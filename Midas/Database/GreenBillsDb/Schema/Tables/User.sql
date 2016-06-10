@@ -19,9 +19,9 @@
 	[DomainName] nvarchar(100),
 	[Disable] bit,
 	[CreatedBy] bigint,
-
+	[RoleId] bigint 
 	CONSTRAINT [FK_User_ContactId] FOREIGN KEY ([ContactInfoId]) REFERENCES [ContactInfo](ContactInfoId),
-
+	CONSTRAINT [FK_User_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [Role](RoleId ),
 	CONSTRAINT [FK_User_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](AccountId),
 	CONSTRAINT [FK_User_ProviderId] FOREIGN KEY ([ProviderId]) REFERENCES [Provider](ProviderId),
 	CONSTRAINT [FK_User_ReferringOfficeID] FOREIGN KEY ([ReferringOfficeID])  REFERENCES [Provider](ProviderId)

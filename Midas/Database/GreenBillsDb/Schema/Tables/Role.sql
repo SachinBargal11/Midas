@@ -4,5 +4,6 @@
 	[Name]	NVARCHAR(50) NOT NULL ,
 	IsStandardRole bit NOT NULL DEFAULT(1) ,
 	EntityType TINYINT NULL,
-	EntityTypeId INT NULL
+	EntityTypeId INT NULL,
+
 )

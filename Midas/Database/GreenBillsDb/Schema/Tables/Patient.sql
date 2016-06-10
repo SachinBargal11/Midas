@@ -27,7 +27,11 @@
 	[SourceProcess] nvarchar(50),
     [PolicyHolderAddressId] bigint,
 	[PolicyHolderContactInfoId] bigint,
-	[AccountId] bigint
+	[InsuranceId] bigint,
+	[InsuranceAddressId] bigint,
+	[AccountId] bigint,
+	CONSTRAINT [FK_Patient_InsuranceId] FOREIGN KEY ([InsuranceId]) REFERENCES [Insurance](InsuranceId),
+	CONSTRAINT [FK_Patient_InsuranceAddressId] FOREIGN KEY ([InsuranceAddressId]) REFERENCES [InsuranceAddress](InsuranceAddressId),
 	CONSTRAINT [FK_Patient_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](AccountId),
 	CONSTRAINT [FK_Patient_UserId] FOREIGN KEY ([UserId]) REFERENCES [User](UserId),
 	CONSTRAINT [FK_Patient_ContactId] FOREIGN KEY ([ContactInfoId]) REFERENCES [ContactInfo](ContactInfoId),
