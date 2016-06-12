@@ -1,0 +1,28 @@
+<a *ngIf="!router.isRouteActive(router.generate(['/Patients/AddPatient']))" class="pull-right m-b-md btn btn-primary" [routerLink]="['AddPatient']">Add Patient</a>
+
+<section class="tabs-section">
+    <div class="tabs-section-nav tabs-section-nav-inline">
+        <ul class="nav" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['PatientsList']" role="tab" data-toggle="tab" [class.active]="isCurrentRoute(['PatientsList'])">
+                Patients								
+			</a>
+            </li>
+            <li *ngFor="let selectedPatient of _patientsStore.selectedPatients | async" class="nav-item">
+                <a class="nav-link" role="tab" data-toggle="tab" [routerLink]="['PatientDetails', {id : selectedPatient.id}]" [class.active]="isCurrentRoute(['PatientDetails', {id: selectedPatient.id}])">
+			    {{ selectedPatient.firstname }}
+                <span class="btn-close fa fa-times-circle-o" (click)="deselectPatient($event, selectedPatient)"></span>
+			</a>
+            </li>
+
+        </ul>
+    </div>
+
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active">
+
+            <router-outlet></router-outlet>
+
+        </div>
+    </div>
+</section>

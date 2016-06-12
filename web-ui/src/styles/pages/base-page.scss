@@ -1,0 +1,14 @@
+.page-content {
+    padding-top: 77px;
+}
+
+.nav {
+    .nav-item .btn-close {
+        color: darkred;
+    }
+}
+
+.table tbody tr:hover td, .table tbody tr:hover th {
+    background-color: #eeeeea;
+    cursor: pointer;
+}
