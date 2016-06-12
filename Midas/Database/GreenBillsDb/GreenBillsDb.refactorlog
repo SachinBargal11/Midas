@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="28080079-3300-4c7a-aadd-20398b22ddc3" ChangeDateTime="06/08/2016 12:04:26">
+    <Property Name="ElementName" Value="[dbo].[Address].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Address]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AddressId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="95fd846c-c765-4d44-b024-38eba0de969b" ChangeDateTime="06/08/2016 12:05:51">
+    <Property Name="ElementName" Value="[dbo].[FK_User_ContactInfo]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[User]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_User_ContactInfo (ContactInfoId)]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="62bf9081-0d29-4311-a0dc-2c9a0b477180" ChangeDateTime="06/08/2016 12:06:18">
+    <Property Name="ElementName" Value="[dbo].[ContactInfo].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ContactInfo]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ContactInfoId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="4318541a-e5b8-4eb0-9b89-384c0b777a80" ChangeDateTime="06/08/2016 12:09:32">
+    <Property Name="ElementName" Value="[dbo].[User].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[User]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="UserId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="b53ecebb-0974-4949-9356-90f3cdfa0b5f" ChangeDateTime="06/08/2016 12:09:45">
+    <Property Name="ElementName" Value="[dbo].[Account].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Account]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AccountId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2fabdf36-aaa8-4eb1-863c-9edbff727c4d" ChangeDateTime="06/08/2016 12:10:29">
+    <Property Name="ElementName" Value="[dbo].[Action].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Action]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ActionId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9cbe26fd-58ce-40ad-aed3-eda9b3209bee" ChangeDateTime="06/08/2016 12:10:47">
+    <Property Name="ElementName" Value="[dbo].[Role].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Role]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="RoleId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="7b02ff39-8d3b-4333-a194-335706ac09e7" ChangeDateTime="06/08/2016 12:14:42">
+    <Property Name="ElementName" Value="[dbo].[FK_User_ToTable]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[User]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_User_Role (RoleId)]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="eaca663c-6f5d-4490-9b68-9bc571dd337d" ChangeDateTime="06/08/2016 12:15:14">
+    <Property Name="ElementName" Value="[dbo].[FK_User_Role (RoleId)]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[User]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_User_Role (RoleId) (RoleId)]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="3e4675a4-f10e-41bf-afe1-707cf09c7822" ChangeDateTime="06/08/2016 12:15:24">
+    <Property Name="ElementName" Value="[dbo].[FK_User_Role (RoleId) (RoleId)]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[User]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_User_Role (RoleId)]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="53fe32b5-8175-4548-8ed2-09a5bd5182f8" ChangeDateTime="06/08/2016 12:20:01">
+    <Property Name="ElementName" Value="[dbo].[Account].[DefaultAddressId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Account]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AddressId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="db7cb477-bdb4-43d7-a839-fdc281023d1e" ChangeDateTime="06/08/2016 12:23:08">
+    <Property Name="ElementName" Value="[dbo].[FK_Account_ToTable]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[Account]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_Account_Address]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a291eddb-709e-4710-b4b0-3897115fadfc" ChangeDateTime="06/08/2016 12:30:46">
+    <Property Name="ElementName" Value="[dbo].[Table1].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Table1]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="OwnerId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d290d483-c3e2-4449-841c-cd63cfa0b1e2" ChangeDateTime="06/10/2016 04:39:49">
+    <Property Name="ElementName" Value="[dbo].[VisitType].[VisitId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VisitType]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="VisitTypeId" />
+  </Operation>
+</Operations>

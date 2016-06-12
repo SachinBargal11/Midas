@@ -1,8 +1,9 @@
 ﻿CREATE TABLE [dbo].[Role]
 (
-	[Id] INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	[RoleId] BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
 	[Name]	NVARCHAR(50) NOT NULL ,
 	IsStandardRole bit NOT NULL DEFAULT(1) ,
 	EntityType TINYINT NULL,
-	EntityTypeId INT NULL
+	EntityTypeId INT NULL,
+
 )
