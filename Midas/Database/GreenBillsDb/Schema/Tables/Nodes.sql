@@ -6,7 +6,6 @@
 	[ParentName] nvarchar(50),
 	[IsDeleted] bit,
 	[AllowToDeleteDocument] bit,
-	[AccountId] bigint not null,
-       
+	[AccountId] bigint not null,       
 	CONSTRAINT [FK_Nodes_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](AccountId)
 )
