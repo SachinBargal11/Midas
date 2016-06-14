@@ -80,5 +80,16 @@
     <Build Include="Schema\Tables\ContactInfo.sql" />
     <Build Include="Schema\Tables\Role.sql" />
     <Build Include="Schema\Tables\RoleActions.sql" />
+    <Build Include="Schema\Tables\EntityType.sql" />
+    <Build Include="Schema\Tables\EntitySchedule.sql" />
+    <Build Include="Schema\Tables\EntityScheduleSetting.sql" />
+    <Build Include="Schema\Tables\InsuranceProvider.sql" />
+    <Build Include="Schema\Tables\MedicalCase.sql" />
+    <Build Include="Schema\Tables\MedicalFacility.sql" />
+    <Build Include="Schema\Tables\MedicalFacilityProvider.sql" />
+    <Build Include="Schema\Tables\UserType.sql" />
+    <Build Include="Schema\Tables\UserSetting.sql" />
+    <Build Include="Schema\Tables\MedicalFacilitySetting.sql" />
+    <Build Include="Schema\Tables\Speciality.sql" />
   </ItemGroup>
 </Project>
