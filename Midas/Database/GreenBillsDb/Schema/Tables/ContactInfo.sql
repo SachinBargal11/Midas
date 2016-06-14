@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[ContactInfo]
 (
-	[Id] INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	[ContactInfoId] BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
 	[Name]	NVARCHAR(50) NOT NULL Default(''),
 	[CellPhone] NVARCHAR(50) NULL,
 	[EmailAddress] NVARCHAR(256) NULL,

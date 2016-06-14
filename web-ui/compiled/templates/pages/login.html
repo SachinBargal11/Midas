@@ -1,0 +1,50 @@
+<div class="page-center">
+    <div class="page-center-in">
+        <div class="container-fluid">
+            <form class="sign-box" [ngFormModel]="loginForm" (ngSubmit)="login()">
+                <div class="sign-avatar">
+                    <img src="theme/img/avatar-sign.png" alt="">
+                </div>
+                <header class="sign-title">Sign In</header>
+                <div class="form-group" [class.error]="email.control.touched && !email.valid">
+                    <input type="email" [class.error]="!email.valid" class="form-control" placeholder="E-Mail" type="text" #email="ngForm" ngControl="email"
+                    />
+                    <div class='error-list' *ngIf="email.control.touched && !email.valid">
+                        <ul>
+                            <li *ngIf="email.control.hasError('required')">Email is required.</li>
+                            <li *ngIf="email.control.hasError('emailValidator')">Email is invalid.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-group" [class.error]="password.control.touched && !password.valid">
+                    <input type="password" class="form-control" [class.error]="!password.valid" placeholder="Password" #password="ngForm" ngControl="password"
+                    />
+                    <div class='error-list' *ngIf="password.control.touched && !email.valid">
+                        <ul>
+                            <li *ngIf="password.control.hasError('required')">Password is required.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox float-left">
+                        <input type="checkbox" id="signed-in" />
+                        <label for="signed-in">Keep me signed in</label>
+                    </div>
+                    <div class="float-right reset">
+                        <a href="#">Reset Password</a>
+                    </div>
+                </div>
+                <button [disabled]="!loginForm.valid" type="submit" class="btn btn-success">Sign in
+                    
+                    <loader [visible]="isLoginInProgress"></loader>
+                </button>
+                <p class="sign-note">New to our website? <a [routerLink]="['Signup']">Sign up</a></p>
+                <!--<button type="button" class="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>-->
+            </form>
+        </div>
+    </div>
+</div>
+<!--.page-center-->
+<simple-notifications [options]="options"></simple-notifications>

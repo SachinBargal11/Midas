@@ -76,20 +76,39 @@
     <Build Include="Schema\Tables\Account.sql" />
     <Build Include="Schema\Tables\Action.sql" />
     <Build Include="Schema\Tables\Address.sql" />
-    <Build Include="Schema\Tables\User.sql" />
+    <Build Include="Schema\Tables\User1.sql" />
     <Build Include="Schema\Tables\ContactInfo.sql" />
     <Build Include="Schema\Tables\Role.sql" />
     <Build Include="Schema\Tables\RoleActions.sql" />
-    <Build Include="Schema\Tables\EntityType.sql" />
-    <Build Include="Schema\Tables\EntitySchedule.sql" />
-    <Build Include="Schema\Tables\EntityScheduleSetting.sql" />
-    <Build Include="Schema\Tables\InsuranceProvider.sql" />
-    <Build Include="Schema\Tables\MedicalCase.sql" />
-    <Build Include="Schema\Tables\MedicalFacility.sql" />
-    <Build Include="Schema\Tables\MedicalFacilityProvider.sql" />
-    <Build Include="Schema\Tables\UserType.sql" />
-    <Build Include="Schema\Tables\UserSetting.sql" />
-    <Build Include="Schema\Tables\MedicalFacilitySetting.sql" />
-    <Build Include="Schema\Tables\Speciality.sql" />
+    <Build Include="Schema\Tables\Owner.sql" />
+    <Build Include="Schema\Tables\Attorney.sql" />
+    <Build Include="Schema\Tables\Adjuster.sql" />
+    <Build Include="Schema\Tables\Abbreviation.sql" />
+    <Build Include="Schema\Tables\CaseType.sql" />
+    <Build Include="Schema\Tables\CaseStatus.sql" />
+    <Build Include="Schema\Tables\BillStatus.sql" />
+    <Build Include="Schema\Tables\VisitType.sql" />
+    <Build Include="Schema\Tables\Provider.sql" />
+    <Build Include="Schema\Tables\Location.sql" />
+    <Build Include="Schema\Tables\Doctor.sql" />
+    <Build Include="Schema\Tables\Specialty.sql" />
+    <Build Include="Schema\Tables\Nodes.sql" />
+    <Build Include="Schema\Tables\Room.sql" />
+    <Build Include="Schema\Tables\RoomDays.sql" />
+    <Build Include="Schema\Tables\ProcedureCode.sql" />
+    <Build Include="Schema\Tables\DiagnosisType.sql" />
+    <Build Include="Schema\Tables\DignosisCode.sql" />
+    <Build Include="Schema\Tables\Transpotation.sql" />
+    <Build Include="Schema\Tables\Insurance.sql" />
+    <Build Include="Schema\Tables\InsuranceAddress.sql" />
+    <Build Include="Schema\Tables\Employer.sql" />
+    <Build Include="Schema\Tables\EmployerAddress.sql" />
+    <Build Include="Schema\Tables\Patient.sql" />
+    <Build Include="Schema\Tables\User.sql" />
+    <Build Include="Schema\Tables\Case.sql" />
+    <Build Include="Schema\Tables\PatientAccidentDetails.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="GreenBillsDb.refactorlog" />
   </ItemGroup>
 </Project>

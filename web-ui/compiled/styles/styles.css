@@ -1,0 +1,40 @@
+/**********/
+/* COLORS */
+/**********/
+/* GRAYS */
+/*********/
+/* FONTS */
+/*********/
+/*********************/
+/* APP CONFIGURATION */
+/*********************/
+html {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  min-height: 100%; }
+
+body {
+  margin: 0;
+  padding: 0; }
+
+.simple-notification-wrapper div.error div.title, .simple-notification-wrapper div.error div.content {
+  color: white !important; }
+
+.site-header {
+  height: 50px;
+  padding-top: 5px; }
+
+.side-menu.side-menu-compact {
+  padding-top: 50px; }
+
+.page-content {
+  padding-top: 77px; }
+
+.nav .nav-item .btn-close {
+  color: darkred; }
+
+.table tbody tr:hover td, .table tbody tr:hover th {
+  background-color: #eeeeea;
+  cursor: pointer; }
+/*# sourceMappingURL=styles.css.map */

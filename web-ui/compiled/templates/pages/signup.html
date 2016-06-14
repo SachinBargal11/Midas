@@ -1,0 +1,66 @@
+<div class="page-center">
+    <div class="page-center-in">
+        <div class="container-fluid">
+            <form class="sign-box" [ngFormModel]="signupForm" (ngSubmit)="register()">
+                <div class="sign-avatar no-photo">+</div>
+                <header class="sign-title">Sign Up</header>
+                <div class="form-group" [class.error]="name.control.touched && !name.valid">
+                    <input type="text" class="form-control" [class.error]="!name.valid" placeholder="Name" #name="ngForm" ngControl="name" />
+                    <div class='error-list' *ngIf="name.control.touched && !name.valid">
+                        <ul>
+                            <li *ngIf="name.control.hasError('required')">Name is required.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-group" [class.error]="email.control.touched && !email.valid">
+                    <input type="email" [class.error]="!email.valid" class="form-control" placeholder="E-Mail" type="text" #email="ngForm" ngControl="email"
+                    />
+                    <div class='error-list' *ngIf="email.control.touched && !email.valid">
+                        <ul>
+                            <li *ngIf="email.control.hasError('required')">Email is required.</li>
+                            <li *ngIf="email.control.hasError('emailValidator')">Email is invalid.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-group" [class.error]="mobileNo.control.touched && !mobileNo.valid">
+                    <input type="text" class="form-control" [class.error]="!mobileNo.valid" placeholder="Mobile No" #mobileNo="ngForm" ngControl="mobileNo"
+                    />
+                    <div class='error-list' *ngIf="mobileNo.control.touched && !mobileNo.valid">
+                        <ul>
+                            <li *ngIf="mobileNo.control.hasError('required')">Mobile number is required.</li>
+                            <li *ngIf="mobileNo.control.hasError('mobileNoValidator')">Mobile number is invalid.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-group" [class.error]="password.control.touched && !password.valid">
+                    <input type="password" minlength='6' class="form-control" [class.error]="!password.valid" placeholder="Password" #password="ngForm" ngControl="password"
+                    />
+                    <div class='error-list' *ngIf="password.control.touched && !password.valid">
+                        <ul>
+                            <li *ngIf="password.control.hasError('required')">Password is required.</li>
+                            <li *ngIf="password.control.hasError('minlength')">Password should be minimum {{password.errors.minlength.requiredLength}} characters.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-group" [class.error]="confirmPassword.control.touched && signupForm.hasError('mismatchedPasswords')">
+                    <input type="password" class="form-control" [class.error]="signupForm.hasError('mismatchedPasswords')" placeholder="Repeat password" #confirmPassword="ngForm"
+                        ngControl="confirmPassword" />
+                    <div class='error-list' *ngIf="confirmPassword.control.touched && signupForm.hasError('mismatchedPasswords')">
+                        <ul>
+                            <li *ngIf="signupForm.hasError('mismatchedPasswords')">Passwords do not match.</li>
+                        </ul>
+                    </div>
+                </div>
+                <button [disabled]="!signupForm.valid" type="submit" class="btn btn-success sign-up">Sign up
+                    <loader [visible]="isSignupInProgress"></loader>
+                </button>
+                <p class="sign-note">Already have an account? <a [routerLink]="['Login']">Login</a></p>
+                <!--<button type="button" class="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>-->
+            </form>
+        </div>
+    </div>
+</div>
+<!--.page-center-->
+<simple-notifications [options]="options"></simple-notifications>

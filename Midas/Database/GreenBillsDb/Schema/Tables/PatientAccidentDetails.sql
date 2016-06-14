@@ -1,0 +1,20 @@
+﻿CREATE TABLE [dbo].[PatientAccidentDetails]
+(
+	[PatientAccidentDetailsId] bigint identity(1,1) NOT NULL PRIMARY KEY,
+	[PatientId]bigint,
+	[AccountId] bigint,
+	[PlateNo] nvarchar(25),
+	[AccidentDate] datetime,
+	[AddressId] bigint,
+	[ReportNo] nvarchar(25),
+	[PatientFromCar] nvarchar(25),
+	[HospitalName] nvarchar(50),
+	[HospitalAddressId] bigint,
+	[DescripInjury] nvarchar(max),
+	[AdmisionDate] datetime,
+	[PatientType] nvarchar(50),
+	CONSTRAINT [FK_PatientAccidentDetails_AddressId] FOREIGN KEY ([AddressId]) REFERENCES [Address](AddressId),
+	CONSTRAINT [FK_PatientAccidentDetails_HospitalAddressId] FOREIGN KEY ([HospitalAddressId]) REFERENCES [Address](AddressId),
+	CONSTRAINT [FK_PatientAccidentDetails_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](AccountId),
+	CONSTRAINT [FKPatientAccidentDetails_PatientId] FOREIGN KEY ([PatientId]) REFERENCES [Patient](PatientId),
+)
