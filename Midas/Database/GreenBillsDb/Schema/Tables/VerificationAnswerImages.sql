@@ -7,7 +7,9 @@
 	[CreatedDate] datetime,
 	[CreatedUserId] bigint,
 	[VerificationId] bigint,
-	[VerificationAnswerId] bigint
+	[VerificationAnswerId] bigint,
+	[AnswerImagePath] nvarchar(max)
+	CONSTRAINT [FK_AnswerImages_ImageId] FOREIGN KEY ([ImageId]) REFERENCES [Images](ImageId)
 	CONSTRAINT [FK_VerificationAnswerImages_VerificationAnswerId] FOREIGN KEY ([VerificationAnswerId]) REFERENCES [BillVerificationAnswer](VerificationAnswerId),
 	CONSTRAINT [FK_VerificationAnswerImages_VerificationId] FOREIGN KEY ([VerificationId]) REFERENCES [BillVerification](VerificationId),
 	CONSTRAINT [FK_VerificationAnswerImages_CreatedUserId] FOREIGN KEY ([CreatedUserId]) REFERENCES [User](UserId ),
