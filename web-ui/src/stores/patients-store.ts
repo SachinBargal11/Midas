@@ -16,6 +16,8 @@ export class PatientsStore {
 
     private _patients: BehaviorSubject<List<Patient>> = new BehaviorSubject(List([]));
     private _selectedPatients: BehaviorSubject<List<Patient>> = new BehaviorSubject(List([]));
+    
+    currentPatient;
 
     constructor(private _patientsService: PatientsService) {
         this.loadInitialData();
@@ -49,6 +51,7 @@ export class PatientsStore {
     findPatientById(id: number) {
         let patients = this._patients.getValue();
         let index = patients.findIndex((currentPatient: Patient) => currentPatient.id === id);
+        this.currentPatient = patients.get(index);
         return patients.get(index);
     }
 

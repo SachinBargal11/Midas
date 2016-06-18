@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ElementRef} from '@angular/core';
 import {ControlGroup, Validators, FormBuilder} from '@angular/common';
 import {ROUTER_DIRECTIVES, Router, RouteParams, RouteConfig} from '@angular/router-deprecated';
 import {AppValidators} from '../../../utils/AppValidators';
@@ -6,6 +6,9 @@ import {LoaderComponent} from '../../elements/loader';
 import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
 import {PatientsStore} from '../../../stores/patients-store';
 import {Patient} from '../../../models/patient';
+import $ from 'jquery';
+import 'eonasdan-bootstrap-datetimepicker';
+import {SessionStore} from '../../../stores/session-store';
 
 @Component({
     selector: 'add-patient',
@@ -20,7 +23,8 @@ export class AddPatientComponent implements OnInit {
         'lastname': '',
         'email': '',
         'mobileNo': '',
-        'address': ''
+        'address': '',
+        'dob' : ''
     });
     options = {
         timeOut: 3000,
@@ -35,22 +39,28 @@ export class AddPatientComponent implements OnInit {
         fb: FormBuilder,
         private _router: Router,
         private _notificationsService: NotificationsService,
+        private _sessionStore: SessionStore,
         private _routeParams: RouteParams,
-        private _patientsStore: PatientsStore
+        private _patientsStore: PatientsStore,
+        private _elRef: ElementRef
     ) {
         this.patientform = fb.group({
             firstname: ['', Validators.required],
             lastname: ['', Validators.required],
             email: ['', Validators.compose([Validators.required, AppValidators.emailValidator])],
             mobileNo: ['', Validators.compose([Validators.required, AppValidators.mobileNoValidator])],
-            address: ['']
+            address: [''],
+            dob: ['', Validators.required]
         });
     }
 
     ngOnInit() {
-        if (!window.localStorage.hasOwnProperty('session_user_name')) {
+        if (!this._sessionStore.isAuthenticated()) {
             this._router.navigate(['Login']);
         }
+        $(this._elRef.nativeElement).find('.datepickerElem').datetimepicker({
+            format: 'll'
+        });
     }
 
 

@@ -59,7 +59,7 @@ System.register(['@angular/core', '@angular/router-deprecated', './patients-list
                     }),
                     router_deprecated_1.RouteConfig([
                         { path: '/', name: 'PatientsList', component: patients_list_1.PatientsListComponent, useAsDefault: true },
-                        { path: '/:id', name: 'PatientDetails', component: patient_details_1.PatientDetailsComponent },
+                        { path: '/:id/...', name: 'PatientDetails', component: patient_details_1.PatientDetailsComponent },
                         { path: '/add', name: 'AddPatient', component: add_patient_1.AddPatientComponent }
                     ]), 
                     __metadata('design:paramtypes', [router_deprecated_1.Router, router_deprecated_1.RouteParams, patients_store_1.PatientsStore])

@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router-deprecated', '../../../stores/patients-store'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router-deprecated', '../../../stores/patients-store', './profile-patient'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router-deprecated', '../../../stores
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_deprecated_1, patients_store_1;
+    var core_1, router_deprecated_1, patients_store_1, profile_patient_1;
     var PatientDetailsComponent;
     return {
         setters:[
@@ -22,14 +22,14 @@ System.register(['@angular/core', '@angular/router-deprecated', '../../../stores
             },
             function (patients_store_1_1) {
                 patients_store_1 = patients_store_1_1;
+            },
+            function (profile_patient_1_1) {
+                profile_patient_1 = profile_patient_1_1;
             }],
         execute: function() {
-            // @RouteConfig([
-            //     { path: '/', name: 'PatientProfile', component: PatientProfileComponent }
-            // ])
             PatientDetailsComponent = (function () {
-                function PatientDetailsComponent(_router, _routeParams, _patientsStore) {
-                    this._router = _router;
+                function PatientDetailsComponent(router, _routeParams, _patientsStore) {
+                    this.router = router;
                     this._routeParams = _routeParams;
                     this._patientsStore = _patientsStore;
                     var patientId = parseInt(this._routeParams.get('id'));
@@ -39,10 +39,17 @@ System.register(['@angular/core', '@angular/router-deprecated', '../../../stores
                         this.patient = patient;
                     }
                     else {
-                        this._router.navigate(['PatientsList']);
+                        this.router.navigate(['PatientsList']);
                     }
                 }
+                PatientDetailsComponent.prototype.isCurrentRoute = function (route) {
+                    var instruction = this.router.generate(route);
+                    return this.router.isRouteActive(instruction);
+                };
                 PatientDetailsComponent = __decorate([
+                    router_deprecated_1.RouteConfig([
+                        { path: '/', name: 'PatientProfile', component: profile_patient_1.PatientProfileComponent, useAsDefault: true }
+                    ]),
                     core_1.Component({
                         selector: 'patient-details',
                         templateUrl: 'templates/pages/patients/patient-details.html',

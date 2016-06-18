@@ -30,6 +30,22 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-lg-4">
+                                <div class="form-group" [class.error]="dob.control.touched && !dob.valid">
+                                    <div class='input-group date'>
+                                        <input type="text" placeholder="Date Of Birth" class="datepickerElem form-control" [class.error]="!dob.valid" #dob="ngForm"
+                                            ngControl="dob">
+                                        <span class="input-group-addon">
+										<i class="font-icon font-icon-calend"></i>
+									</span>
+                                    </div>
+                                    <div class='error-list' *ngIf="dob.control.touched && !dob.valid">
+                                        <ul>
+                                            <li *ngIf="dob.control.hasError('required')">Date Of Birth is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>

@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router-deprecated';
 import {LoaderComponent} from '../elements/loader';
-import {AuthenticationService} from '../../services/authentication';
+import {AuthenticationService} from '../../services/authentication-service';
 import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
 import {CORE_DIRECTIVES} from '@angular/common';
 import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap';
+import {SessionStore} from '../../stores/session-store';
 
 @Component({
     selector: 'app-header',
@@ -35,21 +36,22 @@ export class AppHeaderComponent implements OnInit {
     constructor(
         private _authenticationService: AuthenticationService,
         private _notificationsService: NotificationsService,
+        private _sessionStore: SessionStore,
         private _router: Router
     ) {
 
     }
 
     ngOnInit() {
-        if (window.localStorage.hasOwnProperty('session_user_name')) {
-            this.user_name = window.localStorage.getItem('session_user_name');
+        if (this._sessionStore.isAuthenticated()) {
+            this.user_name = this._sessionStore.session.user.displayName;
         } else {
             this._router.navigate(['Login']);
         }
     }
 
     logout() {
-        window.localStorage.removeItem('session_user_name');
+        this._sessionStore.logout();
         this._router.navigate(['Login']);
     }
 }

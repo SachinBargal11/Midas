@@ -76,6 +76,7 @@ System.register(['@angular/core', 'rxjs/add/operator/share', 'rxjs/add/operator/
                 PatientsStore.prototype.findPatientById = function (id) {
                     var patients = this._patients.getValue();
                     var index = patients.findIndex(function (currentPatient) { return currentPatient.id === id; });
+                    this.currentPatient = patients.get(index);
                     return patients.get(index);
                 };
                 PatientsStore.prototype.addPatient = function (patient) {

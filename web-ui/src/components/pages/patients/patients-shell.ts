@@ -20,7 +20,7 @@ import {Patient} from '../../../models/patient';
 
 @RouteConfig([
     { path: '/', name: 'PatientsList', component: PatientsListComponent, useAsDefault: true },
-    { path: '/:id', name: 'PatientDetails', component: PatientDetailsComponent },
+    { path: '/:id/...', name: 'PatientDetails', component: PatientDetailsComponent },
     { path: '/add', name: 'AddPatient', component: AddPatientComponent }
 ])
 

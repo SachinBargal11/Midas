@@ -30,8 +30,7 @@
     <script src="../node_modules/zone.js/dist/zone.js"></script>
     <script src="../node_modules/reflect-metadata/Reflect.js"></script>
     <script src="../node_modules/systemjs/dist/system.src.js"></script>
-    <!--<script src="../node_modules/jquery/dist/jquery.min.js"></script>-->
-    <!--<script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>-->
+
     <script>
         System.config({
                 map: {
@@ -42,7 +41,17 @@
                     'ng2-bootstrap': '../node_modules/ng2-bootstrap',
                     'moment' : '../node_modules/moment/moment.js',
                     'immutable' : '../node_modules/immutable/dist/immutable.js',
-                    'underscore' : '../node_modules/underscore/underscore.js'                    
+                    'underscore' : '../node_modules/underscore/underscore.js',
+                    'jquery': '../node_modules/jquery/dist/jquery.min.js',
+                    'eonasdan-bootstrap-datetimepicker': '../node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'               
+                },
+                meta: {
+                      'daterangepicker': {
+                          deps: [
+                              'jquery', 
+                              'moment'
+                          ]
+                      }
                 },
                 packages: {
                     'scripts': {

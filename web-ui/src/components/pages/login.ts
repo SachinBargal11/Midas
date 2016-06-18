@@ -3,14 +3,14 @@ import {ControlGroup, Validators, FormBuilder} from '@angular/common';
 import {ROUTER_DIRECTIVES, Router, RouteParams} from '@angular/router-deprecated';
 import {AppValidators} from '../../utils/AppValidators';
 import {LoaderComponent} from '../elements/loader';
-import {AuthenticationService} from '../../services/authentication';
 import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
+import {SessionStore} from '../../stores/session-store';
 
 @Component({
     selector: 'login',
     templateUrl: 'templates/pages/login.html',
     directives: [ROUTER_DIRECTIVES, LoaderComponent, SimpleNotificationsComponent],
-    providers: [AuthenticationService, NotificationsService]
+    providers: [NotificationsService]
 })
 
 export class LoginComponent implements OnInit {
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
     };
     constructor(
         fb: FormBuilder,
-        private _authenticationService: AuthenticationService,
+        private _sessionStore: SessionStore,
         private _notificationsService: NotificationsService,
         private _router: Router,
         private _routeParams: RouteParams
@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (window.localStorage.hasOwnProperty('session_user_name')) {
+        if (this._sessionStore.isAuthenticated()) {
             this._router.navigate(['Dashboard']);
         }
     }
@@ -45,20 +45,12 @@ export class LoginComponent implements OnInit {
     login() {
         var result;
         this.isLoginInProgress = true;
-        var getParam = {
-            email: this.loginForm.value.email,
-            password: this.loginForm.value.password
-        }
-        result = this._authenticationService.authenticate(getParam);
+
+        result = this._sessionStore.login(this.loginForm.value.email, this.loginForm.value.password);
 
         result.subscribe(
-            response => {
-                if (response.length) {
-                    window.localStorage.setItem('session_user_name', response[0].name);
-                    this._router.navigate(['Dashboard']);
-                } else {
-                    this._notificationsService.error('Oh No!', 'Invalid username and password.');
-                }
+            (response) => {
+                this._router.navigate(['Dashboard']);
             },
             error => {
                 this._notificationsService.error('Oh No!', 'Unable to authenticate user.');

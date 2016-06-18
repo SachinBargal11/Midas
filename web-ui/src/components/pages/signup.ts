@@ -3,8 +3,9 @@ import {ControlGroup, Validators, FormBuilder} from '@angular/common';
 import {ROUTER_DIRECTIVES, Router, RouteParams} from '@angular/router-deprecated';
 import {AppValidators} from '../../utils/AppValidators';
 import {LoaderComponent} from '../elements/loader';
-import {AuthenticationService} from '../../services/authentication';
+import {AuthenticationService} from '../../services/authentication-service';
 import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
+import {SessionStore} from '../../stores/session-store';
 
 @Component({
     selector: 'signup',
@@ -27,6 +28,7 @@ export class SignupComponent implements OnInit {
         fb: FormBuilder,
         private _authenticationService: AuthenticationService,
         private _notificationsService: NotificationsService,
+        private _sessionStore: SessionStore,
         private _router: Router,
         private _routeParams: RouteParams
     ) {
@@ -40,7 +42,7 @@ export class SignupComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (window.localStorage.hasOwnProperty('session_user_name')) {
+        if (this._sessionStore.isAuthenticated()) {
             this._router.navigate(['Dashboard']);
         }
     }

@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router-deprecated', './pages/login', './pages/signup', './pages/dashboard', './pages/patients/patients-shell', './elements/app-header', './elements/main-nav'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router-deprecated', './pages/login', './pages/signup', './pages/dashboard', './pages/patients/patients-shell', './elements/app-header', './elements/main-nav', '../stores/session-store'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router-deprecated', './pages/login',
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_deprecated_1, login_1, signup_1, dashboard_1, patients_shell_1, app_header_1, main_nav_1;
+    var core_1, router_deprecated_1, login_1, signup_1, dashboard_1, patients_shell_1, app_header_1, main_nav_1, session_store_1;
     var AppRoot;
     return {
         setters:[
@@ -37,26 +37,37 @@ System.register(['@angular/core', '@angular/router-deprecated', './pages/login',
             },
             function (main_nav_1_1) {
                 main_nav_1 = main_nav_1_1;
+            },
+            function (session_store_1_1) {
+                session_store_1 = session_store_1_1;
             }],
         execute: function() {
             AppRoot = (function () {
-                function AppRoot(router) {
+                function AppRoot(router, _sessionStore) {
                     this.router = router;
+                    this._sessionStore = _sessionStore;
                 }
+                AppRoot.prototype.ngOnInit = function () {
+                    var _this = this;
+                    this._sessionStore.authenticate().subscribe(function (response) {
+                    }, function (error) {
+                        _this.router.navigate(['Login']);
+                    });
+                };
                 AppRoot = __decorate([
                     router_deprecated_1.RouteConfig([
                         { path: '/login', name: 'Login', component: login_1.LoginComponent },
                         { path: '/signup', name: 'Signup', component: signup_1.SignupComponent },
                         { path: '/dashboard', name: 'Dashboard', component: dashboard_1.DashboardComponent },
                         { path: '/patients/...', name: 'Patients', component: patients_shell_1.PatientsShellComponent },
-                        { path: '/*other', name: 'Other', redirectTo: ['Login'] }
+                        { path: '/*other', name: 'Other', redirectTo: ['Dashboard'] }
                     ]),
                     core_1.Component({
                         selector: 'app-root',
                         templateUrl: 'templates/AppRoot.html',
                         directives: [router_deprecated_1.ROUTER_DIRECTIVES, app_header_1.AppHeaderComponent, main_nav_1.MainNavComponent]
                     }), 
-                    __metadata('design:paramtypes', [router_deprecated_1.Router])
+                    __metadata('design:paramtypes', [router_deprecated_1.Router, session_store_1.SessionStore])
                 ], AppRoot);
                 return AppRoot;
             }());

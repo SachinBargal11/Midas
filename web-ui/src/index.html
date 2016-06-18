@@ -30,8 +30,7 @@
     <script src="<%= externalComponentsDirectory %>/node_modules/zone.js/dist/zone.js"></script>
     <script src="<%= externalComponentsDirectory %>/node_modules/reflect-metadata/Reflect.js"></script>
     <script src="<%= externalComponentsDirectory %>/node_modules/systemjs/dist/system.src.js"></script>
-    <!--<script src="<%= externalComponentsDirectory %>/node_modules/jquery/dist/jquery.min.js"></script>-->
-    <!--<script src="<%= externalComponentsDirectory %>/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>-->
+
     <script>
         System.config({
                 map: {
@@ -42,7 +41,17 @@
                     'ng2-bootstrap': '<%= externalComponentsDirectory %>/node_modules/ng2-bootstrap',
                     'moment' : '<%= externalComponentsDirectory %>/node_modules/moment/moment.js',
                     'immutable' : '<%= externalComponentsDirectory %>/node_modules/immutable/dist/immutable.js',
-                    'underscore' : '<%= externalComponentsDirectory %>/node_modules/underscore/underscore.js'                    
+                    'underscore' : '<%= externalComponentsDirectory %>/node_modules/underscore/underscore.js',
+                    'jquery': '<%= externalComponentsDirectory %>/node_modules/jquery/dist/jquery.min.js',
+                    'eonasdan-bootstrap-datetimepicker': '<%= externalComponentsDirectory %>/node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'               
+                },
+                meta: {
+                      'daterangepicker': {
+                          deps: [
+                              'jquery', 
+                              'moment'
+                          ]
+                      }
                 },
                 packages: {
                     'scripts': {
