@@ -31,7 +31,7 @@ export class SessionStore {
 
             if (storedUser) {
                 let user = new User(JSON.parse(storedUser));
-                
+
                 this._populateSession(user);
 
                 resolve(this._session);
@@ -64,10 +64,8 @@ export class SessionStore {
         window.localStorage.removeItem(this.__USER_STORAGE_KEY__);
     }
 
-    private _populateSession(user)
-    {
+    private _populateSession(user) {
         this._session.user = user;
-
         window.localStorage.setItem(this.__USER_STORAGE_KEY__, JSON.stringify(user.toJS()));
     }
 

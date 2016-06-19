@@ -16,7 +16,7 @@ export class PatientsStore {
 
     private _patients: BehaviorSubject<List<Patient>> = new BehaviorSubject(List([]));
     private _selectedPatients: BehaviorSubject<List<Patient>> = new BehaviorSubject(List([]));
-    
+
     currentPatient;
 
     constructor(private _patientsService: PatientsService) {
@@ -32,20 +32,15 @@ export class PatientsStore {
     }
 
     loadInitialData() {
-        this._patientsService.getPatients().subscribe((data: any) => {
-            let patients = (<Object[]>data.json()).map((patientData: any) =>
-                new Patient({
-                    id: patientData.id,
-                    firstname: patientData.firstname, 
-                    lastname: patientData.lastname, 
-                    email: patientData.email, 
-                    mobileNo: patientData.mobileNo, 
-                    address: patientData.address, 
-                    dob: Moment(patientData.dob)
-                }));
+        let promise = new Promise((resolve, reject) => {
+            this._patientsService.getPatients().subscribe((patients: Patient) => {
+                this._patients.next(List(patients));
+                resolve(patients);
+            }, error => {
+                reject(error);
+            });
+        });
 
-            this._patients.next(List(patients));
-        }, error => console.log('Could not load patients.'));
     }
 
     findPatientById(id: number) {
@@ -57,7 +52,7 @@ export class PatientsStore {
 
     addPatient(patient: Patient) {
         let obs = this._patientsService.addPatient(patient);
-        
+
         obs.subscribe(
             res => {
                 this._patients.next(this._patients.getValue().push(patient));

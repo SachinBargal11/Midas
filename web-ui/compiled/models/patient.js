@@ -26,7 +26,8 @@ System.register(['immutable', 'moment'], function(exports_1, context_1) {
                 email: "",
                 mobileNo: "",
                 address: "",
-                dob: moment_1.default(0)
+                dob: moment_1.default(0),
+                createdUser: 0
             });
             Patient = (function (_super) {
                 __extends(Patient, _super);

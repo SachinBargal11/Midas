@@ -60,7 +60,7 @@ export class SignupComponent implements OnInit {
 
 
         result.subscribe(
-            response => {
+            (response) => {
                 this._notificationsService.success('Welcome!', 'You have suceessfully registered!');
                 setTimeout(() => {
                     this._router.navigate(['Login']);

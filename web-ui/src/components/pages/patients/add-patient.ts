@@ -73,6 +73,7 @@ export class AddPatientComponent implements OnInit {
             'email': this.patientform.value.email,
             'mobileNo': this.patientform.value.mobileNo,
             'address': this.patientform.value.address,
+            'createdUser':this._sessionStore.session.user.id
         });
         result = this._patientsStore.addPatient(patient);
         result.subscribe(

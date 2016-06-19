@@ -21,7 +21,8 @@ const PatientRecord = Record({
     email: "",
     mobileNo: "",
     address: "",
-    dob: Moment(0)
+    dob: Moment(0),
+    createdUser: 0
 });
 
 export class Patient extends PatientRecord {
@@ -33,6 +34,7 @@ export class Patient extends PatientRecord {
     mobileNo: string;
     address: string;
     dob: Date;
+    createdUser: number
 
     constructor(props) {
         super(props);
