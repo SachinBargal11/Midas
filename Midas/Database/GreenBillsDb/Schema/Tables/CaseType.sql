@@ -1,9 +1,15 @@
 ﻿CREATE TABLE [dbo].[CaseType]
 (
-	[CaseTypeId] bigint identity(1,1) NOT NULL PRIMARY KEY,
+	[CaseTypeId] int identity(1,1) NOT NULL PRIMARY KEY,
 	[Name] nvarchar(50) not null,
-	[AccountId] bigint,
-	[AbbreviationId] bigint,
-	CONSTRAINT [FK_CaseType_AbbreviationId] FOREIGN KEY ([AbbreviationId]) REFERENCES [Abbreviation](AbbreviationId),
-	CONSTRAINT [FK_CaseType_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](AccountId) 
+	[AccountId] int,
+	[OfficeId] int,
+	[AbbreviationId] int,
+	[Deleted] bit,
+	[CreatedDate] datetime,
+	[UpdatedDate] datetime,
+	[CreatedBy] int,
+	[UpdatedBY]  int,
+	IPAddress varchar(15)
+ 
 )

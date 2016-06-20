@@ -6,8 +6,12 @@
 	[Path] nvarchar(max),
 	[FileName] nvarchar(1000),
 	[AccountId]bigint ,
-	[UserId] bigint
-	CONSTRAINT [FK_Images_UserId] FOREIGN KEY ([UserId]) REFERENCES [User](UserId),
-		CONSTRAINT [FK_POM_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](AccountId),
-		CONSTRAINT [FK_POM_ImageId] FOREIGN KEY ([ImageId]) REFERENCES [Images](ImageId)
+	[PomType] int,
+	[Deleted] bit,
+	[CreatedDate] datetime,
+	[UpdatedDate] datetime,
+	[CreatedBy] int,
+	[UpdatedBY]  int,
+	IPAddress varchar(15)
+	
 )

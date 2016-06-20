@@ -1,13 +1,16 @@
 ﻿CREATE TABLE [dbo].[PaymentImages]
 (
-	[PaymentImageId] bigint identity(1,1) NOT NULL PRIMARY KEY,
-	[ImageId] bigint,
+	[PaymentImageId] int identity(1,1) NOT NULL PRIMARY KEY,
+	[ImageId] int,
 	[Path] nvarchar(max),
 	[FileName] nvarchar(1000),
-	[AccountId]bigint ,
-	[UserId] bigint,
-	CONSTRAINT [FK_PaymentImages_UserId] FOREIGN KEY ([UserId]) REFERENCES [User](UserId),
-	CONSTRAINT [FK_PaymentImages_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](AccountId),		
-	CONSTRAINT [FK_PaymentImages_POMId] FOREIGN KEY ([ImageId]) REFERENCES [Images](ImageId)
+	[AccountId]int ,
+	[Deleted] bit,
+	[CreatedDate] datetime,
+	[UpdatedDate] datetime,
+	[CreatedBy] int,
+	[UpdatedBY]  int,
+	IPAddress varchar(15)
+	
 )
 
