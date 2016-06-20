@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[EmployerAddress]
 (
 	[EmployerAddressId] int NOT NULL PRIMARY KEY,
-	[EmployerId] int ,
+	[UserEmployerId] int ,
 	[AccountId] int,
 	[Address] nvarchar(500),
 	[CityId] int,

@@ -80,8 +80,6 @@
     <Build Include="Schema\Tables\ContactInfo.sql" />
     <Build Include="Schema\Tables\RoleActions.sql" />
     <Build Include="Schema\Tables\Owner.sql" />
-    <Build Include="Schema\Tables\Attorney.sql" />
-    <Build Include="Schema\Tables\Adjuster.sql" />
     <Build Include="Schema\Tables\Abbreviation.sql" />
     <Build Include="Schema\Tables\CaseType.sql" />
     <Build Include="Schema\Tables\CaseStatus.sql" />
@@ -100,7 +98,6 @@
     <Build Include="Schema\Tables\Transportation.sql" />
     <Build Include="Schema\Tables\Insurance.sql" />
     <Build Include="Schema\Tables\InsuranceAddress.sql" />
-    <Build Include="Schema\Tables\Employer.sql" />
     <Build Include="Schema\Tables\EmployerAddress.sql" />
     <Build Include="Schema\Tables\Patient.sql" />
     <Build Include="Schema\Tables\Case.sql" />
@@ -117,6 +114,32 @@
     <Build Include="Schema\Tables\MailProfile.sql" />
     <Build Include="Schema\Tables\UserType.sql" />
     <Build Include="Schema\Tables\DenialReasons.sql" />
+    <Build Include="Schema\Tables\Visits.sql" />
+    <Build Include="Schema\Tables\VisitProcedure.sql" />
+    <Build Include="Schema\Tables\Bills.sql" />
+    <Build Include="Schema\Tables\Reconcilaction.sql" />
+    <Build Include="Schema\Tables\BillDetails.sql" />
+    <Build Include="Schema\Tables\Payment.sql" />
+    <Build Include="Schema\Tables\PaymentImages.sql" />
+    <Build Include="Schema\Tables\BillVerification.sql" />
+    <Build Include="Schema\Tables\VerificationImages.sql" />
+    <Build Include="Schema\Tables\BillVerificationAnswer.sql" />
+    <Build Include="Schema\Tables\VerificationAnswerImages.sql" />
+    <Build Include="Schema\Tables\POM.sql" />
+    <Build Include="Schema\Tables\BillPom.sql" />
+    <Build Include="Schema\Tables\DocumentType.sql" />
+    <Build Include="Schema\Tables\CaseDocument.sql" />
+    <Build Include="Schema\Tables\RequiredDocuments.sql" />
+    <Build Include="Schema\Tables\ReminderType.sql" />
+    <Build Include="Schema\Tables\ReminderStatus.sql" />
+    <Build Include="Schema\Tables\ReminderRecurrence.sql" />
+    <Build Include="Schema\Tables\Mandatory.sql" />
+    <Build Include="Schema\Tables\EnvelopeConfiguration.sql" />
+    <Build Include="Schema\Tables\Reminder.sql" />
+    <Build Include="Schema\Tables\CyclicInsuranceConfiguration.sql" />
+    <Build Include="Schema\Tables\CyclicSpecialtyConfiguration.sql" />
+    <Build Include="Schema\Tables\CyclicProcedureConfigurationAmount.sql" />
+    <Build Include="Schema\Tables\CyclicSpecialtyConfigurationAmount.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="GreenBillsDb.refactorlog" />

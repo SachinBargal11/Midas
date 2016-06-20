@@ -6,7 +6,7 @@
 	[InsuranceId] int,
 	[CaseStatusId] int,
 	[AttorneyId] int,
-	[PatientId] int,
+	PatientDetailId int,
 	[ClaimNumber] nvarchar(50),
 	[PolicyNumber] nvarchar(50),
 	[DateOfAccident] datetime,

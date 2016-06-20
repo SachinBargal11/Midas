@@ -1,16 +1,10 @@
-﻿CREATE TABLE [dbo].[Patient]
+﻿CREATE TABLE [dbo].[PatientDetails]
 (
-	[PatientId] int identity(1,1) NOT NULL PRIMARY KEY,
-	[FirstName] nvarchar(50),
-	[MiddleName] nvarchar(50),
-	[LastName] nvarchar(50),
+	[PatientDetailId] int identity(1,1) NOT NULL PRIMARY KEY,
+	[UserPatientId] int,
+	[FirstName] nvarchar(50),	
 	[Age] int,
-	[AddressId] int,
-	[ContactInfoId] int,
-	[WCBNO] nvarchar(50),
-	[SSN] nvarchar(50),
-	[DateOfBirth] datetime,
-	[Gender] nvarchar(10),
+	[WCBNO] nvarchar(50),	
 	[JobTitle] nvarchar(50),
 	[WorkActivitis] nvarchar(50),
 	[CarrierCaseNo] nvarchar(50),

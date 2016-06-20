@@ -1,15 +1,16 @@
 ﻿CREATE TABLE [dbo].[BillVerificationAnswer]
 (
-	[VerificationAnswerId] bigint identity(1,1) NOT NULL PRIMARY KEY,
-	[VerificationId] bigint,
+	[VerificationAnswerId] int identity(1,1) NOT NULL PRIMARY KEY,
+	[VerificationId] int,
 	[BillId] nvarchar(50),
-	[CaseId] bigint,
-	[CreatedUserId] bigint,
+	[CaseId] int,	
 	[Answer] nvarchar(max),
-	[AccountId]bigint
-	CONSTRAINT [FK_VerificationAnswer_VerificationId] FOREIGN KEY ([VerificationId]) REFERENCES [BillVerification](VerificationId),
-	CONSTRAINT [FK_VerificationAnswer_CaseId] FOREIGN KEY ([CaseId]) REFERENCES [Case](CaseId),
-    CONSTRAINT [FK_VerificationAnswer_BillId] FOREIGN KEY ([BillId]) REFERENCES [Bills](BillId),
-	CONSTRAINT [FK_VerificationAnswer_CreatedUserId] FOREIGN KEY ([CreatedUserId]) REFERENCES [User](UserId ),
-	CONSTRAINT [FK_VerificationAnswer_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](AccountId),
+	[AccountId]int,
+	[Deleted] bit,
+	[CreatedDate] datetime,
+	[UpdatedDate] datetime,
+	[CreatedBy] int,
+	[UpdatedBY]  int,
+	IPAddress varchar(15)
+	
 )

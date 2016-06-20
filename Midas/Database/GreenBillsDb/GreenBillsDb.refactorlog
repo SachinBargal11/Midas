@@ -119,4 +119,32 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Prefix" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="675ae3cb-36c7-4619-9a50-ad5e456c41ee" ChangeDateTime="06/20/2016 09:52:42">
+    <Property Name="ElementName" Value="[dbo].[Payment].[CheckNumber]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Payment]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ChequeNumber" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9122cb45-f8a5-4eb6-8c17-bcd164c4598f" ChangeDateTime="06/20/2016 09:52:52">
+    <Property Name="ElementName" Value="[dbo].[Payment].[CheckDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Payment]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ChequeDate" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="ad8025d1-2fea-4e50-91e8-0a46c8485b55" ChangeDateTime="06/20/2016 09:53:15">
+    <Property Name="ElementName" Value="[dbo].[Payment].[CheckAmount]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Payment]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="hequeAmount" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="b55a4144-f0b0-4847-899f-29301b0d4326" ChangeDateTime="06/20/2016 09:53:24">
+    <Property Name="ElementName" Value="[dbo].[Payment].[hequeAmount]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Payment]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ChequeAmount" />
+  </Operation>
 </Operations>
