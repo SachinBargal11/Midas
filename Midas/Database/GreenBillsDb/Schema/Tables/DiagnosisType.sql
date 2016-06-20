@@ -1,8 +1,14 @@
 ﻿CREATE TABLE [dbo].[DiagnosisType]
 (
-	[DiagnosisTypeId] bigint NOT NULL PRIMARY KEY,
+	[DiagnosisTypeId] int NOT NULL PRIMARY KEY,
 	[Type] nvarchar(100)not null,
-	[AccountId] bigint not null,
-       
-	CONSTRAINT [FK_DiagnosisType_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](AccountId)
+	[AccountId] int null,
+	[OfficeId] int,
+	[Deleted] bit,
+	[CreatedDate] datetime,
+	[UpdatedDate] datetime,
+	[CreatedBy] int,
+	[UpdatedBY]  int,
+     IPAddress varchar(15)  
+	
 )

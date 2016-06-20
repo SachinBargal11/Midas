@@ -1,11 +1,16 @@
 ﻿CREATE TABLE [dbo].[Room]
 (
-	[RoomId] bigint identity(1,1) NOT NULL PRIMARY KEY,
+	[RoomId] int identity(1,1) NOT NULL PRIMARY KEY,
 	[RoomName] nvarchar(50),
-	[StartTime] numeric(13,2),
-	[EndtTime] numeric(13,2),
-	[SpecialtyId] bigint,
-	[AccountId] bigint not null,
+
+	[SpecialtyId] int,
+	[AccountId] int ,
+	[OfficeId]int,
+	[Deleted] bit,
+	[CreatedDate] datetime,
+	[UpdatedDate] datetime,
+	[CreatedBy] int,
+	[UpdatedBY]  int
        
-	CONSTRAINT [FK_Room_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](AccountId)
+	
 )
