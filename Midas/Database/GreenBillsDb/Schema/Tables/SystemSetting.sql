@@ -1,11 +1,16 @@
-﻿CREATE TABLE [dbo].[SystemSetting]
+﻿create TABLE [dbo].[SystemSetting]
 (
-	[SystemSettingId] bigint identity(1,1) NOT NULL PRIMARY KEY,
-	[SystemSettingKeyId] bigint,
-	[Value] nvarchar(50),
+	[SystemSettingId] int identity(1,1) NOT NULL PRIMARY KEY,
+	[SystemSettingKeyId] int,
+	[SysValue] nvarchar(50),
 	[AccountId] bigint,
-	[SubValue] nvarchar(50)
+	[SubValue] nvarchar(50),
+	[Deleted] bit,
+	[CreatedDate] datetime,
+	[UpdatedDate] datetime,
+	[CreatedBy] int,
+	[UpdatedBY]  int
 
-	CONSTRAINT [FK_SystemSetting_ContactId] FOREIGN KEY ([SystemSettingKeyId]) REFERENCES [SystemSettingKey](SystemSettingKeyId),
-	CONSTRAINT [FK_SystemSetting_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](AccountId ),
+	
 )
+

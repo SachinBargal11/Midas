@@ -106,7 +106,7 @@
     <Build Include="Schema\Tables\IntakeAOB.sql" />
     <Build Include="Schema\Tables\State.sql" />
     <Build Include="Schema\Tables\City.sql" />
-    <Build Include="Schema\Tables\CommanSetting.sql" />
+    <Build Include="Schema\Tables\ApplicationSetting.sql" />
     <Build Include="Schema\Tables\Role.sql" />
     <Build Include="Schema\Tables\RoleEvents.sql" />
     <Build Include="Schema\Tables\Activity.sql" />
@@ -140,6 +140,20 @@
     <Build Include="Schema\Tables\CyclicSpecialtyConfiguration.sql" />
     <Build Include="Schema\Tables\CyclicProcedureConfigurationAmount.sql" />
     <Build Include="Schema\Tables\CyclicSpecialtyConfigurationAmount.sql" />
+    <Build Include="Schema\Tables\SystemSettingKey.sql" />
+    <Build Include="Schema\Tables\SystemSetting.sql" />
+    <Build Include="Schema\Tables\CaseAssociatedDiagnosisCode.sql" />
+    <Build Include="Schema\Tables\BillStatusHistory.sql" />
+    <Build Include="Schema\Tables\GroupProcedureCode.sql" />
+    <Build Include="Schema\Tables\GroupProcedureCodeDetails.sql" />
+    <Build Include="Schema\Tables\PacketRequest.sql" />
+    <Build Include="Schema\Tables\PacketRequestBills.sql" />
+    <Build Include="Schema\Tables\NotesType.sql" />
+    <Build Include="Schema\Tables\Notes.sql" />
+    <Build Include="Schema\Tables\CompanyConnections.sql" />
+    <Build Include="Schema\Tables\GeneralDenials.sql" />
+    <Build Include="Schema\Tables\GeneralDenialImages.sql" />
+    <Build Include="Schema\Tables\SignOnPdf.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="GreenBillsDb.refactorlog" />

@@ -1,7 +1,7 @@
-﻿CREATE TABLE [dbo].[Doctor]
-(
-	[DoctorId] int NOT NULL PRIMARY KEY,
-	[Name] nvarchar(100) not null,
+﻿CREATE TABLE [dbo].[DoctorDetails]
+(    
+	[DoctorDetailId] int NOT NULL PRIMARY KEY,
+	[DoctorUserId] int,
 	[LicenseNumber] nvarchar(50),
 	[WCBAuthorization] nvarchar(50),
 	[WcbRatingCode] nvarchar(50),
@@ -24,7 +24,5 @@
 	[UpdatedDate] datetime,
 	[CreatedBy] int,
 	[UpdatedBY]  int
-	CONSTRAINT [FK_Doctor_SpecialtyId] FOREIGN KEY ([SpecialtyId]) REFERENCES [Specialty](SpecialtyId),
-	CONSTRAINT [FK_Doctor_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](AccountId),
-	CONSTRAINT [FK_Doctor_ProviderId] FOREIGN KEY ([ProviderId]) REFERENCES [Provider](ProviderId)
+	
 )

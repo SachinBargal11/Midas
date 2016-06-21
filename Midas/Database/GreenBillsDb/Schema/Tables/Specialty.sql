@@ -16,6 +16,7 @@
 	[IsReferral] BIT,
 	[HaveNotes] bit,
 	[AssociatedSpecialty] int,
+	[MultipleVisitsDay] bit,
 	[AccountId] int,
 	[OfficeId]int,
 	[Deleted] bit,
