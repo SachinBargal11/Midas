@@ -1,8 +1,7 @@
-﻿CREATE TABLE [dbo].[Table1]
+﻿CREATE TABLE [dbo].[Owner]
 (
-	[OwnerId] BIGINT NOT NULL PRIMARY KEY, 
+	[OwnerId] int NOT NULL PRIMARY KEY, 
     [Name] NVARCHAR(50) NOT NULL, 
     [AddressId] TINYINT NOT NULL, 
     [ContactInfoId] TINYINT NOT NULL, 
-    CONSTRAINT [FK_Table1_ToTable] FOREIGN KEY ([Column]) REFERENCES [ToTable]([ToTableColumn])
-)
+    )

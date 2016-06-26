@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[UserType]
 (
-	[Id] INT NOT NULL PRIMARY KEY IDENTITY(1,1),
-	[Name]	NVARCHAR(50) NOT NULL ,
+	[UserTypeId] INT NOT NULL identity(1,1) PRIMARY KEY, 
+    [Type] NVARCHAR(50) NULL
 )
