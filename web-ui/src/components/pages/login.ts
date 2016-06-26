@@ -49,10 +49,11 @@ export class LoginComponent implements OnInit {
         result = this._sessionStore.login(this.loginForm.value.email, this.loginForm.value.password);
 
         result.subscribe(
-            (response) => {
+            response => {
                 this._router.navigate(['Dashboard']);
             },
             error => {
+                this.isLoginInProgress = false;
                 this._notificationsService.error('Oh No!', 'Unable to authenticate user.');
             },
             () => {

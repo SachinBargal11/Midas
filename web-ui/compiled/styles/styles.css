@@ -18,6 +18,9 @@ body {
   margin: 0;
   padding: 0; }
 
+.simple-notification-wrapper div.error div.title, .simple-notification-wrapper div.error div.content {
+  color: white !important; }
+
 .control-panel.open .notification-panel-container {
   width: 280px;
   display: block; }

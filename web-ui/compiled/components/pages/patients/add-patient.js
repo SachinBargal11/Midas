@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/common', '@angular/router-deprecated', '../../../utils/AppValidators', '../../elements/loader', 'angular2-notifications', '../../../stores/patients-store', '../../../models/patient', 'jquery', 'eonasdan-bootstrap-datetimepicker', '../../../stores/session-store', '../../../stores/notifications-store', '../../../models/notification', 'moment'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/common', '@angular/router-deprecated', '../../../utils/AppValidators', '../../elements/loader', '../../../stores/patients-store', '../../../models/patient', 'jquery', 'eonasdan-bootstrap-datetimepicker', '../../../stores/session-store', '../../../stores/notifications-store', '../../../models/notification', 'moment'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, router_deprecated_1, AppValidators_1, loader_1, angular2_notifications_1, patients_store_1, patient_1, jquery_1, session_store_1, notifications_store_1, notification_1, moment_1;
+    var core_1, common_1, router_deprecated_1, AppValidators_1, loader_1, patients_store_1, patient_1, jquery_1, session_store_1, notifications_store_1, notification_1, moment_1;
     var AddPatientComponent;
     return {
         setters:[
@@ -28,9 +28,6 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
             },
             function (loader_1_1) {
                 loader_1 = loader_1_1;
-            },
-            function (angular2_notifications_1_1) {
-                angular2_notifications_1 = angular2_notifications_1_1;
             },
             function (patients_store_1_1) {
                 patients_store_1 = patients_store_1_1;
@@ -56,9 +53,7 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
             }],
         execute: function() {
             AddPatientComponent = (function () {
-                function AddPatientComponent(fb, _router, 
-                    // private _notificationsService: NotificationsService,
-                    _notificationsStore, _sessionStore, _routeParams, _patientsStore, _elRef) {
+                function AddPatientComponent(fb, _router, _notificationsStore, _sessionStore, _routeParams, _patientsStore, _elRef) {
                     this._router = _router;
                     this._notificationsStore = _notificationsStore;
                     this._sessionStore = _sessionStore;
@@ -117,10 +112,7 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
                             'createdAt': moment_1.default()
                         });
                         _this._notificationsStore.addNotification(notification);
-                        // this._notificationsService.success('Success', 'Patient added successfully!');
-                        // setTimeout(() => {
                         _this._router.navigate(['PatientsList']);
-                        // }, 3000);
                     }, function (error) {
                         var notification = new notification_1.Notification({
                             'title': 'Unable to add patient.',
@@ -128,7 +120,6 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
                             'createdAt': moment_1.default()
                         });
                         _this._notificationsStore.addNotification(notification);
-                        // this._notificationsService.error('Error', 'Unable to add patient.');
                     }, function () {
                         _this.isSavePatientProgress = false;
                     });
@@ -137,7 +128,7 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
                     core_1.Component({
                         selector: 'add-patient',
                         templateUrl: 'templates/pages/patients/add-patient.html',
-                        directives: [router_deprecated_1.ROUTER_DIRECTIVES, loader_1.LoaderComponent, angular2_notifications_1.SimpleNotificationsComponent],
+                        directives: [router_deprecated_1.ROUTER_DIRECTIVES, loader_1.LoaderComponent]
                     }), 
                     __metadata('design:paramtypes', [common_1.FormBuilder, router_deprecated_1.Router, notifications_store_1.NotificationsStore, session_store_1.SessionStore, router_deprecated_1.RouteParams, patients_store_1.PatientsStore, core_1.ElementRef])
                 ], AddPatientComponent);

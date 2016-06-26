@@ -3,7 +3,6 @@ import {ControlGroup, Validators, FormBuilder} from '@angular/common';
 import {ROUTER_DIRECTIVES, Router, RouteParams, RouteConfig} from '@angular/router-deprecated';
 import {AppValidators} from '../../../utils/AppValidators';
 import {LoaderComponent} from '../../elements/loader';
-import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
 import {PatientsStore} from '../../../stores/patients-store';
 import {Patient} from '../../../models/patient';
 import $ from 'jquery';
@@ -16,8 +15,7 @@ import Moment from 'moment';
 @Component({
     selector: 'add-patient',
     templateUrl: 'templates/pages/patients/add-patient.html',
-    directives: [ROUTER_DIRECTIVES, LoaderComponent, SimpleNotificationsComponent],
-    // providers: [NotificationsService]
+    directives: [ROUTER_DIRECTIVES, LoaderComponent]
 })
 
 export class AddPatientComponent implements OnInit {
@@ -27,7 +25,7 @@ export class AddPatientComponent implements OnInit {
         'email': '',
         'mobileNo': '',
         'address': '',
-        'dob' : ''
+        'dob': ''
     });
     options = {
         timeOut: 3000,
@@ -41,7 +39,6 @@ export class AddPatientComponent implements OnInit {
     constructor(
         fb: FormBuilder,
         private _router: Router,
-        // private _notificationsService: NotificationsService,
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _routeParams: RouteParams,
@@ -77,30 +74,26 @@ export class AddPatientComponent implements OnInit {
             'email': this.patientform.value.email,
             'mobileNo': this.patientform.value.mobileNo,
             'address': this.patientform.value.address,
-            'createdUser':this._sessionStore.session.user.id
+            'createdUser': this._sessionStore.session.user.id
         });
         result = this._patientsStore.addPatient(patient);
         result.subscribe(
             response => {
                 var notification = new Notification({
-                    'title':  'Patient added successfully!',
+                    'title': 'Patient added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': Moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                // this._notificationsService.success('Success', 'Patient added successfully!');
-                // setTimeout(() => {
-                    this._router.navigate(['PatientsList']);
-                // }, 3000);
+                this._router.navigate(['PatientsList']);
             },
             error => {
                 var notification = new Notification({
-                    'title':  'Unable to add patient.',
+                    'title': 'Unable to add patient.',
                     'type': 'ERROR',
                     'createdAt': Moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                // this._notificationsService.error('Error', 'Unable to add patient.');
             },
             () => {
                 this.isSavePatientProgress = false;

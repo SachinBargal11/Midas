@@ -67,8 +67,8 @@ export class SignupComponent implements OnInit {
                 }, 3000);
             },
             error => {
+                this.isSignupInProgress = false;
                 this._notificationsService.error('Oh No!', 'Unable to register user.');
-                // alert("Unable to register");
             },
             () => {
                 this.isSignupInProgress = false;

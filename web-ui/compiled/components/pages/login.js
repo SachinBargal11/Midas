@@ -67,6 +67,7 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
                     result.subscribe(function (response) {
                         _this._router.navigate(['Dashboard']);
                     }, function (error) {
+                        _this.isLoginInProgress = false;
                         _this._notificationsService.error('Oh No!', 'Unable to authenticate user.');
                     }, function () {
                         _this.isLoginInProgress = false;

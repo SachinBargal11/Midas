@@ -27,7 +27,6 @@ import {NotificationsStore} from '../stores/notifications-store';
         AppHeaderComponent,
         MainNavComponent,
         NotificationComponent
-        // NotificationNewComponent
     ]
 })
 

@@ -83,8 +83,8 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
                             _this._router.navigate(['Login']);
                         }, 3000);
                     }, function (error) {
+                        _this.isSignupInProgress = false;
                         _this._notificationsService.error('Oh No!', 'Unable to register user.');
-                        // alert("Unable to register");
                     }, function () {
                         _this.isSignupInProgress = false;
                     });
