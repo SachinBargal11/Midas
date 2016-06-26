@@ -1,7 +1,7 @@
-System.register(['@angular/platform-browser-dynamic', '@angular/router-deprecated', '../components/AppRoot', '@angular/core', '@angular/common', '@angular/http', '../stores/session-store', '../services/authentication-service', '../stores/patients-store', '../services/patients-service'], function(exports_1, context_1) {
+System.register(['@angular/platform-browser-dynamic', '@angular/router-deprecated', '../components/AppRoot', '@angular/core', '@angular/common', '@angular/http', '../stores/session-store', '../services/authentication-service', '../stores/patients-store', '../services/patients-service', '../stores/notifications-store'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var platform_browser_dynamic_1, router_deprecated_1, AppRoot_1, core_1, common_1, http_1, session_store_1, authentication_service_1, patients_store_1, patients_service_1;
+    var platform_browser_dynamic_1, router_deprecated_1, AppRoot_1, core_1, common_1, http_1, session_store_1, authentication_service_1, patients_store_1, patients_service_1, notifications_store_1;
     return {
         setters:[
             function (platform_browser_dynamic_1_1) {
@@ -33,6 +33,9 @@ System.register(['@angular/platform-browser-dynamic', '@angular/router-deprecate
             },
             function (patients_service_1_1) {
                 patients_service_1 = patients_service_1_1;
+            },
+            function (notifications_store_1_1) {
+                notifications_store_1 = notifications_store_1_1;
             }],
         execute: function() {
             platform_browser_dynamic_1.bootstrap(AppRoot_1.AppRoot, [
@@ -42,6 +45,7 @@ System.register(['@angular/platform-browser-dynamic', '@angular/router-deprecate
                 authentication_service_1.AuthenticationService,
                 patients_service_1.PatientsService,
                 patients_store_1.PatientsStore,
+                notifications_store_1.NotificationsStore,
                 core_1.provide(common_1.LocationStrategy, {
                     useClass: common_1.HashLocationStrategy
                 })]);

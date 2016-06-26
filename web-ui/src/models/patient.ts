@@ -21,7 +21,7 @@ const PatientRecord = Record({
     email: "",
     mobileNo: "",
     address: "",
-    dob: Moment(0),
+    dob: Moment(),
     createdUser: 0
 });
 

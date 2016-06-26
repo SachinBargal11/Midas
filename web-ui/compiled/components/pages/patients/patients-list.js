@@ -29,6 +29,7 @@ System.register(['@angular/core', '@angular/router-deprecated', '../../../stores
                     this._router = _router;
                     this._routeParams = _routeParams;
                     this._patientsStore = _patientsStore;
+                    console.log(this._patientsStore.patients);
                 }
                 PatientsListComponent.prototype.ngOnInit = function () {
                 };

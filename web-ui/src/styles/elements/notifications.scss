@@ -1,7 +1,46 @@
-.simple-notification-wrapper {
-    div.error {
-        div.title, div.content {
-            color: white !important;
-        }
-    }
+.control-panel.open .notification-panel-container {
+    width: 280px;
+    display: block;
+}
+
+.control-panel {
+  
+.notification-panel-container {
+
+    position: fixed;
+  right: 0;
+  top: 0;
+  display: none;
+  height: 100%;
+  background: #F4F8FB;
+  overflow: hidden;
+  border-left: solid 1px #c5d6de;
+  padding-top: 50px;
+
+
+  .control-item-content {
+         padding: 10px;
+         background: #F3F7FA;
+      }
+
+      .control-item-content.open {
+         display: block;
+      }
+
+      .control-item-content-text {
+         border: 1px solid #e0e0e0;
+         border-radius: 3px;
+         background: #fff;
+         font-size: 0.9rem;
+         padding: 8px 11px;
+         display: block;
+         font-size: 0.9rem;
+         margin-top: 5px;
+      }
+}
+}
+
+.control-panel.open .notification-panel-container {
+    width: 280px;
+    display: block;
 }

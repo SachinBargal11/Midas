@@ -1,5 +1,3 @@
-// import {Moment} from 'moment';
-// export interface Patient {
 System.register(['immutable', 'moment'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
@@ -9,7 +7,7 @@ System.register(['immutable', 'moment'], function(exports_1, context_1) {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
     var immutable_1, moment_1;
-    var PatientRecord, Patient;
+    var NotificationRecord, Notification;
     return {
         setters:[
             function (immutable_1_1) {
@@ -19,25 +17,25 @@ System.register(['immutable', 'moment'], function(exports_1, context_1) {
                 moment_1 = moment_1_1;
             }],
         execute: function() {
-            PatientRecord = immutable_1.Record({
-                id: 0,
-                firstname: "",
-                lastname: "",
-                email: "",
-                mobileNo: "",
-                address: "",
-                dob: moment_1.default(),
-                createdUser: 0
+            NotificationRecord = immutable_1.Record({
+                // actionTakenAt: null,
+                // actionTakenBy: null,
+                // actedTakenUpon: null,
+                // actionType: "",
+                title: "",
+                createdAt: moment_1.default(),
+                type: "",
+                isRead: false
             });
-            Patient = (function (_super) {
-                __extends(Patient, _super);
-                function Patient(props) {
+            Notification = (function (_super) {
+                __extends(Notification, _super);
+                function Notification(props) {
                     _super.call(this, props);
                 }
-                return Patient;
-            }(PatientRecord));
-            exports_1("Patient", Patient);
+                return Notification;
+            }(NotificationRecord));
+            exports_1("Notification", Notification);
         }
     }
 });
-//# sourceMappingURL=patient.js.map
+//# sourceMappingURL=notification.js.map
