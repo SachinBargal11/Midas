@@ -1,9 +1,11 @@
 ﻿CREATE TABLE [dbo].[Role]
 (
-	[RoleId] BIGINT NOT NULL PRIMARY KEY IDENTITY(1,1),
-	[Name]	NVARCHAR(50) NOT NULL ,
-	IsStandardRole bit NOT NULL DEFAULT(1) ,
-	EntityType TINYINT NULL,
-	EntityTypeId INT NULL,
-
+[RoleID] int identity(1,1),
+[RoleName] varchar(50),
+[Deleted] bit,
+	[CreatedDate] datetime,
+	[UpdatedDate] datetime,
+	[CreatedBy] int,
+	[UpdatedBY]  int,
+IPAddress varchar(15)
 )

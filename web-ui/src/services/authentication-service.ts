@@ -13,11 +13,18 @@ export class AuthenticationService {
     constructor(private _http: Http) { }
 
     register(user) {
-        var headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        return this._http.post(this._url, JSON.stringify(user), {
-            headers: headers
-        }).map(res => res.json());
+        let promise = new Promise((resolve, reject) => {
+            var headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            return this._http.post(this._url, JSON.stringify(user), {
+                headers: headers
+            }).map(res => res.json()).subscribe((data) => {
+                resolve(data);
+            }, (error) => {
+                reject(error);
+            });
+        });
+        return Observable.from(promise);
     }
 
     authenticate(userId, password) {
@@ -26,7 +33,7 @@ export class AuthenticationService {
             return this._http.get(this._url + '?email=' + userId + '&password=' + password)
                 .map(res => res.json())
                 .subscribe((data) => {
-                    
+
                     if (data.length) {
                         var user = new User({
                             id: data[0].id,
@@ -34,11 +41,10 @@ export class AuthenticationService {
                             phone: data[0].phone,
                             email: data[0].email
                         });
-                        
+
                         resolve(user);
                     }
-                    else
-                    {
+                    else {
                         console.info('Throwing INVALID_CREDENTIALS');
                         reject(new Error('INVALID_CREDENTIALS'));
                     }

@@ -1,15 +1,15 @@
 ﻿CREATE TABLE [dbo].[Doctor]
 (
-	[DoctorId] BIGINT NOT NULL PRIMARY KEY,
+	[DoctorId] int NOT NULL PRIMARY KEY,
 	[Name] nvarchar(100) not null,
 	[LicenseNumber] nvarchar(50),
 	[WCBAuthorization] nvarchar(50),
 	[WcbRatingCode] nvarchar(50),
 	[NPI] nvarchar(50),
-	[ProviderId] bigint,
+	[ProviderId] int,
 	[FederalTaxId] nvarchar(50),
-	[TaxType] int,
-	[AccountId] bigint not null,
+	[TaxType] TINYINT,
+	[AccountId] int not null,
 	[Koel] money,
 	[AssignNumber] nvarchar(50),
 	[Title] nvarchar(10),
@@ -17,10 +17,13 @@
 	[IsReferral] bit,
 	[IsUnBilled] bit,
     [IsSupervising] bit,
-	[IsReading] bit,
-	[IsReffering] bit,
-	[IsBilling] bit,
-	[SpecialtyId] bigint
+	[Type] int,
+	[SpecialtyId] int,
+	[Deleted] bit,
+	[CreatedDate] datetime,
+	[UpdatedDate] datetime,
+	[CreatedBy] int,
+	[UpdatedBY]  int
 	CONSTRAINT [FK_Doctor_SpecialtyId] FOREIGN KEY ([SpecialtyId]) REFERENCES [Specialty](SpecialtyId),
 	CONSTRAINT [FK_Doctor_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](AccountId),
 	CONSTRAINT [FK_Doctor_ProviderId] FOREIGN KEY ([ProviderId]) REFERENCES [Provider](ProviderId)

@@ -1,11 +1,16 @@
 ﻿CREATE TABLE [dbo].[EmployerAddress]
 (
-	[EmployerAddressId] BIGINT NOT NULL PRIMARY KEY,
-	[EmployerId] bigint ,
-	[AccountId] bigint,
-	[AddressId] bigint,
+	[EmployerAddressId] int NOT NULL PRIMARY KEY,
+	[UserEmployerId] int ,
+	[AccountId] int,
+	[Address] nvarchar(500),
+	[CityId] int,
+	[Zip] int,
 	[Default] bit,
-	CONSTRAINT [FK_EmployerAddress_AddressId] FOREIGN KEY (AddressId) REFERENCES Address(AddressId), 
-    CONSTRAINT [FK_EmployerAddress_InsuranceId] FOREIGN KEY ([EmployerId]) REFERENCES [Employer](EmployerId),
-	CONSTRAINT [FK_EmployerAddress_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](AccountId)
+	[Deleted] bit,
+	[CreatedDate] datetime,
+	[UpdatedDate] datetime,
+	[CreatedBy] int,
+	[UpdatedBY]  int
+	
 )

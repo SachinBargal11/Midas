@@ -1,24 +1,27 @@
 ﻿CREATE TABLE [dbo].[BillDetails]
 (
-	[BillDetailId] bigint identity(1,1) NOT NULL PRIMARY KEY,
-	[ProcedureCodeId] bigint ,
+	[BillDetailId] int identity(1,1) NOT NULL PRIMARY KEY,
+	[ProcedureCodeId] int ,
 	[CodeAmount] money,
 	[BillId] nvarchar(50),
 	[DateofVisit] Datetime,
-	[AccountId] bigint,
+	[AccountId] int,
 	[Unit] float,
 	[Price] money,
 	[DoctAmount] money,
-	[SpecialtyId] bigint,
+	[SpecialtyId] int,
 	[IsGroupAmount] bit,
 	[GroupAmount] money,
 	[DailyLimit] money,
 	[Modifier] nvarchar(1000),
 	[cyclicApplied] bit,
 	[CyclicOrignalAmount] money,
-	[CyclicId] int
-	CONSTRAINT [FK_BillDetail_BillId] FOREIGN KEY ([BillId]) REFERENCES [Bills](BillId)
-	CONSTRAINT [FK_BillDetail_SpecialtyId] FOREIGN KEY ([SpecialtyId]) REFERENCES [Specialty](SpecialtyId),
-	CONSTRAINT [FK_BillDetail_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](AccountId),
-	CONSTRAINT [FK_BillDetail_ProcedureCodeId] FOREIGN KEY ([ProcedureCodeId]) REFERENCES [ProcedureCode](ProcedureCodeId)
+	[CyclicId] int,
+	[Deleted] bit,
+	[CreatedDate] datetime,
+	[UpdatedDate] datetime,
+	[CreatedBy] int,
+	[UpdatedBY]  int,
+	IPAddress varchar(15),
+	
 )

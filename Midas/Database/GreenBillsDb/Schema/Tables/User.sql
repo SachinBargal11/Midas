@@ -1,28 +1,28 @@
-﻿CREATE TABLE [dbo].[User]
+﻿CREATE TABLE [dbo].[User1]
 (
-	[UserId] bigint identity(1,1) NOT NULL PRIMARY KEY ,
-	[UserName] nvarchar(50),
-	[Password] nvarchar(250),
-	[ProviderId] bigint,
-	[ContactInfoId] bigint,
-	[AccountId] bigint,
-	[DefaultUrl] nvarchar(250),
+	[UserId] INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+	[UserName] nvarchar(100),
+	[Name]	NVARCHAR(50) NOT NULL ,
+	[FirstName] NVARCHAR(50) NOT NULL ,
+	[MiddleName] NVARCHAR(50) NULL ,
+	[LastName] NVARCHAR(50) NULL,
+	[Gender] Bit, -- 0 Male , 1 Female
+	[UserType] tinyint NOT NULL ,	
+	Notes NVARCHAR(4098) NULL ,
+	Picture NVARCHAR(512) NULL ,
+	AddressId INT NULL,
+	ContactInfoId INT NULL, 
+	[SSN] nvarchar(50),
+	[DateOfBirth] datetime,	
+    [RoleId] INT NULL, 
+    [TypeId] INT NULL, 
+    [Password] NVARCHAR(500) NULL, 
+	[EmployerCode] nvarchar(20),
+	[DefaultAttoreny] bit,
+	[Deleted] bit,
 	[CreatedDate] datetime,
-	[LastLogin] Datetime,
-	[IPEnabled] bit,
-	[ForceToChangePassword] bit,
-	[NextPasswordExpiry] datetime,
-	[ReferringOfficeID]  bigint,
-	[DiagnosisPage] bit,
-	[IsProvider] bit,
-	[ValidandShow] bit,
-	[DomainName] nvarchar(100),
-	[Disable] bit,
-	[CreatedBy] bigint,
-	[RoleId] bigint 
-	CONSTRAINT [FK_User_ContactId] FOREIGN KEY ([ContactInfoId]) REFERENCES [ContactInfo](ContactInfoId),
-	CONSTRAINT [FK_User_RoleId] FOREIGN KEY ([RoleId]) REFERENCES [Role](RoleId ),
-	CONSTRAINT [FK_User_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](AccountId),
-	CONSTRAINT [FK_User_ProviderId] FOREIGN KEY ([ProviderId]) REFERENCES [Provider](ProviderId),
-	CONSTRAINT [FK_User_ReferringOfficeID] FOREIGN KEY ([ReferringOfficeID])  REFERENCES [Provider](ProviderId)
+	[UpdatedDate] datetime,
+	[CreatedBy] int,
+	[UpdatedBY]  int
+    
 )

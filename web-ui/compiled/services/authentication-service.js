@@ -35,11 +35,19 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', '../models
                     this._url = "http://localhost:3004/users";
                 }
                 AuthenticationService.prototype.register = function (user) {
-                    var headers = new http_1.Headers();
-                    headers.append('Content-Type', 'application/json');
-                    return this._http.post(this._url, JSON.stringify(user), {
-                        headers: headers
-                    }).map(function (res) { return res.json(); });
+                    var _this = this;
+                    var promise = new Promise(function (resolve, reject) {
+                        var headers = new http_1.Headers();
+                        headers.append('Content-Type', 'application/json');
+                        return _this._http.post(_this._url, JSON.stringify(user), {
+                            headers: headers
+                        }).map(function (res) { return res.json(); }).subscribe(function (data) {
+                            resolve(data);
+                        }, function (error) {
+                            reject(error);
+                        });
+                    });
+                    return Observable_1.Observable.from(promise);
                 };
                 AuthenticationService.prototype.authenticate = function (userId, password) {
                     var _this = this;

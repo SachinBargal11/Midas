@@ -60,15 +60,15 @@ export class SignupComponent implements OnInit {
 
 
         result.subscribe(
-            response => {
+            (response) => {
                 this._notificationsService.success('Welcome!', 'You have suceessfully registered!');
                 setTimeout(() => {
                     this._router.navigate(['Login']);
                 }, 3000);
             },
             error => {
+                this.isSignupInProgress = false;
                 this._notificationsService.error('Oh No!', 'Unable to register user.');
-                // alert("Unable to register");
             },
             () => {
                 this.isSignupInProgress = false;

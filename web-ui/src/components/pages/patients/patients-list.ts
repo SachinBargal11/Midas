@@ -10,8 +10,8 @@ import {Patient} from '../../../models/patient';
     selector: 'patients-list',
     templateUrl: 'templates/pages/patients/patients-list.html',
     directives: [ROUTER_DIRECTIVES],
-    styles:[
-        
+    styles: [
+
     ]
 })
 
@@ -22,14 +22,15 @@ export class PatientsListComponent implements OnInit {
         private _routeParams: RouteParams,
         private _patientsStore: PatientsStore
     ) {
-           
+        console.log(this._patientsStore.patients);
+
     }
 
     ngOnInit() {
-        
+
     }
-    
+
     selectPatients(patient) {
-        this._patientsStore.selectPatient(patient);        
+        this._patientsStore.selectPatient(patient);
     }
 }

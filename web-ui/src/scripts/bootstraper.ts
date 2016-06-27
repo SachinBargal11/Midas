@@ -12,6 +12,8 @@ import {AuthenticationService} from '../services/authentication-service';
 import {PatientsStore} from '../stores/patients-store';
 import {PatientsService} from '../services/patients-service';
 
+import {NotificationsStore} from '../stores/notifications-store';
+
 bootstrap(AppRoot, [
     ROUTER_PROVIDERS,
     HTTP_PROVIDERS,
@@ -19,6 +21,7 @@ bootstrap(AppRoot, [
     AuthenticationService,
     PatientsService,
     PatientsStore,
+    NotificationsStore,
     provide(LocationStrategy,
         {
             useClass: HashLocationStrategy
