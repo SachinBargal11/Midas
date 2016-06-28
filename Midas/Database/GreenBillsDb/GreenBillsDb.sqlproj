@@ -79,7 +79,6 @@
     <Build Include="Schema\Tables\User.sql" />
     <Build Include="Schema\Tables\ContactInfo.sql" />
     <Build Include="Schema\Tables\RoleActions.sql" />
-    <Build Include="Schema\Tables\Owner.sql" />
     <Build Include="Schema\Tables\Abbreviation.sql" />
     <Build Include="Schema\Tables\CaseType.sql" />
     <Build Include="Schema\Tables\CaseStatus.sql" />
@@ -102,7 +101,7 @@
     <Build Include="Schema\Tables\Patient.sql" />
     <Build Include="Schema\Tables\Case.sql" />
     <Build Include="Schema\Tables\PatientAccidentDetails.sql" />
-    <Build Include="Schema\Tables\Offices.sql" />
+    <Build Include="Schema\Tables\MedicalOffices.sql" />
     <Build Include="Schema\Tables\IntakeAOB.sql" />
     <Build Include="Schema\Tables\State.sql" />
     <Build Include="Schema\Tables\City.sql" />
