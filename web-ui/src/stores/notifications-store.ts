@@ -16,7 +16,7 @@ export class NotificationsStore {
     recentlyAdded = false;
     isOpen = false;
     recentlyAddedCount = 0;
-    
+
     constructor() {
 
     }
@@ -26,47 +26,39 @@ export class NotificationsStore {
     }
 
     addNotification(notification: Notification) {
+        this.readAllNotifications();
+        this.recentlyAddedCount = 0;
         this.recentlyAdded = this.isOpen ? false : true;
-        if(!this.isOpen) {
-            this.recentlyAddedCount++;
-        }  
+        this.recentlyAddedCount++;        
+        if (this.isOpen) {
+            setTimeout(() => {
+                this.recentlyAddedCount = 0;
+                this.readAllNotifications();
+            }, 3000);
+        }
         this._notifications.next(this._notifications.getValue().push(notification));
     }
 
     toggleVisibility() {
-        if(this.isOpen) {
+        if (this.isOpen) {
             this.recentlyAddedCount = 0;
-        }  
+            this.readAllNotifications();
+        }
         this.isOpen = !this.isOpen;
+        if(this.isOpen) {
+            setTimeout(() => {
+                this.recentlyAddedCount = 0;
+                this.readAllNotifications();
+            }, 3000);
+        }
         this.recentlyAdded = false;
-              
     }
 
-    // readAllNotifications() {
-    //     let notifications = this._notifications.getValue();
-    //     notifications.forEach((value) => {
-    //         let index = notifications.findIndex((currentPatient: Notification) => currentPatient.title === value.title);
-    //         debugger;
-    //     });
-    //     // notifications.merge
-    //     // list = list.update(
-    //     //     list.findIndex(function (item) {
-    //     //         return item.get("name") === "third";
-    //     //     }), function (item) {
-    //     //         return item.set("count", 4);
-    //     //     }
-    //     // );
-    //     // let notifications = this._notifications.getValue();
-    //     // notifications.map((value) => {
-
-    //     //     var test =  value.set("isRead", true);
-    //     //     var test =  value.set("title", 'jhgdahsdjgasdkasdh kash dksja');
-    //     //     debugger;
-    //     //     return test;            
-    //     // });
-
-    //     // this._notifications.next(notifications);
-
-    //     debugger;
-    // }
+    readAllNotifications() {
+        let notifications: List<Notification> = this._notifications.getValue();
+        notifications = notifications.toSeq().map((item: Notification) => {
+            return <Notification>item.set("isRead", true);
+        }).toList();
+        this._notifications.next(notifications);
+    }
 }

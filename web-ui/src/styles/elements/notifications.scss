@@ -44,6 +44,24 @@
          display: block;
          font-size: 0.9rem;
          margin-top: 5px;
+
+         &.unread {
+             padding-left: 24px;
+             position: relative;
+         }
+
+         .dot {  
+            display: inline-block;
+            vertical-align: middle;
+            width: 6px;
+            height: 6px;
+            margin: 0 0 6px;
+            border-radius: 50%;
+            background: #fa424a;
+            position: absolute;
+            top: 14px;
+            left: 10px;
+         }
       }
 }
 }
