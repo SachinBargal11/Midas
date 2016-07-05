@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/common', '@angular/router-deprecated', '../../../utils/AppValidators', '../../elements/loader', 'angular2-notifications', '../../../stores/patients-store', '../../../models/patient'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/common', '@angular/router-deprecated', '../../../utils/AppValidators', '../../elements/loader', '../../../stores/patients-store', '../../../models/patient', 'jquery', 'eonasdan-bootstrap-datetimepicker', '../../../stores/session-store', '../../../stores/notifications-store', '../../../models/notification', 'moment'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, router_deprecated_1, AppValidators_1, loader_1, angular2_notifications_1, patients_store_1, patient_1;
+    var core_1, common_1, router_deprecated_1, AppValidators_1, loader_1, patients_store_1, patient_1, jquery_1, session_store_1, notifications_store_1, notification_1, moment_1;
     var AddPatientComponent;
     return {
         setters:[
@@ -29,28 +29,44 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
             function (loader_1_1) {
                 loader_1 = loader_1_1;
             },
-            function (angular2_notifications_1_1) {
-                angular2_notifications_1 = angular2_notifications_1_1;
-            },
             function (patients_store_1_1) {
                 patients_store_1 = patients_store_1_1;
             },
             function (patient_1_1) {
                 patient_1 = patient_1_1;
+            },
+            function (jquery_1_1) {
+                jquery_1 = jquery_1_1;
+            },
+            function (_1) {},
+            function (session_store_1_1) {
+                session_store_1 = session_store_1_1;
+            },
+            function (notifications_store_1_1) {
+                notifications_store_1 = notifications_store_1_1;
+            },
+            function (notification_1_1) {
+                notification_1 = notification_1_1;
+            },
+            function (moment_1_1) {
+                moment_1 = moment_1_1;
             }],
         execute: function() {
             AddPatientComponent = (function () {
-                function AddPatientComponent(fb, _router, _notificationsService, _routeParams, _patientsStore) {
+                function AddPatientComponent(fb, _router, _notificationsStore, _sessionStore, _routeParams, _patientsStore, _elRef) {
                     this._router = _router;
-                    this._notificationsService = _notificationsService;
+                    this._notificationsStore = _notificationsStore;
+                    this._sessionStore = _sessionStore;
                     this._routeParams = _routeParams;
                     this._patientsStore = _patientsStore;
+                    this._elRef = _elRef;
                     this.patient = new patient_1.Patient({
                         'firstname': '',
                         'lastname': '',
                         'email': '',
                         'mobileNo': '',
-                        'address': ''
+                        'address': '',
+                        'dob': ''
                     });
                     this.options = {
                         timeOut: 3000,
@@ -65,13 +81,16 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
                         lastname: ['', common_1.Validators.required],
                         email: ['', common_1.Validators.compose([common_1.Validators.required, AppValidators_1.AppValidators.emailValidator])],
                         mobileNo: ['', common_1.Validators.compose([common_1.Validators.required, AppValidators_1.AppValidators.mobileNoValidator])],
-                        address: ['']
+                        address: [''],
                     });
                 }
                 AddPatientComponent.prototype.ngOnInit = function () {
-                    if (!window.localStorage.hasOwnProperty('session_user_name')) {
+                    if (!this._sessionStore.isAuthenticated()) {
                         this._router.navigate(['Login']);
                     }
+                    jquery_1.default(this._elRef.nativeElement).find('.datepickerElem').datetimepicker({
+                        format: 'll'
+                    });
                 };
                 AddPatientComponent.prototype.savePatient = function () {
                     var _this = this;
@@ -83,15 +102,24 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
                         'email': this.patientform.value.email,
                         'mobileNo': this.patientform.value.mobileNo,
                         'address': this.patientform.value.address,
+                        'createdUser': this._sessionStore.session.user.id
                     });
                     result = this._patientsStore.addPatient(patient);
                     result.subscribe(function (response) {
-                        _this._notificationsService.success('Success', 'Patient added successfully!');
-                        setTimeout(function () {
-                            _this._router.navigate(['PatientsList']);
-                        }, 3000);
+                        var notification = new notification_1.Notification({
+                            'title': 'Patient added successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment_1.default()
+                        });
+                        _this._notificationsStore.addNotification(notification);
+                        _this._router.navigate(['PatientsList']);
                     }, function (error) {
-                        _this._notificationsService.error('Error', 'Unable to add patient.');
+                        var notification = new notification_1.Notification({
+                            'title': 'Unable to add patient.',
+                            'type': 'ERROR',
+                            'createdAt': moment_1.default()
+                        });
+                        _this._notificationsStore.addNotification(notification);
                     }, function () {
                         _this.isSavePatientProgress = false;
                     });
@@ -100,10 +128,9 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
                     core_1.Component({
                         selector: 'add-patient',
                         templateUrl: 'templates/pages/patients/add-patient.html',
-                        directives: [router_deprecated_1.ROUTER_DIRECTIVES, loader_1.LoaderComponent, angular2_notifications_1.SimpleNotificationsComponent],
-                        providers: [angular2_notifications_1.NotificationsService]
+                        directives: [router_deprecated_1.ROUTER_DIRECTIVES, loader_1.LoaderComponent]
                     }), 
-                    __metadata('design:paramtypes', [common_1.FormBuilder, router_deprecated_1.Router, angular2_notifications_1.NotificationsService, router_deprecated_1.RouteParams, patients_store_1.PatientsStore])
+                    __metadata('design:paramtypes', [common_1.FormBuilder, router_deprecated_1.Router, notifications_store_1.NotificationsStore, session_store_1.SessionStore, router_deprecated_1.RouteParams, patients_store_1.PatientsStore, core_1.ElementRef])
                 ], AddPatientComponent);
                 return AddPatientComponent;
             }());

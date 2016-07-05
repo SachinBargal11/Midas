@@ -3,6 +3,13 @@
         <div class="site-header-content">
             <div class="site-header-content-in">
                 <div class="site-header-shown" *ngIf="user_name">
+                    <!--<notification></notification>-->
+                    <div class="dropdown dropdown-notification notif">
+                        <a (click)="showNotifications()" class="header-alarm" [class.active]="_notificationsStore.recentlyAdded">
+                            <i class="font-icon-alarm"></i>
+                        </a>
+                        
+                    </div>
                     <div class="dropdown user-menu" dropdown>
                         <button dropdownToggle class="dropdown-toggle" id="dd-user-menu" type="button" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">

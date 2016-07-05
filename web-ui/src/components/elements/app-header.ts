@@ -1,16 +1,20 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router-deprecated';
 import {LoaderComponent} from '../elements/loader';
-import {AuthenticationService} from '../../services/authentication';
-import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
+import {AuthenticationService} from '../../services/authentication-service';
 import {CORE_DIRECTIVES} from '@angular/common';
 import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap';
+import {SessionStore} from '../../stores/session-store';
+import {NotificationsStore} from '../../stores/notifications-store';
 
 @Component({
     selector: 'app-header',
     templateUrl: 'templates/elements/app-header.html',
-    directives: [LoaderComponent, SimpleNotificationsComponent, DROPDOWN_DIRECTIVES, CORE_DIRECTIVES],
-    providers: [AuthenticationService, NotificationsService]    
+    directives: [
+        LoaderComponent, 
+        DROPDOWN_DIRECTIVES, 
+        CORE_DIRECTIVES],
+    providers: [AuthenticationService]
 })
 
 export class AppHeaderComponent implements OnInit {
@@ -34,22 +38,27 @@ export class AppHeaderComponent implements OnInit {
     };
     constructor(
         private _authenticationService: AuthenticationService,
-        private _notificationsService: NotificationsService,
+        private _notificationsStore: NotificationsStore,
+        private _sessionStore: SessionStore,
         private _router: Router
     ) {
 
     }
 
     ngOnInit() {
-        if (window.localStorage.hasOwnProperty('session_user_name')) {
-            this.user_name = window.localStorage.getItem('session_user_name');
+        if (this._sessionStore.isAuthenticated()) {
+            this.user_name = this._sessionStore.session.user.displayName;
         } else {
             this._router.navigate(['Login']);
         }
     }
 
     logout() {
-        window.localStorage.removeItem('session_user_name');
+        this._sessionStore.logout();
         this._router.navigate(['Login']);
+    }
+
+    showNotifications() {
+        this._notificationsStore.toggleVisibility();
     }
 }

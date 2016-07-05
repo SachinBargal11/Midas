@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/common', '@angular/router-deprecated', '../../utils/AppValidators', '../elements/loader', '../../services/authentication', 'angular2-notifications'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/common', '@angular/router-deprecated', '../../utils/AppValidators', '../elements/loader', '../../services/authentication-service', 'angular2-notifications', '../../stores/session-store'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, router_deprecated_1, AppValidators_1, loader_1, authentication_1, angular2_notifications_1;
+    var core_1, common_1, router_deprecated_1, AppValidators_1, loader_1, authentication_service_1, angular2_notifications_1, session_store_1;
     var SignupComponent;
     return {
         setters:[
@@ -29,17 +29,21 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
             function (loader_1_1) {
                 loader_1 = loader_1_1;
             },
-            function (authentication_1_1) {
-                authentication_1 = authentication_1_1;
+            function (authentication_service_1_1) {
+                authentication_service_1 = authentication_service_1_1;
             },
             function (angular2_notifications_1_1) {
                 angular2_notifications_1 = angular2_notifications_1_1;
+            },
+            function (session_store_1_1) {
+                session_store_1 = session_store_1_1;
             }],
         execute: function() {
             SignupComponent = (function () {
-                function SignupComponent(fb, _authenticationService, _notificationsService, _router, _routeParams) {
+                function SignupComponent(fb, _authenticationService, _notificationsService, _sessionStore, _router, _routeParams) {
                     this._authenticationService = _authenticationService;
                     this._notificationsService = _notificationsService;
+                    this._sessionStore = _sessionStore;
                     this._router = _router;
                     this._routeParams = _routeParams;
                     this.options = {
@@ -58,7 +62,7 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
                     }, { validator: AppValidators_1.AppValidators.matchingPasswords('password', 'confirmPassword') });
                 }
                 SignupComponent.prototype.ngOnInit = function () {
-                    if (window.localStorage.hasOwnProperty('session_user_name')) {
+                    if (this._sessionStore.isAuthenticated()) {
                         this._router.navigate(['Dashboard']);
                     }
                 };
@@ -79,8 +83,8 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
                             _this._router.navigate(['Login']);
                         }, 3000);
                     }, function (error) {
+                        _this.isSignupInProgress = false;
                         _this._notificationsService.error('Oh No!', 'Unable to register user.');
-                        // alert("Unable to register");
                     }, function () {
                         _this.isSignupInProgress = false;
                     });
@@ -90,9 +94,9 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
                         selector: 'signup',
                         templateUrl: 'templates/pages/signup.html',
                         directives: [router_deprecated_1.ROUTER_DIRECTIVES, loader_1.LoaderComponent, angular2_notifications_1.SimpleNotificationsComponent],
-                        providers: [authentication_1.AuthenticationService, angular2_notifications_1.NotificationsService]
+                        providers: [authentication_service_1.AuthenticationService, angular2_notifications_1.NotificationsService]
                     }), 
-                    __metadata('design:paramtypes', [common_1.FormBuilder, authentication_1.AuthenticationService, angular2_notifications_1.NotificationsService, router_deprecated_1.Router, router_deprecated_1.RouteParams])
+                    __metadata('design:paramtypes', [common_1.FormBuilder, authentication_service_1.AuthenticationService, angular2_notifications_1.NotificationsService, session_store_1.SessionStore, router_deprecated_1.Router, router_deprecated_1.RouteParams])
                 ], SignupComponent);
                 return SignupComponent;
             }());

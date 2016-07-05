@@ -3,8 +3,9 @@ import {ControlGroup, Validators, FormBuilder} from '@angular/common';
 import {ROUTER_DIRECTIVES, Router, RouteParams} from '@angular/router-deprecated';
 import {AppValidators} from '../../utils/AppValidators';
 import {LoaderComponent} from '../elements/loader';
-import {AuthenticationService} from '../../services/authentication';
+import {AuthenticationService} from '../../services/authentication-service';
 import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
+import {SessionStore} from '../../stores/session-store';
 
 @Component({
     selector: 'signup',
@@ -27,6 +28,7 @@ export class SignupComponent implements OnInit {
         fb: FormBuilder,
         private _authenticationService: AuthenticationService,
         private _notificationsService: NotificationsService,
+        private _sessionStore: SessionStore,
         private _router: Router,
         private _routeParams: RouteParams
     ) {
@@ -40,7 +42,7 @@ export class SignupComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (window.localStorage.hasOwnProperty('session_user_name')) {
+        if (this._sessionStore.isAuthenticated()) {
             this._router.navigate(['Dashboard']);
         }
     }
@@ -58,15 +60,15 @@ export class SignupComponent implements OnInit {
 
 
         result.subscribe(
-            response => {
+            (response) => {
                 this._notificationsService.success('Welcome!', 'You have suceessfully registered!');
                 setTimeout(() => {
                     this._router.navigate(['Login']);
                 }, 3000);
             },
             error => {
+                this.isSignupInProgress = false;
                 this._notificationsService.error('Oh No!', 'Unable to register user.');
-                // alert("Unable to register");
             },
             () => {
                 this.isSignupInProgress = false;

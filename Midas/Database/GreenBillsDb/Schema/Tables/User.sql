@@ -8,7 +8,7 @@
 	[LastName] NVARCHAR(50) NULL,
 	[Gender] Bit, -- 0 Male , 1 Female
 	[UserType] tinyint NOT NULL ,	
-	Notes NVARCHAR(4098) NULL ,
+	Notes NVARCHAR(4000) NULL ,
 	Picture NVARCHAR(512) NULL ,
 	AddressId INT NULL,
 	ContactInfoId INT NULL, 

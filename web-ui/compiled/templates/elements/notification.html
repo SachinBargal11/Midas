@@ -1,0 +1,13 @@
+<div class="notification-panel-container">
+    <div class="control-item-content">
+        <div class="dropdown-menu-notif-header">
+            Notifications
+            <span class="label label-pill label-danger" *ngIf="_notificationsStore.recentlyAddedCount > 0">{{_notificationsStore.recentlyAddedCount}}</span>
+        </div>
+        <div class="control-item-content-text" [class.unread]="!notification.isRead" *ngFor="let notification of _notificationsStore.notifications | async | reverse">
+            <div class="dot" *ngIf="!notification.isRead"></div>
+            <div>{{notification.title}}</div>
+            <div class="color-blue-grey-lighter">{{notification.createdAt | amTimeAgo}}</div>
+        </div>
+    </div>
+</div>

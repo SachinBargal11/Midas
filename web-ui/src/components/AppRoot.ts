@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RouteConfig, ROUTER_DIRECTIVES, Router} from '@angular/router-deprecated';
 import {LoginComponent} from './pages/login';
 import {SignupComponent} from './pages/signup';
@@ -7,22 +7,46 @@ import {PatientsShellComponent} from './pages/patients/patients-shell';
 import {AppHeaderComponent} from './elements/app-header';
 import {MainNavComponent} from './elements/main-nav';
 
+import {SessionStore} from '../stores/session-store';
+import {NotificationComponent} from './elements/notification';
+import {NotificationsStore} from '../stores/notifications-store';
+
 @RouteConfig([
     { path: '/login', name: 'Login', component: LoginComponent },
     { path: '/signup', name: 'Signup', component: SignupComponent },
     { path: '/dashboard', name: 'Dashboard', component: DashboardComponent },
     { path: '/patients/...', name: 'Patients', component: PatientsShellComponent },
-    { path: '/*other', name: 'Other', redirectTo: ['Login'] }
+    { path: '/*other', name: 'Other', redirectTo: ['Dashboard'] }
 ])
 
 @Component({
     selector: 'app-root',
     templateUrl: 'templates/AppRoot.html',
-    directives: [ROUTER_DIRECTIVES, AppHeaderComponent, MainNavComponent]
+    directives: [
+        ROUTER_DIRECTIVES,
+        AppHeaderComponent,
+        MainNavComponent,
+        NotificationComponent
+    ]
 })
 
-export class AppRoot {
-    constructor(public router: Router) {
+export class AppRoot implements OnInit {
+    constructor(
+        public router: Router,
+        private _sessionStore: SessionStore,
+        private _notificationsStore: NotificationsStore
+    ) {
 
+    }
+
+    ngOnInit() {
+        this._sessionStore.authenticate().subscribe(
+            (response) => {
+
+            },
+            error => {
+                this.router.navigate(['Login']);
+            }
+        )
     }
 }

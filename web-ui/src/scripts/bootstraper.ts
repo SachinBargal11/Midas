@@ -6,8 +6,24 @@ import { LocationStrategy,
     HashLocationStrategy } from '@angular/common';
 import {HTTP_PROVIDERS} from '@angular/http';
 
+import {SessionStore} from '../stores/session-store';
+import {AuthenticationService} from '../services/authentication-service';
+
 import {PatientsStore} from '../stores/patients-store';
 import {PatientsService} from '../services/patients-service';
 
-bootstrap(AppRoot, [ROUTER_PROVIDERS, HTTP_PROVIDERS, PatientsService, PatientsStore, provide(LocationStrategy,
-    { useClass: HashLocationStrategy })]);
+import {NotificationsStore} from '../stores/notifications-store';
+
+bootstrap(AppRoot, [
+    ROUTER_PROVIDERS,
+    HTTP_PROVIDERS,
+    SessionStore,
+    AuthenticationService,
+    PatientsService,
+    PatientsStore,
+    NotificationsStore,
+    provide(LocationStrategy,
+        {
+            useClass: HashLocationStrategy
+        }
+    )]);

@@ -1,0 +1,335 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BA20FAFE-2540-43C5-BF98-53BAAEC4F4A4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GBDataRepository</RootNamespace>
+    <AssemblyName>GBDataRepository</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity.Design" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataAccessManager\DBContextProvider.cs" />
+    <Compile Include="DataAccessManager\GbDataAccessManager.cs" />
+    <Compile Include="DataAccessManager\IDBContextProvider.cs" />
+    <Compile Include="DataAccessManager\IGbDataAccessManager.cs" />
+    <Compile Include="EntityRepository\BaseEntityRepo.cs" />
+    <Compile Include="EntityRepository\Account\AccountRepository.cs" />
+    <Compile Include="EntityRepository\Case\CaseRepository.cs" />
+    <Compile Include="EntityRepository\User\UserRepository.cs" />
+    <Compile Include="EntitySearch\EntitySearch.cs" />
+    <Compile Include="EntitySearch\EntitySearchParameters.cs" />
+    <Compile Include="Model\GreenBillsDbEntities.cs" />
+    <Compile Include="Model\Abbreviation.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Account.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Action.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Activity.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Address.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Bill.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\BillDetail.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\BillPom.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\BillStatu.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\BillVerification.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\BillVerificationAnswer.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Case.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CaseDocument.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CaseStatu.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CaseType.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\City.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ContactInfo.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CyclicInsuranceConfiguration.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CyclicProcedureConfigurationAmount.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CyclicSpecialtyConfiguration.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CyclicSpecialtyConfigurationAmount.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\C__RefactorLog.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DenialReason.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DiagnosisType.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DignosisCode.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Doctor.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DocumentType.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\EmployerAddress.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\EnvelopeConfiguration.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GbDataStore.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GbDataStore.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GbDataStore.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GbDataStore.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GbDataStore.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Insurance.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\InsuranceAddress.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\IntakeAOB.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Location.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\MailProfile.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Mandatory.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Node.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Office.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Owner.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PatientAccidentDetail.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PatientDetail.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Payment.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PaymentImage.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\POM.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ProcedureCode.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Provider.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Reconcilation.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Reminder.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ReminderRecurrence.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ReminderType.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\RequiredDocument.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Role.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\RoleAction.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\RoleActivityEvent.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\RoleEvent.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Room.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\RoomSchedule.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Specialty.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\State.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\sysdiagram.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SystemSetting.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Transportation.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\User1.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\UserType.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\VerificationAnswerImage.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\VerificationImage.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Visit.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\VisitProcedure.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\VisitType.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RepoFactory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="Model\GbDataStore.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>GbDataStore.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Model\GbDataStore.edmx.diagram">
+      <DependentUpon>GbDataStore.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Model\GbDataStore.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>GbDataStore.edmx</DependentUpon>
+      <LastGenOutput>GbDataStore.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Model\GbDataStore.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>GbDataStore.edmx</DependentUpon>
+      <LastGenOutput>GbDataStore.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common.csproj">
+      <Project>{ab922f16-5932-468c-b3c3-4869daec1662}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GBBusinessObjects\GBBusinessObjects.csproj">
+      <Project>{01c07d5e-d792-48cc-b43e-d42b65c5921f}</Project>
+      <Name>GBBusinessObjects</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

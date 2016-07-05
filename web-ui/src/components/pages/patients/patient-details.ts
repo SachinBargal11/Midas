@@ -4,9 +4,9 @@ import {Patient} from '../../../models/patient'
 import {PatientsStore} from '../../../stores/patients-store';
 import {PatientProfileComponent} from './profile-patient';
 
-// @RouteConfig([
-//     { path: '/', name: 'PatientProfile', component: PatientProfileComponent }
-// ])
+@RouteConfig([
+    { path: '/', name: 'PatientProfile', component: PatientProfileComponent, useAsDefault: true }
+])
 
 @Component({
     selector: 'patient-details',
@@ -15,24 +15,27 @@ import {PatientProfileComponent} from './profile-patient';
 })
 
 export class PatientDetailsComponent {
-    
+
     patient: Patient;
 
     constructor(
-        private _router: Router,
+        public router: Router,
         private _routeParams: RouteParams,
         private _patientsStore: PatientsStore
     ) {
         let patientId: number = parseInt(this._routeParams.get('id'));
         let patient = this._patientsStore.findPatientById(patientId);
-        if(patient)
-        {
-            this._patientsStore.selectPatient(patient);            
+        if (patient) {
+            this._patientsStore.selectPatient(patient);
             this.patient = patient;
         }
-        else
-        {
-            this._router.navigate(['PatientsList']);
+        else {
+            this.router.navigate(['PatientsList']);
         }
+    }
+    
+    isCurrentRoute(route) {
+        var instruction = this.router.generate(route);
+        return this.router.isRouteActive(instruction);
     }
 }

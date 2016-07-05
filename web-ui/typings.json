@@ -1,12 +1,15 @@
 {
   "name": "greenyourbills-webapp",
   "globalDependencies": {
+    "eonasdan-bootstrap-datetimepicker": "registry:dt/eonasdan-bootstrap-datetimepicker#4.17.37+20160319170655",
     "es6-shim": "registry:dt/es6-shim#0.31.2+20160317120654",
+    "jquery": "registry:dt/jquery#1.10.0+20160417213236",
+    "moment": "registry:dt/moment#2.8.0+20160316155526",
+    "moment-node": "registry:dt/moment-node#2.11.1+20160511043338",
     "node": "registry:dt/node#4.0.0+20160509154515",
     "underscore": "registry:dt/underscore#1.7.0+20160505190121"
   },
   "dependencies": {
-    "immutable": "registry:npm/immutable#3.7.6+20160411060006",
-    "moment": "registry:npm/moment#2.10.5+20160211003958"
+    "immutable": "registry:npm/immutable#3.7.6+20160411060006"
   }
 }
