@@ -26,6 +26,7 @@
 	[PolicyHolder] nvarchar(100),
 	[PolicyHolderAddressId] int,
 	[PolicyHolderContactInfoId] int,
+	ReferringOfficeID INT,
 	[InsuranceId] int,
 	[InsuranceAddressId] int,
 	[SpecialtyId] int,

@@ -1,30 +1,23 @@
-﻿CREATE TABLE [dbo].[Doctor]
-(
-	[DoctorId] int NOT NULL PRIMARY KEY,
-	[Name] nvarchar(100) not null,
+﻿CREATE TABLE [dbo].[DoctorDetails]
+(    
+	[DoctorDetailId] int NOT NULL PRIMARY KEY,
+	[DoctorUserId] int,
 	[LicenseNumber] nvarchar(50),
 	[WCBAuthorization] nvarchar(50),
 	[WcbRatingCode] nvarchar(50),
 	[NPI] nvarchar(50),
-	[ProviderId] int,
 	[FederalTaxId] nvarchar(50),
 	[TaxType] TINYINT,
-	[AccountId] int not null,
 	[Koel] money,
-	[AssignNumber] nvarchar(50),
+	[AssignNumber] nvarchar(50) ,
 	[Title] nvarchar(10),
+	EIN_SIN INT,
 	[IsEmployee] bit,
-	[IsReferral] bit,
-	[IsUnBilled] bit,
-    [IsSupervising] bit,
 	[Type] int,
-	[SpecialtyId] int,
 	[Deleted] bit,
 	[CreatedDate] datetime,
 	[UpdatedDate] datetime,
 	[CreatedBy] int,
 	[UpdatedBY]  int
-	CONSTRAINT [FK_Doctor_SpecialtyId] FOREIGN KEY ([SpecialtyId]) REFERENCES [Specialty](SpecialtyId),
-	CONSTRAINT [FK_Doctor_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](AccountId),
-	CONSTRAINT [FK_Doctor_ProviderId] FOREIGN KEY ([ProviderId]) REFERENCES [Provider](ProviderId)
+	
 )
