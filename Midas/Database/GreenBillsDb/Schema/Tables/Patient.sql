@@ -2,8 +2,7 @@
 (
 	[PatientDetailId] int identity(1,1) NOT NULL PRIMARY KEY,
 	[UserPatientId] int,
-	[FirstName] nvarchar(50),	
-	[Age] int,
+	[SSN] nvarchar(50),	
 	[WCBNO] nvarchar(50),	
 	[JobTitle] nvarchar(50),
 	[WorkActivitis] nvarchar(50),

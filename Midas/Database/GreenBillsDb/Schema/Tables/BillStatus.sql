@@ -11,6 +11,5 @@
 	[UpdatedDate] datetime,
 	[CreatedBy] int,
 	[UpdatedBY]  int,
-	IPAddress varchar(15)
 	
 )

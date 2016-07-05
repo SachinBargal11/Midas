@@ -86,8 +86,8 @@
     <Build Include="Schema\Tables\VisitType.sql" />
     <Build Include="Schema\Tables\Provider.sql" />
     <Build Include="Schema\Tables\Location.sql" />
-    <Build Include="Schema\Tables\Doctor.sql" />
-    <Build Include="Schema\Tables\Specialty.sql" />
+    <Build Include="Schema\Tables\DoctorDetails.sql" />
+    <Build Include="Schema\Tables\SpecialtyDetails.sql" />
     <Build Include="Schema\Tables\Nodes.sql" />
     <Build Include="Schema\Tables\Room.sql" />
     <Build Include="Schema\Tables\RoomDays.sql" />
@@ -153,6 +153,13 @@
     <Build Include="Schema\Tables\GeneralDenials.sql" />
     <Build Include="Schema\Tables\GeneralDenialImages.sql" />
     <Build Include="Schema\Tables\SignOnPdf.sql" />
+    <Build Include="Schema\Tables\Specialty.sql" />
+    <Build Include="Schema\Tables\DoctorType.sql" />
+    <Build Include="Schema\Tables\TransferredCases.sql" />
+    <Build Include="Schema\Tables\EmailFields.sql" />
+    <Build Include="Schema\Tables\EmailProfile.sql" />
+    <Build Include="Schema\Tables\EmailTemplate.sql" />
+    <Build Include="Schema\Tables\AuditTrail.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="GreenBillsDb.refactorlog" />
