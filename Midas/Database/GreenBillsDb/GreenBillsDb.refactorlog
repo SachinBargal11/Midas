@@ -147,4 +147,39 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="ChequeAmount" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="28d661bb-6bd2-4900-9a92-d0a5235b878c" ChangeDateTime="06/23/2016 07:50:46">
+    <Property Name="ElementName" Value="[dbo].[MedicalOffices].[CreatedBy]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[MedicalOffices]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreatedByUserID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e543e24e-aa21-4a19-a491-c25efabec3d4" ChangeDateTime="06/23/2016 07:51:32">
+    <Property Name="ElementName" Value="[dbo].[UserType].[Type]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[UserType]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="UserType" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="8ee4ee4b-d86e-4087-ad35-db83cd926320" ChangeDateTime="06/23/2016 07:58:29">
+    <Property Name="ElementName" Value="[dbo].[ProviderMedicalOffices].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ProviderMedicalOffices]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ProviderMedicalOfifceID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1ade1478-90de-41f0-a13d-0462b4349ad2" ChangeDateTime="06/23/2016 08:16:41">
+    <Property Name="ElementName" Value="[dbo].[DoctorSpeciality].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DoctorSpeciality]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DocSpecialityID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d4ad3ec4-cf3c-4d3f-844a-41f1b29bb729" ChangeDateTime="06/23/2016 08:17:08">
+    <Property Name="ElementName" Value="[dbo].[DoctorSpeciality].[DocSpecialityID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DoctorSpeciality]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DoctorSpecialityID" />
+  </Operation>
 </Operations>
