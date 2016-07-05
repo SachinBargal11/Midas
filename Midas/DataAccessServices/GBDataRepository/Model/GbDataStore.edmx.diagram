@@ -4,75 +4,90 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="485025e5562f42438614e57b1dfdccb5" Name="Diagram1">
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.C__RefactorLog" Width="1.5" PointX="0.75" PointY="1.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Abbreviation" Width="1.5" PointX="2.75" PointY="1.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Account" Width="1.5" PointX="0.75" PointY="10.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Action" Width="1.5" PointX="0.75" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Address" Width="1.5" PointX="3" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.BillDetail" Width="1.5" PointX="12.75" PointY="1.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.BillPom" Width="1.5" PointX="2.75" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Bill" Width="1.5" PointX="12.75" PointY="8.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.BillStatu" Width="1.5" PointX="8.75" PointY="14.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.BillVerification" Width="1.5" PointX="14.75" PointY="1.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.BillVerificationAnswer" Width="1.5" PointX="14.75" PointY="6.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Case" Width="1.5" PointX="14.75" PointY="11.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.CaseDocument" Width="1.5" PointX="5.75" PointY="16.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.CaseStatu" Width="1.5" PointX="16.75" PointY="1.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.CaseType" Width="1.5" PointX="0.75" PointY="17.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.City" Width="1.5" PointX="16.75" PointY="5.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.ContactInfo" Width="1.5" PointX="6" PointY="2.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.DenialReason" Width="1.5" PointX="16.75" PointY="9.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.DiagnosisType" Width="1.5" PointX="10.75" PointY="17.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.DignosisCode" Width="1.5" PointX="16.75" PointY="13.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Doctor" Width="1.5" PointX="10.5" PointY="7.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.DocumentType" Width="1.5" PointX="16.75" PointY="18.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.EmployerAddress" Width="1.5" PointX="18.75" PointY="1.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Insurance" Width="1.5" PointX="18.75" PointY="6.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.InsuranceAddress" Width="1.5" PointX="7.75" PointY="19.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.IntakeAOB" Width="1.5" PointX="18.75" PointY="12.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Location" Width="1.5" PointX="18.75" PointY="15.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Node" Width="1.5" PointX="3" PointY="13" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Office" Width="1.5" PointX="5.25" PointY="8.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Owner" Width="1.5" PointX="20.75" PointY="1.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.PatientAccidentDetail" Width="1.5" PointX="0.75" PointY="21.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.PatientDetail" Width="1.5" PointX="2.75" PointY="21.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Payment" Width="1.5" PointX="20.75" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.PaymentImage" Width="1.5" PointX="4.75" PointY="21.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.POM" Width="1.5" PointX="20.75" PointY="10.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.ProcedureCode" Width="1.5" PointX="9.75" PointY="21.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Provider" Width="1.5" PointX="8.25" PointY="7.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Reconcilation" Width="1.5" PointX="11.75" PointY="21.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.RequiredDocument" Width="1.5" PointX="13.75" PointY="21.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.RoleAction" Width="1.5" PointX="20.75" PointY="15.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Room" Width="1.5" PointX="3.75" PointY="17.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.RoomSchedule" Width="1.5" PointX="6" PointY="12.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Specialty" Width="1.5" PointX="8.25" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.State" Width="1.5" PointX="20.75" PointY="18.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.sysdiagram" Width="1.5" PointX="18.75" PointY="22.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.SystemSetting" Width="1.5" PointX="20.75" PointY="22.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Transportation" Width="1.5" PointX="22.75" PointY="1.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.User1" Width="1.5" PointX="22.75" PointY="5.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.UserType" Width="1.5" PointX="22.75" PointY="12.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.VerificationAnswerImage" Width="1.5" PointX="22.75" PointY="15.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.VerificationImage" Width="1.5" PointX="15.75" PointY="23.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.VisitProcedure" Width="1.5" PointX="22.75" PointY="20.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Visit" Width="1.5" PointX="6.75" PointY="24.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.VisitType" Width="1.5" PointX="24.75" PointY="1.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Activity" Width="1.5" PointX="24.75" PointY="6.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.CyclicInsuranceConfiguration" Width="1.5" PointX="24.75" PointY="10.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.CyclicProcedureConfigurationAmount" Width="1.5" PointX="24.75" PointY="14.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.CyclicSpecialtyConfiguration" Width="1.5" PointX="24.75" PointY="18.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.CyclicSpecialtyConfigurationAmount" Width="1.5" PointX="17.75" PointY="25.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.EnvelopeConfiguration" Width="1.5" PointX="24.75" PointY="22.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.MailProfile" Width="1.5" PointX="19.75" PointY="26.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Mandatory" Width="1.5" PointX="21.75" PointY="26.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Reminder" Width="1.5" PointX="26.75" PointY="1.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.ReminderRecurrence" Width="1.5" PointX="26.75" PointY="9.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.ReminderType" Width="1.5" PointX="26.75" PointY="12.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.Role" Width="1.5" PointX="11.75" PointY="27.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.RoleActivityEvent" Width="1.5" PointX="13.75" PointY="27.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Midas.GreenBill.Model.RoleEvent" Width="1.5" PointX="26.75" PointY="16.875" IsExpanded="true" />
+      <Diagram DiagramId="494b2838326f4e0485fa868cc46d924c" Name="Diagram1">
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.C__RefactorLog" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Abbreviation" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Account" Width="1.5" PointX="0.75" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Action" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Address" Width="1.5" PointX="3" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.ApplicationSetting" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.BillDetail" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.BillPom" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Bill" Width="1.5" PointX="12.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.BillStatu" Width="1.5" PointX="8.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.BillVerification" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.BillVerificationAnswer" Width="1.5" PointX="14.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Case" Width="1.5" PointX="14.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.CaseDocument" Width="1.5" PointX="5.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.CaseStatu" Width="1.5" PointX="16.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.CaseType" Width="1.5" PointX="0.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.City" Width="1.5" PointX="16.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.ContactInfo" Width="1.5" PointX="6" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.DenialReason" Width="1.5" PointX="16.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.DiagnosisType" Width="1.5" PointX="10.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.DignosisCode" Width="1.5" PointX="16.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Doctor" Width="1.5" PointX="10.5" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.DoctorDetail" Width="1.5" PointX="16.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.DocumentType" Width="1.5" PointX="18.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.EmployerAddress" Width="1.5" PointX="18.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Insurance" Width="1.5" PointX="7.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.InsuranceAddress" Width="1.5" PointX="18.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.IntakeAOB" Width="1.5" PointX="18.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Location" Width="1.5" PointX="18.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.MedicalOffice" Width="1.5" PointX="20.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Node" Width="1.5" PointX="3" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Office" Width="1.5" PointX="5.25" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Owner" Width="1.5" PointX="0.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.PatientAccidentDetail" Width="1.5" PointX="2.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.PatientDetail" Width="1.5" PointX="4.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Payment" Width="1.5" PointX="20.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.PaymentImage" Width="1.5" PointX="9.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.POM" Width="1.5" PointX="20.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.ProcedureCode" Width="1.5" PointX="11.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Provider" Width="1.5" PointX="8.25" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.ProviderDetail" Width="1.5" PointX="13.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Reconcilation" Width="1.5" PointX="20.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.RequiredDocument" Width="1.5" PointX="22.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.RoleAction" Width="1.5" PointX="22.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Room" Width="1.5" PointX="3.75" PointY="16.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.RoomSchedule" Width="1.5" PointX="6" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Specialty" Width="1.5" PointX="22.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.State" Width="1.5" PointX="22.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.sysdiagram" Width="1.5" PointX="22.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.SystemSetting" Width="1.5" PointX="20.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.SystemSettingKey" Width="1.5" PointX="22.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Transportation" Width="1.5" PointX="15.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.User1" Width="1.5" PointX="24.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.UserType" Width="1.5" PointX="6.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.VerificationAnswerImage" Width="1.5" PointX="24.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.VerificationImage" Width="1.5" PointX="8.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.VisitProcedure" Width="1.5" PointX="24.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Visit" Width="1.5" PointX="17.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.VisitType" Width="1.5" PointX="24.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Activity" Width="1.5" PointX="24.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.BillStatusHistory" Width="1.5" PointX="0.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.CaseAssociatedDiagnosisCode" Width="1.5" PointX="26.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.CompanyConnection" Width="1.5" PointX="26.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.CyclicInsuranceConfiguration" Width="1.5" PointX="26.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.CyclicProcedureConfigurationAmount" Width="1.5" PointX="26.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.CyclicSpecialtyConfiguration" Width="1.5" PointX="26.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.CyclicSpecialtyConfigurationAmount" Width="1.5" PointX="19.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.EnvelopeConfiguration" Width="1.5" PointX="26.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.GeneralDenialImage" Width="1.5" PointX="21.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.GeneralDenial" Width="1.5" PointX="26.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.MailProfile" Width="1.5" PointX="10.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Mandatory" Width="1.5" PointX="12.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Note" Width="1.5" PointX="14.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.NotesType" Width="1.5" PointX="23.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.PacketRequest" Width="1.5" PointX="28.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.PacketRequestBill" Width="1.5" PointX="2.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Reminder" Width="1.5" PointX="28.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.ReminderRecurrence" Width="1.5" PointX="4.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.ReminderType" Width="1.5" PointX="6.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.Role" Width="1.5" PointX="28.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.RoleActivityEvent" Width="1.5" PointX="28.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.RoleEvent" Width="1.5" PointX="28.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Midas.GreenBill.Model.SignOnPdf" Width="1.5" PointX="28.75" PointY="24.75" IsExpanded="true" />
         <AssociationConnector Association="Midas.GreenBill.Model.FK_Address_Account_id" ManuallyRouted="false" />
         <AssociationConnector Association="Midas.GreenBill.Model.FK_Doctor_AccountId" ManuallyRouted="false" />
         <AssociationConnector Association="Midas.GreenBill.Model.FK_Nodes_AccountId" ManuallyRouted="false" />
@@ -84,7 +99,6 @@
         <AssociationConnector Association="Midas.GreenBill.Model.FK_Provider_BillingContactId" ManuallyRouted="false" />
         <AssociationConnector Association="Midas.GreenBill.Model.FK_Provider_ContactId" ManuallyRouted="false" />
         <AssociationConnector Association="Midas.GreenBill.Model.FK_Doctor_ProviderId" ManuallyRouted="false" />
-        <AssociationConnector Association="Midas.GreenBill.Model.FK_Doctor_SpecialtyId" ManuallyRouted="false" />
         <AssociationConnector Association="Midas.GreenBill.Model.FK_RoomDays_RoomId" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>

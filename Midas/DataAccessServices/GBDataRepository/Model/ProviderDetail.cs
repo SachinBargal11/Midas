@@ -12,13 +12,22 @@ namespace Midas.GreenBill.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class SystemSetting
+    public partial class ProviderDetail
     {
-        public int SystemSettingId { get; set; }
-        public Nullable<int> SystemSettingKeyId { get; set; }
-        public string SysValue { get; set; }
-        public Nullable<long> AccountId { get; set; }
-        public string SubValue { get; set; }
+        public int ProviderDetailId { get; set; }
+        public Nullable<int> ProviderUserID { get; set; }
+        public string NPI { get; set; }
+        public string FederalTaxId { get; set; }
+        public string Prefix { get; set; }
+        public Nullable<int> LocationId { get; set; }
+        public Nullable<bool> IsSoftwareFeeAdded { get; set; }
+        public Nullable<decimal> SoftwareFee { get; set; }
+        public Nullable<int> PlaceOfService { get; set; }
+        public Nullable<bool> IsReferring { get; set; }
+        public Nullable<int> BillingAddressId { get; set; }
+        public Nullable<int> ContactInfoId { get; set; }
+        public Nullable<int> BillingContactInfoId { get; set; }
+        public int AccountId { get; set; }
         public Nullable<bool> Deleted { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }

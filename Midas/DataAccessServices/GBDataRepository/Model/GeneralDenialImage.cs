@@ -12,13 +12,13 @@ namespace Midas.GreenBill.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class SystemSetting
+    public partial class GeneralDenialImage
     {
-        public int SystemSettingId { get; set; }
-        public Nullable<int> SystemSettingKeyId { get; set; }
-        public string SysValue { get; set; }
-        public Nullable<long> AccountId { get; set; }
-        public string SubValue { get; set; }
+        public int GeneralDenialsImageId { get; set; }
+        public Nullable<int> GeneralDenialsId { get; set; }
+        public string FileName { get; set; }
+        public string FilePath { get; set; }
+        public Nullable<int> ImageId { get; set; }
         public Nullable<bool> Deleted { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }

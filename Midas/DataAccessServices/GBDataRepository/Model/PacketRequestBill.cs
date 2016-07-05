@@ -12,9 +12,10 @@ namespace Midas.GreenBill.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class UserType
+    public partial class PacketRequestBill
     {
-        public int UserTypeId { get; set; }
-        public string UserType1 { get; set; }
+        public int PacketRequestBills { get; set; }
+        public Nullable<int> PacketRequestId { get; set; }
+        public Nullable<int> BillId { get; set; }
     }
 }

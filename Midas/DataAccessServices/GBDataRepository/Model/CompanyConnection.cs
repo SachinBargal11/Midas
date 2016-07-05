@@ -12,13 +12,13 @@ namespace Midas.GreenBill.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class SystemSetting
+    public partial class CompanyConnection
     {
-        public int SystemSettingId { get; set; }
-        public Nullable<int> SystemSettingKeyId { get; set; }
-        public string SysValue { get; set; }
-        public Nullable<long> AccountId { get; set; }
-        public string SubValue { get; set; }
+        public int CompanyConnectionsid { get; set; }
+        public Nullable<int> ConnectionFrom { get; set; }
+        public Nullable<int> ConnectionTo { get; set; }
+        public Nullable<bool> ShowVisit { get; set; }
+        public Nullable<bool> AllowCopyPatient { get; set; }
         public Nullable<bool> Deleted { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }

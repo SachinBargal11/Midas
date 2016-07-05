@@ -41,6 +41,5 @@ namespace Midas.GreenBill.Model
     
         public virtual Account Account { get; set; }
         public virtual Provider Provider { get; set; }
-        public virtual Specialty Specialty { get; set; }
     }
 }

@@ -28,7 +28,6 @@ namespace Midas.GreenBill.Model
         public string Name { get; set; }
         public byte Status { get; set; }
         public int AddressId { get; set; }
-        public int OwnerId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Address> Addresses { get; set; }

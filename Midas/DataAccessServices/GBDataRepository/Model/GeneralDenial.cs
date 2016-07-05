@@ -12,9 +12,16 @@ namespace Midas.GreenBill.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class UserType
+    public partial class GeneralDenial
     {
-        public int UserTypeId { get; set; }
-        public string UserType1 { get; set; }
+        public int GeneralDenialsId { get; set; }
+        public Nullable<int> CaseId { get; set; }
+        public Nullable<int> DenialId { get; set; }
+        public string Comment { get; set; }
+        public Nullable<bool> Deleted { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<System.DateTime> UpdatedDate { get; set; }
+        public Nullable<int> CreatedBy { get; set; }
+        public Nullable<int> UpdatedBY { get; set; }
     }
 }

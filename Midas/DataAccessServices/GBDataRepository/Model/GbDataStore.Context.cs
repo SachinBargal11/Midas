@@ -15,8 +15,7 @@ namespace Midas.GreenBill.Model
     
     public partial class GreenBillsDbEntities : DbContext
     {
-        public GreenBillsDbEntities()
-            : base("name=GreenBillsDbEntities")
+        public GreenBillsDbEntities():base("name=GreenBillsDbEntities")
         {
         }
     
@@ -30,6 +29,7 @@ namespace Midas.GreenBill.Model
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Action> Actions { get; set; }
         public virtual DbSet<Address> Addresses { get; set; }
+        public virtual DbSet<ApplicationSetting> ApplicationSettings { get; set; }
         public virtual DbSet<BillDetail> BillDetails { get; set; }
         public virtual DbSet<BillPom> BillPoms { get; set; }
         public virtual DbSet<Bill> Bills { get; set; }
@@ -46,12 +46,14 @@ namespace Midas.GreenBill.Model
         public virtual DbSet<DiagnosisType> DiagnosisTypes { get; set; }
         public virtual DbSet<DignosisCode> DignosisCodes { get; set; }
         public virtual DbSet<Doctor> Doctors { get; set; }
+        public virtual DbSet<DoctorDetail> DoctorDetails { get; set; }
         public virtual DbSet<DocumentType> DocumentTypes { get; set; }
         public virtual DbSet<EmployerAddress> EmployerAddresses { get; set; }
         public virtual DbSet<Insurance> Insurances { get; set; }
         public virtual DbSet<InsuranceAddress> InsuranceAddresses { get; set; }
         public virtual DbSet<IntakeAOB> IntakeAOBs { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
+        public virtual DbSet<MedicalOffice> MedicalOffices { get; set; }
         public virtual DbSet<Node> Nodes { get; set; }
         public virtual DbSet<Office> Offices { get; set; }
         public virtual DbSet<Owner> Owners { get; set; }
@@ -62,6 +64,7 @@ namespace Midas.GreenBill.Model
         public virtual DbSet<POM> POMs { get; set; }
         public virtual DbSet<ProcedureCode> ProcedureCodes { get; set; }
         public virtual DbSet<Provider> Providers { get; set; }
+        public virtual DbSet<ProviderDetail> ProviderDetails { get; set; }
         public virtual DbSet<Reconcilation> Reconcilations { get; set; }
         public virtual DbSet<RequiredDocument> RequiredDocuments { get; set; }
         public virtual DbSet<RoleAction> RoleActions { get; set; }
@@ -71,6 +74,7 @@ namespace Midas.GreenBill.Model
         public virtual DbSet<State> States { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<SystemSetting> SystemSettings { get; set; }
+        public virtual DbSet<SystemSettingKey> SystemSettingKeys { get; set; }
         public virtual DbSet<Transportation> Transportations { get; set; }
         public virtual DbSet<User1> User1 { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
@@ -80,18 +84,28 @@ namespace Midas.GreenBill.Model
         public virtual DbSet<Visit> Visits { get; set; }
         public virtual DbSet<VisitType> VisitTypes { get; set; }
         public virtual DbSet<Activity> Activities { get; set; }
+        public virtual DbSet<BillStatusHistory> BillStatusHistories { get; set; }
+        public virtual DbSet<CaseAssociatedDiagnosisCode> CaseAssociatedDiagnosisCodes { get; set; }
+        public virtual DbSet<CompanyConnection> CompanyConnections { get; set; }
         public virtual DbSet<CyclicInsuranceConfiguration> CyclicInsuranceConfigurations { get; set; }
         public virtual DbSet<CyclicProcedureConfigurationAmount> CyclicProcedureConfigurationAmounts { get; set; }
         public virtual DbSet<CyclicSpecialtyConfiguration> CyclicSpecialtyConfigurations { get; set; }
         public virtual DbSet<CyclicSpecialtyConfigurationAmount> CyclicSpecialtyConfigurationAmounts { get; set; }
         public virtual DbSet<EnvelopeConfiguration> EnvelopeConfigurations { get; set; }
+        public virtual DbSet<GeneralDenialImage> GeneralDenialImages { get; set; }
+        public virtual DbSet<GeneralDenial> GeneralDenials { get; set; }
         public virtual DbSet<MailProfile> MailProfiles { get; set; }
         public virtual DbSet<Mandatory> Mandatories { get; set; }
+        public virtual DbSet<Note> Notes { get; set; }
+        public virtual DbSet<NotesType> NotesTypes { get; set; }
+        public virtual DbSet<PacketRequest> PacketRequests { get; set; }
+        public virtual DbSet<PacketRequestBill> PacketRequestBills { get; set; }
         public virtual DbSet<Reminder> Reminders { get; set; }
         public virtual DbSet<ReminderRecurrence> ReminderRecurrences { get; set; }
         public virtual DbSet<ReminderType> ReminderTypes { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<RoleActivityEvent> RoleActivityEvents { get; set; }
         public virtual DbSet<RoleEvent> RoleEvents { get; set; }
+        public virtual DbSet<SignOnPdf> SignOnPdfs { get; set; }
     }
 }

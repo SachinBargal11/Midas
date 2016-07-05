@@ -12,17 +12,19 @@ namespace Midas.GreenBill.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class SystemSetting
+    public partial class MedicalOffice
     {
-        public int SystemSettingId { get; set; }
-        public Nullable<int> SystemSettingKeyId { get; set; }
-        public string SysValue { get; set; }
-        public Nullable<long> AccountId { get; set; }
-        public string SubValue { get; set; }
+        public int MedicalOfficeId { get; set; }
+        public string Name { get; set; }
+        public Nullable<int> AddressId { get; set; }
+        public Nullable<int> ContactInfoId { get; set; }
+        public string Prefix { get; set; }
+        public Nullable<System.DateTime> LastLogin { get; set; }
+        public Nullable<bool> IsReferring { get; set; }
         public Nullable<bool> Deleted { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
-        public Nullable<int> CreatedBy { get; set; }
+        public Nullable<int> CreatedByUserID { get; set; }
         public Nullable<int> UpdatedBY { get; set; }
     }
 }

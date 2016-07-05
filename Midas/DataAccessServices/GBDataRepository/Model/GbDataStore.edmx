@@ -27,7 +27,6 @@
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Status" Type="tinyint" Nullable="false" />
           <Property Name="AddressId" Type="int" Nullable="false" />
-          <Property Name="OwnerId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Action">
           <Key>
@@ -71,6 +70,21 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Activity' does not have a primary
           <Property Name="UpdatedDate" Type="datetime" />
           <Property Name="CreatedBy" Type="int" />
           <Property Name="UpdatedBY" Type="int" />
+        </EntityType>
+        <EntityType Name="ApplicationSetting">
+          <Key>
+            <PropertyRef Name="CommanSettingId" />
+          </Key>
+          <Property Name="CommanSettingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="Value" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+          <Property Name="Deleted" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="UpdatedBY" Type="int" />
+          <Property Name="IPAddress" Type="varchar" MaxLength="15" />
         </EntityType>
         <EntityType Name="BillDetails">
           <Key>
@@ -166,6 +180,21 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Activity' does not have a primary
           <Property Name="UpdatedBY" Type="int" />
           <Property Name="IPAddress" Type="varchar" MaxLength="15" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GreenBillsDb.dbo.BillStatusHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="BillStatusHistory">
+          <Key>
+            <PropertyRef Name="BillStatusHistoryId" />
+          </Key>
+          <Property Name="BillStatusHistoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BillId" Type="int" />
+          <Property Name="LastStatusId" Type="int" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="UpdatedBY" Type="int" />
+          <Property Name="IPAddress" Type="varchar" MaxLength="15" />
+        </EntityType>
         <EntityType Name="BillVerification">
           <Key>
             <PropertyRef Name="VerificationId" />
@@ -244,6 +273,22 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Activity' does not have a primary
           <Property Name="CreatedBy" Type="int" />
           <Property Name="UpdatedBY" Type="int" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GreenBillsDb.dbo.CaseAssociatedDiagnosisCode' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CaseAssociatedDiagnosisCode">
+          <Key>
+            <PropertyRef Name="CaseAssociatedDiagnosisCodeId" />
+          </Key>
+          <Property Name="CaseAssociatedDiagnosisCodeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CaseId" Type="int" />
+          <Property Name="DiagnosiCodeId" Type="int" />
+          <Property Name="SpecialtyId" Type="int" />
+          <Property Name="Deleted" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="UpdatedBY" Type="int" />
+        </EntityType>
         <EntityType Name="CaseDocument">
           <Key>
             <PropertyRef Name="CaseDocumentId" />
@@ -303,6 +348,23 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Activity' does not have a primary
           <Property Name="CreatedBy" Type="int" />
           <Property Name="UpdatedBY" Type="int" />
           <Property Name="IPAddress" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GreenBillsDb.dbo.CompanyConnections' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="CompanyConnections">
+          <Key>
+            <PropertyRef Name="CompanyConnectionsid" />
+          </Key>
+          <Property Name="CompanyConnectionsid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConnectionFrom" Type="int" />
+          <Property Name="ConnectionTo" Type="int" />
+          <Property Name="ShowVisit" Type="bit" />
+          <Property Name="AllowCopyPatient" Type="bit" />
+          <Property Name="Deleted" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="UpdatedBY" Type="int" />
         </EntityType>
         <EntityType Name="ContactInfo">
           <Key>
@@ -467,6 +529,30 @@ warning 6002: The table/view 'GreenBillsDb.dbo.CyclicSpecialtyConfigurationAmoun
           <Property Name="CreatedBy" Type="int" />
           <Property Name="UpdatedBY" Type="int" />
         </EntityType>
+        <EntityType Name="DoctorDetails">
+          <Key>
+            <PropertyRef Name="DoctorDetailId" />
+          </Key>
+          <Property Name="DoctorDetailId" Type="int" Nullable="false" />
+          <Property Name="DoctorUserId" Type="int" />
+          <Property Name="LicenseNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="WCBAuthorization" Type="nvarchar" MaxLength="50" />
+          <Property Name="WcbRatingCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="NPI" Type="nvarchar" MaxLength="50" />
+          <Property Name="FederalTaxId" Type="nvarchar" MaxLength="50" />
+          <Property Name="TaxType" Type="tinyint" />
+          <Property Name="Koel" Type="money" />
+          <Property Name="AssignNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="Title" Type="nvarchar" MaxLength="10" />
+          <Property Name="EIN_SIN" Type="int" />
+          <Property Name="IsEmployee" Type="bit" />
+          <Property Name="Type" Type="int" />
+          <Property Name="Deleted" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="UpdatedBY" Type="int" />
+        </EntityType>
         <EntityType Name="DocumentType">
           <Key>
             <PropertyRef Name="DocumentTypeId" />
@@ -525,6 +611,66 @@ warning 6002: The table/view 'GreenBillsDb.dbo.EnvelopeConfiguration' does not h
           <Property Name="UpdatedBy" Type="int" />
           <Property Name="Deleted" Type="bit" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GreenBillsDb.dbo.GeneralDenialImages' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="GeneralDenialImages">
+          <Key>
+            <PropertyRef Name="GeneralDenialsImageId" />
+          </Key>
+          <Property Name="GeneralDenialsImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GeneralDenialsId" Type="int" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="200" />
+          <Property Name="FilePath" Type="nvarchar" MaxLength="2000" />
+          <Property Name="ImageId" Type="int" />
+          <Property Name="Deleted" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="UpdatedBY" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GreenBillsDb.dbo.GeneralDenials' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="GeneralDenials">
+          <Key>
+            <PropertyRef Name="GeneralDenialsId" />
+          </Key>
+          <Property Name="GeneralDenialsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CaseId" Type="int" />
+          <Property Name="DenialId" Type="int" />
+          <Property Name="Comment" Type="nvarchar(max)" />
+          <Property Name="Deleted" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="UpdatedBY" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'GreenBillsDb.dbo.GroupProcedureCode' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="GroupProcedureCode">
+          <Property Name="GroupProcedureCodeId" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="SpecialtyId" Type="int" />
+          <Property Name="Amount" Type="money" />
+          <Property Name="AccountId" Type="int" />
+          <Property Name="OfficeId" Type="int" />
+          <Property Name="Deleted" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="UpdatedBY" Type="int" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'GreenBillsDb.dbo.GroupProcedureCodeDetails' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="GroupProcedureCodeDetails">
+          <Property Name="GroupProcedureCodeDetails" Type="int" />
+          <Property Name="GroupProcedureCodeId" Type="int" />
+          <Property Name="ProcedureCodeId" Type="int" />
+          <Property Name="Deleted" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="UpdatedBY" Type="int" />
+        </EntityType>-->
         <EntityType Name="Insurance">
           <Key>
             <PropertyRef Name="InsuranceId" />
@@ -638,6 +784,23 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Mandatory' does not have a primar
           <Property Name="UpdatedBy" Type="int" />
           <Property Name="Deleted" Type="bit" />
         </EntityType>
+        <EntityType Name="MedicalOffices">
+          <Key>
+            <PropertyRef Name="MedicalOfficeId" />
+          </Key>
+          <Property Name="MedicalOfficeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="AddressId" Type="int" />
+          <Property Name="ContactInfoId" Type="int" />
+          <Property Name="Prefix" Type="nvarchar" MaxLength="2" />
+          <Property Name="LastLogin" Type="datetime" />
+          <Property Name="IsReferring" Type="bit" />
+          <Property Name="Deleted" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="CreatedByUserID" Type="int" />
+          <Property Name="UpdatedBY" Type="int" />
+        </EntityType>
         <EntityType Name="Nodes">
           <Key>
             <PropertyRef Name="NodeId" />
@@ -649,6 +812,36 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Mandatory' does not have a primar
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="AllowToDeleteDocument" Type="bit" />
           <Property Name="AccountId" Type="int" Nullable="false" />
+          <Property Name="Deleted" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="UpdatedBY" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GreenBillsDb.dbo.Notes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Notes">
+          <Key>
+            <PropertyRef Name="NotesId" />
+          </Key>
+          <Property Name="NotesId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NoteTypeId" Type="int" />
+          <Property Name="CaseId" Type="int" />
+          <Property Name="NotesDescription" Type="nvarchar(max)" />
+          <Property Name="Deleted" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="UpdatedBY" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GreenBillsDb.dbo.NotesType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="NotesType">
+          <Key>
+            <PropertyRef Name="NoteTypeId" />
+          </Key>
+          <Property Name="NoteTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NoteType" Type="nvarchar" MaxLength="50" />
           <Property Name="Deleted" Type="bit" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="UpdatedDate" Type="datetime" />
@@ -680,6 +873,34 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Mandatory' does not have a primar
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="AddressId" Type="tinyint" Nullable="false" />
           <Property Name="ContactInfoId" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GreenBillsDb.dbo.PacketRequest' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="PacketRequest">
+          <Key>
+            <PropertyRef Name="PacketRequestId" />
+          </Key>
+          <Property Name="PacketRequestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ZipFileName" Type="nvarchar" MaxLength="100" />
+          <Property Name="PacketPath" Type="nvarchar" MaxLength="20" />
+          <Property Name="IsError" Type="bit" />
+          <Property Name="ErrorMessge" Type="nvarchar(max)" />
+          <Property Name="AccountId" Type="int" />
+          <Property Name="Deleted" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="UpdatedBY" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GreenBillsDb.dbo.PacketRequestBills' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="PacketRequestBills">
+          <Key>
+            <PropertyRef Name="PacketRequestBills" />
+          </Key>
+          <Property Name="PacketRequestBills" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PacketRequestId" Type="int" />
+          <Property Name="BillId" Type="int" />
         </EntityType>
         <EntityType Name="PatientAccidentDetails">
           <Key>
@@ -832,6 +1053,30 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Mandatory' does not have a primar
           <Property Name="PlaceOfService" Type="int" />
           <Property Name="IsReferring" Type="bit" />
           <Property Name="AddressId" Type="int" />
+          <Property Name="BillingAddressId" Type="int" />
+          <Property Name="ContactInfoId" Type="int" />
+          <Property Name="BillingContactInfoId" Type="int" />
+          <Property Name="AccountId" Type="int" Nullable="false" />
+          <Property Name="Deleted" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="UpdatedBY" Type="int" />
+        </EntityType>
+        <EntityType Name="ProviderDetails">
+          <Key>
+            <PropertyRef Name="ProviderDetailId" />
+          </Key>
+          <Property Name="ProviderDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProviderUserID" Type="int" />
+          <Property Name="NPI" Type="nvarchar" MaxLength="50" />
+          <Property Name="FederalTaxId" Type="nvarchar" MaxLength="50" />
+          <Property Name="Prefix" Type="nvarchar" MaxLength="5" />
+          <Property Name="LocationId" Type="int" />
+          <Property Name="IsSoftwareFeeAdded" Type="bit" />
+          <Property Name="SoftwareFee" Type="money" />
+          <Property Name="PlaceOfService" Type="int" />
+          <Property Name="IsReferring" Type="bit" />
           <Property Name="BillingAddressId" Type="int" />
           <Property Name="ContactInfoId" Type="int" />
           <Property Name="BillingContactInfoId" Type="int" />
@@ -1045,6 +1290,18 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <Property Name="EffectiveTo" Type="datetime" />
           <Property Name="AccountId" Type="int" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GreenBillsDb.dbo.SignOnPdf' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SignOnPdf">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PdfType" Type="nvarchar" MaxLength="50" />
+          <Property Name="PdfSignPath" Type="nvarchar(max)" />
+          <Property Name="ProviderId" Type="int" />
+          <Property Name="AccountId" Type="int" />
+        </EntityType>
         <EntityType Name="Specialty">
           <Key>
             <PropertyRef Name="SpecialtyId" />
@@ -1065,8 +1322,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <Property Name="IsReferral" Type="bit" />
           <Property Name="HaveNotes" Type="bit" />
           <Property Name="AssociatedSpecialty" Type="int" />
-          <Property Name="AccountId" Type="int" />
-          <Property Name="OfficeId" Type="int" />
+          <Property Name="MultipleVisitsDay" Type="bit" />
           <Property Name="Deleted" Type="bit" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="UpdatedDate" Type="datetime" />
@@ -1100,18 +1356,31 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
         </EntityType>
         <EntityType Name="SystemSetting">
           <Key>
-            <PropertyRef Name="CommanSettingId" />
+            <PropertyRef Name="SystemSettingId" />
           </Key>
-          <Property Name="CommanSettingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="100" />
-          <Property Name="Value" Type="nvarchar" MaxLength="1000" />
-          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+          <Property Name="SystemSettingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SystemSettingKeyId" Type="int" />
+          <Property Name="SysValue" Type="nvarchar" MaxLength="50" />
+          <Property Name="AccountId" Type="bigint" />
+          <Property Name="SubValue" Type="nvarchar" MaxLength="50" />
           <Property Name="Deleted" Type="bit" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="UpdatedDate" Type="datetime" />
           <Property Name="CreatedBy" Type="int" />
           <Property Name="UpdatedBY" Type="int" />
-          <Property Name="IPAddress" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="SystemSettingKey">
+          <Key>
+            <PropertyRef Name="SystemSettingKeyId" />
+          </Key>
+          <Property Name="SystemSettingKeyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Key" Type="nvarchar" MaxLength="200" />
+          <Property Name="SubValue" Type="bit" />
+          <Property Name="Deleted" Type="bit" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="UpdatedBY" Type="int" />
         </EntityType>
         <EntityType Name="Transportation">
           <Key>
@@ -1163,7 +1432,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
             <PropertyRef Name="UserTypeId" />
           </Key>
           <Property Name="UserTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Type" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserType" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="VerificationAnswerImages">
           <Key>
@@ -1255,6 +1524,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <Property Name="PolicyHolder" Type="nvarchar" MaxLength="100" />
           <Property Name="PolicyHolderAddressId" Type="int" />
           <Property Name="PolicyHolderContactInfoId" Type="int" />
+          <Property Name="ReferringOfficeID" Type="int" />
           <Property Name="InsuranceId" Type="int" />
           <Property Name="InsuranceAddressId" Type="int" />
           <Property Name="SpecialtyId" Type="int" />
@@ -1315,18 +1585,6 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
             </Principal>
             <Dependent Role="Doctor">
               <PropertyRef Name="ProviderId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Doctor_SpecialtyId">
-          <End Role="Specialty" Type="Self.Specialty" Multiplicity="0..1" />
-          <End Role="Doctor" Type="Self.Doctor" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Specialty">
-              <PropertyRef Name="SpecialtyId" />
-            </Principal>
-            <Dependent Role="Doctor">
-              <PropertyRef Name="SpecialtyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1444,6 +1702,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Action" EntityType="Self.Action" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Address" EntityType="Self.Address" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ApplicationSetting" EntityType="Self.ApplicationSetting" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BillDetails" EntityType="Self.BillDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BillPom" EntityType="Self.BillPom" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Bills" EntityType="Self.Bills" Schema="dbo" store:Type="Tables" />
@@ -1460,12 +1719,14 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <EntitySet Name="DiagnosisType" EntityType="Self.DiagnosisType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DignosisCode" EntityType="Self.DignosisCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DoctorDetails" EntityType="Self.DoctorDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DocumentType" EntityType="Self.DocumentType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployerAddress" EntityType="Self.EmployerAddress" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Insurance" EntityType="Self.Insurance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsuranceAddress" EntityType="Self.InsuranceAddress" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IntakeAOB" EntityType="Self.IntakeAOB" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MedicalOffices" EntityType="Self.MedicalOffices" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Nodes" EntityType="Self.Nodes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Offices" EntityType="Self.Offices" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Owner" EntityType="Self.Owner" Schema="dbo" store:Type="Tables" />
@@ -1476,6 +1737,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <EntitySet Name="POM" EntityType="Self.POM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProcedureCode" EntityType="Self.ProcedureCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Provider" EntityType="Self.Provider" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProviderDetails" EntityType="Self.ProviderDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reconcilation" EntityType="Self.Reconcilation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RequiredDocuments" EntityType="Self.RequiredDocuments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoleActions" EntityType="Self.RoleActions" Schema="dbo" store:Type="Tables" />
@@ -1485,6 +1747,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <EntitySet Name="State" EntityType="Self.State" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SystemSetting" EntityType="Self.SystemSetting" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SystemSettingKey" EntityType="Self.SystemSettingKey" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transportation" EntityType="Self.Transportation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User1" EntityType="Self.User1" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
@@ -1506,6 +1769,45 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
     [Activity].[UpdatedBY] AS [UpdatedBY], 
     [Activity].[IPAddress] AS [IPAddress]
     FROM [dbo].[Activity] AS [Activity]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="BillStatusHistory" EntityType="Self.BillStatusHistory" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [BillStatusHistory].[BillStatusHistoryId] AS [BillStatusHistoryId], 
+    [BillStatusHistory].[BillId] AS [BillId], 
+    [BillStatusHistory].[LastStatusId] AS [LastStatusId], 
+    [BillStatusHistory].[CreatedDate] AS [CreatedDate], 
+    [BillStatusHistory].[UpdatedDate] AS [UpdatedDate], 
+    [BillStatusHistory].[CreatedBy] AS [CreatedBy], 
+    [BillStatusHistory].[UpdatedBY] AS [UpdatedBY], 
+    [BillStatusHistory].[IPAddress] AS [IPAddress]
+    FROM [dbo].[BillStatusHistory] AS [BillStatusHistory]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="CaseAssociatedDiagnosisCode" EntityType="Self.CaseAssociatedDiagnosisCode" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [CaseAssociatedDiagnosisCode].[CaseAssociatedDiagnosisCodeId] AS [CaseAssociatedDiagnosisCodeId], 
+    [CaseAssociatedDiagnosisCode].[CaseId] AS [CaseId], 
+    [CaseAssociatedDiagnosisCode].[DiagnosiCodeId] AS [DiagnosiCodeId], 
+    [CaseAssociatedDiagnosisCode].[SpecialtyId] AS [SpecialtyId], 
+    [CaseAssociatedDiagnosisCode].[Deleted] AS [Deleted], 
+    [CaseAssociatedDiagnosisCode].[CreatedDate] AS [CreatedDate], 
+    [CaseAssociatedDiagnosisCode].[UpdatedDate] AS [UpdatedDate], 
+    [CaseAssociatedDiagnosisCode].[CreatedBy] AS [CreatedBy], 
+    [CaseAssociatedDiagnosisCode].[UpdatedBY] AS [UpdatedBY]
+    FROM [dbo].[CaseAssociatedDiagnosisCode] AS [CaseAssociatedDiagnosisCode]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="CompanyConnections" EntityType="Self.CompanyConnections" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [CompanyConnections].[CompanyConnectionsid] AS [CompanyConnectionsid], 
+    [CompanyConnections].[ConnectionFrom] AS [ConnectionFrom], 
+    [CompanyConnections].[ConnectionTo] AS [ConnectionTo], 
+    [CompanyConnections].[ShowVisit] AS [ShowVisit], 
+    [CompanyConnections].[AllowCopyPatient] AS [AllowCopyPatient], 
+    [CompanyConnections].[Deleted] AS [Deleted], 
+    [CompanyConnections].[CreatedDate] AS [CreatedDate], 
+    [CompanyConnections].[UpdatedDate] AS [UpdatedDate], 
+    [CompanyConnections].[CreatedBy] AS [CreatedBy], 
+    [CompanyConnections].[UpdatedBY] AS [UpdatedBY]
+    FROM [dbo].[CompanyConnections] AS [CompanyConnections]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="CyclicInsuranceConfiguration" EntityType="Self.CyclicInsuranceConfiguration" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1575,6 +1877,33 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
     [EnvelopeConfiguration].[Deleted] AS [Deleted]
     FROM [dbo].[EnvelopeConfiguration] AS [EnvelopeConfiguration]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="GeneralDenialImages" EntityType="Self.GeneralDenialImages" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [GeneralDenialImages].[GeneralDenialsImageId] AS [GeneralDenialsImageId], 
+    [GeneralDenialImages].[GeneralDenialsId] AS [GeneralDenialsId], 
+    [GeneralDenialImages].[FileName] AS [FileName], 
+    [GeneralDenialImages].[FilePath] AS [FilePath], 
+    [GeneralDenialImages].[ImageId] AS [ImageId], 
+    [GeneralDenialImages].[Deleted] AS [Deleted], 
+    [GeneralDenialImages].[CreatedDate] AS [CreatedDate], 
+    [GeneralDenialImages].[UpdatedDate] AS [UpdatedDate], 
+    [GeneralDenialImages].[CreatedBy] AS [CreatedBy], 
+    [GeneralDenialImages].[UpdatedBY] AS [UpdatedBY]
+    FROM [dbo].[GeneralDenialImages] AS [GeneralDenialImages]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="GeneralDenials" EntityType="Self.GeneralDenials" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [GeneralDenials].[GeneralDenialsId] AS [GeneralDenialsId], 
+    [GeneralDenials].[CaseId] AS [CaseId], 
+    [GeneralDenials].[DenialId] AS [DenialId], 
+    [GeneralDenials].[Comment] AS [Comment], 
+    [GeneralDenials].[Deleted] AS [Deleted], 
+    [GeneralDenials].[CreatedDate] AS [CreatedDate], 
+    [GeneralDenials].[UpdatedDate] AS [UpdatedDate], 
+    [GeneralDenials].[CreatedBy] AS [CreatedBy], 
+    [GeneralDenials].[UpdatedBY] AS [UpdatedBY]
+    FROM [dbo].[GeneralDenials] AS [GeneralDenials]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="MailProfile" EntityType="Self.MailProfile" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [MailProfile].[MailProfileID] AS [MailProfileID], 
@@ -1608,6 +1937,52 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
     [Mandatory].[UpdatedBy] AS [UpdatedBy], 
     [Mandatory].[Deleted] AS [Deleted]
     FROM [dbo].[Mandatory] AS [Mandatory]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Notes" EntityType="Self.Notes" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Notes].[NotesId] AS [NotesId], 
+    [Notes].[NoteTypeId] AS [NoteTypeId], 
+    [Notes].[CaseId] AS [CaseId], 
+    [Notes].[NotesDescription] AS [NotesDescription], 
+    [Notes].[Deleted] AS [Deleted], 
+    [Notes].[CreatedDate] AS [CreatedDate], 
+    [Notes].[UpdatedDate] AS [UpdatedDate], 
+    [Notes].[CreatedBy] AS [CreatedBy], 
+    [Notes].[UpdatedBY] AS [UpdatedBY]
+    FROM [dbo].[Notes] AS [Notes]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="NotesType" EntityType="Self.NotesType" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [NotesType].[NoteTypeId] AS [NoteTypeId], 
+    [NotesType].[NoteType] AS [NoteType], 
+    [NotesType].[Deleted] AS [Deleted], 
+    [NotesType].[CreatedDate] AS [CreatedDate], 
+    [NotesType].[UpdatedDate] AS [UpdatedDate], 
+    [NotesType].[CreatedBy] AS [CreatedBy], 
+    [NotesType].[UpdatedBY] AS [UpdatedBY]
+    FROM [dbo].[NotesType] AS [NotesType]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PacketRequest" EntityType="Self.PacketRequest" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PacketRequest].[PacketRequestId] AS [PacketRequestId], 
+    [PacketRequest].[ZipFileName] AS [ZipFileName], 
+    [PacketRequest].[PacketPath] AS [PacketPath], 
+    [PacketRequest].[IsError] AS [IsError], 
+    [PacketRequest].[ErrorMessge] AS [ErrorMessge], 
+    [PacketRequest].[AccountId] AS [AccountId], 
+    [PacketRequest].[Deleted] AS [Deleted], 
+    [PacketRequest].[CreatedDate] AS [CreatedDate], 
+    [PacketRequest].[UpdatedDate] AS [UpdatedDate], 
+    [PacketRequest].[CreatedBy] AS [CreatedBy], 
+    [PacketRequest].[UpdatedBY] AS [UpdatedBY]
+    FROM [dbo].[PacketRequest] AS [PacketRequest]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PacketRequestBills" EntityType="Self.PacketRequestBills" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PacketRequestBills].[PacketRequestBills] AS [PacketRequestBills], 
+    [PacketRequestBills].[PacketRequestId] AS [PacketRequestId], 
+    [PacketRequestBills].[BillId] AS [BillId]
+    FROM [dbo].[PacketRequestBills] AS [PacketRequestBills]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="Reminder" EntityType="Self.Reminder" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -1705,6 +2080,15 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
     [RoleEvents].[IPAddress] AS [IPAddress]
     FROM [dbo].[RoleEvents] AS [RoleEvents]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="SignOnPdf" EntityType="Self.SignOnPdf" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SignOnPdf].[Id] AS [Id], 
+    [SignOnPdf].[PdfType] AS [PdfType], 
+    [SignOnPdf].[PdfSignPath] AS [PdfSignPath], 
+    [SignOnPdf].[ProviderId] AS [ProviderId], 
+    [SignOnPdf].[AccountId] AS [AccountId]
+    FROM [dbo].[SignOnPdf] AS [SignOnPdf]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_Address_Account_id" Association="Self.FK_Address_Account_id">
             <End Role="Account" EntitySet="Account" />
             <End Role="Address" EntitySet="Address" />
@@ -1715,10 +2099,6 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           </AssociationSet>
           <AssociationSet Name="FK_Doctor_ProviderId" Association="Self.FK_Doctor_ProviderId">
             <End Role="Provider" EntitySet="Provider" />
-            <End Role="Doctor" EntitySet="Doctor" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Doctor_SpecialtyId" Association="Self.FK_Doctor_SpecialtyId">
-            <End Role="Specialty" EntitySet="Specialty" />
             <End Role="Doctor" EntitySet="Doctor" />
           </AssociationSet>
           <AssociationSet Name="FK_Nodes_AccountId" Association="Self.FK_Nodes_AccountId">
@@ -1785,7 +2165,6 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Status" Type="Byte" Nullable="false" />
           <Property Name="AddressId" Type="Int32" Nullable="false" />
-          <Property Name="OwnerId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Addresses" Relationship="Self.FK_Address_Account_id" FromRole="Account" ToRole="Address" />
           <NavigationProperty Name="Doctors" Relationship="Self.FK_Doctor_AccountId" FromRole="Account" ToRole="Doctor" />
           <NavigationProperty Name="Nodes" Relationship="Self.FK_Nodes_AccountId" FromRole="Account" ToRole="Nodes" />
@@ -1821,6 +2200,21 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <NavigationProperty Name="Offices" Relationship="Self.FK_Ofiice_AddressId" FromRole="Address" ToRole="Offices" />
           <NavigationProperty Name="Providers" Relationship="Self.FK_Provider_AddressId" FromRole="Address" ToRole="Provider" />
           <NavigationProperty Name="Providers1" Relationship="Self.FK_Provider_BillingAddressId" FromRole="Address" ToRole="Provider" />
+        </EntityType>
+        <EntityType Name="ApplicationSetting">
+          <Key>
+            <PropertyRef Name="CommanSettingId" />
+          </Key>
+          <Property Name="CommanSettingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="UpdatedBY" Type="Int32" />
+          <Property Name="IPAddress" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="BillDetail">
           <Key>
@@ -2150,7 +2544,30 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <Property Name="UpdatedBY" Type="Int32" />
           <NavigationProperty Name="Account" Relationship="Self.FK_Doctor_AccountId" FromRole="Doctor" ToRole="Account" />
           <NavigationProperty Name="Provider" Relationship="Self.FK_Doctor_ProviderId" FromRole="Doctor" ToRole="Provider" />
-          <NavigationProperty Name="Specialty" Relationship="Self.FK_Doctor_SpecialtyId" FromRole="Doctor" ToRole="Specialty" />
+        </EntityType>
+        <EntityType Name="DoctorDetail">
+          <Key>
+            <PropertyRef Name="DoctorDetailId" />
+          </Key>
+          <Property Name="DoctorDetailId" Type="Int32" Nullable="false" />
+          <Property Name="DoctorUserId" Type="Int32" />
+          <Property Name="LicenseNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WCBAuthorization" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WcbRatingCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NPI" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FederalTaxId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TaxType" Type="Byte" />
+          <Property Name="Koel" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="AssignNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="EIN_SIN" Type="Int32" />
+          <Property Name="IsEmployee" Type="Boolean" />
+          <Property Name="Type" Type="Int32" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="UpdatedBY" Type="Int32" />
         </EntityType>
         <EntityType Name="DocumentType">
           <Key>
@@ -2260,6 +2677,23 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="UpdatedBY" Type="Int32" />
           <Property Name="IPAddress" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="MedicalOffice">
+          <Key>
+            <PropertyRef Name="MedicalOfficeId" />
+          </Key>
+          <Property Name="MedicalOfficeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AddressId" Type="Int32" />
+          <Property Name="ContactInfoId" Type="Int32" />
+          <Property Name="Prefix" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="LastLogin" Type="DateTime" Precision="3" />
+          <Property Name="IsReferring" Type="Boolean" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedByUserID" Type="Int32" />
+          <Property Name="UpdatedBY" Type="Int32" />
         </EntityType>
         <EntityType Name="Node">
           <Key>
@@ -2473,6 +2907,30 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <NavigationProperty Name="ContactInfo1" Relationship="Self.FK_Provider_ContactId" FromRole="Provider" ToRole="ContactInfo" />
           <NavigationProperty Name="Doctors" Relationship="Self.FK_Doctor_ProviderId" FromRole="Provider" ToRole="Doctor" />
         </EntityType>
+        <EntityType Name="ProviderDetail">
+          <Key>
+            <PropertyRef Name="ProviderDetailId" />
+          </Key>
+          <Property Name="ProviderDetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProviderUserID" Type="Int32" />
+          <Property Name="NPI" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FederalTaxId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Prefix" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="LocationId" Type="Int32" />
+          <Property Name="IsSoftwareFeeAdded" Type="Boolean" />
+          <Property Name="SoftwareFee" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PlaceOfService" Type="Int32" />
+          <Property Name="IsReferring" Type="Boolean" />
+          <Property Name="BillingAddressId" Type="Int32" />
+          <Property Name="ContactInfoId" Type="Int32" />
+          <Property Name="BillingContactInfoId" Type="Int32" />
+          <Property Name="AccountId" Type="Int32" Nullable="false" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="UpdatedBY" Type="Int32" />
+        </EntityType>
         <EntityType Name="Reconcilation">
           <Key>
             <PropertyRef Name="ReconcilationId" />
@@ -2572,15 +3030,13 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <Property Name="IsReferral" Type="Boolean" />
           <Property Name="HaveNotes" Type="Boolean" />
           <Property Name="AssociatedSpecialty" Type="Int32" />
-          <Property Name="AccountId" Type="Int32" />
-          <Property Name="OfficeId" Type="Int32" />
+          <Property Name="MultipleVisitsDay" Type="Boolean" />
           <Property Name="Deleted" Type="Boolean" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="UpdatedBY" Type="Int32" />
           <Property Name="IPAddress" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Doctors" Relationship="Self.FK_Doctor_SpecialtyId" FromRole="Specialty" ToRole="Doctor" />
         </EntityType>
         <EntityType Name="State">
           <Key>
@@ -2608,18 +3064,31 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
         </EntityType>
         <EntityType Name="SystemSetting">
           <Key>
-            <PropertyRef Name="CommanSettingId" />
+            <PropertyRef Name="SystemSettingId" />
           </Key>
-          <Property Name="CommanSettingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Value" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SystemSettingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SystemSettingKeyId" Type="Int32" />
+          <Property Name="SysValue" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccountId" Type="Int64" />
+          <Property Name="SubValue" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Deleted" Type="Boolean" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="UpdatedBY" Type="Int32" />
-          <Property Name="IPAddress" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SystemSettingKey">
+          <Key>
+            <PropertyRef Name="SystemSettingKeyId" />
+          </Key>
+          <Property Name="SystemSettingKeyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Key" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SubValue" Type="Boolean" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="UpdatedBY" Type="Int32" />
         </EntityType>
         <EntityType Name="Transportation">
           <Key>
@@ -2671,7 +3140,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
             <PropertyRef Name="UserTypeId" />
           </Key>
           <Property Name="UserTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserType1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="VerificationAnswerImage">
           <Key>
@@ -2763,6 +3232,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <Property Name="PolicyHolder" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="PolicyHolderAddressId" Type="Int32" />
           <Property Name="PolicyHolderContactInfoId" Type="Int32" />
+          <Property Name="ReferringOfficeID" Type="Int32" />
           <Property Name="InsuranceId" Type="Int32" />
           <Property Name="InsuranceAddressId" Type="Int32" />
           <Property Name="SpecialtyId" Type="Int32" />
@@ -2804,6 +3274,48 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="UpdatedBY" Type="Int32" />
           <Property Name="IPAddress" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="BillStatusHistory">
+          <Key>
+            <PropertyRef Name="BillStatusHistoryId" />
+          </Key>
+          <Property Name="BillStatusHistoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BillId" Type="Int32" />
+          <Property Name="LastStatusId" Type="Int32" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="UpdatedBY" Type="Int32" />
+          <Property Name="IPAddress" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="CaseAssociatedDiagnosisCode">
+          <Key>
+            <PropertyRef Name="CaseAssociatedDiagnosisCodeId" />
+          </Key>
+          <Property Name="CaseAssociatedDiagnosisCodeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CaseId" Type="Int32" />
+          <Property Name="DiagnosiCodeId" Type="Int32" />
+          <Property Name="SpecialtyId" Type="Int32" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="UpdatedBY" Type="Int32" />
+        </EntityType>
+        <EntityType Name="CompanyConnection">
+          <Key>
+            <PropertyRef Name="CompanyConnectionsid" />
+          </Key>
+          <Property Name="CompanyConnectionsid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConnectionFrom" Type="Int32" />
+          <Property Name="ConnectionTo" Type="Int32" />
+          <Property Name="ShowVisit" Type="Boolean" />
+          <Property Name="AllowCopyPatient" Type="Boolean" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="UpdatedBY" Type="Int32" />
         </EntityType>
         <EntityType Name="CyclicInsuranceConfiguration">
           <Key>
@@ -2887,6 +3399,35 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <Property Name="UpdatedBy" Type="Int32" />
           <Property Name="Deleted" Type="Boolean" />
         </EntityType>
+        <EntityType Name="GeneralDenialImage">
+          <Key>
+            <PropertyRef Name="GeneralDenialsImageId" />
+          </Key>
+          <Property Name="GeneralDenialsImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GeneralDenialsId" Type="Int32" />
+          <Property Name="FileName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="FilePath" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="ImageId" Type="Int32" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="UpdatedBY" Type="Int32" />
+        </EntityType>
+        <EntityType Name="GeneralDenial">
+          <Key>
+            <PropertyRef Name="GeneralDenialsId" />
+          </Key>
+          <Property Name="GeneralDenialsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CaseId" Type="Int32" />
+          <Property Name="DenialId" Type="Int32" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="UpdatedBY" Type="Int32" />
+        </EntityType>
         <EntityType Name="MailProfile">
           <Key>
             <PropertyRef Name="MailProfileID" />
@@ -2922,6 +3463,56 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="UpdatedBy" Type="Int32" />
           <Property Name="Deleted" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Note">
+          <Key>
+            <PropertyRef Name="NotesId" />
+          </Key>
+          <Property Name="NotesId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NoteTypeId" Type="Int32" />
+          <Property Name="CaseId" Type="Int32" />
+          <Property Name="NotesDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="UpdatedBY" Type="Int32" />
+        </EntityType>
+        <EntityType Name="NotesType">
+          <Key>
+            <PropertyRef Name="NoteTypeId" />
+          </Key>
+          <Property Name="NoteTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NoteType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="UpdatedBY" Type="Int32" />
+        </EntityType>
+        <EntityType Name="PacketRequest">
+          <Key>
+            <PropertyRef Name="PacketRequestId" />
+          </Key>
+          <Property Name="PacketRequestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ZipFileName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PacketPath" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="IsError" Type="Boolean" />
+          <Property Name="ErrorMessge" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AccountId" Type="Int32" />
+          <Property Name="Deleted" Type="Boolean" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="UpdatedBY" Type="Int32" />
+        </EntityType>
+        <EntityType Name="PacketRequestBill">
+          <Key>
+            <PropertyRef Name="PacketRequestBills" />
+          </Key>
+          <Property Name="PacketRequestBills" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PacketRequestId" Type="Int32" />
+          <Property Name="BillId" Type="Int32" />
         </EntityType>
         <EntityType Name="Reminder">
           <Key>
@@ -3026,6 +3617,16 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <Property Name="CreatedBy" Type="Int32" />
           <Property Name="UpdatedBY" Type="Int32" />
           <Property Name="IPAddress" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SignOnPdf">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PdfType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PdfSignPath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderId" Type="Int32" />
+          <Property Name="AccountId" Type="Int32" />
         </EntityType>
         <Association Name="FK_Address_Account_id">
           <End Role="Account" Type="Self.Account" Multiplicity="1" />
@@ -3159,18 +3760,6 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Doctor_SpecialtyId">
-          <End Role="Specialty" Type="Self.Specialty" Multiplicity="0..1" />
-          <End Role="Doctor" Type="Self.Doctor" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Specialty">
-              <PropertyRef Name="SpecialtyId" />
-            </Principal>
-            <Dependent Role="Doctor">
-              <PropertyRef Name="SpecialtyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_RoomDays_RoomId">
           <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
           <End Role="RoomSchedule" Type="Self.RoomSchedule" Multiplicity="*" />
@@ -3183,12 +3772,13 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="GreenBillsDbEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__RefactorLog" EntityType="Self.C__RefactorLog" />
           <EntitySet Name="Abbreviations" EntityType="Self.Abbreviation" />
           <EntitySet Name="Accounts" EntityType="Self.Account" />
           <EntitySet Name="Actions" EntityType="Self.Action" />
           <EntitySet Name="Addresses" EntityType="Self.Address" />
+          <EntitySet Name="ApplicationSettings" EntityType="Self.ApplicationSetting" />
           <EntitySet Name="BillDetails" EntityType="Self.BillDetail" />
           <EntitySet Name="BillPoms" EntityType="Self.BillPom" />
           <EntitySet Name="Bills" EntityType="Self.Bill" />
@@ -3205,12 +3795,14 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <EntitySet Name="DiagnosisTypes" EntityType="Self.DiagnosisType" />
           <EntitySet Name="DignosisCodes" EntityType="Self.DignosisCode" />
           <EntitySet Name="Doctors" EntityType="Self.Doctor" />
+          <EntitySet Name="DoctorDetails" EntityType="Self.DoctorDetail" />
           <EntitySet Name="DocumentTypes" EntityType="Self.DocumentType" />
           <EntitySet Name="EmployerAddresses" EntityType="Self.EmployerAddress" />
           <EntitySet Name="Insurances" EntityType="Self.Insurance" />
           <EntitySet Name="InsuranceAddresses" EntityType="Self.InsuranceAddress" />
           <EntitySet Name="IntakeAOBs" EntityType="Self.IntakeAOB" />
           <EntitySet Name="Locations" EntityType="Self.Location" />
+          <EntitySet Name="MedicalOffices" EntityType="Self.MedicalOffice" />
           <EntitySet Name="Nodes" EntityType="Self.Node" />
           <EntitySet Name="Offices" EntityType="Self.Office" />
           <EntitySet Name="Owners" EntityType="Self.Owner" />
@@ -3221,6 +3813,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <EntitySet Name="POMs" EntityType="Self.POM" />
           <EntitySet Name="ProcedureCodes" EntityType="Self.ProcedureCode" />
           <EntitySet Name="Providers" EntityType="Self.Provider" />
+          <EntitySet Name="ProviderDetails" EntityType="Self.ProviderDetail" />
           <EntitySet Name="Reconcilations" EntityType="Self.Reconcilation" />
           <EntitySet Name="RequiredDocuments" EntityType="Self.RequiredDocument" />
           <EntitySet Name="RoleActions" EntityType="Self.RoleAction" />
@@ -3230,6 +3823,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <EntitySet Name="States" EntityType="Self.State" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="SystemSettings" EntityType="Self.SystemSetting" />
+          <EntitySet Name="SystemSettingKeys" EntityType="Self.SystemSettingKey" />
           <EntitySet Name="Transportations" EntityType="Self.Transportation" />
           <EntitySet Name="User1" EntityType="Self.User1" />
           <EntitySet Name="UserTypes" EntityType="Self.UserType" />
@@ -3239,19 +3833,29 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <EntitySet Name="Visits" EntityType="Self.Visit" />
           <EntitySet Name="VisitTypes" EntityType="Self.VisitType" />
           <EntitySet Name="Activities" EntityType="Self.Activity" />
+          <EntitySet Name="BillStatusHistories" EntityType="Self.BillStatusHistory" />
+          <EntitySet Name="CaseAssociatedDiagnosisCodes" EntityType="Self.CaseAssociatedDiagnosisCode" />
+          <EntitySet Name="CompanyConnections" EntityType="Self.CompanyConnection" />
           <EntitySet Name="CyclicInsuranceConfigurations" EntityType="Self.CyclicInsuranceConfiguration" />
           <EntitySet Name="CyclicProcedureConfigurationAmounts" EntityType="Self.CyclicProcedureConfigurationAmount" />
           <EntitySet Name="CyclicSpecialtyConfigurations" EntityType="Self.CyclicSpecialtyConfiguration" />
           <EntitySet Name="CyclicSpecialtyConfigurationAmounts" EntityType="Self.CyclicSpecialtyConfigurationAmount" />
           <EntitySet Name="EnvelopeConfigurations" EntityType="Self.EnvelopeConfiguration" />
+          <EntitySet Name="GeneralDenialImages" EntityType="Self.GeneralDenialImage" />
+          <EntitySet Name="GeneralDenials" EntityType="Self.GeneralDenial" />
           <EntitySet Name="MailProfiles" EntityType="Self.MailProfile" />
           <EntitySet Name="Mandatories" EntityType="Self.Mandatory" />
+          <EntitySet Name="Notes" EntityType="Self.Note" />
+          <EntitySet Name="NotesTypes" EntityType="Self.NotesType" />
+          <EntitySet Name="PacketRequests" EntityType="Self.PacketRequest" />
+          <EntitySet Name="PacketRequestBills" EntityType="Self.PacketRequestBill" />
           <EntitySet Name="Reminders" EntityType="Self.Reminder" />
           <EntitySet Name="ReminderRecurrences" EntityType="Self.ReminderRecurrence" />
           <EntitySet Name="ReminderTypes" EntityType="Self.ReminderType" />
           <EntitySet Name="Roles" EntityType="Self.Role" />
           <EntitySet Name="RoleActivityEvents" EntityType="Self.RoleActivityEvent" />
           <EntitySet Name="RoleEvents" EntityType="Self.RoleEvent" />
+          <EntitySet Name="SignOnPdfs" EntityType="Self.SignOnPdf" />
           <AssociationSet Name="FK_Address_Account_id" Association="Self.FK_Address_Account_id">
             <End Role="Account" EntitySet="Accounts" />
             <End Role="Address" EntitySet="Addresses" />
@@ -3296,10 +3900,6 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
             <End Role="Provider" EntitySet="Providers" />
             <End Role="Doctor" EntitySet="Doctors" />
           </AssociationSet>
-          <AssociationSet Name="FK_Doctor_SpecialtyId" Association="Self.FK_Doctor_SpecialtyId">
-            <End Role="Specialty" EntitySet="Specialties" />
-            <End Role="Doctor" EntitySet="Doctors" />
-          </AssociationSet>
           <AssociationSet Name="FK_RoomDays_RoomId" Association="Self.FK_RoomDays_RoomId">
             <End Role="Room" EntitySet="Rooms" />
             <End Role="RoomSchedule" EntitySet="RoomSchedules" />
@@ -3310,7 +3910,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="MidasGreenBillModelStoreContainer" CdmEntityContainer="GreenBillsDbEntities">
+        <EntityContainerMapping StorageEntityContainer="MidasGreenBillModelStoreContainer" CdmEntityContainer="Entities">
           <EntitySetMapping Name="C__RefactorLog">
             <EntityTypeMapping TypeName="Midas.GreenBill.Model.C__RefactorLog">
               <MappingFragment StoreEntitySet="__RefactorLog">
@@ -3334,7 +3934,6 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="AddressId" ColumnName="AddressId" />
-                <ScalarProperty Name="OwnerId" ColumnName="OwnerId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3363,6 +3962,22 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="UpdatedBY" ColumnName="UpdatedBY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApplicationSettings">
+            <EntityTypeMapping TypeName="Midas.GreenBill.Model.ApplicationSetting">
+              <MappingFragment StoreEntitySet="ApplicationSetting">
+                <ScalarProperty Name="CommanSettingId" ColumnName="CommanSettingId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdatedBY" ColumnName="UpdatedBY" />
+                <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3707,6 +4322,31 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="DoctorDetails">
+            <EntityTypeMapping TypeName="Midas.GreenBill.Model.DoctorDetail">
+              <MappingFragment StoreEntitySet="DoctorDetails">
+                <ScalarProperty Name="DoctorDetailId" ColumnName="DoctorDetailId" />
+                <ScalarProperty Name="DoctorUserId" ColumnName="DoctorUserId" />
+                <ScalarProperty Name="LicenseNumber" ColumnName="LicenseNumber" />
+                <ScalarProperty Name="WCBAuthorization" ColumnName="WCBAuthorization" />
+                <ScalarProperty Name="WcbRatingCode" ColumnName="WcbRatingCode" />
+                <ScalarProperty Name="NPI" ColumnName="NPI" />
+                <ScalarProperty Name="FederalTaxId" ColumnName="FederalTaxId" />
+                <ScalarProperty Name="TaxType" ColumnName="TaxType" />
+                <ScalarProperty Name="Koel" ColumnName="Koel" />
+                <ScalarProperty Name="AssignNumber" ColumnName="AssignNumber" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="EIN_SIN" ColumnName="EIN_SIN" />
+                <ScalarProperty Name="IsEmployee" ColumnName="IsEmployee" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdatedBY" ColumnName="UpdatedBY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="DocumentTypes">
             <EntityTypeMapping TypeName="Midas.GreenBill.Model.DocumentType">
               <MappingFragment StoreEntitySet="DocumentType">
@@ -3819,6 +4459,24 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="UpdatedBY" ColumnName="UpdatedBY" />
                 <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MedicalOffices">
+            <EntityTypeMapping TypeName="Midas.GreenBill.Model.MedicalOffice">
+              <MappingFragment StoreEntitySet="MedicalOffices">
+                <ScalarProperty Name="MedicalOfficeId" ColumnName="MedicalOfficeId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AddressId" ColumnName="AddressId" />
+                <ScalarProperty Name="ContactInfoId" ColumnName="ContactInfoId" />
+                <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+                <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+                <ScalarProperty Name="IsReferring" ColumnName="IsReferring" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedByUserID" ColumnName="CreatedByUserID" />
+                <ScalarProperty Name="UpdatedBY" ColumnName="UpdatedBY" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4036,6 +4694,31 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ProviderDetails">
+            <EntityTypeMapping TypeName="Midas.GreenBill.Model.ProviderDetail">
+              <MappingFragment StoreEntitySet="ProviderDetails">
+                <ScalarProperty Name="ProviderDetailId" ColumnName="ProviderDetailId" />
+                <ScalarProperty Name="ProviderUserID" ColumnName="ProviderUserID" />
+                <ScalarProperty Name="NPI" ColumnName="NPI" />
+                <ScalarProperty Name="FederalTaxId" ColumnName="FederalTaxId" />
+                <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="IsSoftwareFeeAdded" ColumnName="IsSoftwareFeeAdded" />
+                <ScalarProperty Name="SoftwareFee" ColumnName="SoftwareFee" />
+                <ScalarProperty Name="PlaceOfService" ColumnName="PlaceOfService" />
+                <ScalarProperty Name="IsReferring" ColumnName="IsReferring" />
+                <ScalarProperty Name="BillingAddressId" ColumnName="BillingAddressId" />
+                <ScalarProperty Name="ContactInfoId" ColumnName="ContactInfoId" />
+                <ScalarProperty Name="BillingContactInfoId" ColumnName="BillingContactInfoId" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdatedBY" ColumnName="UpdatedBY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Reconcilations">
             <EntityTypeMapping TypeName="Midas.GreenBill.Model.Reconcilation">
               <MappingFragment StoreEntitySet="Reconcilation">
@@ -4135,8 +4818,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
                 <ScalarProperty Name="IsReferral" ColumnName="IsReferral" />
                 <ScalarProperty Name="HaveNotes" ColumnName="HaveNotes" />
                 <ScalarProperty Name="AssociatedSpecialty" ColumnName="AssociatedSpecialty" />
-                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
-                <ScalarProperty Name="OfficeId" ColumnName="OfficeId" />
+                <ScalarProperty Name="MultipleVisitsDay" ColumnName="MultipleVisitsDay" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
@@ -4175,16 +4857,30 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
           <EntitySetMapping Name="SystemSettings">
             <EntityTypeMapping TypeName="Midas.GreenBill.Model.SystemSetting">
               <MappingFragment StoreEntitySet="SystemSetting">
-                <ScalarProperty Name="CommanSettingId" ColumnName="CommanSettingId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="SystemSettingId" ColumnName="SystemSettingId" />
+                <ScalarProperty Name="SystemSettingKeyId" ColumnName="SystemSettingKeyId" />
+                <ScalarProperty Name="SysValue" ColumnName="SysValue" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+                <ScalarProperty Name="SubValue" ColumnName="SubValue" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="UpdatedBY" ColumnName="UpdatedBY" />
-                <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SystemSettingKeys">
+            <EntityTypeMapping TypeName="Midas.GreenBill.Model.SystemSettingKey">
+              <MappingFragment StoreEntitySet="SystemSettingKey">
+                <ScalarProperty Name="SystemSettingKeyId" ColumnName="SystemSettingKeyId" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="SubValue" ColumnName="SubValue" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdatedBY" ColumnName="UpdatedBY" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4239,7 +4935,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
             <EntityTypeMapping TypeName="Midas.GreenBill.Model.UserType">
               <MappingFragment StoreEntitySet="UserType">
                 <ScalarProperty Name="UserTypeId" ColumnName="UserTypeId" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="UserType1" ColumnName="UserType" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4335,6 +5031,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
                 <ScalarProperty Name="PolicyHolder" ColumnName="PolicyHolder" />
                 <ScalarProperty Name="PolicyHolderAddressId" ColumnName="PolicyHolderAddressId" />
                 <ScalarProperty Name="PolicyHolderContactInfoId" ColumnName="PolicyHolderContactInfoId" />
+                <ScalarProperty Name="ReferringOfficeID" ColumnName="ReferringOfficeID" />
                 <ScalarProperty Name="InsuranceId" ColumnName="InsuranceId" />
                 <ScalarProperty Name="InsuranceAddressId" ColumnName="InsuranceAddressId" />
                 <ScalarProperty Name="SpecialtyId" ColumnName="SpecialtyId" />
@@ -4378,6 +5075,51 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="UpdatedBY" ColumnName="UpdatedBY" />
                 <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BillStatusHistories">
+            <EntityTypeMapping TypeName="Midas.GreenBill.Model.BillStatusHistory">
+              <MappingFragment StoreEntitySet="BillStatusHistory">
+                <ScalarProperty Name="BillStatusHistoryId" ColumnName="BillStatusHistoryId" />
+                <ScalarProperty Name="BillId" ColumnName="BillId" />
+                <ScalarProperty Name="LastStatusId" ColumnName="LastStatusId" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdatedBY" ColumnName="UpdatedBY" />
+                <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CaseAssociatedDiagnosisCodes">
+            <EntityTypeMapping TypeName="Midas.GreenBill.Model.CaseAssociatedDiagnosisCode">
+              <MappingFragment StoreEntitySet="CaseAssociatedDiagnosisCode">
+                <ScalarProperty Name="CaseAssociatedDiagnosisCodeId" ColumnName="CaseAssociatedDiagnosisCodeId" />
+                <ScalarProperty Name="CaseId" ColumnName="CaseId" />
+                <ScalarProperty Name="DiagnosiCodeId" ColumnName="DiagnosiCodeId" />
+                <ScalarProperty Name="SpecialtyId" ColumnName="SpecialtyId" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdatedBY" ColumnName="UpdatedBY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompanyConnections">
+            <EntityTypeMapping TypeName="Midas.GreenBill.Model.CompanyConnection">
+              <MappingFragment StoreEntitySet="CompanyConnections">
+                <ScalarProperty Name="CompanyConnectionsid" ColumnName="CompanyConnectionsid" />
+                <ScalarProperty Name="ConnectionFrom" ColumnName="ConnectionFrom" />
+                <ScalarProperty Name="ConnectionTo" ColumnName="ConnectionTo" />
+                <ScalarProperty Name="ShowVisit" ColumnName="ShowVisit" />
+                <ScalarProperty Name="AllowCopyPatient" ColumnName="AllowCopyPatient" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdatedBY" ColumnName="UpdatedBY" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4459,6 +5201,37 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="GeneralDenialImages">
+            <EntityTypeMapping TypeName="Midas.GreenBill.Model.GeneralDenialImage">
+              <MappingFragment StoreEntitySet="GeneralDenialImages">
+                <ScalarProperty Name="GeneralDenialsImageId" ColumnName="GeneralDenialsImageId" />
+                <ScalarProperty Name="GeneralDenialsId" ColumnName="GeneralDenialsId" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+                <ScalarProperty Name="ImageId" ColumnName="ImageId" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdatedBY" ColumnName="UpdatedBY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GeneralDenials">
+            <EntityTypeMapping TypeName="Midas.GreenBill.Model.GeneralDenial">
+              <MappingFragment StoreEntitySet="GeneralDenials">
+                <ScalarProperty Name="GeneralDenialsId" ColumnName="GeneralDenialsId" />
+                <ScalarProperty Name="CaseId" ColumnName="CaseId" />
+                <ScalarProperty Name="DenialId" ColumnName="DenialId" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdatedBY" ColumnName="UpdatedBY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="MailProfiles">
             <EntityTypeMapping TypeName="Midas.GreenBill.Model.MailProfile">
               <MappingFragment StoreEntitySet="MailProfile">
@@ -4494,6 +5267,60 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notes">
+            <EntityTypeMapping TypeName="Midas.GreenBill.Model.Note">
+              <MappingFragment StoreEntitySet="Notes">
+                <ScalarProperty Name="NotesId" ColumnName="NotesId" />
+                <ScalarProperty Name="NoteTypeId" ColumnName="NoteTypeId" />
+                <ScalarProperty Name="CaseId" ColumnName="CaseId" />
+                <ScalarProperty Name="NotesDescription" ColumnName="NotesDescription" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdatedBY" ColumnName="UpdatedBY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NotesTypes">
+            <EntityTypeMapping TypeName="Midas.GreenBill.Model.NotesType">
+              <MappingFragment StoreEntitySet="NotesType">
+                <ScalarProperty Name="NoteTypeId" ColumnName="NoteTypeId" />
+                <ScalarProperty Name="NoteType" ColumnName="NoteType" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdatedBY" ColumnName="UpdatedBY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PacketRequests">
+            <EntityTypeMapping TypeName="Midas.GreenBill.Model.PacketRequest">
+              <MappingFragment StoreEntitySet="PacketRequest">
+                <ScalarProperty Name="PacketRequestId" ColumnName="PacketRequestId" />
+                <ScalarProperty Name="ZipFileName" ColumnName="ZipFileName" />
+                <ScalarProperty Name="PacketPath" ColumnName="PacketPath" />
+                <ScalarProperty Name="IsError" ColumnName="IsError" />
+                <ScalarProperty Name="ErrorMessge" ColumnName="ErrorMessge" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
+                <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdatedBY" ColumnName="UpdatedBY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PacketRequestBills">
+            <EntityTypeMapping TypeName="Midas.GreenBill.Model.PacketRequestBill">
+              <MappingFragment StoreEntitySet="PacketRequestBills">
+                <ScalarProperty Name="PacketRequestBills" ColumnName="PacketRequestBills" />
+                <ScalarProperty Name="PacketRequestId" ColumnName="PacketRequestId" />
+                <ScalarProperty Name="BillId" ColumnName="BillId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4602,6 +5429,17 @@ warning 6002: The table/view 'GreenBillsDb.dbo.RoleEvents' does not have a prima
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="UpdatedBY" ColumnName="UpdatedBY" />
                 <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SignOnPdfs">
+            <EntityTypeMapping TypeName="Midas.GreenBill.Model.SignOnPdf">
+              <MappingFragment StoreEntitySet="SignOnPdf">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PdfType" ColumnName="PdfType" />
+                <ScalarProperty Name="PdfSignPath" ColumnName="PdfSignPath" />
+                <ScalarProperty Name="ProviderId" ColumnName="ProviderId" />
+                <ScalarProperty Name="AccountId" ColumnName="AccountId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -12,9 +12,12 @@ namespace Midas.GreenBill.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class UserType
+    public partial class SignOnPdf
     {
-        public int UserTypeId { get; set; }
-        public string UserType1 { get; set; }
+        public int Id { get; set; }
+        public string PdfType { get; set; }
+        public string PdfSignPath { get; set; }
+        public Nullable<int> ProviderId { get; set; }
+        public Nullable<int> AccountId { get; set; }
     }
 }

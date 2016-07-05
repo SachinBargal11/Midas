@@ -12,13 +12,14 @@ namespace Midas.GreenBill.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class SystemSetting
+    public partial class PacketRequest
     {
-        public int SystemSettingId { get; set; }
-        public Nullable<int> SystemSettingKeyId { get; set; }
-        public string SysValue { get; set; }
-        public Nullable<long> AccountId { get; set; }
-        public string SubValue { get; set; }
+        public int PacketRequestId { get; set; }
+        public string ZipFileName { get; set; }
+        public string PacketPath { get; set; }
+        public Nullable<bool> IsError { get; set; }
+        public string ErrorMessge { get; set; }
+        public Nullable<int> AccountId { get; set; }
         public Nullable<bool> Deleted { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
