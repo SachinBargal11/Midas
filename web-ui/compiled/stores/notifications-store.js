@@ -41,18 +41,40 @@ System.register(['@angular/core', 'immutable', "rxjs/Rx", 'rxjs/add/operator/sha
                     configurable: true
                 });
                 NotificationsStore.prototype.addNotification = function (notification) {
+                    var _this = this;
+                    this.readAllNotifications();
+                    this.recentlyAddedCount = 0;
                     this.recentlyAdded = this.isOpen ? false : true;
-                    if (!this.isOpen) {
-                        this.recentlyAddedCount++;
+                    this.recentlyAddedCount++;
+                    if (this.isOpen) {
+                        setTimeout(function () {
+                            _this.recentlyAddedCount = 0;
+                            _this.readAllNotifications();
+                        }, 3000);
                     }
                     this._notifications.next(this._notifications.getValue().push(notification));
                 };
                 NotificationsStore.prototype.toggleVisibility = function () {
+                    var _this = this;
                     if (this.isOpen) {
                         this.recentlyAddedCount = 0;
+                        this.readAllNotifications();
                     }
                     this.isOpen = !this.isOpen;
+                    if (this.isOpen) {
+                        setTimeout(function () {
+                            _this.recentlyAddedCount = 0;
+                            _this.readAllNotifications();
+                        }, 3000);
+                    }
                     this.recentlyAdded = false;
+                };
+                NotificationsStore.prototype.readAllNotifications = function () {
+                    var notifications = this._notifications.getValue();
+                    notifications = notifications.toSeq().map(function (item) {
+                        return item.set("isRead", true);
+                    }).toList();
+                    this._notifications.next(notifications);
                 };
                 NotificationsStore = __decorate([
                     core_1.Injectable(), 
