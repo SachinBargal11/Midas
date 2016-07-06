@@ -41,9 +41,7 @@ export class SignupComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (this._sessionStore.isAuthenticated()) {
-            this._router.navigate(['dashboard']);
-        }
+        
     }
 
     register() {

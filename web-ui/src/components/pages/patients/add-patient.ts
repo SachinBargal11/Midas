@@ -55,9 +55,6 @@ export class AddPatientComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (!this._sessionStore.isAuthenticated()) {
-            this._router.navigate(['/login']);
-        }
         $(this._elRef.nativeElement).find('.datepickerElem').datetimepicker({
             format: 'll'
         });

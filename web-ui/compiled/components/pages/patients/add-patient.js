@@ -83,9 +83,6 @@ System.register(['@angular/core', '@angular/common', '@angular/router', '../../.
                     });
                 }
                 AddPatientComponent.prototype.ngOnInit = function () {
-                    if (!this._sessionStore.isAuthenticated()) {
-                        this._router.navigate(['/login']);
-                    }
                     jquery_1.default(this._elRef.nativeElement).find('.datepickerElem').datetimepicker({
                         format: 'll'
                     });

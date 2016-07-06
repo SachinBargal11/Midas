@@ -61,9 +61,6 @@ System.register(['@angular/core', '@angular/common', '@angular/router', '../../u
                     }, { validator: AppValidators_1.AppValidators.matchingPasswords('password', 'confirmPassword') });
                 }
                 SignupComponent.prototype.ngOnInit = function () {
-                    if (this._sessionStore.isAuthenticated()) {
-                        this._router.navigate(['dashboard']);
-                    }
                 };
                 SignupComponent.prototype.register = function () {
                     var _this = this;

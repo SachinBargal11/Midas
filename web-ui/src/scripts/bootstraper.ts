@@ -14,6 +14,8 @@ import {PatientsService} from '../services/patients-service';
 
 import {NotificationsStore} from '../stores/notifications-store';
 import {APP_ROUTER_PROVIDER} from '../routes/app-routes';
+import {ValidateActiveSession} from '../routes/guards/validate-active-session';
+import {ValidateInActiveSession} from '../routes/guards/validate-inactive-session';
 
 bootstrap(AppRoot, [
     ROUTER_DIRECTIVES,
@@ -24,6 +26,8 @@ bootstrap(AppRoot, [
     PatientsStore,
     NotificationsStore,
     APP_ROUTER_PROVIDER,
+    ValidateActiveSession,
+    ValidateInActiveSession,
     provide(LocationStrategy,
         {
             useValue: [ROUTER_DIRECTIVES],

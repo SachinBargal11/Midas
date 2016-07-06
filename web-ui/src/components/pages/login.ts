@@ -40,9 +40,7 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (this._sessionStore.isAuthenticated()) {
-            this._router.navigate(['/dashboard']);
-        }
+        
     }
 
     login() {

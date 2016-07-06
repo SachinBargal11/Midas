@@ -65,12 +65,12 @@ System.register(['@angular/core', '@angular/router', '../elements/loader', '../.
                         this.user_name = this._sessionStore.session.user.displayName;
                     }
                     else {
-                        this._router.navigate(['Login']);
+                        this._router.navigate(['/login']);
                     }
                 };
                 AppHeaderComponent.prototype.logout = function () {
                     this._sessionStore.logout();
-                    this._router.navigate(['Login']);
+                    this._router.navigate(['/login']);
                 };
                 AppHeaderComponent.prototype.showNotifications = function () {
                     this._notificationsStore.toggleVisibility();

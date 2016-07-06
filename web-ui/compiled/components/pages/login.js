@@ -54,9 +54,6 @@ System.register(['@angular/core', '@angular/common', '@angular/router', '../../u
                     });
                 }
                 LoginComponent.prototype.ngOnInit = function () {
-                    if (this._sessionStore.isAuthenticated()) {
-                        this._router.navigate(['/dashboard']);
-                    }
                 };
                 LoginComponent.prototype.login = function () {
                     var _this = this;

@@ -23,27 +23,17 @@ import {NotificationsStore} from '../stores/notifications-store';
 })
 
 export class AppRoot implements OnInit {
-    currentUrl: string;
 
     constructor(
         private _router: Router,
-        private _location: Location,
-        private _activatedRoute: ActivatedRoute,
         private _sessionStore: SessionStore,
         private _notificationsStore: NotificationsStore
     ) {
 
-        this.currentUrl = '';
     }
 
     ngOnInit() {
-        this._activatedRoute.params.subscribe(
-            params => {
-                // console.log(params);
-            },
-            error => console.log(error)
-        );
-
+        
         this._sessionStore.authenticate().subscribe(
             (response) => {
 
@@ -52,10 +42,6 @@ export class AppRoot implements OnInit {
                 this._router.navigate(['/login']);
             }
         )
-    }
-
-    isCurrentRoute(route: string): boolean {
-        return this.currentUrl === route;
     }
 
 }

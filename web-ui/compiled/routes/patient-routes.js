@@ -1,7 +1,7 @@
-System.register(['../components/pages/patients/patients-list', '../components/pages/patients/patient-details', '../components/pages/patients/add-patient', '../components/pages/patients/patients-shell', '../components/pages/patients/profile-patient'], function(exports_1, context_1) {
+System.register(['../components/pages/patients/patients-list', '../components/pages/patients/patient-details', '../components/pages/patients/add-patient', '../components/pages/patients/patients-shell', '../components/pages/patients/profile-patient', './guards/validate-active-session'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var patients_list_1, patient_details_1, add_patient_1, patients_shell_1, profile_patient_1;
+    var patients_list_1, patient_details_1, add_patient_1, patients_shell_1, profile_patient_1, validate_active_session_1;
     var PatientsShellRoutes;
     return {
         setters:[
@@ -19,12 +19,16 @@ System.register(['../components/pages/patients/patients-list', '../components/pa
             },
             function (profile_patient_1_1) {
                 profile_patient_1 = profile_patient_1_1;
+            },
+            function (validate_active_session_1_1) {
+                validate_active_session_1 = validate_active_session_1_1;
             }],
         execute: function() {
             exports_1("PatientsShellRoutes", PatientsShellRoutes = [
                 {
                     path: 'patients',
                     component: patients_shell_1.PatientsShellComponent,
+                    canActivate: [validate_active_session_1.ValidateActiveSession],
                     children: [
                         {
                             path: '',
