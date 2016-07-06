@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ROUTER_DIRECTIVES, Router, RouteParams, RouteConfig} from '@angular/router-deprecated';
+import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import {Patient} from '../../../models/patient'
 import {PatientsStore} from '../../../stores/patients-store';
 
@@ -13,7 +13,6 @@ export class PatientProfileComponent {
     patient: Patient;
     constructor(
         public router: Router,
-        private _routeParams: RouteParams,
         private _patientsStore: PatientsStore
     ) {
         this.patient = this._patientsStore.currentPatient;

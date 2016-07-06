@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router-deprecated', '../../../stores/patients-store', './profile-patient'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', '../../../stores/patients-store'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,52 +10,45 @@ System.register(['@angular/core', '@angular/router-deprecated', '../../../stores
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_deprecated_1, patients_store_1, profile_patient_1;
+    var core_1, router_1, patients_store_1;
     var PatientDetailsComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             },
-            function (router_deprecated_1_1) {
-                router_deprecated_1 = router_deprecated_1_1;
+            function (router_1_1) {
+                router_1 = router_1_1;
             },
             function (patients_store_1_1) {
                 patients_store_1 = patients_store_1_1;
-            },
-            function (profile_patient_1_1) {
-                profile_patient_1 = profile_patient_1_1;
             }],
         execute: function() {
             PatientDetailsComponent = (function () {
-                function PatientDetailsComponent(router, _routeParams, _patientsStore) {
-                    this.router = router;
-                    this._routeParams = _routeParams;
+                function PatientDetailsComponent(_route, _router, _patientsStore) {
+                    var _this = this;
+                    this._route = _route;
+                    this._router = _router;
                     this._patientsStore = _patientsStore;
-                    var patientId = parseInt(this._routeParams.get('id'));
-                    var patient = this._patientsStore.findPatientById(patientId);
-                    if (patient) {
-                        this._patientsStore.selectPatient(patient);
-                        this.patient = patient;
-                    }
-                    else {
-                        this.router.navigate(['PatientsList']);
-                    }
+                    this._route.params.subscribe(function (routeParams) {
+                        var patientId = parseInt(routeParams.id);
+                        var patient = _this._patientsStore.findPatientById(patientId);
+                        if (patient) {
+                            _this._patientsStore.selectPatient(patient);
+                            _this.patient = patient;
+                        }
+                        else {
+                            _this._router.navigate(['/patients']);
+                        }
+                    });
                 }
-                PatientDetailsComponent.prototype.isCurrentRoute = function (route) {
-                    var instruction = this.router.generate(route);
-                    return this.router.isRouteActive(instruction);
-                };
                 PatientDetailsComponent = __decorate([
-                    router_deprecated_1.RouteConfig([
-                        { path: '/', name: 'PatientProfile', component: profile_patient_1.PatientProfileComponent, useAsDefault: true }
-                    ]),
                     core_1.Component({
                         selector: 'patient-details',
                         templateUrl: 'templates/pages/patients/patient-details.html',
-                        directives: [router_deprecated_1.ROUTER_DIRECTIVES],
+                        directives: [router_1.ROUTER_DIRECTIVES]
                     }), 
-                    __metadata('design:paramtypes', [router_deprecated_1.Router, router_deprecated_1.RouteParams, patients_store_1.PatientsStore])
+                    __metadata('design:paramtypes', [router_1.ActivatedRoute, router_1.Router, patients_store_1.PatientsStore])
                 ], PatientDetailsComponent);
                 return PatientDetailsComponent;
             }());

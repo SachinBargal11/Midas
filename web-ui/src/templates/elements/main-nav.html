@@ -2,14 +2,14 @@
     <div class="mobile-menu-left-overlay"></div>
     <nav class="side-menu side-menu-compact">
         <ul class="side-menu-list">
-            <li class="brown" [class.opened]="isCurrentRoute(['Dashboard'])">
-                <a [routerLink]="['Dashboard']">
+            <li class="brown" [routerLinkActive]="['opened']">
+                <a [routerLink]="['/dashboard']">
                     <i class="fa fa-home"></i>
                     <span class="lbl">Dashboard</span>
                 </a>
             </li>
-            <li class="green" [class.opened]="isCurrentRoute(['Patients'])">
-                <a [routerLink]="['Patients']">
+            <li class="green" [routerLinkActive]="['opened']">
+                <a [routerLink]="['/patients']">
                     <i class="fa fa-users"></i>
                     <span class="lbl">Patients</span>
                 </a>

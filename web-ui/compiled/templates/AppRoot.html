@@ -1,6 +1,10 @@
 <div class="control-panel" [class.open]="_notificationsStore.isOpen">
-    <app-header *ngIf="!router.isRouteActive(router.generate(['/Login'])) && !router.isRouteActive(router.generate(['/Signup']))"></app-header>
-    <main-nav *ngIf="!router.isRouteActive(router.generate(['/Login'])) && !router.isRouteActive(router.generate(['/Signup']))"></main-nav>
+    <!--<app-header *ngIf="!router.isRouteActive(router.generate(['/Login'])) && !router.isRouteActive(router.generate(['/Signup']))"></app-header>-->
+    <!--<main-nav *ngIf="!router.isRouteActive(router.generate(['/Login'])) && !router.isRouteActive(router.generate(['/Signup']))"></main-nav>-->
+    
+    <app-header></app-header>
+    <main-nav></main-nav>
+    
     <notification></notification>
     <div class="page-content">
         <div class="container-fluid">

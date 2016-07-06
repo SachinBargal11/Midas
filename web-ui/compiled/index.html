@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="../node_modules/font-awesome/css/font-awesome.min.css" type="text/css"
         charset="utf-8">
     
+    
     <link rel="stylesheet" href="theme/css/main.css">
     <link rel="stylesheet" href="styles/styles.css">
 </head>
@@ -43,15 +44,15 @@
                     'immutable' : '../node_modules/immutable/dist/immutable.js',
                     'underscore' : '../node_modules/underscore/underscore.js',
                     'jquery': '../node_modules/jquery/dist/jquery.min.js',
-                    'eonasdan-bootstrap-datetimepicker': '../node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'               
-                },
-                meta: {
-                      'daterangepicker': {
-                          deps: [
-                              'jquery', 
-                              'moment'
-                          ]
-                      }
+                    'eonasdan-bootstrap-datetimepicker': '../node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'                },
+                meta: 
+                {
+                        'daterangepicker': {
+                            deps: [
+                                'jquery', 
+                                'moment'
+                            ]
+                        }                        
                 },
                 packages: {
                     'scripts': {
@@ -73,6 +74,9 @@
                         defaultExtension: 'js'
                     },
                     'components': {
+                        defaultExtension: 'js'
+                    },
+                    'routes': {
                         defaultExtension: 'js'
                     },
                     '@angular/common': {
@@ -100,7 +104,7 @@
                         defaultExtension: 'js'
                     },
                     '@angular/router': {
-                        main: 'bundles/router.umd.js',
+                        main: 'index.js',
                         defaultExtension: 'js'
                     },
                     '@angular/router-deprecated': {

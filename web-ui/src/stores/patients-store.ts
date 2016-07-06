@@ -51,14 +51,26 @@ export class PatientsStore {
     }
 
     addPatient(patient: Patient) {
-        let obs = this._patientsService.addPatient(patient);
-
-        obs.subscribe(
-            res => {
+        let promise = new Promise((resolve, reject) => {
+            this._patientsService.addPatient(patient).subscribe((patient: Patient) => {
                 this._patients.next(this._patients.getValue().push(patient));
+                resolve(patient);
+            }, error => {
+                reject(error);
             });
+        });
+        return Observable.from(promise);
 
-        return obs;
+        // let obs = this._patientsService.addPatient(patient);
+
+        // obs.subscribe(
+        //     res => {
+
+        //         debugger;
+        //         this._patients.next(this._patients.getValue().push(patient));
+        //     });
+
+        // return obs;
     }
 
     selectPatient(patient: Patient) {

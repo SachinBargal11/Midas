@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router-deprecated', '../elements/loader', '../../services/authentication-service', '@angular/common', 'ng2-bootstrap', '../../stores/session-store', '../../stores/notifications-store'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', '../elements/loader', '../../services/authentication-service', '@angular/common', 'ng2-bootstrap', '../../stores/session-store', '../../stores/notifications-store'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,15 +10,15 @@ System.register(['@angular/core', '@angular/router-deprecated', '../elements/loa
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_deprecated_1, loader_1, authentication_service_1, common_1, ng2_bootstrap_1, session_store_1, notifications_store_1;
+    var core_1, router_1, loader_1, authentication_service_1, common_1, ng2_bootstrap_1, session_store_1, notifications_store_1;
     var AppHeaderComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             },
-            function (router_deprecated_1_1) {
-                router_deprecated_1 = router_deprecated_1_1;
+            function (router_1_1) {
+                router_1 = router_1_1;
             },
             function (loader_1_1) {
                 loader_1 = loader_1_1;
@@ -85,7 +85,7 @@ System.register(['@angular/core', '@angular/router-deprecated', '../elements/loa
                             common_1.CORE_DIRECTIVES],
                         providers: [authentication_service_1.AuthenticationService]
                     }), 
-                    __metadata('design:paramtypes', [authentication_service_1.AuthenticationService, notifications_store_1.NotificationsStore, session_store_1.SessionStore, router_deprecated_1.Router])
+                    __metadata('design:paramtypes', [authentication_service_1.AuthenticationService, notifications_store_1.NotificationsStore, session_store_1.SessionStore, router_1.Router])
                 ], AppHeaderComponent);
                 return AppHeaderComponent;
             }());

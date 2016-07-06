@@ -6,21 +6,20 @@
             <th>Email</th>
             <th>Mobile No</th>
             <th>Address</th>
+            <th>DOB Actual</th>
             <th>DOB</th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let patient of _patientsStore.patients | async" [routerLink]="['PatientDetails', {id : patient.id}]" (click)="selectPatients(patient)">
+        <!--<tr *ngFor="let patient of _patientsStore.patients | async" [routerLink]="['', patient.id]" (click)="selectPatients(patient)">-->
+        <tr *ngFor="let patient of _patientsStore.patients | async" (click)="selectPatients(patient)">
             <td>{{ patient.firstname }}</td>
             <td>{{ patient.lastname }}</td>
             <td>{{ patient.email }}</td>
             <td>{{ patient.mobileNo }}</td>
             <td>{{ patient.address }}</td>
+            <td>{{ patient.dob}}</td>
             <td>{{ patient.dob.format("Do MMM YYYY") }}</td>
         </tr>
     </tbody>
 </table>
-
-<!--<div class="alert alert-info" role="alert">
-    Sorry! No patients to show.
-</div>-->
