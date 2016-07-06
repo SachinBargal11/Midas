@@ -5,7 +5,7 @@ import {DashboardComponent} from '../components/pages/dashboard';
 import {PatientsShellRoutes} from './patient-routes';
 
 export const appRoutes: RouterConfig = [
-    // { path: '', redirectTo: '/dashboard' },
+    { path: '', redirectTo: '/dashboard', pathMatch: 'full'},
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignupComponent },
     { path: 'dashboard', component: DashboardComponent },

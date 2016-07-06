@@ -51,7 +51,7 @@ System.register(['@angular/core', '@angular/router', '@angular/common', './eleme
                 AppRoot.prototype.ngOnInit = function () {
                     var _this = this;
                     this._activatedRoute.params.subscribe(function (params) {
-                        console.log(params);
+                        // console.log(params);
                     }, function (error) { return console.log(error); });
                     this._sessionStore.authenticate().subscribe(function (response) {
                     }, function (error) {

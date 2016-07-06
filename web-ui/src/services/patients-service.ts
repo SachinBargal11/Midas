@@ -48,11 +48,19 @@ export class PatientsService {
 
     addPatient(patient: Patient) {
         let promise = new Promise((resolve, reject) => {
-
             return this._http.post(this._url, JSON.stringify(patient), {
                 headers: this._headers
-            }).map(res => res.json()).subscribe((patient) => {
-                resolve(patient);
+            }).map(res => res.json()).subscribe((patientData) => {
+                let parsedPatient = new Patient({
+                    id: patientData.id,
+                    firstname: patientData.firstname,
+                    lastname: patientData.lastname,
+                    email: patientData.email,
+                    mobileNo: patientData.mobileNo,
+                    address: patientData.address,
+                    dob: Moment(patientData.dob)
+                });
+                resolve(parsedPatient);
             }, (error) => {
                 reject(error);
             });

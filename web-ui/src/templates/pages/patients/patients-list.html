@@ -6,7 +6,6 @@
             <th>Email</th>
             <th>Mobile No</th>
             <th>Address</th>
-            <th>DOB Actual</th>
             <th>DOB</th>
         </tr>
     </thead>
@@ -18,7 +17,6 @@
             <td>{{ patient.email }}</td>
             <td>{{ patient.mobileNo }}</td>
             <td>{{ patient.address }}</td>
-            <td>{{ patient.dob}}</td>
             <td>{{ patient.dob.format("Do MMM YYYY") }}</td>
         </tr>
     </tbody>

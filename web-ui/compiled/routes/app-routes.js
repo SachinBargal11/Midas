@@ -22,7 +22,7 @@ System.register(['@angular/router', '../components/pages/login', '../components/
             }],
         execute: function() {
             exports_1("appRoutes", appRoutes = [
-                // { path: '', redirectTo: '/dashboard' },
+                { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
                 { path: 'login', component: login_1.LoginComponent },
                 { path: 'signup', component: signup_1.SignupComponent },
                 { path: 'dashboard', component: dashboard_1.DashboardComponent }

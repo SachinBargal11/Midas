@@ -71,8 +71,17 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/
                     var promise = new Promise(function (resolve, reject) {
                         return _this._http.post(_this._url, JSON.stringify(patient), {
                             headers: _this._headers
-                        }).map(function (res) { return res.json(); }).subscribe(function (patient) {
-                            resolve(patient);
+                        }).map(function (res) { return res.json(); }).subscribe(function (patientData) {
+                            var parsedPatient = new patient_1.Patient({
+                                id: patientData.id,
+                                firstname: patientData.firstname,
+                                lastname: patientData.lastname,
+                                email: patientData.email,
+                                mobileNo: patientData.mobileNo,
+                                address: patientData.address,
+                                dob: moment_1.default(patientData.dob)
+                            });
+                            resolve(parsedPatient);
                         }, function (error) {
                             reject(error);
                         });

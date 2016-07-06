@@ -30,7 +30,6 @@ System.register(['@angular/core', '../../stores/notifications-store', '../../pip
             NotificationComponent = (function () {
                 function NotificationComponent(_notificationsStore) {
                     this._notificationsStore = _notificationsStore;
-                    console.log(this._notificationsStore.notifications);
                 }
                 NotificationComponent.prototype.ngOnInit = function () {
                 };

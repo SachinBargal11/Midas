@@ -39,7 +39,7 @@ export class AppRoot implements OnInit {
     ngOnInit() {
         this._activatedRoute.params.subscribe(
             params => {
-                console.log(params);
+                // console.log(params);
             },
             error => console.log(error)
         );
