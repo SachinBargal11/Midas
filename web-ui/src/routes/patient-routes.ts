@@ -21,11 +21,11 @@ export const PatientsShellRoutes: RouterConfig = [
                 component: AddPatientComponent
             },
             {
-                path: ':id',
+                path: '',
                 component: PatientDetailsComponent,
                 children: [
                     {
-                        path: '',
+                        path: ':id/profile',
                         component: PatientProfileComponent
                     }
                 ]

@@ -13,24 +13,14 @@ import {Observable} from 'rxjs/Observable';
 
 export class PatientDetailsComponent {
 
-    patient: Patient;
+    // patient: Patient;
 
     constructor(
         public _route: ActivatedRoute,
         public _router: Router,
         private _patientsStore: PatientsStore
     ) {
-        this._route.params.subscribe((routeParams: any) => {
-            let patientId: number = parseInt(routeParams.id);
-            let patient = this._patientsStore.findPatientById(patientId);
-            if (patient) {
-                this._patientsStore.selectPatient(patient);
-                this.patient = patient;
-            }
-            else {
-                this._router.navigate(['/patients']);
-            }
-        });
+        
 
     }
 }

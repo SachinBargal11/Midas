@@ -28,7 +28,7 @@ export class PatientsShellComponent implements OnInit {
         event.stopPropagation();
         event.preventDefault();
         this._patientsStore.deselectPatient(patient);
-        this.router.navigate(['PatientsList']);
+        this.router.navigate(['/patients']);
     }
 
 }

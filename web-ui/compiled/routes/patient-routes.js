@@ -39,11 +39,11 @@ System.register(['../components/pages/patients/patients-list', '../components/pa
                             component: add_patient_1.AddPatientComponent
                         },
                         {
-                            path: ':id',
+                            path: '',
                             component: patient_details_1.PatientDetailsComponent,
                             children: [
                                 {
-                                    path: '',
+                                    path: ':id/profile',
                                     component: profile_patient_1.PatientProfileComponent
                                 }
                             ]

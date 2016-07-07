@@ -10,7 +10,7 @@
 			</a>
             </li>
             <li *ngFor="let selectedPatient of _patientsStore.selectedPatients | async" class="nav-item">
-                <a class="nav-link" role="tab" data-toggle="tab" [routerLinkActiveOptions]="{exact:true}" [routerLink]="['/patients', selectedPatient.id]"
+                <a class="nav-link" role="tab" data-toggle="tab" [routerLinkActiveOptions]="{exact:true}" [routerLink]="[selectedPatient.id, '/profile']"
                     [routerLinkActive]="['active']">
 			    {{ selectedPatient.firstname }}
                 <span class="btn-close fa fa-times-circle-o" (click)="deselectPatient($event, selectedPatient)"></span>

@@ -35,7 +35,7 @@ System.register(['@angular/core', '@angular/router', '../../../stores/patients-s
                     event.stopPropagation();
                     event.preventDefault();
                     this._patientsStore.deselectPatient(patient);
-                    this.router.navigate(['PatientsList']);
+                    this.router.navigate(['/patients']);
                 };
                 PatientsShellComponent = __decorate([
                     core_1.Component({

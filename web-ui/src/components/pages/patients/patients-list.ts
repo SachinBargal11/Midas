@@ -28,6 +28,6 @@ export class PatientsListComponent implements OnInit {
 
     selectPatients(patient) {
         this._patientsStore.selectPatient(patient);
-        this._router.navigate(['/patients/' + patient.id]);
+        this._router.navigate(['/patients/' + patient.id + '/profile']);
     }
 }

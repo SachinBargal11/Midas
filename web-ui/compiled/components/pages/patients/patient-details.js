@@ -25,22 +25,11 @@ System.register(['@angular/core', '@angular/router', '../../../stores/patients-s
             }],
         execute: function() {
             PatientDetailsComponent = (function () {
+                // patient: Patient;
                 function PatientDetailsComponent(_route, _router, _patientsStore) {
-                    var _this = this;
                     this._route = _route;
                     this._router = _router;
                     this._patientsStore = _patientsStore;
-                    this._route.params.subscribe(function (routeParams) {
-                        var patientId = parseInt(routeParams.id);
-                        var patient = _this._patientsStore.findPatientById(patientId);
-                        if (patient) {
-                            _this._patientsStore.selectPatient(patient);
-                            _this.patient = patient;
-                        }
-                        else {
-                            _this._router.navigate(['/patients']);
-                        }
-                    });
                 }
                 PatientDetailsComponent = __decorate([
                     core_1.Component({

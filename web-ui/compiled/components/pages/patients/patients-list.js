@@ -33,7 +33,7 @@ System.register(['@angular/core', '@angular/router', '../../../stores/patients-s
                 };
                 PatientsListComponent.prototype.selectPatients = function (patient) {
                     this._patientsStore.selectPatient(patient);
-                    this._router.navigate(['/patients/' + patient.id]);
+                    this._router.navigate(['/patients/' + patient.id + '/profile']);
                 };
                 PatientsListComponent = __decorate([
                     core_1.Component({

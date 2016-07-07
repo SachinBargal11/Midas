@@ -25,10 +25,22 @@ System.register(['@angular/core', '@angular/router', '../../../stores/patients-s
             }],
         execute: function() {
             PatientProfileComponent = (function () {
-                function PatientProfileComponent(router, _patientsStore) {
-                    this.router = router;
+                function PatientProfileComponent(_route, _router, _patientsStore) {
+                    var _this = this;
+                    this._route = _route;
+                    this._router = _router;
                     this._patientsStore = _patientsStore;
-                    this.patient = this._patientsStore.currentPatient;
+                    this._route.params.subscribe(function (routeParams) {
+                        var patientId = parseInt(routeParams.id);
+                        var result = _this._patientsStore.fetchPatientById(patientId);
+                        result.subscribe(function (patient) {
+                            _this._patientsStore.selectPatient(patient);
+                            _this.patient = patient;
+                        }, function (error) {
+                            _this._router.navigate(['/patients']);
+                        }, function () {
+                        });
+                    });
                 }
                 PatientProfileComponent = __decorate([
                     core_1.Component({
@@ -36,7 +48,7 @@ System.register(['@angular/core', '@angular/router', '../../../stores/patients-s
                         templateUrl: 'templates/pages/patients/profile-patient.html',
                         directives: [router_1.ROUTER_DIRECTIVES]
                     }), 
-                    __metadata('design:paramtypes', [router_1.Router, patients_store_1.PatientsStore])
+                    __metadata('design:paramtypes', [router_1.ActivatedRoute, router_1.Router, patients_store_1.PatientsStore])
                 ], PatientProfileComponent);
                 return PatientProfileComponent;
             }());
