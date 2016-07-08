@@ -1,15 +1,18 @@
-﻿CREATE TABLE [dbo].[CaseStatus]
+﻿
+CREATE TABLE [dbo].[CaseStatus](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](25) NOT NULL,
+	[IsDeleted] [bit] NULL,
+	[CreateByUserID] [int] NOT NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateByUserID] [int] NULL,
+	[UpdateDate] [datetime] NULL,
+PRIMARY KEY CLUSTERED 
 (
-	[CaseStatusId] int identity(1,1) NOT NULL PRIMARY KEY,
-	[Name] nvarchar(25) not null,
-	[IsArchived] bit,
-	[AccountId] int,
-	[OfficeId] int,
-	[Deleted] bit,
-	[CreatedDate] datetime,
-	[UpdatedDate] datetime,
-	[CreatedBy] int,
-	[UpdatedBY]  int,
-	
-	
-)
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+

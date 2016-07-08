@@ -8,7 +8,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{a49ed36b-91c5-412a-a741-88974d0202ad}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql120DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql110DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -84,7 +84,6 @@
     <Build Include="Schema\Tables\CaseStatus.sql" />
     <Build Include="Schema\Tables\BillStatus.sql" />
     <Build Include="Schema\Tables\VisitType.sql" />
-    <Build Include="Schema\Tables\Provider.sql" />
     <Build Include="Schema\Tables\Location.sql" />
     <Build Include="Schema\Tables\DoctorDetails.sql" />
     <Build Include="Schema\Tables\SpecialtyDetails.sql" />
@@ -98,19 +97,15 @@
     <Build Include="Schema\Tables\Insurance.sql" />
     <Build Include="Schema\Tables\InsuranceAddress.sql" />
     <Build Include="Schema\Tables\EmployerAddress.sql" />
-    <Build Include="Schema\Tables\Patient.sql" />
     <Build Include="Schema\Tables\Case.sql" />
     <Build Include="Schema\Tables\PatientAccidentDetails.sql" />
-    <Build Include="Schema\Tables\MedicalOffices.sql" />
+    <Build Include="Schema\Tables\MedicalFacilities.sql" />
     <Build Include="Schema\Tables\IntakeAOB.sql" />
-    <Build Include="Schema\Tables\State.sql" />
-    <Build Include="Schema\Tables\City.sql" />
     <Build Include="Schema\Tables\ApplicationSetting.sql" />
     <Build Include="Schema\Tables\Role.sql" />
     <Build Include="Schema\Tables\RoleEvents.sql" />
     <Build Include="Schema\Tables\Activity.sql" />
     <Build Include="Schema\Tables\RoleActivityEvents.sql" />
-    <Build Include="Schema\Tables\MailProfile.sql" />
     <Build Include="Schema\Tables\UserType.sql" />
     <Build Include="Schema\Tables\DenialReasons.sql" />
     <Build Include="Schema\Tables\Visits.sql" />
@@ -160,6 +155,11 @@
     <Build Include="Schema\Tables\EmailProfile.sql" />
     <Build Include="Schema\Tables\EmailTemplate.sql" />
     <Build Include="Schema\Tables\AuditTrail.sql" />
+    <Build Include="Schema\Tables\Status.sql" />
+    <Build Include="Schema\Tables\ProviderMedicalOffices.sql" />
+    <Build Include="Schema\Tables\Provider.sql" />
+    <Build Include="Schema\Tables\Patient.sql" />
+    <Build Include="Schema\Tables\PatientInsurance.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="GreenBillsDb.refactorlog" />
