@@ -1,6 +1,10 @@
 const LOCAL_DEV_ENV = {
-    'service_base_url' : 'http://localhost:3000'
+    'SERVICE_BASE_URL' : 'http://localhost:3004'
 }
 const DEV_ENV = {
-    'service_base_url' : 'http://gyb-db.herokuapp.com'
+    'SERVICE_BASE_URL' : 'http://gyb-db.herokuapp.com'
 }
+
+const Environment = LOCAL_DEV_ENV;
+
+export default Environment;

@@ -16,7 +16,6 @@ export class NotificationComponent implements OnInit {
     constructor(
         private _notificationsStore: NotificationsStore
     ) {
-        console.log(this._notificationsStore.notifications);
 
     }
 

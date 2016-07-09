@@ -1,23 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {RouteConfig, ROUTER_DIRECTIVES, Router} from '@angular/router-deprecated';
+import {ActivatedRoute, Router, ROUTER_DIRECTIVES} from '@angular/router';
+import {Location} from '@angular/common';
 import {LoginComponent} from './pages/login';
 import {SignupComponent} from './pages/signup';
 import {DashboardComponent} from './pages/dashboard';
 import {PatientsShellComponent} from './pages/patients/patients-shell';
 import {AppHeaderComponent} from './elements/app-header';
 import {MainNavComponent} from './elements/main-nav';
-
 import {SessionStore} from '../stores/session-store';
 import {NotificationComponent} from './elements/notification';
 import {NotificationsStore} from '../stores/notifications-store';
-
-@RouteConfig([
-    { path: '/login', name: 'Login', component: LoginComponent },
-    { path: '/signup', name: 'Signup', component: SignupComponent },
-    { path: '/dashboard', name: 'Dashboard', component: DashboardComponent },
-    { path: '/patients/...', name: 'Patients', component: PatientsShellComponent },
-    { path: '/*other', name: 'Other', redirectTo: ['Dashboard'] }
-])
 
 @Component({
     selector: 'app-root',
@@ -31,8 +23,9 @@ import {NotificationsStore} from '../stores/notifications-store';
 })
 
 export class AppRoot implements OnInit {
+
     constructor(
-        public router: Router,
+        private _router: Router,
         private _sessionStore: SessionStore,
         private _notificationsStore: NotificationsStore
     ) {
@@ -40,13 +33,15 @@ export class AppRoot implements OnInit {
     }
 
     ngOnInit() {
+        
         this._sessionStore.authenticate().subscribe(
             (response) => {
 
             },
             error => {
-                this.router.navigate(['Login']);
+                this._router.navigate(['/login']);
             }
         )
     }
+
 }

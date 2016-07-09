@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ControlGroup, Validators, FormBuilder} from '@angular/common';
-import {ROUTER_DIRECTIVES, Router, RouteParams} from '@angular/router-deprecated';
+import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import {AppValidators} from '../../utils/AppValidators';
 import {LoaderComponent} from '../elements/loader';
 import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
@@ -9,7 +9,11 @@ import {SessionStore} from '../../stores/session-store';
 @Component({
     selector: 'login',
     templateUrl: 'templates/pages/login.html',
-    directives: [ROUTER_DIRECTIVES, LoaderComponent, SimpleNotificationsComponent],
+    directives: [
+        ROUTER_DIRECTIVES,
+        LoaderComponent,
+        SimpleNotificationsComponent
+    ],
     providers: [NotificationsService]
 })
 
@@ -27,8 +31,7 @@ export class LoginComponent implements OnInit {
         fb: FormBuilder,
         private _sessionStore: SessionStore,
         private _notificationsService: NotificationsService,
-        private _router: Router,
-        private _routeParams: RouteParams
+        private _router: Router
     ) {
         this.loginForm = fb.group({
             email: ['', Validators.compose([Validators.required, AppValidators.emailValidator])],
@@ -37,20 +40,17 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (this._sessionStore.isAuthenticated()) {
-            this._router.navigate(['Dashboard']);
-        }
+        
     }
 
     login() {
         var result;
         this.isLoginInProgress = true;
-
         result = this._sessionStore.login(this.loginForm.value.email, this.loginForm.value.password);
 
         result.subscribe(
             response => {
-                this._router.navigate(['Dashboard']);
+                this._router.navigate(['/dashboard']);
             },
             error => {
                 this.isLoginInProgress = false;

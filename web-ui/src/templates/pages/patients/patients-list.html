@@ -10,7 +10,8 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let patient of _patientsStore.patients | async" [routerLink]="['PatientDetails', {id : patient.id}]" (click)="selectPatients(patient)">
+        <!--<tr *ngFor="let patient of _patientsStore.patients | async" [routerLink]="['', patient.id]" (click)="selectPatients(patient)">-->
+        <tr *ngFor="let patient of _patientsStore.patients | async" (click)="selectPatients(patient)">
             <td>{{ patient.firstname }}</td>
             <td>{{ patient.lastname }}</td>
             <td>{{ patient.email }}</td>
@@ -20,7 +21,3 @@
         </tr>
     </tbody>
 </table>
-
-<!--<div class="alert alert-info" role="alert">
-    Sorry! No patients to show.
-</div>-->

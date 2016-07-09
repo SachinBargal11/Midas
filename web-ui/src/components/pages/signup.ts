@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ControlGroup, Validators, FormBuilder} from '@angular/common';
-import {ROUTER_DIRECTIVES, Router, RouteParams} from '@angular/router-deprecated';
+import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import {AppValidators} from '../../utils/AppValidators';
 import {LoaderComponent} from '../elements/loader';
 import {AuthenticationService} from '../../services/authentication-service';
@@ -29,8 +29,7 @@ export class SignupComponent implements OnInit {
         private _authenticationService: AuthenticationService,
         private _notificationsService: NotificationsService,
         private _sessionStore: SessionStore,
-        private _router: Router,
-        private _routeParams: RouteParams
+        private _router: Router
     ) {
         this.signupForm = fb.group({
             name: ['', Validators.required],
@@ -42,9 +41,7 @@ export class SignupComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (this._sessionStore.isAuthenticated()) {
-            this._router.navigate(['Dashboard']);
-        }
+        
     }
 
     register() {
@@ -63,7 +60,7 @@ export class SignupComponent implements OnInit {
             (response) => {
                 this._notificationsService.success('Welcome!', 'You have suceessfully registered!');
                 setTimeout(() => {
-                    this._router.navigate(['Login']);
+                    this._router.navigate(['/login']);
                 }, 3000);
             },
             error => {

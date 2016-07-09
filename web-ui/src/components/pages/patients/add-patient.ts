@@ -1,6 +1,6 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
 import {ControlGroup, Validators, FormBuilder} from '@angular/common';
-import {ROUTER_DIRECTIVES, Router, RouteParams, RouteConfig} from '@angular/router-deprecated';
+import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
 import {LoaderComponent} from '../../elements/loader';
 import {PatientsStore} from '../../../stores/patients-store';
@@ -25,7 +25,7 @@ export class AddPatientComponent implements OnInit {
         'email': '',
         'mobileNo': '',
         'address': '',
-        'dob': ''
+        // 'dob': ''
     });
     options = {
         timeOut: 3000,
@@ -41,7 +41,6 @@ export class AddPatientComponent implements OnInit {
         private _router: Router,
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
-        private _routeParams: RouteParams,
         private _patientsStore: PatientsStore,
         private _elRef: ElementRef
     ) {
@@ -56,9 +55,6 @@ export class AddPatientComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (!this._sessionStore.isAuthenticated()) {
-            this._router.navigate(['Login']);
-        }
         $(this._elRef.nativeElement).find('.datepickerElem').datetimepicker({
             format: 'll'
         });
@@ -78,16 +74,16 @@ export class AddPatientComponent implements OnInit {
         });
         result = this._patientsStore.addPatient(patient);
         result.subscribe(
-            response => {
+            (response) => {
                 var notification = new Notification({
                     'title': 'Patient added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': Moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['PatientsList']);
+                this._router.navigate(['/patients']);
             },
-            error => {
+            (error) => {
                 var notification = new Notification({
                     'title': 'Unable to add patient.',
                     'type': 'ERROR',

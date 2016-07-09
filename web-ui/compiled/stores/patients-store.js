@@ -1,4 +1,4 @@
-System.register(['@angular/core', 'rxjs/add/operator/share', 'rxjs/add/operator/map', '../services/patients-service', 'immutable', "rxjs/Rx"], function(exports_1, context_1) {
+System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 'rxjs/add/operator/map', '../services/patients-service', 'immutable', "rxjs/Rx"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,12 +10,15 @@ System.register(['@angular/core', 'rxjs/add/operator/share', 'rxjs/add/operator/
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, patients_service_1, immutable_1, Rx_1;
+    var core_1, Observable_1, patients_service_1, immutable_1, Rx_1;
     var PatientsStore;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (Observable_1_1) {
+                Observable_1 = Observable_1_1;
             },
             function (_1) {},
             function (_2) {},
@@ -60,20 +63,41 @@ System.register(['@angular/core', 'rxjs/add/operator/share', 'rxjs/add/operator/
                             reject(error);
                         });
                     });
+                    return Observable_1.Observable.fromPromise(promise);
                 };
                 PatientsStore.prototype.findPatientById = function (id) {
                     var patients = this._patients.getValue();
                     var index = patients.findIndex(function (currentPatient) { return currentPatient.id === id; });
-                    this.currentPatient = patients.get(index);
                     return patients.get(index);
+                };
+                PatientsStore.prototype.fetchPatientById = function (id) {
+                    var _this = this;
+                    var promise = new Promise(function (resolve, reject) {
+                        var matchedPatient = _this.findPatientById(id);
+                        if (matchedPatient) {
+                            resolve(matchedPatient);
+                        }
+                        else {
+                            _this._patientsService.getPatient(id).subscribe(function (patient) {
+                                resolve(patient);
+                            }, function (error) {
+                                reject(error);
+                            });
+                        }
+                    });
+                    return Observable_1.Observable.fromPromise(promise);
                 };
                 PatientsStore.prototype.addPatient = function (patient) {
                     var _this = this;
-                    var obs = this._patientsService.addPatient(patient);
-                    obs.subscribe(function (res) {
-                        _this._patients.next(_this._patients.getValue().push(patient));
+                    var promise = new Promise(function (resolve, reject) {
+                        _this._patientsService.addPatient(patient).subscribe(function (patient) {
+                            _this._patients.next(_this._patients.getValue().push(patient));
+                            resolve(patient);
+                        }, function (error) {
+                            reject(error);
+                        });
                     });
-                    return obs;
+                    return Observable_1.Observable.from(promise);
                 };
                 PatientsStore.prototype.selectPatient = function (patient) {
                     var selectedPatients = this._selectedPatients.getValue();

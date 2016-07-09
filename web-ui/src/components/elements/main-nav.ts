@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router-deprecated';
+import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 
 @Component({
     selector: 'main-nav',
@@ -12,8 +12,8 @@ export class MainNavComponent {
     }
     
     isCurrentRoute(route){
-        var instruction = this._router.generate(route);
-        return this._router.isRouteActive(instruction);
+        // var instruction = this._router.generate(route);
+        // return this._router.isRouteActive(instruction);
     }
 }
 
