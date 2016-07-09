@@ -243,6 +243,8 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
+    <Compile Include="RequestHandler\GbApiRequestHandler.cs" />
+    <Compile Include="RequestHandler\IRequestHandler.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -313,6 +315,20 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{ab922f16-5932-468c-b3c3-4869daec1662}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccessServices\GBDataRepository\GBDataRepository.csproj">
+      <Project>{ba20fafe-2540-43c5-bf98-53baaec4f4a4}</Project>
+      <Name>GBDataRepository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GBBusinessObjects\GBBusinessObjects.csproj">
+      <Project>{01c07d5e-d792-48cc-b43e-d42b65c5921f}</Project>
+      <Name>GBBusinessObjects</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
