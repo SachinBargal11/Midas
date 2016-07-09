@@ -12,5 +12,5 @@
 	[UpdatedDate] datetime,
 	[CreatedBy] int,
 	[UpdatedBY]  int   
-	CONSTRAINT [FK_Nodes_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](AccountId)
+	CONSTRAINT [FK_Nodes_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](ID)
 )
