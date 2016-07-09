@@ -5,7 +5,7 @@
 	[ColorCode] nvarchar(25) ,
 	Orderby int not null,
 	[AccountId] int,
-	[OfficeId]int,
+	[MedicalOfficeId]int,
 	[Deleted] bit,
 	[CreatedDate] datetime,
 	[UpdatedDate] datetime,

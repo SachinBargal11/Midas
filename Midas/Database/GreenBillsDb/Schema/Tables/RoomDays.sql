@@ -9,5 +9,5 @@
 	[EffectiveTo] datetime,
 	[AccountId] int not null,
        CONSTRAINT [FK_RoomDays_RoomId] FOREIGN KEY ([RoomId]) REFERENCES [Room](RoomId),
-	CONSTRAINT [FK_RoomDays_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](AccountId)
+	CONSTRAINT [FK_RoomDays_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](ID)
 )

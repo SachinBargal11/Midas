@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[InsuranceAddress]
 (
-	[InsuranceAddressId] int NOT NULL PRIMARY KEY,
+	[ID] int NOT NULL PRIMARY KEY,
 	[InsuranceId] int ,
 	[AccountId] int,
 	[OfficeId] int,

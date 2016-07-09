@@ -1,0 +1,27 @@
+﻿CREATE TABLE [dbo].[SpecialtyDetails]
+(   SpecialtyDetailId int  identity(1,1) NOT NULL PRIMARY KEY,
+	[SpecialtyId] int,
+	[IsUnitApply] bit,
+	[ParentSpecialtyID] int,
+	[FollowUpDays] int,
+	[FollowupTime] int,
+	[InitialDays] int,
+	[InitialTime] int,
+	[IsInitialEvaluation] bit,
+	[SpecialtyCode] nvarchar(10),
+	[Description] nvarchar(20),
+	[Include1500] bit,
+	[IsReferral] BIT,
+	[HaveNotes] bit,
+	[AssociatedSpecialty] int,
+	[MultipleVisitsDay] bit,
+	[MedicalOfficeId] int,
+	[Deleted] bit,
+	[CreatedDate] datetime,
+	[UpdatedDate] datetime,
+	[CreatedBy] int,
+	[UpdatedBY]  int,
+	IPAddress varchar(15),
+
+	
+)
