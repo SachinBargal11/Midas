@@ -5,7 +5,7 @@
 	[FirstName] [nvarchar](50) NOT NULL,
 	[MiddleName] [nvarchar](50) NULL,
 	[LastName] [nvarchar](50) NULL,
-	[Gender] [bit] NULL,
+	[Gender] TINYINT NULL,
 	[UserType] [tinyint] NOT NULL,
 	[ImageLink] [nvarchar](512) NULL,
 	[AddressId] [int] NULL,

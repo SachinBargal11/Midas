@@ -1,11 +1,31 @@
-﻿CREATE TABLE [dbo].[Specialty]
+﻿
+CREATE TABLE [dbo].[Specialty](
+	[ID] [INT] IDENTITY(1,1) NOT NULL,
+	[Name] [NVARCHAR](50) NOT NULL,
+	[SpecialityCode] [NVARCHAR](50) NOT NULL,
+	[IsDeleted] [BIT] NULL,
+	[CreateByUserID] [INT] NOT NULL,
+	[CreateDate] [DATETIME] NULL,
+	[UpdateByUserID] [INT] NULL,
+	[UpdateDate] [DATETIME] NULL,
+PRIMARY KEY CLUSTERED 
 (
-	[SpecialtyId] int identity(1,1) NOT NULL PRIMARY KEY,
-	[Name] nvarchar(50) not null,
-	[Deleted] bit,
-	[CreatedDate] datetime,
-	[UpdatedDate] datetime,
-	[CreatedBy] int,
-	[UpdatedBY]  int,
-	IPAddress varchar(15),
-)
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[Specialty]  WITH CHECK ADD  CONSTRAINT [FK_Specialty_User] FOREIGN KEY([UpdateByUserID])
+REFERENCES [dbo].[User] ([ID])
+GO
+
+ALTER TABLE [dbo].[Specialty] CHECK CONSTRAINT [FK_Specialty_User]
+GO
+
+ALTER TABLE [dbo].[Specialty]  WITH CHECK ADD  CONSTRAINT [FK_Specialty_User1] FOREIGN KEY([UpdateByUserID])
+REFERENCES [dbo].[User] ([ID])
+GO
+
+ALTER TABLE [dbo].[Specialty] CHECK CONSTRAINT [FK_Specialty_User1]
+GO
