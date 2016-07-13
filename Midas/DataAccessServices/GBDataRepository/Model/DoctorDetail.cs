@@ -22,7 +22,6 @@ namespace Midas.GreenBill.Model
         public string NPI { get; set; }
         public string FederalTaxId { get; set; }
         public Nullable<byte> TaxType { get; set; }
-        public Nullable<decimal> Koel { get; set; }
         public string AssignNumber { get; set; }
         public string Title { get; set; }
         public Nullable<int> EIN_SIN { get; set; }

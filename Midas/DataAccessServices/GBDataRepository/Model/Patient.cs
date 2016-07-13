@@ -12,24 +12,35 @@ namespace Midas.GreenBill.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Abbreviation
+    public partial class Patient
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Abbreviation()
+        public Patient()
         {
-            this.CaseTypes = new HashSet<CaseType>();
+            this.PatientInsurances = new HashSet<PatientInsurance>();
         }
     
         public int ID { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public Nullable<int> UserID { get; set; }
+        public string SSN { get; set; }
+        public string WCBNO { get; set; }
+        public string JobTitle { get; set; }
+        public string WorkActivities { get; set; }
+        public string CarrierCaseNo { get; set; }
+        public Nullable<bool> UseTranspotation { get; set; }
+        public string ChartNo { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
+        public virtual Insurance Insurance { get; set; }
+        public virtual ProviderMedicalFacility ProviderMedicalFacility { get; set; }
+        public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
+        public virtual User User2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CaseType> CaseTypes { get; set; }
+        public virtual ICollection<PatientInsurance> PatientInsurances { get; set; }
     }
 }

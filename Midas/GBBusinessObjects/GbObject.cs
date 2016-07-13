@@ -42,6 +42,11 @@ namespace Midas.GreenBill.BusinessObject
         public string UpdatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
-        
+     
+        public virtual List<BusinessValidation> Validate()
+        {
+            List<BusinessValidation> validations = new List<BusinessValidation>();
+            return validations;
+        }   
     }
 }

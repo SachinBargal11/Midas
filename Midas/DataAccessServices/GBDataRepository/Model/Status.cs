@@ -12,11 +12,13 @@ namespace Midas.GreenBill.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Owner
+    public partial class Status
     {
-        public int OwnerId { get; set; }
-        public string Name { get; set; }
-        public byte AddressId { get; set; }
-        public byte ContactInfoId { get; set; }
+        public string ID { get; set; }
+        public string Status1 { get; set; }
+        public int CreateByUserID { get; set; }
+        public System.DateTime CreateDate { get; set; }
+        public Nullable<int> UpdateByUserID { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
     }
 }

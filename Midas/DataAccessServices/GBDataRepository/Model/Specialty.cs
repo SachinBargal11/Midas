@@ -16,21 +16,6 @@ namespace Midas.GreenBill.Model
     {
         public int SpecialtyId { get; set; }
         public string Name { get; set; }
-        public Nullable<bool> IsUnitApply { get; set; }
-        public Nullable<int> ParentSpecialtyID { get; set; }
-        public Nullable<int> FollowUpDays { get; set; }
-        public Nullable<int> FollowupTime { get; set; }
-        public Nullable<int> InitialDays { get; set; }
-        public Nullable<int> InitialTime { get; set; }
-        public Nullable<bool> IsInitialEvaluation { get; set; }
-        public string SpecialtyCode { get; set; }
-        public string Description { get; set; }
-        public Nullable<bool> IsAssociateToPatient { get; set; }
-        public Nullable<bool> Include1500 { get; set; }
-        public Nullable<bool> IsReferral { get; set; }
-        public Nullable<bool> HaveNotes { get; set; }
-        public Nullable<int> AssociatedSpecialty { get; set; }
-        public Nullable<bool> MultipleVisitsDay { get; set; }
         public Nullable<bool> Deleted { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }

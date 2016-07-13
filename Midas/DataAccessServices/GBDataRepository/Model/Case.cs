@@ -37,10 +37,10 @@ namespace Midas.GreenBill.Model
         public Nullable<int> CopiedUserId { get; set; }
         public Nullable<System.DateTime> CopiedDate { get; set; }
         public Nullable<int> CopiedFormPatient { get; set; }
+        public Nullable<bool> IsSoftDeleted { get; set; }
         public Nullable<decimal> TotalBillAmount { get; set; }
         public Nullable<decimal> Paid { get; set; }
         public Nullable<decimal> Balance { get; set; }
-        public string CasePrefix { get; set; }
         public string RemoteCaseID { get; set; }
         public string MarriedStatus { get; set; }
         public Nullable<int> ReferringDoctorID { get; set; }

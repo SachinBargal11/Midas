@@ -81,6 +81,9 @@
     <Compile Include="Model\ApplicationSetting.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\AuditTrail.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Bill.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
@@ -117,9 +120,6 @@
     <Compile Include="Model\CaseType.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\City.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\CompanyConnection.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
@@ -150,13 +150,22 @@
     <Compile Include="Model\DignosisCode.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Doctor.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\DoctorDetail.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\DoctorType.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\DocumentType.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\EmailField.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\EmailProfile.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\EmailTemplate.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\EmployerAddress.cs">
@@ -199,13 +208,10 @@
     <Compile Include="Model\Location.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\MailProfile.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\Mandatory.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\MedicalOffice.cs">
+    <Compile Include="Model\MedicalFacility.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Node.cs">
@@ -217,22 +223,19 @@
     <Compile Include="Model\NotesType.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Office.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Owner.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\PacketRequest.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PacketRequestBill.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\Patient.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\PatientAccidentDetail.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\PatientDetail.cs">
+    <Compile Include="Model\PatientInsurance.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Payment.cs">
@@ -250,7 +253,7 @@
     <Compile Include="Model\Provider.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\ProviderDetail.cs">
+    <Compile Include="Model\ProviderMedicalFacility.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Reconcilation.cs">
@@ -292,10 +295,10 @@
     <Compile Include="Model\Specialty.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\State.cs">
+    <Compile Include="Model\SpecialtyDetail.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\sysdiagram.cs">
+    <Compile Include="Model\Status.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SystemSetting.cs">
@@ -304,10 +307,13 @@
     <Compile Include="Model\SystemSettingKey.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\TransferredCas.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Transportation.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\User1.cs">
+    <Compile Include="Model\User.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\UserType.cs">
