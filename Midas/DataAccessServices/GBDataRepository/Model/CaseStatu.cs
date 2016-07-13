@@ -14,16 +14,12 @@ namespace Midas.GreenBill.Model
     
     public partial class CaseStatu
     {
-        public int CaseStatusId { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
-        public Nullable<bool> IsArchived { get; set; }
-        public Nullable<int> AccountId { get; set; }
-        public Nullable<int> OfficeId { get; set; }
-        public Nullable<bool> Deleted { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
-        public Nullable<System.DateTime> UpdatedDate { get; set; }
-        public Nullable<int> CreatedBy { get; set; }
-        public Nullable<int> UpdatedBY { get; set; }
-        public string IPAddress { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
+        public int CreateByUserID { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public Nullable<int> UpdateByUserID { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
     }
 }

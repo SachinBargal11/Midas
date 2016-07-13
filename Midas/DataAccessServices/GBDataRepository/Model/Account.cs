@@ -17,27 +17,24 @@ namespace Midas.GreenBill.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Account()
         {
-            this.Addresses = new HashSet<Address>();
-            this.Doctors = new HashSet<Doctor>();
+            this.MedicalFacilities = new HashSet<MedicalFacility>();
             this.Nodes = new HashSet<Node>();
-            this.Providers = new HashSet<Provider>();
             this.RoomSchedules = new HashSet<RoomSchedule>();
         }
     
-        public int AccountId { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
         public byte Status { get; set; }
         public int AddressId { get; set; }
-        public int OwnerId { get; set; }
+        public int CreateByUserID { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public Nullable<int> UpdateByUserID { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Address> Addresses { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Doctor> Doctors { get; set; }
+        public virtual ICollection<MedicalFacility> MedicalFacilities { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Node> Nodes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Provider> Providers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RoomSchedule> RoomSchedules { get; set; }
     }

@@ -12,12 +12,13 @@ namespace Midas.GreenBill.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class sysdiagram
+    public partial class Status
     {
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public string ID { get; set; }
+        public string Status1 { get; set; }
+        public int CreateByUserID { get; set; }
+        public System.DateTime CreateDate { get; set; }
+        public Nullable<int> UpdateByUserID { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
     }
 }

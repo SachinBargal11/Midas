@@ -23,17 +23,17 @@ namespace Midas.GreenBill.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object Save<T, U>(T entity, U parentDBEntity) where T : BO.GbObject
+        public virtual Object Save<T>(T entity) where T : BO.GbObject
         {
             throw new NotImplementedException();
         }
 
-        public virtual void PreSave<T, U>(T entity, U parentDBEntity) where T : BO.GbObject
+        public virtual void PreSave<T>(T entity) where T : BO.GbObject
         {
             //override and do the necessary operations needed for saving an object
         }
 
-        public virtual void PostSave<T, U>(T entity, U parentDBEntity) where T : BO.GbObject
+        public virtual void PostSave<T>(T entity) where T : BO.GbObject
         {
             //override and do the necessary operations needed after saving an object
         }

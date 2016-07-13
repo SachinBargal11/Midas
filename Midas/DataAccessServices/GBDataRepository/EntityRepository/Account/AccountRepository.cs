@@ -27,7 +27,7 @@ namespace Midas.GreenBill.EntityRepository
 
             BO.Account boAccount = new BO.Account();
 
-            boAccount.Id = account.AccountId;
+            boAccount.Id = account.ID;
             boAccount.Name = account.Name;
             boAccount.Status = (BO.AccountStatus)account.Status;
 
@@ -36,14 +36,14 @@ namespace Midas.GreenBill.EntityRepository
         }
 
 
-        public override Object Save<T, U>(T entity, U parentDBObj) 
+        public override Object Save<T>(T entity) 
         {
             Utility.ValidateEntityType<T>(typeof(BO.Account));
             BO.Account accountBO = entity as BO.Account;
 
             Account accountDB = new Account();
             accountDB.Name = accountBO.Name;
-            accountDB.AccountId = accountBO.Id;
+            accountDB.ID = accountBO.Id;
             accountDB.Status = System.Convert.ToByte(accountBO.Status);
 
             //accountDB.ChangeBy

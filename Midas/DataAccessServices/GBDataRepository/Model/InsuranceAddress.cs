@@ -14,7 +14,13 @@ namespace Midas.GreenBill.Model
     
     public partial class InsuranceAddress
     {
-        public int InsuranceAddressId { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public InsuranceAddress()
+        {
+            this.PatientInsurances = new HashSet<PatientInsurance>();
+        }
+    
+        public int ID { get; set; }
         public Nullable<int> InsuranceId { get; set; }
         public Nullable<int> AccountId { get; set; }
         public Nullable<int> OfficeId { get; set; }
@@ -28,5 +34,8 @@ namespace Midas.GreenBill.Model
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<int> UpdatedBY { get; set; }
         public string IPAddress { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientInsurance> PatientInsurances { get; set; }
     }
 }

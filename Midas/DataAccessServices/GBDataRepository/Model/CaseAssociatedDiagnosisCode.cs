@@ -12,22 +12,16 @@ namespace Midas.GreenBill.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class MailProfile
+    public partial class CaseAssociatedDiagnosisCode
     {
-        public int MailProfileID { get; set; }
-        public string ProfileName { get; set; }
-        public string SMTPServer { get; set; }
-        public Nullable<int> SMTPPort { get; set; }
-        public Nullable<bool> IsSSL { get; set; }
-        public Nullable<bool> SMTPAuthenticationRequired { get; set; }
-        public string SMTPUser { get; set; }
-        public string SMTPPassword { get; set; }
-        public string FromEmail { get; set; }
+        public int CaseAssociatedDiagnosisCodeId { get; set; }
+        public Nullable<int> CaseId { get; set; }
+        public Nullable<int> DiagnosiCodeId { get; set; }
+        public Nullable<int> SpecialtyId { get; set; }
         public Nullable<bool> Deleted { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<int> UpdatedBY { get; set; }
-        public string IPAddress { get; set; }
     }
 }

@@ -63,7 +63,6 @@
     <Compile Include="EntityRepository\User\UserRepository.cs" />
     <Compile Include="EntitySearch\EntitySearch.cs" />
     <Compile Include="EntitySearch\EntitySearchParameters.cs" />
-    <Compile Include="Model\GreenBillsDbEntities.cs" />
     <Compile Include="Model\Abbreviation.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
@@ -79,6 +78,12 @@
     <Compile Include="Model\Address.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\ApplicationSetting.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AuditTrail.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Bill.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
@@ -91,6 +96,9 @@
     <Compile Include="Model\BillStatu.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\BillStatusHistory.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\BillVerification.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
@@ -98,6 +106,9 @@
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Case.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CaseAssociatedDiagnosisCode.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CaseDocument.cs">
@@ -109,7 +120,7 @@
     <Compile Include="Model\CaseType.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\City.cs">
+    <Compile Include="Model\CompanyConnection.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ContactInfo.cs">
@@ -139,10 +150,22 @@
     <Compile Include="Model\DignosisCode.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Doctor.cs">
+    <Compile Include="Model\DoctorDetail.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DoctorType.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\DocumentType.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\EmailField.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\EmailProfile.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\EmailTemplate.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\EmployerAddress.cs">
@@ -166,6 +189,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GbDataStore.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Model\GeneralDenial.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GeneralDenialImage.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GreenBillsDbEntities.cs" />
     <Compile Include="Model\Insurance.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
@@ -178,25 +208,34 @@
     <Compile Include="Model\Location.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\MailProfile.cs">
+    <Compile Include="Model\Mandatory.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Mandatory.cs">
+    <Compile Include="Model\MedicalFacility.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Node.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Office.cs">
+    <Compile Include="Model\Note.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Owner.cs">
+    <Compile Include="Model\NotesType.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PacketRequest.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PacketRequestBill.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Patient.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PatientAccidentDetail.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\PatientDetail.cs">
+    <Compile Include="Model\PatientInsurance.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Payment.cs">
@@ -212,6 +251,9 @@
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Provider.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ProviderMedicalFacility.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Reconcilation.cs">
@@ -247,22 +289,31 @@
     <Compile Include="Model\RoomSchedule.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\SignOnPdf.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Specialty.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\State.cs">
+    <Compile Include="Model\SpecialtyDetail.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\sysdiagram.cs">
+    <Compile Include="Model\Status.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SystemSetting.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\SystemSettingKey.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TransferredCas.cs">
+      <DependentUpon>GbDataStore.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Transportation.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\User1.cs">
+    <Compile Include="Model\User.cs">
       <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\UserType.cs">
@@ -287,29 +338,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <EntityDeploy Include="Model\GbDataStore.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>GbDataStore.Designer.cs</LastGenOutput>
     </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
     <None Include="Model\GbDataStore.edmx.diagram">
       <DependentUpon>GbDataStore.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Model\GbDataStore.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>GbDataStore.edmx</DependentUpon>
-      <LastGenOutput>GbDataStore.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Model\GbDataStore.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>GbDataStore.edmx</DependentUpon>
-      <LastGenOutput>GbDataStore.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -323,6 +360,18 @@
       <Project>{01c07d5e-d792-48cc-b43e-d42b65c5921f}</Project>
       <Name>GBBusinessObjects</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Model\GbDataStore.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>GbDataStore.edmx</DependentUpon>
+      <LastGenOutput>GbDataStore.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Model\GbDataStore.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>GbDataStore.edmx</DependentUpon>
+      <LastGenOutput>GbDataStore.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

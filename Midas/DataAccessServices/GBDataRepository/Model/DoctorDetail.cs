@@ -12,35 +12,25 @@ namespace Midas.GreenBill.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Doctor
+    public partial class DoctorDetail
     {
-        public int DoctorId { get; set; }
-        public string Name { get; set; }
+        public int DoctorDetailId { get; set; }
+        public Nullable<int> DoctorUserId { get; set; }
         public string LicenseNumber { get; set; }
         public string WCBAuthorization { get; set; }
         public string WcbRatingCode { get; set; }
         public string NPI { get; set; }
-        public Nullable<int> ProviderId { get; set; }
         public string FederalTaxId { get; set; }
         public Nullable<byte> TaxType { get; set; }
-        public int AccountId { get; set; }
-        public Nullable<decimal> Koel { get; set; }
         public string AssignNumber { get; set; }
         public string Title { get; set; }
+        public Nullable<int> EIN_SIN { get; set; }
         public Nullable<bool> IsEmployee { get; set; }
-        public Nullable<bool> IsReferral { get; set; }
-        public Nullable<bool> IsUnBilled { get; set; }
-        public Nullable<bool> IsSupervising { get; set; }
         public Nullable<int> Type { get; set; }
-        public Nullable<int> SpecialtyId { get; set; }
         public Nullable<bool> Deleted { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<int> UpdatedBY { get; set; }
-    
-        public virtual Account Account { get; set; }
-        public virtual Provider Provider { get; set; }
-        public virtual Specialty Specialty { get; set; }
     }
 }

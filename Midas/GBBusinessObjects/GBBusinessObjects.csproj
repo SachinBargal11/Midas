@@ -43,6 +43,8 @@
     <Compile Include="Account\Account.cs" />
     <Compile Include="Account\AccountStatus.cs" />
     <Compile Include="Address.cs" />
+    <Compile Include="BusinessValidation.cs" />
+    <Compile Include="BusinessValidationResult.cs" />
     <Compile Include="ContactInfo.cs" />
     <Compile Include="GbObject.cs" />
     <Compile Include="Role\IGbRole.cs" />

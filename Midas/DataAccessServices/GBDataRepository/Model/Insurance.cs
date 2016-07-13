@@ -14,23 +14,33 @@ namespace Midas.GreenBill.Model
     
     public partial class Insurance
     {
-        public int InsuranceId { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Insurance()
+        {
+            this.PatientInsurances = new HashSet<PatientInsurance>();
+        }
+    
+        public int ID { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
-        public string Fax { get; set; }
         public string ContactPerson { get; set; }
+        public Nullable<int> ContactInfoId { get; set; }
         public Nullable<bool> Priority_Billing { get; set; }
         public Nullable<bool> Paper_Authorization { get; set; }
         public Nullable<bool> Generate1500Forms { get; set; }
-        public Nullable<int> AccountId { get; set; }
-        public Nullable<int> OfficeId { get; set; }
-        public Nullable<bool> Deleted { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
-        public Nullable<System.DateTime> UpdatedDate { get; set; }
-        public Nullable<int> CreatedBy { get; set; }
-        public Nullable<int> UpdatedBY { get; set; }
-        public string IPAddress { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
+        public int CreateByUserID { get; set; }
+        public System.DateTime CreateDate { get; set; }
+        public Nullable<int> UpdateByUserID { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
+    
+        public virtual ContactInfo ContactInfo { get; set; }
+        public virtual Insurance Insurance1 { get; set; }
+        public virtual Insurance Insurance2 { get; set; }
+        public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
+        public virtual Patient Patient { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientInsurance> PatientInsurances { get; set; }
     }
 }

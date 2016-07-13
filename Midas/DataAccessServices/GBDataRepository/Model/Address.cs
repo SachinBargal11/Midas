@@ -17,32 +17,38 @@ namespace Midas.GreenBill.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Address()
         {
-            this.Offices = new HashSet<Office>();
-            this.Providers = new HashSet<Provider>();
-            this.Providers1 = new HashSet<Provider>();
+            this.MedicalFacilities = new HashSet<MedicalFacility>();
+            this.ProviderMedicalFacilities = new HashSet<ProviderMedicalFacility>();
+            this.ProviderMedicalFacilities1 = new HashSet<ProviderMedicalFacility>();
+            this.Users = new HashSet<User>();
+            this.Users1 = new HashSet<User>();
         }
     
-        public int AddressId { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
         public string Address1 { get; set; }
         public string Address2 { get; set; }
         public string City { get; set; }
         public string State { get; set; }
         public string ZipCode { get; set; }
-        public string CountryCode { get; set; }
-        public int AccountId { get; set; }
-        public Nullable<bool> Deleted { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
-        public Nullable<System.DateTime> UpdatedDate { get; set; }
-        public Nullable<int> CreatedBy { get; set; }
-        public Nullable<int> UpdatedBY { get; set; }
+        public string Country { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
+        public int CreateByUserID { get; set; }
+        public System.DateTime CreateDate { get; set; }
+        public Nullable<int> UpdateByUserID { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
     
-        public virtual Account Account { get; set; }
+        public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Office> Offices { get; set; }
+        public virtual ICollection<MedicalFacility> MedicalFacilities { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Provider> Providers { get; set; }
+        public virtual ICollection<ProviderMedicalFacility> ProviderMedicalFacilities { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Provider> Providers1 { get; set; }
+        public virtual ICollection<ProviderMedicalFacility> ProviderMedicalFacilities1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User> Users { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User> Users1 { get; set; }
     }
 }

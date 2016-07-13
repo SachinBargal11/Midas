@@ -14,38 +14,13 @@ namespace Midas.GreenBill.Model
     
     public partial class Specialty
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Specialty()
-        {
-            this.Doctors = new HashSet<Doctor>();
-        }
-    
         public int SpecialtyId { get; set; }
         public string Name { get; set; }
-        public Nullable<bool> IsUnitApply { get; set; }
-        public Nullable<int> ParentSpecialtyID { get; set; }
-        public Nullable<int> FollowUpDays { get; set; }
-        public Nullable<int> FollowupTime { get; set; }
-        public Nullable<int> InitialDays { get; set; }
-        public Nullable<int> InitialTime { get; set; }
-        public Nullable<bool> IsInitialEvaluation { get; set; }
-        public string SpecialtyCode { get; set; }
-        public string Description { get; set; }
-        public Nullable<bool> IsAssociateToPatient { get; set; }
-        public Nullable<bool> Include1500 { get; set; }
-        public Nullable<bool> IsReferral { get; set; }
-        public Nullable<bool> HaveNotes { get; set; }
-        public Nullable<int> AssociatedSpecialty { get; set; }
-        public Nullable<int> AccountId { get; set; }
-        public Nullable<int> OfficeId { get; set; }
         public Nullable<bool> Deleted { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<int> UpdatedBY { get; set; }
         public string IPAddress { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Doctor> Doctors { get; set; }
     }
 }

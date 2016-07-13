@@ -14,8 +14,22 @@ namespace Midas.GreenBill.Model
     
     public partial class Abbreviation
     {
-        public int AbbreviationId { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Abbreviation()
+        {
+            this.CaseTypes = new HashSet<CaseType>();
+        }
+    
+        public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
+        public int CreateByUserID { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public Nullable<int> UpdateByUserID { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CaseType> CaseTypes { get; set; }
     }
 }

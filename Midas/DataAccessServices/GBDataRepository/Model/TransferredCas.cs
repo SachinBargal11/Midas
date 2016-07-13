@@ -12,16 +12,16 @@ namespace Midas.GreenBill.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class State
+    public partial class TransferredCas
     {
-        public int StateId { get; set; }
-        public string Name { get; set; }
-        public string Code { get; set; }
+        public int TransferredCasesId { get; set; }
+        public Nullable<int> MedicalOfficeId { get; set; }
+        public Nullable<int> LawFirmOfficdeId { get; set; }
+        public string BatchName { get; set; }
         public Nullable<bool> Deleted { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<int> UpdatedBY { get; set; }
-        public string IPAddress { get; set; }
     }
 }
