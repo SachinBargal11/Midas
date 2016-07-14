@@ -9,6 +9,8 @@ using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using System.Web.Http.Cors;
 using System.Configuration;
+using GbWebAPI.ActionFilters;
+using GbWebAPI.FilterAttribute;
 
 namespace GbWebAPI
 {
@@ -40,8 +42,8 @@ namespace GbWebAPI
             settings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Serialize;
             settings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            //GlobalConfiguration.Configuration.Filters.Add(new LoggingFilterAttribute());
-            //GlobalConfiguration.Configuration.Filters.Add(new GlobalExceptionAttribute());
+            GlobalConfiguration.Configuration.Filters.Add(new LoggingFilterAttribute());
+            GlobalConfiguration.Configuration.Filters.Add(new GlobalExceptionAttribute());
         }
     }
 }
