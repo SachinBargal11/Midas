@@ -1,28 +1,58 @@
-﻿CREATE TABLE [dbo].[ProcedureCode]
+﻿CREATE TABLE [dbo].[ProcedureCode](
+	[ID] [INT] IDENTITY(1,1) NOT NULL,
+	[Code] [NVARCHAR](20) NULL,
+	[Description] [NVARCHAR](250) NULL,
+	[Amount] [MONEY] NULL,
+	[LongDescription] [NVARCHAR](1000) NULL,
+	[Modifier] [NVARCHAR](20) NULL,
+	[RVU] [NVARCHAR](200) NULL,
+	[ValueCode] [NVARCHAR](200) NULL,
+	[LongModifier] [NVARCHAR](100) NULL,
+	[LocationId] [INT] NULL,
+	[SpecialtyId] [INT] NULL,
+	[IsDeleted] [BIT] NULL,
+	[CreateByUserID] [INT] NOT NULL,
+	[CreateDate] [DATETIME] NULL,
+	[UpdateByUserID] [INT] NULL,
+	[UpdateDate] [DATETIME] NULL,
+PRIMARY KEY CLUSTERED 
 (
-	[ProcedureCodeId] int identity(1,1) NOT NULL PRIMARY KEY,
-	[code] nvarchar(20),
-	[Description] nvarchar(250),
-	[Amount] money,
-	[IsBilable] bit,
-	[ShowToDoctor] bit,
-	[IsAddedToPreferredList] bit,
-	[LongDescription] nvarchar(1000),
-	[Modifier] nvarchar(20),
-	[RVU] nvarchar(200),
-	[ValueCode] nvarchar(200),
-	[LongModifier] nvarchar(100),
-	[LocationId] int,
-	[SpecialtyId] int,
-	[RoomId] int,
-	[AccountId] int,
-	[OfficeId] int,	
-	[Deleted] bit,
-	[CreatedDate] datetime,
-	[UpdatedDate] datetime,
-	[CreatedBy] int,
-	[UpdatedBY]  int,
-	IPAddress varchar(15)
-	
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
 
-)
+GO
+
+ALTER TABLE [dbo].[ProcedureCode]  WITH CHECK ADD  CONSTRAINT [FK_ProcedureCode_Specialty] FOREIGN KEY([SpecialtyId])
+REFERENCES [dbo].[Specialty] ([ID])
+GO
+
+ALTER TABLE [dbo].[ProcedureCode] CHECK CONSTRAINT [FK_ProcedureCode_Specialty]
+GO
+
+ALTER TABLE [dbo].[ProcedureCode]  WITH CHECK ADD  CONSTRAINT [FK_ProcedureCode_User] FOREIGN KEY([CreateByUserID])
+REFERENCES [dbo].[User] ([ID])
+GO
+
+ALTER TABLE [dbo].[ProcedureCode] CHECK CONSTRAINT [FK_ProcedureCode_User]
+GO
+
+ALTER TABLE [dbo].[ProcedureCode]  WITH CHECK ADD  CONSTRAINT [FK_ProcedureCode_User1] FOREIGN KEY([UpdateByUserID])
+REFERENCES [dbo].[User] ([ID])
+GO
+
+ALTER TABLE [dbo].[ProcedureCode] CHECK CONSTRAINT [FK_ProcedureCode_User1]
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'?' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ProcedureCode', @level2type=N'COLUMN',@level2name=N'RVU'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'?' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ProcedureCode', @level2type=N'COLUMN',@level2name=N'ValueCode'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'?' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ProcedureCode', @level2type=N'COLUMN',@level2name=N'LongModifier'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'?' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'ProcedureCode', @level2type=N'COLUMN',@level2name=N'LocationId'
+GO
+

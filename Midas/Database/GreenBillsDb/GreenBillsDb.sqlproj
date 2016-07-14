@@ -85,7 +85,6 @@
     <Build Include="Schema\Tables\BillStatus.sql" />
     <Build Include="Schema\Tables\VisitType.sql" />
     <Build Include="Schema\Tables\Location.sql" />
-    <Build Include="Schema\Tables\DoctorDetails.sql" />
     <Build Include="Schema\Tables\SpecialtyDetails.sql" />
     <Build Include="Schema\Tables\Nodes.sql" />
     <Build Include="Schema\Tables\Room.sql" />
@@ -160,6 +159,7 @@
     <Build Include="Schema\Tables\Provider.sql" />
     <Build Include="Schema\Tables\Patient.sql" />
     <Build Include="Schema\Tables\PatientInsurance.sql" />
+    <Build Include="Schema\Tables\Doctor.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="GreenBillsDb.refactorlog" />
