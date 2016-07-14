@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/http', 'rxjs/Observable', '../models/user', 'rxjs/add/operator/map'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/operator/map', '../scripts/environment', './adapters/user-adapter'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', '../models
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, Observable_1, user_1;
+    var core_1, http_1, Observable_1, environment_1, user_adapter_1;
     var AuthenticationService;
     return {
         setters:[
@@ -23,16 +23,18 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', '../models
             function (Observable_1_1) {
                 Observable_1 = Observable_1_1;
             },
-            function (user_1_1) {
-                user_1 = user_1_1;
+            function (_1) {},
+            function (environment_1_1) {
+                environment_1 = environment_1_1;
             },
-            function (_1) {}],
+            function (user_adapter_1_1) {
+                user_adapter_1 = user_adapter_1_1;
+            }],
         execute: function() {
             AuthenticationService = (function () {
                 function AuthenticationService(_http) {
                     this._http = _http;
-                    // private _url = "http://gyb-db.herokuapp.com/users";
-                    this._url = "http://localhost:3004/users";
+                    this._url = environment_1.default.SERVICE_BASE_URL + "/users";
                 }
                 AuthenticationService.prototype.register = function (user) {
                     var _this = this;
@@ -47,7 +49,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', '../models
                             reject(error);
                         });
                     });
-                    return Observable_1.Observable.from(promise);
+                    return Observable_1.Observable.fromPromise(promise);
                 };
                 AuthenticationService.prototype.authenticate = function (userId, password) {
                     var _this = this;
@@ -56,23 +58,17 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', '../models
                             .map(function (res) { return res.json(); })
                             .subscribe(function (data) {
                             if (data.length) {
-                                var user = new user_1.User({
-                                    id: data[0].id,
-                                    name: data[0].name,
-                                    phone: data[0].phone,
-                                    email: data[0].email
-                                });
+                                var user = user_adapter_1.UserAdapter.parseResponse(data[0]);
                                 resolve(user);
                             }
                             else {
-                                console.info('Throwing INVALID_CREDENTIALS');
                                 reject(new Error('INVALID_CREDENTIALS'));
                             }
                         }, function (error) {
                             reject(error);
                         });
                     });
-                    return Observable_1.Observable.from(promise);
+                    return Observable_1.Observable.fromPromise(promise);
                 };
                 AuthenticationService = __decorate([
                     core_1.Injectable(), 

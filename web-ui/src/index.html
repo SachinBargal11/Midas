@@ -15,6 +15,7 @@
         charset="utf-8">
     <link rel="stylesheet" href="<%= externalComponentsDirectory %>/node_modules/font-awesome/css/font-awesome.min.css" type="text/css"
         charset="utf-8">
+    
     <!-- /build -->
     <link rel="stylesheet" href="theme/css/main.css">
     <link rel="stylesheet" href="styles/styles.css">
@@ -43,15 +44,15 @@
                     'immutable' : '<%= externalComponentsDirectory %>/node_modules/immutable/dist/immutable.js',
                     'underscore' : '<%= externalComponentsDirectory %>/node_modules/underscore/underscore.js',
                     'jquery': '<%= externalComponentsDirectory %>/node_modules/jquery/dist/jquery.min.js',
-                    'eonasdan-bootstrap-datetimepicker': '<%= externalComponentsDirectory %>/node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'               
-                },
-                meta: {
-                      'daterangepicker': {
-                          deps: [
-                              'jquery', 
-                              'moment'
-                          ]
-                      }
+                    'eonasdan-bootstrap-datetimepicker': '<%= externalComponentsDirectory %>/node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'                },
+                meta: 
+                {
+                        'daterangepicker': {
+                            deps: [
+                                'jquery', 
+                                'moment'
+                            ]
+                        }                        
                 },
                 packages: {
                     'scripts': {
@@ -73,6 +74,9 @@
                         defaultExtension: 'js'
                     },
                     'components': {
+                        defaultExtension: 'js'
+                    },
+                    'routes': {
                         defaultExtension: 'js'
                     },
                     '@angular/common': {
@@ -100,7 +104,7 @@
                         defaultExtension: 'js'
                     },
                     '@angular/router': {
-                        main: 'bundles/router.umd.js',
+                        main: 'index.js',
                         defaultExtension: 'js'
                     },
                     '@angular/router-deprecated': {

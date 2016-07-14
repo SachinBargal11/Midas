@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/common', '@angular/router-deprecated', '../../utils/AppValidators', '../elements/loader', 'angular2-notifications', '../../stores/session-store'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/common', '@angular/router', '../../utils/AppValidators', '../elements/loader', 'angular2-notifications', '../../stores/session-store'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, router_deprecated_1, AppValidators_1, loader_1, angular2_notifications_1, session_store_1;
+    var core_1, common_1, router_1, AppValidators_1, loader_1, angular2_notifications_1, session_store_1;
     var LoginComponent;
     return {
         setters:[
@@ -20,8 +20,8 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
             function (common_1_1) {
                 common_1 = common_1_1;
             },
-            function (router_deprecated_1_1) {
-                router_deprecated_1 = router_deprecated_1_1;
+            function (router_1_1) {
+                router_1 = router_1_1;
             },
             function (AppValidators_1_1) {
                 AppValidators_1 = AppValidators_1_1;
@@ -37,11 +37,10 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
             }],
         execute: function() {
             LoginComponent = (function () {
-                function LoginComponent(fb, _sessionStore, _notificationsService, _router, _routeParams) {
+                function LoginComponent(fb, _sessionStore, _notificationsService, _router) {
                     this._sessionStore = _sessionStore;
                     this._notificationsService = _notificationsService;
                     this._router = _router;
-                    this._routeParams = _routeParams;
                     this.options = {
                         timeOut: 3000,
                         showProgressBar: false,
@@ -55,9 +54,6 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
                     });
                 }
                 LoginComponent.prototype.ngOnInit = function () {
-                    if (this._sessionStore.isAuthenticated()) {
-                        this._router.navigate(['Dashboard']);
-                    }
                 };
                 LoginComponent.prototype.login = function () {
                     var _this = this;
@@ -65,7 +61,7 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
                     this.isLoginInProgress = true;
                     result = this._sessionStore.login(this.loginForm.value.email, this.loginForm.value.password);
                     result.subscribe(function (response) {
-                        _this._router.navigate(['Dashboard']);
+                        _this._router.navigate(['/dashboard']);
                     }, function (error) {
                         _this.isLoginInProgress = false;
                         _this._notificationsService.error('Oh No!', 'Unable to authenticate user.');
@@ -77,10 +73,14 @@ System.register(['@angular/core', '@angular/common', '@angular/router-deprecated
                     core_1.Component({
                         selector: 'login',
                         templateUrl: 'templates/pages/login.html',
-                        directives: [router_deprecated_1.ROUTER_DIRECTIVES, loader_1.LoaderComponent, angular2_notifications_1.SimpleNotificationsComponent],
+                        directives: [
+                            router_1.ROUTER_DIRECTIVES,
+                            loader_1.LoaderComponent,
+                            angular2_notifications_1.SimpleNotificationsComponent
+                        ],
                         providers: [angular2_notifications_1.NotificationsService]
                     }), 
-                    __metadata('design:paramtypes', [common_1.FormBuilder, session_store_1.SessionStore, angular2_notifications_1.NotificationsService, router_deprecated_1.Router, router_deprecated_1.RouteParams])
+                    __metadata('design:paramtypes', [common_1.FormBuilder, session_store_1.SessionStore, angular2_notifications_1.NotificationsService, router_1.Router])
                 ], LoginComponent);
                 return LoginComponent;
             }());

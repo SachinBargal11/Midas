@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router-deprecated';
+import {Router} from '@angular/router';
 import {LoaderComponent} from '../elements/loader';
 import {AuthenticationService} from '../../services/authentication-service';
 import {CORE_DIRECTIVES} from '@angular/common';
@@ -49,13 +49,13 @@ export class AppHeaderComponent implements OnInit {
         if (this._sessionStore.isAuthenticated()) {
             this.user_name = this._sessionStore.session.user.displayName;
         } else {
-            this._router.navigate(['Login']);
+            this._router.navigate(['/login']);
         }
     }
 
     logout() {
         this._sessionStore.logout();
-        this._router.navigate(['Login']);
+        this._router.navigate(['/login']);
     }
 
     showNotifications() {

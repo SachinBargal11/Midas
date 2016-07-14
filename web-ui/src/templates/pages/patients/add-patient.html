@@ -95,8 +95,9 @@
                 <button [disabled]="!patientform.valid || isSavePatientProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSavePatientProgress"></loader>
                 </button>
-                <button type="button" class="btn btn-secondary" [routerLink]="['PatientsList']">Cancel
-                </button>
+                <!--<button type="button" class="btn btn-secondary" [RouterLinkWithHref]="['/dashboard']">Cancel
+                </button>-->
+                <a [routerLink]="['/patients']" class="btn btn-secondary" >Cancel</a>
             </form>
         </div>
     </div>

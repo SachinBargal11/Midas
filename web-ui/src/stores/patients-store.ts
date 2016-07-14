@@ -17,8 +17,6 @@ export class PatientsStore {
     private _patients: BehaviorSubject<List<Patient>> = new BehaviorSubject(List([]));
     private _selectedPatients: BehaviorSubject<List<Patient>> = new BehaviorSubject(List([]));
 
-    currentPatient;
-
     constructor(private _patientsService: PatientsService) {
         this.loadInitialData();
     }
@@ -31,34 +29,50 @@ export class PatientsStore {
         return this._selectedPatients.asObservable();
     }
 
-    loadInitialData() {
+    loadInitialData(): Observable<Patient[]> {
         let promise = new Promise((resolve, reject) => {
-            this._patientsService.getPatients().subscribe((patients: Patient) => {
+            this._patientsService.getPatients().subscribe((patients: Patient[]) => {
                 this._patients.next(List(patients));
                 resolve(patients);
             }, error => {
                 reject(error);
             });
         });
-
+        return <Observable<Patient[]>>Observable.fromPromise(promise);
     }
 
     findPatientById(id: number) {
         let patients = this._patients.getValue();
         let index = patients.findIndex((currentPatient: Patient) => currentPatient.id === id);
-        this.currentPatient = patients.get(index);
         return patients.get(index);
     }
 
-    addPatient(patient: Patient) {
-        let obs = this._patientsService.addPatient(patient);
+    fetchPatientById(id: number): Observable<Patient> {
+        let promise = new Promise((resolve, reject) => {
+            let matchedPatient: Patient = this.findPatientById(id);
+            if (matchedPatient) {
+                resolve(matchedPatient);
+            } else {
+                this._patientsService.getPatient(id).subscribe((patient: Patient) => {
+                    resolve(patient);
+                }, error => {
+                    reject(error);
+                });
+            }
+        });
+        return <Observable<Patient>>Observable.fromPromise(promise);
+    }
 
-        obs.subscribe(
-            res => {
+    addPatient(patient: Patient): Observable<Patient> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientsService.addPatient(patient).subscribe((patient: Patient) => {
                 this._patients.next(this._patients.getValue().push(patient));
+                resolve(patient);
+            }, error => {
+                reject(error);
             });
-
-        return obs;
+        });
+        return <Observable<Patient>>Observable.from(promise);
     }
 
     selectPatient(patient: Patient) {

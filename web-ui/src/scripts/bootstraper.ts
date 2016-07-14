@@ -1,5 +1,5 @@
 import {bootstrap} from '@angular/platform-browser-dynamic';
-import {ROUTER_PROVIDERS} from '@angular/router-deprecated';
+import {ROUTER_DIRECTIVES} from '@angular/router';
 import {AppRoot} from '../components/AppRoot';
 import { provide }           from '@angular/core';
 import { LocationStrategy,
@@ -13,17 +13,25 @@ import {PatientsStore} from '../stores/patients-store';
 import {PatientsService} from '../services/patients-service';
 
 import {NotificationsStore} from '../stores/notifications-store';
+import {APP_ROUTER_PROVIDER} from '../routes/app-routes';
+import {ValidateActiveSession} from '../routes/guards/validate-active-session';
+import {ValidateInActiveSession} from '../routes/guards/validate-inactive-session';
 
 bootstrap(AppRoot, [
-    ROUTER_PROVIDERS,
+    ROUTER_DIRECTIVES,
     HTTP_PROVIDERS,
     SessionStore,
     AuthenticationService,
     PatientsService,
     PatientsStore,
     NotificationsStore,
+    APP_ROUTER_PROVIDER,
+    ValidateActiveSession,
+    ValidateInActiveSession,
     provide(LocationStrategy,
         {
-            useClass: HashLocationStrategy
+            useValue: [ROUTER_DIRECTIVES],
+            useClass: HashLocationStrategy            
         }
-    )]);
+    )
+    ]);
