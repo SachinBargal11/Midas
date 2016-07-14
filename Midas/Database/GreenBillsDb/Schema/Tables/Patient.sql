@@ -5,6 +5,7 @@ CREATE TABLE [dbo].[Patient](
 	[SSN] [nvarchar](50) NULL,
 	[WCBNO] [nvarchar](50) NULL,
 	[JobTitle] [nvarchar](50) NULL,
+	MarriedStatus tinyint,
 	[WorkActivities] [nvarchar](50) NULL,
 	[CarrierCaseNo] [nvarchar](50) NULL,
 	[UseTranspotation] [bit] NULL,
