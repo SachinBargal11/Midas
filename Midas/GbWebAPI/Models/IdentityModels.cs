@@ -29,5 +29,7 @@ namespace GbWebAPI.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<Midas.GreenBill.BusinessObject.Account> Accounts { get; set; }
     }
 }

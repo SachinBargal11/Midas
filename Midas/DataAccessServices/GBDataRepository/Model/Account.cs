@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Midas.GreenBill.Model
+namespace GBDataRepository.Model
 {
     using System;
     using System.Collections.Generic;
@@ -17,28 +17,26 @@ namespace Midas.GreenBill.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Account()
         {
-            this.Addresses = new HashSet<Address>();
-            this.Doctors = new HashSet<Doctor>();
-            this.Nodes = new HashSet<Node>();
-            this.Providers = new HashSet<Provider>();
-            this.RoomSchedules = new HashSet<RoomSchedule>();
+            this.MedicalFacilities = new HashSet<MedicalFacilities>();
+            this.Nodes = new HashSet<Nodes>();
+            this.RoomSchedule = new HashSet<RoomSchedule>();
         }
     
-        public int AccountId { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
         public byte Status { get; set; }
-        public int AddressId { get; set; }
-        public int OwnerId { get; set; }
+        public Nullable<int> AddressId { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
+        public Nullable<int> CreateByUserID { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public Nullable<int> UpdateByUserID { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Address> Addresses { get; set; }
+        public virtual ICollection<MedicalFacilities> MedicalFacilities { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Doctor> Doctors { get; set; }
+        public virtual ICollection<Nodes> Nodes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Node> Nodes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Provider> Providers { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RoomSchedule> RoomSchedules { get; set; }
+        public virtual ICollection<RoomSchedule> RoomSchedule { get; set; }
     }
 }

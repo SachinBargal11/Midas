@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using Midas.GreenBill.Model;
+using GBDataRepository.Model;
 
 namespace Midas.GreenBill.EntityRepository
 {
@@ -17,7 +18,7 @@ namespace Midas.GreenBill.EntityRepository
             _dbSet = context.Set<Account>();
         }
 
-        public override Object Save<T, U>(T entity, U parentDBObj)
+        public override Object Save<T>(T entity)
         {
             return null;
         }

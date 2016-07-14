@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Midas.GreenBill.Model
+namespace GBDataRepository.Model
 {
     using System;
     using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace Midas.GreenBill.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Room()
         {
-            this.RoomSchedules = new HashSet<RoomSchedule>();
+            this.RoomSchedule = new HashSet<RoomSchedule>();
         }
     
         public int RoomId { get; set; }
@@ -32,6 +32,6 @@ namespace Midas.GreenBill.Model
         public Nullable<int> UpdatedBY { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RoomSchedule> RoomSchedules { get; set; }
+        public virtual ICollection<RoomSchedule> RoomSchedule { get; set; }
     }
 }

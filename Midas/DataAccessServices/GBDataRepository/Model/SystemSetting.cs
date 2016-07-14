@@ -7,22 +7,22 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Midas.GreenBill.Model
+namespace GBDataRepository.Model
 {
     using System;
     using System.Collections.Generic;
     
     public partial class SystemSetting
     {
-        public int CommanSettingId { get; set; }
-        public string Name { get; set; }
-        public string Value { get; set; }
-        public string Description { get; set; }
+        public int SystemSettingId { get; set; }
+        public Nullable<int> SystemSettingKeyId { get; set; }
+        public string SysValue { get; set; }
+        public Nullable<long> AccountId { get; set; }
+        public string SubValue { get; set; }
         public Nullable<bool> Deleted { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<int> UpdatedBY { get; set; }
-        public string IPAddress { get; set; }
     }
 }

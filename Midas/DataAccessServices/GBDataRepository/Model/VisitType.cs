@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Midas.GreenBill.Model
+namespace GBDataRepository.Model
 {
     using System;
     using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace Midas.GreenBill.Model
         public string ColorCode { get; set; }
         public int Orderby { get; set; }
         public Nullable<int> AccountId { get; set; }
-        public Nullable<int> OfficeId { get; set; }
+        public Nullable<int> MedicalOfficeId { get; set; }
         public Nullable<bool> Deleted { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }

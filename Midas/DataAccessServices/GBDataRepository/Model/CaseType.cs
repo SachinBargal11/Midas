@@ -7,23 +7,22 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Midas.GreenBill.Model
+namespace GBDataRepository.Model
 {
     using System;
     using System.Collections.Generic;
     
     public partial class CaseType
     {
-        public int CaseTypeId { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
-        public Nullable<int> AccountId { get; set; }
-        public Nullable<int> OfficeId { get; set; }
         public Nullable<int> AbbreviationId { get; set; }
-        public Nullable<bool> Deleted { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
-        public Nullable<System.DateTime> UpdatedDate { get; set; }
-        public Nullable<int> CreatedBy { get; set; }
-        public Nullable<int> UpdatedBY { get; set; }
-        public string IPAddress { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
+        public int CreateByUserID { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public Nullable<int> UpdateByUserID { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
+    
+        public virtual Abbreviation Abbreviation { get; set; }
     }
 }

@@ -41,15 +41,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account\Account.cs" />
-    <Compile Include="Account\AccountStatus.cs" />
     <Compile Include="Address.cs" />
+    <Compile Include="BusinessValidation.cs" />
+    <Compile Include="BusinessValidationResult.cs" />
     <Compile Include="ContactInfo.cs" />
+    <Compile Include="GBEnums.cs" />
     <Compile Include="GbObject.cs" />
-    <Compile Include="Role\IGbRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="User\Gender.cs" />
     <Compile Include="User\User.cs" />
-    <Compile Include="User\UserType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

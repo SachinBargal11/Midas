@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Midas.GreenBill.Model
+namespace GBDataRepository.Model
 {
     using System;
     using System.Collections.Generic;
@@ -16,41 +16,35 @@ namespace Midas.GreenBill.Model
     {
         public int CaseId { get; set; }
         public Nullable<int> CaseTypeId { get; set; }
-        public Nullable<int> ProviderID { get; set; }
-        public Nullable<int> InsuranceId { get; set; }
+        public Nullable<int> MedicalFacilitiesID { get; set; }
+        public Nullable<int> PatientInsuranceId { get; set; }
         public Nullable<int> CaseStatusId { get; set; }
         public Nullable<int> AttorneyId { get; set; }
-        public Nullable<int> PatientDetailId { get; set; }
+        public Nullable<int> PatientID { get; set; }
         public string ClaimNumber { get; set; }
-        public string PolicyNumber { get; set; }
         public Nullable<System.DateTime> DateOfAccident { get; set; }
         public Nullable<int> AdjusterId { get; set; }
-        public Nullable<bool> AssociateToDianosisCode { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
-        public Nullable<int> AccountId { get; set; }
-        public Nullable<int> InsuranceAddressId { get; set; }
+        public Nullable<System.DateTime> CaseDate { get; set; }
         public Nullable<int> CaseNo { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
         public Nullable<int> LocationId { get; set; }
-        public Nullable<int> IsCopied { get; set; }
-        public Nullable<int> CopiedAccountId { get; set; }
-        public Nullable<int> CopiedUserId { get; set; }
-        public Nullable<System.DateTime> CopiedDate { get; set; }
-        public Nullable<int> CopiedFormPatient { get; set; }
-        public Nullable<decimal> TotalBillAmount { get; set; }
-        public Nullable<decimal> Paid { get; set; }
-        public Nullable<decimal> Balance { get; set; }
-        public string CasePrefix { get; set; }
+        public Nullable<bool> IsSoftDeleted { get; set; }
         public string RemoteCaseID { get; set; }
-        public string MarriedStatus { get; set; }
-        public Nullable<int> ReferringDoctorID { get; set; }
         public Nullable<int> ReferringProviderId { get; set; }
         public string DiagnosisForSpecialty { get; set; }
         public Nullable<int> EmployerId { get; set; }
         public Nullable<int> EmployerAddressId { get; set; }
-        public Nullable<bool> Deleted { get; set; }
-        public Nullable<System.DateTime> UpdatedDate { get; set; }
-        public Nullable<int> CreatedBy { get; set; }
-        public Nullable<int> UpdatedBY { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
+        public int CreateByUserID { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public Nullable<int> UpdateByUserID { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
+    
+        public virtual Case Case1 { get; set; }
+        public virtual Case Case2 { get; set; }
+        public virtual Employer Employer { get; set; }
+        public virtual EmployerAddress EmployerAddress { get; set; }
+        public virtual Patient Patient { get; set; }
+        public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
     }
 }

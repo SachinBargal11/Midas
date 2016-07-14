@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Midas.GreenBill.Model
+namespace GBDataRepository.Model
 {
     using System;
     using System.Collections.Generic;
@@ -17,26 +17,40 @@ namespace Midas.GreenBill.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ContactInfo()
         {
-            this.Providers = new HashSet<Provider>();
-            this.Providers1 = new HashSet<Provider>();
+            this.EmployerAddress = new HashSet<EmployerAddress>();
+            this.InsuranceAddress = new HashSet<InsuranceAddress>();
+            this.MedicalFacilities = new HashSet<MedicalFacilities>();
+            this.ProviderMedicalFacilities = new HashSet<ProviderMedicalFacilities>();
+            this.ProviderMedicalFacilities1 = new HashSet<ProviderMedicalFacilities>();
+            this.User2 = new HashSet<User>();
         }
     
-        public int ContactInfoId { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
         public string CellPhone { get; set; }
         public string EmailAddress { get; set; }
         public string HomePhone { get; set; }
         public string WorkPhone { get; set; }
         public string FaxNo { get; set; }
-        public Nullable<bool> Deleted { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
-        public Nullable<System.DateTime> UpdatedDate { get; set; }
-        public Nullable<int> CreatedBy { get; set; }
-        public Nullable<int> UpdatedBY { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
+        public int CreateByUserID { get; set; }
+        public System.DateTime CreateDate { get; set; }
+        public Nullable<int> UpdateByUserID { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
     
+        public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Provider> Providers { get; set; }
+        public virtual ICollection<EmployerAddress> EmployerAddress { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Provider> Providers1 { get; set; }
+        public virtual ICollection<InsuranceAddress> InsuranceAddress { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MedicalFacilities> MedicalFacilities { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProviderMedicalFacilities> ProviderMedicalFacilities { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProviderMedicalFacilities> ProviderMedicalFacilities1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User> User2 { get; set; }
     }
 }

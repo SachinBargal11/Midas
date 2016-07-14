@@ -7,6 +7,7 @@ using System.Data.Entity;
 using Midas.GreenBill.Model;
 using BO = Midas.GreenBill.BusinessObject;
 using Midas.Common;
+using GBDataRepository.Model;
 
 namespace Midas.GreenBill.EntityRepository
 {
@@ -27,30 +28,26 @@ namespace Midas.GreenBill.EntityRepository
 
             BO.Account boAccount = new BO.Account();
 
-            boAccount.Id = account.AccountId;
+            boAccount.ID = account.ID;
             boAccount.Name = account.Name;
-            boAccount.Status = (BO.AccountStatus)account.Status;
+            boAccount.Status = (BO.GBEnums.AccountStatus)account.Status;
 
             //boAccount.Owner = new UserRepository(_context).Convert<BO.User,User1>(account.Owner)
             return (T)(object)boAccount;
         }
 
 
-        public override Object Save<T, U>(T entity, U parentDBObj) 
+        public override Object Save<T>(T entity) 
         {
             Utility.ValidateEntityType<T>(typeof(BO.Account));
             BO.Account accountBO = entity as BO.Account;
 
             Account accountDB = new Account();
             accountDB.Name = accountBO.Name;
-            accountDB.AccountId = accountBO.Id;
+            accountDB.ID = accountBO.ID;
             accountDB.Status = System.Convert.ToByte(accountBO.Status);
 
-            //accountDB.ChangeBy
-            //accountDB.CreateDt
-            //accountDB.ChangeDt = System.DateTime.UtcNow;
-
-            if (accountBO.Id > 0)
+            if (accountBO.ID > 0)
             {
                 _dbSet.Add(accountDB);
             }
@@ -74,7 +71,7 @@ namespace Midas.GreenBill.EntityRepository
         {
             Dictionary<Type, String> filterMap = new Dictionary<Type, string>();
             filterMap.Add(typeof(BO.Account), "");
-            IQueryable<Account> query = EntitySearch.CreateSearchQuery<Account>(_context.Accounts, searchParameters, filterMap);
+            IQueryable<Account> query = EntitySearch.CreateSearchQuery<Account>(_context.Account, searchParameters, filterMap);
             List<Account> accounts = query.ToList<Account>();
             List<T> boAccounts = new List<T>();
             accounts.ForEach(t => boAccounts.Add(Convert<T, Account>(t)));

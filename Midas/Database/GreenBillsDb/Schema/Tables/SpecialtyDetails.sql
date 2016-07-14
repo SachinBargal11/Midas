@@ -1,11 +1,11 @@
 ﻿CREATE TABLE [dbo].[SpecialtyDetails](
 	[ID] [INT] IDENTITY(1,1) NOT NULL,
 	[SpecialtyId] [INT] NULL,
-	[IsUnitApply] [BIT] NULL,
-	[FollowUpDays] [INT] NULL,
-	[FollowupTime] [INT] NULL,
+	ReevalDays [INT] NULL,
+	ReevalVisitCount [INT] NULL,
 	[InitialDays] [INT] NULL,
-	[InitialTime] [INT] NULL,
+	[InitialVisitCount] [INT] NULL, -- Between Reeval and Intitial visit
+	MaxReval int NULL,
 	[IsInitialEvaluation] [BIT] NULL,
 	[Include1500] [BIT] NULL,
 	[AssociatedSpecialty] [INT] NULL,
@@ -45,3 +45,12 @@ GO
 ALTER TABLE [dbo].[SpecialtyDetails] CHECK CONSTRAINT [FK_SpecialtyDetails_User1]
 GO
 
+
+EXEC sp_addextendedproperty @name = N'MS_Description',
+    @value = N'FK',
+    @level0type = N'SCHEMA',
+    @level0name = N'dbo',
+    @level1type = N'TABLE',
+    @level1name = N'SpecialtyDetails',
+    @level2type = N'COLUMN',
+    @level2name = N'SpecialtyId'
