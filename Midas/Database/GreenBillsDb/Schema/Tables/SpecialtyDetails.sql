@@ -10,7 +10,7 @@
 	[Include1500] [BIT] NULL,
 	[AssociatedSpecialty] [INT] NULL,
 	[AllowMultipleVisit] [BIT] NULL,
-	[MedicalOfficeId] [INT] NULL,
+	[MedicalFacilitiesID] [INT] NULL,
 	[IsDeleted] [BIT] NULL,
 	[CreateByUserID] [INT] NOT NULL,
 	[CreateDate] [DATETIME] NULL,
@@ -54,3 +54,12 @@ EXEC sp_addextendedproperty @name = N'MS_Description',
     @level1name = N'SpecialtyDetails',
     @level2type = N'COLUMN',
     @level2name = N'SpecialtyId'
+GO
+EXEC sp_addextendedproperty @name = N'MS_Description',
+    @value = N'To be discussed',
+    @level0type = N'SCHEMA',
+    @level0name = N'dbo',
+    @level1type = N'TABLE',
+    @level1name = N'SpecialtyDetails',
+    @level2type = N'COLUMN',
+    @level2name = N'AllowMultipleVisit'

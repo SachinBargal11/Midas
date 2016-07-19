@@ -26,7 +26,7 @@ namespace GBDataRepository.Model
         public string Name { get; set; }
         public byte Status { get; set; }
         public Nullable<int> AddressId { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
+        public bool IsDeleted { get; set; }
         public Nullable<int> CreateByUserID { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }

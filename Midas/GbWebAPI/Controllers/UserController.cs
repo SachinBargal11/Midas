@@ -17,6 +17,8 @@ using GbWebAPI.Models;
 using GbWebAPI.Providers;
 using GbWebAPI.Results;
 using Midas.GreenBill.BusinessObject;
+using Midas.GreenBill.EntityRepository;
+
 namespace Midas.GreenBill.Api
 {
     [Authorize]
@@ -38,23 +40,26 @@ namespace Midas.GreenBill.Api
         /// </summary>
         /// <returns></returns>
         [Route("GetAllUsers")]
-        public HttpResponseMessage Get()
+        public HttpResponseMessage Get([FromBody]User User)
         {
-            return requestHandler.GetGbObjects(Request);
+            List<EntitySearchParameter> searchParams = new List<EntitySearchParameter>();
+            return requestHandler.GetGbObjects(Request, User, searchParams);
         }
 
         // GET: api/Organizations
         [Route("GetUserByName")]
-        public HttpResponseMessage Get(string name)
+        public HttpResponseMessage Get([FromBody]User User,string name)
         {
-            return requestHandler.GetGbObjectByName(Request, name);
+            return requestHandler.GetGbObjectByName(Request, User,name);
         }
 
         // GET: api/Organizations/5
         [Route("GetUserByID")]
-        public HttpResponseMessage Get(int id)
+        [AllowAnonymous]
+        public HttpResponseMessage Get(int id, [FromBody]User User)
         {
-            return requestHandler.GetGbObjectById(Request, id);
+            User = new User();
+            return requestHandler.GetGbObjectById(Request, User, id);
         }
 
         // POST: api/Organizations
@@ -75,25 +80,25 @@ namespace Midas.GreenBill.Api
         [HttpGet]
         [Route("DeleteUser")]
         [AllowAnonymous]
-        public HttpResponseMessage Delete(int id)
+        public HttpResponseMessage Delete([FromBody]User User,int id)
         {
-            return requestHandler.DeleteGbObject(Request, id);
+            return requestHandler.DeleteGbObject(Request, User, id);
         }
 
         [HttpGet]
         [Route("Login")]
         [AllowAnonymous]
-        public HttpResponseMessage Login(string UserName,string Password)
+        public HttpResponseMessage Login(string UserName, [FromBody]User User,string Password)
         {
-            return requestHandler.ValidateUniqueName(Request, Password);
+            return requestHandler.ValidateUniqueName(Request, User, Password);
         }
 
         // Unique Name Validation
         [HttpGet]
         [Route("IsUnique")]
-        public HttpResponseMessage IsUnique(string name)
+        public HttpResponseMessage IsUnique([FromBody]User User,string name)
         {
-            return requestHandler.ValidateUniqueName(Request, name);
+            return requestHandler.ValidateUniqueName(Request, User, name);
         }
 
         protected override void Dispose(bool disposing)

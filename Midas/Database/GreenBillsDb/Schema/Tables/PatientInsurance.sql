@@ -30,18 +30,18 @@ GO
 ALTER TABLE [dbo].[PatientInsurance] ADD  CONSTRAINT [DF_PatientInsurance_IsDeleted]  DEFAULT ((0)) FOR [IsDeleted]
 GO
 
+ALTER TABLE [dbo].[PatientInsurance]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsurance_Address] FOREIGN KEY([InsuranceAddressID])
+REFERENCES [dbo].[Address] ([ID])
+GO
+
+ALTER TABLE [dbo].[PatientInsurance] CHECK CONSTRAINT [FK_PatientInsurance_Address]
+GO
+
 ALTER TABLE [dbo].[PatientInsurance]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsurance_Insurance] FOREIGN KEY([InsuranceID])
 REFERENCES [dbo].[Insurance] ([ID])
 GO
 
 ALTER TABLE [dbo].[PatientInsurance] CHECK CONSTRAINT [FK_PatientInsurance_Insurance]
-GO
-
-ALTER TABLE [dbo].[PatientInsurance]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsurance_InsuranceAddress] FOREIGN KEY([InsuranceAddressID])
-REFERENCES [dbo].[InsuranceAddress] ([ID])
-GO
-
-ALTER TABLE [dbo].[PatientInsurance] CHECK CONSTRAINT [FK_PatientInsurance_InsuranceAddress]
 GO
 
 ALTER TABLE [dbo].[PatientInsurance]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsurance_Patient] FOREIGN KEY([PatientID])
@@ -51,9 +51,16 @@ GO
 ALTER TABLE [dbo].[PatientInsurance] CHECK CONSTRAINT [FK_PatientInsurance_Patient]
 GO
 
-ALTER TABLE [dbo].[PatientInsurance]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsurance_PatientInsurance] FOREIGN KEY([ID])
-REFERENCES [dbo].[PatientInsurance] ([ID])
+ALTER TABLE [dbo].[PatientInsurance]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsurance_User] FOREIGN KEY([CreateByUserID])
+REFERENCES [dbo].[User] ([ID])
 GO
 
-ALTER TABLE [dbo].[PatientInsurance] CHECK CONSTRAINT [FK_PatientInsurance_PatientInsurance]
+ALTER TABLE [dbo].[PatientInsurance] CHECK CONSTRAINT [FK_PatientInsurance_User]
+GO
+
+ALTER TABLE [dbo].[PatientInsurance]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsurance_User1] FOREIGN KEY([UpdateByUserID])
+REFERENCES [dbo].[User] ([ID])
+GO
+
+ALTER TABLE [dbo].[PatientInsurance] CHECK CONSTRAINT [FK_PatientInsurance_User1]
 GO

@@ -57,7 +57,6 @@
     <Compile Include="DataAccessManager\GbDataAccessManager.cs" />
     <Compile Include="DataAccessManager\IDBContextProvider.cs" />
     <Compile Include="DataAccessManager\IGbDataAccessManager.cs" />
-    <Compile Include="EntityRepository\Account\UserRepository.cs" />
     <Compile Include="EntityRepository\BaseEntityRepo.cs" />
     <Compile Include="EntityRepository\Account\AccountRepository.cs" />
     <Compile Include="EntityRepository\Case\CaseRepository.cs" />
@@ -381,6 +380,9 @@
       <DependentUpon>GreenBillsDB.edmx</DependentUpon>
       <LastGenOutput>GreenBillsDB.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EntityRepository\Masters\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

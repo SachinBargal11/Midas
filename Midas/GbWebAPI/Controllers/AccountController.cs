@@ -17,6 +17,8 @@ using GbWebAPI.Models;
 using GbWebAPI.Providers;
 using GbWebAPI.Results;
 using Midas.GreenBill.BusinessObject;
+using Midas.GreenBill.EntityRepository;
+
 namespace Midas.GreenBill.Api
 {
     [Authorize]
@@ -38,27 +40,40 @@ namespace Midas.GreenBill.Api
         /// </summary>
         /// <returns></returns>
         [Route("GetAllAccounts")]
-        public HttpResponseMessage Get()
+        [AllowAnonymous]
+        public HttpResponseMessage Get([FromBody]Account account)
         {
-            return requestHandler.GetGbObjects(Request);
+            List<EntitySearchParameter> searchParams = new List<EntitySearchParameter>();
+            EntitySearchParameter par1 = new EntitySearchParameter();
+            par1.id = 1;
+            par1.type= typeof(Account);
+            searchParams.Add(par1);
+            account = new Account();
+            return requestHandler.GetGbObjects(Request, account, searchParams);
         }
 
         // GET: api/Organizations
         [Route("GetAccountByName")]
-        public HttpResponseMessage Get(string name)
+        [AllowAnonymous]
+        public HttpResponseMessage Get([FromBody]Account account,string name)
         {
-            return requestHandler.GetGbObjectByName(Request, name);
+            return requestHandler.GetGbObjectByName(Request, account, name);
         }
 
         // GET: api/Organizations/5
-        [Route("GetAccountByID")]
-        public HttpResponseMessage Get(int id)
+        [HttpGet]
+        [Route("GetAccount")]
+        [AllowAnonymous]
+        public HttpResponseMessage Get(int id, [FromBody]Account account)
         {
-            return requestHandler.GetGbObjectById(Request, id);
+            account = new Account();
+            return requestHandler.GetGbObjectById(Request, account, id);
         }
 
         // POST: api/Organizations
+        [HttpPost]
         [Route("AddAccount")]
+        [AllowAnonymous]
         public HttpResponseMessage Post([FromBody]Account account)
         {
             return requestHandler.CreateGbObject(Request, account);
@@ -75,17 +90,17 @@ namespace Midas.GreenBill.Api
         [HttpGet]
         [Route("DeleteAccount")]
         [AllowAnonymous]
-        public HttpResponseMessage Delete(int id)
+        public HttpResponseMessage Delete([FromBody]Account account,int id)
         {
-            return requestHandler.DeleteGbObject(Request, id);
+            return requestHandler.DeleteGbObject(Request, account, id);
         }
 
         // Unique Name Validation
         [HttpGet]
         [Route("IsUnique")]
-        public HttpResponseMessage IsUnique(string name)
+        public HttpResponseMessage IsUnique([FromBody]Account account,string name)
         {
-            return requestHandler.ValidateUniqueName(Request,name);
+            return requestHandler.ValidateUniqueName(Request, account,name);
         }
 
         protected override void Dispose(bool disposing)

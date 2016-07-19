@@ -27,7 +27,7 @@ namespace Midas.GreenBill.DataAccessManager
             context = new GreenBillsDbEntities(entityConnection);
 
 
-            ((IObjectContextAdapter)context).ObjectContext.CommandTimeout = ConfigReader.GetSettingsValue<int>("CommandTimeout", 300);
+           // ((IObjectContextAdapter)context).ObjectContext.CommandTimeout = ConfigReader.GetSettingsValue<int>("CommandTimeout", 300);
 
             return context;
         }

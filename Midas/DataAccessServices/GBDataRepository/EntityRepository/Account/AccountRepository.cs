@@ -1,4 +1,5 @@
-﻿using System;
+﻿#region Imports
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ using Midas.GreenBill.Model;
 using BO = Midas.GreenBill.BusinessObject;
 using Midas.Common;
 using GBDataRepository.Model;
+#endregion
 
 namespace Midas.GreenBill.EntityRepository
 {
@@ -15,11 +17,15 @@ namespace Midas.GreenBill.EntityRepository
     {
         private DbSet<Account> _dbSet;
 
+        #region Constructor
         public AccountRepository(GreenBillsDbEntities context) : base(context)
         {
             _dbSet = context.Set<Account>();
+            context.Configuration.ProxyCreationEnabled = false;
         }
+        #endregion
 
+        #region Entity Conversion
         public override T Convert<T, U>(U entity)
         {
             Account account = entity as Account;
@@ -35,8 +41,9 @@ namespace Midas.GreenBill.EntityRepository
             //boAccount.Owner = new UserRepository(_context).Convert<BO.User,User1>(account.Owner)
             return (T)(object)boAccount;
         }
+        #endregion
 
-
+        #region Save Data
         public override Object Save<T>(T entity) 
         {
             Utility.ValidateEntityType<T>(typeof(BO.Account));
@@ -57,17 +64,30 @@ namespace Midas.GreenBill.EntityRepository
             }
             return accountDB;
         }
+        #endregion
 
-        public override T Get<T>(int id)
+        #region Get Account By ID
+        public override T Get<T>(T entity,int id)
         {
-            return base.Get<T>(id);
+            BO.Account acc_ = Convert<BO.Account, Account>(_context.Account.Find(id));
+            return (T)(object)acc_;
         }
-        public override List<T> Get<T>(string name)
-        {
-            return base.Get<T>(name);
-        }
+        #endregion
 
-        public override List<T> Get<T>(List<EntitySearchParameter> searchParameters)
+        #region Get Account By Name
+        public override List<T> Get<T>(T entity, string name)
+        {
+            List<EntitySearchParameter> searchParameters = new List<EntitySearchParameter>();
+            EntitySearchParameter param = new EntitySearchParameter();
+            param.name = name;
+            searchParameters.Add(param);
+
+            return Get<T>(entity, searchParameters);
+        }
+        #endregion
+
+        #region Get Accounts By Search Parameters
+        public override List<T> Get<T>(T entity,List<EntitySearchParameter> searchParameters)
         {
             Dictionary<Type, String> filterMap = new Dictionary<Type, string>();
             filterMap.Add(typeof(BO.Account), "");
@@ -77,5 +97,6 @@ namespace Midas.GreenBill.EntityRepository
             accounts.ForEach(t => boAccounts.Add(Convert<T, Account>(t)));
             return boAccounts;
         }
+        #endregion
     }
 }

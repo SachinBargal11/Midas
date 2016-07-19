@@ -16,13 +16,6 @@
 
 GO
 
-ALTER TABLE [dbo].[EmployerAddress]  WITH CHECK ADD  CONSTRAINT [FK_EmployerAddress_Addresses] FOREIGN KEY([AddressID])
-REFERENCES [dbo].[Addresses] ([ID])
-GO
-
-ALTER TABLE [dbo].[EmployerAddress] CHECK CONSTRAINT [FK_EmployerAddress_Addresses]
-GO
-
 ALTER TABLE [dbo].[EmployerAddress]  WITH CHECK ADD  CONSTRAINT [FK_EmployerAddress_ContactInfo] FOREIGN KEY([ContactinfoID])
 REFERENCES [dbo].[ContactInfo] ([ID])
 GO
