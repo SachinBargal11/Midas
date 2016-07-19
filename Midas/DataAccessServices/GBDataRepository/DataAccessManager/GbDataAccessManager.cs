@@ -173,7 +173,11 @@ namespace Midas.GreenBill.DataAccessManager
                 //Excecute Object postsave 
                 baseRepo.PostSave(gbObject);
 
+<<<<<<< HEAD
                 return ((GbObject)gbSavedObject).ID;
+=======
+                return ((GbObject)gbSavedObject).Id;
+>>>>>>> master
             }
 
             catch (GbException gbe)
@@ -184,7 +188,11 @@ namespace Midas.GreenBill.DataAccessManager
             catch (Exception ex)
             {
                 //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+<<<<<<< HEAD
                 throw new GbException(string.Format("An unknown Error occurred while saving {0} [{1}]", ((GbObject)(object)(entity)).ID, ex.Message));
+=======
+                throw new GbException(string.Format("An unknown Error occurred while saving {0} [{1}]", ((GbObject)(object)(entity)).Name, ex.Message));
+>>>>>>> master
             }
         }
     }

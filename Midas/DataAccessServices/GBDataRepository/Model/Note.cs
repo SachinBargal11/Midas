@@ -7,21 +7,21 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-<<<<<<< HEAD
-namespace GBDataRepository.Model
-=======
 namespace Midas.GreenBill.Model
->>>>>>> master
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class SignOnPdf
+    public partial class Note
     {
-        public int Id { get; set; }
-        public string PdfType { get; set; }
-        public string PdfSignPath { get; set; }
-        public Nullable<int> ProviderId { get; set; }
-        public Nullable<int> AccountId { get; set; }
+        public int NotesId { get; set; }
+        public Nullable<int> NoteTypeId { get; set; }
+        public Nullable<int> CaseId { get; set; }
+        public string NotesDescription { get; set; }
+        public Nullable<bool> Deleted { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<System.DateTime> UpdatedDate { get; set; }
+        public Nullable<int> CreatedBy { get; set; }
+        public Nullable<int> UpdatedBY { get; set; }
     }
 }

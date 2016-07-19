@@ -7,7 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+<<<<<<< HEAD
 namespace GBDataRepository.Model
+=======
+namespace Midas.GreenBill.Model
+>>>>>>> master
 {
     using System;
     using System.Collections.Generic;
@@ -28,5 +32,14 @@ namespace GBDataRepository.Model
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
+<<<<<<< HEAD
+=======
+    
+        public virtual Insurance Insurance { get; set; }
+        public virtual InsuranceAddress InsuranceAddress { get; set; }
+        public virtual Patient Patient { get; set; }
+        public virtual PatientInsurance PatientInsurance1 { get; set; }
+        public virtual PatientInsurance PatientInsurance2 { get; set; }
+>>>>>>> master
     }
 }

@@ -7,7 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+<<<<<<< HEAD
 namespace GBDataRepository.Model
+=======
+namespace Midas.GreenBill.Model
+>>>>>>> master
 {
     using System;
     using System.Collections.Generic;

@@ -12,14 +12,19 @@ namespace Midas.GreenBill.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class CaseStatu
+    public partial class ApplicationSetting
     {
         public int ID { get; set; }
         public string Name { get; set; }
+        public string Value { get; set; }
+        public string Description { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
+        public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
+    
+        public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
     }
 }

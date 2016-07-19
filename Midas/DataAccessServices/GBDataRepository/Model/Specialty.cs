@@ -14,6 +14,7 @@ namespace GBDataRepository.Model
     
     public partial class Specialty
     {
+<<<<<<< HEAD
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Specialty()
         {
@@ -33,5 +34,15 @@ namespace GBDataRepository.Model
         public virtual ICollection<ProcedureCode> ProcedureCode { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
+=======
+        public int SpecialtyId { get; set; }
+        public string Name { get; set; }
+        public Nullable<bool> Deleted { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public Nullable<System.DateTime> UpdatedDate { get; set; }
+        public Nullable<int> CreatedBy { get; set; }
+        public Nullable<int> UpdatedBY { get; set; }
+        public string IPAddress { get; set; }
+>>>>>>> master
     }
 }

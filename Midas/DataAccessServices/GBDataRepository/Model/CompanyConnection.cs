@@ -12,12 +12,13 @@ namespace Midas.GreenBill.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class CaseAssociatedDiagnosisCode
+    public partial class CompanyConnection
     {
-        public int CaseAssociatedDiagnosisCodeId { get; set; }
-        public Nullable<int> CaseId { get; set; }
-        public Nullable<int> DiagnosiCodeId { get; set; }
-        public Nullable<int> SpecialtyId { get; set; }
+        public int CompanyConnectionsid { get; set; }
+        public Nullable<int> ConnectionFrom { get; set; }
+        public Nullable<int> ConnectionTo { get; set; }
+        public Nullable<bool> ShowVisit { get; set; }
+        public Nullable<bool> AllowCopyPatient { get; set; }
         public Nullable<bool> Deleted { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }

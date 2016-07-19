@@ -40,6 +40,7 @@ namespace Midas.GreenBill.Model
         public string PolicyHolder { get; set; }
         public Nullable<int> PolicyHolderAddressId { get; set; }
         public Nullable<int> PolicyHolderContactInfoId { get; set; }
+        public Nullable<int> ReferringOfficeID { get; set; }
         public Nullable<int> InsuranceId { get; set; }
         public Nullable<int> InsuranceAddressId { get; set; }
         public Nullable<int> SpecialtyId { get; set; }

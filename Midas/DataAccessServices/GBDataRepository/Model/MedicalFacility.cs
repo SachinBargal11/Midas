@@ -7,37 +7,37 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GBDataRepository.Model
+namespace Midas.GreenBill.Model
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Abbreviation
+    public partial class MedicalFacility
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Abbreviation()
+        public MedicalFacility()
         {
-<<<<<<< HEAD
-            this.CaseType = new HashSet<CaseType>();
-=======
-            this.CaseTypes = new HashSet<CaseType>();
->>>>>>> master
+            this.ProviderMedicalFacilities = new HashSet<ProviderMedicalFacility>();
         }
     
         public int ID { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
+        public Nullable<int> AccountID { get; set; }
+        public Nullable<int> AddressId { get; set; }
+        public Nullable<int> ContactInfoId { get; set; }
+        public string Prefix { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
+        public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
+        public virtual Account Account { get; set; }
+        public virtual Address Address { get; set; }
+        public virtual ContactInfo ContactInfo { get; set; }
+        public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-<<<<<<< HEAD
-        public virtual ICollection<CaseType> CaseType { get; set; }
-=======
-        public virtual ICollection<CaseType> CaseTypes { get; set; }
->>>>>>> master
+        public virtual ICollection<ProviderMedicalFacility> ProviderMedicalFacilities { get; set; }
     }
 }

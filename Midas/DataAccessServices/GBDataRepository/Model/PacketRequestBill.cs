@@ -12,11 +12,10 @@ namespace Midas.GreenBill.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Owner
+    public partial class PacketRequestBill
     {
-        public int OwnerId { get; set; }
-        public string Name { get; set; }
-        public byte AddressId { get; set; }
-        public byte ContactInfoId { get; set; }
+        public int PacketRequestBills { get; set; }
+        public Nullable<int> PacketRequestId { get; set; }
+        public Nullable<int> BillId { get; set; }
     }
 }

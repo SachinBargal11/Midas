@@ -34,7 +34,11 @@ namespace Midas.GreenBill.EntityRepository
 
             BO.Account boAccount = new BO.Account();
 
+<<<<<<< HEAD
             boAccount.ID = account.ID;
+=======
+            boAccount.Id = account.ID;
+>>>>>>> master
             boAccount.Name = account.Name;
             boAccount.Status = (BO.GBEnums.AccountStatus)account.Status;
 
@@ -43,7 +47,11 @@ namespace Midas.GreenBill.EntityRepository
         }
         #endregion
 
+<<<<<<< HEAD
         #region Save Data
+=======
+
+>>>>>>> master
         public override Object Save<T>(T entity) 
         {
             Utility.ValidateEntityType<T>(typeof(BO.Account));
@@ -51,7 +59,11 @@ namespace Midas.GreenBill.EntityRepository
 
             Account accountDB = new Account();
             accountDB.Name = accountBO.Name;
+<<<<<<< HEAD
             accountDB.ID = accountBO.ID;
+=======
+            accountDB.ID = accountBO.Id;
+>>>>>>> master
             accountDB.Status = System.Convert.ToByte(accountBO.Status);
 
             if (accountBO.ID > 0)

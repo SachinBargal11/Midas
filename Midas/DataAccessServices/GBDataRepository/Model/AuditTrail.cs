@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GBDataRepository.Model
+namespace Midas.GreenBill.Model
 {
     using System;
     using System.Collections.Generic;

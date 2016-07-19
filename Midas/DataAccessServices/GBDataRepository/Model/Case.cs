@@ -27,7 +27,19 @@ namespace GBDataRepository.Model
         public Nullable<System.DateTime> CaseDate { get; set; }
         public Nullable<int> CaseNo { get; set; }
         public Nullable<int> LocationId { get; set; }
+<<<<<<< HEAD
         public Nullable<bool> IsSoftDeleted { get; set; }
+=======
+        public Nullable<int> IsCopied { get; set; }
+        public Nullable<int> CopiedAccountId { get; set; }
+        public Nullable<int> CopiedUserId { get; set; }
+        public Nullable<System.DateTime> CopiedDate { get; set; }
+        public Nullable<int> CopiedFormPatient { get; set; }
+        public Nullable<bool> IsSoftDeleted { get; set; }
+        public Nullable<decimal> TotalBillAmount { get; set; }
+        public Nullable<decimal> Paid { get; set; }
+        public Nullable<decimal> Balance { get; set; }
+>>>>>>> master
         public string RemoteCaseID { get; set; }
         public Nullable<int> ReferringProviderId { get; set; }
         public string DiagnosisForSpecialty { get; set; }

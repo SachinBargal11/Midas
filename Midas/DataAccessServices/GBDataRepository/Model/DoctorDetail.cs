@@ -12,43 +12,44 @@ namespace GBDataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class InsuranceAddress
+    public partial class DoctorDetail
     {
-<<<<<<< HEAD
-=======
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public InsuranceAddress()
-        {
-            this.PatientInsurances = new HashSet<PatientInsurance>();
-        }
-    
->>>>>>> master
+<<<<<<< HEAD:Midas/DataAccessServices/GBDataRepository/Model/Doctor.cs
         public int ID { get; set; }
-        public Nullable<int> InsuranceId { get; set; }
-        public Nullable<int> AddressID { get; set; }
-        public Nullable<int> ContactinfoID { get; set; }
-        public Nullable<bool> Default { get; set; }
-<<<<<<< HEAD
+        public Nullable<int> DoctorUserId { get; set; }
+        public string SpecialityID { get; set; }
+=======
+        public int DoctorDetailId { get; set; }
+        public Nullable<int> DoctorUserId { get; set; }
+>>>>>>> master:Midas/DataAccessServices/GBDataRepository/Model/DoctorDetail.cs
+        public string LicenseNumber { get; set; }
+        public string WCBAuthorization { get; set; }
+        public string WcbRatingCode { get; set; }
+        public string NPI { get; set; }
+        public string FederalTaxId { get; set; }
+        public Nullable<byte> TaxType { get; set; }
+        public string AssignNumber { get; set; }
+        public string Title { get; set; }
+<<<<<<< HEAD:Midas/DataAccessServices/GBDataRepository/Model/Doctor.cs
+        public Nullable<byte> DoctorType { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
-        public virtual Address Address { get; set; }
-        public virtual ContactInfo ContactInfo { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
+        public virtual User User2 { get; set; }
 =======
+        public Nullable<int> EIN_SIN { get; set; }
+        public Nullable<bool> IsEmployee { get; set; }
+        public Nullable<int> Type { get; set; }
         public Nullable<bool> Deleted { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> UpdatedDate { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<int> UpdatedBY { get; set; }
-        public string IPAddress { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PatientInsurance> PatientInsurances { get; set; }
->>>>>>> master
+>>>>>>> master:Midas/DataAccessServices/GBDataRepository/Model/DoctorDetail.cs
     }
 }
