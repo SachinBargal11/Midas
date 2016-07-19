@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -78,19 +78,8 @@
     <Compile Include="Model\Address.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-<<<<<<< HEAD
     <Compile Include="Model\Addresses.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
-=======
-    <Compile Include="Model\ApplicationSetting.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\AuditTrail.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Bill.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
->>>>>>> master
     </Compile>
     <Compile Include="Model\ApplicationSettings.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
@@ -113,9 +102,6 @@
     <Compile Include="Model\BillStatusHistory.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\BillStatusHistory.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\BillVerification.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
@@ -128,9 +114,6 @@
     <Compile Include="Model\CaseAssociatedDiagnosisCode.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\CaseAssociatedDiagnosisCode.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\CaseDocument.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
@@ -140,13 +123,8 @@
     <Compile Include="Model\CaseType.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-<<<<<<< HEAD
     <Compile Include="Model\CompanyConnections.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
-=======
-    <Compile Include="Model\CompanyConnection.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
->>>>>>> master
     </Compile>
     <Compile Include="Model\ContactInfo.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
@@ -178,19 +156,11 @@
     <Compile Include="Model\DignosisCode.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-<<<<<<< HEAD
     <Compile Include="Model\Doctor.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\DoctorMedProvider.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
-=======
-    <Compile Include="Model\DoctorDetail.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\DoctorType.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
->>>>>>> master
     </Compile>
     <Compile Include="Model\DocumentType.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
@@ -206,15 +176,6 @@
     </Compile>
     <Compile Include="Model\Employer.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\EmailField.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\EmailProfile.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\EmailTemplate.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\EmployerAddress.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
@@ -243,13 +204,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GreenBillsDB.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Model\GeneralDenial.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\GeneralDenialImage.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\GreenBillsDbEntities.cs" />
     <Compile Include="Model\Insurance.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
@@ -260,7 +214,6 @@
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Location.cs">
-<<<<<<< HEAD
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Mandatory.cs">
@@ -271,46 +224,19 @@
     </Compile>
     <Compile Include="Model\Nodes.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
-=======
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Mandatory.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\MedicalFacility.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
->>>>>>> master
     </Compile>
     <Compile Include="Model\Notes.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-<<<<<<< HEAD
     <Compile Include="Model\NotesType.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PacketRequest.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
-=======
-    <Compile Include="Model\Note.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\NotesType.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\PacketRequest.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\PacketRequestBill.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Patient.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
->>>>>>> master
     </Compile>
     <Compile Include="Model\PacketRequestBills.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-<<<<<<< HEAD
     <Compile Include="Model\Patient.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
@@ -319,10 +245,6 @@
     </Compile>
     <Compile Include="Model\PatientInsurance.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
-=======
-    <Compile Include="Model\PatientInsurance.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
->>>>>>> master
     </Compile>
     <Compile Include="Model\Payment.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
@@ -341,9 +263,6 @@
     </Compile>
     <Compile Include="Model\ProviderMedicalFacilities.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\ProviderMedicalFacility.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Reconcilation.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
@@ -381,25 +300,14 @@
     <Compile Include="Model\SignOnPdf.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\SignOnPdf.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\Specialty.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-<<<<<<< HEAD
     <Compile Include="Model\SpecialtyDetails.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Status.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
-=======
-    <Compile Include="Model\SpecialtyDetail.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Status.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
->>>>>>> master
     </Compile>
     <Compile Include="Model\SystemSetting.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
@@ -410,21 +318,11 @@
     <Compile Include="Model\TransferredCases.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\SystemSettingKey.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\TransferredCas.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\Transportation.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\User.cs">
-<<<<<<< HEAD
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
-=======
-      <DependentUpon>GbDataStore.tt</DependentUpon>
->>>>>>> master
     </Compile>
     <Compile Include="Model\UserType.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
@@ -449,21 +347,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-<<<<<<< HEAD
     <EntityDeploy Include="Model\GreenBillsDB.edmx">
-=======
-    <EntityDeploy Include="Model\GbDataStore.edmx">
->>>>>>> master
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>GreenBillsDB.Designer.cs</LastGenOutput>
     </EntityDeploy>
-<<<<<<< HEAD
     <None Include="Model\GreenBillsDB.edmx.diagram">
       <DependentUpon>GreenBillsDB.edmx</DependentUpon>
-=======
-    <None Include="Model\GbDataStore.edmx.diagram">
-      <DependentUpon>GbDataStore.edmx</DependentUpon>
->>>>>>> master
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -481,7 +370,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Content Include="Model\GreenBillsDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>GreenBillsDB.edmx</DependentUpon>
@@ -496,19 +384,6 @@
   <ItemGroup>
     <Folder Include="EntityRepository\Masters\" />
   </ItemGroup>
-=======
-    <Content Include="Model\GbDataStore.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>GbDataStore.edmx</DependentUpon>
-      <LastGenOutput>GbDataStore.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Model\GbDataStore.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>GbDataStore.edmx</DependentUpon>
-      <LastGenOutput>GbDataStore.cs</LastGenOutput>
-    </Content>
-  </ItemGroup>
->>>>>>> master
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
