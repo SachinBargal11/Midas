@@ -57,7 +57,12 @@ export class AppHeaderComponent implements OnInit {
         this._sessionStore.logout();
         this._router.navigate(['/login']);
     }
-
+    
+    changePassword(){
+        this._sessionStore.session;
+        this._router.navigate(['/change-password']);
+    }
+    
     showNotifications() {
         this._notificationsStore.toggleVisibility();
     }

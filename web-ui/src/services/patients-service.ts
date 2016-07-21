@@ -94,9 +94,9 @@ export class PatientsService {
 
     }
 
-    deletePatient(patientId: number): Observable<Patient> {
+    deletePatient(patient: Patient): Observable<Patient> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.delete(`${this._url}/${patientId}`)
+            return this._http.delete(`${this._url}/${patient.id}`)
                 .map(res => res.json())
                 .subscribe((patient) => {
                     resolve(patient);

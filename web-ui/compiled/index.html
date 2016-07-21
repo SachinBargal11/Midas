@@ -44,7 +44,10 @@
                     'immutable' : '../node_modules/immutable/dist/immutable.js',
                     'underscore' : '../node_modules/underscore/underscore.js',
                     'jquery': '../node_modules/jquery/dist/jquery.min.js',
-                    'eonasdan-bootstrap-datetimepicker': '../node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'                },
+                    'primeng': '../node_modules/primeng',
+                    'jquery.inputmask': '../node_modules/jquery.inputmask/dist/jquery.inputmask.bundle.js',
+                    'eonasdan-bootstrap-datetimepicker': '../node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'                
+                },
                 meta: 
                 {
                         'daterangepicker': {
@@ -81,6 +84,10 @@
                     },
                     '@angular/common': {
                         main: 'bundles/common.umd.js',
+                        defaultExtension: 'js'
+                    },
+                    '@angular/forms': {
+                        main: 'bundles/forms.umd.js',
                         defaultExtension: 'js'
                     },
                     '@angular/compiler': {
@@ -124,6 +131,9 @@
                     },
                     'ng2-bootstrap': {
                         main: 'ng2-bootstrap.js',
+                        defaultExtension: 'js'
+                    },
+                    'primeng': {
                         defaultExtension: 'js'
                     }
                 }

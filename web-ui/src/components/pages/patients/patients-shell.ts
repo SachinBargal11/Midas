@@ -3,12 +3,15 @@ import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import {PatientsStore} from '../../../stores/patients-store';
 import {Observable} from 'rxjs/Observable';
 import {Patient} from '../../../models/patient';
-
+import {PatientsListComponent} from './patients-list';
+import {PatientDetailsComponent} from './patient-details';
+import {AddPatientComponent} from './add-patient';
 
 @Component({
     selector: 'patients-shell',
     templateUrl: 'templates/pages/patients/patients-shell.html',
-    directives: [ROUTER_DIRECTIVES]
+    directives: [ROUTER_DIRECTIVES],
+    precompile: [PatientsListComponent, PatientDetailsComponent, AddPatientComponent]
 })
 
 export class PatientsShellComponent implements OnInit {

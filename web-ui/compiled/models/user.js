@@ -18,7 +18,8 @@ System.register(['immutable'], function(exports_1, context_1) {
                 id: 0,
                 name: "",
                 phone: "",
-                email: ""
+                email: "",
+                password: ""
             });
             User = (function (_super) {
                 __extends(User, _super);

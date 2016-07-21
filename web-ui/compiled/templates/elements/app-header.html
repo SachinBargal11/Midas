@@ -16,6 +16,7 @@
                             Welcome ,<b> {{ user_name }} </b>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd-user-menu">
+                            <a (click)="changePassword()" class="dropdown-item"><span class="font-icon glyphicon glyphicon-edit"></span>Change Password</a>
                             <a (click)="logout()" class="dropdown-item"><span class="font-icon glyphicon glyphicon-log-out"></span>Logout</a>
                         </div>
                     </div>

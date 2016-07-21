@@ -1,5 +1,5 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {ControlGroup, Validators, FormBuilder} from '@angular/common';
+import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
 import {LoaderComponent} from '../../elements/loader';
@@ -15,7 +15,7 @@ import Moment from 'moment';
 @Component({
     selector: 'add-patient',
     templateUrl: 'templates/pages/patients/add-patient.html',
-    directives: [ROUTER_DIRECTIVES, LoaderComponent]
+    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent]
 })
 
 export class AddPatientComponent implements OnInit {
@@ -25,7 +25,7 @@ export class AddPatientComponent implements OnInit {
         'email': '',
         'mobileNo': '',
         'address': '',
-        // 'dob': ''
+        'dob': ''
     });
     options = {
         timeOut: 3000,
@@ -34,24 +34,29 @@ export class AddPatientComponent implements OnInit {
         clickToClose: false,
         maxLength: 10
     };
-    patientform: ControlGroup;
+    patientform: FormGroup;
+    patientformControls;
+    
     isSavePatientProgress = false;
     constructor(
-        fb: FormBuilder,
+        private fb: FormBuilder,
         private _router: Router,
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _patientsStore: PatientsStore,
         private _elRef: ElementRef
     ) {
-        this.patientform = fb.group({
+        this.patientform = this.fb.group({
             firstname: ['', Validators.required],
             lastname: ['', Validators.required],
-            email: ['', Validators.compose([Validators.required, AppValidators.emailValidator])],
-            mobileNo: ['', Validators.compose([Validators.required, AppValidators.mobileNoValidator])],
+            email: ['', [Validators.required, AppValidators.emailValidator]],
+            mobileNo: ['', [Validators.required, AppValidators.mobileNoValidator]],
             address: [''],
+            dob: ['']
             // dob: ['', Validators.required]
         });
+        this.patientformControls = this.patientform.controls;       
+        
     }
 
     ngOnInit() {
@@ -70,6 +75,7 @@ export class AddPatientComponent implements OnInit {
             'email': this.patientform.value.email,
             'mobileNo': this.patientform.value.mobileNo,
             'address': this.patientform.value.address,
+            'dob': $("#dob").val(),
             'createdUser': this._sessionStore.session.user.id
         });
         result = this._patientsStore.addPatient(patient);

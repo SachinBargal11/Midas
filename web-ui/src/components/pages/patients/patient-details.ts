@@ -8,7 +8,8 @@ import {Observable} from 'rxjs/Observable';
 @Component({
     selector: 'patient-details',
     templateUrl: 'templates/pages/patients/patient-details.html',
-    directives: [ROUTER_DIRECTIVES]
+    directives: [ROUTER_DIRECTIVES],
+    precompile: [PatientProfileComponent]
 })
 
 export class PatientDetailsComponent {

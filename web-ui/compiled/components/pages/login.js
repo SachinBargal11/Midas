@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/common', '@angular/router', '../../utils/AppValidators', '../elements/loader', 'angular2-notifications', '../../stores/session-store'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/forms', '@angular/router', '../../utils/AppValidators', '../elements/loader', 'angular2-notifications', '../../stores/session-store'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,15 +10,15 @@ System.register(['@angular/core', '@angular/common', '@angular/router', '../../u
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, router_1, AppValidators_1, loader_1, angular2_notifications_1, session_store_1;
+    var core_1, forms_1, router_1, AppValidators_1, loader_1, angular2_notifications_1, session_store_1;
     var LoginComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             },
-            function (common_1_1) {
-                common_1 = common_1_1;
+            function (forms_1_1) {
+                forms_1 = forms_1_1;
             },
             function (router_1_1) {
                 router_1 = router_1_1;
@@ -38,6 +38,7 @@ System.register(['@angular/core', '@angular/common', '@angular/router', '../../u
         execute: function() {
             LoginComponent = (function () {
                 function LoginComponent(fb, _sessionStore, _notificationsService, _router) {
+                    this.fb = fb;
                     this._sessionStore = _sessionStore;
                     this._notificationsService = _notificationsService;
                     this._router = _router;
@@ -48,10 +49,11 @@ System.register(['@angular/core', '@angular/common', '@angular/router', '../../u
                         clickToClose: false,
                         maxLength: 10
                     };
-                    this.loginForm = fb.group({
-                        email: ['', common_1.Validators.compose([common_1.Validators.required, AppValidators_1.AppValidators.emailValidator])],
-                        password: ['', common_1.Validators.required],
+                    this.loginForm = this.fb.group({
+                        email: ['', [forms_1.Validators.required, AppValidators_1.AppValidators.emailValidator]],
+                        password: ['', forms_1.Validators.required],
                     });
+                    this.loginFormControls = this.loginForm.controls;
                 }
                 LoginComponent.prototype.ngOnInit = function () {
                 };
@@ -74,13 +76,15 @@ System.register(['@angular/core', '@angular/common', '@angular/router', '../../u
                         selector: 'login',
                         templateUrl: 'templates/pages/login.html',
                         directives: [
+                            forms_1.FORM_DIRECTIVES,
+                            forms_1.REACTIVE_FORM_DIRECTIVES,
                             router_1.ROUTER_DIRECTIVES,
                             loader_1.LoaderComponent,
                             angular2_notifications_1.SimpleNotificationsComponent
                         ],
                         providers: [angular2_notifications_1.NotificationsService]
                     }), 
-                    __metadata('design:paramtypes', [common_1.FormBuilder, session_store_1.SessionStore, angular2_notifications_1.NotificationsService, router_1.Router])
+                    __metadata('design:paramtypes', [forms_1.FormBuilder, session_store_1.SessionStore, angular2_notifications_1.NotificationsService, router_1.Router])
                 ], LoginComponent);
                 return LoginComponent;
             }());
