@@ -160,6 +160,10 @@
     <Build Include="Schema\Tables\Patient.sql" />
     <Build Include="Schema\Tables\PatientInsurance.sql" />
     <Build Include="Schema\Tables\Doctor.sql" />
+    <Build Include="Schema\Tables\Employer.sql" />
+    <Build Include="Schema\Tables\CaseDiagnosisSpeciality.sql" />
+    <Build Include="Schema\Tables\DoctorMedicalFacilitiesProvider.sql" />
+    <Build Include="Schema\Tables\DoctorSpecialities.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="GreenBillsDb.refactorlog" />

@@ -7,13 +7,34 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Midas.GreenBill.Model
+namespace GBDataRepository.Model
 {
     using System;
     using System.Collections.Generic;
     
     public partial class Specialty
     {
+<<<<<<< HEAD
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Specialty()
+        {
+            this.ProcedureCode = new HashSet<ProcedureCode>();
+        }
+    
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string SpecialityCode { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
+        public int CreateByUserID { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public Nullable<int> UpdateByUserID { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProcedureCode> ProcedureCode { get; set; }
+        public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
+=======
         public int SpecialtyId { get; set; }
         public string Name { get; set; }
         public Nullable<bool> Deleted { get; set; }
@@ -22,5 +43,6 @@ namespace Midas.GreenBill.Model
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<int> UpdatedBY { get; set; }
         public string IPAddress { get; set; }
+>>>>>>> master
     }
 }

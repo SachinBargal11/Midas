@@ -25,6 +25,7 @@ namespace Midas.GreenBill.EntityRepository
 
         public virtual Object Save<T>(T entity) where T : BO.GbObject
         {
+
             throw new NotImplementedException();
         }
 
@@ -39,7 +40,7 @@ namespace Midas.GreenBill.EntityRepository
         }
 
 
-        public virtual T Get<T>(int id)
+        public virtual T Get<T>(T entity,int id)
         {
             throw new NotImplementedException();
         }
@@ -49,11 +50,11 @@ namespace Midas.GreenBill.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual List<T> Get<T>(string name)
+        public virtual List<T> Get<T>(T entity,string name)
         {
             throw new NotImplementedException();
         }
-        public virtual List<T> Get<T>(List<EntitySearchParameter> searchParameters)
+        public virtual List<T> Get<T>(T entity,List<EntitySearchParameter> searchParameters)
         {
             throw new NotImplementedException();
         }
@@ -62,6 +63,7 @@ namespace Midas.GreenBill.EntityRepository
             throw new NotImplementedException();
         }
 
-        #endregion 
+
+        #endregion
     }
 }

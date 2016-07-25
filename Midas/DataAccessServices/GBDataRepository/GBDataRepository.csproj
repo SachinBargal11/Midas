@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -64,287 +64,295 @@
     <Compile Include="EntitySearch\EntitySearch.cs" />
     <Compile Include="EntitySearch\EntitySearchParameters.cs" />
     <Compile Include="Model\Abbreviation.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Account.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Action.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Activity.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Address.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\ApplicationSetting.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\Addresses.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ApplicationSettings.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\AuditTrail.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Bill.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\BillDetail.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\BillDetails.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\BillPom.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\BillStatu.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\Bills.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\BillStatus.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\BillStatusHistory.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\BillVerification.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\BillVerificationAnswer.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Case.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CaseAssociatedDiagnosisCode.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CaseDocument.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\CaseStatu.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\CaseStatus.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CaseType.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\CompanyConnection.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\CompanyConnections.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ContactInfo.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CyclicInsuranceConfiguration.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CyclicProcedureConfigurationAmount.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CyclicSpecialtyConfiguration.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CyclicSpecialtyConfigurationAmount.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\C__MigrationHistory.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\C__RefactorLog.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\DenialReason.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\DenialReasons.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\DiagnosisType.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\DignosisCode.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\DoctorDetail.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\Doctor.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\DoctorType.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\DoctorMedProvider.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\DocumentType.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\EmailField.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\EmailFields.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\EmailProfile.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\EmailTemplate.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Employer.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\EmployerAddress.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\EnvelopeConfiguration.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\GbDataStore.Context.cs">
+    <Compile Include="Model\GeneralDenialImages.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GeneralDenials.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\GreenBillsDB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>GbDataStore.Context.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\GbDataStore.cs">
+    <Compile Include="Model\GreenBillsDB.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\GbDataStore.Designer.cs">
+    <Compile Include="Model\GreenBillsDB.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>GbDataStore.edmx</DependentUpon>
+      <DependentUpon>GreenBillsDB.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Model\GeneralDenial.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\GeneralDenialImage.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\GreenBillsDbEntities.cs" />
     <Compile Include="Model\Insurance.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\InsuranceAddress.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\IntakeAOB.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Location.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Mandatory.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\MedicalFacility.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\MedicalFacilities.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Node.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\Nodes.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Note.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\Notes.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\NotesType.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PacketRequest.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\PacketRequestBill.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\PacketRequestBills.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Patient.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\PatientAccidentDetail.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\PatientAccidentDetails.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PatientInsurance.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Payment.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\PaymentImage.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\PaymentImages.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\POM.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ProcedureCode.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Provider.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\ProviderMedicalFacility.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\ProviderMedicalFacilities.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Reconcilation.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Reminder.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ReminderRecurrence.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ReminderType.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\RequiredDocument.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\RequiredDocuments.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Role.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\RoleAction.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\RoleActions.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\RoleActivityEvent.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\RoleActivityEvents.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\RoleEvent.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\RoleEvents.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Room.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\RoomSchedule.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SignOnPdf.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Specialty.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\SpecialtyDetail.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\SpecialtyDetails.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Status.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SystemSetting.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SystemSettingKey.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\TransferredCas.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\TransferredCases.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Transportation.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\User.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\UserType.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\VerificationAnswerImage.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\VerificationAnswerImages.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\VerificationImage.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Visit.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+    <Compile Include="Model\VerificationImages.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\VisitProcedure.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Visits.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\VisitType.cs">
-      <DependentUpon>GbDataStore.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="RepoFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="Model\GbDataStore.edmx">
+    <EntityDeploy Include="Model\GreenBillsDB.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>GbDataStore.Designer.cs</LastGenOutput>
+      <LastGenOutput>GreenBillsDB.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="Model\GbDataStore.edmx.diagram">
-      <DependentUpon>GbDataStore.edmx</DependentUpon>
+    <None Include="Model\GreenBillsDB.edmx.diagram">
+      <DependentUpon>GreenBillsDB.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -362,16 +370,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Model\GbDataStore.Context.tt">
+    <Content Include="Model\GreenBillsDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>GbDataStore.edmx</DependentUpon>
-      <LastGenOutput>GbDataStore.Context.cs</LastGenOutput>
+      <DependentUpon>GreenBillsDB.edmx</DependentUpon>
+      <LastGenOutput>GreenBillsDB.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Model\GbDataStore.tt">
+    <Content Include="Model\GreenBillsDB.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>GbDataStore.edmx</DependentUpon>
-      <LastGenOutput>GbDataStore.cs</LastGenOutput>
+      <DependentUpon>GreenBillsDB.edmx</DependentUpon>
+      <LastGenOutput>GreenBillsDB.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EntityRepository\Masters\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

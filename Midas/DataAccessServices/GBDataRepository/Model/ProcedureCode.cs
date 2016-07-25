@@ -7,20 +7,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Midas.GreenBill.Model
+namespace GBDataRepository.Model
 {
     using System;
     using System.Collections.Generic;
     
     public partial class ProcedureCode
     {
-        public int ProcedureCodeId { get; set; }
-        public string code { get; set; }
+        public int ID { get; set; }
+        public string Code { get; set; }
         public string Description { get; set; }
         public Nullable<decimal> Amount { get; set; }
-        public Nullable<bool> IsBilable { get; set; }
-        public Nullable<bool> ShowToDoctor { get; set; }
-        public Nullable<bool> IsAddedToPreferredList { get; set; }
         public string LongDescription { get; set; }
         public string Modifier { get; set; }
         public string RVU { get; set; }
@@ -28,14 +25,14 @@ namespace Midas.GreenBill.Model
         public string LongModifier { get; set; }
         public Nullable<int> LocationId { get; set; }
         public Nullable<int> SpecialtyId { get; set; }
-        public Nullable<int> RoomId { get; set; }
-        public Nullable<int> AccountId { get; set; }
-        public Nullable<int> OfficeId { get; set; }
-        public Nullable<bool> Deleted { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
-        public Nullable<System.DateTime> UpdatedDate { get; set; }
-        public Nullable<int> CreatedBy { get; set; }
-        public Nullable<int> UpdatedBY { get; set; }
-        public string IPAddress { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
+        public int CreateByUserID { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public Nullable<int> UpdateByUserID { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
+    
+        public virtual Specialty Specialty { get; set; }
+        public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
     }
 }

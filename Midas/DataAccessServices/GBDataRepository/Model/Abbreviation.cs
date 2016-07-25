@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Midas.GreenBill.Model
+namespace GBDataRepository.Model
 {
     using System;
     using System.Collections.Generic;
@@ -17,7 +17,11 @@ namespace Midas.GreenBill.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Abbreviation()
         {
+<<<<<<< HEAD
+            this.CaseType = new HashSet<CaseType>();
+=======
             this.CaseTypes = new HashSet<CaseType>();
+>>>>>>> master
         }
     
         public int ID { get; set; }
@@ -30,6 +34,10 @@ namespace Midas.GreenBill.Model
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+<<<<<<< HEAD
+        public virtual ICollection<CaseType> CaseType { get; set; }
+=======
         public virtual ICollection<CaseType> CaseTypes { get; set; }
+>>>>>>> master
     }
 }

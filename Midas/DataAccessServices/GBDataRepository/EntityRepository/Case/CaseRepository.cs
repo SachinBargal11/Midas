@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using Midas.GreenBill.Model;
+using GBDataRepository.Model;
 
 namespace Midas.GreenBill.EntityRepository
 {

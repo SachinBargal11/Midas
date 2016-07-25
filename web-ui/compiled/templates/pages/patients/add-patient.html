@@ -2,46 +2,52 @@
     <div class="page-center-in">
         <div class="container-fluid">
             <h5 class="with-border">Add Patient</h5>
-            <form [ngFormModel]="patientform" (ngSubmit)="savePatient()">
+            <form [formGroup]="patientform" (ngSubmit)="savePatient()">
                 <section class="card">
                     <header class="card-header card-header-lg">
                         Patient Information
                     </header>
+
+
                     <div class="card-block">
                         <div class="row">
                             <div class="col-lg-4">
-                                <div class="form-group" [class.error]="firstname.control.touched && !firstname.valid">
-                                    <input type="text" class="form-control" placeholder="First Name" [class.error]="!firstname.valid" #firstname="ngForm" ngControl="firstname">
-                                    <div class='error-list' *ngIf="firstname.control.touched && !firstname.valid">
+                                <div class="form-group" [class.error]="patientformControls.firstname.touched && !patientformControls.firstname.valid">
+                                    <input formControlName="firstname" type="text" class="form-control" placeholder="First Name" [class.error]="!patientformControls.firstname.valid">
+                                    <div class='error-list' *ngIf="patientformControls.firstname.touched && !patientformControls.firstname.valid">
                                         <ul>
-                                            <li *ngIf="firstname.control.hasError('required')">First Name is required.</li>
+                                            <li *ngIf="patientformControls.firstname.hasError('required')">First Name is required.</li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-lg-4">
-                                <div class="form-group" [class.error]="lastname.control.touched && !lastname.valid">
-                                    <input type="text" class="form-control" placeholder="Last Name" [class.error]="!lastname.valid" #lastname="ngForm" ngControl="lastname">
-                                    <div class='error-list' *ngIf="lastname.control.touched && !lastname.valid">
+                                <div class="form-group" [class.error]="patientformControls.lastname.touched && !patientformControls.lastname.valid">
+                                    <input formControlName="lastname" type="text" class="form-control" placeholder="Last Name" [class.error]="!patientformControls.lastname.valid">
+                                    <div class='error-list' *ngIf="patientformControls.lastname.touched && !patientformControls.lastname.valid">
                                         <ul>
-                                            <li *ngIf="lastname.control.hasError('required')">Last Name is required.</li>
+                                            <li *ngIf="patientformControls.lastname.hasError('required')">Last Name is required.</li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <p-calendar formControlName="dob"></p-calendar>
+                                </div>
+                            </div>
                             <!--<div class="col-lg-4">
-                                <div class="form-group" [class.error]="dob.control.touched && !dob.valid">
+                                <div class="form-group" [class.error]="patientformControls.dob.touched && !dob.valid">
                                     <div class='input-group date'>
-                                        <input type="text" placeholder="Date Of Birth" class="datepickerElem form-control" [class.error]="!dob.valid" #dob="ngForm"
-                                            ngControl="dob">
+                                        <input formControlName="dob" type="text" placeholder="Date Of Birth" class="datepickerElem form-control" [class.error]="!dob.valid" />
                                         <span class="input-group-addon">
 										<i class="font-icon font-icon-calend"></i>
 									</span>
                                     </div>
-                                    <div class='error-list' *ngIf="dob.control.touched && !dob.valid">
+                                    <div class='error-list' *ngIf="patientformControls.dob.touched && !dob.valid">
                                         <ul>
-                                            <li *ngIf="dob.control.hasError('required')">Date Of Birth is required.</li>
+                                            <li *ngIf="patientformControls.dob.hasError('required')">Date Of Birth is required.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -56,13 +62,13 @@
                     <div class="card-block">
                         <div class="row">
                             <div class="col-lg-4">
-                                <div class="form-group" [class.error]="email.control.touched && !email.valid">
-                                    <input type="email" [class.error]="!email.valid" class="form-control" placeholder="E-Mail" type="text" #email="ngForm" ngControl="email"
-                                    />
-                                    <div class='error-list' *ngIf="email.control.touched && !email.valid">
+                                <div class="form-group" [class.error]="patientformControls.email.touched && !patientformControls.email.valid">
+                                    <input formControlName="email" type="email" [class.error]="!patientformControls.email.valid" class="form-control" placeholder="E-Mail"
+                                        type="text" />
+                                    <div class='error-list' *ngIf="patientformControls.email.touched && !patientformControls.email.valid">
                                         <ul>
-                                            <li *ngIf="email.control.hasError('required')">Email is required.</li>
-                                            <li *ngIf="email.control.hasError('emailValidator')">Email is invalid.</li>
+                                            <li *ngIf="patientformControls.email.hasError('required')">Email is required.</li>
+                                            <li *ngIf="patientformControls.email.hasError('emailValidator')">Email is invalid.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -70,20 +76,20 @@
                             </div>
 
                             <div class="col-lg-4">
-                                <div class="form-group" [class.error]="mobileNo.control.touched && !mobileNo.valid">
-                                    <input type="text" class="form-control" [class.error]="!mobileNo.valid" placeholder="Mobile No" #mobileNo="ngForm" ngControl="mobileNo"
+                                <div class="form-group" [class.error]="patientformControls.mobileNo.touched && !patientformControls.mobileNo.valid">
+                                    <input formControlName="mobileNo" type="text" class="form-control" [class.error]="!patientformControls.mobileNo.valid" placeholder="Mobile No"
                                     />
-                                    <div class='error-list' *ngIf="mobileNo.control.touched && !mobileNo.valid">
+                                    <div class='error-list' *ngIf="patientformControls.mobileNo.touched && !patientformControls.mobileNo.valid">
                                         <ul>
-                                            <li *ngIf="mobileNo.control.hasError('required')">Mobile number is required.</li>
-                                            <li *ngIf="mobileNo.control.hasError('mobileNoValidator')">Mobile number is invalid.</li>
+                                            <li *ngIf="patientformControls.mobileNo.hasError('required')">Mobile number is required.</li>
+                                            <li *ngIf="patientformControls.mobileNo.hasError('mobileNoValidator')">Mobile number is invalid.</li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <textarea rows="4" class="form-control" placeholder="Address" ngControl="address"></textarea>
+                                    <textarea formControlName="address" rows="4" class="form-control" placeholder="Address"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -97,7 +103,7 @@
                 </button>
                 <!--<button type="button" class="btn btn-secondary" [RouterLinkWithHref]="['/dashboard']">Cancel
                 </button>-->
-                <a [routerLink]="['/patients']" class="btn btn-secondary" >Cancel</a>
+                <a [routerLink]="['/patients']" class="btn btn-secondary">Cancel</a>
             </form>
         </div>
     </div>

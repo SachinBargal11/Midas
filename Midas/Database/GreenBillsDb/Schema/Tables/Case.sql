@@ -1,34 +1,55 @@
-﻿CREATE TABLE [dbo].[Case](
-	[CaseId] [INT] IDENTITY(1,1) NOT NULL,
-	[CaseTypeId] [INT] NULL,
-	[MedicalFacilitiesID] [INT] NULL,
-	[PatientInsuranceId] [INT] NULL,
-	[CaseStatusId] [INT] NULL,
-	[AttorneyId] [INT] NULL,
-	[PatientID] [INT] NULL,
-	[ClaimNumber] [NVARCHAR](50) NULL,
-	[DateOfAccident] [DATETIME] NULL,
-	[AdjusterId] [INT] NULL,
-	[CaseDate] [DATETIME] NULL,
-	[CaseNo] [INT] NULL,
-	[LocationId] [INT] NULL,
-	[IsSoftDeleted] [BIT] NULL,
-	[RemoteCaseID] [NVARCHAR](50) NULL,
-	[ReferringProviderId] [INT] NULL,
-	[DiagnosisForSpecialty] [NVARCHAR](2000) NULL,
-	[EmployerId] [INT] NULL,
-	[EmployerAddressId] [INT] NULL,
-	[IsDeleted] [BIT] NULL,
-	[CreateByUserID] [INT] NOT NULL,
-	[CreateDate] [DATETIME] NULL,
-	[UpdateByUserID] [INT] NULL,
-	[UpdateDate] [DATETIME] NULL,
-PRIMARY KEY CLUSTERED 
+﻿
+CREATE TABLE [dbo].[Case](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[CaseTypeId] [int] NULL,
+	[MedicalFacilitiesID] [int] NULL,
+	[PatientInsuranceId] [int] NULL,
+	[CaseStatusId] [int] NULL,
+	[AttorneyId] [int] NULL,
+	[PatientID] [int] NULL,
+	[ClaimNumber] [nvarchar](50) NULL,
+	[DateOfAccident] [datetime] NULL,
+	[AdjusterId] [int] NULL,
+	[CaseDate] [datetime] NULL,
+	[CaseNo] [int] NULL,
+	[LocationId] [int] NULL,
+	[IsSoftDeleted] [bit] NULL,
+	[RemoteCaseID] [nvarchar](50) NULL,
+	[ReferringProviderId] [int] NULL,
+	[EmployerId] [int] NULL,
+	[EmployerAddressId] [int] NULL,
+	[IsDeleted] [bit] NULL,
+	[CreateByUserID] [int] NOT NULL,
+	[CreateDate] [datetime] NULL,
+	[UpdateByUserID] [int] NULL,
+	[UpdateDate] [datetime] NULL,
+ CONSTRAINT [PK__Case__6CAE524C31CE0624] PRIMARY KEY CLUSTERED 
 (
-	[CaseId] ASC
+	[ID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
+GO
+
+ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_Case] FOREIGN KEY([ID])
+REFERENCES [dbo].[Case] ([ID])
+GO
+
+ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_Case]
+GO
+
+ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_Employer] FOREIGN KEY([EmployerId])
+REFERENCES [dbo].[Employer] ([ID])
+GO
+
+ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_Employer]
+GO
+
+ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_EmployerAddress] FOREIGN KEY([EmployerAddressId])
+REFERENCES [dbo].[EmployerAddress] ([ID])
+GO
+
+ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_EmployerAddress]
 GO
 
 ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_Patient] FOREIGN KEY([PatientID])
@@ -71,3 +92,21 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'?' , @level0ty
 GO
 
 
+
+EXEC sp_addextendedproperty @name = N'MS_Description',
+    @value = N'Attorney ID but can play diferent role like mediator,Claim Investigator',
+    @level0type = N'SCHEMA',
+    @level0name = N'dbo',
+    @level1type = N'TABLE',
+    @level1name = N'Case',
+    @level2type = N'COLUMN',
+    @level2name = N'AdjusterId'
+GO
+EXEC sp_addextendedproperty @name = N'MS_Description',
+    @value = N'Reference ID from third party',
+    @level0type = N'SCHEMA',
+    @level0name = N'dbo',
+    @level1type = N'TABLE',
+    @level1name = N'Case',
+    @level2type = N'COLUMN',
+    @level2name = N'RemoteCaseID'

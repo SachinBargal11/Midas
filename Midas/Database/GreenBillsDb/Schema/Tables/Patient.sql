@@ -9,6 +9,7 @@ CREATE TABLE [dbo].[Patient](
 	[WorkActivities] [nvarchar](50) NULL,
 	[CarrierCaseNo] [nvarchar](50) NULL,
 	[UseTranspotation] [bit] NULL,
+	[Comments] [nvarchar](300) NULL,
 	[ChartNo] [nvarchar](50) NULL,
 	[IsDeleted] [bit] NULL,
 	[CreateByUserID] [int] NOT NULL,

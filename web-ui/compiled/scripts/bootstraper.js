@@ -1,7 +1,7 @@
-System.register(['@angular/platform-browser-dynamic', '@angular/router', '../components/AppRoot', '@angular/core', '@angular/common', '@angular/http', '../stores/session-store', '../services/authentication-service', '../stores/patients-store', '../services/patients-service', '../stores/notifications-store', '../routes/app-routes', '../routes/guards/validate-active-session', '../routes/guards/validate-inactive-session'], function(exports_1, context_1) {
+System.register(['@angular/platform-browser-dynamic', '@angular/router', '../components/AppRoot', '@angular/core', '@angular/common', '@angular/forms', '@angular/http', '../stores/session-store', '../services/authentication-service', '../stores/sub-users-store', '../services/subusers-service', '../stores/patients-store', '../services/patients-service', '../stores/notifications-store', '../routes/app-routes', '../routes/guards/validate-active-session', '../routes/guards/validate-inactive-session'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var platform_browser_dynamic_1, router_1, AppRoot_1, core_1, common_1, http_1, session_store_1, authentication_service_1, patients_store_1, patients_service_1, notifications_store_1, app_routes_1, validate_active_session_1, validate_inactive_session_1;
+    var platform_browser_dynamic_1, router_1, AppRoot_1, core_1, common_1, forms_1, http_1, session_store_1, authentication_service_1, sub_users_store_1, subusers_service_1, patients_store_1, patients_service_1, notifications_store_1, app_routes_1, validate_active_session_1, validate_inactive_session_1, core_2;
     return {
         setters:[
             function (platform_browser_dynamic_1_1) {
@@ -15,9 +15,13 @@ System.register(['@angular/platform-browser-dynamic', '@angular/router', '../com
             },
             function (core_1_1) {
                 core_1 = core_1_1;
+                core_2 = core_1_1;
             },
             function (common_1_1) {
                 common_1 = common_1_1;
+            },
+            function (forms_1_1) {
+                forms_1 = forms_1_1;
             },
             function (http_1_1) {
                 http_1 = http_1_1;
@@ -27,6 +31,12 @@ System.register(['@angular/platform-browser-dynamic', '@angular/router', '../com
             },
             function (authentication_service_1_1) {
                 authentication_service_1 = authentication_service_1_1;
+            },
+            function (sub_users_store_1_1) {
+                sub_users_store_1 = sub_users_store_1_1;
+            },
+            function (subusers_service_1_1) {
+                subusers_service_1 = subusers_service_1_1;
             },
             function (patients_store_1_1) {
                 patients_store_1 = patients_store_1_1;
@@ -47,11 +57,16 @@ System.register(['@angular/platform-browser-dynamic', '@angular/router', '../com
                 validate_inactive_session_1 = validate_inactive_session_1_1;
             }],
         execute: function() {
+            core_2.enableProdMode();
             platform_browser_dynamic_1.bootstrap(AppRoot_1.AppRoot, [
+                forms_1.disableDeprecatedForms(),
+                forms_1.provideForms(),
                 router_1.ROUTER_DIRECTIVES,
                 http_1.HTTP_PROVIDERS,
                 session_store_1.SessionStore,
                 authentication_service_1.AuthenticationService,
+                subusers_service_1.SubUsersService,
+                sub_users_store_1.SubUsersStore,
                 patients_service_1.PatientsService,
                 patients_store_1.PatientsStore,
                 notifications_store_1.NotificationsStore,
@@ -62,7 +77,8 @@ System.register(['@angular/platform-browser-dynamic', '@angular/router', '../com
                     useValue: [router_1.ROUTER_DIRECTIVES],
                     useClass: common_1.HashLocationStrategy
                 })
-            ]);
+            ])
+                .catch(function (err) { return console.error(err); });
         }
     }
 });

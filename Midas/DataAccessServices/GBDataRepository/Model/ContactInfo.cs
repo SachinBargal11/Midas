@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Midas.GreenBill.Model
+namespace GBDataRepository.Model
 {
     using System;
     using System.Collections.Generic;
@@ -17,11 +17,20 @@ namespace Midas.GreenBill.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ContactInfo()
         {
+<<<<<<< HEAD
+            this.EmployerAddress = new HashSet<EmployerAddress>();
+            this.InsuranceAddress = new HashSet<InsuranceAddress>();
+            this.MedicalFacilities = new HashSet<MedicalFacilities>();
+            this.ProviderMedicalFacilities = new HashSet<ProviderMedicalFacilities>();
+            this.ProviderMedicalFacilities1 = new HashSet<ProviderMedicalFacilities>();
+            this.User2 = new HashSet<User>();
+=======
             this.Insurances = new HashSet<Insurance>();
             this.MedicalFacilities = new HashSet<MedicalFacility>();
             this.ProviderMedicalFacilities = new HashSet<ProviderMedicalFacility>();
             this.ProviderMedicalFacilities1 = new HashSet<ProviderMedicalFacility>();
             this.Users = new HashSet<User>();
+>>>>>>> master
         }
     
         public int ID { get; set; }
@@ -40,6 +49,19 @@ namespace Midas.GreenBill.Model
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+<<<<<<< HEAD
+        public virtual ICollection<EmployerAddress> EmployerAddress { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<InsuranceAddress> InsuranceAddress { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MedicalFacilities> MedicalFacilities { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProviderMedicalFacilities> ProviderMedicalFacilities { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProviderMedicalFacilities> ProviderMedicalFacilities1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User> User2 { get; set; }
+=======
         public virtual ICollection<Insurance> Insurances { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MedicalFacility> MedicalFacilities { get; set; }
@@ -49,5 +71,6 @@ namespace Midas.GreenBill.Model
         public virtual ICollection<ProviderMedicalFacility> ProviderMedicalFacilities1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> Users { get; set; }
+>>>>>>> master
     }
 }

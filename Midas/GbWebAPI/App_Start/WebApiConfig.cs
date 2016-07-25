@@ -26,13 +26,13 @@ namespace GbWebAPI
             // Web API routes
             config.MapHttpAttributeRoutes();
 	        //Reference: http://www.asp.net/web-api/overview/security/enabling-cross-origin-requests-in-web-api
-            EnableCorsAttribute corsAttributes = new EnableCorsAttribute(ConfigurationManager.AppSettings["EnableCorsOriginValue"], "*", "*");
-            config.EnableCors(corsAttributes); 
-            config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+            //EnableCorsAttribute corsAttributes = new EnableCorsAttribute(ConfigurationManager.AppSettings["EnableCorsOriginValue"], "*", "*");
+            //config.EnableCors(corsAttributes); 
+            //config.Routes.MapHttpRoute(
+            //    name: "DefaultApi",
+            //    routeTemplate: "api/{controller}/{id}",
+            //    defaults: new { id = RouteParameter.Optional }
+            //);
 		
             var formatters = GlobalConfiguration.Configuration.Formatters;
             var jsonFormatter = formatters.JsonFormatter;

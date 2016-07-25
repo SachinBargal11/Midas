@@ -8,8 +8,7 @@ namespace Midas.GreenBill.BusinessObject
 {
     public class Account:GbObject
     {
-        public AccountStatus Status;
-        public Address PrimaryAddress;
-        public User Owner;
+        public GBEnums.AccountStatus Status { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -1,15 +1,32 @@
-﻿CREATE TABLE [dbo].[Employer]
+﻿CREATE TABLE [dbo].[Employer](
+	[ID] [INT] IDENTITY(1,1) NOT NULL,
+	[Name] [NVARCHAR](50) NULL,
+	[EIN] [NVARCHAR](20) NULL,
+	[IsDeleted] [BIT] NULL,
+	[CreateByUserID] [INT] NOT NULL,
+	[CreateDate] [DATETIME] NOT NULL,
+	[UpdateByUserID] [INT] NULL,
+	[UpdateDate] [DATETIME] NULL,
+ CONSTRAINT [PK_Employer] PRIMARY KEY CLUSTERED 
 (
-	[EmployerId] int identity(1,1) NOT NULL PRIMARY KEY,
-	[Name] nvarchar(250) NOT NULL,
-	[Code] nvarchar(20),
-	[ContactInfoId] int,
-	[Deleted] bit,
-	[CreatedDate] datetime,
-	[UpdatedDate] datetime,
-	[CreatedBy] int,
-	[UpdatedBY]  int,
-	[AccountId] int
-	 CONSTRAINT [FK_Employer_ContactId] FOREIGN KEY ([ContactInfoId]) REFERENCES [ContactInfo](ContactInfoId),
-	 CONSTRAINT [FK_Employer_AccountId] FOREIGN KEY ([AccountId]) REFERENCES [Account](AccountId)
-)
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[Employer]  WITH CHECK ADD  CONSTRAINT [FK_Employer_User] FOREIGN KEY([CreateByUserID])
+REFERENCES [dbo].[User] ([ID])
+GO
+
+ALTER TABLE [dbo].[Employer] CHECK CONSTRAINT [FK_Employer_User]
+GO
+
+ALTER TABLE [dbo].[Employer]  WITH CHECK ADD  CONSTRAINT [FK_Employer_User1] FOREIGN KEY([UpdateByUserID])
+REFERENCES [dbo].[User] ([ID])
+GO
+
+ALTER TABLE [dbo].[Employer] CHECK CONSTRAINT [FK_Employer_User1]
+GO
+
+

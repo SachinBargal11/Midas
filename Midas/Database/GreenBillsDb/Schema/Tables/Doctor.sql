@@ -11,7 +11,6 @@ CREATE TABLE [dbo].[Doctor](
 	[TaxType] [TINYINT] NULL,
 	[AssignNumber] [NVARCHAR](50) NULL,
 	[Title] [NVARCHAR](10) NULL,
-	[DoctorType] [TINYINT] NULL,
 	[IsDeleted] [BIT] NULL,
 	[CreateByUserID] [INT] NOT NULL,
 	[CreateDate] [DATETIME] NULL,
@@ -46,7 +45,7 @@ GO
 ALTER TABLE [dbo].[Doctor] CHECK CONSTRAINT [FK_Doctor_User2]
 GO
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Comma seperated specialities' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Doctor', @level2type=N'COLUMN',@level2name=N'SpecialityID'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'-  Doctor spaciality seperate table' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Doctor', @level2type=N'COLUMN',@level2name=N'SpecialityID'
 GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'SSN=1,EIN=2,ITIN=3,ATIN=4,PTIN=5 (https://www.irs.gov/individuals/international-taxpayers/taxpayer-identification-numbers-tin)' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Doctor', @level2type=N'COLUMN',@level2name=N'TaxType'
@@ -55,7 +54,7 @@ GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'?' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Doctor', @level2type=N'COLUMN',@level2name=N'AssignNumber'
 GO
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Reading,Billing,Referring,Treating' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Doctor', @level2type=N'COLUMN',@level2name=N'DoctorType'
+
 GO
 
 

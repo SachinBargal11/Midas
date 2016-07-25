@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ControlGroup, Validators, FormBuilder} from '@angular/common';
+import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import {AppValidators} from '../../utils/AppValidators';
 import {LoaderComponent} from '../elements/loader';
@@ -10,6 +10,8 @@ import {SessionStore} from '../../stores/session-store';
     selector: 'login',
     templateUrl: 'templates/pages/login.html',
     directives: [
+        FORM_DIRECTIVES,
+        REACTIVE_FORM_DIRECTIVES,
         ROUTER_DIRECTIVES,
         LoaderComponent,
         SimpleNotificationsComponent
@@ -18,7 +20,8 @@ import {SessionStore} from '../../stores/session-store';
 })
 
 export class LoginComponent implements OnInit {
-    loginForm: ControlGroup;
+    loginForm: FormGroup;
+    loginFormControls;
     isLoginInProgress;
     options = {
         timeOut: 3000,
@@ -28,15 +31,16 @@ export class LoginComponent implements OnInit {
         maxLength: 10
     };
     constructor(
-        fb: FormBuilder,
+        private fb: FormBuilder,
         private _sessionStore: SessionStore,
         private _notificationsService: NotificationsService,
         private _router: Router
     ) {
-        this.loginForm = fb.group({
-            email: ['', Validators.compose([Validators.required, AppValidators.emailValidator])],
+        this.loginForm = this.fb.group({
+            email: ['', [Validators.required, AppValidators.emailValidator]],
             password: ['', Validators.required],
         });
+        this.loginFormControls = this.loginForm.controls;
     }
 
     ngOnInit() {

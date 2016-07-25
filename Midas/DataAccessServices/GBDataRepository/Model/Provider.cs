@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Midas.GreenBill.Model
+namespace GBDataRepository.Model
 {
     using System;
     using System.Collections.Generic;
@@ -17,7 +17,12 @@ namespace Midas.GreenBill.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Provider()
         {
+<<<<<<< HEAD
+            this.DoctorMedProvider = new HashSet<DoctorMedProvider>();
+            this.ProviderMedicalFacilities = new HashSet<ProviderMedicalFacilities>();
+=======
             this.ProviderMedicalFacilities = new HashSet<ProviderMedicalFacility>();
+>>>>>>> master
         }
     
         public int ID { get; set; }
@@ -29,9 +34,18 @@ namespace Midas.GreenBill.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
+<<<<<<< HEAD
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DoctorMedProvider> DoctorMedProvider { get; set; }
+        public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ProviderMedicalFacilities> ProviderMedicalFacilities { get; set; }
+=======
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProviderMedicalFacility> ProviderMedicalFacilities { get; set; }
+>>>>>>> master
     }
 }

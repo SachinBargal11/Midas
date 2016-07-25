@@ -12,7 +12,7 @@ namespace Midas.GreenBill.EntityRepository
 {
     public class EntitySearch
     {
-        public static string DeletedColumnName = "Deleted";
+        public static string DeletedColumnName = "IsDeleted";
         public static IQueryable<U> CreateSearchQuery<U>(IQueryable<U> query, List<EntitySearchParameter> searchParameters, Dictionary<Type, string> filterMap)
         {
             query = query.Where(EntitySearch.FilterOutDeletedRecord<U>(EntitySearch.DeletedColumnName));
@@ -41,7 +41,7 @@ namespace Midas.GreenBill.EntityRepository
         {
             ParameterExpression parameter = Expression.Parameter(typeof(T), "i");
             MemberExpression left = Expression.PropertyOrField(parameter, deletedColumn); 
-            ConstantExpression right = Expression.Constant(false);
+            ConstantExpression right = Expression.Constant(true);
             BinaryExpression nonDeleteExpr = Expression.NotEqual(left, right);
             return Expression.Lambda<Func<T, bool>>(nonDeleteExpr, parameter);
         }
@@ -65,7 +65,7 @@ namespace Midas.GreenBill.EntityRepository
             if (searchParameter.id.HasValue)
             {
                 left = Expression.PropertyOrField(left, "Id");
-                Object searchValue = System.Convert.ChangeType(searchParameter.id.Value, typeof(T).GetProperty("Id").PropertyType);
+                Object searchValue = System.Convert.ChangeType(searchParameter.id.Value, typeof(T).GetProperty("ID").PropertyType);
                 right = Expression.Constant(searchValue);
                 BinaryExpression idEqualExpr = Expression.Equal(left, right);
                 BinaryExpression getValid = Expression.And(idEqualExpr, nonDeleteExpr);

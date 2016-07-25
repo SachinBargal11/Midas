@@ -7,7 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+<<<<<<< HEAD
+namespace GBDataRepository.Model
+=======
 namespace Midas.GreenBill.Model
+>>>>>>> master
 {
     using System;
     using System.Collections.Generic;
@@ -17,7 +21,11 @@ namespace Midas.GreenBill.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Patient()
         {
+<<<<<<< HEAD
+            this.Case = new HashSet<Case>();
+=======
             this.PatientInsurances = new HashSet<PatientInsurance>();
+>>>>>>> master
         }
     
         public int ID { get; set; }
@@ -29,12 +37,24 @@ namespace Midas.GreenBill.Model
         public string CarrierCaseNo { get; set; }
         public Nullable<bool> UseTranspotation { get; set; }
         public string ChartNo { get; set; }
+<<<<<<< HEAD
+        public Nullable<int> ProviderMedicalOfficesID { get; set; }
+=======
+>>>>>>> master
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
+<<<<<<< HEAD
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Case> Case { get; set; }
+        public virtual ProviderMedicalFacilities ProviderMedicalFacilities { get; set; }
+        public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
+        public virtual User User2 { get; set; }
+=======
         public virtual Insurance Insurance { get; set; }
         public virtual ProviderMedicalFacility ProviderMedicalFacility { get; set; }
         public virtual User User { get; set; }
@@ -42,5 +62,6 @@ namespace Midas.GreenBill.Model
         public virtual User User2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientInsurance> PatientInsurances { get; set; }
+>>>>>>> master
     }
 }

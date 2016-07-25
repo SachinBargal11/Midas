@@ -1,4 +1,5 @@
-﻿using System;
+﻿#region Imports
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,8 @@ using System.Data.Entity;
 using Midas.GreenBill.Model;
 using BO = Midas.GreenBill.BusinessObject;
 using Midas.Common;
+using GBDataRepository.Model;
+#endregion
 
 namespace Midas.GreenBill.EntityRepository
 {
@@ -14,11 +17,15 @@ namespace Midas.GreenBill.EntityRepository
     {
         private DbSet<Account> _dbSet;
 
+        #region Constructor
         public AccountRepository(GreenBillsDbEntities context) : base(context)
         {
             _dbSet = context.Set<Account>();
+            context.Configuration.ProxyCreationEnabled = false;
         }
+        #endregion
 
+        #region Entity Conversion
         public override T Convert<T, U>(U entity)
         {
             Account account = entity as Account;
@@ -27,15 +34,24 @@ namespace Midas.GreenBill.EntityRepository
 
             BO.Account boAccount = new BO.Account();
 
+<<<<<<< HEAD
+            boAccount.ID = account.ID;
+=======
             boAccount.Id = account.ID;
+>>>>>>> master
             boAccount.Name = account.Name;
-            boAccount.Status = (BO.AccountStatus)account.Status;
+            boAccount.Status = (BO.GBEnums.AccountStatus)account.Status;
 
             //boAccount.Owner = new UserRepository(_context).Convert<BO.User,User1>(account.Owner)
             return (T)(object)boAccount;
         }
+        #endregion
 
+<<<<<<< HEAD
+        #region Save Data
+=======
 
+>>>>>>> master
         public override Object Save<T>(T entity) 
         {
             Utility.ValidateEntityType<T>(typeof(BO.Account));
@@ -43,14 +59,14 @@ namespace Midas.GreenBill.EntityRepository
 
             Account accountDB = new Account();
             accountDB.Name = accountBO.Name;
+<<<<<<< HEAD
+            accountDB.ID = accountBO.ID;
+=======
             accountDB.ID = accountBO.Id;
+>>>>>>> master
             accountDB.Status = System.Convert.ToByte(accountBO.Status);
 
-            //accountDB.ChangeBy
-            //accountDB.CreateDt
-            //accountDB.ChangeDt = System.DateTime.UtcNow;
-
-            if (accountBO.Id > 0)
+            if (accountBO.ID > 0)
             {
                 _dbSet.Add(accountDB);
             }
@@ -60,25 +76,39 @@ namespace Midas.GreenBill.EntityRepository
             }
             return accountDB;
         }
+        #endregion
 
-        public override T Get<T>(int id)
+        #region Get Account By ID
+        public override T Get<T>(T entity,int id)
         {
-            return base.Get<T>(id);
+            BO.Account acc_ = Convert<BO.Account, Account>(_context.Account.Find(id));
+            return (T)(object)acc_;
         }
-        public override List<T> Get<T>(string name)
-        {
-            return base.Get<T>(name);
-        }
+        #endregion
 
-        public override List<T> Get<T>(List<EntitySearchParameter> searchParameters)
+        #region Get Account By Name
+        public override List<T> Get<T>(T entity, string name)
+        {
+            List<EntitySearchParameter> searchParameters = new List<EntitySearchParameter>();
+            EntitySearchParameter param = new EntitySearchParameter();
+            param.name = name;
+            searchParameters.Add(param);
+
+            return Get<T>(entity, searchParameters);
+        }
+        #endregion
+
+        #region Get Accounts By Search Parameters
+        public override List<T> Get<T>(T entity,List<EntitySearchParameter> searchParameters)
         {
             Dictionary<Type, String> filterMap = new Dictionary<Type, string>();
             filterMap.Add(typeof(BO.Account), "");
-            IQueryable<Account> query = EntitySearch.CreateSearchQuery<Account>(_context.Accounts, searchParameters, filterMap);
+            IQueryable<Account> query = EntitySearch.CreateSearchQuery<Account>(_context.Account, searchParameters, filterMap);
             List<Account> accounts = query.ToList<Account>();
             List<T> boAccounts = new List<T>();
             accounts.ForEach(t => boAccounts.Add(Convert<T, Account>(t)));
             return boAccounts;
         }
+        #endregion
     }
 }
