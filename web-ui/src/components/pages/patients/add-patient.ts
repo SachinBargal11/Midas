@@ -54,8 +54,7 @@ export class AddPatientComponent implements OnInit {
             email: ['', [Validators.required, AppValidators.emailValidator]],
             mobileNo: ['', [Validators.required, AppValidators.mobileNoValidator]],
             address: [''],
-            dob: ['']
-            // dob: ['', Validators.required]
+            dob: ['', Validators.required]
         });
         this.patientformControls = this.patientform.controls;       
         
@@ -77,7 +76,7 @@ export class AddPatientComponent implements OnInit {
             'email': this.patientform.value.email,
             'mobileNo': this.patientform.value.mobileNo,
             'address': this.patientform.value.address,
-            'dob': $("#dob").val(),
+            'dob': this.patientform.value.dob,
             'createdUser': this._sessionStore.session.user.id
         });
         result = this._patientsStore.addPatient(patient);

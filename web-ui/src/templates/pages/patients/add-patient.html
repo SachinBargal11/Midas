@@ -33,25 +33,28 @@
                                 </div>
                             </div>
                             <div class="col-lg-4">
-                                <div class="form-group">
-                                    <p-calendar formControlName="dob"></p-calendar>
-                                </div>
-                            </div>
-                            <!--<div class="col-lg-4">
-                                <div class="form-group" [class.error]="patientformControls.dob.touched && !dob.valid">
+                                <div class="form-group" [class.error]="patientformControls.dob.touched && !patientformControls.dob.valid">
                                     <div class='input-group date'>
-                                        <input formControlName="dob" type="text" placeholder="Date Of Birth" class="datepickerElem form-control" [class.error]="!dob.valid" />
-                                        <span class="input-group-addon">
-										<i class="font-icon font-icon-calend"></i>
-									</span>
+                                          <p-calendar formControlName="dob" 
+                                                      dateFormat="M d, yy" 
+                                                      minDate="Jan 1, 1900"
+                                                      maxDate="today" 
+                                                      [monthNavigator]="true" 
+                                                      [yearNavigator]="true"
+                                                      [class.error]="patientformControls.dob.touched && !patientformControls.dob.valid" 
+                                                      placeholder="Date of Birth"
+                                                      showAnim="slideDown"
+                                                      [showIcon]="true"
+                                                      icon="font-icon font-icon-calend">
+                                          </p-calendar>
                                     </div>
-                                    <div class='error-list' *ngIf="patientformControls.dob.touched && !dob.valid">
+                                    <div class='error-list' *ngIf="patientformControls.dob.touched && !patientformControls.dob.valid">
                                         <ul>
                                             <li *ngIf="patientformControls.dob.hasError('required')">Date Of Birth is required.</li>
                                         </ul>
                                     </div>
                                 </div>
-                            </div>-->
+                            </div>
                         </div>
                     </div>
                 </section>
