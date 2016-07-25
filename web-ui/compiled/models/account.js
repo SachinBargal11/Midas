@@ -7,7 +7,7 @@ System.register(['immutable', 'moment'], function(exports_1, context_1) {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
     var immutable_1, moment_1;
-    var UserRecord, User;
+    var AccountRecord, Account;
     return {
         setters:[
             function (immutable_1_1) {
@@ -17,42 +17,33 @@ System.register(['immutable', 'moment'], function(exports_1, context_1) {
                 moment_1 = moment_1_1;
             }],
         execute: function() {
-            UserRecord = immutable_1.Record({
+            AccountRecord = immutable_1.Record({
                 id: 0,
-                userType: 1,
-                accountID: 1,
-                userName: "",
-                firstName: "",
-                middleName: "",
-                lastName: "",
-                gender: 1,
-                imageLink: "",
-                addressID: 7,
-                contactInfoID: 8,
-                dateOfBirth: moment_1.default(),
-                password: "",
+                name: "",
+                addressID: 2,
+                contactInfoID: 3,
                 isDeleted: true,
                 createByUserID: 0,
                 updateByUserID: 0,
                 createDate: moment_1.default(),
                 updateDate: moment_1.default()
             });
-            User = (function (_super) {
-                __extends(User, _super);
-                function User(props) {
+            Account = (function (_super) {
+                __extends(Account, _super);
+                function Account(props) {
                     _super.call(this, props);
                 }
-                Object.defineProperty(User.prototype, "displayName", {
+                Object.defineProperty(Account.prototype, "displayName", {
                     get: function () {
-                        return this.firstName + " " + this.lastName;
+                        return this.name;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                return User;
-            }(UserRecord));
-            exports_1("User", User);
+                return Account;
+            }(AccountRecord));
+            exports_1("Account", Account);
         }
     }
 });
-//# sourceMappingURL=user.js.map
+//# sourceMappingURL=account.js.map

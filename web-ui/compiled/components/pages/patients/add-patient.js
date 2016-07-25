@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/forms', '@angular/router', '../../../utils/AppValidators', '../../elements/loader', '../../../stores/patients-store', '../../../models/patient', 'jquery', 'eonasdan-bootstrap-datetimepicker', '../../../stores/session-store', '../../../stores/notifications-store', '../../../models/notification', 'moment'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/forms', '@angular/router', '../../../utils/AppValidators', '../../elements/loader', '../../../stores/patients-store', '../../../models/patient', 'jquery', '../../../stores/session-store', '../../../stores/notifications-store', '../../../models/notification', 'moment', 'primeng/primeng'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, forms_1, router_1, AppValidators_1, loader_1, patients_store_1, patient_1, jquery_1, session_store_1, notifications_store_1, notification_1, moment_1;
+    var core_1, forms_1, router_1, AppValidators_1, loader_1, patients_store_1, patient_1, jquery_1, session_store_1, notifications_store_1, notification_1, moment_1, primeng_1;
     var AddPatientComponent;
     return {
         setters:[
@@ -38,7 +38,6 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
             function (jquery_1_1) {
                 jquery_1 = jquery_1_1;
             },
-            function (_1) {},
             function (session_store_1_1) {
                 session_store_1 = session_store_1_1;
             },
@@ -50,6 +49,9 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
             },
             function (moment_1_1) {
                 moment_1 = moment_1_1;
+            },
+            function (primeng_1_1) {
+                primeng_1 = primeng_1_1;
             }],
         execute: function() {
             AddPatientComponent = (function () {
@@ -87,9 +89,9 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
                     this.patientformControls = this.patientform.controls;
                 }
                 AddPatientComponent.prototype.ngOnInit = function () {
-                    jquery_1.default(this._elRef.nativeElement).find('.datepickerElem').datetimepicker({
-                        format: 'll'
-                    });
+                    // $(this._elRef.nativeElement).find('.datepickerElem').datetimepicker({
+                    //     format: 'll'
+                    // });
                 };
                 AddPatientComponent.prototype.savePatient = function () {
                     var _this = this;
@@ -128,7 +130,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
                     core_1.Component({
                         selector: 'add-patient',
                         templateUrl: 'templates/pages/patients/add-patient.html',
-                        directives: [forms_1.FORM_DIRECTIVES, forms_1.REACTIVE_FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES, loader_1.LoaderComponent]
+                        directives: [forms_1.FORM_DIRECTIVES, forms_1.REACTIVE_FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES, loader_1.LoaderComponent, primeng_1.Calendar]
                     }), 
                     __metadata('design:paramtypes', [forms_1.FormBuilder, router_1.Router, notifications_store_1.NotificationsStore, session_store_1.SessionStore, patients_store_1.PatientsStore, core_1.ElementRef])
                 ], AddPatientComponent);

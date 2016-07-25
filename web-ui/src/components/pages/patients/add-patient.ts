@@ -6,16 +6,17 @@ import {LoaderComponent} from '../../elements/loader';
 import {PatientsStore} from '../../../stores/patients-store';
 import {Patient} from '../../../models/patient';
 import $ from 'jquery';
-import 'eonasdan-bootstrap-datetimepicker';
+// import 'eonasdan-bootstrap-datetimepicker';
 import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
 import {Notification} from '../../../models/notification';
 import Moment from 'moment';
+import {Calendar} from 'primeng/primeng';
 
 @Component({
     selector: 'add-patient',
     templateUrl: 'templates/pages/patients/add-patient.html',
-    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent]
+    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar]
 })
 
 export class AddPatientComponent implements OnInit {
@@ -34,6 +35,7 @@ export class AddPatientComponent implements OnInit {
         clickToClose: false,
         maxLength: 10
     };
+    date1: string;
     patientform: FormGroup;
     patientformControls;
     
@@ -60,9 +62,9 @@ export class AddPatientComponent implements OnInit {
     }
 
     ngOnInit() {
-        $(this._elRef.nativeElement).find('.datepickerElem').datetimepicker({
-            format: 'll'
-        });
+        // $(this._elRef.nativeElement).find('.datepickerElem').datetimepicker({
+        //     format: 'll'
+        // });
     }
 
 

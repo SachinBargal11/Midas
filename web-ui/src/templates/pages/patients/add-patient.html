@@ -7,11 +7,13 @@
                     <header class="card-header card-header-lg">
                         Patient Information
                     </header>
+
+
                     <div class="card-block">
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-group" [class.error]="patientformControls.firstname.touched && !patientformControls.firstname.valid">
-                                    <input formControlName="firstname" type="text" class="form-control" placeholder="First Name" [class.error]="!patientformControls.firstname.valid" >
+                                    <input formControlName="firstname" type="text" class="form-control" placeholder="First Name" [class.error]="!patientformControls.firstname.valid">
                                     <div class='error-list' *ngIf="patientformControls.firstname.touched && !patientformControls.firstname.valid">
                                         <ul>
                                             <li *ngIf="patientformControls.firstname.hasError('required')">First Name is required.</li>
@@ -31,13 +33,8 @@
                                 </div>
                             </div>
                             <div class="col-lg-4">
-                                <div class="form-group" >
-                                        <div class='input-group date'> 
-                                        <input formControlName="dob" type="text" id="dob" name="dob" placeholder="Date Of Birth" class="datepickerElem form-control">
-                                        <span class="input-group-addon">
-										<span class="font-icon font-icon-calend"></span>
-									</span>
-                                    </div>
+                                <div class="form-group">
+                                    <p-calendar formControlName="dob"></p-calendar>
                                 </div>
                             </div>
                             <!--<div class="col-lg-4">
@@ -66,7 +63,8 @@
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-group" [class.error]="patientformControls.email.touched && !patientformControls.email.valid">
-                                    <input formControlName="email" type="email" [class.error]="!patientformControls.email.valid" class="form-control" placeholder="E-Mail" type="text" />
+                                    <input formControlName="email" type="email" [class.error]="!patientformControls.email.valid" class="form-control" placeholder="E-Mail"
+                                        type="text" />
                                     <div class='error-list' *ngIf="patientformControls.email.touched && !patientformControls.email.valid">
                                         <ul>
                                             <li *ngIf="patientformControls.email.hasError('required')">Email is required.</li>
@@ -79,7 +77,8 @@
 
                             <div class="col-lg-4">
                                 <div class="form-group" [class.error]="patientformControls.mobileNo.touched && !patientformControls.mobileNo.valid">
-                                    <input formControlName="mobileNo" type="text" class="form-control" [class.error]="!patientformControls.mobileNo.valid" placeholder="Mobile No" />
+                                    <input formControlName="mobileNo" type="text" class="form-control" [class.error]="!patientformControls.mobileNo.valid" placeholder="Mobile No"
+                                    />
                                     <div class='error-list' *ngIf="patientformControls.mobileNo.touched && !patientformControls.mobileNo.valid">
                                         <ul>
                                             <li *ngIf="patientformControls.mobileNo.hasError('required')">Mobile number is required.</li>
@@ -104,7 +103,7 @@
                 </button>
                 <!--<button type="button" class="btn btn-secondary" [RouterLinkWithHref]="['/dashboard']">Cancel
                 </button>-->
-                <a [routerLink]="['/patients']" class="btn btn-secondary" >Cancel</a>
+                <a [routerLink]="['/patients']" class="btn btn-secondary">Cancel</a>
             </form>
         </div>
     </div>

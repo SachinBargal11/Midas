@@ -15,7 +15,12 @@
         charset="utf-8">
     <link rel="stylesheet" href="../node_modules/font-awesome/css/font-awesome.min.css" type="text/css"
         charset="utf-8">
-    
+
+    <link rel="stylesheet" type="text/css" href="../node_modules/primeui/primeui-ng-all.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="../node_modules/primeui/themes/bootstrap/theme.css"
+    />
+
     
     <link rel="stylesheet" href="theme/css/main.css">
     <link rel="stylesheet" href="styles/styles.css">
@@ -46,16 +51,27 @@
                     'jquery': '../node_modules/jquery/dist/jquery.min.js',
                     'primeng': '../node_modules/primeng',
                     'jquery.inputmask': '../node_modules/jquery.inputmask/dist/jquery.inputmask.bundle.js',
-                    'eonasdan-bootstrap-datetimepicker': '../node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'                
+                    'jquery.ui': '//code.jquery.com/ui/1.11.4/jquery-ui.min.js',                
+                    'jquery-ui-timepicker-addon': '../node_modules/jquery-ui-timepicker-addon/dist/jquery-ui-timepicker-addon.js'                
                 },
                 meta: 
                 {
-                        'daterangepicker': {
-                            deps: [
-                                'jquery', 
-                                'moment'
-                            ]
-                        }                        
+                    'primeng' : {
+                        deps: [
+                            'jquery.ui',
+                            'jquery-ui-timepicker-addon'
+                        ]
+                    },
+                    'jquery-ui': {
+                        deps: [
+                            'jquery'
+                        ]
+                    },
+                    'jquery-ui-timepicker-addon': {
+                        deps: [
+                            'jquery.ui'
+                        ]
+                    }
                 },
                 packages: {
                     'scripts': {
@@ -139,7 +155,14 @@
                 }
             });
             
-            System.import('scripts/bootstraper')
+            Promise.all([
+                System.import('jquery.ui'),
+                System.import('jquery-ui-timepicker-addon')
+            ])
+                .then(function()
+                {
+                    return System.import('scripts/bootstraper')
+                })
                 .catch(function(error)
                 {
                     console.error(error);
