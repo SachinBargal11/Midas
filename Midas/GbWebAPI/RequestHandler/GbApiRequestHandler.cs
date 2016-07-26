@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -7,6 +7,7 @@ using Midas.GreenBill.BusinessObject;
 using Midas.GreenBill.DataAccessManager;
 using Midas.Common;
 using Midas.GreenBill.EntityRepository;
+using Newtonsoft.Json.Linq;
 
 namespace Midas.GreenBill.Api
 {
@@ -25,7 +26,9 @@ namespace Midas.GreenBill.Api
 
             if(ID>0)
             {
-                return request.CreateResponse<T>(HttpStatusCode.OK, gbObject);
+                var res = (GbObject)(object)gbObject;
+                res.ID = ID;
+                return request.CreateResponse<T>(HttpStatusCode.OK, (T)(object)res);
             }
             else
             {
@@ -38,38 +41,61 @@ namespace Midas.GreenBill.Api
             //use the usertoken to determine the  user
             return "";
         }
-        public HttpResponseMessage GetGbObjectById(HttpRequestMessage request, T gbObject, int id)
+        public HttpResponseMessage GetObject(HttpRequestMessage request, T gbObject)
         {
             
-            T ID = dataAccessManager.Get(gbObject, id);
+            T ID = dataAccessManager.Get(gbObject);
 
             return request.CreateResponse<T>(HttpStatusCode.OK, ID);
         }
 
-        public HttpResponseMessage GetGbObjectByName(HttpRequestMessage request, T gbObject, string name)
+        public HttpResponseMessage DeleteGbObject(HttpRequestMessage request, T gbObject)
         {
-            List<T> objData = dataAccessManager.Get(gbObject, name);
-            return request.CreateResponse<List<T>>(HttpStatusCode.OK, objData);
+            int ID = dataAccessManager.Delete(gbObject);
+
+            if (ID > 0)
+            {
+                var res = (GbObject)(object)gbObject;
+                res.ID = ID;
+                return request.CreateResponse<T>(HttpStatusCode.OK, (T)(object)res);
+            }
+            else
+            {
+                return request.CreateResponse<T>(HttpStatusCode.NotFound, gbObject);
+            }
         }
 
-        public HttpResponseMessage DeleteGbObject(HttpRequestMessage request, T gbObject, int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public HttpResponseMessage ValidateUniqueName(HttpRequestMessage request, T gbObject, string name)
+        public HttpResponseMessage ValidateUniqueName(HttpRequestMessage request, T gbObject)
         {
             throw new NotImplementedException();
         }
 
         public HttpResponseMessage UpdateGbObject(HttpRequestMessage request, T gbObject)
         {
-            throw new NotImplementedException();
+            int ID = dataAccessManager.Save(gbObject);
+
+            if (ID > 0)
+            {
+                var res = (GbObject)(object)gbObject;
+                res.ID = ID;
+                return request.CreateResponse<T>(HttpStatusCode.OK, (T)(object)res);
+            }
+            else
+            {
+                return request.CreateResponse<T>(HttpStatusCode.NotFound, gbObject);
+            }
         }
 
         public HttpResponseMessage GetGbObjects(HttpRequestMessage request, T gbObject, List<EntitySearchParameter> filter)
         {
             List<T> ID = dataAccessManager.Get(gbObject, filter);
+
+            return request.CreateResponse(HttpStatusCode.OK, ID);
+        }
+
+        public HttpResponseMessage SignUp(HttpRequestMessage request, JObject data)
+        {
+            Object ID = dataAccessManager.Signup(data);
 
             return request.CreateResponse(HttpStatusCode.OK, ID);
         }

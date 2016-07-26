@@ -7,16 +7,15 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Midas.GreenBill.Model
+namespace GBDataRepository.Model
 {
-    using GBDataRepository.Model;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-
+    
     public partial class GreenBillsDbEntities : DbContext
     {
-        public GreenBillsDbEntities(string connectionString)
+        public GreenBillsDbEntities(string Connection)
             : base("name=GreenBillsDbEntities")
         {
         }
@@ -26,93 +25,94 @@ namespace Midas.GreenBill.Model
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
-        public virtual DbSet<C__RefactorLog> C__RefactorLog { get; set; }
-        public virtual DbSet<Abbreviation> Abbreviation { get; set; }
-        public virtual DbSet<Account> Account { get; set; }
-        public virtual DbSet<GBDataRepository.Model.Action> Action { get; set; }
-        public virtual DbSet<Address> Address { get; set; }
-        public virtual DbSet<Addresses> Addresses { get; set; }
-        public virtual DbSet<ApplicationSettings> ApplicationSettings { get; set; }
-        public virtual DbSet<BillDetails> BillDetails { get; set; }
-        public virtual DbSet<BillPom> BillPom { get; set; }
-        public virtual DbSet<Bills> Bills { get; set; }
-        public virtual DbSet<BillStatus> BillStatus { get; set; }
-        public virtual DbSet<BillVerification> BillVerification { get; set; }
-        public virtual DbSet<BillVerificationAnswer> BillVerificationAnswer { get; set; }
-        public virtual DbSet<Case> Case { get; set; }
-        public virtual DbSet<CaseDocument> CaseDocument { get; set; }
-        public virtual DbSet<CaseStatus> CaseStatus { get; set; }
-        public virtual DbSet<CaseType> CaseType { get; set; }
-        public virtual DbSet<ContactInfo> ContactInfo { get; set; }
-        public virtual DbSet<DenialReasons> DenialReasons { get; set; }
-        public virtual DbSet<DiagnosisType> DiagnosisType { get; set; }
-        public virtual DbSet<DignosisCode> DignosisCode { get; set; }
-        public virtual DbSet<Doctor> Doctor { get; set; }
-        public virtual DbSet<DoctorMedProvider> DoctorMedProvider { get; set; }
-        public virtual DbSet<DocumentType> DocumentType { get; set; }
-        public virtual DbSet<EmailFields> EmailFields { get; set; }
-        public virtual DbSet<EmailProfile> EmailProfile { get; set; }
-        public virtual DbSet<EmailTemplate> EmailTemplate { get; set; }
-        public virtual DbSet<Employer> Employer { get; set; }
-        public virtual DbSet<EmployerAddress> EmployerAddress { get; set; }
-        public virtual DbSet<Insurance> Insurance { get; set; }
-        public virtual DbSet<InsuranceAddress> InsuranceAddress { get; set; }
-        public virtual DbSet<IntakeAOB> IntakeAOB { get; set; }
-        public virtual DbSet<Location> Location { get; set; }
-        public virtual DbSet<MedicalFacilities> MedicalFacilities { get; set; }
-        public virtual DbSet<Nodes> Nodes { get; set; }
-        public virtual DbSet<Patient> Patient { get; set; }
-        public virtual DbSet<PatientAccidentDetails> PatientAccidentDetails { get; set; }
-        public virtual DbSet<PatientInsurance> PatientInsurance { get; set; }
-        public virtual DbSet<Payment> Payment { get; set; }
-        public virtual DbSet<PaymentImages> PaymentImages { get; set; }
-        public virtual DbSet<POM> POM { get; set; }
-        public virtual DbSet<ProcedureCode> ProcedureCode { get; set; }
-        public virtual DbSet<Provider> Provider { get; set; }
-        public virtual DbSet<ProviderMedicalFacilities> ProviderMedicalFacilities { get; set; }
-        public virtual DbSet<Reconcilation> Reconcilation { get; set; }
-        public virtual DbSet<RequiredDocuments> RequiredDocuments { get; set; }
-        public virtual DbSet<RoleActions> RoleActions { get; set; }
-        public virtual DbSet<Room> Room { get; set; }
-        public virtual DbSet<RoomSchedule> RoomSchedule { get; set; }
-        public virtual DbSet<Specialty> Specialty { get; set; }
-        public virtual DbSet<SpecialtyDetails> SpecialtyDetails { get; set; }
-        public virtual DbSet<SystemSetting> SystemSetting { get; set; }
-        public virtual DbSet<SystemSettingKey> SystemSettingKey { get; set; }
-        public virtual DbSet<TransferredCases> TransferredCases { get; set; }
-        public virtual DbSet<Transportation> Transportation { get; set; }
-        public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<UserType> UserType { get; set; }
-        public virtual DbSet<VerificationAnswerImages> VerificationAnswerImages { get; set; }
-        public virtual DbSet<VerificationImages> VerificationImages { get; set; }
-        public virtual DbSet<VisitProcedure> VisitProcedure { get; set; }
-        public virtual DbSet<Visits> Visits { get; set; }
-        public virtual DbSet<VisitType> VisitType { get; set; }
-        public virtual DbSet<Activity> Activity { get; set; }
-        public virtual DbSet<AuditTrail> AuditTrail { get; set; }
-        public virtual DbSet<BillStatusHistory> BillStatusHistory { get; set; }
-        public virtual DbSet<CaseAssociatedDiagnosisCode> CaseAssociatedDiagnosisCode { get; set; }
-        public virtual DbSet<CompanyConnections> CompanyConnections { get; set; }
-        public virtual DbSet<CyclicInsuranceConfiguration> CyclicInsuranceConfiguration { get; set; }
-        public virtual DbSet<CyclicProcedureConfigurationAmount> CyclicProcedureConfigurationAmount { get; set; }
-        public virtual DbSet<CyclicSpecialtyConfiguration> CyclicSpecialtyConfiguration { get; set; }
-        public virtual DbSet<CyclicSpecialtyConfigurationAmount> CyclicSpecialtyConfigurationAmount { get; set; }
-        public virtual DbSet<EnvelopeConfiguration> EnvelopeConfiguration { get; set; }
-        public virtual DbSet<GeneralDenialImages> GeneralDenialImages { get; set; }
-        public virtual DbSet<GeneralDenials> GeneralDenials { get; set; }
-        public virtual DbSet<Mandatory> Mandatory { get; set; }
-        public virtual DbSet<Notes> Notes { get; set; }
-        public virtual DbSet<NotesType> NotesType { get; set; }
-        public virtual DbSet<PacketRequest> PacketRequest { get; set; }
-        public virtual DbSet<PacketRequestBills> PacketRequestBills { get; set; }
-        public virtual DbSet<Reminder> Reminder { get; set; }
-        public virtual DbSet<ReminderRecurrence> ReminderRecurrence { get; set; }
-        public virtual DbSet<ReminderType> ReminderType { get; set; }
-        public virtual DbSet<Role> Role { get; set; }
-        public virtual DbSet<RoleActivityEvents> RoleActivityEvents { get; set; }
-        public virtual DbSet<RoleEvents> RoleEvents { get; set; }
-        public virtual DbSet<SignOnPdf> SignOnPdf { get; set; }
+        public virtual DbSet<Abbreviation> Abbreviations { get; set; }
+        public virtual DbSet<Account> Accounts { get; set; }
+        public virtual DbSet<Action> Actions { get; set; }
+        public virtual DbSet<Address> Addresses { get; set; }
+        public virtual DbSet<Address1> Addresses1 { get; set; }
+        public virtual DbSet<ApplicationSetting> ApplicationSettings { get; set; }
+        public virtual DbSet<BillDetail> BillDetails { get; set; }
+        public virtual DbSet<BillPom> BillPoms { get; set; }
+        public virtual DbSet<Bill> Bills { get; set; }
+        public virtual DbSet<BillStatu> BillStatus { get; set; }
+        public virtual DbSet<BillVerification> BillVerifications { get; set; }
+        public virtual DbSet<BillVerificationAnswer> BillVerificationAnswers { get; set; }
+        public virtual DbSet<Case> Cases { get; set; }
+        public virtual DbSet<CaseDiagnosisSpeciality> CaseDiagnosisSpecialities { get; set; }
+        public virtual DbSet<CaseDocument> CaseDocuments { get; set; }
+        public virtual DbSet<CaseStatu> CaseStatus { get; set; }
+        public virtual DbSet<CaseType> CaseTypes { get; set; }
+        public virtual DbSet<ContactInfo> ContactInfoes { get; set; }
+        public virtual DbSet<DenialReason> DenialReasons { get; set; }
+        public virtual DbSet<DiagnosisType> DiagnosisTypes { get; set; }
+        public virtual DbSet<DignosisCode> DignosisCodes { get; set; }
+        public virtual DbSet<Doctor> Doctors { get; set; }
+        public virtual DbSet<DoctorMedicalFacilitiesProvider> DoctorMedicalFacilitiesProviders { get; set; }
+        public virtual DbSet<DoctorSpeciality> DoctorSpecialities { get; set; }
+        public virtual DbSet<DocumentType> DocumentTypes { get; set; }
+        public virtual DbSet<EmailField> EmailFields { get; set; }
+        public virtual DbSet<EmailProfile> EmailProfiles { get; set; }
+        public virtual DbSet<EmailTemplate> EmailTemplates { get; set; }
+        public virtual DbSet<Employer> Employers { get; set; }
+        public virtual DbSet<EmployerAddress> EmployerAddresses { get; set; }
+        public virtual DbSet<Insurance> Insurances { get; set; }
+        public virtual DbSet<InsuranceAddress> InsuranceAddresses { get; set; }
+        public virtual DbSet<IntakeAOB> IntakeAOBs { get; set; }
+        public virtual DbSet<Location> Locations { get; set; }
+        public virtual DbSet<MedicalFacility> MedicalFacilities { get; set; }
+        public virtual DbSet<Node> Nodes { get; set; }
+        public virtual DbSet<Patient> Patients { get; set; }
+        public virtual DbSet<PatientAccidentDetail> PatientAccidentDetails { get; set; }
+        public virtual DbSet<PatientInsurance> PatientInsurances { get; set; }
+        public virtual DbSet<Payment> Payments { get; set; }
+        public virtual DbSet<PaymentImage> PaymentImages { get; set; }
+        public virtual DbSet<POM> POMs { get; set; }
+        public virtual DbSet<ProcedureCode> ProcedureCodes { get; set; }
+        public virtual DbSet<Provider> Providers { get; set; }
+        public virtual DbSet<ProviderMedicalFacility> ProviderMedicalFacilities { get; set; }
+        public virtual DbSet<Reconcilation> Reconcilations { get; set; }
+        public virtual DbSet<RequiredDocument> RequiredDocuments { get; set; }
+        public virtual DbSet<RoleAction> RoleActions { get; set; }
+        public virtual DbSet<Room> Rooms { get; set; }
+        public virtual DbSet<RoomSchedule> RoomSchedules { get; set; }
+        public virtual DbSet<Specialty> Specialties { get; set; }
+        public virtual DbSet<SpecialtyDetail> SpecialtyDetails { get; set; }
+        public virtual DbSet<SystemSetting> SystemSettings { get; set; }
+        public virtual DbSet<SystemSettingKey> SystemSettingKeys { get; set; }
+        public virtual DbSet<TransferredCas> TransferredCases { get; set; }
+        public virtual DbSet<Transportation> Transportations { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserType> UserTypes { get; set; }
+        public virtual DbSet<VerificationAnswerImage> VerificationAnswerImages { get; set; }
+        public virtual DbSet<VerificationImage> VerificationImages { get; set; }
+        public virtual DbSet<VisitProcedure> VisitProcedures { get; set; }
+        public virtual DbSet<Visit> Visits { get; set; }
+        public virtual DbSet<VisitType> VisitTypes { get; set; }
+        public virtual DbSet<AccountStatu> AccountStatus { get; set; }
+        public virtual DbSet<Activity> Activities { get; set; }
+        public virtual DbSet<AuditTrail> AuditTrails { get; set; }
+        public virtual DbSet<BillStatusHistory> BillStatusHistories { get; set; }
+        public virtual DbSet<CaseAssociatedDiagnosisCode> CaseAssociatedDiagnosisCodes { get; set; }
+        public virtual DbSet<CompanyConnection> CompanyConnections { get; set; }
+        public virtual DbSet<CyclicInsuranceConfiguration> CyclicInsuranceConfigurations { get; set; }
+        public virtual DbSet<CyclicProcedureConfigurationAmount> CyclicProcedureConfigurationAmounts { get; set; }
+        public virtual DbSet<CyclicSpecialtyConfiguration> CyclicSpecialtyConfigurations { get; set; }
+        public virtual DbSet<CyclicSpecialtyConfigurationAmount> CyclicSpecialtyConfigurationAmounts { get; set; }
+        public virtual DbSet<EnvelopeConfiguration> EnvelopeConfigurations { get; set; }
+        public virtual DbSet<GeneralDenialImage> GeneralDenialImages { get; set; }
+        public virtual DbSet<GeneralDenial> GeneralDenials { get; set; }
+        public virtual DbSet<Mandatory> Mandatories { get; set; }
+        public virtual DbSet<Note> Notes { get; set; }
+        public virtual DbSet<NotesType> NotesTypes { get; set; }
+        public virtual DbSet<PacketRequest> PacketRequests { get; set; }
+        public virtual DbSet<PacketRequestBill> PacketRequestBills { get; set; }
+        public virtual DbSet<Reminder> Reminders { get; set; }
+        public virtual DbSet<ReminderRecurrence> ReminderRecurrences { get; set; }
+        public virtual DbSet<ReminderType> ReminderTypes { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<RoleActivityEvent> RoleActivityEvents { get; set; }
+        public virtual DbSet<RoleEvent> RoleEvents { get; set; }
+        public virtual DbSet<SignOnPdf> SignOnPdfs { get; set; }
         public virtual DbSet<Status> Status { get; set; }
     }
 }

@@ -8,17 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Midas;
 using Midas.GreenBill;
-using Midas.GreenBill.Model;
+using GBDataRepository.Model;
+
 using Midas.Common;
 
 namespace Midas.GreenBill.DataAccessManager
 {
     public class DBContextProvider : IDBContextProvider
     {
-        GreenBillsDbEntities IDBContextProvider.GetGbDBContext()
+        public GreenBillsDbEntities GetGbDBContext()
         {
             GreenBillsDbEntities context = null;
-            string serverName = ConfigReader.GetSettingsValue<string>("GbDatabaseServer", ".");
+            string serverName = ConfigReader.GetSettingsValue<string>("GbDatabaseServer", "codearray.dlinkddns.com");
             string databaseName = ConfigReader.GetSettingsValue<string>("GbDatabase", "GreenBillsDb");
             string modelName = ConfigReader.GetSettingsValue<string>("ModelName", "GreenBillsDb");
 
@@ -27,7 +28,7 @@ namespace Midas.GreenBill.DataAccessManager
             context = new GreenBillsDbEntities(entityConnection);
 
 
-           // ((IObjectContextAdapter)context).ObjectContext.CommandTimeout = ConfigReader.GetSettingsValue<int>("CommandTimeout", 300);
+            // ((IObjectContextAdapter)context).ObjectContext.CommandTimeout = ConfigReader.GetSettingsValue<int>("CommandTimeout", 300);
 
             return context;
         }
@@ -72,7 +73,9 @@ namespace Midas.GreenBill.DataAccessManager
 
             connBuilder.DataSource = serverName;
             connBuilder.InitialCatalog = databaseName;
-            connBuilder.IntegratedSecurity = true;
+            //connBuilder.IntegratedSecurity = true;
+            connBuilder.UserID = "sa";
+            connBuilder.Password = "CAsql123";
             connBuilder.ConnectTimeout = ConfigReader.GetSettingsValue<int>("ConnectionTimeout", 60);
             connBuilder.Pooling = ConfigReader.GetSettingsValue<bool>("Pooling", true);
             connBuilder.MinPoolSize = ConfigReader.GetSettingsValue<int>("MinPoolSize", 10);

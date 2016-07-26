@@ -10,6 +10,8 @@ using Midas.Common;
 using Midas.GreenBill;
 using Midas.GreenBill.EntityRepository;
 using Midas.GreenBill.BusinessObject;
+using Newtonsoft.Json.Linq;
+
 namespace Midas.GreenBill.DataAccessManager
 {
     public class GbDataAccessManager<T> : IGbDataAccessManager<T>
@@ -22,6 +24,51 @@ namespace Midas.GreenBill.DataAccessManager
         public GbDataAccessManager(IDBContextProvider dbContextProvider = null)
         {
             this.dbContextProvider = dbContextProvider ?? new DBContextProvider();
+        }
+
+        public int Delete(T entity)
+        {
+            try
+            {
+                var gbObject = (GbObject)(object)entity;
+                if (gbObject == null)
+                    throw new GbException(string.Format("Null Object cannot be saved. ObjectType : {0}", typeof(T).Name));
+
+                //Update CreatedBy and other tracking fields to child entities
+
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+
+                baseRepo.PreSave(gbObject);
+
+                List<BusinessValidation> validations = gbObject.Validate();
+                var failedValidations = validations.Where(v => v.ValidationResult == BusinessValidationResult.Failure);
+
+                if (failedValidations.Count() > 0)
+                {
+                    throw new GbValidationException();
+                    //format the exception message
+                    //throw new GbValidationException(CreateValidationExceptionMessage(failedValidations, typeof(T).Name));
+                }
+
+
+                var gbSavedObject = baseRepo.Delete(gbObject);
+
+                //Excecute Object postsave 
+                baseRepo.PostSave(gbObject);
+
+                return ((GBDataRepository.Model.GBDataObject)gbSavedObject).ID;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                throw;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                throw new GbException(string.Format("An unknown Error occurred while saving {0} [{1}]", ((GbObject)(object)(entity)).ID, ex.Message));
+            }
         }
 
         public List<T> Get(T entity,List<EntitySearchParameter> filter, int? nestingLevels = default(int?))
@@ -64,6 +111,48 @@ namespace Midas.GreenBill.DataAccessManager
             }
         }
 
+
+
+        public Object Signup(JObject data, int? nestingLevels = default(int?), bool includeAllVersions = false, bool applySecurity = false)
+        {
+            try
+            {
+                //var gbObject = (GbObject)(object)data;
+                if (data == null)
+                    throw new GbException(string.Format("Null Object cannot be saved. ObjectType : {0}", typeof(T).Name));
+
+                //Update CreatedBy and other tracking fields to child entities
+
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+
+                //List<BusinessValidation> validations = gbObject.Validate();
+                //var failedValidations = validations.Where(v => v.ValidationResult == BusinessValidationResult.Failure);
+
+                //if (failedValidations.Count() > 0)
+                //{
+                //    throw new GbValidationException();
+                //    //format the exception message
+                //    //throw new GbValidationException(CreateValidationExceptionMessage(failedValidations, typeof(T).Name));
+                //}
+
+
+                var gbdata = baseRepo.Signup(data);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                throw;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                throw new GbException(string.Format("An unknown Error occurred while saving {0} [{1}]", ((GbObject)(object)(data)).ID, ex.Message));
+            }
+        }
+
         List<T> IGbDataAccessManager<T>.Get(T entity, string name, int? nestingLevels, bool includeAllVersions)
         {
 
@@ -103,7 +192,7 @@ namespace Midas.GreenBill.DataAccessManager
             }
         }
 
-        T IGbDataAccessManager<T>.Get(T entity,int id, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        T IGbDataAccessManager<T>.Get(T entity, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
@@ -126,7 +215,7 @@ namespace Midas.GreenBill.DataAccessManager
                 }
 
 
-                var gbdata = baseRepo.Get<T>(entity,id);
+                var gbdata = baseRepo.Get<T>(entity);
 
                 return gbdata;
             }
@@ -173,11 +262,7 @@ namespace Midas.GreenBill.DataAccessManager
                 //Excecute Object postsave 
                 baseRepo.PostSave(gbObject);
 
-<<<<<<< HEAD
                 return ((GbObject)gbSavedObject).ID;
-=======
-                return ((GbObject)gbSavedObject).Id;
->>>>>>> master
             }
 
             catch (GbException gbe)
@@ -188,11 +273,7 @@ namespace Midas.GreenBill.DataAccessManager
             catch (Exception ex)
             {
                 //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
-<<<<<<< HEAD
                 throw new GbException(string.Format("An unknown Error occurred while saving {0} [{1}]", ((GbObject)(object)(entity)).ID, ex.Message));
-=======
-                throw new GbException(string.Format("An unknown Error occurred while saving {0} [{1}]", ((GbObject)(object)(entity)).Name, ex.Message));
->>>>>>> master
             }
         }
     }

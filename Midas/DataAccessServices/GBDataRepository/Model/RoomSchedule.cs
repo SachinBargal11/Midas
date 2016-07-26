@@ -23,7 +23,6 @@ namespace GBDataRepository.Model
         public Nullable<System.DateTime> EffectiveTo { get; set; }
         public int AccountId { get; set; }
     
-        public virtual Account Account { get; set; }
         public virtual Room Room { get; set; }
     }
 }

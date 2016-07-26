@@ -11,21 +11,24 @@ namespace Midas.GreenBill.BusinessObject
         #region Account Status
             public enum AccountStatus
             {
-                active=1,
-                disabled=2,
-                paused=3,
-                pending=4
+                Active = 1,
+                InActive = 2,
+                Suspended = 3,
+                Limited = 4
             }
         #endregion
 
         #region User Type
             public enum UserType
             {
-                RegularStaff = 1,
-                Doctor = 2,
-                Patient = 3,
-                Attorney = 4 , 
-            }
+                Admin = 1,
+                Owner = 2,
+                Doctor = 3,
+                Patient = 4 ,
+                Attorney = 5,
+                Adjuster = 6,
+                Accounts = 7
+        }
         #endregion
 
         #region Gender

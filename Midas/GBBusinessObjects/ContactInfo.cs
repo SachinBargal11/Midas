@@ -8,10 +8,11 @@ namespace Midas.GreenBill.BusinessObject
 {
     public class ContactInfo:GbObject
     {
-        string CellPhone;
-        string EmailAddress;
-        string HomePhone;
-        string WorkPhone;
-        string FaxNo;
+        public string Name { get; set; }
+        public string CellPhone { get; set; }
+        public string EmailAddress { get; set; }
+        public string HomePhone { get; set; }
+        public string WorkPhone { get; set; }
+        public string FaxNo { get; set; }
     }
 }

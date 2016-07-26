@@ -8,11 +8,12 @@ namespace Midas.GreenBill.BusinessObject
 {
     public class Address:GbObject
     {
-        string Address1;
-        string Address2;
-        string City;
-        string State;
-        string ZipCode;
-        string CountryCode; 
+        public string Name { get; set; }
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string ZipCode { get; set; }
+        public string Country { get; set; }
     }
 }

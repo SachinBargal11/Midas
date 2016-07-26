@@ -40,6 +40,9 @@ namespace GbWebAPI
             settings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Serialize;
             settings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            var json = config.Formatters.JsonFormatter;
+            json.SerializerSettings.PreserveReferencesHandling =
+                Newtonsoft.Json.PreserveReferencesHandling.None;
             //GlobalConfiguration.Configuration.Filters.Add(new LoggingFilterAttribute());
             //GlobalConfiguration.Configuration.Filters.Add(new GlobalExceptionAttribute());
         }

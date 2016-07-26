@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Midas.GreenBill.Model
+namespace GBDataRepository.Model
 {
     using System;
     using System.Collections.Generic;
@@ -27,8 +27,6 @@ namespace Midas.GreenBill.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
-        public virtual Address Address { get; set; }
-        public virtual Address Address1 { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual ContactInfo ContactInfo1 { get; set; }
         public virtual MedicalFacility MedicalFacility { get; set; }
@@ -36,7 +34,5 @@ namespace Midas.GreenBill.Model
         public virtual Provider Provider { get; set; }
         public virtual ProviderMedicalFacility ProviderMedicalFacilities1 { get; set; }
         public virtual ProviderMedicalFacility ProviderMedicalFacility1 { get; set; }
-        public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
     }
 }

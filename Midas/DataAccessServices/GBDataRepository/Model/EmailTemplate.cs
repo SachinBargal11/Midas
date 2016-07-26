@@ -7,11 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-<<<<<<< HEAD
 namespace GBDataRepository.Model
-=======
-namespace Midas.GreenBill.Model
->>>>>>> master
 {
     using System;
     using System.Collections.Generic;
@@ -27,8 +23,5 @@ namespace Midas.GreenBill.Model
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-    
-        public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
     }
 }

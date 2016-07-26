@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Midas.GreenBill.Model
+namespace GBDataRepository.Model
 {
     using System;
     using System.Collections.Generic;
@@ -15,7 +15,7 @@ namespace Midas.GreenBill.Model
     public partial class CaseAssociatedDiagnosisCode
     {
         public int CaseAssociatedDiagnosisCodeId { get; set; }
-        public Nullable<int> CaseId { get; set; }
+        public int CaseId { get; set; }
         public Nullable<int> DiagnosiCodeId { get; set; }
         public Nullable<int> SpecialtyId { get; set; }
         public Nullable<bool> Deleted { get; set; }

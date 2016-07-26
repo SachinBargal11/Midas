@@ -7,35 +7,29 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Midas.GreenBill.Model
+namespace GBDataRepository.Model
 {
     using System;
     using System.Collections.Generic;
     
     public partial class SpecialtyDetail
     {
-        public int SpecialtyDetailId { get; set; }
+        public int ID { get; set; }
         public Nullable<int> SpecialtyId { get; set; }
         public Nullable<bool> IsUnitApply { get; set; }
-        public Nullable<int> ParentSpecialtyID { get; set; }
         public Nullable<int> FollowUpDays { get; set; }
         public Nullable<int> FollowupTime { get; set; }
         public Nullable<int> InitialDays { get; set; }
         public Nullable<int> InitialTime { get; set; }
         public Nullable<bool> IsInitialEvaluation { get; set; }
-        public string SpecialtyCode { get; set; }
-        public string Description { get; set; }
         public Nullable<bool> Include1500 { get; set; }
-        public Nullable<bool> IsReferral { get; set; }
-        public Nullable<bool> HaveNotes { get; set; }
         public Nullable<int> AssociatedSpecialty { get; set; }
-        public Nullable<bool> MultipleVisitsDay { get; set; }
+        public Nullable<bool> AllowMultipleVisit { get; set; }
         public Nullable<int> MedicalOfficeId { get; set; }
-        public Nullable<bool> Deleted { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
-        public Nullable<System.DateTime> UpdatedDate { get; set; }
-        public Nullable<int> CreatedBy { get; set; }
-        public Nullable<int> UpdatedBY { get; set; }
-        public string IPAddress { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
+        public int CreateByUserID { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
+        public Nullable<int> UpdateByUserID { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
     }
 }

@@ -12,28 +12,18 @@ namespace GBDataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class ContactInfo
+    public partial class ContactInfo : GBDataObject
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ContactInfo()
         {
-<<<<<<< HEAD
-            this.EmployerAddress = new HashSet<EmployerAddress>();
-            this.InsuranceAddress = new HashSet<InsuranceAddress>();
-            this.MedicalFacilities = new HashSet<MedicalFacilities>();
-            this.ProviderMedicalFacilities = new HashSet<ProviderMedicalFacilities>();
-            this.ProviderMedicalFacilities1 = new HashSet<ProviderMedicalFacilities>();
-            this.User2 = new HashSet<User>();
-=======
-            this.Insurances = new HashSet<Insurance>();
+            this.EmployerAddresses = new HashSet<EmployerAddress>();
+            this.InsuranceAddresses = new HashSet<InsuranceAddress>();
             this.MedicalFacilities = new HashSet<MedicalFacility>();
             this.ProviderMedicalFacilities = new HashSet<ProviderMedicalFacility>();
             this.ProviderMedicalFacilities1 = new HashSet<ProviderMedicalFacility>();
             this.Users = new HashSet<User>();
->>>>>>> master
         }
-    
-        public int ID { get; set; }
         public string Name { get; set; }
         public string CellPhone { get; set; }
         public string EmailAddress { get; set; }
@@ -46,23 +36,10 @@ namespace GBDataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
-        public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-<<<<<<< HEAD
-        public virtual ICollection<EmployerAddress> EmployerAddress { get; set; }
+        public virtual ICollection<EmployerAddress> EmployerAddresses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<InsuranceAddress> InsuranceAddress { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MedicalFacilities> MedicalFacilities { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProviderMedicalFacilities> ProviderMedicalFacilities { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProviderMedicalFacilities> ProviderMedicalFacilities1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> User2 { get; set; }
-=======
-        public virtual ICollection<Insurance> Insurances { get; set; }
+        public virtual ICollection<InsuranceAddress> InsuranceAddresses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MedicalFacility> MedicalFacilities { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -71,6 +48,5 @@ namespace GBDataRepository.Model
         public virtual ICollection<ProviderMedicalFacility> ProviderMedicalFacilities1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> Users { get; set; }
->>>>>>> master
     }
 }

@@ -14,7 +14,13 @@ namespace GBDataRepository.Model
     
     public partial class Case
     {
-        public int CaseId { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Case()
+        {
+            this.CaseDiagnosisSpecialities = new HashSet<CaseDiagnosisSpeciality>();
+        }
+    
+        public int ID { get; set; }
         public Nullable<int> CaseTypeId { get; set; }
         public Nullable<int> MedicalFacilitiesID { get; set; }
         public Nullable<int> PatientInsuranceId { get; set; }
@@ -27,22 +33,9 @@ namespace GBDataRepository.Model
         public Nullable<System.DateTime> CaseDate { get; set; }
         public Nullable<int> CaseNo { get; set; }
         public Nullable<int> LocationId { get; set; }
-<<<<<<< HEAD
         public Nullable<bool> IsSoftDeleted { get; set; }
-=======
-        public Nullable<int> IsCopied { get; set; }
-        public Nullable<int> CopiedAccountId { get; set; }
-        public Nullable<int> CopiedUserId { get; set; }
-        public Nullable<System.DateTime> CopiedDate { get; set; }
-        public Nullable<int> CopiedFormPatient { get; set; }
-        public Nullable<bool> IsSoftDeleted { get; set; }
-        public Nullable<decimal> TotalBillAmount { get; set; }
-        public Nullable<decimal> Paid { get; set; }
-        public Nullable<decimal> Balance { get; set; }
->>>>>>> master
         public string RemoteCaseID { get; set; }
         public Nullable<int> ReferringProviderId { get; set; }
-        public string DiagnosisForSpecialty { get; set; }
         public Nullable<int> EmployerId { get; set; }
         public Nullable<int> EmployerAddressId { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
@@ -56,7 +49,7 @@ namespace GBDataRepository.Model
         public virtual Employer Employer { get; set; }
         public virtual EmployerAddress EmployerAddress { get; set; }
         public virtual Patient Patient { get; set; }
-        public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CaseDiagnosisSpeciality> CaseDiagnosisSpecialities { get; set; }
     }
 }
