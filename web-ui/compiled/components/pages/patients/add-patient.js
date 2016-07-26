@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/forms', '@angular/router', '../../../utils/AppValidators', '../../elements/loader', '../../../stores/patients-store', '../../../models/patient', 'jquery', '../../../stores/session-store', '../../../stores/notifications-store', '../../../models/notification', 'moment', 'primeng/primeng'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/forms', '@angular/router', '../../../utils/AppValidators', '../../elements/loader', '../../../stores/patients-store', '../../../models/patient', '../../../stores/session-store', '../../../stores/notifications-store', '../../../models/notification', 'moment', 'primeng/primeng'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, forms_1, router_1, AppValidators_1, loader_1, patients_store_1, patient_1, jquery_1, session_store_1, notifications_store_1, notification_1, moment_1, primeng_1;
+    var core_1, forms_1, router_1, AppValidators_1, loader_1, patients_store_1, patient_1, session_store_1, notifications_store_1, notification_1, moment_1, primeng_1;
     var AddPatientComponent;
     return {
         setters:[
@@ -34,9 +34,6 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
             },
             function (patient_1_1) {
                 patient_1 = patient_1_1;
-            },
-            function (jquery_1_1) {
-                jquery_1 = jquery_1_1;
             },
             function (session_store_1_1) {
                 session_store_1 = session_store_1_1;
@@ -84,7 +81,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
                         email: ['', [forms_1.Validators.required, AppValidators_1.AppValidators.emailValidator]],
                         mobileNo: ['', [forms_1.Validators.required, AppValidators_1.AppValidators.mobileNoValidator]],
                         address: [''],
-                        dob: ['']
+                        dob: ['', forms_1.Validators.required]
                     });
                     this.patientformControls = this.patientform.controls;
                 }
@@ -103,7 +100,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
                         'email': this.patientform.value.email,
                         'mobileNo': this.patientform.value.mobileNo,
                         'address': this.patientform.value.address,
-                        'dob': jquery_1.default("#dob").val(),
+                        'dob': this.patientform.value.dob,
                         'createdUser': this._sessionStore.session.user.id
                     });
                     result = this._patientsStore.addPatient(patient);
