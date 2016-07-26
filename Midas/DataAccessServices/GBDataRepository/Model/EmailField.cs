@@ -7,33 +7,23 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GBDataRepository.Model
+namespace Midas.GreenBill.Model
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Doctor
+    public partial class EmailField
     {
         public int ID { get; set; }
-        public Nullable<int> DoctorUserId { get; set; }
-        public string SpecialityID { get; set; }
-        public string LicenseNumber { get; set; }
-        public string WCBAuthorization { get; set; }
-        public string WcbRatingCode { get; set; }
-        public string NPI { get; set; }
-        public string FederalTaxId { get; set; }
-        public Nullable<byte> TaxType { get; set; }
-        public string AssignNumber { get; set; }
-        public string Title { get; set; }
-        public Nullable<byte> DoctorType { get; set; }
+        public string FieldName { get; set; }
+        public string SQLQuery { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
+        public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
-        public virtual User User2 { get; set; }
     }
 }

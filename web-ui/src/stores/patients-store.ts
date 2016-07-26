@@ -75,6 +75,34 @@ export class PatientsStore {
         return <Observable<Patient>>Observable.from(promise);
     }
 
+     updatePatient(patient: Patient): Observable<Patient> {
+        let patients = this._patients.getValue();
+        let index = patients.findIndex((currentPatient: Patient) => currentPatient.id === patient.id);
+        let promise = new Promise((resolve, reject) => {
+            this._patientsService.updatePatient(patient).subscribe((patient: Patient) => {
+                this._patients.next(patients.set(index, patient));
+                resolve(patient);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Patient>>Observable.from(promise);
+    }
+    
+      deletePatient(patient: Patient): Observable<Patient> {
+        let patients = this._patients.getValue();        
+        let index = patients.findIndex((currentPatient: Patient) => currentPatient.id === patient.id);              
+        let promise = new Promise((resolve, reject) => {
+            this._patientsService.deletePatient(patient).subscribe((patient: Patient) => {
+              this._patients.next(patients.delete(index));
+                resolve(patient);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Patient>>Observable.from(promise);
+    }
+    
     selectPatient(patient: Patient) {
         let selectedPatients = this._selectedPatients.getValue();
         let index = selectedPatients.findIndex((currentPatient: Patient) => currentPatient.id === patient.id);

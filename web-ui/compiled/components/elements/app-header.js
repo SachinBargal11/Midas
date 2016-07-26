@@ -72,6 +72,10 @@ System.register(['@angular/core', '@angular/router', '../elements/loader', '../.
                     this._sessionStore.logout();
                     this._router.navigate(['/login']);
                 };
+                AppHeaderComponent.prototype.changePassword = function () {
+                    this._sessionStore.session;
+                    this._router.navigate(['/change-password']);
+                };
                 AppHeaderComponent.prototype.showNotifications = function () {
                     this._notificationsStore.toggleVisibility();
                 };

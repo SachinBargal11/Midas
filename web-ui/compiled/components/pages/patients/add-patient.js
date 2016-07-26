@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/common', '@angular/router', '../../../utils/AppValidators', '../../elements/loader', '../../../stores/patients-store', '../../../models/patient', 'jquery', 'eonasdan-bootstrap-datetimepicker', '../../../stores/session-store', '../../../stores/notifications-store', '../../../models/notification', 'moment'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/forms', '@angular/router', '../../../utils/AppValidators', '../../elements/loader', '../../../stores/patients-store', '../../../models/patient', '../../../stores/session-store', '../../../stores/notifications-store', '../../../models/notification', 'moment', 'primeng/primeng'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,15 +10,15 @@ System.register(['@angular/core', '@angular/common', '@angular/router', '../../.
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, common_1, router_1, AppValidators_1, loader_1, patients_store_1, patient_1, jquery_1, session_store_1, notifications_store_1, notification_1, moment_1;
+    var core_1, forms_1, router_1, AppValidators_1, loader_1, patients_store_1, patient_1, session_store_1, notifications_store_1, notification_1, moment_1, primeng_1;
     var AddPatientComponent;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
             },
-            function (common_1_1) {
-                common_1 = common_1_1;
+            function (forms_1_1) {
+                forms_1 = forms_1_1;
             },
             function (router_1_1) {
                 router_1 = router_1_1;
@@ -35,10 +35,6 @@ System.register(['@angular/core', '@angular/common', '@angular/router', '../../.
             function (patient_1_1) {
                 patient_1 = patient_1_1;
             },
-            function (jquery_1_1) {
-                jquery_1 = jquery_1_1;
-            },
-            function (_1) {},
             function (session_store_1_1) {
                 session_store_1 = session_store_1_1;
             },
@@ -50,10 +46,14 @@ System.register(['@angular/core', '@angular/common', '@angular/router', '../../.
             },
             function (moment_1_1) {
                 moment_1 = moment_1_1;
+            },
+            function (primeng_1_1) {
+                primeng_1 = primeng_1_1;
             }],
         execute: function() {
             AddPatientComponent = (function () {
                 function AddPatientComponent(fb, _router, _notificationsStore, _sessionStore, _patientsStore, _elRef) {
+                    this.fb = fb;
                     this._router = _router;
                     this._notificationsStore = _notificationsStore;
                     this._sessionStore = _sessionStore;
@@ -65,6 +65,7 @@ System.register(['@angular/core', '@angular/common', '@angular/router', '../../.
                         'email': '',
                         'mobileNo': '',
                         'address': '',
+                        'dob': ''
                     });
                     this.options = {
                         timeOut: 3000,
@@ -74,18 +75,20 @@ System.register(['@angular/core', '@angular/common', '@angular/router', '../../.
                         maxLength: 10
                     };
                     this.isSavePatientProgress = false;
-                    this.patientform = fb.group({
-                        firstname: ['', common_1.Validators.required],
-                        lastname: ['', common_1.Validators.required],
-                        email: ['', common_1.Validators.compose([common_1.Validators.required, AppValidators_1.AppValidators.emailValidator])],
-                        mobileNo: ['', common_1.Validators.compose([common_1.Validators.required, AppValidators_1.AppValidators.mobileNoValidator])],
+                    this.patientform = this.fb.group({
+                        firstname: ['', forms_1.Validators.required],
+                        lastname: ['', forms_1.Validators.required],
+                        email: ['', [forms_1.Validators.required, AppValidators_1.AppValidators.emailValidator]],
+                        mobileNo: ['', [forms_1.Validators.required, AppValidators_1.AppValidators.mobileNoValidator]],
                         address: [''],
+                        dob: ['', forms_1.Validators.required]
                     });
+                    this.patientformControls = this.patientform.controls;
                 }
                 AddPatientComponent.prototype.ngOnInit = function () {
-                    jquery_1.default(this._elRef.nativeElement).find('.datepickerElem').datetimepicker({
-                        format: 'll'
-                    });
+                    // $(this._elRef.nativeElement).find('.datepickerElem').datetimepicker({
+                    //     format: 'll'
+                    // });
                 };
                 AddPatientComponent.prototype.savePatient = function () {
                     var _this = this;
@@ -97,6 +100,7 @@ System.register(['@angular/core', '@angular/common', '@angular/router', '../../.
                         'email': this.patientform.value.email,
                         'mobileNo': this.patientform.value.mobileNo,
                         'address': this.patientform.value.address,
+                        'dob': this.patientform.value.dob,
                         'createdUser': this._sessionStore.session.user.id
                     });
                     result = this._patientsStore.addPatient(patient);
@@ -123,9 +127,9 @@ System.register(['@angular/core', '@angular/common', '@angular/router', '../../.
                     core_1.Component({
                         selector: 'add-patient',
                         templateUrl: 'templates/pages/patients/add-patient.html',
-                        directives: [router_1.ROUTER_DIRECTIVES, loader_1.LoaderComponent]
+                        directives: [forms_1.FORM_DIRECTIVES, forms_1.REACTIVE_FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES, loader_1.LoaderComponent, primeng_1.Calendar]
                     }), 
-                    __metadata('design:paramtypes', [common_1.FormBuilder, router_1.Router, notifications_store_1.NotificationsStore, session_store_1.SessionStore, patients_store_1.PatientsStore, core_1.ElementRef])
+                    __metadata('design:paramtypes', [forms_1.FormBuilder, router_1.Router, notifications_store_1.NotificationsStore, session_store_1.SessionStore, patients_store_1.PatientsStore, core_1.ElementRef])
                 ], AddPatientComponent);
                 return AddPatientComponent;
             }());

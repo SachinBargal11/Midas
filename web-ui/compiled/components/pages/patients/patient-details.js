@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router', '../../../stores/patients-store'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', '../../../stores/patients-store', './profile-patient'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router', '../../../stores/patients-s
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, patients_store_1;
+    var core_1, router_1, patients_store_1, profile_patient_1;
     var PatientDetailsComponent;
     return {
         setters:[
@@ -22,6 +22,9 @@ System.register(['@angular/core', '@angular/router', '../../../stores/patients-s
             },
             function (patients_store_1_1) {
                 patients_store_1 = patients_store_1_1;
+            },
+            function (profile_patient_1_1) {
+                profile_patient_1 = profile_patient_1_1;
             }],
         execute: function() {
             PatientDetailsComponent = (function () {
@@ -35,7 +38,8 @@ System.register(['@angular/core', '@angular/router', '../../../stores/patients-s
                     core_1.Component({
                         selector: 'patient-details',
                         templateUrl: 'templates/pages/patients/patient-details.html',
-                        directives: [router_1.ROUTER_DIRECTIVES]
+                        directives: [router_1.ROUTER_DIRECTIVES],
+                        precompile: [profile_patient_1.PatientProfileComponent]
                     }), 
                     __metadata('design:paramtypes', [router_1.ActivatedRoute, router_1.Router, patients_store_1.PatientsStore])
                 ], PatientDetailsComponent);

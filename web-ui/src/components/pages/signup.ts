@@ -1,16 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {ControlGroup, Validators, FormBuilder} from '@angular/common';
+import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import {AppValidators} from '../../utils/AppValidators';
 import {LoaderComponent} from '../elements/loader';
 import {AuthenticationService} from '../../services/authentication-service';
 import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
 import {SessionStore} from '../../stores/session-store';
+import {User} from '../../models/user';
 
 @Component({
     selector: 'signup',
     templateUrl: 'templates/pages/signup.html',
-    directives: [ROUTER_DIRECTIVES, LoaderComponent, SimpleNotificationsComponent],
+    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, SimpleNotificationsComponent],
     providers: [AuthenticationService, NotificationsService]
 })
 
@@ -22,22 +23,25 @@ export class SignupComponent implements OnInit {
         clickToClose: false,
         maxLength: 10
     };
-    signupForm: ControlGroup;
+    signupForm: FormGroup;
+    signupFormControls;
     isSignupInProgress;
     constructor(
-        fb: FormBuilder,
+        private fb: FormBuilder,
         private _authenticationService: AuthenticationService,
         private _notificationsService: NotificationsService,
         private _sessionStore: SessionStore,
         private _router: Router
     ) {
-        this.signupForm = fb.group({
+        this.signupForm = this.fb.group({
             name: ['', Validators.required],
-            email: ['', Validators.compose([Validators.required, AppValidators.emailValidator])],
-            mobileNo: ['', Validators.compose([Validators.required, AppValidators.mobileNoValidator])],
+            email: ['', [Validators.required, AppValidators.emailValidator]],
+            mobileNo: ['', [Validators.required, AppValidators.mobileNoValidator]],
             password: ['', Validators.required],
             confirmPassword: ['', Validators.required]
         }, { validator: AppValidators.matchingPasswords('password', 'confirmPassword') });
+        
+        this.signupFormControls = this.signupForm.controls;
     }
 
     ngOnInit() {
@@ -47,12 +51,12 @@ export class SignupComponent implements OnInit {
     register() {
         this.isSignupInProgress = true;
         var result;
-        var user = {
+        var user = new User({
             'name': this.signupForm.value.name,
             'email': this.signupForm.value.email,
-            'mobileNo': this.signupForm.value.mobileNo,
+            'phone': this.signupForm.value.mobileNo,
             'password': this.signupForm.value.password
-        }
+        });
         result = this._authenticationService.register(user);
 
 

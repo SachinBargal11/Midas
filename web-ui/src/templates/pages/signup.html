@@ -1,51 +1,47 @@
 <div class="page-center">
     <div class="page-center-in">
         <div class="container-fluid">
-            <form class="sign-box" [ngFormModel]="signupForm" (ngSubmit)="register()">
+            <form class="sign-box" [formGroup]="signupForm" (ngSubmit)="register()">
                 <div class="sign-avatar no-photo">+</div>
                 <header class="sign-title">Sign Up</header>
-                <div class="form-group" [class.error]="name.control.touched && !name.valid">
-                    <input type="text" class="form-control" [class.error]="!name.valid" placeholder="Name" #name="ngForm" ngControl="name" />
-                    <div class='error-list' *ngIf="name.control.touched && !name.valid">
+                <div class="form-group" [class.error]="signupFormControls.name.touched && !signupFormControls.name.valid">
+                    <input formControlName="name" type="text" class="form-control" [class.error]="!signupFormControls.name.valid" placeholder="Name" />
+                    <div class='error-list' *ngIf="signupFormControls.name.touched && !signupFormControls.name.valid">
                         <ul>
-                            <li *ngIf="name.control.hasError('required')">Name is required.</li>
+                            <li *ngIf="signupFormControls.name.hasError('required')">Name is required.</li>
                         </ul>
                     </div>
                 </div>
-                <div class="form-group" [class.error]="email.control.touched && !email.valid">
-                    <input type="email" [class.error]="!email.valid" class="form-control" placeholder="E-Mail" type="text" #email="ngForm" ngControl="email"
-                    />
-                    <div class='error-list' *ngIf="email.control.touched && !email.valid">
+                <div class="form-group" [class.error]="signupFormControls.email.touched && !signupFormControls.email.valid">
+                    <input formControlName="email" type="email" [class.error]="!signupFormControls.email.valid" class="form-control" placeholder="E-Mail" type="text" />
+                    <div class='error-list' *ngIf="signupFormControls.email.touched && !signupFormControls.email.valid">
                         <ul>
-                            <li *ngIf="email.control.hasError('required')">Email is required.</li>
-                            <li *ngIf="email.control.hasError('emailValidator')">Email is invalid.</li>
+                            <li *ngIf="signupFormControls.email.hasError('required')">Email is required.</li>
+                            <li *ngIf="signupFormControls.email.hasError('emailValidator')">Email is invalid.</li>
                         </ul>
                     </div>
                 </div>
-                <div class="form-group" [class.error]="mobileNo.control.touched && !mobileNo.valid">
-                    <input type="text" class="form-control" [class.error]="!mobileNo.valid" placeholder="Mobile No" #mobileNo="ngForm" ngControl="mobileNo"
-                    />
-                    <div class='error-list' *ngIf="mobileNo.control.touched && !mobileNo.valid">
+                <div class="form-group" [class.error]="signupFormControls.mobileNo.touched && !signupFormControls.mobileNo.valid">
+                    <input formControlName="mobileNo" type="text" class="form-control" [class.error]="!signupFormControls.mobileNo.valid" placeholder="Mobile No" />
+                    <div class='error-list' *ngIf="signupFormControls.mobileNo.touched && !signupFormControls.mobileNo.valid">
                         <ul>
-                            <li *ngIf="mobileNo.control.hasError('required')">Mobile number is required.</li>
-                            <li *ngIf="mobileNo.control.hasError('mobileNoValidator')">Mobile number is invalid.</li>
+                            <li *ngIf="signupFormControls.mobileNo.hasError('required')">Mobile number is required.</li>
+                            <li *ngIf="signupFormControls.mobileNo.hasError('mobileNoValidator')">Mobile number is invalid.</li>
                         </ul>
                     </div>
                 </div>
-                <div class="form-group" [class.error]="password.control.touched && !password.valid">
-                    <input type="password" minlength='6' class="form-control" [class.error]="!password.valid" placeholder="Password" #password="ngForm" ngControl="password"
-                    />
-                    <div class='error-list' *ngIf="password.control.touched && !password.valid">
+                <div class="form-group" [class.error]="signupFormControls.password.touched && !signupFormControls.password.valid">
+                    <input formControlName="password" type="password" minlength='6' class="form-control" [class.error]="!signupFormControls.password.valid" placeholder="Password" />
+                    <div class='error-list' *ngIf="signupFormControls.password.touched && !signupFormControls.password.valid">
                         <ul>
-                            <li *ngIf="password.control.hasError('required')">Password is required.</li>
-                            <li *ngIf="password.control.hasError('minlength')">Password should be minimum {{password.errors.minlength.requiredLength}} characters.</li>
+                            <li *ngIf="signupFormControls.password.hasError('required')">Password is required.</li>
+                            <li *ngIf="signupFormControls.password.hasError('minlength')">Password should be minimum {{signupFormControls.password.errors.minlength.requiredLength}} characters.</li>
                         </ul>
                     </div>
                 </div>
-                <div class="form-group" [class.error]="confirmPassword.control.touched && signupForm.hasError('mismatchedPasswords')">
-                    <input type="password" class="form-control" [class.error]="signupForm.hasError('mismatchedPasswords')" placeholder="Repeat password" #confirmPassword="ngForm"
-                        ngControl="confirmPassword" />
-                    <div class='error-list' *ngIf="confirmPassword.control.touched && signupForm.hasError('mismatchedPasswords')">
+                <div class="form-group" [class.error]="signupFormControls.confirmPassword.touched && signupForm.hasError('mismatchedPasswords')">
+                    <input formControlName="confirmPassword" type="password" class="form-control" [class.error]="signupForm.hasError('mismatchedPasswords')" placeholder="Repeat password" />
+                    <div class='error-list' *ngIf="signupFormControls.confirmPassword.touched && signupForm.hasError('mismatchedPasswords')">
                         <ul>
                             <li *ngIf="signupForm.hasError('mismatchedPasswords')">Passwords do not match.</li>
                         </ul>

@@ -112,10 +112,10 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/
                     });
                     return Observable_1.Observable.fromPromise(promise);
                 };
-                PatientsService.prototype.deletePatient = function (patientId) {
+                PatientsService.prototype.deletePatient = function (patient) {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {
-                        return _this._http.delete(_this._url + "/" + patientId)
+                        return _this._http.delete(_this._url + "/" + patient.id)
                             .map(function (res) { return res.json(); })
                             .subscribe(function (patient) {
                             resolve(patient);

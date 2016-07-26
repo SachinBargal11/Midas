@@ -14,6 +14,15 @@ namespace GBDataRepository.Model
     
     public partial class UserType
     {
+<<<<<<< HEAD
+=======
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public UserType()
+        {
+            this.Users = new HashSet<User>();
+        }
+    
+>>>>>>> master
         public byte ID { get; set; }
         public string UserType1 { get; set; }
         public int CreateByUserID { get; set; }
@@ -21,6 +30,11 @@ namespace GBDataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
+<<<<<<< HEAD
+=======
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User> Users { get; set; }
+>>>>>>> master
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
     }

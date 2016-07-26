@@ -15,7 +15,12 @@
         charset="utf-8">
     <link rel="stylesheet" href="<%= externalComponentsDirectory %>/node_modules/font-awesome/css/font-awesome.min.css" type="text/css"
         charset="utf-8">
-    
+
+    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/primeui/primeui-ng-all.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/primeui/themes/bootstrap/theme.css"
+    />
+
     <!-- /build -->
     <link rel="stylesheet" href="theme/css/main.css">
     <link rel="stylesheet" href="styles/styles.css">
@@ -44,15 +49,29 @@
                     'immutable' : '<%= externalComponentsDirectory %>/node_modules/immutable/dist/immutable.js',
                     'underscore' : '<%= externalComponentsDirectory %>/node_modules/underscore/underscore.js',
                     'jquery': '<%= externalComponentsDirectory %>/node_modules/jquery/dist/jquery.min.js',
-                    'eonasdan-bootstrap-datetimepicker': '<%= externalComponentsDirectory %>/node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'                },
+                    'primeng': '<%= externalComponentsDirectory %>/node_modules/primeng',
+                    'jquery.inputmask': '<%= externalComponentsDirectory %>/node_modules/jquery.inputmask/dist/jquery.inputmask.bundle.js',
+                    'jquery.ui': '//code.jquery.com/ui/1.11.4/jquery-ui.min.js',                
+                    'jquery-ui-timepicker-addon': '<%= externalComponentsDirectory %>/node_modules/jquery-ui-timepicker-addon/dist/jquery-ui-timepicker-addon.js'                
+                },
                 meta: 
                 {
-                        'daterangepicker': {
-                            deps: [
-                                'jquery', 
-                                'moment'
-                            ]
-                        }                        
+                    'primeng' : {
+                        deps: [
+                            'jquery.ui',
+                            'jquery-ui-timepicker-addon'
+                        ]
+                    },
+                    'jquery-ui': {
+                        deps: [
+                            'jquery'
+                        ]
+                    },
+                    'jquery-ui-timepicker-addon': {
+                        deps: [
+                            'jquery.ui'
+                        ]
+                    }
                 },
                 packages: {
                     'scripts': {
@@ -81,6 +100,10 @@
                     },
                     '@angular/common': {
                         main: 'bundles/common.umd.js',
+                        defaultExtension: 'js'
+                    },
+                    '@angular/forms': {
+                        main: 'bundles/forms.umd.js',
                         defaultExtension: 'js'
                     },
                     '@angular/compiler': {
@@ -125,11 +148,21 @@
                     'ng2-bootstrap': {
                         main: 'ng2-bootstrap.js',
                         defaultExtension: 'js'
+                    },
+                    'primeng': {
+                        defaultExtension: 'js'
                     }
                 }
             });
             
-            System.import('scripts/bootstraper')
+            Promise.all([
+                System.import('jquery.ui'),
+                System.import('jquery-ui-timepicker-addon')
+            ])
+                .then(function()
+                {
+                    return System.import('scripts/bootstraper')
+                })
                 .catch(function(error)
                 {
                     console.error(error);

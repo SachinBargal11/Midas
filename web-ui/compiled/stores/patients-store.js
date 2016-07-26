@@ -99,6 +99,34 @@ System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 
                     });
                     return Observable_1.Observable.from(promise);
                 };
+                PatientsStore.prototype.updatePatient = function (patient) {
+                    var _this = this;
+                    var patients = this._patients.getValue();
+                    var index = patients.findIndex(function (currentPatient) { return currentPatient.id === patient.id; });
+                    var promise = new Promise(function (resolve, reject) {
+                        _this._patientsService.updatePatient(patient).subscribe(function (patient) {
+                            _this._patients.next(patients.set(index, patient));
+                            resolve(patient);
+                        }, function (error) {
+                            reject(error);
+                        });
+                    });
+                    return Observable_1.Observable.from(promise);
+                };
+                PatientsStore.prototype.deletePatient = function (patient) {
+                    var _this = this;
+                    var patients = this._patients.getValue();
+                    var index = patients.findIndex(function (currentPatient) { return currentPatient.id === patient.id; });
+                    var promise = new Promise(function (resolve, reject) {
+                        _this._patientsService.deletePatient(patient).subscribe(function (patient) {
+                            _this._patients.next(patients.delete(index));
+                            resolve(patient);
+                        }, function (error) {
+                            reject(error);
+                        });
+                    });
+                    return Observable_1.Observable.from(promise);
+                };
                 PatientsStore.prototype.selectPatient = function (patient) {
                     var selectedPatients = this._selectedPatients.getValue();
                     var index = selectedPatients.findIndex(function (currentPatient) { return currentPatient.id === patient.id; });

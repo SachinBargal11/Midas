@@ -36,6 +36,5 @@ namespace Midas.GreenBill.Model
         public Nullable<System.DateTime> UpdatedDate { get; set; }
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<int> UpdatedBY { get; set; }
-        public string IPAddress { get; set; }
     }
 }

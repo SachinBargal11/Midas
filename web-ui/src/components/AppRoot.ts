@@ -10,6 +10,8 @@ import {MainNavComponent} from './elements/main-nav';
 import {SessionStore} from '../stores/session-store';
 import {NotificationComponent} from './elements/notification';
 import {NotificationsStore} from '../stores/notifications-store';
+import {ChangePasswordComponent} from './pages/change-password';
+import {AddUserComponent} from './pages/add-user';
 
 @Component({
     selector: 'app-root',
@@ -19,7 +21,14 @@ import {NotificationsStore} from '../stores/notifications-store';
         AppHeaderComponent,
         MainNavComponent,
         NotificationComponent
-    ]
+    ],
+     precompile: [LoginComponent, 
+                  SignupComponent, 
+                  ChangePasswordComponent, 
+                  AddUserComponent, 
+                  DashboardComponent, 
+                  PatientsShellComponent
+     ]
 })
 
 export class AppRoot implements OnInit {

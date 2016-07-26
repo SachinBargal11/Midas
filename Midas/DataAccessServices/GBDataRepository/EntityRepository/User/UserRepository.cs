@@ -25,8 +25,12 @@ namespace Midas.GreenBill.EntityRepository
         }
         #endregion
 
+<<<<<<< HEAD
         #region Entity Conversion
         public override T Convert<T, U>(U entity)
+=======
+        public override Object Save<T>(T entity)
+>>>>>>> master
         {
             User user = entity as User;
             if (user == null)
