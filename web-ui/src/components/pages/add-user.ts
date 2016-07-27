@@ -1,31 +1,37 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
+import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap';
 import {AppValidators} from '../../utils/AppValidators';
 import {LoaderComponent} from '../elements/loader';
-import {SubUsersStore} from '../../stores/sub-users-store';
-import {SubUser} from '../../models/sub-user';
+// import {UsersStore} from '../../stores/users-store';
+import {User} from '../../models/user';
+import {Contact} from '../../models/contact';
+import {Address} from '../../models/address';
 import $ from 'jquery';
 import {SessionStore} from '../../stores/session-store';
 import {NotificationsStore} from '../../stores/notifications-store';
 import {Notification} from '../../models/notification';
 import Moment from 'moment';
+import {Calendar, RadioButton, SelectItem} from 'primeng/primeng';
 
 @Component({
-    selector: 'sub-user',
-    templateUrl: 'templates/pages/add-sub-user.html',
-    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent]
+    selector: 'add-user',
+    templateUrl: 'templates/pages/add-user.html',
+    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, DROPDOWN_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar, RadioButton]
 })
 
 export class AddUserComponent implements OnInit {
-    subuser = new SubUser({
-        'firstname': '',
-        'lastname': '',
-        'email': '',
-        'mobileNo': '',
-        'address': '',
-        // 'dob': ''
-    });
+    // user = new User({
+    //     'firstName': '',
+    //     'middleName': '',
+    //     'lastName': '',
+    //     'userName': '',
+    //     'mobileNo': '',
+    //     'address': '',
+    //     'dob': ''
+    // });
+    user = new User({});
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -33,26 +39,46 @@ export class AddUserComponent implements OnInit {
         clickToClose: false,
         maxLength: 10
     };
-    subuserform: FormGroup;
-    subuserformControls;
-    isSaveSubUserProgress = false;
+    userform: FormGroup;   
+    userformControls;
+    isSaveUserProgress = false;
+ 
     constructor(
         private fb: FormBuilder,
         private _router: Router,
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
-        private _subusersStore: SubUsersStore,
+        // private _usersStore: UsersStore,
         private _elRef: ElementRef
     ) {
-        this.subuserform = this.fb.group({
-            firstname: ['', Validators.required],
-            lastname: ['', Validators.required],
-            email: ['', [Validators.required, AppValidators.emailValidator]],
-            mobileNo: ['', [Validators.required, AppValidators.mobileNoValidator]],
-            address: [''],
-            // dob: ['', Validators.required]
+        this.userform = this.fb.group({
+                   userInfo: this.fb.group({
+                                  firstname: ['', Validators.required],
+                                  middlename: ['', Validators.required],
+                                  lastname: ['', Validators.required],
+                                  gender: ['', Validators.required],
+                                  dob: ['', Validators.required],
+                                  userType: ['', Validators.required]
+                              }),
+                   contact: this.fb.group({           
+                                  email: ['', [Validators.required, AppValidators.emailValidator]],
+                                  cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+                                  homePhone: [''],
+                                  workPhone: [''],
+                                  faxNo: ['']
+                              }),
+                   address: this.fb.group({           
+                                  address1: ['', Validators.required],
+                                  address2: [''],
+                                  city: ['', Validators.required],
+                                  zipCode: ['', Validators.required],
+                                  state: ['', Validators.required],
+                                  country: ['', Validators.required]
+                              })    
         });
-        this.subuserformControls = this.subuserform.controls;
+      
+         this.userformControls = this.userform.controls;
+         
     }
 
     ngOnInit() {
@@ -60,40 +86,41 @@ export class AddUserComponent implements OnInit {
     }
 
 
-    saveSubUser() {
-        this.isSaveSubUserProgress = true;
-        var result;
-        var subuser = new SubUser({
-            'firstname': this.subuserform.value.firstname,
-            'lastname': this.subuserform.value.lastname,
-            'email': this.subuserform.value.email,
-            'mobileNo': this.subuserform.value.mobileNo,
-            'address': this.subuserform.value.address,
-            'createdUser': this._sessionStore.session.user.id
-        });
-        result = this._subusersStore.addSubUser(subuser);
-        result.subscribe(
-            (response) => {
-                var notification = new Notification({
-                    'title': 'User added successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': Moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/users/add']);
-            },
-            (error) => {
-                var notification = new Notification({
-                    'title': 'Unable to add user.',
-                    'type': 'ERROR',
-                    'createdAt': Moment()
-                });
-                this._notificationsStore.addNotification(notification);
-            },
-            () => {
-                this.isSaveSubUserProgress = false;
-            });
+    // saveUser() {
+    //     this.isSaveUserProgress = true;
+    //     var result;
+    //     var user = new User({
+    //         'firstname': this.userform.value.firstname,
+    //         'lastname': this.userform.value.lastname,
+    //         'email': this.userform.value.email,
+    //         'mobileNo': this.userform.value.mobileNo,
+    //         'address': this.userform.value.address,
+    //         'dob': this.userform.value.dob,
+    //         'createdUser': this._sessionStore.session.user.id
+    //     });
+    //     result = this._usersStore.addUser(user);
+    //     result.subscribe(
+    //         (response) => {
+    //             var notification = new Notification({
+    //                 'title': 'User added successfully!',
+    //                 'type': 'SUCCESS',
+    //                 'createdAt': Moment()
+    //             });
+    //             this._notificationsStore.addNotification(notification);
+    //             this._router.navigate(['/users/add']);
+    //         },
+    //         (error) => {
+    //             var notification = new Notification({
+    //                 'title': 'Unable to add user.',
+    //                 'type': 'ERROR',
+    //                 'createdAt': Moment()
+    //             });
+    //             this._notificationsStore.addNotification(notification);
+    //         },
+    //         () => {
+    //             this.isSaveUserProgress = false;
+    //         });
 
-    }
+    // }
 
 }

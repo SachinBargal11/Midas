@@ -1,7 +1,7 @@
 import {Record} from 'immutable';
 import Moment from 'moment';
 
-const ContactInfoRecord = Record({
+const ContactRecord = Record({
     id: 0,
     name: "",
     cellPhone: "",
@@ -16,7 +16,7 @@ const ContactInfoRecord = Record({
     updateDate: Moment()
 });
 
-export class ContactInfo extends ContactInfoRecord {
+export class Contact extends ContactRecord {
 
     id: number;
     name: string;
