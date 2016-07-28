@@ -25,7 +25,7 @@
                                     <input formControlName="middlename" type="text" class="form-control" placeholder="Middle Name" [class.error]="!userformControls.userInfo.controls.middlename.valid">
                                     <div class='error-list' *ngIf="userformControls.userInfo.controls.middlename.touched && !userformControls.userInfo.controls.middlename.valid">
                                         <ul>
-                                            <li *ngIf="userformControls.userInfo.controls.middlename.hasError('required')">First Name is required.</li>
+                                            <li *ngIf="userformControls.userInfo.controls.middlename.hasError('required')">Middle Name is required.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -50,6 +50,7 @@
                                       <div class="form-group" [class.error]="userformControls.userInfo.controls.gender.touched && !userformControls.userInfo.controls.gender.valid">
                                         <select formControlName="gender" class="selectpicker form-control" title="Select Gender." [class.error]="userformControls.userInfo.controls.gender.touched && !userformControls.userInfo.controls.gender.valid">
                                              <option value="">-Select Gender-</option>
+                                             <option disabled>────────────────────</option>
                                              <option value="1">Male</option>
                                              <option value="2">Female</option>
                                          </select>
@@ -71,15 +72,14 @@
                                                       [monthNavigator]="true" 
                                                       [yearNavigator]="true"
                                                       [class.error]="userformControls.userInfo.controls.dob.touched && !userformControls.userInfo.controls.dob.valid" 
-                                                      placeholder="Date of Birth"
+                                                      placeholder="Date of birth"
                                                       showAnim="slideDown"
-                                                      [showIcon]="true"
-                                                      icon="font-icon font-icon-calend">
+                                                      [showIcon]="true">
                                           </p-calendar>
                                     </div>
                                     <div class='error-list' *ngIf="userformControls.userInfo.controls.dob.touched && !userformControls.userInfo.controls.dob.valid">
                                         <ul>
-                                            <li *ngIf="userformControls.userInfo.controls.dob.hasError('required')">Date Of Birth is required.</li>
+                                            <li *ngIf="userformControls.userInfo.controls.dob.hasError('required')">Date of birth is required.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -88,6 +88,7 @@
                                     <div class="form-group" [class.error]="userformControls.userInfo.controls.userType.touched && !userformControls.userInfo.controls.userType.valid">
                                         <select formControlName="userType" class="selectpicker form-control" title="Select User Type." [class.error]="userformControls.userInfo.controls.userType.touched && !userformControls.userInfo.controls.userType.valid">
                                              <option value="">-Select UserType-</option>
+                                             <option disabled>────────────────────</option>
                                              <option value="1">Admin</option>
                                              <option value="2">Owner</option>
                                              <option value="3">Doctor</option>
