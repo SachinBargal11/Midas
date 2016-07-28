@@ -65,8 +65,8 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                             firstname: ['', forms_1.Validators.required],
                             middlename: ['', forms_1.Validators.required],
                             lastname: ['', forms_1.Validators.required],
-                            gender: ['', forms_1.Validators.required],
-                            dob: ['', forms_1.Validators.required],
+                            //   gender: ['', Validators.required],
+                            //   dob: ['', Validators.required],
                             userType: ['', forms_1.Validators.required]
                         }),
                         contact: this.fb.group({

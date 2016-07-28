@@ -49,8 +49,8 @@ export class AddUserComponent implements OnInit {
                 firstname: ['', Validators.required],
                 middlename: ['', Validators.required],
                 lastname: ['', Validators.required],
-                gender: ['', Validators.required],
-                dob: ['', Validators.required],
+                // gender: ['', Validators.required],
+                // dob: ['', Validators.required],
                 userType: ['', Validators.required]
             }),
             contact: this.fb.group({
