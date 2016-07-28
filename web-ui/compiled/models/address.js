@@ -1,4 +1,4 @@
-System.register(['immutable', 'moment'], function(exports_1, context_1) {
+System.register(['immutable'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __extends = (this && this.__extends) || function (d, b) {
@@ -6,15 +6,12 @@ System.register(['immutable', 'moment'], function(exports_1, context_1) {
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
-    var immutable_1, moment_1;
+    var immutable_1;
     var AddressRecord, Address;
     return {
         setters:[
             function (immutable_1_1) {
                 immutable_1 = immutable_1_1;
-            },
-            function (moment_1_1) {
-                moment_1 = moment_1_1;
             }],
         execute: function() {
             AddressRecord = immutable_1.Record({
@@ -26,11 +23,11 @@ System.register(['immutable', 'moment'], function(exports_1, context_1) {
                 state: "",
                 zipCode: "",
                 country: "",
-                isDeleted: true,
+                isDeleted: false,
                 createByUserID: 0,
                 updateByUserID: 0,
-                createDate: moment_1.default(),
-                updateDate: moment_1.default()
+                createDate: null,
+                updateDate: null //Moment
             });
             Address = (function (_super) {
                 __extends(Address, _super);

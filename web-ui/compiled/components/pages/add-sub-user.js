@@ -120,9 +120,10 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../ut
                         templateUrl: 'templates/pages/add-sub-user.html',
                         directives: [forms_1.FORM_DIRECTIVES, forms_1.REACTIVE_FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES, loader_1.LoaderComponent]
                     }), 
-                    __metadata('design:paramtypes', [forms_1.FormBuilder, router_1.Router, notifications_store_1.NotificationsStore, session_store_1.SessionStore, sub_users_store_1.SubUsersStore, core_1.ElementRef])
+                    __metadata('design:paramtypes', [forms_1.FormBuilder, router_1.Router, notifications_store_1.NotificationsStore, session_store_1.SessionStore, (typeof (_a = typeof sub_users_store_1.SubUsersStore !== 'undefined' && sub_users_store_1.SubUsersStore) === 'function' && _a) || Object, core_1.ElementRef])
                 ], AddUserComponent);
                 return AddUserComponent;
+                var _a;
             }());
             exports_1("AddUserComponent", AddUserComponent);
         }

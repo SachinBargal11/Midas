@@ -1,4 +1,4 @@
-System.register(['immutable', 'moment'], function(exports_1, context_1) {
+System.register(['immutable', './enums/AccountStatus'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __extends = (this && this.__extends) || function (d, b) {
@@ -6,27 +6,26 @@ System.register(['immutable', 'moment'], function(exports_1, context_1) {
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
-    var immutable_1, moment_1;
+    var immutable_1, AccountStatus_1;
     var AccountRecord, Account;
     return {
         setters:[
             function (immutable_1_1) {
                 immutable_1 = immutable_1_1;
             },
-            function (moment_1_1) {
-                moment_1 = moment_1_1;
+            function (AccountStatus_1_1) {
+                AccountStatus_1 = AccountStatus_1_1;
             }],
         execute: function() {
             AccountRecord = immutable_1.Record({
                 id: 0,
                 name: "",
-                addressID: 2,
-                contactInfoID: 3,
-                isDeleted: true,
+                status: AccountStatus_1.AccountStatus.Active,
+                isDeleted: false,
                 createByUserID: 0,
                 updateByUserID: 0,
-                createDate: moment_1.default(),
-                updateDate: moment_1.default()
+                createDate: null,
+                updateDate: null
             });
             Account = (function (_super) {
                 __extends(Account, _super);

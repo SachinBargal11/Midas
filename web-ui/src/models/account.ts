@@ -1,29 +1,28 @@
 import {Record} from 'immutable';
-import Moment from 'moment';
+import moment from 'moment';
+import {AccountStatus} from './enums/AccountStatus';
 
 const AccountRecord = Record({
     id: 0,
     name: "",
-    addressID: 2,
-    contactInfoID: 3,
-    isDeleted: true,
+    status: AccountStatus.Active,
+    isDeleted: false,
     createByUserID: 0,
     updateByUserID: 0,
-    createDate: Moment(),
-    updateDate: Moment()
+    createDate: null,
+    updateDate: null
 });
 
 export class Account extends AccountRecord {
 
     id: number;
     name: string;
-    addressID: number;
-    contactInfoID: number;
+    status: AccountStatus;
     isDeleted: boolean;
     createByUserID: number;
     updateByUserID: number;
-    createDate: Date;
-    updateDate: Date;
+    createDate: moment.MomentStatic;
+    updateDate: moment.MomentStatic;
 
     constructor(props) {
         super(props);

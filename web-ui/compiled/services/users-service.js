@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/operator/share', 'rxjs/add/operator/map', '../scripts/environment', '../stores/session-store', './adapters/subuser-adapter'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observable', 'rxjs/add/operator/share', 'rxjs/add/operator/map', '../scripts/environment', '../stores/session-store', './adapters/user-adapter'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,8 +10,8 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, Observable_1, environment_1, session_store_1, subuser_adapter_1;
-    var SubUsersService;
+    var core_1, http_1, underscore_1, Observable_1, environment_1, session_store_1, user_adapter_1;
+    var UsersService;
     return {
         setters:[
             function (core_1_1) {
@@ -19,6 +19,9 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/
             },
             function (http_1_1) {
                 http_1 = http_1_1;
+            },
+            function (underscore_1_1) {
+                underscore_1 = underscore_1_1;
             },
             function (Observable_1_1) {
                 Observable_1 = Observable_1_1;
@@ -31,43 +34,50 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/
             function (session_store_1_1) {
                 session_store_1 = session_store_1_1;
             },
-            function (subuser_adapter_1_1) {
-                subuser_adapter_1 = subuser_adapter_1_1;
+            function (user_adapter_1_1) {
+                user_adapter_1 = user_adapter_1_1;
             }],
         execute: function() {
-            SubUsersService = (function () {
-                function SubUsersService(_http, _sessionStore) {
+            UsersService = (function () {
+                function UsersService(_http, _sessionStore) {
                     this._http = _http;
                     this._sessionStore = _sessionStore;
-                    this._url = environment_1.default.SERVICE_BASE_URL + "/subusers";
+                    this._url = environment_1.default.SERVICE_BASE_URL + "/users";
                     this._headers = new http_1.Headers();
                     this._headers.append('Content-Type', 'application/json');
                 }
-                SubUsersService.prototype.addSubUser = function (subuser) {
+                UsersService.prototype.addUser = function (user) {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {
-                        return _this._http.post(_this._url, JSON.stringify(subuser), {
+                        var userRequestData = user.toJS();
+                        // add/replace values which need to be changed
+                        underscore_1.default.extend(userRequestData, {
+                            dateOfBirth: userRequestData.dateOfBirth ? userRequestData.dateOfBirth.toISOString() : null
+                        });
+                        // remove unneeded keys 
+                        userRequestData = underscore_1.default.omit(userRequestData, 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
+                        return _this._http.post(_this._url, JSON.stringify(userRequestData), {
                             headers: _this._headers
                         })
                             .map(function (res) { return res.json(); })
-                            .subscribe(function (subuserData) {
-                            var parsedSubUser = null;
-                            parsedSubUser = subuser_adapter_1.SubUserAdapter.parseResponse(subuserData);
-                            resolve(parsedSubUser);
+                            .subscribe(function (userData) {
+                            var parsedUser = null;
+                            parsedUser = user_adapter_1.UserAdapter.parseResponse(userData);
+                            resolve(parsedUser);
                         }, function (error) {
                             reject(error);
                         });
                     });
                     return Observable_1.Observable.fromPromise(promise);
                 };
-                SubUsersService = __decorate([
+                UsersService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [http_1.Http, session_store_1.SessionStore])
-                ], SubUsersService);
-                return SubUsersService;
+                ], UsersService);
+                return UsersService;
             }());
-            exports_1("SubUsersService", SubUsersService);
+            exports_1("UsersService", UsersService);
         }
     }
 });
-//# sourceMappingURL=subusers-service.js.map
+//# sourceMappingURL=users-service.js.map

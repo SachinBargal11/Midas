@@ -1,12 +1,15 @@
-System.register(['../../models/user'], function(exports_1, context_1) {
+System.register(['../../models/user', 'moment'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var user_1;
+    var user_1, moment_1;
     var UserAdapter;
     return {
         setters:[
             function (user_1_1) {
                 user_1 = user_1_1;
+            },
+            function (moment_1_1) {
+                moment_1 = moment_1_1;
             }],
         execute: function() {
             UserAdapter = (function () {
@@ -17,9 +20,12 @@ System.register(['../../models/user'], function(exports_1, context_1) {
                     if (userData) {
                         user = new user_1.User({
                             id: userData.id,
-                            name: userData.name,
-                            phone: userData.phone,
-                            email: userData.email
+                            firstname: userData.firstname,
+                            lastname: userData.lastname,
+                            email: userData.email,
+                            mobileNo: userData.mobileNo,
+                            address: userData.address,
+                            dob: moment_1.default(userData.dob)
                         });
                     }
                     return user;

@@ -1,4 +1,4 @@
-System.register(['immutable', 'moment'], function(exports_1, context_1) {
+System.register(['immutable', './enums/UserType', './enums/Gender'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __extends = (this && this.__extends) || function (d, b) {
@@ -6,36 +6,40 @@ System.register(['immutable', 'moment'], function(exports_1, context_1) {
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
-    var immutable_1, moment_1;
+    var immutable_1, UserType_1, Gender_1;
     var UserRecord, User;
     return {
         setters:[
             function (immutable_1_1) {
                 immutable_1 = immutable_1_1;
             },
-            function (moment_1_1) {
-                moment_1 = moment_1_1;
+            function (UserType_1_1) {
+                UserType_1 = UserType_1_1;
+            },
+            function (Gender_1_1) {
+                Gender_1 = Gender_1_1;
             }],
         execute: function() {
             UserRecord = immutable_1.Record({
                 id: 0,
-                userType: 1,
+                name: "",
+                userType: UserType_1.UserType.Admin,
                 accountID: 1,
                 userName: "",
                 firstName: "",
                 middleName: "",
                 lastName: "",
-                gender: 1,
+                gender: Gender_1.Gender.Male,
                 imageLink: "",
-                addressID: 7,
-                contactInfoID: 8,
-                dateOfBirth: moment_1.default(),
+                address: null,
+                contact: null,
+                dateOfBirth: null,
                 password: "",
-                isDeleted: true,
+                isDeleted: false,
                 createByUserID: 0,
                 updateByUserID: 0,
-                createDate: moment_1.default(),
-                updateDate: moment_1.default()
+                createDate: null,
+                updateDate: null //Moment
             });
             User = (function (_super) {
                 __extends(User, _super);
@@ -44,7 +48,8 @@ System.register(['immutable', 'moment'], function(exports_1, context_1) {
                 }
                 Object.defineProperty(User.prototype, "displayName", {
                     get: function () {
-                        return this.firstName + " " + this.lastName;
+                        // return this.firstName + " " + this.lastName;
+                        return this.name;
                     },
                     enumerable: true,
                     configurable: true

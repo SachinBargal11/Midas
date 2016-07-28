@@ -1,5 +1,5 @@
 import {Record} from 'immutable';
-import Moment from 'moment';
+import moment from 'moment';
 
 const AddressRecord = Record({
     id: 0,
@@ -10,11 +10,11 @@ const AddressRecord = Record({
     state: "",
     zipCode: "",
     country: "",
-    isDeleted: true,
+    isDeleted: false,
     createByUserID: 0,
     updateByUserID: 0,
-    createDate: Moment(),
-    updateDate: Moment()
+    createDate: null, //Moment
+    updateDate: null //Moment
 });
 
 export class Address extends AddressRecord {
@@ -30,8 +30,8 @@ export class Address extends AddressRecord {
     isDeleted: boolean;
     createByUserID: number;
     updateByUserID: number;
-    createDate: Date;
-    updateDate: Date;
+    createDate: moment.MomentStatic;
+    updateDate: moment.MomentStatic;
 
     constructor(props) {
         super(props);
