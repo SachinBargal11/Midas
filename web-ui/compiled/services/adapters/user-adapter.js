@@ -15,7 +15,6 @@ System.register(['../../models/user-details'], function(exports_1, context_1) {
                 UserAdapter.parseResponse = function (userData) {
                     var user = null;
                     if (userData) {
-                        debugger;
                         user = new user_details_1.UserDetail({
                             user: userData.user,
                             contactInfo: userData.contactInfo,

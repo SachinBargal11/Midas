@@ -22,7 +22,6 @@ export class UsersStore {
 
     addUser(userDetail: UserDetail): Observable<UserDetail> {
         let promise = new Promise((resolve, reject) => {
-            debugger;
             this._usersService.addUser(userDetail).subscribe((user: UserDetail) => {
                 this._users.next(this._users.getValue().push(user));
                 resolve(user);

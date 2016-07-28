@@ -4,7 +4,9 @@ import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap';
 import {AppValidators} from '../../utils/AppValidators';
 import {LoaderComponent} from '../elements/loader';
-import {UsersStore} from '../../stores/users-store';
+import {AuthenticationService} from '../../services/authentication-service';
+import {AccountDetail} from '../../models/account-details';
+import {Account} from '../../models/account';
 import {User} from '../../models/user';
 import {Contact} from '../../models/contact';
 import {Address} from '../../models/address';
@@ -24,7 +26,6 @@ import {Calendar, RadioButton, SelectItem} from 'primeng/primeng';
 
 export class SignupComponent implements OnInit {
 
-    // user = new User({});
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -41,19 +42,22 @@ export class SignupComponent implements OnInit {
         private _router: Router,
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
-        // private _usersStore: UsersStore,
+        private _authenticationService: AuthenticationService,
         private _elRef: ElementRef
     ) {
         this.signupform = this.fb.group({
-            userInfo: this.fb.group({
-                firstname: ['', Validators.required],
+            user: this.fb.group({
+                // userName: ['', [Validators.required, AppValidators.emailValidator]],
+                password: ['123456', Validators.required],
+                confirmPassword: ['123456', Validators.required],
+                firstname: ['test', Validators.required],
                 middlename: [''],
-                lastname: ['', Validators.required],
-                userType: ['', Validators.required]
-            }),
-            contact: this.fb.group({
-                email: ['', [Validators.required, AppValidators.emailValidator]],
-                cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+                lastname: ['test', Validators.required],
+                email: ['t@yahoo.com', [Validators.required, AppValidators.emailValidator]]
+            }, { validator: AppValidators.matchingPasswords('password', 'confirmPassword') }),
+            contactInfo: this.fb.group({
+                
+                cellPhone: ['1234567890', [Validators.required, AppValidators.mobileNoValidator]],
                 homePhone: [''],
                 workPhone: [''],
                 faxNo: ['']
@@ -67,10 +71,9 @@ export class SignupComponent implements OnInit {
                 country: ['']
             }),
             account: this.fb.group({
-                accountName: ['', Validators.required],
-                password: ['', Validators.required],
-                confirmPassword: ['', Validators.required]
-            }, { validator: AppValidators.matchingPasswords('password', 'confirmPassword') })
+                accountName: ['test123', Validators.required]
+
+            })
         });
 
         this.userformControls = this.signupform.controls;
@@ -82,41 +85,61 @@ export class SignupComponent implements OnInit {
     }
 
 
-    // saveUser() {
-    //     this.isSaveUserProgress = true;
-    //     var result;
-    //     var user = new User({
-    //         'firstname': this.userform.value.firstname,
-    //         'lastname': this.userform.value.lastname,
-    //         'email': this.userform.value.email,
-    //         'mobileNo': this.userform.value.mobileNo,
-    //         'address': this.userform.value.address,
-    //         'dob': this.userform.value.dob,
-    //         'createdUser': this._sessionStore.session.user.id
-    //     });
-    //     result = this._usersStore.addUser(user);
-    //     result.subscribe(
-    //         (response) => {
-    //             var notification = new Notification({
-    //                 'title': 'User added successfully!',
-    //                 'type': 'SUCCESS',
-    //                 'createdAt': Moment()
-    //             });
-    //             this._notificationsStore.addNotification(notification);
-    //             this._router.navigate(['/users/add']);
-    //         },
-    //         (error) => {
-    //             var notification = new Notification({
-    //                 'title': 'Unable to add user.',
-    //                 'type': 'ERROR',
-    //                 'createdAt': Moment()
-    //             });
-    //             this._notificationsStore.addNotification(notification);
-    //         },
-    //         () => {
-    //             this.isSaveUserProgress = false;
-    //         });
+    saveUser() {
+        this.isSaveUserProgress = true;
+        var result;
+        let signupFormValues = this.signupform.value;
 
-    // }
+        let accountDetail = new AccountDetail({
+            account: new Account({
+                name: signupFormValues.account.accountName
+            }),
+            user: new User({
+                firstName: signupFormValues.user.firstname,
+                middleName: signupFormValues.user.middlename,
+                lastName: signupFormValues.user.lastname,
+                userName: signupFormValues.contactInfo.email
+            }),
+            contactInfo: new Contact({
+                cellPhone: signupFormValues.contactInfo.cellPhone,
+                emailAddress: signupFormValues.contactInfo.email,
+                faxNo: signupFormValues.contactInfo.faxNo,
+                homePhone: signupFormValues.contactInfo.homePhone,
+                workPhone: signupFormValues.contactInfo.workPhone,
+            }),
+            address: new Address({
+                address1: signupFormValues.address.address1,
+                address2: signupFormValues.address.address2,
+                city: signupFormValues.address.city,
+                country: signupFormValues.address.country,
+                state: signupFormValues.address.state,
+                zipCode: signupFormValues.address.zipCode,
+            })
+        });
+
+        result = this._authenticationService.register(accountDetail);
+        result.subscribe(
+            (response) => {
+                var notification = new Notification({
+                    'title': 'User added successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': Moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._router.navigate(['/users/add']);
+            },
+            (error) => {
+                var notification = new Notification({
+                    'title': 'Unable to add user.',
+                    'type': 'ERROR',
+                    'createdAt': Moment()
+                });
+                this._notificationsStore.addNotification(notification);
+            },
+            () => {
+                this.isSaveUserProgress = false;
+            });
+
+    }
 
 }

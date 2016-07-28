@@ -40,7 +40,6 @@ System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 
                 UsersStore.prototype.addUser = function (userDetail) {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {
-                        debugger;
                         _this._usersService.addUser(userDetail).subscribe(function (user) {
                             _this._users.next(_this._users.getValue().push(user));
                             resolve(user);

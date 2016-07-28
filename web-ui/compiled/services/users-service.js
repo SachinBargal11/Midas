@@ -42,21 +42,23 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                 function UsersService(_http, _sessionStore) {
                     this._http = _http;
                     this._sessionStore = _sessionStore;
-                    this._url = environment_1.default.SERVICE_BASE_URL + "/users";
+                    this._url = "" + environment_1.default.SERVICE_BASE_URL;
                     this._headers = new http_1.Headers();
                     this._headers.append('Content-Type', 'application/json');
                 }
-                UsersService.prototype.addUser = function (user) {
+                UsersService.prototype.addUser = function (userDetail) {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {
-                        var userRequestData = user.toJS();
+                        var userDetailRequestData = userDetail.toJS();
                         // add/replace values which need to be changed
-                        underscore_1.default.extend(userRequestData, {
-                            dateOfBirth: userRequestData.dateOfBirth ? userRequestData.dateOfBirth.toISOString() : null
+                        underscore_1.default.extend(userDetailRequestData.user, {
+                            dateOfBirth: userDetailRequestData.user.dateOfBirth ? userDetailRequestData.user.dateOfBirth.toISOString() : null
                         });
                         // remove unneeded keys 
-                        userRequestData = underscore_1.default.omit(userRequestData, 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
-                        return _this._http.post(_this._url, JSON.stringify(userRequestData), {
+                        userDetailRequestData.user = underscore_1.default.omit(userDetailRequestData.user, 'id', 'isDeleted', 'name', 'password', 'status', 'dateOfBirth', 'gender', 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
+                        userDetailRequestData.address = underscore_1.default.omit(userDetailRequestData.address, 'id', 'isDeleted', 'name', 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
+                        userDetailRequestData.contactInfo = underscore_1.default.omit(userDetailRequestData.contactInfo, 'id', 'isDeleted', 'name', 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
+                        return _this._http.post(_this._url + '/User/Add', JSON.stringify(userDetailRequestData), {
                             headers: _this._headers
                         })
                             .map(function (res) { return res.json(); })

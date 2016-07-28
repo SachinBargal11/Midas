@@ -56,7 +56,7 @@ export class User extends UserRecord {
 
     public get displayName(): string {
         // return this.firstName + " " + this.lastName;
-        return this.name;
+        return 'Test';
     }
 
 

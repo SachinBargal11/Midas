@@ -48,10 +48,8 @@ export class AddUserComponent implements OnInit {
         this.userform = this.fb.group({
             userInfo: this.fb.group({
                 firstname: ['', Validators.required],
-                middlename: ['', Validators.required],
+                middlename: [''],
                 lastname: ['', Validators.required],
-                // gender: ['', Validators.required],
-                // dob: ['', Validators.required],
                 userType: ['', Validators.required]
             }),
             contact: this.fb.group({
@@ -62,12 +60,12 @@ export class AddUserComponent implements OnInit {
                 faxNo: ['']
             }),
             address: this.fb.group({
-                address1: ['', Validators.required],
+                address1: [''],
                 address2: [''],
-                city: ['', Validators.required],
-                zipCode: ['', Validators.required],
-                state: ['', Validators.required],
-                country: ['', Validators.required]
+                city: [''],
+                zipCode: [''],
+                state: [''],
+                country: ['']
             })
         });
 
@@ -87,13 +85,12 @@ export class AddUserComponent implements OnInit {
                 firstName: userFormValues.userInfo.firstname,
                 middleName: userFormValues.userInfo.middlename,
                 lastName: userFormValues.userInfo.lastname,
-                gender: parseInt(userFormValues.userInfo.gender), //Gender[1],//
-                dateOfBirth: moment(),//userFormValues.userInfo.dob),
                 userType: parseInt(userFormValues.userInfo.userType), //UserType[1],//,
+                userName: userFormValues.contact.email,
             }),
             contactInfo: new Contact({
                 cellPhone: userFormValues.contact.cellPhone,
-                email: userFormValues.contact.email,
+                emailAddress: userFormValues.contact.email,
                 faxNo: userFormValues.contact.faxNo,
                 homePhone: userFormValues.contact.homePhone,
                 workPhone: userFormValues.contact.workPhone,

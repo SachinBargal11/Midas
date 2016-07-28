@@ -7,7 +7,6 @@ export class UserAdapter {
 
         let user = null;
         if (userData) {
-            debugger;
             user = new UserDetail({
                 user: userData.user,
                 contactInfo: userData.contactInfo,

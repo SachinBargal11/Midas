@@ -82,10 +82,8 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                     this.userform = this.fb.group({
                         userInfo: this.fb.group({
                             firstname: ['', forms_1.Validators.required],
-                            middlename: ['', forms_1.Validators.required],
+                            middlename: [''],
                             lastname: ['', forms_1.Validators.required],
-                            // gender: ['', Validators.required],
-                            // dob: ['', Validators.required],
                             userType: ['', forms_1.Validators.required]
                         }),
                         contact: this.fb.group({
@@ -96,12 +94,12 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                             faxNo: ['']
                         }),
                         address: this.fb.group({
-                            address1: ['', forms_1.Validators.required],
+                            address1: [''],
                             address2: [''],
-                            city: ['', forms_1.Validators.required],
-                            zipCode: ['', forms_1.Validators.required],
-                            state: ['', forms_1.Validators.required],
-                            country: ['', forms_1.Validators.required]
+                            city: [''],
+                            zipCode: [''],
+                            state: [''],
+                            country: ['']
                         })
                     });
                     this.userformControls = this.userform.controls;
@@ -116,13 +114,12 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                             firstName: userFormValues.userInfo.firstname,
                             middleName: userFormValues.userInfo.middlename,
                             lastName: userFormValues.userInfo.lastname,
-                            gender: parseInt(userFormValues.userInfo.gender),
-                            dateOfBirth: moment_1.default(),
                             userType: parseInt(userFormValues.userInfo.userType),
+                            userName: userFormValues.contact.email,
                         }),
                         contactInfo: new contact_1.Contact({
                             cellPhone: userFormValues.contact.cellPhone,
-                            email: userFormValues.contact.email,
+                            emailAddress: userFormValues.contact.email,
                             faxNo: userFormValues.contact.faxNo,
                             homePhone: userFormValues.contact.homePhone,
                             workPhone: userFormValues.contact.workPhone,

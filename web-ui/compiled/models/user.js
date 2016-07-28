@@ -49,7 +49,7 @@ System.register(['immutable', './enums/UserType', './enums/Gender'], function(ex
                 Object.defineProperty(User.prototype, "displayName", {
                     get: function () {
                         // return this.firstName + " " + this.lastName;
-                        return this.name;
+                        return 'Test';
                     },
                     enumerable: true,
                     configurable: true

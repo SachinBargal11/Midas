@@ -78,8 +78,8 @@ System.register(['@angular/core', 'rxjs/Observable', '../services/authentication
                     window.localStorage.removeItem(this.__USER_STORAGE_KEY__);
                 };
                 SessionStore.prototype._populateSession = function (user) {
-                    this._session.user = user;
-                    window.localStorage.setItem(this.__USER_STORAGE_KEY__, JSON.stringify(user.toJS()));
+                    this._session.user = new user_1.User({});
+                    window.localStorage.setItem(this.__USER_STORAGE_KEY__, JSON.stringify(new user_1.User({}).toJS()));
                 };
                 SessionStore.prototype._resetSession = function () {
                     this.session.user = null;
