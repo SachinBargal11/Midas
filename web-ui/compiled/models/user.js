@@ -31,8 +31,8 @@ System.register(['immutable', './enums/UserType', './enums/Gender'], function(ex
                 lastName: "",
                 gender: Gender_1.Gender.Male,
                 imageLink: "",
-                address: null,
-                contact: null,
+                // address: null, //Address
+                // contact: null, //Contact
                 dateOfBirth: null,
                 password: "",
                 isDeleted: false,

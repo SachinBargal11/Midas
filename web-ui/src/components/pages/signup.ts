@@ -4,7 +4,7 @@ import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap';
 import {AppValidators} from '../../utils/AppValidators';
 import {LoaderComponent} from '../elements/loader';
-// import {UsersStore} from '../../stores/users-store';
+import {UsersStore} from '../../stores/users-store';
 import {User} from '../../models/user';
 import {Contact} from '../../models/contact';
 import {Address} from '../../models/address';
@@ -23,7 +23,7 @@ import {Calendar, RadioButton, SelectItem} from 'primeng/primeng';
 })
 
 export class SignupComponent implements OnInit {
- 
+
     // user = new User({});
     options = {
         timeOut: 3000,
@@ -32,10 +32,10 @@ export class SignupComponent implements OnInit {
         clickToClose: false,
         maxLength: 10
     };
-    signupform: FormGroup;   
+    signupform: FormGroup;
     userformControls;
     isSaveUserProgress = false;
- 
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -45,42 +45,40 @@ export class SignupComponent implements OnInit {
         private _elRef: ElementRef
     ) {
         this.signupform = this.fb.group({
-                   userInfo: this.fb.group({
-                                  firstname: ['', Validators.required],
-                                  middlename: ['', Validators.required],
-                                  lastname: ['', Validators.required],
-                                //   gender: ['', Validators.required],
-                                //   dob: ['', Validators.required],
-                                  userType: ['', Validators.required]
-                              }),
-                   contact: this.fb.group({           
-                                  email: ['', [Validators.required, AppValidators.emailValidator]],
-                                  cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                                  homePhone: [''],
-                                  workPhone: [''],
-                                  faxNo: ['']
-                              }),
-                   address: this.fb.group({           
-                                  address1: ['', Validators.required],
-                                  address2: [''],
-                                  city: ['', Validators.required],
-                                  zipCode: ['', Validators.required],
-                                  state: ['', Validators.required],
-                                  country: ['', Validators.required]
-                              }), 
-                   account: this.fb.group({
-                                  accountName: ['', Validators.required],
-                                  password: ['', Validators.required],
-                                  confirmPassword: ['', Validators.required]
-                              }, { validator: AppValidators.matchingPasswords('password', 'confirmPassword') })             
+            userInfo: this.fb.group({
+                firstname: ['', Validators.required],
+                middlename: [''],
+                lastname: ['', Validators.required],
+                userType: ['', Validators.required]
+            }),
+            contact: this.fb.group({
+                email: ['', [Validators.required, AppValidators.emailValidator]],
+                cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+                homePhone: [''],
+                workPhone: [''],
+                faxNo: ['']
+            }),
+            address: this.fb.group({
+                address1: [''],
+                address2: [''],
+                city: [''],
+                zipCode: [''],
+                state: [''],
+                country: ['']
+            }),
+            account: this.fb.group({
+                accountName: ['', Validators.required],
+                password: ['', Validators.required],
+                confirmPassword: ['', Validators.required]
+            }, { validator: AppValidators.matchingPasswords('password', 'confirmPassword') })
         });
-      
-         this.userformControls = this.signupform.controls;
-         
+
+        this.userformControls = this.signupform.controls;
+
     }
 
     ngOnInit() {
-        
+
     }
 
 

@@ -1,20 +1,17 @@
-import {User} from '../../models/user';
+import {UserDetail} from '../../models/user-details';
 import Moment from 'moment';
 
 
 export class UserAdapter {
-    static parseResponse(userData: any): User {
+    static parseResponse(userData: any): UserDetail {
 
         let user = null;
         if (userData) {
-            user = new User({
-                id: userData.id,
-                firstname: userData.firstname,
-                lastname: userData.lastname,
-                email: userData.email,
-                mobileNo: userData.mobileNo,
-                address: userData.address,
-                dob: Moment(userData.dob)
+            debugger;
+            user = new UserDetail({
+                user: userData.user,
+                contactInfo: userData.contactInfo,
+                address: userData.address
             });
         }
         return user;

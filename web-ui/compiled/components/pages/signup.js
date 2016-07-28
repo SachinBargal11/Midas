@@ -63,10 +63,8 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                     this.signupform = this.fb.group({
                         userInfo: this.fb.group({
                             firstname: ['', forms_1.Validators.required],
-                            middlename: ['', forms_1.Validators.required],
+                            middlename: [''],
                             lastname: ['', forms_1.Validators.required],
-                            //   gender: ['', Validators.required],
-                            //   dob: ['', Validators.required],
                             userType: ['', forms_1.Validators.required]
                         }),
                         contact: this.fb.group({
@@ -77,12 +75,12 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                             faxNo: ['']
                         }),
                         address: this.fb.group({
-                            address1: ['', forms_1.Validators.required],
+                            address1: [''],
                             address2: [''],
-                            city: ['', forms_1.Validators.required],
-                            zipCode: ['', forms_1.Validators.required],
-                            state: ['', forms_1.Validators.required],
-                            country: ['', forms_1.Validators.required]
+                            city: [''],
+                            zipCode: [''],
+                            state: [''],
+                            country: ['']
                         }),
                         account: this.fb.group({
                             accountName: ['', forms_1.Validators.required],

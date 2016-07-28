@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-bootstrap', '../../utils/AppValidators', '../elements/loader', '../../stores/users-store', '../../models/user', '../../models/contact', '../../models/address', '../../stores/session-store', '../../stores/notifications-store', '../../models/notification', 'moment', 'primeng/primeng'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-bootstrap', '../../utils/AppValidators', '../elements/loader', '../../stores/users-store', '../../models/user-details', '../../models/user', '../../models/contact', '../../models/address', '../../stores/session-store', '../../stores/notifications-store', '../../models/notification', 'moment', 'primeng/primeng'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, forms_1, router_1, ng2_bootstrap_1, AppValidators_1, loader_1, users_store_1, user_1, contact_1, address_1, session_store_1, notifications_store_1, notification_1, moment_1, primeng_1;
+    var core_1, forms_1, router_1, ng2_bootstrap_1, AppValidators_1, loader_1, users_store_1, user_details_1, user_1, contact_1, address_1, session_store_1, notifications_store_1, notification_1, moment_1, primeng_1;
     var AddUserComponent;
     return {
         setters:[
@@ -34,6 +34,9 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
             },
             function (users_store_1_1) {
                 users_store_1 = users_store_1_1;
+            },
+            function (user_details_1_1) {
+                user_details_1 = user_details_1_1;
             },
             function (user_1_1) {
                 user_1 = user_1_1;
@@ -105,17 +108,19 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                 }
                 AddUserComponent.prototype.ngOnInit = function () {
                 };
-                AddUserComponent.prototype.saveUser = function (model) {
+                AddUserComponent.prototype.saveUser = function () {
                     var _this = this;
                     var userFormValues = this.userform.value;
-                    var user = new user_1.User({
-                        firstName: userFormValues.userInfo.firstname,
-                        middleName: userFormValues.userInfo.middlename,
-                        lastName: userFormValues.userInfo.lastname,
-                        gender: parseInt(userFormValues.userInfo.gender),
-                        dateOfBirth: moment_1.default(),
-                        userType: parseInt(userFormValues.userInfo.userType),
-                        contact: new contact_1.Contact({
+                    var userDetail = new user_details_1.UserDetail({
+                        user: new user_1.User({
+                            firstName: userFormValues.userInfo.firstname,
+                            middleName: userFormValues.userInfo.middlename,
+                            lastName: userFormValues.userInfo.lastname,
+                            gender: parseInt(userFormValues.userInfo.gender),
+                            dateOfBirth: moment_1.default(),
+                            userType: parseInt(userFormValues.userInfo.userType),
+                        }),
+                        contactInfo: new contact_1.Contact({
                             cellPhone: userFormValues.contact.cellPhone,
                             email: userFormValues.contact.email,
                             faxNo: userFormValues.contact.faxNo,
@@ -133,7 +138,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                     });
                     this.isSaveUserProgress = true;
                     var result;
-                    result = this._usersStore.addUser(user);
+                    result = this._usersStore.addUser(userDetail);
                     result.subscribe(function (response) {
                         var notification = new notification_1.Notification({
                             'title': 'User added successfully!',

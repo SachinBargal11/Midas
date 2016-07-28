@@ -6,7 +6,7 @@ import {Observer} from 'rxjs/Observer';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
-import {User} from '../models/user';
+import {UserDetail} from '../models/user-details';
 import {SessionStore} from '../stores/session-store';
 import {UserAdapter} from './adapters/user-adapter';
 
@@ -23,8 +23,8 @@ export class UsersService {
         this._headers.append('Content-Type', 'application/json');
     }
     
-    addUser(user: User): Observable<User> {
-        let promise: Promise<User> = new Promise((resolve, reject) => {
+    addUser(user: UserDetail): Observable<UserDetail> {
+        let promise: Promise<UserDetail> = new Promise((resolve, reject) => {
 
 
             let userRequestData = user.toJS();
@@ -41,14 +41,14 @@ export class UsersService {
             })
             .map(res => res.json())
             .subscribe((userData: any) => {
-                let parsedUser: User = null;
+                let parsedUser: UserDetail = null;
                 parsedUser = UserAdapter.parseResponse(userData);
                 resolve(parsedUser);
             }, (error) => {
                 reject(error);
             });
         });
-        return <Observable<User>>Observable.fromPromise(promise);
+        return <Observable<UserDetail>>Observable.fromPromise(promise);
 
     }
 

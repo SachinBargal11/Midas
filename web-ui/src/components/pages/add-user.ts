@@ -5,6 +5,7 @@ import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap';
 import {AppValidators} from '../../utils/AppValidators';
 import {LoaderComponent} from '../elements/loader';
 import {UsersStore} from '../../stores/users-store';
+import {UserDetail} from '../../models/user-details';
 import {User} from '../../models/user';
 import {Contact} from '../../models/contact';
 import {Address} from '../../models/address';
@@ -79,16 +80,18 @@ export class AddUserComponent implements OnInit {
     }
 
 
-    saveUser(model) {
+    saveUser() {
         let userFormValues = this.userform.value;
-        let user = new User({
-            firstName: userFormValues.userInfo.firstname,
-            middleName: userFormValues.userInfo.middlename,
-            lastName: userFormValues.userInfo.lastname,
-            gender: parseInt(userFormValues.userInfo.gender), //Gender[1],//
-            dateOfBirth: moment(),//userFormValues.userInfo.dob),
-            userType: parseInt(userFormValues.userInfo.userType), //UserType[1],//,
-            contact: new Contact({
+        let userDetail = new UserDetail({
+            user: new User({
+                firstName: userFormValues.userInfo.firstname,
+                middleName: userFormValues.userInfo.middlename,
+                lastName: userFormValues.userInfo.lastname,
+                gender: parseInt(userFormValues.userInfo.gender), //Gender[1],//
+                dateOfBirth: moment(),//userFormValues.userInfo.dob),
+                userType: parseInt(userFormValues.userInfo.userType), //UserType[1],//,
+            }),
+            contactInfo: new Contact({
                 cellPhone: userFormValues.contact.cellPhone,
                 email: userFormValues.contact.email,
                 faxNo: userFormValues.contact.faxNo,
@@ -107,7 +110,7 @@ export class AddUserComponent implements OnInit {
         this.isSaveUserProgress = true;
         var result;
 
-        result = this._usersStore.addUser(user);
+        result = this._usersStore.addUser(userDetail);
         result.subscribe(
             (response) => {
                 var notification = new Notification({

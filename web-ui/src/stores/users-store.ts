@@ -3,7 +3,7 @@ import {Observable} from 'rxjs/Observable';
 import {Observer} from 'rxjs/Observer';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import {User} from '../models/user';
+import {UserDetail} from '../models/user-details';
 import {UsersService} from '../services/users-service';
 import {Subject} from "rxjs/Subject";
 import {List} from 'immutable';
@@ -14,23 +14,23 @@ import Moment from 'moment';
 @Injectable()
 export class UsersStore {
 
-    private _users: BehaviorSubject<List<User>> = new BehaviorSubject(List([]));
+    private _users: BehaviorSubject<List<UserDetail>> = new BehaviorSubject(List([]));
 
     constructor(private _usersService: UsersService) {
 
     }
 
-    addUser(user: User): Observable<User> {
+    addUser(userDetail: UserDetail): Observable<UserDetail> {
         let promise = new Promise((resolve, reject) => {
             debugger;
-            this._usersService.addUser(user).subscribe((user: User) => {
+            this._usersService.addUser(userDetail).subscribe((user: UserDetail) => {
                 this._users.next(this._users.getValue().push(user));
                 resolve(user);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<User>>Observable.from(promise);
+        return <Observable<UserDetail>>Observable.from(promise);
     }
 
 

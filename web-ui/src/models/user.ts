@@ -1,7 +1,7 @@
 import {Record} from 'immutable';
 import moment from 'moment';
-import {Address} from './address';
-import {Contact} from './contact';
+// import {Address} from './address';
+// import {Contact} from './contact';
 import {UserType} from './enums/UserType';
 import {Gender} from './enums/Gender';
 
@@ -16,8 +16,8 @@ const UserRecord = Record({
     lastName: "",
     gender: Gender.Male,
     imageLink: "",
-    address: null, //Address
-    contact: null, //Contact
+    // address: null, //Address
+    // contact: null, //Contact
     dateOfBirth: null, //Moment
     password: "",
     isDeleted: false,
@@ -39,8 +39,8 @@ export class User extends UserRecord {
     lastName: string;
     gender: Gender;
     imageLink: string;
-    address: Address;
-    contact: Contact;
+    // address: Address;
+    // contact: Contact;
     dateOfBirth: moment.MomentStatic;
     password: string;
     isDeleted: boolean;
