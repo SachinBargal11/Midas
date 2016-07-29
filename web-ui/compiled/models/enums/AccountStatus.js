@@ -6,10 +6,10 @@ System.register([], function(exports_1, context_1) {
         setters:[],
         execute: function() {
             (function (AccountStatus) {
-                AccountStatus[AccountStatus["Active"] = 1] = "Active";
-                AccountStatus[AccountStatus["InActive"] = 2] = "InActive";
-                AccountStatus[AccountStatus["Suspended"] = 3] = "Suspended";
-                AccountStatus[AccountStatus["Limited"] = 4] = "Limited";
+                AccountStatus[AccountStatus["active"] = 1] = "active";
+                AccountStatus[AccountStatus["inActive"] = 2] = "inActive";
+                AccountStatus[AccountStatus["suspended"] = 3] = "suspended";
+                AccountStatus[AccountStatus["limited"] = 4] = "limited";
             })(AccountStatus || (AccountStatus = {}));
             exports_1("AccountStatus", AccountStatus);
         }

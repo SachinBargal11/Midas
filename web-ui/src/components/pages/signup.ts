@@ -21,7 +21,17 @@ import {Calendar, InputMask, RadioButton, SelectItem} from 'primeng/primeng';
 @Component({
     selector: 'signup',
     templateUrl: 'templates/pages/signup.html',
-    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, DROPDOWN_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar, InputMask, RadioButton]
+    directives: [
+        FORM_DIRECTIVES,
+        REACTIVE_FORM_DIRECTIVES,
+        DROPDOWN_DIRECTIVES,
+        ROUTER_DIRECTIVES,
+        LoaderComponent,
+        Calendar,
+        InputMask,
+        RadioButton,
+        SimpleNotificationsComponent],
+    providers: [NotificationsService]
 })
 
 export class SignupComponent implements OnInit {
@@ -35,12 +45,13 @@ export class SignupComponent implements OnInit {
     };
     signupform: FormGroup;
     userformControls;
-    isSaveUserProgress = false;
+    isSignupInProgress = false;
 
     constructor(
         private fb: FormBuilder,
         private _router: Router,
         private _notificationsStore: NotificationsStore,
+        private _notificationsService: NotificationsService,
         private _sessionStore: SessionStore,
         private _authenticationService: AuthenticationService,
         private _elRef: ElementRef
@@ -56,7 +67,7 @@ export class SignupComponent implements OnInit {
                 email: ['t@yahoo.com', [Validators.required, AppValidators.emailValidator]]
             }, { validator: AppValidators.matchingPasswords('password', 'confirmPassword') }),
             contactInfo: this.fb.group({
-                
+
                 cellPhone: ['1234567890', [Validators.required, AppValidators.mobileNoValidator]],
                 homePhone: [''],
                 workPhone: [''],
@@ -86,7 +97,7 @@ export class SignupComponent implements OnInit {
 
 
     saveUser() {
-        this.isSaveUserProgress = true;
+        this.isSignupInProgress = true;
         var result;
         let signupFormValues = this.signupform.value;
         let accountDetail = new AccountDetail({
@@ -118,24 +129,17 @@ export class SignupComponent implements OnInit {
         result = this._authenticationService.register(accountDetail);
         result.subscribe(
             (response) => {
-                var notification = new Notification({
-                    'title': 'User added successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': Moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/users/add']);
+                this._notificationsService.success('Welcome!', 'You have suceessfully registered!');
+                setTimeout(() => {
+                    this._router.navigate(['/login']);
+                }, 3000);
             },
-            (error) => {
-                var notification = new Notification({
-                    'title': 'Unable to add user.',
-                    'type': 'ERROR',
-                    'createdAt': Moment()
-                });
-                this._notificationsStore.addNotification(notification);
+            error => {
+                this.isSignupInProgress = false;
+                this._notificationsService.error('Oh No!', 'Unable to register user.');
             },
             () => {
-                this.isSaveUserProgress = false;
+                this.isSignupInProgress = false;
             });
 
     }

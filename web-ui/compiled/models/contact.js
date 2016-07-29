@@ -22,7 +22,7 @@ System.register(['immutable'], function(exports_1, context_1) {
                 homePhone: "",
                 workPhone: "",
                 faxNo: "",
-                isDeleted: false,
+                isDeleted: 0,
                 createByUserID: 0,
                 updateByUserID: 0,
                 createDate: null,

@@ -23,7 +23,7 @@ System.register(['immutable'], function(exports_1, context_1) {
                 state: "",
                 zipCode: "",
                 country: "",
-                isDeleted: false,
+                isDeleted: 0,
                 createByUserID: 0,
                 updateByUserID: 0,
                 createDate: null,

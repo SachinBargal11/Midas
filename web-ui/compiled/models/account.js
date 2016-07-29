@@ -20,8 +20,8 @@ System.register(['immutable', './enums/AccountStatus'], function(exports_1, cont
             AccountRecord = immutable_1.Record({
                 id: 0,
                 name: "",
-                status: AccountStatus_1.AccountStatus.Active,
-                isDeleted: false,
+                status: AccountStatus_1.AccountStatus.active,
+                isDeleted: 0,
                 createByUserID: 0,
                 updateByUserID: 0,
                 createDate: null,

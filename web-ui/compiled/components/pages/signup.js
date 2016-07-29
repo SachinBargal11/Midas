@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-bootstrap', '../../utils/AppValidators', '../elements/loader', '../../services/authentication-service', '../../models/account-details', '../../models/user', '../../models/contact', '../../models/address', '../../models/account', '../../stores/session-store', '../../stores/notifications-store', '../../models/notification', 'moment', 'primeng/primeng'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-bootstrap', '../../utils/AppValidators', '../elements/loader', '../../services/authentication-service', '../../models/account-details', '../../models/user', '../../models/contact', '../../models/address', '../../models/account', '../../stores/session-store', '../../stores/notifications-store', 'angular2-notifications', 'primeng/primeng'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, forms_1, router_1, ng2_bootstrap_1, AppValidators_1, loader_1, authentication_service_1, account_details_1, user_1, contact_1, address_1, account_1, session_store_1, notifications_store_1, notification_1, moment_1, primeng_1;
+    var core_1, forms_1, router_1, ng2_bootstrap_1, AppValidators_1, loader_1, authentication_service_1, account_details_1, user_1, contact_1, address_1, account_1, session_store_1, notifications_store_1, angular2_notifications_1, primeng_1;
     var SignupComponent;
     return {
         setters:[
@@ -56,21 +56,19 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
             function (notifications_store_1_1) {
                 notifications_store_1 = notifications_store_1_1;
             },
-            function (notification_1_1) {
-                notification_1 = notification_1_1;
-            },
-            function (moment_1_1) {
-                moment_1 = moment_1_1;
+            function (angular2_notifications_1_1) {
+                angular2_notifications_1 = angular2_notifications_1_1;
             },
             function (primeng_1_1) {
                 primeng_1 = primeng_1_1;
             }],
         execute: function() {
             SignupComponent = (function () {
-                function SignupComponent(fb, _router, _notificationsStore, _sessionStore, _authenticationService, _elRef) {
+                function SignupComponent(fb, _router, _notificationsStore, _notificationsService, _sessionStore, _authenticationService, _elRef) {
                     this.fb = fb;
                     this._router = _router;
                     this._notificationsStore = _notificationsStore;
+                    this._notificationsService = _notificationsService;
                     this._sessionStore = _sessionStore;
                     this._authenticationService = _authenticationService;
                     this._elRef = _elRef;
@@ -81,7 +79,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                         clickToClose: false,
                         maxLength: 10
                     };
-                    this.isSaveUserProgress = false;
+                    this.isSignupInProgress = false;
                     this.signupform = this.fb.group({
                         user: this.fb.group({
                             // userName: ['', [Validators.required, AppValidators.emailValidator]],
@@ -116,7 +114,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                 };
                 SignupComponent.prototype.saveUser = function () {
                     var _this = this;
-                    this.isSaveUserProgress = true;
+                    this.isSignupInProgress = true;
                     var result;
                     var signupFormValues = this.signupform.value;
                     var accountDetail = new account_details_1.AccountDetail({
@@ -147,31 +145,34 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                     });
                     result = this._authenticationService.register(accountDetail);
                     result.subscribe(function (response) {
-                        var notification = new notification_1.Notification({
-                            'title': 'User added successfully!',
-                            'type': 'SUCCESS',
-                            'createdAt': moment_1.default()
-                        });
-                        _this._notificationsStore.addNotification(notification);
-                        _this._router.navigate(['/users/add']);
+                        _this._notificationsService.success('Welcome!', 'You have suceessfully registered!');
+                        setTimeout(function () {
+                            _this._router.navigate(['/login']);
+                        }, 3000);
                     }, function (error) {
-                        var notification = new notification_1.Notification({
-                            'title': 'Unable to add user.',
-                            'type': 'ERROR',
-                            'createdAt': moment_1.default()
-                        });
-                        _this._notificationsStore.addNotification(notification);
+                        _this.isSignupInProgress = false;
+                        _this._notificationsService.error('Oh No!', 'Unable to register user.');
                     }, function () {
-                        _this.isSaveUserProgress = false;
+                        _this.isSignupInProgress = false;
                     });
                 };
                 SignupComponent = __decorate([
                     core_1.Component({
                         selector: 'signup',
                         templateUrl: 'templates/pages/signup.html',
-                        directives: [forms_1.FORM_DIRECTIVES, forms_1.REACTIVE_FORM_DIRECTIVES, ng2_bootstrap_1.DROPDOWN_DIRECTIVES, router_1.ROUTER_DIRECTIVES, loader_1.LoaderComponent, primeng_1.Calendar, primeng_1.InputMask, primeng_1.RadioButton]
+                        directives: [
+                            forms_1.FORM_DIRECTIVES,
+                            forms_1.REACTIVE_FORM_DIRECTIVES,
+                            ng2_bootstrap_1.DROPDOWN_DIRECTIVES,
+                            router_1.ROUTER_DIRECTIVES,
+                            loader_1.LoaderComponent,
+                            primeng_1.Calendar,
+                            primeng_1.InputMask,
+                            primeng_1.RadioButton,
+                            angular2_notifications_1.SimpleNotificationsComponent],
+                        providers: [angular2_notifications_1.NotificationsService]
                     }), 
-                    __metadata('design:paramtypes', [forms_1.FormBuilder, router_1.Router, notifications_store_1.NotificationsStore, session_store_1.SessionStore, authentication_service_1.AuthenticationService, core_1.ElementRef])
+                    __metadata('design:paramtypes', [forms_1.FormBuilder, router_1.Router, notifications_store_1.NotificationsStore, angular2_notifications_1.NotificationsService, session_store_1.SessionStore, authentication_service_1.AuthenticationService, core_1.ElementRef])
                 ], SignupComponent);
                 return SignupComponent;
             }());

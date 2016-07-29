@@ -1,4 +1,4 @@
-System.register(['immutable', './enums/UserType', './enums/Gender'], function(exports_1, context_1) {
+System.register(['immutable', 'moment', './enums/UserType', './enums/Gender'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __extends = (this && this.__extends) || function (d, b) {
@@ -6,12 +6,15 @@ System.register(['immutable', './enums/UserType', './enums/Gender'], function(ex
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
-    var immutable_1, UserType_1, Gender_1;
+    var immutable_1, moment_1, UserType_1, Gender_1;
     var UserRecord, User;
     return {
         setters:[
             function (immutable_1_1) {
                 immutable_1 = immutable_1_1;
+            },
+            function (moment_1_1) {
+                moment_1 = moment_1_1;
             },
             function (UserType_1_1) {
                 UserType_1 = UserType_1_1;
@@ -23,7 +26,7 @@ System.register(['immutable', './enums/UserType', './enums/Gender'], function(ex
             UserRecord = immutable_1.Record({
                 id: 0,
                 name: "",
-                userType: UserType_1.UserType.Admin,
+                userType: UserType_1.UserType.Owner,
                 accountID: 1,
                 userName: "",
                 firstName: "",
@@ -33,9 +36,9 @@ System.register(['immutable', './enums/UserType', './enums/Gender'], function(ex
                 imageLink: "",
                 // address: null, //Address
                 // contact: null, //Contact
-                dateOfBirth: null,
+                dateOfBirth: moment_1.default(),
                 password: "",
-                isDeleted: false,
+                isDeleted: 0,
                 createByUserID: 0,
                 updateByUserID: 0,
                 createDate: null,

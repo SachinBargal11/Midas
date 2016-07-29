@@ -8,7 +8,7 @@ import {Gender} from './enums/Gender';
 const UserRecord = Record({
     id: 0,
     name: "",
-    userType: UserType.Admin,
+    userType: UserType.Owner,
     accountID: 1,
     userName: "",
     firstName: "",
@@ -18,9 +18,9 @@ const UserRecord = Record({
     imageLink: "",
     // address: null, //Address
     // contact: null, //Contact
-    dateOfBirth: null, //Moment
+    dateOfBirth: moment(), //Moment
     password: "",
-    isDeleted: false,
+    isDeleted: 0,
     createByUserID: 0,
     updateByUserID: 0,
     createDate: null, //Moment

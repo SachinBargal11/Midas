@@ -288,8 +288,8 @@
                         </div>
 
                         <div class="">
-                            <button [disabled]="!signupform.valid || isSaveUserProgress" type="submit" class="btn btn-success sign-up">Sign up
-                                <loader [visible]="isSaveUserProgress"></loader>
+                            <button [disabled]="!signupform.valid || isSignupInProgress" type="submit" class="btn btn-success sign-up">Sign up
+                                <loader [visible]="isSignupInProgress"></loader>
                             </button>
                             <span class="sign-note">Already have an account? <a [routerLink]="['/login']">Login</a></span>
                         </div>
