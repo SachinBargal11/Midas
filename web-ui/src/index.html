@@ -59,10 +59,16 @@
                     'primeng' : {
                         deps: [
                             'jquery.ui',
-                            'jquery-ui-timepicker-addon'
+                            'jquery-ui-timepicker-addon',
+                            'jquery.inputmask'
                         ]
                     },
                     'jquery-ui': {
+                        deps: [
+                            'jquery'
+                        ]
+                    },
+                    'jquery.inputmask': {
                         deps: [
                             'jquery'
                         ]
@@ -157,7 +163,8 @@
             
             Promise.all([
                 System.import('jquery.ui'),
-                System.import('jquery-ui-timepicker-addon')
+                System.import('jquery-ui-timepicker-addon'),
+                System.import('jquery.inputmask')
             ])
                 .then(function()
                 {

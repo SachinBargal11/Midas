@@ -115,8 +115,8 @@
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-group" [class.error]="userformControls.contact.controls.email.touched && !userformControls.contact.controls.email.valid">
-                                    <input formControlName="email" type="email" [class.error]="!userformControls.contact.controls.email.valid" class="form-control" placeholder="E-Mail"
-                                        type="text" />
+                                    <input type="email" formControlName="email" [class.error]="!userformControls.contact.controls.email.valid" 
+                                    class="form-control" type="text" placeholder="E-Mail" />
                                     <div class='error-list' *ngIf="userformControls.contact.controls.email.touched && !userformControls.contact.controls.email.valid">
                                         <ul>
                                             <li *ngIf="userformControls.contact.controls.email.hasError('required')">Email is required.</li>
@@ -129,12 +129,12 @@
 
                             <div class="col-lg-4">
                                 <div class="form-group" [class.error]="userformControls.contact.controls.cellPhone.touched && !userformControls.contact.controls.cellPhone.valid">
-                                    <input formControlName="cellPhone" type="text" class="form-control" [class.error]="!userformControls.contact.controls.cellPhone.valid" placeholder="Cell Phone No"
-                                    />
+                                    <p-inputMask mask="9999999999" formControlName="cellPhone" [class.error]="userformControls.contact.controls.cellPhone.touched && !userformControls.contact.controls.cellPhone.valid" 
+                                     placeholder="Cellphone no"></p-inputMask>
                                     <div class='error-list' *ngIf="userformControls.contact.controls.cellPhone.touched && !userformControls.contact.controls.cellPhone.valid">
                                         <ul>
-                                            <li *ngIf="userformControls.contact.controls.cellPhone.hasError('required')">Cell Phone number is required.</li>
-                                            <li *ngIf="userformControls.contact.controls.cellPhone.hasError('mobileNoValidator')">Cell Phone number is invalid.</li>
+                                            <li *ngIf="userformControls.contact.controls.cellPhone.hasError('required')">Cellphone number is required.</li>
+                                            <li *ngIf="userformControls.contact.controls.cellPhone.hasError('mobileNoValidator')">Cellphone number is invalid.</li>
                                         </ul>
                                     </div>
                                 </div>

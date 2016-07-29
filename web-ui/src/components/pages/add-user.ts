@@ -14,14 +14,14 @@ import {SessionStore} from '../../stores/session-store';
 import {NotificationsStore} from '../../stores/notifications-store';
 import {Notification} from '../../models/notification';
 import moment from 'moment';
-import {Calendar, RadioButton, SelectItem} from 'primeng/primeng';
+import {Calendar, InputMask, RadioButton, SelectItem} from 'primeng/primeng';
 import {Gender} from '../../models/enums/Gender';
 import {UserType} from '../../models/enums/UserType';
 
 @Component({
     selector: 'add-user',
     templateUrl: 'templates/pages/add-user.html',
-    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, DROPDOWN_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar, RadioButton]
+    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, DROPDOWN_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar, InputMask, RadioButton]
 })
 
 export class AddUserComponent implements OnInit {

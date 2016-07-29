@@ -159,7 +159,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                     core_1.Component({
                         selector: 'add-user',
                         templateUrl: 'templates/pages/add-user.html',
-                        directives: [forms_1.FORM_DIRECTIVES, forms_1.REACTIVE_FORM_DIRECTIVES, ng2_bootstrap_1.DROPDOWN_DIRECTIVES, router_1.ROUTER_DIRECTIVES, loader_1.LoaderComponent, primeng_1.Calendar, primeng_1.RadioButton]
+                        directives: [forms_1.FORM_DIRECTIVES, forms_1.REACTIVE_FORM_DIRECTIVES, ng2_bootstrap_1.DROPDOWN_DIRECTIVES, router_1.ROUTER_DIRECTIVES, loader_1.LoaderComponent, primeng_1.Calendar, primeng_1.InputMask, primeng_1.RadioButton]
                     }), 
                     __metadata('design:paramtypes', [forms_1.FormBuilder, router_1.Router, notifications_store_1.NotificationsStore, session_store_1.SessionStore, users_store_1.UsersStore, core_1.ElementRef])
                 ], AddUserComponent);

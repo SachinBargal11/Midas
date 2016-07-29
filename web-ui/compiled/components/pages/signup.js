@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-bootstrap', '../../utils/AppValidators', '../elements/loader', '../../services/authentication-service', '../../models/account-details', '../../models/account', '../../models/user', '../../models/contact', '../../models/address', '../../stores/session-store', '../../stores/notifications-store', '../../models/notification', 'moment', 'primeng/primeng'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-bootstrap', '../../utils/AppValidators', '../elements/loader', '../../services/authentication-service', '../../models/account-details', '../../models/user', '../../models/contact', '../../models/address', '../../models/account', '../../stores/session-store', '../../stores/notifications-store', '../../models/notification', 'moment', 'primeng/primeng'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, forms_1, router_1, ng2_bootstrap_1, AppValidators_1, loader_1, authentication_service_1, account_details_1, account_1, user_1, contact_1, address_1, session_store_1, notifications_store_1, notification_1, moment_1, primeng_1;
+    var core_1, forms_1, router_1, ng2_bootstrap_1, AppValidators_1, loader_1, authentication_service_1, account_details_1, user_1, contact_1, address_1, account_1, session_store_1, notifications_store_1, notification_1, moment_1, primeng_1;
     var SignupComponent;
     return {
         setters:[
@@ -38,9 +38,6 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
             function (account_details_1_1) {
                 account_details_1 = account_details_1_1;
             },
-            function (account_1_1) {
-                account_1 = account_1_1;
-            },
             function (user_1_1) {
                 user_1 = user_1_1;
             },
@@ -49,6 +46,9 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
             },
             function (address_1_1) {
                 address_1 = address_1_1;
+            },
+            function (account_1_1) {
+                account_1 = account_1_1;
             },
             function (session_store_1_1) {
                 session_store_1 = session_store_1_1;
@@ -169,7 +169,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                     core_1.Component({
                         selector: 'signup',
                         templateUrl: 'templates/pages/signup.html',
-                        directives: [forms_1.FORM_DIRECTIVES, forms_1.REACTIVE_FORM_DIRECTIVES, ng2_bootstrap_1.DROPDOWN_DIRECTIVES, router_1.ROUTER_DIRECTIVES, loader_1.LoaderComponent, primeng_1.Calendar, primeng_1.RadioButton]
+                        directives: [forms_1.FORM_DIRECTIVES, forms_1.REACTIVE_FORM_DIRECTIVES, ng2_bootstrap_1.DROPDOWN_DIRECTIVES, router_1.ROUTER_DIRECTIVES, loader_1.LoaderComponent, primeng_1.Calendar, primeng_1.InputMask, primeng_1.RadioButton]
                     }), 
                     __metadata('design:paramtypes', [forms_1.FormBuilder, router_1.Router, notifications_store_1.NotificationsStore, session_store_1.SessionStore, authentication_service_1.AuthenticationService, core_1.ElementRef])
                 ], SignupComponent);

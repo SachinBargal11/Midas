@@ -6,22 +6,22 @@ import {AppValidators} from '../../utils/AppValidators';
 import {LoaderComponent} from '../elements/loader';
 import {AuthenticationService} from '../../services/authentication-service';
 import {AccountDetail} from '../../models/account-details';
-import {Account} from '../../models/account';
 import {User} from '../../models/user';
 import {Contact} from '../../models/contact';
 import {Address} from '../../models/address';
+import {Account} from '../../models/account';
 import $ from 'jquery';
 import {SessionStore} from '../../stores/session-store';
 import {NotificationsStore} from '../../stores/notifications-store';
 import {Notification} from '../../models/notification';
 import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
 import Moment from 'moment';
-import {Calendar, RadioButton, SelectItem} from 'primeng/primeng';
+import {Calendar, InputMask, RadioButton, SelectItem} from 'primeng/primeng';
 
 @Component({
     selector: 'signup',
     templateUrl: 'templates/pages/signup.html',
-    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, DROPDOWN_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar, RadioButton]
+    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, DROPDOWN_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar, InputMask, RadioButton]
 })
 
 export class SignupComponent implements OnInit {
@@ -89,7 +89,6 @@ export class SignupComponent implements OnInit {
         this.isSaveUserProgress = true;
         var result;
         let signupFormValues = this.signupform.value;
-
         let accountDetail = new AccountDetail({
             account: new Account({
                 name: signupFormValues.account.accountName
@@ -116,7 +115,6 @@ export class SignupComponent implements OnInit {
                 zipCode: signupFormValues.address.zipCode,
             })
         });
-
         result = this._authenticationService.register(accountDetail);
         result.subscribe(
             (response) => {
