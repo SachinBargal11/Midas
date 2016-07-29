@@ -89,12 +89,21 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/
                 };
                 AuthenticationService.prototype.authenticate = function (userId, password) {
                     var _this = this;
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
                     var promise = new Promise(function (resolve, reject) {
-                        return _this._http.get('http://localhost:3004/users' + '?email=' + userId + '&password=' + password)
-                            .map(function (res) { return res.json(); })
+                        var autheticateRequestData = {
+                            user: {
+                                "userName": userId,
+                                "password": password
+                            }
+                        };
+                        return _this._http.post(_this._url + '/User/Login', JSON.stringify(autheticateRequestData), {
+                            headers: headers
+                        }).map(function (res) { return res.json(); })
                             .subscribe(function (data) {
-                            if (data.length) {
-                                var user = user_adapter_1.UserAdapter.parseResponse(data[0]);
+                            if (data) {
+                                var user = user_adapter_1.UserAdapter.parseResponse(data);
                                 resolve(user);
                             }
                             else {

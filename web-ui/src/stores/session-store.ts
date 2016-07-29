@@ -64,9 +64,9 @@ export class SessionStore {
         window.localStorage.removeItem(this.__USER_STORAGE_KEY__);
     }
 
-    private _populateSession(user) {
-        this._session.user = new User({});
-        window.localStorage.setItem(this.__USER_STORAGE_KEY__, JSON.stringify(new User({}).toJS()));
+    private _populateSession(user: User) {
+        this._session.user = user;
+        window.localStorage.setItem(this.__USER_STORAGE_KEY__, JSON.stringify(user.toJS()));
     }
 
     private _resetSession() {

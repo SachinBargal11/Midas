@@ -20,7 +20,7 @@ export class AuthenticationService {
 
     register(accountDetail: AccountDetail): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
-            var headers = new Headers();
+            let headers = new Headers();
             headers.append('Content-Type', 'application/json');
             let accountDetailRequestData;
             try {
@@ -49,27 +49,37 @@ export class AuthenticationService {
             return this._http.post(this._url + '/Account/Signup', JSON.stringify(accountDetailRequestData), {
                 headers: headers
             })
-            .map(res => res.json())
-            .subscribe((data: any) => {
-                if(data.errorMessage) {
-                    reject(new Error(data.errorMessage));
-                } else {
-                    resolve(data);
-                }
-            }, (error) => {
-                reject(error);
-            });
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    if (data.errorMessage) {
+                        reject(new Error(data.errorMessage));
+                    } else {
+                        resolve(data);
+                    }
+                }, (error) => {
+                    reject(error);
+                });
         });
         return <Observable<any>>Observable.fromPromise(promise);
     }
 
     authenticate(userId: string, password: string): Observable<User> {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
         let promise: Promise<User> = new Promise((resolve, reject) => {
-            return this._http.get('http://localhost:3004/users' + '?email=' + userId + '&password=' + password)
-                .map(res => res.json())
+            let autheticateRequestData = {
+                user: {
+                    "userName": userId,
+                    "password": password
+                }
+            }
+            return this._http.post(this._url + '/User/Login', JSON.stringify(autheticateRequestData), {
+                headers: headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
-                    if (data.length) {
-                        var user = UserAdapter.parseResponse(data[0]);
+                    if (data) {
+                        var user = UserAdapter.parseResponse(data);
                         resolve(user);
                     }
                     else {

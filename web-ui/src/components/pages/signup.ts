@@ -59,16 +59,16 @@ export class SignupComponent implements OnInit {
         this.signupform = this.fb.group({
             user: this.fb.group({
                 // userName: ['', [Validators.required, AppValidators.emailValidator]],
-                password: ['123456', Validators.required],
-                confirmPassword: ['123456', Validators.required],
-                firstname: ['test', Validators.required],
+                password: ['', Validators.required],
+                confirmPassword: ['', Validators.required],
+                firstname: ['', Validators.required],
                 middlename: [''],
-                lastname: ['test', Validators.required],
-                email: ['t@yahoo.com', [Validators.required, AppValidators.emailValidator]]
+                lastname: ['', Validators.required],
+                email: ['', [Validators.required, AppValidators.emailValidator]]
             }, { validator: AppValidators.matchingPasswords('password', 'confirmPassword') }),
             contactInfo: this.fb.group({
 
-                cellPhone: ['1234567890', [Validators.required, AppValidators.mobileNoValidator]],
+                cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
                 homePhone: [''],
                 workPhone: [''],
                 faxNo: ['']
@@ -82,7 +82,7 @@ export class SignupComponent implements OnInit {
                 country: ['']
             }),
             account: this.fb.group({
-                accountName: ['test123', Validators.required]
+                accountName: ['', Validators.required]
 
             })
         });
@@ -108,11 +108,12 @@ export class SignupComponent implements OnInit {
                 firstName: signupFormValues.user.firstname,
                 middleName: signupFormValues.user.middlename,
                 lastName: signupFormValues.user.lastname,
-                userName: signupFormValues.contactInfo.email
+                userName: signupFormValues.user.email,
+                password: signupFormValues.user.password
             }),
             contactInfo: new Contact({
                 cellPhone: signupFormValues.contactInfo.cellPhone,
-                emailAddress: signupFormValues.contactInfo.email,
+                emailAddress: signupFormValues.user.email,
                 faxNo: signupFormValues.contactInfo.faxNo,
                 homePhone: signupFormValues.contactInfo.homePhone,
                 workPhone: signupFormValues.contactInfo.workPhone,

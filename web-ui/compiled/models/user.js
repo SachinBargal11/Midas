@@ -51,8 +51,7 @@ System.register(['immutable', 'moment', './enums/UserType', './enums/Gender'], f
                 }
                 Object.defineProperty(User.prototype, "displayName", {
                     get: function () {
-                        // return this.firstName + " " + this.lastName;
-                        return 'Test';
+                        return this.firstName + " " + this.lastName;
                     },
                     enumerable: true,
                     configurable: true

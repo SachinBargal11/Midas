@@ -83,15 +83,15 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                     this.signupform = this.fb.group({
                         user: this.fb.group({
                             // userName: ['', [Validators.required, AppValidators.emailValidator]],
-                            password: ['123456', forms_1.Validators.required],
-                            confirmPassword: ['123456', forms_1.Validators.required],
-                            firstname: ['test', forms_1.Validators.required],
+                            password: ['', forms_1.Validators.required],
+                            confirmPassword: ['', forms_1.Validators.required],
+                            firstname: ['', forms_1.Validators.required],
                             middlename: [''],
-                            lastname: ['test', forms_1.Validators.required],
-                            email: ['t@yahoo.com', [forms_1.Validators.required, AppValidators_1.AppValidators.emailValidator]]
+                            lastname: ['', forms_1.Validators.required],
+                            email: ['', [forms_1.Validators.required, AppValidators_1.AppValidators.emailValidator]]
                         }, { validator: AppValidators_1.AppValidators.matchingPasswords('password', 'confirmPassword') }),
                         contactInfo: this.fb.group({
-                            cellPhone: ['1234567890', [forms_1.Validators.required, AppValidators_1.AppValidators.mobileNoValidator]],
+                            cellPhone: ['', [forms_1.Validators.required, AppValidators_1.AppValidators.mobileNoValidator]],
                             homePhone: [''],
                             workPhone: [''],
                             faxNo: ['']
@@ -105,7 +105,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                             country: ['']
                         }),
                         account: this.fb.group({
-                            accountName: ['test123', forms_1.Validators.required]
+                            accountName: ['', forms_1.Validators.required]
                         })
                     });
                     this.userformControls = this.signupform.controls;
@@ -125,11 +125,12 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                             firstName: signupFormValues.user.firstname,
                             middleName: signupFormValues.user.middlename,
                             lastName: signupFormValues.user.lastname,
-                            userName: signupFormValues.contactInfo.email
+                            userName: signupFormValues.user.email,
+                            password: signupFormValues.user.password
                         }),
                         contactInfo: new contact_1.Contact({
                             cellPhone: signupFormValues.contactInfo.cellPhone,
-                            emailAddress: signupFormValues.contactInfo.email,
+                            emailAddress: signupFormValues.user.email,
                             faxNo: signupFormValues.contactInfo.faxNo,
                             homePhone: signupFormValues.contactInfo.homePhone,
                             workPhone: signupFormValues.contactInfo.workPhone,
