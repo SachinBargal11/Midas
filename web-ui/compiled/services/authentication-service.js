@@ -103,7 +103,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/
                         }).map(function (res) { return res.json(); })
                             .subscribe(function (data) {
                             if (data) {
-                                var user = user_adapter_1.UserAdapter.parseResponse(data);
+                                var user = user_adapter_1.UserAdapter.parseUserResponse(data);
                                 resolve(user);
                             }
                             else {

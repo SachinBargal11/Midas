@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observable', 'rxjs/add/operator/share', 'rxjs/add/operator/map', '../scripts/environment', '../stores/session-store', './adapters/user-adapter'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observable', 'rxjs/add/operator/share', 'rxjs/add/operator/map', '../scripts/environment', '../stores/session-store', './adapters/user-adapter', '../models/enums/UserType'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, underscore_1, Observable_1, environment_1, session_store_1, user_adapter_1;
+    var core_1, http_1, underscore_1, Observable_1, environment_1, session_store_1, user_adapter_1, UserType_1;
     var UsersService;
     return {
         setters:[
@@ -36,6 +36,9 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
             },
             function (user_adapter_1_1) {
                 user_adapter_1 = user_adapter_1_1;
+            },
+            function (UserType_1_1) {
+                UserType_1 = UserType_1_1;
             }],
         execute: function() {
             UsersService = (function () {
@@ -52,12 +55,13 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                         var userDetailRequestData = userDetail.toJS();
                         // add/replace values which need to be changed
                         underscore_1.default.extend(userDetailRequestData.user, {
+                            userType: UserType_1.UserType[userDetailRequestData.user.userType],
                             dateOfBirth: userDetailRequestData.user.dateOfBirth ? userDetailRequestData.user.dateOfBirth.toISOString() : null
                         });
                         // remove unneeded keys 
-                        userDetailRequestData.user = underscore_1.default.omit(userDetailRequestData.user, 'id', 'isDeleted', 'name', 'password', 'status', 'dateOfBirth', 'gender', 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
-                        userDetailRequestData.address = underscore_1.default.omit(userDetailRequestData.address, 'id', 'isDeleted', 'name', 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
-                        userDetailRequestData.contactInfo = underscore_1.default.omit(userDetailRequestData.contactInfo, 'id', 'isDeleted', 'name', 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
+                        userDetailRequestData.user = underscore_1.default.omit(userDetailRequestData.user, 'gender', 'status', 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
+                        userDetailRequestData.address = underscore_1.default.omit(userDetailRequestData.address, 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
+                        userDetailRequestData.contactInfo = underscore_1.default.omit(userDetailRequestData.contactInfo, 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
                         return _this._http.post(_this._url + '/User/Add', JSON.stringify(userDetailRequestData), {
                             headers: _this._headers
                         })

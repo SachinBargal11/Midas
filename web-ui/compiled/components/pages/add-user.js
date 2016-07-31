@@ -88,7 +88,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                         }),
                         contact: this.fb.group({
                             email: ['', [forms_1.Validators.required, AppValidators_1.AppValidators.emailValidator]],
-                            cellPhone: ['', [forms_1.Validators.required, AppValidators_1.AppValidators.mobileNoValidator]],
+                            cellPhone: ['', [forms_1.Validators.required]],
                             homePhone: [''],
                             workPhone: [''],
                             faxNo: ['']
@@ -115,7 +115,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                             middleName: userFormValues.userInfo.middlename,
                             lastName: userFormValues.userInfo.lastname,
                             userType: parseInt(userFormValues.userInfo.userType),
-                            userName: userFormValues.contact.email,
+                            userName: userFormValues.contact.email
                         }),
                         contactInfo: new contact_1.Contact({
                             cellPhone: userFormValues.contact.cellPhone,

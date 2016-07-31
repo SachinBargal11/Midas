@@ -54,7 +54,7 @@ export class AddUserComponent implements OnInit {
             }),
             contact: this.fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
-                cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+                cellPhone: ['', [Validators.required]],
                 homePhone: [''],
                 workPhone: [''],
                 faxNo: ['']
@@ -86,7 +86,7 @@ export class AddUserComponent implements OnInit {
                 middleName: userFormValues.userInfo.middlename,
                 lastName: userFormValues.userInfo.lastname,
                 userType: parseInt(userFormValues.userInfo.userType), //UserType[1],//,
-                userName: userFormValues.contact.email,
+                userName: userFormValues.contact.email                
             }),
             contactInfo: new Contact({
                 cellPhone: userFormValues.contact.cellPhone,

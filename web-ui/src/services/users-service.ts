@@ -9,6 +9,7 @@ import Environment from '../scripts/environment';
 import {UserDetail} from '../models/user-details';
 import {SessionStore} from '../stores/session-store';
 import {UserAdapter} from './adapters/user-adapter';
+import {UserType} from '../models/enums/UserType';
 
 @Injectable()
 export class UsersService {
@@ -31,13 +32,14 @@ export class UsersService {
 
             // add/replace values which need to be changed
             _.extend(userDetailRequestData.user, {
+                userType: UserType[userDetailRequestData.user.userType],
                 dateOfBirth: userDetailRequestData.user.dateOfBirth ? userDetailRequestData.user.dateOfBirth.toISOString() : null
             });
 
             // remove unneeded keys 
-            userDetailRequestData.user = _.omit(userDetailRequestData.user, 'id', 'isDeleted', 'name', 'password' ,'status', 'dateOfBirth', 'gender', 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
-            userDetailRequestData.address = _.omit(userDetailRequestData.address, 'id', 'isDeleted', 'name', 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
-            userDetailRequestData.contactInfo = _.omit(userDetailRequestData.contactInfo, 'id', 'isDeleted', 'name', 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
+            userDetailRequestData.user = _.omit(userDetailRequestData.user, 'gender', 'status', 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
+            userDetailRequestData.address = _.omit(userDetailRequestData.address, 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
+            userDetailRequestData.contactInfo = _.omit(userDetailRequestData.contactInfo, 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
 
             return this._http.post(this._url + '/User/Add', JSON.stringify(userDetailRequestData), {
                 headers: this._headers

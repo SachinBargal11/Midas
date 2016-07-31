@@ -1,10 +1,11 @@
 import {User} from '../../models/user';
+import {UserDetail} from '../../models/user-details';
 import Moment from 'moment';
 import _ from 'underscore';
 
 
 export class UserAdapter {
-    static parseResponse(userData: any): User {
+    static parseUserResponse(userData: any): User {
 
         let user = null;
         if (userData) {
@@ -13,4 +14,20 @@ export class UserAdapter {
         }
         return user;
     }
+
+    static parseResponse(userData: any): UserDetail {
+
+        let user = null;
+        let tempUser = _.omit(userData, 'address', 'account', 'contactInfo', 'updateDate');
+        if (userData) {
+            user = new UserDetail({
+                user: tempUser,
+                address: userData.address,
+                contactInfo: user.contactInfo
+            });
+        }
+        return user;
+    }
+
+
 }

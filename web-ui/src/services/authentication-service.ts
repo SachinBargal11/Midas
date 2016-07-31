@@ -79,7 +79,7 @@ export class AuthenticationService {
             }).map(res => res.json())
                 .subscribe((data: any) => {
                     if (data) {
-                        var user = UserAdapter.parseResponse(data);
+                        var user = UserAdapter.parseUserResponse(data);
                         resolve(user);
                     }
                     else {
