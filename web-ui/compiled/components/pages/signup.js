@@ -91,7 +91,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                             email: ['', [forms_1.Validators.required, AppValidators_1.AppValidators.emailValidator]]
                         }, { validator: AppValidators_1.AppValidators.matchingPasswords('password', 'confirmPassword') }),
                         contactInfo: this.fb.group({
-                            cellPhone: ['', [forms_1.Validators.required, AppValidators_1.AppValidators.mobileNoValidator]],
+                            cellPhone: ['', [forms_1.Validators.required]],
                             homePhone: [''],
                             workPhone: [''],
                             faxNo: ['']
@@ -133,7 +133,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                             emailAddress: signupFormValues.user.email,
                             faxNo: signupFormValues.contactInfo.faxNo,
                             homePhone: signupFormValues.contactInfo.homePhone,
-                            workPhone: signupFormValues.contactInfo.workPhone,
+                            workPhone: signupFormValues.contactInfo.workPhone
                         }),
                         address: new address_1.Address({
                             address1: signupFormValues.address.address1,
@@ -141,7 +141,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                             city: signupFormValues.address.city,
                             country: signupFormValues.address.country,
                             state: signupFormValues.address.state,
-                            zipCode: signupFormValues.address.zipCode,
+                            zipCode: signupFormValues.address.zipCode
                         })
                     });
                     result = this._authenticationService.register(accountDetail);

@@ -179,8 +179,8 @@
                                 
                                 <div class="col-lg-4">
                                 <div class="form-group" [class.error]="userformControls.contactInfo.controls.cellPhone.touched && !userformControls.contactInfo.controls.cellPhone.valid">
-                                    <p-inputMask mask="9999999999" formControlName="cellPhone" [class.error]="userformControls.contactInfo.controls.cellPhone.touched && !userformControls.contactInfo.controls.cellPhone.valid" 
-                                     placeholder="Cellphone no"></p-inputMask>
+                                    <p-inputMask mask="99-999-9999" formControlName="cellPhone" [class.error]="userformControls.contactInfo.controls.cellPhone.touched && !userformControls.contactInfo.controls.cellPhone.valid" 
+                                     placeholder="999-999-9999" styleClass="form-control" [options]="{showMaskOnHover:false}"></p-inputMask>
                                     <div class='error-list' *ngIf="userformControls.contactInfo.controls.cellPhone.touched && !userformControls.contactInfo.controls.cellPhone.valid">
                                         <ul>
                                             <li *ngIf="userformControls.contactInfo.controls.cellPhone.hasError('required')">Cellphone number is required.</li>

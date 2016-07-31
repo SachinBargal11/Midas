@@ -68,7 +68,7 @@ export class SignupComponent implements OnInit {
             }, { validator: AppValidators.matchingPasswords('password', 'confirmPassword') }),
             contactInfo: this.fb.group({
 
-                cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+                cellPhone: ['', [Validators.required]],
                 homePhone: [''],
                 workPhone: [''],
                 faxNo: ['']
@@ -116,7 +116,7 @@ export class SignupComponent implements OnInit {
                 emailAddress: signupFormValues.user.email,
                 faxNo: signupFormValues.contactInfo.faxNo,
                 homePhone: signupFormValues.contactInfo.homePhone,
-                workPhone: signupFormValues.contactInfo.workPhone,
+                workPhone: signupFormValues.contactInfo.workPhone
             }),
             address: new Address({
                 address1: signupFormValues.address.address1,
@@ -124,7 +124,7 @@ export class SignupComponent implements OnInit {
                 city: signupFormValues.address.city,
                 country: signupFormValues.address.country,
                 state: signupFormValues.address.state,
-                zipCode: signupFormValues.address.zipCode,
+                zipCode: signupFormValues.address.zipCode
             })
         });
         result = this._authenticationService.register(accountDetail);
