@@ -33,7 +33,7 @@ System.register(['../../models/user', '../../models/user-details', 'underscore']
                         user = new user_details_1.UserDetail({
                             user: tempUser,
                             address: userData.address,
-                            contactInfo: user.contactInfo
+                            contactInfo: userData.contactInfo
                         });
                     }
                     return user;

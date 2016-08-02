@@ -74,7 +74,7 @@ export class AuthenticationService {
                     "password": password
                 }
             }
-            return this._http.post(this._url + '/User/Login', JSON.stringify(autheticateRequestData), {
+            return this._http.post(this._url + '/User/Signin', JSON.stringify(autheticateRequestData), {
                 headers: headers
             }).map(res => res.json())
                 .subscribe((data: any) => {

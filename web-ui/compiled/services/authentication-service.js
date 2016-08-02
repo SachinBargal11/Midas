@@ -98,7 +98,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/
                                 "password": password
                             }
                         };
-                        return _this._http.post(_this._url + '/User/Login', JSON.stringify(autheticateRequestData), {
+                        return _this._http.post(_this._url + '/User/Signin', JSON.stringify(autheticateRequestData), {
                             headers: headers
                         }).map(function (res) { return res.json(); })
                             .subscribe(function (data) {

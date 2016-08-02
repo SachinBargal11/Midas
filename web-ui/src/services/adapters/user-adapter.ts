@@ -23,7 +23,7 @@ export class UserAdapter {
             user = new UserDetail({
                 user: tempUser,
                 address: userData.address,
-                contactInfo: user.contactInfo
+                contactInfo: userData.contactInfo
             });
         }
         return user;
