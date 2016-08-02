@@ -24,7 +24,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                     <input formControlName="password" type="password" class="form-control" [class.error]="!loginFormControls.password.valid"
-                        placeholder="Password">
+                        placeholder="">
                     <div class='error-list' *ngIf="loginFormControls.password.touched && !loginFormControls.password.valid">
                         <ul>
                             <li *ngIf="loginFormControls.password.hasError('required')">Password is required.</li>
