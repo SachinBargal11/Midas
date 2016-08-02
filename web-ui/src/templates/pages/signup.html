@@ -15,8 +15,11 @@
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class="form-group" [class.error]="userformControls.account.controls.accountName.touched && !userformControls.account.controls.accountName.valid">
+                                        <label class="form-label"> Account Name
+                                            <span class="color-red">*</span>
+                                        </label>
                                         <input formControlName="accountName" type="text" minlength='6' class="form-control" [class.error]="!userformControls.account.controls.accountName.valid"
-                                            placeholder="Account Name" />
+                                        />
                                         <div class='error-list' *ngIf="userformControls.account.controls.accountName.touched && !userformControls.account.controls.accountName.valid">
                                             <ul>
                                                 <li *ngIf="userformControls.account.controls.accountName.hasError('required')">Account Name is required.</li>
@@ -34,9 +37,12 @@
                         <div class="card-block" formGroupName="user">
                             <div class="row">
                                 <div class="col-lg-4">
+                                    <label class="form-label"> E-Mail
+                                            <span class="color-red">*</span>
+                                        </label>
                                     <div class="form-group" [class.error]="userformControls.user.controls.email.touched && !userformControls.user.controls.email.valid">
                                         <input formControlName="email" type="email" [class.error]="!userformControls.user.controls.email.valid" class="form-control"
-                                            placeholder="E-Mail" type="text" />
+                                            placeholder="" type="text" />
                                         <div class='error-list' *ngIf="userformControls.user.controls.email.touched && !userformControls.user.controls.email.valid">
                                             <ul>
                                                 <li *ngIf="userformControls.user.controls.email.hasError('required')">Email is required.</li>
@@ -49,9 +55,12 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-4">
+                                    <label class="form-label"> Password
+                                            <span class="color-red">*</span>
+                                        </label>
                                     <div class="form-group" [class.error]="userformControls.user.controls.password.touched && !userformControls.user.controls.password.valid">
                                         <input formControlName="password" type="password" minlength='6' class="form-control" [class.error]="!userformControls.user.controls.password.valid"
-                                            placeholder="Password" />
+                                            placeholder="" />
                                         <div class='error-list' *ngIf="userformControls.user.controls.password.touched && !userformControls.user.controls.password.valid">
                                             <ul>
                                                 <li *ngIf="userformControls.user.controls.password.hasError('required')">Password is required.</li>
@@ -63,9 +72,12 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
+                                    <label class="form-label"> Repeat Password
+                                            <span class="color-red">*</span>
+                                        </label>
                                     <div class="form-group" [class.error]="userformControls.user.controls.confirmPassword.touched && userformControls.user.hasError('mismatchedPasswords')">
                                         <input formControlName="confirmPassword" type="password" class="form-control" [class.error]="userformControls.user.hasError('mismatchedPasswords')"
-                                            placeholder="Repeat password" />
+                                            placeholder="" />
                                         <div class='error-list' *ngIf="userformControls.user.controls.confirmPassword.touched && userformControls.user.hasError('mismatchedPasswords')">
                                             <ul>
                                                 <li *ngIf="userformControls.user.hasError('mismatchedPasswords')">Passwords do not match.</li>
@@ -76,8 +88,11 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-4">
+                                    <label class="form-label"> First Name
+                                            <span class="color-red">*</span>
+                                        </label>
                                     <div class="form-group" [class.error]="userformControls.user.controls.firstname.touched && !userformControls.user.controls.firstname.valid">
-                                        <input formControlName="firstname" type="text" class="form-control" placeholder="First Name" [class.error]="!userformControls.user.controls.firstname.valid">
+                                        <input formControlName="firstname" type="text" class="form-control" placeholder="" [class.error]="!userformControls.user.controls.firstname.valid">
                                         <div class='error-list' *ngIf="userformControls.user.controls.firstname.touched && !userformControls.user.controls.firstname.valid">
                                             <ul>
                                                 <li *ngIf="userformControls.user.controls.firstname.hasError('required')">First Name is required.</li>
@@ -86,8 +101,9 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
+                                    <label class="form-label"> Middle Name</label>
                                     <div class="form-group" [class.error]="userformControls.user.controls.middlename.touched && !userformControls.user.controls.middlename.valid">
-                                        <input formControlName="middlename" type="text" class="form-control" placeholder="Middle Name" [class.error]="!userformControls.user.controls.middlename.valid">
+                                        <input formControlName="middlename" type="text" class="form-control" placeholder="" [class.error]="!userformControls.user.controls.middlename.valid">
                                         <div class='error-list' *ngIf="userformControls.user.controls.middlename.touched && !userformControls.user.controls.middlename.valid">
                                             <ul>
                                                 <li *ngIf="userformControls.user.controls.middlename.hasError('required')">Middle Name is required.</li>
@@ -97,8 +113,11 @@
                                 </div>
 
                                 <div class="col-lg-4">
+                                    <label class="form-label"> Last Name
+                                            <span class="color-red">*</span>
+                                        </label>
                                     <div class="form-group" [class.error]="userformControls.user.controls.lastname.touched && !userformControls.user.controls.lastname.valid">
-                                        <input formControlName="lastname" type="text" class="form-control" placeholder="Last Name" [class.error]="!userformControls.user.controls.lastname.valid">
+                                        <input formControlName="lastname" type="text" class="form-control" placeholder="" [class.error]="!userformControls.user.controls.lastname.valid">
                                         <div class='error-list' *ngIf="userformControls.user.controls.lastname.touched && !userformControls.user.controls.lastname.valid">
                                             <ul>
                                                 <li *ngIf="userformControls.user.controls.lastname.hasError('required')">Last Name is required.</li>
@@ -178,6 +197,9 @@
                             <div class="row">
 
                                 <div class="col-lg-4">
+                                    <label class="form-label"> Mobile No
+                                            <span class="color-red">*</span>
+                                        </label>
                                     <div class="form-group" [class.error]="userformControls.contactInfo.controls.cellPhone.touched && !userformControls.contactInfo.controls.cellPhone.valid">
                                         <p-inputMask mask="99-999-9999" formControlName="cellPhone" [class.error]="userformControls.contactInfo.controls.cellPhone.touched && !userformControls.contactInfo.controls.cellPhone.valid"
                                             placeholder="999-999-9999" styleClass="form-control" [options]="{showMaskOnHover:false}"></p-inputMask>
@@ -193,17 +215,20 @@
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <input formControlName="homePhone" type="text" class="form-control" placeholder="Home Phone No" />
+                                        <label class="form-label"> Home Phone No</label>
+                                        <input formControlName="homePhone" type="text" class="form-control" placeholder="" />
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <input formControlName="workPhone" type="text" class="form-control" placeholder="Work Phone No" />
+                                        <label class="form-label"> Work Phone No</label>
+                                        <input formControlName="workPhone" type="text" class="form-control" placeholder="" />
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <input formControlName="faxNo" type="text" class="form-control" placeholder="Fax No" />
+                                        <label class="form-label"> Fax No</label>
+                                        <input formControlName="faxNo" type="text" class="form-control" placeholder="" />
                                     </div>
                                 </div>
                             </div>
@@ -215,9 +240,10 @@
                         <div class="card-block" formGroupName="address">
                             <div class="row">
                                 <div class="col-lg-4">
+                                    <label class="form-label"> Address1</label>
                                     <div class="form-group" [class.error]="userformControls.address.controls.address1.touched && !userformControls.address.controls.address1.valid">
                                         <input formControlName="address1" type="email" [class.error]="!userformControls.address.controls.address1.valid" class="form-control"
-                                            placeholder="Address1" type="text" />
+                                            placeholder="" type="text" />
                                         <div class='error-list' *ngIf="userformControls.address.controls.address1.touched && !userformControls.address.controls.address1.valid">
                                             <ul>
                                                 <li *ngIf="userformControls.address.controls.address1.hasError('required')">Address1 is required.</li>
@@ -228,9 +254,10 @@
                                 </div>
 
                                 <div class="col-lg-4">
+                                    <label class="form-label"> Address2</label>
                                     <div class="form-group" [class.error]="userformControls.address.controls.address2.touched && !userformControls.address.controls.address2.valid">
                                         <input formControlName="address2" type="text" class="form-control" [class.error]="!userformControls.address.controls.address2.valid"
-                                            placeholder="Address2" />
+                                            placeholder="" />
                                         <div class='error-list' *ngIf="userformControls.address.controls.address2.touched && !userformControls.address.controls.address2.valid">
                                             <ul>
                                                 <li *ngIf="userformControls.address.controls.address2.hasError('required')">Address2 is required.</li>
@@ -239,9 +266,10 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
+                                    <label class="form-label"> City</label>
                                     <div class="form-group" [class.error]="userformControls.address.controls.city.touched && !userformControls.address.controls.city.valid">
                                         <input formControlName="city" type="text" class="form-control" [class.error]="!userformControls.address.controls.city.valid"
-                                            placeholder="City" />
+                                            placeholder="" />
                                         <div class='error-list' *ngIf="userformControls.address.controls.city.touched && !userformControls.address.controls.city.valid">
                                             <ul>
                                                 <li *ngIf="userformControls.address.controls.city.hasError('required')">City is required.</li>
@@ -252,9 +280,10 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-4">
+                                    <label class="form-label"> State</label>
                                     <div class="form-group" [class.error]="userformControls.address.controls.state.touched && !userformControls.address.controls.state.valid">
                                         <input formControlName="state" type="text" class="form-control" [class.error]="!userformControls.address.controls.state.valid"
-                                            placeholder="State" />
+                                            placeholder="" />
                                         <div class='error-list' *ngIf="userformControls.address.controls.state.touched && !userformControls.address.controls.state.valid">
                                             <ul>
                                                 <li *ngIf="userformControls.address.controls.state.hasError('required')">State is required.</li>
@@ -263,9 +292,10 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
+                                    <label class="form-label"> Zip Code</label>
                                     <div class="form-group" [class.error]="userformControls.address.controls.zipCode.touched && !userformControls.address.controls.zipCode.valid">
                                         <input formControlName="zipCode" type="text" class="form-control" [class.error]="!userformControls.address.controls.zipCode.valid"
-                                            placeholder="Zip Code" />
+                                            placeholder="" />
                                         <div class='error-list' *ngIf="userformControls.address.controls.zipCode.touched && !userformControls.address.controls.zipCode.valid">
                                             <ul>
                                                 <li *ngIf="userformControls.address.controls.zipCode.hasError('required')">ZipCode is required.</li>
@@ -274,9 +304,10 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
+                                    <label class="form-label">Country</label>
                                     <div class="form-group" [class.error]="userformControls.address.controls.country.touched && !userformControls.address.controls.country.valid">
                                         <input formControlName="country" type="text" class="form-control" [class.error]="!userformControls.address.controls.country.valid"
-                                            placeholder="Country" />
+                                            placeholder="" />
                                         <div class='error-list' *ngIf="userformControls.address.controls.country.touched && !userformControls.address.controls.country.valid">
                                             <ul>
                                                 <li *ngIf="userformControls.address.controls.country.hasError('required')">Country is required.</li>
