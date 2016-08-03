@@ -71,6 +71,7 @@ System.register(['@angular/core', '@angular/router', '../elements/loader', '../.
                 AppHeaderComponent.prototype.logout = function () {
                     this._sessionStore.logout();
                     this._router.navigate(['/login']);
+                    this._notificationsStore.closeNotification();
                 };
                 AppHeaderComponent.prototype.changePassword = function () {
                     this._sessionStore.session;

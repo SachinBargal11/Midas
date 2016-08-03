@@ -53,6 +53,12 @@ export class NotificationsStore {
         }
         this.recentlyAdded = false;
     }
+    
+    closeNotification(){
+        if(this.isOpen){
+           this.isOpen = !this.isOpen;
+        }
+    }
 
     readAllNotifications() {
         let notifications: List<Notification> = this._notifications.getValue();

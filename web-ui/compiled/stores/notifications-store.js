@@ -69,6 +69,11 @@ System.register(['@angular/core', 'immutable', "rxjs/Rx", 'rxjs/add/operator/sha
                     }
                     this.recentlyAdded = false;
                 };
+                NotificationsStore.prototype.closeNotification = function () {
+                    if (this.isOpen) {
+                        this.isOpen = !this.isOpen;
+                    }
+                };
                 NotificationsStore.prototype.readAllNotifications = function () {
                     var notifications = this._notifications.getValue();
                     notifications = notifications.toSeq().map(function (item) {
