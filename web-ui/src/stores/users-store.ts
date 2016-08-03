@@ -17,7 +17,23 @@ export class UsersStore {
     private _users: BehaviorSubject<List<UserDetail>> = new BehaviorSubject(List([]));
 
     constructor(private _usersService: UsersService) {
+        this.loadInitialData();
+    }
 
+    get users() {
+        return this._users.asObservable();
+    }
+
+    loadInitialData(): Observable<UserDetail[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._usersService.getUsers().subscribe((users: UserDetail[]) => {
+                this._users.next(List(users));
+                resolve(users);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<UserDetail[]>>Observable.fromPromise(promise);
     }
 
     addUser(userDetail: UserDetail): Observable<UserDetail> {

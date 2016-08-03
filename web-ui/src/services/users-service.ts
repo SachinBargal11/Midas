@@ -24,6 +24,24 @@ export class UsersService {
         this._headers.append('Content-Type', 'application/json');
     }
 
+    getUsers(): Observable<UserDetail[]> {
+        let promise: Promise<UserDetail[]> = new Promise((resolve, reject) => {
+            return this._http.post(this._url + "/User/GetAll", JSON.stringify({ "user": [{}] }), {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let users = (<Object[]>data).map((userData: any) => {
+                        return UserAdapter.parseResponse(userData);
+                    });
+                    resolve(users);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<UserDetail[]>>Observable.fromPromise(promise);
+    }
+
     addUser(userDetail: UserDetail): Observable<UserDetail> {
         let promise: Promise<UserDetail> = new Promise((resolve, reject) => {
 

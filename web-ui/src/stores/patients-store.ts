@@ -21,6 +21,9 @@ export class PatientsStore {
         this.loadInitialData();
     }
 
+
+
+
     get patients() {
         return this._patients.asObservable();
     }

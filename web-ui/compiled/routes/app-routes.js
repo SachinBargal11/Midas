@@ -1,7 +1,7 @@
-System.register(['@angular/router', '../components/pages/login', '../components/pages/signup', '../components/pages/add-user', '../components/pages/dashboard', './patient-routes', './guards/validate-active-session', './guards/validate-inactive-session', '../components/pages/change-password'], function(exports_1, context_1) {
+System.register(['@angular/router', '../components/pages/login', '../components/pages/signup', '../components/pages/dashboard', './patient-routes', './user-routes', './guards/validate-active-session', './guards/validate-inactive-session', '../components/pages/change-password'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var router_1, login_1, signup_1, add_user_1, dashboard_1, patient_routes_1, validate_active_session_1, validate_inactive_session_1, change_password_1;
+    var router_1, login_1, signup_1, dashboard_1, patient_routes_1, user_routes_1, validate_active_session_1, validate_inactive_session_1, change_password_1;
     var appRoutes, APP_ROUTER_PROVIDER;
     return {
         setters:[
@@ -14,14 +14,14 @@ System.register(['@angular/router', '../components/pages/login', '../components/
             function (signup_1_1) {
                 signup_1 = signup_1_1;
             },
-            function (add_user_1_1) {
-                add_user_1 = add_user_1_1;
-            },
             function (dashboard_1_1) {
                 dashboard_1 = dashboard_1_1;
             },
             function (patient_routes_1_1) {
                 patient_routes_1 = patient_routes_1_1;
+            },
+            function (user_routes_1_1) {
+                user_routes_1 = user_routes_1_1;
             },
             function (validate_active_session_1_1) {
                 validate_active_session_1 = validate_active_session_1_1;
@@ -58,13 +58,8 @@ System.register(['@angular/router', '../components/pages/login', '../components/
                     path: 'dashboard',
                     component: dashboard_1.DashboardComponent,
                     canActivate: [validate_active_session_1.ValidateActiveSession]
-                },
-                {
-                    path: 'users/add',
-                    component: add_user_1.AddUserComponent,
-                    canActivate: [validate_active_session_1.ValidateActiveSession]
                 }
-            ].concat(patient_routes_1.PatientsShellRoutes));
+            ].concat(user_routes_1.UsersRoutes, patient_routes_1.PatientsShellRoutes));
             exports_1("APP_ROUTER_PROVIDER", APP_ROUTER_PROVIDER = router_1.provideRouter(appRoutes));
         }
     }

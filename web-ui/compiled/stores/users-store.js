@@ -36,7 +36,27 @@ System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 
                 function UsersStore(_usersService) {
                     this._usersService = _usersService;
                     this._users = new Rx_1.BehaviorSubject(immutable_1.List([]));
+                    this.loadInitialData();
                 }
+                Object.defineProperty(UsersStore.prototype, "users", {
+                    get: function () {
+                        return this._users.asObservable();
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                UsersStore.prototype.loadInitialData = function () {
+                    var _this = this;
+                    var promise = new Promise(function (resolve, reject) {
+                        _this._usersService.getUsers().subscribe(function (users) {
+                            _this._users.next(immutable_1.List(users));
+                            resolve(users);
+                        }, function (error) {
+                            reject(error);
+                        });
+                    });
+                    return Observable_1.Observable.fromPromise(promise);
+                };
                 UsersStore.prototype.addUser = function (userDetail) {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {

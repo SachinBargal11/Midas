@@ -49,6 +49,23 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                     this._headers = new http_1.Headers();
                     this._headers.append('Content-Type', 'application/json');
                 }
+                UsersService.prototype.getUsers = function () {
+                    var _this = this;
+                    var promise = new Promise(function (resolve, reject) {
+                        return _this._http.post(_this._url + "/User/GetAll", JSON.stringify({ "user": [{}] }), {
+                            headers: _this._headers
+                        }).map(function (res) { return res.json(); })
+                            .subscribe(function (data) {
+                            var users = data.map(function (userData) {
+                                return user_adapter_1.UserAdapter.parseResponse(userData);
+                            });
+                            resolve(users);
+                        }, function (error) {
+                            reject(error);
+                        });
+                    });
+                    return Observable_1.Observable.fromPromise(promise);
+                };
                 UsersService.prototype.addUser = function (userDetail) {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {
