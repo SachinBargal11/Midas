@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router', './pages/login', './pages/signup', './pages/dashboard', './pages/patients/patients-shell', './elements/app-header', './elements/main-nav', '../stores/session-store', './elements/notification', '../stores/notifications-store', './pages/change-password', './pages/add-user'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', './pages/login', './pages/signup', './pages/dashboard', './pages/patients/patients-shell', './elements/app-header', './elements/main-nav', '../stores/session-store', './elements/notification', '../stores/notifications-store', './pages/change-password', './pages/users/add-user', './pages/users/users-list'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router', './pages/login', './pages/s
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, login_1, signup_1, dashboard_1, patients_shell_1, app_header_1, main_nav_1, session_store_1, notification_1, notifications_store_1, change_password_1, add_user_1;
+    var core_1, router_1, login_1, signup_1, dashboard_1, patients_shell_1, app_header_1, main_nav_1, session_store_1, notification_1, notifications_store_1, change_password_1, add_user_1, users_list_1;
     var AppRoot;
     return {
         setters:[
@@ -52,6 +52,9 @@ System.register(['@angular/core', '@angular/router', './pages/login', './pages/s
             },
             function (add_user_1_1) {
                 add_user_1 = add_user_1_1;
+            },
+            function (users_list_1_1) {
+                users_list_1 = users_list_1_1;
             }],
         execute: function() {
             AppRoot = (function () {
@@ -81,6 +84,7 @@ System.register(['@angular/core', '@angular/router', './pages/login', './pages/s
                             signup_1.SignupComponent,
                             change_password_1.ChangePasswordComponent,
                             add_user_1.AddUserComponent,
+                            users_list_1.UsersListComponent,
                             dashboard_1.DashboardComponent,
                             patients_shell_1.PatientsShellComponent
                         ]

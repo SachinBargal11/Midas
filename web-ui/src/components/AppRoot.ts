@@ -11,7 +11,8 @@ import {SessionStore} from '../stores/session-store';
 import {NotificationComponent} from './elements/notification';
 import {NotificationsStore} from '../stores/notifications-store';
 import {ChangePasswordComponent} from './pages/change-password';
-import {AddUserComponent} from './pages/add-user';
+import {AddUserComponent} from './pages/users/add-user';
+import {UsersListComponent} from './pages/users/users-list';
 
 @Component({
     selector: 'app-root',
@@ -26,6 +27,7 @@ import {AddUserComponent} from './pages/add-user';
                   SignupComponent, 
                   ChangePasswordComponent, 
                   AddUserComponent, 
+                  UsersListComponent,
                   DashboardComponent, 
                   PatientsShellComponent
      ]
