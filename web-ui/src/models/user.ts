@@ -9,7 +9,7 @@ const UserRecord = Record({
     id: 0,
     name: "",
     userType: UserType.Owner,
-    accountID: 1,
+    accountId: 1,
     userName: "",
     firstName: "",
     middleName: "",
@@ -21,8 +21,8 @@ const UserRecord = Record({
     dateOfBirth: moment(), //Moment
     password: "",
     isDeleted: 0,
-    createByUserID: 0,
-    updateByUserID: 0,
+    createByUserId: 0,
+    updateByUserId: 0,
     createDate: null, //Moment
     updateDate: null //Moment
 });
@@ -32,7 +32,7 @@ export class User extends UserRecord {
     id: number;
     name: string;
     userType: UserType;
-    accountID: number;
+    accountId: number;
     userName: string;
     firstName: string;
     middleName: string;
@@ -44,8 +44,8 @@ export class User extends UserRecord {
     dateOfBirth: moment.MomentStatic;
     password: string;
     isDeleted: boolean;
-    createByUserID: number;
-    updateByUserID: number;
+    createByUserId: number;
+    updateByUserId: number;
     createDate: moment.MomentStatic;
     updateDate: moment.MomentStatic;
 
@@ -54,9 +54,12 @@ export class User extends UserRecord {
     }
 
 
-    public get displayName(): string {
-        return this.firstName + " " + this.lastName;
-    }
+    // public get displayName(): string {
+    //     return this.firstName + " " + this.lastName;
+    // }
 
+    // public get account_id(): number {
+    //     return this.accountId;
+    // }
 
 }

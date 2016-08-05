@@ -11,8 +11,8 @@ const AddressRecord = Record({
     zipCode: "",
     country: "",
     isDeleted: 0,
-    createByUserID: 0,
-    updateByUserID: 0,
+    createByUserId: 0,
+    updateByUserId: 0,
     createDate: null, //Moment
     updateDate: null //Moment
 });
@@ -28,8 +28,8 @@ export class Address extends AddressRecord {
     zipCode: string;
     country: string;
     isDeleted: boolean;
-    createByUserID: number;
-    updateByUserID: number;
+    createByUserId: number;
+    updateByUserId: number;
     createDate: moment.MomentStatic;
     updateDate: moment.MomentStatic;
 

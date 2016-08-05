@@ -7,8 +7,8 @@ const AccountRecord = Record({
     name: "",
     status: AccountStatus.active,
     isDeleted: 0,
-    createByUserID: 0,
-    updateByUserID: 0,
+    createByUserId: 0,
+    updateByUserId: 0,
     createDate: null,
     updateDate: null
 });
@@ -19,8 +19,8 @@ export class Account extends AccountRecord {
     name: string;
     status: AccountStatus;
     isDeleted: boolean;
-    createByUserID: number;
-    updateByUserID: number;
+    createByUserId: number;
+    updateByUserId: number;
     createDate: moment.MomentStatic;
     updateDate: moment.MomentStatic;
 

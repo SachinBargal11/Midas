@@ -24,13 +24,13 @@ export class UsersService {
         this._headers.append('Content-Type', 'application/json');
     }
 
-    getUsers(): Observable<UserDetail[]> {
+    getUsers(accountId: number): Observable<UserDetail[]> {
         let promise: Promise<UserDetail[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + "/User/GetAll", JSON.stringify({ "user": [{}] }), {
+            return this._http.post(this._url + "/Account/Get", JSON.stringify({ "id": accountId }), {
                 headers: this._headers
             }).map(res => res.json())
-                .subscribe((data: Array<Object>) => {
-                    let users = (<Object[]>data).map((userData: any) => {
+                .subscribe((data: any) => {
+                    let users = (<Object[]>data.users).map((userData: any) => {
                         return UserAdapter.parseResponse(userData);
                     });
                     resolve(users);

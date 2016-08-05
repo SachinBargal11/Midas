@@ -33,6 +33,20 @@ System.register(['immutable'], function(exports_1, context_1) {
                     enumerable: true,
                     configurable: true
                 });
+                Object.defineProperty(Session.prototype, "displayName", {
+                    get: function () {
+                        return this._user.firstName + " " + this._user.lastName;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(Session.prototype, "account_id", {
+                    get: function () {
+                        return this._user.accountId;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
                 return Session;
             }(SessionRecord));
             exports_1("Session", Session);

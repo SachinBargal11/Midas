@@ -47,7 +47,7 @@ export class AppHeaderComponent implements OnInit {
 
     ngOnInit() {
         if (this._sessionStore.isAuthenticated()) {
-            this.user_name = this._sessionStore.session.user.displayName;
+            this.user_name = this._sessionStore.session.displayName;
         } else {
             this._router.navigate(['/login']);
         }

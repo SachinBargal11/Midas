@@ -49,14 +49,14 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                     this._headers = new http_1.Headers();
                     this._headers.append('Content-Type', 'application/json');
                 }
-                UsersService.prototype.getUsers = function () {
+                UsersService.prototype.getUsers = function (accountId) {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {
-                        return _this._http.post(_this._url + "/User/GetAll", JSON.stringify({ "user": [{}] }), {
+                        return _this._http.post(_this._url + "/Account/Get", JSON.stringify({ "id": accountId }), {
                             headers: _this._headers
                         }).map(function (res) { return res.json(); })
                             .subscribe(function (data) {
-                            var users = data.map(function (userData) {
+                            var users = data.users.map(function (userData) {
                                 return user_adapter_1.UserAdapter.parseResponse(userData);
                             });
                             resolve(users);

@@ -23,8 +23,8 @@ System.register(['immutable'], function(exports_1, context_1) {
                 workPhone: "",
                 faxNo: "",
                 isDeleted: 0,
-                createByUserID: 0,
-                updateByUserID: 0,
+                createByUserId: 0,
+                updateByUserId: 0,
                 createDate: null,
                 updateDate: null //Moment
             });

@@ -22,8 +22,8 @@ System.register(['immutable', './enums/AccountStatus'], function(exports_1, cont
                 name: "",
                 status: AccountStatus_1.AccountStatus.active,
                 isDeleted: 0,
-                createByUserID: 0,
-                updateByUserID: 0,
+                createByUserId: 0,
+                updateByUserId: 0,
                 createDate: null,
                 updateDate: null
             });

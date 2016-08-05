@@ -27,7 +27,7 @@ System.register(['immutable', 'moment', './enums/UserType', './enums/Gender'], f
                 id: 0,
                 name: "",
                 userType: UserType_1.UserType.Owner,
-                accountID: 1,
+                accountId: 1,
                 userName: "",
                 firstName: "",
                 middleName: "",
@@ -39,8 +39,8 @@ System.register(['immutable', 'moment', './enums/UserType', './enums/Gender'], f
                 dateOfBirth: moment_1.default(),
                 password: "",
                 isDeleted: 0,
-                createByUserID: 0,
-                updateByUserID: 0,
+                createByUserId: 0,
+                updateByUserId: 0,
                 createDate: null,
                 updateDate: null //Moment
             });
@@ -49,13 +49,6 @@ System.register(['immutable', 'moment', './enums/UserType', './enums/Gender'], f
                 function User(props) {
                     _super.call(this, props);
                 }
-                Object.defineProperty(User.prototype, "displayName", {
-                    get: function () {
-                        return this.firstName + " " + this.lastName;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
                 return User;
             }(UserRecord));
             exports_1("User", User);

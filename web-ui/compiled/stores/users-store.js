@@ -1,4 +1,4 @@
-System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 'rxjs/add/operator/map', '../services/users-service', 'immutable', "rxjs/Rx"], function(exports_1, context_1) {
+System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 'rxjs/add/operator/map', '../services/users-service', './session-store', 'immutable', "rxjs/Rx"], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, Observable_1, users_service_1, immutable_1, Rx_1;
+    var core_1, Observable_1, users_service_1, session_store_1, immutable_1, Rx_1;
     var UsersStore;
     return {
         setters:[
@@ -25,6 +25,9 @@ System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 
             function (users_service_1_1) {
                 users_service_1 = users_service_1_1;
             },
+            function (session_store_1_1) {
+                session_store_1 = session_store_1_1;
+            },
             function (immutable_1_1) {
                 immutable_1 = immutable_1_1;
             },
@@ -33,8 +36,9 @@ System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 
             }],
         execute: function() {
             UsersStore = (function () {
-                function UsersStore(_usersService) {
+                function UsersStore(_usersService, _sessionStore) {
                     this._usersService = _usersService;
+                    this._sessionStore = _sessionStore;
                     this._users = new Rx_1.BehaviorSubject(immutable_1.List([]));
                     this.loadInitialData();
                 }
@@ -47,8 +51,9 @@ System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 
                 });
                 UsersStore.prototype.loadInitialData = function () {
                     var _this = this;
+                    var accountId = this._sessionStore.session.account_id;
                     var promise = new Promise(function (resolve, reject) {
-                        _this._usersService.getUsers().subscribe(function (users) {
+                        _this._usersService.getUsers(accountId).subscribe(function (users) {
                             _this._users.next(immutable_1.List(users));
                             resolve(users);
                         }, function (error) {
@@ -71,7 +76,7 @@ System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 
                 };
                 UsersStore = __decorate([
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [users_service_1.UsersService])
+                    __metadata('design:paramtypes', [users_service_1.UsersService, session_store_1.SessionStore])
                 ], UsersStore);
                 return UsersStore;
             }());

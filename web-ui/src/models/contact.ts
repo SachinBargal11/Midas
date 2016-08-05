@@ -10,8 +10,8 @@ const ContactRecord = Record({
     workPhone: "",
     faxNo: "",
     isDeleted: 0,
-    createByUserID: 0,
-    updateByUserID: 0,
+    createByUserId: 0,
+    updateByUserId: 0,
     createDate: null, //Moment
     updateDate: null //Moment
 });
@@ -26,8 +26,8 @@ export class Contact extends ContactRecord {
     workPhone: string;
     faxNo: string;
     isDeleted: boolean;
-    createByUserID: number;
-    updateByUserID: number;
+    createByUserId: number;
+    updateByUserId: number;
     createDate: moment.MomentStatic;
     updateDate: moment.MomentStatic;
 
