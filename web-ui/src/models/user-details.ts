@@ -7,7 +7,7 @@ import {Account} from './account';
 
 const UserDetailRecord = Record({
 
-    // account: null,
+    account: null,
     user: null, //Address
     address: null, //Address
     contactInfo: null, //Contact
@@ -16,7 +16,7 @@ const UserDetailRecord = Record({
 
 export class UserDetail extends UserDetailRecord {
 
-    // account: Account;
+    account: Account;
     user: User;
     address: Address;
     contact: Contact;
