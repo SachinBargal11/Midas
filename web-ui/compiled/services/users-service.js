@@ -52,9 +52,7 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                 UsersService.prototype.getUsers = function (accountId) {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {
-                        return _this._http.post(_this._url + "/Account/Get", JSON.stringify({ "id": 8 }), {
-                            headers: _this._headers
-                        }).map(function (res) { return res.json(); })
+                        return _this._http.get(_this._url + "/Account/Get/" + accountId).map(function (res) { return res.json(); })
                             .subscribe(function (data) {
                             var users = data.users.map(function (userData) {
                                 return user_adapter_1.UserAdapter.parseResponse(userData);
@@ -79,6 +77,7 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                         userDetailRequestData.user = underscore_1.default.omit(userDetailRequestData.user, 'gender', 'status', 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
                         userDetailRequestData.address = underscore_1.default.omit(userDetailRequestData.address, 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
                         userDetailRequestData.contactInfo = underscore_1.default.omit(userDetailRequestData.contactInfo, 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
+                        userDetailRequestData.account = underscore_1.default.omit(userDetailRequestData.account, 'name', 'staus', 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
                         return _this._http.post(_this._url + '/User/Add', JSON.stringify(userDetailRequestData), {
                             headers: _this._headers
                         })

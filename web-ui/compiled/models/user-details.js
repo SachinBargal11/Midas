@@ -15,6 +15,7 @@ System.register(['immutable'], function(exports_1, context_1) {
             }],
         execute: function() {
             UserDetailRecord = immutable_1.Record({
+                // account: null,
                 user: null,
                 address: null,
                 contactInfo: null,

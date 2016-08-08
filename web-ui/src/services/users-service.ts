@@ -26,9 +26,7 @@ export class UsersService {
 
     getUsers(accountId: number): Observable<UserDetail[]> {
         let promise: Promise<UserDetail[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + "/Account/Get", JSON.stringify({ "id": 8 }), {
-                headers: this._headers
-            }).map(res => res.json())
+            return this._http.get(this._url + "/Account/Get/" + accountId).map(res => res.json())
                 .subscribe((data: any) => {
                     let users = (<Object[]>data.users).map((userData: any) => {
                         return UserAdapter.parseResponse(userData);
@@ -57,6 +55,7 @@ export class UsersService {
             userDetailRequestData.user = _.omit(userDetailRequestData.user, 'gender', 'status', 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
             userDetailRequestData.address = _.omit(userDetailRequestData.address, 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
             userDetailRequestData.contactInfo = _.omit(userDetailRequestData.contactInfo, 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
+            userDetailRequestData.account = _.omit(userDetailRequestData.account, 'name', 'staus', 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
 
             return this._http.post(this._url + '/User/Add', JSON.stringify(userDetailRequestData), {
                 headers: this._headers

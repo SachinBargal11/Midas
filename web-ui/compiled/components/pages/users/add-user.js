@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/forms', '@angular/router', '../../../utils/AppValidators', '../../elements/loader', '../../../stores/users-store', '../../../models/user-details', '../../../models/user', '../../../services/users-service', '../../../models/contact', '../../../models/address', '../../../stores/session-store', '../../../stores/notifications-store', '../../../models/notification', 'moment', 'primeng/primeng', '../../../stores/states-store', '../../../services/state-service', '@angular/http', '../../../pipes/limit-array-pipe'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/forms', '@angular/router', '../../../utils/AppValidators', '../../elements/loader', '../../../stores/users-store', '../../../models/user-details', '../../../models/user', '../../../services/users-service', '../../../models/account', '../../../models/contact', '../../../models/address', '../../../stores/session-store', '../../../stores/notifications-store', '../../../models/notification', 'moment', 'primeng/primeng', '../../../stores/states-store', '../../../services/state-service', '@angular/http', '../../../pipes/limit-array-pipe'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, forms_1, router_1, AppValidators_1, loader_1, users_store_1, user_details_1, user_1, users_service_1, contact_1, address_1, session_store_1, notifications_store_1, notification_1, moment_1, primeng_1, states_store_1, state_service_1, http_1, limit_array_pipe_1;
+    var core_1, forms_1, router_1, AppValidators_1, loader_1, users_store_1, user_details_1, user_1, users_service_1, account_1, contact_1, address_1, session_store_1, notifications_store_1, notification_1, moment_1, primeng_1, states_store_1, state_service_1, http_1, limit_array_pipe_1;
     var AddUserComponent;
     return {
         setters:[
@@ -40,6 +40,9 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
             },
             function (users_service_1_1) {
                 users_service_1 = users_service_1_1;
+            },
+            function (account_1_1) {
+                account_1 = account_1_1;
             },
             function (contact_1_1) {
                 contact_1 = contact_1_1;
@@ -128,7 +131,11 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
                     var _this = this;
                     var userFormValues = this.userform.value;
                     var userDetail = new user_details_1.UserDetail({
+                        account: new account_1.Account({
+                            id: this._sessionStore.session.user.accountId
+                        }),
                         user: new user_1.User({
+                            accountId: 176,
                             firstName: userFormValues.userInfo.firstname,
                             middleName: userFormValues.userInfo.middlename,
                             lastName: userFormValues.userInfo.lastname,

@@ -9,7 +9,7 @@ const UserRecord = Record({
     id: 0,
     name: "",
     userType: UserType.Owner,
-    accountId: 1,
+    accountId: "",
     userName: "",
     firstName: "",
     middleName: "",

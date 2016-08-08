@@ -7,6 +7,8 @@ import {UsersStore} from '../../../stores/users-store';
 import {UserDetail} from '../../../models/user-details';
 import {User} from '../../../models/user';
 import {UsersService} from '../../../services/users-service';
+import {AccountDetail} from '../../../models/account-details';
+import {Account} from '../../../models/account';
 import {Contact} from '../../../models/contact';
 import {Address} from '../../../models/address';
 import $ from 'jquery';
@@ -90,7 +92,11 @@ export class AddUserComponent implements OnInit {
     saveUser() {
         let userFormValues = this.userform.value;
         let userDetail = new UserDetail({
+            account: new Account({
+               id: this._sessionStore.session.user.accountId
+            }),
             user: new User({
+                accountId: 176,
                 firstName: userFormValues.userInfo.firstname,
                 middleName: userFormValues.userInfo.middlename,
                 lastName: userFormValues.userInfo.lastname,

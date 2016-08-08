@@ -27,7 +27,7 @@ System.register(['immutable', 'moment', './enums/UserType', './enums/Gender'], f
                 id: 0,
                 name: "",
                 userType: UserType_1.UserType.Owner,
-                accountId: 1,
+                accountId: "",
                 userName: "",
                 firstName: "",
                 middleName: "",
