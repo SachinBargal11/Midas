@@ -231,8 +231,10 @@
                                 <label class="form-label"> State
                                         </label>
                                 <div class="form-group" [class.error]="userformControls.address.controls.state.touched && !userformControls.address.controls.state.valid">
-                                    <input formControlName="state" type="text" class="form-control" [class.error]="!userformControls.address.controls.state.valid" placeholder=""
-                                    />
+                                      <input formControlName="state" type="text" list="states" name="mystate" class="form-control"/>
+                                        <datalist id="states">
+                                        	<option *ngFor="let state of states">{{ state }}</option>
+                                        </datalist>
                                     <div class='error-list' *ngIf="userformControls.address.controls.state.touched && !userformControls.address.controls.state.valid">
                                         <ul>
                                             <li *ngIf="userformControls.address.controls.state.hasError('required')">State is required.</li>

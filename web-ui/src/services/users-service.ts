@@ -26,7 +26,7 @@ export class UsersService {
 
     getUsers(accountId: number): Observable<UserDetail[]> {
         let promise: Promise<UserDetail[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + "/Account/Get", JSON.stringify({ "id": accountId }), {
+            return this._http.post(this._url + "/Account/Get", JSON.stringify({ "id": 8 }), {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -37,7 +37,6 @@ export class UsersService {
                 }, (error) => {
                     reject(error);
                 });
-
         });
         return <Observable<UserDetail[]>>Observable.fromPromise(promise);
     }
@@ -73,7 +72,7 @@ export class UsersService {
         });
         return <Observable<UserDetail>>Observable.fromPromise(promise);
 
-    }
+    }  
 
 }
 
