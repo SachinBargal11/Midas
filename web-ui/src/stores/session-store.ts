@@ -1,12 +1,15 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Output, EventEmitter} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {Observer} from 'rxjs/Observer';
+import {List} from 'immutable';
 import {AuthenticationService} from '../services/authentication-service';
 import {User} from '../models/user';
 import {Session} from '../models/session';
 
 @Injectable()
 export class SessionStore {
+
+    @Output() userLogoutEvent: EventEmitter<{}> = new EventEmitter(true);
 
     private _session: Session = new Session();
 
@@ -71,5 +74,6 @@ export class SessionStore {
 
     private _resetSession() {
         this.session.user = null;
+        this.userLogoutEvent.emit(null);
     }
 }

@@ -1,4 +1,4 @@
-System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 'rxjs/add/operator/map', '../services/patients-service', 'immutable', "rxjs/Rx"], function(exports_1, context_1) {
+System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 'rxjs/add/operator/map', '../services/patients-service', 'immutable', "rxjs/Rx", './session-store'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, Observable_1, patients_service_1, immutable_1, Rx_1;
+    var core_1, Observable_1, patients_service_1, immutable_1, Rx_1, session_store_1;
     var PatientsStore;
     return {
         setters:[
@@ -30,15 +30,27 @@ System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 
             },
             function (Rx_1_1) {
                 Rx_1 = Rx_1_1;
+            },
+            function (session_store_1_1) {
+                session_store_1 = session_store_1_1;
             }],
         execute: function() {
             PatientsStore = (function () {
-                function PatientsStore(_patientsService) {
+                function PatientsStore(_patientsService, _sessionStore) {
+                    var _this = this;
                     this._patientsService = _patientsService;
+                    this._sessionStore = _sessionStore;
                     this._patients = new Rx_1.BehaviorSubject(immutable_1.List([]));
                     this._selectedPatients = new Rx_1.BehaviorSubject(immutable_1.List([]));
                     this.loadInitialData();
+                    this._sessionStore.userLogoutEvent.subscribe(function () {
+                        _this.resetStore();
+                    });
                 }
+                PatientsStore.prototype.resetStore = function () {
+                    this._patients.next(this._patients.getValue().clear());
+                    this._selectedPatients.next(this._selectedPatients.getValue().clear());
+                };
                 Object.defineProperty(PatientsStore.prototype, "patients", {
                     get: function () {
                         return this._patients.asObservable();
@@ -141,7 +153,7 @@ System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 
                 };
                 PatientsStore = __decorate([
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [patients_service_1.PatientsService])
+                    __metadata('design:paramtypes', [patients_service_1.PatientsService, session_store_1.SessionStore])
                 ], PatientsStore);
                 return PatientsStore;
             }());

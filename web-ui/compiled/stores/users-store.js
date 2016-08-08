@@ -37,11 +37,18 @@ System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 
         execute: function() {
             UsersStore = (function () {
                 function UsersStore(_usersService, _sessionStore) {
+                    var _this = this;
                     this._usersService = _usersService;
                     this._sessionStore = _sessionStore;
                     this._users = new Rx_1.BehaviorSubject(immutable_1.List([]));
                     this.loadInitialData();
+                    this._sessionStore.userLogoutEvent.subscribe(function () {
+                        _this.resetStore();
+                    });
                 }
+                UsersStore.prototype.resetStore = function () {
+                    this._users.next(this._users.getValue().clear());
+                };
                 Object.defineProperty(UsersStore.prototype, "users", {
                     get: function () {
                         return this._users.asObservable();

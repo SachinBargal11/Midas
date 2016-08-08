@@ -19,9 +19,16 @@ export class StatesStore {
     private _states: BehaviorSubject<List<States>> = new BehaviorSubject(List([]));
 
     constructor(
-        private _statesService: StateService
+        private _statesService: StateService,
+        private _sessionStore: SessionStore
     ) {
-        
+        this._sessionStore.userLogoutEvent.subscribe(() => {
+            this.resetStore()
+        });
+    }
+
+    resetStore() {
+        this._states.next(this._states.getValue().clear());
     }
 
     get states() {

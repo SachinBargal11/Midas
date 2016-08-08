@@ -56,7 +56,6 @@ export class AppHeaderComponent implements OnInit {
     logout() {
         this._sessionStore.logout();
         this._router.navigate(['/login']);
-        this._notificationsStore.closeNotification();
     }
     
     changePassword(){

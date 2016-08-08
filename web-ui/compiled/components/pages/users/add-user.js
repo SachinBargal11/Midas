@@ -132,10 +132,10 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
                     var userFormValues = this.userform.value;
                     var userDetail = new user_details_1.UserDetail({
                         account: new account_1.Account({
-                            id: this._sessionStore.session.user.accountId
+                            //    id: 176 
+                            id: this._sessionStore.session.account_id
                         }),
                         user: new user_1.User({
-                            accountId: 176,
                             firstName: userFormValues.userInfo.firstname,
                             middleName: userFormValues.userInfo.middlename,
                             lastName: userFormValues.userInfo.lastname,

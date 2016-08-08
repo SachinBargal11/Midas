@@ -7,28 +7,23 @@ System.register(['immutable'], function(exports_1, context_1) {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
     var immutable_1;
-    var UserDetailRecord, UserDetail;
+    var StatesRecord, States;
     return {
         setters:[
             function (immutable_1_1) {
                 immutable_1 = immutable_1_1;
             }],
         execute: function() {
-            UserDetailRecord = immutable_1.Record({
-                account: null,
-                user: null,
-                address: null,
-                contactInfo: null,
-            });
-            UserDetail = (function (_super) {
-                __extends(UserDetail, _super);
-                function UserDetail(props) {
+            StatesRecord = immutable_1.Record({});
+            States = (function (_super) {
+                __extends(States, _super);
+                function States(props) {
                     _super.call(this, props);
                 }
-                return UserDetail;
-            }(UserDetailRecord));
-            exports_1("UserDetail", UserDetail);
+                return States;
+            }(StatesRecord));
+            exports_1("States", States);
         }
     }
 });
-//# sourceMappingURL=user-details.js.map
+//# sourceMappingURL=states.js.map

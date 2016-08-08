@@ -1,4 +1,4 @@
-System.register(['@angular/core', 'immutable', "rxjs/Rx", 'rxjs/add/operator/share', 'rxjs/add/operator/map'], function(exports_1, context_1) {
+System.register(['@angular/core', 'immutable', "rxjs/Rx", 'rxjs/add/operator/share', 'rxjs/add/operator/map', './session-store'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', 'immutable', "rxjs/Rx", 'rxjs/add/operator/sha
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, immutable_1, Rx_1;
+    var core_1, immutable_1, Rx_1, session_store_1;
     var NotificationsStore;
     return {
         setters:[
@@ -24,15 +24,29 @@ System.register(['@angular/core', 'immutable', "rxjs/Rx", 'rxjs/add/operator/sha
                 Rx_1 = Rx_1_1;
             },
             function (_1) {},
-            function (_2) {}],
+            function (_2) {},
+            function (session_store_1_1) {
+                session_store_1 = session_store_1_1;
+            }],
         execute: function() {
             NotificationsStore = (function () {
-                function NotificationsStore() {
+                function NotificationsStore(_sessionStore) {
+                    var _this = this;
+                    this._sessionStore = _sessionStore;
                     this._notifications = new Rx_1.BehaviorSubject(immutable_1.List([]));
                     this.recentlyAdded = false;
                     this.isOpen = false;
                     this.recentlyAddedCount = 0;
+                    this._sessionStore.userLogoutEvent.subscribe(function () {
+                        _this.resetStore();
+                    });
                 }
+                NotificationsStore.prototype.resetStore = function () {
+                    this._notifications.next(this._notifications.getValue().clear());
+                    this.recentlyAdded = false;
+                    this.isOpen = false;
+                    this.recentlyAddedCount = 0;
+                };
                 Object.defineProperty(NotificationsStore.prototype, "notifications", {
                     get: function () {
                         return this._notifications.asObservable();
@@ -69,11 +83,6 @@ System.register(['@angular/core', 'immutable', "rxjs/Rx", 'rxjs/add/operator/sha
                     }
                     this.recentlyAdded = false;
                 };
-                NotificationsStore.prototype.closeNotification = function () {
-                    if (this.isOpen) {
-                        this.isOpen = !this.isOpen;
-                    }
-                };
                 NotificationsStore.prototype.readAllNotifications = function () {
                     var notifications = this._notifications.getValue();
                     notifications = notifications.toSeq().map(function (item) {
@@ -83,7 +92,7 @@ System.register(['@angular/core', 'immutable', "rxjs/Rx", 'rxjs/add/operator/sha
                 };
                 NotificationsStore = __decorate([
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [session_store_1.SessionStore])
                 ], NotificationsStore);
                 return NotificationsStore;
             }());

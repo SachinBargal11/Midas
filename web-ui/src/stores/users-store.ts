@@ -23,7 +23,15 @@ export class UsersStore {
         private _sessionStore: SessionStore
     ) {
         this.loadInitialData();
+        this._sessionStore.userLogoutEvent.subscribe(() => {
+            this.resetStore()
+        });
     }
+
+    resetStore() {
+        this._users.next(this._users.getValue().clear());
+    }
+
 
     get users() {
         return this._users.asObservable();
