@@ -22,6 +22,9 @@ System.register(['../../models/user', '../../models/user-details', 'underscore']
                     var user = null;
                     if (userData) {
                         var tempUser = underscore_1.default.omit(userData, 'address', 'account', 'contactInfo', 'updateDate');
+                        if (userData.account) {
+                            tempUser.accountId = userData.account.id;
+                        }
                         user = new user_1.User(tempUser);
                     }
                     return user;

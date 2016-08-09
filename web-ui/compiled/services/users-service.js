@@ -52,7 +52,7 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                 UsersService.prototype.getUsers = function (accountId) {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {
-                        return _this._http.get(_this._url + "/Account/Get/" + 176).map(function (res) { return res.json(); })
+                        return _this._http.get(_this._url + "/Account/Get/" + accountId).map(function (res) { return res.json(); })
                             .subscribe(function (data) {
                             var users = data.users.map(function (userData) {
                                 return user_adapter_1.UserAdapter.parseResponse(userData);

@@ -26,7 +26,7 @@ export class UsersService {
 
     getUsers(accountId: number): Observable<UserDetail[]> {
         let promise: Promise<UserDetail[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + "/Account/Get/" + 176).map(res => res.json())
+            return this._http.get(this._url + "/Account/Get/" + accountId).map(res => res.json())
                 .subscribe((data: any) => {
                     let users = (<Object[]>data.users).map((userData: any) => {
                         return UserAdapter.parseResponse(userData);

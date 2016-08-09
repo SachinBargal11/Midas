@@ -10,6 +10,9 @@ export class UserAdapter {
         let user = null;
         if (userData) {
             let tempUser = _.omit(userData, 'address', 'account', 'contactInfo', 'updateDate');
+            if (userData.account) {
+                tempUser.accountId = userData.account.id;
+            }
             user = new User(tempUser);
         }
         return user;
