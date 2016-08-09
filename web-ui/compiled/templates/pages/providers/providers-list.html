@@ -1,0 +1,19 @@
+<a class="pull-right m-b-md btn btn-primary" [routerLink]="['/providers/add']">Add Provider</a>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>NPI</th>
+            <!--<th>FederalTaxId</th>
+            <th>Prefix</th>-->
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let provider of _providersStore.providers | async | reverse">
+            <td>{{ provider.name }}</td>
+            <td>{{ provider.npi }}</td>
+            <!--<td>{{ provider.federalTaxID }}</td>
+            <td>{{ provider.prefix }}</td>-->
+        </tr>
+    </tbody>
+</table>
