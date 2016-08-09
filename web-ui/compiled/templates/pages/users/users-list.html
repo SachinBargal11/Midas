@@ -7,7 +7,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let user of _usersStore.users | async | reverse | limit">
+        <tr *ngFor="let user of _usersStore.users | async | reverse">
             <td>{{ user.user.firstName }}</td>
             <td>{{ user.user.lastName }}</td>
         </tr>

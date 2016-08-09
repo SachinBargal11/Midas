@@ -1,7 +1,7 @@
-System.register(['@angular/router', '../components/pages/login', '../components/pages/signup', '../components/pages/dashboard', './patient-routes', './user-routes', './guards/validate-active-session', './guards/validate-inactive-session', '../components/pages/change-password'], function(exports_1, context_1) {
+System.register(['@angular/router', '../components/pages/login', '../components/pages/signup', '../components/pages/dashboard', './patient-routes', './user-routes', './guards/validate-active-session', './guards/validate-inactive-session', '../components/pages/change-password', '../components/pages/providers/add-provider'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var router_1, login_1, signup_1, dashboard_1, patient_routes_1, user_routes_1, validate_active_session_1, validate_inactive_session_1, change_password_1;
+    var router_1, login_1, signup_1, dashboard_1, patient_routes_1, user_routes_1, validate_active_session_1, validate_inactive_session_1, change_password_1, add_provider_1;
     var appRoutes, APP_ROUTER_PROVIDER;
     return {
         setters:[
@@ -31,6 +31,9 @@ System.register(['@angular/router', '../components/pages/login', '../components/
             },
             function (change_password_1_1) {
                 change_password_1 = change_password_1_1;
+            },
+            function (add_provider_1_1) {
+                add_provider_1 = add_provider_1_1;
             }],
         execute: function() {
             exports_1("appRoutes", appRoutes = [
@@ -57,6 +60,11 @@ System.register(['@angular/router', '../components/pages/login', '../components/
                 {
                     path: 'dashboard',
                     component: dashboard_1.DashboardComponent,
+                    canActivate: [validate_active_session_1.ValidateActiveSession]
+                },
+                {
+                    path: 'add-provider',
+                    component: add_provider_1.AddProviderComponent,
                     canActivate: [validate_active_session_1.ValidateActiveSession]
                 }
             ].concat(user_routes_1.UsersRoutes, patient_routes_1.PatientsShellRoutes));

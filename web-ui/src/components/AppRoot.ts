@@ -13,6 +13,7 @@ import {NotificationsStore} from '../stores/notifications-store';
 import {ChangePasswordComponent} from './pages/change-password';
 import {AddUserComponent} from './pages/users/add-user';
 import {UsersListComponent} from './pages/users/users-list';
+import {AddProviderComponent} from './pages/providers/add-provider';
 import {StatesStore} from '../stores/states-store';
 import {StateService} from '../services/state-service';
 
@@ -31,7 +32,8 @@ import {StateService} from '../services/state-service';
                   ChangePasswordComponent, 
                   AddUserComponent, 
                   UsersListComponent,
-                  DashboardComponent, 
+                  DashboardComponent,
+                  AddProviderComponent, 
                   PatientsShellComponent
      ]
 })

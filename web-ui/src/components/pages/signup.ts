@@ -10,6 +10,8 @@ import {User} from '../../models/user';
 import {Contact} from '../../models/contact';
 import {Address} from '../../models/address';
 import {Account} from '../../models/account';
+import {StatesStore} from '../../stores/states-store';
+import {StateService} from '../../services/state-service';
 import $ from 'jquery';
 import {SessionStore} from '../../stores/session-store';
 import {NotificationsStore} from '../../stores/notifications-store';
@@ -31,11 +33,11 @@ import {Calendar, InputMask, RadioButton, SelectItem} from 'primeng/primeng';
         InputMask,
         RadioButton,
         SimpleNotificationsComponent],
-    providers: [NotificationsService]
+    providers: [NotificationsService, StateService, StatesStore]
 })
 
 export class SignupComponent implements OnInit {
-
+   states: any[];
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -54,6 +56,8 @@ export class SignupComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _sessionStore: SessionStore,
         private _authenticationService: AuthenticationService,
+        private _stateService: StateService,
+        private _statesStore: StatesStore,
         private _elRef: ElementRef
     ) {
         this.signupform = this.fb.group({
@@ -92,7 +96,8 @@ export class SignupComponent implements OnInit {
     }
 
     ngOnInit() {
-
+                    this._stateService.getStates()
+                        .subscribe(states => this.states = states);
     }
 
 

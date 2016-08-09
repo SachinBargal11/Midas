@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-bootstrap', '../../utils/AppValidators', '../elements/loader', '../../services/authentication-service', '../../models/account-details', '../../models/user', '../../models/contact', '../../models/address', '../../models/account', '../../stores/session-store', '../../stores/notifications-store', 'angular2-notifications', 'primeng/primeng'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-bootstrap', '../../utils/AppValidators', '../elements/loader', '../../services/authentication-service', '../../models/account-details', '../../models/user', '../../models/contact', '../../models/address', '../../models/account', '../../stores/states-store', '../../services/state-service', '../../stores/session-store', '../../stores/notifications-store', 'angular2-notifications', 'primeng/primeng'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, forms_1, router_1, ng2_bootstrap_1, AppValidators_1, loader_1, authentication_service_1, account_details_1, user_1, contact_1, address_1, account_1, session_store_1, notifications_store_1, angular2_notifications_1, primeng_1;
+    var core_1, forms_1, router_1, ng2_bootstrap_1, AppValidators_1, loader_1, authentication_service_1, account_details_1, user_1, contact_1, address_1, account_1, states_store_1, state_service_1, session_store_1, notifications_store_1, angular2_notifications_1, primeng_1;
     var SignupComponent;
     return {
         setters:[
@@ -50,6 +50,12 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
             function (account_1_1) {
                 account_1 = account_1_1;
             },
+            function (states_store_1_1) {
+                states_store_1 = states_store_1_1;
+            },
+            function (state_service_1_1) {
+                state_service_1 = state_service_1_1;
+            },
             function (session_store_1_1) {
                 session_store_1 = session_store_1_1;
             },
@@ -64,13 +70,15 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
             }],
         execute: function() {
             SignupComponent = (function () {
-                function SignupComponent(fb, _router, _notificationsStore, _notificationsService, _sessionStore, _authenticationService, _elRef) {
+                function SignupComponent(fb, _router, _notificationsStore, _notificationsService, _sessionStore, _authenticationService, _stateService, _statesStore, _elRef) {
                     this.fb = fb;
                     this._router = _router;
                     this._notificationsStore = _notificationsStore;
                     this._notificationsService = _notificationsService;
                     this._sessionStore = _sessionStore;
                     this._authenticationService = _authenticationService;
+                    this._stateService = _stateService;
+                    this._statesStore = _statesStore;
                     this._elRef = _elRef;
                     this.options = {
                         timeOut: 3000,
@@ -111,6 +119,9 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                     this.userformControls = this.signupform.controls;
                 }
                 SignupComponent.prototype.ngOnInit = function () {
+                    var _this = this;
+                    this._stateService.getStates()
+                        .subscribe(function (states) { return _this.states = states; });
                 };
                 SignupComponent.prototype.saveUser = function () {
                     var _this = this;
@@ -171,9 +182,9 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                             primeng_1.InputMask,
                             primeng_1.RadioButton,
                             angular2_notifications_1.SimpleNotificationsComponent],
-                        providers: [angular2_notifications_1.NotificationsService]
+                        providers: [angular2_notifications_1.NotificationsService, state_service_1.StateService, states_store_1.StatesStore]
                     }), 
-                    __metadata('design:paramtypes', [forms_1.FormBuilder, router_1.Router, notifications_store_1.NotificationsStore, angular2_notifications_1.NotificationsService, session_store_1.SessionStore, authentication_service_1.AuthenticationService, core_1.ElementRef])
+                    __metadata('design:paramtypes', [forms_1.FormBuilder, router_1.Router, notifications_store_1.NotificationsStore, angular2_notifications_1.NotificationsService, session_store_1.SessionStore, authentication_service_1.AuthenticationService, state_service_1.StateService, states_store_1.StatesStore, core_1.ElementRef])
                 ], SignupComponent);
                 return SignupComponent;
             }());
