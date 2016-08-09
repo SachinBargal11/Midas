@@ -52,11 +52,11 @@ export class UsersService {
             });
 
             // remove unneeded keys 
-            userDetailRequestData.user = _.omit(userDetailRequestData.user, 'accountID', 'gender', 'status', 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
-            userDetailRequestData.address = _.omit(userDetailRequestData.address, 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
-            userDetailRequestData.contactInfo = _.omit(userDetailRequestData.contactInfo, 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
-           userDetailRequestData.account = _.omit(userDetailRequestData.account, 'name', 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
-           
+            userDetailRequestData.user = _.omit(userDetailRequestData.user, 'accountId', 'gender', 'status', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+            userDetailRequestData.address = _.omit(userDetailRequestData.address, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+            userDetailRequestData.contactInfo = _.omit(userDetailRequestData.contactInfo, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+            userDetailRequestData.account = _.omit(userDetailRequestData.account, 'name', 'status', 'isDeleted', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+
             return this._http.post(this._url + '/User/Add', JSON.stringify(userDetailRequestData), {
                 headers: this._headers
             })
@@ -71,7 +71,7 @@ export class UsersService {
         });
         return <Observable<UserDetail>>Observable.fromPromise(promise);
 
-    }  
+    }
 
 }
 

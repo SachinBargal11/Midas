@@ -84,8 +84,8 @@ export class AddUserComponent implements OnInit {
     }
 
     ngOnInit() {
-                   this._stateService.getStates()
-                        .subscribe(states => this.states = states);
+        this._stateService.getStates()
+            .subscribe(states => this.states = states);
     }
 
 

@@ -74,10 +74,10 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                             dateOfBirth: userDetailRequestData.user.dateOfBirth ? userDetailRequestData.user.dateOfBirth.toISOString() : null
                         });
                         // remove unneeded keys 
-                        userDetailRequestData.user = underscore_1.default.omit(userDetailRequestData.user, 'accountID', 'gender', 'status', 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
-                        userDetailRequestData.address = underscore_1.default.omit(userDetailRequestData.address, 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
-                        userDetailRequestData.contactInfo = underscore_1.default.omit(userDetailRequestData.contactInfo, 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
-                        userDetailRequestData.account = underscore_1.default.omit(userDetailRequestData.account, 'name', 'createByUserID', 'createDate', 'updateByUserID', 'updateDate');
+                        userDetailRequestData.user = underscore_1.default.omit(userDetailRequestData.user, 'accountId', 'gender', 'status', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+                        userDetailRequestData.address = underscore_1.default.omit(userDetailRequestData.address, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+                        userDetailRequestData.contactInfo = underscore_1.default.omit(userDetailRequestData.contactInfo, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+                        userDetailRequestData.account = underscore_1.default.omit(userDetailRequestData.account, 'name', 'status', 'isDeleted', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
                         return _this._http.post(_this._url + '/User/Add', JSON.stringify(userDetailRequestData), {
                             headers: _this._headers
                         })
