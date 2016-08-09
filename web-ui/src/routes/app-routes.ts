@@ -4,10 +4,10 @@ import {SignupComponent} from '../components/pages/signup';
 import {DashboardComponent} from '../components/pages/dashboard';
 import {PatientsShellRoutes} from './patient-routes';
 import {UsersRoutes} from './user-routes';
+import {ProvidersRoutes} from './provider-routes';
 import {ValidateActiveSession} from './guards/validate-active-session';
 import {ValidateInActiveSession} from './guards/validate-inactive-session';
 import {ChangePasswordComponent} from '../components/pages/change-password';
-import {AddProviderComponent} from '../components/pages/providers/add-provider'
 
 export const appRoutes: RouterConfig = [
     {
@@ -35,11 +35,7 @@ export const appRoutes: RouterConfig = [
         component: DashboardComponent,
         canActivate: [ValidateActiveSession]
     },
-    {
-        path: 'add-provider',
-        component: AddProviderComponent,
-        canActivate: [ValidateActiveSession]
-    },
+    ...ProvidersRoutes,
     ...UsersRoutes,
     ...PatientsShellRoutes
 ];

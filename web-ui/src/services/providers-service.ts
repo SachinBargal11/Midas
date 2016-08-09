@@ -24,18 +24,7 @@ export class ProvidersService {
     }
     
     getProviders(): Observable<Provider[]> {
-        // let promise: Promise<Provider[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url + "/Provider/GetAll").map(res => res.json());
-        //         .subscribe((data: any) => {
-        //             let providers = (<Object[]>data.providers).map((providerData: any) => {
-        //                 return ProviderAdapter.parseResponse(providerData);
-        //             });
-        //             resolve(providers);
-        //         }, (error) => {
-        //             reject(error);
-        //         });
-        // });
-        // return <Observable<Provider[]>>Observable.fromPromise(promise);
     }
 
     addProvider(providerDetail: Provider): Observable<Provider> {

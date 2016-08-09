@@ -49,7 +49,7 @@ System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 
                 ProvidersStore.prototype.resetStore = function () {
                     this._providers.next(this._providers.getValue().clear());
                 };
-                Object.defineProperty(ProvidersStore.prototype, "provides", {
+                Object.defineProperty(ProvidersStore.prototype, "providers", {
                     get: function () {
                         return this._providers.asObservable();
                     },

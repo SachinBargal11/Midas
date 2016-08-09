@@ -47,18 +47,7 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                     this._headers.append('Content-Type', 'application/json');
                 }
                 ProvidersService.prototype.getProviders = function () {
-                    // let promise: Promise<Provider[]> = new Promise((resolve, reject) => {
                     return this._http.get(this._url + "/Provider/GetAll").map(function (res) { return res.json(); });
-                    //         .subscribe((data: any) => {
-                    //             let providers = (<Object[]>data.providers).map((providerData: any) => {
-                    //                 return ProviderAdapter.parseResponse(providerData);
-                    //             });
-                    //             resolve(providers);
-                    //         }, (error) => {
-                    //             reject(error);
-                    //         });
-                    // });
-                    // return <Observable<Provider[]>>Observable.fromPromise(promise);
                 };
                 ProvidersService.prototype.addProvider = function (providerDetail) {
                     var _this = this;

@@ -33,7 +33,7 @@ export class ProvidersStore {
     }
 
 
-    get provides() {
+    get providers() {
         return this._providers.asObservable();
     }
 

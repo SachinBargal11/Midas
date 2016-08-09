@@ -14,6 +14,7 @@ import {ChangePasswordComponent} from './pages/change-password';
 import {AddUserComponent} from './pages/users/add-user';
 import {UsersListComponent} from './pages/users/users-list';
 import {AddProviderComponent} from './pages/providers/add-provider';
+import {ProvidersListComponent} from './pages/providers/providers-list';
 import {StatesStore} from '../stores/states-store';
 import {StateService} from '../services/state-service';
 
@@ -33,7 +34,8 @@ import {StateService} from '../services/state-service';
                   AddUserComponent, 
                   UsersListComponent,
                   DashboardComponent,
-                  AddProviderComponent, 
+                  AddProviderComponent,
+                  ProvidersListComponent, 
                   PatientsShellComponent
      ]
 })
