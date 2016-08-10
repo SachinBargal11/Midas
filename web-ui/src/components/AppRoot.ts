@@ -15,6 +15,8 @@ import {AddUserComponent} from './pages/users/add-user';
 import {UsersListComponent} from './pages/users/users-list';
 import {AddProviderComponent} from './pages/providers/add-provider';
 import {ProvidersListComponent} from './pages/providers/providers-list';
+import {AddMedicalFacilityComponent} from './pages/medical-facilities/add-medical-facility';
+import {MedicalFacilitiesListComponent} from './pages/medical-facilities/medical-facilities-list';
 import {StatesStore} from '../stores/states-store';
 import {StateService} from '../services/state-service';
 
@@ -35,7 +37,9 @@ import {StateService} from '../services/state-service';
                   UsersListComponent,
                   DashboardComponent,
                   AddProviderComponent,
-                  ProvidersListComponent, 
+                  ProvidersListComponent,
+                  AddMedicalFacilityComponent,
+                  MedicalFacilitiesListComponent,
                   PatientsShellComponent
      ]
 })

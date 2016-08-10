@@ -13,6 +13,12 @@ import {AuthenticationService} from '../services/authentication-service';
 import {UsersStore} from '../stores/users-store';
 import {UsersService} from '../services/users-service';
 
+import {ProvidersStore} from '../stores/providers-store';
+import {ProvidersService} from '../services/providers-service';
+
+import {MedicalFacilityStore} from '../stores/medical-facilities-store';
+import {MedicalFacilityService} from '../services/medical-facility-service';
+
 import {PatientsStore} from '../stores/patients-store';
 import {PatientsService} from '../services/patients-service';
 
@@ -34,6 +40,10 @@ bootstrap(AppRoot, [
     AuthenticationService,
     UsersService,
     UsersStore,
+    ProvidersStore,
+    ProvidersService,
+    MedicalFacilityStore,
+    MedicalFacilityService,
     PatientsService,
     PatientsStore,
     NotificationsStore,
