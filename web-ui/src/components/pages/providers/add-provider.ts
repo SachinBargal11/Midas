@@ -84,7 +84,7 @@ export class AddProviderComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/dashboard']);
+                this._router.navigate(['/providers']);
             },
             (error) => {
                 var notification = new Notification({

@@ -109,7 +109,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../el
                             'createdAt': moment_1.default()
                         });
                         _this._notificationsStore.addNotification(notification);
-                        _this._router.navigate(['/dashboard']);
+                        _this._router.navigate(['/providers']);
                     }, function (error) {
                         var notification = new notification_1.Notification({
                             'title': 'Unable to add Provider.',
