@@ -8,16 +8,28 @@
                     <span class="lbl">Dashboard</span>
                 </a>
             </li>
-            <li class="green" [routerLinkActive]="['opened']">
+            <!--<li class="green" [routerLinkActive]="['opened']">
                 <a [routerLink]="['/patients']">
                     <i class="fa fa-users"></i>
                     <span class="lbl">Patients</span>
                 </a>
-            </li>
+            </li>-->
             <li class="green" [routerLinkActive]="['opened']">
-                <a [routerLink]="['/users/add']">
+                <a [routerLink]="['/users']">
                     <i class="fa fa-users"></i>
                     <span class="lbl">Users</span>
+                </a>
+            </li>
+            <li class="green" [routerLinkActive]="['opened']">
+                <a [routerLink]="['/providers']">
+                    <i class="fa fa-users"></i>
+                    <span class="lbl">Providers</span>
+                </a>
+            </li>
+            <li class="green" [routerLinkActive]="['opened']">
+                <a [routerLink]="['/medical-facilities']">
+                    <i class="fa fa-users"></i>
+                    <span class="lbl">Medical Facilities</span>
                 </a>
             </li>
         </ul>

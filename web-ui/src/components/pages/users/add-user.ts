@@ -1,0 +1,150 @@
+import {Component, OnInit, ElementRef} from '@angular/core';
+import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
+import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {AppValidators} from '../../../utils/AppValidators';
+import {LoaderComponent} from '../../elements/loader';
+import {UsersStore} from '../../../stores/users-store';
+import {UserDetail} from '../../../models/user-details';
+import {User} from '../../../models/user';
+import {UsersService} from '../../../services/users-service';
+import {AccountDetail} from '../../../models/account-details';
+import {Account} from '../../../models/account';
+import {Contact} from '../../../models/contact';
+import {Address} from '../../../models/address';
+import $ from 'jquery';
+import {SessionStore} from '../../../stores/session-store';
+import {NotificationsStore} from '../../../stores/notifications-store';
+import {Notification} from '../../../models/notification';
+import moment from 'moment';
+import {Calendar, InputMask, AutoComplete, SelectItem} from 'primeng/primeng';
+import {Gender} from '../../../models/enums/Gender';
+import {UserType} from '../../../models/enums/UserType';
+import {StatesStore} from '../../../stores/states-store';
+import {StateService} from '../../../services/state-service';
+import {HTTP_PROVIDERS}    from '@angular/http';
+import {LimitPipe} from '../../../pipes/limit-array-pipe';
+
+@Component({
+    selector: 'add-user',
+    templateUrl: 'templates/pages/users/add-user.html',
+    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar, InputMask, AutoComplete],
+    providers: [HTTP_PROVIDERS, UsersService, StateService, StatesStore],
+    pipes: [LimitPipe]
+})
+
+export class AddUserComponent implements OnInit {
+    states: any[];
+    options = {
+        timeOut: 3000,
+        showProgressBar: true,
+        pauseOnHover: false,
+        clickToClose: false,
+        maxLength: 10
+    };
+    userform: FormGroup;
+    userformControls;
+    isSaveUserProgress = false;
+
+    constructor(
+        private _stateService: StateService,
+        private _statesStore: StatesStore,
+        private _userService: UsersService,
+        private fb: FormBuilder,
+        private _router: Router,
+        private _notificationsStore: NotificationsStore,
+        private _sessionStore: SessionStore,
+        private _usersStore: UsersStore,
+        private _elRef: ElementRef
+    ) {
+        this.userform = this.fb.group({
+            userInfo: this.fb.group({
+                firstname: ['', Validators.required],
+                middlename: [''],
+                lastname: ['', Validators.required],
+                userType: ['', Validators.required]
+            }),
+            contact: this.fb.group({
+                email: ['', [Validators.required, AppValidators.emailValidator]],
+                cellPhone: ['', [Validators.required]],
+                homePhone: [''],
+                workPhone: [''],
+                faxNo: ['']
+            }),
+            address: this.fb.group({
+                address1: [''],
+                address2: [''],
+                city: [''],
+                zipCode: [''],
+                state: [''],
+                country: ['']
+            })
+        });
+
+        this.userformControls = this.userform.controls;
+    }
+
+    ngOnInit() {
+        this._stateService.getStates()
+            .subscribe(states => this.states = states);
+    }
+
+
+    saveUser() {
+        let userFormValues = this.userform.value;
+        let userDetail = new UserDetail({
+            account: new Account({
+            //    id: 176 
+               id: this._sessionStore.session.account_id 
+            }),
+            user: new User({
+                firstName: userFormValues.userInfo.firstname,
+                middleName: userFormValues.userInfo.middlename,
+                lastName: userFormValues.userInfo.lastname,
+                userType: parseInt(userFormValues.userInfo.userType), //UserType[1],//,
+                userName: userFormValues.contact.email                
+            }),
+            contactInfo: new Contact({
+                cellPhone: userFormValues.contact.cellPhone,
+                emailAddress: userFormValues.contact.email,
+                faxNo: userFormValues.contact.faxNo,
+                homePhone: userFormValues.contact.homePhone,
+                workPhone: userFormValues.contact.workPhone,
+            }),
+            address: new Address({
+                address1: userFormValues.address.address1,
+                address2: userFormValues.address.address2,
+                city: userFormValues.address.city,
+                country: userFormValues.address.country,
+                state: userFormValues.address.state,
+                zipCode: userFormValues.address.zipCode,
+            })
+        });
+        this.isSaveUserProgress = true;
+        var result;
+
+        result = this._usersStore.addUser(userDetail);
+        result.subscribe(
+            (response) => {
+                var notification = new Notification({
+                    'title': 'User added successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._router.navigate(['/users']);
+            },
+            (error) => {
+                var notification = new Notification({
+                    'title': 'Unable to add user.',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+            },
+            () => {
+                this.isSaveUserProgress = false;
+            });
+
+    }
+
+}

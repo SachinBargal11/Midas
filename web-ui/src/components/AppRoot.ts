@@ -11,7 +11,14 @@ import {SessionStore} from '../stores/session-store';
 import {NotificationComponent} from './elements/notification';
 import {NotificationsStore} from '../stores/notifications-store';
 import {ChangePasswordComponent} from './pages/change-password';
-import {AddUserComponent} from './pages/add-user';
+import {AddUserComponent} from './pages/users/add-user';
+import {UsersListComponent} from './pages/users/users-list';
+import {AddProviderComponent} from './pages/providers/add-provider';
+import {ProvidersListComponent} from './pages/providers/providers-list';
+import {AddMedicalFacilityComponent} from './pages/medical-facilities/add-medical-facility';
+import {MedicalFacilitiesListComponent} from './pages/medical-facilities/medical-facilities-list';
+import {StatesStore} from '../stores/states-store';
+import {StateService} from '../services/state-service';
 
 @Component({
     selector: 'app-root',
@@ -22,11 +29,17 @@ import {AddUserComponent} from './pages/add-user';
         MainNavComponent,
         NotificationComponent
     ],
+    providers:[StatesStore, StateService],
      precompile: [LoginComponent, 
                   SignupComponent, 
                   ChangePasswordComponent, 
                   AddUserComponent, 
-                  DashboardComponent, 
+                  UsersListComponent,
+                  DashboardComponent,
+                  AddProviderComponent,
+                  ProvidersListComponent,
+                  AddMedicalFacilityComponent,
+                  MedicalFacilitiesListComponent,
                   PatientsShellComponent
      ]
 })
@@ -36,7 +49,8 @@ export class AppRoot implements OnInit {
     constructor(
         private _router: Router,
         private _sessionStore: SessionStore,
-        private _notificationsStore: NotificationsStore
+        private _notificationsStore: NotificationsStore,
+        private _statesStore: StatesStore
     ) {
 
     }
@@ -50,7 +64,9 @@ export class AppRoot implements OnInit {
             error => {
                 this._router.navigate(['/login']);
             }
-        )
+           
+        ),   
+          
+        this._statesStore.getStates();
     }
-
 }

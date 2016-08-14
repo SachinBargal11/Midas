@@ -62,7 +62,7 @@ System.register(['@angular/core', '@angular/router', '../elements/loader', '../.
                 };
                 AppHeaderComponent.prototype.ngOnInit = function () {
                     if (this._sessionStore.isAuthenticated()) {
-                        this.user_name = this._sessionStore.session.user.displayName;
+                        this.user_name = this._sessionStore.session.displayName;
                     }
                     else {
                         this._router.navigate(['/login']);

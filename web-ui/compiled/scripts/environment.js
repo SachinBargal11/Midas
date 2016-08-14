@@ -6,7 +6,8 @@ System.register([], function(exports_1, context_1) {
         setters:[],
         execute: function() {
             LOCAL_DEV_ENV = {
-                'SERVICE_BASE_URL': 'http://localhost:3004'
+                // 'SERVICE_BASE_URL' : 'http://localhost:3004'
+                'SERVICE_BASE_URL': 'http://codearray.dlinkddns.com:7003/midasapi'
             };
             DEV_ENV = {
                 'SERVICE_BASE_URL': 'http://gyb-db.herokuapp.com'

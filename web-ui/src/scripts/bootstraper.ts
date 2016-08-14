@@ -10,8 +10,14 @@ import {HTTP_PROVIDERS} from '@angular/http';
 import {SessionStore} from '../stores/session-store';
 import {AuthenticationService} from '../services/authentication-service';
 
-import {SubUsersStore} from '../stores/sub-users-store';
-import {SubUsersService} from '../services/subusers-service';
+import {UsersStore} from '../stores/users-store';
+import {UsersService} from '../services/users-service';
+
+import {ProvidersStore} from '../stores/providers-store';
+import {ProvidersService} from '../services/providers-service';
+
+import {MedicalFacilityStore} from '../stores/medical-facilities-store';
+import {MedicalFacilityService} from '../services/medical-facility-service';
 
 import {PatientsStore} from '../stores/patients-store';
 import {PatientsService} from '../services/patients-service';
@@ -32,8 +38,12 @@ bootstrap(AppRoot, [
     HTTP_PROVIDERS,
     SessionStore,
     AuthenticationService,
-    SubUsersService,
-    SubUsersStore,
+    UsersService,
+    UsersStore,
+    ProvidersStore,
+    ProvidersService,
+    MedicalFacilityStore,
+    MedicalFacilityService,
     PatientsService,
     PatientsStore,
     NotificationsStore,

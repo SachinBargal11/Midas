@@ -84,4 +84,8 @@ body {
 .table tbody tr:hover td, .table tbody tr:hover th {
   background-color: #eeeeea;
   cursor: pointer; }
+
+.ui-inputtext.ui-state-focus, .ui-widget-content .ui-inputtext.ui-state-focus, .ui-widget-header .ui-inputtext.ui-state-focus {
+  background: inherit;
+  box-shadow: none; }
 /*# sourceMappingURL=styles.css.map */

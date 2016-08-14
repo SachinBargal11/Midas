@@ -1,0 +1,17 @@
+<h1 class="with-border">Users
+<a class="pull-right m-b-md btn btn-primary" [routerLink]="['/users/add']">Add User</a>
+</h1>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of _usersStore.users | async | reverse">
+            <td>{{ user.user.firstName }}</td>
+            <td>{{ user.user.lastName }}</td>
+        </tr>
+    </tbody>
+</table>

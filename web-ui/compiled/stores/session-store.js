@@ -33,6 +33,7 @@ System.register(['@angular/core', 'rxjs/Observable', '../services/authentication
             SessionStore = (function () {
                 function SessionStore(_authenticationService) {
                     this._authenticationService = _authenticationService;
+                    this.userLogoutEvent = new core_1.EventEmitter(true);
                     this._session = new session_1.Session();
                     this.__USER_STORAGE_KEY__ = 'logged_user';
                 }
@@ -83,7 +84,12 @@ System.register(['@angular/core', 'rxjs/Observable', '../services/authentication
                 };
                 SessionStore.prototype._resetSession = function () {
                     this.session.user = null;
+                    this.userLogoutEvent.emit(null);
                 };
+                __decorate([
+                    core_1.Output(), 
+                    __metadata('design:type', core_1.EventEmitter)
+                ], SessionStore.prototype, "userLogoutEvent", void 0);
                 SessionStore = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [authentication_service_1.AuthenticationService])
