@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
-using Midas.GreenBill.Model;
+using GBDataRepository.Model;
+
 using GBDataRepository.Model;
 
 namespace Midas.GreenBill.EntityRepository
@@ -16,11 +17,6 @@ namespace Midas.GreenBill.EntityRepository
         public CaseRepository(GreenBillsDbEntities context) : base(context)
         {
             _dbSet = context.Set<Account>();
-        }
-
-        public override Object Save<T>(T entity)
-        {
-            return null;
         }
     }
 }

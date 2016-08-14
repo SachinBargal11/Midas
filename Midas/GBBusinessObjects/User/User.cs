@@ -4,22 +4,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System.ComponentModel.DataAnnotations;
+
 namespace Midas.GreenBill.BusinessObject
 {
     public class User: GbObject
     {
-        GBEnums.UserType UserType { get; set; }
+        [Required]
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty("userType")]
+        public GBEnums.UserType UserType { get; set; }
+        public Account Account { get; set; }
+
+        public Address Address { get; set; }
+        public ContactInfo ContactInfo { get; set; }
+        [Required]
+        [JsonProperty("userName")]
         public string UserName { get; set; }
-        string FirstName { get; set; }
-        string MiddleName { get; set; }
-        string LastName { get; set; }
-        GBEnums.Gender Gender { get; set; }
-        string Notes { get; set; }
-        string ImageLink { get; set; }
-        Address PrimaryAddress { get; set; }
-        ContactInfo PrimaryContactInfo { get; set; }
-        SecureString SSN { get; set; }
-        DateTime DateOfBirth { get; set; }
+        [Required]
+        [JsonProperty("firstName")]
+        public string FirstName { get; set; }
+        [JsonProperty("middleName")]
+
+        public string MiddleName { get; set; }
+        [Required]
+        [JsonProperty("lastName")]
+        public  string LastName { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty("gender")]
+        public GBEnums.Gender Gender { get; set; }
+        [JsonProperty("imageLink")]
+        public string ImageLink { get; set; }
+        [JsonProperty("dateOfBirth")]
+        public DateTime? DateOfBirth { get; set; }
         public string Password /*Need to be updated to SecureString*/ { get; set; }
     }
 }

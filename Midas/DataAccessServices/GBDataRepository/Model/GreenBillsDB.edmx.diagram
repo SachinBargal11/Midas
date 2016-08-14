@@ -4,170 +4,125 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="9b8742ce319f492f99dc3e0760e3d37a" Name="Diagram1">
-        <EntityTypeShape EntityType="GreenBillsDbModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.C__RefactorLog" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Abbreviation" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Account" Width="1.5" PointX="3.75" PointY="34.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Action" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Address" Width="1.5" PointX="0.75" PointY="39" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Addresses" Width="1.5" PointX="11.25" PointY="51.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.ApplicationSettings" Width="1.5" PointX="11.25" PointY="15.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.BillDetails" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.BillPom" Width="1.5" PointX="6.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Bills" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.BillStatus" Width="1.5" PointX="2.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.BillVerification" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.BillVerificationAnswer" Width="1.5" PointX="8.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Case" Width="1.5" PointX="18" PointY="36.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.CaseDocument" Width="1.5" PointX="4.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.CaseStatus" Width="1.5" PointX="6.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.CaseType" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.ContactInfo" Width="1.5" PointX="11.25" PointY="19.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.DenialReasons" Width="1.5" PointX="8.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.DiagnosisType" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.DignosisCode" Width="1.5" PointX="10.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Doctor" Width="1.5" PointX="11.25" PointY="25" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.DoctorMedProvider" Width="1.5" PointX="13.5" PointY="45.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.DocumentType" Width="1.5" PointX="10.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.EmailFields" Width="1.5" PointX="11.25" PointY="30.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.EmailProfile" Width="1.5" PointX="11.25" PointY="34.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.EmailTemplate" Width="1.5" PointX="11.25" PointY="39" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Employer" Width="1.5" PointX="11.25" PointY="42.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.EmployerAddress" Width="1.5" PointX="13.5" PointY="32" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Insurance" Width="1.5" PointX="11.25" PointY="47" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.InsuranceAddress" Width="1.5" PointX="3" PointY="39.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.IntakeAOB" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Location" Width="1.5" PointX="12.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.MedicalFacilities" Width="1.5" PointX="6" PointY="39.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Nodes" Width="1.5" PointX="6" PointY="34.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Patient" Width="1.5" PointX="15.75" PointY="39" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.PatientAccidentDetails" Width="1.5" PointX="12.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.PatientInsurance" Width="1.5" PointX="2.75" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Payment" Width="1.5" PointX="4.75" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.PaymentImages" Width="1.5" PointX="6.75" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.POM" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.ProcedureCode" Width="1.5" PointX="13.5" PointY="49.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Provider" Width="1.5" PointX="11.25" PointY="56.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.ProviderMedicalFacilities" Width="1.5" PointX="13.5" PointY="37" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Reconcilation" Width="1.5" PointX="14.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.RequiredDocuments" Width="1.5" PointX="14.75" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.RoleActions" Width="1.5" PointX="13.75" PointY="15.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Room" Width="1.5" PointX="3.75" PointY="30.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.RoomSchedule" Width="1.5" PointX="6" PointY="31" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Specialty" Width="1.5" PointX="11.25" PointY="60.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.SpecialtyDetails" Width="1.5" PointX="11.25" PointY="64.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.SystemSetting" Width="1.5" PointX="15.75" PointY="15.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.SystemSettingKey" Width="1.5" PointX="16.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.TransferredCases" Width="1.5" PointX="16.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Transportation" Width="1.5" PointX="16.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.User" Width="1.5" PointX="9" PointY="34.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.UserType" Width="1.5" PointX="11.25" PointY="70.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.VerificationAnswerImages" Width="1.5" PointX="6.75" PointY="17.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.VerificationImages" Width="1.5" PointX="17.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.VisitProcedure" Width="1.5" PointX="17.75" PointY="16.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Visits" Width="1.5" PointX="18.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.VisitType" Width="1.5" PointX="0.75" PointY="18.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Activity" Width="1.5" PointX="2.75" PointY="19.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.AuditTrail" Width="1.5" PointX="18.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.BillStatusHistory" Width="1.5" PointX="19.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.CaseAssociatedDiagnosisCode" Width="1.5" PointX="13.75" PointY="19.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.CompanyConnections" Width="1.5" PointX="19.75" PointY="16.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.CyclicInsuranceConfiguration" Width="1.5" PointX="20.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.CyclicProcedureConfigurationAmount" Width="1.5" PointX="20.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.CyclicSpecialtyConfiguration" Width="1.5" PointX="20.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.CyclicSpecialtyConfigurationAmount" Width="1.5" PointX="19.75" PointY="20.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.EnvelopeConfiguration" Width="1.5" PointX="21.75" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.GeneralDenialImages" Width="1.5" PointX="21.75" PointY="17.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.GeneralDenials" Width="1.5" PointX="21.75" PointY="21.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Mandatory" Width="1.5" PointX="22.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Notes" Width="1.5" PointX="22.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.NotesType" Width="1.5" PointX="4.75" PointY="22.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.PacketRequest" Width="1.5" PointX="6.75" PointY="22.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.PacketRequestBills" Width="1.5" PointX="22.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Reminder" Width="1.5" PointX="15.75" PointY="22.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.ReminderRecurrence" Width="1.5" PointX="0.75" PointY="23.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.ReminderType" Width="1.5" PointX="23.75" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Role" Width="1.5" PointX="23.75" PointY="15.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.RoleActivityEvents" Width="1.5" PointX="17.75" PointY="23.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.RoleEvents" Width="1.5" PointX="23.75" PointY="19.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.SignOnPdf" Width="1.5" PointX="23.75" PointY="23.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GreenBillsDbModel.Status" Width="1.5" PointX="24.75" PointY="0.75" IsExpanded="true" />
+      <Diagram DiagramId="ca746cd95c094192bab7724797a18a1b" Name="Diagram1">
+        <EntityTypeShape EntityType="GreenBillsDbModel.Abbreviation" Width="1.5" PointX="13.75" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Account" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Action" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Address" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.ApplicationSetting" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.BillDetail" Width="1.5" PointX="15.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.BillPom" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Bill" Width="1.5" PointX="17.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.BillStatu" Width="1.5" PointX="2.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.BillVerification" Width="1.5" PointX="17.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.BillVerificationAnswer" Width="1.5" PointX="13.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Case" Width="1.5" PointX="8.25" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.CaseDiagnosisSpeciality" Width="1.5" PointX="13.5" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.CaseDocument" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.CaseStatu" Width="1.5" PointX="15.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.CaseType" Width="1.5" PointX="16" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.ContactInfo" Width="1.5" PointX="0.75" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.DenialReason" Width="1.5" PointX="17.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.DiagnosisType" Width="1.5" PointX="10.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.DignosisCode" Width="1.5" PointX="18.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Doctor" Width="1.5" PointX="5.25" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.DoctorMedicalFacilitiesProvider" Width="1.5" PointX="11.25" PointY="15.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.DoctorSpeciality" Width="1.5" PointX="19.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.DocumentType" Width="1.5" PointX="19.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.EmailField" Width="1.5" PointX="19.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.EmailProfile" Width="1.5" PointX="20.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.EmailTemplate" Width="1.5" PointX="20.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Employer" Width="1.5" PointX="0.75" PointY="18.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.EmployerAddress" Width="1.5" PointX="3" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Insurance" Width="1.5" PointX="6" PointY="20.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.InsuranceAddress" Width="1.5" PointX="3" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.IntakeAOB" Width="1.5" PointX="21.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Location" Width="1.5" PointX="0.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.MedicalFacility" Width="1.5" PointX="6" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Node" Width="1.5" PointX="2.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Patient" Width="1.5" PointX="6" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.PatientAccidentDetail" Width="1.5" PointX="21.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.PatientInsurance" Width="1.5" PointX="8.25" PointY="15.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Payment" Width="1.5" PointX="12.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.PaymentImage" Width="1.5" PointX="14.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.POM" Width="1.5" PointX="16.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.ProcedureCode" Width="1.5" PointX="13.5" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Provider" Width="1.5" PointX="9" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.ProviderMedicalFacility" Width="1.5" PointX="11.25" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Reconcilation" Width="1.5" PointX="21.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.RequiredDocument" Width="1.5" PointX="18.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.RoleAction" Width="1.5" PointX="22.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Room" Width="1.5" PointX="11.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.RoomSchedule" Width="1.5" PointX="14" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Specialty" Width="1.5" PointX="11.25" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.SpecialtyDetail" Width="1.5" PointX="8.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.SystemSetting" Width="1.5" PointX="22.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.SystemSettingKey" Width="1.5" PointX="23.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.TransferredCas" Width="1.5" PointX="23.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Transportation" Width="1.5" PointX="23.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.User" Width="1.5" PointX="3" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.UserType" Width="1.5" PointX="0.75" PointY="14.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.VerificationAnswerImage" Width="1.5" PointX="20.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.VerificationImage" Width="1.5" PointX="23.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.VisitProcedure" Width="1.5" PointX="24.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Visit" Width="1.5" PointX="4.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.VisitType" Width="1.5" PointX="24.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.AccountStatu" Width="1.5" PointX="25.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Activity" Width="1.5" PointX="25.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.AuditTrail" Width="1.5" PointX="14.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.BillStatusHistory" Width="1.5" PointX="16.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.CaseAssociatedDiagnosisCode" Width="1.5" PointX="25.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.CompanyConnection" Width="1.5" PointX="25.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.CyclicInsuranceConfiguration" Width="1.5" PointX="0.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.CyclicProcedureConfigurationAmount" Width="1.5" PointX="26.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.CyclicSpecialtyConfiguration" Width="1.5" PointX="26.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.CyclicSpecialtyConfigurationAmount" Width="1.5" PointX="10.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.EnvelopeConfiguration" Width="1.5" PointX="22.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.GeneralDenialImage" Width="1.5" PointX="24.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.GeneralDenial" Width="1.5" PointX="26.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Mandatory" Width="1.5" PointX="6.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Note" Width="1.5" PointX="27.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.NotesType" Width="1.5" PointX="27.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.PacketRequest" Width="1.5" PointX="27.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.PacketRequestBill" Width="1.5" PointX="18.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Reminder" Width="1.5" PointX="28.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.ReminderRecurrence" Width="1.5" PointX="27.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.ReminderType" Width="1.5" PointX="27.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Role" Width="1.5" PointX="12.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.RoleActivityEvent" Width="1.5" PointX="28.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.RoleEvent" Width="1.5" PointX="8.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.SignOnPdf" Width="1.5" PointX="29.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GreenBillsDbModel.Status" Width="1.5" PointX="29.75" PointY="11.75" IsExpanded="true" />
         <AssociationConnector Association="GreenBillsDbModel.FK_CaseType_Abbreviation" ManuallyRouted="false" />
         <AssociationConnector Association="GreenBillsDbModel.FK_MedicalFacilities_Account" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_Nodes_AccountId" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_RoomDays_AccountId" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_Address_User" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_Address_User1" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_InsuranceAddress_InsuranceAddress" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_MedicalOffices_Address" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_ProviderMedicalOffices_Address" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_ProviderMedicalOffices_Address1" ManuallyRouted="false" />
         <AssociationConnector Association="GreenBillsDbModel.FK_User_Account" ManuallyRouted="false" />
+        <AssociationConnector Association="GreenBillsDbModel.FK_MedicalFacilities_Address" ManuallyRouted="false" />
+        <AssociationConnector Association="GreenBillsDbModel.FK_ProviderMedicalFacilities_BillingAddress" ManuallyRouted="false" />
+        <AssociationConnector Association="GreenBillsDbModel.FK_ProviderMedicalFacilities_TraetingAddress" ManuallyRouted="false" />
         <AssociationConnector Association="GreenBillsDbModel.FK_User_Address" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_EmployerAddress_Addresses" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_ApplicationSettings_User" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_ApplicationSettings_User1" ManuallyRouted="false" />
         <AssociationConnector Association="GreenBillsDbModel.FK_Case_Case" ManuallyRouted="false" />
         <AssociationConnector Association="GreenBillsDbModel.FK_Case_Employer" ManuallyRouted="false" />
         <AssociationConnector Association="GreenBillsDbModel.FK_Case_EmployerAddress" ManuallyRouted="false" />
         <AssociationConnector Association="GreenBillsDbModel.FK_Case_Patient" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_Case_User" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_Case_User1" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_ContactInfo_User" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_ContactInfo_User1" ManuallyRouted="false" />
+        <AssociationConnector Association="GreenBillsDbModel.FK_CaseDiagnosisSpeciality_Case" ManuallyRouted="false" />
+        <AssociationConnector Association="GreenBillsDbModel.FK_CaseDiagnosisSpeciality_Specialty" ManuallyRouted="false" />
         <AssociationConnector Association="GreenBillsDbModel.FK_EmployerAddress_ContactInfo" ManuallyRouted="false" />
         <AssociationConnector Association="GreenBillsDbModel.FK_InsuranceAddress_ContactInfo" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_MedicalOffices_ContactInfo" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_ProviderMedicalOffices_ContactInfo" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_ProviderMedicalOffices_ContactInfo1" ManuallyRouted="false" />
+        <AssociationConnector Association="GreenBillsDbModel.FK_MedicalFacilities_ContactInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="GreenBillsDbModel.FK_ProviderMedicalFacilities_BillingContactInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="GreenBillsDbModel.FK_ProviderMedicalFacilities_TreatingContactInfo" ManuallyRouted="false" />
         <AssociationConnector Association="GreenBillsDbModel.FK_User_ContactInfo" ManuallyRouted="false" />
         <AssociationConnector Association="GreenBillsDbModel.FK_Doctor_User" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_Doctor_User1" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_Doctor_User2" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_DoctorMedProvider_MedicalFacilities" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_DoctorMedProvider_Provider" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_DoctorMedProvider_User" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_DoctorMedProvider_User1" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_DoctorMedProvider_User2" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_EmailFields_User" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_EmailFields_User1" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_EmailProfile_User" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_EmailProfile_User1" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_EmailTemplate_User" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_EmailTemplate_User1" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_Employer_User" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_Employer_User1" ManuallyRouted="false" />
+        <AssociationConnector Association="GreenBillsDbModel.FK_DoctorMedicalFacilitiesProvider_Provider" ManuallyRouted="false" />
         <AssociationConnector Association="GreenBillsDbModel.FK_EmployerAddress_User" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_EmployerAddress_User1" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_Insurance_Insurance" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_Insurance_User" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_InsuranceAddress_User" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_InsuranceAddress_User1" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_MedicalOffices_User" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_MedicalOffices_User1" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_ProviderMedicalOffices_MedicalOffices" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_Patient_ProviderMedicalOffices" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_Patient_User" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_Patient_User1" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_Patient_User2" ManuallyRouted="false" />
+        <AssociationConnector Association="GreenBillsDbModel.FK_PatientInsurance_Insurance" ManuallyRouted="false" />
+        <AssociationConnector Association="GreenBillsDbModel.FK_MedicalFacilities_User" ManuallyRouted="false" />
+        <AssociationConnector Association="GreenBillsDbModel.FK_ProviderMedicalFacilities_ProviderMedicalFacilities" ManuallyRouted="false" />
+        <AssociationConnector Association="GreenBillsDbModel.FK_PatientInsurance_Patient" ManuallyRouted="false" />
         <AssociationConnector Association="GreenBillsDbModel.FK_ProcedureCode_Specialty" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_ProcedureCode_User" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_ProcedureCode_User1" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_Provider_User" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_Provider_User1" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_ProviderMedicalOffices_Provider" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_ProviderMedicalOffices_ProviderMedicalOffices" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_ProviderMedicalOffices_User" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_ProviderMedicalOffices_User1" ManuallyRouted="false" />
+        <AssociationConnector Association="GreenBillsDbModel.FK_ProviderMedicalFacilities_Provider" ManuallyRouted="false" />
         <AssociationConnector Association="GreenBillsDbModel.FK_RoomDays_RoomId" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_Specialty_User" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_Specialty_User1" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_SpecialtyDetails_Specialty" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_SpecialtyDetails_User" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_SpecialtyDetails_User1" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_UserType_User" ManuallyRouted="false" />
-        <AssociationConnector Association="GreenBillsDbModel.FK_UserType_User1" ManuallyRouted="false" />
+        <AssociationConnector Association="GreenBillsDbModel.FK_User_UserType" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

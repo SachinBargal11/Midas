@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Midas.GreenBill.Model;
+using GBDataRepository.Model;
 using BO = Midas.GreenBill.BusinessObject;
+using Newtonsoft.Json.Linq;
+
 namespace Midas.GreenBill.EntityRepository
 {
     internal abstract class BaseEntityRepo
@@ -23,7 +25,12 @@ namespace Midas.GreenBill.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object Save<T>(T entity) where T : BO.GbObject
+        public virtual Object Save(JObject data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object Delete<T>(T entity) where T : BO.GbObject
         {
 
             throw new NotImplementedException();
@@ -34,27 +41,40 @@ namespace Midas.GreenBill.EntityRepository
             //override and do the necessary operations needed for saving an object
         }
 
+        public virtual void PreSave(JObject data)
+        {
+            //override and do the necessary operations needed for saving an object
+        }
+
+        public virtual void PostSave(JObject data)
+        {
+            //override and do the necessary operations needed for saving an object
+        }
+
         public virtual void PostSave<T>(T entity) where T : BO.GbObject
         {
             //override and do the necessary operations needed after saving an object
         }
-
-
-        public virtual T Get<T>(T entity,int id)
+        public virtual  Object Signup(JObject data)
         {
             throw new NotImplementedException();
         }
 
+        public virtual T Get<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object Login(JObject entity)
+        {
+            throw new NotImplementedException();
+        }
         public virtual T Convert<T, U>(U entity)
         {
             throw new NotImplementedException();
         }
 
-        public virtual List<T> Get<T>(T entity,string name)
-        {
-            throw new NotImplementedException();
-        }
-        public virtual List<T> Get<T>(T entity,List<EntitySearchParameter> searchParameters)
+        public virtual Object Get(JObject entity)
         {
             throw new NotImplementedException();
         }

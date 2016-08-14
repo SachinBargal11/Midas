@@ -17,8 +17,8 @@ namespace GBDataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Employer()
         {
-            this.Case = new HashSet<Case>();
-            this.EmployerAddress = new HashSet<EmployerAddress>();
+            this.Cases = new HashSet<Case>();
+            this.EmployerAddresses = new HashSet<EmployerAddress>();
         }
     
         public int ID { get; set; }
@@ -31,10 +31,8 @@ namespace GBDataRepository.Model
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Case> Case { get; set; }
-        public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
+        public virtual ICollection<Case> Cases { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EmployerAddress> EmployerAddress { get; set; }
+        public virtual ICollection<EmployerAddress> EmployerAddresses { get; set; }
     }
 }

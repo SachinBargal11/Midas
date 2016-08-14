@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Midas.GreenBill.Model
+namespace GBDataRepository.Model
 {
     using System;
     using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace Midas.GreenBill.Model
     {
         public int ID { get; set; }
         public int ProviderID { get; set; }
-        public int MedicalOfficeID { get; set; }
+        public int MedicalFacilityID { get; set; }
         public int BillingAdressID { get; set; }
         public int TreatingAddressID { get; set; }
         public int BillingContactInfoID { get; set; }
@@ -32,11 +32,6 @@ namespace Midas.GreenBill.Model
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual ContactInfo ContactInfo1 { get; set; }
         public virtual MedicalFacility MedicalFacility { get; set; }
-        public virtual Patient Patient { get; set; }
         public virtual Provider Provider { get; set; }
-        public virtual ProviderMedicalFacility ProviderMedicalFacilities1 { get; set; }
-        public virtual ProviderMedicalFacility ProviderMedicalFacility1 { get; set; }
-        public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
     }
 }

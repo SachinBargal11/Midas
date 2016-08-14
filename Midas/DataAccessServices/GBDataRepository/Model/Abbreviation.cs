@@ -17,11 +17,7 @@ namespace GBDataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Abbreviation()
         {
-<<<<<<< HEAD
-            this.CaseType = new HashSet<CaseType>();
-=======
             this.CaseTypes = new HashSet<CaseType>();
->>>>>>> master
         }
     
         public int ID { get; set; }
@@ -34,10 +30,6 @@ namespace GBDataRepository.Model
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-<<<<<<< HEAD
-        public virtual ICollection<CaseType> CaseType { get; set; }
-=======
         public virtual ICollection<CaseType> CaseTypes { get; set; }
->>>>>>> master
     }
 }

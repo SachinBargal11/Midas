@@ -15,33 +15,49 @@ namespace Midas.GreenBill.EntityRepository
         public static string DeletedColumnName = "IsDeleted";
         public static IQueryable<U> CreateSearchQuery<U>(IQueryable<U> query, List<EntitySearchParameter> searchParameters, Dictionary<Type, string> filterMap)
         {
-            query = query.Where(EntitySearch.FilterOutDeletedRecord<U>(EntitySearch.DeletedColumnName));
+            //query = query.Where(EntitySearch.FilterOutDeletedRecord<U>(EntitySearch.DeletedColumnName));
 
-            foreach (EntitySearchParameter searchParameter in searchParameters.Where(i => i.type != null))
+            //foreach (EntitySearchParameter searchParameter in searchParameters.Where(i => i.type != null))
+            //{
+            //    if (filterMap.ContainsKey(searchParameter.type))
+            //    {
+            //        query = query.Where(EntitySearch.FilterbyIdOrName<U>(filterMap[searchParameter.type], searchParameter));
+            //    }
+            //    else
+            //    {
+            //        throw new NotImplementedException();
+            //    }
+            //}
+
+            ////Default option to order by name
+            //ParameterExpression param = Expression.Parameter(typeof(U));
+            //Expression<Func<U, String>> propExpression = Expression.Lambda<Func<U, String>>(Expression.Property(param, "Name"), param);
+
+            //query = query.OrderBy(propExpression);
+            return query;
+        }
+        public static T ChangeType<T>(object value)
+        {
+            var t = typeof(T);
+
+            if (t.IsGenericType && t.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
             {
-                if (filterMap.ContainsKey(searchParameter.type))
+                if (value == null)
                 {
-                    query = query.Where(EntitySearch.FilterbyIdOrName<U>(filterMap[searchParameter.type], searchParameter));
+                    return default(T);
                 }
-                else
-                {
-                    throw new NotImplementedException();
-                }
+
+                t = Nullable.GetUnderlyingType(t);
             }
 
-            //Default option to order by name
-            ParameterExpression param = Expression.Parameter(typeof(U));
-            Expression<Func<U, String>> propExpression = Expression.Lambda<Func<U, String>>(Expression.Property(param, "Name"), param);
-
-            query = query.OrderBy(propExpression);
-            return query;
+            return (T)Convert.ChangeType(value, t);
         }
 
         public static Expression<Func<T, bool>> FilterOutDeletedRecord<T>(string deletedColumn)
         {
             ParameterExpression parameter = Expression.Parameter(typeof(T), "i");
             MemberExpression left = Expression.PropertyOrField(parameter, deletedColumn); 
-            ConstantExpression right = Expression.Constant(true);
+            ConstantExpression right = Expression.Constant(ChangeType < T > (true));
             BinaryExpression nonDeleteExpr = Expression.NotEqual(left, right);
             return Expression.Lambda<Func<T, bool>>(nonDeleteExpr, parameter);
         }

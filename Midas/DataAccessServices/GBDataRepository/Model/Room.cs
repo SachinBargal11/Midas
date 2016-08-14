@@ -17,7 +17,7 @@ namespace GBDataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Room()
         {
-            this.RoomSchedule = new HashSet<RoomSchedule>();
+            this.RoomSchedules = new HashSet<RoomSchedule>();
         }
     
         public int RoomId { get; set; }
@@ -32,6 +32,6 @@ namespace GBDataRepository.Model
         public Nullable<int> UpdatedBY { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RoomSchedule> RoomSchedule { get; set; }
+        public virtual ICollection<RoomSchedule> RoomSchedules { get; set; }
     }
 }

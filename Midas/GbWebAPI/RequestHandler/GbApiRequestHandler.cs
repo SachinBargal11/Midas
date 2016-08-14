@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -7,6 +7,7 @@ using Midas.GreenBill.BusinessObject;
 using Midas.GreenBill.DataAccessManager;
 using Midas.Common;
 using Midas.GreenBill.EntityRepository;
+using Newtonsoft.Json.Linq;
 
 namespace Midas.GreenBill.Api
 {
@@ -19,13 +20,36 @@ namespace Midas.GreenBill.Api
             dataAccessManager = new GbDataAccessManager<T>();
         }
 
-        public HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject)
+        public HttpResponseMessage CreateGbObject(HttpRequestMessage request, JObject gbObject)
         {
-            int ID= dataAccessManager.Save(gbObject);
+            Object ID = dataAccessManager.Save(gbObject);
 
-            if(ID>0)
+            return request.CreateResponse(HttpStatusCode.OK, ID);
+        }
+        
+
+        private static string GetCurrentUserFromContext(HttpRequestMessage request)
+        {
+            //use the usertoken to determine the  user
+            return "";
+        }
+        public HttpResponseMessage GetObject(HttpRequestMessage request, T gbObject)
+        {
+            
+            T ID = dataAccessManager.Get(gbObject);
+
+            return request.CreateResponse<T>(HttpStatusCode.OK, ID);
+        }
+
+        public HttpResponseMessage DeleteGbObject(HttpRequestMessage request, T gbObject)
+        {
+            int ID = dataAccessManager.Delete(gbObject);
+
+            if (ID > 0)
             {
-                return request.CreateResponse<T>(HttpStatusCode.OK, gbObject);
+                var res = (GbObject)(object)gbObject;
+                res.ID = ID;
+                return request.CreateResponse<T>(HttpStatusCode.OK, (T)(object)res);
             }
             else
             {
@@ -33,31 +57,7 @@ namespace Midas.GreenBill.Api
             }
         }
 
-        private static string GetCurrentUserFromContext(HttpRequestMessage request)
-        {
-            //use the usertoken to determine the  user
-            return "";
-        }
-        public HttpResponseMessage GetGbObjectById(HttpRequestMessage request, T gbObject, int id)
-        {
-            
-            T ID = dataAccessManager.Get(gbObject, id);
-
-            return request.CreateResponse<T>(HttpStatusCode.OK, ID);
-        }
-
-        public HttpResponseMessage GetGbObjectByName(HttpRequestMessage request, T gbObject, string name)
-        {
-            List<T> objData = dataAccessManager.Get(gbObject, name);
-            return request.CreateResponse<List<T>>(HttpStatusCode.OK, objData);
-        }
-
-        public HttpResponseMessage DeleteGbObject(HttpRequestMessage request, T gbObject, int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public HttpResponseMessage ValidateUniqueName(HttpRequestMessage request, T gbObject, string name)
+        public HttpResponseMessage ValidateUniqueName(HttpRequestMessage request, T gbObject)
         {
             throw new NotImplementedException();
         }
@@ -67,11 +67,25 @@ namespace Midas.GreenBill.Api
             throw new NotImplementedException();
         }
 
-        public HttpResponseMessage GetGbObjects(HttpRequestMessage request, T gbObject, List<EntitySearchParameter> filter)
+        public HttpResponseMessage GetGbObjects(HttpRequestMessage request,JObject data)
         {
-            List<T> ID = dataAccessManager.Get(gbObject, filter);
+            Object objResult = dataAccessManager.Get(data);
 
-            return request.CreateResponse(HttpStatusCode.OK, ID);
+            return request.CreateResponse(HttpStatusCode.OK, objResult);
+        }
+
+        public HttpResponseMessage SignUp(HttpRequestMessage request, JObject data)
+        {
+            Object objResult = dataAccessManager.Signup(data);
+
+            return request.CreateResponse(HttpStatusCode.OK, objResult);
+        }
+
+        public HttpResponseMessage Login(HttpRequestMessage request, JObject data)
+        {
+            Object objResult = dataAccessManager.Login(data);
+
+            return request.CreateResponse(HttpStatusCode.OK, objResult);
         }
     }
 }

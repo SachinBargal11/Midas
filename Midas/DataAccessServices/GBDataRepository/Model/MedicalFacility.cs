@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Midas.GreenBill.Model
+namespace GBDataRepository.Model
 {
     using System;
     using System.Collections.Generic;
@@ -26,6 +26,7 @@ namespace Midas.GreenBill.Model
         public Nullable<int> AddressId { get; set; }
         public Nullable<int> ContactInfoId { get; set; }
         public string Prefix { get; set; }
+        public int DefaultAttorneyUserID { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
@@ -36,7 +37,6 @@ namespace Midas.GreenBill.Model
         public virtual Address Address { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProviderMedicalFacility> ProviderMedicalFacilities { get; set; }
     }

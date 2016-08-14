@@ -8,5 +8,6 @@ namespace Midas.Common
 {
     public class GbValidationException:GbException
     {
+
     }
 }

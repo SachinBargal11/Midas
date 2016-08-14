@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -38,6 +38,10 @@
       <HintPath>..\..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Backup\210716\Midas\GbWebAPI.Tests\bin\Debug\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -45,6 +49,7 @@
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,13 +58,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="DataAccessManager\DBContextProvider.cs" />
     <Compile Include="DataAccessManager\GbDataAccessManager.cs" />
     <Compile Include="DataAccessManager\IDBContextProvider.cs" />
     <Compile Include="DataAccessManager\IGbDataAccessManager.cs" />
+    <Compile Include="EntityRepository\Address\AddressRepository.cs" />
     <Compile Include="EntityRepository\BaseEntityRepo.cs" />
     <Compile Include="EntityRepository\Account\AccountRepository.cs" />
     <Compile Include="EntityRepository\Case\CaseRepository.cs" />
+    <Compile Include="EntityRepository\ContactInfo\ContactRepository.cs" />
+    <Compile Include="EntityRepository\MedicalFacilities\MedicalFacilityRepository.cs" />
+    <Compile Include="EntityRepository\Provider\ProviderMedicalFacilityRepository.cs" />
+    <Compile Include="EntityRepository\Provider\ProviderRepository.cs" />
     <Compile Include="EntityRepository\User\UserRepository.cs" />
     <Compile Include="EntitySearch\EntitySearch.cs" />
     <Compile Include="EntitySearch\EntitySearchParameters.cs" />
@@ -67,6 +78,9 @@
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Account.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AccountStatu.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Action.cs">
@@ -78,25 +92,22 @@
     <Compile Include="Model\Address.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Addresses.cs">
-      <DependentUpon>GreenBillsDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\ApplicationSettings.cs">
+    <Compile Include="Model\ApplicationSetting.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\AuditTrail.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\BillDetails.cs">
+    <Compile Include="Model\Bill.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\BillDetail.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\BillPom.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Bills.cs">
-      <DependentUpon>GreenBillsDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\BillStatus.cs">
+    <Compile Include="Model\BillStatu.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\BillStatusHistory.cs">
@@ -114,16 +125,19 @@
     <Compile Include="Model\CaseAssociatedDiagnosisCode.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\CaseDiagnosisSpeciality.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\CaseDocument.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\CaseStatus.cs">
+    <Compile Include="Model\CaseStatu.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CaseType.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\CompanyConnections.cs">
+    <Compile Include="Model\CompanyConnection.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ContactInfo.cs">
@@ -141,13 +155,7 @@
     <Compile Include="Model\CyclicSpecialtyConfigurationAmount.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\C__MigrationHistory.cs">
-      <DependentUpon>GreenBillsDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\C__RefactorLog.cs">
-      <DependentUpon>GreenBillsDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\DenialReasons.cs">
+    <Compile Include="Model\DenialReason.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\DiagnosisType.cs">
@@ -159,13 +167,16 @@
     <Compile Include="Model\Doctor.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\DoctorMedProvider.cs">
+    <Compile Include="Model\DoctorMedicalFacilitiesProvider.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\DoctorSpeciality.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\DocumentType.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\EmailFields.cs">
+    <Compile Include="Model\EmailField.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\EmailProfile.cs">
@@ -183,10 +194,11 @@
     <Compile Include="Model\EnvelopeConfiguration.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\GeneralDenialImages.cs">
+    <Compile Include="Model\GBDataObject.cs" />
+    <Compile Include="Model\GeneralDenial.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\GeneralDenials.cs">
+    <Compile Include="Model\GeneralDenialImage.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\GreenBillsDB.Context.cs">
@@ -219,13 +231,13 @@
     <Compile Include="Model\Mandatory.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\MedicalFacilities.cs">
+    <Compile Include="Model\MedicalFacility.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Nodes.cs">
+    <Compile Include="Model\Node.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Notes.cs">
+    <Compile Include="Model\Note.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\NotesType.cs">
@@ -234,13 +246,13 @@
     <Compile Include="Model\PacketRequest.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\PacketRequestBills.cs">
+    <Compile Include="Model\PacketRequestBill.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Patient.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\PatientAccidentDetails.cs">
+    <Compile Include="Model\PatientAccidentDetail.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PatientInsurance.cs">
@@ -249,7 +261,7 @@
     <Compile Include="Model\Payment.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\PaymentImages.cs">
+    <Compile Include="Model\PaymentImage.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\POM.cs">
@@ -261,7 +273,7 @@
     <Compile Include="Model\Provider.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\ProviderMedicalFacilities.cs">
+    <Compile Include="Model\ProviderMedicalFacility.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Reconcilation.cs">
@@ -276,19 +288,19 @@
     <Compile Include="Model\ReminderType.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\RequiredDocuments.cs">
+    <Compile Include="Model\RequiredDocument.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Role.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\RoleActions.cs">
+    <Compile Include="Model\RoleAction.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\RoleActivityEvents.cs">
+    <Compile Include="Model\RoleActivityEvent.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\RoleEvents.cs">
+    <Compile Include="Model\RoleEvent.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Room.cs">
@@ -303,7 +315,7 @@
     <Compile Include="Model\Specialty.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\SpecialtyDetails.cs">
+    <Compile Include="Model\SpecialtyDetail.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Status.cs">
@@ -315,7 +327,7 @@
     <Compile Include="Model\SystemSettingKey.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\TransferredCases.cs">
+    <Compile Include="Model\TransferredCas.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Transportation.cs">
@@ -327,16 +339,16 @@
     <Compile Include="Model\UserType.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\VerificationAnswerImages.cs">
+    <Compile Include="Model\VerificationAnswerImage.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\VerificationImages.cs">
+    <Compile Include="Model\VerificationImage.cs">
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Visit.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\VisitProcedure.cs">
-      <DependentUpon>GreenBillsDB.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Visits.cs">
       <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\VisitType.cs">
@@ -380,9 +392,6 @@
       <DependentUpon>GreenBillsDB.edmx</DependentUpon>
       <LastGenOutput>GreenBillsDB.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EntityRepository\Masters\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

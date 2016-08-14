@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
@@ -18,6 +18,9 @@ using GbWebAPI.Providers;
 using GbWebAPI.Results;
 using Midas.GreenBill.BusinessObject;
 using Midas.GreenBill.EntityRepository;
+using Newtonsoft.Json.Linq;
+using BO = Midas.GreenBill.BusinessObject;
+using System.Web.Http.Cors;
 
 namespace Midas.GreenBill.Api
 {
@@ -32,75 +35,65 @@ namespace Midas.GreenBill.Api
             requestHandler = new GbApiRequestHandler<Account>();
         }
 
-
-        // GET: api/Account
-        // get all accounts that the current user has access to
-        /// <summary>
-        /// GetAllAccount
-        /// </summary>
-        /// <returns></returns>
-        [Route("GetAllAccounts")]
+        // GET: api/Organizations/5
+        [HttpGet]
+        [Route("Get")]
         [AllowAnonymous]
         public HttpResponseMessage Get([FromBody]Account account)
         {
-            List<EntitySearchParameter> searchParams = new List<EntitySearchParameter>();
-            EntitySearchParameter par1 = new EntitySearchParameter();
-            par1.id = 1;
-            par1.type= typeof(Account);
-            searchParams.Add(par1);
-            account = new Account();
-            return requestHandler.GetGbObjects(Request, account, searchParams);
+            return requestHandler.GetObject(Request, account);
         }
 
-        // GET: api/Organizations
-        [Route("GetAccountByName")]
-        [AllowAnonymous]
-        public HttpResponseMessage Get([FromBody]Account account,string name)
-        {
-            return requestHandler.GetGbObjectByName(Request, account, name);
-        }
-
-        // GET: api/Organizations/5
         [HttpGet]
-        [Route("GetAccount")]
+        [Route("GetAll")]
         [AllowAnonymous]
-        public HttpResponseMessage Get(int id, [FromBody]Account account)
+        public HttpResponseMessage Get(JObject data)
         {
-            account = new Account();
-            return requestHandler.GetGbObjectById(Request, account, id);
+            return requestHandler.GetGbObjects(Request, data);
         }
 
         // POST: api/Organizations
         [HttpPost]
-        [Route("AddAccount")]
+        [Route("Add")]
         [AllowAnonymous]
-        public HttpResponseMessage Post([FromBody]Account account)
+        public HttpResponseMessage Post(JObject data)
         {
-            return requestHandler.CreateGbObject(Request, account);
+         return requestHandler.CreateGbObject(Request, data);
         }
 
         // PUT: api/Organizations/5
-        [Route("UpdateAccount")]
-        public HttpResponseMessage Put(int id, [FromBody]Account account)
+        [Route("Update")]
+        [HttpPut]
+        [AllowAnonymous]
+        public HttpResponseMessage Put([FromBody]Account account)
         {
             return requestHandler.UpdateGbObject(Request, account);
         }
 
         // DELETE: api/Organizations/id={organizationId}
-        [HttpGet]
-        [Route("DeleteAccount")]
+        [HttpDelete]
+        [Route("Delete")]
         [AllowAnonymous]
-        public HttpResponseMessage Delete([FromBody]Account account,int id)
+        public HttpResponseMessage Delete([FromBody]Account account)
         {
-            return requestHandler.DeleteGbObject(Request, account, id);
+            return requestHandler.DeleteGbObject(Request, account);
         }
 
         // Unique Name Validation
-        [HttpGet]
+        [HttpPost]
         [Route("IsUnique")]
-        public HttpResponseMessage IsUnique([FromBody]Account account,string name)
+        [AllowAnonymous]
+        public HttpResponseMessage IsUnique([FromBody]Account account)
         {
-            return requestHandler.ValidateUniqueName(Request, account,name);
+            return requestHandler.ValidateUniqueName(Request, account);
+        }
+
+        [HttpPost]
+        [Route("Signup")]
+        [AllowAnonymous]
+        public HttpResponseMessage Signup(JObject data)
+        { 
+            return requestHandler.SignUp(Request, data);
         }
 
         protected override void Dispose(bool disposing)
