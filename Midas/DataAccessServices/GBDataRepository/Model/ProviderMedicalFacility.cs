@@ -16,7 +16,7 @@ namespace GBDataRepository.Model
     {
         public int ID { get; set; }
         public int ProviderID { get; set; }
-        public int MedicalOfficeID { get; set; }
+        public int MedicalFacilityID { get; set; }
         public int BillingAdressID { get; set; }
         public int TreatingAddressID { get; set; }
         public int BillingContactInfoID { get; set; }
@@ -27,12 +27,11 @@ namespace GBDataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
+        public virtual Address Address { get; set; }
+        public virtual Address Address1 { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual ContactInfo ContactInfo1 { get; set; }
         public virtual MedicalFacility MedicalFacility { get; set; }
-        public virtual Patient Patient { get; set; }
         public virtual Provider Provider { get; set; }
-        public virtual ProviderMedicalFacility ProviderMedicalFacilities1 { get; set; }
-        public virtual ProviderMedicalFacility ProviderMedicalFacility1 { get; set; }
     }
 }

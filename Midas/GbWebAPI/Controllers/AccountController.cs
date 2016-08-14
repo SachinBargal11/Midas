@@ -20,6 +20,8 @@ using Midas.GreenBill.BusinessObject;
 using Midas.GreenBill.EntityRepository;
 using Newtonsoft.Json.Linq;
 using BO = Midas.GreenBill.BusinessObject;
+using System.Web.Http.Cors;
+
 namespace Midas.GreenBill.Api
 {
     [Authorize]
@@ -34,7 +36,7 @@ namespace Midas.GreenBill.Api
         }
 
         // GET: api/Organizations/5
-        [HttpPost]
+        [HttpGet]
         [Route("Get")]
         [AllowAnonymous]
         public HttpResponseMessage Get([FromBody]Account account)
@@ -42,13 +44,21 @@ namespace Midas.GreenBill.Api
             return requestHandler.GetObject(Request, account);
         }
 
+        [HttpGet]
+        [Route("GetAll")]
+        [AllowAnonymous]
+        public HttpResponseMessage Get(JObject data)
+        {
+            return requestHandler.GetGbObjects(Request, data);
+        }
+
         // POST: api/Organizations
         [HttpPost]
         [Route("Add")]
         [AllowAnonymous]
-        public HttpResponseMessage Post([FromBody]Account account)
+        public HttpResponseMessage Post(JObject data)
         {
-         return requestHandler.CreateGbObject(Request, account);
+         return requestHandler.CreateGbObject(Request, data);
         }
 
         // PUT: api/Organizations/5
@@ -82,16 +92,7 @@ namespace Midas.GreenBill.Api
         [Route("Signup")]
         [AllowAnonymous]
         public HttpResponseMessage Signup(JObject data)
-        {
-            //dynamic json = data;
-
-            //stuff["content"].ToObject<Content>();
-
-            //BO.Account account = data.ToObject<BO.Account>();
-            //BO.User user = data.ToObject<BO.User>();
-            //BO.Address address = data.ToObject<BO.Address>();
-            //BO.ContactInfo contactinfo = data.ToObject<BO.ContactInfo>();
-
+        { 
             return requestHandler.SignUp(Request, data);
         }
 

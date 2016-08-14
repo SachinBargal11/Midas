@@ -16,15 +16,21 @@ namespace GbWebAPI.Providers
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
     {
         private readonly string _publicClientId;
-
-        public ApplicationOAuthProvider(string publicClientId)
+        private readonly Func<UserManager<IdentityUser>> _userManagerFactory;
+        public ApplicationOAuthProvider(string publicClientId, Func<UserManager<IdentityUser>> userManagerFactory)
         {
             if (publicClientId == null)
             {
                 throw new ArgumentNullException("publicClientId");
             }
 
+            if (userManagerFactory == null)
+            {
+                throw new ArgumentNullException("userManagerFactory");
+            }
+
             _publicClientId = publicClientId;
+            _userManagerFactory = userManagerFactory;
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)

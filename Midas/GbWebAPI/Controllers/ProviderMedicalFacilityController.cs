@@ -18,39 +18,30 @@ using GbWebAPI.Providers;
 using GbWebAPI.Results;
 using Midas.GreenBill.BusinessObject;
 using Midas.GreenBill.EntityRepository;
-using Midas.GreenBill.DataAccessManager;
-using Midas.GreenBill.Api;
 using Newtonsoft.Json.Linq;
+using BO = Midas.GreenBill.BusinessObject;
 using System.Web.Http.Cors;
-using TokenAuthMVC.Attributes;
 
 namespace Midas.GreenBill.Api
 {
-    [RoutePrefix("midasapi/User")]
-    [RESTAuthorize]
-    public class UserController : ApiController
+    [Authorize]
+    [RoutePrefix("midasapi/ProviderMedicalFacility")]
+    public class ProviderMedicalFacilityController : ApiController
     {
+        private IRequestHandler<ProviderMedicalFacility> requestHandler;
 
-        private IRequestHandler<User> requestHandler;
-        public UserController()
+        public ProviderMedicalFacilityController()
         {
-            requestHandler = new GbApiRequestHandler<User>();
+            requestHandler = new GbApiRequestHandler<ProviderMedicalFacility>();
         }
 
-        [HttpPost]
-        [Route("GetAll")]
-        [AllowAnonymous]
-        public HttpResponseMessage Get(JObject data)
-        {
-            return requestHandler.GetGbObjects(Request, data);
-        }
-
+        // GET: api/Organizations/5
         [HttpPost]
         [Route("Get")]
         [AllowAnonymous]
-        public HttpResponseMessage Get([FromBody]User User)
+        public HttpResponseMessage Get([FromBody]ProviderMedicalFacility pmf)
         {
-            return requestHandler.GetObject(Request, User);
+            return requestHandler.GetObject(Request, pmf);
         }
 
         // POST: api/Organizations
@@ -66,35 +57,29 @@ namespace Midas.GreenBill.Api
         [Route("Update")]
         [HttpPut]
         [AllowAnonymous]
-        public HttpResponseMessage Put([FromBody]User User)
+        public HttpResponseMessage Put([FromBody]ProviderMedicalFacility pmf)
         {
-            return requestHandler.UpdateGbObject(Request, User);
+            return requestHandler.UpdateGbObject(Request, pmf);
         }
 
         // DELETE: api/Organizations/id={organizationId}
         [HttpDelete]
         [Route("Delete")]
         [AllowAnonymous]
-        public HttpResponseMessage Delete([FromBody]User User)
+        public HttpResponseMessage Delete([FromBody]ProviderMedicalFacility pmf)
         {
-            return requestHandler.DeleteGbObject(Request, User);
-        }
-
-        [HttpPost]
-        [Route("Signin")]
-        [RESTAuthorize]
-        public HttpResponseMessage Signin(JObject data)
-        {
-            return requestHandler.Login(Request, data);
+            return requestHandler.DeleteGbObject(Request, pmf);
         }
 
         // Unique Name Validation
-        [HttpGet]
+        [HttpPost]
         [Route("IsUnique")]
-        public HttpResponseMessage IsUnique([FromBody]User User)
+        [AllowAnonymous]
+        public HttpResponseMessage IsUnique([FromBody]ProviderMedicalFacility pmf)
         {
-            return requestHandler.ValidateUniqueName(Request, User);
+            return requestHandler.ValidateUniqueName(Request, pmf);
         }
+
 
         protected override void Dispose(bool disposing)
         {
@@ -103,3 +88,7 @@ namespace Midas.GreenBill.Api
 
     }
 }
+
+
+
+//ProviderMedicalFacilityController

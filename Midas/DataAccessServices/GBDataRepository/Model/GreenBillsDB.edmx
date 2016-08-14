@@ -26,8 +26,8 @@
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Status" Type="tinyint" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
-          <Property Name="CreateByUserID" Type="int" />
-          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime" />
         </EntityType>
@@ -75,11 +75,11 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Activity' does not have a primary
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Address1" Type="nvarchar" MaxLength="512" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Address1" Type="nvarchar" MaxLength="512" />
           <Property Name="Address2" Type="nvarchar" MaxLength="512" />
-          <Property Name="City" Type="nvarchar" MaxLength="256" Nullable="false" />
-          <Property Name="State" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="256" />
+          <Property Name="State" Type="nvarchar" MaxLength="256" />
           <Property Name="ZipCode" Type="nvarchar" MaxLength="12" />
           <Property Name="Country" Type="nvarchar" MaxLength="20" />
           <Property Name="IsDeleted" Type="bit" />
@@ -87,19 +87,6 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Activity' does not have a primary
           <Property Name="CreateDate" Type="datetime" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime" />
-        </EntityType>
-        <EntityType Name="Addresses">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar(max)" />
-          <Property Name="Description" Type="nvarchar(max)" />
-          <Property Name="IsDeleted" Type="bit" Nullable="false" />
-          <Property Name="CreateByUserID" Type="nvarchar(max)" />
-          <Property Name="UpdateByUserID" Type="nvarchar(max)" />
-          <Property Name="CreateDate" Type="datetime" Nullable="false" />
-          <Property Name="UpdateDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="ApplicationSettings">
           <Key>
@@ -387,7 +374,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.CompanyConnections' does not have
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="CellPhone" Type="nvarchar" MaxLength="50" />
           <Property Name="EmailAddress" Type="nvarchar" MaxLength="256" />
           <Property Name="HomePhone" Type="nvarchar" MaxLength="50" />
@@ -530,10 +517,9 @@ warning 6002: The table/view 'GreenBillsDb.dbo.CyclicSpecialtyConfigurationAmoun
           <Property Name="TaxType" Type="tinyint" />
           <Property Name="AssignNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="Title" Type="nvarchar" MaxLength="10" />
-          <Property Name="DoctorType" Type="tinyint" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime" />
         </EntityType>
@@ -1048,6 +1034,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.PacketRequestBills' does not have
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="NPI" Type="nvarchar" MaxLength="10" />
           <Property Name="FederalTaxId" Type="nvarchar" MaxLength="50" />
           <Property Name="Prefix" Type="nvarchar" MaxLength="5" />
@@ -1062,7 +1049,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.PacketRequestBills' does not have
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProviderID" Type="int" Nullable="false" />
-          <Property Name="MedicalOfficeID" Type="int" Nullable="false" />
+          <Property Name="MedicalFacilityID" Type="int" Nullable="false" />
           <Property Name="BillingAdressID" Type="int" Nullable="false" />
           <Property Name="TreatingAddressID" Type="int" Nullable="false" />
           <Property Name="BillingContactInfoID" Type="int" Nullable="false" />
@@ -1400,19 +1387,19 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AccountID" Type="int" />
-          <Property Name="UserName" Type="nvarchar" MaxLength="100" />
+          <Property Name="AccountID" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Gender" Type="tinyint" />
           <Property Name="UserType" Type="tinyint" Nullable="false" />
           <Property Name="ImageLink" Type="nvarchar" MaxLength="512" />
-          <Property Name="AddressId" Type="int" />
-          <Property Name="ContactInfoId" Type="int" />
+          <Property Name="AddressId" Type="int" Nullable="false" />
+          <Property Name="ContactInfoId" Type="int" Nullable="false" />
           <Property Name="DateOfBirth" Type="datetime" />
-          <Property Name="Password" Type="nvarchar" MaxLength="500" />
+          <Property Name="Password" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
-          <Property Name="CreateByUserID" Type="int" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime" />
@@ -1630,27 +1617,15 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_DoctorMedicalFacilitiesProvider_Doctor">
-          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
-          <End Role="DoctorMedicalFacilitiesProvider" Type="Self.DoctorMedicalFacilitiesProvider" Multiplicity="*" />
+        <Association Name="FK_Doctor_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Doctor">
+            <Principal Role="User">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="DoctorMedicalFacilitiesProvider">
-              <PropertyRef Name="DoctorID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DoctorMedicalFacilitiesProvider_MedicalFacilities">
-          <End Role="MedicalFacilities" Type="Self.MedicalFacilities" Multiplicity="1" />
-          <End Role="DoctorMedicalFacilitiesProvider" Type="Self.DoctorMedicalFacilitiesProvider" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MedicalFacilities">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="DoctorMedicalFacilitiesProvider">
-              <PropertyRef Name="MedicalFacilitiesID" />
+            <Dependent Role="Doctor">
+              <PropertyRef Name="DoctorUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1663,18 +1638,6 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             </Principal>
             <Dependent Role="DoctorMedicalFacilitiesProvider">
               <PropertyRef Name="ProviderID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployerAddress_Addresses">
-          <End Role="Addresses" Type="Self.Addresses" Multiplicity="0..1" />
-          <End Role="EmployerAddress" Type="Self.EmployerAddress" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Addresses">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="EmployerAddress">
-              <PropertyRef Name="AddressID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1714,7 +1677,31 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_MedicalOffices_ContactInfo">
+        <Association Name="FK_MedicalFacilities_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="MedicalFacilities" Type="Self.MedicalFacilities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MedicalFacilities">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MedicalFacilities_Address">
+          <End Role="Address" Type="Self.Address" Multiplicity="0..1" />
+          <End Role="MedicalFacilities" Type="Self.MedicalFacilities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MedicalFacilities">
+              <PropertyRef Name="AddressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MedicalFacilities_ContactInfo">
           <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="0..1" />
           <End Role="MedicalFacilities" Type="Self.MedicalFacilities" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1726,15 +1713,15 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Patient_ProviderMedicalOffices">
-          <End Role="ProviderMedicalFacilities" Type="Self.ProviderMedicalFacilities" Multiplicity="1" />
-          <End Role="Patient" Type="Self.Patient" Multiplicity="0..1" />
+        <Association Name="FK_MedicalFacilities_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="MedicalFacilities" Type="Self.MedicalFacilities" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ProviderMedicalFacilities">
+            <Principal Role="User">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Patient">
-              <PropertyRef Name="ID" />
+            <Dependent Role="MedicalFacilities">
+              <PropertyRef Name="DefaultAttorneyUserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1774,7 +1761,19 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ProviderMedicalOffices_ContactInfo">
+        <Association Name="FK_ProviderMedicalFacilities_BillingAddress">
+          <End Role="Address" Type="Self.Address" Multiplicity="1" />
+          <End Role="ProviderMedicalFacilities" Type="Self.ProviderMedicalFacilities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ProviderMedicalFacilities">
+              <PropertyRef Name="BillingAdressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProviderMedicalFacilities_BillingContactInfo">
           <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="1" />
           <End Role="ProviderMedicalFacilities" Type="Self.ProviderMedicalFacilities" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1786,31 +1785,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ProviderMedicalOffices_ContactInfo1">
-          <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="1" />
-          <End Role="ProviderMedicalFacilities" Type="Self.ProviderMedicalFacilities" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ContactInfo">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ProviderMedicalFacilities">
-              <PropertyRef Name="TreatingContactInfoID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ProviderMedicalOffices_MedicalOffices">
-          <End Role="MedicalFacilities" Type="Self.MedicalFacilities" Multiplicity="1" />
-          <End Role="ProviderMedicalFacilities" Type="Self.ProviderMedicalFacilities" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MedicalFacilities">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ProviderMedicalFacilities">
-              <PropertyRef Name="MedicalOfficeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ProviderMedicalOffices_Provider">
+        <Association Name="FK_ProviderMedicalFacilities_Provider">
           <End Role="Provider" Type="Self.Provider" Multiplicity="1" />
           <End Role="ProviderMedicalFacilities" Type="Self.ProviderMedicalFacilities" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1822,15 +1797,39 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ProviderMedicalOffices_ProviderMedicalOffices">
-          <End Role="ProviderMedicalFacilities" Type="Self.ProviderMedicalFacilities" Multiplicity="1" />
-          <End Role="ProviderMedicalFacilities1" Type="Self.ProviderMedicalFacilities" Multiplicity="0..1" />
+        <Association Name="FK_ProviderMedicalFacilities_ProviderMedicalFacilities">
+          <End Role="MedicalFacilities" Type="Self.MedicalFacilities" Multiplicity="1" />
+          <End Role="ProviderMedicalFacilities" Type="Self.ProviderMedicalFacilities" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="ProviderMedicalFacilities">
+            <Principal Role="MedicalFacilities">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="ProviderMedicalFacilities1">
+            <Dependent Role="ProviderMedicalFacilities">
+              <PropertyRef Name="MedicalFacilityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProviderMedicalFacilities_TraetingAddress">
+          <End Role="Address" Type="Self.Address" Multiplicity="1" />
+          <End Role="ProviderMedicalFacilities" Type="Self.ProviderMedicalFacilities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
               <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ProviderMedicalFacilities">
+              <PropertyRef Name="TreatingAddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProviderMedicalFacilities_TreatingContactInfo">
+          <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="1" />
+          <End Role="ProviderMedicalFacilities" Type="Self.ProviderMedicalFacilities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactInfo">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ProviderMedicalFacilities">
+              <PropertyRef Name="TreatingContactInfoID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1847,7 +1846,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_User_Account">
-          <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Account">
@@ -1859,7 +1858,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_User_Address">
-          <End Role="Address" Type="Self.Address" Multiplicity="0..1" />
+          <End Role="Address" Type="Self.Address" Multiplicity="1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Address">
@@ -1871,7 +1870,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_User_ContactInfo">
-          <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="0..1" />
+          <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ContactInfo">
@@ -1899,7 +1898,6 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Action" EntityType="Self.Action" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Address" EntityType="Self.Address" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Addresses" EntityType="Self.Addresses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ApplicationSettings" EntityType="Self.ApplicationSettings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BillDetails" EntityType="Self.BillDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BillPom" EntityType="Self.BillPom" Schema="dbo" store:Type="Tables" />
@@ -2328,21 +2326,13 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             <End Role="Abbreviation" EntitySet="Abbreviation" />
             <End Role="CaseType" EntitySet="CaseType" />
           </AssociationSet>
-          <AssociationSet Name="FK_DoctorMedicalFacilitiesProvider_Doctor" Association="Self.FK_DoctorMedicalFacilitiesProvider_Doctor">
+          <AssociationSet Name="FK_Doctor_User" Association="Self.FK_Doctor_User">
+            <End Role="User" EntitySet="User" />
             <End Role="Doctor" EntitySet="Doctor" />
-            <End Role="DoctorMedicalFacilitiesProvider" EntitySet="DoctorMedicalFacilitiesProvider" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorMedicalFacilitiesProvider_MedicalFacilities" Association="Self.FK_DoctorMedicalFacilitiesProvider_MedicalFacilities">
-            <End Role="MedicalFacilities" EntitySet="MedicalFacilities" />
-            <End Role="DoctorMedicalFacilitiesProvider" EntitySet="DoctorMedicalFacilitiesProvider" />
           </AssociationSet>
           <AssociationSet Name="FK_DoctorMedicalFacilitiesProvider_Provider" Association="Self.FK_DoctorMedicalFacilitiesProvider_Provider">
             <End Role="Provider" EntitySet="Provider" />
             <End Role="DoctorMedicalFacilitiesProvider" EntitySet="DoctorMedicalFacilitiesProvider" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployerAddress_Addresses" Association="Self.FK_EmployerAddress_Addresses">
-            <End Role="Addresses" EntitySet="Addresses" />
-            <End Role="EmployerAddress" EntitySet="EmployerAddress" />
           </AssociationSet>
           <AssociationSet Name="FK_EmployerAddress_ContactInfo" Association="Self.FK_EmployerAddress_ContactInfo">
             <End Role="ContactInfo" EntitySet="ContactInfo" />
@@ -2356,13 +2346,21 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             <End Role="ContactInfo" EntitySet="ContactInfo" />
             <End Role="InsuranceAddress" EntitySet="InsuranceAddress" />
           </AssociationSet>
-          <AssociationSet Name="FK_MedicalOffices_ContactInfo" Association="Self.FK_MedicalOffices_ContactInfo">
+          <AssociationSet Name="FK_MedicalFacilities_Account" Association="Self.FK_MedicalFacilities_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="MedicalFacilities" EntitySet="MedicalFacilities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MedicalFacilities_Address" Association="Self.FK_MedicalFacilities_Address">
+            <End Role="Address" EntitySet="Address" />
+            <End Role="MedicalFacilities" EntitySet="MedicalFacilities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MedicalFacilities_ContactInfo" Association="Self.FK_MedicalFacilities_ContactInfo">
             <End Role="ContactInfo" EntitySet="ContactInfo" />
             <End Role="MedicalFacilities" EntitySet="MedicalFacilities" />
           </AssociationSet>
-          <AssociationSet Name="FK_Patient_ProviderMedicalOffices" Association="Self.FK_Patient_ProviderMedicalOffices">
-            <End Role="ProviderMedicalFacilities" EntitySet="ProviderMedicalFacilities" />
-            <End Role="Patient" EntitySet="Patient" />
+          <AssociationSet Name="FK_MedicalFacilities_User" Association="Self.FK_MedicalFacilities_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="MedicalFacilities" EntitySet="MedicalFacilities" />
           </AssociationSet>
           <AssociationSet Name="FK_PatientInsurance_Insurance" Association="Self.FK_PatientInsurance_Insurance">
             <End Role="Insurance" EntitySet="Insurance" />
@@ -2376,25 +2374,29 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             <End Role="Specialty" EntitySet="Specialty" />
             <End Role="ProcedureCode" EntitySet="ProcedureCode" />
           </AssociationSet>
-          <AssociationSet Name="FK_ProviderMedicalOffices_ContactInfo" Association="Self.FK_ProviderMedicalOffices_ContactInfo">
+          <AssociationSet Name="FK_ProviderMedicalFacilities_BillingAddress" Association="Self.FK_ProviderMedicalFacilities_BillingAddress">
+            <End Role="Address" EntitySet="Address" />
+            <End Role="ProviderMedicalFacilities" EntitySet="ProviderMedicalFacilities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProviderMedicalFacilities_BillingContactInfo" Association="Self.FK_ProviderMedicalFacilities_BillingContactInfo">
             <End Role="ContactInfo" EntitySet="ContactInfo" />
             <End Role="ProviderMedicalFacilities" EntitySet="ProviderMedicalFacilities" />
           </AssociationSet>
-          <AssociationSet Name="FK_ProviderMedicalOffices_ContactInfo1" Association="Self.FK_ProviderMedicalOffices_ContactInfo1">
-            <End Role="ContactInfo" EntitySet="ContactInfo" />
-            <End Role="ProviderMedicalFacilities" EntitySet="ProviderMedicalFacilities" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ProviderMedicalOffices_MedicalOffices" Association="Self.FK_ProviderMedicalOffices_MedicalOffices">
-            <End Role="MedicalFacilities" EntitySet="MedicalFacilities" />
-            <End Role="ProviderMedicalFacilities" EntitySet="ProviderMedicalFacilities" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ProviderMedicalOffices_Provider" Association="Self.FK_ProviderMedicalOffices_Provider">
+          <AssociationSet Name="FK_ProviderMedicalFacilities_Provider" Association="Self.FK_ProviderMedicalFacilities_Provider">
             <End Role="Provider" EntitySet="Provider" />
             <End Role="ProviderMedicalFacilities" EntitySet="ProviderMedicalFacilities" />
           </AssociationSet>
-          <AssociationSet Name="FK_ProviderMedicalOffices_ProviderMedicalOffices" Association="Self.FK_ProviderMedicalOffices_ProviderMedicalOffices">
+          <AssociationSet Name="FK_ProviderMedicalFacilities_ProviderMedicalFacilities" Association="Self.FK_ProviderMedicalFacilities_ProviderMedicalFacilities">
+            <End Role="MedicalFacilities" EntitySet="MedicalFacilities" />
             <End Role="ProviderMedicalFacilities" EntitySet="ProviderMedicalFacilities" />
-            <End Role="ProviderMedicalFacilities1" EntitySet="ProviderMedicalFacilities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProviderMedicalFacilities_TraetingAddress" Association="Self.FK_ProviderMedicalFacilities_TraetingAddress">
+            <End Role="Address" EntitySet="Address" />
+            <End Role="ProviderMedicalFacilities" EntitySet="ProviderMedicalFacilities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProviderMedicalFacilities_TreatingContactInfo" Association="Self.FK_ProviderMedicalFacilities_TreatingContactInfo">
+            <End Role="ContactInfo" EntitySet="ContactInfo" />
+            <End Role="ProviderMedicalFacilities" EntitySet="ProviderMedicalFacilities" />
           </AssociationSet>
           <AssociationSet Name="FK_RoomDays_RoomId" Association="Self.FK_RoomDays_RoomId">
             <End Role="Room" EntitySet="Room" />
@@ -2444,10 +2446,11 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Status" Type="Byte" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateByUserID" Type="Int32" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="MedicalFacilities" Relationship="Self.FK_MedicalFacilities_Account" FromRole="Account" ToRole="MedicalFacilities" />
           <NavigationProperty Name="Users" Relationship="Self.FK_User_Account" FromRole="Account" ToRole="User" />
         </EntityType>
         <EntityType Name="Action">
@@ -2462,11 +2465,11 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Address1" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address1" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
           <Property Name="Address2" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="State" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="ZipCode" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
           <Property Name="Country" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="IsDeleted" Type="Boolean" />
@@ -2474,21 +2477,10 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="MedicalFacilities" Relationship="Self.FK_MedicalFacilities_Address" FromRole="Address" ToRole="MedicalFacilities" />
+          <NavigationProperty Name="ProviderMedicalFacilities" Relationship="Self.FK_ProviderMedicalFacilities_BillingAddress" FromRole="Address" ToRole="ProviderMedicalFacilities" />
+          <NavigationProperty Name="ProviderMedicalFacilities1" Relationship="Self.FK_ProviderMedicalFacilities_TraetingAddress" FromRole="Address" ToRole="ProviderMedicalFacilities" />
           <NavigationProperty Name="Users" Relationship="Self.FK_User_Address" FromRole="Address" ToRole="User" />
-        </EntityType>
-        <EntityType Name="Address1">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="CreateByUserID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="UpdateByUserID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="EmployerAddresses" Relationship="Self.FK_EmployerAddress_Addresses" FromRole="Addresses" ToRole="EmployerAddress" />
         </EntityType>
         <EntityType Name="ApplicationSetting">
           <Key>
@@ -2723,7 +2715,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CellPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EmailAddress" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="HomePhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -2736,9 +2728,9 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="EmployerAddresses" Relationship="Self.FK_EmployerAddress_ContactInfo" FromRole="ContactInfo" ToRole="EmployerAddress" />
           <NavigationProperty Name="InsuranceAddresses" Relationship="Self.FK_InsuranceAddress_ContactInfo" FromRole="ContactInfo" ToRole="InsuranceAddress" />
-          <NavigationProperty Name="MedicalFacilities" Relationship="Self.FK_MedicalOffices_ContactInfo" FromRole="ContactInfo" ToRole="MedicalFacilities" />
-          <NavigationProperty Name="ProviderMedicalFacilities" Relationship="Self.FK_ProviderMedicalOffices_ContactInfo" FromRole="ContactInfo" ToRole="ProviderMedicalFacilities" />
-          <NavigationProperty Name="ProviderMedicalFacilities1" Relationship="Self.FK_ProviderMedicalOffices_ContactInfo1" FromRole="ContactInfo" ToRole="ProviderMedicalFacilities" />
+          <NavigationProperty Name="MedicalFacilities" Relationship="Self.FK_MedicalFacilities_ContactInfo" FromRole="ContactInfo" ToRole="MedicalFacilities" />
+          <NavigationProperty Name="ProviderMedicalFacilities" Relationship="Self.FK_ProviderMedicalFacilities_BillingContactInfo" FromRole="ContactInfo" ToRole="ProviderMedicalFacilities" />
+          <NavigationProperty Name="ProviderMedicalFacilities1" Relationship="Self.FK_ProviderMedicalFacilities_TreatingContactInfo" FromRole="ContactInfo" ToRole="ProviderMedicalFacilities" />
           <NavigationProperty Name="Users" Relationship="Self.FK_User_ContactInfo" FromRole="ContactInfo" ToRole="User" />
         </EntityType>
         <EntityType Name="DenialReason">
@@ -2802,13 +2794,12 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
           <Property Name="TaxType" Type="Byte" />
           <Property Name="AssignNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Title" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="DoctorType" Type="Byte" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="DoctorMedicalFacilitiesProviders" Relationship="Self.FK_DoctorMedicalFacilitiesProvider_Doctor" FromRole="Doctor" ToRole="DoctorMedicalFacilitiesProvider" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Doctor_User" FromRole="Doctor" ToRole="User" />
         </EntityType>
         <EntityType Name="DoctorMedicalFacilitiesProvider">
           <Key>
@@ -2823,8 +2814,6 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Doctor" Relationship="Self.FK_DoctorMedicalFacilitiesProvider_Doctor" FromRole="DoctorMedicalFacilitiesProvider" ToRole="Doctor" />
-          <NavigationProperty Name="MedicalFacility" Relationship="Self.FK_DoctorMedicalFacilitiesProvider_MedicalFacilities" FromRole="DoctorMedicalFacilitiesProvider" ToRole="MedicalFacilities" />
           <NavigationProperty Name="Provider" Relationship="Self.FK_DoctorMedicalFacilitiesProvider_Provider" FromRole="DoctorMedicalFacilitiesProvider" ToRole="Provider" />
         </EntityType>
         <EntityType Name="DoctorSpeciality">
@@ -2932,7 +2921,6 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Address" Relationship="Self.FK_EmployerAddress_Addresses" FromRole="EmployerAddress" ToRole="Addresses" />
           <NavigationProperty Name="Cases" Relationship="Self.FK_Case_EmployerAddress" FromRole="EmployerAddress" ToRole="Case" />
           <NavigationProperty Name="ContactInfo" Relationship="Self.FK_EmployerAddress_ContactInfo" FromRole="EmployerAddress" ToRole="ContactInfo" />
           <NavigationProperty Name="Employer" Relationship="Self.FK_EmployerAddress_User" FromRole="EmployerAddress" ToRole="Employer" />
@@ -3017,9 +3005,11 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="ContactInfo" Relationship="Self.FK_MedicalOffices_ContactInfo" FromRole="MedicalFacilities" ToRole="ContactInfo" />
-          <NavigationProperty Name="DoctorMedicalFacilitiesProviders" Relationship="Self.FK_DoctorMedicalFacilitiesProvider_MedicalFacilities" FromRole="MedicalFacilities" ToRole="DoctorMedicalFacilitiesProvider" />
-          <NavigationProperty Name="ProviderMedicalFacilities" Relationship="Self.FK_ProviderMedicalOffices_MedicalOffices" FromRole="MedicalFacilities" ToRole="ProviderMedicalFacilities" />
+          <NavigationProperty Name="Account" Relationship="Self.FK_MedicalFacilities_Account" FromRole="MedicalFacilities" ToRole="Account" />
+          <NavigationProperty Name="Address" Relationship="Self.FK_MedicalFacilities_Address" FromRole="MedicalFacilities" ToRole="Address" />
+          <NavigationProperty Name="ContactInfo" Relationship="Self.FK_MedicalFacilities_ContactInfo" FromRole="MedicalFacilities" ToRole="ContactInfo" />
+          <NavigationProperty Name="User" Relationship="Self.FK_MedicalFacilities_User" FromRole="MedicalFacilities" ToRole="User" />
+          <NavigationProperty Name="ProviderMedicalFacilities" Relationship="Self.FK_ProviderMedicalFacilities_ProviderMedicalFacilities" FromRole="MedicalFacilities" ToRole="ProviderMedicalFacilities" />
         </EntityType>
         <EntityType Name="Node">
           <Key>
@@ -3058,7 +3048,6 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Cases" Relationship="Self.FK_Case_Patient" FromRole="Patient" ToRole="Case" />
-          <NavigationProperty Name="ProviderMedicalFacility" Relationship="Self.FK_Patient_ProviderMedicalOffices" FromRole="Patient" ToRole="ProviderMedicalFacilities" />
           <NavigationProperty Name="PatientInsurances" Relationship="Self.FK_PatientInsurance_Patient" FromRole="Patient" ToRole="PatientInsurance" />
         </EntityType>
         <EntityType Name="PatientAccidentDetail">
@@ -3183,6 +3172,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="NPI" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="FederalTaxId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Prefix" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
@@ -3191,7 +3181,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="DoctorMedicalFacilitiesProviders" Relationship="Self.FK_DoctorMedicalFacilitiesProvider_Provider" FromRole="Provider" ToRole="DoctorMedicalFacilitiesProvider" />
-          <NavigationProperty Name="ProviderMedicalFacilities" Relationship="Self.FK_ProviderMedicalOffices_Provider" FromRole="Provider" ToRole="ProviderMedicalFacilities" />
+          <NavigationProperty Name="ProviderMedicalFacilities" Relationship="Self.FK_ProviderMedicalFacilities_Provider" FromRole="Provider" ToRole="ProviderMedicalFacilities" />
         </EntityType>
         <EntityType Name="ProviderMedicalFacility">
           <Key>
@@ -3199,7 +3189,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProviderID" Type="Int32" Nullable="false" />
-          <Property Name="MedicalOfficeID" Type="Int32" Nullable="false" />
+          <Property Name="MedicalFacilityID" Type="Int32" Nullable="false" />
           <Property Name="BillingAdressID" Type="Int32" Nullable="false" />
           <Property Name="TreatingAddressID" Type="Int32" Nullable="false" />
           <Property Name="BillingContactInfoID" Type="Int32" Nullable="false" />
@@ -3209,13 +3199,12 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="ContactInfo" Relationship="Self.FK_ProviderMedicalOffices_ContactInfo" FromRole="ProviderMedicalFacilities" ToRole="ContactInfo" />
-          <NavigationProperty Name="ContactInfo1" Relationship="Self.FK_ProviderMedicalOffices_ContactInfo1" FromRole="ProviderMedicalFacilities" ToRole="ContactInfo" />
-          <NavigationProperty Name="MedicalFacility" Relationship="Self.FK_ProviderMedicalOffices_MedicalOffices" FromRole="ProviderMedicalFacilities" ToRole="MedicalFacilities" />
-          <NavigationProperty Name="Patient" Relationship="Self.FK_Patient_ProviderMedicalOffices" FromRole="ProviderMedicalFacilities" ToRole="Patient" />
-          <NavigationProperty Name="Provider" Relationship="Self.FK_ProviderMedicalOffices_Provider" FromRole="ProviderMedicalFacilities" ToRole="Provider" />
-          <NavigationProperty Name="ProviderMedicalFacilities1" Relationship="Self.FK_ProviderMedicalOffices_ProviderMedicalOffices" FromRole="ProviderMedicalFacilities" ToRole="ProviderMedicalFacilities1" />
-          <NavigationProperty Name="ProviderMedicalFacility1" Relationship="Self.FK_ProviderMedicalOffices_ProviderMedicalOffices" FromRole="ProviderMedicalFacilities1" ToRole="ProviderMedicalFacilities" />
+          <NavigationProperty Name="Address" Relationship="Self.FK_ProviderMedicalFacilities_BillingAddress" FromRole="ProviderMedicalFacilities" ToRole="Address" />
+          <NavigationProperty Name="Address1" Relationship="Self.FK_ProviderMedicalFacilities_TraetingAddress" FromRole="ProviderMedicalFacilities" ToRole="Address" />
+          <NavigationProperty Name="ContactInfo" Relationship="Self.FK_ProviderMedicalFacilities_BillingContactInfo" FromRole="ProviderMedicalFacilities" ToRole="ContactInfo" />
+          <NavigationProperty Name="ContactInfo1" Relationship="Self.FK_ProviderMedicalFacilities_TreatingContactInfo" FromRole="ProviderMedicalFacilities" ToRole="ContactInfo" />
+          <NavigationProperty Name="MedicalFacility" Relationship="Self.FK_ProviderMedicalFacilities_ProviderMedicalFacilities" FromRole="ProviderMedicalFacilities" ToRole="MedicalFacilities" />
+          <NavigationProperty Name="Provider" Relationship="Self.FK_ProviderMedicalFacilities_Provider" FromRole="ProviderMedicalFacilities" ToRole="Provider" />
         </EntityType>
         <EntityType Name="Reconcilation">
           <Key>
@@ -3395,25 +3384,27 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AccountID" Type="Int32" />
-          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AccountID" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Gender" Type="Byte" />
           <Property Name="UserType" Type="Byte" Nullable="false" />
           <Property Name="ImageLink" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-          <Property Name="AddressId" Type="Int32" />
-          <Property Name="ContactInfoId" Type="Int32" />
+          <Property Name="AddressId" Type="Int32" Nullable="false" />
+          <Property Name="ContactInfoId" Type="Int32" Nullable="false" />
           <Property Name="DateOfBirth" Type="DateTime" Precision="3" />
-          <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateByUserID" Type="Int32" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Account" Relationship="Self.FK_User_Account" FromRole="User" ToRole="Account" />
           <NavigationProperty Name="Address" Relationship="Self.FK_User_Address" FromRole="User" ToRole="Address" />
           <NavigationProperty Name="ContactInfo" Relationship="Self.FK_User_ContactInfo" FromRole="User" ToRole="ContactInfo" />
+          <NavigationProperty Name="Doctors" Relationship="Self.FK_Doctor_User" FromRole="User" ToRole="Doctor" />
+          <NavigationProperty Name="MedicalFacilities" Relationship="Self.FK_MedicalFacilities_User" FromRole="User" ToRole="MedicalFacilities" />
           <NavigationProperty Name="UserType1" Relationship="Self.FK_User_UserType" FromRole="User" ToRole="UserType" />
         </EntityType>
         <EntityType Name="UserType">
@@ -3943,8 +3934,20 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_User_Account">
+        <Association Name="FK_MedicalFacilities_Account">
           <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+          <End Role="MedicalFacilities" Type="Self.MedicalFacility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MedicalFacilities">
+              <PropertyRef Name="AccountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Account">
@@ -3955,8 +3958,44 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_User_Address">
+        <Association Name="FK_MedicalFacilities_Address">
           <End Role="Address" Type="Self.Address" Multiplicity="0..1" />
+          <End Role="MedicalFacilities" Type="Self.MedicalFacility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MedicalFacilities">
+              <PropertyRef Name="AddressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProviderMedicalFacilities_BillingAddress">
+          <End Role="Address" Type="Self.Address" Multiplicity="1" />
+          <End Role="ProviderMedicalFacilities" Type="Self.ProviderMedicalFacility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ProviderMedicalFacilities">
+              <PropertyRef Name="BillingAdressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProviderMedicalFacilities_TraetingAddress">
+          <End Role="Address" Type="Self.Address" Multiplicity="1" />
+          <End Role="ProviderMedicalFacilities" Type="Self.ProviderMedicalFacility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ProviderMedicalFacilities">
+              <PropertyRef Name="TreatingAddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Address">
+          <End Role="Address" Type="Self.Address" Multiplicity="1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Address">
@@ -3964,18 +4003,6 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             </Principal>
             <Dependent Role="User">
               <PropertyRef Name="AddressId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EmployerAddress_Addresses">
-          <End Role="Addresses" Type="Self.Address1" Multiplicity="0..1" />
-          <End Role="EmployerAddress" Type="Self.EmployerAddress" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Addresses">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="EmployerAddress">
-              <PropertyRef Name="AddressID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4075,7 +4102,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_MedicalOffices_ContactInfo">
+        <Association Name="FK_MedicalFacilities_ContactInfo">
           <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="0..1" />
           <End Role="MedicalFacilities" Type="Self.MedicalFacility" Multiplicity="*" />
           <ReferentialConstraint>
@@ -4087,7 +4114,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ProviderMedicalOffices_ContactInfo">
+        <Association Name="FK_ProviderMedicalFacilities_BillingContactInfo">
           <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="1" />
           <End Role="ProviderMedicalFacilities" Type="Self.ProviderMedicalFacility" Multiplicity="*" />
           <ReferentialConstraint>
@@ -4099,7 +4126,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ProviderMedicalOffices_ContactInfo1">
+        <Association Name="FK_ProviderMedicalFacilities_TreatingContactInfo">
           <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="1" />
           <End Role="ProviderMedicalFacilities" Type="Self.ProviderMedicalFacility" Multiplicity="*" />
           <ReferentialConstraint>
@@ -4112,7 +4139,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_User_ContactInfo">
-          <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="0..1" />
+          <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ContactInfo">
@@ -4123,27 +4150,15 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_DoctorMedicalFacilitiesProvider_Doctor">
-          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
-          <End Role="DoctorMedicalFacilitiesProvider" Type="Self.DoctorMedicalFacilitiesProvider" Multiplicity="*" />
+        <Association Name="FK_Doctor_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Doctor">
+            <Principal Role="User">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="DoctorMedicalFacilitiesProvider">
-              <PropertyRef Name="DoctorID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DoctorMedicalFacilitiesProvider_MedicalFacilities">
-          <End Role="MedicalFacilities" Type="Self.MedicalFacility" Multiplicity="1" />
-          <End Role="DoctorMedicalFacilitiesProvider" Type="Self.DoctorMedicalFacilitiesProvider" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MedicalFacilities">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="DoctorMedicalFacilitiesProvider">
-              <PropertyRef Name="MedicalFacilitiesID" />
+            <Dependent Role="Doctor">
+              <PropertyRef Name="DoctorUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4183,7 +4198,19 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ProviderMedicalOffices_MedicalOffices">
+        <Association Name="FK_MedicalFacilities_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="MedicalFacilities" Type="Self.MedicalFacility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MedicalFacilities">
+              <PropertyRef Name="DefaultAttorneyUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProviderMedicalFacilities_ProviderMedicalFacilities">
           <End Role="MedicalFacilities" Type="Self.MedicalFacility" Multiplicity="1" />
           <End Role="ProviderMedicalFacilities" Type="Self.ProviderMedicalFacility" Multiplicity="*" />
           <ReferentialConstraint>
@@ -4191,19 +4218,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="ProviderMedicalFacilities">
-              <PropertyRef Name="MedicalOfficeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Patient_ProviderMedicalOffices">
-          <End Role="ProviderMedicalFacilities" Type="Self.ProviderMedicalFacility" Multiplicity="1" />
-          <End Role="Patient" Type="Self.Patient" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="ProviderMedicalFacilities">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Patient">
-              <PropertyRef Name="ID" />
+              <PropertyRef Name="MedicalFacilityID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4231,7 +4246,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ProviderMedicalOffices_Provider">
+        <Association Name="FK_ProviderMedicalFacilities_Provider">
           <End Role="Provider" Type="Self.Provider" Multiplicity="1" />
           <End Role="ProviderMedicalFacilities" Type="Self.ProviderMedicalFacility" Multiplicity="*" />
           <ReferentialConstraint>
@@ -4240,18 +4255,6 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             </Principal>
             <Dependent Role="ProviderMedicalFacilities">
               <PropertyRef Name="ProviderID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ProviderMedicalOffices_ProviderMedicalOffices">
-          <End Role="ProviderMedicalFacilities" Type="Self.ProviderMedicalFacility" Multiplicity="1" />
-          <End Role="ProviderMedicalFacilities1" Type="Self.ProviderMedicalFacility" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="ProviderMedicalFacilities">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ProviderMedicalFacilities1">
-              <PropertyRef Name="ID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4284,7 +4287,6 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
           <EntitySet Name="Accounts" EntityType="Self.Account" />
           <EntitySet Name="Actions" EntityType="Self.Action" />
           <EntitySet Name="Addresses" EntityType="Self.Address" />
-          <EntitySet Name="Addresses1" EntityType="Self.Address1" />
           <EntitySet Name="ApplicationSettings" EntityType="Self.ApplicationSetting" />
           <EntitySet Name="BillDetails" EntityType="Self.BillDetail" />
           <EntitySet Name="BillPoms" EntityType="Self.BillPom" />
@@ -4373,17 +4375,29 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             <End Role="Abbreviation" EntitySet="Abbreviations" />
             <End Role="CaseType" EntitySet="CaseTypes" />
           </AssociationSet>
+          <AssociationSet Name="FK_MedicalFacilities_Account" Association="Self.FK_MedicalFacilities_Account">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="MedicalFacilities" EntitySet="MedicalFacilities" />
+          </AssociationSet>
           <AssociationSet Name="FK_User_Account" Association="Self.FK_User_Account">
             <End Role="Account" EntitySet="Accounts" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
+          <AssociationSet Name="FK_MedicalFacilities_Address" Association="Self.FK_MedicalFacilities_Address">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="MedicalFacilities" EntitySet="MedicalFacilities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProviderMedicalFacilities_BillingAddress" Association="Self.FK_ProviderMedicalFacilities_BillingAddress">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="ProviderMedicalFacilities" EntitySet="ProviderMedicalFacilities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProviderMedicalFacilities_TraetingAddress" Association="Self.FK_ProviderMedicalFacilities_TraetingAddress">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="ProviderMedicalFacilities" EntitySet="ProviderMedicalFacilities" />
+          </AssociationSet>
           <AssociationSet Name="FK_User_Address" Association="Self.FK_User_Address">
             <End Role="Address" EntitySet="Addresses" />
             <End Role="User" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EmployerAddress_Addresses" Association="Self.FK_EmployerAddress_Addresses">
-            <End Role="Addresses" EntitySet="Addresses1" />
-            <End Role="EmployerAddress" EntitySet="EmployerAddresses" />
           </AssociationSet>
           <AssociationSet Name="FK_Case_Case" Association="Self.FK_Case_Case">
             <End Role="Case" EntitySet="Cases" />
@@ -4417,15 +4431,15 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             <End Role="ContactInfo" EntitySet="ContactInfoes" />
             <End Role="InsuranceAddress" EntitySet="InsuranceAddresses" />
           </AssociationSet>
-          <AssociationSet Name="FK_MedicalOffices_ContactInfo" Association="Self.FK_MedicalOffices_ContactInfo">
+          <AssociationSet Name="FK_MedicalFacilities_ContactInfo" Association="Self.FK_MedicalFacilities_ContactInfo">
             <End Role="ContactInfo" EntitySet="ContactInfoes" />
             <End Role="MedicalFacilities" EntitySet="MedicalFacilities" />
           </AssociationSet>
-          <AssociationSet Name="FK_ProviderMedicalOffices_ContactInfo" Association="Self.FK_ProviderMedicalOffices_ContactInfo">
+          <AssociationSet Name="FK_ProviderMedicalFacilities_BillingContactInfo" Association="Self.FK_ProviderMedicalFacilities_BillingContactInfo">
             <End Role="ContactInfo" EntitySet="ContactInfoes" />
             <End Role="ProviderMedicalFacilities" EntitySet="ProviderMedicalFacilities" />
           </AssociationSet>
-          <AssociationSet Name="FK_ProviderMedicalOffices_ContactInfo1" Association="Self.FK_ProviderMedicalOffices_ContactInfo1">
+          <AssociationSet Name="FK_ProviderMedicalFacilities_TreatingContactInfo" Association="Self.FK_ProviderMedicalFacilities_TreatingContactInfo">
             <End Role="ContactInfo" EntitySet="ContactInfoes" />
             <End Role="ProviderMedicalFacilities" EntitySet="ProviderMedicalFacilities" />
           </AssociationSet>
@@ -4433,13 +4447,9 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             <End Role="ContactInfo" EntitySet="ContactInfoes" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
-          <AssociationSet Name="FK_DoctorMedicalFacilitiesProvider_Doctor" Association="Self.FK_DoctorMedicalFacilitiesProvider_Doctor">
+          <AssociationSet Name="FK_Doctor_User" Association="Self.FK_Doctor_User">
+            <End Role="User" EntitySet="Users" />
             <End Role="Doctor" EntitySet="Doctors" />
-            <End Role="DoctorMedicalFacilitiesProvider" EntitySet="DoctorMedicalFacilitiesProviders" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorMedicalFacilitiesProvider_MedicalFacilities" Association="Self.FK_DoctorMedicalFacilitiesProvider_MedicalFacilities">
-            <End Role="MedicalFacilities" EntitySet="MedicalFacilities" />
-            <End Role="DoctorMedicalFacilitiesProvider" EntitySet="DoctorMedicalFacilitiesProviders" />
           </AssociationSet>
           <AssociationSet Name="FK_DoctorMedicalFacilitiesProvider_Provider" Association="Self.FK_DoctorMedicalFacilitiesProvider_Provider">
             <End Role="Provider" EntitySet="Providers" />
@@ -4453,13 +4463,13 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             <End Role="Insurance" EntitySet="Insurances" />
             <End Role="PatientInsurance" EntitySet="PatientInsurances" />
           </AssociationSet>
-          <AssociationSet Name="FK_ProviderMedicalOffices_MedicalOffices" Association="Self.FK_ProviderMedicalOffices_MedicalOffices">
+          <AssociationSet Name="FK_MedicalFacilities_User" Association="Self.FK_MedicalFacilities_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="MedicalFacilities" EntitySet="MedicalFacilities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProviderMedicalFacilities_ProviderMedicalFacilities" Association="Self.FK_ProviderMedicalFacilities_ProviderMedicalFacilities">
             <End Role="MedicalFacilities" EntitySet="MedicalFacilities" />
             <End Role="ProviderMedicalFacilities" EntitySet="ProviderMedicalFacilities" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Patient_ProviderMedicalOffices" Association="Self.FK_Patient_ProviderMedicalOffices">
-            <End Role="ProviderMedicalFacilities" EntitySet="ProviderMedicalFacilities" />
-            <End Role="Patient" EntitySet="Patients" />
           </AssociationSet>
           <AssociationSet Name="FK_PatientInsurance_Patient" Association="Self.FK_PatientInsurance_Patient">
             <End Role="Patient" EntitySet="Patients" />
@@ -4469,13 +4479,9 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             <End Role="Specialty" EntitySet="Specialties" />
             <End Role="ProcedureCode" EntitySet="ProcedureCodes" />
           </AssociationSet>
-          <AssociationSet Name="FK_ProviderMedicalOffices_Provider" Association="Self.FK_ProviderMedicalOffices_Provider">
+          <AssociationSet Name="FK_ProviderMedicalFacilities_Provider" Association="Self.FK_ProviderMedicalFacilities_Provider">
             <End Role="Provider" EntitySet="Providers" />
             <End Role="ProviderMedicalFacilities" EntitySet="ProviderMedicalFacilities" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ProviderMedicalOffices_ProviderMedicalOffices" Association="Self.FK_ProviderMedicalOffices_ProviderMedicalOffices">
-            <End Role="ProviderMedicalFacilities" EntitySet="ProviderMedicalFacilities" />
-            <End Role="ProviderMedicalFacilities1" EntitySet="ProviderMedicalFacilities" />
           </AssociationSet>
           <AssociationSet Name="FK_RoomDays_RoomId" Association="Self.FK_RoomDays_RoomId">
             <End Role="Room" EntitySet="Rooms" />
@@ -4543,20 +4549,6 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Addresses1">
-            <EntityTypeMapping TypeName="GreenBillsDbModel.Address1">
-              <MappingFragment StoreEntitySet="Addresses">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -4873,7 +4865,6 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
                 <ScalarProperty Name="TaxType" ColumnName="TaxType" />
                 <ScalarProperty Name="AssignNumber" ColumnName="AssignNumber" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="DoctorType" ColumnName="DoctorType" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -5255,6 +5246,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
             <EntityTypeMapping TypeName="GreenBillsDbModel.Provider">
               <MappingFragment StoreEntitySet="Provider">
                 <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="NPI" ColumnName="NPI" />
                 <ScalarProperty Name="FederalTaxId" ColumnName="FederalTaxId" />
                 <ScalarProperty Name="Prefix" ColumnName="Prefix" />
@@ -5270,7 +5262,7 @@ warning 6002: The table/view 'GreenBillsDb.dbo.Status' does not have a primary k
               <MappingFragment StoreEntitySet="ProviderMedicalFacilities">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ProviderID" ColumnName="ProviderID" />
-                <ScalarProperty Name="MedicalOfficeID" ColumnName="MedicalOfficeID" />
+                <ScalarProperty Name="MedicalFacilityID" ColumnName="MedicalFacilityID" />
                 <ScalarProperty Name="BillingAdressID" ColumnName="BillingAdressID" />
                 <ScalarProperty Name="TreatingAddressID" ColumnName="TreatingAddressID" />
                 <ScalarProperty Name="BillingContactInfoID" ColumnName="BillingContactInfoID" />

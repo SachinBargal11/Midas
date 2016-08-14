@@ -13,6 +13,7 @@ namespace Midas.GreenBill.BusinessObject
     {
         private int id = 0;
 
+        [JsonProperty("id")]
         public int ID
         {
             get
@@ -27,13 +28,20 @@ namespace Midas.GreenBill.BusinessObject
 
 
         //public string Description { get; set; }
+        [JsonProperty("isDeleted")]
         [JsonConverter(typeof(BoolConverter))]
-        public bool IsDeleted { get; set; }
+        public bool? IsDeleted { get; set; }
         //public Dictionary<string, object> ExtensionProperties { get; set; }
+        [JsonProperty("createByUserID")]
         public int CreateByUserID { get; set; }
-        public int UpdateByUserID { get; set; }
+
+        [JsonProperty("updateByUserID")]
+        public int? UpdateByUserID { get; set; }
+        [JsonProperty("createDate")]
         public DateTime CreateDate { get; set; }
-        public DateTime UpdateDate { get; set; }
+
+        [JsonProperty("updateDate")]
+        public DateTime? UpdateDate { get; set; }
 
         public virtual List<BusinessValidation> Validate()
         {

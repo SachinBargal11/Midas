@@ -14,12 +14,6 @@ namespace GBDataRepository.Model
     
     public partial class Doctor
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Doctor()
-        {
-            this.DoctorMedicalFacilitiesProviders = new HashSet<DoctorMedicalFacilitiesProvider>();
-        }
-    
         public int ID { get; set; }
         public Nullable<int> DoctorUserId { get; set; }
         public string LicenseNumber { get; set; }
@@ -30,14 +24,12 @@ namespace GBDataRepository.Model
         public Nullable<byte> TaxType { get; set; }
         public string AssignNumber { get; set; }
         public string Title { get; set; }
-        public Nullable<byte> DoctorType { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
+        public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DoctorMedicalFacilitiesProvider> DoctorMedicalFacilitiesProviders { get; set; }
+        public virtual User User { get; set; }
     }
 }

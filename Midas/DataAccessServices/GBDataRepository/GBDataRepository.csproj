@@ -61,314 +61,310 @@
     <Compile Include="Constants.cs" />
     <Compile Include="DataAccessManager\DBContextProvider.cs" />
     <Compile Include="DataAccessManager\GbDataAccessManager.cs" />
-    <Compile Include="DataAccessManager\GBUserDataAcessManager.cs" />
     <Compile Include="DataAccessManager\IDBContextProvider.cs" />
     <Compile Include="DataAccessManager\IGbDataAccessManager.cs" />
-    <Compile Include="DataAccessManager\IGBUserDataAcessManager.cs" />
     <Compile Include="EntityRepository\Address\AddressRepository.cs" />
     <Compile Include="EntityRepository\BaseEntityRepo.cs" />
     <Compile Include="EntityRepository\Account\AccountRepository.cs" />
     <Compile Include="EntityRepository\Case\CaseRepository.cs" />
     <Compile Include="EntityRepository\ContactInfo\ContactRepository.cs" />
     <Compile Include="EntityRepository\MedicalFacilities\MedicalFacilityRepository.cs" />
+    <Compile Include="EntityRepository\Provider\ProviderMedicalFacilityRepository.cs" />
     <Compile Include="EntityRepository\Provider\ProviderRepository.cs" />
     <Compile Include="EntityRepository\User\UserRepository.cs" />
     <Compile Include="EntitySearch\EntitySearch.cs" />
     <Compile Include="EntitySearch\EntitySearchParameters.cs" />
     <Compile Include="Model\Abbreviation.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Account.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\AccountStatu.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Action.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Activity.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Address.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Address1.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ApplicationSetting.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\AuditTrail.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Bill.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\BillDetail.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\BillPom.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\BillStatu.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\BillStatusHistory.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\BillVerification.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\BillVerificationAnswer.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Case.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CaseAssociatedDiagnosisCode.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CaseDiagnosisSpeciality.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CaseDocument.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CaseStatu.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CaseType.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CompanyConnection.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ContactInfo.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CyclicInsuranceConfiguration.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CyclicProcedureConfigurationAmount.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CyclicSpecialtyConfiguration.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CyclicSpecialtyConfigurationAmount.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\DenialReason.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\DiagnosisType.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\DignosisCode.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Doctor.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\DoctorMedicalFacilitiesProvider.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\DoctorSpeciality.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\DocumentType.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\EmailField.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\EmailProfile.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\EmailTemplate.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Employer.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\EmployerAddress.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\EnvelopeConfiguration.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\GBDataObject.cs" />
     <Compile Include="Model\GeneralDenial.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\GeneralDenialImage.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\GreenBillsDb.Context.cs">
+    <Compile Include="Model\GreenBillsDB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>GreenBillsDb.Context.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\GreenBillsDb.cs">
+    <Compile Include="Model\GreenBillsDB.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\GreenBillsDb.Designer.cs">
+    <Compile Include="Model\GreenBillsDB.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>GreenBillsDb.edmx</DependentUpon>
+      <DependentUpon>GreenBillsDB.edmx</DependentUpon>
     </Compile>
     <Compile Include="Model\Insurance.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\InsuranceAddress.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\IntakeAOB.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Location.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Mandatory.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\MedicalFacility.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Node.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Note.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\NotesType.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PacketRequest.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PacketRequestBill.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Patient.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PatientAccidentDetail.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PatientInsurance.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Payment.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PaymentImage.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\POM.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ProcedureCode.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Provider.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ProviderMedicalFacility.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Reconcilation.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Reminder.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ReminderRecurrence.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\ReminderType.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\RequiredDocument.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Role.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\RoleAction.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\RoleActivityEvent.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\RoleEvent.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Room.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\RoomSchedule.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SignOnPdf.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Specialty.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SpecialtyDetail.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Status.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SystemSetting.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SystemSettingKey.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\TransferredCas.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Transportation.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\User.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\UserType.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\VerificationAnswerImage.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\VerificationImage.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Visit.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\VisitProcedure.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\VisitType.cs">
-      <DependentUpon>GreenBillsDb.tt</DependentUpon>
+      <DependentUpon>GreenBillsDB.tt</DependentUpon>
     </Compile>
     <Compile Include="RepoFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="Model\GreenBillsDb.edmx">
+    <EntityDeploy Include="Model\GreenBillsDB.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>GreenBillsDb.Designer.cs</LastGenOutput>
+      <LastGenOutput>GreenBillsDB.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="Model\GreenBillsDb.edmx.diagram">
-      <DependentUpon>GreenBillsDb.edmx</DependentUpon>
+    <None Include="Model\GreenBillsDB.edmx.diagram">
+      <DependentUpon>GreenBillsDB.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -386,15 +382,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Model\GreenBillsDb.Context.tt">
+    <Content Include="Model\GreenBillsDB.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>GreenBillsDb.edmx</DependentUpon>
-      <LastGenOutput>GreenBillsDb.Context.cs</LastGenOutput>
+      <DependentUpon>GreenBillsDB.edmx</DependentUpon>
+      <LastGenOutput>GreenBillsDB.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Model\GreenBillsDb.tt">
+    <Content Include="Model\GreenBillsDB.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>GreenBillsDb.edmx</DependentUpon>
-      <LastGenOutput>GreenBillsDb.cs</LastGenOutput>
+      <DependentUpon>GreenBillsDB.edmx</DependentUpon>
+      <LastGenOutput>GreenBillsDB.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -10,14 +10,13 @@ namespace Midas.GreenBill.DataAccessManager
 {
     public interface IGbDataAccessManager<T>
     {
-        int Save(T entity);
+        Object Save(JObject entity);
         int Delete(T entity);
         T Get(T entity, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
 
-        List<T> Get(T entity,string name, int? nestingLevels = null, bool includeAllVersions = false);
-
-        List<T> Get(T entity,List<EntitySearchParameter> filter, int? nestingLevels = null);
+        Object Get(JObject data, int? nestingLevels = null);
         Object Signup(JObject data, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object Login(JObject data, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
 
         //List<GbObject> GetDependencies(int id, int parentId, bool applySecurity = true);
 

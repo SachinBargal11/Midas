@@ -10,6 +10,7 @@ using BO = Midas.GreenBill.BusinessObject;
 using Midas.Common;
 using Midas.GreenBill.EN;
 using System.Web.Script.Serialization;
+using Newtonsoft.Json.Linq;
 #endregion
 
 namespace Midas.GreenBill.EntityRepository
@@ -55,15 +56,48 @@ namespace Midas.GreenBill.EntityRepository
             _context.SaveChanges();
 
             var res = (BO.GbObject)(object)entity;
-            res.Message = Constants.ProviderDeleted;
             return contactinfoDB;
         }
         #endregion
 
         #region Save Data
-        public override Object Save<T>(T entity)
+        //public override Object Save<T>(T entity)
+        //{
+        //    BO.Provider providerBO = entity as BO.Provider;
+
+        //    Provider providerDB = new Provider();
+        //    providerDB.ID = providerBO.ID;
+        //    providerDB.NPI = providerBO.NPI;
+        //    providerDB.FederalTaxId = providerBO.FederalTaxId;
+        //    providerDB.Prefix = providerBO.Prefix;
+
+        //    string Message = "";
+        //    if (providerDB.ID > 0)
+        //    {
+        //        providerDB.UpdateDate = DateTime.UtcNow;
+        //        providerDB.CreateDate = DateTime.UtcNow;
+        //        providerDB.UpdateByUserID = providerBO.UpdateByUserID;
+        //        _context.Entry(providerDB).State = System.Data.Entity.EntityState.Modified;
+        //        Message = Constants.ProviderUpdated;
+        //    }
+        //    else
+        //    {
+        //        providerDB.CreateDate = DateTime.UtcNow;
+        //        providerDB.CreateByUserID = providerBO.CreateByUserID;
+        //        _dbSet.Add(providerDB);
+        //        Message = Constants.AccountAdded;
+        //    }
+
+        //    var res = (BO.GbObject)(object)entity;
+        //    res.Message = Message;
+        //    res.ID = providerDB.ID;
+
+        //    _context.SaveChanges();
+        //    return res;
+        //}
+        public override object Save(JObject data)
         {
-            BO.Provider providerBO = entity as BO.Provider;
+            BO.Provider providerBO = data["provider"].ToObject<BO.Provider>();
 
             Provider providerDB = new Provider();
             providerDB.ID = providerBO.ID;
@@ -71,29 +105,33 @@ namespace Midas.GreenBill.EntityRepository
             providerDB.FederalTaxId = providerBO.FederalTaxId;
             providerDB.Prefix = providerBO.Prefix;
 
-            string Message = "";
             if (providerDB.ID > 0)
             {
-                providerDB.UpdateDate = DateTime.UtcNow;
-                providerDB.CreateDate = DateTime.UtcNow;
-                providerDB.UpdateByUserID = providerBO.UpdateByUserID;
-                _context.Entry(providerDB).State = System.Data.Entity.EntityState.Modified;
-                Message = Constants.ProviderUpdated;
+                //Find provider By ID
+                Provider usr = _context.Providers.Where(p => p.ID == providerBO.ID).FirstOrDefault<Provider>();
+
+                if (usr != null)
+                {
+                    usr.NPI = providerBO.NPI;
+                    usr.FederalTaxId = providerBO.FederalTaxId;
+                    usr.Prefix = providerBO.Prefix;
+                    usr.UpdateByUserID = providerBO.UpdateByUserID;
+                    usr.UpdateDate = DateTime.UtcNow;
+                }
+                _context.Entry(usr).State = System.Data.Entity.EntityState.Modified;
+                providerDB = usr;
             }
             else
             {
                 providerDB.CreateDate = DateTime.UtcNow;
                 providerDB.CreateByUserID = providerBO.CreateByUserID;
                 _dbSet.Add(providerDB);
-                Message = Constants.AccountAdded;
             }
 
-            var res = (BO.GbObject)(object)entity;
-            res.Message = Message;
-            res.ID = providerDB.ID;
-
             _context.SaveChanges();
-            return res;
+            BO.Provider acc_ = Convert<BO.Provider, Provider>(providerDB);
+            var res = (BO.GbObject)(object)acc_;
+            return (object)res;
         }
         #endregion
 
@@ -106,29 +144,29 @@ namespace Midas.GreenBill.EntityRepository
         #endregion
 
 
-        #region Get Provider By Name
-        public override List<T> Get<T>(T entity, string name)
-        {
-            List<EntitySearchParameter> searchParameters = new List<EntitySearchParameter>();
-            EntitySearchParameter param = new EntitySearchParameter();
-            param.name = name;
-            searchParameters.Add(param);
+        //#region Get Provider By Name
+        //public override List<T> Get<T>(T entity, string name)
+        //{
+        //    List<EntitySearchParameter> searchParameters = new List<EntitySearchParameter>();
+        //    EntitySearchParameter param = new EntitySearchParameter();
+        //    param.name = name;
+        //    searchParameters.Add(param);
 
-            return Get<T>(entity, searchParameters);
-        }
-        #endregion
+        //    return Get<T>(entity, searchParameters);
+        //}
+        //#endregion
 
-        #region Get Provider By Search Parameters
-        public override List<T> Get<T>(T entity, List<EntitySearchParameter> searchParameters)
-        {
-            Dictionary<Type, String> filterMap = new Dictionary<Type, string>();
-            filterMap.Add(typeof(BO.Provider), "");
-            IQueryable<Provider> query = EntitySearch.CreateSearchQuery<Provider>(_context.Providers, searchParameters, filterMap);
-            List<Provider> contactinfoes = query.ToList<Provider>();
-            List<T> boProvider = new List<T>();
-            contactinfoes.ForEach(t => boProvider.Add(Convert<T, Provider>(t)));
-            return boProvider;
-        }
-        #endregion
+        //#region Get Provider By Search Parameters
+        //public override List<T> Get<T>(T entity, List<EntitySearchParameter> searchParameters)
+        //{
+        //    Dictionary<Type, String> filterMap = new Dictionary<Type, string>();
+        //    filterMap.Add(typeof(BO.Provider), "");
+        //    IQueryable<Provider> query = EntitySearch.CreateSearchQuery<Provider>(_context.Providers, searchParameters, filterMap);
+        //    List<Provider> contactinfoes = query.ToList<Provider>();
+        //    List<T> boProvider = new List<T>();
+        //    contactinfoes.ForEach(t => boProvider.Add(Convert<T, Provider>(t)));
+        //    return boProvider;
+        //}
+        //#endregion
     }
 }

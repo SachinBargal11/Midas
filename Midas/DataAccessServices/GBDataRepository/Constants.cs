@@ -9,6 +9,7 @@ namespace Midas.GreenBill.EN
     {
         #region Account
         public const string AccountAdded = "Account added successfully";
+        public const string AccountAlreadyExists = "Account already exists";
         public const string AccountUpdated = "Account updated successfully";
         public const string AccountDeleted = "Account Deleted Sucessfully";
         #endregion
@@ -17,6 +18,8 @@ namespace Midas.GreenBill.EN
         public const string UserAdded = "User added successfully";
         public const string UserUpdated = "User updated successfully";
         public const string UserDeleted = "User Deleted Sucessfully";
+        public const string UserAlreadyExists = "Username already exists.";
+        public const string InvalidCredentials = "Authentication Failed Invalid credentials";
         #endregion
 
         #region Address

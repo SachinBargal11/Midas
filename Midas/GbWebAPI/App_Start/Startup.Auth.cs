@@ -16,7 +16,7 @@ namespace GbWebAPI
     public partial class Startup
     {
         public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
-
+        public static Func<UserManager<IdentityUser>> UserManagerFactory { get; set; }
         public static string PublicClientId { get; private set; }
 
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
@@ -31,15 +31,16 @@ namespace GbWebAPI
             app.UseCookieAuthentication(new CookieAuthenticationOptions());
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
-            // Configure the application for OAuth based flow
             PublicClientId = "self";
+
+            UserManagerFactory = () => new UserManager<IdentityUser>(new UserStore<IdentityUser>());
+
             OAuthOptions = new OAuthAuthorizationServerOptions
             {
                 TokenEndpointPath = new PathString("/Token"),
-                Provider = new ApplicationOAuthProvider(PublicClientId),
-                AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
+                Provider = new ApplicationOAuthProvider(PublicClientId, UserManagerFactory),
+                AuthorizeEndpointPath = new PathString("/midasapi/User/Login"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
-                // In production mode set AllowInsecureHttp = false
                 AllowInsecureHttp = true
             };
 

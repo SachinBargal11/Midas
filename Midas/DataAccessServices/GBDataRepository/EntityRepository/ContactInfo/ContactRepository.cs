@@ -10,6 +10,7 @@ using BO = Midas.GreenBill.BusinessObject;
 using Midas.Common;
 using Midas.GreenBill.EN;
 using System.Web.Script.Serialization;
+using Newtonsoft.Json.Linq;
 #endregion
 
 namespace Midas.GreenBill.EntityRepository
@@ -58,48 +59,51 @@ namespace Midas.GreenBill.EntityRepository
             _context.SaveChanges();
 
             var res = (BO.GbObject)(object)entity;
-            res.Message = Constants.ContactInfoDeleted;
             return contactinfoDB;
         }
         #endregion
 
         #region Save Data
-        public override Object Save<T>(T entity)
+        //public override Object Save<T>(T entity)
+        //{
+        //    BO.ContactInfo contactinfoBO = entity as BO.ContactInfo;
+
+        //    ContactInfo contactinfoDB = new ContactInfo();
+        //    contactinfoDB.ID = contactinfoBO.ID;
+        //    contactinfoDB.Name = contactinfoBO.Name;
+        //    contactinfoDB.CellPhone = contactinfoBO.CellPhone;
+        //    contactinfoDB.EmailAddress = contactinfoBO.EmailAddress;
+        //    contactinfoDB.HomePhone = contactinfoBO.HomePhone;
+        //    contactinfoDB.WorkPhone = contactinfoBO.WorkPhone;
+        //    contactinfoDB.FaxNo = contactinfoBO.FaxNo;
+
+        //    contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
+        //    string Message = "";
+        //    if (contactinfoDB.ID > 0)
+        //    {
+        //        contactinfoDB.UpdateDate = DateTime.UtcNow;
+        //        contactinfoDB.CreateDate = DateTime.UtcNow;
+        //        contactinfoDB.UpdateByUserID = contactinfoBO.UpdateByUserID;
+        //        _context.Entry(contactinfoDB).State = System.Data.Entity.EntityState.Modified;
+        //        Message = Constants.ContactInfoUpdated;
+        //    }
+        //    else
+        //    {
+        //        contactinfoDB.CreateDate = DateTime.UtcNow;
+        //        contactinfoDB.CreateByUserID = contactinfoBO.CreateByUserID;
+        //        _dbSet.Add(contactinfoDB);
+        //        Message = Constants.ContactInfoAdded;
+        //    }
+
+        //    var res = (BO.GbObject)(object)entity;
+        //    res.Message = Message;
+        //    res.ID = contactinfoDB.ID;
+        //    _context.SaveChanges();
+        //    return res;
+        //}
+        public override object Save(JObject data)
         {
-            BO.ContactInfo contactinfoBO = entity as BO.ContactInfo;
-
-            ContactInfo contactinfoDB = new ContactInfo();
-            contactinfoDB.ID = contactinfoBO.ID;
-            contactinfoDB.Name = contactinfoBO.Name;
-            contactinfoDB.CellPhone = contactinfoBO.CellPhone;
-            contactinfoDB.EmailAddress = contactinfoBO.EmailAddress;
-            contactinfoDB.HomePhone = contactinfoBO.HomePhone;
-            contactinfoDB.WorkPhone = contactinfoBO.WorkPhone;
-            contactinfoDB.FaxNo = contactinfoBO.FaxNo;
-
-            contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
-            string Message = "";
-            if (contactinfoDB.ID > 0)
-            {
-                contactinfoDB.UpdateDate = DateTime.UtcNow;
-                contactinfoDB.CreateDate = DateTime.UtcNow;
-                contactinfoDB.UpdateByUserID = contactinfoBO.UpdateByUserID;
-                _context.Entry(contactinfoDB).State = System.Data.Entity.EntityState.Modified;
-                Message = Constants.ContactInfoUpdated;
-            }
-            else
-            {
-                contactinfoDB.CreateDate = DateTime.UtcNow;
-                contactinfoDB.CreateByUserID = contactinfoBO.CreateByUserID;
-                _dbSet.Add(contactinfoDB);
-                Message = Constants.ContactInfoAdded;
-            }
-
-            var res = (BO.GbObject)(object)entity;
-            res.Message = Message;
-            res.ID = contactinfoDB.ID;
-            _context.SaveChanges();
-            return res;
+            return base.Save(data);
         }
         #endregion
 
@@ -112,29 +116,29 @@ namespace Midas.GreenBill.EntityRepository
         #endregion
 
 
-        #region Get ContactInfo By Name
-        public override List<T> Get<T>(T entity, string name)
-        {
-            List<EntitySearchParameter> searchParameters = new List<EntitySearchParameter>();
-            EntitySearchParameter param = new EntitySearchParameter();
-            param.name = name;
-            searchParameters.Add(param);
+        //#region Get ContactInfo By Name
+        //public override List<T> Get<T>(T entity, string name)
+        //{
+        //    List<EntitySearchParameter> searchParameters = new List<EntitySearchParameter>();
+        //    EntitySearchParameter param = new EntitySearchParameter();
+        //    param.name = name;
+        //    searchParameters.Add(param);
 
-            return Get<T>(entity, searchParameters);
-        }
-        #endregion
+        //    return Get<T>(entity, searchParameters);
+        //}
+        //#endregion
 
-        #region Get ContactInfo By Search Parameters
-        public override List<T> Get<T>(T entity, List<EntitySearchParameter> searchParameters)
-        {
-            Dictionary<Type, String> filterMap = new Dictionary<Type, string>();
-            filterMap.Add(typeof(BO.ContactInfo), "");
-            IQueryable<ContactInfo> query = EntitySearch.CreateSearchQuery<ContactInfo>(_context.ContactInfoes, searchParameters, filterMap);
-            List<ContactInfo> contactinfoes = query.ToList<ContactInfo>();
-            List<T> boContactInfo = new List<T>();
-            contactinfoes.ForEach(t => boContactInfo.Add(Convert<T, ContactInfo>(t)));
-            return boContactInfo;
-        }
-        #endregion
+        //#region Get ContactInfo By Search Parameters
+        //public override List<T> Get<T>(T entity, List<EntitySearchParameter> searchParameters)
+        //{
+        //    Dictionary<Type, String> filterMap = new Dictionary<Type, string>();
+        //    filterMap.Add(typeof(BO.ContactInfo), "");
+        //    IQueryable<ContactInfo> query = EntitySearch.CreateSearchQuery<ContactInfo>(_context.ContactInfoes, searchParameters, filterMap);
+        //    List<ContactInfo> contactinfoes = query.ToList<ContactInfo>();
+        //    List<T> boContactInfo = new List<T>();
+        //    contactinfoes.ForEach(t => boContactInfo.Add(Convert<T, ContactInfo>(t)));
+        //    return boContactInfo;
+        //}
+        //#endregion
     }
 }

@@ -17,6 +17,8 @@ using GbWebAPI.Models;
 using GbWebAPI.Results;
 using Midas.GreenBill.BusinessObject;
 using Midas.GreenBill.EntityRepository;
+using Newtonsoft.Json.Linq;
+using System.Web.Http.Cors;
 
 namespace Midas.GreenBill.Api
 {
@@ -44,9 +46,9 @@ namespace Midas.GreenBill.Api
         [HttpPost]
         [Route("Add")]
         [AllowAnonymous]
-        public HttpResponseMessage Post([FromBody]MedicalFacility medicalfacility)
+        public HttpResponseMessage Post(JObject data)
         {
-            return requestHandler.CreateGbObject(Request, medicalfacility);
+            return requestHandler.CreateGbObject(Request, data);
         }
 
         // PUT: api/Organizations/5

@@ -35,6 +35,7 @@
       <HintPath>..\..\Backup\210716\Midas\GbWebAPI.Tests\bin\Debug\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -50,11 +51,14 @@
     <Compile Include="BusinessValidation.cs" />
     <Compile Include="BusinessValidationResult.cs" />
     <Compile Include="ContactInfo.cs" />
+    <Compile Include="ErrorHandler.cs" />
     <Compile Include="GBEnums.cs" />
     <Compile Include="GbObject.cs" />
     <Compile Include="MedicalFacilities\MedicalFacility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProviderMedicalFacility.cs" />
     <Compile Include="Provider\Provider.cs" />
+    <Compile Include="Response.cs" />
     <Compile Include="User\User.cs" />
   </ItemGroup>
   <ItemGroup />

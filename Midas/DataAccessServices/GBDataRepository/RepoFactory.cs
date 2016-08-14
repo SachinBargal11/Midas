@@ -38,6 +38,10 @@ namespace Midas.GreenBill
             {
                 repo = new MedicalFacilityRepository(context);
             }
+            else if (typeof(T) == typeof(BO.ProviderMedicalFacility))
+            {
+                repo = new ProviderMedicalFacilityRepository(context);
+            }
             return repo;
         }
     }

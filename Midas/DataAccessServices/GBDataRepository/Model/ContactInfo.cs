@@ -12,7 +12,7 @@ namespace GBDataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class ContactInfo : GBDataObject
+    public partial class ContactInfo
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ContactInfo()
@@ -24,6 +24,8 @@ namespace GBDataRepository.Model
             this.ProviderMedicalFacilities1 = new HashSet<ProviderMedicalFacility>();
             this.Users = new HashSet<User>();
         }
+    
+        public int ID { get; set; }
         public string Name { get; set; }
         public string CellPhone { get; set; }
         public string EmailAddress { get; set; }

@@ -9,13 +9,14 @@ namespace Midas.GreenBill.Api
 {
     public interface IRequestHandler<T> 
     {
-        HttpResponseMessage GetGbObjects(HttpRequestMessage request, T gbObject, List<EntitySearchParameter> filter);
+        HttpResponseMessage GetGbObjects(HttpRequestMessage request,JObject data);
         HttpResponseMessage GetObject(HttpRequestMessage request, T gbObject);
-        HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage CreateGbObject(HttpRequestMessage request, JObject gbObject);
         HttpResponseMessage UpdateGbObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage DeleteGbObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage ValidateUniqueName(HttpRequestMessage request, T gbObject);
         HttpResponseMessage SignUp(HttpRequestMessage request, JObject data);
+        HttpResponseMessage Login(HttpRequestMessage request, JObject data);
 
     }
 }

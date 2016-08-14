@@ -20,21 +20,13 @@ namespace Midas.GreenBill.Api
             dataAccessManager = new GbDataAccessManager<T>();
         }
 
-        public HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject)
+        public HttpResponseMessage CreateGbObject(HttpRequestMessage request, JObject gbObject)
         {
-            int ID= dataAccessManager.Save(gbObject);
+            Object ID = dataAccessManager.Save(gbObject);
 
-            if(ID>0)
-            {
-                var res = (GbObject)(object)gbObject;
-                res.ID = ID;
-                return request.CreateResponse<T>(HttpStatusCode.OK, (T)(object)res);
-            }
-            else
-            {
-                return request.CreateResponse<T>(HttpStatusCode.NotFound, gbObject);
-            }
+            return request.CreateResponse(HttpStatusCode.OK, ID);
         }
+        
 
         private static string GetCurrentUserFromContext(HttpRequestMessage request)
         {
@@ -72,32 +64,28 @@ namespace Midas.GreenBill.Api
 
         public HttpResponseMessage UpdateGbObject(HttpRequestMessage request, T gbObject)
         {
-            int ID = dataAccessManager.Save(gbObject);
-
-            if (ID > 0)
-            {
-                var res = (GbObject)(object)gbObject;
-                res.ID = ID;
-                return request.CreateResponse<T>(HttpStatusCode.OK, (T)(object)res);
-            }
-            else
-            {
-                return request.CreateResponse<T>(HttpStatusCode.NotFound, gbObject);
-            }
+            throw new NotImplementedException();
         }
 
-        public HttpResponseMessage GetGbObjects(HttpRequestMessage request, T gbObject, List<EntitySearchParameter> filter)
+        public HttpResponseMessage GetGbObjects(HttpRequestMessage request,JObject data)
         {
-            List<T> ID = dataAccessManager.Get(gbObject, filter);
+            Object objResult = dataAccessManager.Get(data);
 
-            return request.CreateResponse(HttpStatusCode.OK, ID);
+            return request.CreateResponse(HttpStatusCode.OK, objResult);
         }
 
         public HttpResponseMessage SignUp(HttpRequestMessage request, JObject data)
         {
-            Object ID = dataAccessManager.Signup(data);
+            Object objResult = dataAccessManager.Signup(data);
 
-            return request.CreateResponse(HttpStatusCode.OK, ID);
+            return request.CreateResponse(HttpStatusCode.OK, objResult);
+        }
+
+        public HttpResponseMessage Login(HttpRequestMessage request, JObject data)
+        {
+            Object objResult = dataAccessManager.Login(data);
+
+            return request.CreateResponse(HttpStatusCode.OK, objResult);
         }
     }
 }

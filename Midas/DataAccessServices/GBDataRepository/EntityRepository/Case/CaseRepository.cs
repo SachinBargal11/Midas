@@ -18,10 +18,5 @@ namespace Midas.GreenBill.EntityRepository
         {
             _dbSet = context.Set<Account>();
         }
-
-        public override Object Save<T>(T entity)
-        {
-            return null;
-        }
     }
 }

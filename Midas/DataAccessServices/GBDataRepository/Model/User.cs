@@ -12,21 +12,30 @@ namespace GBDataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class User : GBDataObject
+    public partial class User
     {
-        public Nullable<int> AccountID { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public User()
+        {
+            this.Doctors = new HashSet<Doctor>();
+            this.MedicalFacilities = new HashSet<MedicalFacility>();
+        }
+
+    
+        public int ID { get; set; }
+        public int? AccountID { get; set; }
         public string UserName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public Nullable<byte> Gender { get; set; }
+        public byte? Gender { get; set; }
         public byte UserType { get; set; }
         public string ImageLink { get; set; }
-        public Nullable<int> AddressId { get; set; }
-        public Nullable<int> ContactInfoId { get; set; }
+        public int AddressId { get; set; }
+        public int ContactInfoId { get; set; }
         public Nullable<System.DateTime> DateOfBirth { get; set; }
         public string Password { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
-        public Nullable<int> CreateByUserID { get; set; }
+        public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
@@ -34,6 +43,10 @@ namespace GBDataRepository.Model
         public virtual Account Account { get; set; }
         public virtual Address Address { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Doctor> Doctors { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MedicalFacility> MedicalFacilities { get; set; }
         public virtual UserType UserType1 { get; set; }
     }
 }

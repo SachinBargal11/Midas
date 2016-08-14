@@ -15,21 +15,22 @@ namespace GBDataRepository.Model
     
     public partial class GreenBillsDbEntities : DbContext
     {
-        public GreenBillsDbEntities(string Connection)
+        public GreenBillsDbEntities(string ConnectionString)
             : base("name=GreenBillsDbEntities")
         {
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            throw new UnintentionalCodeFirstException();
+            modelBuilder.Entity<User>()
+               .Map(m => m.Requires("IsDeleted").HasValue(false))
+            .Ignore(m => m.IsDeleted);
         }
     
         public virtual DbSet<Abbreviation> Abbreviations { get; set; }
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Action> Actions { get; set; }
         public virtual DbSet<Address> Addresses { get; set; }
-        public virtual DbSet<Address1> Addresses1 { get; set; }
         public virtual DbSet<ApplicationSetting> ApplicationSettings { get; set; }
         public virtual DbSet<BillDetail> BillDetails { get; set; }
         public virtual DbSet<BillPom> BillPoms { get; set; }

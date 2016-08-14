@@ -22,6 +22,7 @@ namespace GBDataRepository.Model
         }
     
         public int ID { get; set; }
+        public string Name { get; set; }
         public string NPI { get; set; }
         public string FederalTaxId { get; set; }
         public string Prefix { get; set; }

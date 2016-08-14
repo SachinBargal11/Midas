@@ -17,7 +17,6 @@ namespace GBDataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MedicalFacility()
         {
-            this.DoctorMedicalFacilitiesProviders = new HashSet<DoctorMedicalFacilitiesProvider>();
             this.ProviderMedicalFacilities = new HashSet<ProviderMedicalFacility>();
         }
     
@@ -34,9 +33,10 @@ namespace GBDataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
+        public virtual Account Account { get; set; }
+        public virtual Address Address { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DoctorMedicalFacilitiesProvider> DoctorMedicalFacilitiesProviders { get; set; }
+        public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProviderMedicalFacility> ProviderMedicalFacilities { get; set; }
     }

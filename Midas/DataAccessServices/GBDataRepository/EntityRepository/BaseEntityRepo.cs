@@ -25,9 +25,8 @@ namespace Midas.GreenBill.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object Save<T>(T entity) where T : BO.GbObject
+        public virtual Object Save(JObject data)
         {
-
             throw new NotImplementedException();
         }
 
@@ -38,6 +37,16 @@ namespace Midas.GreenBill.EntityRepository
         }
 
         public virtual void PreSave<T>(T entity) where T : BO.GbObject
+        {
+            //override and do the necessary operations needed for saving an object
+        }
+
+        public virtual void PreSave(JObject data)
+        {
+            //override and do the necessary operations needed for saving an object
+        }
+
+        public virtual void PostSave(JObject data)
         {
             //override and do the necessary operations needed for saving an object
         }
@@ -56,7 +65,7 @@ namespace Midas.GreenBill.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual T Login<T>(T entity, string userName, string Password)
+        public virtual Object Login(JObject entity)
         {
             throw new NotImplementedException();
         }
@@ -65,11 +74,7 @@ namespace Midas.GreenBill.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual List<T> Get<T>(T entity,string name)
-        {
-            throw new NotImplementedException();
-        }
-        public virtual List<T> Get<T>(T entity,List<EntitySearchParameter> searchParameters)
+        public virtual Object Get(JObject entity)
         {
             throw new NotImplementedException();
         }

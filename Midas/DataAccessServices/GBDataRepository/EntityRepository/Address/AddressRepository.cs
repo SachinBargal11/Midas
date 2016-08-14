@@ -10,6 +10,7 @@ using BO = Midas.GreenBill.BusinessObject;
 using Midas.Common;
 using Midas.GreenBill.EN;
 using System.Web.Script.Serialization;
+using Newtonsoft.Json.Linq;
 #endregion
 
 namespace Midas.GreenBill.EntityRepository
@@ -59,53 +60,14 @@ namespace Midas.GreenBill.EntityRepository
             _context.SaveChanges();
 
             var res = (BO.GbObject)(object)entity;
-            res.Message = Constants.AddressDeleted;
             return addressDB;
         }
         #endregion
 
-        #region Save Data
-        public override Object Save<T>(T entity)
+        public override object Save(JObject data)
         {
-            BO.Address addressBO = entity as BO.Address;
-
-            Address addressDB = new Address();
-            addressDB.ID = addressBO.ID;
-            addressDB.Name = addressBO.Name;
-            addressDB.Address1 = addressBO.Address1;
-            addressDB.Address2 = addressBO.Address2;
-            addressDB.City = addressBO.City;
-            addressDB.State = addressBO.State;
-            addressDB.ZipCode = addressBO.ZipCode;
-            addressDB.Country = addressBO.Country;
-
-            addressDB.IsDeleted = addressBO.IsDeleted;
-            string Message = "";
-            if (addressDB.ID > 0)
-            {
-                addressDB.UpdateDate = DateTime.UtcNow;
-                addressDB.CreateDate = DateTime.UtcNow;
-                addressDB.UpdateByUserID = addressBO.UpdateByUserID;
-                _context.Entry(addressDB).State = System.Data.Entity.EntityState.Modified;
-                Message = Constants.AddressUpdated;
-            }
-            else
-            {
-                addressDB.CreateDate = DateTime.UtcNow;
-                addressDB.CreateByUserID = addressBO.CreateByUserID;
-                _dbSet.Add(addressDB);
-                Message = Constants.AddressAdded;
-            }
-            _context.SaveChanges();
-
-            var res = (BO.GbObject)(object)entity;
-            res.Message = Message;
-            res.ID = addressDB.ID;
-
-
-            return res;
+            return base.Save(data);
         }
-        #endregion
 
         #region Get Address By ID
         public override T Get<T>(T entity)
@@ -116,29 +78,29 @@ namespace Midas.GreenBill.EntityRepository
         #endregion
 
 
-        #region Get Address By Name
-        public override List<T> Get<T>(T entity, string name)
-        {
-            List<EntitySearchParameter> searchParameters = new List<EntitySearchParameter>();
-            EntitySearchParameter param = new EntitySearchParameter();
-            param.name = name;
-            searchParameters.Add(param);
+        //#region Get Address By Name
+        //public override List<T> Get<T>(T entity, string name)
+        //{
+        //    List<EntitySearchParameter> searchParameters = new List<EntitySearchParameter>();
+        //    EntitySearchParameter param = new EntitySearchParameter();
+        //    param.name = name;
+        //    searchParameters.Add(param);
 
-            return Get<T>(entity, searchParameters);
-        }
-        #endregion
+        //    return Get<T>(entity, searchParameters);
+        //}
+        //#endregion
 
-        #region Get Address By Search Parameters
-        public override List<T> Get<T>(T entity, List<EntitySearchParameter> searchParameters)
-        {
-            Dictionary<Type, String> filterMap = new Dictionary<Type, string>();
-            filterMap.Add(typeof(BO.Address), "");
-            IQueryable<Address> query = EntitySearch.CreateSearchQuery<Address>(_context.Addresses, searchParameters, filterMap);
-            List<Address> addresses = query.ToList<Address>();
-            List<T> boAddress = new List<T>();
-            addresses.ForEach(t => boAddress.Add(Convert<T, Address>(t)));
-            return boAddress;
-        }
-        #endregion
+        //#region Get Address By Search Parameters
+        //public override List<T> Get<T>(T entity, List<EntitySearchParameter> searchParameters)
+        //{
+        //    Dictionary<Type, String> filterMap = new Dictionary<Type, string>();
+        //    filterMap.Add(typeof(BO.Address), "");
+        //    IQueryable<Address> query = EntitySearch.CreateSearchQuery<Address>(_context.Addresses, searchParameters, filterMap);
+        //    List<Address> addresses = query.ToList<Address>();
+        //    List<T> boAddress = new List<T>();
+        //    addresses.ForEach(t => boAddress.Add(Convert<T, Address>(t)));
+        //    return boAddress;
+        //}
+        //#endregion
     }
 }
