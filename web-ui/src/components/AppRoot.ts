@@ -12,6 +12,7 @@ import {NotificationComponent} from './elements/notification';
 import {NotificationsStore} from '../stores/notifications-store';
 import {ChangePasswordComponent} from './pages/change-password';
 import {AddUserComponent} from './pages/users/add-user';
+import {UpdateUserComponent} from './pages/users/update-user';
 import {UsersListComponent} from './pages/users/users-list';
 import {AddProviderComponent} from './pages/providers/add-provider';
 import {ProvidersListComponent} from './pages/providers/providers-list';
@@ -34,6 +35,7 @@ import {StateService} from '../services/state-service';
                   SignupComponent, 
                   ChangePasswordComponent, 
                   AddUserComponent, 
+                  UpdateUserComponent,
                   UsersListComponent,
                   DashboardComponent,
                   AddProviderComponent,

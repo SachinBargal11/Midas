@@ -37,6 +37,10 @@ System.register(['@angular/core', '@angular/router', '../../../stores/users-stor
                 }
                 UsersListComponent.prototype.ngOnInit = function () {
                 };
+                UsersListComponent.prototype.selectUser = function (user) {
+                    // this._usersStore.selectUser(user);
+                    this._router.navigate(['/users/update/' + user.user.id]);
+                };
                 UsersListComponent = __decorate([
                     core_1.Component({
                         selector: 'users-list',

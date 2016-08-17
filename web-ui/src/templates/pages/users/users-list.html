@@ -6,12 +6,21 @@
         <tr>
             <th>First Name</th>
             <th>Last Name</th>
+            <th>id</th>
+            <th>Edit</th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let user of _usersStore.users | async | reverse">
             <td>{{ user.user.firstName }}</td>
             <td>{{ user.user.lastName }}</td>
+            <td>{{ user.user.id }}</td>
+            <td>
+                <!--<a [routerLink]="['update-user', { id: user.user.id }]">-->
+                <a (click)="selectUser(user)">
+                    <i class="glyphicon glyphicon-edit"></i>
+                </a>
+            </td>
         </tr>
     </tbody>
 </table>
