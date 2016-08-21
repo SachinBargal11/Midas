@@ -19,7 +19,7 @@ import {LimitPipe} from '../../../pipes/limit-array-pipe';
     selector: 'add-provider',
     templateUrl: 'templates/pages/providers/add-provider.html',
     directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar, InputMask, AutoComplete],
-    providers: [HTTP_PROVIDERS, ProvidersService, ProvidersStore],
+    providers: [HTTP_PROVIDERS, ProvidersService, ProvidersStore, FormBuilder],
     pipes: [LimitPipe]
 })
 

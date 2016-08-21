@@ -1,4 +1,4 @@
-import { provideRouter, RouterConfig } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import {LoginComponent} from '../components/pages/login';
 import {SignupComponent} from '../components/pages/signup';
 import {DashboardComponent} from '../components/pages/dashboard';
@@ -10,7 +10,7 @@ import {ValidateActiveSession} from './guards/validate-active-session';
 import {ValidateInActiveSession} from './guards/validate-inactive-session';
 import {ChangePasswordComponent} from '../components/pages/change-password';
 
-export const appRoutes: RouterConfig = [
+export const appRoutes: Routes = [
     {
         path: '',
         redirectTo: '/dashboard',
@@ -41,4 +41,4 @@ export const appRoutes: RouterConfig = [
     ...UsersRoutes,
     ...PatientsShellRoutes
 ];
-export const APP_ROUTER_PROVIDER = provideRouter(appRoutes);
+export const APP_ROUTER_PROVIDER = RouterModule.forRoot(appRoutes);

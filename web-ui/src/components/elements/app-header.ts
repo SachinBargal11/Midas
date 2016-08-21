@@ -10,11 +10,11 @@ import {NotificationsStore} from '../../stores/notifications-store';
 @Component({
     selector: 'app-header',
     templateUrl: 'templates/elements/app-header.html',
-    directives: [
-        LoaderComponent, 
-        DROPDOWN_DIRECTIVES, 
-        CORE_DIRECTIVES],
-    providers: [AuthenticationService]
+    // directives: [
+    //     LoaderComponent, 
+    //     DROPDOWN_DIRECTIVES, 
+    //     CORE_DIRECTIVES],
+    // providers: [AuthenticationService]
 })
 
 export class AppHeaderComponent implements OnInit {

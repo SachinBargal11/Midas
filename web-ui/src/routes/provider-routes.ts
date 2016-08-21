@@ -1,13 +1,13 @@
-import {RouterConfig} from '@angular/router';
+import {Routes, RouterModule} from '@angular/router';
 import {ValidateActiveSession} from './guards/validate-active-session';
 import {AddProviderComponent} from '../components/pages/providers/add-provider';
 import {ProvidersListComponent} from '../components/pages/providers/providers-list';
 
-export const ProvidersRoutes: RouterConfig = [
+export const ProvidersRoutes: Routes = [
     {
         path: 'providers',
         component: ProvidersListComponent,
-        canActivate: [ValidateActiveSession]        
+        canActivate: [ValidateActiveSession]
     },
     {
         path: 'providers/add',

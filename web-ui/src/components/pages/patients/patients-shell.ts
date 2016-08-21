@@ -11,7 +11,7 @@ import {AddPatientComponent} from './add-patient';
     selector: 'patients-shell',
     templateUrl: 'templates/pages/patients/patients-shell.html',
     directives: [ROUTER_DIRECTIVES],
-    precompile: [PatientsListComponent, PatientDetailsComponent, AddPatientComponent]
+    // entryComponents: [PatientsListComponent, PatientDetailsComponent, AddPatientComponent]
 })
 
 export class PatientsShellComponent implements OnInit {
@@ -20,7 +20,7 @@ export class PatientsShellComponent implements OnInit {
         public router: Router,
         private _patientsStore: PatientsStore
     ) {
-        
+
     }
 
     ngOnInit() {

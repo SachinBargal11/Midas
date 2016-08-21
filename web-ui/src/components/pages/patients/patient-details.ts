@@ -9,7 +9,7 @@ import {Observable} from 'rxjs/Observable';
     selector: 'patient-details',
     templateUrl: 'templates/pages/patients/patient-details.html',
     directives: [ROUTER_DIRECTIVES],
-    precompile: [PatientProfileComponent]
+    // entryComponents: [PatientProfileComponent]
 })
 
 export class PatientDetailsComponent {
@@ -21,7 +21,7 @@ export class PatientDetailsComponent {
         public _router: Router,
         private _patientsStore: PatientsStore
     ) {
-        
+
 
     }
 }

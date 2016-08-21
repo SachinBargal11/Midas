@@ -126,7 +126,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../el
                         selector: 'add-provider',
                         templateUrl: 'templates/pages/providers/add-provider.html',
                         directives: [forms_1.FORM_DIRECTIVES, forms_1.REACTIVE_FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES, loader_1.LoaderComponent, primeng_1.Calendar, primeng_1.InputMask, primeng_1.AutoComplete],
-                        providers: [http_1.HTTP_PROVIDERS, providers_service_1.ProvidersService, providers_store_1.ProvidersStore],
+                        providers: [http_1.HTTP_PROVIDERS, providers_service_1.ProvidersService, providers_store_1.ProvidersStore, forms_1.FormBuilder],
                         pipes: [limit_array_pipe_1.LimitPipe]
                     }), 
                     __metadata('design:paramtypes', [providers_service_1.ProvidersService, providers_store_1.ProvidersStore, forms_1.FormBuilder, router_1.Router, notifications_store_1.NotificationsStore, session_store_1.SessionStore, core_1.ElementRef])

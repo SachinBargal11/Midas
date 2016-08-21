@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router', '../elements/loader', '../../services/authentication-service', '@angular/common', 'ng2-bootstrap', '../../stores/session-store', '../../stores/notifications-store'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', '../../services/authentication-service', '../../stores/session-store', '../../stores/notifications-store'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router', '../elements/loader', '../.
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, loader_1, authentication_service_1, common_1, ng2_bootstrap_1, session_store_1, notifications_store_1;
+    var core_1, router_1, authentication_service_1, session_store_1, notifications_store_1;
     var AppHeaderComponent;
     return {
         setters:[
@@ -20,17 +20,8 @@ System.register(['@angular/core', '@angular/router', '../elements/loader', '../.
             function (router_1_1) {
                 router_1 = router_1_1;
             },
-            function (loader_1_1) {
-                loader_1 = loader_1_1;
-            },
             function (authentication_service_1_1) {
                 authentication_service_1 = authentication_service_1_1;
-            },
-            function (common_1_1) {
-                common_1 = common_1_1;
-            },
-            function (ng2_bootstrap_1_1) {
-                ng2_bootstrap_1 = ng2_bootstrap_1_1;
             },
             function (session_store_1_1) {
                 session_store_1 = session_store_1_1;
@@ -83,11 +74,6 @@ System.register(['@angular/core', '@angular/router', '../elements/loader', '../.
                     core_1.Component({
                         selector: 'app-header',
                         templateUrl: 'templates/elements/app-header.html',
-                        directives: [
-                            loader_1.LoaderComponent,
-                            ng2_bootstrap_1.DROPDOWN_DIRECTIVES,
-                            common_1.CORE_DIRECTIVES],
-                        providers: [authentication_service_1.AuthenticationService]
                     }), 
                     __metadata('design:paramtypes', [authentication_service_1.AuthenticationService, notifications_store_1.NotificationsStore, session_store_1.SessionStore, router_1.Router])
                 ], AppHeaderComponent);

@@ -4,7 +4,7 @@ import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 @Component({
     selector: 'main-nav',
     templateUrl: 'templates/elements/main-nav.html',
-    directives: [ROUTER_DIRECTIVES]
+    // directives: [ROUTER_DIRECTIVES]
 })
 
 export class MainNavComponent {

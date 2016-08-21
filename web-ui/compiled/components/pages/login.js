@@ -82,7 +82,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../ut
                             loader_1.LoaderComponent,
                             angular2_notifications_1.SimpleNotificationsComponent
                         ],
-                        providers: [angular2_notifications_1.NotificationsService]
+                        providers: [angular2_notifications_1.NotificationsService, forms_1.FormBuilder]
                     }), 
                     __metadata('design:paramtypes', [forms_1.FormBuilder, session_store_1.SessionStore, angular2_notifications_1.NotificationsService, router_1.Router])
                 ], LoginComponent);

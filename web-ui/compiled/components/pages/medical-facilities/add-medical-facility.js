@@ -183,7 +183,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
                         selector: 'add-medical-facility',
                         templateUrl: 'templates/pages/medical-facilities/add-medical-facility.html',
                         directives: [forms_1.FORM_DIRECTIVES, forms_1.REACTIVE_FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES, loader_1.LoaderComponent, primeng_1.Calendar, primeng_1.InputMask, primeng_1.AutoComplete],
-                        providers: [http_1.HTTP_PROVIDERS, medical_facility_service_1.MedicalFacilityService, state_service_1.StateService, states_store_1.StatesStore],
+                        providers: [http_1.HTTP_PROVIDERS, medical_facility_service_1.MedicalFacilityService, state_service_1.StateService, states_store_1.StatesStore, forms_1.FormBuilder],
                         pipes: [limit_array_pipe_1.LimitPipe]
                     }), 
                     __metadata('design:paramtypes', [state_service_1.StateService, states_store_1.StatesStore, medical_facilities_store_1.MedicalFacilityStore, forms_1.FormBuilder, router_1.Router, notifications_store_1.NotificationsStore, session_store_1.SessionStore, core_1.ElementRef])

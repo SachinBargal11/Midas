@@ -16,7 +16,7 @@ import {SessionStore} from '../../stores/session-store';
         LoaderComponent,
         SimpleNotificationsComponent
     ],
-    providers: [NotificationsService]
+    providers: [NotificationsService, FormBuilder]
 })
 
 export class LoginComponent implements OnInit {

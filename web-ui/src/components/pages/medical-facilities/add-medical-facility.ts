@@ -29,7 +29,7 @@ import {LimitPipe} from '../../../pipes/limit-array-pipe';
     selector: 'add-medical-facility',
     templateUrl: 'templates/pages/medical-facilities/add-medical-facility.html',
     directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar, InputMask, AutoComplete],
-    providers: [HTTP_PROVIDERS, MedicalFacilityService, StateService, StatesStore],
+    providers: [HTTP_PROVIDERS, MedicalFacilityService, StateService, StatesStore, FormBuilder],
     pipes: [LimitPipe]
 })
 

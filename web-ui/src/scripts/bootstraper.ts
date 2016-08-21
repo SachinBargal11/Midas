@@ -1,11 +1,20 @@
+
+/** Angular Modules */
+
+import {enableProdMode, NgModule} from '@angular/core';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { BrowserModule }  from '@angular/platform-browser';
+import { FormsModule }    from '@angular/forms';
 import {bootstrap} from '@angular/platform-browser-dynamic';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 import {AppRoot} from '../components/AppRoot';
 import { provide }           from '@angular/core';
 import { LocationStrategy,
     HashLocationStrategy } from '@angular/common';
-import { disableDeprecatedForms, provideForms } from '@angular/forms';
+// import { disableDeprecatedForms, provideForms } from '@angular/forms';
 import {HTTP_PROVIDERS} from '@angular/http';
+
+/** Application Services and Providers */
 
 import {SessionStore} from '../stores/session-store';
 import {AuthenticationService} from '../services/authentication-service';
@@ -22,39 +31,90 @@ import {MedicalFacilityService} from '../services/medical-facility-service';
 import {PatientsStore} from '../stores/patients-store';
 import {PatientsService} from '../services/patients-service';
 
+import {StatesStore} from '../stores/states-store';
+import {StateService} from '../services/state-service';
+
 import {NotificationsStore} from '../stores/notifications-store';
 import {APP_ROUTER_PROVIDER} from '../routes/app-routes';
 import {ValidateActiveSession} from '../routes/guards/validate-active-session';
 import {ValidateInActiveSession} from '../routes/guards/validate-inactive-session';
 
-import {enableProdMode} from '@angular/core';
+/** Components */
+
+import {LoginComponent} from '../components/pages/login';
+import {SignupComponent} from '../components/pages/signup';
+import {DashboardComponent} from '../components/pages/dashboard';
+import {PatientsShellComponent} from '../components/pages/patients/patients-shell';
+import {PatientsListComponent } from '../components/pages/patients/patients-list';
+import {AddPatientComponent } from '../components/pages/patients/add-patient';
+import {PatientDetailsComponent } from '../components/pages/patients/patient-details';
+import {PatientProfileComponent } from '../components/pages/patients/profile-patient';
+import {AppHeaderComponent} from '../components/elements/app-header';
+import {MainNavComponent} from '../components/elements/main-nav';
+
+import {NotificationComponent} from '../components/elements/notification';
+import {ChangePasswordComponent} from '../components/pages/change-password';
+import {AddUserComponent} from '../components/pages/users/add-user';
+import {UsersListComponent} from '../components/pages/users/users-list';
+import {AddProviderComponent} from '../components/pages/providers/add-provider';
+import {ProvidersListComponent} from '../components/pages/providers/providers-list';
+import {AddMedicalFacilityComponent} from '../components/pages/medical-facilities/add-medical-facility';
+import {MedicalFacilitiesListComponent} from '../components/pages/medical-facilities/medical-facilities-list';
+
+import {Http, Headers} from '@angular/http';
+
 
 enableProdMode();
 
-bootstrap(AppRoot, [
-    disableDeprecatedForms(),
-    provideForms(),
-    ROUTER_DIRECTIVES,
-    HTTP_PROVIDERS,
-    SessionStore,
-    AuthenticationService,
-    UsersService,
-    UsersStore,
-    ProvidersStore,
-    ProvidersService,
-    MedicalFacilityStore,
-    MedicalFacilityService,
-    PatientsService,
-    PatientsStore,
-    NotificationsStore,
-    APP_ROUTER_PROVIDER,
-    ValidateActiveSession,
-    ValidateInActiveSession,
-    provide(LocationStrategy,
-        {
-            useValue: [ROUTER_DIRECTIVES],
-            useClass: HashLocationStrategy
-        }
-    )
-])
-    .catch((err: any) => console.error(err));
+@NgModule({
+    imports: [
+        BrowserModule,
+        FormsModule,
+        APP_ROUTER_PROVIDER
+    ],
+    declarations: [
+        AppRoot,
+        LoginComponent,
+        SignupComponent,
+        DashboardComponent,
+        PatientsListComponent,
+        AddPatientComponent,
+        PatientDetailsComponent,
+        PatientProfileComponent,
+        PatientsShellComponent,
+        AppHeaderComponent,
+        MainNavComponent,
+        ChangePasswordComponent,
+        AddUserComponent,
+        UsersListComponent,
+        AddProviderComponent,
+        ProvidersListComponent,
+        AddMedicalFacilityComponent,
+        MedicalFacilitiesListComponent
+    ],
+    providers: [
+        SessionStore,
+        AuthenticationService,
+        UsersStore,
+        UsersService,
+        ProvidersStore,
+        ProvidersService,
+        MedicalFacilityStore,
+        MedicalFacilityService,
+        PatientsStore,
+        PatientsService,
+        StatesStore,
+        StateService,
+        NotificationsStore,
+        ValidateActiveSession,
+        ValidateInActiveSession,
+        Http,
+        HTTP_PROVIDERS
+    ],
+    bootstrap: [
+        AppRoot
+    ]
+})
+export class BootStraper {
+}
+platformBrowserDynamic().bootstrapModule(BootStraper);

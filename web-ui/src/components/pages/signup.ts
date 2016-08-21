@@ -33,11 +33,11 @@ import {Calendar, InputMask, RadioButton, SelectItem} from 'primeng/primeng';
         InputMask,
         RadioButton,
         SimpleNotificationsComponent],
-    providers: [NotificationsService, StateService, StatesStore]
+    providers: [NotificationsService, StateService, StatesStore, FormBuilder]
 })
 
 export class SignupComponent implements OnInit {
-   states: any[];
+    states: any[];
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -96,8 +96,8 @@ export class SignupComponent implements OnInit {
     }
 
     ngOnInit() {
-                    this._stateService.getStates()
-                        .subscribe(states => this.states = states);
+        this._stateService.getStates()
+            .subscribe(states => this.states = states);
     }
 
 

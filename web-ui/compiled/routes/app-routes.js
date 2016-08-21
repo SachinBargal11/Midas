@@ -66,7 +66,7 @@ System.register(['@angular/router', '../components/pages/login', '../components/
                     canActivate: [validate_active_session_1.ValidateActiveSession]
                 }
             ].concat(medical_facility_routes_1.MedicalFacilitiesRoutes, provider_routes_1.ProvidersRoutes, user_routes_1.UsersRoutes, patient_routes_1.PatientsShellRoutes));
-            exports_1("APP_ROUTER_PROVIDER", APP_ROUTER_PROVIDER = router_1.provideRouter(appRoutes));
+            exports_1("APP_ROUTER_PROVIDER", APP_ROUTER_PROVIDER = router_1.RouterModule.forRoot(appRoutes));
         }
     }
 });

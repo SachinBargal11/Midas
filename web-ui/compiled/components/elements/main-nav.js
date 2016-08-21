@@ -33,7 +33,6 @@ System.register(['@angular/core', '@angular/router'], function(exports_1, contex
                     core_1.Component({
                         selector: 'main-nav',
                         templateUrl: 'templates/elements/main-nav.html',
-                        directives: [router_1.ROUTER_DIRECTIVES]
                     }), 
                     __metadata('design:paramtypes', [router_1.Router])
                 ], MainNavComponent);

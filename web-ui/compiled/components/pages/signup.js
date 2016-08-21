@@ -182,7 +182,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                             primeng_1.InputMask,
                             primeng_1.RadioButton,
                             angular2_notifications_1.SimpleNotificationsComponent],
-                        providers: [angular2_notifications_1.NotificationsService, state_service_1.StateService, states_store_1.StatesStore]
+                        providers: [angular2_notifications_1.NotificationsService, state_service_1.StateService, states_store_1.StatesStore, forms_1.FormBuilder]
                     }), 
                     __metadata('design:paramtypes', [forms_1.FormBuilder, router_1.Router, notifications_store_1.NotificationsStore, angular2_notifications_1.NotificationsService, session_store_1.SessionStore, authentication_service_1.AuthenticationService, state_service_1.StateService, states_store_1.StatesStore, core_1.ElementRef])
                 ], SignupComponent);
