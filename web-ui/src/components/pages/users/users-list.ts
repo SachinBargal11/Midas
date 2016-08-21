@@ -21,9 +21,11 @@ export class UsersListComponent implements OnInit {
         private _usersStore: UsersStore
     ) {
     }
-
     ngOnInit() {
 
     }
-
+selectUser(user) {
+        // this._usersStore.selectUser(user);
+        this._router.navigate(['/users/update/' + user.user.id]);
+    }
 }

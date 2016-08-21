@@ -41,6 +41,7 @@ System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 
                     this._usersService = _usersService;
                     this._sessionStore = _sessionStore;
                     this._users = new Rx_1.BehaviorSubject(immutable_1.List([]));
+                    this._selectedUsers = new Rx_1.BehaviorSubject(immutable_1.List([]));
                     this.loadInitialData();
                     this._sessionStore.userLogoutEvent.subscribe(function () {
                         _this.resetStore();
@@ -52,6 +53,13 @@ System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 
                 Object.defineProperty(UsersStore.prototype, "users", {
                     get: function () {
                         return this._users.asObservable();
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(UsersStore.prototype, "selectedUsers", {
+                    get: function () {
+                        return this._selectedUsers.asObservable();
                     },
                     enumerable: true,
                     configurable: true
@@ -69,6 +77,29 @@ System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 
                     });
                     return Observable_1.Observable.fromPromise(promise);
                 };
+                UsersStore.prototype.findUserById = function (id) {
+                    var users = this._users.getValue();
+                    var index = users.findIndex(function (currentUser) { return currentUser.user.id === id; });
+                    return users.get(index);
+                };
+                UsersStore.prototype.fetchUserById = function (id) {
+                    var _this = this;
+                    var promise = new Promise(function (resolve, reject) {
+                        var matchedUser = _this.findUserById(id);
+                        if (matchedUser) {
+                            resolve(matchedUser);
+                        }
+                        else {
+                            _this._usersService.getUser(id)
+                                .subscribe(function (userDetail) {
+                                resolve(userDetail);
+                            }, function (error) {
+                                reject(error);
+                            });
+                        }
+                    });
+                    return Observable_1.Observable.fromPromise(promise);
+                };
                 UsersStore.prototype.addUser = function (userDetail) {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {
@@ -80,6 +111,27 @@ System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 
                         });
                     });
                     return Observable_1.Observable.from(promise);
+                };
+                UsersStore.prototype.updateUser = function (userDetail) {
+                    var _this = this;
+                    var users = this._users.getValue();
+                    var index = users.findIndex(function (currentUser) { return currentUser.user.id === userDetail.user.id; });
+                    var promise = new Promise(function (resolve, reject) {
+                        _this._usersService.updateUser(userDetail).subscribe(function (userDetail) {
+                            _this._users.next(_this._users.getValue().push(userDetail));
+                            resolve(userDetail);
+                        }, function (error) {
+                            reject(error);
+                        });
+                    });
+                    return Observable_1.Observable.from(promise);
+                };
+                UsersStore.prototype.selectUser = function (userDetail) {
+                    var selectedUsers = this._selectedUsers.getValue();
+                    var index = selectedUsers.findIndex(function (currentUser) { return currentUser.user.id === userDetail.user.id; });
+                    if (index < 0) {
+                        this._selectedUsers.next(this._selectedUsers.getValue().push(userDetail));
+                    }
                 };
                 UsersStore = __decorate([
                     core_1.Injectable(), 
