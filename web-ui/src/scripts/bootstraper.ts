@@ -56,6 +56,7 @@ import {NotificationComponent} from '../components/elements/notification';
 import {ChangePasswordComponent} from '../components/pages/change-password';
 import {AddUserComponent} from '../components/pages/users/add-user';
 import {UsersListComponent} from '../components/pages/users/users-list';
+import {UpdateUserComponent} from '../components/pages/users/update-user';
 import {AddProviderComponent} from '../components/pages/providers/add-provider';
 import {ProvidersListComponent} from '../components/pages/providers/providers-list';
 import {AddMedicalFacilityComponent} from '../components/pages/medical-facilities/add-medical-facility';
@@ -86,6 +87,7 @@ enableProdMode();
         MainNavComponent,
         ChangePasswordComponent,
         AddUserComponent,
+        UpdateUserComponent,
         UsersListComponent,
         AddProviderComponent,
         ProvidersListComponent,

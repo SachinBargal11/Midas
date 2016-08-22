@@ -9,6 +9,6 @@ module.exports = function(grunt)
         }
     });
 
-    grunt.registerTask('default', ['sass:development', 'postcss:development', 'eslint', 'copy:development', 'htmlbuild:development']);
-    grunt.registerTask('dist', ['clean:dist', 'sass:dist', 'postcss:dist', 'eslint', 'ts:dist', 'uglify:dist', 'copy:dist', 'htmlbuild:dist']);
+    grunt.registerTask('default', ['sass:development', 'postcss:development', 'copy:development', 'htmlbuild:development']);
+    grunt.registerTask('dist', ['clean:dist', 'sass:dist', 'postcss:dist', 'systemjs:dist', 'copy:dist', 'htmlbuild:dist']);
 };
