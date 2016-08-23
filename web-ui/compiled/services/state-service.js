@@ -33,7 +33,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/share', 'r
                     this._headers = new http_1.Headers();
                 }
                 StateService.prototype.getStates = function () {
-                    return this._http.get(this._url + "/Utils/GetStates").map(function (res) { return res.json(); });
+                    return this._http.get(this._url + '/Utils/GetStates').map(function (res) { return res.json(); });
                 };
                 StateService = __decorate([
                     core_1.Injectable(), 

@@ -8,10 +8,10 @@ import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 })
 
 export class MainNavComponent {
-    constructor(private _router: Router){
+    constructor(private _router: Router) {
     }
-    
-    isCurrentRoute(route){
+
+    isCurrentRoute(route) {
         // var instruction = this._router.generate(route);
         // return this._router.isRouteActive(instruction);
     }

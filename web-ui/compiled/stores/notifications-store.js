@@ -1,4 +1,4 @@
-System.register(['@angular/core', 'immutable', "rxjs/Rx", 'rxjs/add/operator/share', 'rxjs/add/operator/map', './session-store'], function(exports_1, context_1) {
+System.register(['@angular/core', 'immutable', 'rxjs/Rx', 'rxjs/add/operator/share', 'rxjs/add/operator/map', './session-store'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -86,7 +86,7 @@ System.register(['@angular/core', 'immutable', "rxjs/Rx", 'rxjs/add/operator/sha
                 NotificationsStore.prototype.readAllNotifications = function () {
                     var notifications = this._notifications.getValue();
                     notifications = notifications.toSeq().map(function (item) {
-                        return item.set("isRead", true);
+                        return item.set('isRead', true);
                     }).toList();
                     this._notifications.next(notifications);
                 };

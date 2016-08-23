@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import {PatientsStore} from '../../../stores/patients-store';
 import {List} from 'immutable';
-import {Observer} from "rxjs/Observer";
-import {Observable} from "rxjs/Observable";
+import {Observer} from 'rxjs/Observer';
+import {Observable} from 'rxjs/Observable';
 import {Patient} from '../../../models/patient';
 
 @Component({

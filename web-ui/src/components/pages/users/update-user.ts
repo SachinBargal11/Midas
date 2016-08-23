@@ -65,14 +65,14 @@ export class UpdateUserComponent implements OnInit {
             result.subscribe(
                 (userDetail: UserDetail) => {
                     this._usersStore.selectUser(userDetail);
-                   this.user = userDetail.user;                    
+                   this.user = userDetail.user;
                 },
                 (error) => {
                     this._router.navigate(['/users']);
                 },
                 () => {
                 });
-        });   
+        });
         this.userform = this.fb.group({
                 firstname: ['', Validators.required],
                 middlename: [''],
@@ -110,16 +110,16 @@ export class UpdateUserComponent implements OnInit {
         let userFormValues = this.userform.value;
         let userDetail = new UserDetail({
             account: new Account({
-               id: this._sessionStore.session.account_id 
+               id: this._sessionStore.session.account_id
             }),
             user: new User({
                 id: this.user.id,
                 firstName: userFormValues.firstname,
                 middleName: userFormValues.middlename,
                 lastName: userFormValues.lastname,
-                userType: parseInt(userFormValues.userType), 
+                userType: parseInt(userFormValues.userType),
                 userName: userFormValues.contact.email ,
-                password: userFormValues.password                
+                password: userFormValues.password
             }),
             contactInfo: new Contact({
                 cellPhone: userFormValues.contact.cellPhone,
@@ -138,12 +138,12 @@ export class UpdateUserComponent implements OnInit {
             })
         });
         this.isSaveUserProgress = true;
-        var result;
+        let result;
 
         result = this._usersStore.updateUser(userDetail);
         result.subscribe(
             (response) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'User updated successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
@@ -152,7 +152,7 @@ export class UpdateUserComponent implements OnInit {
                 this._router.navigate(['/users']);
             },
             (error) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'Unable to update user.',
                     'type': 'ERROR',
                     'createdAt': moment()

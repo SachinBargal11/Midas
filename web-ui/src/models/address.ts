@@ -3,18 +3,18 @@ import moment from 'moment';
 
 const AddressRecord = Record({
     id: 0,
-    name: "",
-    address1: "",
-    address2: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    country: "",
+    name: '',
+    address1: '',
+    address2: '',
+    city: '',
+    state: '',
+    zipCode: '',
+    country: '',
     isDeleted: 0,
     createByUserId: 0,
     updateByUserId: 0,
-    createDate: null, //Moment
-    updateDate: null //Moment
+    createDate: null, // Moment
+    updateDate: null // Moment
 });
 
 export class Address extends AddressRecord {

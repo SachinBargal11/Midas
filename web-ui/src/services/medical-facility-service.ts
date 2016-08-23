@@ -26,7 +26,7 @@ export class MedicalFacilityService {
 
     getMedicalFacilities(accountId: number): Observable<MedicalFacilityDetail[]> {
         let promise: Promise<MedicalFacilityDetail[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + "/Account/Get/" + accountId).map(res => res.json())
+            return this._http.get(this._url + '/Account/Get/' + accountId).map(res => res.json())
                 .subscribe((data: any) => {
                     let medicalFacilities = (<Object[]>data.medicalFacilities).map((medicalFacilityData: any) => {
                         return MedicalFacilityAdapter.parseResponse(medicalFacilityData);
@@ -52,7 +52,7 @@ export class MedicalFacilityService {
             });
 
             // remove unneeded keys 
-            medicalFacilityDetailRequestData.user = _.omit(medicalFacilityDetailRequestData.user, 'password', 'userName', 'imageLink', 'dateOfBirth', 'name', 'userType', 'firstName', 'middleName', 'lastName', 'gender', 'status', 'isDeleted', 'createByUserId', 'createDate','updateByUserId', 'updateDate');
+            medicalFacilityDetailRequestData.user = _.omit(medicalFacilityDetailRequestData.user, 'password', 'userName', 'imageLink', 'dateOfBirth', 'name', 'userType', 'firstName', 'middleName', 'lastName', 'gender', 'status', 'isDeleted', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
             medicalFacilityDetailRequestData.address = _.omit(medicalFacilityDetailRequestData.address, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
             medicalFacilityDetailRequestData.contactInfo = _.omit(medicalFacilityDetailRequestData.contactInfo, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
             medicalFacilityDetailRequestData.account = _.omit(medicalFacilityDetailRequestData.account, 'name', 'status', 'isDeleted', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');

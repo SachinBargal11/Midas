@@ -1,4 +1,4 @@
-System.register(['@angular/core', 'rxjs/add/operator/share', 'rxjs/add/operator/map', '../services/state-service', './session-store', 'immutable', "rxjs/Rx"], function(exports_1, context_1) {
+System.register(['@angular/core', 'rxjs/add/operator/share', 'rxjs/add/operator/map', '../services/state-service', './session-store', 'immutable', 'rxjs/Rx'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {

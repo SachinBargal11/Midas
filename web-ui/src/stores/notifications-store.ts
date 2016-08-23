@@ -1,9 +1,9 @@
 import {Injectable, Output, EventEmitter} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {Observer} from 'rxjs/Observer';
-import {Subject} from "rxjs/Subject";
+import {Subject} from 'rxjs/Subject';
 import {List} from 'immutable';
-import {BehaviorSubject} from "rxjs/Rx";
+import {BehaviorSubject} from 'rxjs/Rx';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import {Notification} from '../models/notification';
@@ -22,7 +22,7 @@ export class NotificationsStore {
         private _sessionStore: SessionStore
     ) {
         this._sessionStore.userLogoutEvent.subscribe(() => {
-            this.resetStore()
+            this.resetStore();
         });
     }
 
@@ -69,7 +69,7 @@ export class NotificationsStore {
     readAllNotifications() {
         let notifications: List<Notification> = this._notifications.getValue();
         notifications = notifications.toSeq().map((item: Notification) => {
-            return <Notification>item.set("isRead", true);
+            return <Notification>item.set('isRead', true);
         }).toList();
         this._notifications.next(notifications);
     }

@@ -16,8 +16,8 @@ System.register(['immutable'], function(exports_1, context_1) {
         execute: function() {
             MedicalFacilityRecord = immutable_1.Record({
                 id: 0,
-                name: "",
-                prefix: "",
+                name: '',
+                prefix: '',
                 defaultAttorneyUserid: 0,
                 isDeleted: 0,
                 createByUserId: 0,

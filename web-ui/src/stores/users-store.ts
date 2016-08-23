@@ -7,9 +7,9 @@ import {UserDetail} from '../models/user-details';
 import {User} from '../models/user';
 import {UsersService} from '../services/users-service';
 import {SessionStore} from './session-store';
-import {Subject} from "rxjs/Subject";
+import {Subject} from 'rxjs/Subject';
 import {List} from 'immutable';
-import {BehaviorSubject} from "rxjs/Rx";
+import {BehaviorSubject} from 'rxjs/Rx';
 import _ from 'underscore';
 import Moment from 'moment';
 
@@ -17,7 +17,7 @@ import Moment from 'moment';
 @Injectable()
 export class UsersStore {
 
-    private _users: BehaviorSubject<List<UserDetail>> = new BehaviorSubject(List([]));    
+    private _users: BehaviorSubject<List<UserDetail>> = new BehaviorSubject(List([]));
     private _selectedUsers: BehaviorSubject<List<UserDetail>> = new BehaviorSubject(List([]));
     constructor(
         private _usersService: UsersService,
@@ -25,7 +25,7 @@ export class UsersStore {
     ) {
         this.loadInitialData();
         this._sessionStore.userLogoutEvent.subscribe(() => {
-            this.resetStore()
+            this.resetStore();
         });
     }
 
@@ -54,7 +54,7 @@ export class UsersStore {
         });
         return <Observable<UserDetail[]>>Observable.fromPromise(promise);
     }
-    
+
       findUserById(id: number) {
         let users = this._users.getValue();
         let index = users.findIndex((currentUser: UserDetail) => currentUser.user.id === id);
@@ -77,7 +77,7 @@ export class UsersStore {
         });
         return <Observable<UserDetail>>Observable.fromPromise(promise);
     }
-    
+
 
     addUser(userDetail: UserDetail): Observable<UserDetail> {
         let promise = new Promise((resolve, reject) => {

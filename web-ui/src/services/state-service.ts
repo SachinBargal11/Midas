@@ -19,6 +19,6 @@ export class StateService {
     ) { }
 
  getStates(): Observable<States[]> {
-            return this._http.get(this._url + "/Utils/GetStates").map(res => res.json());
+            return this._http.get(this._url + '/Utils/GetStates').map(res => res.json());
     }
 }

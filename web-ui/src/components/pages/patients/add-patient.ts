@@ -38,7 +38,7 @@ export class AddPatientComponent implements OnInit {
     date1: string;
     patientform: FormGroup;
     patientformControls;
-    
+
     isSavePatientProgress = false;
     constructor(
         private fb: FormBuilder,
@@ -56,8 +56,8 @@ export class AddPatientComponent implements OnInit {
             address: [''],
             dob: ['', Validators.required]
         });
-        this.patientformControls = this.patientform.controls;       
-        
+        this.patientformControls = this.patientform.controls;
+
     }
 
     ngOnInit() {
@@ -69,8 +69,8 @@ export class AddPatientComponent implements OnInit {
 
     savePatient() {
         this.isSavePatientProgress = true;
-        var result;
-        var patient = new Patient({
+        let result;
+        let patient = new Patient({
             'firstname': this.patientform.value.firstname,
             'lastname': this.patientform.value.lastname,
             'email': this.patientform.value.email,
@@ -82,7 +82,7 @@ export class AddPatientComponent implements OnInit {
         result = this._patientsStore.addPatient(patient);
         result.subscribe(
             (response) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'Patient added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': Moment()
@@ -91,7 +91,7 @@ export class AddPatientComponent implements OnInit {
                 this._router.navigate(['/patients']);
             },
             (error) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'Unable to add patient.',
                     'type': 'ERROR',
                     'createdAt': Moment()

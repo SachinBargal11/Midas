@@ -2,13 +2,13 @@ import {FormControl, FormGroup} from '@angular/forms';
 
 export class AppValidators {
     static emailValidator(control: FormControl) {
-        var regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        let regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (control.value && !regEx.test(control.value)) {
             return { emailValidator: true };
         }
     }
     static mobileNoValidator(control: FormControl) {
-        var regEx = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        let regEx = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
         if (control.value && !regEx.test(control.value)) {
             return { mobileNoValidator: true };
         }
@@ -24,6 +24,6 @@ export class AppValidators {
                     mismatchedPasswords: true
                 };
             }
-        }
+        };
     }
 }

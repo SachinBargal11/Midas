@@ -3,13 +3,13 @@ import moment from 'moment';
 import {AccountStatus} from './enums/AccountStatus';
 
 const ProviderRecord = Record({
-provider:{
+provider: {
     id: 0,
-    name: "",
-    npi: "",
-    federalTaxID: "",
-    prefix: "",    
-    providerMedicalFacilities: "",
+    name: '',
+    npi: '',
+    federalTaxID: '',
+    prefix: '',
+    providerMedicalFacilities: '',
     isDeleted: 0,
     createByUserID: 0,
     updateByUserID: 0,
@@ -19,7 +19,7 @@ provider:{
 });
 
 export class Provider extends ProviderRecord {
-provider:{
+provider: {
     id: number;
     name: string;
     npi: string;
@@ -31,7 +31,7 @@ provider:{
     updateByUserID: number;
     createDate: moment.MomentStatic;
     updateDate: moment.MomentStatic;
-}
+};
     constructor(props) {
         super(props);
     }

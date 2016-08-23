@@ -21,11 +21,11 @@ System.register(['immutable', 'moment'], function(exports_1, context_1) {
         execute: function() {
             PatientRecord = immutable_1.Record({
                 id: 0,
-                firstname: "",
-                lastname: "",
-                email: "",
-                mobileNo: "",
-                address: "",
+                firstname: '',
+                lastname: '',
+                email: '',
+                mobileNo: '',
+                address: '',
                 dob: moment_1.default(),
                 createdUser: 0
             });

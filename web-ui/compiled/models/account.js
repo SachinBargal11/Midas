@@ -19,7 +19,7 @@ System.register(['immutable', './enums/AccountStatus'], function(exports_1, cont
         execute: function() {
             AccountRecord = immutable_1.Record({
                 id: 0,
-                name: "",
+                name: '',
                 status: AccountStatus_1.AccountStatus.active,
                 isDeleted: 0,
                 createByUserId: 0,

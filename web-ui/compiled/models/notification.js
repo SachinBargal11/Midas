@@ -22,9 +22,9 @@ System.register(['immutable', 'moment'], function(exports_1, context_1) {
                 // actionTakenBy: null,
                 // actedTakenUpon: null,
                 // actionType: "",
-                title: "",
+                title: '',
                 createdAt: moment_1.default(),
-                type: "",
+                type: '',
                 isRead: false
             });
             Notification = (function (_super) {

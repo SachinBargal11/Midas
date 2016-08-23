@@ -63,7 +63,7 @@ export class AddProviderComponent implements OnInit {
     saveProvider() {
         let providerFormValues = this.providerform.value;
         let providerDetail = new Provider({
-            provider:{
+            provider: {
                 name: providerFormValues.provider.name,
                 npi: providerFormValues.provider.npi,
                 federalTaxID: providerFormValues.provider.federalTaxID,
@@ -72,13 +72,13 @@ export class AddProviderComponent implements OnInit {
             }
         });
         this.isSaveProviderProgress = true;
-        var result;
+        let result;
 
         // result = this._providersStore.addProvider(providerDetail);
         result = this._providerService.addProvider(providerDetail);
         result.subscribe(
             (response) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'Provider added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
@@ -87,7 +87,7 @@ export class AddProviderComponent implements OnInit {
                 this._router.navigate(['/providers']);
             },
             (error) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'Unable to add Provider.',
                     'type': 'ERROR',
                     'createdAt': moment()

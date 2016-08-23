@@ -90,10 +90,10 @@ export class AddMedicalFacilityComponent implements OnInit {
         let medicalFacilityDetail = new MedicalFacilityDetail({
             account: new Account({
             //    id: 176 
-               id: this._sessionStore.session.account_id 
+               id: this._sessionStore.session.account_id
             }),
             user: new User({
-                id: this._sessionStore.session.user.id              
+                id: this._sessionStore.session.user.id
             }),
             medicalfacility: new MedicalFacility({
                 name: medicalFacilityFormValues.name,
@@ -116,12 +116,12 @@ export class AddMedicalFacilityComponent implements OnInit {
             })
         });
         this.isSaveMedicalFacilityProgress = true;
-        var result;
+        let result;
 
         result = this._medicalFacilitiesStore.addMedicalFacility(medicalFacilityDetail);
         result.subscribe(
             (response) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'Medical facility added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
@@ -130,7 +130,7 @@ export class AddMedicalFacilityComponent implements OnInit {
                 this._router.navigate(['/medical-facilities']);
             },
             (error) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'Unable to add Medical facility.',
                     'type': 'ERROR',
                     'createdAt': moment()

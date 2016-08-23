@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ROUTER_DIRECTIVES, ActivatedRoute, Router} from '@angular/router';
-import {Patient} from '../../../models/patient'
+import {Patient} from '../../../models/patient';
 import {PatientsStore} from '../../../stores/patients-store';
 import {PatientProfileComponent} from './profile-patient';
 import {Observable} from 'rxjs/Observable';

@@ -27,13 +27,13 @@ export class UsersService {
 
     getUser(userId: Number): Observable<UserDetail> {
         let promise: Promise<UserDetail> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + "/User/Get/" + userId).map(res => res.json())
+            return this._http.get(this._url + '/User/Get/' + userId).map(res => res.json())
                 .subscribe((data: any) => {
                     let user = null;
                     if (data.length) {
                         user = UserAdapter.parseResponse(data[0]);
                         resolve(user);
-                    } 
+                    }
                     // else {
                     //     reject(new Error('NOT_FOUND'));
                     // }
@@ -45,7 +45,7 @@ export class UsersService {
     }
     getUsers(accountId: number): Observable<UserDetail[]> {
         let promise: Promise<UserDetail[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + "/Account/Get/" + accountId).map(res => res.json())
+            return this._http.get(this._url + '/Account/Get/' + accountId).map(res => res.json())
                 .subscribe((data: any) => {
                     let users = (<Object[]>data.users).map((userData: any) => {
                         return UserAdapter.parseResponse(userData);

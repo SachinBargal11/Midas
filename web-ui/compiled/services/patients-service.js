@@ -46,7 +46,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/
                 PatientsService.prototype.getPatient = function (patientId) {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {
-                        return _this._http.get(_this._url + "?id=" + patientId).map(function (res) { return res.json(); })
+                        return _this._http.get(_this._url + '?id=' + patientId).map(function (res) { return res.json(); })
                             .subscribe(function (data) {
                             var patient = null;
                             if (data.length) {
@@ -65,7 +65,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/
                 PatientsService.prototype.getPatients = function () {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {
-                        return _this._http.get(_this._url + "?createdUser=" + _this._sessionStore.session.user.id)
+                        return _this._http.get(_this._url + '?createdUser=' + _this._sessionStore.session.user.id)
                             .map(function (res) { return res.json(); })
                             .subscribe(function (data) {
                             var patients = data.map(function (patientData) {

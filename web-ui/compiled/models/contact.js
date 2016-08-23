@@ -16,12 +16,12 @@ System.register(['immutable'], function(exports_1, context_1) {
         execute: function() {
             ContactRecord = immutable_1.Record({
                 id: 0,
-                name: "",
-                cellPhone: "",
-                emailAddress: "",
-                homePhone: "",
-                workPhone: "",
-                faxNo: "",
+                name: '',
+                cellPhone: '',
+                emailAddress: '',
+                homePhone: '',
+                workPhone: '',
+                faxNo: '',
                 isDeleted: 0,
                 createByUserId: 0,
                 updateByUserId: 0,

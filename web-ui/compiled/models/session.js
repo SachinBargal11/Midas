@@ -35,7 +35,7 @@ System.register(['immutable'], function(exports_1, context_1) {
                 });
                 Object.defineProperty(Session.prototype, "displayName", {
                     get: function () {
-                        return this._user.firstName + " " + this._user.lastName;
+                        return this._user.firstName + ' ' + this._user.lastName;
                     },
                     enumerable: true,
                     configurable: true

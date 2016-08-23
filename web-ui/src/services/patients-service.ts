@@ -24,7 +24,7 @@ export class PatientsService {
 
     getPatient(patientId: Number): Observable<Patient> {
         let promise: Promise<Patient> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + "?id=" + patientId).map(res => res.json())
+            return this._http.get(this._url + '?id=' + patientId).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     let patient = null;
                     if (data.length) {
@@ -43,7 +43,7 @@ export class PatientsService {
 
     getPatients(): Observable<Patient[]> {
         let promise: Promise<Patient[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + "?createdUser=" + this._sessionStore.session.user.id)
+            return this._http.get(this._url + '?createdUser=' + this._sessionStore.session.user.id)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patients = (<Object[]>data).map((patientData: any) => {

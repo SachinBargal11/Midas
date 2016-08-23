@@ -70,16 +70,16 @@ export class AuthenticationService {
         let promise: Promise<User> = new Promise((resolve, reject) => {
             let autheticateRequestData = {
                 user: {
-                    "userName": userId,
-                    "password": password
+                    'userName': userId,
+                    'password': password
                 }
-            }
+            };
             return this._http.post(this._url + '/User/Signin', JSON.stringify(autheticateRequestData), {
                 headers: headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
                     if (data) {
-                        var user = UserAdapter.parseUserResponse(data);
+                        let user = UserAdapter.parseUserResponse(data);
                         resolve(user);
                     }
                     else {
@@ -99,12 +99,12 @@ export class AuthenticationService {
                 .map(res => res.json())
                 .subscribe((data: any) => {
                     if (data.length) {
-                        var user = UserAdapter.parseResponse(data[0]);
+                        let user = UserAdapter.parseResponse(data[0]);
                         resolve(user);
                     }
                     else {
                         console.info('Old password is wrong');
-                        reject(new Error('INVALID_CREDENTIALS'))
+                        reject(new Error('INVALID_CREDENTIALS'));
                     }
                 }, (error) => {
                     reject(error);
@@ -115,13 +115,13 @@ export class AuthenticationService {
     }
     updatePassword(userId: string, newpassword: string): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
-            var headers = new Headers();
+            let headers = new Headers();
             headers.append('Content-Type', 'application/json');
             return this._http.patch(`${this._url}/${userId}`, JSON.stringify(newpassword), {
                 headers: headers
             }).map(res => res.json()).subscribe((data: any) => {
                 if (data.length) {
-                    var user = UserAdapter.parseResponse(data[0]);
+                    let user = UserAdapter.parseResponse(data[0]);
                     resolve(data);
                 }
                 else {

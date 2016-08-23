@@ -94,8 +94,8 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/
                     var promise = new Promise(function (resolve, reject) {
                         var autheticateRequestData = {
                             user: {
-                                "userName": userId,
-                                "password": password
+                                'userName': userId,
+                                'password': password
                             }
                         };
                         return _this._http.post(_this._url + '/User/Signin', JSON.stringify(autheticateRequestData), {

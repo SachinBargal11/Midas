@@ -103,7 +103,7 @@ export class SignupComponent implements OnInit {
 
     saveUser() {
         this.isSignupInProgress = true;
-        var result;
+        let result;
         let signupFormValues = this.signupform.value;
         let accountDetail = new AccountDetail({
             account: new Account({

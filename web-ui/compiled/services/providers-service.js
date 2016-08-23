@@ -47,7 +47,7 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                     this._headers.append('Content-Type', 'application/json');
                 }
                 ProvidersService.prototype.getProviders = function () {
-                    return this._http.get(this._url + "/Provider/GetAll").map(function (res) { return res.json(); });
+                    return this._http.get(this._url + '/Provider/GetAll').map(function (res) { return res.json(); });
                 };
                 ProvidersService.prototype.addProvider = function (providerDetail) {
                     var _this = this;

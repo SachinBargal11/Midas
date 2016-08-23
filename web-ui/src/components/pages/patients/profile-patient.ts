@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
-import {Patient} from '../../../models/patient'
+import {Patient} from '../../../models/patient';
 import {PatientsStore} from '../../../stores/patients-store';
 
 @Component({
@@ -22,7 +22,7 @@ export class PatientProfileComponent {
             result.subscribe(
                 (patient: Patient) => {
                     this._patientsStore.selectPatient(patient);
-                    this.patient = patient;                    
+                    this.patient = patient;
                 },
                 (error) => {
                     this._router.navigate(['/patients']);

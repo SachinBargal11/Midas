@@ -4,7 +4,7 @@ import {AccountStatus} from './enums/AccountStatus';
 
 const AccountRecord = Record({
     id: 0,
-    name: "",
+    name: '',
     status: AccountStatus.active,
     isDeleted: 0,
     createByUserId: 0,

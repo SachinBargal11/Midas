@@ -3,12 +3,12 @@ import moment from 'moment';
 
 const ContactRecord = Record({
     id: 0,
-    name: "",
-    cellPhone: "",
-    emailAddress: "",
-    homePhone: "",
-    workPhone: "",
-    faxNo: "",
+    name: '',
+    cellPhone: '',
+    emailAddress: '',
+    homePhone: '',
+    workPhone: '',
+    faxNo: '',
     isDeleted: 0,
     createByUserId: 0,
     updateByUserId: 0,

@@ -6,9 +6,9 @@ const NotificationRecord = Record({
     // actionTakenBy: null,
     // actedTakenUpon: null,
     // actionType: "",
-    title: "",
+    title: '',
     createdAt: Moment(),
-    type: "",
+    type: '',
     isRead: false
 });
 

@@ -16,18 +16,18 @@ System.register(['immutable'], function(exports_1, context_1) {
         execute: function() {
             AddressRecord = immutable_1.Record({
                 id: 0,
-                name: "",
-                address1: "",
-                address2: "",
-                city: "",
-                state: "",
-                zipCode: "",
-                country: "",
+                name: '',
+                address1: '',
+                address2: '',
+                city: '',
+                state: '',
+                zipCode: '',
+                country: '',
                 isDeleted: 0,
                 createByUserId: 0,
                 updateByUserId: 0,
                 createDate: null,
-                updateDate: null //Moment
+                updateDate: null // Moment
             });
             Address = (function (_super) {
                 __extends(Address, _super);

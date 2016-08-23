@@ -20,7 +20,7 @@ export class Session extends SessionRecord {
     }
 
     public get displayName(): string {
-        return this._user.firstName + " " + this._user.lastName;
+        return this._user.firstName + ' ' + this._user.lastName;
     }
 
     public get account_id(): number {

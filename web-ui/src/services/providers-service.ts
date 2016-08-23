@@ -22,9 +22,9 @@ export class ProvidersService {
     ) {
         this._headers.append('Content-Type', 'application/json');
     }
-    
+
     getProviders(): Observable<Provider[]> {
-            return this._http.get(this._url + "/Provider/GetAll").map(res => res.json());
+            return this._http.get(this._url + '/Provider/GetAll').map(res => res.json());
     }
 
     addProvider(providerDetail: Provider): Observable<Provider> {
@@ -32,10 +32,10 @@ export class ProvidersService {
 
 
             let providerDetailRequestData = providerDetail.toJS();
-            
+
             // remove unneeded keys 
             providerDetailRequestData.provider = _.omit(providerDetailRequestData.provider, 'providerMedicalFacilities',  'createDate', 'updateByUserID', 'updateDate');
-           
+
             return this._http.post(this._url + '/Provider/Add', JSON.stringify(providerDetailRequestData), {
                 headers: this._headers
             })
@@ -50,7 +50,7 @@ export class ProvidersService {
         });
         return <Observable<Provider>>Observable.fromPromise(promise);
 
-    }  
+    }
 
 }
 

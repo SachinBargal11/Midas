@@ -3,8 +3,8 @@ import moment from 'moment';
 
 const MedicalFacilityRecord = Record({
     id: 0,
-    name: "",
-    prefix: "",
+    name: '',
+    prefix: '',
     defaultAttorneyUserid: 0,
     isDeleted: 0,
     createByUserId: 0,

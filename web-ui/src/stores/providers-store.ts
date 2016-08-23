@@ -6,9 +6,9 @@ import 'rxjs/add/operator/map';
 import {Provider} from '../models/provider';
 import {ProvidersService} from '../services/providers-service';
 import {SessionStore} from './session-store';
-import {Subject} from "rxjs/Subject";
+import {Subject} from 'rxjs/Subject';
 import {List} from 'immutable';
-import {BehaviorSubject} from "rxjs/Rx";
+import {BehaviorSubject} from 'rxjs/Rx';
 import _ from 'underscore';
 import Moment from 'moment';
 
@@ -24,7 +24,7 @@ export class ProvidersStore {
     ) {
         this.loadInitialData();
         this._sessionStore.userLogoutEvent.subscribe(() => {
-            this.resetStore()
+            this.resetStore();
         });
     }
 

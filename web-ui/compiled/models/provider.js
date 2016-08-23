@@ -17,11 +17,11 @@ System.register(['immutable'], function(exports_1, context_1) {
             ProviderRecord = immutable_1.Record({
                 provider: {
                     id: 0,
-                    name: "",
-                    npi: "",
-                    federalTaxID: "",
-                    prefix: "",
-                    providerMedicalFacilities: "",
+                    name: '',
+                    npi: '',
+                    federalTaxID: '',
+                    prefix: '',
+                    providerMedicalFacilities: '',
                     isDeleted: 0,
                     createByUserID: 0,
                     updateByUserID: 0,

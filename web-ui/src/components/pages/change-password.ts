@@ -17,7 +17,7 @@ import {AuthenticationService} from '../../services/authentication-service';
 })
 
 export class ChangePasswordComponent implements OnInit {
-    
+
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -40,7 +40,7 @@ export class ChangePasswordComponent implements OnInit {
         password: ['', Validators.required],
         confirmPassword: ['', Validators.required]
         }, { validator: AppValidators.matchingPasswords('password', 'confirmPassword') });
-        
+
         this.changePassFormControls = this.changePassForm.controls;
 }
 
@@ -51,21 +51,21 @@ export class ChangePasswordComponent implements OnInit {
     }
     changePassword() {
         this.isPassChangeInProgress = true;
-        var result;
-        var userId: any = this._sessionStore.session.user.id;
-        var oldpassword = this.changePassForm.value.oldpassword;
-        var newpassword: any = {   
+        let result;
+        let userId: any = this._sessionStore.session.user.id;
+        let oldpassword = this.changePassForm.value.oldpassword;
+        let newpassword: any = {
             'password': this.changePassForm.value.confirmPassword
-        }
-        
+        };
+
         result = this._authenticationService.authenticatePassword(userId, oldpassword);
-         
+
            result.subscribe(
-            (response) => { 
-            this._authenticationService.updatePassword(userId, newpassword)        
+            (response) => {
+            this._authenticationService.updatePassword(userId, newpassword)
             .subscribe(
             (response) => {
-                this._notificationsService.success('Success','Password changed successfully!');
+                this._notificationsService.success('Success', 'Password changed successfully!');
                 setTimeout(() => {
                     this._router.navigate(['/dashboard']);
                 }, 3000);
@@ -76,7 +76,7 @@ export class ChangePasswordComponent implements OnInit {
             },
             () => {
                 this.isPassChangeInProgress = false;
-            });       
-        } 
-        
+            });
+        }
+
 }

@@ -94,14 +94,14 @@ export class AddUserComponent implements OnInit {
         let userDetail = new UserDetail({
             account: new Account({
             //    id: 176 
-               id: this._sessionStore.session.account_id 
+               id: this._sessionStore.session.account_id
             }),
             user: new User({
                 firstName: userFormValues.userInfo.firstname,
                 middleName: userFormValues.userInfo.middlename,
                 lastName: userFormValues.userInfo.lastname,
-                userType: parseInt(userFormValues.userInfo.userType), //UserType[1],//,
-                userName: userFormValues.contact.email                
+                userType: parseInt(userFormValues.userInfo.userType), // UserType[1],//,
+                userName: userFormValues.contact.email
             }),
             contactInfo: new Contact({
                 cellPhone: userFormValues.contact.cellPhone,
@@ -120,12 +120,12 @@ export class AddUserComponent implements OnInit {
             })
         });
         this.isSaveUserProgress = true;
-        var result;
+        let result;
 
         result = this._usersStore.addUser(userDetail);
         result.subscribe(
             (response) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'User added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
@@ -134,7 +134,7 @@ export class AddUserComponent implements OnInit {
                 this._router.navigate(['/users']);
             },
             (error) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'Unable to add user.',
                     'type': 'ERROR',
                     'createdAt': moment()

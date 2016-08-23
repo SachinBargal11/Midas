@@ -44,11 +44,11 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
-        
+
     }
 
     login() {
-        var result;
+        let result;
         this.isLoginInProgress = true;
         result = this._sessionStore.login(this.loginForm.value.email, this.loginForm.value.password);
 
