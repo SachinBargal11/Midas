@@ -34,9 +34,9 @@ export class UsersService {
                         user = UserAdapter.parseResponse(data[0]);
                         resolve(user);
                     }
-                    // else {
-                    //     reject(new Error('NOT_FOUND'));
-                    // }
+                    else {
+                        reject(new Error('NOT_FOUND'));
+                    }
                 }, (error) => {
                     reject(error);
                 });

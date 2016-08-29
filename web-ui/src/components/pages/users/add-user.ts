@@ -61,8 +61,10 @@ export class AddUserComponent implements OnInit {
                 firstname: ['', Validators.required],
                 middlename: [''],
                 lastname: ['', Validators.required],
-                userType: ['', Validators.required]
-            }),
+                userType: ['', Validators.required],
+                password: ['', Validators.required],
+                confirmPassword: ['', Validators.required]
+            }, { validator: AppValidators.matchingPasswords('password', 'confirmPassword') }),
             contact: this.fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
                 cellPhone: ['', [Validators.required]],
@@ -93,14 +95,14 @@ export class AddUserComponent implements OnInit {
         let userFormValues = this.userform.value;
         let userDetail = new UserDetail({
             account: new Account({
-            //    id: 176 
                id: this._sessionStore.session.account_id
             }),
             user: new User({
                 firstName: userFormValues.userInfo.firstname,
                 middleName: userFormValues.userInfo.middlename,
                 lastName: userFormValues.userInfo.lastname,
-                userType: parseInt(userFormValues.userInfo.userType), // UserType[1],//,
+                userType: parseInt(userFormValues.userInfo.userType), // UserType[1],//,                
+                password: userFormValues.userInfo.password,
                 userName: userFormValues.contact.email
             }),
             contactInfo: new Contact({

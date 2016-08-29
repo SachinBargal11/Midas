@@ -28,7 +28,7 @@ import {LimitPipe} from '../../../pipes/limit-array-pipe';
     selector: 'update-user',
     templateUrl: 'templates/pages/users/update-user.html',
     directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar, InputMask, AutoComplete],
-    providers: [HTTP_PROVIDERS, UsersService, StateService, StatesStore],
+    providers: [HTTP_PROVIDERS, UsersService, StateService, StatesStore, FormBuilder],
     pipes: [LimitPipe]
 })
 
@@ -118,7 +118,7 @@ export class UpdateUserComponent implements OnInit {
                 middleName: userFormValues.middlename,
                 lastName: userFormValues.lastname,
                 userType: parseInt(userFormValues.userType),
-                userName: userFormValues.contact.email ,
+                userName: userFormValues.contact.email,
                 password: userFormValues.password
             }),
             contactInfo: new Contact({

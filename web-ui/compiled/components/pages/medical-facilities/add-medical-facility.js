@@ -130,7 +130,6 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
                     var medicalFacilityFormValues = this.medicalFacilityForm.value;
                     var medicalFacilityDetail = new medical_facility_details_1.MedicalFacilityDetail({
                         account: new account_1.Account({
-                            //    id: 176 
                             id: this._sessionStore.session.account_id
                         }),
                         user: new user_1.User({

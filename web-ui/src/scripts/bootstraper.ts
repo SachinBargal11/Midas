@@ -28,6 +28,9 @@ import {ProvidersService} from '../services/providers-service';
 import {MedicalFacilityStore} from '../stores/medical-facilities-store';
 import {MedicalFacilityService} from '../services/medical-facility-service';
 
+import {DoctorsStore} from '../stores/doctors-store';
+import {DoctorsService} from '../services/doctors-service';
+
 import {PatientsStore} from '../stores/patients-store';
 import {PatientsService} from '../services/patients-service';
 
@@ -61,6 +64,9 @@ import {AddProviderComponent} from '../components/pages/providers/add-provider';
 import {ProvidersListComponent} from '../components/pages/providers/providers-list';
 import {AddMedicalFacilityComponent} from '../components/pages/medical-facilities/add-medical-facility';
 import {MedicalFacilitiesListComponent} from '../components/pages/medical-facilities/medical-facilities-list';
+import {AddDoctorComponent} from '../components/pages/doctors/add-doctor';
+import {UpdateDoctorComponent} from '../components/pages/doctors/update-doctor';
+import {DoctorsListComponent} from '../components/pages/doctors/doctors-list';
 
 import {Http, Headers} from '@angular/http';
 
@@ -92,7 +98,10 @@ enableProdMode();
         AddProviderComponent,
         ProvidersListComponent,
         AddMedicalFacilityComponent,
-        MedicalFacilitiesListComponent
+        MedicalFacilitiesListComponent,
+        AddDoctorComponent,
+        UpdateDoctorComponent,
+        DoctorsListComponent
     ],
     providers: [
         SessionStore,
@@ -103,6 +112,8 @@ enableProdMode();
         ProvidersService,
         MedicalFacilityStore,
         MedicalFacilityService,
+        DoctorsStore,
+        DoctorsService,
         PatientsStore,
         PatientsService,
         StatesStore,

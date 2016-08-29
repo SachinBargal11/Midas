@@ -112,8 +112,41 @@
                                         </ul>
                                     </div>    
                                     </div>
-                               </div>                             
-                        </div>
+                               </div>                            
+                             </div>
+                               <div class="row">
+                                <div class="col-lg-4">
+                                    <label class="form-label"> Password
+                                            <span class="color-red">*</span>
+                                        </label>
+                                    <div class="form-group" [class.error]="userformControls.userInfo.controls.password.touched && !userformControls.userInfo.controls.password.valid">
+                                        <input formControlName="password" [ngModel]="password" type="password" minlength='6' class="form-control" [class.error]="!userformControls.userInfo.controls.password.valid"
+                                            placeholder="" />
+                                        <div class='error-list' *ngIf="userformControls.userInfo.controls.password.touched && !userformControls.userInfo.controls.password.valid">
+                                            <ul>
+                                                <li *ngIf="userformControls.userInfo.controls.password.hasError('required')">Password is required.</li>
+                                                <li *ngIf="userformControls.userInfo.controls.password.hasError('minlength')">Password should be minimum {{userformControls.userInfo.controls.password.errors.minlength.requiredLength}}
+                                                    characters.
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label class="form-label"> Repeat Password
+                                            <span class="color-red">*</span>
+                                        </label>
+                                    <div class="form-group" [class.error]="userformControls.userInfo.controls.confirmPassword.touched && userformControls.userInfo.hasError('mismatchedPasswords')">
+                                        <input formControlName="confirmPassword" type="password" class="form-control" [class.error]="userformControls.userInfo.hasError('mismatchedPasswords')"
+                                            placeholder="" />
+                                        <div class='error-list' *ngIf="userformControls.userInfo.controls.confirmPassword.touched && userformControls.userInfo.hasError('mismatchedPasswords')">
+                                            <ul>
+                                                <li *ngIf="userformControls.userInfo.hasError('mismatchedPasswords')">Passwords do not match.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
                     </div>
                 </section>
                 

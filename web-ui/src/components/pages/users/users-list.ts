@@ -10,7 +10,8 @@ import {LimitPipe} from '../../../pipes/limit-array-pipe';
     directives: [
         ROUTER_DIRECTIVES
     ],
-    pipes: [ReversePipe, LimitPipe]
+    pipes: [ReversePipe, LimitPipe],
+    providers: [UsersStore]
 })
 
 
@@ -25,7 +26,6 @@ export class UsersListComponent implements OnInit {
 
     }
 selectUser(user) {
-        // this._usersStore.selectUser(user);
         this._router.navigate(['/users/update/' + user.user.id]);
     }
 }

@@ -38,7 +38,6 @@ System.register(['@angular/core', '@angular/router', '../../../stores/users-stor
                 UsersListComponent.prototype.ngOnInit = function () {
                 };
                 UsersListComponent.prototype.selectUser = function (user) {
-                    // this._usersStore.selectUser(user);
                     this._router.navigate(['/users/update/' + user.user.id]);
                 };
                 UsersListComponent = __decorate([
@@ -48,7 +47,8 @@ System.register(['@angular/core', '@angular/router', '../../../stores/users-stor
                         directives: [
                             router_1.ROUTER_DIRECTIVES
                         ],
-                        pipes: [reverse_array_pipe_1.ReversePipe, limit_array_pipe_1.LimitPipe]
+                        pipes: [reverse_array_pipe_1.ReversePipe, limit_array_pipe_1.LimitPipe],
+                        providers: [users_store_1.UsersStore]
                     }), 
                     __metadata('design:paramtypes', [router_1.Router, users_store_1.UsersStore])
                 ], UsersListComponent);

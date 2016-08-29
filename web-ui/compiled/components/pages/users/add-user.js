@@ -102,8 +102,10 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
                             firstname: ['', forms_1.Validators.required],
                             middlename: [''],
                             lastname: ['', forms_1.Validators.required],
-                            userType: ['', forms_1.Validators.required]
-                        }),
+                            userType: ['', forms_1.Validators.required],
+                            password: ['', forms_1.Validators.required],
+                            confirmPassword: ['', forms_1.Validators.required]
+                        }, { validator: AppValidators_1.AppValidators.matchingPasswords('password', 'confirmPassword') }),
                         contact: this.fb.group({
                             email: ['', [forms_1.Validators.required, AppValidators_1.AppValidators.emailValidator]],
                             cellPhone: ['', [forms_1.Validators.required]],
@@ -132,7 +134,6 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
                     var userFormValues = this.userform.value;
                     var userDetail = new user_details_1.UserDetail({
                         account: new account_1.Account({
-                            //    id: 176 
                             id: this._sessionStore.session.account_id
                         }),
                         user: new user_1.User({
@@ -140,6 +141,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
                             middleName: userFormValues.userInfo.middlename,
                             lastName: userFormValues.userInfo.lastname,
                             userType: parseInt(userFormValues.userInfo.userType),
+                            password: userFormValues.userInfo.password,
                             userName: userFormValues.contact.email
                         }),
                         contactInfo: new contact_1.Contact({

@@ -59,9 +59,9 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                                 user = user_adapter_1.UserAdapter.parseResponse(data[0]);
                                 resolve(user);
                             }
-                            // else {
-                            //     reject(new Error('NOT_FOUND'));
-                            // }
+                            else {
+                                reject(new Error('NOT_FOUND'));
+                            }
                         }, function (error) {
                             reject(error);
                         });
