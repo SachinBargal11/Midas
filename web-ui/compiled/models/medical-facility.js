@@ -18,7 +18,7 @@ System.register(['immutable'], function(exports_1, context_1) {
                 id: 0,
                 name: "",
                 prefix: "",
-                defaultAttorneyUserid: 0,
+                // defaultAttorneyUserid: 0,
                 isDeleted: 0,
                 createByUserId: 0,
                 updateByUserId: 0,

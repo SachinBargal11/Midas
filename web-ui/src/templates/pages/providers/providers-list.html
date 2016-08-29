@@ -6,16 +6,14 @@
         <tr>
             <th>Name</th>
             <th>NPI</th>
-            <!--<th>FederalTaxId</th>
-            <th>Prefix</th>-->
+            <th>Prefix</th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let provider of _providersStore.providers | async | reverse">
             <td>{{ provider.name }}</td>
             <td>{{ provider.npi }}</td>
-            <!--<td>{{ provider.federalTaxID }}</td>
-            <td>{{ provider.prefix }}</td>-->
+            <td>{{ provider.prefix }}</td>
         </tr>
     </tbody>
 </table>

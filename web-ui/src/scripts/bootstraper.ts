@@ -4,7 +4,7 @@
 import {enableProdMode, NgModule} from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { BrowserModule }  from '@angular/platform-browser';
-import { FormsModule }    from '@angular/forms';
+import { FormsModule, FormBuilder }    from '@angular/forms';
 import {bootstrap} from '@angular/platform-browser-dynamic';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 import {AppRoot} from '../components/AppRoot';
@@ -27,6 +27,9 @@ import {ProvidersService} from '../services/providers-service';
 
 import {MedicalFacilityStore} from '../stores/medical-facilities-store';
 import {MedicalFacilityService} from '../services/medical-facility-service';
+
+import {DoctorsStore} from '../stores/doctors-store';
+import {DoctorsService} from '../services/doctors-service';
 
 import {PatientsStore} from '../stores/patients-store';
 import {PatientsService} from '../services/patients-service';
@@ -57,6 +60,9 @@ import {ChangePasswordComponent} from '../components/pages/change-password';
 import {AddUserComponent} from '../components/pages/users/add-user';
 import {UsersListComponent} from '../components/pages/users/users-list';
 import {UpdateUserComponent} from '../components/pages/users/update-user';
+import {AddDoctorComponent} from '../components/pages/doctors/add-doctor';
+import {UpdateDoctorComponent} from '../components/pages/doctors/update-doctor';
+import {DoctorsListComponent} from '../components/pages/doctors/doctors-list';
 import {AddProviderComponent} from '../components/pages/providers/add-provider';
 import {ProvidersListComponent} from '../components/pages/providers/providers-list';
 import {AddMedicalFacilityComponent} from '../components/pages/medical-facilities/add-medical-facility';
@@ -92,7 +98,10 @@ enableProdMode();
         AddProviderComponent,
         ProvidersListComponent,
         AddMedicalFacilityComponent,
-        MedicalFacilitiesListComponent
+        MedicalFacilitiesListComponent,
+        AddDoctorComponent,
+        UpdateDoctorComponent,
+        DoctorsListComponent
     ],
     providers: [
         SessionStore,
@@ -103,6 +112,8 @@ enableProdMode();
         ProvidersService,
         MedicalFacilityStore,
         MedicalFacilityService,
+        DoctorsStore,
+        DoctorsService,
         PatientsStore,
         PatientsService,
         StatesStore,
@@ -111,7 +122,8 @@ enableProdMode();
         ValidateActiveSession,
         ValidateInActiveSession,
         Http,
-        HTTP_PROVIDERS
+        HTTP_PROVIDERS,
+        FormBuilder
     ],
     bootstrap: [
         AppRoot

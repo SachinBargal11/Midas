@@ -74,11 +74,11 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                             dateOfBirth: medicalFacilityDetailRequestData.user.dateOfBirth ? medicalFacilityDetailRequestData.user.dateOfBirth.toISOString() : null
                         });
                         // remove unneeded keys 
-                        medicalFacilityDetailRequestData.user = underscore_1.default.omit(medicalFacilityDetailRequestData.user, 'password', 'userName', 'imageLink', 'dateOfBirth', 'name', 'userType', 'firstName', 'middleName', 'lastName', 'gender', 'status', 'isDeleted', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+                        medicalFacilityDetailRequestData.user = underscore_1.default.omit(medicalFacilityDetailRequestData.user, 'accountId', 'password', 'userName', 'imageLink', 'dateOfBirth', 'name', 'userType', 'firstName', 'middleName', 'lastName', 'gender', 'status', 'isDeleted', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
                         medicalFacilityDetailRequestData.address = underscore_1.default.omit(medicalFacilityDetailRequestData.address, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
                         medicalFacilityDetailRequestData.contactInfo = underscore_1.default.omit(medicalFacilityDetailRequestData.contactInfo, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
                         medicalFacilityDetailRequestData.account = underscore_1.default.omit(medicalFacilityDetailRequestData.account, 'name', 'status', 'isDeleted', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
-                        medicalFacilityDetailRequestData.medicalFacility = underscore_1.default.omit(medicalFacilityDetailRequestData.medicalFacility, 'status', 'isDeleted', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+                        medicalFacilityDetailRequestData.medicalfacility = underscore_1.default.omit(medicalFacilityDetailRequestData.medicalfacility, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
                         return _this._http.post(_this._url + '/MedicalFacility/Add', JSON.stringify(medicalFacilityDetailRequestData), {
                             headers: _this._headers
                         })

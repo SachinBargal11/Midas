@@ -12,7 +12,7 @@ const MedicalFacilityRecord = Record({
     user: null, //User
     address: null, //Address
     contactInfo: null, //Contact
-    medicalFacility: null, //MedicalFacility
+    medicalfacility: null, //MedicalFacility
 });
 
 export class MedicalFacilityDetail extends MedicalFacilityRecord {
@@ -21,7 +21,7 @@ export class MedicalFacilityDetail extends MedicalFacilityRecord {
     user: User;
     address: Address;
     contact: Contact;
-    medicalFacility: MedicalFacility;
+    medicalfacility: MedicalFacility;
 
 
     constructor(props) {

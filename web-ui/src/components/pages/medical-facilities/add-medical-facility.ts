@@ -89,7 +89,6 @@ export class AddMedicalFacilityComponent implements OnInit {
         let medicalFacilityFormValues = this.medicalFacilityForm.value;
         let medicalFacilityDetail = new MedicalFacilityDetail({
             account: new Account({
-            //    id: 176 
                id: this._sessionStore.session.account_id 
             }),
             user: new User({

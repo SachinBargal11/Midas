@@ -52,11 +52,11 @@ export class MedicalFacilityService {
             });
 
             // remove unneeded keys 
-            medicalFacilityDetailRequestData.user = _.omit(medicalFacilityDetailRequestData.user, 'password', 'userName', 'imageLink', 'dateOfBirth', 'name', 'userType', 'firstName', 'middleName', 'lastName', 'gender', 'status', 'isDeleted', 'createByUserId', 'createDate','updateByUserId', 'updateDate');
+            medicalFacilityDetailRequestData.user = _.omit(medicalFacilityDetailRequestData.user, 'accountId', 'password', 'userName', 'imageLink', 'dateOfBirth', 'name', 'userType', 'firstName', 'middleName', 'lastName', 'gender', 'status', 'isDeleted', 'createByUserId', 'createDate','updateByUserId', 'updateDate');
             medicalFacilityDetailRequestData.address = _.omit(medicalFacilityDetailRequestData.address, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
             medicalFacilityDetailRequestData.contactInfo = _.omit(medicalFacilityDetailRequestData.contactInfo, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
             medicalFacilityDetailRequestData.account = _.omit(medicalFacilityDetailRequestData.account, 'name', 'status', 'isDeleted', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
-            medicalFacilityDetailRequestData.medicalFacility = _.omit(medicalFacilityDetailRequestData.medicalFacility, 'status', 'isDeleted', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+            medicalFacilityDetailRequestData.medicalfacility = _.omit(medicalFacilityDetailRequestData.medicalfacility, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
 
             return this._http.post(this._url + '/MedicalFacility/Add', JSON.stringify(medicalFacilityDetailRequestData), {
                 headers: this._headers

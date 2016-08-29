@@ -1,0 +1,28 @@
+<h1 class="with-border">Doctors
+<a class="pull-right m-b-md btn btn-primary" [routerLink]="['/doctors/add']">Add Doctor</a>
+</h1>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>NPI</th>
+            <th>id</th>
+            <!--<th>Firstname</th>-->
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let doctor of _doctorsStore.doctors | async | reverse">
+            <td>{{ doctor.doctor.title }}</td>
+            <td>{{ doctor.doctor.npi }}</td>
+            <td>{{ doctor.doctor.id }}</td>
+            <!--<td>{{ doctor.doctor.user.firstName }}</td>-->
+            <td>
+                <!--<a [routerLink]="['/doctors/update/', { id: doctor.doctor.id }]">-->
+                <a (click)="selectDoctor(doctor)">
+                    <i class="glyphicon glyphicon-edit"></i>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
