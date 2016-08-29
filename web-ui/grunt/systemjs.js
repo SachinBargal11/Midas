@@ -35,7 +35,7 @@ module.exports = {
                         'jquery.inputmask'
                     ]
                 },
-                'jquery-ui': {
+                'jquery.ui': {
                     deps: [
                         'jquery'
                     ]
