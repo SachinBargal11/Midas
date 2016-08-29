@@ -15,6 +15,11 @@ module.exports = {
 			src: ['css/main.css', 'fonts/**/*.*', 'img/**/*.*'],
 			dest: '<%= compiledLocation %>/theme/',
 			expand: true
+    	}, {
+			cwd: '<%= srcLocation %>/external/',
+			src: ['**/*.*'],
+			dest: '<%= compiledLocation %>/external/',
+			expand: true
     	}]
 	},
 	dist: {
@@ -82,6 +87,11 @@ module.exports = {
 			cwd: 'node_modules/jquery/',
 			src: ['dist/jquery.min.js'],
 			dest: '<%= distLocation %>/node_modules/jquery/',
+			expand: true
+    	}, {
+			cwd: '<%= srcLocation %>/external/',
+			src: ['**/*.*'],
+			dest: '<%= distLocation %>/external/',
 			expand: true
     	}]
 	}

@@ -34,6 +34,13 @@ module.exports = {
 		files: ['<%= srcLocation %>/styles/assets/**/*'],
 		tasks: ['newer:copy:development']
 	},
+	external: {
+		options: {
+			livereload: false
+		},
+		files: ['<%= srcLocation %>/external/**/*'],
+		tasks: ['newer:copy:development']
+	},
 	typescript: {
 		options: {
 			livereload: false

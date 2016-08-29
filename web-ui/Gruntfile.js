@@ -4,7 +4,7 @@ module.exports = function (grunt) {
         config: {
             srcLocation: 'src',
             compiledLocation: 'compiled',
-            distLocation: 'dist'
+            distLocation: 'app'
         }
     });
 
