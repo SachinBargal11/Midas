@@ -38,5 +38,13 @@ namespace Midas.GreenBill.BusinessObject
                 Female = 2
             }
         #endregion
+
+        #region Tax Type
+        public enum TaxType
+        {
+            Tax1 = 1,
+            Tax2 = 2
+        }
+        #endregion
     }
 }

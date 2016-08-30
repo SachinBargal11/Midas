@@ -108,10 +108,10 @@ namespace Midas.GreenBill.EntityRepository
         #endregion
 
         #region Get ContactInfo By ID
-        public override T Get<T>(T entity)
+        public override Object Get(int id)
         {
-            BO.ContactInfo acc_ = Convert<BO.ContactInfo, ContactInfo>(_context.ContactInfoes.Find(((BO.GbObject)(object)entity).ID));
-            return (T)(object)acc_;
+            BO.ContactInfo acc_ = Convert<BO.ContactInfo, ContactInfo>(_context.ContactInfoes.Find(id));
+            return (object)acc_;
         }
         #endregion
 

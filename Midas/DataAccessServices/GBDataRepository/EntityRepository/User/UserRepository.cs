@@ -127,12 +127,14 @@ namespace Midas.GreenBill.EntityRepository
 
             addressBO = data["address"] == null ? new BO.Address() : data["address"].ToObject<BO.Address>();
             contactinfoBO = data["contactinfo"] == null ? new BO.ContactInfo() : data["contactinfo"].ToObject<BO.ContactInfo>();
+            accountBO = data["account"] == null ? new BO.Account() : data["account"].ToObject<BO.Account>();
 
             Account accountDB = new Account();
             User userDB = new User();
             Address addressDB = new Address();
             ContactInfo contactinfoDB = new ContactInfo();
 
+            if(userDB.ID!=0)
             if (_context.Users.Any(o => o.UserName == userBO.UserName))
             {
                 return new BO.GbObject { Message = Constants.UserAlreadyExists};
@@ -143,13 +145,8 @@ namespace Midas.GreenBill.EntityRepository
                 accountBO=data["account"].ToObject<BO.Account>();
 
                 #region Account
-                accountDB.Name = accountBO.Name;
-                accountDB.ID = accountBO.ID;
-                accountDB.Status = System.Convert.ToByte(accountBO.Status);
-                accountDB.IsDeleted = accountBO.IsDeleted;
+                userDB.AccountID = accountBO.ID;
                 #endregion
-
-                userDB.Account = accountDB;
             }
 
             #region Address
@@ -178,6 +175,7 @@ namespace Midas.GreenBill.EntityRepository
             userDB.UserName = userBO.UserName;
             userDB.FirstName = userBO.FirstName;
             userDB.LastName = userBO.LastName;
+            userDB.ID = userBO.ID;
             userDB.Gender = System.Convert.ToByte(userBO.Gender);
             userDB.UserType = System.Convert.ToByte(userBO.UserType);
             userDB.ImageLink = userBO.ImageLink;
@@ -295,10 +293,10 @@ namespace Midas.GreenBill.EntityRepository
         #endregion
 
         #region Get User By ID
-        public override T Get<T>(T entity)
+        public override Object Get(int id)
         {
-            BO.User acc_ = Convert<BO.User, User>(_context.Users.Include("Address").Include("ContactInfo").Where(p => p.ID == ((BO.GbObject)(object)entity).ID).FirstOrDefault<User>());
-            return (T)(object)acc_;
+            BO.User acc_ = Convert<BO.User, User>(_context.Users.Include("Address").Include("ContactInfo").Where(p => p.ID == id).FirstOrDefault<User>());
+            return (object)acc_;
         }
         #endregion
 
@@ -307,7 +305,7 @@ namespace Midas.GreenBill.EntityRepository
         {
             BO.User userBO = entity["user"].ToObject<BO.User>();
             string Pass = userBO.Password;
-            dynamic data = _context.Users.Where(x => x.UserName == userBO.UserName && x.Password == Pass).FirstOrDefault();
+            dynamic data = _context.Users.Include("Account").Where(x => x.UserName == userBO.UserName && x.Password == Pass).FirstOrDefault();
             BO.User acc_ = Convert<BO.User, User>(data);
 
             //return acc_ != null ? (object)acc_ : new BO.GbObject { Message = Constants.InvalidCredentials };
@@ -330,7 +328,8 @@ namespace Midas.GreenBill.EntityRepository
         #region Get User By Search Parameters
         public override Object Get(JObject data)
         {
-            List<BO.User> userBO = data["user"].ToObject<List<BO.User>>();
+            List<BO.User> userBO;
+            userBO = data != null ? (data["user"] != null ? data["user"].ToObject<List<BO.User>>() : new List<BO.User>()) : new List<BO.User>();
 
             List<EntitySearchParameter> searchParameters = new List<EntityRepository.EntitySearchParameter>();
             foreach (BO.User item in userBO)

@@ -117,7 +117,8 @@ namespace Midas.GreenBill.EntityRepository
                 boMedicalFacility.ID = providermedicalfacility.MedicalFacility.ID;
                 boMedicalFacility.Name = providermedicalfacility.MedicalFacility.Name;
                 boMedicalFacility.Prefix = providermedicalfacility.MedicalFacility.Prefix;
-                boMedicalFacility.DefaultAttorneyUserID = providermedicalfacility.MedicalFacility.DefaultAttorneyUserID;
+                if(providermedicalfacility.MedicalFacility.DefaultAttorneyUserID.HasValue)
+                boMedicalFacility.DefaultAttorneyUserID = providermedicalfacility.MedicalFacility.DefaultAttorneyUserID.Value;
                 boMedicalFacility.CreateByUserID = providermedicalfacility.MedicalFacility.CreateByUserID;
                 providermedicalfacilityBO.CreateDate = providermedicalfacility.MedicalFacility.CreateDate;
                 providermedicalfacilityBO.MedicalFacility = boMedicalFacility;
@@ -293,10 +294,10 @@ namespace Midas.GreenBill.EntityRepository
         #endregion
 
         #region Get ProviderMedicalFacility By ID
-        public override T Get<T>(T entity)
+        public override Object Get(int id)
         {
-            BO.ProviderMedicalFacility acc_ = Convert<BO.ProviderMedicalFacility, ProviderMedicalFacility>(_context.ProviderMedicalFacilities.Include("Address").Include("ContactInfo").Include("Address1").Include("ContactInfo1").Include("MedicalFacility").Include("Provider").Where(p => p.ID == ((BO.GbObject)(object)entity).ID).FirstOrDefault<ProviderMedicalFacility>());
-            return (T)(object)acc_;
+            BO.ProviderMedicalFacility acc_ = Convert<BO.ProviderMedicalFacility, ProviderMedicalFacility>(_context.ProviderMedicalFacilities.Include("Address").Include("ContactInfo").Include("Address1").Include("ContactInfo1").Include("MedicalFacility").Include("Provider").Where(p => p.ID ==id).FirstOrDefault<ProviderMedicalFacility>());
+            return (object)acc_;
         }
         #endregion
 

@@ -17,8 +17,7 @@ namespace GBDataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Specialty()
         {
-            this.CaseDiagnosisSpecialities = new HashSet<CaseDiagnosisSpeciality>();
-            this.ProcedureCodes = new HashSet<ProcedureCode>();
+            this.SpecialtyDetails = new HashSet<SpecialtyDetail>();
         }
     
         public int ID { get; set; }
@@ -26,13 +25,11 @@ namespace GBDataRepository.Model
         public string SpecialityCode { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
+        public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CaseDiagnosisSpeciality> CaseDiagnosisSpecialities { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProcedureCode> ProcedureCodes { get; set; }
+        public virtual ICollection<SpecialtyDetail> SpecialtyDetails { get; set; }
     }
 }

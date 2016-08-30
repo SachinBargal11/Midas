@@ -18,16 +18,19 @@ namespace GBDataRepository.Model
         public User()
         {
             this.Doctors = new HashSet<Doctor>();
+            this.DoctorMedicalFacilitiesProviders = new HashSet<DoctorMedicalFacilitiesProvider>();
+            this.DoctorSpecialities = new HashSet<DoctorSpeciality>();
             this.MedicalFacilities = new HashSet<MedicalFacility>();
+            this.Patients = new HashSet<Patient>();
+            this.PatientInsurances = new HashSet<PatientInsurance>();
         }
-
     
         public int ID { get; set; }
-        public int? AccountID { get; set; }
+        public Nullable<int> AccountID { get; set; }
         public string UserName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public byte? Gender { get; set; }
+        public Nullable<byte> Gender { get; set; }
         public byte UserType { get; set; }
         public string ImageLink { get; set; }
         public int AddressId { get; set; }
@@ -46,7 +49,17 @@ namespace GBDataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Doctor> Doctors { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DoctorMedicalFacilitiesProvider> DoctorMedicalFacilitiesProviders { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DoctorSpeciality> DoctorSpecialities { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MedicalFacility> MedicalFacilities { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Patient> Patients { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientInsurance> PatientInsurances { get; set; }
+        public virtual User User1 { get; set; }
+        public virtual User User2 { get; set; }
         public virtual UserType UserType1 { get; set; }
     }
 }

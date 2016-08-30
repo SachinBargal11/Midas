@@ -60,7 +60,7 @@ namespace Midas.GreenBill.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual T Get<T>(T entity)
+        public virtual Object Get(int id)
         {
             throw new NotImplementedException();
         }

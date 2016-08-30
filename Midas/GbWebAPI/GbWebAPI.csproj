@@ -247,16 +247,18 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Attributes\RESTAuthorizeAttribute.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="ActionFilters\LoggingFilterAttribute.cs" />
     <Compile Include="Controllers\AddressInfoController.cs" />
     <Compile Include="Controllers\ContactInfoController.cs" />
+    <Compile Include="Controllers\DoctorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MedicalFacilityController.cs" />
     <Compile Include="Controllers\ProviderController.cs" />
     <Compile Include="Controllers\ProviderMedicalFacilityController.cs" />
+    <Compile Include="Controllers\SpecialtyController.cs" />
+    <Compile Include="Controllers\SpecialtyDetailsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UtilsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -361,10 +363,6 @@
     <ProjectReference Include="..\GBBusinessObjects\GBBusinessObjects.csproj">
       <Project>{01c07d5e-d792-48cc-b43e-d42b65c5921f}</Project>
       <Name>GBBusinessObjects</Name>
-    </ProjectReference>
-    <ProjectReference Include="C:\Users\admin\Downloads\TokenAuthMVC-master\TokenAuthMVC-master\TokenAuthMVC.Managers\TokenAuthMVC.Managers.csproj">
-      <Project>{28FD1900-363E-43EA-AB44-0850915AC588}</Project>
-      <Name>TokenAuthMVC.Managers</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

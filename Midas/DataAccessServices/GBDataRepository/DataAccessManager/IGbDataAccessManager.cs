@@ -12,7 +12,7 @@ namespace Midas.GreenBill.DataAccessManager
     {
         Object Save(JObject entity);
         int Delete(T entity);
-        T Get(T entity, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object Get(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
 
         Object Get(JObject data, int? nestingLevels = null);
         Object Signup(JObject data, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);

@@ -51,6 +51,7 @@
     <Compile Include="BusinessValidation.cs" />
     <Compile Include="BusinessValidationResult.cs" />
     <Compile Include="ContactInfo.cs" />
+    <Compile Include="Doctor\Doctor.cs" />
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="GBEnums.cs" />
     <Compile Include="GbObject.cs" />
@@ -59,7 +60,10 @@
     <Compile Include="ProviderMedicalFacility.cs" />
     <Compile Include="Provider\Provider.cs" />
     <Compile Include="Response.cs" />
+    <Compile Include="Speciality\Specialty.cs" />
+    <Compile Include="Speciality\SpecialtyDetails.cs" />
     <Compile Include="User\User.cs" />
+    <Compile Include="Validation\Validations.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

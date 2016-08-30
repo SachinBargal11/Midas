@@ -14,6 +14,12 @@ namespace GBDataRepository.Model
     
     public partial class ProviderMedicalFacility
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ProviderMedicalFacility()
+        {
+            this.Patients = new HashSet<Patient>();
+        }
+    
         public int ID { get; set; }
         public int ProviderID { get; set; }
         public int MedicalFacilityID { get; set; }
@@ -32,6 +38,8 @@ namespace GBDataRepository.Model
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual ContactInfo ContactInfo1 { get; set; }
         public virtual MedicalFacility MedicalFacility { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Patient> Patients { get; set; }
         public virtual Provider Provider { get; set; }
     }
 }

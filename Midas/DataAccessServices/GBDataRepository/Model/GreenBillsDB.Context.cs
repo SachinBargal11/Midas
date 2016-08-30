@@ -22,15 +22,14 @@ namespace GBDataRepository.Model
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
-               .Map(m => m.Requires("IsDeleted").HasValue(false))
-            .Ignore(m => m.IsDeleted);
+            throw new UnintentionalCodeFirstException();
         }
     
         public virtual DbSet<Abbreviation> Abbreviations { get; set; }
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<Action> Actions { get; set; }
         public virtual DbSet<Address> Addresses { get; set; }
+        public virtual DbSet<Address1> Addresses1 { get; set; }
         public virtual DbSet<ApplicationSetting> ApplicationSettings { get; set; }
         public virtual DbSet<BillDetail> BillDetails { get; set; }
         public virtual DbSet<BillPom> BillPoms { get; set; }

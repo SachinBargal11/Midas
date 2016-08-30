@@ -42,6 +42,18 @@ namespace Midas.GreenBill
             {
                 repo = new ProviderMedicalFacilityRepository(context);
             }
+            else if (typeof(T) == typeof(BO.Doctor))
+            {
+                repo = new DoctorRepository(context);
+            }
+            else if (typeof(T) == typeof(BO.Specialty))
+            {
+                repo = new SpecialtyRepository(context);
+            }
+            else if (typeof(T) == typeof(BO.SpecialityDetails))
+            {
+                repo = new SpecialtyDetailsRepository(context);
+            }
             return repo;
         }
     }

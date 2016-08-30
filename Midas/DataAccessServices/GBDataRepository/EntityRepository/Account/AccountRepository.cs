@@ -165,6 +165,7 @@ namespace Midas.GreenBill.EntityRepository
         #region Signup
         public override Object Signup(JObject data)
         {
+           
             BO.Address addressBO;
             BO.ContactInfo contactinfoBO;
 
@@ -347,10 +348,10 @@ namespace Midas.GreenBill.EntityRepository
         #endregion
 
         #region Get Account By ID
-        public override T Get<T>(T entity)
+        public override Object Get(int id)
         {
-            BO.Account acc_ = Convert<BO.Account, Account>(_context.Accounts.Include("Users").Include("MedicalFacilities").Where(p => p.ID == ((BO.GbObject)(object)entity).ID).FirstOrDefault<Account>());
-            return (T)(object)acc_;
+            BO.Account acc_ = Convert<BO.Account, Account>(_context.Accounts.Include("Users").Include("MedicalFacilities").Where(p => p.ID == id).FirstOrDefault<Account>());
+            return (object)acc_;
         }
         #endregion
 
@@ -369,7 +370,8 @@ namespace Midas.GreenBill.EntityRepository
         #region Get User By Search Parameters
         public override Object Get(JObject data)
         {
-            List<BO.Account> userBO = data["account"].ToObject<List<BO.Account>>();
+            List<BO.Account> userBO;
+            userBO = data != null ? (data["account"] != null ? data["provider"].ToObject<List<BO.Account>>() : new List<BO.Account>()) : new List<BO.Account>();
 
             List<EntitySearchParameter> searchParameters = new List<EntityRepository.EntitySearchParameter>();
             foreach (BO.Account item in userBO)

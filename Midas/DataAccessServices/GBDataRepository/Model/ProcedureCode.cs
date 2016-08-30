@@ -30,7 +30,5 @@ namespace GBDataRepository.Model
         public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-    
-        public virtual Specialty Specialty { get; set; }
     }
 }

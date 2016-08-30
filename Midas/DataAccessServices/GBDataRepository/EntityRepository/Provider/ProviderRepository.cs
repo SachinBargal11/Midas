@@ -41,6 +41,14 @@ namespace Midas.GreenBill.EntityRepository
             boProvider.FederalTaxId = provider.FederalTaxId;
             boProvider.Prefix = provider.Prefix;
 
+            if (provider.UpdateByUserID.HasValue)
+                boProvider.UpdateByUserID = provider.UpdateByUserID.Value;
+            if (provider.UpdateDate.HasValue)
+                boProvider.UpdateDate = provider.UpdateDate.Value;
+
+            boProvider.CreateByUserID = provider.CreateByUserID;
+            boProvider.CreateDate = provider.CreateDate;
+
             return (T)(object)boProvider;
         }
         #endregion
@@ -100,10 +108,17 @@ namespace Midas.GreenBill.EntityRepository
             BO.Provider providerBO = data["provider"].ToObject<BO.Provider>();
 
             Provider providerDB = new Provider();
+            providerDB.Name = providerBO.Name;
             providerDB.ID = providerBO.ID;
             providerDB.NPI = providerBO.NPI;
             providerDB.FederalTaxId = providerBO.FederalTaxId;
             providerDB.Prefix = providerBO.Prefix;
+
+
+            if (_context.Providers.Any(o => o.Name == providerBO.Name))
+            {
+                return new BO.GbObject { Message = Constants.ProviderAlreadyExists };
+            }
 
             if (providerDB.ID > 0)
             {
@@ -136,10 +151,10 @@ namespace Midas.GreenBill.EntityRepository
         #endregion
 
         #region Get Provider By ID
-        public override T Get<T>(T entity)
+        public override Object Get(int id)
         {
-            BO.Provider acc_ = Convert<BO.Provider, Provider>(_context.Providers.Find(((BO.GbObject)(object)entity).ID));
-            return (T)(object)acc_;
+            BO.Provider acc_ = Convert<BO.Provider, Provider>(_context.Providers.Find(id));
+            return (object)acc_;
         }
         #endregion
 
@@ -156,17 +171,28 @@ namespace Midas.GreenBill.EntityRepository
         //}
         //#endregion
 
-        //#region Get Provider By Search Parameters
-        //public override List<T> Get<T>(T entity, List<EntitySearchParameter> searchParameters)
-        //{
-        //    Dictionary<Type, String> filterMap = new Dictionary<Type, string>();
-        //    filterMap.Add(typeof(BO.Provider), "");
-        //    IQueryable<Provider> query = EntitySearch.CreateSearchQuery<Provider>(_context.Providers, searchParameters, filterMap);
-        //    List<Provider> contactinfoes = query.ToList<Provider>();
-        //    List<T> boProvider = new List<T>();
-        //    contactinfoes.ForEach(t => boProvider.Add(Convert<T, Provider>(t)));
-        //    return boProvider;
-        //}
-        //#endregion
+        #region Get Provider By Search Parameters
+        public override Object Get(JObject data)
+        {
+            List<BO.Provider> userBO;
+            userBO = data != null ? (data["provider"] != null ? data["provider"].ToObject<List<BO.Provider>>() : new List<BO.Provider>()) : new List<BO.Provider>();
+
+            List<EntitySearchParameter> searchParameters = new List<EntityRepository.EntitySearchParameter>();
+            foreach (BO.Provider item in userBO)
+            {
+                EntitySearchParameter param = new EntityRepository.EntitySearchParameter();
+                param.id = item.ID;
+                param.name = item.Name;
+                searchParameters.Add(param);
+            }
+
+            Dictionary<Type, String> filterMap = new Dictionary<Type, string>();
+            filterMap.Add(typeof(BO.Provider), "");
+            IQueryable<Provider> query = EntitySearch.CreateSearchQuery<Provider>(_context.Providers, searchParameters, filterMap);
+            List<Provider> Users = query.ToList<Provider>();
+
+            return (object)Users;
+        }
+        #endregion
     }
 }
