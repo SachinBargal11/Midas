@@ -23,7 +23,7 @@ module.exports = {
                 'jquery': 'node_modules/jquery/dist/jquery.min.js',
                 'primeng': 'node_modules/primeng',
                 'jquery.inputmask': 'node_modules/jquery.inputmask/dist/jquery.inputmask.bundle.js',
-                'jquery.ui': 'external/jquery-ui/jquery-ui.min.js',
+                'jquery-ui': 'external/jquery-ui/jquery-ui.min.js',
                 'jquery-ui-timepicker-addon': 'node_modules/jquery-ui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.js',
                 'datatables': 'node_modules/datatables/media/js/jquery.dataTables.min.js'                
             },
@@ -31,12 +31,12 @@ module.exports = {
             {
                 'primeng' : {
                     deps: [
-                        'jquery.ui',
+                        'jquery-ui',
                         'jquery-ui-timepicker-addon',
                         'jquery.inputmask'
                     ]
                 },
-                'jquery.ui': {
+                'jquery-ui': {
                     deps: [
                         'jquery'
                     ]
@@ -53,7 +53,7 @@ module.exports = {
                 },
                 'jquery-ui-timepicker-addon': {
                     deps: [
-                        'jquery.ui'
+                        'jquery-ui'
                     ]
                 }
             },

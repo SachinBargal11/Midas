@@ -7,9 +7,9 @@ import {DoctorDetail} from '../models/doctor-details';
 import {Doctor} from '../models/doctor';
 import {DoctorsService} from '../services/doctors-service';
 import {SessionStore} from './session-store';
-import {Subject} from "rxjs/Subject";
+import {Subject} from 'rxjs/Subject';
 import {List} from 'immutable';
-import {BehaviorSubject} from "rxjs/Rx";
+import {BehaviorSubject} from 'rxjs/Rx';
 import _ from 'underscore';
 import Moment from 'moment';
 
@@ -17,16 +17,16 @@ import Moment from 'moment';
 @Injectable()
 export class DoctorsStore {
 
-    private _doctors: BehaviorSubject<List<DoctorDetail>> = new BehaviorSubject(List([]));    
+    private _doctors: BehaviorSubject<List<DoctorDetail>> = new BehaviorSubject(List([]));
     private _selectedDoctors: BehaviorSubject<List<DoctorDetail>> = new BehaviorSubject(List([]));
-  
+
    constructor(
         private _doctorsService: DoctorsService,
         private _sessionStore: SessionStore
     ) {
         this.loadInitialData();
         this._sessionStore.userLogoutEvent.subscribe(() => {
-            this.resetStore()
+            this.resetStore();
         });
     }
 
@@ -55,7 +55,7 @@ export class DoctorsStore {
         });
         return <Observable<DoctorDetail[]>>Observable.fromPromise(promise);
     }
-    
+
     findDoctorById(id: number) {
         let doctors = this._doctors.getValue();
         let index = doctors.findIndex((currentDoctor: DoctorDetail) => currentDoctor.doctor.id === id);
@@ -78,7 +78,7 @@ export class DoctorsStore {
         });
         return <Observable<DoctorDetail>>Observable.fromPromise(promise);
     }
-    
+
 
     addDoctor(doctorDetail: DoctorDetail): Observable<DoctorDetail> {
         let promise = new Promise((resolve, reject) => {

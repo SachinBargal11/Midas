@@ -103,7 +103,7 @@ export class AddDoctorComponent implements OnInit {
     saveDoctor() {
         let doctorFormValues = this.doctorform.value;
         let doctorDetail = new DoctorDetail({
-            doctor: new Doctor({                
+            doctor: new Doctor({
                 licenseNumber: doctorFormValues.doctor.licenseNumber,
                 wcbAuthorization: doctorFormValues.doctor.wcbAuthorization,
                 wcbRatingCode: doctorFormValues.doctor.wcbRatingCode,
@@ -113,13 +113,13 @@ export class AddDoctorComponent implements OnInit {
                 assignNumber: doctorFormValues.doctor.assignNumber,
                 title: doctorFormValues.doctor.title
             }),
-            user: new User({ 
-                userName: doctorFormValues.contact.email,  
+            user: new User({
+                userName: doctorFormValues.contact.email,
                 firstName: doctorFormValues.userInfo.firstname,
                 middleName: doctorFormValues.userInfo.middlename,
                 lastName: doctorFormValues.userInfo.lastname,
-                userType: parseInt(doctorFormValues.userInfo.userType), 
-                password: doctorFormValues.userInfo.password               
+                userType: parseInt(doctorFormValues.userInfo.userType),
+                password: doctorFormValues.userInfo.password
             }),
             contactInfo: new Contact({
                 cellPhone: doctorFormValues.contact.cellPhone,
@@ -138,12 +138,12 @@ export class AddDoctorComponent implements OnInit {
             })
         });
         this.isSaveDoctorProgress = true;
-        var result;
+        let result;
 
         result = this._doctorsStore.addDoctor(doctorDetail);
         result.subscribe(
             (response) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'Doctor added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
@@ -152,7 +152,7 @@ export class AddDoctorComponent implements OnInit {
                 this._router.navigate(['/doctors']);
             },
             (error) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'Unable to add Doctor.',
                     'type': 'ERROR',
                     'createdAt': moment()

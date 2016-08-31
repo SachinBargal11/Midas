@@ -52,7 +52,7 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                 MedicalFacilityService.prototype.getMedicalFacilities = function (accountId) {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {
-                        return _this._http.get(_this._url + "/Account/Get/" + accountId).map(function (res) { return res.json(); })
+                        return _this._http.get(_this._url + '/Account/Get/' + accountId).map(function (res) { return res.json(); })
                             .subscribe(function (data) {
                             var medicalFacilities = data.medicalFacilities.map(function (medicalFacilityData) {
                                 return medical_facility_adapter_1.MedicalFacilityAdapter.parseResponse(medicalFacilityData);

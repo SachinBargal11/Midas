@@ -12,7 +12,7 @@ export class DoctorAdapter {
         if (doctorData) {
             doctor = new DoctorDetail({
                 doctor: tempDoctor,
-                user:doctorData.user,
+                user: doctorData.user,
                 address: doctorData.address,
                 contactInfo: doctorData.contactInfo
             });

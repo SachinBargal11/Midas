@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
     loginFormControls;
     isLoginInProgress;
     options = {
-        timeOut: 3000,
+        timeOut: 50000,
         showProgressBar: false,
         pauseOnHover: false,
         clickToClose: false,

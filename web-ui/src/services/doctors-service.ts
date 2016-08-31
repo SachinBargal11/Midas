@@ -27,7 +27,7 @@ export class DoctorsService {
 
     getDoctor(doctorId: Number): Observable<DoctorDetail> {
         let promise: Promise<DoctorDetail> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + "/Doctor/Get/" + doctorId).map(res => res.json())
+            return this._http.get(this._url + '/Doctor/Get/' + doctorId).map(res => res.json())
                 .subscribe((data: any) => {
                     let doctor = null;
                     if (data.length) {
@@ -44,7 +44,7 @@ export class DoctorsService {
     }
     getDoctors(): Observable<DoctorDetail[]> {
         let promise: Promise<DoctorDetail[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + "/Doctor/GetAll", JSON.stringify({ "doctor": [{}] }), {
+            return this._http.post(this._url + '/Doctor/GetAll', JSON.stringify({ 'doctor': [{}] }), {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: Array<Object>) => {

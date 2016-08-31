@@ -62,14 +62,14 @@ export class UpdateDoctorComponent implements OnInit {
             let result = this._doctorsStore.fetchDoctorById(doctorId);
             result.subscribe(
                 (doctorDetail: DoctorDetail) => {
-                   this.doctor = doctorDetail.doctor;                    
+                   this.doctor = doctorDetail.doctor;
                 },
                 (error) => {
                     this._router.navigate(['/doctors']);
                 },
                 () => {
                 });
-        }); 
+        });
         this.doctorform = this.fb.group({
             doctor: this.fb.group({
                 licenseNumber: ['', Validators.required],
@@ -118,8 +118,8 @@ export class UpdateDoctorComponent implements OnInit {
     updateDoctor() {
         let doctorFormValues = this.doctorform.value;
         let doctorDetail = new DoctorDetail({
-            doctor: new Doctor({   
-                id: this.doctor.id,             
+            doctor: new Doctor({
+                id: this.doctor.id,
                 licenseNumber: doctorFormValues.doctor.licenseNumber,
                 wcbAuthorization: doctorFormValues.doctor.wcbAuthorization,
                 wcbRatingCode: doctorFormValues.doctor.wcbRatingCode,
@@ -129,13 +129,13 @@ export class UpdateDoctorComponent implements OnInit {
                 assignNumber: doctorFormValues.doctor.assignNumber,
                 title: doctorFormValues.doctor.title,
             }),
-            user: new User({ 
-                userName: doctorFormValues.contact.email,  
+            user: new User({
+                userName: doctorFormValues.contact.email,
                 firstName: doctorFormValues.userInfo.firstname,
                 middleName: doctorFormValues.userInfo.middlename,
                 lastName: doctorFormValues.userInfo.lastname,
-                userType: parseInt(doctorFormValues.userInfo.userType), 
-                password: doctorFormValues.userInfo.password               
+                userType: parseInt(doctorFormValues.userInfo.userType),
+                password: doctorFormValues.userInfo.password
             })
             // contactInfo: new Contact({
             //     cellPhone: doctorFormValues.contact.cellPhone,
@@ -154,12 +154,12 @@ export class UpdateDoctorComponent implements OnInit {
             // })
         });
         this.isSaveDoctorProgress = true;
-        var result;
+        let result;
 
         result = this._doctorsStore.updateDoctor(doctorDetail);
         result.subscribe(
             (response) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'Doctor updated successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
@@ -168,7 +168,7 @@ export class UpdateDoctorComponent implements OnInit {
                 this._router.navigate(['/doctors']);
             },
             (error) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'Unable to update Doctor.',
                     'type': 'ERROR',
                     'createdAt': moment()

@@ -43,7 +43,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../ut
                     this._notificationsService = _notificationsService;
                     this._router = _router;
                     this.options = {
-                        timeOut: 3000,
+                        timeOut: 50000,
                         showProgressBar: false,
                         pauseOnHover: false,
                         clickToClose: false,

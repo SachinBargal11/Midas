@@ -2,18 +2,16 @@
 /** Angular Modules */
 
 import {enableProdMode, NgModule} from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { BrowserModule }  from '@angular/platform-browser';
-import { FormsModule }    from '@angular/forms';
+import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import {BrowserModule}  from '@angular/platform-browser';
+import {FormsModule}    from '@angular/forms';
 import {bootstrap} from '@angular/platform-browser-dynamic';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 import {AppRoot} from '../components/AppRoot';
-import { provide }           from '@angular/core';
-import { LocationStrategy,
-    HashLocationStrategy } from '@angular/common';
-// import { disableDeprecatedForms, provideForms } from '@angular/forms';
-import {HTTP_PROVIDERS} from '@angular/http';
-import {InputTextModule,DataTableModule,ButtonModule,DialogModule} from 'primeng/primeng';
+import {provide} from '@angular/core';
+import {HTTP_PROVIDERS, Http} from '@angular/http';
+import {InputTextModule, DataTableModule, ButtonModule, DialogModule} from 'primeng/primeng';
+import {SimpleNotificationsModule} from 'angular2-notifications';
 
 /** Application Services and Providers */
 
@@ -69,8 +67,6 @@ import {AddDoctorComponent} from '../components/pages/doctors/add-doctor';
 import {UpdateDoctorComponent} from '../components/pages/doctors/update-doctor';
 import {DoctorsListComponent} from '../components/pages/doctors/doctors-list';
 
-import {Http, Headers} from '@angular/http';
-
 
 enableProdMode();
 
@@ -79,7 +75,11 @@ enableProdMode();
         BrowserModule,
         FormsModule,
         APP_ROUTER_PROVIDER,
-        InputTextModule,DataTableModule,ButtonModule,DialogModule
+        InputTextModule,
+        DataTableModule,
+        ButtonModule,
+        DialogModule,
+        SimpleNotificationsModule
     ],
     declarations: [
         AppRoot,

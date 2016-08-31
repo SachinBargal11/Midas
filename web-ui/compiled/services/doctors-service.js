@@ -52,7 +52,7 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                 DoctorsService.prototype.getDoctor = function (doctorId) {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {
-                        return _this._http.get(_this._url + "/Doctor/Get/" + doctorId).map(function (res) { return res.json(); })
+                        return _this._http.get(_this._url + '/Doctor/Get/' + doctorId).map(function (res) { return res.json(); })
                             .subscribe(function (data) {
                             var doctor = null;
                             if (data.length) {
@@ -71,7 +71,7 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                 DoctorsService.prototype.getDoctors = function () {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {
-                        return _this._http.post(_this._url + "/Doctor/GetAll", JSON.stringify({ "doctor": [{}] }), {
+                        return _this._http.post(_this._url + '/Doctor/GetAll', JSON.stringify({ 'doctor': [{}] }), {
                             headers: _this._headers
                         }).map(function (res) { return res.json(); })
                             .subscribe(function (data) {

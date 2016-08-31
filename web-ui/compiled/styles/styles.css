@@ -18,6 +18,9 @@ body {
   margin: 0;
   padding: 0; }
 
+.simple-notification .sn-title, .simple-notification .sn-content {
+  color: #fff; }
+
 .simple-notification-wrapper div.error div.title, .simple-notification-wrapper div.error div.content {
   color: white !important; }
 
