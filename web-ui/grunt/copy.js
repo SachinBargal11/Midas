@@ -88,7 +88,12 @@ module.exports = {
 			src: ['dist/jquery.min.js'],
 			dest: '<%= distLocation %>/node_modules/jquery/',
 			expand: true
-    	}, {
+    	},{
+			cwd: 'node_modules/datatables/',
+			src: ['media/js/jquery.dataTables.min.js'],
+			dest: '<%= distLocation %>/node_modules/datatables/',
+			expand: true
+    	},{
 			cwd: '<%= srcLocation %>/external/',
 			src: ['**/*.*'],
 			dest: '<%= distLocation %>/external/',

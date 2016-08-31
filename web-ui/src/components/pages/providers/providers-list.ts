@@ -4,6 +4,9 @@ import {ProvidersStore} from '../../../stores/providers-store';
 import {ProvidersService} from '../../../services/providers-service';
 import {ReversePipe} from '../../../pipes/reverse-array-pipe';
 import {LimitPipe} from '../../../pipes/limit-array-pipe';
+import {DataTable} from 'primeng/primeng';
+import {SessionStore} from '../../../stores/session-store';
+import {Provider} from '../../../models/provider';
 
 @Component({
     selector: 'providers-list',
@@ -17,7 +20,7 @@ import {LimitPipe} from '../../../pipes/limit-array-pipe';
 
 
 export class ProvidersListComponent implements OnInit {
-    providers: any[];
+    providers: Provider[];
     constructor(
         private _router: Router,
         private _providersStore: ProvidersStore,

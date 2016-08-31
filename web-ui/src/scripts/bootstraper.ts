@@ -13,6 +13,7 @@ import { LocationStrategy,
     HashLocationStrategy } from '@angular/common';
 // import { disableDeprecatedForms, provideForms } from '@angular/forms';
 import {HTTP_PROVIDERS} from '@angular/http';
+import {InputTextModule,DataTableModule,ButtonModule,DialogModule} from 'primeng/primeng';
 
 /** Application Services and Providers */
 
@@ -77,7 +78,8 @@ enableProdMode();
     imports: [
         BrowserModule,
         FormsModule,
-        APP_ROUTER_PROVIDER
+        APP_ROUTER_PROVIDER,
+        InputTextModule,DataTableModule,ButtonModule,DialogModule
     ],
     declarations: [
         AppRoot,

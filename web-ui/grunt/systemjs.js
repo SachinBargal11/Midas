@@ -24,7 +24,8 @@ module.exports = {
                 'primeng': 'node_modules/primeng',
                 'jquery.inputmask': 'node_modules/jquery.inputmask/dist/jquery.inputmask.bundle.js',
                 'jquery.ui': 'external/jquery-ui/jquery-ui.min.js',
-                'jquery-ui-timepicker-addon': 'node_modules/jquery-ui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.js'                
+                'jquery-ui-timepicker-addon': 'node_modules/jquery-ui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.js',
+                'datatables': 'node_modules/datatables/media/js/jquery.dataTables.min.js'                
             },
             meta: 
             {
@@ -39,6 +40,11 @@ module.exports = {
                     deps: [
                         'jquery'
                     ]
+                },
+                'datatables': {
+                    deps: [
+                        'jquery'
+                       ]
                 },
                 'jquery.inputmask': {
                     deps: [

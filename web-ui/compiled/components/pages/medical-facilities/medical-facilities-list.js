@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router', '../../../stores/medical-facilities-store', '../../../pipes/reverse-array-pipe', '../../../pipes/limit-array-pipe'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', '../../../stores/medical-facilities-store', '../../../services/medical-facility-service', '../../../pipes/reverse-array-pipe', '../../../pipes/limit-array-pipe', '../../../stores/session-store'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router', '../../../stores/medical-fa
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, medical_facilities_store_1, reverse_array_pipe_1, limit_array_pipe_1;
+    var core_1, router_1, medical_facilities_store_1, medical_facility_service_1, reverse_array_pipe_1, limit_array_pipe_1, session_store_1;
     var MedicalFacilitiesListComponent;
     return {
         setters:[
@@ -23,19 +23,31 @@ System.register(['@angular/core', '@angular/router', '../../../stores/medical-fa
             function (medical_facilities_store_1_1) {
                 medical_facilities_store_1 = medical_facilities_store_1_1;
             },
+            function (medical_facility_service_1_1) {
+                medical_facility_service_1 = medical_facility_service_1_1;
+            },
             function (reverse_array_pipe_1_1) {
                 reverse_array_pipe_1 = reverse_array_pipe_1_1;
             },
             function (limit_array_pipe_1_1) {
                 limit_array_pipe_1 = limit_array_pipe_1_1;
+            },
+            function (session_store_1_1) {
+                session_store_1 = session_store_1_1;
             }],
         execute: function() {
             MedicalFacilitiesListComponent = (function () {
-                function MedicalFacilitiesListComponent(_router, _medicalFacilityStore) {
+                function MedicalFacilitiesListComponent(_router, _sessionStore, _medicalFacilityStore, _medicalFacilityService) {
                     this._router = _router;
+                    this._sessionStore = _sessionStore;
                     this._medicalFacilityStore = _medicalFacilityStore;
+                    this._medicalFacilityService = _medicalFacilityService;
                 }
                 MedicalFacilitiesListComponent.prototype.ngOnInit = function () {
+                    var _this = this;
+                    var accountId = this._sessionStore.session.account_id;
+                    var user = this._medicalFacilityService.getMedicalFacilities(accountId)
+                        .subscribe(function (medicalfacilities) { return _this.medicalfacilities = medicalfacilities; });
                 };
                 MedicalFacilitiesListComponent = __decorate([
                     core_1.Component({
@@ -46,7 +58,7 @@ System.register(['@angular/core', '@angular/router', '../../../stores/medical-fa
                         ],
                         pipes: [reverse_array_pipe_1.ReversePipe, limit_array_pipe_1.LimitPipe]
                     }), 
-                    __metadata('design:paramtypes', [router_1.Router, medical_facilities_store_1.MedicalFacilityStore])
+                    __metadata('design:paramtypes', [router_1.Router, session_store_1.SessionStore, medical_facilities_store_1.MedicalFacilityStore, medical_facility_service_1.MedicalFacilityService])
                 ], MedicalFacilitiesListComponent);
                 return MedicalFacilitiesListComponent;
             }());

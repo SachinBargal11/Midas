@@ -83,6 +83,23 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                     });
                     return Observable_1.Observable.fromPromise(promise);
                 };
+                // getUsers(accountId: number){
+                //         return this._http.get(this._url + '/Account/Get/' + accountId)
+                //                          .toPromise()
+                //                          .then(res => <UserDetail[]> res.json().data)
+                //                          .then(data => { return data; });
+                //         // .map(res => res.json())
+                //     //         .subscribe((data: any) => {
+                //     //             let users = (<Object[]>data.users).map((userData: any) => {
+                //     //                 return UserAdapter.parseResponse(userData);
+                //     //             });
+                //     //             resolve(users);
+                //     //         }, (error) => {
+                //     //             reject(error);
+                //     //         });
+                //     // });
+                //     // return <Observable<UserDetail[]>>Observable.fromPromise(promise);
+                // }
                 UsersService.prototype.addUser = function (userDetail) {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {

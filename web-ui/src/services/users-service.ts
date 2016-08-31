@@ -57,6 +57,23 @@ export class UsersService {
         });
         return <Observable<UserDetail[]>>Observable.fromPromise(promise);
     }
+    // getUsers(accountId: number){
+    //         return this._http.get(this._url + '/Account/Get/' + accountId)
+    //                          .toPromise()
+    //                          .then(res => <UserDetail[]> res.json().data)
+    //                          .then(data => { return data; });
+    //         // .map(res => res.json())
+    //     //         .subscribe((data: any) => {
+    //     //             let users = (<Object[]>data.users).map((userData: any) => {
+    //     //                 return UserAdapter.parseResponse(userData);
+    //     //             });
+    //     //             resolve(users);
+    //     //         }, (error) => {
+    //     //             reject(error);
+    //     //         });
+    //     // });
+    //     // return <Observable<UserDetail[]>>Observable.fromPromise(promise);
+    // }
 
     addUser(userDetail: UserDetail): Observable<UserDetail> {
         let promise: Promise<UserDetail> = new Promise((resolve, reject) => {

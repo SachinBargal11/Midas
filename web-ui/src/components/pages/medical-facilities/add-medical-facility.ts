@@ -15,7 +15,7 @@ import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
 import {Notification} from '../../../models/notification';
 import moment from 'moment';
-import {Calendar, InputMask, AutoComplete, SelectItem} from 'primeng/primeng';
+import {Calendar, InputMask, AutoComplete} from 'primeng/primeng';
 import {MedicalFacilityStore} from '../../../stores/medical-facilities-store';
 import {MedicalFacilityService} from '../../../services/medical-facility-service';
 import {Gender} from '../../../models/enums/Gender';
