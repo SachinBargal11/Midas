@@ -7,7 +7,7 @@ import {LoaderComponent} from '../elements/loader';
 import {AuthenticationService} from '../../services/authentication-service';
 import {AccountDetail} from '../../models/account-details';
 import {User} from '../../models/user';
-import {Contact} from '../../models/contact';
+import {ContactInfo} from '../../models/contact';
 import {Address} from '../../models/address';
 import {Account} from '../../models/account';
 import {StatesStore} from '../../stores/states-store';
@@ -116,7 +116,7 @@ export class SignupComponent implements OnInit {
                 userName: signupFormValues.user.email,
                 password: signupFormValues.user.password
             }),
-            contactInfo: new Contact({
+            contactInfo: new ContactInfo({
                 cellPhone: signupFormValues.contactInfo.cellPhone,
                 emailAddress: signupFormValues.user.email,
                 faxNo: signupFormValues.contactInfo.faxNo,

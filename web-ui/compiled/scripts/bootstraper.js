@@ -216,7 +216,8 @@ System.register(['@angular/core', '@angular/platform-browser-dynamic', '@angular
                             validate_active_session_1.ValidateActiveSession,
                             validate_inactive_session_1.ValidateInActiveSession,
                             http_1.Http,
-                            http_1.HTTP_PROVIDERS
+                            http_1.HTTP_PROVIDERS,
+                            forms_1.FormBuilder
                         ],
                         bootstrap: [
                             AppRoot_1.AppRoot

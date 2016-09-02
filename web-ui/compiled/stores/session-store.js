@@ -78,6 +78,17 @@ System.register(['@angular/core', 'rxjs/Observable', '../services/authentication
                     this._resetSession();
                     window.localStorage.removeItem(this.__USER_STORAGE_KEY__);
                 };
+                SessionStore.prototype.authenticatePassword = function (userName, oldpassword) {
+                    var _this = this;
+                    var promise = new Promise(function (resolve, reject) {
+                        _this._authenticationService.authenticatePassword(userName, oldpassword).subscribe(function (user) {
+                            resolve(user);
+                        }, function (error) {
+                            reject(error);
+                        });
+                    });
+                    return Observable_1.Observable.from(promise);
+                };
                 SessionStore.prototype._populateSession = function (user) {
                     this._session.user = user;
                     window.localStorage.setItem(this.__USER_STORAGE_KEY__, JSON.stringify(user.toJS()));

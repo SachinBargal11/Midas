@@ -139,7 +139,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', 'ng2-boot
                             userName: signupFormValues.user.email,
                             password: signupFormValues.user.password
                         }),
-                        contactInfo: new contact_1.Contact({
+                        contactInfo: new contact_1.ContactInfo({
                             cellPhone: signupFormValues.contactInfo.cellPhone,
                             emailAddress: signupFormValues.user.email,
                             faxNo: signupFormValues.contactInfo.faxNo,

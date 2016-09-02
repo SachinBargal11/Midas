@@ -53,15 +53,19 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {
                         return _this._http.get(_this._url + '/User/Get/' + userId).map(function (res) { return res.json(); })
-                            .subscribe(function (data) {
-                            var user = null;
-                            if (data.length) {
-                                user = user_adapter_1.UserAdapter.parseResponse(data[0]);
-                                resolve(user);
-                            }
-                            else {
-                                reject(new Error('NOT_FOUND'));
-                            }
+                            .subscribe(function (userData) {
+                            var parsedUser = null;
+                            parsedUser = user_adapter_1.UserAdapter.parseResponse(userData);
+                            resolve(parsedUser);
+                            // let user = null;
+                            // if (userData.length) {
+                            //     user = UserAdapter.parseResponse(userData[0]);
+                            //     resolve(user);
+                            // }
+                            // resolve(user);
+                            // else {
+                            //     reject(new Error('NOT_FOUND'));
+                            // }
                         }, function (error) {
                             reject(error);
                         });
@@ -83,23 +87,6 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                     });
                     return Observable_1.Observable.fromPromise(promise);
                 };
-                // getUsers(accountId: number){
-                //         return this._http.get(this._url + '/Account/Get/' + accountId)
-                //                          .toPromise()
-                //                          .then(res => <UserDetail[]> res.json().data)
-                //                          .then(data => { return data; });
-                //         // .map(res => res.json())
-                //     //         .subscribe((data: any) => {
-                //     //             let users = (<Object[]>data.users).map((userData: any) => {
-                //     //                 return UserAdapter.parseResponse(userData);
-                //     //             });
-                //     //             resolve(users);
-                //     //         }, (error) => {
-                //     //             reject(error);
-                //     //         });
-                //     // });
-                //     // return <Observable<UserDetail[]>>Observable.fromPromise(promise);
-                // }
                 UsersService.prototype.addUser = function (userDetail) {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {
@@ -129,6 +116,34 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                     return Observable_1.Observable.fromPromise(promise);
                 };
                 UsersService.prototype.updateUser = function (userDetail) {
+                    var _this = this;
+                    var promise = new Promise(function (resolve, reject) {
+                        var userDetailRequestData = userDetail.toJS();
+                        // add/replace values which need to be changed
+                        underscore_1.default.extend(userDetailRequestData.user, {
+                            userType: UserType_1.UserType[userDetailRequestData.user.userType],
+                            dateOfBirth: userDetailRequestData.user.dateOfBirth ? userDetailRequestData.user.dateOfBirth.toISOString() : null
+                        });
+                        // remove unneeded keys 
+                        userDetailRequestData.user = underscore_1.default.omit(userDetailRequestData.user, 'accountId', 'gender', 'status', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+                        userDetailRequestData.address = underscore_1.default.omit(userDetailRequestData.address, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+                        userDetailRequestData.contactInfo = underscore_1.default.omit(userDetailRequestData.contactInfo, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+                        userDetailRequestData.account = underscore_1.default.omit(userDetailRequestData.account, 'name', 'status', 'isDeleted', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+                        return _this._http.post(_this._url + '/User/Add', JSON.stringify(userDetailRequestData), {
+                            headers: _this._headers
+                        })
+                            .map(function (res) { return res.json(); })
+                            .subscribe(function (userData) {
+                            var parsedUser = null;
+                            parsedUser = user_adapter_1.UserAdapter.parseResponse(userData);
+                            resolve(parsedUser);
+                        }, function (error) {
+                            reject(error);
+                        });
+                    });
+                    return Observable_1.Observable.fromPromise(promise);
+                };
+                UsersService.prototype.updatePassword = function (userDetail) {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {
                         var userDetailRequestData = userDetail.toJS();

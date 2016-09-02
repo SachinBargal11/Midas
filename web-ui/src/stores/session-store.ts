@@ -67,6 +67,19 @@ export class SessionStore {
         window.localStorage.removeItem(this.__USER_STORAGE_KEY__);
     }
 
+    authenticatePassword(userName, oldpassword) {
+        let promise = new Promise((resolve, reject) => {
+            this._authenticationService.authenticatePassword(userName, oldpassword).subscribe((user: User) => {
+
+                resolve(user);
+
+            }, (error) => {
+                reject(error);
+            });
+        });
+        return Observable.from(promise);
+    }
+
     private _populateSession(user: User) {
         this._session.user = user;
         window.localStorage.setItem(this.__USER_STORAGE_KEY__, JSON.stringify(user.toJS()));

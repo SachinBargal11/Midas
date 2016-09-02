@@ -91,8 +91,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
                     this._sessionStore = _sessionStore;
                     this._usersStore = _usersStore;
                     this._elRef = _elRef;
-                    this.user = user_details_1.UserDetail.prototype.user;
-                    // user: any[];
+                    this.user = new user_1.User({});
                     this.options = {
                         timeOut: 3000,
                         showProgressBar: true,
@@ -105,22 +104,23 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
                         var userId = parseInt(routeParams.id);
                         var result = _this._usersStore.fetchUserById(userId);
                         result.subscribe(function (userDetail) {
-                            _this._usersStore.selectUser(userDetail);
                             _this.user = userDetail.user;
+                            _this.address = userDetail.address;
+                            _this.contactInfo = userDetail.contactInfo;
                         }, function (error) {
                             _this._router.navigate(['/users']);
                         }, function () {
                         });
                     });
                     this.userform = this.fb.group({
-                        firstname: ['', forms_1.Validators.required],
-                        middlename: [''],
-                        lastname: ['', forms_1.Validators.required],
+                        firstName: ['', forms_1.Validators.required],
+                        middleName: [''],
+                        lastName: ['', forms_1.Validators.required],
                         userType: ['', forms_1.Validators.required],
                         password: ['', forms_1.Validators.required],
                         confirmPassword: ['', forms_1.Validators.required],
                         contact: this.fb.group({
-                            email: ['', [forms_1.Validators.required, AppValidators_1.AppValidators.emailValidator]],
+                            emailAddress: ['', [forms_1.Validators.required, AppValidators_1.AppValidators.emailValidator]],
                             cellPhone: ['', [forms_1.Validators.required]],
                             homePhone: [''],
                             workPhone: [''],
@@ -151,16 +151,16 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
                         }),
                         user: new user_1.User({
                             id: this.user.id,
-                            firstName: userFormValues.firstname,
-                            middleName: userFormValues.middlename,
-                            lastName: userFormValues.lastname,
+                            firstName: userFormValues.firstName,
+                            middleName: userFormValues.middleName,
+                            lastName: userFormValues.lastName,
                             userType: parseInt(userFormValues.userType),
-                            userName: userFormValues.contact.email,
+                            userName: userFormValues.contact.emailAddress,
                             password: userFormValues.password
                         }),
-                        contactInfo: new contact_1.Contact({
+                        contactInfo: new contact_1.ContactInfo({
                             cellPhone: userFormValues.contact.cellPhone,
-                            emailAddress: userFormValues.contact.email,
+                            emailAddress: userFormValues.contact.emailAddress,
                             faxNo: userFormValues.contact.faxNo,
                             homePhone: userFormValues.contact.homePhone,
                             workPhone: userFormValues.contact.workPhone,

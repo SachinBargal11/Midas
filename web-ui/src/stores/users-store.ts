@@ -103,6 +103,19 @@ export class UsersStore {
         });
         return <Observable<UserDetail>>Observable.from(promise);
     }
+    updatePassword(userDetail: UserDetail): Observable<UserDetail> {
+        let users = this._users.getValue();
+        let index = users.findIndex((currentUser: UserDetail) => currentUser.user.id === userDetail.user.id);
+        let promise = new Promise((resolve, reject) => {
+            this._usersService.updatePassword(userDetail).subscribe((userDetail: UserDetail) => {
+                this._users.next(this._users.getValue().push(userDetail));
+                resolve(userDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<UserDetail>>Observable.from(promise);
+    }
 
     selectUser(userDetail: UserDetail) {
         let selectedUsers = this._selectedUsers.getValue();

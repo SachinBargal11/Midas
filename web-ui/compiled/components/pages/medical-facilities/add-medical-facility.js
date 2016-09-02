@@ -139,7 +139,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
                             name: medicalFacilityFormValues.name,
                             prefix: medicalFacilityFormValues.prefix
                         }),
-                        contactInfo: new contact_1.Contact({
+                        contactInfo: new contact_1.ContactInfo({
                             cellPhone: medicalFacilityFormValues.contact.cellPhone,
                             emailAddress: medicalFacilityFormValues.contact.email,
                             faxNo: medicalFacilityFormValues.contact.faxNo,

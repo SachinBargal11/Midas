@@ -59,7 +59,6 @@ export class AppHeaderComponent implements OnInit {
     }
 
     changePassword() {
-        this._sessionStore.session;
         this._router.navigate(['/change-password']);
     }
 

@@ -161,7 +161,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
                             userType: parseInt(doctorFormValues.userInfo.userType),
                             password: doctorFormValues.userInfo.password
                         }),
-                        contactInfo: new contact_1.Contact({
+                        contactInfo: new contact_1.ContactInfo({
                             cellPhone: doctorFormValues.contact.cellPhone,
                             emailAddress: doctorFormValues.contact.email,
                             faxNo: doctorFormValues.contact.faxNo,

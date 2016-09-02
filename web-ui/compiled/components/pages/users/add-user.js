@@ -144,7 +144,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
                             password: userFormValues.userInfo.password,
                             userName: userFormValues.contact.email
                         }),
-                        contactInfo: new contact_1.Contact({
+                        contactInfo: new contact_1.ContactInfo({
                             cellPhone: userFormValues.contact.cellPhone,
                             emailAddress: userFormValues.contact.email,
                             faxNo: userFormValues.contact.faxNo,

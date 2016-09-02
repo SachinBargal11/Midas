@@ -9,7 +9,7 @@ import {User} from '../../../models/user';
 import {UsersService} from '../../../services/users-service';
 import {AccountDetail} from '../../../models/account-details';
 import {Account} from '../../../models/account';
-import {Contact} from '../../../models/contact';
+import {ContactInfo} from '../../../models/contact';
 import {Address} from '../../../models/address';
 import $ from 'jquery';
 import {SessionStore} from '../../../stores/session-store';
@@ -34,8 +34,9 @@ import {LimitPipe} from '../../../pipes/limit-array-pipe';
 
 export class UpdateUserComponent implements OnInit {
     states: any[];
-    user = UserDetail.prototype.user;
-    // user: any[];
+    user = new User({});
+    address: Address;
+    contactInfo: ContactInfo;
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -64,8 +65,9 @@ export class UpdateUserComponent implements OnInit {
             let result = this._usersStore.fetchUserById(userId);
             result.subscribe(
                 (userDetail: UserDetail) => {
-                    this._usersStore.selectUser(userDetail);
                    this.user = userDetail.user;
+                   this.address = userDetail.address;
+                   this.contactInfo = userDetail.contactInfo;
                 },
                 (error) => {
                     this._router.navigate(['/users']);
@@ -74,14 +76,14 @@ export class UpdateUserComponent implements OnInit {
                 });
         });
         this.userform = this.fb.group({
-                firstname: ['', Validators.required],
-                middlename: [''],
-                lastname: ['', Validators.required],
+                firstName: ['', Validators.required],
+                middleName: [''],
+                lastName: ['', Validators.required],
                 userType: ['', Validators.required],
                 password: ['', Validators.required],
                 confirmPassword: ['', Validators.required],
             contact: this.fb.group({
-                email: ['', [Validators.required, AppValidators.emailValidator]],
+                emailAddress: ['', [Validators.required, AppValidators.emailValidator]],
                 cellPhone: ['', [Validators.required]],
                 homePhone: [''],
                 workPhone: [''],
@@ -114,16 +116,16 @@ export class UpdateUserComponent implements OnInit {
             }),
             user: new User({
                 id: this.user.id,
-                firstName: userFormValues.firstname,
-                middleName: userFormValues.middlename,
-                lastName: userFormValues.lastname,
+                firstName: userFormValues.firstName,
+                middleName: userFormValues.middleName,
+                lastName: userFormValues.lastName,
                 userType: parseInt(userFormValues.userType),
-                userName: userFormValues.contact.email,
+                userName: userFormValues.contact.emailAddress,
                 password: userFormValues.password
             }),
-            contactInfo: new Contact({
+            contactInfo: new ContactInfo({
                 cellPhone: userFormValues.contact.cellPhone,
-                emailAddress: userFormValues.contact.email,
+                emailAddress: userFormValues.contact.emailAddress,
                 faxNo: userFormValues.contact.faxNo,
                 homePhone: userFormValues.contact.homePhone,
                 workPhone: userFormValues.contact.workPhone,

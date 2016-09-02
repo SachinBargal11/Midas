@@ -1,6 +1,5 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
-import {DoctorsStore} from '../../../stores/doctors-store';
 import {DoctorsService} from '../../../services/doctors-service';
 import {ReversePipe} from '../../../pipes/reverse-array-pipe';
 import {LimitPipe} from '../../../pipes/limit-array-pipe';
@@ -14,7 +13,7 @@ import {DoctorDetail} from '../../../models/doctor-details';
         ROUTER_DIRECTIVES
     ],
     pipes: [ReversePipe, LimitPipe],
-    providers: [DoctorsStore]
+    providers: [DoctorsService]
 })
 
 
@@ -22,7 +21,6 @@ export class DoctorsListComponent implements OnInit {
 doctors: DoctorDetail[];
     constructor(
         private _router: Router,
-        private _doctorsStore: DoctorsStore,
         private _doctorsService: DoctorsService
     ) {
     }

@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router', '../../../stores/providers-store', '../../../services/providers-service', '../../../pipes/reverse-array-pipe', '../../../pipes/limit-array-pipe'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', '../../../services/providers-service', '../../../pipes/reverse-array-pipe', '../../../pipes/limit-array-pipe'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router', '../../../stores/providers-
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, providers_store_1, providers_service_1, reverse_array_pipe_1, limit_array_pipe_1;
+    var core_1, router_1, providers_service_1, reverse_array_pipe_1, limit_array_pipe_1;
     var ProvidersListComponent;
     return {
         setters:[
@@ -19,9 +19,6 @@ System.register(['@angular/core', '@angular/router', '../../../stores/providers-
             },
             function (router_1_1) {
                 router_1 = router_1_1;
-            },
-            function (providers_store_1_1) {
-                providers_store_1 = providers_store_1_1;
             },
             function (providers_service_1_1) {
                 providers_service_1 = providers_service_1_1;
@@ -34,9 +31,8 @@ System.register(['@angular/core', '@angular/router', '../../../stores/providers-
             }],
         execute: function() {
             ProvidersListComponent = (function () {
-                function ProvidersListComponent(_router, _providersStore, _providersService) {
+                function ProvidersListComponent(_router, _providersService) {
                     this._router = _router;
-                    this._providersStore = _providersStore;
                     this._providersService = _providersService;
                 }
                 ProvidersListComponent.prototype.ngOnInit = function () {
@@ -51,10 +47,10 @@ System.register(['@angular/core', '@angular/router', '../../../stores/providers-
                         directives: [
                             router_1.ROUTER_DIRECTIVES
                         ],
-                        providers: [providers_store_1.ProvidersStore, providers_service_1.ProvidersService],
+                        providers: [providers_service_1.ProvidersService],
                         pipes: [reverse_array_pipe_1.ReversePipe, limit_array_pipe_1.LimitPipe]
                     }), 
-                    __metadata('design:paramtypes', [router_1.Router, providers_store_1.ProvidersStore, providers_service_1.ProvidersService])
+                    __metadata('design:paramtypes', [router_1.Router, providers_service_1.ProvidersService])
                 ], ProvidersListComponent);
                 return ProvidersListComponent;
             }());

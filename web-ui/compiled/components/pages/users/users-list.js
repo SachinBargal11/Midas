@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router', '../../../stores/session-store', '../../../stores/users-store', '../../../services/users-service', '../../../pipes/reverse-array-pipe', '../../../pipes/limit-array-pipe'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', '../../../stores/session-store', '../../../services/users-service', '../../../pipes/reverse-array-pipe', '../../../pipes/limit-array-pipe'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/router', '../../../stores/session-st
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, session_store_1, users_store_1, users_service_1, reverse_array_pipe_1, limit_array_pipe_1;
+    var core_1, router_1, session_store_1, users_service_1, reverse_array_pipe_1, limit_array_pipe_1;
     var UsersListComponent;
     return {
         setters:[
@@ -23,9 +23,6 @@ System.register(['@angular/core', '@angular/router', '../../../stores/session-st
             function (session_store_1_1) {
                 session_store_1 = session_store_1_1;
             },
-            function (users_store_1_1) {
-                users_store_1 = users_store_1_1;
-            },
             function (users_service_1_1) {
                 users_service_1 = users_service_1_1;
             },
@@ -37,9 +34,8 @@ System.register(['@angular/core', '@angular/router', '../../../stores/session-st
             }],
         execute: function() {
             UsersListComponent = (function () {
-                function UsersListComponent(_router, _usersStore, _usersService, _sessionStore) {
+                function UsersListComponent(_router, _usersService, _sessionStore) {
                     this._router = _router;
-                    this._usersStore = _usersStore;
                     this._usersService = _usersService;
                     this._sessionStore = _sessionStore;
                 }
@@ -60,9 +56,9 @@ System.register(['@angular/core', '@angular/router', '../../../stores/session-st
                             router_1.ROUTER_DIRECTIVES
                         ],
                         pipes: [reverse_array_pipe_1.ReversePipe, limit_array_pipe_1.LimitPipe],
-                        providers: [users_store_1.UsersStore, users_service_1.UsersService]
+                        providers: [users_service_1.UsersService]
                     }), 
-                    __metadata('design:paramtypes', [router_1.Router, users_store_1.UsersStore, users_service_1.UsersService, session_store_1.SessionStore])
+                    __metadata('design:paramtypes', [router_1.Router, users_service_1.UsersService, session_store_1.SessionStore])
                 ], UsersListComponent);
                 return UsersListComponent;
             }());

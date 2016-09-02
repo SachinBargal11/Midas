@@ -9,7 +9,7 @@ import {User} from '../../../models/user';
 import {UsersService} from '../../../services/users-service';
 import {AccountDetail} from '../../../models/account-details';
 import {Account} from '../../../models/account';
-import {Contact} from '../../../models/contact';
+import {ContactInfo} from '../../../models/contact';
 import {Address} from '../../../models/address';
 import $ from 'jquery';
 import {SessionStore} from '../../../stores/session-store';
@@ -105,7 +105,7 @@ export class AddUserComponent implements OnInit {
                 password: userFormValues.userInfo.password,
                 userName: userFormValues.contact.email
             }),
-            contactInfo: new Contact({
+            contactInfo: new ContactInfo({
                 cellPhone: userFormValues.contact.cellPhone,
                 emailAddress: userFormValues.contact.email,
                 faxNo: userFormValues.contact.faxNo,

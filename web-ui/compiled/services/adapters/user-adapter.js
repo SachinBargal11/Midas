@@ -21,8 +21,8 @@ System.register(['../../models/user', '../../models/user-details', 'underscore']
                 UserAdapter.parseUserResponse = function (userData) {
                     var user = null;
                     if (userData) {
-                        var tempUser = underscore_1.default.omit(userData, 'address', 'account', 'contactInfo', 'updateDate');
-                        // let tempUser = _.omit(userData, 'address', 'contactInfo', 'updateDate');
+                        // let tempUser = _.omit(userData, 'address', 'account', 'contactInfo', 'updateDate');
+                        var tempUser = underscore_1.default.omit(userData, 'account', 'updateDate');
                         if (userData.account) {
                             tempUser.accountId = userData.account.id;
                         }
@@ -32,8 +32,8 @@ System.register(['../../models/user', '../../models/user-details', 'underscore']
                 };
                 UserAdapter.parseResponse = function (userData) {
                     var user = null;
-                    var tempUser = underscore_1.default.omit(userData, 'address', 'account', 'contactInfo', 'updateDate');
-                    // let tempUser = _.omit(userData, 'address', 'contactInfo', 'updateDate');
+                    // let tempUser = _.omit(userData, 'address', 'account', 'contactInfo', 'updateDate');
+                    var tempUser = underscore_1.default.omit(userData, 'account', 'updateDate');
                     if (userData) {
                         user = new user_details_1.UserDetail({
                             user: tempUser,

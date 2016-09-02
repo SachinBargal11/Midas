@@ -87,14 +87,14 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/
                     });
                     return Observable_1.Observable.fromPromise(promise);
                 };
-                AuthenticationService.prototype.authenticate = function (userId, password) {
+                AuthenticationService.prototype.authenticate = function (email, password) {
                     var _this = this;
                     var headers = new http_1.Headers();
                     headers.append('Content-Type', 'application/json');
                     var promise = new Promise(function (resolve, reject) {
                         var autheticateRequestData = {
                             user: {
-                                'userName': userId,
+                                'userName': email,
                                 'password': password
                             }
                         };
@@ -115,18 +115,26 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/
                     });
                     return Observable_1.Observable.fromPromise(promise);
                 };
-                AuthenticationService.prototype.authenticatePassword = function (userId, oldpassword) {
+                AuthenticationService.prototype.authenticatePassword = function (userName, oldpassword) {
                     var _this = this;
+                    var headers = new http_1.Headers();
+                    headers.append('Content-Type', 'application/json');
                     var promise = new Promise(function (resolve, reject) {
-                        return _this._http.get(_this._url + '?id=' + userId + '&password=' + oldpassword)
-                            .map(function (res) { return res.json(); })
+                        var autheticateRequestData = {
+                            user: {
+                                'userName': userName,
+                                'password': oldpassword
+                            }
+                        };
+                        return _this._http.post(_this._url + '/User/Signin', JSON.stringify(autheticateRequestData), {
+                            headers: headers
+                        }).map(function (res) { return res.json(); })
                             .subscribe(function (data) {
-                            if (data.length) {
-                                var user = user_adapter_1.UserAdapter.parseResponse(data[0]);
+                            if (data) {
+                                var user = user_adapter_1.UserAdapter.parseUserResponse(data);
                                 resolve(user);
                             }
                             else {
-                                console.info('Old password is wrong');
                                 reject(new Error('INVALID_CREDENTIALS'));
                             }
                         }, function (error) {

@@ -1,7 +1,6 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import {SessionStore} from '../../../stores/session-store';
-import {UsersStore} from '../../../stores/users-store';
 import {UsersService} from '../../../services/users-service';
 import {ReversePipe} from '../../../pipes/reverse-array-pipe';
 import {LimitPipe} from '../../../pipes/limit-array-pipe';
@@ -15,7 +14,7 @@ import {UserDetail} from '../../../models/user-details';
         ROUTER_DIRECTIVES
     ],
     pipes: [ReversePipe, LimitPipe],
-    providers: [UsersStore, UsersService]
+    providers: [UsersService]
 })
 
 
@@ -24,7 +23,6 @@ users: UserDetail[];
 cols: any[];
     constructor(
         private _router: Router,
-        private _usersStore: UsersStore,
         private _usersService: UsersService,
         private _sessionStore: SessionStore
     ) {

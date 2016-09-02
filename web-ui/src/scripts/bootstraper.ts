@@ -4,7 +4,7 @@
 import {enableProdMode, NgModule} from '@angular/core';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import {BrowserModule}  from '@angular/platform-browser';
-import {FormsModule}    from '@angular/forms';
+import {FormsModule, FormBuilder}    from '@angular/forms';
 import {bootstrap} from '@angular/platform-browser-dynamic';
 import {ROUTER_DIRECTIVES} from '@angular/router';
 import {AppRoot} from '../components/AppRoot';
@@ -124,7 +124,8 @@ enableProdMode();
         ValidateActiveSession,
         ValidateInActiveSession,
         Http,
-        HTTP_PROVIDERS
+        HTTP_PROVIDERS,
+        FormBuilder
     ],
     bootstrap: [
         AppRoot

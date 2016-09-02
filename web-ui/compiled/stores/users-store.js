@@ -126,6 +126,20 @@ System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 
                     });
                     return Observable_1.Observable.from(promise);
                 };
+                UsersStore.prototype.updatePassword = function (userDetail) {
+                    var _this = this;
+                    var users = this._users.getValue();
+                    var index = users.findIndex(function (currentUser) { return currentUser.user.id === userDetail.user.id; });
+                    var promise = new Promise(function (resolve, reject) {
+                        _this._usersService.updatePassword(userDetail).subscribe(function (userDetail) {
+                            _this._users.next(_this._users.getValue().push(userDetail));
+                            resolve(userDetail);
+                        }, function (error) {
+                            reject(error);
+                        });
+                    });
+                    return Observable_1.Observable.from(promise);
+                };
                 UsersStore.prototype.selectUser = function (userDetail) {
                     var selectedUsers = this._selectedUsers.getValue();
                     var index = selectedUsers.findIndex(function (currentUser) { return currentUser.user.id === userDetail.user.id; });

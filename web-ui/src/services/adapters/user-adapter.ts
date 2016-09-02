@@ -9,8 +9,8 @@ export class UserAdapter {
 
         let user = null;
         if (userData) {
-            let tempUser = _.omit(userData, 'address', 'account', 'contactInfo', 'updateDate');
-            // let tempUser = _.omit(userData, 'address', 'contactInfo', 'updateDate');
+            // let tempUser = _.omit(userData, 'address', 'account', 'contactInfo', 'updateDate');
+            let tempUser = _.omit(userData, 'account', 'updateDate');
             if (userData.account) {
                 tempUser.accountId = userData.account.id;
             }
@@ -22,14 +22,14 @@ export class UserAdapter {
     static parseResponse(userData: any): UserDetail {
 
         let user = null;
-        let tempUser = _.omit(userData, 'address', 'account', 'contactInfo', 'updateDate');
-        // let tempUser = _.omit(userData, 'address', 'contactInfo', 'updateDate');
+        // let tempUser = _.omit(userData, 'address', 'account', 'contactInfo', 'updateDate');
+        let tempUser = _.omit(userData, 'account', 'updateDate');
         if (userData) {
             user = new UserDetail({
                 user: tempUser,
                 address: userData.address,
                 contactInfo: userData.contactInfo,
-                // account:userData.account
+                // account: userData.account
             });
         }
         return user;

@@ -63,14 +63,14 @@ export class AuthenticationService {
         return <Observable<any>>Observable.fromPromise(promise);
     }
 
-    authenticate(userId: string, password: string): Observable<User> {
+    authenticate(email: string, password: string): Observable<User> {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
 
         let promise: Promise<User> = new Promise((resolve, reject) => {
             let autheticateRequestData = {
                 user: {
-                    'userName': userId,
+                    'userName': email,
                     'password': password
                 }
             };
@@ -93,17 +93,26 @@ export class AuthenticationService {
         return <Observable<User>>Observable.fromPromise(promise);
     }
 
-    authenticatePassword(userId: string, oldpassword: string): Observable<User> {
+    authenticatePassword(userName: string, oldpassword: string): Observable<User> {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
         let promise: Promise<User> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '?id=' + userId + '&password=' + oldpassword)
-                .map(res => res.json())
+            let autheticateRequestData = {
+                user: {
+                    'userName': userName,
+                    'password': oldpassword
+                }
+            };
+            return this._http.post(this._url + '/User/Signin', JSON.stringify(autheticateRequestData), {
+                headers: headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
-                    if (data.length) {
-                        let user = UserAdapter.parseResponse(data[0]);
+                    if (data) {
+                        let user = UserAdapter.parseUserResponse(data);
                         resolve(user);
                     }
                     else {
-                        console.info('Old password is wrong');
                         reject(new Error('INVALID_CREDENTIALS'));
                     }
                 }, (error) => {
@@ -113,7 +122,7 @@ export class AuthenticationService {
 
         return <Observable<User>>Observable.fromPromise(promise);
     }
-    updatePassword(userId: string, newpassword: string): Observable<any> {
+    updatePassword(userId: string, newpassword: any): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
@@ -133,5 +142,45 @@ export class AuthenticationService {
         });
         return <Observable<any>>Observable.fromPromise(promise);
     }
+    // authenticatePassword(userId: string, oldpassword: string): Observable<User> {
+    //     let promise: Promise<User> = new Promise((resolve, reject) => {
+    //         return this._http.get(this._url + '?id=' + userId + '&password=' + oldpassword)
+    //             .map(res => res.json())
+    //             .subscribe((data: any) => {
+    //                 if (data.length) {
+    //                     let user = UserAdapter.parseResponse(data[0]);
+    //                     resolve(user);
+    //                 }
+    //                 else {
+    //                     console.info('Old password is wrong');
+    //                     reject(new Error('INVALID_CREDENTIALS'));
+    //                 }
+    //             }, (error) => {
+    //                 reject(error);
+    //             });
+    //     });
+
+    //     return <Observable<User>>Observable.fromPromise(promise);
+    // }
+    // updatePassword(userId: string, newpassword: string): Observable<any> {
+    //     let promise: Promise<any> = new Promise((resolve, reject) => {
+    //         let headers = new Headers();
+    //         headers.append('Content-Type', 'application/json');
+    //         return this._http.patch(`${this._url}/${userId}`, JSON.stringify(newpassword), {
+    //             headers: headers
+    //         }).map(res => res.json()).subscribe((data: any) => {
+    //             if (data.length) {
+    //                 let user = UserAdapter.parseResponse(data[0]);
+    //                 resolve(data);
+    //             }
+    //             else {
+    //                 resolve(data);
+    //             }
+    //         }, (error) => {
+    //             reject(error);
+    //         });
+    //     });
+    //     return <Observable<any>>Observable.fromPromise(promise);
+    // }
 
 }

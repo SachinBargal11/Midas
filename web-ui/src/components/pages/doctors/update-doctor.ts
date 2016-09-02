@@ -8,7 +8,7 @@ import {DoctorsService} from '../../../services/doctors-service';
 import {DoctorDetail} from '../../../models/doctor-details';
 import {Doctor} from '../../../models/doctor';
 import {User} from '../../../models/user';
-import {Contact} from '../../../models/contact';
+import {ContactInfo} from '../../../models/contact';
 import {Address} from '../../../models/address';
 import $ from 'jquery';
 import {SessionStore} from '../../../stores/session-store';
@@ -137,7 +137,7 @@ export class UpdateDoctorComponent implements OnInit {
                 userType: parseInt(doctorFormValues.userInfo.userType),
                 password: doctorFormValues.userInfo.password
             })
-            // contactInfo: new Contact({
+            // contactInfo: new ContactInfo({
             //     cellPhone: doctorFormValues.contact.cellPhone,
             //     emailAddress: doctorFormValues.contact.email,
             //     faxNo: doctorFormValues.contact.faxNo,

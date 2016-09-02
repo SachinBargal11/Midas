@@ -1,6 +1,5 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
-import {MedicalFacilityStore} from '../../../stores/medical-facilities-store';
 import {MedicalFacilityService} from '../../../services/medical-facility-service';
 import {ReversePipe} from '../../../pipes/reverse-array-pipe';
 import {LimitPipe} from '../../../pipes/limit-array-pipe';
@@ -23,7 +22,6 @@ medicalfacilities: MedicalFacilityDetail[];
     constructor(
         private _router: Router,
         private _sessionStore: SessionStore,
-        private _medicalFacilityStore: MedicalFacilityStore,
         private _medicalFacilityService: MedicalFacilityService
     ) {
     }

@@ -4,7 +4,7 @@ import {Account} from './account';
 import {MedicalFacility} from './medical-facility';
 import {User} from './user';
 import {Address} from './address';
-import {Contact} from './contact';
+import {ContactInfo} from './contact';
 
 const MedicalFacilityRecord = Record({
 
@@ -20,7 +20,7 @@ export class MedicalFacilityDetail extends MedicalFacilityRecord {
     account: Account;
     user: User;
     address: Address;
-    contact: Contact;
+    contactInfo: ContactInfo;
     medicalfacility: MedicalFacility;
 
 

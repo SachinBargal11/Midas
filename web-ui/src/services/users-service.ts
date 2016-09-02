@@ -28,15 +28,19 @@ export class UsersService {
     getUser(userId: Number): Observable<UserDetail> {
         let promise: Promise<UserDetail> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/User/Get/' + userId).map(res => res.json())
-                .subscribe((data: any) => {
-                    let user = null;
-                    if (data.length) {
-                        user = UserAdapter.parseResponse(data[0]);
-                        resolve(user);
-                    }
-                    else {
-                        reject(new Error('NOT_FOUND'));
-                    }
+                .subscribe((userData: any) => {
+                    let parsedUser: UserDetail = null;
+                    parsedUser = UserAdapter.parseResponse(userData);
+                    resolve(parsedUser);
+                    // let user = null;
+                    // if (userData.length) {
+                    //     user = UserAdapter.parseResponse(userData[0]);
+                    //     resolve(user);
+                    // }
+                    // resolve(user);
+                    // else {
+                    //     reject(new Error('NOT_FOUND'));
+                    // }
                 }, (error) => {
                     reject(error);
                 });
@@ -57,23 +61,6 @@ export class UsersService {
         });
         return <Observable<UserDetail[]>>Observable.fromPromise(promise);
     }
-    // getUsers(accountId: number){
-    //         return this._http.get(this._url + '/Account/Get/' + accountId)
-    //                          .toPromise()
-    //                          .then(res => <UserDetail[]> res.json().data)
-    //                          .then(data => { return data; });
-    //         // .map(res => res.json())
-    //     //         .subscribe((data: any) => {
-    //     //             let users = (<Object[]>data.users).map((userData: any) => {
-    //     //                 return UserAdapter.parseResponse(userData);
-    //     //             });
-    //     //             resolve(users);
-    //     //         }, (error) => {
-    //     //             reject(error);
-    //     //         });
-    //     // });
-    //     // return <Observable<UserDetail[]>>Observable.fromPromise(promise);
-    // }
 
     addUser(userDetail: UserDetail): Observable<UserDetail> {
         let promise: Promise<UserDetail> = new Promise((resolve, reject) => {
@@ -109,6 +96,40 @@ export class UsersService {
 
     }
     updateUser(userDetail: UserDetail): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+
+
+            let userDetailRequestData = userDetail.toJS();
+
+            // add/replace values which need to be changed
+            _.extend(userDetailRequestData.user, {
+                userType: UserType[userDetailRequestData.user.userType],
+                dateOfBirth: userDetailRequestData.user.dateOfBirth ? userDetailRequestData.user.dateOfBirth.toISOString() : null
+            });
+
+            // remove unneeded keys 
+            userDetailRequestData.user = _.omit(userDetailRequestData.user, 'accountId', 'gender', 'status', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+            userDetailRequestData.address = _.omit(userDetailRequestData.address, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+            userDetailRequestData.contactInfo = _.omit(userDetailRequestData.contactInfo, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+            userDetailRequestData.account = _.omit(userDetailRequestData.account, 'name', 'status', 'isDeleted', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+
+            return this._http.post(this._url + '/User/Add', JSON.stringify(userDetailRequestData), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((userData: any) => {
+                    let parsedUser: UserDetail = null;
+                    parsedUser = UserAdapter.parseResponse(userData);
+                    resolve(parsedUser);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+
+    }
+
+    updatePassword(userDetail: UserDetail): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
 
 
