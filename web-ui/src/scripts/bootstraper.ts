@@ -94,6 +94,7 @@ enableProdMode();
         AppHeaderComponent,
         MainNavComponent,
         ChangePasswordComponent,
+        NotificationComponent,
         AddUserComponent,
         UpdateUserComponent,
         UsersListComponent,
