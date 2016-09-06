@@ -1,15 +1,15 @@
-System.register(['../../models/user', '../../models/user-details', 'underscore'], function(exports_1, context_1) {
+System.register(['../../models/user', '../../models/account-details', 'underscore'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var user_1, user_details_1, underscore_1;
+    var user_1, account_details_1, underscore_1;
     var UserAdapter;
     return {
         setters:[
             function (user_1_1) {
                 user_1 = user_1_1;
             },
-            function (user_details_1_1) {
-                user_details_1 = user_details_1_1;
+            function (account_details_1_1) {
+                account_details_1 = account_details_1_1;
             },
             function (underscore_1_1) {
                 underscore_1 = underscore_1_1;
@@ -35,7 +35,7 @@ System.register(['../../models/user', '../../models/user-details', 'underscore']
                     // let tempUser = _.omit(userData, 'address', 'account', 'contactInfo', 'updateDate');
                     var tempUser = underscore_1.default.omit(userData, 'account', 'updateDate');
                     if (userData) {
-                        user = new user_details_1.UserDetail({
+                        user = new account_details_1.AccountDetail({
                             user: tempUser,
                             address: userData.address,
                             contactInfo: userData.contactInfo,

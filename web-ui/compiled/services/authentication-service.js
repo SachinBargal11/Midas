@@ -143,27 +143,6 @@ System.register(['@angular/core', '@angular/http', 'rxjs/Observable', 'rxjs/add/
                     });
                     return Observable_1.Observable.fromPromise(promise);
                 };
-                AuthenticationService.prototype.updatePassword = function (userId, newpassword) {
-                    var _this = this;
-                    var promise = new Promise(function (resolve, reject) {
-                        var headers = new http_1.Headers();
-                        headers.append('Content-Type', 'application/json');
-                        return _this._http.patch(_this._url + "/" + userId, JSON.stringify(newpassword), {
-                            headers: headers
-                        }).map(function (res) { return res.json(); }).subscribe(function (data) {
-                            if (data.length) {
-                                var user = user_adapter_1.UserAdapter.parseResponse(data[0]);
-                                resolve(data);
-                            }
-                            else {
-                                resolve(data);
-                            }
-                        }, function (error) {
-                            reject(error);
-                        });
-                    });
-                    return Observable_1.Observable.fromPromise(promise);
-                };
                 AuthenticationService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [http_1.Http])

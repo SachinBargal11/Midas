@@ -4,7 +4,6 @@ import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
 import {LoaderComponent} from '../../elements/loader';
 import {UsersStore} from '../../../stores/users-store';
-import {UserDetail} from '../../../models/user-details';
 import {User} from '../../../models/user';
 import {UsersService} from '../../../services/users-service';
 import {AccountDetail} from '../../../models/account-details';
@@ -93,7 +92,7 @@ export class AddUserComponent implements OnInit {
 
     saveUser() {
         let userFormValues = this.userform.value;
-        let userDetail = new UserDetail({
+        let userDetail = new AccountDetail({
             account: new Account({
                id: this._sessionStore.session.account_id
             }),

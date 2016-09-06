@@ -57,15 +57,6 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                             var parsedUser = null;
                             parsedUser = user_adapter_1.UserAdapter.parseResponse(userData);
                             resolve(parsedUser);
-                            // let user = null;
-                            // if (userData.length) {
-                            //     user = UserAdapter.parseResponse(userData[0]);
-                            //     resolve(user);
-                            // }
-                            // resolve(user);
-                            // else {
-                            //     reject(new Error('NOT_FOUND'));
-                            // }
                         }, function (error) {
                             reject(error);
                         });

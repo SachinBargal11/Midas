@@ -4,7 +4,6 @@ import {ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
 import {LoaderComponent} from '../../elements/loader';
 import {UsersStore} from '../../../stores/users-store';
-import {UserDetail} from '../../../models/user-details';
 import {User} from '../../../models/user';
 import {UsersService} from '../../../services/users-service';
 import {AccountDetail} from '../../../models/account-details';
@@ -35,8 +34,8 @@ import {LimitPipe} from '../../../pipes/limit-array-pipe';
 export class UpdateUserComponent implements OnInit {
     states: any[];
     user = new User({});
-    address: Address;
-    contactInfo: ContactInfo;
+    address = new Address({});
+    contactInfo = new ContactInfo({});
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -64,7 +63,7 @@ export class UpdateUserComponent implements OnInit {
             let userId: number = parseInt(routeParams.id);
             let result = this._usersStore.fetchUserById(userId);
             result.subscribe(
-                (userDetail: UserDetail) => {
+                (userDetail: AccountDetail) => {
                    this.user = userDetail.user;
                    this.address = userDetail.address;
                    this.contactInfo = userDetail.contactInfo;
@@ -110,7 +109,7 @@ export class UpdateUserComponent implements OnInit {
 
     updateUser() {
         let userFormValues = this.userform.value;
-        let userDetail = new UserDetail({
+        let userDetail = new AccountDetail({
             account: new Account({
                id: this._sessionStore.session.account_id
             }),

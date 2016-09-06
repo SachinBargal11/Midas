@@ -7,7 +7,7 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
 import {User} from '../models/user';
-import {UserDetail} from '../models/user-details';
+import {AccountDetail} from '../models/account-details';
 import {SessionStore} from '../stores/session-store';
 import {UserAdapter} from './adapters/user-adapter';
 import {UserType} from '../models/enums/UserType';
@@ -25,30 +25,21 @@ export class UsersService {
         this._headers.append('Content-Type', 'application/json');
     }
 
-    getUser(userId: Number): Observable<UserDetail> {
-        let promise: Promise<UserDetail> = new Promise((resolve, reject) => {
+    getUser(userId: Number): Observable<AccountDetail> {
+        let promise: Promise<AccountDetail> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/User/Get/' + userId).map(res => res.json())
                 .subscribe((userData: any) => {
-                    let parsedUser: UserDetail = null;
+                    let parsedUser: AccountDetail = null;
                     parsedUser = UserAdapter.parseResponse(userData);
                     resolve(parsedUser);
-                    // let user = null;
-                    // if (userData.length) {
-                    //     user = UserAdapter.parseResponse(userData[0]);
-                    //     resolve(user);
-                    // }
-                    // resolve(user);
-                    // else {
-                    //     reject(new Error('NOT_FOUND'));
-                    // }
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<UserDetail>>Observable.fromPromise(promise);
+        return <Observable<AccountDetail>>Observable.fromPromise(promise);
     }
-    getUsers(accountId: number): Observable<UserDetail[]> {
-        let promise: Promise<UserDetail[]> = new Promise((resolve, reject) => {
+    getUsers(accountId: number): Observable<AccountDetail[]> {
+        let promise: Promise<AccountDetail[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/Account/Get/' + accountId).map(res => res.json())
                 .subscribe((data: any) => {
                     let users = (<Object[]>data.users).map((userData: any) => {
@@ -59,11 +50,11 @@ export class UsersService {
                     reject(error);
                 });
         });
-        return <Observable<UserDetail[]>>Observable.fromPromise(promise);
+        return <Observable<AccountDetail[]>>Observable.fromPromise(promise);
     }
 
-    addUser(userDetail: UserDetail): Observable<UserDetail> {
-        let promise: Promise<UserDetail> = new Promise((resolve, reject) => {
+    addUser(userDetail: AccountDetail): Observable<AccountDetail> {
+        let promise: Promise<AccountDetail> = new Promise((resolve, reject) => {
 
 
             let userDetailRequestData = userDetail.toJS();
@@ -85,17 +76,17 @@ export class UsersService {
             })
                 .map(res => res.json())
                 .subscribe((userData: any) => {
-                    let parsedUser: UserDetail = null;
+                    let parsedUser: AccountDetail = null;
                     parsedUser = UserAdapter.parseResponse(userData);
                     resolve(parsedUser);
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<UserDetail>>Observable.fromPromise(promise);
+        return <Observable<AccountDetail>>Observable.fromPromise(promise);
 
     }
-    updateUser(userDetail: UserDetail): Observable<any> {
+    updateUser(userDetail: AccountDetail): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
 
 
@@ -118,7 +109,7 @@ export class UsersService {
             })
                 .map(res => res.json())
                 .subscribe((userData: any) => {
-                    let parsedUser: UserDetail = null;
+                    let parsedUser: AccountDetail = null;
                     parsedUser = UserAdapter.parseResponse(userData);
                     resolve(parsedUser);
                 }, (error) => {
@@ -129,7 +120,7 @@ export class UsersService {
 
     }
 
-    updatePassword(userDetail: UserDetail): Observable<any> {
+    updatePassword(userDetail: AccountDetail): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
 
 
@@ -152,7 +143,7 @@ export class UsersService {
             })
                 .map(res => res.json())
                 .subscribe((userData: any) => {
-                    let parsedUser: UserDetail = null;
+                    let parsedUser: AccountDetail = null;
                     parsedUser = UserAdapter.parseResponse(userData);
                     resolve(parsedUser);
                 }, (error) => {

@@ -54,14 +54,9 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                     var promise = new Promise(function (resolve, reject) {
                         return _this._http.get(_this._url + '/Doctor/Get/' + doctorId).map(function (res) { return res.json(); })
                             .subscribe(function (data) {
-                            var doctor = null;
-                            if (data.length) {
-                                doctor = doctor_adapter_1.DoctorAdapter.parseResponse(data[0]);
-                                resolve(doctor);
-                            }
-                            else {
-                                reject(new Error('NOT_FOUND'));
-                            }
+                            var parsedDoctor = null;
+                            parsedDoctor = doctor_adapter_1.DoctorAdapter.parseResponse(data);
+                            resolve(parsedDoctor);
                         }, function (error) {
                             reject(error);
                         });

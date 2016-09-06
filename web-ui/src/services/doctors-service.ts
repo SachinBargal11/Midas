@@ -29,13 +29,9 @@ export class DoctorsService {
         let promise: Promise<DoctorDetail> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/Doctor/Get/' + doctorId).map(res => res.json())
                 .subscribe((data: any) => {
-                    let doctor = null;
-                    if (data.length) {
-                        doctor = DoctorAdapter.parseResponse(data[0]);
-                        resolve(doctor);
-                    } else {
-                        reject(new Error('NOT_FOUND'));
-                    }
+                    let parsedDoctor: DoctorDetail = null;
+                    parsedDoctor = DoctorAdapter.parseResponse(data);
+                    resolve(parsedDoctor);
                 }, (error) => {
                     reject(error);
                 });

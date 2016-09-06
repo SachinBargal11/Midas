@@ -45,12 +45,10 @@ export class ChangePasswordComponent implements OnInit {
         private _sessionStore: SessionStore
     ) {
             let userId: number = this._sessionStore.session.user.id;
-            // let result = this._usersStore.fetchUserById(userId);
             let result = this._usersService.getUser(userId);
             result.subscribe(
                 (userDetail: UserDetail) => {
                    this.userDetail = userDetail;
-                    this._usersStore.selectUser(userDetail);
                 },
                 (error) => {
                     this._router.navigate(['/users']);
@@ -68,15 +66,6 @@ export class ChangePasswordComponent implements OnInit {
 }
 
     ngOnInit() {
-            // let userId: number = this._sessionStore.session.user.id;
-            // this._usersService.getUser(userId)
-            //     .subscribe(
-            //           userDetail => this.userDetail = userDetail,
-            //          response => {
-            //                if (response.status === 404) {
-            //             this._router.navigate(['/dashboard']);
-            //          }
-            // });
     }
 
     updatePassword() {
@@ -133,22 +122,6 @@ export class ChangePasswordComponent implements OnInit {
             () => {
                 this.isPassChangeInProgress = false;
             });
-
-            // let result = this._usersService.updatePassword(userDetail);
-            // result.subscribe(
-            // (response) => {
-            //     this._notificationsService.success('Welcome!', 'Password changed suceessfully!');
-            //     setTimeout(() => {
-            //         this._router.navigate(['/dashboard']);
-            //     }, 3000);
-            // },
-            // error => {
-            //     this.isPassChangeInProgress = false;
-            //     this._notificationsService.error('Oh No!', 'Unable to change password.');
-            // },
-            // () => {
-            //     this.isPassChangeInProgress = false;
-            // });
         }
 
 }

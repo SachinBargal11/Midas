@@ -1,5 +1,5 @@
 import {User} from '../../models/user';
-import {UserDetail} from '../../models/user-details';
+import {AccountDetail} from '../../models/account-details';
 import Moment from 'moment';
 import _ from 'underscore';
 
@@ -19,13 +19,13 @@ export class UserAdapter {
         return user;
     }
 
-    static parseResponse(userData: any): UserDetail {
+    static parseResponse(userData: any): AccountDetail {
 
         let user = null;
         // let tempUser = _.omit(userData, 'address', 'account', 'contactInfo', 'updateDate');
         let tempUser = _.omit(userData, 'account', 'updateDate');
         if (userData) {
-            user = new UserDetail({
+            user = new AccountDetail({
                 user: tempUser,
                 address: userData.address,
                 contactInfo: userData.contactInfo,

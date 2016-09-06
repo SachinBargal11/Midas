@@ -79,11 +79,9 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../ut
                         maxLength: 10
                     };
                     var userId = this._sessionStore.session.user.id;
-                    // let result = this._usersStore.fetchUserById(userId);
                     var result = this._usersService.getUser(userId);
                     result.subscribe(function (userDetail) {
                         _this.userDetail = userDetail;
-                        _this._usersStore.selectUser(userDetail);
                     }, function (error) {
                         _this._router.navigate(['/users']);
                     }, function () {
@@ -96,15 +94,6 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../ut
                     this.changePassFormControls = this.changePassForm.controls;
                 }
                 ChangePasswordComponent.prototype.ngOnInit = function () {
-                    // let userId: number = this._sessionStore.session.user.id;
-                    // this._usersService.getUser(userId)
-                    //     .subscribe(
-                    //           userDetail => this.userDetail = userDetail,
-                    //          response => {
-                    //                if (response.status === 404) {
-                    //             this._router.navigate(['/dashboard']);
-                    //          }
-                    // });
                 };
                 ChangePasswordComponent.prototype.updatePassword = function () {
                     var _this = this;
@@ -154,21 +143,6 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../ut
                     }, function () {
                         _this.isPassChangeInProgress = false;
                     });
-                    // let result = this._usersService.updatePassword(userDetail);
-                    // result.subscribe(
-                    // (response) => {
-                    //     this._notificationsService.success('Welcome!', 'Password changed suceessfully!');
-                    //     setTimeout(() => {
-                    //         this._router.navigate(['/dashboard']);
-                    //     }, 3000);
-                    // },
-                    // error => {
-                    //     this.isPassChangeInProgress = false;
-                    //     this._notificationsService.error('Oh No!', 'Unable to change password.');
-                    // },
-                    // () => {
-                    //     this.isPassChangeInProgress = false;
-                    // });
                 };
                 ChangePasswordComponent = __decorate([
                     core_1.Component({
