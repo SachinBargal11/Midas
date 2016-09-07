@@ -25,7 +25,7 @@ doctors: DoctorDetail[];
     ) {
     }
     ngOnInit() {
-         let user = this._doctorsService.getDoctors()
+         let doctor = this._doctorsService.getDoctors()
                                 .subscribe(doctors => this.doctors = doctors);
 
     }

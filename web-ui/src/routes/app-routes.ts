@@ -7,6 +7,7 @@ import {UsersRoutes} from './user-routes';
 import {ProvidersRoutes} from './provider-routes';
 import {MedicalFacilitiesRoutes} from './medical-facility-routes';
 import {DoctorsRoutes} from './doctor-routes';
+import {SpecialityRoutes} from './speciality-routes';
 import {ValidateActiveSession} from './guards/validate-active-session';
 import {ValidateInActiveSession} from './guards/validate-inactive-session';
 import {ChangePasswordComponent} from '../components/pages/change-password';
@@ -41,6 +42,7 @@ export const appRoutes: Routes = [
     ...MedicalFacilitiesRoutes,
     ...ProvidersRoutes,
     ...UsersRoutes,
-    ...PatientsShellRoutes
+    ...PatientsShellRoutes,
+    ...SpecialityRoutes
 ];
 export const APP_ROUTER_PROVIDER = RouterModule.forRoot(appRoutes);

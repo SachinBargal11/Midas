@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/router', '../../../services/doctors-service', '../../../pipes/reverse-array-pipe', '../../../pipes/limit-array-pipe'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/router', '../../../services/speciality-service', '../../../pipes/reverse-array-pipe', '../../../pipes/limit-array-pipe'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,8 +10,8 @@ System.register(['@angular/core', '@angular/router', '../../../services/doctors-
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, doctors_service_1, reverse_array_pipe_1, limit_array_pipe_1;
-    var DoctorsListComponent;
+    var core_1, router_1, speciality_service_1, reverse_array_pipe_1, limit_array_pipe_1;
+    var SpecialityListComponent;
     return {
         setters:[
             function (core_1_1) {
@@ -20,8 +20,8 @@ System.register(['@angular/core', '@angular/router', '../../../services/doctors-
             function (router_1_1) {
                 router_1 = router_1_1;
             },
-            function (doctors_service_1_1) {
-                doctors_service_1 = doctors_service_1_1;
+            function (speciality_service_1_1) {
+                speciality_service_1 = speciality_service_1_1;
             },
             function (reverse_array_pipe_1_1) {
                 reverse_array_pipe_1 = reverse_array_pipe_1_1;
@@ -30,35 +30,35 @@ System.register(['@angular/core', '@angular/router', '../../../services/doctors-
                 limit_array_pipe_1 = limit_array_pipe_1_1;
             }],
         execute: function() {
-            DoctorsListComponent = (function () {
-                function DoctorsListComponent(_router, _doctorsService) {
+            SpecialityListComponent = (function () {
+                function SpecialityListComponent(_router, _specialityService) {
                     this._router = _router;
-                    this._doctorsService = _doctorsService;
+                    this._specialityService = _specialityService;
                 }
-                DoctorsListComponent.prototype.ngOnInit = function () {
+                SpecialityListComponent.prototype.ngOnInit = function () {
                     var _this = this;
-                    var doctor = this._doctorsService.getDoctors()
-                        .subscribe(function (doctors) { return _this.doctors = doctors; });
+                    var specialty = this._specialityService.getSpecialities()
+                        .subscribe(function (specialties) { return _this.specialties = specialties; });
                 };
-                DoctorsListComponent.prototype.selectDoctor = function (doctor) {
-                    this._router.navigate(['/doctors/update/' + doctor.doctor.id]);
+                SpecialityListComponent.prototype.selectSpeciality = function (specialty) {
+                    this._router.navigate(['/specialities/update/' + specialty.specialty.id]);
                 };
-                DoctorsListComponent = __decorate([
+                SpecialityListComponent = __decorate([
                     core_1.Component({
-                        selector: 'doctors-list',
-                        templateUrl: 'templates/pages/doctors/doctors-list.html',
+                        selector: 'speciality-list',
+                        templateUrl: 'templates/pages/speciality/speciality-list.html',
                         directives: [
                             router_1.ROUTER_DIRECTIVES
                         ],
                         pipes: [reverse_array_pipe_1.ReversePipe, limit_array_pipe_1.LimitPipe],
-                        providers: [doctors_service_1.DoctorsService]
+                        providers: [speciality_service_1.SpecialityService]
                     }), 
-                    __metadata('design:paramtypes', [router_1.Router, doctors_service_1.DoctorsService])
-                ], DoctorsListComponent);
-                return DoctorsListComponent;
+                    __metadata('design:paramtypes', [router_1.Router, speciality_service_1.SpecialityService])
+                ], SpecialityListComponent);
+                return SpecialityListComponent;
             }());
-            exports_1("DoctorsListComponent", DoctorsListComponent);
+            exports_1("SpecialityListComponent", SpecialityListComponent);
         }
     }
 });
-//# sourceMappingURL=doctors-list.js.map
+//# sourceMappingURL=speciality-list.js.map

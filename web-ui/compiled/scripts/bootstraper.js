@@ -1,5 +1,5 @@
 /** Angular Modules */
-System.register(['@angular/core', '@angular/platform-browser-dynamic', '@angular/platform-browser', '@angular/forms', '../components/AppRoot', '@angular/http', 'primeng/primeng', 'angular2-notifications', '../stores/session-store', '../services/authentication-service', '../stores/users-store', '../services/users-service', '../stores/providers-store', '../services/providers-service', '../stores/medical-facilities-store', '../services/medical-facility-service', '../stores/doctors-store', '../services/doctors-service', '../stores/patients-store', '../services/patients-service', '../stores/states-store', '../services/state-service', '../stores/notifications-store', '../routes/app-routes', '../routes/guards/validate-active-session', '../routes/guards/validate-inactive-session', '../components/pages/login', '../components/pages/signup', '../components/pages/dashboard', '../components/pages/patients/patients-shell', '../components/pages/patients/patients-list', '../components/pages/patients/add-patient', '../components/pages/patients/patient-details', '../components/pages/patients/profile-patient', '../components/elements/app-header', '../components/elements/main-nav', '../components/elements/notification', '../components/pages/change-password', '../components/pages/users/add-user', '../components/pages/users/users-list', '../components/pages/users/update-user', '../components/pages/providers/add-provider', '../components/pages/providers/providers-list', '../components/pages/medical-facilities/add-medical-facility', '../components/pages/medical-facilities/medical-facilities-list', '../components/pages/doctors/add-doctor', '../components/pages/doctors/update-doctor', '../components/pages/doctors/doctors-list'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/platform-browser-dynamic', '@angular/platform-browser', '@angular/forms', '../components/AppRoot', '@angular/http', 'primeng/primeng', 'angular2-notifications', '../stores/session-store', '../services/authentication-service', '../stores/users-store', '../services/users-service', '../stores/providers-store', '../services/providers-service', '../stores/medical-facilities-store', '../services/medical-facility-service', '../stores/doctors-store', '../services/doctors-service', '../stores/speciality-store', '../services/speciality-service', '../stores/patients-store', '../services/patients-service', '../stores/states-store', '../services/state-service', '../stores/notifications-store', '../routes/app-routes', '../routes/guards/validate-active-session', '../routes/guards/validate-inactive-session', '../components/pages/login', '../components/pages/signup', '../components/pages/dashboard', '../components/pages/patients/patients-shell', '../components/pages/patients/patients-list', '../components/pages/patients/add-patient', '../components/pages/patients/patient-details', '../components/pages/patients/profile-patient', '../components/elements/app-header', '../components/elements/main-nav', '../components/elements/notification', '../components/pages/change-password', '../components/pages/users/add-user', '../components/pages/users/users-list', '../components/pages/users/update-user', '../components/pages/providers/add-provider', '../components/pages/providers/providers-list', '../components/pages/medical-facilities/add-medical-facility', '../components/pages/medical-facilities/medical-facilities-list', '../components/pages/doctors/add-doctor', '../components/pages/doctors/update-doctor', '../components/pages/doctors/doctors-list', '../components/pages/speciality/speciality-list', '../components/pages/speciality/add-speciality', '../components/pages/speciality/update-speciality'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -11,7 +11,7 @@ System.register(['@angular/core', '@angular/platform-browser-dynamic', '@angular
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, platform_browser_dynamic_1, platform_browser_1, forms_1, AppRoot_1, http_1, primeng_1, angular2_notifications_1, session_store_1, authentication_service_1, users_store_1, users_service_1, providers_store_1, providers_service_1, medical_facilities_store_1, medical_facility_service_1, doctors_store_1, doctors_service_1, patients_store_1, patients_service_1, states_store_1, state_service_1, notifications_store_1, app_routes_1, validate_active_session_1, validate_inactive_session_1, login_1, signup_1, dashboard_1, patients_shell_1, patients_list_1, add_patient_1, patient_details_1, profile_patient_1, app_header_1, main_nav_1, notification_1, change_password_1, add_user_1, users_list_1, update_user_1, add_provider_1, providers_list_1, add_medical_facility_1, medical_facilities_list_1, add_doctor_1, update_doctor_1, doctors_list_1;
+    var core_1, platform_browser_dynamic_1, platform_browser_1, forms_1, AppRoot_1, http_1, primeng_1, angular2_notifications_1, session_store_1, authentication_service_1, users_store_1, users_service_1, providers_store_1, providers_service_1, medical_facilities_store_1, medical_facility_service_1, doctors_store_1, doctors_service_1, speciality_store_1, speciality_service_1, patients_store_1, patients_service_1, states_store_1, state_service_1, notifications_store_1, app_routes_1, validate_active_session_1, validate_inactive_session_1, login_1, signup_1, dashboard_1, patients_shell_1, patients_list_1, add_patient_1, patient_details_1, profile_patient_1, app_header_1, main_nav_1, notification_1, change_password_1, add_user_1, users_list_1, update_user_1, add_provider_1, providers_list_1, add_medical_facility_1, medical_facilities_list_1, add_doctor_1, update_doctor_1, doctors_list_1, speciality_list_1, add_speciality_1, update_speciality_1;
     var BootStraper;
     return {
         setters:[
@@ -68,6 +68,12 @@ System.register(['@angular/core', '@angular/platform-browser-dynamic', '@angular
             },
             function (doctors_service_1_1) {
                 doctors_service_1 = doctors_service_1_1;
+            },
+            function (speciality_store_1_1) {
+                speciality_store_1 = speciality_store_1_1;
+            },
+            function (speciality_service_1_1) {
+                speciality_service_1 = speciality_service_1_1;
             },
             function (patients_store_1_1) {
                 patients_store_1 = patients_store_1_1;
@@ -158,6 +164,15 @@ System.register(['@angular/core', '@angular/platform-browser-dynamic', '@angular
             },
             function (doctors_list_1_1) {
                 doctors_list_1 = doctors_list_1_1;
+            },
+            function (speciality_list_1_1) {
+                speciality_list_1 = speciality_list_1_1;
+            },
+            function (add_speciality_1_1) {
+                add_speciality_1 = add_speciality_1_1;
+            },
+            function (update_speciality_1_1) {
+                update_speciality_1 = update_speciality_1_1;
             }],
         execute: function() {
             core_1.enableProdMode();
@@ -199,7 +214,10 @@ System.register(['@angular/core', '@angular/platform-browser-dynamic', '@angular
                             medical_facilities_list_1.MedicalFacilitiesListComponent,
                             add_doctor_1.AddDoctorComponent,
                             update_doctor_1.UpdateDoctorComponent,
-                            doctors_list_1.DoctorsListComponent
+                            doctors_list_1.DoctorsListComponent,
+                            speciality_list_1.SpecialityListComponent,
+                            add_speciality_1.AddSpecialityComponent,
+                            update_speciality_1.UpdateSpecialityComponent
                         ],
                         providers: [
                             session_store_1.SessionStore,
@@ -212,6 +230,8 @@ System.register(['@angular/core', '@angular/platform-browser-dynamic', '@angular
                             medical_facility_service_1.MedicalFacilityService,
                             doctors_store_1.DoctorsStore,
                             doctors_service_1.DoctorsService,
+                            speciality_store_1.SpecialityStore,
+                            speciality_service_1.SpecialityService,
                             patients_store_1.PatientsStore,
                             patients_service_1.PatientsService,
                             states_store_1.StatesStore,
