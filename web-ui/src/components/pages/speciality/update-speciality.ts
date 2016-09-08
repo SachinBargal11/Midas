@@ -86,7 +86,7 @@ export class UpdateSpecialityComponent implements OnInit {
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'Speciality added successfully!',
+                    'title': 'Speciality updated successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
@@ -95,7 +95,7 @@ export class UpdateSpecialityComponent implements OnInit {
             },
             (error) => {
                 let notification = new Notification({
-                    'title': 'Unable to add Speciality.',
+                    'title': 'Unable to update Speciality.',
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
