@@ -15,7 +15,6 @@ namespace GBDataRepository.Model
     public partial class Doctor
     {
         public int ID { get; set; }
-        public Nullable<int> DoctorUserId { get; set; }
         public string LicenseNumber { get; set; }
         public string WCBAuthorization { get; set; }
         public string WcbRatingCode { get; set; }
@@ -29,6 +28,7 @@ namespace GBDataRepository.Model
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
+        public Nullable<int> DoctorID { get; set; }
     
         public virtual User User { get; set; }
     }

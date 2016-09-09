@@ -38,6 +38,7 @@ namespace Midas.GreenBill.EN
         public const string ProviderAdded = "Provider added successfully";
         public const string ProviderUpdated = "Provider updated successfully";
         public const string ProviderDeleted = "Provider Deleted Sucessfully";
+        public const string ProviderAlreadyExists = "Provider already exists.";
         #endregion
 
         #region Medical Facility
@@ -45,5 +46,7 @@ namespace Midas.GreenBill.EN
         public const string MedicalFacilityUpdated = "Medical Facility updated successfully";
         public const string MedicalFacilityDeleted = "Medical Facility Deleted Sucessfully";
         #endregion
+
+        public const string SpecilityAlreadyExists = "Specialty already exists.";
     }
 }

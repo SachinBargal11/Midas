@@ -48,7 +48,6 @@ namespace GBDataRepository.Model
         public virtual Case Case2 { get; set; }
         public virtual Employer Employer { get; set; }
         public virtual EmployerAddress EmployerAddress { get; set; }
-        public virtual Patient Patient { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CaseDiagnosisSpeciality> CaseDiagnosisSpecialities { get; set; }
     }

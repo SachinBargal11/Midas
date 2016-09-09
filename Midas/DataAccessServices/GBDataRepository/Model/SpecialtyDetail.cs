@@ -15,7 +15,7 @@ namespace GBDataRepository.Model
     public partial class SpecialtyDetail
     {
         public int ID { get; set; }
-        public Nullable<int> SpecialtyId { get; set; }
+        public int SpecialtyId { get; set; }
         public Nullable<bool> IsUnitApply { get; set; }
         public Nullable<int> FollowUpDays { get; set; }
         public Nullable<int> FollowupTime { get; set; }
@@ -28,8 +28,11 @@ namespace GBDataRepository.Model
         public Nullable<int> MedicalOfficeId { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
+        public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
+    
+        public virtual MedicalFacility MedicalFacility { get; set; }
+        public virtual Specialty Specialty { get; set; }
     }
 }

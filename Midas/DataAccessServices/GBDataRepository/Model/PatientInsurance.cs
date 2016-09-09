@@ -29,7 +29,8 @@ namespace GBDataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
+        public virtual Address Address { get; set; }
         public virtual Insurance Insurance { get; set; }
-        public virtual Patient Patient { get; set; }
+        public virtual User User { get; set; }
     }
 }

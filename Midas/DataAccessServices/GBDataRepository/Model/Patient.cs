@@ -14,15 +14,8 @@ namespace GBDataRepository.Model
     
     public partial class Patient
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Patient()
-        {
-            this.Cases = new HashSet<Case>();
-            this.PatientInsurances = new HashSet<PatientInsurance>();
-        }
-    
         public int ID { get; set; }
-        public Nullable<int> UserID { get; set; }
+        public int UserID { get; set; }
         public string SSN { get; set; }
         public string WCBNO { get; set; }
         public string JobTitle { get; set; }
@@ -30,16 +23,14 @@ namespace GBDataRepository.Model
         public string CarrierCaseNo { get; set; }
         public Nullable<bool> UseTranspotation { get; set; }
         public string ChartNo { get; set; }
-        public Nullable<int> ProviderMedicalOfficesID { get; set; }
+        public Nullable<int> ProviderMedicalFacilityID { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
+        public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Case> Cases { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PatientInsurance> PatientInsurances { get; set; }
+        public virtual ProviderMedicalFacility ProviderMedicalFacility { get; set; }
+        public virtual User User { get; set; }
     }
 }

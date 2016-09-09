@@ -10,7 +10,7 @@ namespace Midas.GreenBill.Api
     public interface IRequestHandler<T> 
     {
         HttpResponseMessage GetGbObjects(HttpRequestMessage request,JObject data);
-        HttpResponseMessage GetObject(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage GetObject(HttpRequestMessage request, int id);
         HttpResponseMessage CreateGbObject(HttpRequestMessage request, JObject gbObject);
         HttpResponseMessage UpdateGbObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage DeleteGbObject(HttpRequestMessage request, T gbObject);

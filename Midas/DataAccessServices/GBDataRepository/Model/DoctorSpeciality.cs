@@ -15,12 +15,14 @@ namespace GBDataRepository.Model
     public partial class DoctorSpeciality
     {
         public int ID { get; set; }
-        public int DoctorID { get; set; }
+        public int DoctorUserID { get; set; }
         public int SpecialityID { get; set; }
         public bool IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
+    
+        public virtual User User { get; set; }
     }
 }

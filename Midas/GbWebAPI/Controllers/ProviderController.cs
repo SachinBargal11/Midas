@@ -35,12 +35,12 @@ namespace Midas.GreenBill.Api
         }
 
         // GET: api/Organizations/5
-        [HttpPost]
-        [Route("Get")]
+        [HttpGet]
+        [Route("Get/{id}")]
         [AllowAnonymous]
-        public HttpResponseMessage Get([FromBody]Provider provider)
+        public HttpResponseMessage Get(int id)
         {
-            return requestHandler.GetObject(Request, provider);
+            return requestHandler.GetObject(Request, id);
         }
 
         // POST: api/Organizations
@@ -59,6 +59,14 @@ namespace Midas.GreenBill.Api
         public HttpResponseMessage Put([FromBody]Provider provider)
         {
             return requestHandler.UpdateGbObject(Request, provider);
+        }
+
+        [HttpGet]
+        [Route("GetAll")]
+        [AllowAnonymous]
+        public HttpResponseMessage Get(JObject data)
+        {
+            return requestHandler.GetGbObjects(Request, data);
         }
 
         // DELETE: api/Organizations/id={organizationId}

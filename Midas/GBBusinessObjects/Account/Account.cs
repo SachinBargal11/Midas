@@ -24,3 +24,4 @@ namespace Midas.GreenBill.BusinessObject
         public ICollection<MedicalFacility> MedicalFacilities { get; set; }
     }
 }
+

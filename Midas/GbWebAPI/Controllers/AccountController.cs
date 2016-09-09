@@ -37,11 +37,11 @@ namespace Midas.GreenBill.Api
 
         // GET: api/Organizations/5
         [HttpGet]
-        [Route("Get")]
+        [Route("Get/{id}")]
         [AllowAnonymous]
-        public HttpResponseMessage Get([FromBody]Account account)
+        public HttpResponseMessage Get(int id)
         {
-            return requestHandler.GetObject(Request, account);
+            return requestHandler.GetObject(Request, id);
         }
 
         [HttpGet]

@@ -39,7 +39,7 @@ namespace Midas.GreenBill.EntityRepository
             boMedicalFacility.ID = medicalfacility.ID;
             boMedicalFacility.Name = medicalfacility.Name;
             boMedicalFacility.Prefix = medicalfacility.Prefix;
-            boMedicalFacility.DefaultAttorneyUserID = medicalfacility.DefaultAttorneyUserID;
+            boMedicalFacility.DefaultAttorneyUserID = medicalfacility.DefaultAttorneyUserID.Value;
             boMedicalFacility.CreateByUserID = medicalfacility.CreateByUserID;
             boMedicalFacility.CreateDate = medicalfacility.CreateDate;
 
@@ -108,8 +108,8 @@ namespace Midas.GreenBill.EntityRepository
         public override object Save(JObject data)
         {
             BO.Account accountBO = data["account"].ToObject<BO.Account>();
-            BO.Address addressBO = data["address"].ToObject<BO.Address>();
-            BO.ContactInfo contactinfoBO = data["contactinfo"].ToObject<BO.ContactInfo>();
+            BO.Address addressBO = data["address"]==null?new BO.Address(): data["address"].ToObject<BO.Address>();
+            BO.ContactInfo contactinfoBO = data["contactinfo"] == null ? new BO.ContactInfo() : data["contactinfo"].ToObject<BO.ContactInfo>();
             BO.User userBO = data["user"].ToObject<BO.User>();
             BO.MedicalFacility medfacilityBO = data["medicalfacility"].ToObject<BO.MedicalFacility>();
 
@@ -151,12 +151,14 @@ namespace Midas.GreenBill.EntityRepository
             medfacilityDB.ContactInfo = contactinfoDB;
 
             //Find Account
-            Account acct = _context.Accounts.Where(p => p.Name == accountBO.Name).FirstOrDefault<Account>();
+            Account acct = _context.Accounts.Where(p => p.ID == accountBO.ID).FirstOrDefault<Account>();
             if (acct != null)
                 medfacilityDB.AccountID = acct.ID;
+            else
+                throw new GbException("Invalid account.Please check account detail.");
 
             //Find Default Attorney
-            User user = _context.Users.Where(p => p.UserName == userBO.UserName).FirstOrDefault<User>();
+            User user = _context.Users.Where(p => p.ID == userBO.ID).FirstOrDefault<User>();
             if (user != null)
                 medfacilityDB.DefaultAttorneyUserID = user.ID;
 
@@ -168,11 +170,12 @@ namespace Midas.GreenBill.EntityRepository
                 if (usr != null)
                 {
                     #region User
-                    usr.UpdateByUserID = userBO.UpdateByUserID;
-                    usr.UpdateDate = DateTime.UtcNow;
-                    usr.IsDeleted = medfacilityBO.IsDeleted;
-                    usr.Name = medfacilityBO.Name;
-                    usr.Prefix = medfacilityBO.Prefix;
+                    medfacilityDB.UpdateByUserID = medfacilityBO.UpdateByUserID;
+                    medfacilityDB.UpdateDate = DateTime.UtcNow;
+                    medfacilityDB.IsDeleted = medfacilityBO.IsDeleted;
+                    medfacilityDB.Name = medfacilityBO.Name;
+                    medfacilityDB.Prefix = medfacilityBO.Prefix;
+                    medfacilityDB.IsDeleted = medfacilityBO.IsDeleted;
                     #endregion
 
                     #region Address
@@ -229,11 +232,11 @@ namespace Midas.GreenBill.EntityRepository
         #endregion
 
         #region Get MedicalFacilities By ID
-        public override T Get<T>(T entity)
+        public override Object Get(int id)
         {
             
-            BO.MedicalFacility acc_ = Convert<BO.MedicalFacility, MedicalFacility>(_context.MedicalFacilities.Include("Account").Include("ContactInfo").Include("Address").Include("User").Where(p => p.ID == ((BO.GbObject)(object)entity).ID).FirstOrDefault<MedicalFacility>());
-            return (T)(object)acc_;
+            BO.MedicalFacility acc_ = Convert<BO.MedicalFacility, MedicalFacility>(_context.MedicalFacilities.Include("Account").Include("ContactInfo").Include("Address").Include("User").Where(p => p.ID == id).FirstOrDefault<MedicalFacility>());
+            return (object)acc_;
         }
         #endregion
 

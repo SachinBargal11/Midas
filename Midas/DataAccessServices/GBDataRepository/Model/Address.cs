@@ -17,7 +17,9 @@ namespace GBDataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Address()
         {
+            this.InsuranceAddresses = new HashSet<InsuranceAddress>();
             this.MedicalFacilities = new HashSet<MedicalFacility>();
+            this.PatientInsurances = new HashSet<PatientInsurance>();
             this.ProviderMedicalFacilities = new HashSet<ProviderMedicalFacility>();
             this.ProviderMedicalFacilities1 = new HashSet<ProviderMedicalFacility>();
             this.Users = new HashSet<User>();
@@ -38,7 +40,11 @@ namespace GBDataRepository.Model
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<InsuranceAddress> InsuranceAddresses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MedicalFacility> MedicalFacilities { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientInsurance> PatientInsurances { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProviderMedicalFacility> ProviderMedicalFacilities { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

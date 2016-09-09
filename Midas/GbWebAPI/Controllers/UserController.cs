@@ -22,12 +22,11 @@ using Midas.GreenBill.DataAccessManager;
 using Midas.GreenBill.Api;
 using Newtonsoft.Json.Linq;
 using System.Web.Http.Cors;
-using TokenAuthMVC.Attributes;
 
 namespace Midas.GreenBill.Api
 {
     [RoutePrefix("midasapi/User")]
-    [RESTAuthorize]
+    [AllowAnonymous]
     public class UserController : ApiController
     {
 
@@ -45,12 +44,12 @@ namespace Midas.GreenBill.Api
             return requestHandler.GetGbObjects(Request, data);
         }
 
-        [HttpPost]
-        [Route("Get")]
+        [HttpGet]
+        [Route("Get/{id}")]
         [AllowAnonymous]
-        public HttpResponseMessage Get([FromBody]User User)
+        public HttpResponseMessage Get(int id)
         {
-            return requestHandler.GetObject(Request, User);
+            return requestHandler.GetObject(Request, id);
         }
 
         // POST: api/Organizations
@@ -82,7 +81,7 @@ namespace Midas.GreenBill.Api
 
         [HttpPost]
         [Route("Signin")]
-        [RESTAuthorize]
+        [AllowAnonymous]
         public HttpResponseMessage Signin(JObject data)
         {
             return requestHandler.Login(Request, data);

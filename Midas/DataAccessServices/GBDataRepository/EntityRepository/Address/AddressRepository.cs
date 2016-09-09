@@ -70,10 +70,10 @@ namespace Midas.GreenBill.EntityRepository
         }
 
         #region Get Address By ID
-        public override T Get<T>(T entity)
+        public override Object Get(int id)
         {
-            BO.Address acc_ = Convert<BO.Address, Address>(_context.Addresses.Find(((BO.GbObject)(object)entity).ID));
-            return (T)(object)acc_;
+            BO.Address acc_ = Convert<BO.Address, Address>(_context.Addresses.Find(id));
+            return (object)acc_;
         }
         #endregion
 

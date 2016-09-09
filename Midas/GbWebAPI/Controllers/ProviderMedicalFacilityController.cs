@@ -36,12 +36,12 @@ namespace Midas.GreenBill.Api
         }
 
         // GET: api/Organizations/5
-        [HttpPost]
-        [Route("Get")]
+        [HttpGet]
+        [Route("Get/{id}")]
         [AllowAnonymous]
-        public HttpResponseMessage Get([FromBody]ProviderMedicalFacility pmf)
+        public HttpResponseMessage Get(int id)
         {
-            return requestHandler.GetObject(Request, pmf);
+            return requestHandler.GetObject(Request, id);
         }
 
         // POST: api/Organizations

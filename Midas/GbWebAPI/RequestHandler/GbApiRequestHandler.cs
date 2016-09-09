@@ -33,12 +33,12 @@ namespace Midas.GreenBill.Api
             //use the usertoken to determine the  user
             return "";
         }
-        public HttpResponseMessage GetObject(HttpRequestMessage request, T gbObject)
+        public HttpResponseMessage GetObject(HttpRequestMessage request, int id)
         {
             
-            T ID = dataAccessManager.Get(gbObject);
+            Object ID = dataAccessManager.Get(id);
 
-            return request.CreateResponse<T>(HttpStatusCode.OK, ID);
+            return request.CreateResponse(HttpStatusCode.OK, ID);
         }
 
         public HttpResponseMessage DeleteGbObject(HttpRequestMessage request, T gbObject)
