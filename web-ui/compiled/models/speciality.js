@@ -7,7 +7,7 @@ System.register(['immutable'], function(exports_1, context_1) {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
     var immutable_1;
-    var SpecialtyRecord, Specialty;
+    var SpecialtyRecord, Speciality;
     return {
         setters:[
             function (immutable_1_1) {
@@ -26,14 +26,14 @@ System.register(['immutable'], function(exports_1, context_1) {
                     updateDate: null
                 }
             });
-            Specialty = (function (_super) {
-                __extends(Specialty, _super);
-                function Specialty(props) {
+            Speciality = (function (_super) {
+                __extends(Speciality, _super);
+                function Speciality(props) {
                     _super.call(this, props);
                 }
-                return Specialty;
+                return Speciality;
             }(SpecialtyRecord));
-            exports_1("Specialty", Specialty);
+            exports_1("Speciality", Speciality);
         }
     }
 });

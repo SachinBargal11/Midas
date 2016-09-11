@@ -31,6 +31,11 @@ System.register([], function(exports_1, context_1) {
                         }
                     };
                 };
+                AppValidators.selectedValueValidator = function (control) {
+                    if (!control.value) {
+                        return { selectedValueValidator: true };
+                    }
+                };
                 return AppValidators;
             }());
             exports_1("AppValidators", AppValidators);

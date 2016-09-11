@@ -1,0 +1,105 @@
+<form [formGroup]="specialityDetailForm" (ngSubmit)="saveSpecialityDetail()">
+    <section class="card">
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Speciality <span class="color-red">*</span></label>
+                    <div class="form-group" [class.error]="specialityDetailFormControls.associatedSpeciality.touched && !specialityDetailFormControls.associatedSpeciality.valid">
+                        <select [ngModel]="specialityDetail.associatedSpeciality" formControlName="associatedSpeciality" class="selectpicker form-control"
+                            [class.error]="specialityDetailFormControls.associatedSpeciality.touched && !specialityDetailFormControls.associatedSpeciality.valid">
+                            <option value="0">-Select Speciality-</option>
+                            <option *ngFor="let speciality of specialities | async" value="{{speciality.specialty.id}}">{{speciality.specialty.specialityCode}} - {{speciality.specialty.name}}</option>
+                        </select>
+                        <div class='error-list' *ngIf="specialityDetailFormControls.associatedSpeciality.touched && !specialityDetailFormControls.associatedSpeciality.valid">
+                            <ul>
+                                <li *ngIf="specialityDetailFormControls.associatedSpeciality.hasError('selectedValueValidator')">Speciality is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Does Unit Apply? </label>
+                    <div class="form-group">
+                        <p-radioButton formControlName="isUnitApply" name="isUnitApply" value="1" label="Yes" [(ngModel)]="specialityDetailJS.isUnitApply"></p-radioButton>
+                        <p-radioButton formControlName="isUnitApply" name="isUnitApply" value="0" label="No" [(ngModel)]="specialityDetailJS.isUnitApply"></p-radioButton>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Is Initial Evaluation? </label>
+                    <div class="form-group">
+                        <p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="1" label="Yes" [(ngModel)]="specialityDetailJS.isInitialEvaluation"></p-radioButton>
+                        <p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="0" label="No" [(ngModel)]="specialityDetailJS.isInitialEvaluation"></p-radioButton>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Allow Multiple Visits? </label>
+                    <div class="form-group">
+                        <p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="1" label="Yes" [(ngModel)]="specialityDetailJS.allowMultipleVisit"></p-radioButton>
+                        <p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="0" label="No" [(ngModel)]="specialityDetailJS.allowMultipleVisit"></p-radioButton>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Include 1500? </label>
+                    <div class="form-group">
+                        <p-radioButton formControlName="include1500" name="include1500" value="1" label="Yes" [(ngModel)]="specialityDetailJS.include1500"></p-radioButton>
+                        <p-radioButton formControlName="include1500" name="include1500" value="0" label="No" [(ngModel)]="specialityDetailJS.include1500"></p-radioButton>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Follow-up Days</label>
+                    <div class="form-group" [class.error]="specialityDetailFormControls.followUpDays.touched && !specialityDetailFormControls.followUpDays.valid">
+                        <input [(ngModel)]="specialityDetailJS.followUpDays" formControlName="followUpDays" type="number" [class.error]="!specialityDetailFormControls.followUpDays.valid"
+                            class="form-control" />
+                        <div class='error-list' *ngIf="specialityDetailFormControls.followUpDays.touched && !specialityDetailFormControls.followUpDays.valid">
+                            <ul>
+                                <li *ngIf="specialityDetailFormControls.followUpDays.hasError('required')">Follow-up days is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Follow-up Time</label>
+                    <div class="form-group" [class.error]="specialityDetailFormControls.followupTime.touched && !specialityDetailFormControls.followupTime.valid">
+                        <input [(ngModel)]="specialityDetailJS.followupTime" formControlName="followupTime" type="number" [class.error]="!specialityDetailFormControls.followupTime.valid"
+                            class="form-control" />
+                        <div class='error-list' *ngIf="specialityDetailFormControls.followupTime.touched && !specialityDetailFormControls.followupTime.valid">
+                            <ul>
+                                <li *ngIf="specialityDetailFormControls.followupTime.hasError('required')">Follow-up time is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Initial Days</label>
+                    <div class="form-group" [class.error]="specialityDetailFormControls.initialDays.touched && !specialityDetailFormControls.initialDays.valid">
+                        <input [(ngModel)]="specialityDetailJS.initialDays" formControlName="initialDays" type="number" [class.error]="!specialityDetailFormControls.initialDays.valid"
+                            class="form-control" />
+                        <div class='error-list' *ngIf="specialityDetailFormControls.initialDays.touched && !specialityDetailFormControls.initialDays.valid">
+                            <ul>
+                                <li *ngIf="specialityDetailFormControls.initialDays.hasError('required')">Initial days is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Initial Time</label>
+                    <div class="form-group" [class.error]="specialityDetailFormControls.initialTime.touched && !specialityDetailFormControls.initialTime.valid">
+                        <input [(ngModel)]="specialityDetailJS.initialTime" formControlName="initialTime" type="number" [class.error]="!specialityDetailFormControls.initialTime.valid"
+                            class="form-control" />
+                        <div class='error-list' *ngIf="specialityDetailFormControls.initialTime.touched && !specialityDetailFormControls.initialTime.valid">
+                            <ul>
+                                <li *ngIf="specialityDetailFormControls.initialTime.hasError('required')">Initial time is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button [disabled]="!specialityDetailForm.valid || isSpecialityDetailSaveInProgress" type="submit" class="btn btn-success sign-up">Update
+                <loader [visible]="isSpecialityDetailSaveInProgress"></loader>
+            </button>
+        </div>        
+    </section>
+
+</form>

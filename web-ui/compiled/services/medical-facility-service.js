@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observable', 'rxjs/add/operator/share', 'rxjs/add/operator/map', '../scripts/environment', '../stores/session-store', './adapters/medical-facility-adapter', '../models/enums/UserType'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observable', 'rxjs/add/operator/share', 'rxjs/add/operator/map', '../scripts/environment', '../models/speciality-details', '../stores/session-store', './adapters/medical-facility-adapter', '../models/enums/UserType'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, underscore_1, Observable_1, environment_1, session_store_1, medical_facility_adapter_1, UserType_1;
+    var core_1, http_1, underscore_1, Observable_1, environment_1, speciality_details_1, session_store_1, medical_facility_adapter_1, UserType_1;
     var MedicalFacilityService;
     return {
         setters:[
@@ -30,6 +30,9 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
             function (_2) {},
             function (environment_1_1) {
                 environment_1 = environment_1_1;
+            },
+            function (speciality_details_1_1) {
+                speciality_details_1 = speciality_details_1_1;
             },
             function (session_store_1_1) {
                 session_store_1 = session_store_1_1;
@@ -80,6 +83,71 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                         medicalFacilityDetailRequestData.account = underscore_1.default.omit(medicalFacilityDetailRequestData.account, 'name', 'status', 'isDeleted', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
                         medicalFacilityDetailRequestData.medicalfacility = underscore_1.default.omit(medicalFacilityDetailRequestData.medicalfacility, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
                         return _this._http.post(_this._url + '/MedicalFacility/Add', JSON.stringify(medicalFacilityDetailRequestData), {
+                            headers: _this._headers
+                        })
+                            .map(function (res) { return res.json(); })
+                            .subscribe(function (medicalFacilityData) {
+                            var parsedMedicalFacility = null;
+                            parsedMedicalFacility = medical_facility_adapter_1.MedicalFacilityAdapter.parseResponse(medicalFacilityData);
+                            resolve(parsedMedicalFacility);
+                        }, function (error) {
+                            reject(error);
+                        });
+                    });
+                    return Observable_1.Observable.fromPromise(promise);
+                };
+                MedicalFacilityService.prototype.fetchMedicalFacilityById = function (id) {
+                    var _this = this;
+                    var promise = new Promise(function (resolve, reject) {
+                        return _this._http.get(_this._url + '/MedicalFacility/Get/' + id).map(function (res) { return res.json(); })
+                            .subscribe(function (data) {
+                            var medicalFacility = medical_facility_adapter_1.MedicalFacilityAdapter.parseResponse(data);
+                            medicalFacility.specialityDetails.push(new speciality_details_1.SpecialityDetail({
+                                id: 1,
+                                isUnitApply: 1,
+                                followUpDays: 0,
+                                followupTime: 0,
+                                initialDays: 0,
+                                initialTime: 0,
+                                isInitialEvaluation: 1,
+                                include1500: 1,
+                                associatedSpeciality: 0,
+                                allowMultipleVisit: 1
+                            }));
+                            medicalFacility.specialityDetails.push(new speciality_details_1.SpecialityDetail({
+                                id: 2,
+                                isUnitApply: 1,
+                                followUpDays: 0,
+                                followupTime: 0,
+                                initialDays: 0,
+                                initialTime: 0,
+                                isInitialEvaluation: 1,
+                                include1500: 1,
+                                associatedSpeciality: 2,
+                                allowMultipleVisit: 1
+                            }));
+                            resolve(medicalFacility);
+                        }, function (error) {
+                            reject(error);
+                        });
+                    });
+                    return Observable_1.Observable.fromPromise(promise);
+                };
+                MedicalFacilityService.prototype.updateSpecialityDetail = function (specialityDetail, medicalFacilityDetail) {
+                    var _this = this;
+                    var promise = new Promise(function (resolve, reject) {
+                        var specialityDetailData = underscore_1.default.omit(specialityDetail.toJS(), 'id');
+                        var requestData = {
+                            specialty: {
+                                id: specialityDetail.associatedSpeciality
+                            },
+                            medicalFacility: {
+                                id: medicalFacilityDetail.medicalfacility.id
+                            },
+                            id: specialityDetail.id,
+                            specialtyDetail: specialityDetailData
+                        };
+                        return _this._http.post(_this._url + '/SpecialtyDetails/Add', JSON.stringify(requestData), {
                             headers: _this._headers
                         })
                             .map(function (res) { return res.json(); })

@@ -20,6 +20,7 @@ System.register(['immutable'], function(exports_1, context_1) {
                 address: null,
                 contactInfo: null,
                 medicalfacility: null,
+                specialityDetails: new Array()
             });
             MedicalFacilityDetail = (function (_super) {
                 __extends(MedicalFacilityDetail, _super);

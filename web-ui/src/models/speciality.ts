@@ -14,7 +14,7 @@ specialty: {
     }
 });
 
-export class Specialty extends SpecialtyRecord {
+export class Speciality extends SpecialtyRecord {
 specialty: {
     id: number;
     name: string;

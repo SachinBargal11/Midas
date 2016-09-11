@@ -4,7 +4,7 @@ import {SpecialityService} from '../../../services/speciality-service';
 import {ReversePipe} from '../../../pipes/reverse-array-pipe';
 import {LimitPipe} from '../../../pipes/limit-array-pipe';
 import {DataTable} from 'primeng/primeng';
-import {Specialty} from '../../../models/speciality';
+import {Speciality} from '../../../models/speciality';
 
 @Component({
     selector: 'speciality-list',
@@ -18,7 +18,7 @@ import {Specialty} from '../../../models/speciality';
 
 
 export class SpecialityListComponent implements OnInit {
-specialties: Specialty[];
+specialties: Speciality[];
     constructor(
         private _router: Router,
         private _specialityService: SpecialityService

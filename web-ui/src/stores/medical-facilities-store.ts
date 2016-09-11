@@ -4,6 +4,7 @@ import {Observer} from 'rxjs/Observer';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import {MedicalFacilityDetail} from '../models/medical-facility-details';
+import {SpecialityDetail} from '../models/speciality-details';
 import {MedicalFacilityService} from '../services/medical-facility-service';
 import {SessionStore} from './session-store';
 import {Subject} from 'rxjs/Subject';
@@ -62,5 +63,38 @@ export class MedicalFacilityStore {
         return <Observable<MedicalFacilityDetail>>Observable.from(promise);
     }
 
+    updateSpecialityDetail(specialtyDetail: SpecialityDetail, medicalFacilityDetail: MedicalFacilityDetail) {
+        let promise = new Promise((resolve, reject) => {
+            this._medicalFacilitiesService.updateSpecialityDetail(specialtyDetail, medicalFacilityDetail).subscribe((medicalFacility: MedicalFacilityDetail) => {
+                this._medicalFacilities.next(this._medicalFacilities.getValue().push(medicalFacility));
+                resolve(medicalFacility);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<MedicalFacilityDetail>>Observable.from(promise);
+    }
+
+    findMedicalFacilityById(id: number) {
+        let medicalFacilities = this._medicalFacilities.getValue();
+        let index = medicalFacilities.findIndex((currentMedicalFacility: MedicalFacilityDetail) => currentMedicalFacility.medicalfacility.id === id);
+        return medicalFacilities.get(index);
+    }
+
+    fetchMedicalFacilityById(id: number): Observable<MedicalFacilityDetail> {
+        let promise = new Promise((resolve, reject) => {
+            let matchedMedicalFacility: MedicalFacilityDetail = this.findMedicalFacilityById(id);
+            if (matchedMedicalFacility) {
+                resolve(matchedMedicalFacility);
+            } else {
+                this._medicalFacilitiesService.fetchMedicalFacilityById(id).subscribe((medicalFacility: MedicalFacilityDetail) => {
+                    resolve(medicalFacility);
+                }, error => {
+                    reject(error);
+                });
+            }
+        });
+        return <Observable<MedicalFacilityDetail>>Observable.from(promise);
+    }
 
 }

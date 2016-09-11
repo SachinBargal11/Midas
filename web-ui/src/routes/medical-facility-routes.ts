@@ -2,6 +2,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {ValidateActiveSession} from './guards/validate-active-session';
 import {AddMedicalFacilityComponent} from '../components/pages/medical-facilities/add-medical-facility';
 import {MedicalFacilitiesListComponent} from '../components/pages/medical-facilities/medical-facilities-list';
+import {SpecialityDetailsComponent} from '../components/pages/medical-facilities/speciality-details';
 
 export const MedicalFacilitiesRoutes: Routes = [
     {
@@ -12,6 +13,11 @@ export const MedicalFacilitiesRoutes: Routes = [
     {
         path: 'medical-facilities/add',
         component: AddMedicalFacilityComponent,
+        canActivate: [ValidateActiveSession]
+    },
+    {
+        path: 'medical-facilities/:id/specialities',
+        component: SpecialityDetailsComponent,
         canActivate: [ValidateActiveSession]
     }
 ];

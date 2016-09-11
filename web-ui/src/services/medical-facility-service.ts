@@ -7,6 +7,7 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
 import {MedicalFacilityDetail} from '../models/medical-facility-details';
+import {SpecialityDetail} from '../models/speciality-details';
 import {SessionStore} from '../stores/session-store';
 import {MedicalFacilityAdapter} from './adapters/medical-facility-adapter';
 import {UserType} from '../models/enums/UserType';
@@ -59,6 +60,75 @@ export class MedicalFacilityService {
             medicalFacilityDetailRequestData.medicalfacility = _.omit(medicalFacilityDetailRequestData.medicalfacility, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
 
             return this._http.post(this._url + '/MedicalFacility/Add', JSON.stringify(medicalFacilityDetailRequestData), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((medicalFacilityData: any) => {
+                    let parsedMedicalFacility: MedicalFacilityDetail = null;
+                    parsedMedicalFacility = MedicalFacilityAdapter.parseResponse(medicalFacilityData);
+                    resolve(parsedMedicalFacility);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<MedicalFacilityDetail>>Observable.fromPromise(promise);
+    }
+
+    fetchMedicalFacilityById(id: number): Observable<MedicalFacilityDetail> {
+        let promise: Promise<MedicalFacilityDetail> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/MedicalFacility/Get/' + id).map(res => res.json())
+                .subscribe((data: any) => {
+                    let medicalFacility: MedicalFacilityDetail = MedicalFacilityAdapter.parseResponse(data);
+
+                    medicalFacility.specialityDetails.push(new SpecialityDetail({
+                        id: 1,
+                        isUnitApply: 1,
+                        followUpDays: 0,
+                        followupTime: 0,
+                        initialDays: 0,
+                        initialTime: 0,
+                        isInitialEvaluation: 1,
+                        include1500: 1,
+                        associatedSpeciality: 0,
+                        allowMultipleVisit: 1
+                    }));
+
+                    medicalFacility.specialityDetails.push(new SpecialityDetail({
+                        id: 2,
+                        isUnitApply: 1,
+                        followUpDays: 0,
+                        followupTime: 0,
+                        initialDays: 0,
+                        initialTime: 0,
+                        isInitialEvaluation: 1,
+                        include1500: 1,
+                        associatedSpeciality: 2,
+                        allowMultipleVisit: 1
+                    }));
+
+                    resolve(medicalFacility);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<MedicalFacilityDetail>>Observable.fromPromise(promise);
+    }
+
+    updateSpecialityDetail(specialityDetail: SpecialityDetail, medicalFacilityDetail: MedicalFacilityDetail): Observable<MedicalFacilityDetail> {
+        let promise: Promise<MedicalFacilityDetail> = new Promise((resolve, reject) => {
+            let specialityDetailData = _.omit(specialityDetail.toJS(), 'id');
+            let requestData = {
+                specialty: {
+                    id: specialityDetail.associatedSpeciality
+                },
+                medicalFacility: {
+                    id: medicalFacilityDetail.medicalfacility.id
+                },
+                id: specialityDetail.id,
+                specialtyDetail: specialityDetailData
+            };
+
+            return this._http.post(this._url + '/SpecialtyDetails/Add', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())

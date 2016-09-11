@@ -16,7 +16,7 @@ System.register(['../../models/speciality'], function(exports_1, context_1) {
                     var specialty = null;
                     var tempSpeciality = _.omit(specialtyData, 'updateDate');
                     if (specialtyData) {
-                        specialty = new speciality_1.Specialty({
+                        specialty = new speciality_1.Speciality({
                             specialty: {
                                 id: specialtyData.id,
                                 name: specialtyData.name,

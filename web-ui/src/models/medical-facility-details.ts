@@ -5,6 +5,7 @@ import {MedicalFacility} from './medical-facility';
 import {User} from './user';
 import {Address} from './address';
 import {ContactInfo} from './contact';
+import {SpecialityDetail} from './speciality-details';
 
 const MedicalFacilityRecord = Record({
 
@@ -13,6 +14,7 @@ const MedicalFacilityRecord = Record({
     address: null, //Address
     contactInfo: null, //Contact
     medicalfacility: null, //MedicalFacility
+    specialityDetails: new Array()
 });
 
 export class MedicalFacilityDetail extends MedicalFacilityRecord {
@@ -22,7 +24,7 @@ export class MedicalFacilityDetail extends MedicalFacilityRecord {
     address: Address;
     contactInfo: ContactInfo;
     medicalfacility: MedicalFacility;
-
+    specialityDetails: Array<SpecialityDetail>;
 
     constructor(props) {
         super(props);

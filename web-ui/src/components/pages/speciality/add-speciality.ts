@@ -4,7 +4,7 @@ import {ROUTER_DIRECTIVES, Router} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
 import {LoaderComponent} from '../../elements/loader';
 import {SpecialityStore} from '../../../stores/speciality-store';
-import {Specialty} from '../../../models/speciality';
+import {Speciality} from '../../../models/speciality';
 import $ from 'jquery';
 import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
@@ -56,7 +56,7 @@ export class AddSpecialityComponent implements OnInit {
 
     saveSpeciality() {
         let specialityformValues = this.specialityform.value;
-        let specialty = new Specialty({
+        let specialty = new Speciality({
             specialty: {
                 name: specialityformValues.name,
                 specialityCode: specialityformValues.specialityCode

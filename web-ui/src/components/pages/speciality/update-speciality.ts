@@ -4,7 +4,7 @@ import {ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
 import {LoaderComponent} from '../../elements/loader';
 import {SpecialityStore} from '../../../stores/speciality-store';
-import {Specialty} from '../../../models/speciality';
+import {Speciality} from '../../../models/speciality';
 import $ from 'jquery';
 import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
@@ -23,7 +23,7 @@ import {LimitPipe} from '../../../pipes/limit-array-pipe';
 })
 
 export class UpdateSpecialityComponent implements OnInit {
-    specialty = new Specialty({});
+    specialty = new Speciality({});
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -48,7 +48,7 @@ export class UpdateSpecialityComponent implements OnInit {
             let specialityId: number = parseInt(routeParams.id);
             let result = this._specialityStore.fetchSpecialityById(specialityId);
             result.subscribe(
-                (specialty: Specialty) => {
+                (specialty: Speciality) => {
                    this.specialty = specialty;
                 },
                 (error) => {
@@ -72,7 +72,7 @@ export class UpdateSpecialityComponent implements OnInit {
 
     updateSpeciality() {
         let specialityformValues = this.specialityform.value;
-        let specialty = new Specialty({
+        let specialty = new Speciality({
             specialty: {
                 id: this.specialty.specialty.id,
                 name: specialityformValues.name,

@@ -26,4 +26,10 @@ export class AppValidators {
             }
         };
     }
+
+    static selectedValueValidator(control: FormControl) {
+        if (!control.value) {
+            return { selectedValueValidator: true };
+        }
+    }
 }

@@ -64,7 +64,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../el
                     this._notificationsStore = _notificationsStore;
                     this._sessionStore = _sessionStore;
                     this._elRef = _elRef;
-                    this.specialty = new speciality_1.Specialty({});
+                    this.specialty = new speciality_1.Speciality({});
                     this.options = {
                         timeOut: 3000,
                         showProgressBar: true,
@@ -94,7 +94,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../el
                 UpdateSpecialityComponent.prototype.updateSpeciality = function () {
                     var _this = this;
                     var specialityformValues = this.specialityform.value;
-                    var specialty = new speciality_1.Specialty({
+                    var specialty = new speciality_1.Speciality({
                         specialty: {
                             id: this.specialty.specialty.id,
                             name: specialityformValues.name,
@@ -106,7 +106,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../el
                     result = this._specialityStore.updateSpeciality(specialty);
                     result.subscribe(function (response) {
                         var notification = new notification_1.Notification({
-                            'title': 'Speciality added successfully!',
+                            'title': 'Speciality updated successfully!',
                             'type': 'SUCCESS',
                             'createdAt': moment_1.default()
                         });
@@ -114,7 +114,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../el
                         _this._router.navigate(['/specialities']);
                     }, function (error) {
                         var notification = new notification_1.Notification({
-                            'title': 'Unable to add Speciality.',
+                            'title': 'Unable to update Speciality.',
                             'type': 'ERROR',
                             'createdAt': moment_1.default()
                         });

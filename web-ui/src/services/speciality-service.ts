@@ -6,7 +6,7 @@ import {Observer} from 'rxjs/Observer';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
-import {Specialty} from '../models/speciality';
+import {Speciality} from '../models/speciality';
 import {SessionStore} from '../stores/session-store';
 import {SpecialityAdapter} from './adapters/speciality-adapter';
 
@@ -23,22 +23,22 @@ export class SpecialityService {
         this._headers.append('Content-Type', 'application/json');
     }
 
-    getSpeciality(specialtyId: Number): Observable<Specialty> {
-        let promise: Promise<Specialty> = new Promise((resolve, reject) => {
+    getSpeciality(specialtyId: Number): Observable<Speciality> {
+        let promise: Promise<Speciality> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/Specialty/Get/' + specialtyId).map(res => res.json())
                 .subscribe((specialtyData: any) => {
-                    let parsedSpecialty: Specialty = null;
+                    let parsedSpecialty: Speciality = null;
                     parsedSpecialty = SpecialityAdapter.parseResponse(specialtyData);
                     resolve(parsedSpecialty);
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<Specialty>>Observable.fromPromise(promise);
+        return <Observable<Speciality>>Observable.fromPromise(promise);
     }
 
-    getSpecialities(): Observable<Specialty[]> {
-              let promise: Promise<Specialty[]> = new Promise((resolve, reject) => {
+    getSpecialities(): Observable<Speciality[]> {
+              let promise: Promise<Speciality[]> = new Promise((resolve, reject) => {
              return this._http.post(this._url + '/Specialty/GetAll', JSON.stringify({'speciality': [{}]}), {
                 headers: this._headers
               })
@@ -52,11 +52,11 @@ export class SpecialityService {
                     reject(error);
                 });
         });
-        return <Observable<Specialty[]>>Observable.fromPromise(promise);
+        return <Observable<Speciality[]>>Observable.fromPromise(promise);
     }
 
-    addSpeciality(specialty: Specialty): Observable<Specialty> {
-        let promise: Promise<Specialty> = new Promise((resolve, reject) => {
+    addSpeciality(specialty: Speciality): Observable<Speciality> {
+        let promise: Promise<Speciality> = new Promise((resolve, reject) => {
 
 
             let specialtyRequestData = specialty.toJS();
@@ -69,18 +69,18 @@ export class SpecialityService {
             })
                 .map(res => res.json())
                 .subscribe((specialtyData: any) => {
-                    let parsedSpecialty: Specialty = null;
+                    let parsedSpecialty: Speciality = null;
                     parsedSpecialty = SpecialityAdapter.parseResponse(specialtyData);
                     resolve(parsedSpecialty);
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<Specialty>>Observable.fromPromise(promise);
+        return <Observable<Speciality>>Observable.fromPromise(promise);
 
     }
-    updateSpeciality(specialty: Specialty): Observable<Specialty> {
-        let promise: Promise<Specialty> = new Promise((resolve, reject) => {
+    updateSpeciality(specialty: Speciality): Observable<Speciality> {
+        let promise: Promise<Speciality> = new Promise((resolve, reject) => {
 
 
             let specialtyRequestData = specialty.toJS();
@@ -93,14 +93,14 @@ export class SpecialityService {
             })
                 .map(res => res.json())
                 .subscribe((specialtyData: any) => {
-                    let parsedSpecialty: Specialty = null;
+                    let parsedSpecialty: Speciality = null;
                     parsedSpecialty = SpecialityAdapter.parseResponse(specialtyData);
                     resolve(parsedSpecialty);
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<Specialty>>Observable.fromPromise(promise);
+        return <Observable<Speciality>>Observable.fromPromise(promise);
 
     }
 

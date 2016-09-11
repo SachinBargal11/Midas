@@ -81,7 +81,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../el
                 AddSpecialityComponent.prototype.saveSpeciality = function () {
                     var _this = this;
                     var specialityformValues = this.specialityform.value;
-                    var specialty = new speciality_1.Specialty({
+                    var specialty = new speciality_1.Speciality({
                         specialty: {
                             name: specialityformValues.name,
                             specialityCode: specialityformValues.specialityCode

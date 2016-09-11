@@ -3,7 +3,7 @@ import {Observable} from 'rxjs/Observable';
 import {Observer} from 'rxjs/Observer';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import {Specialty} from '../models/speciality';
+import {Speciality} from '../models/speciality';
 import {SpecialityService} from '../services/speciality-service';
 import {SessionStore} from './session-store';
 import {Subject} from 'rxjs/Subject';
@@ -16,8 +16,8 @@ import Moment from 'moment';
 @Injectable()
 export class SpecialityStore {
 
-    private _specialties: BehaviorSubject<List<Specialty>> = new BehaviorSubject(List([]));
-    private _selectedSpecialties: BehaviorSubject<List<Specialty>> = new BehaviorSubject(List([]));
+    private _specialties: BehaviorSubject<List<Speciality>> = new BehaviorSubject(List([]));
+    private _selectedSpecialties: BehaviorSubject<List<Speciality>> = new BehaviorSubject(List([]));
 
     constructor(
         private _specialityService: SpecialityService,
@@ -43,70 +43,70 @@ export class SpecialityStore {
         return this._selectedSpecialties.asObservable();
     }
 
-    loadInitialData(): Observable<Specialty[]> {
+    loadInitialData(): Observable<Speciality[]> {
         let promise = new Promise((resolve, reject) => {
-            this._specialityService.getSpecialities().subscribe((specialties: Specialty[]) => {
+            this._specialityService.getSpecialities().subscribe((specialties: Speciality[]) => {
                 this._specialties.next(List(specialties));
                 resolve(specialties);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<Specialty[]>>Observable.fromPromise(promise);
+        return <Observable<Speciality[]>>Observable.fromPromise(promise);
     }
 
     findSpecialityById(id: number) {
         let specialties = this._specialties.getValue();
-        let index = specialties.findIndex((currentSpecialty: Specialty) => currentSpecialty.specialty.id === id);
+        let index = specialties.findIndex((currentSpecialty: Speciality) => currentSpecialty.specialty.id === id);
         return specialties.get(index);
     }
 
-    fetchSpecialityById(id: number): Observable<Specialty> {
+    fetchSpecialityById(id: number): Observable<Speciality> {
         let promise = new Promise((resolve, reject) => {
-            let matchedSpecialty: Specialty = this.findSpecialityById(id);
+            let matchedSpecialty: Speciality = this.findSpecialityById(id);
             if (matchedSpecialty) {
                 resolve(matchedSpecialty);
             } else {
                 this._specialityService.getSpeciality(id)
-                .subscribe((specialty: Specialty) => {
+                .subscribe((specialty: Speciality) => {
                     resolve(specialty);
                 }, error => {
                     reject(error);
                 });
             }
         });
-        return <Observable<Specialty>>Observable.fromPromise(promise);
+        return <Observable<Speciality>>Observable.fromPromise(promise);
     }
 
-    addSpeciality(specialty: Specialty): Observable<Specialty> {
+    addSpeciality(specialty: Speciality): Observable<Speciality> {
         let promise = new Promise((resolve, reject) => {
-            this._specialityService.addSpeciality(specialty).subscribe((specialty: Specialty) => {
+            this._specialityService.addSpeciality(specialty).subscribe((specialty: Speciality) => {
                 this._specialties.next(this._specialties.getValue().push(specialty));
                 resolve(specialty);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<Specialty>>Observable.from(promise);
+        return <Observable<Speciality>>Observable.from(promise);
     }
 
-    updateSpeciality(specialty: Specialty): Observable<Specialty> {
+    updateSpeciality(specialty: Speciality): Observable<Speciality> {
         // let specialities = this._specialties.getValue();
         // let index = specialities.findIndex((currentSpecialty: Specialty) => currentSpecialty.specialty.id === specialty.specialty.id);
         let promise = new Promise((resolve, reject) => {
-            this._specialityService.updateSpeciality(specialty).subscribe((currentSpecialty: Specialty) => {
+            this._specialityService.updateSpeciality(specialty).subscribe((currentSpecialty: Speciality) => {
                 this._specialties.next(this._specialties.getValue().push(specialty));
                 resolve(specialty);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<Specialty>>Observable.from(promise);
+        return <Observable<Speciality>>Observable.from(promise);
     }
 
-     selectSpecialities(specialty: Specialty) {
+     selectSpecialities(specialty: Speciality) {
         let selectedSpecialties = this._selectedSpecialties.getValue();
-        let index = selectedSpecialties.findIndex((currentSpecialty: Specialty) => currentSpecialty.specialty.id === specialty.specialty.id);
+        let index = selectedSpecialties.findIndex((currentSpecialty: Speciality) => currentSpecialty.specialty.id === specialty.specialty.id);
         if (index < 0) {
             this._selectedSpecialties.next(this._selectedSpecialties.getValue().push(specialty));
         }

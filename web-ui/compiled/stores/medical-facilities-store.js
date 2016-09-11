@@ -81,6 +81,40 @@ System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 
                     });
                     return Observable_1.Observable.from(promise);
                 };
+                MedicalFacilityStore.prototype.updateSpecialityDetail = function (specialtyDetail, medicalFacilityDetail) {
+                    var _this = this;
+                    var promise = new Promise(function (resolve, reject) {
+                        _this._medicalFacilitiesService.updateSpecialityDetail(specialtyDetail, medicalFacilityDetail).subscribe(function (medicalFacility) {
+                            _this._medicalFacilities.next(_this._medicalFacilities.getValue().push(medicalFacility));
+                            resolve(medicalFacility);
+                        }, function (error) {
+                            reject(error);
+                        });
+                    });
+                    return Observable_1.Observable.from(promise);
+                };
+                MedicalFacilityStore.prototype.findMedicalFacilityById = function (id) {
+                    var medicalFacilities = this._medicalFacilities.getValue();
+                    var index = medicalFacilities.findIndex(function (currentMedicalFacility) { return currentMedicalFacility.medicalfacility.id === id; });
+                    return medicalFacilities.get(index);
+                };
+                MedicalFacilityStore.prototype.fetchMedicalFacilityById = function (id) {
+                    var _this = this;
+                    var promise = new Promise(function (resolve, reject) {
+                        var matchedMedicalFacility = _this.findMedicalFacilityById(id);
+                        if (matchedMedicalFacility) {
+                            resolve(matchedMedicalFacility);
+                        }
+                        else {
+                            _this._medicalFacilitiesService.fetchMedicalFacilityById(id).subscribe(function (medicalFacility) {
+                                resolve(medicalFacility);
+                            }, function (error) {
+                                reject(error);
+                            });
+                        }
+                    });
+                    return Observable_1.Observable.from(promise);
+                };
                 MedicalFacilityStore = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [medical_facility_service_1.MedicalFacilityService, session_store_1.SessionStore])
