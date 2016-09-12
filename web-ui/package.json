@@ -62,7 +62,7 @@
     "jquery": "^3.1.0",
     "jquery-ui-timepicker-addon": "^1.6.3",
     "jquery.inputmask": "^3.3.1",
-    "ng2-bootstrap": "^1.0.24",
+    "ng2-bootstrap": "^1.1.2",
     "primeng": "^1.0.0-beta.13",
     "primeui": "^4.1.15",
     "reflect-metadata": "^0.1.8",

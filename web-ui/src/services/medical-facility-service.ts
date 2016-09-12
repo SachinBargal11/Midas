@@ -10,6 +10,7 @@ import {MedicalFacilityDetail} from '../models/medical-facility-details';
 import {SpecialityDetail} from '../models/speciality-details';
 import {SessionStore} from '../stores/session-store';
 import {MedicalFacilityAdapter} from './adapters/medical-facility-adapter';
+import {SpecialityDetailAdapter} from './adapters/speciality-detail-adapter';
 import {UserType} from '../models/enums/UserType';
 
 @Injectable()
@@ -86,7 +87,7 @@ export class MedicalFacilityService {
         });
         return <Observable<MedicalFacilityDetail>>Observable.fromPromise(promise);
     }
-       updateMedicalFacility(medicalFacilityDetail: MedicalFacilityDetail): Observable<any> {
+    updateMedicalFacility(medicalFacilityDetail: MedicalFacilityDetail): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
 
 
@@ -125,33 +126,6 @@ export class MedicalFacilityService {
             return this._http.get(this._url + '/MedicalFacility/Get/' + id).map(res => res.json())
                 .subscribe((data: any) => {
                     let medicalFacility: MedicalFacilityDetail = MedicalFacilityAdapter.parseResponse(data);
-
-                    medicalFacility.specialityDetails.push(new SpecialityDetail({
-                        id: 1,
-                        isUnitApply: 1,
-                        followUpDays: 0,
-                        followupTime: 0,
-                        initialDays: 0,
-                        initialTime: 0,
-                        isInitialEvaluation: 1,
-                        include1500: 1,
-                        associatedSpeciality: 0,
-                        allowMultipleVisit: 1
-                    }));
-
-                    medicalFacility.specialityDetails.push(new SpecialityDetail({
-                        id: 2,
-                        isUnitApply: 1,
-                        followUpDays: 0,
-                        followupTime: 0,
-                        initialDays: 0,
-                        initialTime: 0,
-                        isInitialEvaluation: 1,
-                        include1500: 1,
-                        associatedSpeciality: 2,
-                        allowMultipleVisit: 1
-                    }));
-
                     resolve(medicalFacility);
                 }, (error) => {
                     reject(error);
@@ -160,8 +134,8 @@ export class MedicalFacilityService {
         return <Observable<MedicalFacilityDetail>>Observable.fromPromise(promise);
     }
 
-    updateSpecialityDetail(specialityDetail: SpecialityDetail, medicalFacilityDetail: MedicalFacilityDetail): Observable<MedicalFacilityDetail> {
-        let promise: Promise<MedicalFacilityDetail> = new Promise((resolve, reject) => {
+    updateSpecialityDetail(specialityDetail: SpecialityDetail, medicalFacilityDetail: MedicalFacilityDetail): Observable<SpecialityDetail> {
+        let promise: Promise<SpecialityDetail> = new Promise((resolve, reject) => {
             let specialityDetailData = _.omit(specialityDetail.toJS(), 'id');
             let requestData = {
                 speciality: {
@@ -178,15 +152,15 @@ export class MedicalFacilityService {
                 headers: this._headers
             })
                 .map(res => res.json())
-                .subscribe((medicalFacilityData: any) => {
-                    let parsedMedicalFacility: MedicalFacilityDetail = null;
-                    parsedMedicalFacility = MedicalFacilityAdapter.parseResponse(medicalFacilityData);
-                    resolve(parsedMedicalFacility);
+                .subscribe((specialityDetailData: any) => {
+                    let parsedSpecialityDetail: SpecialityDetail = null;
+                    parsedSpecialityDetail = SpecialityDetailAdapter.parseResponse(specialityDetailData);
+                    resolve(parsedSpecialityDetail);
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<MedicalFacilityDetail>>Observable.fromPromise(promise);
+        return <Observable<SpecialityDetail>>Observable.fromPromise(promise);
     }
 
 }

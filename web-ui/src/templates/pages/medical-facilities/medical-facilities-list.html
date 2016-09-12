@@ -11,7 +11,7 @@
     <p-column field="medicalfacility.name" header="Medicalfacility Name" [sortable]="true" [filter]="true"></p-column>
     <p-column field="medicalfacility.prefix" header="Prefix" [sortable]="true" [filter]="true"></p-column>
     <p-column field="medicalfacility.id" header="Medicalfacility id" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
-    <p-column styleClass="col-button" header="Edit">
+    <p-column styleClass="col-button" header="Update Specialities">
         <template let-medicalfacility="rowData">
             <a [routerLink]="[medicalfacility.medicalfacility.id, 'specialities']"><i class="glyphicon glyphicon-edit"></i></a>
         </template>

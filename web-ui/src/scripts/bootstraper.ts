@@ -12,6 +12,7 @@ import {provide} from '@angular/core';
 import {HTTP_PROVIDERS, Http} from '@angular/http';
 import {InputTextModule, DataTableModule, ButtonModule, DialogModule} from 'primeng/primeng';
 import {SimpleNotificationsModule} from 'angular2-notifications';
+import {Ng2BootstrapModule} from 'ng2-bootstrap/ng2-bootstrap';
 
 /** Application Services and Providers */
 
@@ -70,6 +71,7 @@ import {AddMedicalFacilityComponent} from '../components/pages/medical-facilitie
 import {MedicalFacilitiesListComponent} from '../components/pages/medical-facilities/medical-facilities-list';
 import {SpecialityDetailsComponent} from '../components/pages/medical-facilities/speciality-details';
 import {SpecialityDetailFormComponent} from '../components/pages/medical-facilities/speciality-detail-form';
+import {AddSpecialityDetailComponent} from '../components/pages/medical-facilities/add-speciality-details';
 import {AddDoctorComponent} from '../components/pages/doctors/add-doctor';
 import {UpdateDoctorComponent} from '../components/pages/doctors/update-doctor';
 import {DoctorsListComponent} from '../components/pages/doctors/doctors-list';
@@ -89,7 +91,8 @@ enableProdMode();
         DataTableModule,
         ButtonModule,
         DialogModule,
-        SimpleNotificationsModule
+        SimpleNotificationsModule,
+        Ng2BootstrapModule
     ],
     declarations: [
         AppRoot,
@@ -116,6 +119,7 @@ enableProdMode();
         MedicalFacilitiesListComponent,
         SpecialityDetailsComponent,
         SpecialityDetailFormComponent,
+        AddSpecialityDetailComponent,
         AddDoctorComponent,
         UpdateDoctorComponent,
         DoctorsListComponent,

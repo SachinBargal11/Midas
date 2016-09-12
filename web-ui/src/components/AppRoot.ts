@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute, Router, ROUTER_DIRECTIVES} from '@angular/router';
 import {Location} from '@angular/common';
 import {SessionStore} from '../stores/session-store';
@@ -17,7 +17,8 @@ export class AppRoot implements OnInit {
         private _router: Router,
         private _sessionStore: SessionStore,
         private _notificationsStore: NotificationsStore,
-        private _statesStore: StatesStore
+        private _statesStore: StatesStore,
+        private viewContainerRef: ViewContainerRef
     ) {
     }
 

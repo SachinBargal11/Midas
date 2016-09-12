@@ -1,7 +1,6 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
 import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
 import {ROUTER_DIRECTIVES, Router} from '@angular/router';
-import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap';
 import {AppValidators} from '../../utils/AppValidators';
 import {LoaderComponent} from '../elements/loader';
 import {AuthenticationService} from '../../services/authentication-service';
@@ -26,7 +25,6 @@ import {Calendar, InputMask, RadioButton, SelectItem} from 'primeng/primeng';
     directives: [
         FORM_DIRECTIVES,
         REACTIVE_FORM_DIRECTIVES,
-        DROPDOWN_DIRECTIVES,
         ROUTER_DIRECTIVES,
         LoaderComponent,
         Calendar,

@@ -1,3 +1,4 @@
+import {Speciality} from './speciality';
 import {Record} from 'immutable';
 import moment from 'moment';
 

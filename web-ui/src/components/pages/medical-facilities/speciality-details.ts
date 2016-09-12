@@ -1,5 +1,7 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
+import {Record, List} from 'immutable';
+import {Component, OnInit, ElementRef, ViewChild} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
+import { ModalDirective } from 'ng2-bootstrap/ng2-bootstrap';
 import {MedicalFacilityService} from '../../../services/medical-facility-service';
 import {MedicalFacilityStore} from '../../../stores/medical-facilities-store';
 import {SessionStore} from '../../../stores/session-store';
@@ -7,18 +9,20 @@ import {SpecialityDetail} from '../../../models/speciality-details';
 import {MedicalFacilityDetail} from '../../../models/medical-facility-details';
 import {MapToJSPipe} from '../../../pipes/map-to-js';
 import {SpecialityDetailFormComponent} from './speciality-detail-form';
+import {AddSpecialityDetailComponent} from './add-speciality-details';
 
 @Component({
     selector: 'speciality-details',
     templateUrl: 'templates/pages/medical-facilities/speciality-details.html',
-    directives: [ROUTER_DIRECTIVES],
+    directives: [ROUTER_DIRECTIVES, ModalDirective],
     pipes: [MapToJSPipe]
 })
 
 export class SpecialityDetailsComponent {
     medicalFacilityDetail: MedicalFacilityDetail;
-    get specialityDetails(): Array<SpecialityDetail> {
-        return this.medicalFacilityDetail ? this.medicalFacilityDetail.specialityDetails : null;
+    @ViewChild('childModal') public childModal: ModalDirective;
+    get specialityDetails(): List<SpecialityDetail> {
+        return this.medicalFacilityDetail ? this.medicalFacilityDetail.specialityDetails.getValue() : null;
     }
     constructor(
         public _route: ActivatedRoute,
@@ -39,5 +43,13 @@ export class SpecialityDetailsComponent {
                 () => {
                 });
         });
+    }
+
+    public showChildModal(): void {
+        this.childModal.show();
+    }
+
+    public hideChildModal(): void {
+        this.childModal.hide();
     }
 }

@@ -55,7 +55,7 @@ export class SpecialityStore {
         return <Observable<Speciality[]>>Observable.fromPromise(promise);
     }
 
-    findSpecialityById(id: number) {
+    findSpecialityById(id: number): Speciality {
         let specialities = this._specialities.getValue();
         let index = specialities.findIndex((currentSpeciality: Speciality) => currentSpeciality.speciality.id === id);
         return specialities.get(index);
@@ -68,11 +68,11 @@ export class SpecialityStore {
                 resolve(matchedSpeciality);
             } else {
                 this._specialityService.getSpeciality(id)
-                .subscribe((speciality: Speciality) => {
-                    resolve(speciality);
-                }, error => {
-                    reject(error);
-                });
+                    .subscribe((speciality: Speciality) => {
+                        resolve(speciality);
+                    }, error => {
+                        reject(error);
+                    });
             }
         });
         return <Observable<Speciality>>Observable.fromPromise(promise);
@@ -104,7 +104,7 @@ export class SpecialityStore {
         return <Observable<Speciality>>Observable.from(promise);
     }
 
-     selectSpecialities(speciality: Speciality) {
+    selectSpecialities(speciality: Speciality) {
         let selectedSpecialities = this._selectedSpecialities.getValue();
         let index = selectedSpecialities.findIndex((currentSpeciality: Speciality) => currentSpeciality.speciality.id === speciality.speciality.id);
         if (index < 0) {

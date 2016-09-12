@@ -3,7 +3,6 @@ import {Router} from '@angular/router';
 import {LoaderComponent} from '../elements/loader';
 import {AuthenticationService} from '../../services/authentication-service';
 import {CORE_DIRECTIVES} from '@angular/common';
-import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap';
 import {SessionStore} from '../../stores/session-store';
 import {NotificationsStore} from '../../stores/notifications-store';
 
@@ -12,7 +11,6 @@ import {NotificationsStore} from '../../stores/notifications-store';
     templateUrl: 'templates/elements/app-header.html',
     directives: [
         LoaderComponent,
-        DROPDOWN_DIRECTIVES,
         CORE_DIRECTIVES],
     providers: [AuthenticationService]
 })

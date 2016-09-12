@@ -78,14 +78,15 @@ export class MedicalFacilityStore {
 
     updateSpecialityDetail(specialityDetail: SpecialityDetail, medicalFacilityDetail: MedicalFacilityDetail) {
         let promise = new Promise((resolve, reject) => {
-            this._medicalFacilitiesService.updateSpecialityDetail(specialityDetail, medicalFacilityDetail).subscribe((medicalFacility: MedicalFacilityDetail) => {
-                this._medicalFacilities.next(this._medicalFacilities.getValue().push(medicalFacility));
-                resolve(medicalFacility);
+            this._medicalFacilitiesService.updateSpecialityDetail(specialityDetail, medicalFacilityDetail).subscribe((specialityDetail: SpecialityDetail) => {
+                medicalFacilityDetail.specialityDetails.next(medicalFacilityDetail.specialityDetails.getValue().push(specialityDetail));
+                this._medicalFacilities.next(this._medicalFacilities.getValue());
+                resolve(specialityDetail);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<MedicalFacilityDetail>>Observable.from(promise);
+        return <Observable<SpecialityDetail>>Observable.from(promise);
     }
 
     findMedicalFacilityById(id: number) {
