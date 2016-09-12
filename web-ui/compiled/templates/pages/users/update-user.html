@@ -99,13 +99,13 @@
                                         <select formControlName="userType" [ngModel]="user.userType" class="selectpicker form-control" title="Select User Type." [class.error]="userformControls.userType.touched && !userformControls.userType.valid">
                                              <option value="">-Select UserType-</option>
                                              <option disabled>────────────────────</option>
-                                             <option value="Admin">Admin</option>
-                                             <option value="Owner">Owner</option>
-                                             <option value="Doctor">Doctor</option>
-                                             <option value="Patient">Patient</option>
-                                             <option value="Attorney">Attorney</option>
-                                             <option value="Adjuster">Adjuster</option>
-                                             <option value="Accounts">Accounts</option>
+                                             <option value="1">Admin</option>
+                                             <option value="2">Owner</option>
+                                             <option value="3">Doctor</option>
+                                             <option value="4">Patient</option>
+                                             <option value="5">Attorney</option>
+                                             <option value="6">Adjuster</option>
+                                             <option value="7">Accounts</option>
                                          </select>
                                           <div class='error-list' *ngIf="userformControls.userType.touched && !userformControls.userType.valid">
                                         <ul>

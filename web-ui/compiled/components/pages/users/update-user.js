@@ -157,8 +157,8 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
                             middleName: userFormValues.middleName,
                             lastName: userFormValues.lastName,
                             userType: parseInt(userFormValues.userType),
-                            userName: userFormValues.contact.emailAddress,
-                            password: userFormValues.password
+                            password: userFormValues.password,
+                            userName: userFormValues.contact.emailAddress
                         }),
                         contactInfo: new contact_1.ContactInfo({
                             cellPhone: userFormValues.contact.cellPhone,

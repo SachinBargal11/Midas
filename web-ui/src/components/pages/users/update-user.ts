@@ -118,9 +118,9 @@ export class UpdateUserComponent implements OnInit {
                 firstName: userFormValues.firstName,
                 middleName: userFormValues.middleName,
                 lastName: userFormValues.lastName,
-                userType: parseInt(userFormValues.userType),
-                userName: userFormValues.contact.emailAddress,
-                password: userFormValues.password
+                userType: parseInt(userFormValues.userType), // UserType[1],//,                
+                password: userFormValues.password,
+                userName: userFormValues.contact.emailAddress
             }),
             contactInfo: new ContactInfo({
                 cellPhone: userFormValues.contact.cellPhone,
