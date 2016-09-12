@@ -1,5 +1,5 @@
 <h1 class="with-border">Medical Facilities
-<a class="pull-right m-b-md btn btn-primary" [routerLink]="['/medical-facilities/add']">Add Medical Facility</a>
+    <a class="pull-right m-b-md btn btn-primary" [routerLink]="['/medical-facilities/add']">Add Medical Facility</a>
 </h1>
 <div class="ui-widget-header ui-helper-clearfix" style="padding:4px 10px;border-bottom: 0 none">
     <i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
@@ -13,7 +13,7 @@
     <p-column field="medicalfacility.id" header="Medicalfacility id" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
     <p-column styleClass="col-button" header="Edit">
         <template let-medicalfacility="rowData">
-            <button type="button" pButton (click)="selectMedicalFacility(medicalfacility)" icon="glyphicon glyphicon-edit"></button>
+            <a [routerLink]="[medicalfacility.medicalfacility.id, 'specialities']"><i class="glyphicon glyphicon-edit"></i></a>
         </template>
     </p-column>   
 </p-dataTable>

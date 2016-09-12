@@ -31,8 +31,4 @@ medicalfacilities: MedicalFacilityDetail[];
          let medicalfacility = this._medicalFacilityService.getMedicalFacilities(accountId)
                                 .subscribe(medicalfacilities => this.medicalfacilities = medicalfacilities);
     }
-    selectMedicalFacility(medicalfacility) {
-        this._router.navigate(['/medical-facilities/update/' + medicalfacility.medicalfacility.id]);
-    }
-
 }
