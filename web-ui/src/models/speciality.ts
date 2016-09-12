@@ -2,7 +2,7 @@ import {Record} from 'immutable';
 import moment from 'moment';
 
 const SpecialtyRecord = Record({
-specialty: {
+speciality: {
     id: 0,
     name: '',
     specialityCode: '',
@@ -15,7 +15,7 @@ specialty: {
 });
 
 export class Speciality extends SpecialtyRecord {
-specialty: {
+speciality: {
     id: number;
     name: string;
     specialityCode: string;

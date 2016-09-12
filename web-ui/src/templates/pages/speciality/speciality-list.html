@@ -5,14 +5,14 @@
     <i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
     <input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Speciality">
 </div>
-<p-dataTable [value]="specialties" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+<p-dataTable [value]="specialities" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>List of Specialities</header>
-    <p-column field="specialty.name" header="Name" [sortable]="true" [filter]="true"></p-column>
-    <p-column field="specialty.specialityCode" header="Speciality Code" [sortable]="true" [filter]="true"></p-column>
-    <p-column field="specialty.id" header="Speciality Id" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
+    <p-column field="speciality.name" header="Name" [sortable]="true" [filter]="true"></p-column>
+    <p-column field="speciality.specialityCode" header="Speciality Code" [sortable]="true" [filter]="true"></p-column>
+    <p-column field="speciality.id" header="Speciality Id" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
    <p-column styleClass="col-button" header="Edit">
-        <template let-specialty="rowData">
-           <button type="button" pButton (click)="selectSpeciality(specialty)" icon="glyphicon glyphicon-edit"></button>
+        <template let-speciality="rowData">
+        <a [routerLink]="['/specialities/update/', speciality.speciality.id]"><i class="glyphicon glyphicon-edit"></i></a>
         </template>
     </p-column>
 

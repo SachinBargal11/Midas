@@ -18,18 +18,15 @@ import {Speciality} from '../../../models/speciality';
 
 
 export class SpecialityListComponent implements OnInit {
-specialties: Speciality[];
+specialities: Speciality[];
     constructor(
         private _router: Router,
         private _specialityService: SpecialityService
     ) {
     }
     ngOnInit() {
-         let specialty = this._specialityService.getSpecialities()
-                                .subscribe(specialties => this.specialties = specialties);
+         let speciality = this._specialityService.getSpecialities()
+                                .subscribe(specialities => this.specialities = specialities);
 
-    }
-selectSpeciality(specialty) {
-        this._router.navigate(['/specialities/update/' + specialty.specialty.id]);
     }
 }

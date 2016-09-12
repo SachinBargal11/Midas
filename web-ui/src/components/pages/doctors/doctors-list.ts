@@ -29,7 +29,4 @@ doctors: DoctorDetail[];
                                 .subscribe(doctors => this.doctors = doctors);
 
     }
-selectDoctor(doctor) {
-        this._router.navigate(['/doctors/update/' + doctor.doctor.id]);
-    }
 }

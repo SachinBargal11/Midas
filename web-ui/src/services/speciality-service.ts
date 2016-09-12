@@ -23,13 +23,13 @@ export class SpecialityService {
         this._headers.append('Content-Type', 'application/json');
     }
 
-    getSpeciality(specialtyId: Number): Observable<Speciality> {
+    getSpeciality(specialityId: Number): Observable<Speciality> {
         let promise: Promise<Speciality> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Specialty/Get/' + specialtyId).map(res => res.json())
-                .subscribe((specialtyData: any) => {
-                    let parsedSpecialty: Speciality = null;
-                    parsedSpecialty = SpecialityAdapter.parseResponse(specialtyData);
-                    resolve(parsedSpecialty);
+            return this._http.get(this._url + '/Speciality/Get/' + specialityId).map(res => res.json())
+                .subscribe((specialityData: any) => {
+                    let parsedSpeciality: Speciality = null;
+                    parsedSpeciality = SpecialityAdapter.parseResponse(specialityData);
+                    resolve(parsedSpeciality);
                 }, (error) => {
                     reject(error);
                 });
@@ -39,13 +39,13 @@ export class SpecialityService {
 
     getSpecialities(): Observable<Speciality[]> {
               let promise: Promise<Speciality[]> = new Promise((resolve, reject) => {
-             return this._http.post(this._url + '/Specialty/GetAll', JSON.stringify({'speciality': [{}]}), {
+             return this._http.post(this._url + '/Speciality/GetAll', JSON.stringify({'speciality': [{}]}), {
                 headers: this._headers
               })
                 .map(res => res.json())
-                .subscribe((specialtyData: Array<Object>) => {
-                    let specialties = (<Object[]>specialtyData).map((specialtyData: any) => {
-                        return SpecialityAdapter.parseResponse(specialtyData);
+                .subscribe((specialityData: Array<Object>) => {
+                    let specialties = (<Object[]>specialityData).map((specialityData: any) => {
+                        return SpecialityAdapter.parseResponse(specialityData);
                     });
                     resolve(specialties);
                 }, (error) => {
@@ -55,23 +55,23 @@ export class SpecialityService {
         return <Observable<Speciality[]>>Observable.fromPromise(promise);
     }
 
-    addSpeciality(specialty: Speciality): Observable<Speciality> {
+    addSpeciality(speciality: Speciality): Observable<Speciality> {
         let promise: Promise<Speciality> = new Promise((resolve, reject) => {
 
 
-            let specialtyRequestData = specialty.toJS();
+            let specialityRequestData = speciality.toJS();
 
             // remove unneeded keys 
-            specialtyRequestData.specialty = _.omit(specialtyRequestData.specialty, 'createDate', 'updateByUserID', 'updateDate');
+            specialityRequestData.speciality = _.omit(specialityRequestData.speciality, 'createDate', 'updateByUserID', 'updateDate');
 
-            return this._http.post(this._url + '/Specialty/Add', JSON.stringify(specialtyRequestData), {
+            return this._http.post(this._url + '/Speciality/Add', JSON.stringify(specialityRequestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
-                .subscribe((specialtyData: any) => {
-                    let parsedSpecialty: Speciality = null;
-                    parsedSpecialty = SpecialityAdapter.parseResponse(specialtyData);
-                    resolve(parsedSpecialty);
+                .subscribe((specialityData: any) => {
+                    let parsedSpeciality: Speciality = null;
+                    parsedSpeciality = SpecialityAdapter.parseResponse(specialityData);
+                    resolve(parsedSpeciality);
                 }, (error) => {
                     reject(error);
                 });
@@ -79,23 +79,23 @@ export class SpecialityService {
         return <Observable<Speciality>>Observable.fromPromise(promise);
 
     }
-    updateSpeciality(specialty: Speciality): Observable<Speciality> {
+    updateSpeciality(speciality: Speciality): Observable<Speciality> {
         let promise: Promise<Speciality> = new Promise((resolve, reject) => {
 
 
-            let specialtyRequestData = specialty.toJS();
+            let specialityRequestData = speciality.toJS();
 
             // remove unneeded keys 
-            specialtyRequestData.specialty = _.omit(specialtyRequestData.specialty, 'createDate', 'updateByUserID', 'updateDate');
+            specialityRequestData.speciality = _.omit(specialityRequestData.speciality, 'createDate', 'updateByUserID', 'updateDate');
 
-            return this._http.post(this._url + '/Specialty/Add', JSON.stringify(specialtyRequestData), {
+            return this._http.post(this._url + '/Speciality/Add', JSON.stringify(specialityRequestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
-                .subscribe((specialtyData: any) => {
-                    let parsedSpecialty: Speciality = null;
-                    parsedSpecialty = SpecialityAdapter.parseResponse(specialtyData);
-                    resolve(parsedSpecialty);
+                .subscribe((specialityData: any) => {
+                    let parsedSpeciality: Speciality = null;
+                    parsedSpeciality = SpecialityAdapter.parseResponse(specialityData);
+                    resolve(parsedSpeciality);
                 }, (error) => {
                     reject(error);
                 });

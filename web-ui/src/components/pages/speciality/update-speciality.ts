@@ -23,7 +23,7 @@ import {LimitPipe} from '../../../pipes/limit-array-pipe';
 })
 
 export class UpdateSpecialityComponent implements OnInit {
-    specialty = new Speciality({});
+    speciality = new Speciality({});
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -48,8 +48,8 @@ export class UpdateSpecialityComponent implements OnInit {
             let specialityId: number = parseInt(routeParams.id);
             let result = this._specialityStore.fetchSpecialityById(specialityId);
             result.subscribe(
-                (specialty: Speciality) => {
-                   this.specialty = specialty;
+                (speciality: Speciality) => {
+                   this.speciality = speciality;
                 },
                 (error) => {
                     this._router.navigate(['/specialities']);
@@ -72,9 +72,9 @@ export class UpdateSpecialityComponent implements OnInit {
 
     updateSpeciality() {
         let specialityformValues = this.specialityform.value;
-        let specialty = new Speciality({
-            specialty: {
-                id: this.specialty.specialty.id,
+        let speciality = new Speciality({
+            speciality: {
+                id: this.speciality.speciality.id,
                 name: specialityformValues.name,
                 specialityCode: specialityformValues.specialityCode
             }
@@ -82,7 +82,7 @@ export class UpdateSpecialityComponent implements OnInit {
         this.isSaveDoctorProgress = true;
         let result;
 
-        result = this._specialityStore.updateSpeciality(specialty);
+        result = this._specialityStore.updateSpeciality(speciality);
         result.subscribe(
             (response) => {
                 let notification = new Notification({

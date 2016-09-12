@@ -34,7 +34,4 @@ cols: any[];
                                 .subscribe(users => this.users = users);
 
     }
-selectUser(user) {
-        this._router.navigate(['/users/update/' + user.user.id]);
-    }
 }

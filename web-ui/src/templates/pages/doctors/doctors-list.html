@@ -12,7 +12,7 @@
     <p-column field="doctor.id" header="Doctor Id" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
    <p-column styleClass="col-button" header="Edit">
         <template let-doctor="rowData">
-            <button type="button" pButton (click)="selectDoctor(doctor)" icon="glyphicon glyphicon-edit"></button>
+        <a [routerLink]="['/doctors/update/', doctor.doctor.id]"><i class="glyphicon glyphicon-edit"></i></a>
         </template>
     </p-column>
 </p-dataTable>

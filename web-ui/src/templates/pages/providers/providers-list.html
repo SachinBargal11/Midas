@@ -13,7 +13,7 @@
     <p-column field="id" header="Provider id" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
     <p-column styleClass="col-button" header="Edit">
         <template let-provider="rowData">
-           <button type="button" pButton (click)="selectProvider(provider)" icon="glyphicon glyphicon-edit"></button>
+        <a [routerLink]="['/providers/update/', provider.id]"><i class="glyphicon glyphicon-edit"></i></a>
         </template>
     </p-column>
 </p-dataTable>

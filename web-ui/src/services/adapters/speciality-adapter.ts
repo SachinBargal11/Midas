@@ -3,19 +3,19 @@ import Moment from 'moment';
 
 
 export class SpecialityAdapter {
-    static parseResponse(specialtyData: any): Speciality {
+    static parseResponse(specialityData: any): Speciality {
 
-        let specialty = null;
-        let tempSpeciality = _.omit(specialtyData, 'updateDate');
-        if (specialtyData) {
-            specialty = new Speciality({
-                specialty: {
-                    id: specialtyData.id,
-                    name: specialtyData.name,
-                    specialityCode: specialtyData.specialityCode
+        let speciality = null;
+        let tempSpeciality = _.omit(specialityData, 'updateDate');
+        if (specialityData) {
+            speciality = new Speciality({
+                speciality: {
+                    id: specialityData.id,
+                    name: specialityData.name,
+                    specialityCode: specialityData.specialityCode
                     }
             });
         }
-        return specialty;
+        return speciality;
     }
 }

@@ -16,8 +16,8 @@ import Moment from 'moment';
 @Injectable()
 export class SpecialityStore {
 
-    private _specialties: BehaviorSubject<List<Speciality>> = new BehaviorSubject(List([]));
-    private _selectedSpecialties: BehaviorSubject<List<Speciality>> = new BehaviorSubject(List([]));
+    private _specialities: BehaviorSubject<List<Speciality>> = new BehaviorSubject(List([]));
+    private _selectedSpecialities: BehaviorSubject<List<Speciality>> = new BehaviorSubject(List([]));
 
     constructor(
         private _specialityService: SpecialityService,
@@ -30,24 +30,24 @@ export class SpecialityStore {
     }
 
     resetStore() {
-        this._specialties.next(this._specialties.getValue().clear());
-        this._selectedSpecialties.next(this._selectedSpecialties.getValue().clear());
+        this._specialities.next(this._specialities.getValue().clear());
+        this._selectedSpecialities.next(this._selectedSpecialities.getValue().clear());
     }
 
 
-    get specialties() {
-        return this._specialties.asObservable();
+    get specialities() {
+        return this._specialities.asObservable();
     }
 
     get selectedSpecialities() {
-        return this._selectedSpecialties.asObservable();
+        return this._selectedSpecialities.asObservable();
     }
 
     loadInitialData(): Observable<Speciality[]> {
         let promise = new Promise((resolve, reject) => {
-            this._specialityService.getSpecialities().subscribe((specialties: Speciality[]) => {
-                this._specialties.next(List(specialties));
-                resolve(specialties);
+            this._specialityService.getSpecialities().subscribe((specialities: Speciality[]) => {
+                this._specialities.next(List(specialities));
+                resolve(specialities);
             }, error => {
                 reject(error);
             });
@@ -56,20 +56,20 @@ export class SpecialityStore {
     }
 
     findSpecialityById(id: number) {
-        let specialties = this._specialties.getValue();
-        let index = specialties.findIndex((currentSpecialty: Speciality) => currentSpecialty.specialty.id === id);
-        return specialties.get(index);
+        let specialities = this._specialities.getValue();
+        let index = specialities.findIndex((currentSpeciality: Speciality) => currentSpeciality.speciality.id === id);
+        return specialities.get(index);
     }
 
     fetchSpecialityById(id: number): Observable<Speciality> {
         let promise = new Promise((resolve, reject) => {
-            let matchedSpecialty: Speciality = this.findSpecialityById(id);
-            if (matchedSpecialty) {
-                resolve(matchedSpecialty);
+            let matchedSpeciality: Speciality = this.findSpecialityById(id);
+            if (matchedSpeciality) {
+                resolve(matchedSpeciality);
             } else {
                 this._specialityService.getSpeciality(id)
-                .subscribe((specialty: Speciality) => {
-                    resolve(specialty);
+                .subscribe((speciality: Speciality) => {
+                    resolve(speciality);
                 }, error => {
                     reject(error);
                 });
@@ -78,11 +78,11 @@ export class SpecialityStore {
         return <Observable<Speciality>>Observable.fromPromise(promise);
     }
 
-    addSpeciality(specialty: Speciality): Observable<Speciality> {
+    addSpeciality(speciality: Speciality): Observable<Speciality> {
         let promise = new Promise((resolve, reject) => {
-            this._specialityService.addSpeciality(specialty).subscribe((specialty: Speciality) => {
-                this._specialties.next(this._specialties.getValue().push(specialty));
-                resolve(specialty);
+            this._specialityService.addSpeciality(speciality).subscribe((speciality: Speciality) => {
+                this._specialities.next(this._specialities.getValue().push(speciality));
+                resolve(speciality);
             }, error => {
                 reject(error);
             });
@@ -90,13 +90,13 @@ export class SpecialityStore {
         return <Observable<Speciality>>Observable.from(promise);
     }
 
-    updateSpeciality(specialty: Speciality): Observable<Speciality> {
-        // let specialities = this._specialties.getValue();
-        // let index = specialities.findIndex((currentSpecialty: Specialty) => currentSpecialty.specialty.id === specialty.specialty.id);
+    updateSpeciality(speciality: Speciality): Observable<Speciality> {
+        let specialities = this._specialities.getValue();
+        let index = specialities.findIndex((currentSpeciality: Speciality) => currentSpeciality.speciality.id === speciality.speciality.id);
         let promise = new Promise((resolve, reject) => {
-            this._specialityService.updateSpeciality(specialty).subscribe((currentSpecialty: Speciality) => {
-                this._specialties.next(this._specialties.getValue().push(specialty));
-                resolve(specialty);
+            this._specialityService.updateSpeciality(speciality).subscribe((currentSpeciality: Speciality) => {
+                this._specialities.next(this._specialities.getValue().push(speciality));
+                resolve(speciality);
             }, error => {
                 reject(error);
             });
@@ -104,11 +104,11 @@ export class SpecialityStore {
         return <Observable<Speciality>>Observable.from(promise);
     }
 
-     selectSpecialities(specialty: Speciality) {
-        let selectedSpecialties = this._selectedSpecialties.getValue();
-        let index = selectedSpecialties.findIndex((currentSpecialty: Speciality) => currentSpecialty.specialty.id === specialty.specialty.id);
+     selectSpecialities(speciality: Speciality) {
+        let selectedSpecialities = this._selectedSpecialities.getValue();
+        let index = selectedSpecialities.findIndex((currentSpeciality: Speciality) => currentSpeciality.speciality.id === speciality.speciality.id);
         if (index < 0) {
-            this._selectedSpecialties.next(this._selectedSpecialties.getValue().push(specialty));
+            this._selectedSpecialities.next(this._selectedSpecialities.getValue().push(speciality));
         }
     }
 

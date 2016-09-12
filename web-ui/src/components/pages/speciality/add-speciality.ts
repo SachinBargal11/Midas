@@ -56,8 +56,8 @@ export class AddSpecialityComponent implements OnInit {
 
     saveSpeciality() {
         let specialityformValues = this.specialityform.value;
-        let specialty = new Speciality({
-            specialty: {
+        let speciality = new Speciality({
+            speciality: {
                 name: specialityformValues.name,
                 specialityCode: specialityformValues.specialityCode
             }
@@ -65,7 +65,7 @@ export class AddSpecialityComponent implements OnInit {
         this.isSaveDoctorProgress = true;
         let result;
 
-        result = this._specialityStore.addSpeciality(specialty);
+        result = this._specialityStore.addSpeciality(speciality);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
