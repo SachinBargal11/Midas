@@ -46,10 +46,44 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                     this._headers = new http_1.Headers();
                     this._headers.append('Content-Type', 'application/json');
                 }
+                ProvidersService.prototype.getProvider = function (providerId) {
+                    var _this = this;
+                    var promise = new Promise(function (resolve, reject) {
+                        return _this._http.get(_this._url + '/Provider/Get/' + providerId).map(function (res) { return res.json(); })
+                            .subscribe(function (providerData) {
+                            var parsedProvider = null;
+                            parsedProvider = provider_adapter_1.ProviderAdapter.parseResponse(providerData);
+                            resolve(parsedProvider);
+                        }, function (error) {
+                            reject(error);
+                        });
+                    });
+                    return Observable_1.Observable.fromPromise(promise);
+                };
                 ProvidersService.prototype.getProviders = function () {
                     return this._http.get(this._url + '/Provider/GetAll').map(function (res) { return res.json(); });
                 };
                 ProvidersService.prototype.addProvider = function (providerDetail) {
+                    var _this = this;
+                    var promise = new Promise(function (resolve, reject) {
+                        var providerDetailRequestData = providerDetail.toJS();
+                        // remove unneeded keys 
+                        providerDetailRequestData.provider = underscore_1.default.omit(providerDetailRequestData.provider, 'providerMedicalFacilities', 'createDate', 'updateByUserID', 'updateDate');
+                        return _this._http.post(_this._url + '/Provider/Add', JSON.stringify(providerDetailRequestData), {
+                            headers: _this._headers
+                        })
+                            .map(function (res) { return res.json(); })
+                            .subscribe(function (providerData) {
+                            var parsedProvider = null;
+                            parsedProvider = provider_adapter_1.ProviderAdapter.parseResponse(providerData);
+                            resolve(parsedProvider);
+                        }, function (error) {
+                            reject(error);
+                        });
+                    });
+                    return Observable_1.Observable.fromPromise(promise);
+                };
+                ProvidersService.prototype.updateProvider = function (providerDetail) {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {
                         var providerDetailRequestData = providerDetail.toJS();

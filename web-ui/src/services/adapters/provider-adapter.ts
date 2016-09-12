@@ -8,11 +8,13 @@ export class ProviderAdapter {
         let provider = null;
         if (providerData) {
             provider = new Provider({
+              provider: {
                 id: providerData.id,
                 name: providerData.name,
                 npi: providerData.npi,
                 federalTaxID: providerData.federalTaxID,
                 prefix: providerData.prefix
+              }
             });
         }
         return provider;

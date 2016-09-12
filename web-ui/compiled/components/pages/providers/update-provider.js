@@ -11,7 +11,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../el
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1, forms_1, router_1, loader_1, providers_store_1, provider_1, providers_service_1, session_store_1, notifications_store_1, notification_1, moment_1, primeng_1, http_1, limit_array_pipe_1;
-    var AddProviderComponent;
+    var UpdateProviderComponent;
     return {
         setters:[
             function (core_1_1) {
@@ -57,15 +57,18 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../el
                 limit_array_pipe_1 = limit_array_pipe_1_1;
             }],
         execute: function() {
-            AddProviderComponent = (function () {
-                function AddProviderComponent(_providerService, _providersStore, fb, _router, _notificationsStore, _sessionStore, _elRef) {
+            UpdateProviderComponent = (function () {
+                function UpdateProviderComponent(_providerService, _providersStore, fb, _router, _route, _notificationsStore, _sessionStore, _elRef) {
+                    var _this = this;
                     this._providerService = _providerService;
                     this._providersStore = _providersStore;
                     this.fb = fb;
                     this._router = _router;
+                    this._route = _route;
                     this._notificationsStore = _notificationsStore;
                     this._sessionStore = _sessionStore;
                     this._elRef = _elRef;
+                    this.provider = new provider_1.Provider({});
                     this.options = {
                         timeOut: 3000,
                         showProgressBar: true,
@@ -74,6 +77,16 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../el
                         maxLength: 10
                     };
                     this.isSaveProviderProgress = false;
+                    this._route.params.subscribe(function (routeParams) {
+                        var providerId = parseInt(routeParams.id);
+                        var result = _this._providersStore.fetchProviderById(providerId);
+                        result.subscribe(function (provider) {
+                            _this.provider = provider;
+                        }, function (error) {
+                            _this._router.navigate(['/providers']);
+                        }, function () {
+                        });
+                    });
                     this.providerform = this.fb.group({
                         provider: this.fb.group({
                             name: ['', forms_1.Validators.required],
@@ -84,13 +97,14 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../el
                     });
                     this.providerformControls = this.providerform.controls;
                 }
-                AddProviderComponent.prototype.ngOnInit = function () {
+                UpdateProviderComponent.prototype.ngOnInit = function () {
                 };
-                AddProviderComponent.prototype.saveProvider = function () {
+                UpdateProviderComponent.prototype.updateProvider = function () {
                     var _this = this;
                     var providerFormValues = this.providerform.value;
                     var providerDetail = new provider_1.Provider({
                         provider: {
+                            id: this.provider.provider.id,
                             name: providerFormValues.provider.name,
                             npi: providerFormValues.provider.npi,
                             federalTaxID: providerFormValues.provider.federalTaxID,
@@ -99,11 +113,11 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../el
                     });
                     this.isSaveProviderProgress = true;
                     var result;
-                    // result = this._providersStore.addProvider(providerDetail);
-                    result = this._providerService.addProvider(providerDetail);
+                    result = this._providersStore.updateProvider(providerDetail);
+                    // result = this._providerService.addProvider(providerDetail);
                     result.subscribe(function (response) {
                         var notification = new notification_1.Notification({
-                            'title': 'Provider added successfully!',
+                            'title': 'Provider updated successfully!',
                             'type': 'SUCCESS',
                             'createdAt': moment_1.default()
                         });
@@ -111,7 +125,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../el
                         _this._router.navigate(['/providers']);
                     }, function (error) {
                         var notification = new notification_1.Notification({
-                            'title': 'Unable to add Provider.',
+                            'title': 'Unable to update Provider.',
                             'type': 'ERROR',
                             'createdAt': moment_1.default()
                         });
@@ -120,20 +134,20 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../el
                         _this.isSaveProviderProgress = false;
                     });
                 };
-                AddProviderComponent = __decorate([
+                UpdateProviderComponent = __decorate([
                     core_1.Component({
-                        selector: 'add-provider',
-                        templateUrl: 'templates/pages/providers/add-provider.html',
+                        selector: 'update-provider',
+                        templateUrl: 'templates/pages/providers/update-provider.html',
                         directives: [forms_1.FORM_DIRECTIVES, forms_1.REACTIVE_FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES, loader_1.LoaderComponent, primeng_1.Calendar, primeng_1.InputMask, primeng_1.AutoComplete],
                         providers: [http_1.HTTP_PROVIDERS, providers_service_1.ProvidersService, providers_store_1.ProvidersStore, forms_1.FormBuilder],
                         pipes: [limit_array_pipe_1.LimitPipe]
                     }), 
-                    __metadata('design:paramtypes', [providers_service_1.ProvidersService, providers_store_1.ProvidersStore, forms_1.FormBuilder, router_1.Router, notifications_store_1.NotificationsStore, session_store_1.SessionStore, core_1.ElementRef])
-                ], AddProviderComponent);
-                return AddProviderComponent;
+                    __metadata('design:paramtypes', [providers_service_1.ProvidersService, providers_store_1.ProvidersStore, forms_1.FormBuilder, router_1.Router, router_1.ActivatedRoute, notifications_store_1.NotificationsStore, session_store_1.SessionStore, core_1.ElementRef])
+                ], UpdateProviderComponent);
+                return UpdateProviderComponent;
             }());
-            exports_1("AddProviderComponent", AddProviderComponent);
+            exports_1("UpdateProviderComponent", UpdateProviderComponent);
         }
     }
 });
-//# sourceMappingURL=add-provider.js.map
+//# sourceMappingURL=update-provider.js.map

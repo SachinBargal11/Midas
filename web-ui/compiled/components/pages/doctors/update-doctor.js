@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/forms', '@angular/router', '../../../utils/AppValidators', '../../elements/loader', '../../../stores/doctors-store', '../../../services/doctors-service', '../../../models/doctor-details', '../../../models/doctor', '../../../models/user', '../../../stores/session-store', '../../../stores/notifications-store', '../../../models/notification', 'moment', 'primeng/primeng', '../../../stores/states-store', '../../../services/state-service', '@angular/http', '../../../pipes/limit-array-pipe'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/forms', '@angular/router', '../../../utils/AppValidators', '../../elements/loader', '../../../stores/users-store', '../../../stores/doctors-store', '../../../services/doctors-service', '../../../models/doctor-details', '../../../models/doctor', '../../../models/user', '../../../models/contact', '../../../models/address', '../../../stores/session-store', '../../../stores/notifications-store', '../../../models/notification', 'moment', 'primeng/primeng', '../../../stores/states-store', '../../../services/state-service', '@angular/http', '../../../pipes/limit-array-pipe'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, forms_1, router_1, AppValidators_1, loader_1, doctors_store_1, doctors_service_1, doctor_details_1, doctor_1, user_1, session_store_1, notifications_store_1, notification_1, moment_1, primeng_1, states_store_1, state_service_1, http_1, limit_array_pipe_1;
+    var core_1, forms_1, router_1, AppValidators_1, loader_1, users_store_1, doctors_store_1, doctors_service_1, doctor_details_1, doctor_1, user_1, contact_1, address_1, session_store_1, notifications_store_1, notification_1, moment_1, primeng_1, states_store_1, state_service_1, http_1, limit_array_pipe_1;
     var UpdateDoctorComponent;
     return {
         setters:[
@@ -29,6 +29,9 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
             function (loader_1_1) {
                 loader_1 = loader_1_1;
             },
+            function (users_store_1_1) {
+                users_store_1 = users_store_1_1;
+            },
             function (doctors_store_1_1) {
                 doctors_store_1 = doctors_store_1_1;
             },
@@ -43,6 +46,12 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
             },
             function (user_1_1) {
                 user_1 = user_1_1;
+            },
+            function (contact_1_1) {
+                contact_1 = contact_1_1;
+            },
+            function (address_1_1) {
+                address_1 = address_1_1;
             },
             function (session_store_1_1) {
                 session_store_1 = session_store_1_1;
@@ -73,19 +82,20 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
             }],
         execute: function() {
             UpdateDoctorComponent = (function () {
-                function UpdateDoctorComponent(_stateService, _statesStore, _doctorsService, _doctorsStore, fb, _router, _route, _notificationsStore, _sessionStore, _elRef) {
+                function UpdateDoctorComponent(_stateService, _statesStore, _doctorsService, _doctorsStore, _usersStore, fb, _router, _route, _notificationsStore, _sessionStore, _elRef) {
                     var _this = this;
                     this._stateService = _stateService;
                     this._statesStore = _statesStore;
                     this._doctorsService = _doctorsService;
                     this._doctorsStore = _doctorsStore;
+                    this._usersStore = _usersStore;
                     this.fb = fb;
                     this._router = _router;
                     this._route = _route;
                     this._notificationsStore = _notificationsStore;
                     this._sessionStore = _sessionStore;
                     this._elRef = _elRef;
-                    this.doctor = doctor_details_1.DoctorDetail.prototype.doctor;
+                    this.doctor = new doctor_1.Doctor({});
                     this.options = {
                         timeOut: 3000,
                         showProgressBar: true,
@@ -168,6 +178,21 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
                             lastName: doctorFormValues.userInfo.lastname,
                             userType: parseInt(doctorFormValues.userInfo.userType),
                             password: doctorFormValues.userInfo.password
+                        }),
+                        contactInfo: new contact_1.ContactInfo({
+                            cellPhone: doctorFormValues.contact.cellPhone,
+                            emailAddress: doctorFormValues.contact.email,
+                            faxNo: doctorFormValues.contact.faxNo,
+                            homePhone: doctorFormValues.contact.homePhone,
+                            workPhone: doctorFormValues.contact.workPhone,
+                        }),
+                        address: new address_1.Address({
+                            address1: doctorFormValues.address.address1,
+                            address2: doctorFormValues.address.address2,
+                            city: doctorFormValues.address.city,
+                            country: doctorFormValues.address.country,
+                            state: doctorFormValues.address.state,
+                            zipCode: doctorFormValues.address.zipCode,
                         })
                     });
                     this.isSaveDoctorProgress = true;
@@ -200,7 +225,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../..
                         providers: [http_1.HTTP_PROVIDERS, doctors_service_1.DoctorsService, state_service_1.StateService, states_store_1.StatesStore, forms_1.FormBuilder],
                         pipes: [limit_array_pipe_1.LimitPipe]
                     }), 
-                    __metadata('design:paramtypes', [state_service_1.StateService, states_store_1.StatesStore, doctors_service_1.DoctorsService, doctors_store_1.DoctorsStore, forms_1.FormBuilder, router_1.Router, router_1.ActivatedRoute, notifications_store_1.NotificationsStore, session_store_1.SessionStore, core_1.ElementRef])
+                    __metadata('design:paramtypes', [state_service_1.StateService, states_store_1.StatesStore, doctors_service_1.DoctorsService, doctors_store_1.DoctorsStore, users_store_1.UsersStore, forms_1.FormBuilder, router_1.Router, router_1.ActivatedRoute, notifications_store_1.NotificationsStore, session_store_1.SessionStore, core_1.ElementRef])
                 ], UpdateDoctorComponent);
                 return UpdateDoctorComponent;
             }());

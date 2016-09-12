@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/forms', '@angular/router', '../../utils/AppValidators', '../elements/loader', 'angular2-notifications', '../../models/user-details', '../../models/user', '../../models/contact', '../../models/address', '../../models/account', '../../stores/users-store', '../../services/users-service', '../../stores/session-store', '../../services/authentication-service'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/forms', '@angular/router', '../../utils/AppValidators', '../elements/loader', 'angular2-notifications', '../../models/account-details', '../../models/user', '../../models/contact', '../../models/address', '../../models/account', '../../stores/users-store', '../../services/users-service', '../../stores/session-store', '../../services/authentication-service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../ut
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, forms_1, router_1, AppValidators_1, loader_1, angular2_notifications_1, user_details_1, user_1, contact_1, address_1, account_1, users_store_1, users_service_1, session_store_1, authentication_service_1;
+    var core_1, forms_1, router_1, AppValidators_1, loader_1, angular2_notifications_1, account_details_1, user_1, contact_1, address_1, account_1, users_store_1, users_service_1, session_store_1, authentication_service_1;
     var ChangePasswordComponent;
     return {
         setters:[
@@ -32,8 +32,8 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../ut
             function (angular2_notifications_1_1) {
                 angular2_notifications_1 = angular2_notifications_1_1;
             },
-            function (user_details_1_1) {
-                user_details_1 = user_details_1_1;
+            function (account_details_1_1) {
+                account_details_1 = account_details_1_1;
             },
             function (user_1_1) {
                 user_1 = user_1_1;
@@ -80,8 +80,8 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../ut
                     };
                     var userId = this._sessionStore.session.user.id;
                     var result = this._usersService.getUser(userId);
-                    result.subscribe(function (userDetail) {
-                        _this.userDetail = userDetail;
+                    result.subscribe(function (accountDetail) {
+                        _this.accountDetail = accountDetail;
                     }, function (error) {
                         _this._router.navigate(['/users']);
                     }, function () {
@@ -97,39 +97,40 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../ut
                 };
                 ChangePasswordComponent.prototype.updatePassword = function () {
                     var _this = this;
-                    var userDetail = new user_details_1.UserDetail({
+                    var userDetail = new account_details_1.AccountDetail({
                         account: new account_1.Account({
                             id: this._sessionStore.session.account_id
                         }),
                         user: new user_1.User({
-                            id: this.userDetail.user.id,
-                            firstName: this.userDetail.user.firstName,
-                            middleName: this.userDetail.user.middleName,
-                            lastName: this.userDetail.user.lastName,
-                            userType: this.userDetail.user.userType,
-                            userName: this.userDetail.user.userName,
+                            id: this.accountDetail.user.id,
+                            firstName: this.accountDetail.user.firstName,
+                            middleName: this.accountDetail.user.middleName,
+                            lastName: this.accountDetail.user.lastName,
+                            userType: this.accountDetail.user.userType,
+                            userName: this.accountDetail.user.userName,
                             password: this.changePassForm.value.password
                         }),
                         contactInfo: new contact_1.ContactInfo({
-                            cellPhone: this.userDetail.contactInfo.cellPhone,
-                            emailAddress: this.userDetail.contactInfo.emailAddress,
-                            faxNo: this.userDetail.contactInfo.faxNo,
-                            homePhone: this.userDetail.contactInfo.homePhone,
-                            workPhone: this.userDetail.contactInfo.workPhone,
+                            cellPhone: this.accountDetail.contactInfo.cellPhone,
+                            emailAddress: this.accountDetail.contactInfo.emailAddress,
+                            faxNo: this.accountDetail.contactInfo.faxNo,
+                            homePhone: this.accountDetail.contactInfo.homePhone,
+                            workPhone: this.accountDetail.contactInfo.workPhone,
                         }),
                         address: new address_1.Address({
-                            address1: this.userDetail.address.address1,
-                            address2: this.userDetail.address.address2,
-                            city: this.userDetail.address.city,
-                            country: this.userDetail.address.country,
-                            state: this.userDetail.address.state,
-                            zipCode: this.userDetail.address.zipCode,
+                            address1: this.accountDetail.address.address1,
+                            address2: this.accountDetail.address.address2,
+                            city: this.accountDetail.address.city,
+                            country: this.accountDetail.address.country,
+                            state: this.accountDetail.address.state,
+                            zipCode: this.accountDetail.address.zipCode,
                         })
                     });
                     this.isPassChangeInProgress = true;
                     var userName = this._sessionStore.session.user.userName;
                     var oldpassword = this.changePassForm.value.oldpassword;
-                    var result = this._sessionStore.authenticatePassword(userName, oldpassword);
+                    // let result = this._sessionStore.authenticatePassword(userName, oldpassword);
+                    var result = this._authenticationService.authenticate(userName, oldpassword);
                     result.subscribe(function (response) {
                         _this._usersStore.updatePassword(userDetail)
                             .subscribe(function (response) {

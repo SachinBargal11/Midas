@@ -3,6 +3,7 @@ import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormControl, Form
 import {ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
 import {LoaderComponent} from '../../elements/loader';
+import {UsersStore} from '../../../stores/users-store';
 import {DoctorsStore} from '../../../stores/doctors-store';
 import {DoctorsService} from '../../../services/doctors-service';
 import {DoctorDetail} from '../../../models/doctor-details';
@@ -33,7 +34,7 @@ import {LimitPipe} from '../../../pipes/limit-array-pipe';
 
 export class UpdateDoctorComponent implements OnInit {
     states: any[];
-    doctor = DoctorDetail.prototype.doctor;
+    doctor = new Doctor({});
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -50,6 +51,7 @@ export class UpdateDoctorComponent implements OnInit {
         private _statesStore: StatesStore,
         private _doctorsService: DoctorsService,
         private _doctorsStore: DoctorsStore,
+        private _usersStore: UsersStore,
         private fb: FormBuilder,
         private _router: Router,
         private _route: ActivatedRoute,
@@ -136,22 +138,22 @@ export class UpdateDoctorComponent implements OnInit {
                 lastName: doctorFormValues.userInfo.lastname,
                 userType: parseInt(doctorFormValues.userInfo.userType),
                 password: doctorFormValues.userInfo.password
+            }),
+            contactInfo: new ContactInfo({
+                cellPhone: doctorFormValues.contact.cellPhone,
+                emailAddress: doctorFormValues.contact.email,
+                faxNo: doctorFormValues.contact.faxNo,
+                homePhone: doctorFormValues.contact.homePhone,
+                workPhone: doctorFormValues.contact.workPhone,
+            }),
+            address: new Address({
+                address1: doctorFormValues.address.address1,
+                address2: doctorFormValues.address.address2,
+                city: doctorFormValues.address.city,
+                country: doctorFormValues.address.country,
+                state: doctorFormValues.address.state,
+                zipCode: doctorFormValues.address.zipCode,
             })
-            // contactInfo: new ContactInfo({
-            //     cellPhone: doctorFormValues.contact.cellPhone,
-            //     emailAddress: doctorFormValues.contact.email,
-            //     faxNo: doctorFormValues.contact.faxNo,
-            //     homePhone: doctorFormValues.contact.homePhone,
-            //     workPhone: doctorFormValues.contact.workPhone,
-            // }),
-            // address: new Address({
-            //     address1: doctorFormValues.address.address1,
-            //     address2: doctorFormValues.address.address2,
-            //     city: doctorFormValues.address.city,
-            //     country: doctorFormValues.address.country,
-            //     state: doctorFormValues.address.state,
-            //     zipCode: doctorFormValues.address.zipCode,
-            // })
         });
         this.isSaveDoctorProgress = true;
         let result;

@@ -64,6 +64,8 @@ import {UsersListComponent} from '../components/pages/users/users-list';
 import {UpdateUserComponent} from '../components/pages/users/update-user';
 import {AddProviderComponent} from '../components/pages/providers/add-provider';
 import {ProvidersListComponent} from '../components/pages/providers/providers-list';
+import {UpdateProviderComponent} from '../components/pages/providers/update-provider';
+import {UpdateMedicalFacilityComponent} from '../components/pages/medical-facilities/update-medical-facility';
 import {AddMedicalFacilityComponent} from '../components/pages/medical-facilities/add-medical-facility';
 import {MedicalFacilitiesListComponent} from '../components/pages/medical-facilities/medical-facilities-list';
 import {SpecialityDetailsComponent} from '../components/pages/medical-facilities/speciality-details';
@@ -107,8 +109,10 @@ enableProdMode();
         UpdateUserComponent,
         UsersListComponent,
         AddProviderComponent,
+        UpdateProviderComponent,
         ProvidersListComponent,
         AddMedicalFacilityComponent,
+        UpdateMedicalFacilityComponent,
         MedicalFacilitiesListComponent,
         SpecialityDetailsComponent,
         SpecialityDetailFormComponent,

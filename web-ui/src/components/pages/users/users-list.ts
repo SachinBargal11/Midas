@@ -6,6 +6,7 @@ import {ReversePipe} from '../../../pipes/reverse-array-pipe';
 import {LimitPipe} from '../../../pipes/limit-array-pipe';
 import {DataTable} from 'primeng/primeng';
 import {UserDetail} from '../../../models/user-details';
+import {AccountDetail} from '../../../models/account-details';
 
 @Component({
     selector: 'users-list',
@@ -19,7 +20,7 @@ import {UserDetail} from '../../../models/user-details';
 
 
 export class UsersListComponent implements OnInit {
-users: UserDetail[];
+users: AccountDetail[];
 cols: any[];
     constructor(
         private _router: Router,

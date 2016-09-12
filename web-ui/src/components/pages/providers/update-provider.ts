@@ -3,8 +3,9 @@ import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormControl, Form
 import {ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
 import {LoaderComponent} from '../../elements/loader';
-import {SpecialityStore} from '../../../stores/speciality-store';
-import {Speciality} from '../../../models/speciality';
+import {ProvidersStore} from '../../../stores/providers-store';
+import {Provider} from '../../../models/provider';
+import {ProvidersService} from '../../../services/providers-service';
 import $ from 'jquery';
 import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
@@ -15,15 +16,15 @@ import {HTTP_PROVIDERS}    from '@angular/http';
 import {LimitPipe} from '../../../pipes/limit-array-pipe';
 
 @Component({
-    selector: 'update-speciality',
-    templateUrl: 'templates/pages/speciality/update-speciality.html',
+    selector: 'update-provider',
+    templateUrl: 'templates/pages/providers/update-provider.html',
     directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar, InputMask, AutoComplete],
-    providers: [HTTP_PROVIDERS, FormBuilder],
+    providers: [HTTP_PROVIDERS, ProvidersService, ProvidersStore, FormBuilder],
     pipes: [LimitPipe]
 })
 
-export class UpdateSpecialityComponent implements OnInit {
-    specialty = new Speciality({});
+export class UpdateProviderComponent implements OnInit {
+    provider = new Provider({});
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -31,12 +32,13 @@ export class UpdateSpecialityComponent implements OnInit {
         clickToClose: false,
         maxLength: 10
     };
-    specialityform: FormGroup;
-    specialityformControls;
-    isSaveDoctorProgress = false;
+    providerform: FormGroup;
+    providerformControls;
+    isSaveProviderProgress = false;
 
     constructor(
-        private _specialityStore: SpecialityStore,
+        private _providerService: ProvidersService,
+        private _providersStore: ProvidersStore,
         private fb: FormBuilder,
         private _router: Router,
         private _route: ActivatedRoute,
@@ -45,64 +47,71 @@ export class UpdateSpecialityComponent implements OnInit {
         private _elRef: ElementRef
     ) {
         this._route.params.subscribe((routeParams: any) => {
-            let specialityId: number = parseInt(routeParams.id);
-            let result = this._specialityStore.fetchSpecialityById(specialityId);
+            let providerId: number = parseInt(routeParams.id);
+            let result = this._providersStore.fetchProviderById(providerId);
             result.subscribe(
-                (specialty: Speciality) => {
-                   this.specialty = specialty;
+                (provider: Provider) => {
+                   this.provider = provider;
                 },
                 (error) => {
-                    this._router.navigate(['/specialities']);
+                    this._router.navigate(['/providers']);
                 },
                 () => {
                 });
         });
 
-        this.specialityform = this.fb.group({
+        this.providerform = this.fb.group({
+            provider: this.fb.group({
                 name: ['', Validators.required],
-                specialityCode: ['', Validators.required]
+                npi: ['', Validators.required],
+                federalTaxID: ['', Validators.required],
+                prefix: ['', Validators.required]
+            })
         });
 
-        this.specialityformControls = this.specialityform.controls;
+        this.providerformControls = this.providerform.controls;
     }
 
     ngOnInit() {
     }
 
 
-    updateSpeciality() {
-        let specialityformValues = this.specialityform.value;
-        let specialty = new Speciality({
-            specialty: {
-                id: this.specialty.specialty.id,
-                name: specialityformValues.name,
-                specialityCode: specialityformValues.specialityCode
+    updateProvider() {
+        let providerFormValues = this.providerform.value;
+        let providerDetail = new Provider({
+            provider: {
+                id: this.provider.provider.id,
+                name: providerFormValues.provider.name,
+                npi: providerFormValues.provider.npi,
+                federalTaxID: providerFormValues.provider.federalTaxID,
+                prefix: providerFormValues.provider.prefix
             }
         });
-        this.isSaveDoctorProgress = true;
+        this.isSaveProviderProgress = true;
         let result;
 
-        result = this._specialityStore.updateSpeciality(specialty);
+        result = this._providersStore.updateProvider(providerDetail);
+        // result = this._providerService.addProvider(providerDetail);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'Speciality updated successfully!',
+                    'title': 'Provider updated successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/specialities']);
+                this._router.navigate(['/providers']);
             },
             (error) => {
                 let notification = new Notification({
-                    'title': 'Unable to update Speciality.',
+                    'title': 'Unable to update Provider.',
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
             },
             () => {
-                this.isSaveDoctorProgress = false;
+                this.isSaveProviderProgress = false;
             });
 
     }

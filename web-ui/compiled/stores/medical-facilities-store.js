@@ -81,6 +81,20 @@ System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 
                     });
                     return Observable_1.Observable.from(promise);
                 };
+                MedicalFacilityStore.prototype.updateMedicalFacility = function (medicalFacilityDetail) {
+                    var _this = this;
+                    // let medicalFacilities = this._medicalFacilities.getValue();
+                    // let index = medicalFacilities.findIndex((currentMedicalFacility: MedicalFacilityDetail) => currentMedicalFacility.user.id === medicalFacilityDetail.medicalfacility.id);
+                    var promise = new Promise(function (resolve, reject) {
+                        _this._medicalFacilitiesService.updateMedicalFacility(medicalFacilityDetail).subscribe(function (medicalFacilityDetail) {
+                            _this._medicalFacilities.next(_this._medicalFacilities.getValue().push(medicalFacilityDetail));
+                            resolve(medicalFacilityDetail);
+                        }, function (error) {
+                            reject(error);
+                        });
+                    });
+                    return Observable_1.Observable.from(promise);
+                };
                 MedicalFacilityStore.prototype.updateSpecialityDetail = function (specialtyDetail, medicalFacilityDetail) {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {

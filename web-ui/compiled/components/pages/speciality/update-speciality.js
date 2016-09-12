@@ -79,7 +79,7 @@ System.register(['@angular/core', '@angular/forms', '@angular/router', '../../el
                         result.subscribe(function (specialty) {
                             _this.specialty = specialty;
                         }, function (error) {
-                            _this._router.navigate(['/doctors']);
+                            _this._router.navigate(['/specialities']);
                         }, function () {
                         });
                     });

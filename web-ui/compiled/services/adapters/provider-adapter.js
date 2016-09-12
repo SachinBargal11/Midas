@@ -16,11 +16,13 @@ System.register(['../../models/provider'], function(exports_1, context_1) {
                     var provider = null;
                     if (providerData) {
                         provider = new provider_1.Provider({
-                            id: providerData.id,
-                            name: providerData.name,
-                            npi: providerData.npi,
-                            federalTaxID: providerData.federalTaxID,
-                            prefix: providerData.prefix
+                            provider: {
+                                id: providerData.id,
+                                name: providerData.name,
+                                npi: providerData.npi,
+                                federalTaxID: providerData.federalTaxID,
+                                prefix: providerData.prefix
+                            }
                         });
                     }
                     return provider;

@@ -40,6 +40,9 @@ System.register(['@angular/core', '@angular/router', '../../../services/provider
                     this._providersService.getProviders()
                         .subscribe(function (providers) { return _this.providers = providers; });
                 };
+                ProvidersListComponent.prototype.selectProvider = function (provider) {
+                    this._router.navigate(['/providers/update/' + provider.id]);
+                };
                 ProvidersListComponent = __decorate([
                     core_1.Component({
                         selector: 'providers-list',

@@ -30,5 +30,8 @@ export class ProvidersListComponent implements OnInit {
             this._providersService.getProviders()
                 .subscribe(providers => this.providers = providers);
     }
+    selectProvider(provider) {
+           this._router.navigate(['/providers/update/' + provider.id]);
+    }
 
 }

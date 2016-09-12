@@ -62,6 +62,19 @@ export class MedicalFacilityStore {
         });
         return <Observable<MedicalFacilityDetail>>Observable.from(promise);
     }
+    updateMedicalFacility(medicalFacilityDetail: MedicalFacilityDetail): Observable<MedicalFacilityDetail> {
+        // let medicalFacilities = this._medicalFacilities.getValue();
+        // let index = medicalFacilities.findIndex((currentMedicalFacility: MedicalFacilityDetail) => currentMedicalFacility.user.id === medicalFacilityDetail.medicalfacility.id);
+        let promise = new Promise((resolve, reject) => {
+            this._medicalFacilitiesService.updateMedicalFacility(medicalFacilityDetail).subscribe((medicalFacilityDetail: MedicalFacilityDetail) => {
+                this._medicalFacilities.next(this._medicalFacilities.getValue().push(medicalFacilityDetail));
+                resolve(medicalFacilityDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<MedicalFacilityDetail>>Observable.from(promise);
+    }
 
     updateSpecialityDetail(specialtyDetail: SpecialityDetail, medicalFacilityDetail: MedicalFacilityDetail) {
         let promise = new Promise((resolve, reject) => {

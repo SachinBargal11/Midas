@@ -23,11 +23,50 @@ export class ProvidersService {
         this._headers.append('Content-Type', 'application/json');
     }
 
+    getProvider(providerId: Number): Observable<Provider> {
+        let promise: Promise<Provider> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Provider/Get/' + providerId).map(res => res.json())
+                .subscribe((providerData: any) => {
+                    let parsedProvider: Provider = null;
+                    parsedProvider = ProviderAdapter.parseResponse(providerData);
+                    resolve(parsedProvider);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Provider>>Observable.fromPromise(promise);
+    }
+
     getProviders(): Observable<Provider[]> {
             return this._http.get(this._url + '/Provider/GetAll').map(res => res.json());
     }
 
     addProvider(providerDetail: Provider): Observable<Provider> {
+        let promise: Promise<Provider> = new Promise((resolve, reject) => {
+
+
+            let providerDetailRequestData = providerDetail.toJS();
+
+            // remove unneeded keys 
+            providerDetailRequestData.provider = _.omit(providerDetailRequestData.provider, 'providerMedicalFacilities',  'createDate', 'updateByUserID', 'updateDate');
+
+            return this._http.post(this._url + '/Provider/Add', JSON.stringify(providerDetailRequestData), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((providerData: any) => {
+                    let parsedProvider: Provider = null;
+                    parsedProvider = ProviderAdapter.parseResponse(providerData);
+                    resolve(parsedProvider);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Provider>>Observable.fromPromise(promise);
+
+    }
+
+    updateProvider(providerDetail: Provider): Observable<Provider> {
         let promise: Promise<Provider> = new Promise((resolve, reject) => {
 
 

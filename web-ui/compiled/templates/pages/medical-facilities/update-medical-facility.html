@@ -1,0 +1,207 @@
+<div class="page-center">
+    <div class="page-center-in">
+        <div class="container-fluid">
+            <h5 class="with-border">Edit Medical Facility</h5>
+            <form [formGroup]="medicalFacilityForm" (ngSubmit)="updateMedicalFacility()">
+                <section class="card">
+                    <!--<div class="sign-avatar no-photo">+</div>-->
+                    <header class="card-header card-header-lg">
+                        Medical facility Information
+                    </header>
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label class="form-label"> Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="medicalFacilityFormControls.name.touched && !medicalFacilityFormControls.name.valid">
+                                    <input formControlName="name" [ngModel]="medicalfacility.name" type="text" class="form-control" placeholder="" [class.error]="!medicalFacilityFormControls.name.valid">
+                                    <div class='error-list' *ngIf="medicalFacilityFormControls.name.touched && !medicalFacilityFormControls.name.valid">
+                                        <ul>
+                                            <li *ngIf="medicalFacilityFormControls.name.hasError('required')">Medical facility name is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>                             
+                            <div class="col-lg-4">
+                                <label class="form-label"> Prefix
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="medicalFacilityFormControls.prefix.touched && !medicalFacilityFormControls.prefix.valid">
+                                     <select formControlName="prefix" [ngModel]="medicalfacility.prefix" class="selectpicker form-control" title="Select Prefix." [class.error]="medicalFacilityFormControls.prefix.touched && !medicalFacilityFormControls.prefix.valid">
+                                             <option value="">-Select Prefix-</option>
+                                             <option disabled>────────────────────</option>
+                                             <option value="MM">MM</option>
+                                         </select><div class='error-list' *ngIf="medicalFacilityFormControls.prefix.touched && !medicalFacilityFormControls.prefix.valid">
+                                        <ul>
+                                            <li *ngIf="medicalFacilityFormControls.prefix.hasError('required')">Prefix is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>                             
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="card">
+                    <header class="card-header card-header-lg">
+                        Contact Information
+                    </header>
+                    <div class="card-block" formGroupName="contact" >
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label class="form-label"> E-Mail
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="medicalFacilityFormControls.contact.controls.email.touched && !medicalFacilityFormControls.contact.controls.email.valid">
+                                    <input type="email" formControlName="email" [ngModel]="contactInfo.emailAddress" [class.error]="!medicalFacilityFormControls.contact.controls.email.valid" 
+                                    class="form-control" type="text" placeholder="" />
+                                    <div class='error-list' *ngIf="medicalFacilityFormControls.contact.controls.email.touched && !medicalFacilityFormControls.contact.controls.email.valid">
+                                        <ul>
+                                            <li *ngIf="medicalFacilityFormControls.contact.controls.email.hasError('required')">Email is required.</li>
+                                            <li *ngIf="medicalFacilityFormControls.contact.controls.email.hasError('emailValidator')">Email is invalid.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!--<small class="text-muted">We'll never share your email with anyone else.</small>-->
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="form-label"> Cellphone
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="medicalFacilityFormControls.contact.controls.cellPhone.touched && !medicalFacilityFormControls.contact.controls.cellPhone.valid">
+                                    <p-inputMask mask="999-999-9999" formControlName="cellPhone" [ngModel]="contactInfo.cellPhone" [class.error]="medicalFacilityFormControls.contact.controls.cellPhone.touched && !medicalFacilityFormControls.contact.controls.cellPhone.valid" 
+                                     placeholder="999-999-9999" styleClass="form-control" [options]="{showMaskOnHover:false}"></p-inputMask>
+                                    <div class='error-list' *ngIf="medicalFacilityFormControls.contact.controls.cellPhone.touched && !medicalFacilityFormControls.contact.controls.cellPhone.valid">
+                                        <ul>
+                                            <li *ngIf="medicalFacilityFormControls.contact.controls.cellPhone.hasError('required')">Cellphone number is required.</li>
+                                            <li *ngIf="medicalFacilityFormControls.contact.controls.cellPhone.hasError('mobileNoValidator')">Cellphone number is invalid.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                         </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group" >
+                                        <label class="form-label"> Home Phone No</label>
+                                    <input formControlName="homePhone" [ngModel]="contactInfo.homePhone" type="text" class="form-control" placeholder="" />
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                        <label class="form-label"> Work Phone No</label>
+                                    <input formControlName="workPhone" [ngModel]="contactInfo.workPhone" type="text" class="form-control" placeholder=""/>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                        <label class="form-label"> Fax No</label>
+                                    <input formControlName="faxNo" [ngModel]="contactInfo.faxNo" type="text" class="form-control" placeholder="" />
+                                </div>
+                            </div>
+                          </div> 
+                          </div>
+                  </section>
+                
+                <section class="card">
+                    <header class="card-header card-header-lg">
+                        Address Information
+                    </header>
+                    <div class="card-block" formGroupName="address">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label class="form-label"> Address1
+                                        </label>
+                                <div class="form-group" [class.error]="medicalFacilityFormControls.address.controls.address1.touched && !medicalFacilityFormControls.address.controls.address1.valid">
+                                    <input formControlName="address1" [ngModel]="address.address1" type="email" [class.error]="!medicalFacilityFormControls.address.controls.address1.valid" class="form-control" placeholder=""
+                                        type="text" />
+                                    <div class='error-list' *ngIf="medicalFacilityFormControls.address.controls.address1.touched && !medicalFacilityFormControls.address.controls.address1.valid">
+                                        <ul>
+                                            <li *ngIf="medicalFacilityFormControls.address.controls.address1.hasError('required')">Address1 is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!--<small class="text-muted">We'll never share your email with anyone else.</small>-->
+                            </div>
+
+                            <div class="col-lg-4">
+                                <label class="form-label"> Address2
+                                        </label>
+                                <div class="form-group" [class.error]="medicalFacilityFormControls.address.controls.address2.touched && !medicalFacilityFormControls.address.controls.address2.valid">
+                                    <input formControlName="address2" [ngModel]="address.address2" type="text" class="form-control" [class.error]="!medicalFacilityFormControls.address.controls.address2.valid" placeholder=""
+                                    />
+                                    <div class='error-list' *ngIf="medicalFacilityFormControls.address.controls.address2.touched && !medicalFacilityFormControls.address.controls.address2.valid">
+                                        <ul>
+                                            <li *ngIf="medicalFacilityFormControls.address.controls.address2.hasError('required')">Address2 is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="form-label"> City
+                                        </label>
+                                <div class="form-group" [class.error]="medicalFacilityFormControls.address.controls.city.touched && !medicalFacilityFormControls.address.controls.city.valid">
+                                    <input formControlName="city" [ngModel]="address.city" type="text" class="form-control" [class.error]="!medicalFacilityFormControls.address.controls.city.valid" placeholder=""
+                                    />
+                                    <div class='error-list' *ngIf="medicalFacilityFormControls.address.controls.city.touched && !medicalFacilityFormControls.address.controls.city.valid">
+                                        <ul>
+                                            <li *ngIf="medicalFacilityFormControls.address.controls.city.hasError('required')">City is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                         </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label class="form-label"> State
+                                        </label>
+                                <div class="form-group" [class.error]="medicalFacilityFormControls.address.controls.state.touched && !medicalFacilityFormControls.address.controls.state.valid">
+                                      <input formControlName="state" [ngModel]="address.state" type="text" list="states" name="mystate" class="form-control"/>
+                                        <datalist id="states">
+                                        	<option *ngFor="let state of states">{{ state }}</option>
+                                        </datalist>
+                                    <div class='error-list' *ngIf="medicalFacilityFormControls.address.controls.state.touched && !medicalFacilityFormControls.address.controls.state.valid">
+                                        <ul>
+                                            <li *ngIf="medicalFacilityFormControls.address.controls.state.hasError('required')">State is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="form-label"> Zipcode
+                                        </label>
+                                <div class="form-group" [class.error]="medicalFacilityFormControls.address.controls.zipCode.touched && !medicalFacilityFormControls.address.controls.zipCode.valid">
+                                    <input formControlName="zipCode" [ngModel]="address.zipCode" type="text" class="form-control" [class.error]="!medicalFacilityFormControls.address.controls.zipCode.valid" placeholder=""
+                                    />
+                                    <div class='error-list' *ngIf="medicalFacilityFormControls.address.controls.zipCode.touched && !medicalFacilityFormControls.address.controls.zipCode.valid">
+                                        <ul>
+                                            <li *ngIf="medicalFacilityFormControls.address.controls.zipCode.hasError('required')">ZipCode is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="form-label"> Country
+                                        </label>
+                                <div class="form-group" [class.error]="medicalFacilityFormControls.address.controls.country.touched && !medicalFacilityFormControls.address.controls.country.valid">
+                                    <input formControlName="country" [ngModel]="address.country" type="text" class="form-control" [class.error]="!medicalFacilityFormControls.address.controls.country.valid" placeholder=""
+                                    />
+                                    <div class='error-list' *ngIf="medicalFacilityFormControls.address.controls.country.touched && !medicalFacilityFormControls.address.controls.country.valid">
+                                        <ul>
+                                            <li *ngIf="medicalFacilityFormControls.address.controls.country.hasError('required')">Country is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                      </section>
+                <button [disabled]="!medicalFacilityForm.valid || isSaveMedicalFacilityProgress" type="submit" class="btn btn-success sign-up">Update
+                    <loader [visible]="isSaveMedicalFacilityProgress"></loader>
+                </button>
+                <a [routerLink]="['/medical-facilities']" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>

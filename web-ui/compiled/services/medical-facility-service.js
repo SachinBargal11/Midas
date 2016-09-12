@@ -52,6 +52,20 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                     this._headers = new http_1.Headers();
                     this._headers.append('Content-Type', 'application/json');
                 }
+                MedicalFacilityService.prototype.getMedicalFacility = function (medfacilityId) {
+                    var _this = this;
+                    var promise = new Promise(function (resolve, reject) {
+                        return _this._http.get(_this._url + '/MedicalFacility/Get/' + medfacilityId).map(function (res) { return res.json(); })
+                            .subscribe(function (medicalFacilityData) {
+                            var parsedMedicalFacility = null;
+                            parsedMedicalFacility = medical_facility_adapter_1.MedicalFacilityAdapter.parseResponse(medicalFacilityData);
+                            resolve(parsedMedicalFacility);
+                        }, function (error) {
+                            reject(error);
+                        });
+                    });
+                    return Observable_1.Observable.fromPromise(promise);
+                };
                 MedicalFacilityService.prototype.getMedicalFacilities = function (accountId) {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {
@@ -68,6 +82,35 @@ System.register(['@angular/core', '@angular/http', 'underscore', 'rxjs/Observabl
                     return Observable_1.Observable.fromPromise(promise);
                 };
                 MedicalFacilityService.prototype.addMedicalFacility = function (medicalFacilityDetail) {
+                    var _this = this;
+                    var promise = new Promise(function (resolve, reject) {
+                        var medicalFacilityDetailRequestData = medicalFacilityDetail.toJS();
+                        // add/replace values which need to be changed
+                        underscore_1.default.extend(medicalFacilityDetailRequestData.user, {
+                            userType: UserType_1.UserType[medicalFacilityDetailRequestData.user.userType],
+                            dateOfBirth: medicalFacilityDetailRequestData.user.dateOfBirth ? medicalFacilityDetailRequestData.user.dateOfBirth.toISOString() : null
+                        });
+                        // remove unneeded keys 
+                        medicalFacilityDetailRequestData.user = underscore_1.default.omit(medicalFacilityDetailRequestData.user, 'accountId', 'password', 'userName', 'imageLink', 'dateOfBirth', 'name', 'userType', 'firstName', 'middleName', 'lastName', 'gender', 'status', 'isDeleted', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+                        medicalFacilityDetailRequestData.address = underscore_1.default.omit(medicalFacilityDetailRequestData.address, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+                        medicalFacilityDetailRequestData.contactInfo = underscore_1.default.omit(medicalFacilityDetailRequestData.contactInfo, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+                        medicalFacilityDetailRequestData.account = underscore_1.default.omit(medicalFacilityDetailRequestData.account, 'name', 'status', 'isDeleted', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+                        medicalFacilityDetailRequestData.medicalfacility = underscore_1.default.omit(medicalFacilityDetailRequestData.medicalfacility, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+                        return _this._http.post(_this._url + '/MedicalFacility/Add', JSON.stringify(medicalFacilityDetailRequestData), {
+                            headers: _this._headers
+                        })
+                            .map(function (res) { return res.json(); })
+                            .subscribe(function (medicalFacilityData) {
+                            var parsedMedicalFacility = null;
+                            parsedMedicalFacility = medical_facility_adapter_1.MedicalFacilityAdapter.parseResponse(medicalFacilityData);
+                            resolve(parsedMedicalFacility);
+                        }, function (error) {
+                            reject(error);
+                        });
+                    });
+                    return Observable_1.Observable.fromPromise(promise);
+                };
+                MedicalFacilityService.prototype.updateMedicalFacility = function (medicalFacilityDetail) {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {
                         var medicalFacilityDetailRequestData = medicalFacilityDetail.toJS();

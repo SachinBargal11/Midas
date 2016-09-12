@@ -5,6 +5,7 @@ import {AppValidators} from '../../utils/AppValidators';
 import {LoaderComponent} from '../elements/loader';
 import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
 
+import {AccountDetail} from '../../models/account-details';
 import {UserDetail} from '../../models/user-details';
 import {User} from '../../models/user';
 import {ContactInfo} from '../../models/contact';
@@ -23,7 +24,7 @@ import {AuthenticationService} from '../../services/authentication-service';
 })
 
 export class ChangePasswordComponent implements OnInit {
-    userDetail: UserDetail;
+    accountDetail: AccountDetail;
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -47,8 +48,8 @@ export class ChangePasswordComponent implements OnInit {
             let userId: number = this._sessionStore.session.user.id;
             let result = this._usersService.getUser(userId);
             result.subscribe(
-                (userDetail: UserDetail) => {
-                   this.userDetail = userDetail;
+                (accountDetail: AccountDetail) => {
+                   this.accountDetail = accountDetail;
                 },
                 (error) => {
                     this._router.navigate(['/users']);
@@ -69,33 +70,33 @@ export class ChangePasswordComponent implements OnInit {
     }
 
     updatePassword() {
-        let userDetail = new UserDetail({
+        let userDetail = new AccountDetail({
             account: new Account({
                id: this._sessionStore.session.account_id
             }),
             user: new User({
-                id: this.userDetail.user.id,
-                firstName: this.userDetail.user.firstName,
-                middleName: this.userDetail.user.middleName,
-                lastName: this.userDetail.user.lastName,
-                userType: this.userDetail.user.userType,
-                userName: this.userDetail.user.userName,
+                id: this.accountDetail.user.id,
+                firstName: this.accountDetail.user.firstName,
+                middleName: this.accountDetail.user.middleName,
+                lastName: this.accountDetail.user.lastName,
+                userType: this.accountDetail.user.userType,
+                userName: this.accountDetail.user.userName,
                 password: this.changePassForm.value.password
             }),
             contactInfo: new ContactInfo({
-                cellPhone: this.userDetail.contactInfo.cellPhone,
-                emailAddress: this.userDetail.contactInfo.emailAddress,
-                faxNo: this.userDetail.contactInfo.faxNo,
-                homePhone: this.userDetail.contactInfo.homePhone,
-                workPhone: this.userDetail.contactInfo.workPhone,
+                cellPhone: this.accountDetail.contactInfo.cellPhone,
+                emailAddress: this.accountDetail.contactInfo.emailAddress,
+                faxNo: this.accountDetail.contactInfo.faxNo,
+                homePhone: this.accountDetail.contactInfo.homePhone,
+                workPhone: this.accountDetail.contactInfo.workPhone,
             }),
             address: new Address({
-                address1: this.userDetail.address.address1,
-                address2: this.userDetail.address.address2,
-                city: this.userDetail.address.city,
-                country: this.userDetail.address.country,
-                state: this.userDetail.address.state,
-                zipCode: this.userDetail.address.zipCode,
+                address1: this.accountDetail.address.address1,
+                address2: this.accountDetail.address.address2,
+                city: this.accountDetail.address.city,
+                country: this.accountDetail.address.country,
+                state: this.accountDetail.address.state,
+                zipCode: this.accountDetail.address.zipCode,
             })
         });
 
@@ -104,7 +105,8 @@ export class ChangePasswordComponent implements OnInit {
         let userName = this._sessionStore.session.user.userName;
         let oldpassword = this.changePassForm.value.oldpassword;
 
-        let result = this._sessionStore.authenticatePassword(userName, oldpassword);
+        // let result = this._sessionStore.authenticatePassword(userName, oldpassword);
+        let result = this._authenticationService.authenticate(userName, oldpassword);
            result.subscribe(
             (response) => {
             this._usersStore.updatePassword(userDetail)

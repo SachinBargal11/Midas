@@ -42,8 +42,11 @@ System.register(['@angular/core', '@angular/router', '../../../services/medical-
                 MedicalFacilitiesListComponent.prototype.ngOnInit = function () {
                     var _this = this;
                     var accountId = this._sessionStore.session.account_id;
-                    var user = this._medicalFacilityService.getMedicalFacilities(accountId)
+                    var medicalfacility = this._medicalFacilityService.getMedicalFacilities(accountId)
                         .subscribe(function (medicalfacilities) { return _this.medicalfacilities = medicalfacilities; });
+                };
+                MedicalFacilitiesListComponent.prototype.selectMedicalFacility = function (medicalfacility) {
+                    this._router.navigate(['/medical-facilities/update/' + medicalfacility.medicalfacility.id]);
                 };
                 MedicalFacilitiesListComponent = __decorate([
                     core_1.Component({

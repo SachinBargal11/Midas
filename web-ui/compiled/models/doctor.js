@@ -24,6 +24,7 @@ System.register(['immutable'], function(exports_1, context_1) {
                 taxType: '',
                 assignNumber: '',
                 title: '',
+                doctorUser: '',
                 isDeleted: 0,
                 createByUserId: 0,
                 updateByUserId: 0,

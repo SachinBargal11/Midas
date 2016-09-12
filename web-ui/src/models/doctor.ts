@@ -14,6 +14,7 @@ const DoctorRecord = Record({
     taxType: '',
     assignNumber: '',
     title: '',
+    doctorUser: '',
     isDeleted: 0,
     createByUserId: 0,
     updateByUserId: 0,
@@ -32,6 +33,7 @@ export class Doctor extends DoctorRecord {
     taxType: string;
     assignNumber: string;
     title: string;
+    doctorUser: User;
     isDeleted: boolean;
     createByUserId: number;
     updateByUserId: number;

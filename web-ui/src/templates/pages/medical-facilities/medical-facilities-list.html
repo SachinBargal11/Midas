@@ -7,8 +7,13 @@
 </div>
 
 <p-dataTable [value]="medicalfacilities" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
-    <header>Medical Facilities</header>
+    <header>List of Medical Facilities</header>
     <p-column field="medicalfacility.name" header="Medicalfacility Name" [sortable]="true" [filter]="true"></p-column>
     <p-column field="medicalfacility.prefix" header="Prefix" [sortable]="true" [filter]="true"></p-column>
-    <p-column field="medicalfacility.id" header="Medicalfacility id" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>   
+    <p-column field="medicalfacility.id" header="Medicalfacility id" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
+    <p-column styleClass="col-button" header="Edit">
+        <template let-medicalfacility="rowData">
+            <button type="button" pButton (click)="selectMedicalFacility(medicalfacility)" icon="glyphicon glyphicon-edit"></button>
+        </template>
+    </p-column>   
 </p-dataTable>

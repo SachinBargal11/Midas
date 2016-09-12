@@ -24,6 +24,19 @@ export class MedicalFacilityService {
     ) {
         this._headers.append('Content-Type', 'application/json');
     }
+    getMedicalFacility(medfacilityId: Number): Observable<MedicalFacilityDetail> {
+        let promise: Promise<MedicalFacilityDetail> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/MedicalFacility/Get/' + medfacilityId).map(res => res.json())
+                .subscribe((medicalFacilityData: any) => {
+                    let parsedMedicalFacility: MedicalFacilityDetail = null;
+                    parsedMedicalFacility = MedicalFacilityAdapter.parseResponse(medicalFacilityData);
+                    resolve(parsedMedicalFacility);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<MedicalFacilityDetail>>Observable.fromPromise(promise);
+    }
 
     getMedicalFacilities(accountId: number): Observable<MedicalFacilityDetail[]> {
         let promise: Promise<MedicalFacilityDetail[]> = new Promise((resolve, reject) => {
@@ -72,6 +85,39 @@ export class MedicalFacilityService {
                 });
         });
         return <Observable<MedicalFacilityDetail>>Observable.fromPromise(promise);
+    }
+       updateMedicalFacility(medicalFacilityDetail: MedicalFacilityDetail): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+
+
+            let medicalFacilityDetailRequestData = medicalFacilityDetail.toJS();
+
+            // add/replace values which need to be changed
+            _.extend(medicalFacilityDetailRequestData.user, {
+                userType: UserType[medicalFacilityDetailRequestData.user.userType],
+                dateOfBirth: medicalFacilityDetailRequestData.user.dateOfBirth ? medicalFacilityDetailRequestData.user.dateOfBirth.toISOString() : null
+            });
+
+            // remove unneeded keys 
+            medicalFacilityDetailRequestData.user = _.omit(medicalFacilityDetailRequestData.user, 'accountId', 'password', 'userName', 'imageLink', 'dateOfBirth', 'name', 'userType', 'firstName', 'middleName', 'lastName', 'gender', 'status', 'isDeleted', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+            medicalFacilityDetailRequestData.address = _.omit(medicalFacilityDetailRequestData.address, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+            medicalFacilityDetailRequestData.contactInfo = _.omit(medicalFacilityDetailRequestData.contactInfo, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+            medicalFacilityDetailRequestData.account = _.omit(medicalFacilityDetailRequestData.account, 'name', 'status', 'isDeleted', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+            medicalFacilityDetailRequestData.medicalfacility = _.omit(medicalFacilityDetailRequestData.medicalfacility, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+
+            return this._http.post(this._url + '/MedicalFacility/Add', JSON.stringify(medicalFacilityDetailRequestData), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((medicalFacilityData: any) => {
+                    let parsedMedicalFacility: MedicalFacilityDetail = null;
+                    parsedMedicalFacility = MedicalFacilityAdapter.parseResponse(medicalFacilityData);
+                    resolve(parsedMedicalFacility);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
     }
 
     fetchMedicalFacilityById(id: number): Observable<MedicalFacilityDetail> {

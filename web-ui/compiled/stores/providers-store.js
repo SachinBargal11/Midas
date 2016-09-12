@@ -68,10 +68,47 @@ System.register(['@angular/core', 'rxjs/Observable', 'rxjs/add/operator/share', 
                     });
                     return Observable_1.Observable.fromPromise(promise);
                 };
+                ProvidersStore.prototype.findProviderById = function (id) {
+                    var providers = this._providers.getValue();
+                    var index = providers.findIndex(function (currentProvider) { return currentProvider.provider.id === id; });
+                    return providers.get(index);
+                };
+                ProvidersStore.prototype.fetchProviderById = function (id) {
+                    var _this = this;
+                    var promise = new Promise(function (resolve, reject) {
+                        var matchedProvider = _this.findProviderById(id);
+                        if (matchedProvider) {
+                            resolve(matchedProvider);
+                        }
+                        else {
+                            _this._providersService.getProvider(id)
+                                .subscribe(function (provider) {
+                                resolve(provider);
+                            }, function (error) {
+                                reject(error);
+                            });
+                        }
+                    });
+                    return Observable_1.Observable.fromPromise(promise);
+                };
                 ProvidersStore.prototype.addProvider = function (providerDetail) {
                     var _this = this;
                     var promise = new Promise(function (resolve, reject) {
                         _this._providersService.addProvider(providerDetail).subscribe(function (provider) {
+                            _this._providers.next(_this._providers.getValue().push(provider));
+                            resolve(provider);
+                        }, function (error) {
+                            reject(error);
+                        });
+                    });
+                    return Observable_1.Observable.from(promise);
+                };
+                ProvidersStore.prototype.updateProvider = function (provider) {
+                    var _this = this;
+                    // let providers = this._providers.getValue();
+                    // let index = providers.findIndex((currentProvider: Provider) => currentProvider.provider.id === provider.provider.id);
+                    var promise = new Promise(function (resolve, reject) {
+                        _this._providersService.updateProvider(provider).subscribe(function (currentProvider) {
                             _this._providers.next(_this._providers.getValue().push(provider));
                             resolve(provider);
                         }, function (error) {

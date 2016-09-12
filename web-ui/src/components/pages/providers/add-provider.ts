@@ -67,8 +67,7 @@ export class AddProviderComponent implements OnInit {
                 name: providerFormValues.provider.name,
                 npi: providerFormValues.provider.npi,
                 federalTaxID: providerFormValues.provider.federalTaxID,
-                prefix: providerFormValues.provider.prefix,
-                createByUserID: 176
+                prefix: providerFormValues.provider.prefix
             }
         });
         this.isSaveProviderProgress = true;

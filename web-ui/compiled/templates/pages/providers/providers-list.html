@@ -6,9 +6,14 @@
     <input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Provider">
 </div>
 <p-dataTable [value]="providers" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
-    <header>Providers</header>
+    <header>List of Providers</header>
     <p-column field="name" header="Provider Name" [sortable]="true" [filter]="true"></p-column>
     <p-column field="npi" header="NPI" [sortable]="true" [filter]="true"></p-column>
     <p-column field="prefix" header="Prefix" [sortable]="true" [filter]="true"></p-column>
     <p-column field="id" header="Provider id" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
+    <p-column styleClass="col-button" header="Edit">
+        <template let-provider="rowData">
+           <button type="button" pButton (click)="selectProvider(provider)" icon="glyphicon glyphicon-edit"></button>
+        </template>
+    </p-column>
 </p-dataTable>

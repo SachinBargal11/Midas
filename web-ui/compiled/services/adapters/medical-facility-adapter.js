@@ -15,21 +15,9 @@ System.register(['../../models/medical-facility-details', 'underscore'], functio
             MedicalFacilityAdapter = (function () {
                 function MedicalFacilityAdapter() {
                 }
-                // static parseMedicalFacilityResponse(medicalFacilityData: any): MedicalFacility {
-                //     let medicalFacility = null;
-                //     let tempMedicalFacility = _.omit(medicalFacilityData, 'defaultAttorneyUserid', 'updateDate');
-                //     if (medicalFacilityData) {
-                //          medicalFacility = new MedicalFacility({
-                //             name: medicalFacilityData.name,
-                //             prefix: medicalFacilityData.prefix,
-                //             // defaultAttorneyUserid: medicalFacilityData.defaultAttorneyUserid
-                //          });
-                //     }
-                //     return medicalFacility;
-                // }
                 MedicalFacilityAdapter.parseResponse = function (medicalFacilityData) {
                     var medicalFacility = null;
-                    var tempMedicalFacility = underscore_1.default.omit(medicalFacilityData, 'address', 'contactInfo', 'updateDate');
+                    var tempMedicalFacility = underscore_1.default.omit(medicalFacilityData, 'updateDate');
                     if (medicalFacilityData) {
                         medicalFacility = new medical_facility_details_1.MedicalFacilityDetail({
                             medicalfacility: tempMedicalFacility,

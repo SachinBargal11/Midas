@@ -1,7 +1,7 @@
-System.register(['./guards/validate-active-session', '../components/pages/providers/add-provider', '../components/pages/providers/providers-list'], function(exports_1, context_1) {
+System.register(['./guards/validate-active-session', '../components/pages/providers/add-provider', '../components/pages/providers/update-provider', '../components/pages/providers/providers-list'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var validate_active_session_1, add_provider_1, providers_list_1;
+    var validate_active_session_1, add_provider_1, update_provider_1, providers_list_1;
     var ProvidersRoutes;
     return {
         setters:[
@@ -10,6 +10,9 @@ System.register(['./guards/validate-active-session', '../components/pages/provid
             },
             function (add_provider_1_1) {
                 add_provider_1 = add_provider_1_1;
+            },
+            function (update_provider_1_1) {
+                update_provider_1 = update_provider_1_1;
             },
             function (providers_list_1_1) {
                 providers_list_1 = providers_list_1_1;
@@ -24,6 +27,11 @@ System.register(['./guards/validate-active-session', '../components/pages/provid
                 {
                     path: 'providers/add',
                     component: add_provider_1.AddProviderComponent,
+                    canActivate: [validate_active_session_1.ValidateActiveSession]
+                },
+                {
+                    path: 'providers/update/:id',
+                    component: update_provider_1.UpdateProviderComponent,
                     canActivate: [validate_active_session_1.ValidateActiveSession]
                 }
             ]);
