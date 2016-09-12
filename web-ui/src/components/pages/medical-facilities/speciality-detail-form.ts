@@ -51,7 +51,7 @@ export class SpecialityDetailFormComponent {
         private _medicalFacilityStore: MedicalFacilityStore,
         private _specialityStore: SpecialityStore
     ) {
-        this.specialities = this._specialityStore.specialties;
+        this.specialities = this._specialityStore.specialities;
         this.specialityDetailForm = this.fb.group({
             isUnitApply: [''],
             followUpDays: ['', Validators.required],
@@ -69,7 +69,7 @@ export class SpecialityDetailFormComponent {
 
     saveSpecialityDetail() {
         let specialityDetailFormValues = this.specialityDetailForm.value;
-        let specialtyDetail = new SpecialityDetail({
+        let specialityDetail = new SpecialityDetail({
             id: this.specialityDetail.id,
             isUnitApply: parseInt(specialityDetailFormValues.isUnitApply),
             followUpDays: parseInt(specialityDetailFormValues.followUpDays),
@@ -84,7 +84,7 @@ export class SpecialityDetailFormComponent {
         this.isSpecialityDetailSaveInProgress = true;
         let result;
 
-        result = this._medicalFacilityStore.updateSpecialityDetail(specialtyDetail, this.medicalFacilityDetail);
+        result = this._medicalFacilityStore.updateSpecialityDetail(specialityDetail, this.medicalFacilityDetail);
         result.subscribe(
             (response) => {
                 let notification = new Notification({

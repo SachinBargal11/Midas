@@ -76,9 +76,9 @@ export class MedicalFacilityStore {
         return <Observable<MedicalFacilityDetail>>Observable.from(promise);
     }
 
-    updateSpecialityDetail(specialtyDetail: SpecialityDetail, medicalFacilityDetail: MedicalFacilityDetail) {
+    updateSpecialityDetail(specialityDetail: SpecialityDetail, medicalFacilityDetail: MedicalFacilityDetail) {
         let promise = new Promise((resolve, reject) => {
-            this._medicalFacilitiesService.updateSpecialityDetail(specialtyDetail, medicalFacilityDetail).subscribe((medicalFacility: MedicalFacilityDetail) => {
+            this._medicalFacilitiesService.updateSpecialityDetail(specialityDetail, medicalFacilityDetail).subscribe((medicalFacility: MedicalFacilityDetail) => {
                 this._medicalFacilities.next(this._medicalFacilities.getValue().push(medicalFacility));
                 resolve(medicalFacility);
             }, error => {

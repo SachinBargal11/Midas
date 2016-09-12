@@ -164,17 +164,17 @@ export class MedicalFacilityService {
         let promise: Promise<MedicalFacilityDetail> = new Promise((resolve, reject) => {
             let specialityDetailData = _.omit(specialityDetail.toJS(), 'id');
             let requestData = {
-                specialty: {
+                speciality: {
                     id: specialityDetail.associatedSpeciality
                 },
                 medicalFacility: {
                     id: medicalFacilityDetail.medicalfacility.id
                 },
                 id: specialityDetail.id,
-                specialtyDetail: specialityDetailData
+                specialityDetail: specialityDetailData
             };
 
-            return this._http.post(this._url + '/SpecialtyDetails/Add', JSON.stringify(requestData), {
+            return this._http.post(this._url + '/SpecialityDetails/Add', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())

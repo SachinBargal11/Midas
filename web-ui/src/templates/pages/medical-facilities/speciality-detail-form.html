@@ -8,7 +8,7 @@
                         <select [ngModel]="specialityDetail.associatedSpeciality" formControlName="associatedSpeciality" class="selectpicker form-control"
                             [class.error]="specialityDetailFormControls.associatedSpeciality.touched && !specialityDetailFormControls.associatedSpeciality.valid">
                             <option value="0">-Select Speciality-</option>
-                            <option *ngFor="let speciality of specialities | async" value="{{speciality.specialty.id}}">{{speciality.specialty.specialityCode}} - {{speciality.specialty.name}}</option>
+                            <option *ngFor="let speciality of specialities | async" value="{{speciality.speciality.id}}">{{speciality.speciality.specialityCode}} - {{speciality.speciality.name}}</option>
                         </select>
                         <div class='error-list' *ngIf="specialityDetailFormControls.associatedSpeciality.touched && !specialityDetailFormControls.associatedSpeciality.valid">
                             <ul>
