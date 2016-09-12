@@ -90,7 +90,7 @@ module.exports = {
 			expand: true
     	},{
 			cwd: 'node_modules/datatables/',
-			src: ['media/js/jquery.dataTables.min.js'],
+			src: ['media/js/jquery.dataTables.min.js', 'media/css/jquery.dataTables.min.css'],
 			dest: '<%= distLocation %>/node_modules/datatables/',
 			expand: true
     	},{
