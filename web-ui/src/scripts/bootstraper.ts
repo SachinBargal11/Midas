@@ -57,6 +57,8 @@ import {PatientDetailsComponent } from '../components/pages/patients/patient-det
 import {PatientProfileComponent } from '../components/pages/patients/profile-patient';
 import {AppHeaderComponent} from '../components/elements/app-header';
 import {MainNavComponent} from '../components/elements/main-nav';
+import {LoaderComponent} from '../components/elements/loader';
+import {ProgressBarComponent} from '../components/elements/progress-bar';
 
 import {NotificationComponent} from '../components/elements/notification';
 import {ChangePasswordComponent} from '../components/pages/change-password';
@@ -106,6 +108,8 @@ enableProdMode();
         PatientsShellComponent,
         AppHeaderComponent,
         MainNavComponent,
+        LoaderComponent,
+        ProgressBarComponent,
         ChangePasswordComponent,
         NotificationComponent,
         AddUserComponent,

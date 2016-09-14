@@ -19,6 +19,7 @@ import {MedicalFacilityDetail} from '../../../models/medical-facility-details';
 
 export class MedicalFacilitiesListComponent implements OnInit {
 medicalfacilities: MedicalFacilityDetail[];
+medicalfacilitiesLoading;
     constructor(
         private _router: Router,
         private _sessionStore: SessionStore,
@@ -27,8 +28,14 @@ medicalfacilities: MedicalFacilityDetail[];
     }
 
     ngOnInit() {
+        this.loadMedicalFacility();
+    }
+    loadMedicalFacility() {
+        this.medicalfacilitiesLoading = true;
         let accountId = this._sessionStore.session.account_id;
          let medicalfacility = this._medicalFacilityService.getMedicalFacilities(accountId)
-                                .subscribe(medicalfacilities => this.medicalfacilities = medicalfacilities);
+                                .subscribe(medicalfacilities => { this.medicalfacilities = medicalfacilities; },
+                                 null,
+                                    () => { this.medicalfacilitiesLoading = false; });
     }
 }

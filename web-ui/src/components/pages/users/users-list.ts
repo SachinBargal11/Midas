@@ -7,12 +7,14 @@ import {LimitPipe} from '../../../pipes/limit-array-pipe';
 import {DataTable} from 'primeng/primeng';
 import {UserDetail} from '../../../models/user-details';
 import {AccountDetail} from '../../../models/account-details';
+import {LoaderComponent} from '../../elements/loader';
 
 @Component({
     selector: 'users-list',
     templateUrl: 'templates/pages/users/users-list.html',
     directives: [
-        ROUTER_DIRECTIVES
+        ROUTER_DIRECTIVES,
+        LoaderComponent
     ],
     pipes: [ReversePipe, LimitPipe],
     providers: [UsersService]
@@ -21,6 +23,7 @@ import {AccountDetail} from '../../../models/account-details';
 
 export class UsersListComponent implements OnInit {
 users: AccountDetail[];
+usersLoading;
 cols: any[];
     constructor(
         private _router: Router,
@@ -29,9 +32,16 @@ cols: any[];
     ) {
     }
     ngOnInit() {
+        this.loadUsers();
+    }
+
+    loadUsers() {
+        this.usersLoading = true;
         let accountId = this._sessionStore.session.account_id;
          let user = this._usersService.getUsers(accountId)
-                                .subscribe(users => this.users = users);
+                                .subscribe(users => { this.users = users; },
+                                  null,
+                                  () => { this.usersLoading = false; });
 
     }
 }

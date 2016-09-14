@@ -20,6 +20,7 @@ import {Provider} from '../../../models/provider';
 
 export class ProvidersListComponent implements OnInit {
     providers: Provider[];
+    providersLoading;
     constructor(
         private _router: Router,
         private _providersService: ProvidersService
@@ -27,8 +28,15 @@ export class ProvidersListComponent implements OnInit {
     }
 
     ngOnInit() {
-            this._providersService.getProviders()
-                .subscribe(providers => this.providers = providers);
+        this.loadProviders();
+    }
+
+    loadProviders() {
+        this.providersLoading = true;
+        this._providersService.getProviders()
+                .subscribe(providers => { this.providers = providers; },
+                null,
+                  () => { this.providersLoading = false; });
     }
 
 }

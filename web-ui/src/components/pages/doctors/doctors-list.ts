@@ -19,14 +19,20 @@ import {DoctorDetail} from '../../../models/doctor-details';
 
 export class DoctorsListComponent implements OnInit {
 doctors: DoctorDetail[];
+doctorsLoading;
     constructor(
         private _router: Router,
         private _doctorsService: DoctorsService
     ) {
     }
     ngOnInit() {
+        this.loadDoctors();
+    }
+    loadDoctors() {
+        this.doctorsLoading = true;
          let doctor = this._doctorsService.getDoctors()
-                                .subscribe(doctors => this.doctors = doctors);
-
+                                .subscribe(doctors => { this.doctors = doctors; },
+                                 null,
+                                   () => { this.doctorsLoading = false; });
     }
 }

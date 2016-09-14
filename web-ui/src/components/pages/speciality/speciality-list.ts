@@ -19,14 +19,20 @@ import {Speciality} from '../../../models/speciality';
 
 export class SpecialityListComponent implements OnInit {
 specialities: Speciality[];
+specialityLoading;
     constructor(
         private _router: Router,
         private _specialityService: SpecialityService
     ) {
     }
     ngOnInit() {
-         let speciality = this._specialityService.getSpecialities()
-                                .subscribe(specialities => this.specialities = specialities);
-
+        this.loadSpeciality();
+    }
+    loadSpeciality() {
+        this.specialityLoading = true;
+          let speciality = this._specialityService.getSpecialities()
+                                .subscribe(specialities => { this.specialities = specialities; },
+                                null,
+                                  () => { this.specialityLoading = false; });
     }
 }
