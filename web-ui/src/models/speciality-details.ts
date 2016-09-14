@@ -12,7 +12,8 @@ const SpecialityDetailRecord = Record({
     isInitialEvaluation: 1,
     include1500: 1,
     associatedSpeciality: 0,
-    allowMultipleVisit: 1
+    allowMultipleVisit: 1,
+    isDeleted: 0
 });
 
 export class SpecialityDetail extends SpecialityDetailRecord {
@@ -26,6 +27,7 @@ export class SpecialityDetail extends SpecialityDetailRecord {
     include1500: number;
     associatedSpeciality: number;
     allowMultipleVisit: number;
+    isDeleted: number;
 
     constructor(props) {
         super(props);

@@ -17,8 +17,10 @@
                     <tr *ngFor="let specialityDetail of specialityDetails">
                         <td>{{ specialityDetail.associatedSpeciality }}</td>
                         <td>{{ specialityDetail.id }}</td>
-                        <td><button type="button" pButton (click)="updateSpecialityDetail(specialityDetail)" icon="glyphicon glyphicon-edit"></button></td>
-                        <td><button type="button" pButton (click)="deleteSpecialityDetail(specialityDetail)" icon="glyphicon glyphicon-remove"></button></td>
+                        <td><button type="button" pButton (click)="updateSpecialityDetail(specialityDetail, medicalFacilityDetail)"
+                                icon="glyphicon glyphicon-edit"></button></td>
+                        <td><button type="button" pButton (click)="deleteSpecialityDetail(specialityDetail, medicalFacilityDetail)"
+                                icon="glyphicon glyphicon-remove"></button></td>
                     </tr>
                 </tbody>
             </table>
@@ -41,3 +43,4 @@
         </div>
     </div>
 </div>
+<simple-notifications [options]="options"></simple-notifications>

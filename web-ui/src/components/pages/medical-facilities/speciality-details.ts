@@ -1,7 +1,10 @@
 import {Record, List} from 'immutable';
-import {Component, OnInit, ElementRef, ViewChild} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import moment from 'moment';
+import {Component, OnInit, ElementRef, ViewChild, Output, EventEmitter} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
 import { ModalDirective } from 'ng2-bootstrap/ng2-bootstrap';
+import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
 import {MedicalFacilityService} from '../../../services/medical-facility-service';
 import {MedicalFacilityStore} from '../../../stores/medical-facilities-store';
 import {SessionStore} from '../../../stores/session-store';
@@ -10,6 +13,10 @@ import {MedicalFacilityDetail} from '../../../models/medical-facility-details';
 import {MapToJSPipe} from '../../../pipes/map-to-js';
 import {SpecialityDetailFormComponent} from './speciality-detail-form';
 import {AddSpecialityDetailComponent} from './add-speciality-details';
+
+import {NotificationsStore} from '../../../stores/notifications-store';
+import {Notification} from '../../../models/notification';
+
 
 @Component({
     selector: 'speciality-details',
@@ -21,6 +28,14 @@ import {AddSpecialityDetailComponent} from './add-speciality-details';
 export class SpecialityDetailsComponent {
     medicalFacilityDetail: MedicalFacilityDetail;
     @ViewChild('childModal') public childModal: ModalDirective;
+    options = {
+        timeOut: 3000,
+        showProgressBar: true,
+        pauseOnHover: false,
+        clickToClose: false,
+        maxLength: 10
+    };
+
     get specialityDetails(): List<SpecialityDetail> {
         return this.medicalFacilityDetail ? this.medicalFacilityDetail.specialityDetails.getValue() : null;
     }
@@ -28,7 +43,9 @@ export class SpecialityDetailsComponent {
         public _route: ActivatedRoute,
         public _router: Router,
         private _medicalFacilityService: MedicalFacilityService,
-        private _medicalFacilityStore: MedicalFacilityStore
+        private _medicalFacilityStore: MedicalFacilityStore,
+        private _notificationsStore: NotificationsStore,
+        private _notificationsService: NotificationsService
     ) {
         this._route.params.subscribe((routeParams: any) => {
             let medicalFacilityId: number = parseInt(routeParams.id);
@@ -51,5 +68,30 @@ export class SpecialityDetailsComponent {
 
     public hideChildModal(): void {
         this.childModal.hide();
+    }
+
+    deleteSpecialityDetail(specialityDetail: SpecialityDetail, medicalFacilityDetail: MedicalFacilityDetail) {
+        let result: Observable<SpecialityDetail>;
+        result = this._medicalFacilityStore.deleteSpecialityDetail(specialityDetail, this.medicalFacilityDetail);
+        result.subscribe(
+            (response: SpecialityDetail) => {
+                let notification = new Notification({
+                    'title': 'Speciality Detail Deleted Successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+            },
+            (error) => {
+                let notification = new Notification({
+                    'title': 'Unable to delete Speciality Detail.',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'Unable to delete Speciality Detail.');
+            },
+            () => {
+            });
     }
 }

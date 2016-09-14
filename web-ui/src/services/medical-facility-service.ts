@@ -134,7 +134,7 @@ export class MedicalFacilityService {
         return <Observable<MedicalFacilityDetail>>Observable.fromPromise(promise);
     }
 
-    updateSpecialityDetail(specialityDetail: SpecialityDetail, medicalFacilityDetail: MedicalFacilityDetail): Observable<SpecialityDetail> {
+    addSpecialityDetail(specialityDetail: SpecialityDetail, medicalFacilityDetail: MedicalFacilityDetail): Observable<SpecialityDetail> {
         let promise: Promise<SpecialityDetail> = new Promise((resolve, reject) => {
             let specialityDetailData = _.omit(specialityDetail.toJS(), 'id');
             let requestData = {
@@ -145,6 +145,36 @@ export class MedicalFacilityService {
                     id: medicalFacilityDetail.medicalfacility.id
                 },
                 id: specialityDetail.id,
+                specialityDetail: specialityDetailData
+            };
+
+            return this._http.post(this._url + '/SpecialityDetails/Add', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((specialityDetailData: any) => {
+                    let parsedSpecialityDetail: SpecialityDetail = null;
+                    parsedSpecialityDetail = SpecialityDetailAdapter.parseResponse(specialityDetailData);
+                    resolve(parsedSpecialityDetail);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<SpecialityDetail>>Observable.fromPromise(promise);
+    }
+
+
+    deleteSpecialityDetail(specialityDetail: SpecialityDetail, medicalFacilityDetail: MedicalFacilityDetail): Observable<SpecialityDetail> {
+        let promise: Promise<SpecialityDetail> = new Promise((resolve, reject) => {
+            let specialityDetailData = specialityDetail.toJS();
+            specialityDetailData.isDeleted = 1;
+            let requestData = {
+                speciality: {
+                    id: specialityDetail.associatedSpeciality
+                },
+                medicalFacility: {
+                    id: medicalFacilityDetail.medicalfacility.id
+                },
                 specialityDetail: specialityDetailData
             };
 

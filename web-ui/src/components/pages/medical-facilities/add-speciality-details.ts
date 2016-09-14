@@ -95,7 +95,7 @@ export class AddSpecialityDetailComponent {
         this.isSpecialityDetailSaveInProgress = true;
         let result: Observable<SpecialityDetail>;
 
-        result = this._medicalFacilityStore.updateSpecialityDetail(specialityDetail, this.medicalFacilityDetail);
+        result = this._medicalFacilityStore.addSpecialityDetail(specialityDetail, this.medicalFacilityDetail);
         result.subscribe(
             (response: SpecialityDetail) => {
                 let notification = new Notification({
@@ -104,11 +104,9 @@ export class AddSpecialityDetailComponent {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this.specialityDetailForm.reset();
+                this.resetForm();
                 this.addSpecialityDetailSuccess.emit(response);
-                _.defer(() => {
-                    this.specialityDetail = new SpecialityDetail({});
-                });
+
             },
             (error) => {
                 this.isSpecialityDetailSaveInProgress = false;
@@ -125,5 +123,12 @@ export class AddSpecialityDetailComponent {
                 this.isSpecialityDetailSaveInProgress = false;
             });
 
+    }
+
+    resetForm() {
+        this.specialityDetailForm.reset();
+        _.defer(() => {
+            this.specialityDetail = new SpecialityDetail({});
+        });
     }
 }

@@ -76,10 +76,25 @@ export class MedicalFacilityStore {
         return <Observable<MedicalFacilityDetail>>Observable.from(promise);
     }
 
-    updateSpecialityDetail(specialityDetail: SpecialityDetail, medicalFacilityDetail: MedicalFacilityDetail) {
+    addSpecialityDetail(specialityDetail: SpecialityDetail, medicalFacilityDetail: MedicalFacilityDetail) {
         let promise = new Promise((resolve, reject) => {
-            this._medicalFacilitiesService.updateSpecialityDetail(specialityDetail, medicalFacilityDetail).subscribe((specialityDetail: SpecialityDetail) => {
+            this._medicalFacilitiesService.addSpecialityDetail(specialityDetail, medicalFacilityDetail).subscribe((specialityDetail: SpecialityDetail) => {
                 medicalFacilityDetail.specialityDetails.next(medicalFacilityDetail.specialityDetails.getValue().push(specialityDetail));
+                this._medicalFacilities.next(this._medicalFacilities.getValue());
+                resolve(specialityDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<SpecialityDetail>>Observable.from(promise);
+    }
+
+    deleteSpecialityDetail(specialityDetail: SpecialityDetail, medicalFacilityDetail: MedicalFacilityDetail) {
+        let specialityDetails = medicalFacilityDetail.specialityDetails.getValue();
+        let index = specialityDetails.findIndex((currentSpecialityDetail: SpecialityDetail) => currentSpecialityDetail.id === specialityDetail.id);
+        let promise = new Promise((resolve, reject) => {
+            this._medicalFacilitiesService.deleteSpecialityDetail(specialityDetail, medicalFacilityDetail).subscribe((specialityDetail: SpecialityDetail) => {
+                medicalFacilityDetail.specialityDetails.next(specialityDetails.delete(index));
                 this._medicalFacilities.next(this._medicalFacilities.getValue());
                 resolve(specialityDetail);
             }, error => {
