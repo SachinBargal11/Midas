@@ -19,8 +19,8 @@ import {NotificationsStore} from '../../../stores/notifications-store';
 import {Notification} from '../../../models/notification';
 
 @Component({
-    selector: 'add-speciality-details',
-    templateUrl: 'templates/pages/medical-facilities/add-speciality-details.html',
+    selector: 'add-speciality-detail',
+    templateUrl: 'templates/pages/medical-facilities/add-speciality-detail.html',
     directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES],
     providers: [FormBuilder]
 })

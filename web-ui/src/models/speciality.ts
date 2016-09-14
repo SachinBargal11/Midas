@@ -29,4 +29,8 @@ speciality: {
     constructor(props) {
         super(props);
     }
+
+    get displayName(): string {
+        return `${this.speciality.specialityCode} - ${this.speciality.name}`;
+    }
 }

@@ -89,6 +89,25 @@ export class MedicalFacilityStore {
         return <Observable<SpecialityDetail>>Observable.from(promise);
     }
 
+    updateSpecialityDetail(specialityDetail: SpecialityDetail, medicalFacilityDetail: MedicalFacilityDetail) {
+        let specialityDetails = medicalFacilityDetail.specialityDetails.getValue();
+        let index = specialityDetails.findIndex((currentSpecialityDetail: SpecialityDetail) => currentSpecialityDetail.id === specialityDetail.id);
+        let promise = new Promise((resolve, reject) => {
+            this._medicalFacilitiesService.updateSpecialityDetail(specialityDetail, medicalFacilityDetail).subscribe((specialityDetail: SpecialityDetail) => {
+                let specialityDetails: List<SpecialityDetail> = medicalFacilityDetail.specialityDetails.getValue();
+                specialityDetails = specialityDetails.update(index, function () {
+                    return specialityDetail;
+                });
+                medicalFacilityDetail.specialityDetails.next(specialityDetails);
+                this._medicalFacilities.next(this._medicalFacilities.getValue());
+                resolve(specialityDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<SpecialityDetail>>Observable.from(promise);
+    }
+
     deleteSpecialityDetail(specialityDetail: SpecialityDetail, medicalFacilityDetail: MedicalFacilityDetail) {
         let specialityDetails = medicalFacilityDetail.specialityDetails.getValue();
         let index = specialityDetails.findIndex((currentSpecialityDetail: SpecialityDetail) => currentSpecialityDetail.id === specialityDetail.id);

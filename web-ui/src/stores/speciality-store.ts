@@ -23,7 +23,6 @@ export class SpecialityStore {
         private _specialityService: SpecialityService,
         private _sessionStore: SessionStore
     ) {
-        this.loadInitialData();
         this._sessionStore.userLogoutEvent.subscribe(() => {
             this.resetStore();
         });

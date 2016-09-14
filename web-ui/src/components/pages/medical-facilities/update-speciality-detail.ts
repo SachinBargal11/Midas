@@ -1,10 +1,11 @@
-import {Component, OnInit, ElementRef, Input} from '@angular/core';
+import {Component, OnInit, ElementRef, Input, Output, EventEmitter} from '@angular/core';
 import {ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {List} from 'immutable';
 import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
 import {RadioButtonModule} from 'primeng/primeng';
 import moment from 'moment';
+import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
 import {MedicalFacilityService} from '../../../services/medical-facility-service';
 import {MedicalFacilityStore} from '../../../stores/medical-facilities-store';
 import {SessionStore} from '../../../stores/session-store';
@@ -18,35 +19,50 @@ import {NotificationsStore} from '../../../stores/notifications-store';
 import {Notification} from '../../../models/notification';
 
 @Component({
-    selector: 'speciality-detail-form',
-    templateUrl: 'templates/pages/medical-facilities/speciality-detail-form.html',
+    selector: 'update-speciality-detail',
+    templateUrl: 'templates/pages/medical-facilities/update-speciality-detail.html',
     directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES],
     providers: [FormBuilder]
 })
 
 
-export class SpecialityDetailFormComponent {
+export class UpdateSpecialityDetailComponent {
 
-    @Input() specialityDetail: SpecialityDetail;
     @Input() medicalFacilityDetail: MedicalFacilityDetail;
-    private _specialityDetailJS = null;
-    isSpecialityDetailSaveInProgress = false;
-    get specialityDetailJS() {
-        if (!this._specialityDetailJS) {
-            this._specialityDetailJS = this.specialityDetail.toJS();
-        }
-        return this._specialityDetailJS;
-    }
+    @Output() updateSpecialityDetailSuccess = new EventEmitter();
+    @Output() updateSpecialityDetailError = new EventEmitter();
 
+    private _specialityDetail: SpecialityDetail = null;
+
+    @Input() set specialityDetail(value: SpecialityDetail) {
+        if (value) {
+            this._specialityDetail = value;
+            this.specialityDetailForTemplate = this._specialityDetail.toJS();
+        } else {
+            this._specialityDetail = null;
+            this.specialityDetailForTemplate = null;
+        }
+    }
+    specialityDetailForTemplate = null;
+    isSpecialityDetailSaveInProgress = false;
     specialities: Observable<List<Speciality>>;
     specialityDetailForm: FormGroup;
-    specialityDetailFormControls;
+    specialityDetailFormControls: any;
+
+    options = {
+        timeOut: 3000,
+        showProgressBar: true,
+        pauseOnHover: false,
+        clickToClose: false,
+        maxLength: 10
+    };
 
     constructor(
         public _route: ActivatedRoute,
         public _router: Router,
         private fb: FormBuilder,
         private _notificationsStore: NotificationsStore,
+        private _notificationsService: NotificationsService,
         private _medicalFacilityService: MedicalFacilityService,
         private _medicalFacilityStore: MedicalFacilityStore,
         private _specialityStore: SpecialityStore
@@ -70,7 +86,7 @@ export class SpecialityDetailFormComponent {
     saveSpecialityDetail() {
         let specialityDetailFormValues = this.specialityDetailForm.value;
         let specialityDetail = new SpecialityDetail({
-            id: this.specialityDetail.id,
+            id: this._specialityDetail.id,
             isUnitApply: parseInt(specialityDetailFormValues.isUnitApply),
             followUpDays: parseInt(specialityDetailFormValues.followUpDays),
             followupTime: parseInt(specialityDetailFormValues.followupTime),
@@ -82,31 +98,42 @@ export class SpecialityDetailFormComponent {
             allowMultipleVisit: parseInt(specialityDetailFormValues.allowMultipleVisit)
         });
         this.isSpecialityDetailSaveInProgress = true;
-        let result;
+        let result: Observable<SpecialityDetail>;
 
         result = this._medicalFacilityStore.updateSpecialityDetail(specialityDetail, this.medicalFacilityDetail);
         result.subscribe(
-            (response) => {
+            (response: SpecialityDetail) => {
                 let notification = new Notification({
-                    'title': 'Speciality saved successfully!',
+                    'title': 'Speciality added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/medical-facilities/' + this.medicalFacilityDetail.medicalfacility.id + '/specialities']);
+                this.resetForm();
+                this.updateSpecialityDetailSuccess.emit(response);
+
             },
             (error) => {
                 this.isSpecialityDetailSaveInProgress = false;
                 let notification = new Notification({
-                    'title': 'Unable to save Speciality.',
+                    'title': 'Unable to add Speciality.',
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'Unable to add Speciality.');
+                this.updateSpecialityDetailError.emit(error);
             },
             () => {
                 this.isSpecialityDetailSaveInProgress = false;
             });
 
+    }
+
+    resetForm() {
+        this.specialityDetailForm.reset();
+        _.defer(() => {
+            this.specialityDetail = this._specialityDetail;
+        });
     }
 }

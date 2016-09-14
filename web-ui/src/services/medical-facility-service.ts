@@ -144,7 +144,34 @@ export class MedicalFacilityService {
                 medicalFacility: {
                     id: medicalFacilityDetail.medicalfacility.id
                 },
-                id: specialityDetail.id,
+                specialityDetail: specialityDetailData
+            };
+
+            return this._http.post(this._url + '/SpecialityDetails/Add', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((specialityDetailData: any) => {
+                    let parsedSpecialityDetail: SpecialityDetail = null;
+                    parsedSpecialityDetail = SpecialityDetailAdapter.parseResponse(specialityDetailData);
+                    resolve(parsedSpecialityDetail);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<SpecialityDetail>>Observable.fromPromise(promise);
+    }
+
+    updateSpecialityDetail(specialityDetail: SpecialityDetail, medicalFacilityDetail: MedicalFacilityDetail): Observable<SpecialityDetail> {
+        let promise: Promise<SpecialityDetail> = new Promise((resolve, reject) => {
+            let specialityDetailData = specialityDetail.toJS();
+            let requestData = {
+                speciality: {
+                    id: specialityDetail.associatedSpeciality
+                },
+                medicalFacility: {
+                    id: medicalFacilityDetail.medicalfacility.id
+                },
                 specialityDetail: specialityDetailData
             };
 

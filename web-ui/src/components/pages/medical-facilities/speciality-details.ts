@@ -11,11 +11,13 @@ import {SessionStore} from '../../../stores/session-store';
 import {SpecialityDetail} from '../../../models/speciality-details';
 import {MedicalFacilityDetail} from '../../../models/medical-facility-details';
 import {MapToJSPipe} from '../../../pipes/map-to-js';
-import {SpecialityDetailFormComponent} from './speciality-detail-form';
-import {AddSpecialityDetailComponent} from './add-speciality-details';
+import {UpdateSpecialityDetailComponent} from './update-speciality-detail';
+import {AddSpecialityDetailComponent} from './add-speciality-detail';
 
 import {NotificationsStore} from '../../../stores/notifications-store';
 import {Notification} from '../../../models/notification';
+
+import {SpecialityStore} from '../../../stores/speciality-store';
 
 
 @Component({
@@ -27,7 +29,13 @@ import {Notification} from '../../../models/notification';
 
 export class SpecialityDetailsComponent {
     medicalFacilityDetail: MedicalFacilityDetail;
-    @ViewChild('childModal') public childModal: ModalDirective;
+    selectedSpecialityDetail: SpecialityDetail = null;
+    @ViewChild('addSpecialityDetailModal') public addSpecialityDetailModal: ModalDirective;
+    @ViewChild('updateSpecialityDetailModal') public updateSpecialityDetailModal: ModalDirective;
+
+    @ViewChild(AddSpecialityDetailComponent) private addSpecialityDetailComponent: AddSpecialityDetailComponent;
+    @ViewChild(UpdateSpecialityDetailComponent) private updateSpecialityDetailComponent: UpdateSpecialityDetailComponent;
+
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -45,7 +53,8 @@ export class SpecialityDetailsComponent {
         private _medicalFacilityService: MedicalFacilityService,
         private _medicalFacilityStore: MedicalFacilityStore,
         private _notificationsStore: NotificationsStore,
-        private _notificationsService: NotificationsService
+        private _notificationsService: NotificationsService,
+        public specialityStore: SpecialityStore
     ) {
         this._route.params.subscribe((routeParams: any) => {
             let medicalFacilityId: number = parseInt(routeParams.id);
@@ -62,12 +71,34 @@ export class SpecialityDetailsComponent {
         });
     }
 
-    public showChildModal(): void {
-        this.childModal.show();
+    showAddSpecialityDetailModal(): void {
+        this.addSpecialityDetailModal.show();
     }
 
-    public hideChildModal(): void {
-        this.childModal.hide();
+    hideAddSpecialityDetailModal(): void {
+        this.addSpecialityDetailModal.hide();
+    }
+
+    showUpdateSpecialityDetailModal(): void {
+        this.updateSpecialityDetailModal.show();
+    }
+
+    hideUpdateSpecialityDetailModal(): void {
+        this.updateSpecialityDetailModal.hide();
+    }
+
+    onAddSpecialityDetailModalHide(): void {
+        this.addSpecialityDetailComponent.resetForm();
+    }
+
+    onUpdateSpecialityDetailModalHide(): void {
+        this.updateSpecialityDetailComponent.resetForm();
+        this.selectedSpecialityDetail = null;
+    }
+
+    updateSpecialityDetail(specialityDetail: SpecialityDetail, medicalFacilityDetail: MedicalFacilityDetail) {
+        this.selectedSpecialityDetail = specialityDetail;
+        this.showUpdateSpecialityDetailModal();
     }
 
     deleteSpecialityDetail(specialityDetail: SpecialityDetail, medicalFacilityDetail: MedicalFacilityDetail) {
@@ -92,6 +123,7 @@ export class SpecialityDetailsComponent {
                 this._notificationsService.error('Oh No!', 'Unable to delete Speciality Detail.');
             },
             () => {
+
             });
     }
 }

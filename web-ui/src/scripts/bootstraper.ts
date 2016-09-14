@@ -72,8 +72,8 @@ import {UpdateMedicalFacilityComponent} from '../components/pages/medical-facili
 import {AddMedicalFacilityComponent} from '../components/pages/medical-facilities/add-medical-facility';
 import {MedicalFacilitiesListComponent} from '../components/pages/medical-facilities/medical-facilities-list';
 import {SpecialityDetailsComponent} from '../components/pages/medical-facilities/speciality-details';
-import {SpecialityDetailFormComponent} from '../components/pages/medical-facilities/speciality-detail-form';
-import {AddSpecialityDetailComponent} from '../components/pages/medical-facilities/add-speciality-details';
+import {UpdateSpecialityDetailComponent} from '../components/pages/medical-facilities/update-speciality-detail';
+import {AddSpecialityDetailComponent} from '../components/pages/medical-facilities/add-speciality-detail';
 import {AddDoctorComponent} from '../components/pages/doctors/add-doctor';
 import {UpdateDoctorComponent} from '../components/pages/doctors/update-doctor';
 import {DoctorsListComponent} from '../components/pages/doctors/doctors-list';
@@ -122,7 +122,7 @@ enableProdMode();
         UpdateMedicalFacilityComponent,
         MedicalFacilitiesListComponent,
         SpecialityDetailsComponent,
-        SpecialityDetailFormComponent,
+        UpdateSpecialityDetailComponent,
         AddSpecialityDetailComponent,
         AddDoctorComponent,
         UpdateDoctorComponent,
