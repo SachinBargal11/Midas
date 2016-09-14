@@ -99,7 +99,7 @@ export class AddSpecialityDetailComponent {
         result.subscribe(
             (response: SpecialityDetail) => {
                 let notification = new Notification({
-                    'title': 'Speciality added successfully!',
+                    'title': 'Speciality Details added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
@@ -111,12 +111,12 @@ export class AddSpecialityDetailComponent {
             (error) => {
                 this.isSpecialityDetailSaveInProgress = false;
                 let notification = new Notification({
-                    'title': 'Unable to add Speciality.',
+                    'title': 'Unable to add Speciality Details.',
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', 'Unable to add Speciality.');
+                this._notificationsService.error('Oh No!', 'Unable to add Speciality Details.');
                 this.addSpecialityDetailError.emit(error);
             },
             () => {
