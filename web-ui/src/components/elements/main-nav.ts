@@ -1,10 +1,9 @@
 import {Component} from '@angular/core';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'main-nav',
-    templateUrl: 'templates/elements/main-nav.html',
-    // directives: [ROUTER_DIRECTIVES]
+    templateUrl: 'templates/elements/main-nav.html'
 })
 
 export class MainNavComponent {

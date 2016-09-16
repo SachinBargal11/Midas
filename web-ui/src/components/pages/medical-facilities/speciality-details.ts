@@ -2,7 +2,7 @@ import {Record, List} from 'immutable';
 import {Observable} from 'rxjs/Observable';
 import moment from 'moment';
 import {Component, OnInit, ElementRef, ViewChild, Output, EventEmitter} from '@angular/core';
-import {ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import { ModalDirective } from 'ng2-bootstrap/ng2-bootstrap';
 import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
 import {MedicalFacilityService} from '../../../services/medical-facility-service';
@@ -10,7 +10,7 @@ import {MedicalFacilityStore} from '../../../stores/medical-facilities-store';
 import {SessionStore} from '../../../stores/session-store';
 import {SpecialityDetail} from '../../../models/speciality-details';
 import {MedicalFacilityDetail} from '../../../models/medical-facility-details';
-import {MapToJSPipe} from '../../../pipes/map-to-js';
+
 import {UpdateSpecialityDetailComponent} from './update-speciality-detail';
 import {AddSpecialityDetailComponent} from './add-speciality-detail';
 
@@ -23,8 +23,6 @@ import {SpecialityStore} from '../../../stores/speciality-store';
 @Component({
     selector: 'speciality-details',
     templateUrl: 'templates/pages/medical-facilities/speciality-details.html',
-    directives: [ROUTER_DIRECTIVES, ModalDirective],
-    pipes: [MapToJSPipe]
 })
 
 export class SpecialityDetailsComponent {

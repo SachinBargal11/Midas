@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {PatientsStore} from '../../../stores/patients-store';
 import {Observable} from 'rxjs/Observable';
 import {Patient} from '../../../models/patient';
@@ -9,9 +9,7 @@ import {AddPatientComponent} from './add-patient';
 
 @Component({
     selector: 'patients-shell',
-    templateUrl: 'templates/pages/patients/patients-shell.html',
-    directives: [ROUTER_DIRECTIVES],
-    // entryComponents: [PatientsListComponent, PatientDetailsComponent, AddPatientComponent]
+    templateUrl: 'templates/pages/patients/patients-shell.html'
 })
 
 export class PatientsShellComponent implements OnInit {

@@ -1,8 +1,8 @@
 import {Component, OnInit, ElementRef, Input, Output, EventEmitter} from '@angular/core';
-import {ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {List} from 'immutable';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
+import {Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
 import {RadioButtonModule} from 'primeng/primeng';
 import moment from 'moment';
 import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
@@ -21,7 +21,6 @@ import {Notification} from '../../../models/notification';
 @Component({
     selector: 'add-speciality-detail',
     templateUrl: 'templates/pages/medical-facilities/add-speciality-detail.html',
-    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES],
     providers: [FormBuilder]
 })
 

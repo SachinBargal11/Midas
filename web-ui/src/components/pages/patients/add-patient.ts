@@ -1,6 +1,6 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {Validators, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
+import {Router} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
 import {LoaderComponent} from '../../elements/loader';
 import {PatientsStore} from '../../../stores/patients-store';
@@ -14,8 +14,7 @@ import {Calendar} from 'primeng/primeng';
 
 @Component({
     selector: 'add-patient',
-    templateUrl: 'templates/pages/patients/add-patient.html',
-    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar]
+    templateUrl: 'templates/pages/patients/add-patient.html'
 })
 
 export class AddPatientComponent implements OnInit {

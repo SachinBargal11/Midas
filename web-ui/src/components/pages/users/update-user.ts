@@ -1,6 +1,6 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
-import {ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
+import {Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
+import {Router, ActivatedRoute} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
 import {LoaderComponent} from '../../elements/loader';
 import {UsersStore} from '../../../stores/users-store';
@@ -20,15 +20,11 @@ import {Gender} from '../../../models/enums/Gender';
 import {UserType} from '../../../models/enums/UserType';
 import {StatesStore} from '../../../stores/states-store';
 import {StateService} from '../../../services/state-service';
-import {HTTP_PROVIDERS}    from '@angular/http';
-import {LimitPipe} from '../../../pipes/limit-array-pipe';
 
 @Component({
     selector: 'update-user',
     templateUrl: 'templates/pages/users/update-user.html',
-    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar, InputMask, AutoComplete],
-    providers: [HTTP_PROVIDERS, UsersService, StateService, StatesStore, FormBuilder],
-    pipes: [LimitPipe]
+    providers: [UsersService, StateService, StatesStore, FormBuilder]
 })
 
 export class UpdateUserComponent implements OnInit {
@@ -59,14 +55,14 @@ export class UpdateUserComponent implements OnInit {
         private _usersStore: UsersStore,
         private _elRef: ElementRef
     ) {
-          this._route.params.subscribe((routeParams: any) => {
+        this._route.params.subscribe((routeParams: any) => {
             let userId: number = parseInt(routeParams.id);
             let result = this._usersStore.fetchUserById(userId);
             result.subscribe(
                 (userDetail: AccountDetail) => {
-                   this.user = userDetail.user;
-                   this.address = userDetail.address;
-                   this.contactInfo = userDetail.contactInfo;
+                    this.user = userDetail.user;
+                    this.address = userDetail.address;
+                    this.contactInfo = userDetail.contactInfo;
                 },
                 (error) => {
                     this._router.navigate(['/users']);
@@ -75,12 +71,12 @@ export class UpdateUserComponent implements OnInit {
                 });
         });
         this.userform = this.fb.group({
-                firstName: ['', Validators.required],
-                middleName: [''],
-                lastName: ['', Validators.required],
-                userType: ['', Validators.required],
-                password: ['', Validators.required],
-                confirmPassword: ['', Validators.required],
+            firstName: ['', Validators.required],
+            middleName: [''],
+            lastName: ['', Validators.required],
+            userType: ['', Validators.required],
+            password: ['', Validators.required],
+            confirmPassword: ['', Validators.required],
             contact: this.fb.group({
                 emailAddress: ['', [Validators.required, AppValidators.emailValidator]],
                 cellPhone: ['', [Validators.required]],
@@ -111,7 +107,7 @@ export class UpdateUserComponent implements OnInit {
         let userFormValues = this.userform.value;
         let userDetail = new AccountDetail({
             account: new Account({
-               id: this._sessionStore.session.account_id
+                id: this._sessionStore.session.account_id
             }),
             user: new User({
                 id: this.user.id,

@@ -1,6 +1,6 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
-import {ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
+import {Validators, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
+import {Router, ActivatedRoute} from '@angular/router';
 import {AppValidators} from '../../utils/AppValidators';
 import {LoaderComponent} from '../elements/loader';
 import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
@@ -19,7 +19,6 @@ import {AuthenticationService} from '../../services/authentication-service';
 @Component({
     selector: 'change-password',
     templateUrl: 'templates/pages/change-password.html',
-    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, SimpleNotificationsComponent],
     providers: [FormBuilder, AuthenticationService, NotificationsService]
 })
 

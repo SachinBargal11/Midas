@@ -1,6 +1,6 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
+import {Router} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
 import {LoaderComponent} from '../../elements/loader';
 import {UsersStore} from '../../../stores/users-store';
@@ -20,15 +20,12 @@ import {Gender} from '../../../models/enums/Gender';
 import {UserType} from '../../../models/enums/UserType';
 import {StatesStore} from '../../../stores/states-store';
 import {StateService} from '../../../services/state-service';
-import {HTTP_PROVIDERS}    from '@angular/http';
 import {LimitPipe} from '../../../pipes/limit-array-pipe';
 
 @Component({
     selector: 'add-user',
     templateUrl: 'templates/pages/users/add-user.html',
-    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar, InputMask, AutoComplete],
-    providers: [HTTP_PROVIDERS, UsersService, StateService, StatesStore, FormBuilder],
-    pipes: [LimitPipe]
+    providers: [UsersService, StateService, StatesStore, FormBuilder],
 })
 
 export class AddUserComponent implements OnInit {

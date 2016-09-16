@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {Validators, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
+import {Router} from '@angular/router';
 import {AppValidators} from '../../utils/AppValidators';
 import {LoaderComponent} from '../elements/loader';
 import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
@@ -9,13 +9,6 @@ import {SessionStore} from '../../stores/session-store';
 @Component({
     selector: 'login',
     templateUrl: 'templates/pages/login.html',
-    directives: [
-        FORM_DIRECTIVES,
-        REACTIVE_FORM_DIRECTIVES,
-        ROUTER_DIRECTIVES,
-        LoaderComponent,
-        SimpleNotificationsComponent
-    ],
     providers: [NotificationsService, FormBuilder]
 })
 

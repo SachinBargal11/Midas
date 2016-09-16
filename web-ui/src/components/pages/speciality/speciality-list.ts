@@ -1,18 +1,12 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {SpecialityService} from '../../../services/speciality-service';
-import {ReversePipe} from '../../../pipes/reverse-array-pipe';
-import {LimitPipe} from '../../../pipes/limit-array-pipe';
 import {DataTable} from 'primeng/primeng';
 import {Speciality} from '../../../models/speciality';
 
 @Component({
     selector: 'speciality-list',
     templateUrl: 'templates/pages/speciality/speciality-list.html',
-    directives: [
-        ROUTER_DIRECTIVES
-    ],
-    pipes: [ReversePipe, LimitPipe],
     providers: [SpecialityService]
 })
 

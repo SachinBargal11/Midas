@@ -1,6 +1,6 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
-import {ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
+import {Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
+import {Router, ActivatedRoute} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
 import {LoaderComponent} from '../../elements/loader';
 import {ProvidersStore} from '../../../stores/providers-store';
@@ -12,15 +12,11 @@ import {NotificationsStore} from '../../../stores/notifications-store';
 import {Notification} from '../../../models/notification';
 import moment from 'moment';
 import {Calendar, InputMask, AutoComplete, SelectItem} from 'primeng/primeng';
-import {HTTP_PROVIDERS}    from '@angular/http';
-import {LimitPipe} from '../../../pipes/limit-array-pipe';
 
 @Component({
     selector: 'update-provider',
     templateUrl: 'templates/pages/providers/update-provider.html',
-    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar, InputMask, AutoComplete],
-    providers: [HTTP_PROVIDERS, ProvidersService, ProvidersStore, FormBuilder],
-    pipes: [LimitPipe]
+    providers: [ProvidersService, ProvidersStore, FormBuilder]
 })
 
 export class UpdateProviderComponent implements OnInit {

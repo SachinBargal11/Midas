@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewContainerRef} from '@angular/core';
-import {ActivatedRoute, Router, ROUTER_DIRECTIVES} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {SessionStore} from '../stores/session-store';
 import {NotificationsStore} from '../stores/notifications-store';

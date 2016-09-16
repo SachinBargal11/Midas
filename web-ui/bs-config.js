@@ -7,6 +7,6 @@ module.exports = {
     }
   },
   files: ["compiled/**/*.*"],
-  reloadDebounce: 1000,
-  reloadThrottle: 2000
+  reloadDebounce: 2000,
+  // reloadThrottle: 2000
 };

@@ -1,6 +1,6 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
+import {Router} from '@angular/router';
 import {AppValidators} from '../../utils/AppValidators';
 import {LoaderComponent} from '../elements/loader';
 import {AuthenticationService} from '../../services/authentication-service';
@@ -17,20 +17,10 @@ import {NotificationsStore} from '../../stores/notifications-store';
 import {Notification} from '../../models/notification';
 import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
 import Moment from 'moment';
-import {Calendar, InputMask, RadioButton, SelectItem} from 'primeng/primeng';
 
 @Component({
     selector: 'signup',
     templateUrl: 'templates/pages/signup.html',
-    directives: [
-        FORM_DIRECTIVES,
-        REACTIVE_FORM_DIRECTIVES,
-        ROUTER_DIRECTIVES,
-        LoaderComponent,
-        Calendar,
-        InputMask,
-        RadioButton,
-        SimpleNotificationsComponent],
     providers: [NotificationsService, StateService, StatesStore, FormBuilder]
 })
 

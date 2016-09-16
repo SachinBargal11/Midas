@@ -1,6 +1,6 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
+import {Router} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
 import {LoaderComponent} from '../../elements/loader';
 import {MedicalFacility} from '../../../models/medical-facility';
@@ -10,7 +10,6 @@ import {AccountDetail} from '../../../models/account-details';
 import {Account} from '../../../models/account';
 import {ContactInfo} from '../../../models/contact';
 import {Address} from '../../../models/address';
-// import $ from 'jquery';
 import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
 import {Notification} from '../../../models/notification';
@@ -22,15 +21,11 @@ import {Gender} from '../../../models/enums/Gender';
 import {UserType} from '../../../models/enums/UserType';
 import {StatesStore} from '../../../stores/states-store';
 import {StateService} from '../../../services/state-service';
-import {HTTP_PROVIDERS}    from '@angular/http';
-import {LimitPipe} from '../../../pipes/limit-array-pipe';
 
 @Component({
     selector: 'add-medical-facility',
     templateUrl: 'templates/pages/medical-facilities/add-medical-facility.html',
-    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar, InputMask, AutoComplete],
-    providers: [HTTP_PROVIDERS, MedicalFacilityService, StateService, StatesStore, FormBuilder],
-    pipes: [LimitPipe]
+    providers: [MedicalFacilityService, StateService, StatesStore, FormBuilder]
 })
 
 export class AddMedicalFacilityComponent implements OnInit {

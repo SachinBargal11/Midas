@@ -14,7 +14,7 @@
     <p-column field="user.lastName" header="Last Name" [sortable]="true" [filter]="true"></p-column>
     <p-column field="user.id" header="User id" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
    <p-column styleClass="col-button" header="Edit">
-        <template let-user="rowData">
+        <template let-user="rowData" pTemplate type="body">
             <a [routerLink]="['/users/update/', user.user.id]"><i class="glyphicon glyphicon-edit"></i></a>
         </template>
     </p-column>

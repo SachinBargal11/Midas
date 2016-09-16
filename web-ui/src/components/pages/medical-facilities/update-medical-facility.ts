@@ -1,6 +1,6 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
-import {ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
+import {Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
+import {Router, ActivatedRoute} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
 import {LoaderComponent} from '../../elements/loader';
 import {MedicalFacility} from '../../../models/medical-facility';
@@ -22,15 +22,12 @@ import {Gender} from '../../../models/enums/Gender';
 import {UserType} from '../../../models/enums/UserType';
 import {StatesStore} from '../../../stores/states-store';
 import {StateService} from '../../../services/state-service';
-import {HTTP_PROVIDERS}    from '@angular/http';
 import {LimitPipe} from '../../../pipes/limit-array-pipe';
 
 @Component({
     selector: 'update-medical-facility',
     templateUrl: 'templates/pages/medical-facilities/update-medical-facility.html',
-    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar, InputMask, AutoComplete],
-    providers: [HTTP_PROVIDERS, MedicalFacilityService, StateService, StatesStore, FormBuilder],
-    pipes: [LimitPipe]
+    providers: [MedicalFacilityService, StateService, StatesStore, FormBuilder]
 })
 
 export class UpdateMedicalFacilityComponent implements OnInit {
@@ -66,9 +63,9 @@ export class UpdateMedicalFacilityComponent implements OnInit {
             let result = this._medicalFacilitiesStore.fetchMedicalFacilityById(mfId);
             result.subscribe(
                 (medicalFacilityDetail: MedicalFacilityDetail) => {
-                   this.medicalfacility = medicalFacilityDetail.medicalfacility;
-                   this.contactInfo = medicalFacilityDetail.contactInfo;
-                   this.address = medicalFacilityDetail.address;
+                    this.medicalfacility = medicalFacilityDetail.medicalfacility;
+                    this.contactInfo = medicalFacilityDetail.contactInfo;
+                    this.address = medicalFacilityDetail.address;
                 },
                 (error) => {
                     this._router.navigate(['/doctors']);
@@ -78,8 +75,8 @@ export class UpdateMedicalFacilityComponent implements OnInit {
         });
 
         this.medicalFacilityForm = this.fb.group({
-                name: ['', Validators.required],
-                prefix: ['', Validators.required],
+            name: ['', Validators.required],
+            prefix: ['', Validators.required],
             contact: this.fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
                 cellPhone: ['', [Validators.required]],
@@ -110,7 +107,7 @@ export class UpdateMedicalFacilityComponent implements OnInit {
         let medicalFacilityFormValues = this.medicalFacilityForm.value;
         let medicalFacilityDetail = new MedicalFacilityDetail({
             account: new Account({
-               id: this._sessionStore.session.account_id
+                id: this._sessionStore.session.account_id
             }),
             user: new User({
                 id: this._sessionStore.session.user.id

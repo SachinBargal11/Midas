@@ -4,13 +4,9 @@
 import {enableProdMode, NgModule} from '@angular/core';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import {BrowserModule}  from '@angular/platform-browser';
-import {FormsModule, FormBuilder}    from '@angular/forms';
-import {bootstrap} from '@angular/platform-browser-dynamic';
-import {ROUTER_DIRECTIVES} from '@angular/router';
+import {FormsModule, FormBuilder, ReactiveFormsModule}    from '@angular/forms';
 import {AppRoot} from '../components/AppRoot';
-import {provide} from '@angular/core';
-import {HTTP_PROVIDERS, Http} from '@angular/http';
-import {InputTextModule, DataTableModule, ButtonModule, DialogModule} from 'primeng/primeng';
+import {HttpModule} from '@angular/http';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {Ng2BootstrapModule} from 'ng2-bootstrap/ng2-bootstrap';
 
@@ -81,6 +77,14 @@ import {SpecialityListComponent} from '../components/pages/speciality/speciality
 import {AddSpecialityComponent} from '../components/pages/speciality/add-speciality';
 import {UpdateSpecialityComponent} from '../components/pages/speciality/update-speciality';
 
+import {LimitPipe} from '../pipes/limit-array-pipe';
+import {TimeAgoPipe} from '../pipes/time-ago-pipe';
+import {ReversePipe} from '../pipes/reverse-array-pipe';
+import {MapToJSPipe} from '../pipes/map-to-js';
+
+import {InputTextModule, DataTableModule, SharedModule, ButtonModule, DialogModule, CalendarModule, InputMaskModule, RadioButtonModule, MultiSelectModule} from 'primeng/primeng';
+
+
 
 enableProdMode();
 
@@ -88,13 +92,19 @@ enableProdMode();
     imports: [
         BrowserModule,
         FormsModule,
+        ReactiveFormsModule,
         APP_ROUTER_PROVIDER,
         InputTextModule,
         DataTableModule,
         ButtonModule,
         DialogModule,
         SimpleNotificationsModule,
-        Ng2BootstrapModule
+        Ng2BootstrapModule,
+        InputMaskModule,
+        CalendarModule,
+        RadioButtonModule,
+        MultiSelectModule,
+        HttpModule
     ],
     declarations: [
         AppRoot,
@@ -129,7 +139,11 @@ enableProdMode();
         DoctorsListComponent,
         SpecialityListComponent,
         AddSpecialityComponent,
-        UpdateSpecialityComponent
+        UpdateSpecialityComponent,
+        TimeAgoPipe,
+        ReversePipe,
+        LimitPipe,
+        MapToJSPipe
     ],
     providers: [
         SessionStore,
@@ -151,8 +165,6 @@ enableProdMode();
         NotificationsStore,
         ValidateActiveSession,
         ValidateInActiveSession,
-        Http,
-        HTTP_PROVIDERS,
         FormBuilder
     ],
     bootstrap: [
