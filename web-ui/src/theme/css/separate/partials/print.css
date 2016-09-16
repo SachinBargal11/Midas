@@ -449,15 +449,15 @@ video {
   .dark-theme .page-content {
     padding-top: 15px;
   }
-  .with-side-menu .page-content {
+  .chrome-browser.with-side-menu .page-content {
     padding-left: 255px;
     margin-left: -255px;
   }
-  .with-side-menu-compact .page-content {
+  .chrome-browser.with-side-menu-compact .page-content {
     padding-left: 115px;
     margin-left: -115px;
   }
-  .with-side-menu-addl .page-content {
+  .chrome-browser.with-side-menu-addl .page-content {
     padding-left: 335px;
     margin-left: -335px;
   }
@@ -472,19 +472,19 @@ video {
   }
 }
 @media print and (max-width: 991px) {
-  .with-side-menu .page-content {
+  .chrome-browser.with-side-menu .page-content {
     padding-left: 0;
     padding-right: 0;
   }
 }
 @media print and (max-width: 991px) {
-  .with-side-menu-compact .page-content {
+  .chrome-browser.with-side-menu-compact .page-content {
     padding-left: 0;
     padding-right: 0;
   }
 }
 @media print and (max-width: 991px) {
-  .with-side-menu-addl .page-content {
+  .chrome-browser.with-side-menu-addl .page-content {
     padding-left: 0;
     padding-right: 0;
   }

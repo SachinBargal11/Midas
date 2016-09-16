@@ -20,28 +20,6 @@
     -webkit-transform: scale(1);
   }
 }
-@-moz-keyframes showSweetAlert {
-  0% {
-    -moz-transform: scale(0.7);
-         transform: scale(0.7);
-    -webkit-transform: scale(0.7);
-  }
-  45% {
-    -moz-transform: scale(1.05);
-         transform: scale(1.05);
-    -webkit-transform: scale(1.05);
-  }
-  80% {
-    -moz-transform: scale(0.95);
-         transform: scale(0.95);
-    -webkit-tranform: scale(0.95);
-  }
-  100% {
-    -moz-transform: scale(1);
-         transform: scale(1);
-    -webkit-transform: scale(1);
-  }
-}
 @-o-keyframes showSweetAlert {
   0% {
     -o-transform: scale(0.7);
@@ -66,28 +44,24 @@
 }
 @keyframes showSweetAlert {
   0% {
-    -moz-transform: scale(0.7);
-      -o-transform: scale(0.7);
-         transform: scale(0.7);
+    -o-transform: scale(0.7);
+       transform: scale(0.7);
     -webkit-transform: scale(0.7);
   }
   45% {
-    -moz-transform: scale(1.05);
-      -o-transform: scale(1.05);
-         transform: scale(1.05);
+    -o-transform: scale(1.05);
+       transform: scale(1.05);
     -webkit-transform: scale(1.05);
   }
   80% {
     -webkit-transform: scale(0.95);
-       -moz-transform: scale(0.95);
          -o-transform: scale(0.95);
             transform: scale(0.95);
     -webkit-tranform: scale(0.95);
   }
   100% {
-    -moz-transform: scale(1);
-      -o-transform: scale(1);
-         transform: scale(1);
+    -o-transform: scale(1);
+       transform: scale(1);
     -webkit-transform: scale(1);
   }
 }
@@ -98,18 +72,6 @@
   }
   100% {
     transform: scale(0.5);
-    -webkit-transform: scale(0.5);
-  }
-}
-@-moz-keyframes hideSweetAlert {
-  0% {
-    -moz-transform: scale(1);
-         transform: scale(1);
-    -webkit-transform: scale(1);
-  }
-  100% {
-    -moz-transform: scale(0.5);
-         transform: scale(0.5);
     -webkit-transform: scale(0.5);
   }
 }
@@ -127,58 +89,27 @@
 }
 @keyframes hideSweetAlert {
   0% {
-    -moz-transform: scale(1);
-      -o-transform: scale(1);
-         transform: scale(1);
+    -o-transform: scale(1);
+       transform: scale(1);
     -webkit-transform: scale(1);
   }
   100% {
-    -moz-transform: scale(0.5);
-      -o-transform: scale(0.5);
-         transform: scale(0.5);
+    -o-transform: scale(0.5);
+       transform: scale(0.5);
     -webkit-transform: scale(0.5);
   }
 }
 .showSweetAlert {
   -webkit-animation: showSweetAlert 0.3s;
-  -moz-animation: showSweetAlert 0.3s;
-    -o-animation: showSweetAlert 0.3s;
-       animation: showSweetAlert 0.3s;
+  -o-animation: showSweetAlert 0.3s;
+     animation: showSweetAlert 0.3s;
 }
 .hideSweetAlert {
   -webkit-animation: hideSweetAlert 0.2s;
-  -moz-animation: hideSweetAlert 0.2s;
-    -o-animation: hideSweetAlert 0.2s;
-       animation: hideSweetAlert 0.2s;
+  -o-animation: hideSweetAlert 0.2s;
+     animation: hideSweetAlert 0.2s;
 }
 @-webkit-keyframes animateSuccessTip {
-  0% {
-    width: 0;
-    left: 1px;
-    top: 19px;
-  }
-  54% {
-    width: 0;
-    left: 1px;
-    top: 19px;
-  }
-  70% {
-    width: 50px;
-    left: -8px;
-    top: 37px;
-  }
-  84% {
-    width: 17px;
-    left: 21px;
-    top: 48px;
-  }
-  100% {
-    width: 25px;
-    left: 14px;
-    top: 45px;
-  }
-}
-@-moz-keyframes animateSuccessTip {
   0% {
     width: 0;
     left: 1px;
@@ -281,28 +212,6 @@
     top: 38px;
   }
 }
-@-moz-keyframes animateSuccessLong {
-  0% {
-    width: 0;
-    right: 46px;
-    top: 54px;
-  }
-  65% {
-    width: 0;
-    right: 46px;
-    top: 54px;
-  }
-  84% {
-    width: 55px;
-    right: 0px;
-    top: 35px;
-  }
-  100% {
-    width: 47px;
-    right: 8px;
-    top: 38px;
-  }
-}
 @-o-keyframes animateSuccessLong {
   0% {
     width: 0;
@@ -365,28 +274,6 @@
     -webkit-transform: rotate(-405deg);
   }
 }
-@-moz-keyframes rotatePlaceholder {
-  0% {
-    -moz-transform: rotate(-45deg);
-         transform: rotate(-45deg);
-    -webkit-transform: rotate(-45deg);
-  }
-  5% {
-    -moz-transform: rotate(-45deg);
-         transform: rotate(-45deg);
-    -webkit-transform: rotate(-45deg);
-  }
-  12% {
-    -moz-transform: rotate(-405deg);
-         transform: rotate(-405deg);
-    -webkit-transform: rotate(-405deg);
-  }
-  100% {
-    -moz-transform: rotate(-405deg);
-         transform: rotate(-405deg);
-    -webkit-transform: rotate(-405deg);
-  }
-}
 @-o-keyframes rotatePlaceholder {
   0% {
     -o-transform: rotate(-45deg);
@@ -411,47 +298,40 @@
 }
 @keyframes rotatePlaceholder {
   0% {
-    -moz-transform: rotate(-45deg);
-      -o-transform: rotate(-45deg);
-         transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+       transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
   }
   5% {
-    -moz-transform: rotate(-45deg);
-      -o-transform: rotate(-45deg);
-         transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+       transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
   }
   12% {
-    -moz-transform: rotate(-405deg);
-      -o-transform: rotate(-405deg);
-         transform: rotate(-405deg);
+    -o-transform: rotate(-405deg);
+       transform: rotate(-405deg);
     -webkit-transform: rotate(-405deg);
   }
   100% {
-    -moz-transform: rotate(-405deg);
-      -o-transform: rotate(-405deg);
-         transform: rotate(-405deg);
+    -o-transform: rotate(-405deg);
+       transform: rotate(-405deg);
     -webkit-transform: rotate(-405deg);
   }
 }
 .animateSuccessTip {
   -webkit-animation: animateSuccessTip 0.75s;
-  -moz-animation: animateSuccessTip 0.75s;
-    -o-animation: animateSuccessTip 0.75s;
-       animation: animateSuccessTip 0.75s;
+  -o-animation: animateSuccessTip 0.75s;
+     animation: animateSuccessTip 0.75s;
 }
 .animateSuccessLong {
   -webkit-animation: animateSuccessLong 0.75s;
-  -moz-animation: animateSuccessLong 0.75s;
-    -o-animation: animateSuccessLong 0.75s;
-       animation: animateSuccessLong 0.75s;
+  -o-animation: animateSuccessLong 0.75s;
+     animation: animateSuccessLong 0.75s;
 }
 .icon.success.animate::after {
   -webkit-animation: rotatePlaceholder 4.25s ease-in;
-  -moz-animation: rotatePlaceholder 4.25s ease-in;
-    -o-animation: rotatePlaceholder 4.25s ease-in;
-       animation: rotatePlaceholder 4.25s ease-in;
+  -o-animation: rotatePlaceholder 4.25s ease-in;
+     animation: rotatePlaceholder 4.25s ease-in;
 }
 @-webkit-keyframes animateErrorIcon {
   0% {
@@ -461,20 +341,6 @@
   }
   100% {
     transform: rotateX(0deg);
-    -webkit-transform: rotateX(0deg);
-    opacity: 1;
-  }
-}
-@-moz-keyframes animateErrorIcon {
-  0% {
-    -moz-transform: rotateX(100deg);
-         transform: rotateX(100deg);
-    -webkit-transform: rotateX(100deg);
-    opacity: 0;
-  }
-  100% {
-    -moz-transform: rotateX(0deg);
-         transform: rotateX(0deg);
     -webkit-transform: rotateX(0deg);
     opacity: 1;
   }
@@ -493,23 +359,20 @@
 }
 @keyframes animateErrorIcon {
   0% {
-    -moz-transform: rotateX(100deg);
-         transform: rotateX(100deg);
+    transform: rotateX(100deg);
     -webkit-transform: rotateX(100deg);
     opacity: 0;
   }
   100% {
-    -moz-transform: rotateX(0deg);
-         transform: rotateX(0deg);
+    transform: rotateX(0deg);
     -webkit-transform: rotateX(0deg);
     opacity: 1;
   }
 }
 .animateErrorIcon {
   -webkit-animation: animateErrorIcon 0.5s;
-  -moz-animation: animateErrorIcon 0.5s;
-    -o-animation: animateErrorIcon 0.5s;
-       animation: animateErrorIcon 0.5s;
+  -o-animation: animateErrorIcon 0.5s;
+     animation: animateErrorIcon 0.5s;
 }
 @-webkit-keyframes animateXMark {
   0% {
@@ -531,35 +394,6 @@
   }
   100% {
     transform: scale(1);
-    -webkit-transform: scale(1);
-    margin-top: 0;
-    opacity: 1;
-  }
-}
-@-moz-keyframes animateXMark {
-  0% {
-    -moz-transform: scale(0.4);
-         transform: scale(0.4);
-    -webkit-transform: scale(0.4);
-    margin-top: 26px;
-    opacity: 0;
-  }
-  50% {
-    -moz-transform: scale(0.4);
-         transform: scale(0.4);
-    -webkit-transform: scale(0.4);
-    margin-top: 26px;
-    opacity: 0;
-  }
-  80% {
-    -moz-transform: scale(1.15);
-         transform: scale(1.15);
-    -webkit-transform: scale(1.15);
-    margin-top: -6px;
-  }
-  100% {
-    -moz-transform: scale(1);
-         transform: scale(1);
     -webkit-transform: scale(1);
     margin-top: 0;
     opacity: 1;
@@ -596,32 +430,28 @@
 }
 @keyframes animateXMark {
   0% {
-    -moz-transform: scale(0.4);
-      -o-transform: scale(0.4);
-         transform: scale(0.4);
+    -o-transform: scale(0.4);
+       transform: scale(0.4);
     -webkit-transform: scale(0.4);
     margin-top: 26px;
     opacity: 0;
   }
   50% {
-    -moz-transform: scale(0.4);
-      -o-transform: scale(0.4);
-         transform: scale(0.4);
+    -o-transform: scale(0.4);
+       transform: scale(0.4);
     -webkit-transform: scale(0.4);
     margin-top: 26px;
     opacity: 0;
   }
   80% {
-    -moz-transform: scale(1.15);
-      -o-transform: scale(1.15);
-         transform: scale(1.15);
+    -o-transform: scale(1.15);
+       transform: scale(1.15);
     -webkit-transform: scale(1.15);
     margin-top: -6px;
   }
   100% {
-    -moz-transform: scale(1);
-      -o-transform: scale(1);
-         transform: scale(1);
+    -o-transform: scale(1);
+       transform: scale(1);
     -webkit-transform: scale(1);
     margin-top: 0;
     opacity: 1;
@@ -629,19 +459,10 @@
 }
 .animateXMark {
   -webkit-animation: animateXMark 0.5s;
-  -moz-animation: animateXMark 0.5s;
-    -o-animation: animateXMark 0.5s;
-       animation: animateXMark 0.5s;
+  -o-animation: animateXMark 0.5s;
+     animation: animateXMark 0.5s;
 }
 @-webkit-keyframes pulseWarning {
-  0% {
-    border-color: rgba(242, 152, 36, 0.5);
-  }
-  100% {
-    border-color: #f29824;
-  }
-}
-@-moz-keyframes pulseWarning {
   0% {
     border-color: rgba(242, 152, 36, 0.5);
   }
@@ -667,19 +488,10 @@
 }
 .pulseWarning {
   -webkit-animation: pulseWarning 0.75s infinite alternate;
-  -moz-animation: pulseWarning 0.75s infinite alternate;
-    -o-animation: pulseWarning 0.75s infinite alternate;
-       animation: pulseWarning 0.75s infinite alternate;
+  -o-animation: pulseWarning 0.75s infinite alternate;
+     animation: pulseWarning 0.75s infinite alternate;
 }
 @-webkit-keyframes pulseWarningIns {
-  0% {
-    background-color: rgba(242, 152, 36, 0.5);
-  }
-  100% {
-    background-color: #f29824;
-  }
-}
-@-moz-keyframes pulseWarningIns {
   0% {
     background-color: rgba(242, 152, 36, 0.5);
   }
@@ -705,7 +517,6 @@
 }
 .pulseWarningIns {
   -webkit-animation: pulseWarningIns 0.75s infinite alternate;
-  -moz-animation: pulseWarningIns 0.75s infinite alternate;
-    -o-animation: pulseWarningIns 0.75s infinite alternate;
-       animation: pulseWarningIns 0.75s infinite alternate;
+  -o-animation: pulseWarningIns 0.75s infinite alternate;
+     animation: pulseWarningIns 0.75s infinite alternate;
 }
