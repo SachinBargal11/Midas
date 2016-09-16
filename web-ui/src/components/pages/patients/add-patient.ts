@@ -6,7 +6,6 @@ import {LoaderComponent} from '../../elements/loader';
 import {PatientsStore} from '../../../stores/patients-store';
 import {Patient} from '../../../models/patient';
 import $ from 'jquery';
-// import 'eonasdan-bootstrap-datetimepicker';
 import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
 import {Notification} from '../../../models/notification';

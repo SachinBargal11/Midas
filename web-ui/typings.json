@@ -4,12 +4,12 @@
     "eonasdan-bootstrap-datetimepicker": "registry:dt/eonasdan-bootstrap-datetimepicker#4.17.37+20160319170655",
     "es6-shim": "registry:dt/es6-shim#0.31.2+20160602141504",
     "handsontable": "registry:dt/handsontable#0.24.3+20160711161324",
-    "jquery": "registry:dt/jquery#1.10.0+20160704162008",
+    "jquery": "registry:dt/jquery#1.10.0+20160908203239",
     "moment": "registry:dt/moment#2.11.1+20160829143156",
     "node": "registry:dt/node#4.0.0+20160509154515",
     "numbro": "registry:dt/numbro#0.0.0+20160316155526",
     "pikaday": "registry:dt/pikaday#0.0.0+20160812121421",
-    "underscore": "registry:dt/underscore#1.7.0+20160805164035",
+    "underscore": "registry:dt/underscore#1.8.3+20160908111004",
     "zeroclipboard": "registry:dt/zeroclipboard#2.0.0+20151202024443"
   },
   "dependencies": {
