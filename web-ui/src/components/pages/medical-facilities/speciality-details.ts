@@ -1,13 +1,11 @@
-import {Record, List} from 'immutable';
+import {List} from 'immutable';
 import {Observable} from 'rxjs/Observable';
 import moment from 'moment';
-import {Component, OnInit, ElementRef, ViewChild, Output, EventEmitter} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import { ModalDirective } from 'ng2-bootstrap/ng2-bootstrap';
-import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
-import {MedicalFacilityService} from '../../../services/medical-facility-service';
+import {NotificationsService} from 'angular2-notifications';
 import {MedicalFacilityStore} from '../../../stores/medical-facilities-store';
-import {SessionStore} from '../../../stores/session-store';
 import {SpecialityDetail} from '../../../models/speciality-details';
 import {MedicalFacilityDetail} from '../../../models/medical-facility-details';
 
@@ -48,7 +46,6 @@ export class SpecialityDetailsComponent {
     constructor(
         public _route: ActivatedRoute,
         public _router: Router,
-        private _medicalFacilityService: MedicalFacilityService,
         private _medicalFacilityStore: MedicalFacilityStore,
         private _notificationsStore: NotificationsStore,
         private _notificationsService: NotificationsService,

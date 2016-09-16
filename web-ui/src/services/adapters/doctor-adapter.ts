@@ -1,6 +1,4 @@
-import {Doctor} from '../../models/doctor';
 import {DoctorDetail} from '../../models/doctor-details';
-import Moment from 'moment';
 import _ from 'underscore';
 
 

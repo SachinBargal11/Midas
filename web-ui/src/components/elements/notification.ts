@@ -1,8 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {NotificationsStore} from '../../stores/notifications-store';
-import Moment from 'moment';
-
-import $ from 'jquery';
 
 @Component({
     selector: 'notification',

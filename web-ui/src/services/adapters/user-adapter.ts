@@ -1,6 +1,5 @@
 import {User} from '../../models/user';
 import {AccountDetail} from '../../models/account-details';
-import Moment from 'moment';
 import _ from 'underscore';
 
 
@@ -9,7 +8,6 @@ export class UserAdapter {
 
         let user = null;
         if (userData) {
-            // let tempUser = _.omit(userData, 'address', 'account', 'contactInfo', 'updateDate');
             let tempUser = _.omit(userData, 'account', 'updateDate');
             if (userData.account) {
                 tempUser.accountId = userData.account.id;
@@ -22,14 +20,12 @@ export class UserAdapter {
     static parseResponse(userData: any): AccountDetail {
 
         let user = null;
-        // let tempUser = _.omit(userData, 'address', 'account', 'contactInfo', 'updateDate');
         let tempUser = _.omit(userData, 'account', 'updateDate');
         if (userData) {
             user = new AccountDetail({
                 user: tempUser,
                 address: userData.address,
-                contactInfo: userData.contactInfo,
-                // account: userData.account
+                contactInfo: userData.contactInfo
             });
         }
         return user;

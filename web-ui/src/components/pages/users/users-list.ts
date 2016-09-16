@@ -1,10 +1,8 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {SessionStore} from '../../../stores/session-store';
 import {UsersService} from '../../../services/users-service';
-import {UserDetail} from '../../../models/user-details';
 import {AccountDetail} from '../../../models/account-details';
-import {LoaderComponent} from '../../elements/loader';
 
 @Component({
     selector: 'users-list',
@@ -14,9 +12,9 @@ import {LoaderComponent} from '../../elements/loader';
 
 
 export class UsersListComponent implements OnInit {
-users: AccountDetail[];
-usersLoading;
-cols: any[];
+    users: AccountDetail[];
+    usersLoading;
+    cols: any[];
     constructor(
         private _router: Router,
         private _usersService: UsersService,
@@ -30,10 +28,11 @@ cols: any[];
     loadUsers() {
         this.usersLoading = true;
         let accountId = this._sessionStore.session.account_id;
-         let user = this._usersService.getUsers(accountId)
-                                .subscribe(users => { this.users = users; },
-                                  null,
-                                  () => { this.usersLoading = false; });
+        let user = this._usersService.getUsers(accountId)
+            .subscribe(users => { this.users = users; },
+            null,
+            () => { this.usersLoading = false; });
 
+        return user;
     }
 }

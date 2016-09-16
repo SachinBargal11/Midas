@@ -1,8 +1,6 @@
 import {Record} from 'immutable';
 import moment from 'moment';
 import {User} from './user';
-import {UserType} from './enums/UserType';
-import {Gender} from './enums/Gender';
 
 const DoctorRecord = Record({
     id: 0,

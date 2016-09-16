@@ -1,4 +1,4 @@
-import { RouterModule, Routes } from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {LoginComponent} from '../components/pages/login';
 import {SignupComponent} from '../components/pages/signup';
 import {DashboardComponent} from '../components/pages/dashboard';

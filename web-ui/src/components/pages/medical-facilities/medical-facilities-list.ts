@@ -1,7 +1,6 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {MedicalFacilityService} from '../../../services/medical-facility-service';
-import {DataTable} from 'primeng/primeng';
 import {SessionStore} from '../../../stores/session-store';
 import {MedicalFacilityDetail} from '../../../models/medical-facility-details';
 
@@ -12,8 +11,8 @@ import {MedicalFacilityDetail} from '../../../models/medical-facility-details';
 
 
 export class MedicalFacilitiesListComponent implements OnInit {
-medicalfacilities: MedicalFacilityDetail[];
-medicalfacilitiesLoading;
+    medicalfacilities: MedicalFacilityDetail[];
+    medicalfacilitiesLoading;
     constructor(
         private _router: Router,
         private _sessionStore: SessionStore,
@@ -27,9 +26,10 @@ medicalfacilitiesLoading;
     loadMedicalFacility() {
         this.medicalfacilitiesLoading = true;
         let accountId = this._sessionStore.session.account_id;
-         let medicalfacility = this._medicalFacilityService.getMedicalFacilities(accountId)
-                                .subscribe(medicalfacilities => { this.medicalfacilities = medicalfacilities; },
-                                 null,
-                                    () => { this.medicalfacilitiesLoading = false; });
+        let medicalfacility = this._medicalFacilityService.getMedicalFacilities(accountId)
+            .subscribe(medicalfacilities => { this.medicalfacilities = medicalfacilities; },
+            null,
+            () => { this.medicalfacilitiesLoading = false; });
+        return medicalfacility;
     }
 }

@@ -1,16 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {Observer} from 'rxjs/Observer';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import {Provider} from '../models/provider';
 import {ProvidersService} from '../services/providers-service';
 import {SessionStore} from './session-store';
-import {Subject} from 'rxjs/Subject';
 import {List} from 'immutable';
 import {BehaviorSubject} from 'rxjs/Rx';
-import _ from 'underscore';
-import Moment from 'moment';
 
 
 @Injectable()
@@ -85,11 +81,9 @@ export class ProvidersStore {
     }
 
     updateProvider(provider: Provider): Observable<Provider> {
-        // let providers = this._providers.getValue();
-        // let index = providers.findIndex((currentProvider: Provider) => currentProvider.provider.id === provider.provider.id);
         let promise = new Promise((resolve, reject) => {
             this._providersService.updateProvider(provider).subscribe((currentProvider: Provider) => {
-                this._providers.next(this._providers.getValue().push(provider));
+                this._providers.next(this._providers.getValue().push(currentProvider));
                 resolve(provider);
             }, error => {
                 reject(error);

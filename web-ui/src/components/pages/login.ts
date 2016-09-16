@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Validators, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
+import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AppValidators} from '../../utils/AppValidators';
-import {LoaderComponent} from '../elements/loader';
-import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
+import {NotificationsService} from 'angular2-notifications';
 import {SessionStore} from '../../stores/session-store';
 
 @Component({

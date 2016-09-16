@@ -1,6 +1,4 @@
 import {Provider} from '../../models/provider';
-import Moment from 'moment';
-
 
 export class ProviderAdapter {
     static parseResponse(providerData: any): Provider {

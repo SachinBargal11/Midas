@@ -1,4 +1,4 @@
-import {Routes, RouterModule} from '@angular/router';
+import {Routes} from '@angular/router';
 import {ValidateActiveSession} from './guards/validate-active-session';
 import {AddProviderComponent} from '../components/pages/providers/add-provider';
 import {UpdateProviderComponent} from '../components/pages/providers/update-provider';

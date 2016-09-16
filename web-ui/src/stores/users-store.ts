@@ -1,17 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {Observer} from 'rxjs/Observer';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import {AccountDetail} from '../models/account-details';
-import {User} from '../models/user';
 import {UsersService} from '../services/users-service';
 import {SessionStore} from './session-store';
-import {Subject} from 'rxjs/Subject';
 import {List} from 'immutable';
 import {BehaviorSubject} from 'rxjs/Rx';
-import _ from 'underscore';
-import Moment from 'moment';
 
 
 @Injectable()
@@ -91,8 +86,6 @@ export class UsersStore {
         return <Observable<AccountDetail>>Observable.from(promise);
     }
     updateUser(userDetail: AccountDetail): Observable<AccountDetail> {
-        let users = this._users.getValue();
-        let index = users.findIndex((currentUser: AccountDetail) => currentUser.user.id === userDetail.user.id);
         let promise = new Promise((resolve, reject) => {
             this._usersService.updateUser(userDetail).subscribe((userDetail: AccountDetail) => {
                 this._users.next(this._users.getValue().push(userDetail));
@@ -104,8 +97,6 @@ export class UsersStore {
         return <Observable<AccountDetail>>Observable.from(promise);
     }
     updatePassword(userDetail: AccountDetail): Observable<AccountDetail> {
-        let users = this._users.getValue();
-        let index = users.findIndex((currentUser: AccountDetail) => currentUser.user.id === userDetail.user.id);
         let promise = new Promise((resolve, reject) => {
             this._usersService.updatePassword(userDetail).subscribe((userDetail: AccountDetail) => {
                 this._users.next(this._users.getValue().push(userDetail));

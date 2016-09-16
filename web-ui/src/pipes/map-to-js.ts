@@ -8,7 +8,7 @@ import _ from 'underscore';
 
 @Injectable()
 export class MapToJSPipe implements PipeTransform {
-    transform(items: any[], args: any[]): any {
+    transform(items: any[]): any {
         return _.map(items, (datum) => {
             return datum.toJS();
         });

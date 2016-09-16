@@ -1,7 +1,5 @@
 import {Injectable, Output, EventEmitter} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {Observer} from 'rxjs/Observer';
-import {List} from 'immutable';
 import {AuthenticationService} from '../services/authentication-service';
 import {User} from '../models/user';
 import {Session} from '../models/session';

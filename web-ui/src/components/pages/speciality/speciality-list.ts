@@ -1,7 +1,6 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {SpecialityService} from '../../../services/speciality-service';
-import {DataTable} from 'primeng/primeng';
 import {Speciality} from '../../../models/speciality';
 
 @Component({
@@ -12,8 +11,8 @@ import {Speciality} from '../../../models/speciality';
 
 
 export class SpecialityListComponent implements OnInit {
-specialities: Speciality[];
-specialityLoading;
+    specialities: Speciality[];
+    specialityLoading;
     constructor(
         private _router: Router,
         private _specialityService: SpecialityService
@@ -24,9 +23,10 @@ specialityLoading;
     }
     loadSpeciality() {
         this.specialityLoading = true;
-          let speciality = this._specialityService.getSpecialities()
-                                .subscribe(specialities => { this.specialities = specialities; },
-                                null,
-                                  () => { this.specialityLoading = false; });
+        let speciality = this._specialityService.getSpecialities()
+            .subscribe(specialities => { this.specialities = specialities; },
+            null,
+            () => { this.specialityLoading = false; });
+        return speciality;
     }
 }

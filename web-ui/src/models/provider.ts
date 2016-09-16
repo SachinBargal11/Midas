@@ -1,6 +1,5 @@
 import {Record} from 'immutable';
 import moment from 'moment';
-import {AccountStatus} from './enums/AccountStatus';
 
 const ProviderRecord = Record({
 provider: {

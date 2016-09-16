@@ -1,28 +1,21 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
+import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
-import {LoaderComponent} from '../../elements/loader';
 import {MedicalFacility} from '../../../models/medical-facility';
 import {MedicalFacilityDetail} from '../../../models/medical-facility-details';
 import {User} from '../../../models/user';
-import {AccountDetail} from '../../../models/account-details';
 import {Account} from '../../../models/account';
 import {ContactInfo} from '../../../models/contact';
 import {Address} from '../../../models/address';
-// import $ from 'jquery';
 import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
 import {Notification} from '../../../models/notification';
 import moment from 'moment';
-import {Calendar, InputMask, AutoComplete} from 'primeng/primeng';
 import {MedicalFacilityStore} from '../../../stores/medical-facilities-store';
 import {MedicalFacilityService} from '../../../services/medical-facility-service';
-import {Gender} from '../../../models/enums/Gender';
-import {UserType} from '../../../models/enums/UserType';
 import {StatesStore} from '../../../stores/states-store';
 import {StateService} from '../../../services/state-service';
-import {LimitPipe} from '../../../pipes/limit-array-pipe';
 
 @Component({
     selector: 'update-medical-facility',

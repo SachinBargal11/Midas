@@ -1,5 +1,4 @@
 import {Record} from 'immutable';
-import moment from 'moment';
 import {User} from './user';
 import {Address} from './address';
 import {ContactInfo} from './contact';

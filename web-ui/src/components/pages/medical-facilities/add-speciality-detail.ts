@@ -1,14 +1,12 @@
-import {Component, OnInit, ElementRef, Input, Output, EventEmitter} from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
 import {List} from 'immutable';
-import {Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
-import {RadioButtonModule} from 'primeng/primeng';
+import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 import moment from 'moment';
-import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
+import {NotificationsService} from 'angular2-notifications';
 import {MedicalFacilityService} from '../../../services/medical-facility-service';
 import {MedicalFacilityStore} from '../../../stores/medical-facilities-store';
-import {SessionStore} from '../../../stores/session-store';
 import {SpecialityDetail} from '../../../models/speciality-details';
 import {Speciality} from '../../../models/speciality';
 import {MedicalFacilityDetail} from '../../../models/medical-facility-details';

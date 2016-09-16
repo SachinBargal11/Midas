@@ -1,17 +1,13 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
-import {AppValidators} from '../../../utils/AppValidators';
-import {LoaderComponent} from '../../elements/loader';
+import {Router} from '@angular/router';
+import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 import {ProvidersStore} from '../../../stores/providers-store';
 import {Provider} from '../../../models/provider';
 import {ProvidersService} from '../../../services/providers-service';
-import $ from 'jquery';
 import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
 import {Notification} from '../../../models/notification';
 import moment from 'moment';
-import {Calendar, InputMask, AutoComplete, SelectItem} from 'primeng/primeng';
 
 @Component({
     selector: 'add-provider',

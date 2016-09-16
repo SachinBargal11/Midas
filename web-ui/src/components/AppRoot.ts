@@ -1,11 +1,9 @@
 import {Component, OnInit, ViewContainerRef} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Location} from '@angular/common';
+import {Router} from '@angular/router';
 import {SessionStore} from '../stores/session-store';
 import {NotificationsStore} from '../stores/notifications-store';
 import {StatesStore} from '../stores/states-store';
 import {SpecialityStore} from '../stores/speciality-store';
-import {StateService} from '../services/state-service';
 
 @Component({
     selector: 'app-root',

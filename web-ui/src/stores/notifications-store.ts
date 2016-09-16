@@ -1,7 +1,4 @@
-import {Injectable, Output, EventEmitter} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Observer} from 'rxjs/Observer';
-import {Subject} from 'rxjs/Subject';
+import {Injectable} from '@angular/core';
 import {List} from 'immutable';
 import {BehaviorSubject} from 'rxjs/Rx';
 import 'rxjs/add/operator/share';

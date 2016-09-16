@@ -1,8 +1,7 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
+import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AppValidators} from '../../utils/AppValidators';
-import {LoaderComponent} from '../elements/loader';
 import {AuthenticationService} from '../../services/authentication-service';
 import {AccountDetail} from '../../models/account-details';
 import {User} from '../../models/user';
@@ -11,12 +10,9 @@ import {Address} from '../../models/address';
 import {Account} from '../../models/account';
 import {StatesStore} from '../../stores/states-store';
 import {StateService} from '../../services/state-service';
-import $ from 'jquery';
 import {SessionStore} from '../../stores/session-store';
 import {NotificationsStore} from '../../stores/notifications-store';
-import {Notification} from '../../models/notification';
-import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
-import Moment from 'moment';
+import {NotificationsService} from 'angular2-notifications';
 
 @Component({
     selector: 'signup',

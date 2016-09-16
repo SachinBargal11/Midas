@@ -1,12 +1,10 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
 import {AppValidators} from '../../utils/AppValidators';
-import {LoaderComponent} from '../elements/loader';
-import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
+import {NotificationsService} from 'angular2-notifications';
 
 import {AccountDetail} from '../../models/account-details';
-import {UserDetail} from '../../models/user-details';
 import {User} from '../../models/user';
 import {ContactInfo} from '../../models/contact';
 import {Address} from '../../models/address';
@@ -44,26 +42,26 @@ export class ChangePasswordComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _sessionStore: SessionStore
     ) {
-            let userId: number = this._sessionStore.session.user.id;
-            let result = this._usersService.getUser(userId);
-            result.subscribe(
-                (accountDetail: AccountDetail) => {
-                   this.accountDetail = accountDetail;
-                },
-                (error) => {
-                    this._router.navigate(['/users']);
-                },
-                () => {
-                });
+        let userId: number = this._sessionStore.session.user.id;
+        let result = this._usersService.getUser(userId);
+        result.subscribe(
+            (accountDetail: AccountDetail) => {
+                this.accountDetail = accountDetail;
+            },
+            (error) => {
+                this._router.navigate(['/users']);
+            },
+            () => {
+            });
 
         this.changePassForm = this.fb.group({
-        oldpassword: [''],
-        password: ['', Validators.required],
-        confirmPassword: ['', Validators.required]
+            oldpassword: [''],
+            password: ['', Validators.required],
+            confirmPassword: ['', Validators.required]
         }, { validator: AppValidators.matchingPasswords('password', 'confirmPassword') });
 
         this.changePassFormControls = this.changePassForm.controls;
-}
+    }
 
     ngOnInit() {
     }
@@ -71,7 +69,7 @@ export class ChangePasswordComponent implements OnInit {
     updatePassword() {
         let userDetail = new AccountDetail({
             account: new Account({
-               id: this._sessionStore.session.account_id
+                id: this._sessionStore.session.account_id
             }),
             user: new User({
                 id: this.accountDetail.user.id,
@@ -106,23 +104,23 @@ export class ChangePasswordComponent implements OnInit {
 
         // let result = this._sessionStore.authenticatePassword(userName, oldpassword);
         let result = this._authenticationService.authenticate(userName, oldpassword);
-           result.subscribe(
+        result.subscribe(
             (response) => {
-            this._usersStore.updatePassword(userDetail)
-            .subscribe(
-            (response) => {
-                this._notificationsService.success('Success', 'Password changed successfully!');
-                setTimeout(() => {
-                    this._router.navigate(['/dashboard']);
-                }, 3000);
-            });
+                this._usersStore.updatePassword(userDetail)
+                    .subscribe(
+                    (response) => {
+                        this._notificationsService.success('Success', 'Password changed successfully!');
+                        setTimeout(() => {
+                            this._router.navigate(['/dashboard']);
+                        }, 3000);
+                    });
             },
             error => {
-            this._notificationsService.error('Error!', 'Please enter old password correctly.');
+                this._notificationsService.error('Error!', 'Please enter old password correctly.');
             },
             () => {
                 this.isPassChangeInProgress = false;
             });
-        }
+    }
 
 }

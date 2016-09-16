@@ -1,7 +1,4 @@
 import {SpecialityDetail} from '../../models/speciality-details';
-import Moment from 'moment';
-import _ from 'underscore';
-
 
 export class SpecialityDetailAdapter {
     static parseResponse(specialityDetailData: any): SpecialityDetail {

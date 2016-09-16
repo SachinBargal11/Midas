@@ -2,13 +2,11 @@ import {Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import _ from 'underscore';
 import {Observable} from 'rxjs/Observable';
-import {Observer} from 'rxjs/Observer';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
 import {MedicalFacilityDetail} from '../models/medical-facility-details';
 import {SpecialityDetail} from '../models/speciality-details';
-import {SessionStore} from '../stores/session-store';
 import {MedicalFacilityAdapter} from './adapters/medical-facility-adapter';
 import {SpecialityDetailAdapter} from './adapters/speciality-detail-adapter';
 import {UserType} from '../models/enums/UserType';
@@ -20,8 +18,7 @@ export class MedicalFacilityService {
     private _headers: Headers = new Headers();
 
     constructor(
-        private _http: Http,
-        private _sessionStore: SessionStore
+        private _http: Http
     ) {
         this._headers.append('Content-Type', 'application/json');
     }

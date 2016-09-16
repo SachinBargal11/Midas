@@ -2,12 +2,10 @@ import {Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import _ from 'underscore';
 import {Observable} from 'rxjs/Observable';
-import {Observer} from 'rxjs/Observer';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
 import {Speciality} from '../models/speciality';
-import {SessionStore} from '../stores/session-store';
 import {SpecialityAdapter} from './adapters/speciality-adapter';
 
 @Injectable()
@@ -17,8 +15,7 @@ export class SpecialityService {
     private _headers: Headers = new Headers();
 
     constructor(
-        private _http: Http,
-        private _sessionStore: SessionStore
+        private _http: Http
     ) {
         this._headers.append('Content-Type', 'application/json');
     }

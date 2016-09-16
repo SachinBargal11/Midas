@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {Patient} from '../../../models/patient';
 import {PatientsStore} from '../../../stores/patients-store';

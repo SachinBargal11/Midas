@@ -1,7 +1,6 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {DoctorsService} from '../../../services/doctors-service';
-import {DataTable} from 'primeng/primeng';
 import {DoctorDetail} from '../../../models/doctor-details';
 
 @Component({
@@ -12,8 +11,8 @@ import {DoctorDetail} from '../../../models/doctor-details';
 
 
 export class DoctorsListComponent implements OnInit {
-doctors: DoctorDetail[];
-doctorsLoading;
+    doctors: DoctorDetail[];
+    doctorsLoading;
     constructor(
         private _router: Router,
         private _doctorsService: DoctorsService
@@ -24,9 +23,10 @@ doctorsLoading;
     }
     loadDoctors() {
         this.doctorsLoading = true;
-         let doctor = this._doctorsService.getDoctors()
-                                .subscribe(doctors => { this.doctors = doctors; },
-                                 null,
-                                   () => { this.doctorsLoading = false; });
+        let doctor = this._doctorsService.getDoctors()
+            .subscribe(doctors => { this.doctors = doctors; },
+            null,
+            () => { this.doctorsLoading = false; });
+        return doctor;
     }
 }

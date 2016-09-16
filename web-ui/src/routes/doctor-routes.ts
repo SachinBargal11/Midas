@@ -1,4 +1,4 @@
-import {Routes, RouterModule} from '@angular/router';
+import {Routes} from '@angular/router';
 import {ValidateActiveSession} from './guards/validate-active-session';
 import {AddDoctorComponent} from '../components/pages/doctors/add-doctor';
 import {UpdateDoctorComponent} from '../components/pages/doctors/update-doctor';

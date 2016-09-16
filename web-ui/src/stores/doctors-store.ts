@@ -1,17 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {Observer} from 'rxjs/Observer';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import {DoctorDetail} from '../models/doctor-details';
-import {Doctor} from '../models/doctor';
 import {DoctorsService} from '../services/doctors-service';
 import {SessionStore} from './session-store';
-import {Subject} from 'rxjs/Subject';
 import {List} from 'immutable';
 import {BehaviorSubject} from 'rxjs/Rx';
-import _ from 'underscore';
-import Moment from 'moment';
 
 
 @Injectable()
@@ -92,8 +87,6 @@ export class DoctorsStore {
         return <Observable<DoctorDetail>>Observable.from(promise);
     }
     updateDoctor(doctorDetail: DoctorDetail): Observable<DoctorDetail> {
-        let doctors = this._doctors.getValue();
-        let index = doctors.findIndex((currentDoctor: DoctorDetail) => currentDoctor.doctor.id === doctorDetail.doctor.id);
         let promise = new Promise((resolve, reject) => {
             this._doctorsService.updateDoctor(doctorDetail).subscribe((doctorDetail: DoctorDetail) => {
                 this._doctors.next(this._doctors.getValue().push(doctorDetail));

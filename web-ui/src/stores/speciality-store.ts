@@ -1,16 +1,12 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {Observer} from 'rxjs/Observer';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import {Speciality} from '../models/speciality';
 import {SpecialityService} from '../services/speciality-service';
 import {SessionStore} from './session-store';
-import {Subject} from 'rxjs/Subject';
 import {List} from 'immutable';
 import {BehaviorSubject} from 'rxjs/Rx';
-import _ from 'underscore';
-import Moment from 'moment';
 
 
 @Injectable()
@@ -90,11 +86,9 @@ export class SpecialityStore {
     }
 
     updateSpeciality(speciality: Speciality): Observable<Speciality> {
-        let specialities = this._specialities.getValue();
-        let index = specialities.findIndex((currentSpeciality: Speciality) => currentSpeciality.speciality.id === speciality.speciality.id);
         let promise = new Promise((resolve, reject) => {
             this._specialityService.updateSpeciality(speciality).subscribe((currentSpeciality: Speciality) => {
-                this._specialities.next(this._specialities.getValue().push(speciality));
+                this._specialities.next(this._specialities.getValue().push(currentSpeciality));
                 resolve(speciality);
             }, error => {
                 reject(error);

@@ -1,8 +1,6 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {ProvidersService} from '../../../services/providers-service';
-import {DataTable} from 'primeng/primeng';
-import {SessionStore} from '../../../stores/session-store';
 import {Provider} from '../../../models/provider';
 
 @Component({

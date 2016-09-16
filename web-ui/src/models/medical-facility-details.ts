@@ -1,5 +1,4 @@
 import {Record, List} from 'immutable';
-import moment from 'moment';
 import {BehaviorSubject} from 'rxjs/Rx';
 import {Account} from './account';
 import {MedicalFacility} from './medical-facility';

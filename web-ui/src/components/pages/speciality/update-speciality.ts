@@ -1,16 +1,12 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
+import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
-import {AppValidators} from '../../../utils/AppValidators';
-import {LoaderComponent} from '../../elements/loader';
 import {SpecialityStore} from '../../../stores/speciality-store';
 import {Speciality} from '../../../models/speciality';
-import $ from 'jquery';
 import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
 import {Notification} from '../../../models/notification';
 import moment from 'moment';
-import {Calendar, InputMask, AutoComplete, SelectItem} from 'primeng/primeng';
 
 @Component({
     selector: 'update-speciality',

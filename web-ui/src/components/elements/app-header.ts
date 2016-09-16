@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {LoaderComponent} from '../elements/loader';
 import {AuthenticationService} from '../../services/authentication-service';
 import {SessionStore} from '../../stores/session-store';
 import {NotificationsStore} from '../../stores/notifications-store';

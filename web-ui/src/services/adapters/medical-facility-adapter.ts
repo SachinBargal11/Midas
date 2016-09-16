@@ -1,8 +1,6 @@
-import Moment from 'moment';
 import _ from 'underscore';
-import {Record, List} from 'immutable';
+import {List} from 'immutable';
 import {SpecialityDetailAdapter} from './speciality-detail-adapter';
-import {MedicalFacility} from '../../models/medical-facility';
 import {MedicalFacilityDetail} from '../../models/medical-facility-details';
 import {SpecialityDetail} from '../../models/speciality-details';
 

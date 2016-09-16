@@ -104,7 +104,8 @@ enableProdMode();
         CalendarModule,
         RadioButtonModule,
         MultiSelectModule,
-        HttpModule
+        HttpModule,
+        SharedModule
     ],
     declarations: [
         AppRoot,

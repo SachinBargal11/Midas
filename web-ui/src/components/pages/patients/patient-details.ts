@@ -1,9 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Patient} from '../../../models/patient';
 import {PatientsStore} from '../../../stores/patients-store';
-import {PatientProfileComponent} from './profile-patient';
-import {Observable} from 'rxjs/Observable';
 
 @Component({
     selector: 'patient-details',
