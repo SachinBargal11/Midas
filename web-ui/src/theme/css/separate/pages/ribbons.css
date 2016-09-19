@@ -42,8 +42,7 @@
   color: #ffffff;
 }
 .ribbon-block.with-image .background-image {
-  -o-background-size: cover;
-     background-size: cover;
+  background-size: cover;
   position: absolute;
   top: 0px;
   bottom: 0px;

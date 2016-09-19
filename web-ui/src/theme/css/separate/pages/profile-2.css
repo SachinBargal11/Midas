@@ -11,8 +11,7 @@
   height: 245px;
   margin: -27px -15px 20px;
   background: #232936 no-repeat 50% 50%;
-  -o-background-size: cover;
-     background-size: cover;
+  background-size: cover;
   position: relative;
   color: #fff;
 }
@@ -81,7 +80,6 @@
   text-align: center;
 }
 .profile-header-photo.gradient .info-block {
-  background: -moz-linear-gradient(top, rgba(125, 185, 232, 0) 0%, #000000 100%);
   background: -webkit-linear-gradient(top, rgba(125, 185, 232, 0) 0%, #000000 100%);
   background: -webkit-gradient(linear, left top, left bottom, from(rgba(125, 185, 232, 0)), to(#000000));
   background: -o-linear-gradient(top, rgba(125, 185, 232, 0) 0%, #000000 100%);
@@ -155,7 +153,6 @@
   font-size: .875rem;
   padding: 35% 0 0;
   -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }

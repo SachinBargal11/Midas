@@ -55,9 +55,9 @@ export class ChangePasswordComponent implements OnInit {
             });
 
         this.changePassForm = this.fb.group({
-            oldpassword: [''],
-            password: ['', Validators.required],
-            confirmPassword: ['', Validators.required]
+        oldpassword: ['', Validators.required],
+        password: ['', Validators.required],
+        confirmPassword: ['', Validators.required]
         }, { validator: AppValidators.matchingPasswords('password', 'confirmPassword') });
 
         this.changePassFormControls = this.changePassForm.controls;

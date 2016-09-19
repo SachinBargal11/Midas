@@ -96,3 +96,12 @@
 .sign-box .close:hover {
   color: #00a8ff;
 }
+.sign-box.reset-password-box .btn {
+  display: inline-block !important;
+  margin: 10px auto 12px;
+  margin-right: 10px;
+}
+.sign-box.reset-password-box a {
+  display: inline-block;
+  margin-left: 4px;
+}

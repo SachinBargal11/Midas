@@ -2154,7 +2154,6 @@ textarea.form-control {
 }
 .form-group-checkbox .form-tooltip-error:before {
   -webkit-transform: rotate(-90deg);
-     -moz-transform: rotate(-90deg);
       -ms-transform: rotate(-90deg);
        -o-transform: rotate(-90deg);
           transform: rotate(-90deg);
@@ -2170,7 +2169,6 @@ textarea.form-control {
 }
 .form-label .form-tooltip-error:before {
   -webkit-transform: rotate(90deg);
-     -moz-transform: rotate(90deg);
       -ms-transform: rotate(90deg);
        -o-transform: rotate(90deg);
           transform: rotate(90deg);
@@ -2221,7 +2219,6 @@ textarea.form-control {
   border-color: #dbe4ea;
   color: rgba(108, 122, 134, 0.7);
   -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
@@ -2285,7 +2282,6 @@ textarea.form-control {
   color: #adb7be;
   border: none;
   -webkit-transition: none;
-  -moz-transition: none;
   -o-transition: none;
   transition: none;
 }
@@ -2491,7 +2487,6 @@ textarea.form-control {
           border-radius: 25rem;
   background: #929faa;
   -webkit-transition: background .4s ease;
-  -moz-transition: background .4s ease;
   -o-transition: background .4s ease;
   transition: background .4s ease;
 }
@@ -2503,11 +2498,9 @@ textarea.form-control {
   -webkit-border-radius: 50%;
           border-radius: 50%;
   -webkit-transition: left .4s ease;
-  -moz-transition: left .4s ease;
   -o-transition: left .4s ease;
   transition: left .4s ease;
   background: #ffffff;
-  background: -moz-linear-gradient(top, #ffffff 0%, #e4f6ff 100%);
   background: -webkit-linear-gradient(top, #ffffff 0%, #e4f6ff 100%);
   background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e4f6ff));
   background: -o-linear-gradient(top, #ffffff 0%, #e4f6ff 100%);
@@ -2529,7 +2522,6 @@ textarea.form-control {
 .checkbox-slide input:disabled + label:after {
   background: #fcfefe;
   border-color: #c5d6de;
-  background: -moz-linear-gradient(top, #fcfefe 0%, #edf2f5 100%);
   background: -webkit-linear-gradient(top, #fcfefe 0%, #edf2f5 100%);
   background: -webkit-gradient(linear, left top, left bottom, from(#fcfefe), to(#edf2f5));
   background: -o-linear-gradient(top, #fcfefe 0%, #edf2f5 100%);
@@ -2554,7 +2546,6 @@ textarea.form-control {
   width: 43px;
   background: #929faa;
   -webkit-transition: background .4s ease;
-  -moz-transition: background .4s ease;
   -o-transition: background .4s ease;
   transition: background .4s ease;
 }
@@ -2562,11 +2553,9 @@ textarea.form-control {
   width: 20px;
   border: solid 1px #929faa;
   -webkit-transition: left .4s ease;
-  -moz-transition: left .4s ease;
   -o-transition: left .4s ease;
   transition: left .4s ease;
   background: #ffffff;
-  background: -moz-linear-gradient(top, #ffffff 0%, #eef4f7 100%);
   background: -webkit-linear-gradient(top, #ffffff 0%, #eef4f7 100%);
   background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#eef4f7));
   background: -o-linear-gradient(top, #ffffff 0%, #eef4f7 100%);
@@ -2576,7 +2565,6 @@ textarea.form-control {
 .checkbox-toggle input + label:hover:after {
   border-color: #00a8ff;
   background: #ffffff;
-  background: -moz-linear-gradient(top, #ffffff 0%, #e9f8ff 100%);
   background: -webkit-linear-gradient(top, #ffffff 0%, #e9f8ff 100%);
   background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e9f8ff));
   background: -o-linear-gradient(top, #ffffff 0%, #e9f8ff 100%);
@@ -2590,7 +2578,6 @@ textarea.form-control {
   left: 23px;
   border-color: #00a8ff;
   background: #ffffff;
-  background: -moz-linear-gradient(top, #ffffff 0%, #e9f8ff 100%);
   background: -webkit-linear-gradient(top, #ffffff 0%, #e9f8ff 100%);
   background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e9f8ff));
   background: -o-linear-gradient(top, #ffffff 0%, #e9f8ff 100%);
@@ -2603,7 +2590,6 @@ textarea.form-control {
 .checkbox-toggle input:disabled + label:after {
   border-color: #dbe4eb;
   background: #ffffff;
-  background: -moz-linear-gradient(top, #ffffff 0%, #eef4f7 100%);
   background: -webkit-linear-gradient(top, #ffffff 0%, #eef4f7 100%);
   background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#eef4f7));
   background: -o-linear-gradient(top, #ffffff 0%, #eef4f7 100%);
@@ -2717,7 +2703,6 @@ textarea.form-control {
   margin: -2px 8px -2px 0;
   font-size: 16px;
   -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   vertical-align: middle;
@@ -3047,7 +3032,6 @@ textarea.form-control {
   margin: -2px 8px -2px 0;
   font-size: 1rem;
   -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   vertical-align: middle;
@@ -3313,7 +3297,6 @@ textarea.form-control {
   position: relative;
   overflow: hidden;
   -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   cursor: pointer;

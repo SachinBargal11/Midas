@@ -603,7 +603,6 @@ mark,
           border-radius: .25rem;
   -webkit-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
 .img-circle {
@@ -1977,8 +1976,7 @@ input[type="checkbox"].disabled {
   padding-right: 2.25rem;
   background-repeat: no-repeat;
   background-position: center right .5625rem;
-  -o-background-size: 1.4625rem 1.4625rem;
-     background-size: 1.4625rem 1.4625rem;
+  background-size: 1.4625rem 1.4625rem;
 }
 .has-success .text-help,
 .has-success .form-control-label,
@@ -2694,7 +2692,6 @@ input[type="button"].btn-block {
   opacity: 0;
   -webkit-transition: opacity .15s linear;
   -o-transition: opacity .15s linear;
-  -moz-transition: opacity .15s linear;
   transition: opacity .15s linear;
 }
 .fade.in {
@@ -2712,15 +2709,12 @@ input[type="button"].btn-block {
   overflow: hidden;
   -webkit-transition-timing-function: ease;
   -o-transition-timing-function: ease;
-  -moz-transition-timing-function: ease;
-       transition-timing-function: ease;
+  transition-timing-function: ease;
   -webkit-transition-duration: .35s;
   -o-transition-duration: .35s;
-  -moz-transition-duration: .35s;
-       transition-duration: .35s;
+  transition-duration: .35s;
   -webkit-transition-property: height;
   -o-transition-property: height;
-  -moz-transition-property: height;
   transition-property: height;
 }
 .dropup,
@@ -2761,8 +2755,7 @@ input[type="button"].btn-block {
   text-align: left;
   list-style: none;
   background-color: #fff;
-  -o-background-clip: padding-box;
-     background-clip: padding-box;
+  background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.15);
   -webkit-border-radius: .25rem;
           border-radius: .25rem;
@@ -3212,8 +3205,7 @@ input[type="button"].btn-block {
   background-color: #eee;
   background-repeat: no-repeat;
   background-position: center center;
-  -o-background-size: 50% 50%;
-     background-size: 50% 50%;
+  background-size: 50% 50%;
 }
 .c-checkbox .c-indicator {
   -webkit-border-radius: .25rem;
@@ -3254,8 +3246,7 @@ input[type="button"].btn-block {
   vertical-align: middle;
   background: #fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAUCAMAAACzvE1FAAAADFBMVEUzMzMzMzMzMzMzMzMKAG/3AAAAA3RSTlMAf4C/aSLHAAAAPElEQVR42q3NMQ4AIAgEQTn//2cLdRKppSGzBYwzVXvznNWs8C58CiussPJj8h6NwgorrKRdTvuV9v16Afn0AYFOB7aYAAAAAElFTkSuQmCC) no-repeat right 0.75rem center;
   background-image: none \9;
-  -o-background-size: 8px 10px;
-     background-size: 8px 10px;
+  background-size: 8px 10px;
   border: 1px solid #ccc;
   -moz-appearance: none;
 }
@@ -4207,14 +4198,6 @@ a.label:hover {
     background-position: 0 0;
   }
 }
-@-moz-keyframes progress-bar-stripes {
-  from {
-    background-position: 1rem 0;
-  }
-  to {
-    background-position: 0 0;
-  }
-}
 @keyframes progress-bar-stripes {
   from {
     background-position: 1rem 0;
@@ -4234,8 +4217,7 @@ a.label:hover {
   color: #0074d9;
   border: 0;
   -moz-appearance: none;
-  -webkit-appearance: none;
-          appearance: none;
+  appearance: none;
 }
 .progress[value]::-webkit-progress-bar {
   background-color: #eee;
@@ -4293,7 +4275,6 @@ a.label:hover {
   background-size: 1rem 1rem;
 }
 .progress-striped[value]::-moz-progress-bar {
-  background-image: -moz-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
   background-size: 1rem 1rem;
 }
@@ -4301,10 +4282,8 @@ a.label:hover {
   .progress-bar-striped {
     background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
     background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-    background-image: -moz-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
     background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
-    -o-background-size: 1rem 1rem;
-       background-size: 1rem 1rem;
+    background-size: 1rem 1rem;
   }
 }
 .progress-animated[value]::-webkit-progress-value {
@@ -4312,15 +4291,13 @@ a.label:hover {
   animation: progress-bar-stripes 2s linear infinite;
 }
 .progress-animated[value]::-moz-progress-bar {
-  -moz-animation: progress-bar-stripes 2s linear infinite;
-       animation: progress-bar-stripes 2s linear infinite;
+  animation: progress-bar-stripes 2s linear infinite;
 }
 @media screen and (min-width: 0) {
   .progress-animated .progress-bar-striped {
     -webkit-animation: progress-bar-stripes 2s linear infinite;
     -o-animation: progress-bar-stripes 2s linear infinite;
-    -moz-animation: progress-bar-stripes 2s linear infinite;
-         animation: progress-bar-stripes 2s linear infinite;
+    animation: progress-bar-stripes 2s linear infinite;
   }
 }
 .progress-success[value]::-webkit-progress-value {
@@ -4706,22 +4683,18 @@ button.close {
   -webkit-transition: -webkit-transform 0.3s ease-out;
   -o-transition: transform 0.3s ease-out, -o-transform 0.3s ease-out;
   transition: -webkit-transform 0.3s ease-out;
-  -moz-transition: transform 0.3s ease-out, -moz-transform 0.3s ease-out;
   transition: transform 0.3s ease-out;
-  transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out, -moz-transform 0.3s ease-out, -o-transform 0.3s ease-out;
   transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out, -o-transform 0.3s ease-out;
   -webkit-transform: translate(0, -25%);
   -ms-transform: translate(0, -25%);
   -o-transform: translate(0, -25%);
-  -moz-transform: translate(0, -25%);
-       transform: translate(0, -25%);
+  transform: translate(0, -25%);
 }
 .modal.in .modal-dialog {
   -webkit-transform: translate(0, 0);
   -ms-transform: translate(0, 0);
   -o-transform: translate(0, 0);
-  -moz-transform: translate(0, 0);
-       transform: translate(0, 0);
+  transform: translate(0, 0);
 }
 .modal-open .modal {
   overflow-x: hidden;
@@ -4735,8 +4708,7 @@ button.close {
 .modal-content {
   position: relative;
   background-color: #fff;
-  -o-background-clip: padding-box;
-     background-clip: padding-box;
+  background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.2);
   -webkit-border-radius: .3rem;
           border-radius: .3rem;
@@ -4935,8 +4907,7 @@ button.close {
   word-wrap: normal;
   white-space: normal;
   background-color: #fff;
-  -o-background-clip: padding-box;
-     background-clip: padding-box;
+  background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.2);
   -webkit-border-radius: .3rem;
           border-radius: .3rem;
@@ -5063,7 +5034,6 @@ button.close {
   display: none;
   -webkit-transition: 0.6s ease-in-out left;
   -o-transition: 0.6s ease-in-out left;
-  -moz-transition: 0.6s ease-in-out left;
   transition: 0.6s ease-in-out left;
 }
 .carousel-inner > .carousel-item > img,
@@ -5075,38 +5045,31 @@ button.close {
     -webkit-transition: -webkit-transform 0.6s ease-in-out;
     -o-transition: transform 0.6s ease-in-out, -o-transform 0.6s ease-in-out;
     transition: -webkit-transform 0.6s ease-in-out;
-    -moz-transition: transform 0.6s ease-in-out, -moz-transform 0.6s ease-in-out;
     transition: transform 0.6s ease-in-out;
-    transition: transform 0.6s ease-in-out, -webkit-transform 0.6s ease-in-out, -moz-transform 0.6s ease-in-out, -o-transform 0.6s ease-in-out;
     transition: transform 0.6s ease-in-out, -webkit-transform 0.6s ease-in-out, -o-transform 0.6s ease-in-out;
     -webkit-backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-         backface-visibility: hidden;
+    backface-visibility: hidden;
     -webkit-perspective: 1000px;
-    -moz-perspective: 1000px;
-         perspective: 1000px;
+    perspective: 1000px;
   }
   .carousel-inner > .carousel-item.next,
   .carousel-inner > .carousel-item.active.right {
     left: 0;
     -webkit-transform: translate3d(100%, 0, 0);
-    -moz-transform: translate3d(100%, 0, 0);
-         transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
   }
   .carousel-inner > .carousel-item.prev,
   .carousel-inner > .carousel-item.active.left {
     left: 0;
     -webkit-transform: translate3d(-100%, 0, 0);
-    -moz-transform: translate3d(-100%, 0, 0);
-         transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
   }
   .carousel-inner > .carousel-item.next.left,
   .carousel-inner > .carousel-item.prev.right,
   .carousel-inner > .carousel-item.active {
     left: 0;
     -webkit-transform: translate3d(0, 0, 0);
-    -moz-transform: translate3d(0, 0, 0);
-         transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
   }
 }
 .carousel-inner > .active,
@@ -5155,7 +5118,6 @@ button.close {
   background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 0.5)), to(rgba(0, 0, 0, 0.0001)));
   background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.0001) 100%);
   background-image: -o-linear-gradient(left, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.0001) 100%);
-  background-image: -moz-linear-gradient(left, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.0001) 100%);
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.0001) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#00000000', GradientType=1);
   background-repeat: repeat-x;
@@ -5166,7 +5128,6 @@ button.close {
   background-image: -webkit-gradient(linear, left top, right top, from(rgba(0, 0, 0, 0.0001)), to(rgba(0, 0, 0, 0.5)));
   background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0.0001) 0%, rgba(0, 0, 0, 0.5) 100%);
   background-image: -o-linear-gradient(left, rgba(0, 0, 0, 0.0001) 0%, rgba(0, 0, 0, 0.5) 100%);
-  background-image: -moz-linear-gradient(left, rgba(0, 0, 0, 0.0001) 0%, rgba(0, 0, 0, 0.5) 100%);
   background-image: linear-gradient(to right, rgba(0, 0, 0, 0.0001) 0%, rgba(0, 0, 0, 0.5) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#80000000', GradientType=1);
   background-repeat: repeat-x;

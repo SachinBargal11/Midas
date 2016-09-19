@@ -249,8 +249,7 @@
   -webkit-border-radius: .25rem;
           border-radius: .25rem;
   background: #000 no-repeat 50% 50%;
-  -o-background-size: cover;
-     background-size: cover;
+  background-size: cover;
   position: relative;
 }
 .cstm-video-player .cstm-video-player-controls {
@@ -262,8 +261,7 @@
   -webkit-border-radius: 0 0 .25rem .25rem;
           border-radius: 0 0 .25rem .25rem;
   background: url('../img/player-controls.png') repeat-x bottom;
-  -o-background-size: 2px 75px;
-     background-size: 2px 75px;
+  background-size: 2px 75px;
   padding: 32px 10px 0;
   z-index: 5;
 }

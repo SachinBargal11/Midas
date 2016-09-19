@@ -413,8 +413,7 @@
   padding: 2px 30px 0 52px;
   height: 43px;
   background: no-repeat 0 0;
-  -o-background-size: auto 43px;
-     background-size: auto 43px;
+  background-size: auto 43px;
   margin: 0 0 20px 0;
   color: #818181;
   font-size: .9375rem;
