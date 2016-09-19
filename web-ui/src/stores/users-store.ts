@@ -18,7 +18,6 @@ export class UsersStore {
         private _usersService: UsersService,
         private _sessionStore: SessionStore
     ) {
-        this.loadInitialData();
         this._sessionStore.userLogoutEvent.subscribe(() => {
             this.resetStore();
         });
@@ -37,7 +36,7 @@ export class UsersStore {
         return this._selectedUsers.asObservable();
     }
 
-    loadInitialData(): Observable<AccountDetail[]> {
+    getUsers(): Observable<AccountDetail[]> {
         let accountId: number = this._sessionStore.session.account_id;
         let promise = new Promise((resolve, reject) => {
             this._usersService.getUsers(accountId).subscribe((users: AccountDetail[]) => {

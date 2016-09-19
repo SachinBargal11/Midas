@@ -18,7 +18,6 @@ export class ProvidersStore {
         private _providersService: ProvidersService,
         private _sessionStore: SessionStore
     ) {
-        this.loadInitialData();
         this._sessionStore.userLogoutEvent.subscribe(() => {
             this.resetStore();
         });
@@ -33,7 +32,7 @@ export class ProvidersStore {
         return this._providers.asObservable();
     }
 
-    loadInitialData(): Observable<Provider[]> {
+    getProviders(): Observable<Provider[]> {
         let promise = new Promise((resolve, reject) => {
             this._providersService.getProviders().subscribe((providers: Provider[]) => {
                 this._providers.next(List(providers));

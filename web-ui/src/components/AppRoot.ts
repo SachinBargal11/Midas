@@ -32,7 +32,7 @@ export class AppRoot implements OnInit {
                 this._router.navigate(['/login']);
             }
         ),
-        this._specialityStore.loadInitialData();
+        this._specialityStore.getSpecialities();
         this._statesStore.getStates();
     }
 }

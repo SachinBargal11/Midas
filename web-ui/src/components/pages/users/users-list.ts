@@ -1,13 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {SessionStore} from '../../../stores/session-store';
-import {UsersService} from '../../../services/users-service';
+import {UsersStore} from '../../../stores/users-store';
 import {AccountDetail} from '../../../models/account-details';
 
 @Component({
     selector: 'users-list',
-    templateUrl: 'templates/pages/users/users-list.html',
-    providers: [UsersService]
+    templateUrl: 'templates/pages/users/users-list.html'
 })
 
 
@@ -17,7 +16,7 @@ export class UsersListComponent implements OnInit {
     cols: any[];
     constructor(
         private _router: Router,
-        private _usersService: UsersService,
+        private _usersStore: UsersStore,
         private _sessionStore: SessionStore
     ) {
     }
@@ -27,12 +26,13 @@ export class UsersListComponent implements OnInit {
 
     loadUsers() {
         this.usersLoading = true;
-        let accountId = this._sessionStore.session.account_id;
-        let user = this._usersService.getUsers(accountId)
-            .subscribe(users => { this.users = users; },
+        this._usersStore.getUsers()
+            .subscribe(users => {
+                this.users = users;
+            },
             null,
-            () => { this.usersLoading = false; });
-
-        return user;
+            () => {
+                this.usersLoading = false;
+            });
     }
 }

@@ -38,7 +38,7 @@ export class SpecialityStore {
         return this._selectedSpecialities.asObservable();
     }
 
-    loadInitialData(): Observable<Speciality[]> {
+    getSpecialities(): Observable<Speciality[]> {
         let promise = new Promise((resolve, reject) => {
             this._specialityService.getSpecialities().subscribe((specialities: Speciality[]) => {
                 this._specialities.next(List(specialities));

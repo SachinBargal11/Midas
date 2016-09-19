@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {SpecialityService} from '../../../services/speciality-service';
+import {SpecialityStore} from '../../../stores/speciality-store';
 import {Speciality} from '../../../models/speciality';
 
 @Component({
     selector: 'speciality-list',
-    templateUrl: 'templates/pages/speciality/speciality-list.html',
-    providers: [SpecialityService]
+    templateUrl: 'templates/pages/speciality/speciality-list.html'
 })
 
 
@@ -15,18 +14,20 @@ export class SpecialityListComponent implements OnInit {
     specialityLoading;
     constructor(
         private _router: Router,
-        private _specialityService: SpecialityService
+        private _specialityStore: SpecialityStore
     ) {
+
     }
+
     ngOnInit() {
         this.loadSpeciality();
     }
+
     loadSpeciality() {
         this.specialityLoading = true;
-        let speciality = this._specialityService.getSpecialities()
+        this._specialityStore.getSpecialities()
             .subscribe(specialities => { this.specialities = specialities; },
             null,
             () => { this.specialityLoading = false; });
-        return speciality;
     }
 }

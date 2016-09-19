@@ -30,4 +30,8 @@ export class MedicalFacilityDetail extends MedicalFacilityRecord {
         super(props);
     }
 
+    get hasSpecialityDetails(): boolean {
+        return this.specialityDetails.getValue().size ? true : false;
+    }
+
 }

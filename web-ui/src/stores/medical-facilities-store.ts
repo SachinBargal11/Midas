@@ -19,7 +19,6 @@ export class MedicalFacilityStore {
         private _medicalFacilitiesService: MedicalFacilityService,
         private _sessionStore: SessionStore
     ) {
-        this.loadInitialData();
         this._sessionStore.userLogoutEvent.subscribe(() => {
             this.resetStore();
         });
@@ -34,7 +33,7 @@ export class MedicalFacilityStore {
         return this._medicalFacilities.asObservable();
     }
 
-    loadInitialData(): Observable<MedicalFacilityDetail[]> {
+    getMedicalFacilities(): Observable<MedicalFacilityDetail[]> {
         let accountId: number = this._sessionStore.session.account_id;
         let promise = new Promise((resolve, reject) => {
             this._medicalFacilitiesService.getMedicalFacilities(accountId).subscribe((medicalFacilities: MedicalFacilityDetail[]) => {
@@ -117,7 +116,7 @@ export class MedicalFacilityStore {
         return <Observable<SpecialityDetail>>Observable.from(promise);
     }
 
-    findMedicalFacilityById(id: number) {
+    findMedicalFacilityById(id: number): MedicalFacilityDetail {
         let medicalFacilities = this._medicalFacilities.getValue();
         let index = medicalFacilities.findIndex((currentMedicalFacility: MedicalFacilityDetail) => currentMedicalFacility.medicalfacility.id === id);
         return medicalFacilities.get(index);
@@ -126,10 +125,16 @@ export class MedicalFacilityStore {
     fetchMedicalFacilityById(id: number): Observable<MedicalFacilityDetail> {
         let promise = new Promise((resolve, reject) => {
             let matchedMedicalFacility: MedicalFacilityDetail = this.findMedicalFacilityById(id);
-            if (matchedMedicalFacility) {
+            if (matchedMedicalFacility && matchedMedicalFacility.hasSpecialityDetails) {
                 resolve(matchedMedicalFacility);
             } else {
                 this._medicalFacilitiesService.fetchMedicalFacilityById(id).subscribe((medicalFacility: MedicalFacilityDetail) => {
+                    let medicalFacilities: List<MedicalFacilityDetail> = this._medicalFacilities.getValue();
+                    let index = medicalFacilities.findIndex((currentMedicalFacility: MedicalFacilityDetail) => currentMedicalFacility.medicalfacility.id === id);
+                    medicalFacilities = medicalFacilities.update(index, function () {
+                        return medicalFacility;
+                    });
+                    this._medicalFacilities.next(this._medicalFacilities.getValue());
                     resolve(medicalFacility);
                 }, error => {
                     reject(error);

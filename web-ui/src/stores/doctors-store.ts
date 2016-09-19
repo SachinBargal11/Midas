@@ -19,7 +19,6 @@ export class DoctorsStore {
         private _doctorsService: DoctorsService,
         private _sessionStore: SessionStore
     ) {
-        this.loadInitialData();
         this._sessionStore.userLogoutEvent.subscribe(() => {
             this.resetStore();
         });
@@ -39,7 +38,7 @@ export class DoctorsStore {
         return this._selectedDoctors.asObservable();
     }
 
-    loadInitialData(): Observable<DoctorDetail[]> {
+    getDoctors(): Observable<DoctorDetail[]> {
         let promise = new Promise((resolve, reject) => {
             this._doctorsService.getDoctors().subscribe((doctors: DoctorDetail[]) => {
                 this._doctors.next(List(doctors));

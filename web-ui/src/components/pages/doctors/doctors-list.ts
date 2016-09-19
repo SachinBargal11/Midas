@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {DoctorsService} from '../../../services/doctors-service';
+import {DoctorsStore} from '../../../stores/doctors-store';
 import {DoctorDetail} from '../../../models/doctor-details';
 
 @Component({
     selector: 'doctors-list',
-    templateUrl: 'templates/pages/doctors/doctors-list.html',
-    providers: [DoctorsService]
+    templateUrl: 'templates/pages/doctors/doctors-list.html'
 })
 
 
@@ -15,7 +14,7 @@ export class DoctorsListComponent implements OnInit {
     doctorsLoading;
     constructor(
         private _router: Router,
-        private _doctorsService: DoctorsService
+        private _doctorsStore: DoctorsStore
     ) {
     }
     ngOnInit() {
@@ -23,7 +22,7 @@ export class DoctorsListComponent implements OnInit {
     }
     loadDoctors() {
         this.doctorsLoading = true;
-        let doctor = this._doctorsService.getDoctors()
+        let doctor = this._doctorsStore.getDoctors()
             .subscribe(doctors => { this.doctors = doctors; },
             null,
             () => { this.doctorsLoading = false; });
