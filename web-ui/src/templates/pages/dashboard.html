@@ -9,7 +9,7 @@
                                  Users Statistics
                              </header>
                              <div class="card-block">
-                                 <p-chart type="bar" [data]="data"></p-chart>
+                                 <p-chart *ngIf="!usersLoading" type="line" [data]="data" [options]="options"></p-chart>
                              </div>
                          </section>
                      </div>

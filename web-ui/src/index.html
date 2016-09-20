@@ -12,17 +12,22 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
-  
+
     <!-- build:process -->
-    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/bootstrap/dist/css/bootstrap.min.css" charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/font-awesome/css/font-awesome.min.css" charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/primeui/primeui-ng-all.min.css" charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/primeui/themes/bootstrap/theme.css" charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/datatables/media/css/jquery.dataTables.min.css" charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/bootstrap/dist/css/bootstrap.min.css"
+        charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/font-awesome/css/font-awesome.min.css"
+        charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/primeui/primeui-ng-all.min.css"
+        charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/primeui/themes/bootstrap/theme.css"
+        charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/datatables/media/css/jquery.dataTables.min.css"
+        charset="utf-8" />
     <!-- /build -->
-    
+
     <link rel="stylesheet" type="text/css" href="theme/css/main.css" charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="styles/styles.css" charset="utf-8" />  
+    <link rel="stylesheet" type="text/css" href="styles/styles.css" charset="utf-8" />
 </head>
 
 <body class="application viewport with-side-menu-compact">
@@ -59,7 +64,7 @@
                     'jquery-ui': 'external/jquery-ui/jquery-ui.min.js',         
                     'jquery-ui-timepicker-addon': '<%= externalComponentsDirectory %>/node_modules/jquery-ui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.js',
                     'datatables': '<%= externalComponentsDirectory %>/node_modules/datatables/media/js/jquery.dataTables.min.js',
-                    'chart': '<%= externalComponentsDirectory %>/node_modules/chart.js/dist/Chart.js'
+                    'chart.js': '<%= externalComponentsDirectory %>/node_modules/chart.js/dist/Chart.js'
 
                 },
                 meta: 
@@ -81,9 +86,10 @@
                             'jquery'
                         ]
                     },
-                    'chart': {
+                    'chart.js': {
                         deps: [
-                            'jquery'
+                            'jquery',
+                            'moment'
                         ]
                     },
                     'jquery.inputmask': {
@@ -175,14 +181,18 @@
                 }
             });
             
-            Promise.all([
-                System.import('jquery-ui'),
-                System.import('jquery-ui-timepicker-addon'),
-                System.import('jquery.inputmask'),
-                System.import('datatables'),
-                System.import('chart')
-            ])
-                .then(function()
+            System.import('moment').then(function(moment){
+                window.moment = moment;
+            }).then(function(){
+                return Promise.all([
+                    System.import('moment'),
+                    System.import('jquery-ui'),
+                    System.import('jquery-ui-timepicker-addon'),
+                    System.import('jquery.inputmask'),
+                    System.import('datatables')
+                    // System.import('chart.js')
+                ]);
+            }).then(function()
                 {
                     return System.import('scripts/bootstraper')
                 })

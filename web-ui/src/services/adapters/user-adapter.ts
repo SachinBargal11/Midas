@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import {User} from '../../models/user';
 import {AccountDetail} from '../../models/account-details';
 import _ from 'underscore';
@@ -6,13 +7,15 @@ import _ from 'underscore';
 export class UserAdapter {
     static parseUserResponse(userData: any): User {
 
-        let user = null;
+        let user: User = null;
         if (userData) {
-            let tempUser = _.omit(userData, 'account', 'updateDate');
+            let tempUser: any = _.omit(userData, 'account', 'updateDate');
             if (userData.account) {
                 tempUser.accountId = userData.account.id;
             }
-            user = new User(tempUser);
+            user = new User(_.extend(tempUser, {
+                createDate: moment.utc(tempUser.createDate)
+            }));
         }
         return user;
     }
@@ -20,7 +23,8 @@ export class UserAdapter {
     static parseResponse(userData: any): AccountDetail {
 
         let user = null;
-        let tempUser = _.omit(userData, 'account', 'updateDate');
+        let tempUser = this.parseUserResponse(userData);
+
         if (userData) {
             user = new AccountDetail({
                 user: tempUser,

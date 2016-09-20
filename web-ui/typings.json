@@ -13,6 +13,7 @@
     "zeroclipboard": "registry:dt/zeroclipboard#2.0.0+20151202024443"
   },
   "dependencies": {
+    "chart.js": "registry:npm/chart.js#2.1.4+20160615174920",
     "immutable": "registry:npm/immutable#3.7.6+20160411060006"
   }
 }
