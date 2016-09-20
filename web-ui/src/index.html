@@ -54,10 +54,12 @@
                     'underscore' : '<%= externalComponentsDirectory %>/node_modules/underscore/underscore.js',
                     'jquery': '<%= externalComponentsDirectory %>/node_modules/jquery/dist/jquery.min.js',
                     'primeng': '<%= externalComponentsDirectory %>/node_modules/primeng',
+                    'primeui': '<%= externalComponentsDirectory %>/node_modules/primeui/primeui-ng-all.min.js',
                     'jquery.inputmask': '<%= externalComponentsDirectory %>/node_modules/jquery.inputmask/dist/jquery.inputmask.bundle.js',
                     'jquery-ui': 'external/jquery-ui/jquery-ui.min.js',         
                     'jquery-ui-timepicker-addon': '<%= externalComponentsDirectory %>/node_modules/jquery-ui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.js',
-                    'datatables': '<%= externalComponentsDirectory %>/node_modules/datatables/media/js/jquery.dataTables.min.js'
+                    'datatables': '<%= externalComponentsDirectory %>/node_modules/datatables/media/js/jquery.dataTables.min.js',
+                    'chart': '<%= externalComponentsDirectory %>/node_modules/chart.js/dist/Chart.js'
 
                 },
                 meta: 
@@ -75,6 +77,11 @@
                         ]
                     },
                     'datatables': {
+                        deps: [
+                            'jquery'
+                        ]
+                    },
+                    'chart': {
                         deps: [
                             'jquery'
                         ]
@@ -172,7 +179,8 @@
                 System.import('jquery-ui'),
                 System.import('jquery-ui-timepicker-addon'),
                 System.import('jquery.inputmask'),
-                System.import('datatables')
+                System.import('datatables'),
+                System.import('chart')
             ])
                 .then(function()
                 {

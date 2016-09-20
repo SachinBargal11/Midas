@@ -77,12 +77,14 @@ import {SpecialityListComponent} from '../components/pages/speciality/speciality
 import {AddSpecialityComponent} from '../components/pages/speciality/add-speciality';
 import {UpdateSpecialityComponent} from '../components/pages/speciality/update-speciality';
 
+import {UserStatisticsComponent} from '../components/pages/users/user-statistics';
+
 import {LimitPipe} from '../pipes/limit-array-pipe';
 import {TimeAgoPipe} from '../pipes/time-ago-pipe';
 import {ReversePipe} from '../pipes/reverse-array-pipe';
 import {MapToJSPipe} from '../pipes/map-to-js';
 
-import {InputTextModule, DataTableModule, SharedModule, ButtonModule, DialogModule, CalendarModule, InputMaskModule, RadioButtonModule, MultiSelectModule} from 'primeng/primeng';
+import {InputTextModule, ChartModule, DataTableModule, SharedModule, ButtonModule, DialogModule, CalendarModule, InputMaskModule, RadioButtonModule, MultiSelectModule} from 'primeng/primeng';
 
 
 
@@ -95,6 +97,7 @@ enableProdMode();
         ReactiveFormsModule,
         APP_ROUTER_PROVIDER,
         InputTextModule,
+        ChartModule,
         DataTableModule,
         ButtonModule,
         DialogModule,
@@ -141,6 +144,7 @@ enableProdMode();
         SpecialityListComponent,
         AddSpecialityComponent,
         UpdateSpecialityComponent,
+        UserStatisticsComponent,
         TimeAgoPipe,
         ReversePipe,
         LimitPipe,
