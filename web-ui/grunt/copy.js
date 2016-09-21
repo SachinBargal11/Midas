@@ -94,6 +94,11 @@ module.exports = {
 			dest: '<%= distLocation %>/node_modules/datatables/',
 			expand: true
     	},{
+			cwd: 'node_modules/moment/',
+			src: ['moment.js'],
+			dest: '<%= distLocation %>/node_modules/moment/',
+			expand: true
+    	},{
 			cwd: '<%= srcLocation %>/external/',
 			src: ['**/*.*'],
 			dest: '<%= distLocation %>/external/',

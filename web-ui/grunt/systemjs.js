@@ -25,7 +25,8 @@ module.exports = {
                 'jquery.inputmask': 'node_modules/jquery.inputmask/dist/jquery.inputmask.bundle.js',
                 'jquery-ui': 'external/jquery-ui/jquery-ui.min.js',
                 'jquery-ui-timepicker-addon': 'node_modules/jquery-ui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.js',
-                'datatables': 'node_modules/datatables/media/js/jquery.dataTables.min.js'                
+                'datatables': 'node_modules/datatables/media/js/jquery.dataTables.min.js',
+				'chart.js': 'node_modules/chart.js/dist/Chart.js'				
             },
             meta: 
             {
@@ -46,6 +47,12 @@ module.exports = {
                         'jquery'
                        ]
                 },
+				'chart.js': {
+					deps: [
+						'jquery',
+						'moment'
+					]
+				},
                 'jquery.inputmask': {
                     deps: [
                         'jquery'
