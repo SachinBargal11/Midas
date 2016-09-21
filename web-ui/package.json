@@ -9,6 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "local-server": "lite-server",
     "grunt-watch": "grunt watch --force",
+    "tsc": "tsc",
     "tsc-watch": "tsc -w",
     "typings": "typings"
   },
@@ -18,6 +19,7 @@
     "autoprefixer": "^6.4.1",
     "concurrently": "^2.2.0",
     "grunt": "^1.0.1",
+    "grunt-cli": "^1.2.0",
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-uglify": "^2.0.0",
@@ -26,6 +28,7 @@
     "grunt-newer": "^1.2.0",
     "grunt-postcss": "^0.8.0",
     "grunt-systemjs-builder": "^0.2.7",
+    "grunt-teamcity": "^0.1.5",
     "grunt-ts": "^6.0.0-beta.3",
     "grunt-tslint": "^3.2.1",
     "lite-server": "^2.2.2",
