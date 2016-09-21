@@ -78,6 +78,7 @@ import {AddSpecialityComponent} from '../components/pages/speciality/add-special
 import {UpdateSpecialityComponent} from '../components/pages/speciality/update-speciality';
 
 import {UserStatisticsComponent} from '../components/pages/users/user-statistics';
+import {DoctorsStatisticsComponent} from '../components/pages/doctors/doctors-statistics';
 
 import {LimitPipe} from '../pipes/limit-array-pipe';
 import {TimeAgoPipe} from '../pipes/time-ago-pipe';
@@ -145,6 +146,7 @@ enableProdMode();
         AddSpecialityComponent,
         UpdateSpecialityComponent,
         UserStatisticsComponent,
+        DoctorsStatisticsComponent,
         TimeAgoPipe,
         ReversePipe,
         LimitPipe,
