@@ -55,7 +55,14 @@ constructor(
                     unit: 'week'
                 }
             }]
-        }
+        },
+        tooltips: {
+                callbacks: {
+                    title: function (tooltipItem, data) {
+                        return tooltipItem[0].xLabel.format('Do MMM YY');
+                    }
+                }
+            }
 
     };
     this.data = {
