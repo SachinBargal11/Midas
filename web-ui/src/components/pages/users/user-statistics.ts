@@ -56,6 +56,7 @@ constructor(
                 }
             }]
         }
+
     };
     this.data = {
         datasets: [
