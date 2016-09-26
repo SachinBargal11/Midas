@@ -8,6 +8,10 @@ import {UsersService} from '../../../services/users-service';
 import {SessionStore} from '../../../stores/session-store';
 import {UsersStore} from '../../../stores/users-store';
 import {AccountDetail} from '../../../models/account-details';
+import {DoctorsStore} from '../../../stores/doctors-store';
+import {DoctorDetail} from '../../../models/doctor-details';
+import {ProvidersStore} from '../../../stores/providers-store';
+import {Provider} from '../../../models/provider';
 import {NotificationsService} from 'angular2-notifications';
 
 
@@ -21,10 +25,16 @@ data: any;
 options: any;
 users: AccountDetail[];
 usersLoading;
+doctors: DoctorDetail[];
+doctorsLoading;
+providers: Provider[];
+providersLoading;
 constructor(
     private _router: Router,
     private _usersStore: UsersStore,
     private _usersService: UsersService,
+    private _doctorsStore: DoctorsStore,
+    private _providersStore: ProvidersStore,
     private _sessionStore: SessionStore,
     private _notificationsService: NotificationsService
 ) {
@@ -45,6 +55,25 @@ constructor(
         null,
         () => {
             this.usersLoading = false;
+        }
+    );
+    this.doctorsLoading = true;
+    this._doctorsStore.getDoctors().subscribe(doctors => {
+        this.doctors = doctors;
+        let groupedDoctors: Array<any> = _.chain(this.doctors).groupBy(function (doctor) {
+            return doctor.toJS().doctor.createDate.format('Do MMM YY');
+        }).map(function (value: Array<any>, key: string) {
+            return {
+                x: moment(key, 'Do MMM YY'),
+                y: value.length
+            };
+        })
+        .value();
+        this.data.datasets[1].data = groupedDoctors;
+    },
+        null,
+        () => {
+            this.doctorsLoading = false;
         }
     );
     this.options = {
@@ -69,8 +98,14 @@ constructor(
         datasets: [
             {
                 label: 'Users',
-                backgroundColor: '#42A5F5',
+                fill: false,
                 borderColor: '#1E88E5',
+                data: []
+            },
+            {
+                label: 'Doctors',
+                fill: false,
+                borderColor: '#00BF03',
                 data: []
             }
         ]
