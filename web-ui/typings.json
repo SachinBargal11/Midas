@@ -6,7 +6,7 @@
     "handsontable": "registry:dt/handsontable#0.24.3+20160711161324",
     "jquery": "registry:dt/jquery#1.10.0+20160908203239",
     "moment": "registry:dt/moment#2.11.1+20160829143156",
-    "node": "registry:dt/node#4.0.0+20160509154515",
+    "node-4": "registry:dt/node-4#4.0.0+20160914122103",
     "numbro": "registry:dt/numbro#0.0.0+20160316155526",
     "pikaday": "registry:dt/pikaday#0.0.0+20160812121421",
     "underscore": "registry:dt/underscore#1.8.3+20160908111004",
