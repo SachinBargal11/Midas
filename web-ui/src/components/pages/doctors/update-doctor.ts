@@ -26,6 +26,9 @@ import {StateService} from '../../../services/state-service';
 export class UpdateDoctorComponent implements OnInit {
     states: any[];
     doctor = new Doctor({});
+    doctorUser = new User({});
+    address = new Address({});
+    contactInfo = new ContactInfo({});
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -56,6 +59,9 @@ export class UpdateDoctorComponent implements OnInit {
             result.subscribe(
                 (doctorDetail: DoctorDetail) => {
                     this.doctor = doctorDetail.doctor;
+                    this.doctorUser = doctorDetail.doctor.doctorUser;
+                    this.address = doctorDetail.address;
+                    this.contactInfo = doctorDetail.contactInfo;
                 },
                 (error) => {
                     this._router.navigate(['/doctors']);

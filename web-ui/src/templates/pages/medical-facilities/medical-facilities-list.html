@@ -1,7 +1,11 @@
 <h1 class="with-border">Medical Facilities
     <a class="pull-right m-b-md btn btn-primary" [routerLink]="['/medical-facilities/add']">Add Medical Facility</a>
 </h1>
-<progress-bar [visible]="medicalfacilitiesLoading">
+<progress-bar [visible]="medicalfacilitiesLoading" 
+              style="position:fixed;
+                     top:0;
+                     width:100%;
+                     z-index:100;">
     <span class="sr-only">Loading medical facilities...</span>
 </progress-bar>
 <div class="ui-widget-header ui-helper-clearfix" style="padding:4px 10px;border-bottom: 0 none">

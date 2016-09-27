@@ -1,10 +1,6 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 
-import 'rxjs/add/operator/share';
-import 'rxjs/add/operator/map';
-import 'chart.js';
-import {UsersService} from '../../../services/users-service';
 import {SessionStore} from '../../../stores/session-store';
 import {UsersStore} from '../../../stores/users-store';
 import {AccountDetail} from '../../../models/account-details';
@@ -32,7 +28,6 @@ providersLoading;
 constructor(
     private _router: Router,
     private _usersStore: UsersStore,
-    private _usersService: UsersService,
     private _doctorsStore: DoctorsStore,
     private _providersStore: ProvidersStore,
     private _sessionStore: SessionStore,

@@ -9,17 +9,17 @@ import {Component, Input} from '@angular/core';
             .loader {
               height: 2px;
               width: 100%;
-              position: relative;
+              position: fixed;
+              top: 0;
               overflow: hidden;
-              background-color: #ddd;
             }
             .loader:before{
               display: block;
-              position: absolute;
+              position: fixed;
               content: "";
               left: -200px;
               width: 200px;
-              height: 4px;
+              height: 2px;
               background-color: #2980b9;
               animation: loading 2s linear infinite;
             }

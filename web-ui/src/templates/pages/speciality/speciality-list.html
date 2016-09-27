@@ -1,7 +1,11 @@
 <h1 class="with-border">Specialities
 <a class="pull-right m-b-md btn btn-primary" [routerLink]="['/specialities/add']">Add Speciality</a>
 </h1>
-<progress-bar [visible]="specialityLoading">
+<progress-bar [visible]="specialityLoading" 
+              style="position:fixed;
+                     top:0;
+                     width:100%;
+                     z-index:100;">
     <span class="sr-only">Loading specialities...</span>
 </progress-bar>
 <div class="ui-widget-header ui-helper-clearfix" style="padding:4px 10px;border-bottom: 0 none">

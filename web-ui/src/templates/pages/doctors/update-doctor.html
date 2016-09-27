@@ -139,7 +139,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="doctorformControls.userInfo.controls.firstname.touched && !doctorformControls.userInfo.controls.firstname.valid">
-                                    <input formControlName="firstname" type="text" class="form-control" placeholder="" [class.error]="!doctorformControls.userInfo.controls.firstname.valid">
+                                    <input formControlName="firstname" [ngModel]="doctorUser.firstname" type="text" class="form-control" placeholder="" [class.error]="!doctorformControls.userInfo.controls.firstname.valid">
                                     <div class='error-list' *ngIf="doctorformControls.userInfo.controls.firstname.touched && !doctorformControls.userInfo.controls.firstname.valid">
                                         <ul>
                                             <li *ngIf="doctorformControls.userInfo.controls.firstname.hasError('required')">First Name is required.</li>
@@ -151,7 +151,7 @@
                                 <label class="form-label"> Middlename
                                         </label>
                                 <div class="form-group" [class.error]="doctorformControls.userInfo.controls.middlename.touched && !doctorformControls.userInfo.controls.middlename.valid">
-                                    <input formControlName="middlename" type="text" class="form-control" placeholder="" [class.error]="!doctorformControls.userInfo.controls.middlename.valid">
+                                    <input formControlName="middlename" [ngModel]="doctorUser.middlename" type="text" class="form-control" placeholder="" [class.error]="!doctorformControls.userInfo.controls.middlename.valid">
                                     <div class='error-list' *ngIf="doctorformControls.userInfo.controls.middlename.touched && !doctorformControls.userInfo.controls.middlename.valid">
                                         <ul>
                                             <li *ngIf="doctorformControls.userInfo.controls.middlename.hasError('required')">Middle Name is required.</li>
@@ -165,7 +165,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="doctorformControls.userInfo.controls.lastname.touched && !doctorformControls.userInfo.controls.lastname.valid">
-                                    <input formControlName="lastname" type="text" class="form-control" placeholder="" [class.error]="!doctorformControls.userInfo.controls.lastname.valid">
+                                    <input formControlName="lastname" [ngModel]="doctorUser.lastname" type="text" class="form-control" placeholder="" [class.error]="!doctorformControls.userInfo.controls.lastname.valid">
                                     <div class='error-list' *ngIf="doctorformControls.userInfo.controls.lastname.touched && !doctorformControls.userInfo.controls.lastname.valid">
                                         <ul>
                                             <li *ngIf="doctorformControls.userInfo.controls.lastname.hasError('required')">Last Name is required.</li>
@@ -178,7 +178,7 @@
                           <div class="row">
                                <!-- <div class="col-lg-4">
                                       <div class="form-group" [class.error]="doctorformControls.userInfo.controls.gender.touched && !doctorformControls.userInfo.controls.gender.valid">
-                                        <select formControlName="gender" class="selectpicker form-control" title="Select Gender." [class.error]="doctorformControls.userInfo.controls.gender.touched && !doctorformControls.userInfo.controls.gender.valid">
+                                        <select formControlName="gender" [ngModel]="doctorUser.gender" class="selectpicker form-control" title="Select Gender." [class.error]="doctorformControls.userInfo.controls.gender.touched && !doctorformControls.userInfo.controls.gender.valid">
                                              <option value="">-Select Gender-</option>
                                              <option disabled>────────────────────</option>
                                              <option value="1">Male</option>
@@ -195,7 +195,8 @@
                             <div class="col-lg-4">
                                 <div class="form-group" [class.error]="doctorformControls.userInfo.controls.dob.touched && !doctorformControls.userInfo.controls.dob.valid">
                                     <div class='input-group date'>
-                                          <p-calendar formControlName="dob" 
+                                          <p-calendar formControlName="dob"
+                                                      [ngModel]="doctorUser.dob" 
                                                       dateFormat="M d, yy" 
                                                       minDate="Jan 1, 1900"
                                                       maxDate="today" 
@@ -219,16 +220,16 @@
                                             <span class="color-red">*</span>
                                         </label>
                                     <div class="form-group" [class.error]="doctorformControls.userInfo.controls.userType.touched && !doctorformControls.userInfo.controls.userType.valid">
-                                        <select formControlName="userType" class="selectpicker form-control" title="Select User Type." [class.error]="doctorformControls.userInfo.controls.userType.touched && !doctorformControls.userInfo.controls.userType.valid">
+                                        <select formControlName="userType" [ngModel]="doctorUser.userType" class="selectpicker form-control" title="Select User Type." [class.error]="doctorformControls.userInfo.controls.userType.touched && !doctorformControls.userInfo.controls.userType.valid">
                                              <option value="">-Select UserType-</option>
                                              <option disabled>────────────────────</option>
-                                             <option value="1">Admin</option>
-                                             <option value="2">Owner</option>
-                                             <option value="3">Doctor</option>
-                                             <option value="4">Patient</option>
-                                             <option value="5">Attorney</option>
-                                             <option value="6">Adjuster</option>
-                                             <option value="7">Accounts</option>
+                                             <option value="1" disabled>Admin</option>
+                                             <option value="2" disabled>Owner</option>
+                                             <option value="3" selected>Doctor</option>
+                                             <option value="4" disabled>Patient</option>
+                                             <option value="5" disabled>Attorney</option>
+                                             <option value="6" disabled>Adjuster</option>
+                                             <option value="7" disabled>Accounts</option>
                                          </select>
                                           <div class='error-list' *ngIf="doctorformControls.userInfo.controls.userType.touched && !doctorformControls.userInfo.controls.userType.valid">
                                         <ul>
@@ -244,7 +245,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                                     <div class="form-group" [class.error]="doctorformControls.userInfo.controls.password.touched && !doctorformControls.userInfo.controls.password.valid">
-                                        <input formControlName="password" type="password" minlength='6' class="form-control" [class.error]="!doctorformControls.userInfo.controls.password.valid"
+                                        <input formControlName="password" [ngModel]="doctorUser.password" type="password" minlength='6' class="form-control" [class.error]="!doctorformControls.userInfo.controls.password.valid"
                                             placeholder="" />
                                         <div class='error-list' *ngIf="doctorformControls.userInfo.controls.password.touched && !doctorformControls.userInfo.controls.password.valid">
                                             <ul>
@@ -285,7 +286,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="doctorformControls.contact.controls.email.touched && !doctorformControls.contact.controls.email.valid">
-                                    <input type="email" formControlName="email" [class.error]="!doctorformControls.contact.controls.email.valid" 
+                                    <input type="email" formControlName="email" [ngModel]="contactInfo.email" [class.error]="!doctorformControls.contact.controls.email.valid" 
                                     class="form-control" type="text" placeholder="" />
                                     <div class='error-list' *ngIf="doctorformControls.contact.controls.email.touched && !doctorformControls.contact.controls.email.valid">
                                         <ul>
@@ -300,7 +301,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="doctorformControls.contact.controls.cellPhone.touched && !doctorformControls.contact.controls.cellPhone.valid">
-                                    <p-inputMask mask="999-999-9999" formControlName="cellPhone" [class.error]="doctorformControls.contact.controls.cellPhone.touched && !doctorformControls.contact.controls.cellPhone.valid" 
+                                    <p-inputMask mask="999-999-9999" formControlName="cellPhone" [ngModel]="contactInfo.cellPhone" [class.error]="doctorformControls.contact.controls.cellPhone.touched && !doctorformControls.contact.controls.cellPhone.valid" 
                                      placeholder="999-999-9999" styleClass="form-control" [options]="{showMaskOnHover:false}"></p-inputMask>
                                     <div class='error-list' *ngIf="doctorformControls.contact.controls.cellPhone.touched && !doctorformControls.contact.controls.cellPhone.valid">
                                         <ul>
@@ -315,19 +316,19 @@
                             <div class="col-lg-4">
                                 <div class="form-group" >
                                         <label class="form-label"> Home Phone No</label>
-                                    <input formControlName="homePhone" type="text" class="form-control" placeholder="" />
+                                    <input formControlName="homePhone" [ngModel]="contactInfo.homePhone" type="text" class="form-control" placeholder="" />
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                         <label class="form-label"> Work Phone No</label>
-                                    <input formControlName="workPhone" type="text" class="form-control" placeholder=""/>
+                                    <input formControlName="workPhone" [ngModel]="contactInfo.workPhone" type="text" class="form-control" placeholder=""/>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                         <label class="form-label"> Fax No</label>
-                                    <input formControlName="faxNo" type="text" class="form-control" placeholder="" />
+                                    <input formControlName="faxNo" [ngModel]="contactInfo.faxNo" type="text" class="form-control" placeholder="" />
                                 </div>
                             </div>
                           </div> 
@@ -344,8 +345,8 @@
                                 <label class="form-label"> Address1
                                         </label>
                                 <div class="form-group" [class.error]="doctorformControls.address.controls.address1.touched && !doctorformControls.address.controls.address1.valid">
-                                    <input formControlName="address1" type="email" [class.error]="!doctorformControls.address.controls.address1.valid" class="form-control" placeholder=""
-                                        type="text" />
+                                    <input formControlName="address1" [ngModel]="address.address1" type="text" [class.error]="!doctorformControls.address.controls.address1.valid" class="form-control" placeholder=""
+                                     />
                                     <div class='error-list' *ngIf="doctorformControls.address.controls.address1.touched && !doctorformControls.address.controls.address1.valid">
                                         <ul>
                                             <li *ngIf="doctorformControls.address.controls.address1.hasError('required')">Address1 is required.</li>
@@ -358,7 +359,7 @@
                                 <label class="form-label"> Address2
                                         </label>
                                 <div class="form-group" [class.error]="doctorformControls.address.controls.address2.touched && !doctorformControls.address.controls.address2.valid">
-                                    <input formControlName="address2" type="text" class="form-control" [class.error]="!doctorformControls.address.controls.address2.valid" placeholder=""
+                                    <input formControlName="address2" [ngModel]="address.address2" type="text" class="form-control" [class.error]="!doctorformControls.address.controls.address2.valid" placeholder=""
                                     />
                                     <div class='error-list' *ngIf="doctorformControls.address.controls.address2.touched && !doctorformControls.address.controls.address2.valid">
                                         <ul>
@@ -371,7 +372,7 @@
                                 <label class="form-label"> City
                                         </label>
                                 <div class="form-group" [class.error]="doctorformControls.address.controls.city.touched && !doctorformControls.address.controls.city.valid">
-                                    <input formControlName="city" type="text" class="form-control" [class.error]="!doctorformControls.address.controls.city.valid" placeholder=""
+                                    <input formControlName="city" [ngModel]="address.city" type="text" class="form-control" [class.error]="!doctorformControls.address.controls.city.valid" placeholder=""
                                     />
                                     <div class='error-list' *ngIf="doctorformControls.address.controls.city.touched && !doctorformControls.address.controls.city.valid">
                                         <ul>
@@ -386,7 +387,7 @@
                                 <label class="form-label"> State
                                         </label>
                                 <div class="form-group" [class.error]="doctorformControls.address.controls.state.touched && !doctorformControls.address.controls.state.valid">
-                                      <input formControlName="state" type="text" list="states" name="mystate" [class.error]="!doctorformControls.address.controls.state.valid" class="form-control"/>
+                                      <input formControlName="state" [ngModel]="address.state" type="text" list="states" name="mystate" [class.error]="!doctorformControls.address.controls.state.valid" class="form-control"/>
                                         <datalist id="states">
                                         	<option *ngFor="let state of states">{{ state }}</option>
                                         </datalist>
@@ -401,7 +402,7 @@
                                 <label class="form-label"> Zipcode
                                         </label>
                                 <div class="form-group" [class.error]="doctorformControls.address.controls.zipCode.touched && !doctorformControls.address.controls.zipCode.valid">
-                                    <input formControlName="zipCode" type="text" class="form-control" [class.error]="!doctorformControls.address.controls.zipCode.valid" placeholder=""
+                                    <input formControlName="zipCode" [ngModel]="address.zipCode" type="text" class="form-control" [class.error]="!doctorformControls.address.controls.zipCode.valid" placeholder=""
                                     />
                                     <div class='error-list' *ngIf="doctorformControls.address.controls.zipCode.touched && !doctorformControls.address.controls.zipCode.valid">
                                         <ul>
@@ -414,7 +415,7 @@
                                 <label class="form-label"> Country
                                         </label>
                                 <div class="form-group" [class.error]="doctorformControls.address.controls.country.touched && !doctorformControls.address.controls.country.valid">
-                                    <input formControlName="country" type="text" class="form-control" [class.error]="!doctorformControls.address.controls.country.valid" placeholder=""
+                                    <input formControlName="country" [ngModel]="address.country" type="text" class="form-control" [class.error]="!doctorformControls.address.controls.country.valid" placeholder=""
                                     />
                                     <div class='error-list' *ngIf="doctorformControls.address.controls.country.touched && !doctorformControls.address.controls.country.valid">
                                         <ul>
