@@ -3,9 +3,7 @@
   <PropertyGroup>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseName>GreenBillsDbTeamCity</TargetDatabaseName>
-    <DeployScriptFileName>GreenBillsDb.sql</DeployScriptFileName>
-    <BlockWhenDriftDetected>True</BlockWhenDriftDetected>
-    <RegisterDataTierApplication>True</RegisterDataTierApplication>
+    <DeployScriptFileName>GreenBillsDbTeamCity.sql</DeployScriptFileName>
     <TargetConnectionString>Data Source=198.204.230.82;Persist Security Info=True;User ID=sa;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True</TargetConnectionString>
     <ProfileVersionNumber>1</ProfileVersionNumber>
   </PropertyGroup>

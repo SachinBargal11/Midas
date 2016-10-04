@@ -17,12 +17,13 @@
     <ModelCollation>1033, CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetLanguage>CS</TargetLanguage>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <SqlServerVerification>False</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -66,6 +67,7 @@
     <Folder Include="Schema\Functions" />
     <Folder Include="Schema\UDT" />
     <Folder Include="Properties\PublishProfiles" />
+    <Folder Include="Snapshots" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\Script.PreDeployment.sql" />
@@ -170,7 +172,8 @@
     <RefactorLog Include="GreenBillsDb.refactorlog" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\PublishProfiles\GreenBillsDb.publish.pubxml" />
     <None Include="Properties\PublishProfiles\GreenBillsDb.publish.xml" />
+    <None Include="Snapshots\GreenBillsDb_20161004_22-18-49.dacpac" />
+    <None Include="GreenBillsDb.publish.xml" />
   </ItemGroup>
 </Project>
