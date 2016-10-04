@@ -65,6 +65,7 @@
     <Folder Include="Schema\Procedures" />
     <Folder Include="Schema\Functions" />
     <Folder Include="Schema\UDT" />
+    <Folder Include="Properties\PublishProfiles" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\Script.PreDeployment.sql" />
@@ -167,5 +168,9 @@
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="GreenBillsDb.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\GreenBillsDb.publish.pubxml" />
+    <None Include="Properties\PublishProfiles\GreenBillsDb.publish.xml" />
   </ItemGroup>
 </Project>
