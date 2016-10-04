@@ -4,7 +4,7 @@
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseName>GreenBillsDbTeamCity</TargetDatabaseName>
     <DeployScriptFileName>GreenBillsDbTeamCity.sql</DeployScriptFileName>
-    <TargetConnectionString>Data Source=198.204.230.82;Persist Security Info=True;User ID=sa;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True</TargetConnectionString>
+    <TargetConnectionString>Data Source=198.204.230.82;Persist Security Info=True;User ID=sa;Password=CodeArray@123;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True</TargetConnectionString>
     <ProfileVersionNumber>1</ProfileVersionNumber>
   </PropertyGroup>
 </Project>
