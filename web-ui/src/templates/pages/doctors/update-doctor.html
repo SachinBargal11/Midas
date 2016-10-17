@@ -138,37 +138,37 @@
                                 <label class="form-label"> Firstname
                                             <span class="color-red">*</span>
                                         </label>
-                                <div class="form-group" [class.error]="doctorformControls.userInfo.controls.firstname.touched && !doctorformControls.userInfo.controls.firstname.valid">
-                                    <input formControlName="firstname" [ngModel]="doctorUser.firstname" type="text" class="form-control" placeholder="" [class.error]="!doctorformControls.userInfo.controls.firstname.valid">
-                                    <div class='error-list' *ngIf="doctorformControls.userInfo.controls.firstname.touched && !doctorformControls.userInfo.controls.firstname.valid">
+                                <div class="form-group" [class.error]="doctorformControls.userInfo.controls.firstName.touched && !doctorformControls.userInfo.controls.firstName.valid">
+                                    <input formControlName="firstName" [ngModel]="doctorUser.firstName" type="text" class="form-control" placeholder="" [class.error]="!doctorformControls.userInfo.controls.firstName.valid">
+                                    <div class='error-list' *ngIf="doctorformControls.userInfo.controls.firstName.touched && !doctorformControls.userInfo.controls.firstName.valid">
                                         <ul>
-                                            <li *ngIf="doctorformControls.userInfo.controls.firstname.hasError('required')">First Name is required.</li>
+                                            <li *ngIf="doctorformControls.userInfo.controls.firstName.hasError('required')">First Name is required.</li>
                                         </ul>
                                     </div>
                                 </div>
                             </div> 
                             <div class="col-lg-4">
-                                <label class="form-label"> Middlename
+                                <label class="form-label"> MiddleName
                                         </label>
-                                <div class="form-group" [class.error]="doctorformControls.userInfo.controls.middlename.touched && !doctorformControls.userInfo.controls.middlename.valid">
-                                    <input formControlName="middlename" [ngModel]="doctorUser.middlename" type="text" class="form-control" placeholder="" [class.error]="!doctorformControls.userInfo.controls.middlename.valid">
-                                    <div class='error-list' *ngIf="doctorformControls.userInfo.controls.middlename.touched && !doctorformControls.userInfo.controls.middlename.valid">
+                                <div class="form-group" [class.error]="doctorformControls.userInfo.controls.middleName.touched && !doctorformControls.userInfo.controls.middleName.valid">
+                                    <input formControlName="middleName" [ngModel]="doctorUser.middleName" type="text" class="form-control" placeholder="" [class.error]="!doctorformControls.userInfo.controls.middleName.valid">
+                                    <div class='error-list' *ngIf="doctorformControls.userInfo.controls.middleName.touched && !doctorformControls.userInfo.controls.middleName.valid">
                                         <ul>
-                                            <li *ngIf="doctorformControls.userInfo.controls.middlename.hasError('required')">Middle Name is required.</li>
+                                            <li *ngIf="doctorformControls.userInfo.controls.middleName.hasError('required')">Middle Name is required.</li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-lg-4">
-                                <label class="form-label"> Lastname
+                                <label class="form-label"> LastName
                                             <span class="color-red">*</span>
                                         </label>
-                                <div class="form-group" [class.error]="doctorformControls.userInfo.controls.lastname.touched && !doctorformControls.userInfo.controls.lastname.valid">
-                                    <input formControlName="lastname" [ngModel]="doctorUser.lastname" type="text" class="form-control" placeholder="" [class.error]="!doctorformControls.userInfo.controls.lastname.valid">
-                                    <div class='error-list' *ngIf="doctorformControls.userInfo.controls.lastname.touched && !doctorformControls.userInfo.controls.lastname.valid">
+                                <div class="form-group" [class.error]="doctorformControls.userInfo.controls.lastName.touched && !doctorformControls.userInfo.controls.lastName.valid">
+                                    <input formControlName="lastName" [ngModel]="doctorUser.lastName" type="text" class="form-control" placeholder="" [class.error]="!doctorformControls.userInfo.controls.lastName.valid">
+                                    <div class='error-list' *ngIf="doctorformControls.userInfo.controls.lastName.touched && !doctorformControls.userInfo.controls.lastName.valid">
                                         <ul>
-                                            <li *ngIf="doctorformControls.userInfo.controls.lastname.hasError('required')">Last Name is required.</li>
+                                            <li *ngIf="doctorformControls.userInfo.controls.lastName.hasError('required')">Last Name is required.</li>
                                         </ul>
                                     </div>
                                 </div>

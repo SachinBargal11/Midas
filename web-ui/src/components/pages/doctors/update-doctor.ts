@@ -81,9 +81,9 @@ export class UpdateDoctorComponent implements OnInit {
                 title: ['', Validators.required]
             }),
             userInfo: this.fb.group({
-                firstname: ['', Validators.required],
-                middlename: [''],
-                lastname: ['', Validators.required],
+                firstName: ['', Validators.required],
+                middleName: [''],
+                lastName: ['', Validators.required],
                 userType: ['', Validators.required],
                 password: ['', Validators.required],
                 confirmPassword: ['', Validators.required],
@@ -130,9 +130,9 @@ export class UpdateDoctorComponent implements OnInit {
             }),
             user: new User({
                 userName: doctorFormValues.contact.email,
-                firstName: doctorFormValues.userInfo.firstname,
-                middleName: doctorFormValues.userInfo.middlename,
-                lastName: doctorFormValues.userInfo.lastname,
+                firstName: doctorFormValues.userInfo.firstName,
+                middleName: doctorFormValues.userInfo.middleName,
+                lastName: doctorFormValues.userInfo.lastName,
                 userType: parseInt(doctorFormValues.userInfo.userType),
                 password: doctorFormValues.userInfo.password
             }),

@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {Location} from '@angular/common';
 import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
 import {AppValidators} from '../../utils/AppValidators';
@@ -33,6 +34,7 @@ export class ChangePasswordComponent implements OnInit {
     changePassFormControls;
     isPassChangeInProgress;
     constructor(
+        private location: Location,
         private fb: FormBuilder,
         private _router: Router,
         public _route: ActivatedRoute,
@@ -122,5 +124,9 @@ export class ChangePasswordComponent implements OnInit {
                 this.isPassChangeInProgress = false;
             });
     }
+
+    goBack(): void {
+    this.location.back();
+  }
 
 }
