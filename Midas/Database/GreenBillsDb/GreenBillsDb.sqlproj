@@ -8,7 +8,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{a49ed36b-91c5-412a-a741-88974d0202ad}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql110DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql100DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -23,6 +23,7 @@
     <SqlServerVerification>False</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -65,6 +66,8 @@
     <Folder Include="Schema\Procedures" />
     <Folder Include="Schema\Functions" />
     <Folder Include="Schema\UDT" />
+    <Folder Include="Properties\PublishProfiles" />
+    <Folder Include="Snapshots" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\Script.PreDeployment.sql" />
@@ -167,5 +170,10 @@
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="GreenBillsDb.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\GreenBillsDb.publish.xml" />
+    <None Include="Snapshots\GreenBillsDb_20161004_22-18-49.dacpac" />
+    <None Include="GreenBillsDb.publish.xml" />
   </ItemGroup>
 </Project>
