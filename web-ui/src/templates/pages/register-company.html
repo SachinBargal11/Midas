@@ -1,0 +1,142 @@
+<div class="page-center">
+    <div class="page-center-in">
+        <div class="container-fluid">
+            <form [formGroup]="registercompanyform" (ngSubmit)="saveUser()">
+
+                <section class="card">
+                    <div class="text-center">
+                        <header class="card-header card-header-lg">Register company</header>
+                    </div>
+                    <div class="card-block">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                     <label class="form-label"> Company Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                                        <div class="form-group" [class.error]="userformControls.companyName.touched && !userformControls.companyName.valid">
+                                       <input formControlName="companyName" type="text" class="form-control" [class.error]="!userformControls.companyName.valid"/>
+                                        <div class='error-list' *ngIf="userformControls.companyName.touched && !userformControls.companyName.valid">
+                                            <ul>
+                                                <li *ngIf="userformControls.companyName.hasError('required')">Company Name is required.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label"> Contact Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                                        <div class="form-group" [class.error]="userformControls.contactName.touched && !userformControls.contactName.valid">
+                                        <input formControlName="contactName" type="text" class="form-control" [class.error]="!userformControls.contactName.valid" />
+                                        <div class='error-list' *ngIf="userformControls.contactName.touched && !userformControls.contactName.valid">
+                                            <ul>
+                                                <li *ngIf="userformControls.contactName.hasError('required')">Contact Name is required.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                   <label class="form-label"> Tax Id
+                                        </label>
+                                         <div class="form-group" [class.error]="userformControls.taxId.touched && !userformControls.taxId.valid">
+                                        <input formControlName="taxId" type="text" class="form-control" [class.error]="!userformControls.taxId.valid"/>
+                                        <div class='error-list' *ngIf="userformControls.taxId.touched && !userformControls.taxId.valid">
+                                            <ul>
+                                                <li *ngIf="userformControls.taxId.hasError('required')">Tax Id is required.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                <label class="form-label"> Phone number
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="userformControls.phoneNo.touched && !userformControls.phoneNo.valid">
+                                    <p-inputMask mask="999-999-9999" formControlName="phoneNo" [class.error]="userformControls.phoneNo.touched && !userformControls.phoneNo.valid" 
+                                     placeholder="999-999-9999" styleClass="form-control" [options]="{showMaskOnHover:false}"></p-inputMask>
+                                    <div class='error-list' *ngIf="userformControls.phoneNo.touched && !userformControls.phoneNo.valid">
+                                        <ul>
+                                            <li *ngIf="userformControls.phoneNo.hasError('required')">Phone number is required.</li>
+                                            <li *ngIf="userformControls.phoneNo.hasError('mobileNoValidator')">Phone number is invalid.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="row">
+                                 <div class="col-lg-6">
+                                     <label class="form-label"> Company type
+                                        </label>
+                                      <div class="form-group" [class.error]="userformControls.companyType.touched && !userformControls.companyType.valid">
+                                        <select formControlName="companyType" class="selectpicker form-control" title="Select Company Type." [class.error]="userformControls.companyType.touched && !userformControls.companyType.valid">
+                                             <option value="">-Select company type-</option>
+                                             <option disabled>────────────────────</option>
+                                             <option value="1">Medical Provider</option>
+                                             <option value="2">PI\BI Firm</option>
+                                             <option value="3">Collection Firm</option>
+                                             <option value="4">Transportation</option>
+                                         </select>
+                                          <div class='error-list' *ngIf="userformControls.companyType.touched && !userformControls.companyType.valid">
+                                        <ul>
+                                            <li *ngIf="userformControls.companyType.hasError('required')">Company type is required.</li>
+                                        </ul>
+                                         </div>    
+                                     </div>
+                                 </div>
+                                <div class="col-lg-6">
+                                    <label class="form-label"> E-Mail
+                                            <span class="color-red">*</span>
+                                        </label>
+                                    <div class="form-group" [class.error]="userformControls.email.touched && !userformControls.email.valid">
+                                        <input formControlName="email" type="email" [class.error]="!userformControls.email.valid" class="form-control"
+                                            placeholder="" type="text" />
+                                        <div class='error-list' *ngIf="userformControls.email.touched && !userformControls.email.valid">
+                                            <ul>
+                                                <li *ngIf="userformControls.email.hasError('required')">Email is required.</li>
+                                                <li *ngIf="userformControls.email.hasError('emailValidator')">Email is invalid.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                 <div class="col-lg-6">
+                                     <label class="form-label"> Subscription plan
+                                            <span class="color-red">*</span>
+                                        </label>
+                                      <div class="form-group" [class.error]="userformControls.subscriptionPlan.touched && !userformControls.subscriptionPlan.valid">
+                                        <select formControlName="subscriptionPlan" class="selectpicker form-control" title="Select subscription plan." [class.error]="userformControls.subscriptionPlan.touched && !userformControls.subscriptionPlan.valid">
+                                             <option value="">-Select subscription plan-</option>
+                                             <option disabled>────────────────────</option>
+                                             <option value="1">Single user</option>
+                                             <option value="2">Volume license</option>
+                                         </select>
+                                          <div class='error-list' *ngIf="userformControls.subscriptionPlan.touched && !userformControls.subscriptionPlan.valid">
+                                        <ul>
+                                            <li *ngIf="userformControls.subscriptionPlan.hasError('required')">Subscription plan is required.</li>
+                                        </ul>
+                                         </div>    
+                                     </div>
+                                 </div>
+                            </div>
+                         
+
+                        <div class="">
+                            <button [disabled]="!registercompanyform.valid || isSignupInProgress" type="submit" class="btn btn-success sign-up">Register
+                                <loader [visible]="isSignupInProgress"></loader>
+                            </button>
+                            <span class="sign-note">Already have an account? <a [routerLink]="['/login']">Login</a></span>
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </div>
+    </div>
+</div>
+
+<simple-notifications [options]="options"></simple-notifications>

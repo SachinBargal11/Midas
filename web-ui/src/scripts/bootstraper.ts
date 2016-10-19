@@ -43,6 +43,7 @@ import {ValidateInActiveSession} from '../routes/guards/validate-inactive-sessio
 
 /** Components */
 
+import {RegisterCompanyComponent} from '../components/pages/register-company';
 import {LoginComponent} from '../components/pages/login';
 import {SignupComponent} from '../components/pages/signup';
 import {DashboardComponent} from '../components/pages/dashboard';
@@ -113,6 +114,7 @@ enableProdMode();
     ],
     declarations: [
         AppRoot,
+        RegisterCompanyComponent,
         LoginComponent,
         SignupComponent,
         DashboardComponent,

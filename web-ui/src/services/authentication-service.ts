@@ -14,10 +14,24 @@ import {UserType} from '../models/enums/UserType';
 @Injectable()
 export class AuthenticationService {
 
-    private _url: string = `${Environment.SERVICE_BASE_URL}`;
+     private _url: string = `${Environment.SERVICE_BASE_URL}`;
+    private _url1: string = 'http://localhost:3004/company';
 
     constructor(private _http: Http) { }
-
+    registerCompany(companyDetail) {
+        let promise = new Promise((resolve, reject) => {
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            return this._http.post(this._url1, JSON.stringify(companyDetail), {
+                headers: headers
+            }).map(res => res.json()).subscribe((data) => {
+                resolve(data);
+            }, (error) => {
+                reject(error);
+            });
+        });
+        return Observable.from(promise);
+    }
     register(accountDetail: AccountDetail): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let headers = new Headers();

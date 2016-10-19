@@ -11,6 +11,7 @@ import {SpecialityRoutes} from './speciality-routes';
 import {ValidateActiveSession} from './guards/validate-active-session';
 import {ValidateInActiveSession} from './guards/validate-inactive-session';
 import {ChangePasswordComponent} from '../components/pages/change-password';
+import {RegisterCompanyComponent} from '../components/pages/register-company';
 
 export const appRoutes: Routes = [
     {
@@ -23,9 +24,14 @@ export const appRoutes: Routes = [
         component: LoginComponent,
         canActivate: [ValidateInActiveSession]
     },
+    // {
+    //     path: 'signup',
+    //     component: SignupComponent,
+    //     canActivate: [ValidateInActiveSession]
+    // },
     {
-        path: 'signup',
-        component: SignupComponent,
+        path: 'register-company',
+        component: RegisterCompanyComponent,
         canActivate: [ValidateInActiveSession]
     },
     {
