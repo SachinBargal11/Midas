@@ -7,6 +7,7 @@ import {AccountDetail} from '../models/account-details';
 import {User} from '../models/user';
 import {UserAdapter} from './adapters/user-adapter';
 import _ from 'underscore';
+import {Company} from '../models/company';
 
 import {AccountStatus} from '../models/enums/AccountStatus';
 import {UserType} from '../models/enums/UserType';
@@ -31,6 +32,17 @@ export class AuthenticationService {
             });
         });
         return Observable.from(promise);
+    }
+    getCompanies(): Observable<Company[]> {
+        let promise = new Promise((resolve, reject) => {
+        return this._http.get(this._url1).map(res => res.json())
+         .subscribe((data) => {
+                resolve(data);
+            }, (error) => {
+                reject(error);
+            });
+        });
+        return <Observable<Company[]>>Observable.fromPromise(promise);
     }
     register(accountDetail: AccountDetail): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
