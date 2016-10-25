@@ -133,8 +133,6 @@
                             <button [disabled]="!registercompanyform.valid || isRegistrationInProgress" type="submit" class="btn btn-success sign-up">Register
                                 <loader [visible]="isRegistrationInProgress"></loader>
                             </button>
-                             <button (click)="show()" type="submit" class="btn btn-success sign-up">Show
-                            </button>
                         </div>
                         <div class="text-center">
                             <span class="sign-note">Already have an account? <a [routerLink]="['/login']">Login</a></span>
