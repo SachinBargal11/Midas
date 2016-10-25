@@ -1,6 +1,6 @@
 import {RouterModule, Routes} from '@angular/router';
 import {LoginComponent} from '../components/pages/login';
-import {SignupComponent} from '../components/pages/signup';
+// import {SignupComponent} from '../components/pages/signup';
 import {DashboardComponent} from '../components/pages/dashboard';
 import {PatientsShellRoutes} from './patient-routes';
 import {UsersRoutes} from './user-routes';
@@ -8,6 +8,7 @@ import {ProvidersRoutes} from './provider-routes';
 import {MedicalFacilitiesRoutes} from './medical-facility-routes';
 import {DoctorsRoutes} from './doctor-routes';
 import {SpecialityRoutes} from './speciality-routes';
+import {MedicalProviderRoutes} from './medical-provider';
 import {ValidateActiveSession} from './guards/validate-active-session';
 import {ValidateInActiveSession} from './guards/validate-inactive-session';
 import {ChangePasswordComponent} from '../components/pages/change-password';
@@ -45,6 +46,7 @@ export const appRoutes: Routes = [
         canActivate: [ValidateActiveSession]
     },
     ...DoctorsRoutes,
+    ...MedicalProviderRoutes,
     ...MedicalFacilitiesRoutes,
     ...ProvidersRoutes,
     ...UsersRoutes,
