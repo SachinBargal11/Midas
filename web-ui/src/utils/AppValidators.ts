@@ -9,9 +9,6 @@ export class AppValidators {
                 private directive: Directive
          ) {
     }
-     getCompanyName(control: FormControl) {
-          this._companyStore.findCompanyName(control.value);
-    }
     static emailValidator(control: FormControl) {
         let regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (control.value && !regEx.test(control.value)) {
@@ -44,18 +41,54 @@ export class AppValidators {
         }
     }
 
-  static companyNameTaken(control: FormControl) {
-      let companyNames = ['Jim', 'John', 'Jill', 'Jackie', 'sachin'];
-   let q = new Promise((resolve, reject) => {
-     setTimeout(() => {
-       if (control.value === 'David') {
-    // if (companyNames.indexOf(control.value) === -1) {
-         resolve({'companyNameTaken': true});
-       } else {
-         resolve(null);
-       }
-     }, 1000);
-   });
-   return q;
- }
+    static companyNameTaken = (company: any[]) => {
+              function getFields(input, field) {
+                        let output = [];
+                        for (let i = 0; i < input.length ; ++i)
+                            output.push(input[i][field]);
+                        return output;
+                    }
+          return (control: FormControl) => {
+                    let companyNames = getFields(company, 'companyName');
+
+                for (let i = 0; i < company.length ; i += 1) {
+                   let val = company[i].toString();
+                   if (control.value === val) {
+                       return {companyNameTaken: true};
+                      }
+                }
+          };
+    }
+    static emailTaken = (company: any) => {
+          return (control: FormControl) => {
+                for (let i = 0; i < company.length ; i += 1) {
+                   let val = company[i].toString();
+                   if (control.value === val) {
+                       return {emailTaken: true};
+                      }
+                }
+          };
+    }
+
+//   static companyNameTaken = (company: any) => {
+//           return (control: FormControl) => {
+// //  let companyNames: string[] = [ 'John', 'sachin', 'Jill', 'Jackie', 'Jim'];
+//        let q = new Promise((resolve, reject) => {
+//          setTimeout(() => {
+//         //    if (controlValue === 'David') {
+//             for (let i = 0; i < company.length ; i += 1) {
+//             let val = company[i].toString();
+//             if (control.value === val) {
+//                  alert(val);
+//                 resolve({'companyNameTaken': true});
+//                } else {
+//                  resolve(null);
+//                }
+//             }
+//          }, 1000);
+//        });
+//        return q;
+//      };
+//     };
+
 }

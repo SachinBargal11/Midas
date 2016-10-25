@@ -16,8 +16,10 @@ import {NotificationsService} from 'angular2-notifications';
 })
 
 export class RegisterCompanyComponent implements OnInit {
-    company: Company[];
-    companyName: any;
+    // company = new Company({});
+    company: any[];
+    companyName: any[];
+    email: any[];
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -40,13 +42,13 @@ export class RegisterCompanyComponent implements OnInit {
         private _elRef: ElementRef
     ) {
         this.registercompanyform = this.fb.group({
-                // companyName: [''],
-                companyName: ['', Validators.compose([Validators.required]), Validators.composeAsync([AppValidators.companyNameTaken])],
+                companyName: ['', [Validators.required, AppValidators.companyNameTaken([ 'John', 'sachin', 'Jill', 'Jackie', 'Jim' ])]],
+                // companyName: ['', [Validators.required, AppValidators.companyNameTaken([])]],
                 contactName: ['', Validators.required],
                 taxId: [''],
                 phoneNo: ['', Validators.required],
                 companyType: [''],
-                email: ['', [Validators.required, AppValidators.emailValidator]],
+                email: ['', [Validators.required, AppValidators.emailValidator, AppValidators.emailTaken([ 'john@yahoo.com', 'sachin@gmail.com', 'jill@gmail.com', 'jackie@yahoo.com', 'jim@gmail.com'])]],
                 subscriptionPlan: ['', Validators.required]
         });
 
@@ -55,11 +57,24 @@ export class RegisterCompanyComponent implements OnInit {
     }
 
     ngOnInit() {
-        this._authenticationService.getCompanies()
-                 .subscribe(company => this.company = company);
+        this.show();
     }
-
-
+show() {
+        this._authenticationService.getCompanies()
+                 .subscribe(
+                (company: Company[]) => {
+                    this.company = company;
+                    function getFields(input, field) {
+                        let output = [];
+                        for (let i = 0; i < input.length ; ++i)
+                            output.push(input[i][field]);
+                        return output;
+                    }
+                     this.companyName = getFields(company, 'companyName');
+                     this.email = getFields(company, 'email');
+                });
+        alert(this._authenticationService.companies);
+    }
     saveUser() {
         this.isRegistrationInProgress = true;
         let result;

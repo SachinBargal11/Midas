@@ -11,9 +11,10 @@ import {BehaviorSubject} from 'rxjs/Rx';
 
 @Injectable()
 export class CompanyStore {
-
+companyName: any[];
+email: any[];
     private _companies: BehaviorSubject<List<Company>> = new BehaviorSubject(List([]));
-    constructor(
+   constructor(
         private _authenticationService: AuthenticationService,
         private _sessionStore: SessionStore
     ) {
@@ -42,11 +43,29 @@ export class CompanyStore {
         });
         return <Observable<Company[]>>Observable.fromPromise(promise);
     }
+    // getCompanyNames() {
+    //     let companyName: any[];
+    //     let email: any[];
+    //     this._authenticationService.getCompanies()
+    //              .subscribe(
+    //             (company: Company[]) => {
+    //                 function getFields(input, field) {
+    //                     let output = [];
+    //                     for (let i = 0; i < input.length ; ++i)
+    //                         output.push(input[i][field]);
+    //                     return output;
+    //                 }
+    //                  companyName = getFields(company, 'companyName');
+    //                  email = getFields(company, 'email');
+    //                  return companyName;
+    //             },
+    //             () => {
+    //             });
+    //             return companyName;
+    // }
 
-    findCompanyName(companyName: string) {
-        let companies = this._companies.getValue();
-        let index = companies.findIndex((currentCompany: Company) => currentCompany.companyName === companyName);
-        return companies.get(index);
-    }
-
+ getCompanyNames() {
+    this.getCompanies();
+    return this._authenticationService.companies;
+}
 }

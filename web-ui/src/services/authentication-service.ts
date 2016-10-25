@@ -6,6 +6,7 @@ import Environment from '../scripts/environment';
 import {AccountDetail} from '../models/account-details';
 import {User} from '../models/user';
 import {UserAdapter} from './adapters/user-adapter';
+import {CompanyAdapter} from './adapters/company-adapter';
 import _ from 'underscore';
 import {Company} from '../models/company';
 
@@ -14,7 +15,7 @@ import {UserType} from '../models/enums/UserType';
 
 @Injectable()
 export class AuthenticationService {
-
+companies: any[];
      private _url: string = `${Environment.SERVICE_BASE_URL}`;
     private _url1: string = 'http://localhost:3004/company';
 
@@ -36,11 +37,14 @@ export class AuthenticationService {
     getCompanies(): Observable<Company[]> {
         let promise = new Promise((resolve, reject) => {
         return this._http.get(this._url1).map(res => res.json())
-         .subscribe((data) => {
-                resolve(data);
-            }, (error) => {
-                reject(error);
-            });
+         .subscribe((data: any) => {
+                    this.companies = (<Object[]>data).map((companyData: any) => {
+                        return CompanyAdapter.parseResponse(companyData);
+                    });
+                    resolve(this.companies);
+                }, (error) => {
+                    reject(error);
+                });
         });
         return <Observable<Company[]>>Observable.fromPromise(promise);
     }

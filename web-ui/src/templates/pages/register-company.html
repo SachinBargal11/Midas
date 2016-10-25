@@ -100,6 +100,7 @@
                                             <ul>
                                                 <li *ngIf="userformControls.email.hasError('required')">Email is required.</li>
                                                 <li *ngIf="userformControls.email.hasError('emailValidator')">Email is invalid.</li>
+                                                <li *ngIf="userformControls.email.hasError('emailTaken')">Email already taken.</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -131,6 +132,8 @@
                         <div class="text-center">
                             <button [disabled]="!registercompanyform.valid || isRegistrationInProgress" type="submit" class="btn btn-success sign-up">Register
                                 <loader [visible]="isRegistrationInProgress"></loader>
+                            </button>
+                             <button (click)="show()" type="submit" class="btn btn-success sign-up">Show
                             </button>
                         </div>
                         <div class="text-center">
