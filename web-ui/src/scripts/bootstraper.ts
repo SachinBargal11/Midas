@@ -38,6 +38,8 @@ import { PatientsService } from '../services/patients-service';
 import { StatesStore } from '../stores/states-store';
 import { StateService } from '../services/state-service';
 
+import { MedicalProviderService } from '../services/medical-provider-service';
+
 import { NotificationsStore } from '../stores/notifications-store';
 import { APP_ROUTER_PROVIDER } from '../routes/app-routes';
 import { ValidateActiveSession } from '../routes/guards/validate-active-session';
@@ -184,6 +186,7 @@ enableProdMode();
         NotificationsStore,
         ValidateActiveSession,
         ValidateInActiveSession,
+        MedicalProviderService,
         FormBuilder
     ],
     bootstrap: [
