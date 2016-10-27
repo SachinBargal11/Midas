@@ -93,6 +93,34 @@ companies: any[];
         return <Observable<any>>Observable.fromPromise(promise);
     }
 
+    checkForValidToken(token) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        let promise: Promise<User> = new Promise((resolve, reject) => {
+            let autheticateRequestData = {
+                user: {
+                    'token': token
+                }
+            };
+            return this._http.post(this._url + '/validateToken', JSON.stringify(autheticateRequestData), {
+                headers: headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    if (data) {
+                        let user = UserAdapter.parseUserResponse(data);
+                        resolve(user);
+                    }
+                    else {
+                        reject(new Error('INVALID_CREDENTIALS'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+
     authenticate(email: string, password: string): Observable<User> {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');

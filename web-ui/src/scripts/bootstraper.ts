@@ -15,10 +15,10 @@ import { Ng2BootstrapModule } from 'ng2-bootstrap/ng2-bootstrap';
 import { SessionStore } from '../stores/session-store';
 import { AuthenticationService } from '../services/authentication-service';
 
-import {CompanyStore} from '../stores/company-store';
+import { CompanyStore } from '../stores/company-store';
 
-import {UsersStore} from '../stores/users-store';
-import {UsersService} from '../services/users-service';
+import { UsersStore } from '../stores/users-store';
+import { UsersService } from '../services/users-service';
 
 import { ProvidersStore } from '../stores/providers-store';
 import { ProvidersService } from '../services/providers-service';
@@ -47,6 +47,7 @@ import { ValidateInActiveSession } from '../routes/guards/validate-inactive-sess
 
 /** Components */
 
+import { AccountActivationComponent } from '../components/pages/account-activation';
 import { RegisterCompanyComponent } from '../components/pages/register-company';
 import { LoginComponent } from '../components/pages/login';
 import { SignupComponent } from '../components/pages/signup';
@@ -123,6 +124,7 @@ enableProdMode();
     declarations: [
         AppRoot,
         RegisterCompanyComponent,
+        AccountActivationComponent,
         LoginComponent,
         SignupComponent,
         DashboardComponent,

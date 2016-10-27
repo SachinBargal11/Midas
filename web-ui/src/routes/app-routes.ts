@@ -1,20 +1,26 @@
-import {RouterModule, Routes} from '@angular/router';
-import {LoginComponent} from '../components/pages/login';
+import { RouterModule, Routes } from '@angular/router';
+import { LoginComponent } from '../components/pages/login';
 // import {SignupComponent} from '../components/pages/signup';
-import {DashboardComponent} from '../components/pages/dashboard';
-import {PatientsShellRoutes} from './patient-routes';
-import {UsersRoutes} from './user-routes';
-import {ProvidersRoutes} from './provider-routes';
-import {MedicalFacilitiesRoutes} from './medical-facility-routes';
-import {DoctorsRoutes} from './doctor-routes';
-import {SpecialityRoutes} from './speciality-routes';
-import {MedicalProviderRoutes} from './medical-provider';
-import {ValidateActiveSession} from './guards/validate-active-session';
-import {ValidateInActiveSession} from './guards/validate-inactive-session';
-import {ChangePasswordComponent} from '../components/pages/change-password';
-import {RegisterCompanyComponent} from '../components/pages/register-company';
+import { DashboardComponent } from '../components/pages/dashboard';
+import { PatientsShellRoutes } from './patient-routes';
+import { UsersRoutes } from './user-routes';
+import { ProvidersRoutes } from './provider-routes';
+import { MedicalFacilitiesRoutes } from './medical-facility-routes';
+import { DoctorsRoutes } from './doctor-routes';
+import { SpecialityRoutes } from './speciality-routes';
+import { MedicalProviderRoutes } from './medical-provider';
+import { ValidateActiveSession } from './guards/validate-active-session';
+import { ValidateInActiveSession } from './guards/validate-inactive-session';
+import { ChangePasswordComponent } from '../components/pages/change-password';
+import { RegisterCompanyComponent } from '../components/pages/register-company';
+import { AccountActivationComponent } from '../components/pages/account-activation';
 
 export const appRoutes: Routes = [
+    {
+        path: 'activation/:token',
+        component: AccountActivationComponent,
+        canActivate: [ValidateInActiveSession]
+    },
     {
         path: '',
         redirectTo: '/dashboard',
