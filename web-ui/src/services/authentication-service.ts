@@ -17,14 +17,14 @@ import {UserType} from '../models/enums/UserType';
 export class AuthenticationService {
 companies: any[];
      private _url: string = `${Environment.SERVICE_BASE_URL}`;
-    private _url1: string = 'http://localhost:3004/company';
+     private _url1: string = 'http://localhost:3004/company';
 
     constructor(private _http: Http) { }
-    registerCompany(companyDetail) {
-        let promise = new Promise((resolve, reject) => {
+    registerCompany(companyDetail: Company): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
-            return this._http.post(this._url1, JSON.stringify(companyDetail), {
+            return this._http.post(this._url + '/Company/Signup', JSON.stringify(companyDetail), {
                 headers: headers
             }).map(res => res.json()).subscribe((data) => {
                 resolve(data);
@@ -32,7 +32,7 @@ companies: any[];
                 reject(error);
             });
         });
-        return Observable.from(promise);
+        return <Observable<any>>Observable.fromPromise(promise);
     }
     getCompanies(): Observable<Company[]> {
         let promise = new Promise((resolve, reject) => {

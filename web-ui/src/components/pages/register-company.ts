@@ -46,7 +46,7 @@ export class RegisterCompanyComponent implements OnInit {
                 // companyName: ['', [Validators.required, AppValidators.companyNameTaken([])]],
                 contactName: ['', Validators.required],
                 taxId: [''],
-                phoneNo: ['', Validators.required],
+                phoneNo: [''],
                 companyType: [''],
                 email: ['', [Validators.required, AppValidators.emailValidator, AppValidators.emailTaken([ 'john@yahoo.com', 'sachin@gmail.com', 'jill@gmail.com', 'jackie@yahoo.com', 'jim@gmail.com'])]],
                 subscriptionPlan: ['', Validators.required]
@@ -70,23 +70,45 @@ show() {
                             output.push(input[i][field]);
                         return output;
                     }
-                     this.companyName = getFields(company, 'companyName');
+                    //  this.companyName = getFields(company, 'companyName');
                      this.email = getFields(company, 'email');
                 });
-        alert(this._authenticationService.companies);
+        // alert(this._authenticationService.companies);
     }
     saveUser() {
         this.isRegistrationInProgress = true;
         let result;
         let registercompanyformValues = this.registercompanyform.value;
+        // let companyDetail = new Company({
+        //         companyName: registercompanyformValues.companyName,
+        //         contactName: registercompanyformValues.contactName,
+        //         taxId: registercompanyformValues.taxId,
+        //         phoneNo: registercompanyformValues.phoneNo,
+        //         companyType: parseInt(registercompanyformValues.companyType),
+        //         email: registercompanyformValues.email,
+        //         subscriptionPlan: parseInt(registercompanyformValues.subscriptionPlan)
+        // });
         let companyDetail = new Company({
-                companyName: registercompanyformValues.companyName,
-                contactName: registercompanyformValues.contactName,
+            company: {
+                name: registercompanyformValues.companyName,
                 taxId: registercompanyformValues.taxId,
-                phoneNo: registercompanyformValues.phoneNo,
-                companyType: parseInt(registercompanyformValues.companyType),
-                email: registercompanyformValues.email,
-                subscriptionPlan: parseInt(registercompanyformValues.subscriptionPlan)
+                companyType: registercompanyformValues.companyType,
+                status: 'InActive',
+                subsCriptionType: registercompanyformValues.subscriptionPlan
+            },
+            user: {
+                userName: registercompanyformValues.email,
+                firstName: registercompanyformValues.contactName,
+                middleName: '',
+                lastName: '',
+                userType: 'Owner'
+                // password: '123456'
+            },
+            role: {
+                name: 'Doctor',
+                roleType: 'Admin',
+                status: 'active'
+            }
         });
         result = this._authenticationService.registerCompany(companyDetail);
         result.subscribe(
