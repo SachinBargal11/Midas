@@ -32,9 +32,7 @@ export class AccountActivationComponent implements OnInit {
         private _authenticationService: AuthenticationService,
         private _notificationsService: NotificationsService
     ) {
-        debugger;
         this._route.params.subscribe((routeParams: any) => {
-            debugger;
             let token: number = parseInt(routeParams.token);
             let result = this._authenticationService.checkForValidToken(token);
             result.subscribe(
