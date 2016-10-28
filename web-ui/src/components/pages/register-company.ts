@@ -43,11 +43,11 @@ export class RegisterCompanyComponent implements OnInit {
     ) {
         this.registercompanyform = this.fb.group({
                 companyName: ['', [Validators.required, AppValidators.companyNameTaken([ 'John', 'sachin', 'Jill', 'Jackie', 'Jim' ])]],
-                // companyName: ['', [Validators.required, AppValidators.companyNameTaken([])]],
-                contactName: ['', Validators.required],
+                firstName: ['', Validators.required],
+                lastName: ['', Validators.required],
                 taxId: [''],
-                phoneNo: [''],
-                companyType: [''],
+                phoneNo: ['', Validators.required],
+                companyType: ['', Validators.required],
                 email: ['', [Validators.required, AppValidators.emailValidator, AppValidators.emailTaken([ 'john@yahoo.com', 'sachin@gmail.com', 'jill@gmail.com', 'jackie@yahoo.com', 'jim@gmail.com'])]],
                 subscriptionPlan: ['', Validators.required]
         });
@@ -57,7 +57,7 @@ export class RegisterCompanyComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.show();
+        // this.show();
     }
 show() {
         this._authenticationService.getCompanies()
@@ -79,30 +79,23 @@ show() {
         this.isRegistrationInProgress = true;
         let result;
         let registercompanyformValues = this.registercompanyform.value;
-        // let companyDetail = new Company({
-        //         companyName: registercompanyformValues.companyName,
-        //         contactName: registercompanyformValues.contactName,
-        //         taxId: registercompanyformValues.taxId,
-        //         phoneNo: registercompanyformValues.phoneNo,
-        //         companyType: parseInt(registercompanyformValues.companyType),
-        //         email: registercompanyformValues.email,
-        //         subscriptionPlan: parseInt(registercompanyformValues.subscriptionPlan)
-        // });
         let companyDetail = new Company({
             company: {
                 name: registercompanyformValues.companyName,
                 taxId: registercompanyformValues.taxId,
                 companyType: registercompanyformValues.companyType,
-                status: 'InActive',
                 subsCriptionType: registercompanyformValues.subscriptionPlan
             },
             user: {
                 userName: registercompanyformValues.email,
-                firstName: registercompanyformValues.contactName,
-                middleName: '',
-                lastName: '',
-                userType: 'Owner'
-                // password: '123456'
+                firstName: registercompanyformValues.firstName,
+                lastName: registercompanyformValues.lastName,
+                userType: 'Owner',
+                password: '123456'
+            },
+            contactInfo: {
+                cellPhone: registercompanyformValues.phoneNo,
+                emailAddress: registercompanyformValues.email
             },
             role: {
                 name: 'Doctor',

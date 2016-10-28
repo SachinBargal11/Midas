@@ -6,6 +6,9 @@ import { AppValidators } from '../../utils/AppValidators';
 import { NotificationsService } from 'angular2-notifications';
 
 import { AuthenticationService } from '../../services/authentication-service';
+import { UsersService } from '../../services/users-service';
+
+import { User } from '../../models/user';
 
 @Component({
     selector: 'account-activation',
@@ -14,12 +17,14 @@ import { AuthenticationService } from '../../services/authentication-service';
 })
 
 export class AccountActivationComponent implements OnInit {
+    token: any;
+    user: any;
     options = {
         timeOut: 3000,
         showProgressBar: true,
         pauseOnHover: false,
-        clickToClose: false,
-        maxLength: 10
+        clickToClose: false
+        // maxLength: 10
     };
     changePassForm: FormGroup;
     changePassFormControls;
@@ -30,14 +35,17 @@ export class AccountActivationComponent implements OnInit {
         private _router: Router,
         public _route: ActivatedRoute,
         private _authenticationService: AuthenticationService,
-        private _notificationsService: NotificationsService
+        private _notificationsService: NotificationsService,
+        private _usersService: UsersService
     ) {
         this._route.params.subscribe((routeParams: any) => {
-            let token: number = parseInt(routeParams.token);
-            let result = this._authenticationService.checkForValidToken(token);
+            this.token = routeParams.token;
+            // let token: number = parseInt(routeParams.token);
+            let result = this._authenticationService.checkForValidToken(this.token);
             result.subscribe(
-                (response) => {
+                (data: any) => {
                     // check for response
+                    this.user = data.user;
                 },
                 (error) => {
                     // this._router.navigate(['/login']);
@@ -59,7 +67,34 @@ export class AccountActivationComponent implements OnInit {
     }
 
     updatePassword() {
-        
+        let userDetail = ({
+            user: {
+                id: this.user.id,
+                password: this.changePassForm.value.password
+            }
+        });
+
+
+        this.isPassChangeInProgress = true;
+
+        let result = this._authenticationService.checkForValidToken(this.token);
+        result.subscribe(
+            (response) => {
+                this._authenticationService.updatePassword(userDetail)
+                    .subscribe(
+                    (response) => {
+                        this._notificationsService.success('Success', 'Password updated successfully!');
+                        setTimeout(() => {
+                             this._router.navigate(['/login']);
+                        }, 3000);
+                    });
+            },
+            error => {
+                this._notificationsService.error('Error!', 'Unable to update password.');
+            },
+            () => {
+                this.isPassChangeInProgress = false;
+            });
     }
 
     goBack(): void {

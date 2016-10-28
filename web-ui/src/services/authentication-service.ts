@@ -99,26 +99,42 @@ companies: any[];
 
         let promise: Promise<User> = new Promise((resolve, reject) => {
             let autheticateRequestData = {
-                user: {
-                    'token': token
-                }
+                    emailValidation: {
+                            appKey: token
+                    }
             };
-            return this._http.post(this._url + '/validateToken', JSON.stringify(autheticateRequestData), {
+            return this._http.post(this._url + '/Company/ValidateInvitation', JSON.stringify(autheticateRequestData), {
                 headers: headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
                     if (data) {
-                        let user = UserAdapter.parseUserResponse(data);
-                        resolve(user);
+                        resolve(data);
                     }
                     else {
-                        reject(new Error('INVALID_CREDENTIALS'));
+                        reject(new Error('INVALID_TOKEN'));
                     }
                 }, (error) => {
                     reject(error);
                 });
         });
         return <Observable<any>>Observable.fromPromise(promise);
+    }
+    updatePassword(userDetail: any): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+           let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            return this._http.post(this._url + '/User/Add', JSON.stringify(userDetail), {
+                headers: headers
+            })
+                .map(res => res.json())
+                .subscribe((userData: any) => {
+                    resolve(userData);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+
     }
 
     authenticate(email: string, password: string): Observable<User> {

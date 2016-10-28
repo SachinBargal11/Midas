@@ -1,7 +1,7 @@
-<div class="page-content">
+<!--<div class="page-content">-->
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-lg-9 col-lg-push-1 col-md-12">
+			<div class="col-lg-8 col-lg-push-2 col-md-12">
             <form [formGroup]="registercompanyform" name="registercompanyform" (ngSubmit)="saveUser()">
 
                 <section class="box-typical">
@@ -25,14 +25,14 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <label class="form-label"> Contact Name
+                                    <label class="form-label"> First Name
                                             <span class="color-red">*</span>
                                         </label>
-                                        <div class="form-group" [class.error]="userformControls.contactName.touched && !userformControls.contactName.valid">
-                                        <input formControlName="contactName" type="text" class="form-control" [class.error]="!userformControls.contactName.valid" />
-                                        <div class='error-list' *ngIf="userformControls.contactName.touched && !userformControls.contactName.valid">
+                                        <div class="form-group" [class.error]="userformControls.firstName.touched && !userformControls.firstName.valid">
+                                        <input formControlName="firstName" type="text" class="form-control" [class.error]="!userformControls.firstName.valid" />
+                                        <div class='error-list' *ngIf="userformControls.firstName.touched && !userformControls.firstName.valid">
                                             <ul>
-                                                <li *ngIf="userformControls.contactName.hasError('required')">Contact Name is required.</li>
+                                                <li *ngIf="userformControls.firstName.hasError('required')">First name is required.</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -53,6 +53,43 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
+                                    <label class="form-label"> Last Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                                        <div class="form-group" [class.error]="userformControls.lastName.touched && !userformControls.lastName.valid">
+                                        <input formControlName="lastName" type="text" class="form-control" [class.error]="!userformControls.lastName.valid" />
+                                        <div class='error-list' *ngIf="userformControls.lastName.touched && !userformControls.lastName.valid">
+                                            <ul>
+                                                <li *ngIf="userformControls.lastName.hasError('required')">Last name is required.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                 <div class="col-lg-6">
+                                     <label class="form-label"> Company type
+                                            <span class="color-red">*</span>
+                                        </label>
+                                      <div class="form-group" [class.error]="userformControls.companyType.touched && !userformControls.companyType.valid">
+                                        <select formControlName="companyType" class="selectpicker form-control" title="Select Company Type." [class.error]="userformControls.companyType.touched && !userformControls.companyType.valid">
+                                             <option value="">-Select company type-</option>
+                                             <option disabled>────────────────────</option>
+                                             <option value="Billing">Billing</option>
+                                             <!--<option value="Medical Provider">Medical Provider</option>
+                                             <option value="PI\BI Firm">PI\BI Firm</option>
+                                             <option value="Collection Firm">Collection Firm</option>
+                                             <option value="Transportation">Transportation</option>-->
+                                         </select>
+                                          <div class='error-list' *ngIf="userformControls.companyType.touched && !userformControls.companyType.valid">
+                                        <ul>
+                                            <li *ngIf="userformControls.companyType.hasError('required')">Company type is required.</li>
+                                        </ul>
+                                         </div>    
+                                     </div>
+                                 </div>
+                                <div class="col-lg-6">
                                 <label class="form-label"> Phone number
                                             <span class="color-red">*</span>
                                         </label>
@@ -71,21 +108,19 @@
 
                             <div class="row">
                                  <div class="col-lg-6">
-                                     <label class="form-label"> Company type
+                                     <label class="form-label"> Subscription plan
+                                            <span class="color-red">*</span>
                                         </label>
-                                      <div class="form-group" [class.error]="userformControls.companyType.touched && !userformControls.companyType.valid">
-                                        <select formControlName="companyType" class="selectpicker form-control" title="Select Company Type." [class.error]="userformControls.companyType.touched && !userformControls.companyType.valid">
-                                             <option value="">-Select company type-</option>
+                                      <div class="form-group" [class.error]="userformControls.subscriptionPlan.touched && !userformControls.subscriptionPlan.valid">
+                                        <select formControlName="subscriptionPlan" class="selectpicker form-control" title="Select subscription plan." [class.error]="userformControls.subscriptionPlan.touched && !userformControls.subscriptionPlan.valid">
+                                             <option value="">-Select subscription plan-</option>
                                              <option disabled>────────────────────</option>
-                                             <option value="Billing">Billing</option>
-                                             <option value="Medical Provider">Medical Provider</option>
-                                             <option value="PI\BI Firm">PI\BI Firm</option>
-                                             <option value="Collection Firm">Collection Firm</option>
-                                             <option value="Transportation">Transportation</option>
+                                             <option value="Trial">Trial</option>
+                                             <!--<option value="30 day Trial">30 day Trial</option>-->
                                          </select>
-                                          <div class='error-list' *ngIf="userformControls.companyType.touched && !userformControls.companyType.valid">
+                                          <div class='error-list' *ngIf="userformControls.subscriptionPlan.touched && !userformControls.subscriptionPlan.valid">
                                         <ul>
-                                            <li *ngIf="userformControls.companyType.hasError('required')">Company type is required.</li>
+                                            <li *ngIf="userformControls.subscriptionPlan.hasError('required')">Subscription plan is required.</li>
                                         </ul>
                                          </div>    
                                      </div>
@@ -107,28 +142,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="row">
-                                 <div class="col-lg-6">
-                                     <label class="form-label"> Subscription plan
-                                            <span class="color-red">*</span>
-                                        </label>
-                                      <div class="form-group" [class.error]="userformControls.subscriptionPlan.touched && !userformControls.subscriptionPlan.valid">
-                                        <select formControlName="subscriptionPlan" class="selectpicker form-control" title="Select subscription plan." [class.error]="userformControls.subscriptionPlan.touched && !userformControls.subscriptionPlan.valid">
-                                             <option value="">-Select subscription plan-</option>
-                                             <option disabled>────────────────────</option>
-                                             <option value="Trial">Trial</option>
-                                             <option value="Single user">Single user</option>
-                                             <option value="Volume license">Volume license</option>
-                                         </select>
-                                          <div class='error-list' *ngIf="userformControls.subscriptionPlan.touched && !userformControls.subscriptionPlan.valid">
-                                        <ul>
-                                            <li *ngIf="userformControls.subscriptionPlan.hasError('required')">Subscription plan is required.</li>
-                                        </ul>
-                                         </div>    
-                                     </div>
-                                 </div>
-                            </div>
                          
 
                         <div class="text-center">
@@ -146,6 +159,6 @@
           </div>
       </div>
    </div>
-</div>
+<!--</div>-->
 
 <simple-notifications [options]="options"></simple-notifications>
