@@ -1,13 +1,13 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router} from '@angular/router';
-import {AppValidators} from '../../utils/AppValidators';
-import {AuthenticationService} from '../../services/authentication-service';
-import {CompanyStore} from '../../stores/company-store';
-import {Company} from '../../models/company';
-import {SessionStore} from '../../stores/session-store';
-import {NotificationsStore} from '../../stores/notifications-store';
-import {NotificationsService} from 'angular2-notifications';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AppValidators } from '../../utils/AppValidators';
+import { AuthenticationService } from '../../services/authentication-service';
+import { CompanyStore } from '../../stores/company-store';
+import { Company } from '../../models/company';
+import { SessionStore } from '../../stores/session-store';
+import { NotificationsStore } from '../../stores/notifications-store';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
     selector: 'register-company',
@@ -25,7 +25,6 @@ export class RegisterCompanyComponent implements OnInit {
         showProgressBar: true,
         pauseOnHover: false,
         clickToClose: false
-        // maxLength: 10
     };
     registercompanyform: FormGroup;
     userformControls;
@@ -42,14 +41,14 @@ export class RegisterCompanyComponent implements OnInit {
         private _elRef: ElementRef
     ) {
         this.registercompanyform = this.fb.group({
-                companyName: ['', [Validators.required, AppValidators.companyNameTaken([ 'John', 'sachin', 'Jill', 'Jackie', 'Jim' ])]],
-                firstName: ['', Validators.required],
-                lastName: ['', Validators.required],
-                taxId: [''],
-                phoneNo: ['', Validators.required],
-                companyType: ['', Validators.required],
-                email: ['', [Validators.required, AppValidators.emailValidator, AppValidators.emailTaken([ 'john@yahoo.com', 'sachin@gmail.com', 'jill@gmail.com', 'jackie@yahoo.com', 'jim@gmail.com'])]],
-                subscriptionPlan: ['', Validators.required]
+            companyName: ['', [Validators.required, AppValidators.companyNameTaken(['John', 'sachin', 'Jill', 'Jackie', 'Jim'])]],
+            firstName: ['', Validators.required],
+            lastName: ['', Validators.required],
+            taxId: [''],
+            phoneNo: ['', Validators.required],
+            companyType: ['', Validators.required],
+            email: ['', [Validators.required, AppValidators.emailValidator, AppValidators.emailTaken(['john@yahoo.com', 'sachin@gmail.com', 'jill@gmail.com', 'jackie@yahoo.com', 'jim@gmail.com'])]],
+            subscriptionPlan: ['', Validators.required]
         });
 
         this.userformControls = this.registercompanyform.controls;
@@ -59,20 +58,20 @@ export class RegisterCompanyComponent implements OnInit {
     ngOnInit() {
         // this.show();
     }
-show() {
+    show() {
         this._authenticationService.getCompanies()
-                 .subscribe(
-                (company: Company[]) => {
-                    this.company = company;
-                    function getFields(input, field) {
-                        let output = [];
-                        for (let i = 0; i < input.length ; ++i)
-                            output.push(input[i][field]);
-                        return output;
-                    }
-                    //  this.companyName = getFields(company, 'companyName');
-                     this.email = getFields(company, 'email');
-                });
+            .subscribe(
+            (company: Company[]) => {
+                this.company = company;
+                function getFields(input, field) {
+                    let output = [];
+                    for (let i = 0; i < input.length; ++i)
+                        output.push(input[i][field]);
+                    return output;
+                }
+                //  this.companyName = getFields(company, 'companyName');
+                this.email = getFields(company, 'email');
+            });
         // alert(this._authenticationService.companies);
     }
     saveUser() {
@@ -111,9 +110,14 @@ show() {
                     this._router.navigate(['/login']);
                 }, 3000);
             },
-            error => {
+            (error) => {
+                let errorObj = JSON.parse(error._body);
+                let errorString = 'Unable to register user.';
+                if (errorObj.message) {
+                    errorString = errorObj.message;
+                }
                 this.isRegistrationInProgress = false;
-                this._notificationsService.error('Oh No!', 'Unable to register user.');
+                this._notificationsService.error('Oh No!', errorString);
             },
             () => {
                 this.isRegistrationInProgress = false;

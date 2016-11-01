@@ -19,8 +19,7 @@ export class LoginComponent implements OnInit {
         timeOut: 50000,
         showProgressBar: false,
         pauseOnHover: false,
-        clickToClose: false,
-        maxLength: 10
+        clickToClose: false
     };
     constructor(
         private fb: FormBuilder,

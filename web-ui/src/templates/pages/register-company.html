@@ -25,6 +25,21 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
+                                   <label class="form-label"> Tax Id
+                                        </label>
+                                         <div class="form-group" [class.error]="userformControls.taxId.touched && !userformControls.taxId.valid">
+                                        <input formControlName="taxId" type="text" class="form-control" [class.error]="!userformControls.taxId.valid"/>
+                                        <div class='error-list' *ngIf="userformControls.taxId.touched && !userformControls.taxId.valid">
+                                            <ul>
+                                                <li *ngIf="userformControls.taxId.hasError('required')">Tax Id is required.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
                                     <label class="form-label"> First Name
                                             <span class="color-red">*</span>
                                         </label>
@@ -37,21 +52,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-lg-6">
-                                   <label class="form-label"> Tax Id
-                                        </label>
-                                         <div class="form-group" [class.error]="userformControls.taxId.touched && !userformControls.taxId.valid">
-                                        <input formControlName="taxId" type="text" class="form-control" [class.error]="!userformControls.taxId.valid"/>
-                                        <div class='error-list' *ngIf="userformControls.taxId.touched && !userformControls.taxId.valid">
-                                            <ul>
-                                                <li *ngIf="userformControls.taxId.hasError('required')">Tax Id is required.</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+                                
                                 <div class="col-lg-6">
                                     <label class="form-label"> Last Name
                                             <span class="color-red">*</span>
