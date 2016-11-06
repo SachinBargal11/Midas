@@ -49,7 +49,7 @@ export class AccountActivationComponent implements OnInit {
                 (error) => {
                     this._notificationsService.error('Error!', 'Activation code is invalid.');
                     setTimeout(() => {
-                        this._router.navigate(['/login']);
+                        // this._router.navigate(['/login']);
                     }, 3000);
                 },
                 () => {
@@ -58,7 +58,7 @@ export class AccountActivationComponent implements OnInit {
 
 
         this.changePassForm = this.fb.group({
-            password: ['', Validators.required],
+            password: ['', [Validators.required, Validators.maxLength(20), AppValidators.passwordValidator]],
             confirmPassword: ['', Validators.required]
         }, { validator: AppValidators.matchingPasswords('password', 'confirmPassword') });
 

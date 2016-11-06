@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppValidators } from '../../utils/AppValidators';
 import { AuthenticationService } from '../../services/authentication-service';
@@ -44,7 +44,7 @@ export class RegisterCompanyComponent implements OnInit {
             companyName: ['', [Validators.required, AppValidators.companyNameTaken(['John', 'sachin', 'Jill', 'Jackie', 'Jim'])]],
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
-            taxId: [''],
+            taxId: ['', Validators.required],
             phoneNo: ['', Validators.required],
             companyType: ['', Validators.required],
             email: ['', [Validators.required, AppValidators.emailValidator, AppValidators.emailTaken(['john@yahoo.com', 'sachin@gmail.com', 'jill@gmail.com', 'jackie@yahoo.com', 'jim@gmail.com'])]],

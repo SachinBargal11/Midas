@@ -59,7 +59,6 @@ export class LoginComponent implements OnInit {
 
         result.subscribe(
             (session: Session) => {
-                debugger;
                 if (this.checkSecuredLogin(this.loginForm.value.email)) {
                     this._router.navigate(['/login/security-check']);
                 } else {

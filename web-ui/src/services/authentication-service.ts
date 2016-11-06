@@ -154,7 +154,6 @@ export class AuthenticationService {
             }).map(res => res.json())
                 .subscribe((data: any) => {
                     if (data) {
-                        debugger;
                         let user = UserAdapter.parseSignInResponse(data);
                         window.sessionStorage.setItem('pin', data.pin);
                         resolve(user);

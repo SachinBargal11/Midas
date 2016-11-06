@@ -15,7 +15,6 @@ export class Session extends SessionRecord {
     }
 
     public set user(value: User) {
-        debugger;
         this._user = value;
     }
 

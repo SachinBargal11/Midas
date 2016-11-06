@@ -4,7 +4,7 @@
 			<form [formGroup]="securityCheckForm" (ngSubmit)="validateSecurityCode()" class="">
 				<section class="box-typical">
 					<div class="card-block">
-						<header class="box-typical-header-sm text-center">Enter your security code which has been sent to your registered email address </header>
+						<header class="box-typical-header-sm text-center">Enter your security code which has been sent to your registered email address with reference number <b>{{referenceNumber}}</b></header>
 						<div class="row">
 							<div class="col-lg-6">
 								<label class="form-label"> Security Code
@@ -20,8 +20,6 @@
 								</div>
 							</div>
 						</div>
-
-
 						<button [disabled]="!securityCheckForm.valid || isSecurityCheckInProgress" type="submit" class="btn btn-success sign-up">Submit
                     <loader [visible]="isSecurityCheckInProgress"></loader>
                 </button>

@@ -24,6 +24,7 @@ export class SecurityCheckComponent implements OnInit {
     securityCheckFormControls;
     isSecurityCheckInProgress;
     isRegenrateCodeInProgress;
+    referenceNumber;
 
     constructor(
         private location: Location,
@@ -34,7 +35,7 @@ export class SecurityCheckComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _notificationsService: NotificationsService
     ) {
-
+        this.referenceNumber = window.sessionStorage.getItem('pin');
         this.securityCheckForm = this.fb.group({
             code: ['', Validators.required],
         });
@@ -60,7 +61,6 @@ export class SecurityCheckComponent implements OnInit {
     }
 
     regenrateCode() {
-        debugger;
         let user: User = new User(JSON.parse(window.sessionStorage.getItem('logged_user_with_pending_security_review')));
         this.isRegenrateCodeInProgress = true;
         let result = this._authenticationService.generateCode(user.id);

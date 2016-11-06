@@ -11,15 +11,18 @@
                                             <span class="color-red">*</span>
                                         </label>
 								<div class="form-group" [class.error]="changePassFormControls.password.touched && !changePassFormControls.password.valid">
-									<input formControlName="password" type="password" minlength='6' class="form-control" [class.error]="!changePassFormControls.password.valid"
+									<input formControlName="password" type="password" minlength='8' class="form-control" [class.error]="!changePassFormControls.password.valid"
 									/>
 									<div class='error-list' *ngIf="changePassFormControls.password.touched && !changePassFormControls.password.valid">
 										<ul>
 											<li *ngIf="changePassFormControls.password.hasError('required')">Password is required.</li>
 											<li *ngIf="changePassFormControls.password.hasError('minlength')">Password should be minimum {{changePassFormControls.password.errors.minlength.requiredLength}} characters.</li>
+											<li *ngIf="changePassFormControls.password.hasError('maxlength')">Password should be maximum {{changePassFormControls.password.errors.maxlength.requiredLength}} characters.</li>
+											<li *ngIf="changePassFormControls.password.hasError('passwordValidator')">Please enter a valid password</li>
 										</ul>
 									</div>
 								</div>
+
 							</div>
 							<div class="col-lg-6">
 								<label class="form-label"> Confirm Password
@@ -36,13 +39,23 @@
 								</div>
 							</div>
 						</div>
-
-
-						<button [disabled]="!changePassForm.valid || isPassChangeInProgress" type="submit" class="btn btn-success sign-up">Change Password
+						<div class="row">
+							<div class="col-lg-6">
+								<small class="text-muted">
+										Password must be minimum 8 characters long & maximum 20 characters long. It should contain combination of uppercase (A through Z) & lowercase (a through z) letters, 0 to 10 digits, Nonalphanumeric . 
+								</small>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-6">
+								<button [disabled]="!changePassForm.valid || isPassChangeInProgress" type="submit" class="btn btn-success sign-up">Change Password
                     <loader [visible]="isPassChangeInProgress"></loader>
                 </button>
-						<button type="button" class="btn btn-secondary" (click)="goBack()">Cancel
+								<button type="button" class="btn btn-secondary" (click)="goBack()">Cancel
                 </button>
+
+							</div>
+						</div>
 					</div>
 				</section>
 			</form>
