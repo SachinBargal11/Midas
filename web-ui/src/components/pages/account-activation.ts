@@ -8,8 +8,6 @@ import { NotificationsService } from 'angular2-notifications';
 import { AuthenticationService } from '../../services/authentication-service';
 import { UsersService } from '../../services/users-service';
 
-import { User } from '../../models/user';
-
 @Component({
     selector: 'account-activation',
     templateUrl: 'templates/pages/account-activation.html',
@@ -79,17 +77,13 @@ export class AccountActivationComponent implements OnInit {
 
         this.isPassChangeInProgress = true;
 
-        let result = this._authenticationService.checkForValidToken(this.token);
-        result.subscribe(
+        this._authenticationService.updatePassword(userDetail)
+            .subscribe(
             (response) => {
-                this._authenticationService.updatePassword(userDetail)
-                    .subscribe(
-                    (response) => {
-                        this._notificationsService.success('Success', 'Your password has been set successfully!');
-                        setTimeout(() => {
-                            this._router.navigate(['/login']);
-                        }, 3000);
-                    });
+                this._notificationsService.success('Success', 'Your password has been set successfully!');
+                setTimeout(() => {
+                    this._router.navigate(['/login']);
+                }, 3000);
             },
             error => {
                 this._notificationsService.error('Error!', 'Unable to set your password.');
