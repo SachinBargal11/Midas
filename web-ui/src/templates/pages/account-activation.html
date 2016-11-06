@@ -1,35 +1,50 @@
-<div class="page-center">
-	<div class="page-center-in">
-		<div class="container-fluid">
-			<form [formGroup]="changePassForm" (ngSubmit)="updatePassword()" class="sign-box">
-				<section>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-lg-8 col-lg-push-2 col-md-12">
+			<form [formGroup]="changePassForm" (ngSubmit)="updatePassword()" class="">
+				<section class="box-typical">
+					<div class="card-block">
+						<header class="box-typical-header-sm text-center">Please set your password for company login </header>
+						<div class="row">
+							<div class="col-lg-6">
+								<label class="form-label"> Password
+                                            <span class="color-red">*</span>
+                                        </label>
+								<div class="form-group" [class.error]="changePassFormControls.password.touched && !changePassFormControls.password.valid">
+									<input formControlName="password" type="password" minlength='6' class="form-control" [class.error]="!changePassFormControls.password.valid"
+									/>
+									<div class='error-list' *ngIf="changePassFormControls.password.touched && !changePassFormControls.password.valid">
+										<ul>
+											<li *ngIf="changePassFormControls.password.hasError('required')">Password is required.</li>
+											<li *ngIf="changePassFormControls.password.hasError('minlength')">Password should be minimum {{changePassFormControls.password.errors.minlength.requiredLength}} characters.</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<label class="form-label"> Confirm Password
+                                            <span class="color-red">*</span>
+                                        </label>
+								<div class="form-group" [class.error]="changePassFormControls.confirmPassword.touched && changePassForm.hasError('mismatchedPasswords')">
+									<input formControlName="confirmPassword" type="password" class="form-control" [class.error]="changePassForm.hasError('mismatchedPasswords')"
+									/>
+									<div class='error-list' *ngIf="changePassFormControls.confirmPassword.touched && changePassForm.hasError('mismatchedPasswords')">
+										<ul>
+											<li *ngIf="changePassForm.hasError('mismatchedPasswords')">Passwords do not match.</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
 
 
-					<div class="form-group" [class.error]="changePassFormControls.password.touched && !changePassFormControls.password.valid">
-						<input formControlName="password" type="password" minlength='6' class="form-control" [class.error]="!changePassFormControls.password.valid"
-							placeholder="New Password" />
-						<div class='error-list' *ngIf="changePassFormControls.password.touched && !changePassFormControls.password.valid">
-							<ul>
-								<li *ngIf="changePassFormControls.password.hasError('required')">Password is required.</li>
-								<li *ngIf="changePassFormControls.password.hasError('minlength')">Password should be minimum {{changePassFormControls.password.errors.minlength.requiredLength}} characters.</li>
-							</ul>
-						</div>
-					</div>
-					<div class="form-group" [class.error]="changePassFormControls.confirmPassword.touched && changePassForm.hasError('mismatchedPasswords')">
-						<input formControlName="confirmPassword" type="password" class="form-control" [class.error]="changePassForm.hasError('mismatchedPasswords')"
-							placeholder="Repeat password" />
-						<div class='error-list' *ngIf="changePassFormControls.confirmPassword.touched && changePassForm.hasError('mismatchedPasswords')">
-							<ul>
-								<li *ngIf="changePassForm.hasError('mismatchedPasswords')">Passwords do not match.</li>
-							</ul>
-						</div>
-					</div>
-				</section>
-				<button [disabled]="!changePassForm.valid || isPassChangeInProgress" type="submit" class="btn btn-success sign-up">Change Password
+						<button [disabled]="!changePassForm.valid || isPassChangeInProgress" type="submit" class="btn btn-success sign-up">Change Password
                     <loader [visible]="isPassChangeInProgress"></loader>
                 </button>
-				<button type="button" class="btn btn-secondary" (click)="goBack()">Cancel
+						<button type="button" class="btn btn-secondary" (click)="goBack()">Cancel
                 </button>
+					</div>
+				</section>
 			</form>
 		</div>
 	</div>

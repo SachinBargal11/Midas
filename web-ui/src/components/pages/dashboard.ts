@@ -20,17 +20,17 @@ medicalfacilities: any;
         private _providersStore: ProvidersStore,
         private _medicalFacilityStore: MedicalFacilityStore
     ) {
-        this._usersStore.getUsers().subscribe(users => {
-        this.users = users.length;
-        });
-        this._doctorsStore.getDoctors().subscribe(doctors => {
-        this.doctors = doctors.length;
-        });
-        this._providersStore.getProviders().subscribe(providers => {
-        this.providers = providers.length;
-        });
-        this._medicalFacilityStore.getMedicalFacilities().subscribe(medicalfacilities => {
-        this.medicalfacilities = medicalfacilities.length;
-        });
+        // this._usersStore.getUsers().subscribe(users => {
+        // this.users = users.length;
+        // });
+        // this._doctorsStore.getDoctors().subscribe(doctors => {
+        // this.doctors = doctors.length;
+        // });
+        // this._providersStore.getProviders().subscribe(providers => {
+        // this.providers = providers.length;
+        // });
+        // this._medicalFacilityStore.getMedicalFacilities().subscribe(medicalfacilities => {
+        // this.medicalfacilities = medicalfacilities.length;
+        // });
     }
 }

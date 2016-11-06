@@ -105,14 +105,14 @@ export class RegisterCompanyComponent implements OnInit {
         result = this._authenticationService.registerCompany(companyDetail);
         result.subscribe(
             (response) => {
-                this._notificationsService.success('Welcome!', 'You have successfully registered!');
+                this._notificationsService.success('Welcome!', 'Your company has been registered successfully! Check your email for activation.');
                 setTimeout(() => {
                     this._router.navigate(['/login']);
                 }, 3000);
             },
             (error) => {
                 let errorObj = JSON.parse(error._body);
-                let errorString = 'Unable to register user.';
+                let errorString = 'Unable to register company.';
                 if (errorObj.message) {
                     errorString = errorObj.message;
                 }
@@ -124,5 +124,8 @@ export class RegisterCompanyComponent implements OnInit {
             });
 
     }
-
+    goBack(): void {
+        // this.location.back();
+        this._router.navigate(['/login']);
+    }
 }

@@ -14,6 +14,7 @@ import { ValidateInActiveSession } from './guards/validate-inactive-session';
 import { ChangePasswordComponent } from '../components/pages/change-password';
 import { RegisterCompanyComponent } from '../components/pages/register-company';
 import { AccountActivationComponent } from '../components/pages/account-activation';
+import { SecurityCheckComponent } from '../components/pages/security-check';
 
 export const appRoutes: Routes = [
     {
@@ -29,6 +30,11 @@ export const appRoutes: Routes = [
     {
         path: 'login',
         component: LoginComponent,
+        canActivate: [ValidateInActiveSession]
+    },
+    {
+        path: 'login/security-check',
+        component: SecurityCheckComponent,
         canActivate: [ValidateInActiveSession]
     },
     // {

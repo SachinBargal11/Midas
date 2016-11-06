@@ -40,7 +40,6 @@ export class AccountActivationComponent implements OnInit {
     ) {
         this._route.params.subscribe((routeParams: any) => {
             this.token = routeParams.token;
-            // let token: number = parseInt(routeParams.token);
             let result = this._authenticationService.checkForValidToken(this.token);
             result.subscribe(
                 (data: any) => {
@@ -48,7 +47,10 @@ export class AccountActivationComponent implements OnInit {
                     this.user = data.user;
                 },
                 (error) => {
-                    // this._router.navigate(['/login']);
+                    this._notificationsService.error('Error!', 'Activation code is invalid.');
+                    setTimeout(() => {
+                        this._router.navigate(['/login']);
+                    }, 3000);
                 },
                 () => {
                 });
@@ -83,14 +85,14 @@ export class AccountActivationComponent implements OnInit {
                 this._authenticationService.updatePassword(userDetail)
                     .subscribe(
                     (response) => {
-                        this._notificationsService.success('Success', 'Password updated successfully!');
+                        this._notificationsService.success('Success', 'Your password has been set successfully!');
                         setTimeout(() => {
-                             this._router.navigate(['/login']);
+                            this._router.navigate(['/login']);
                         }, 3000);
                     });
             },
             error => {
-                this._notificationsService.error('Error!', 'Unable to update password.');
+                this._notificationsService.error('Error!', 'Unable to set your password.');
             },
             () => {
                 this.isPassChangeInProgress = false;
@@ -98,7 +100,8 @@ export class AccountActivationComponent implements OnInit {
     }
 
     goBack(): void {
-        this.location.back();
+        // this.location.back();
+        this._router.navigate(['/login']);
     }
 
 }

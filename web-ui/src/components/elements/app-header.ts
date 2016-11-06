@@ -32,22 +32,22 @@ export class AppHeaderComponent implements OnInit {
     constructor(
         private _authenticationService: AuthenticationService,
         private _notificationsStore: NotificationsStore,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _router: Router
     ) {
 
     }
 
     ngOnInit() {
-        if (this._sessionStore.isAuthenticated()) {
-            this.user_name = this._sessionStore.session.displayName;
-        } else {
-            this._router.navigate(['/login']);
-        }
+        // if (this._sessionStore.isAuthenticated()) {
+        //     this.user_name = this._sessionStore.session.displayName;
+        // } else {
+        //     this._router.navigate(['/login']);
+        // }
     }
 
     logout() {
-        this._sessionStore.logout();
+        this.sessionStore.logout();
         this._router.navigate(['/login']);
     }
 

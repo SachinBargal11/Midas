@@ -50,6 +50,7 @@ import { ValidateInActiveSession } from '../routes/guards/validate-inactive-sess
 import { AccountActivationComponent } from '../components/pages/account-activation';
 import { RegisterCompanyComponent } from '../components/pages/register-company';
 import { LoginComponent } from '../components/pages/login';
+import { SecurityCheckComponent  } from '../components/pages/security-check';
 import { SignupComponent } from '../components/pages/signup';
 import { DashboardComponent } from '../components/pages/dashboard';
 import { PatientsShellComponent } from '../components/pages/patients/patients-shell';
@@ -125,6 +126,7 @@ enableProdMode();
         AppRoot,
         RegisterCompanyComponent,
         AccountActivationComponent,
+        SecurityCheckComponent,
         LoginComponent,
         SignupComponent,
         DashboardComponent,

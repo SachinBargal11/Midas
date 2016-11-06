@@ -14,7 +14,7 @@ export class ValidateActiveSession implements CanActivate {
     constructor(private _sessionStore: SessionStore, private _router: Router) { }
 
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        if (this._sessionStore.isAuthenticated()) {
+        if (this._sessionStore.session.isAuthenticated) {
             return true;
         }
 

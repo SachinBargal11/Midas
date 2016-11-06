@@ -1,23 +1,23 @@
-import {Injectable} from '@angular/core';
-import {Http, Headers} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { Http, Headers } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
-import {AccountDetail} from '../models/account-details';
-import {User} from '../models/user';
-import {UserAdapter} from './adapters/user-adapter';
-import {CompanyAdapter} from './adapters/company-adapter';
+import { AccountDetail } from '../models/account-details';
+import { User } from '../models/user';
+import { UserAdapter } from './adapters/user-adapter';
+import { CompanyAdapter } from './adapters/company-adapter';
 import _ from 'underscore';
-import {Company} from '../models/company';
+import { Company } from '../models/company';
 
-import {AccountStatus} from '../models/enums/AccountStatus';
-import {UserType} from '../models/enums/UserType';
+import { AccountStatus } from '../models/enums/AccountStatus';
+import { UserType } from '../models/enums/UserType';
 
 @Injectable()
 export class AuthenticationService {
-companies: any[];
-     private _url: string = `${Environment.SERVICE_BASE_URL}`;
-     private _url1: string = 'http://localhost:3004/company';
+    companies: any[];
+    private _url: string = `${Environment.SERVICE_BASE_URL}`;
+    private _url1: string = 'http://localhost:3004';
 
     constructor(private _http: Http) { }
     registerCompany(companyDetail: Company): Observable<any> {
@@ -36,8 +36,8 @@ companies: any[];
     }
     getCompanies(): Observable<Company[]> {
         let promise = new Promise((resolve, reject) => {
-        return this._http.get(this._url1).map(res => res.json())
-         .subscribe((data: any) => {
+            return this._http.get(this._url1 + '/company').map(res => res.json())
+                .subscribe((data: any) => {
                     this.companies = (<Object[]>data).map((companyData: any) => {
                         return CompanyAdapter.parseResponse(companyData);
                     });
@@ -99,9 +99,9 @@ companies: any[];
 
         let promise: Promise<User> = new Promise((resolve, reject) => {
             let autheticateRequestData = {
-                    emailValidation: {
-                            appKey: token
-                    }
+                emailValidation: {
+                    appKey: token
+                }
             };
             return this._http.post(this._url + '/Company/ValidateInvitation', JSON.stringify(autheticateRequestData), {
                 headers: headers
@@ -121,7 +121,7 @@ companies: any[];
     }
     updatePassword(userDetail: any): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
-           let headers = new Headers();
+            let headers = new Headers();
             headers.append('Content-Type', 'application/json');
             return this._http.post(this._url + '/User/Add', JSON.stringify(userDetail), {
                 headers: headers
@@ -137,7 +137,7 @@ companies: any[];
 
     }
 
-    authenticate(email: string, password: string): Observable<User> {
+    authenticate(email: string, password: string, forceLogin: boolean): Observable<User> {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
 
@@ -145,7 +145,8 @@ companies: any[];
             let autheticateRequestData = {
                 user: {
                     'userName': email,
-                    'password': password
+                    'password': password,
+                    'forceLogin': forceLogin
                 }
             };
             return this._http.post(this._url + '/User/Signin', JSON.stringify(autheticateRequestData), {
@@ -153,7 +154,9 @@ companies: any[];
             }).map(res => res.json())
                 .subscribe((data: any) => {
                     if (data) {
-                        let user = UserAdapter.parseUserResponse(data);
+                        debugger;
+                        let user = UserAdapter.parseSignInResponse(data);
+                        window.sessionStorage.setItem('pin', data.pin);
                         resolve(user);
                     }
                     else {
@@ -195,5 +198,64 @@ companies: any[];
         });
 
         return <Observable<User>>Observable.fromPromise(promise);
+    }
+
+    generateCode(userId) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        let promise: Promise<User> = new Promise((resolve, reject) => {
+            let postData = {
+                user: {
+                    id: userId
+                }
+            };
+            return this._http.post(this._url + '/OTP/GenerateOTP', JSON.stringify(postData), {
+                headers: headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    window.sessionStorage.setItem('pin', data.pin);
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+
+    validateSecurityCode(userId, code, pin) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        let promise = new Promise((resolve, reject) => {
+            let postData = {
+                otp: {
+                    otp: code,
+                    pin: pin
+                },
+                user: {
+                    id: userId
+                }
+            };
+
+            return this._http.post(this._url + '/OTP/ValidateOTP', JSON.stringify(postData),{
+                headers: headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    if (data) {
+                        resolve(true);
+                    } else {
+                        resolve(false);
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<boolean>>Observable.fromPromise(promise);
+    }
+
+    getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 }

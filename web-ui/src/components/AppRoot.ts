@@ -24,14 +24,14 @@ export class AppRoot implements OnInit {
 
     ngOnInit() {
 
-        // this._sessionStore.authenticate().subscribe(
-        //     (response) => {
+        this._sessionStore.authenticate().subscribe(
+            (response) => {
 
-        //     },
-        //     error => {
-        //         this._router.navigate(['/login']);
-        //     }
-        // )
+            },
+            error => {
+                // this._router.navigate(['/login']);
+            }
+        );
         // this._specialityStore.getSpecialities();
         // this._statesStore.getStates();
     }
