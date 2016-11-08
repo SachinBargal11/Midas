@@ -1,10 +1,11 @@
-import {Record} from 'immutable';
-import moment from 'moment';
+import {Record, List} from 'immutable';
+import {BehaviorSubject} from 'rxjs/Rx';
 import {Account} from './account';
 import {MedicalFacility} from './medical-facility';
 import {User} from './user';
 import {Address} from './address';
-import {Contact} from './contact';
+import {ContactInfo} from './contact';
+import {SpecialityDetail} from './speciality-details';
 
 const MedicalFacilityRecord = Record({
 
@@ -12,7 +13,8 @@ const MedicalFacilityRecord = Record({
     user: null, //User
     address: null, //Address
     contactInfo: null, //Contact
-    medicalFacility: null, //MedicalFacility
+    medicalfacility: null, //MedicalFacility
+    specialityDetails: new BehaviorSubject<List<SpecialityDetail>>(List<SpecialityDetail>([]))
 });
 
 export class MedicalFacilityDetail extends MedicalFacilityRecord {
@@ -20,12 +22,16 @@ export class MedicalFacilityDetail extends MedicalFacilityRecord {
     account: Account;
     user: User;
     address: Address;
-    contact: Contact;
-    medicalFacility: MedicalFacility;
-
+    contactInfo: ContactInfo;
+    medicalfacility: MedicalFacility;
+    specialityDetails: BehaviorSubject<List<SpecialityDetail>>;
 
     constructor(props) {
         super(props);
+    }
+
+    get hasSpecialityDetails(): boolean {
+        return this.specialityDetails.getValue().size ? true : false;
     }
 
 }

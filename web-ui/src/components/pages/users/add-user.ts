@@ -1,35 +1,25 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {Validators, FormGroup, FormBuilder} from '@angular/forms';
+import {Router} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
-import {LoaderComponent} from '../../elements/loader';
 import {UsersStore} from '../../../stores/users-store';
-import {UserDetail} from '../../../models/user-details';
 import {User} from '../../../models/user';
 import {UsersService} from '../../../services/users-service';
 import {AccountDetail} from '../../../models/account-details';
 import {Account} from '../../../models/account';
-import {Contact} from '../../../models/contact';
+import {ContactInfo} from '../../../models/contact';
 import {Address} from '../../../models/address';
-import $ from 'jquery';
 import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
 import {Notification} from '../../../models/notification';
 import moment from 'moment';
-import {Calendar, InputMask, AutoComplete, SelectItem} from 'primeng/primeng';
-import {Gender} from '../../../models/enums/Gender';
-import {UserType} from '../../../models/enums/UserType';
 import {StatesStore} from '../../../stores/states-store';
 import {StateService} from '../../../services/state-service';
-import {HTTP_PROVIDERS}    from '@angular/http';
-import {LimitPipe} from '../../../pipes/limit-array-pipe';
 
 @Component({
     selector: 'add-user',
     templateUrl: 'templates/pages/users/add-user.html',
-    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar, InputMask, AutoComplete],
-    providers: [HTTP_PROVIDERS, UsersService, StateService, StatesStore],
-    pipes: [LimitPipe]
+    providers: [UsersService, StateService, StatesStore, FormBuilder],
 })
 
 export class AddUserComponent implements OnInit {
@@ -61,8 +51,10 @@ export class AddUserComponent implements OnInit {
                 firstname: ['', Validators.required],
                 middlename: [''],
                 lastname: ['', Validators.required],
-                userType: ['', Validators.required]
-            }),
+                userType: ['', Validators.required],
+                password: ['', Validators.required],
+                confirmPassword: ['', Validators.required]
+            }, { validator: AppValidators.matchingPasswords('password', 'confirmPassword') }),
             contact: this.fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
                 cellPhone: ['', [Validators.required]],
@@ -91,19 +83,19 @@ export class AddUserComponent implements OnInit {
 
     saveUser() {
         let userFormValues = this.userform.value;
-        let userDetail = new UserDetail({
+        let userDetail = new AccountDetail({
             account: new Account({
-            //    id: 176 
-               id: this._sessionStore.session.account_id 
+               id: this._sessionStore.session.account_id
             }),
             user: new User({
                 firstName: userFormValues.userInfo.firstname,
                 middleName: userFormValues.userInfo.middlename,
                 lastName: userFormValues.userInfo.lastname,
-                userType: parseInt(userFormValues.userInfo.userType), //UserType[1],//,
-                userName: userFormValues.contact.email                
+                userType: parseInt(userFormValues.userInfo.userType), // UserType[1],//,                
+                password: userFormValues.userInfo.password,
+                userName: userFormValues.contact.email
             }),
-            contactInfo: new Contact({
+            contactInfo: new ContactInfo({
                 cellPhone: userFormValues.contact.cellPhone,
                 emailAddress: userFormValues.contact.email,
                 faxNo: userFormValues.contact.faxNo,
@@ -120,12 +112,12 @@ export class AddUserComponent implements OnInit {
             })
         });
         this.isSaveUserProgress = true;
-        var result;
+        let result;
 
         result = this._usersStore.addUser(userDetail);
         result.subscribe(
             (response) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'User added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
@@ -134,7 +126,7 @@ export class AddUserComponent implements OnInit {
                 this._router.navigate(['/users']);
             },
             (error) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'Unable to add user.',
                     'type': 'ERROR',
                     'createdAt': moment()

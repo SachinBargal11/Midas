@@ -1,3 +1,6 @@
 node_modules
 .tscache
 typings
+app
+compiled
+some_dummy_value

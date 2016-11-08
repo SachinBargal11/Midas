@@ -1,43 +1,27 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
-import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap';
+import {Validators, FormGroup, FormBuilder} from '@angular/forms';
+import {Router} from '@angular/router';
 import {AppValidators} from '../../utils/AppValidators';
-import {LoaderComponent} from '../elements/loader';
 import {AuthenticationService} from '../../services/authentication-service';
 import {AccountDetail} from '../../models/account-details';
 import {User} from '../../models/user';
-import {Contact} from '../../models/contact';
+import {ContactInfo} from '../../models/contact';
 import {Address} from '../../models/address';
 import {Account} from '../../models/account';
 import {StatesStore} from '../../stores/states-store';
 import {StateService} from '../../services/state-service';
-import $ from 'jquery';
 import {SessionStore} from '../../stores/session-store';
 import {NotificationsStore} from '../../stores/notifications-store';
-import {Notification} from '../../models/notification';
-import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
-import Moment from 'moment';
-import {Calendar, InputMask, RadioButton, SelectItem} from 'primeng/primeng';
+import {NotificationsService} from 'angular2-notifications';
 
 @Component({
     selector: 'signup',
     templateUrl: 'templates/pages/signup.html',
-    directives: [
-        FORM_DIRECTIVES,
-        REACTIVE_FORM_DIRECTIVES,
-        DROPDOWN_DIRECTIVES,
-        ROUTER_DIRECTIVES,
-        LoaderComponent,
-        Calendar,
-        InputMask,
-        RadioButton,
-        SimpleNotificationsComponent],
-    providers: [NotificationsService, StateService, StatesStore]
+    providers: [NotificationsService, StateService, StatesStore, FormBuilder]
 })
 
 export class SignupComponent implements OnInit {
-   states: any[];
+    states: any[];
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -96,14 +80,14 @@ export class SignupComponent implements OnInit {
     }
 
     ngOnInit() {
-                    this._stateService.getStates()
-                        .subscribe(states => this.states = states);
+        this._stateService.getStates()
+            .subscribe(states => this.states = states);
     }
 
 
     saveUser() {
         this.isSignupInProgress = true;
-        var result;
+        let result;
         let signupFormValues = this.signupform.value;
         let accountDetail = new AccountDetail({
             account: new Account({
@@ -116,7 +100,7 @@ export class SignupComponent implements OnInit {
                 userName: signupFormValues.user.email,
                 password: signupFormValues.user.password
             }),
-            contactInfo: new Contact({
+            contactInfo: new ContactInfo({
                 cellPhone: signupFormValues.contactInfo.cellPhone,
                 emailAddress: signupFormValues.user.email,
                 faxNo: signupFormValues.contactInfo.faxNo,

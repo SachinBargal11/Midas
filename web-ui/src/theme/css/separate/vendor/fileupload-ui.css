@@ -29,8 +29,7 @@
   width: 32px;
   height: 32px;
   background: url("../img/loading.gif") center no-repeat;
-  -o-background-size: contain;
-     background-size: contain;
+  background-size: contain;
 }
 .files audio,
 .files video {

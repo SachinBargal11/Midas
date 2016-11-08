@@ -15,14 +15,6 @@
     left: 6px;
   }
 }
-@-moz-keyframes writing {
-  0% {
-    left: 0px;
-  }
-  100% {
-    left: 6px;
-  }
-}
 @-o-keyframes writing {
   0% {
     left: 0px;
@@ -97,7 +89,6 @@
   line-height: 20px;
   cursor: default;
   -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   max-width: 100%;
@@ -171,15 +162,12 @@
   left: 0;
   top: 0;
   -webkit-animation-name: writing;
-     -moz-animation-name: writing;
        -o-animation-name: writing;
           animation-name: writing;
   -webkit-animation-duration: 1.2s;
-     -moz-animation-duration: 1.2s;
        -o-animation-duration: 1.2s;
           animation-duration: 1.2s;
   -webkit-animation-iteration-count: infinite;
-     -moz-animation-iteration-count: infinite;
        -o-animation-iteration-count: infinite;
           animation-iteration-count: infinite;
 }

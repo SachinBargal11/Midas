@@ -1,30 +1,35 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 import {MedicalFacilityStore} from '../../../stores/medical-facilities-store';
-import {MedicalFacilityService} from '../../../services/medical-facility-service';
-import {ReversePipe} from '../../../pipes/reverse-array-pipe';
-import {LimitPipe} from '../../../pipes/limit-array-pipe';
+import {SessionStore} from '../../../stores/session-store';
+import {MedicalFacilityDetail} from '../../../models/medical-facility-details';
 
 @Component({
     selector: 'medical-facilities-list',
-    templateUrl: 'templates/pages/medical-facilities/medical-facilities-list.html',
-    directives: [
-        ROUTER_DIRECTIVES
-    ],
-    pipes: [ReversePipe, LimitPipe]
+    templateUrl: 'templates/pages/medical-facilities/medical-facilities-list.html'
 })
 
 
 export class MedicalFacilitiesListComponent implements OnInit {
-
+    medicalfacilities: MedicalFacilityDetail[];
+    medicalfacilitiesLoading;
     constructor(
         private _router: Router,
+        private _sessionStore: SessionStore,
         private _medicalFacilityStore: MedicalFacilityStore
     ) {
     }
 
     ngOnInit() {
-
+        this.loadMedicalFacility();
     }
 
+    loadMedicalFacility() {
+        this.medicalfacilitiesLoading = true;
+        let medicalfacility = this._medicalFacilityStore.getMedicalFacilities()
+            .subscribe(medicalfacilities => { this.medicalfacilities = medicalfacilities; },
+            null,
+            () => { this.medicalfacilitiesLoading = false; });
+        return medicalfacility;
+    }
 }

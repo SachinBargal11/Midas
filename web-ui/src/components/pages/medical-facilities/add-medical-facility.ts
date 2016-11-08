@@ -1,36 +1,26 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {Validators, FormGroup, FormBuilder} from '@angular/forms';
+import {Router} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
-import {LoaderComponent} from '../../elements/loader';
 import {MedicalFacility} from '../../../models/medical-facility';
 import {MedicalFacilityDetail} from '../../../models/medical-facility-details';
 import {User} from '../../../models/user';
-import {AccountDetail} from '../../../models/account-details';
 import {Account} from '../../../models/account';
-import {Contact} from '../../../models/contact';
+import {ContactInfo} from '../../../models/contact';
 import {Address} from '../../../models/address';
-// import $ from 'jquery';
 import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
 import {Notification} from '../../../models/notification';
 import moment from 'moment';
-import {Calendar, InputMask, AutoComplete, SelectItem} from 'primeng/primeng';
 import {MedicalFacilityStore} from '../../../stores/medical-facilities-store';
 import {MedicalFacilityService} from '../../../services/medical-facility-service';
-import {Gender} from '../../../models/enums/Gender';
-import {UserType} from '../../../models/enums/UserType';
 import {StatesStore} from '../../../stores/states-store';
 import {StateService} from '../../../services/state-service';
-import {HTTP_PROVIDERS}    from '@angular/http';
-import {LimitPipe} from '../../../pipes/limit-array-pipe';
 
 @Component({
     selector: 'add-medical-facility',
     templateUrl: 'templates/pages/medical-facilities/add-medical-facility.html',
-    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar, InputMask, AutoComplete],
-    providers: [HTTP_PROVIDERS, MedicalFacilityService, StateService, StatesStore],
-    pipes: [LimitPipe]
+    providers: [MedicalFacilityService, StateService, StatesStore, FormBuilder]
 })
 
 export class AddMedicalFacilityComponent implements OnInit {
@@ -89,17 +79,16 @@ export class AddMedicalFacilityComponent implements OnInit {
         let medicalFacilityFormValues = this.medicalFacilityForm.value;
         let medicalFacilityDetail = new MedicalFacilityDetail({
             account: new Account({
-            //    id: 176 
-               id: this._sessionStore.session.account_id 
+               id: this._sessionStore.session.account_id
             }),
             user: new User({
-                id: this._sessionStore.session.user.id              
+                id: this._sessionStore.session.user.id
             }),
             medicalfacility: new MedicalFacility({
                 name: medicalFacilityFormValues.name,
                 prefix: medicalFacilityFormValues.prefix
             }),
-            contactInfo: new Contact({
+            contactInfo: new ContactInfo({
                 cellPhone: medicalFacilityFormValues.contact.cellPhone,
                 emailAddress: medicalFacilityFormValues.contact.email,
                 faxNo: medicalFacilityFormValues.contact.faxNo,
@@ -116,12 +105,12 @@ export class AddMedicalFacilityComponent implements OnInit {
             })
         });
         this.isSaveMedicalFacilityProgress = true;
-        var result;
+        let result;
 
         result = this._medicalFacilitiesStore.addMedicalFacility(medicalFacilityDetail);
         result.subscribe(
             (response) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'Medical facility added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
@@ -130,7 +119,7 @@ export class AddMedicalFacilityComponent implements OnInit {
                 this._router.navigate(['/medical-facilities']);
             },
             (error) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'Unable to add Medical facility.',
                     'type': 'ERROR',
                     'createdAt': moment()

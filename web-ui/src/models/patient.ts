@@ -16,11 +16,11 @@ import Moment from 'moment';
 
 const PatientRecord = Record({
     id: 0,
-    firstname: "",
-    lastname: "",
-    email: "",
-    mobileNo: "",
-    address: "",
+    firstname: '',
+    lastname: '',
+    email: '',
+    mobileNo: '',
+    address: '',
     dob: Moment(),
     createdUser: 0
 });
@@ -34,7 +34,7 @@ export class Patient extends PatientRecord {
     mobileNo: string;
     address: string;
     dob: Date;
-    createdUser: number
+    createdUser: number;
 
     constructor(props) {
         super(props);

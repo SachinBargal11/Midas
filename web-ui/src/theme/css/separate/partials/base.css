@@ -453,7 +453,6 @@ body {
   background: #fff;
   overflow: hidden;
   -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
@@ -466,7 +465,6 @@ body {
   font-weight: 600;
   color: #343434;
   -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
@@ -541,6 +539,11 @@ body {
   /* ==========================================================================
 	  Mobile Right Menu
 	  ========================================================================== */
+}
+.site-header .btn-nav {
+  margin-left: 20px;
+  margin-top: -5px;
+  float: left;
 }
 .site-header .site-logo {
   display: block;
@@ -774,7 +777,6 @@ body {
   font-weight: 600;
   color: #919fa9;
   -webkit-transition: none;
-  -moz-transition: none;
   -o-transition: none;
   transition: none;
 }
@@ -988,7 +990,6 @@ body {
           border-radius: 50%;
   border: solid 1px transparent;
   -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
@@ -1138,7 +1139,7 @@ body {
   top: 5px;
   margin: 0 0 0 12px;
 }
-@media (max-width: 1500px) and (min-width: 992px) {
+@media (max-width: 1530px) and (min-width: 992px) {
   .site-header .dropdown.dropdown-typical a.dropdown-toggle .font-icon {
     margin-right: 0;
   }
@@ -1176,7 +1177,6 @@ body {
     padding: 15px;
     overflow: auto;
     -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
     float: none;
@@ -1202,6 +1202,11 @@ body {
     width: 100%;
     padding: 10px 0;
     float: none;
+  }
+  .site-header .site-header-collapsed .btn-nav {
+    margin-left: 0;
+    margin-top: 5px;
+    width: 100%;
   }
   .site-header .site-header-collapsed .dropdown {
     float: none;
@@ -1243,7 +1248,6 @@ body {
   }
   .site-header .site-header-collapsed .dropdown.mobile-opened .dropdown-toggle:after {
     -webkit-transform: rotate(180deg);
-       -moz-transform: rotate(180deg);
         -ms-transform: rotate(180deg);
          -o-transform: rotate(180deg);
             transform: rotate(180deg);
@@ -1261,7 +1265,6 @@ body {
   }
   .site-header .site-header-collapsed .dropdown.dropdown-typical .dropdown-more .dropdown-more-caption:before {
     -webkit-transform: rotate(90deg);
-       -moz-transform: rotate(90deg);
         -ms-transform: rotate(90deg);
          -o-transform: rotate(90deg);
             transform: rotate(90deg);
@@ -1286,7 +1289,6 @@ body {
   }
   .site-header .site-header-collapsed .dropdown.dropdown-typical .dropdown-more.opened .dropdown-more-caption:before {
     -webkit-transform: rotate(-90deg);
-       -moz-transform: rotate(-90deg);
         -ms-transform: rotate(-90deg);
          -o-transform: rotate(-90deg);
             transform: rotate(-90deg);
@@ -1355,7 +1357,6 @@ body {
   border: none;
   cursor: pointer;
   -webkit-transition: background 0.3s;
-  -moz-transition: background 0.3s;
   -o-transition: background 0.3s;
   transition: background 0.3s;
   background: none;
@@ -1372,10 +1373,9 @@ body {
   background: #adb7be;
   -webkit-transition: -webkit-transform 0.3s;
   transition: -webkit-transform 0.3s;
-  -moz-transition: transform 0.3s, -moz-transform 0.3s;
   -o-transition: transform 0.3s, -o-transform 0.3s;
   transition: transform 0.3s;
-  transition: transform 0.3s, -webkit-transform 0.3s, -moz-transform 0.3s, -o-transform 0.3s;
+  transition: transform 0.3s, -webkit-transform 0.3s, -o-transform 0.3s;
 }
 .hamburger span:before,
 .hamburger span:after {
@@ -1390,37 +1390,32 @@ body {
 .hamburger span:before {
   top: -7px;
   -webkit-transform-origin: top right;
-     -moz-transform-origin: top right;
       -ms-transform-origin: top right;
        -o-transform-origin: top right;
           transform-origin: top right;
   -webkit-transition: width 0.3s, top 0.3s, -webkit-transform 0.3s;
   transition: width 0.3s, top 0.3s, -webkit-transform 0.3s;
-  -moz-transition: transform 0.3s, width 0.3s, top 0.3s, -moz-transform 0.3s;
   -o-transition: transform 0.3s, width 0.3s, top 0.3s, -o-transform 0.3s;
   transition: transform 0.3s, width 0.3s, top 0.3s;
-  transition: transform 0.3s, width 0.3s, top 0.3s, -webkit-transform 0.3s, -moz-transform 0.3s, -o-transform 0.3s;
+  transition: transform 0.3s, width 0.3s, top 0.3s, -webkit-transform 0.3s, -o-transform 0.3s;
 }
 .hamburger span:after {
   bottom: -7px;
   -webkit-transform-origin: bottom right;
-     -moz-transform-origin: bottom right;
       -ms-transform-origin: bottom right;
        -o-transform-origin: bottom right;
           transform-origin: bottom right;
   -webkit-transition: width 0.3s, bottom 0.3s, -webkit-transform 0.3s;
   transition: width 0.3s, bottom 0.3s, -webkit-transform 0.3s;
-  -moz-transition: transform 0.3s, width 0.3s, bottom 0.3s, -moz-transform 0.3s;
   -o-transition: transform 0.3s, width 0.3s, bottom 0.3s, -o-transform 0.3s;
   transition: transform 0.3s, width 0.3s, bottom 0.3s;
-  transition: transform 0.3s, width 0.3s, bottom 0.3s, -webkit-transform 0.3s, -moz-transform 0.3s, -o-transform 0.3s;
+  transition: transform 0.3s, width 0.3s, bottom 0.3s, -webkit-transform 0.3s, -o-transform 0.3s;
 }
 .hamburger.is-active {
   background: none;
 }
 .hamburger.is-active span {
   -webkit-transform: rotate(180deg);
-     -moz-transform: rotate(180deg);
       -ms-transform: rotate(180deg);
        -o-transform: rotate(180deg);
           transform: rotate(180deg);
@@ -1432,7 +1427,6 @@ body {
 .hamburger.is-active span:before {
   top: 0;
   -webkit-transform: translateX(12px) translateY(1px) rotate(45deg);
-     -moz-transform: translateX(12px) translateY(1px) rotate(45deg);
       -ms-transform: translateX(12px) translateY(1px) rotate(45deg);
        -o-transform: translateX(12px) translateY(1px) rotate(45deg);
           transform: translateX(12px) translateY(1px) rotate(45deg);
@@ -1440,7 +1434,6 @@ body {
 .hamburger.is-active span:after {
   bottom: 0;
   -webkit-transform: translateX(12px) translateY(-1px) rotate(-45deg);
-     -moz-transform: translateX(12px) translateY(-1px) rotate(-45deg);
       -ms-transform: translateX(12px) translateY(-1px) rotate(-45deg);
        -o-transform: translateX(12px) translateY(-1px) rotate(-45deg);
           transform: translateX(12px) translateY(-1px) rotate(-45deg);

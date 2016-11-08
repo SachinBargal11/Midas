@@ -1,0 +1,73 @@
+<div class="page-center">
+    <div class="page-center-in">
+        <div class="container-fluid">
+            <h5 class="with-border">Edit Provider</h5>
+            <form [formGroup]="providerform" (ngSubmit)="updateProvider()">
+                <section class="card">
+                    <div class="card-block" formGroupName="provider">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="form-label"> Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="providerformControls.provider.controls.name.touched && !providerformControls.provider.controls.name.valid">
+                                    <input formControlName="name" [ngModel]="provider.provider.name" type="text" unique="checkName(name)" class="form-control" placeholder="" [class.error]="!providerformControls.provider.controls.name.valid">
+                                   <div class='error-list' *ngIf="providerformControls.provider.controls.name.touched && !providerformControls.provider.controls.name.valid">
+                                        <ul>
+                                            <li *ngIf="providerformControls.provider.controls.name.hasError('required')">Name is required.</li>
+                                        </ul>
+                                    </div>   
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="form-label"> NPI
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="providerformControls.provider.controls.npi.touched && !providerformControls.provider.controls.npi.valid">
+                                    <input formControlName="npi" [ngModel]="provider.provider.npi" type="text" class="form-control" placeholder="" [class.error]="!providerformControls.provider.controls.npi.valid">
+                                    <div class='error-list' *ngIf="providerformControls.provider.controls.npi.touched && !providerformControls.provider.controls.npi.valid">
+                                        <ul>
+                                            <li *ngIf="providerformControls.provider.controls.npi.hasError('required')">NPI is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="form-label"> FederalTaxId
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="providerformControls.provider.controls.federalTaxID.touched && !providerformControls.provider.controls.federalTaxID.valid">
+                                    <input formControlName="federalTaxID" [ngModel]="provider.provider.federalTaxID" type="text" class="form-control" placeholder="" [class.error]="!providerformControls.provider.controls.federalTaxID.valid">
+                                    <div class='error-list' *ngIf="providerformControls.provider.controls.federalTaxID.touched && !providerformControls.provider.controls.federalTaxID.valid">
+                                        <ul>
+                                            <li *ngIf="providerformControls.provider.controls.federalTaxID.hasError('required')">FederalTaxId is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="form-label"> Prefix
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="providerformControls.provider.controls.prefix.touched && !providerformControls.provider.controls.prefix.valid">
+                                    <input formControlName="prefix" [ngModel]="provider.provider.prefix" type="text" class="form-control" placeholder="" [class.error]="!providerformControls.provider.controls.prefix.valid">
+                                    <div class='error-list' *ngIf="providerformControls.provider.controls.prefix.touched && !providerformControls.provider.controls.prefix.valid">
+                                        <ul>
+                                            <li *ngIf="providerformControls.provider.controls.prefix.hasError('required')">Prefix is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <button [disabled]="!providerform.valid || isSaveProviderProgress" type="submit" class="btn btn-success sign-up">Update
+                    <loader [visible]="isSaveProviderProgress"></loader>
+                </button>
+                <a [routerLink]="['/providers']" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>

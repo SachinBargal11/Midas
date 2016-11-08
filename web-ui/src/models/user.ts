@@ -7,19 +7,19 @@ import {Gender} from './enums/Gender';
 
 const UserRecord = Record({
     id: 0,
-    name: "",
+    name: '',
     userType: UserType.Owner,
-    accountId: "",
-    userName: "",
-    firstName: "",
-    middleName: "",
-    lastName: "",
+    accountId: '',
+    userName: '',
+    firstName: '',
+    middleName: '',
+    lastName: '',
     gender: Gender.Male,
-    imageLink: "",
+    imageLink: '',
     // address: null, //Address
     // contact: null, //Contact
     dateOfBirth: moment(), //Moment
-    password: "",
+    password: '',
     isDeleted: 0,
     createByUserId: 0,
     updateByUserId: 0,

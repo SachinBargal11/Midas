@@ -1,22 +1,17 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {Validators, FormGroup, FormBuilder} from '@angular/forms';
+import {Router} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
-import {LoaderComponent} from '../../elements/loader';
 import {PatientsStore} from '../../../stores/patients-store';
 import {Patient} from '../../../models/patient';
-import $ from 'jquery';
-// import 'eonasdan-bootstrap-datetimepicker';
 import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
 import {Notification} from '../../../models/notification';
 import Moment from 'moment';
-import {Calendar} from 'primeng/primeng';
 
 @Component({
     selector: 'add-patient',
-    templateUrl: 'templates/pages/patients/add-patient.html',
-    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar]
+    templateUrl: 'templates/pages/patients/add-patient.html'
 })
 
 export class AddPatientComponent implements OnInit {
@@ -38,7 +33,7 @@ export class AddPatientComponent implements OnInit {
     date1: string;
     patientform: FormGroup;
     patientformControls;
-    
+
     isSavePatientProgress = false;
     constructor(
         private fb: FormBuilder,
@@ -56,8 +51,8 @@ export class AddPatientComponent implements OnInit {
             address: [''],
             dob: ['', Validators.required]
         });
-        this.patientformControls = this.patientform.controls;       
-        
+        this.patientformControls = this.patientform.controls;
+
     }
 
     ngOnInit() {
@@ -69,8 +64,8 @@ export class AddPatientComponent implements OnInit {
 
     savePatient() {
         this.isSavePatientProgress = true;
-        var result;
-        var patient = new Patient({
+        let result;
+        let patient = new Patient({
             'firstname': this.patientform.value.firstname,
             'lastname': this.patientform.value.lastname,
             'email': this.patientform.value.email,
@@ -82,7 +77,7 @@ export class AddPatientComponent implements OnInit {
         result = this._patientsStore.addPatient(patient);
         result.subscribe(
             (response) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'Patient added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': Moment()
@@ -91,7 +86,7 @@ export class AddPatientComponent implements OnInit {
                 this._router.navigate(['/patients']);
             },
             (error) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'Unable to add patient.',
                     'type': 'ERROR',
                     'createdAt': Moment()

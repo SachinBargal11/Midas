@@ -1,33 +1,45 @@
-import {User} from '../../models/user';
-import {UserDetail} from '../../models/user-details';
-import Moment from 'moment';
+import * as moment from 'moment';
+import { User } from '../../models/user';
+import { AccountDetail } from '../../models/account-details';
 import _ from 'underscore';
 
 
 export class UserAdapter {
     static parseUserResponse(userData: any): User {
 
-        let user = null;
+        let user: User = null;
         if (userData) {
-            let tempUser = _.omit(userData, 'address', 'account', 'contactInfo', 'updateDate');
-            if (userData.account) {
-                tempUser.accountId = userData.account.id;
-            }
-            user = new User(tempUser);
+            let tempUser: any = userData.user;
+            user = new User(_.extend(tempUser, {
+                createDate: moment.utc(tempUser.createDate)
+            }));
         }
         return user;
     }
 
-    static parseResponse(userData: any): UserDetail {
+    static parseResponse(userData: any): AccountDetail {
 
         let user = null;
-        let tempUser = _.omit(userData, 'address', 'account', 'contactInfo', 'updateDate');
+        let tempUser = this.parseUserResponse(userData);
+
         if (userData) {
-            user = new UserDetail({
+            user = new AccountDetail({
                 user: tempUser,
                 address: userData.address,
                 contactInfo: userData.contactInfo
             });
+        }
+        return user;
+    }
+
+    static parseSignInResponse(userData: any): User {
+        let user = null;
+
+
+        if (userData) {
+            if (userData.user) {
+                user = this.parseUserResponse(userData);
+            }
         }
         return user;
     }

@@ -1,21 +1,26 @@
 <h1 class="with-border">Providers
 <a class="pull-right m-b-md btn btn-primary" [routerLink]="['/providers/add']">Add Provider</a>
 </h1>
-<table class="table table-bordered table-fixed">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>NPI</th>
-            <!--<th>FederalTaxId</th>
-            <th>Prefix</th>-->
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let provider of _providersStore.providers | async | reverse">
-            <td>{{ provider.name }}</td>
-            <td>{{ provider.npi }}</td>
-            <!--<td>{{ provider.federalTaxID }}</td>
-            <td>{{ provider.prefix }}</td>-->
-        </tr>
-    </tbody>
-</table>
+<progress-bar [visible]="providersLoading" 
+              style="position:fixed;
+                     top:0;
+                     width:100%;
+                     z-index:100;">
+    <span class="sr-only">Loading providers...</span>
+</progress-bar>
+<div class="ui-widget-header ui-helper-clearfix" style="padding:4px 10px;border-bottom: 0 none">
+    <i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
+    <input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Provider">
+</div>
+<p-dataTable [value]="providers" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+    <header>List of Providers</header>
+    <p-column field="name" header="Provider Name" [sortable]="true" [filter]="true"></p-column>
+    <p-column field="npi" header="NPI" [sortable]="true" [filter]="true"></p-column>
+    <p-column field="prefix" header="Prefix" [sortable]="true" [filter]="true"></p-column>
+    <p-column field="id" header="Provider id" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
+    <p-column styleClass="col-button" header="Edit">
+        <template let-provider="rowData" pTemplate type="body">
+        <a [routerLink]="['/providers/update/', provider.id]"><i class="glyphicon glyphicon-edit"></i></a>
+        </template>
+    </p-column>
+</p-dataTable>

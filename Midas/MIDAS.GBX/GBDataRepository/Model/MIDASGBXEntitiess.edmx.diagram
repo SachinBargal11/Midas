@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e499818e4b8a4c5fb35de89d09adbdb7" Name="Diagram1">
+        <EntityTypeShape EntityType="MIDASGBXModel.AddressInfo" Width="1.5" PointX="0.75" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Company" Width="1.5" PointX="3" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.CompanyType" Width="1.5" PointX="0.75" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.ContactInfo" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Doctor" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Invitation" Width="1.5" PointX="8.25" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.InvitationType" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Location" Width="1.5" PointX="6" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Log" Width="1.5" PointX="10.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.MedicalProvider" Width="1.5" PointX="10.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Role" Width="1.5" PointX="3" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.SubscriptionPlan" Width="1.5" PointX="0.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.User" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.UserCompany" Width="1.5" PointX="8.25" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.UserCompanyRole" Width="1.5" PointX="5.25" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.UserType" Width="1.5" PointX="11.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Company_AddressInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Location_AddressInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASGBXModel.FK_User_AddressInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Company_CompanyType" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Company_ContactInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Company_SubscriptionPlan" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Invitation_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASGBXModel.FK_UserCompany_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Location_ContactInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASGBXModel.FK_User_ContactInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Invitation_User_Invitation" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASGBXModel.FK_UserCompanyRole_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASGBXModel.FK_UserCompany_User" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASGBXModel.FK_UserCompanyRole_User" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

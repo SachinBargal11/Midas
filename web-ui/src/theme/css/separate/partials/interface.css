@@ -1970,7 +1970,6 @@ hr.margin-4 {
   margin: 0 8px 0 0;
   color: #adb7be;
   -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   font-size: 16px;
@@ -2004,7 +2003,6 @@ hr.margin-4 {
 .dropdown.dropdown-typical a.dropdown-toggle:after,
 .dropdown.dropdown-typical a.dropdown-toggle .font-icon {
   -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
@@ -2060,7 +2058,6 @@ hr.margin-4 {
 .dropdown.dropdown-typical .dropdown-more .dropdown-more-caption {
   padding: 3px 12px;
   -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
@@ -2080,7 +2077,6 @@ hr.margin-4 {
   border-width: 4px 0 4px 5px;
   border-color: transparent transparent transparent #adb7be;
   -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
@@ -2191,7 +2187,6 @@ hr.margin-4 {
   border-color: #dbe4ea;
   color: #6c7a86;
   -webkit-transition: none;
-  -moz-transition: none;
   -o-transition: none;
   transition: none;
 }
@@ -2212,7 +2207,6 @@ hr.margin-4 {
 .dropdown.open .btn.dropdown-toggle:focus:after,
 .dropdown.open .btn.btn-grey:after {
   -webkit-transform: rotate(180deg);
-     -moz-transform: rotate(180deg);
       -ms-transform: rotate(180deg);
        -o-transform: rotate(180deg);
           transform: rotate(180deg);
@@ -2537,7 +2531,6 @@ a.label-light-grey:hover {
   position: absolute;
   left: 0;
   bottom: 0;
-  background: -moz-linear-gradient(top, rgba(216, 226, 231, 0) 0%, #d8e2e7 77%, #d8e2e7 100%);
   background: -webkit-linear-gradient(top, rgba(216, 226, 231, 0) 0%, #d8e2e7 77%, #d8e2e7 100%);
   background: -webkit-gradient(linear, left top, left bottom, from(rgba(216, 226, 231, 0)), color-stop(77%, #d8e2e7), to(#d8e2e7));
   background: -o-linear-gradient(top, rgba(216, 226, 231, 0) 0%, #d8e2e7 77%, #d8e2e7 100%);
@@ -3102,7 +3095,6 @@ a.label-light-grey:hover {
 .bootstrap-table .fixed-table-pagination ul.pagination li.page-next .font-icon {
   line-height: 32px;
   -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   color: rgba(173, 183, 190, 0.7);
@@ -3140,7 +3132,6 @@ a.label-light-grey:hover {
 }
 .user-card-row a {
   -webkit-transition: none;
-  -moz-transition: none;
   -o-transition: none;
   transition: none;
 }
@@ -4285,7 +4276,6 @@ a.label-light-grey:hover {
 .jspContainer .jspTrack {
   opacity: 0;
   -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
@@ -4511,7 +4501,6 @@ body.modal-open {
   color: #adb7be;
   margin: 0 5px 0 0;
   -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
@@ -4834,7 +4823,6 @@ body.modal-open {
   line-height: 28px;
   border-top: solid 4px transparent;
   -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
@@ -4882,7 +4870,6 @@ body.modal-open {
 .tabs-section-nav.tabs-section-nav-left .nav-link,
 .tabs-section-nav.tabs-section-nav-left .nav-link-in {
   -webkit-transition: none;
-  -moz-transition: none;
   -o-transition: none;
   transition: none;
 }
@@ -4893,7 +4880,6 @@ body.modal-open {
   color: #adb7be;
   margin: 0 0 .2em;
   -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
@@ -5276,7 +5262,6 @@ body.modal-open {
   text-align: center;
   font-weight: 600;
   -webkit-transition: none;
-  -moz-transition: none;
   -o-transition: none;
   transition: none;
 }
@@ -5559,7 +5544,6 @@ body.modal-open {
   }
   .horizontal-navigation.menu-left-opened .main-nav {
     -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
     z-index: 60;

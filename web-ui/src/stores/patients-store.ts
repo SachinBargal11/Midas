@@ -1,15 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {Observer} from 'rxjs/Observer';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import {Patient} from '../models/patient';
 import {PatientsService} from '../services/patients-service';
-import {Subject} from "rxjs/Subject";
 import {List} from 'immutable';
-import {BehaviorSubject} from "rxjs/Rx";
-import _ from 'underscore';
-import Moment from 'moment';
+import {BehaviorSubject} from 'rxjs/Rx';
 import {SessionStore} from './session-store';
 
 @Injectable()
@@ -24,7 +20,7 @@ export class PatientsStore {
     ) {
         this.loadInitialData();
         this._sessionStore.userLogoutEvent.subscribe(() => {
-            this.resetStore()
+            this.resetStore();
         });
     }
 

@@ -1,23 +1,53 @@
-import {Injectable} from '@angular/core';
-import {Http, Headers} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { Http, Headers } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
-import {AccountDetail} from '../models/account-details';
-import {User} from '../models/user';
-import {UserAdapter} from './adapters/user-adapter';
+import { AccountDetail } from '../models/account-details';
+import { User } from '../models/user';
+import { UserAdapter } from './adapters/user-adapter';
+import { CompanyAdapter } from './adapters/company-adapter';
 import _ from 'underscore';
+import { Company } from '../models/company';
 
-import {AccountStatus} from '../models/enums/AccountStatus';
-import {UserType} from '../models/enums/UserType';
+import { AccountStatus } from '../models/enums/AccountStatus';
+import { UserType } from '../models/enums/UserType';
 
 @Injectable()
 export class AuthenticationService {
-
+    companies: any[];
     private _url: string = `${Environment.SERVICE_BASE_URL}`;
+    private _url1: string = 'http://localhost:3004';
 
     constructor(private _http: Http) { }
-
+    registerCompany(companyDetail: Company): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            return this._http.post(this._url + '/Company/Signup', JSON.stringify(companyDetail), {
+                headers: headers
+            }).map(res => res.json()).subscribe((data) => {
+                resolve(data);
+            }, (error) => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+    getCompanies(): Observable<Company[]> {
+        let promise = new Promise((resolve, reject) => {
+            return this._http.get(this._url1 + '/company').map(res => res.json())
+                .subscribe((data: any) => {
+                    this.companies = (<Object[]>data).map((companyData: any) => {
+                        return CompanyAdapter.parseResponse(companyData);
+                    });
+                    resolve(this.companies);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Company[]>>Observable.fromPromise(promise);
+    }
     register(accountDetail: AccountDetail): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let headers = new Headers();
@@ -63,23 +93,69 @@ export class AuthenticationService {
         return <Observable<any>>Observable.fromPromise(promise);
     }
 
-    authenticate(userId: string, password: string): Observable<User> {
+    checkForValidToken(token) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        let promise: Promise<User> = new Promise((resolve, reject) => {
+            let autheticateRequestData = {
+                emailValidation: {
+                    appKey: token
+                }
+            };
+            return this._http.post(this._url + '/Company/ValidateInvitation', JSON.stringify(autheticateRequestData), {
+                headers: headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    if (data) {
+                        resolve(data);
+                    }
+                    else {
+                        reject(new Error('INVALID_TOKEN'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+    updatePassword(userDetail: any): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            return this._http.post(this._url + '/User/Add', JSON.stringify(userDetail), {
+                headers: headers
+            })
+                .map(res => res.json())
+                .subscribe((userData: any) => {
+                    resolve(userData);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+
+    }
+
+    authenticate(email: string, password: string, forceLogin: boolean): Observable<User> {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
 
         let promise: Promise<User> = new Promise((resolve, reject) => {
             let autheticateRequestData = {
                 user: {
-                    "userName": userId,
-                    "password": password
+                    'userName': email,
+                    'password': password,
+                    'forceLogin': forceLogin
                 }
-            }
+            };
             return this._http.post(this._url + '/User/Signin', JSON.stringify(autheticateRequestData), {
                 headers: headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
                     if (data) {
-                        var user = UserAdapter.parseUserResponse(data);
+                        let user = UserAdapter.parseSignInResponse(data);
+                        window.sessionStorage.setItem('pin', data.pin);
                         resolve(user);
                     }
                     else {
@@ -93,18 +169,27 @@ export class AuthenticationService {
         return <Observable<User>>Observable.fromPromise(promise);
     }
 
-    authenticatePassword(userId: string, oldpassword: string): Observable<User> {
+    authenticatePassword(userName: string, oldpassword: string): Observable<User> {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
         let promise: Promise<User> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '?id=' + userId + '&password=' + oldpassword)
-                .map(res => res.json())
+            let autheticateRequestData = {
+                user: {
+                    'userName': userName,
+                    'password': oldpassword
+                }
+            };
+            return this._http.post(this._url + '/User/Signin', JSON.stringify(autheticateRequestData), {
+                headers: headers
+            }).map(res => res.json())
                 .subscribe((data: any) => {
-                    if (data.length) {
-                        var user = UserAdapter.parseResponse(data[0]);
+                    if (data) {
+                        let user = UserAdapter.parseUserResponse(data);
                         resolve(user);
                     }
                     else {
-                        console.info('Old password is wrong');
-                        reject(new Error('INVALID_CREDENTIALS'))
+                        reject(new Error('INVALID_CREDENTIALS'));
                     }
                 }, (error) => {
                     reject(error);
@@ -113,25 +198,63 @@ export class AuthenticationService {
 
         return <Observable<User>>Observable.fromPromise(promise);
     }
-    updatePassword(userId: string, newpassword: string): Observable<any> {
-        let promise: Promise<any> = new Promise((resolve, reject) => {
-            var headers = new Headers();
-            headers.append('Content-Type', 'application/json');
-            return this._http.patch(`${this._url}/${userId}`, JSON.stringify(newpassword), {
+
+    generateCode(userId) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        let promise: Promise<User> = new Promise((resolve, reject) => {
+            let postData = {
+                user: {
+                    id: userId
+                }
+            };
+            return this._http.post(this._url + '/OTP/GenerateOTP', JSON.stringify(postData), {
                 headers: headers
-            }).map(res => res.json()).subscribe((data: any) => {
-                if (data.length) {
-                    var user = UserAdapter.parseResponse(data[0]);
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    window.sessionStorage.setItem('pin', data.pin);
                     resolve(data);
-                }
-                else {
-                    resolve(data);
-                }
-            }, (error) => {
-                reject(error);
-            });
+                }, (error) => {
+                    reject(error);
+                });
         });
+
         return <Observable<any>>Observable.fromPromise(promise);
     }
 
+    validateSecurityCode(userId, code, pin) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        let promise = new Promise((resolve, reject) => {
+            let postData = {
+                otp: {
+                    otp: code,
+                    pin: pin
+                },
+                user: {
+                    id: userId
+                }
+            };
+
+            return this._http.post(this._url + '/OTP/ValidateOTP', JSON.stringify(postData),{
+                headers: headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    if (data) {
+                        resolve(true);
+                    } else {
+                        resolve(false);
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<boolean>>Observable.fromPromise(promise);
+    }
+
+    getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 }

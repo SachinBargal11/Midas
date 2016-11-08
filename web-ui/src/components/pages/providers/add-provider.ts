@@ -1,26 +1,18 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormControl, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
-import {AppValidators} from '../../../utils/AppValidators';
-import {LoaderComponent} from '../../elements/loader';
+import {Router} from '@angular/router';
+import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 import {ProvidersStore} from '../../../stores/providers-store';
 import {Provider} from '../../../models/provider';
 import {ProvidersService} from '../../../services/providers-service';
-import $ from 'jquery';
 import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
 import {Notification} from '../../../models/notification';
 import moment from 'moment';
-import {Calendar, InputMask, AutoComplete, SelectItem} from 'primeng/primeng';
-import {HTTP_PROVIDERS}    from '@angular/http';
-import {LimitPipe} from '../../../pipes/limit-array-pipe';
 
 @Component({
     selector: 'add-provider',
     templateUrl: 'templates/pages/providers/add-provider.html',
-    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, Calendar, InputMask, AutoComplete],
-    providers: [HTTP_PROVIDERS, ProvidersService, ProvidersStore],
-    pipes: [LimitPipe]
+    providers: [ProvidersService, ProvidersStore, FormBuilder]
 })
 
 export class AddProviderComponent implements OnInit {
@@ -63,22 +55,21 @@ export class AddProviderComponent implements OnInit {
     saveProvider() {
         let providerFormValues = this.providerform.value;
         let providerDetail = new Provider({
-            provider:{
+            provider: {
                 name: providerFormValues.provider.name,
                 npi: providerFormValues.provider.npi,
                 federalTaxID: providerFormValues.provider.federalTaxID,
-                prefix: providerFormValues.provider.prefix,
-                createByUserID: 176
+                prefix: providerFormValues.provider.prefix
             }
         });
         this.isSaveProviderProgress = true;
-        var result;
+        let result;
 
         // result = this._providersStore.addProvider(providerDetail);
         result = this._providerService.addProvider(providerDetail);
         result.subscribe(
             (response) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'Provider added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
@@ -87,7 +78,7 @@ export class AddProviderComponent implements OnInit {
                 this._router.navigate(['/providers']);
             },
             (error) => {
-                var notification = new Notification({
+                let notification = new Notification({
                     'title': 'Unable to add Provider.',
                     'type': 'ERROR',
                     'createdAt': moment()

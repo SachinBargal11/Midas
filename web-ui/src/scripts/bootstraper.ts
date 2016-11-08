@@ -1,60 +1,202 @@
-import {bootstrap} from '@angular/platform-browser-dynamic';
-import {ROUTER_DIRECTIVES} from '@angular/router';
-import {AppRoot} from '../components/AppRoot';
-import { provide }           from '@angular/core';
-import { LocationStrategy,
-    HashLocationStrategy } from '@angular/common';
-import { disableDeprecatedForms, provideForms } from '@angular/forms';
-import {HTTP_PROVIDERS} from '@angular/http';
 
-import {SessionStore} from '../stores/session-store';
-import {AuthenticationService} from '../services/authentication-service';
+/** Angular Modules */
 
-import {UsersStore} from '../stores/users-store';
-import {UsersService} from '../services/users-service';
+import { enableProdMode, NgModule } from '@angular/core';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { AppRoot } from '../components/AppRoot';
+import { HttpModule } from '@angular/http';
+import { SimpleNotificationsModule } from 'angular2-notifications';
+import { Ng2BootstrapModule } from 'ng2-bootstrap/ng2-bootstrap';
 
-import {ProvidersStore} from '../stores/providers-store';
-import {ProvidersService} from '../services/providers-service';
+/** Application Services and Providers */
 
-import {MedicalFacilityStore} from '../stores/medical-facilities-store';
-import {MedicalFacilityService} from '../services/medical-facility-service';
+import { SessionStore } from '../stores/session-store';
+import { AuthenticationService } from '../services/authentication-service';
 
-import {PatientsStore} from '../stores/patients-store';
-import {PatientsService} from '../services/patients-service';
+import { CompanyStore } from '../stores/company-store';
 
-import {NotificationsStore} from '../stores/notifications-store';
-import {APP_ROUTER_PROVIDER} from '../routes/app-routes';
-import {ValidateActiveSession} from '../routes/guards/validate-active-session';
-import {ValidateInActiveSession} from '../routes/guards/validate-inactive-session';
+import { UsersStore } from '../stores/users-store';
+import { UsersService } from '../services/users-service';
 
-import {enableProdMode} from '@angular/core';
+import { ProvidersStore } from '../stores/providers-store';
+import { ProvidersService } from '../services/providers-service';
+
+import { MedicalFacilityStore } from '../stores/medical-facilities-store';
+import { MedicalFacilityService } from '../services/medical-facility-service';
+
+import { DoctorsStore } from '../stores/doctors-store';
+import { DoctorsService } from '../services/doctors-service';
+
+import { SpecialityStore } from '../stores/speciality-store';
+import { SpecialityService } from '../services/speciality-service';
+
+import { PatientsStore } from '../stores/patients-store';
+import { PatientsService } from '../services/patients-service';
+
+import { StatesStore } from '../stores/states-store';
+import { StateService } from '../services/state-service';
+
+import { MedicalProviderService } from '../services/medical-provider-service';
+
+import { NotificationsStore } from '../stores/notifications-store';
+import { APP_ROUTER_PROVIDER } from '../routes/app-routes';
+import { ValidateActiveSession } from '../routes/guards/validate-active-session';
+import { ValidateInActiveSession } from '../routes/guards/validate-inactive-session';
+
+/** Components */
+
+import { AccountActivationComponent } from '../components/pages/account-activation';
+import { RegisterCompanyComponent } from '../components/pages/register-company';
+import { LoginComponent } from '../components/pages/login';
+import { SecurityCheckComponent  } from '../components/pages/security-check';
+import { SignupComponent } from '../components/pages/signup';
+import { DashboardComponent } from '../components/pages/dashboard';
+import { PatientsShellComponent } from '../components/pages/patients/patients-shell';
+import { PatientsListComponent } from '../components/pages/patients/patients-list';
+import { AddPatientComponent } from '../components/pages/patients/add-patient';
+import { PatientDetailsComponent } from '../components/pages/patients/patient-details';
+import { PatientProfileComponent } from '../components/pages/patients/profile-patient';
+import { AppHeaderComponent } from '../components/elements/app-header';
+import { MainNavComponent } from '../components/elements/main-nav';
+import { LoaderComponent } from '../components/elements/loader';
+import { ProgressBarComponent } from '../components/elements/progress-bar';
+
+import { NotificationComponent } from '../components/elements/notification';
+import { ChangePasswordComponent } from '../components/pages/change-password';
+import { AddUserComponent } from '../components/pages/users/add-user';
+import { UsersListComponent } from '../components/pages/users/users-list';
+import { UpdateUserComponent } from '../components/pages/users/update-user';
+import { AddProviderComponent } from '../components/pages/providers/add-provider';
+import { ProvidersListComponent } from '../components/pages/providers/providers-list';
+import { UpdateProviderComponent } from '../components/pages/providers/update-provider';
+import { UpdateMedicalFacilityComponent } from '../components/pages/medical-facilities/update-medical-facility';
+import { AddMedicalFacilityComponent } from '../components/pages/medical-facilities/add-medical-facility';
+import { MedicalFacilitiesListComponent } from '../components/pages/medical-facilities/medical-facilities-list';
+import { SpecialityDetailsComponent } from '../components/pages/medical-facilities/speciality-details';
+import { UpdateSpecialityDetailComponent } from '../components/pages/medical-facilities/update-speciality-detail';
+import { AddSpecialityDetailComponent } from '../components/pages/medical-facilities/add-speciality-detail';
+import { AddDoctorComponent } from '../components/pages/doctors/add-doctor';
+import { UpdateDoctorComponent } from '../components/pages/doctors/update-doctor';
+import { DoctorsListComponent } from '../components/pages/doctors/doctors-list';
+import { SpecialityListComponent } from '../components/pages/speciality/speciality-list';
+import { AddSpecialityComponent } from '../components/pages/speciality/add-speciality';
+import { UpdateSpecialityComponent } from '../components/pages/speciality/update-speciality';
+
+import { UserStatisticsComponent } from '../components/pages/users/user-statistics';
+import { DoctorsStatisticsComponent } from '../components/pages/doctors/doctors-statistics';
+
+import { MedicalProviderShellComponent } from '../components/pages/medical-provider/medical-provider-shell';
+import { LocationComponent } from '../components/pages/medical-provider/location';
+import { MedicalProviderNavComponent } from '../components/pages/medical-provider/medical-provider-nav-bar';
+
+import { LimitPipe } from '../pipes/limit-array-pipe';
+import { TimeAgoPipe } from '../pipes/time-ago-pipe';
+import { ReversePipe } from '../pipes/reverse-array-pipe';
+import { MapToJSPipe } from '../pipes/map-to-js';
+
+import { InputTextModule, ChartModule, DataTableModule, SharedModule, ButtonModule, DialogModule, CalendarModule, InputMaskModule, RadioButtonModule, MultiSelectModule } from 'primeng/primeng';
+
+
 
 enableProdMode();
 
-bootstrap(AppRoot, [
-    disableDeprecatedForms(),
-    provideForms(),
-    ROUTER_DIRECTIVES,
-    HTTP_PROVIDERS,
-    SessionStore,
-    AuthenticationService,
-    UsersService,
-    UsersStore,
-    ProvidersStore,
-    ProvidersService,
-    MedicalFacilityStore,
-    MedicalFacilityService,
-    PatientsService,
-    PatientsStore,
-    NotificationsStore,
-    APP_ROUTER_PROVIDER,
-    ValidateActiveSession,
-    ValidateInActiveSession,
-    provide(LocationStrategy,
-        {
-            useValue: [ROUTER_DIRECTIVES],
-            useClass: HashLocationStrategy
-        }
-    )
-])
-    .catch((err: any) => console.error(err));
+@NgModule({
+    imports: [
+        BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        APP_ROUTER_PROVIDER,
+        InputTextModule,
+        ChartModule,
+        DataTableModule,
+        ButtonModule,
+        DialogModule,
+        SimpleNotificationsModule,
+        Ng2BootstrapModule,
+        InputMaskModule,
+        CalendarModule,
+        RadioButtonModule,
+        MultiSelectModule,
+        HttpModule,
+        SharedModule
+    ],
+    declarations: [
+        AppRoot,
+        RegisterCompanyComponent,
+        AccountActivationComponent,
+        SecurityCheckComponent,
+        LoginComponent,
+        SignupComponent,
+        DashboardComponent,
+        PatientsListComponent,
+        AddPatientComponent,
+        PatientDetailsComponent,
+        PatientProfileComponent,
+        PatientsShellComponent,
+        AppHeaderComponent,
+        MainNavComponent,
+        LoaderComponent,
+        ProgressBarComponent,
+        ChangePasswordComponent,
+        NotificationComponent,
+        AddUserComponent,
+        UpdateUserComponent,
+        UsersListComponent,
+        AddProviderComponent,
+        UpdateProviderComponent,
+        ProvidersListComponent,
+        AddMedicalFacilityComponent,
+        UpdateMedicalFacilityComponent,
+        MedicalFacilitiesListComponent,
+        SpecialityDetailsComponent,
+        UpdateSpecialityDetailComponent,
+        AddSpecialityDetailComponent,
+        AddDoctorComponent,
+        UpdateDoctorComponent,
+        DoctorsListComponent,
+        SpecialityListComponent,
+        AddSpecialityComponent,
+        UpdateSpecialityComponent,
+        UserStatisticsComponent,
+        DoctorsStatisticsComponent,
+        MedicalProviderNavComponent,
+        MedicalProviderShellComponent,
+        LocationComponent,
+        TimeAgoPipe,
+        ReversePipe,
+        LimitPipe,
+        MapToJSPipe
+    ],
+    providers: [
+        SessionStore,
+        AuthenticationService,
+        CompanyStore,
+        UsersStore,
+        UsersService,
+        ProvidersStore,
+        ProvidersService,
+        MedicalFacilityStore,
+        MedicalFacilityService,
+        DoctorsStore,
+        DoctorsService,
+        SpecialityStore,
+        SpecialityService,
+        PatientsStore,
+        PatientsService,
+        StatesStore,
+        StateService,
+        NotificationsStore,
+        ValidateActiveSession,
+        ValidateInActiveSession,
+        MedicalProviderService,
+        FormBuilder
+    ],
+    bootstrap: [
+        AppRoot
+    ]
+})
+export class BootStraper {
+}
+platformBrowserDynamic().bootstrapModule(BootStraper);
