@@ -1,4 +1,4 @@
-import { Spinner } from 'primeng';
+import { Spinner } from 'primeng/primeng';
 import { debounce } from 'rxjs/operator/debounce';
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';

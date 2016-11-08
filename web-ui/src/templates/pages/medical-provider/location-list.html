@@ -19,9 +19,4 @@
     <p-column field="name" header="Name" [sortable]="true"></p-column>
     <p-column field="address" header="Address" [sortable]="true"></p-column>
     <p-column field="phone" header="Phone" [sortable]="true"></p-column>
-    <footer>
-        <ul>
-            <li *ngFor="let location of selectedLocations" style="text-align: left">{{location.name + ' - ' + location.address + ' - ' + location.phone}}</li>
-        </ul>
-    </footer>
 </p-dataTable>

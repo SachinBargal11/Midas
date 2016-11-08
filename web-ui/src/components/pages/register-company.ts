@@ -89,8 +89,7 @@ export class RegisterCompanyComponent implements OnInit {
                 userName: registercompanyformValues.email,
                 firstName: registercompanyformValues.firstName,
                 lastName: registercompanyformValues.lastName,
-                userType: 'Owner',
-                password: '123456'
+                userType: 'Owner'
             },
             contactInfo: {
                 cellPhone: registercompanyformValues.phoneNo,
