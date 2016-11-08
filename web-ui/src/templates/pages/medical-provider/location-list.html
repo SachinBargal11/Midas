@@ -13,7 +13,7 @@
     <i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
     <input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Locations">
 </div>
-<p-dataTable [value]="locations" [(selection)]="selectedLocations" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+<p-dataTable [value]="locations" [(selection)]="selectedLocations" selectionMode="single" (onRowSelect)="onRowSelect($event)" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Locations</header>
     <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
     <p-column field="name" header="Name" [sortable]="true"></p-column>

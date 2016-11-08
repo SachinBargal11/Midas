@@ -15,6 +15,7 @@ import { ChangePasswordComponent } from '../components/pages/change-password';
 import { RegisterCompanyComponent } from '../components/pages/register-company';
 import { AccountActivationComponent } from '../components/pages/account-activation';
 import { SecurityCheckComponent } from '../components/pages/security-check';
+import { LocationManagementRoutes } from './location-management-routes';
 
 export const appRoutes: Routes = [
     {
@@ -63,6 +64,7 @@ export const appRoutes: Routes = [
     ...ProvidersRoutes,
     ...UsersRoutes,
     ...PatientsShellRoutes,
-    ...SpecialityRoutes
+    ...SpecialityRoutes,
+    ...LocationManagementRoutes
 ];
 export const APP_ROUTER_PROVIDER = RouterModule.forRoot(appRoutes);

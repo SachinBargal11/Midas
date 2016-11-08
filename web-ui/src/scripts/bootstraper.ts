@@ -91,6 +91,10 @@ import { MedicalProviderShellComponent } from '../components/pages/medical-provi
 import { LocationComponent } from '../components/pages/medical-provider/location';
 import { MedicalProviderNavComponent } from '../components/pages/medical-provider/medical-provider-nav-bar';
 
+import { LocationShellComponent } from '../components/pages/location-management/location-shell';
+import { BasicComponent } from '../components/pages/location-management/basic';
+import { ScheduleComponent } from '../components/pages/location-management/schedule';
+
 import { LimitPipe } from '../pipes/limit-array-pipe';
 import { TimeAgoPipe } from '../pipes/time-ago-pipe';
 import { ReversePipe } from '../pipes/reverse-array-pipe';
@@ -164,6 +168,9 @@ enableProdMode();
         MedicalProviderNavComponent,
         MedicalProviderShellComponent,
         LocationComponent,
+        LocationShellComponent,
+        BasicComponent,
+        ScheduleComponent,
         TimeAgoPipe,
         ReversePipe,
         LimitPipe,

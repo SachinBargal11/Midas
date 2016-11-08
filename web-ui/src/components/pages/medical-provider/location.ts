@@ -33,5 +33,8 @@ export class LocationComponent implements OnInit {
                 this.locationsLoading = false;
             });
     }
+    onRowSelect(event) {
+        this._router.navigate(['/location-shell']);
+    }
 
 }
