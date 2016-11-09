@@ -1,6 +1,18 @@
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-lg-8 col-lg-push-2 col-md-12">
+		<div class="col-lg-8 col-lg-push-2 col-md-12" *ngIf="!isTokenValidated">
+			Validating Registration...<i class="fa fa-circle-o-notch fa-spin"></i>
+		</div>
+		<div class="col-lg-8 col-lg-push-2 col-md-12" *ngIf="isTokenValidated && !isTokenValid">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="alert alert-danger">
+						Not able to verify your registration. Make sure you have opened the link you have received in your email.
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-8 col-lg-push-2 col-md-12" *ngIf="isTokenValidated && isTokenValid">
 			<form [formGroup]="changePassForm" (ngSubmit)="updatePassword()" class="">
 				<section class="box-typical">
 					<div class="card-block">
@@ -40,8 +52,8 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-lg-6">
-								<small class="text-muted">
+							<div class="col-lg-12">
+								<small class="text-muted help-block">
 										Password must be minimum 8 characters long & maximum 20 characters long. It should contain combination of uppercase (A through Z) & lowercase (a through z) letters, 0 to 10 digits, Nonalphanumeric . 
 								</small>
 							</div>

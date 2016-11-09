@@ -66,6 +66,7 @@ export class SecurityCheckComponent implements OnInit {
         let result = this._authenticationService.generateCode(user.id);
         result.subscribe(
             (response) => {
+                this.referenceNumber = window.sessionStorage.getItem('pin');
                 this._notificationsService.success('Success!', 'Please check your email for regenerated security code!');
             },
             (error) => {

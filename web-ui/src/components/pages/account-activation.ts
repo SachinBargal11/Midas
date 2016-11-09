@@ -15,6 +15,8 @@ import { UsersService } from '../../services/users-service';
 })
 
 export class AccountActivationComponent implements OnInit {
+    isTokenValidated: boolean = false;
+    isTokenValid: boolean = false;
     token: any;
     user: any;
     options = {
@@ -22,7 +24,6 @@ export class AccountActivationComponent implements OnInit {
         showProgressBar: true,
         pauseOnHover: false,
         clickToClose: false
-        // maxLength: 10
     };
     changePassForm: FormGroup;
     changePassFormControls;
@@ -42,13 +43,15 @@ export class AccountActivationComponent implements OnInit {
             result.subscribe(
                 (data: any) => {
                     // check for response
-                    this.user = data.user;
+                    this.isTokenValidated = true;
+                    this.isTokenValid = true;
                 },
                 (error) => {
-                    this._notificationsService.error('Error!', 'Activation code is invalid.');
-                    setTimeout(() => {
-                        // this._router.navigate(['/login']);
-                    }, 3000);
+                    this.isTokenValidated = true;
+                    // this._notificationsService.error('Error!', 'Activation code is invalid.');
+                    // setTimeout(() => {
+                    //     this._router.navigate(['/login']);
+                    // }, 3000);
                 },
                 () => {
                 });
