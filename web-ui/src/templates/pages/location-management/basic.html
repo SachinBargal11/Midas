@@ -5,7 +5,7 @@
                 <section class="card">
                     <div class="card-block">
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label class="form-label"> Office Name
                                             <span class="color-red">*</span>
                                         </label>
@@ -18,7 +18,7 @@
                                     </div>
                                 </div>
                             </div> 
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label class="form-label"> Address
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.address.touched && !basicformControls.address.valid">
@@ -33,7 +33,7 @@
                           </div>
 
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label class="form-label"> City
                                             <span class="color-red">*</span>
                                         </label>
@@ -46,12 +46,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label class="form-label"> State
                                             <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.state.touched && !basicformControls.state.valid">
-                                    <input formControlName="state" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.state.valid">
+                                    <input formControlName="state" list="states" name="mystate" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.state.valid">
+                                    <datalist id="states">
+                                        <option>New York</option>
+                                        <option>California</option>
+                                    </datalist> 
                                     <div class='error-list' *ngIf="basicformControls.state.touched && !basicformControls.state.valid">
                                         <ul>
                                             <li *ngIf="basicformControls.state.hasError('required')">State is required.</li>
@@ -62,7 +66,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label class="form-label"> Zip code
                                             <span class="color-red">*</span>
                                         </label>
@@ -75,12 +79,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label class="form-label"> Office phone
                                             <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.officePhone.touched && !basicformControls.officePhone.valid">
-                                    <input formControlName="officePhone" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.officePhone.valid">
+                                    <!--<input formControlName="officePhone" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.officePhone.valid">-->
+                                    <p-inputMask mask="999-999-9999" formControlName="officePhone" [class.error]="basicformControls.officePhone.touched && !basicformControls.officePhone.valid" 
+                                     placeholder="999-999-9999" styleClass="form-control" [options]="{showMaskOnHover:false}"></p-inputMask>
                                     <div class='error-list' *ngIf="basicformControls.officePhone.touched && !basicformControls.officePhone.valid">
                                         <ul>
                                             <li *ngIf="basicformControls.officePhone.hasError('required')">Office Phone is required.</li>
@@ -91,7 +97,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label class="form-label"> Fax
                                             <span class="color-red">*</span>
                                         </label>
@@ -104,12 +110,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label class="form-label"> Office type
                                             <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.officeType.touched && !basicformControls.officeType.valid">
-                                    <input formControlName="officeType" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.officeType.valid">
+                                    <!--<input formControlName="officeType" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.officeType.valid">-->
+                                    <select formControlName="officeType" type="text" class="form-control" placeholder="" [class.error]="basicformControls.officeType.touched && !basicformControls.officeType.valid">
+                                        <option>Medical Office</option>
+                                    </select>
                                     <div class='error-list' *ngIf="basicformControls.officeType.touched && !basicformControls.officeType.valid">
                                         <ul>
                                             <li *ngIf="basicformControls.officeType.hasError('required')">Office type is required.</li>

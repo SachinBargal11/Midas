@@ -30,6 +30,30 @@ export class ScheduleComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _elRef: ElementRef
     ) {
+        this.scheduleform = this.fb.group({
+                sundayFrom: [''],
+                sundayTo: [''],
+                sunday: [''],
+                mondayFrom: [''],
+                mondayTo: [''],
+                monday: [''],
+                tuesdayFrom: [''],
+                tuesdayTo: [''],
+                tuesday: [''],
+                wednesdayFrom: [''],
+                wednesdayTo: [''],
+                wednesday: [''],
+                ThursdayFrom: [''],
+                ThursdayTo: [''],
+                Thursday: [''],
+                fridayFrom: [''],
+                fridayTo: [''],
+                friday: [''],
+                saturdayFrom: [''],
+                saturdayTo: [''],
+                saturday: [''],
+            });
+        this.scheduleformControls = this.scheduleform.controls;
     }
 
     ngOnInit() {
