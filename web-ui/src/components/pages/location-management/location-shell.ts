@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {SessionStore} from '../../../stores/session-store';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { SessionStore } from '../../../stores/session-store';
 
 @Component({
     selector: 'location-shell',
@@ -11,9 +11,10 @@ export class LocationShellComponent implements OnInit {
 
     constructor(
         public router: Router,
+        public _route: ActivatedRoute,
         private _sessionStore: SessionStore
     ) {
-
+        
     }
 
     ngOnInit() {

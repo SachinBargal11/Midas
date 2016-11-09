@@ -33,8 +33,9 @@ export class LocationComponent implements OnInit {
                 this.locationsLoading = false;
             });
     }
-    onRowSelect(event) {
-        this._router.navigate(['/location-shell']);
+    onRowSelect(location) {
+        debugger;
+        this._router.navigate(['/medicalProvider/locations/' + location.name + '/basic']);
     }
 
 }

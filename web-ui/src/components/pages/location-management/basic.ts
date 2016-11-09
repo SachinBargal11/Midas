@@ -1,6 +1,6 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
 import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
 import {UsersStore} from '../../../stores/users-store';
 import {User} from '../../../models/user';
@@ -40,11 +40,15 @@ export class BasicComponent implements OnInit {
         private _statesStore: StatesStore,
         private fb: FormBuilder,
         private _router: Router,
+        public _route: ActivatedRoute,
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _usersStore: UsersStore,
         private _elRef: ElementRef
     ) {
+        this._route.params.subscribe((routeParams: any) => {
+            console.log(routeParams.locationName);
+        });
         this.basicform = this.fb.group({
                 officeName: ['', Validators.required],
                 address: [''],
