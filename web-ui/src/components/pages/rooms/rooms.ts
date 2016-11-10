@@ -34,7 +34,7 @@ export class RoomsComponent implements OnInit {
             });
     }
     onRowSelect(room) {
-        // this._router.navigate(['/medicalProvider/rooms/' + room + '/edit']);
+        this._router.navigateByUrl('rooms/' + room.id + '/edit');
     }
 
 }

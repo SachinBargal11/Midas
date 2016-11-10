@@ -104,6 +104,7 @@ import { AccessComponent } from '../components/pages/location-management/access'
 
 import { RoomsComponent } from '../components/pages/rooms/rooms';
 import { AddRoomComponent } from '../components/pages/rooms/add-room';
+import { EditRoomComponent } from '../components/pages/rooms/edit-room';
 
 import { LimitPipe } from '../pipes/limit-array-pipe';
 import { TimeAgoPipe } from '../pipes/time-ago-pipe';
@@ -185,6 +186,7 @@ enableProdMode();
         AccessComponent,
         RoomsComponent,
         AddRoomComponent,
+        EditRoomComponent,
         TimeAgoPipe,
         ReversePipe,
         LimitPipe,

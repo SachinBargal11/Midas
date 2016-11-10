@@ -20,6 +20,24 @@ export class RoomsService {
         this._headers.append('Content-Type', 'application/json');
     }
 
+    getRoom(roomId: Number): Observable<Room> {
+        let promise: Promise<Room> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '?id=' + roomId).map(res => res.json())
+                .subscribe((data: Array<any>) => {
+                    let room = null;
+                    if (data.length) {
+                        // room = roomAdapter.parseResponse(data[0]);
+                        resolve(room);
+                    } else {
+                        reject(new Error('NOT_FOUND'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<Room>>Observable.fromPromise(promise);
+    }
     getRooms(): Observable<Room[]> {
         let promise: Promise<Room[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url).map(res => res.json())
@@ -33,10 +51,8 @@ export class RoomsService {
     }
     addRoom(roomDetail: Room): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
-            let headers = new Headers();
-            headers.append('Content-Type', 'application/json');
             return this._http.post(this._url, JSON.stringify(roomDetail), {
-                headers: headers
+                headers: this._headers
             }).map(res => res.json()).subscribe((data) => {
                 resolve(data);
             }, (error) => {
@@ -44,6 +60,21 @@ export class RoomsService {
             });
         });
         return <Observable<any>>Observable.fromPromise(promise);
+    }
+    updateRoom(roomDetail: Room): Observable<Room> {
+        let promise = new Promise((resolve, reject) => {
+            return this._http.put(`${this._url}/${roomDetail.id}`, JSON.stringify(roomDetail), {
+                headers: this._headers
+            })
+            .map(res => res.json())
+            .subscribe((data) => {
+                resolve(data);
+            }, (error) => {
+                reject(error);
+            });
+        });
+        return <Observable<Room>>Observable.fromPromise(promise);
+
     }
 
 }

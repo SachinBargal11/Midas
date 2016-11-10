@@ -42,11 +42,44 @@ export class RoomsStore {
         });
         return <Observable<Room[]>>Observable.fromPromise(promise);
     }
+      findRoomById(id: number) {
+        let rooms = this._rooms.getValue();
+        let index = rooms.findIndex((currentRoom: Room) => currentRoom.id === id);
+        return rooms.get(index);
+    }
+
+    fetchRoomById(id: number): Observable<Room> {
+        let promise = new Promise((resolve, reject) => {
+            let matchedRoom: Room = this.findRoomById(id);
+            if (matchedRoom) {
+                resolve(matchedRoom);
+            } else {
+                this._roomsService.getRoom(id)
+                .subscribe((room: Room) => {
+                    resolve(room);
+                }, error => {
+                    reject(error);
+                });
+            }
+        });
+        return <Observable<Room>>Observable.fromPromise(promise);
+    }
     addRoom(roomDetail: Room): Observable<Room> {
         let promise = new Promise((resolve, reject) => {
             this._roomsService.addRoom(roomDetail).subscribe((room: Room) => {
                 this._rooms.next(this._rooms.getValue().push(room));
                 resolve(room);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Room>>Observable.from(promise);
+    }
+    updateRoom(roomDetail: Room): Observable<Room> {
+        let promise = new Promise((resolve, reject) => {
+            this._roomsService.updateRoom(roomDetail).subscribe((roomDetail: Room) => {
+                this._rooms.next(this._rooms.getValue().push(roomDetail));
+                resolve(roomDetail);
             }, error => {
                 reject(error);
             });

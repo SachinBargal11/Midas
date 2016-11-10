@@ -10,20 +10,21 @@ import {Notification} from '../../../models/notification';
 import moment from 'moment';
 
 @Component({
-    selector: 'add-room',
-    templateUrl: 'templates/pages/rooms/add-room.html',
+    selector: 'edit-room',
+    templateUrl: 'templates/pages/rooms/edit-room.html',
     providers: [FormBuilder],
 })
 
-export class AddRoomComponent implements OnInit {
+export class EditRoomComponent implements OnInit {
+    room: any;
     options = {
         timeOut: 3000,
         showProgressBar: true,
         pauseOnHover: false,
         clickToClose: false
     };
-    addroomform: FormGroup;
-    addroomformControls;
+    editroomform: FormGroup;
+    editroomformControls;
     isSaveProgress = false;
 
     constructor(
@@ -36,45 +37,56 @@ export class AddRoomComponent implements OnInit {
         private _elRef: ElementRef
     ) {
         this._route.params.subscribe((routeParams: any) => {
-            console.log(routeParams.locationName);
+            let roomId: number = parseInt(routeParams.id);
+            let result = this._roomsStore.fetchRoomById(roomId);
+            result.subscribe(
+                (room: Room) => {
+                    this.room = room;
+                },
+                (error) => {
+                    this._router.navigate(['/rooms']);
+                },
+                () => {
+                });
         });
-        this.addroomform = this.fb.group({
+        this.editroomform = this.fb.group({
                 name: ['', Validators.required],
                 phone: ['', Validators.required],
                 testsProvided: ['', Validators.required]
             });
 
-        this.addroomformControls = this.addroomform.controls;
+        this.editroomformControls = this.editroomform.controls;
     }
 
     ngOnInit() {
     }
 
 
-    save() {
-        let addroomformValues = this.addroomform.value;
+    update() {
+        let editroomformValues = this.editroomform.value;
         let roomDetail = new Room({
-                name: addroomformValues.name,
-                phone: addroomformValues.phone,
-                testsProvided: addroomformValues.testsProvided
+            id: this.room.id,
+            name: editroomformValues.name,
+            phone: editroomformValues.phone,
+            testsProvided: editroomformValues.testsProvided
         });
         this.isSaveProgress = true;
         let result;
 
-        result = this._roomsStore.addRoom(roomDetail);
+        result = this._roomsStore.updateRoom(roomDetail);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'Room added successfully!',
+                    'title': 'Room updated successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                // this._router.navigate(['/rooms']);
+                this._router.navigate(['rooms']);
             },
             (error) => {
                 let notification = new Notification({
-                    'title': 'Unable to add Room.',
+                    'title': 'Unable to update Room.',
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

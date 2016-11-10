@@ -37,11 +37,13 @@ export const LocationManagementRoutes: Routes = [
                 component: ScheduleComponent,
                 canActivate: [ValidateActiveSession]
             },
-            {
-                path: 'rooms',
-                component: RoomsComponent,
-                canActivate: [ValidateActiveSession]
-            },
+            // {
+            //     path: 'rooms',
+            //     component: RoomsComponent,
+            //     canActivate: [ValidateActiveSession],
+            //     children: RoomsRoutes
+            // },
+            ...RoomsRoutes,
             {
                 path: 'settings',
                 component: SettingsComponent,
