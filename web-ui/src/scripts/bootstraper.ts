@@ -1,4 +1,3 @@
-
 /** Angular Modules */
 
 import { enableProdMode, NgModule } from '@angular/core';
@@ -39,6 +38,9 @@ import { StatesStore } from '../stores/states-store';
 import { StateService } from '../services/state-service';
 
 import { MedicalProviderService } from '../services/medical-provider-service';
+
+import { LocationsStore } from '../stores/locations-store';
+import { LocationsService } from '../services/locations-service';
 
 import { NotificationsStore } from '../stores/notifications-store';
 import { APP_ROUTER_PROVIDER } from '../routes/app-routes';
@@ -202,6 +204,8 @@ enableProdMode();
         ValidateActiveSession,
         ValidateInActiveSession,
         MedicalProviderService,
+        LocationsService,
+        LocationsStore,
         FormBuilder
     ],
     bootstrap: [

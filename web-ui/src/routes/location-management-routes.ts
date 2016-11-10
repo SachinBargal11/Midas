@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { ValidateActiveSession } from './guards/validate-active-session';
+import { LocationComponent } from '../components/pages/medical-provider/location';
 import { LocationShellComponent } from '../components/pages/location-management/location-shell';
 import { BasicComponent } from '../components/pages/location-management/basic';
 import { ScheduleComponent } from '../components/pages/location-management/schedule';
@@ -8,16 +9,24 @@ import { AccessComponent } from '../components/pages/location-management/access'
 
 export const LocationManagementRoutes: Routes = [
     {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'locations'
+    },
+    {
         path: 'locations',
+        component: LocationComponent,
+    },
+    {
+        path: 'locations/:locationName',
         component: LocationShellComponent,
-        canActivate: [ValidateActiveSession],
         children: [
-            // {
-            //     path: 'locations/:locationName/basic',
-            //     redirectTo: 'basic'
-            // },
             {
-                path: 'locations/:locationName/basic',
+                path: '',
+                redirectTo: 'basic'
+            },
+            {
+                path: 'basic',
                 component: BasicComponent,
                 canActivate: [ValidateActiveSession]
             },

@@ -14,7 +14,7 @@ export class LocationShellComponent implements OnInit {
         public _route: ActivatedRoute,
         private _sessionStore: SessionStore
     ) {
-        
+
     }
 
     ngOnInit() {
