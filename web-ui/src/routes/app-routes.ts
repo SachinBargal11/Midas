@@ -64,7 +64,6 @@ export const appRoutes: Routes = [
     ...ProvidersRoutes,
     ...UsersRoutes,
     ...PatientsShellRoutes,
-    ...SpecialityRoutes,
-    ...LocationManagementRoutes
+    ...SpecialityRoutes
 ];
 export const APP_ROUTER_PROVIDER = RouterModule.forRoot(appRoutes);

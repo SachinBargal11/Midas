@@ -42,6 +42,9 @@ import { MedicalProviderService } from '../services/medical-provider-service';
 import { LocationsStore } from '../stores/locations-store';
 import { LocationsService } from '../services/locations-service';
 
+import { RoomsStore } from '../stores/rooms-store';
+import { RoomsService } from '../services/rooms-service';
+
 import { NotificationsStore } from '../stores/notifications-store';
 import { APP_ROUTER_PROVIDER } from '../routes/app-routes';
 import { ValidateActiveSession } from '../routes/guards/validate-active-session';
@@ -98,6 +101,9 @@ import { BasicComponent } from '../components/pages/location-management/basic';
 import { ScheduleComponent } from '../components/pages/location-management/schedule';
 import { SettingsComponent } from '../components/pages/location-management/settings';
 import { AccessComponent } from '../components/pages/location-management/access';
+
+import { RoomsComponent } from '../components/pages/rooms/rooms';
+import { AddRoomComponent } from '../components/pages/rooms/add-room';
 
 import { LimitPipe } from '../pipes/limit-array-pipe';
 import { TimeAgoPipe } from '../pipes/time-ago-pipe';
@@ -177,6 +183,8 @@ enableProdMode();
         ScheduleComponent,
         SettingsComponent,
         AccessComponent,
+        RoomsComponent,
+        AddRoomComponent,
         TimeAgoPipe,
         ReversePipe,
         LimitPipe,
@@ -206,6 +214,8 @@ enableProdMode();
         MedicalProviderService,
         LocationsService,
         LocationsStore,
+        RoomsService,
+        RoomsStore,
         FormBuilder
     ],
     bootstrap: [

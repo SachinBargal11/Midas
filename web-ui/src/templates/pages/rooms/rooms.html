@@ -1,0 +1,22 @@
+<h1>
+<a class="btn btn-primary" [routerLink]="['/add']">Add Room</a>
+<a class="btn btn-danger">Delete selected rooms</a>
+</h1>
+<progress-bar [visible]="locationsLoading" 
+              style="position:fixed;
+                     top:0;
+                     width:100%;
+                     z-index:100;">
+    <span class="sr-only">Loading Rooms...</span>
+</progress-bar>
+<!--<div class="ui-widget-header ui-helper-clearfix" style="padding:4px 10px;border-bottom: 0 none">
+    <i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
+    <input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Rooms">
+</div>-->
+<p-dataTable [value]="rooms" [(selection)]="selectedRoom" selectionMode="single" (onRowSelect)="onRowSelect(selectedRoom)" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+    <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
+    <p-column field="name" header="Name" [sortable]="true"></p-column>
+    <p-column field="phone" header="Phone" [sortable]="true"></p-column>
+    <p-column field="testsProvided" header="Tests Provided" [sortable]="true"></p-column>
+</p-dataTable>
+
