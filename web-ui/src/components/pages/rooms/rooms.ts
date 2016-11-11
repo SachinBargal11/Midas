@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {Room} from '../../../models/room';
 import {RoomsStore} from '../../../stores/rooms-store';
+import { RoomsService } from '../../../services/rooms-service';
 
 @Component({
     selector: 'rooms',
@@ -9,11 +10,13 @@ import {RoomsStore} from '../../../stores/rooms-store';
 })
 
 export class RoomsComponent implements OnInit {
+    selectedRooms: Room[];
     rooms: Room[];
     roomsLoading;
     constructor(
         private _router: Router,
-        private _roomsStore: RoomsStore
+        private _roomsStore: RoomsStore,
+        private _roomsService: RoomsService
         ) {
 
     }
@@ -33,8 +36,17 @@ export class RoomsComponent implements OnInit {
                 this.roomsLoading = false;
             });
     }
-    onRowSelect(room) {
-        this._router.navigateByUrl('rooms/' + room.id + '/edit');
+    deleteRooms() {
+        this.selectedRooms.forEach(element => {
+            this._roomsStore.deleteRoom(element)
+                .subscribe(rooms => { 
+                        this.rooms.splice(this.findSelectedRoomIndex(element), 1);
+                });
+        });
+    }
+    
+    findSelectedRoomIndex(element): number {
+        return this.rooms.indexOf(element);
     }
 
 }

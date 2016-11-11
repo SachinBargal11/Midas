@@ -1,8 +1,10 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
+import { Location } from '@angular/common';
 import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
 import {RoomsStore} from '../../../stores/rooms-store';
+import { RoomsService } from '../../../services/rooms-service';
 import {Room} from '../../../models/room';
 import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
@@ -16,7 +18,7 @@ import moment from 'moment';
 })
 
 export class EditRoomComponent implements OnInit {
-    room: any;
+    room = new Room({});
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -29,11 +31,13 @@ export class EditRoomComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
+        private location: Location,
         private _router: Router,
         public _route: ActivatedRoute,
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _roomsStore: RoomsStore,
+        private _roomsService: RoomsService,
         private _elRef: ElementRef
     ) {
         this._route.params.subscribe((routeParams: any) => {
@@ -44,7 +48,8 @@ export class EditRoomComponent implements OnInit {
                     this.room = room;
                 },
                 (error) => {
-                    this._router.navigate(['/rooms']);
+                    // this._router.navigate(['/rooms']);
+                    this.location.back();
                 },
                 () => {
                 });
@@ -61,6 +66,9 @@ export class EditRoomComponent implements OnInit {
     ngOnInit() {
     }
 
+    goBack(): void {
+        this.location.back();
+    }
 
     update() {
         let editroomformValues = this.editroomform.value;
@@ -82,7 +90,8 @@ export class EditRoomComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['rooms']);
+                // this._router.navigate(['rooms']);
+                this.location.back();
             },
             (error) => {
                 let notification = new Notification({

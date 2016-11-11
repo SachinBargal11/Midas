@@ -86,6 +86,20 @@ export class RoomsStore {
         });
         return <Observable<Room>>Observable.from(promise);
     }
+    deleteRoom(room: Room) {
+        let rooms = this._rooms.getValue();
+        let index = rooms.findIndex((currentRoom: Room) => currentRoom.id === room.id);
+        let promise = new Promise((resolve, reject) => {
+            this._roomsService.deleteRoom(room)
+            .subscribe((room: Room) => {
+                this._rooms.next(rooms.delete(index));
+                resolve(room);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Room>>Observable.from(promise);
+    }
 
     resetStore() {
         this._rooms.next(this._rooms.getValue().clear());

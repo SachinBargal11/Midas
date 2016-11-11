@@ -23,14 +23,8 @@ export class RoomsService {
     getRoom(roomId: Number): Observable<Room> {
         let promise: Promise<Room> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '?id=' + roomId).map(res => res.json())
-                .subscribe((data: Array<any>) => {
-                    let room = null;
-                    if (data.length) {
-                        // room = roomAdapter.parseResponse(data[0]);
-                        resolve(room);
-                    } else {
-                        reject(new Error('NOT_FOUND'));
-                    }
+                .subscribe((data) => {
+                        resolve(data[0]);
                 }, (error) => {
                     reject(error);
                 });
@@ -74,7 +68,18 @@ export class RoomsService {
             });
         });
         return <Observable<Room>>Observable.fromPromise(promise);
-
+    }
+    deleteRoom(room: Room): Observable<Room> {
+        let promise = new Promise((resolve, reject) => {
+            return this._http.delete(`${this._url}/${room.id}`)
+                .map(res => res.json())
+                .subscribe((room) => {
+                    resolve(room);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Room>>Observable.from(promise);
     }
 
 }

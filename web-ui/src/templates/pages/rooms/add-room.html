@@ -52,6 +52,8 @@
                 <div class="text-center">
                 <button [disabled]="!addroomform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveProgress"></loader>
+                </button>		
+                <button type="button" class="btn btn-secondary" (click)="goBack()">Cancel
                 </button>
                 <!--<a [routerLink]="['/users']" class="btn btn-secondary">Cancel</a>-->
                 </div>

@@ -10,7 +10,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="editroomformControls.name.touched && !editroomformControls.name.valid">
-                                    <input formControlName="name" type="text" class="form-control" placeholder="" [class.error]="!editroomformControls.name.valid">
+                                    <input formControlName="name" [ngModel]="room.name" type="text" class="form-control" placeholder="" [class.error]="!editroomformControls.name.valid">
                                     <div class='error-list' *ngIf="editroomformControls.name.touched && !editroomformControls.name.valid">
                                         <ul>
                                             <li *ngIf="editroomformControls.name.hasError('required')">Name is required.</li>
@@ -24,7 +24,7 @@
                                         </label>
                                 <div class="form-group" [class.error]="editroomformControls.phone.touched && !editroomformControls.phone.valid">
                                     <!--<input formControlName="phone" type="text" class="form-control" placeholder="" [class.error]="!editroomformControls.phone.valid">-->
-                                    <p-inputMask mask="999-999-9999" formControlName="phone" [class.error]="editroomformControls.phone.touched && !editroomformControls.phone.valid" 
+                                    <p-inputMask mask="999-999-9999" formControlName="phone" [ngModel]="room.phone" [class.error]="editroomformControls.phone.touched && !editroomformControls.phone.valid" 
                                      placeholder="999-999-9999" styleClass="form-control" [options]="{showMaskOnHover:false}"></p-inputMask>
                                     <div class='error-list' *ngIf="editroomformControls.phone.touched && !editroomformControls.phone.valid">
                                         <ul>
@@ -38,7 +38,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="editroomformControls.testsProvided.touched && !editroomformControls.testsProvided.valid">
-                                    <input formControlName="testsProvided" type="text" class="form-control" placeholder="" [class.error]="!editroomformControls.testsProvided.valid">
+                                    <input formControlName="testsProvided" [ngModel]="room.testsProvided" type="text" class="form-control" placeholder="" [class.error]="!editroomformControls.testsProvided.valid">
                                     <div class='error-list' *ngIf="editroomformControls.testsProvided.touched && !editroomformControls.testsProvided.valid">
                                         <ul>
                                             <li *ngIf="editroomformControls.testsProvided.hasError('required')">Tests Provided is required.</li>
@@ -52,6 +52,8 @@
                 <div class="text-center">
                 <button [disabled]="!editroomform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Update
                     <loader [visible]="isSaveProgress"></loader>
+                </button>		
+                <button type="button" class="btn btn-secondary" (click)="goBack()">Cancel
                 </button>
                 <!--<a [routerLink]="['/users']" class="btn btn-secondary">Cancel</a>-->
                 </div>

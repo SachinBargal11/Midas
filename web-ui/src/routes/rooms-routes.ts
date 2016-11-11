@@ -16,7 +16,7 @@ export const RoomsRoutes: Routes = [
         canActivate: [ValidateActiveSession]
     },
     {
-        path: 'rooms/:id/edit',
+        path: 'rooms/edit/:id',
         component: EditRoomComponent,
         canActivate: [ValidateActiveSession]
     }

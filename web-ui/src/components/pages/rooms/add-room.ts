@@ -1,4 +1,5 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
+import { Location } from '@angular/common';
 import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
@@ -28,6 +29,7 @@ export class AddRoomComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
+        private location: Location,
         private _router: Router,
         public _route: ActivatedRoute,
         private _notificationsStore: NotificationsStore,
@@ -50,6 +52,9 @@ export class AddRoomComponent implements OnInit {
     ngOnInit() {
     }
 
+    goBack(): void {
+        this.location.back();
+    }
 
     save() {
         let addroomformValues = this.addroomform.value;
@@ -71,6 +76,7 @@ export class AddRoomComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 // this._router.navigate(['/rooms']);
+                this.location.back();
             },
             (error) => {
                 let notification = new Notification({
