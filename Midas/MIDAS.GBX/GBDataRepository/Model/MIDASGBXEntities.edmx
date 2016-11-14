@@ -4,11 +4,11 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MIDASGBXModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="MIDASGBXModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="MIDASGBXModelStoreContainer">
-          <EntitySet Name="AddressInfo" EntityType="MIDASGBXModel.Store.AddressInfo" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Company" EntityType="MIDASGBXModel.Store.Company" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="CompanySpecialtyDetails" EntityType="MIDASGBXModel.Store.CompanySpecialtyDetails" store:Type="Tables" store:Schema="dbo" store:Name="CompanySpecialtyDetails">
+          <EntitySet Name="AddressInfo" EntityType="MIDASGBXModel.Store.AddressInfo" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Company" EntityType="MIDASGBXModel.Store.Company" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="CompanySpecialtyDetails" EntityType="MIDASGBXModel.Store.CompanySpecialtyDetails" store:Type="Tables" store:Schema="dbo" store:Name="CompanySpecialtyDetails" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator">
             <DefiningQuery>SELECT 
       [CompanySpecialtyDetails].[id] AS [id], 
       [CompanySpecialtyDetails].[SpecialtyId] AS [SpecialtyId], 
@@ -29,29 +29,29 @@
       [CompanySpecialtyDetails].[UpdateDate] AS [UpdateDate]
       FROM [dbo].[CompanySpecialtyDetails] AS [CompanySpecialtyDetails]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="CompanyType" EntityType="MIDASGBXModel.Store.CompanyType" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="ContactInfo" EntityType="MIDASGBXModel.Store.ContactInfo" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Doctor" EntityType="MIDASGBXModel.Store.Doctor" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="DoctorSpecialities" EntityType="MIDASGBXModel.Store.DoctorSpecialities" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="EmailFields" EntityType="MIDASGBXModel.Store.EmailFields" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="EmailProfile" EntityType="MIDASGBXModel.Store.EmailProfile" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="EmailTemplate" EntityType="MIDASGBXModel.Store.EmailTemplate" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Invitation" EntityType="MIDASGBXModel.Store.Invitation" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="InvitationType" EntityType="MIDASGBXModel.Store.InvitationType" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Location" EntityType="MIDASGBXModel.Store.Location" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Log" EntityType="MIDASGBXModel.Store.Log" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="MedicalProvider" EntityType="MIDASGBXModel.Store.MedicalProvider" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="OTP" EntityType="MIDASGBXModel.Store.OTP" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="PasswordToken" EntityType="MIDASGBXModel.Store.PasswordToken" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Role" EntityType="MIDASGBXModel.Store.Role" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Specialty" EntityType="MIDASGBXModel.Store.Specialty" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="SpecialtyDetails" EntityType="MIDASGBXModel.Store.SpecialtyDetails" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="SubscriptionPlan" EntityType="MIDASGBXModel.Store.SubscriptionPlan" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="User" EntityType="MIDASGBXModel.Store.User" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="UserCompany" EntityType="MIDASGBXModel.Store.UserCompany" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="UserCompanyRole" EntityType="MIDASGBXModel.Store.UserCompanyRole" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="UserToken" EntityType="MIDASGBXModel.Store.UserToken" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="UserType" EntityType="MIDASGBXModel.Store.UserType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CompanyType" EntityType="MIDASGBXModel.Store.CompanyType" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="ContactInfo" EntityType="MIDASGBXModel.Store.ContactInfo" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Doctor" EntityType="MIDASGBXModel.Store.Doctor" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="DoctorSpecialities" EntityType="MIDASGBXModel.Store.DoctorSpecialities" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="EmailFields" EntityType="MIDASGBXModel.Store.EmailFields" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="EmailProfile" EntityType="MIDASGBXModel.Store.EmailProfile" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="EmailTemplate" EntityType="MIDASGBXModel.Store.EmailTemplate" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Invitation" EntityType="MIDASGBXModel.Store.Invitation" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="InvitationType" EntityType="MIDASGBXModel.Store.InvitationType" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Location" EntityType="MIDASGBXModel.Store.Location" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Log" EntityType="MIDASGBXModel.Store.Log" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="MedicalProvider" EntityType="MIDASGBXModel.Store.MedicalProvider" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="OTP" EntityType="MIDASGBXModel.Store.OTP" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="PasswordToken" EntityType="MIDASGBXModel.Store.PasswordToken" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Role" EntityType="MIDASGBXModel.Store.Role" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Specialty" EntityType="MIDASGBXModel.Store.Specialty" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="SpecialtyDetails" EntityType="MIDASGBXModel.Store.SpecialtyDetails" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="SubscriptionPlan" EntityType="MIDASGBXModel.Store.SubscriptionPlan" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="User" EntityType="MIDASGBXModel.Store.User" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="UserCompany" EntityType="MIDASGBXModel.Store.UserCompany" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="UserCompanyRole" EntityType="MIDASGBXModel.Store.UserCompanyRole" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="UserToken" EntityType="MIDASGBXModel.Store.UserToken" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="UserType" EntityType="MIDASGBXModel.Store.UserType" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
           <AssociationSet Name="FK_Company_AddressInfo" Association="MIDASGBXModel.Store.FK_Company_AddressInfo">
             <End Role="AddressInfo" EntitySet="AddressInfo" />
             <End Role="Company" EntitySet="Company" />
@@ -819,7 +819,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="MIDASGBXModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="MIDASGBXModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
         <EntityContainer Name="MIDASGBXEntities" p1:LazyLoadingEnabled="true">
           <EntitySet Name="AddressInfoes" EntityType="MIDASGBXModel.AddressInfo" />
           <EntitySet Name="Companies" EntityType="MIDASGBXModel.Company" />
@@ -2109,6 +2109,6 @@
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
-    <Diagrams></Diagrams>
+    <Diagrams />
   </Designer>
 </edmx:Edmx>
