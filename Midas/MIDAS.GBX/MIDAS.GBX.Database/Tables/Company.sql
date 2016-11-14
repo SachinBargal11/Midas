@@ -1,5 +1,4 @@
-﻿
-CREATE TABLE [dbo].[Company](
+﻿CREATE TABLE [dbo].[Company](
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [nvarchar](50) NOT NULL,
 	[Status] [tinyint] NOT NULL,
@@ -48,5 +47,3 @@ GO
 
 ALTER TABLE [dbo].[Company] CHECK CONSTRAINT [FK_Company_SubscriptionPlan]
 GO
-
-

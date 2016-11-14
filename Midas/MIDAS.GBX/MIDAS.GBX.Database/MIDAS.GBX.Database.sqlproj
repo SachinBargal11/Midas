@@ -58,7 +58,6 @@
   <ItemGroup>
     <Build Include="Tables\AddressInfo.sql" />
     <Build Include="Tables\Company.sql" />
-    <Build Include="Tables\CompanyLocation.sql" />
     <Build Include="Tables\CompanyType.sql" />
     <Build Include="Tables\ContactInfo.sql" />
     <Build Include="Tables\Doctor.sql" />
@@ -71,7 +70,6 @@
     <Build Include="Tables\Location.sql" />
     <Build Include="Tables\Log.sql" />
     <Build Include="Tables\MedicalProvider.sql" />
-    <Build Include="Tables\MedicalProviderLocation.sql" />
     <Build Include="Tables\OTP.sql" />
     <Build Include="Tables\PasswordToken.sql" />
     <Build Include="Tables\Role.sql" />
@@ -83,6 +81,7 @@
     <Build Include="Tables\UserCompanyRole.sql" />
     <Build Include="Tables\UserToken.sql" />
     <Build Include="Tables\UserType.sql" />
+    <Build Include="Tables\CompanySpecialtyDetails.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />
