@@ -11,7 +11,7 @@ CREATE TABLE [dbo].[SpecialtyDetails](
 	[Include1500] [bit] NULL,
 	[AssociatedSpecialty] [int] NULL,
 	[AllowMultipleVisit] [bit] NULL,
-	[MedicalFacilitiesID] [int] NULL DEFAULT X,
+	[MedicalFacilitiesID] [int] NULL,
 	[IsDeleted] [bit] NULL,
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NULL,
