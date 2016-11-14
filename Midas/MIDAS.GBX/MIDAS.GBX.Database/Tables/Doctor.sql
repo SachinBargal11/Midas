@@ -11,7 +11,7 @@
 	[CreateDate] [datetime2](7) NOT NULL,
 	[UpdateByUserID] [int] NULL,
 	[UpdateDate] [datetime2](7) NULL,
-	[UserD] [int] NULL,
+	[UserID] [int] NULL,
  CONSTRAINT [PK__Doctor__3214EC274F0D6139] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
@@ -20,7 +20,7 @@
 
 GO
 
-ALTER TABLE [dbo].[Doctor]  WITH CHECK ADD  CONSTRAINT [FK_Doctor_User] FOREIGN KEY([UserD])
+ALTER TABLE [dbo].[Doctor]  WITH CHECK ADD  CONSTRAINT [FK_Doctor_User] FOREIGN KEY([UserID])
 REFERENCES [dbo].[User] ([id])
 GO
 
