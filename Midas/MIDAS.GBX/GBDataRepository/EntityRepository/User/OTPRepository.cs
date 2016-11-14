@@ -9,7 +9,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static MIDAS.GBX.BusinessObjects.GBEnums;
 using BO = MIDAS.GBX.BusinessObjects;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
