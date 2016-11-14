@@ -4,12 +4,6 @@ import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppValidators } from '../../utils/AppValidators';
 import { NotificationsService } from 'angular2-notifications';
-
-import { AccountDetail } from '../../models/account-details';
-import { User } from '../../models/user';
-import { ContactInfo } from '../../models/contact';
-import { Address } from '../../models/address';
-import { Account } from '../../models/account';
 import { UsersStore } from '../../stores/users-store';
 import { UsersService } from '../../services/users-service';
 import { SessionStore } from '../../stores/session-store';
@@ -101,4 +95,5 @@ export class ChangePasswordComponent implements OnInit {
         // this.location.back();
     }
 
+}
 }

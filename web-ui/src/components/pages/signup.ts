@@ -5,7 +5,7 @@ import {AppValidators} from '../../utils/AppValidators';
 import {AuthenticationService} from '../../services/authentication-service';
 import {AccountDetail} from '../../models/account-details';
 import {User} from '../../models/user';
-import {ContactInfo} from '../../models/contact';
+import {Contact} from '../../models/contact';
 import {Address} from '../../models/address';
 import {Account} from '../../models/account';
 import {StatesStore} from '../../stores/states-store';
@@ -100,7 +100,7 @@ export class SignupComponent implements OnInit {
                 userName: signupFormValues.user.email,
                 password: signupFormValues.user.password
             }),
-            contactInfo: new ContactInfo({
+            contactInfo: new Contact({
                 cellPhone: signupFormValues.contactInfo.cellPhone,
                 emailAddress: signupFormValues.user.email,
                 faxNo: signupFormValues.contactInfo.faxNo,

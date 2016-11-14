@@ -45,6 +45,7 @@ export class AccountActivationComponent implements OnInit {
                     // check for response
                     this.isTokenValidated = true;
                     this.isTokenValid = true;
+                    this.user = data.user;
                 },
                 (error) => {
                     this.isTokenValidated = true;
@@ -70,17 +71,14 @@ export class AccountActivationComponent implements OnInit {
     }
 
     updatePassword() {
-        let userDetail = ({
-            user: {
-                id: this.user.id,
-                password: this.changePassForm.value.password
-            }
-        });
-
-
+        let requestData = { user: null };
+        requestData.user = {
+            id: this.user.id,
+            password: this.changePassForm.value.password
+        };
         this.isPassChangeInProgress = true;
 
-        this._authenticationService.updatePassword(userDetail)
+        this._authenticationService.updatePassword(requestData)
             .subscribe(
             (response) => {
                 this._notificationsService.success('Success', 'Your password has been set successfully!');

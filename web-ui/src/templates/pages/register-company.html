@@ -14,13 +14,12 @@
                                             <span class="color-red">*</span>
                                         </label>
                                     <div class="form-group" [class.error]="userformControls.companyName.touched && !userformControls.companyName.valid">
-                                        <input formControlName="companyName" [(ngModel)]="companyName" name="companyName" type="text" class="form-control" [class.error]="!userformControls.companyName.valid"
+                                        <input formControlName="companyName" type="text" class="form-control" [class.error]="!userformControls.companyName.valid"
                                         />
                                         <div class='error-list' *ngIf="userformControls.companyName.touched && !userformControls.companyName.valid">
                                             <ul>
                                                 <li *ngIf="userformControls.companyName.pending">Checking...</li>
                                                 <li *ngIf="userformControls.companyName.hasError('required')">Company Name is required.</li>
-                                                <li *ngIf="userformControls.companyName.hasError('companyNameTaken')">Company Name already exists.</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -138,7 +137,6 @@
                                             <ul>
                                                 <li *ngIf="userformControls.email.hasError('required')">Email is required.</li>
                                                 <li *ngIf="userformControls.email.hasError('emailValidator')">Email is invalid.</li>
-                                                <li *ngIf="userformControls.email.hasError('emailTaken')">Email already taken.</li>
                                             </ul>
                                         </div>
                                     </div>

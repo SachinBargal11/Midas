@@ -1,10 +1,17 @@
+import { Contact } from '../../models/contact';
+import { controlPath } from '@angular/forms/src/directives/shared';
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppValidators } from '../../utils/AppValidators';
 import { AuthenticationService } from '../../services/authentication-service';
+import { RegistrationService } from '../../services/registration-service';
 import { CompanyStore } from '../../stores/company-store';
 import { Company } from '../../models/company';
+import { Account } from '../../models/account';
+import { User } from '../../models/user';
+import { UserRole } from '../../models/user-role';
+import { UserType } from '../../models/enums/user-type';
 import { SessionStore } from '../../stores/session-store';
 import { NotificationsStore } from '../../stores/notifications-store';
 import { NotificationsService } from 'angular2-notifications';
@@ -16,10 +23,6 @@ import { NotificationsService } from 'angular2-notifications';
 })
 
 export class RegisterCompanyComponent implements OnInit {
-    // company = new Company({});
-    company: any[];
-    companyName: any[];
-    email: any[];
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -37,17 +40,18 @@ export class RegisterCompanyComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _sessionStore: SessionStore,
         private _authenticationService: AuthenticationService,
+        private _registrationService: RegistrationService,
         private _companyStore: CompanyStore,
         private _elRef: ElementRef
     ) {
         this.registercompanyform = this.fb.group({
-            companyName: ['', [Validators.required, AppValidators.companyNameTaken(['John', 'sachin', 'Jill', 'Jackie', 'Jim'])]],
+            companyName: ['', [Validators.required]],
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
             taxId: ['', Validators.required],
             phoneNo: ['', Validators.required],
             companyType: ['', Validators.required],
-            email: ['', [Validators.required, AppValidators.emailValidator, AppValidators.emailTaken(['john@yahoo.com', 'sachin@gmail.com', 'jill@gmail.com', 'jackie@yahoo.com', 'jim@gmail.com'])]],
+            email: ['', [Validators.required, AppValidators.emailValidator]],
             subscriptionPlan: ['', Validators.required]
         });
 
@@ -56,52 +60,36 @@ export class RegisterCompanyComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.show();
     }
-    show() {
-        this._authenticationService.getCompanies()
-            .subscribe(
-            (company: Company[]) => {
-                this.company = company;
-                function getFields(input, field) {
-                    let output = [];
-                    for (let i = 0; i < input.length; ++i)
-                        output.push(input[i][field]);
-                    return output;
-                }
-                //  this.companyName = getFields(company, 'companyName');
-                this.email = getFields(company, 'email');
-            });
-        // alert(this._authenticationService.companies);
-    }
+
     saveUser() {
         this.isRegistrationInProgress = true;
         let result;
         let registercompanyformValues = this.registercompanyform.value;
-        let companyDetail = new Company({
-            company: {
+        let company = new Account({
+            company: new Company({
                 name: registercompanyformValues.companyName,
                 taxId: registercompanyformValues.taxId,
-                companyType: registercompanyformValues.companyType,
-                subsCriptionType: registercompanyformValues.subscriptionPlan
-            },
-            user: {
+                companyType: registercompanyformValues.companyType
+            }),
+            user: new User({
                 userName: registercompanyformValues.email,
                 firstName: registercompanyformValues.firstName,
                 lastName: registercompanyformValues.lastName,
-                userType: 'Owner'
-            },
-            contactInfo: {
-                cellPhone: registercompanyformValues.phoneNo,
-                emailAddress: registercompanyformValues.email
-            },
-            role: {
+                userType: UserType.ADMIN,
+                contact: new Contact({
+                    cellPhone: registercompanyformValues.phoneNo,
+                    emailAddress: registercompanyformValues.email
+                })
+            }),
+            role: new UserRole({
                 name: 'Doctor',
                 roleType: 'Admin',
                 status: 'active'
-            }
+            }),
+            subscriptionPlan: registercompanyformValues.subscriptionPlan
         });
-        result = this._authenticationService.registerCompany(companyDetail);
+        result = this._registrationService.registerCompany(company);
         result.subscribe(
             (response) => {
                 this._notificationsService.success('Welcome!', 'Your company has been registered successfully! Check your email for activation.');

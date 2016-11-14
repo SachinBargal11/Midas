@@ -1,36 +1,27 @@
-import {Record} from 'immutable';
-import moment from 'moment';
-import {AccountStatus} from './enums/AccountStatus';
+import { Record } from 'immutable';
+import { Company } from './company';
+import { UserRole } from './user-role';
+import { User } from './user';
+import { AccountStatus } from './enums/account-status';
+import { SubscriptionPlan } from './enums/subscription-plan';
 
 const AccountRecord = Record({
-    id: 0,
-    name: '',
-    status: AccountStatus.active,
-    isDeleted: 0,
-    createByUserId: 0,
-    updateByUserId: 0,
-    createDate: null,
-    updateDate: null
+    company: null,
+    user: null,
+    role: null,
+    accountStatus: AccountStatus.IN_ACTIVE,
+    subscriptionPlan: SubscriptionPlan.TRIAL
 });
 
 export class Account extends AccountRecord {
-
-    id: number;
-    name: string;
-    status: AccountStatus;
-    isDeleted: boolean;
-    createByUserId: number;
-    updateByUserId: number;
-    createDate: moment.MomentStatic;
-    updateDate: moment.MomentStatic;
+    company: Company;
+    user: User;
+    role: UserRole;
+    accountStatus: AccountStatus;
+    subscriptionPlan: SubscriptionPlan;
 
     constructor(props) {
         super(props);
-    }
-
-
-    public get displayName(): string {
-        return this.name;
     }
 
 }
