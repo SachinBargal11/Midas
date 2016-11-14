@@ -14,6 +14,8 @@ import { Ng2BootstrapModule } from 'ng2-bootstrap/ng2-bootstrap';
 import { SessionStore } from '../stores/session-store';
 import { AuthenticationService } from '../services/authentication-service';
 
+import { RegistrationService } from '../services/registration-service';
+
 import { CompanyStore } from '../stores/company-store';
 
 import { UsersStore } from '../stores/users-store';
@@ -197,6 +199,7 @@ enableProdMode();
         AuthenticationService,
         CompanyStore,
         UsersStore,
+        RegistrationService,
         UsersService,
         ProvidersStore,
         ProvidersService,

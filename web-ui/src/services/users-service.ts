@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
 import {AccountDetail} from '../models/account-details';
 import {UserAdapter} from './adapters/user-adapter';
-import {UserType} from '../models/enums/UserType';
+import {UserType} from '../models/enums/user-type';
 
 @Injectable()
 export class UsersService {

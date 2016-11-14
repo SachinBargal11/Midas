@@ -6,7 +6,7 @@ import {MedicalFacility} from '../../../models/medical-facility';
 import {MedicalFacilityDetail} from '../../../models/medical-facility-details';
 import {User} from '../../../models/user';
 import {Account} from '../../../models/account';
-import {ContactInfo} from '../../../models/contact';
+import {Contact} from '../../../models/contact';
 import {Address} from '../../../models/address';
 import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
@@ -26,7 +26,7 @@ import {StateService} from '../../../services/state-service';
 export class UpdateMedicalFacilityComponent implements OnInit {
     medicalFacilityDetail = new MedicalFacilityDetail({});
     medicalfacility = new MedicalFacility({});
-    contactInfo = new ContactInfo({});
+    contactInfo = new Contact({});
     address = new Address({});
     states: any[];
     options = {
@@ -110,7 +110,7 @@ export class UpdateMedicalFacilityComponent implements OnInit {
                 name: medicalFacilityFormValues.name,
                 prefix: medicalFacilityFormValues.prefix
             }),
-            contactinfo: new ContactInfo({
+            contactinfo: new Contact({
                 cellPhone: medicalFacilityFormValues.contact.cellPhone,
                 emailAddress: medicalFacilityFormValues.contact.email,
                 faxNo: medicalFacilityFormValues.contact.faxNo,

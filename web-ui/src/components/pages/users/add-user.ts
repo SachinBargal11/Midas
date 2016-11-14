@@ -7,7 +7,7 @@ import {User} from '../../../models/user';
 import {UsersService} from '../../../services/users-service';
 import {AccountDetail} from '../../../models/account-details';
 import {Account} from '../../../models/account';
-import {ContactInfo} from '../../../models/contact';
+import {Contact} from '../../../models/contact';
 import {Address} from '../../../models/address';
 import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
@@ -95,7 +95,7 @@ export class AddUserComponent implements OnInit {
                 password: userFormValues.userInfo.password,
                 userName: userFormValues.contact.email
             }),
-            contactInfo: new ContactInfo({
+            contactInfo: new Contact({
                 cellPhone: userFormValues.contact.cellPhone,
                 emailAddress: userFormValues.contact.email,
                 faxNo: userFormValues.contact.faxNo,

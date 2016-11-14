@@ -6,7 +6,7 @@ import {MedicalFacility} from '../../../models/medical-facility';
 import {MedicalFacilityDetail} from '../../../models/medical-facility-details';
 import {User} from '../../../models/user';
 import {Account} from '../../../models/account';
-import {ContactInfo} from '../../../models/contact';
+import {Contact} from '../../../models/contact';
 import {Address} from '../../../models/address';
 import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
@@ -88,7 +88,7 @@ export class AddMedicalFacilityComponent implements OnInit {
                 name: medicalFacilityFormValues.name,
                 prefix: medicalFacilityFormValues.prefix
             }),
-            contactInfo: new ContactInfo({
+            contactInfo: new Contact({
                 cellPhone: medicalFacilityFormValues.contact.cellPhone,
                 emailAddress: medicalFacilityFormValues.contact.email,
                 faxNo: medicalFacilityFormValues.contact.faxNo,

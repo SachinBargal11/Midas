@@ -9,7 +9,7 @@ import {MedicalFacilityDetail} from '../models/medical-facility-details';
 import {SpecialityDetail} from '../models/speciality-details';
 import {MedicalFacilityAdapter} from './adapters/medical-facility-adapter';
 import {SpecialityDetailAdapter} from './adapters/speciality-detail-adapter';
-import {UserType} from '../models/enums/UserType';
+import {UserType} from '../models/enums/user-type';
 
 @Injectable()
 export class MedicalFacilityService {

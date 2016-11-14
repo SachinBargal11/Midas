@@ -1,3 +1,4 @@
+import { access } from 'fs';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -8,10 +9,9 @@ import { User } from '../models/user';
 import { UserAdapter } from './adapters/user-adapter';
 import { CompanyAdapter } from './adapters/company-adapter';
 import _ from 'underscore';
-import { Company } from '../models/company';
-
-import { AccountStatus } from '../models/enums/AccountStatus';
-import { UserType } from '../models/enums/UserType';
+import { Account } from '../models/account';
+import { AccountStatus } from '../models/enums/account-status';
+import { UserType } from '../models/enums/user-type';
 
 @Injectable()
 export class AuthenticationService {
@@ -20,34 +20,39 @@ export class AuthenticationService {
     private _url1: string = 'http://localhost:3004';
 
     constructor(private _http: Http) { }
-    registerCompany(companyDetail: Company): Observable<any> {
-        let promise: Promise<any> = new Promise((resolve, reject) => {
-            let headers = new Headers();
-            headers.append('Content-Type', 'application/json');
-            return this._http.post(this._url + '/Company/Signup', JSON.stringify(companyDetail), {
-                headers: headers
-            }).map(res => res.json()).subscribe((data) => {
-                resolve(data);
-            }, (error) => {
-                reject(error);
-            });
-        });
-        return <Observable<any>>Observable.fromPromise(promise);
-    }
-    getCompanies(): Observable<Company[]> {
-        let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url1 + '/company').map(res => res.json())
-                .subscribe((data: any) => {
-                    this.companies = (<Object[]>data).map((companyData: any) => {
-                        return CompanyAdapter.parseResponse(companyData);
-                    });
-                    resolve(this.companies);
-                }, (error) => {
-                    reject(error);
-                });
-        });
-        return <Observable<Company[]>>Observable.fromPromise(promise);
-    }
+    // registerCompany(account: Account): Observable<any> {
+    //     let promise: Promise<any> = new Promise((resolve, reject) => {
+    //         let headers = new Headers();
+    //         headers.append('Content-Type', 'application/json');
+
+    //         let requestData: any = account.toJS();
+    //         requestData.contactInfo = requestData.user.contact;
+    //         requestData.user = _.omit(requestData.user, 'contact');
+
+    //         return this._http.post(this._url + '/Company/Signup', JSON.stringify(account), {
+    //             headers: headers
+    //         }).map(res => res.json()).subscribe((data) => {
+    //             resolve(data);
+    //         }, (error) => {
+    //             reject(error);
+    //         });
+    //     });
+    //     return <Observable<any>>Observable.fromPromise(promise);
+    // }
+    // getCompanies(): Observable<Company[]> {
+    //     let promise = new Promise((resolve, reject) => {
+    //         return this._http.get(this._url1 + '/company').map(res => res.json())
+    //             .subscribe((data: any) => {
+    //                 this.companies = (<Object[]>data).map((companyData: any) => {
+    //                     return CompanyAdapter.parseResponse(companyData);
+    //                 });
+    //                 resolve(this.companies);
+    //             }, (error) => {
+    //                 reject(error);
+    //             });
+    //     });
+    //     return <Observable<Company[]>>Observable.fromPromise(promise);
+    // }
     register(accountDetail: AccountDetail): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let headers = new Headers();
@@ -238,7 +243,7 @@ export class AuthenticationService {
                 }
             };
 
-            return this._http.post(this._url + '/OTP/ValidateOTP', JSON.stringify(postData),{
+            return this._http.post(this._url + '/OTP/ValidateOTP', JSON.stringify(postData), {
                 headers: headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
