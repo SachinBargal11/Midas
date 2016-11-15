@@ -6,8 +6,8 @@ import { BasicComponent } from '../components/pages/location-management/basic';
 import { ScheduleComponent } from '../components/pages/location-management/schedule';
 import { SettingsComponent } from '../components/pages/location-management/settings';
 import { AccessComponent } from '../components/pages/location-management/access';
-import { RoomsComponent } from '../components/pages/rooms/rooms';
 import { RoomsRoutes } from './rooms-routes';
+import { DoctorsRoutes } from './doctors-routes';
 
 export const LocationManagementRoutes: Routes = [
     {
@@ -37,13 +37,8 @@ export const LocationManagementRoutes: Routes = [
                 component: ScheduleComponent,
                 canActivate: [ValidateActiveSession]
             },
-            // {
-            //     path: 'rooms',
-            //     component: RoomsComponent,
-            //     canActivate: [ValidateActiveSession],
-            //     children: RoomsRoutes
-            // },
             ...RoomsRoutes,
+            ...DoctorsRoutes,
             {
                 path: 'settings',
                 component: SettingsComponent,

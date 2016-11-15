@@ -57,9 +57,6 @@ export class ChangePasswordComponent implements OnInit {
             }
         });
 
-
-
-
         this.isPassChangeInProgress = true;
         let userName = this._sessionStore.session.user.userName;
         let oldpassword = this.changePassForm.value.oldpassword;
@@ -95,5 +92,4 @@ export class ChangePasswordComponent implements OnInit {
         // this.location.back();
     }
 
-}
 }
