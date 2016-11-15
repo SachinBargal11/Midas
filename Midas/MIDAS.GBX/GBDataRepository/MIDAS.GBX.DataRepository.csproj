@@ -203,6 +203,9 @@
   <ItemGroup>
     <Folder Include="EntityRepository\AddressInfo\" />
     <Folder Include="EntityRepository\ContactInfo\" />
+    <Folder Include="EntityRepository\Doctor\" />
+    <Folder Include="EntityRepository\MedicaProvider\" />
+    <Folder Include="EntityRepository\Speciality\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

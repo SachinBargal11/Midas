@@ -4,11 +4,11 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MIDASGBXModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="MIDASGBXModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="MIDASGBXModelStoreContainer">
-          <EntitySet Name="AddressInfo" EntityType="MIDASGBXModel.Store.AddressInfo" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Company" EntityType="MIDASGBXModel.Store.Company" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="CompanySpecialtyDetails" EntityType="MIDASGBXModel.Store.CompanySpecialtyDetails" store:Type="Tables" store:Schema="dbo" store:Name="CompanySpecialtyDetails" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator">
+          <EntitySet Name="AddressInfo" EntityType="MIDASGBXModel.Store.AddressInfo" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Company" EntityType="MIDASGBXModel.Store.Company" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CompanySpecialtyDetails" EntityType="MIDASGBXModel.Store.CompanySpecialtyDetails" store:Type="Tables" store:Schema="dbo" store:Name="CompanySpecialtyDetails">
             <DefiningQuery>SELECT 
       [CompanySpecialtyDetails].[id] AS [id], 
       [CompanySpecialtyDetails].[SpecialtyId] AS [SpecialtyId], 
@@ -29,29 +29,29 @@
       [CompanySpecialtyDetails].[UpdateDate] AS [UpdateDate]
       FROM [dbo].[CompanySpecialtyDetails] AS [CompanySpecialtyDetails]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="CompanyType" EntityType="MIDASGBXModel.Store.CompanyType" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="ContactInfo" EntityType="MIDASGBXModel.Store.ContactInfo" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Doctor" EntityType="MIDASGBXModel.Store.Doctor" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="DoctorSpecialities" EntityType="MIDASGBXModel.Store.DoctorSpecialities" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="EmailFields" EntityType="MIDASGBXModel.Store.EmailFields" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="EmailProfile" EntityType="MIDASGBXModel.Store.EmailProfile" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="EmailTemplate" EntityType="MIDASGBXModel.Store.EmailTemplate" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Invitation" EntityType="MIDASGBXModel.Store.Invitation" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="InvitationType" EntityType="MIDASGBXModel.Store.InvitationType" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Location" EntityType="MIDASGBXModel.Store.Location" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Log" EntityType="MIDASGBXModel.Store.Log" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="MedicalProvider" EntityType="MIDASGBXModel.Store.MedicalProvider" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="OTP" EntityType="MIDASGBXModel.Store.OTP" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="PasswordToken" EntityType="MIDASGBXModel.Store.PasswordToken" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Role" EntityType="MIDASGBXModel.Store.Role" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="Specialty" EntityType="MIDASGBXModel.Store.Specialty" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="SpecialtyDetails" EntityType="MIDASGBXModel.Store.SpecialtyDetails" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="SubscriptionPlan" EntityType="MIDASGBXModel.Store.SubscriptionPlan" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="User" EntityType="MIDASGBXModel.Store.User" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="UserCompany" EntityType="MIDASGBXModel.Store.UserCompany" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="UserCompanyRole" EntityType="MIDASGBXModel.Store.UserCompanyRole" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="UserToken" EntityType="MIDASGBXModel.Store.UserToken" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
-          <EntitySet Name="UserType" EntityType="MIDASGBXModel.Store.UserType" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="CompanyType" EntityType="MIDASGBXModel.Store.CompanyType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ContactInfo" EntityType="MIDASGBXModel.Store.ContactInfo" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Doctor" EntityType="MIDASGBXModel.Store.Doctor" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="DoctorSpecialities" EntityType="MIDASGBXModel.Store.DoctorSpecialities" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="EmailFields" EntityType="MIDASGBXModel.Store.EmailFields" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="EmailProfile" EntityType="MIDASGBXModel.Store.EmailProfile" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="EmailTemplate" EntityType="MIDASGBXModel.Store.EmailTemplate" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Invitation" EntityType="MIDASGBXModel.Store.Invitation" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="InvitationType" EntityType="MIDASGBXModel.Store.InvitationType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Location" EntityType="MIDASGBXModel.Store.Location" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Log" EntityType="MIDASGBXModel.Store.Log" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="MedicalProvider" EntityType="MIDASGBXModel.Store.MedicalProvider" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="OTP" EntityType="MIDASGBXModel.Store.OTP" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PasswordToken" EntityType="MIDASGBXModel.Store.PasswordToken" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Role" EntityType="MIDASGBXModel.Store.Role" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Specialty" EntityType="MIDASGBXModel.Store.Specialty" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SpecialtyDetails" EntityType="MIDASGBXModel.Store.SpecialtyDetails" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SubscriptionPlan" EntityType="MIDASGBXModel.Store.SubscriptionPlan" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="User" EntityType="MIDASGBXModel.Store.User" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserCompany" EntityType="MIDASGBXModel.Store.UserCompany" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserCompanyRole" EntityType="MIDASGBXModel.Store.UserCompanyRole" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserToken" EntityType="MIDASGBXModel.Store.UserToken" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserType" EntityType="MIDASGBXModel.Store.UserType" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK_Company_AddressInfo" Association="MIDASGBXModel.Store.FK_Company_AddressInfo">
             <End Role="AddressInfo" EntitySet="AddressInfo" />
             <End Role="Company" EntitySet="Company" />
@@ -80,6 +80,14 @@
             <End Role="User" EntitySet="User" />
             <End Role="Doctor" EntitySet="Doctor" />
           </AssociationSet>
+          <AssociationSet Name="FK_DoctorSpecialities_Doctor" Association="MIDASGBXModel.Store.FK_DoctorSpecialities_Doctor">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DoctorSpecialities_Specialty" Association="MIDASGBXModel.Store.FK_DoctorSpecialities_Specialty">
+            <End Role="Specialty" EntitySet="Specialty" />
+            <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
+          </AssociationSet>
           <AssociationSet Name="FK_Invitation_Company" Association="MIDASGBXModel.Store.FK_Invitation_Company">
             <End Role="Company" EntitySet="Company" />
             <End Role="Invitation" EntitySet="Invitation" />
@@ -99,10 +107,6 @@
           <AssociationSet Name="FK_Location_ContactInfo" Association="MIDASGBXModel.Store.FK_Location_ContactInfo">
             <End Role="ContactInfo" EntitySet="ContactInfo" />
             <End Role="Location" EntitySet="Location" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Location_Location" Association="MIDASGBXModel.Store.FK_Location_Location">
-            <End Role="Location" EntitySet="Location" />
-            <End Role="Location1" EntitySet="Location" />
           </AssociationSet>
           <AssociationSet Name="FK_MedicalProvider_Company" Association="MIDASGBXModel.Store.FK_MedicalProvider_Company">
             <End Role="Company" EntitySet="Company" />
@@ -635,6 +639,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DoctorSpecialities_Doctor">
+          <End Role="Doctor" Type="MIDASGBXModel.Store.Doctor" Multiplicity="1" />
+          <End Role="DoctorSpecialities" Type="MIDASGBXModel.Store.DoctorSpecialities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DoctorSpecialities">
+              <PropertyRef Name="DoctorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DoctorSpecialities_Specialty">
+          <End Role="Specialty" Type="MIDASGBXModel.Store.Specialty" Multiplicity="1" />
+          <End Role="DoctorSpecialities" Type="MIDASGBXModel.Store.DoctorSpecialities" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Specialty">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DoctorSpecialities">
+              <PropertyRef Name="SpecialityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Invitation_Company">
           <End Role="Company" Type="MIDASGBXModel.Store.Company" Multiplicity="1" />
           <End Role="Invitation" Type="MIDASGBXModel.Store.Invitation" Multiplicity="*" />
@@ -692,18 +720,6 @@
             </Principal>
             <Dependent Role="Location">
               <PropertyRef Name="ContactInfoID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Location_Location">
-          <End Role="Location" Type="MIDASGBXModel.Store.Location" Multiplicity="1" />
-          <End Role="Location1" Type="MIDASGBXModel.Store.Location" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Location">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Location1">
-              <PropertyRef Name="id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -819,7 +835,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="MIDASGBXModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+      <Schema Namespace="MIDASGBXModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="MIDASGBXEntities" p1:LazyLoadingEnabled="true">
           <EntitySet Name="AddressInfoes" EntityType="MIDASGBXModel.AddressInfo" />
           <EntitySet Name="Companies" EntityType="MIDASGBXModel.Company" />
@@ -907,13 +923,17 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Doctor" EntitySet="Doctors" />
           </AssociationSet>
+          <AssociationSet Name="FK_DoctorSpecialities_Doctor" Association="MIDASGBXModel.FK_DoctorSpecialities_Doctor">
+            <End Role="Doctor" EntitySet="Doctors" />
+            <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DoctorSpecialities_Specialty" Association="MIDASGBXModel.FK_DoctorSpecialities_Specialty">
+            <End Role="Specialty" EntitySet="Specialties" />
+            <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
+          </AssociationSet>
           <AssociationSet Name="FK_Invitation_User_Invitation" Association="MIDASGBXModel.FK_Invitation_User_Invitation">
             <End Role="User" EntitySet="Users" />
             <End Role="Invitation" EntitySet="Invitations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Location_Location" Association="MIDASGBXModel.FK_Location_Location">
-            <End Role="Location" EntitySet="Locations" />
-            <End Role="Location1" EntitySet="Locations" />
           </AssociationSet>
           <AssociationSet Name="FK_UserCompanyRole_Role" Association="MIDASGBXModel.FK_UserCompanyRole_Role">
             <End Role="Role" EntitySet="Roles" />
@@ -1060,6 +1080,7 @@
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="UserID" Type="Int32" />
           <NavigationProperty Name="User" Relationship="MIDASGBXModel.FK_Doctor_User" FromRole="Doctor" ToRole="User" />
+          <NavigationProperty Name="DoctorSpecialities" Relationship="MIDASGBXModel.FK_DoctorSpecialities_Doctor" FromRole="Doctor" ToRole="DoctorSpecialities" />
         </EntityType>
         <EntityType Name="DoctorSpeciality">
           <Key>
@@ -1073,6 +1094,8 @@
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Doctor" Relationship="MIDASGBXModel.FK_DoctorSpecialities_Doctor" FromRole="DoctorSpecialities" ToRole="Doctor" />
+          <NavigationProperty Name="Specialty" Relationship="MIDASGBXModel.FK_DoctorSpecialities_Specialty" FromRole="DoctorSpecialities" ToRole="Specialty" />
         </EntityType>
         <EntityType Name="EmailField">
           <Key>
@@ -1168,8 +1191,6 @@
           <NavigationProperty Name="AddressInfo" Relationship="MIDASGBXModel.FK_Location_AddressInfo" FromRole="Location" ToRole="AddressInfo" />
           <NavigationProperty Name="Company" Relationship="MIDASGBXModel.FK_Location_Company" FromRole="Location" ToRole="Company" />
           <NavigationProperty Name="ContactInfo" Relationship="MIDASGBXModel.FK_Location_ContactInfo" FromRole="Location" ToRole="ContactInfo" />
-          <NavigationProperty Name="Location1" Relationship="MIDASGBXModel.FK_Location_Location" FromRole="Location" ToRole="Location1" />
-          <NavigationProperty Name="Location2" Relationship="MIDASGBXModel.FK_Location_Location" FromRole="Location1" ToRole="Location" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -1261,6 +1282,7 @@
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="CompanySpecialtyDetails" Relationship="MIDASGBXModel.FK_CompanySpecialtyDetails_Specialty" FromRole="Specialty" ToRole="CompanySpecialtyDetails" />
+          <NavigationProperty Name="DoctorSpecialities" Relationship="MIDASGBXModel.FK_DoctorSpecialities_Specialty" FromRole="Specialty" ToRole="DoctorSpecialities" />
           <NavigationProperty Name="SpecialtyDetails" Relationship="MIDASGBXModel.FK_SpecialtyDetails_Specialty" FromRole="Specialty" ToRole="SpecialtyDetails" />
         </EntityType>
         <EntityType Name="SpecialtyDetail">
@@ -1567,6 +1589,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DoctorSpecialities_Doctor">
+          <End Role="Doctor" Type="MIDASGBXModel.Doctor" Multiplicity="1" />
+          <End Role="DoctorSpecialities" Type="MIDASGBXModel.DoctorSpeciality" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DoctorSpecialities">
+              <PropertyRef Name="DoctorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DoctorSpecialities_Specialty">
+          <End Role="Specialty" Type="MIDASGBXModel.Specialty" Multiplicity="1" />
+          <End Role="DoctorSpecialities" Type="MIDASGBXModel.DoctorSpeciality" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Specialty">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DoctorSpecialities">
+              <PropertyRef Name="SpecialityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Invitation_User_Invitation">
           <End Role="User" Type="MIDASGBXModel.User" Multiplicity="1" />
           <End Role="Invitation" Type="MIDASGBXModel.Invitation" Multiplicity="*" />
@@ -1576,18 +1622,6 @@
             </Principal>
             <Dependent Role="Invitation">
               <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Location_Location">
-          <End Role="Location" Type="MIDASGBXModel.Location" Multiplicity="1" />
-          <End Role="Location1" Type="MIDASGBXModel.Location" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Location">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Location1">
-              <PropertyRef Name="id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2109,6 +2143,6 @@
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
-    <Diagrams />
+    <Diagrams></Diagrams>
   </Designer>
 </edmx:Edmx>

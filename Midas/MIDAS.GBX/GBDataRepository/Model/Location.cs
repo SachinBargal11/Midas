@@ -30,7 +30,5 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual AddressInfo AddressInfo { get; set; }
         public virtual Company Company { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
-        public virtual Location Location1 { get; set; }
-        public virtual Location Location2 { get; set; }
     }
 }

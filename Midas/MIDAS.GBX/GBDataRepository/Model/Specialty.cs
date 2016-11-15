@@ -17,6 +17,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public Specialty()
         {
             this.CompanySpecialtyDetails = new HashSet<CompanySpecialtyDetail>();
+            this.DoctorSpecialities = new HashSet<DoctorSpeciality>();
             this.SpecialtyDetails = new HashSet<SpecialtyDetail>();
         }
     
@@ -31,6 +32,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
         public virtual ICollection<CompanySpecialtyDetail> CompanySpecialtyDetails { get; set; }
+        public virtual ICollection<DoctorSpeciality> DoctorSpecialities { get; set; }
         public virtual ICollection<SpecialtyDetail> SpecialtyDetails { get; set; }
     }
 }

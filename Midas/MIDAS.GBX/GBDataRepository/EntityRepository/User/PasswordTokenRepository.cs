@@ -69,6 +69,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             BO.PasswordToken passwordBO = entity["user"].ToObject<BO.PasswordToken>();
 
+            dynamic data_ = _context.Users.Where(x => x.UserName == passwordBO.UserName).FirstOrDefault();
+            if (data_ == null)
+            {
+                return new BO.User { ErrorMessage = "No record found for this username.", StatusCode = System.Net.HttpStatusCode.NoContent };
+            }
+
             PasswordToken passwordDB = new PasswordToken();
             passwordDB.TokenHash = Guid.NewGuid();
             passwordDB.UserName = passwordBO.UserName;
