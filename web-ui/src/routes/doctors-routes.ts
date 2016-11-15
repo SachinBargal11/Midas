@@ -16,7 +16,7 @@ export const DoctorsRoutes: Routes = [
         canActivate: [ValidateActiveSession]
     },
     {
-        path: 'doctors/update/:id',
+        path: 'doctors/edit/:id',
         component: UpdateDoctorComponent,
         canActivate: [ValidateActiveSession]
     }

@@ -37,16 +37,21 @@ export class RoomsComponent implements OnInit {
             });
     }
     deleteRooms() {
-        this.selectedRooms.forEach(element => {
-            this._roomsStore.deleteRoom(element)
-                .subscribe(rooms => { 
-                        this.rooms.splice(this.findSelectedRoomIndex(element), 1);
-                });
-        });
+        if(this.selectedRooms !== undefined) {
+            this.selectedRooms.forEach(room => {
+                this._roomsStore.deleteRoom(room)
+                    .subscribe(rooms => { 
+                            this.rooms.splice(this.rooms.indexOf(room), 1);
+                    });
+            });
+        }
+        else {
+            console.log('select rooms first to delete');
+        }
     }
     
-    findSelectedRoomIndex(element): number {
-        return this.rooms.indexOf(element);
+    findSelectedRoomIndex(room): number {
+        return this.rooms.indexOf(room);
     }
 
 }

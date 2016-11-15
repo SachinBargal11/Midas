@@ -308,7 +308,8 @@
                 <button [disabled]="!userform.valid || isSaveUserProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveUserProgress"></loader>
                 </button>
-                <a [routerLink]="['/users']" class="btn btn-secondary">Cancel</a>
+                <!--<a [routerLink]="['/users']" class="btn btn-secondary">Cancel</a>-->
+                <a [routerLink]="['/medicalProvider/users']" class="btn btn-secondary">Cancel</a>
             </form>
         </div>
     </div>
