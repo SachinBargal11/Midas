@@ -1,0 +1,35 @@
+<!--<main-nav></main-nav>-->
+<medical-provider-nav></medical-provider-nav>
+<section class="tabs-section">
+	<div class="tabs-section-nav tabs-section-nav-inline">
+		<ul class="nav" role="tablist">
+			<li class="nav-item">
+				<a class="nav-link" routerLink="basic" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+					Basic
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" routerLink="access" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+					Access
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" role="tab" data-toggle="tab">
+					Locations
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" role="tab" data-toggle="tab">
+					Billing
+				</a>
+			</li>
+		</ul>
+	</div>
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane fade in active">
+
+            <router-outlet></router-outlet>
+
+        </div>
+	</div><!--.tab-content-->
+</section><!--.tabs-section-->

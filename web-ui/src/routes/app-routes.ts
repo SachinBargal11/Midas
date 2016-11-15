@@ -6,7 +6,7 @@ import { PatientsShellRoutes } from './patient-routes';
 import { UsersRoutes } from './user-routes';
 import { ProvidersRoutes } from './provider-routes';
 import { MedicalFacilitiesRoutes } from './medical-facility-routes';
-import { DoctorsRoutes } from './doctor-routes';
+import { DoctorsRoutes } from './doctors-routes';
 import { SpecialityRoutes } from './speciality-routes';
 import { MedicalProviderRoutes } from './medical-provider';
 import { ValidateActiveSession } from './guards/validate-active-session';

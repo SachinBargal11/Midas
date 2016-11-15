@@ -72,6 +72,9 @@ import { ProgressBarComponent } from '../components/elements/progress-bar';
 
 import { NotificationComponent } from '../components/elements/notification';
 import { ChangePasswordComponent } from '../components/pages/change-password';
+import { UserShellComponent } from '../components/pages/users/users-shell';
+import { UserBasicComponent } from '../components/pages/users/user-basic';
+import { UserAccessComponent } from '../components/pages/users/user-access';
 import { AddUserComponent } from '../components/pages/users/add-user';
 import { UsersListComponent } from '../components/pages/users/users-list';
 import { UpdateUserComponent } from '../components/pages/users/update-user';
@@ -158,6 +161,9 @@ enableProdMode();
         ProgressBarComponent,
         ChangePasswordComponent,
         NotificationComponent,
+        UserShellComponent,
+        UserBasicComponent,
+        UserAccessComponent,
         AddUserComponent,
         UpdateUserComponent,
         UsersListComponent,
