@@ -78,6 +78,8 @@ import { UserAccessComponent } from '../components/pages/users/user-access';
 import { AddUserComponent } from '../components/pages/users/add-user';
 import { UsersListComponent } from '../components/pages/users/users-list';
 import { UpdateUserComponent } from '../components/pages/users/update-user';
+import { LocationsComponent } from '../components/pages/users/locations';
+import { BillingComponent } from '../components/pages/users/Billing';
 import { AddProviderComponent } from '../components/pages/providers/add-provider';
 import { ProvidersListComponent } from '../components/pages/providers/providers-list';
 import { UpdateProviderComponent } from '../components/pages/providers/update-provider';
@@ -167,6 +169,8 @@ enableProdMode();
         AddUserComponent,
         UpdateUserComponent,
         UsersListComponent,
+        LocationsComponent,
+        BillingComponent,
         AddProviderComponent,
         UpdateProviderComponent,
         ProvidersListComponent,

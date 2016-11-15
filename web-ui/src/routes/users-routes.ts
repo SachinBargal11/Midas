@@ -8,6 +8,9 @@ import { SettingsComponent } from '../components/pages/location-management/setti
 import { UserAccessComponent } from '../components/pages/users/user-access';
 import { RoomsComponent } from '../components/pages/rooms/rooms';
 import { RoomsRoutes } from './rooms-routes';
+import { AddUserComponent } from '../components/pages/users/add-user';
+import { LocationsComponent } from '../components/pages/users/locations';
+import { BillingComponent } from '../components/pages/users/Billing';
 
 export const UsersRoutes: Routes = [
     {
@@ -18,6 +21,11 @@ export const UsersRoutes: Routes = [
     {
         path: 'users',
         component: UsersListComponent
+    },
+    {
+        path: 'users/add',
+        component: AddUserComponent,
+        canActivate: [ValidateActiveSession]
     },
     {
         path: 'users/:userName',
@@ -35,6 +43,16 @@ export const UsersRoutes: Routes = [
             {
                 path: 'access',
                 component: UserAccessComponent,
+                canActivate: [ValidateActiveSession]
+            },
+            {
+                path: 'locations',
+                component: LocationsComponent,
+                canActivate: [ValidateActiveSession]
+            },
+            {
+                path: 'billing',
+                component: BillingComponent,
                 canActivate: [ValidateActiveSession]
             }
         ]
