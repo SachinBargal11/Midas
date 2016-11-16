@@ -31,6 +31,30 @@ namespace MIDAS.GBX
             {
                 repo = new PasswordTokenRepository(context);
             }
+            if (typeof(T) == typeof(BO.Location))
+            {
+                repo = new PasswordTokenRepository(context);
+            }
+            if (typeof(T) == typeof(BO.MedicalProvider))
+            {
+                repo = new PasswordTokenRepository(context);
+            }
+            if (typeof(T) == typeof(BO.Specialty))
+            {
+                repo = new PasswordTokenRepository(context);
+            }
+            if (typeof(T) == typeof(BO.SpecialtyDetails))
+            {
+                repo = new PasswordTokenRepository(context);
+            }
+            if (typeof(T) == typeof(BO.Doctor))
+            {
+                repo = new PasswordTokenRepository(context);
+            }
+            if (typeof(T) == typeof(BO.DoctorSpeciality))
+            {
+                repo = new PasswordTokenRepository(context);
+            }
             return repo;
         }
     }
