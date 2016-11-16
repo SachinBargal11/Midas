@@ -13,10 +13,11 @@ import { MedicalProviderRoutes } from './medical-provider';
 import { ValidateActiveSession } from './guards/validate-active-session';
 import { ValidateInActiveSession } from './guards/validate-inactive-session';
 import { ChangePasswordComponent } from '../components/pages/change-password';
+import { ForgotPasswordComponent } from '../components/pages/forgot-password';
+import { ResetPasswordComponent } from '../components/pages/reset-password';
 import { RegisterCompanyComponent } from '../components/pages/register-company';
 import { AccountActivationComponent } from '../components/pages/account-activation';
 import { SecurityCheckComponent } from '../components/pages/security-check';
-import { LocationManagementRoutes } from './location-management-routes';
 
 export const appRoutes: Routes = [
     {
@@ -47,6 +48,16 @@ export const appRoutes: Routes = [
     {
         path: 'register-company',
         component: RegisterCompanyComponent,
+        canActivate: [ValidateInActiveSession]
+    },
+    {
+        path: 'forgot-password',
+        component: ForgotPasswordComponent,
+        canActivate: [ValidateInActiveSession]
+    },
+    {
+        path: 'reset-password/:token',
+        component: ResetPasswordComponent,
         canActivate: [ValidateInActiveSession]
     },
     {

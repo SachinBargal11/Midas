@@ -79,6 +79,8 @@ import { LoaderComponent } from '../components/elements/loader';
 import { ProgressBarComponent } from '../components/elements/progress-bar';
 
 import { NotificationComponent } from '../components/elements/notification';
+import { ForgotPasswordComponent } from '../components/pages/forgot-password';
+import { ResetPasswordComponent } from '../components/pages/reset-password';
 import { ChangePasswordComponent } from '../components/pages/change-password';
 import { UserShellComponent } from '../components/pages/users/users-shell';
 import { UserBasicComponent } from '../components/pages/users/user-basic';
@@ -177,6 +179,8 @@ enableProdMode();
         MainNavComponent,
         LoaderComponent,
         ProgressBarComponent,
+        ForgotPasswordComponent,
+        ResetPasswordComponent,
         ChangePasswordComponent,
         NotificationComponent,
         UserShellComponent,
