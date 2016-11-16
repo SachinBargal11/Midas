@@ -4,11 +4,11 @@ import {PatientsStore} from '../../../stores/patients-store';
 import {Patient} from '../../../models/patient';
 
 @Component({
-    selector: 'patients-shell',
-    templateUrl: 'templates/pages/patients/patients-shell.html'
+    selector: 'patients-manager-shell',
+    templateUrl: 'templates/pages/patients/patients-manager-shell.html'
 })
 
-export class PatientsShellComponent implements OnInit {
+export class PatientsManagerShellComponent implements OnInit {
 
     constructor(
         public router: Router,

@@ -60,6 +60,14 @@ import { LoginComponent } from '../components/pages/login';
 import { SecurityCheckComponent  } from '../components/pages/security-check';
 import { SignupComponent } from '../components/pages/signup';
 import { DashboardComponent } from '../components/pages/dashboard';
+import { PatientNavComponent } from '../components/pages/patients/patient-nav-bar';
+import { PatientsManagerShellComponent } from '../components/pages/patients/patients-manager-shell';
+import { PatientBasicComponent } from '../components/pages/patients/patient-basic';
+import { DemographicsComponent } from '../components/pages/patients/demographics';
+import { InsurancesComponent } from '../components/pages/patients/insurances';
+import { BalancesComponent } from '../components/pages/patients/balances';
+import { DocumentsComponent } from '../components/pages/patients/documents';
+import { AppointmentsComponent } from '../components/pages/patients/appointments';
 import { PatientsShellComponent } from '../components/pages/patients/patients-shell';
 import { PatientsListComponent } from '../components/pages/patients/patients-list';
 import { AddPatientComponent } from '../components/pages/patients/add-patient';
@@ -152,6 +160,14 @@ enableProdMode();
         LoginComponent,
         SignupComponent,
         DashboardComponent,
+        PatientNavComponent,
+        PatientsManagerShellComponent,
+        PatientBasicComponent,
+        DemographicsComponent,
+        InsurancesComponent,
+        BalancesComponent,
+        DocumentsComponent,
+        AppointmentsComponent,
         PatientsListComponent,
         AddPatientComponent,
         PatientDetailsComponent,

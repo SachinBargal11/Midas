@@ -2,6 +2,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from '../components/pages/login';
 // import {SignupComponent} from '../components/pages/signup';
 import { DashboardComponent } from '../components/pages/dashboard';
+import { PatientManagerRoutes } from './patient-manager-routes';
 import { PatientsShellRoutes } from './patient-routes';
 import { UsersRoutes } from './user-routes';
 import { ProvidersRoutes } from './provider-routes';
@@ -58,6 +59,7 @@ export const appRoutes: Routes = [
         component: DashboardComponent,
         canActivate: [ValidateActiveSession]
     },
+    ...PatientManagerRoutes,
     ...DoctorsRoutes,
     ...MedicalProviderRoutes,
     ...MedicalFacilitiesRoutes,
