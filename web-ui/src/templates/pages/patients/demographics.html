@@ -5,7 +5,7 @@
                 <section class="col-md-12">
                     <div class="card-block">
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label class="form-label"> Patient SSN
                                         </label>
                                 <div class="form-group" [class.error]="demographicsformControls.ssn.touched && !demographicsformControls.ssn.valid">
@@ -17,7 +17,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label class="form-label"> Date Of Birth
                                         </label>
                                 <div class="form-group" [class.error]="demographicsformControls.dob.touched && !demographicsformControls.dob.valid">
@@ -31,7 +31,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label class="form-label"> Sex
                                         </label>
                                 <div class="form-group" [class.error]="demographicsformControls.sex.touched && !demographicsformControls.sex.valid">
@@ -45,8 +45,25 @@
                                         </ul>
                                     </div>
                                 </div>
+                            </div>                                  
+                            <div class="col-lg-6">
+                                <label class="form-label"> Marital Status
+                                        </label>
+                                <div class="form-group" [class.error]="demographicsformControls.maritalStatus.touched && !demographicsformControls.maritalStatus.valid">
+                                    <select formControlName="maritalStatus" class="select2-arrow form-control" [class.error]="demographicsformControls.maritalStatus.touched && !demographicsformControls.maritalStatus.valid">
+                                             <option >Married</option>
+                                             <option >Un-Married</option>
+                                         </select>
+                                    <div class='error-list' *ngIf="demographicsformControls.maritalStatus.touched && !demographicsformControls.maritalStatus.valid">
+                                        <ul>
+                                            <li *ngIf="demographicsformControls.maritalStatus.hasError('required')">Marital status is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-lg-4">
+                        </div>                      
+                        <div class="row">
+                            <div class="col-lg-6">
                                 <label class="form-label"> Race
                                         </label>
                                 <div class="form-group" [class.error]="demographicsformControls.race.touched && !demographicsformControls.race.valid">
@@ -61,7 +78,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label class="form-label"> Ethinicity
                                         </label>
                                 <div class="form-group" [class.error]="demographicsformControls.ethinicity.touched && !demographicsformControls.ethinicity.valid">
@@ -78,7 +95,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label class="form-label"> Street Address
                                         </label>
                                 <div class="form-group" [class.error]="demographicsformControls.streetAddress.touched && !demographicsformControls.streetAddress.valid">
@@ -90,7 +107,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label class="form-label"> City
                                         </label>
                                 <div class="form-group" [class.error]="demographicsformControls.city.touched && !demographicsformControls.city.valid">
@@ -105,7 +122,7 @@
                         </div>
 
                         <div class="row">                            
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label class="form-label"> Zip Code
                                         </label>
                                 <div class="form-group" [class.error]="demographicsformControls.zipcode.touched && !demographicsformControls.zipcode.valid">
@@ -117,7 +134,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label class="form-label"> State
                                         </label>
                                 <div class="form-group" [class.error]="demographicsformControls.state.touched && !demographicsformControls.state.valid">
@@ -137,26 +154,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">                            
-                            <div class="col-lg-4">
-                                <label class="form-label"> Marital Status
-                                        </label>
-                                <div class="form-group" [class.error]="demographicsformControls.maritalStatus.touched && !demographicsformControls.maritalStatus.valid">
-                                    <select formControlName="maritalStatus" class="select2-arrow form-control" [class.error]="demographicsformControls.maritalStatus.touched && !demographicsformControls.maritalStatus.valid">
-                                             <option >Married</option>
-                                             <option >Un-Married</option>
-                                         </select>
-                                    <div class='error-list' *ngIf="demographicsformControls.maritalStatus.touched && !demographicsformControls.maritalStatus.valid">
-                                        <ul>
-                                            <li *ngIf="demographicsformControls.maritalStatus.hasError('required')">Marital status is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label class="form-label"> Emergency Contact
                                         </label>
                                 <div class="form-group" [class.error]="demographicsformControls.emergencyContact.touched && !demographicsformControls.emergencyContact.valid">
@@ -168,7 +168,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label class="form-label"> Emergency Contact Phone
                                         </label>
                                 <div class="form-group" [class.error]="demographicsformControls.emergencyContactPhone.touched && !demographicsformControls.emergencyContactPhone.valid">

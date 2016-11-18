@@ -100,11 +100,11 @@
                                 <label class="form-label"> Email
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.email.touched && !basicformControls.email.valid">
-                                    <input formControlName="email" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.email.valid">
+                                    <input formControlName="email" type="text" class="form-control" placeholder="" [class.error]="basicformControls.email.touched && !basicformControls.email.valid">
                                     <div class='error-list' *ngIf="basicformControls.email.touched && !basicformControls.email.valid">
                                         <ul>
                                             <li *ngIf="basicformControls.email.hasError('required')">Email is required.</li>
-                                            <li *ngIf="userformControls.contact.controls.email.hasError('emailValidator')">Email is invalid.</li>
+                                            <li *ngIf="basicformControls.email.hasError('emailValidator')">Email is invalid.</li>
                                         </ul>
                                     </div>
                                 </div>

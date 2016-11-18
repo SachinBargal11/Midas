@@ -64,11 +64,18 @@
                     'jquery-ui': 'external/jquery-ui/jquery-ui.min.js',         
                     'jquery-ui-timepicker-addon': '<%= externalComponentsDirectory %>/node_modules/jquery-ui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.js',
                     'datatables': '<%= externalComponentsDirectory %>/node_modules/datatables/media/js/jquery.dataTables.min.js',
-                    'chart.js': '<%= externalComponentsDirectory %>/node_modules/chart.js/dist/Chart.js'
+                    'chart.js': '<%= externalComponentsDirectory %>/node_modules/chart.js/dist/Chart.js',
+                    'eonasdan-bootstrap-datetimepicker': '<%= externalComponentsDirectory %>/node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js'
 
                 },
                 meta: 
                 {
+                      'daterangepicker': {
+                          deps: [
+                              'jquery', 
+                              'moment'
+                          ]
+                      },
                     'primeng' : {
                         deps: [
                             'jquery-ui',

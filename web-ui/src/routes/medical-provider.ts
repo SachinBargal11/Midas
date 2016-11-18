@@ -3,6 +3,9 @@ import { ValidateActiveSession } from './guards/validate-active-session';
 import { MedicalProviderShellComponent } from '../components/pages/medical-provider/medical-provider-shell';
 import { LocationManagementRoutes } from './location-management-routes';
 import { UsersRoutes } from './users-routes';
+import { CalendarShellRoutes } from './calendar-routes';
+import { ReportsShellRoutes } from './reports-routes';
+import { DoctorsRoutes } from './doctors-routes';
 
 export const MedicalProviderRoutes: Routes = [
     {
@@ -10,7 +13,10 @@ export const MedicalProviderRoutes: Routes = [
         component: MedicalProviderShellComponent,
         canActivate: [ValidateActiveSession],
         children: [...LocationManagementRoutes,
-                   ...UsersRoutes
+                   ...UsersRoutes,
+                   ...CalendarShellRoutes,
+                   ...ReportsShellRoutes,
+                   ...DoctorsRoutes
         ]
     },
 ];

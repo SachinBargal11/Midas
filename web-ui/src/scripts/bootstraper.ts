@@ -60,6 +60,9 @@ import { LoginComponent } from '../components/pages/login';
 import { SecurityCheckComponent  } from '../components/pages/security-check';
 import { SignupComponent } from '../components/pages/signup';
 import { DashboardComponent } from '../components/pages/dashboard';
+import { CasesComponent } from '../components/pages/patient-manager/cases';
+import { ReferalsComponent } from '../components/pages/patient-manager/referals';
+import { ConsentFormsComponent } from '../components/pages/patient-manager/consent-forms';
 import { PatientNavComponent } from '../components/pages/patients/patient-nav-bar';
 import { PatientsManagerShellComponent } from '../components/pages/patients/patients-manager-shell';
 import { PatientBasicComponent } from '../components/pages/patients/patient-basic';
@@ -90,6 +93,8 @@ import { UsersListComponent } from '../components/pages/users/users-list';
 import { UpdateUserComponent } from '../components/pages/users/update-user';
 import { LocationsComponent } from '../components/pages/users/locations';
 import { BillingComponent } from '../components/pages/users/Billing';
+import { CalendarComponent } from '../components/pages/users/calendar';
+import { ReportsComponent } from '../components/pages/users/reports';
 import { AddProviderComponent } from '../components/pages/providers/add-provider';
 import { ProvidersListComponent } from '../components/pages/providers/providers-list';
 import { UpdateProviderComponent } from '../components/pages/providers/update-provider';
@@ -162,6 +167,9 @@ enableProdMode();
         LoginComponent,
         SignupComponent,
         DashboardComponent,
+        CasesComponent,
+        ReferalsComponent,
+        ConsentFormsComponent,
         PatientNavComponent,
         PatientsManagerShellComponent,
         PatientBasicComponent,
@@ -191,6 +199,8 @@ enableProdMode();
         UsersListComponent,
         LocationsComponent,
         BillingComponent,
+        CalendarComponent,
+        ReportsComponent,
         AddProviderComponent,
         UpdateProviderComponent,
         ProvidersListComponent,
