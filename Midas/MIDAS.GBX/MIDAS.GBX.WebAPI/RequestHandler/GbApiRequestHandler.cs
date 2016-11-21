@@ -119,9 +119,9 @@ namespace MIDAS.GBX.WebAPI
                     return request.CreateResponse(HttpStatusCode.Conflict, objResult);
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, new GbObject { ErrorMessage="Invalid parameters."});
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
 
@@ -217,7 +217,7 @@ namespace MIDAS.GBX.WebAPI
             try
             {
                 var res = (GbObject)(object)objResult;
-                return request.CreateResponse(res.StatusCode, objResult);
+                return request.CreateResponse(res.StatusCode, res);
             }
             catch (Exception ex)
             {

@@ -12,8 +12,6 @@ using System.Configuration;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Net;
-using MIDAS.GBX.WebAPI.ActionFilters;
-
 namespace MIDAS.GBX.WebAPI
 {
     public static class WebApiConfig
@@ -52,7 +50,6 @@ namespace MIDAS.GBX.WebAPI
             //GlobalConfiguration.Configuration.Filters.Add(new LoggingFilterAttribute());
             //GlobalConfiguration.Configuration.Filters.Add(new GlobalExceptionAttribute());
             //config.Filters.Add(new Elmah.Contrib.WebApi.ElmahHandleErrorApiAttribute());
-            config.Filters.Add(new LoggingFilterAttribute());
         }
     }
 }

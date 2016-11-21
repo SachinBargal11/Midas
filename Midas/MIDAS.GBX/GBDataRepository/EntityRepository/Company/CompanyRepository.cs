@@ -88,6 +88,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Validate Entities
+        public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate(JObject data)
+        {
+            BO.Company companyBO = data["company"].ToObject<BO.Company>();
+            BO.User userBO = data["user"].ToObject<BO.User>();
+            var result=companyBO.Validate();
+            return result;
+        }
+        #endregion
+
         #region Save Data
         public override object Save(JObject data)
         {
@@ -98,6 +108,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Signup
         public override Object Signup(JObject data)
         {
+            bool flagUser = false;
             BO.Role roleBO;
             BO.AddressInfo addressBO;
             BO.ContactInfo contactinfoBO;
@@ -124,7 +135,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else if (_context.Users.Any(o => o.UserName == userBO.UserName))
             {
-                return new BO.GbObject { Message = Constants.UserAlreadyExists };
+                flagUser = true;
             }
 
             #region Company
@@ -162,25 +173,38 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             #endregion
 
             #region User
-            userDB.UserName = userBO.UserName;
-            userDB.MiddleName = userBO.MiddleName;
-            userDB.FirstName = userBO.FirstName;
-            userDB.LastName = userBO.LastName;
-            userDB.Gender = System.Convert.ToByte(userBO.Gender);
-            userDB.UserType = System.Convert.ToByte(userBO.UserType);
-            userDB.C2FactAuthEmailEnabled =System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactEmail"));
-            userDB.C2FactAuthSMSEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactSMS"));
-            userDB.ImageLink = userBO.ImageLink;
-            if (userBO.DateOfBirth.HasValue)
-                userDB.DateOfBirth = userBO.DateOfBirth.Value;
-            //userDB.Password = PasswordHash.HashPassword(userBO.Password);
+            if (!flagUser)
+            {
+                userDB.UserName = userBO.UserName;
+                userDB.MiddleName = userBO.MiddleName;
+                userDB.FirstName = userBO.FirstName;
+                userDB.LastName = userBO.LastName;
+                userDB.Gender = System.Convert.ToByte(userBO.Gender);
+                userDB.UserType = System.Convert.ToByte(userBO.UserType);
+                userDB.C2FactAuthEmailEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactEmail"));
+                userDB.C2FactAuthSMSEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactSMS"));
+                userDB.ImageLink = userBO.ImageLink;
+                if (userBO.DateOfBirth.HasValue)
+                    userDB.DateOfBirth = userBO.DateOfBirth.Value;
+                //userDB.Password = PasswordHash.HashPassword(userBO.Password);
 
-            if (userBO.IsDeleted.HasValue)
-                userDB.IsDeleted = userBO.IsDeleted.Value;
+                if (userBO.IsDeleted.HasValue)
+                    userDB.IsDeleted = userBO.IsDeleted.Value;
 
-            userDB.AddressInfo = addressDB;
-            userDB.ContactInfo = contactinfoDB;
+                userDB.AddressInfo = addressDB;
+                userDB.ContactInfo = contactinfoDB;
+                userCompanyDB.User = userDB;
+            }
+            else
+            {
+                ////Find Record By Name
+                User user_ = _context.Users.Where(p => p.UserName == userBO.UserName).FirstOrDefault<User>();
+                userCompanyDB.User = user_;
+                _context.Entry(user_).State = System.Data.Entity.EntityState.Modified;
+            }
+
             #endregion
+
 
             #region Role
             roleDB.Name = roleBO.Name;
@@ -192,7 +216,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             UserCompany cmp = new UserCompany();
             cmp.Company = companyDB;
 
-            userCompanyDB.User = userDB;
+
 
             companyDB.AddressInfo = addressDB;
             companyDB.ContactInfo = contactinfoDB;
@@ -275,7 +299,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.Company acc_ = Convert<BO.Company, Company>(_context.Companies.Where(p => p.id == id).FirstOrDefault<Company>());
             if (acc_ == null)
             {
-                acc_.StatusCode = System.Net.HttpStatusCode.NotFound;
+                acc_.StatusCode = System.Net.HttpStatusCode.NoContent;
                 return acc_;
             }
             else

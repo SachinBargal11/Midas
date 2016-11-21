@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -57,12 +58,14 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("statusCode")]
         public HttpStatusCode StatusCode { get; set; }
 
-        public virtual List<BusinessValidation> Validate()
+        public virtual List<BusinessValidation> Validate(object Entity)
         {
             List<BusinessValidation> validations = new List<BusinessValidation>();
-            
+
+            //Implement login for validation
             return validations;
-        }   
+        }
+
         public string Message { get; set; }
         public string ErrorMessage { get; set; }
         //var json = new JavaScriptSerializer().Serialize(obj);

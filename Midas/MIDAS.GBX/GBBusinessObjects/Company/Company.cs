@@ -34,5 +34,24 @@ namespace MIDAS.GBX.BusinessObjects
         public string TaxID { get; set; }
         public AddressInfo AddressInfo { get; set; }
         public ContactInfo ContactInfo { get; set; }
+
+        public virtual List<BusinessValidation> Validate()
+        {
+            List<BusinessValidation> validations = new List<BusinessValidation>();
+            BusinessValidation validation = new BusinessValidation();
+            //Implement logic for validation
+
+            if (string.IsNullOrEmpty(Name))
+            {
+                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Name is required" });
+            }
+
+            if (string.IsNullOrEmpty(TaxID))
+            {
+                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "TaxID is required" });
+            }
+
+            return validations;
+        }
     }
 }

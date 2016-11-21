@@ -30,6 +30,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate(JObject data)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object Delete<T>(T entity) where T : BO.GbObject
         {
 

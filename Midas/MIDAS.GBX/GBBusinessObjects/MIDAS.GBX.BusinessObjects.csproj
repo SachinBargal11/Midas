@@ -57,6 +57,7 @@
     <Compile Include="ContactInfo\ContactInfo.cs" />
     <Compile Include="Doctor\Doctor.cs" />
     <Compile Include="Doctor\DoctorSpeciality.cs" />
+    <Compile Include="ErrorObject.cs" />
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="GBEnums.cs" />
     <Compile Include="GbObject.cs" />

@@ -84,10 +84,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NLog.4.3.10\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -216,9 +212,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionFilters\AuthorizationRequiredAttribute.cs" />
-    <Compile Include="ActionFilters\GlobalExceptionAttribute.cs" />
-    <Compile Include="ActionFilters\LoggingFilterAttribute.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -278,7 +271,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\JSONHelper.cs" />
-    <Compile Include="Helper\NLogger.cs" />
     <Compile Include="Helper\ServiceStatus.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -361,7 +353,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="APILog\" />
     <Folder Include="App_Data\" />
     <Folder Include="Views\OTP\" />
     <Folder Include="Views\PasswordToken\" />

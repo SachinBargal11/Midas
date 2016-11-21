@@ -89,5 +89,14 @@ namespace MIDAS.GBX.BusinessObjects
             Testing = 2
         }
         #endregion
+
+        #region Error Type
+        public enum ErrorType
+        {
+            Validation = 1,
+            InvalidParameters = 1,
+            Unknown = 2
+        }
+        #endregion
     }
 }
