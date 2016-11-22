@@ -58,16 +58,15 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("statusCode")]
         public HttpStatusCode StatusCode { get; set; }
 
-        public virtual List<BusinessValidation> Validate(object Entity)
-        {
-            List<BusinessValidation> validations = new List<BusinessValidation>();
-
-            //Implement login for validation
-            return validations;
-        }
-
         public string Message { get; set; }
         public string ErrorMessage { get; set; }
         //var json = new JavaScriptSerializer().Serialize(obj);
+
+        public virtual List<BusinessValidation> Validate<T>(T entity)
+        {
+            List<BusinessValidation> validations = new List<BusinessValidation>();
+
+            return validations;
+        }
     }
 }

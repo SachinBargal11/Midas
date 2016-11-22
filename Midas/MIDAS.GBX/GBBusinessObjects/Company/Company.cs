@@ -11,21 +11,17 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class Company:GbObject
     {
-        [Required]
         [JsonProperty("status")]
         [JsonConverter(typeof(StringEnumConverter))]
         public GBEnums.AccountStatus Status { get; set; }
 
-        [Required]
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        [Required]
         [JsonProperty("companyType")]
         [JsonConverter(typeof(StringEnumConverter))]
         public GBEnums.CompanyType CompanyType { get; set; }
 
-        [Required]
         [JsonProperty("subscriptionType")]
         [JsonConverter(typeof(StringEnumConverter))]
         public GBEnums.SubsCriptionType SubsCriptionType { get; set; }
@@ -35,8 +31,9 @@ namespace MIDAS.GBX.BusinessObjects
         public AddressInfo AddressInfo { get; set; }
         public ContactInfo ContactInfo { get; set; }
 
-        public virtual List<BusinessValidation> Validate()
+        public override List<BusinessValidation> Validate<T>(T entity)
         {
+
             List<BusinessValidation> validations = new List<BusinessValidation>();
             BusinessValidation validation = new BusinessValidation();
             //Implement logic for validation
@@ -49,6 +46,11 @@ namespace MIDAS.GBX.BusinessObjects
             if (string.IsNullOrEmpty(TaxID))
             {
                 validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "TaxID is required" });
+            }
+
+            if (TaxID.Length!=10)
+            {
+                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Please input valid 10 digit TaxID" });
             }
 
             return validations;

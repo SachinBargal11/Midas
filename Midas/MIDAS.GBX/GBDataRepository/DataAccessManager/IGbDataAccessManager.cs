@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MIDAS.GBX.DataAccessManager
 {
@@ -15,9 +14,9 @@ namespace MIDAS.GBX.DataAccessManager
         Object Get(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
 
         Object Get(JObject data, int? nestingLevels = null);
-        Object Signup(JObject data, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object Signup(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object Login(JObject data, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
-        Object ValidateInvitation(JObject data, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object ValidateInvitation(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
 
         Object GenerateToken(int userId);
         Object ValidateToken(string tokenId);

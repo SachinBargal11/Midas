@@ -30,14 +30,13 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate(JObject data)
+        public virtual List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
             throw new NotImplementedException();
         }
 
         public virtual Object Delete<T>(T entity) where T : BO.GbObject
         {
-
             throw new NotImplementedException();
         }
 
@@ -60,7 +59,7 @@ namespace MIDAS.GBX.EntityRepository
         {
             //override and do the necessary operations needed after saving an object
         }
-        public virtual  Object Signup(JObject data)
+        public virtual  Object Signup<T>(T data)
         {
             throw new NotImplementedException();
         }
@@ -75,7 +74,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object ValidateInvitation(JObject entity)
+        public virtual Object ValidateInvitation<T>(T entity)
         {
             throw new NotImplementedException();
         }

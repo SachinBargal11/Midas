@@ -197,15 +197,10 @@ namespace MIDAS.GBX.DataAccessManager
 
         }
         #endregion
-        public Object Signup(JObject data, int? nestingLevels = default(int?), bool includeAllVersions = false, bool applySecurity = false)
+        public Object Signup(T data, int? nestingLevels = default(int?), bool includeAllVersions = false, bool applySecurity = false)
         {
             try
             {
-
-                //List<BusinessValidation> validations = gbObject.Validate();
-
-                //var failedValidations = validations.Where(v => v.ValidationResult == BusinessValidationResult.Failure);
-                //var gbObject = (GbObject)(object)data;
                 if (data == null)
                     throw new GbException(string.Format("Null Object cannot be saved. ObjectType : {0}", typeof(T).Name));
 
@@ -216,7 +211,7 @@ namespace MIDAS.GBX.DataAccessManager
                 List<MIDAS.GBX.BusinessObjects.BusinessValidation> validationResults = baseRepo.Validate(data);
                 if (validationResults.Count > 0)
                 {
-                    return new ErrorObject { ErrorMessage = "Please check error object for more details", errorObject = validationResults };
+                    return new ErrorObject { ErrorMessage = "Please check error object for more details", errorObject = validationResults,ErrorLevel=ErrorLevel.Validation };
                 }
                 else
                 {
@@ -226,42 +221,26 @@ namespace MIDAS.GBX.DataAccessManager
             }
             catch (DbEntityValidationException ex)
             {
-                // Retrieve the error messages as a list of strings.
-                var errorMessages = ex.EntityValidationErrors
-                        .SelectMany(x => x.ValidationErrors)
-                        .Select(x => x.ErrorMessage);
-
-                // Join the list to a single string.
-                var fullErrorMessage = string.Join("; ", errorMessages);
-
-                // Combine the original exception message with the new one.
-                var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
-
-                // Throw a new DbEntityValidationException with the improved exception message.
-                //throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
                 return ex;
             }
             catch (DbUpdateException ex)
             {
                 var sqlex = ex.InnerException.InnerException as SqlException;
 
-                return new ErrorObject { ErrorMessage = "Unique key exception.Please refer error object for more details.", errorObject = sqlex };
+                return new ErrorObject { ErrorMessage = "Unique key exception.Please refer error object for more details.", errorObject = sqlex,ErrorLevel=ErrorLevel.Exception };
             }
             catch (GbException gbe)
             {
-                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
                 return gbe;
             }
             catch (Exception ex)
             {
-                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
-                //throw new GbException(string.Format("An unknown Error occurred while saving  [{0}]",ex.InnerException.Message));
                 return ex;
             }
 
         }
 
-        public Object ValidateInvitation(JObject data, int? nestingLevels = default(int?), bool includeAllVersions = false, bool applySecurity = false)
+        public Object ValidateInvitation(T data, int? nestingLevels = default(int?), bool includeAllVersions = false, bool applySecurity = false)
         {
             try
             {
@@ -272,20 +251,36 @@ namespace MIDAS.GBX.DataAccessManager
 
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
 
+                List<MIDAS.GBX.BusinessObjects.BusinessValidation> validationResults = baseRepo.Validate(data);
+                if (validationResults.Count > 0)
+                {
+                    return new ErrorObject { ErrorMessage = "Please check error object for more details", errorObject = validationResults, ErrorLevel = ErrorLevel.Validation };
+                }
+                else
+                {
+                    var gbSavedObject = baseRepo.ValidateInvitation(data);
 
-                var gbSavedObject = baseRepo.ValidateInvitation(data);
+                    return gbSavedObject;
+                }
 
-                return gbSavedObject;
+
             }
+            catch (DbEntityValidationException ex)
+            {
+                return ex;
+            }
+            catch (DbUpdateException ex)
+            {
+                var sqlex = ex.InnerException.InnerException as SqlException;
 
+                return new ErrorObject { ErrorMessage = "Unique key exception.Please refer error object for more details.", errorObject = sqlex, ErrorLevel = ErrorLevel.Exception };
+            }
             catch (GbException gbe)
             {
-                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
                 return gbe;
             }
             catch (Exception ex)
             {
-                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
                 return ex;
             }
         }

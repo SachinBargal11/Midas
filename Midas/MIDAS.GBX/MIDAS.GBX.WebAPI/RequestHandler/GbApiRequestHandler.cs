@@ -33,7 +33,7 @@ namespace MIDAS.GBX.WebAPI
             }
             catch (Exception ex)
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, new GbObject { ErrorMessage = "Invalid parameters." });
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
             }
         }
         
@@ -57,7 +57,7 @@ namespace MIDAS.GBX.WebAPI
             }
             catch (Exception ex)
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, new GbObject { ErrorMessage = "Invalid parameters." });
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
             }
         }
 
@@ -101,13 +101,28 @@ namespace MIDAS.GBX.WebAPI
             }
             catch (Exception ex)
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, new GbObject { ErrorMessage = "Invalid parameters." });
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
             }
         }
 
-        public HttpResponseMessage SignUp(HttpRequestMessage request, JObject data)
+        public HttpResponseMessage SignUp(HttpRequestMessage request, T gbObject)
         {
-            Object objResult = dataAccessManager.Signup(data);
+            Signup signUPBO = (Signup)(object)gbObject;
+
+            if (signUPBO.company == null)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Company object can't be null", errorObject = "",ErrorLevel=ErrorLevel.Error });
+            }
+            else if (signUPBO.user == null)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "User object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+            else if (signUPBO.role == null)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Role object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+
+            var objResult = dataAccessManager.Signup(gbObject);
             try
             {
                 if (((GbObject)objResult).ID > 0)
@@ -119,9 +134,9 @@ namespace MIDAS.GBX.WebAPI
                     return request.CreateResponse(HttpStatusCode.Conflict, objResult);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
             }
         }
 
@@ -137,13 +152,18 @@ namespace MIDAS.GBX.WebAPI
             }
             catch (Exception ex)
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, new GbObject { ErrorMessage = "Invalid parameters." });
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
             }
         }
 
-        public HttpResponseMessage ValidateInvitation(HttpRequestMessage request, JObject data)
+        public HttpResponseMessage ValidateInvitation(HttpRequestMessage request, T gbObject)
         {
-            Object objResult = dataAccessManager.ValidateInvitation(data);
+            Invitation invitationBO = (Invitation)(object)gbObject;
+            if (invitationBO == null)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Invitation object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+            var objResult = dataAccessManager.ValidateInvitation(gbObject);
 
             try
             {
@@ -155,7 +175,7 @@ namespace MIDAS.GBX.WebAPI
             }
             catch (Exception ex)
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, new GbObject { ErrorMessage = "Invalid parameters." });
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
             }
         }
 
@@ -191,7 +211,7 @@ namespace MIDAS.GBX.WebAPI
             }
             catch (Exception ex)
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, new GbObject { ErrorMessage = "Invalid parameters." });
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
             }
         }
 
@@ -206,7 +226,7 @@ namespace MIDAS.GBX.WebAPI
             }
             catch (Exception ex)
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, new GbObject { ErrorMessage = "Invalid parameters." });
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
             }
         }
 
@@ -221,7 +241,7 @@ namespace MIDAS.GBX.WebAPI
             }
             catch (Exception ex)
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, new GbObject { ErrorMessage = "Invalid parameters." });
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
             }
         }
 
@@ -236,7 +256,7 @@ namespace MIDAS.GBX.WebAPI
             }
             catch (Exception ex)
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, new GbObject { ErrorMessage = "Invalid parameters." });
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
             }
         }
         #endregion

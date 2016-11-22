@@ -54,6 +54,7 @@
     <Compile Include="BusinessValidationResult.cs" />
     <Compile Include="Company\Company.cs" />
     <Compile Include="Company\Location.cs" />
+    <Compile Include="Company\Signup.cs" />
     <Compile Include="ContactInfo\ContactInfo.cs" />
     <Compile Include="Doctor\Doctor.cs" />
     <Compile Include="Doctor\DoctorSpeciality.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="User\UserCompany.cs" />
     <Compile Include="User\UserCompanyRole.cs" />
     <Compile Include="User\UserToken.cs" />
+    <Compile Include="Validation\IValidation.cs" />
     <Compile Include="Validation\Validations.cs" />
   </ItemGroup>
   <ItemGroup />
