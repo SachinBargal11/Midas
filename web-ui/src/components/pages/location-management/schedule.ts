@@ -5,8 +5,6 @@ import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
 import {Notification} from '../../../models/notification';
 import moment from 'moment';
-import $ from 'jquery';
-import 'eonasdan-bootstrap-datetimepicker';
 
 @Component({
     selector: 'schedule',
@@ -59,9 +57,6 @@ export class ScheduleComponent implements OnInit {
     }
 
     ngOnInit() {
-        $(this._elRef.nativeElement).find('.datepickerElem').datetimepicker({
-            format: 'LT'
-        });
     }
 
 
