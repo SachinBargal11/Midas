@@ -7,7 +7,6 @@ import { ScheduleComponent } from '../components/pages/location-management/sched
 import { SettingsComponent } from '../components/pages/location-management/settings';
 import { AccessComponent } from '../components/pages/location-management/access';
 import { RoomsRoutes } from './rooms-routes';
-import { DoctorsRoutes } from './doctors-routes';
 
 export const LocationManagementRoutes: Routes = [
     {
@@ -38,7 +37,7 @@ export const LocationManagementRoutes: Routes = [
                 canActivate: [ValidateActiveSession]
             },
             ...RoomsRoutes,
-            ...DoctorsRoutes,
+            // ...DoctorsRoutes,
             {
                 path: 'settings',
                 component: SettingsComponent,
