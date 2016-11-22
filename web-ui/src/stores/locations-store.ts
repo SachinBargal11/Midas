@@ -47,6 +47,18 @@ export class LocationsStore {
         this._locations.next(this._locations.getValue().clear());
         this._selectedLocation.next(null);
     }
+    
+    addLocation(basicInfo: Location): Observable<Location> {
+        let promise = new Promise((resolve, reject) => {
+            this._locationsService.addLocation(basicInfo).subscribe((location: Location) => {
+                this._locations.next(this._locations.getValue().push(location));
+                resolve(location);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Location>>Observable.from(promise);
+    }
 
     selectLocation(location: Location) {
         this._selectedLocation.next(location);

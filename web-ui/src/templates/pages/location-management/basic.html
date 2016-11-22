@@ -117,7 +117,9 @@
                                 <div class="form-group" [class.error]="basicformControls.officeType.touched && !basicformControls.officeType.valid">
                                     <!--<input formControlName="officeType" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.officeType.valid">-->
                                     <select formControlName="officeType" type="text" class="form-control" placeholder="" [class.error]="basicformControls.officeType.touched && !basicformControls.officeType.valid">
-                                        <option>Medical Office</option>
+                                        <option value="0">None</option>
+                                        <option value="1">Medical Office</option>
+                                        <option value="2">Medical Testing Facility</option>
                                     </select>
                                     <div class='error-list' *ngIf="basicformControls.officeType.touched && !basicformControls.officeType.valid">
                                         <ul>
