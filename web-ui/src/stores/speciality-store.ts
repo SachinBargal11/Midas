@@ -52,7 +52,7 @@ export class SpecialityStore {
 
     findSpecialityById(id: number): Speciality {
         let specialities = this._specialities.getValue();
-        let index = specialities.findIndex((currentSpeciality: Speciality) => currentSpeciality.speciality.id === id);
+        let index = specialities.findIndex((currentSpeciality: Speciality) => currentSpeciality.id === id);
         return specialities.get(index);
     }
 
@@ -99,7 +99,7 @@ export class SpecialityStore {
 
     selectSpecialities(speciality: Speciality) {
         let selectedSpecialities = this._selectedSpecialities.getValue();
-        let index = selectedSpecialities.findIndex((currentSpeciality: Speciality) => currentSpeciality.speciality.id === speciality.speciality.id);
+        let index = selectedSpecialities.findIndex((currentSpeciality: Speciality) => currentSpeciality.id === speciality.id);
         if (index < 0) {
             this._selectedSpecialities.next(this._selectedSpecialities.getValue().push(speciality));
         }

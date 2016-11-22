@@ -59,7 +59,7 @@ export class UpdateDoctorComponent implements OnInit {
             result.subscribe(
                 (doctorDetail: DoctorDetail) => {
                     this.doctor = doctorDetail.doctor;
-                    this.doctorUser = doctorDetail.doctor.doctorUser;
+                    // this.doctorUser = doctorDetail.doctor.userId;
                     this.address = doctorDetail.address;
                     this.contactInfo = doctorDetail.contactInfo;
                 },

@@ -46,7 +46,7 @@ export class ProvidersStore {
 
     findProviderById(id: number) {
         let providers = this._providers.getValue();
-        let index = providers.findIndex((currentProvider: Provider) => currentProvider.provider.id === id);
+        let index = providers.findIndex((currentProvider: Provider) => currentProvider.id === id);
         return providers.get(index);
     }
 
