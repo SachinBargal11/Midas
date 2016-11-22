@@ -66,14 +66,14 @@
 
                         <div class="row">
                             <div class="col-lg-12">
-                                <label class="form-label"> Home cellPhone
+                                <label class="form-label"> Home Phone
                                         </label>
-                                <div class="form-group" [class.error]="basicformControls.homecellPhone.touched && !basicformControls.homecellPhone.valid">
-                                    <p-inputMask mask="999-999-9999" formControlName="homecellPhone" [class.error]="basicformControls.homecellPhone.touched && !basicformControls.homecellPhone.valid" 
+                                <div class="form-group" [class.error]="basicformControls.homePhone.touched && !basicformControls.homePhone.valid">
+                                    <p-inputMask mask="999-999-9999" formControlName="homePhone" [class.error]="basicformControls.homePhone.touched && !basicformControls.homePhone.valid" 
                                      placeholder="999-999-9999" styleClass="form-control" [options]="{showMaskOnHover:false}"></p-inputMask>
-                                    <div class='error-list' *ngIf="basicformControls.homecellPhone.touched && !basicformControls.homecellPhone.valid">
+                                    <div class='error-list' *ngIf="basicformControls.homePhone.touched && !basicformControls.homePhone.valid">
                                         <ul>
-                                            <li *ngIf="basicformControls.homecellPhone.hasError('required')">Home cellPhone is required.</li>
+                                            <li *ngIf="basicformControls.homePhone.hasError('required')">Home Phone is required.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -82,7 +82,7 @@
 
                         <div class="row">
                             <div class="col-lg-12">
-                                <label class="form-label">Cell cellPhone
+                                <label class="form-label">Cell Phone
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.cellphone.touched && !basicformControls.cellphone.valid">
                                     <p-inputMask mask="999-999-9999" formControlName="cellphone" [class.error]="basicformControls.cellphone.touched && !basicformControls.cellphone.valid" 

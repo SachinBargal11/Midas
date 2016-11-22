@@ -38,13 +38,13 @@ export class PatientBasicComponent implements OnInit {
             console.log(routeParams.locationName);
         });
         this.basicform = this.fb.group({
-                primaryProvider: ['', Validators.required],
-                firstName: ['', Validators.required],
-                lastName: ['', Validators.required],
-                title: ['', Validators.required],
-                homecellPhone: ['', Validators.required],
-                cellphone: ['', Validators.required],
-                email: ['', [Validators.required, AppValidators.emailValidator]],
+                primaryProvider: [''],
+                firstName: [''],
+                lastName: [''],
+                title: [''],
+                homePhone: [''],
+                cellphone: [''],
+                email: [''],
                 photo: ['']
             });
 
