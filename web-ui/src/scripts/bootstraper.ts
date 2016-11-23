@@ -119,6 +119,7 @@ import { LocationComponent } from '../components/pages/medical-provider/location
 import { MedicalProviderNavComponent } from '../components/pages/medical-provider/medical-provider-nav-bar';
 
 import { LocationShellComponent } from '../components/pages/location-management/location-shell';
+import { AddLocationComponent } from '../components/pages/location-management/add-location';
 import { BasicComponent } from '../components/pages/location-management/basic';
 import { ScheduleComponent } from '../components/pages/location-management/schedule';
 import { SettingsComponent } from '../components/pages/location-management/settings';
@@ -222,6 +223,7 @@ enableProdMode();
         MedicalProviderShellComponent,
         LocationComponent,
         LocationShellComponent,
+        AddLocationComponent,
         BasicComponent,
         ScheduleComponent,
         SettingsComponent,
