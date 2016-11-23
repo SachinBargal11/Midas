@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {PatientsStore} from '../../../stores/patients-store';
+import { Patient } from '../../../models/patient';
 
 @Component({
     selector: 'patients-list',
@@ -8,6 +9,9 @@ import {PatientsStore} from '../../../stores/patients-store';
 })
 
 export class PatientsListComponent implements OnInit {
+    selectedPatients: Patient[];
+    patients: Patient[];
+    patientsLoading;
 
     constructor(
         private _router: Router,
@@ -16,11 +20,21 @@ export class PatientsListComponent implements OnInit {
     }
 
     ngOnInit() {
-
+        this.loadPatients();
     }
 
-    selectPatients(patient) {
-        this._patientsStore.selectPatient(patient);
-        this._router.navigate(['/patients/' + patient.id + '/profile']);
+    loadPatients() {
+        this.patientsLoading = true;
+        this._patientsStore.getPatients()
+            .subscribe(patients => {
+                this.patients = patients;
+            },
+            null,
+            () => {
+                this.patientsLoading = false;
+            });
+    }
+    onRowSelect(patient) {
+        this._router.navigate(['/patientManager/patients/' + patient.firstname + '/basic']);
     }
 }

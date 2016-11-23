@@ -28,13 +28,28 @@
 				<div class="site-header-collapsed">
 					<div class="site-header-collapsed-in">
 						<div class="dropdown dropdown-typical">
-							<a href="#" class="dropdown-toggle no-arr">
+							<a [routerLink]="['/patientManager']" class="dropdown-toggle no-arr">
                                 Patient Manager
 							</a>
 						</div>
 						<div class="dropdown dropdown-typical">
 							<a [routerLink]="['/medicalProvider']" class="dropdown-toggle no-arr">
                                 Medical Office Manager
+							</a>
+						</div>
+						<div class="dropdown dropdown-typical">
+							<a [routerLink]="['/doctors']" class="dropdown-toggle no-arr">
+                                Doctors
+							</a>
+						</div>
+						<div class="dropdown dropdown-typical">
+							<a [routerLink]="['/specialities']" class="dropdown-toggle no-arr">
+                                Specialities
+							</a>
+						</div>
+						<div class="dropdown dropdown-typical">
+							<a [routerLink]="['/medical-facilities']" class="dropdown-toggle no-arr">
+                                Medical Facilities
 							</a>
 						</div>
 					</div>

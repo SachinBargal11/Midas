@@ -31,6 +31,23 @@ export class LocationsService {
         });
         return <Observable<Location[]>>Observable.fromPromise(promise);
     }
+    addLocation(location: Location): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+
+            let requestData: any = location.toJS();
+            requestData.contactInfo = requestData.contact;
+            requestData = _.omit(requestData, 'contact');
+            console.log(requestData);
+            return this._http.post(this._url, JSON.stringify(requestData), {
+                headers: this._headers
+            }).map(res => res.json()).subscribe((data) => {
+                resolve(data);
+            }, (error) => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
 
 }
 

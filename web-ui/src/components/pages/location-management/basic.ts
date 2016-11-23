@@ -2,11 +2,8 @@ import {Component, OnInit, ElementRef} from '@angular/core';
 import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
-import {UsersStore} from '../../../stores/users-store';
-import {User} from '../../../models/user';
-import {UsersService} from '../../../services/users-service';
-import {AccountDetail} from '../../../models/account-details';
-import {Account} from '../../../models/account';
+import {LocationsStore} from '../../../stores/locations-store';
+import {Location} from '../../../models/location';
 import {Contact} from '../../../models/contact';
 import {Address} from '../../../models/address';
 import {SessionStore} from '../../../stores/session-store';
@@ -19,7 +16,7 @@ import {StateService} from '../../../services/state-service';
 @Component({
     selector: 'basic',
     templateUrl: 'templates/pages/location-management/basic.html',
-    providers: [UsersService, StateService, StatesStore, FormBuilder],
+    providers: [StateService, StatesStore, FormBuilder],
 })
 
 export class BasicComponent implements OnInit {
@@ -36,14 +33,13 @@ export class BasicComponent implements OnInit {
     isSaveProgress = false;
 
     constructor(
-        private _stateService: StateService,
         private _statesStore: StatesStore,
         private fb: FormBuilder,
         private _router: Router,
         public _route: ActivatedRoute,
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
-        private _usersStore: UsersStore,
+        private _locationsStore: LocationsStore,
         private _elRef: ElementRef
     ) {
         this._route.params.subscribe((routeParams: any) => {
@@ -69,51 +65,37 @@ export class BasicComponent implements OnInit {
 
     save() {
         let basicformValues = this.basicform.value;
-        let userDetail = new AccountDetail({
-            account: new Account({
-               id: this._sessionStore.session.account_id
-            }),
-            user: new User({
-                firstName: basicformValues.userInfo.firstname,
-                middleName: basicformValues.userInfo.middlename,
-                lastName: basicformValues.userInfo.lastname,
-                userType: parseInt(basicformValues.userInfo.userType), // UserType[1],//,                
-                password: basicformValues.userInfo.password,
-                userName: basicformValues.contact.email
-            }),
-            contactInfo: new Contact({
-                cellPhone: basicformValues.contact.cellPhone,
-                emailAddress: basicformValues.contact.email,
-                faxNo: basicformValues.contact.faxNo,
-                homePhone: basicformValues.contact.homePhone,
-                workPhone: basicformValues.contact.workPhone,
+        let basicInfo = new Location({
+            name: basicformValues.officeName,
+            locationType: parseInt(basicformValues.officeType),
+            contact: new Contact({
+                faxNo: basicformValues.fax,
+                workPhone: basicformValues.officePhone,
             }),
             address: new Address({
-                address1: basicformValues.address.address1,
-                address2: basicformValues.address.address2,
-                city: basicformValues.address.city,
-                country: basicformValues.address.country,
-                state: basicformValues.address.state,
-                zipCode: basicformValues.address.zipCode,
+                address1: basicformValues.address,
+                city: basicformValues.city,
+                state: basicformValues.state,
+                zipCode: basicformValues.zipCode,
             })
         });
         this.isSaveProgress = true;
         let result;
 
-        result = this._usersStore.addUser(userDetail);
+        result = this._locationsStore.addLocation(basicInfo);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'User added successfully!',
+                    'title': 'Location added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/users']);
+                this._router.navigate(['/medicalProvider/locations']);
             },
             (error) => {
                 let notification = new Notification({
-                    'title': 'Unable to add user.',
+                    'title': 'Unable to add location.',
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

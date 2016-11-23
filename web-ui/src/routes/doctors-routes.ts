@@ -6,6 +6,11 @@ import {DoctorsListComponent} from '../components/pages/doctors/doctors-list';
 
 export const DoctorsRoutes: Routes = [
     {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'doctors'
+    },
+    {
         path: 'doctors',
         component: DoctorsListComponent,
         canActivate: [ValidateActiveSession]

@@ -37,7 +37,7 @@
                         <label for="signed-in">Keep me signed in</label>
                     </div>
                     <div class="float-right reset">
-                        <a href="#">Reset Password</a>
+                        <a [routerLink]="['/forgot-password']">Forgot Password</a>
                     </div>
                 </div>
                 <button [disabled]="!loginForm.valid" type="submit" class="btn btn-success">Sign in

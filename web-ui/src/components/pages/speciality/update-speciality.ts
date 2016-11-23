@@ -66,7 +66,7 @@ export class UpdateSpecialityComponent implements OnInit {
         let specialityformValues = this.specialityform.value;
         let speciality = new Speciality({
             speciality: {
-                id: this.speciality.speciality.id,
+                id: this.speciality.id,
                 name: specialityformValues.name,
                 specialityCode: specialityformValues.specialityCode
             }

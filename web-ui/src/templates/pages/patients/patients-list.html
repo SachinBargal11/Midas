@@ -1,4 +1,28 @@
-<table class="table table-bordered">
+<h1>
+<a class="btn btn-primary" routerLink="add">Add Patient</a>
+</h1>
+<progress-bar [visible]="patientsLoading" 
+              style="position:fixed;
+                     top:0;
+                     width:100%;
+                     z-index:100;">
+    <span class="sr-only">Loading Patients...</span>
+</progress-bar>
+<div class="ui-widget-header ui-helper-clearfix" style="padding:4px 10px;border-bottom: 0 none">
+    <i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
+    <input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Patients">
+</div>
+<p-dataTable [value]="patients" [(selection)]="selectedPatient" selectionMode="single" (onRowSelect)="onRowSelect(selectedPatient)" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+    <header>Patients</header>
+    <p-column field="name" header="Name" [sortable]="true"></p-column>
+    <p-column field="address" header="Address" [sortable]="true"></p-column>
+    <p-column field="mobileNo" header="Phone" [sortable]="true"></p-column>
+    <p-column field="status" header="Status" [sortable]="true"></p-column>
+    <p-column field="caseId" header="CaseId" [sortable]="true"></p-column>
+</p-dataTable>
+<router-outlet></router-outlet>
+
+<!--<table class="table table-bordered">
     <thead>
         <tr>
             <th>First Name</th>
@@ -10,7 +34,6 @@
         </tr>
     </thead>
     <tbody>
-        <!--<tr *ngFor="let patient of _patientsStore.patients | async" [routerLink]="['', patient.id]" (click)="selectPatients(patient)">-->
         <tr *ngFor="let patient of _patientsStore.patients | async" (click)="selectPatients(patient)">
             <td>{{ patient.firstname }}</td>
             <td>{{ patient.lastname }}</td>
@@ -20,4 +43,4 @@
             <td>{{ patient.dob.format("Do MMM YYYY") }}</td>
         </tr>
     </tbody>
-</table>
+</table>-->

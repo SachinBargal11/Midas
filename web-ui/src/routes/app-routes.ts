@@ -2,6 +2,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from '../components/pages/login';
 // import {SignupComponent} from '../components/pages/signup';
 import { DashboardComponent } from '../components/pages/dashboard';
+import { PatientManagerRoutes } from './patient-manager-routes';
 import { PatientsShellRoutes } from './patient-routes';
 import { UsersRoutes } from './user-routes';
 import { ProvidersRoutes } from './provider-routes';
@@ -12,10 +13,11 @@ import { MedicalProviderRoutes } from './medical-provider';
 import { ValidateActiveSession } from './guards/validate-active-session';
 import { ValidateInActiveSession } from './guards/validate-inactive-session';
 import { ChangePasswordComponent } from '../components/pages/change-password';
+import { ForgotPasswordComponent } from '../components/pages/forgot-password';
+import { ResetPasswordComponent } from '../components/pages/reset-password';
 import { RegisterCompanyComponent } from '../components/pages/register-company';
 import { AccountActivationComponent } from '../components/pages/account-activation';
 import { SecurityCheckComponent } from '../components/pages/security-check';
-import { LocationManagementRoutes } from './location-management-routes';
 
 export const appRoutes: Routes = [
     {
@@ -49,6 +51,16 @@ export const appRoutes: Routes = [
         canActivate: [ValidateInActiveSession]
     },
     {
+        path: 'forgot-password',
+        component: ForgotPasswordComponent,
+        canActivate: [ValidateInActiveSession]
+    },
+    {
+        path: 'reset-password/:token',
+        component: ResetPasswordComponent,
+        canActivate: [ValidateInActiveSession]
+    },
+    {
         path: 'change-password',
         component: ChangePasswordComponent,
         canActivate: [ValidateActiveSession]
@@ -58,6 +70,7 @@ export const appRoutes: Routes = [
         component: DashboardComponent,
         canActivate: [ValidateActiveSession]
     },
+    ...PatientManagerRoutes,
     ...DoctorsRoutes,
     ...MedicalProviderRoutes,
     ...MedicalFacilitiesRoutes,

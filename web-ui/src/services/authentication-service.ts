@@ -20,39 +20,7 @@ export class AuthenticationService {
     private _url1: string = 'http://localhost:3004';
 
     constructor(private _http: Http) { }
-    // registerCompany(account: Account): Observable<any> {
-    //     let promise: Promise<any> = new Promise((resolve, reject) => {
-    //         let headers = new Headers();
-    //         headers.append('Content-Type', 'application/json');
 
-    //         let requestData: any = account.toJS();
-    //         requestData.contactInfo = requestData.user.contact;
-    //         requestData.user = _.omit(requestData.user, 'contact');
-
-    //         return this._http.post(this._url + '/Company/Signup', JSON.stringify(account), {
-    //             headers: headers
-    //         }).map(res => res.json()).subscribe((data) => {
-    //             resolve(data);
-    //         }, (error) => {
-    //             reject(error);
-    //         });
-    //     });
-    //     return <Observable<any>>Observable.fromPromise(promise);
-    // }
-    // getCompanies(): Observable<Company[]> {
-    //     let promise = new Promise((resolve, reject) => {
-    //         return this._http.get(this._url1 + '/company').map(res => res.json())
-    //             .subscribe((data: any) => {
-    //                 this.companies = (<Object[]>data).map((companyData: any) => {
-    //                     return CompanyAdapter.parseResponse(companyData);
-    //                 });
-    //                 resolve(this.companies);
-    //             }, (error) => {
-    //                 reject(error);
-    //             });
-    //     });
-    //     return <Observable<Company[]>>Observable.fromPromise(promise);
-    // }
     register(accountDetail: AccountDetail): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let headers = new Headers();
@@ -97,6 +65,47 @@ export class AuthenticationService {
         });
         return <Observable<any>>Observable.fromPromise(promise);
     }
+
+    GeneratePasswordResetLink(userDetail: any): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            let headers = new Headers();
+            headers.append('Content-Type', 'application/json');
+            return this._http.post(this._url + '/PasswordToken/GeneratePasswordResetLink', JSON.stringify(userDetail), {
+                headers: headers
+            })
+                .map(res => res.json())
+                .subscribe((userData: any) => {
+                    resolve(userData);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+
+    }
+
+    checkForValidResetPasswordToken(autheticateRequestData) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        let promise: Promise<User> = new Promise((resolve, reject) => {
+            return this._http.post(this._url + '/PasswordToken/ValidatePassword', JSON.stringify(autheticateRequestData), {
+                headers: headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    if (data) {
+                        resolve(data);
+                    }
+                    else {
+                        reject(new Error('INVALID_TOKEN'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+
 
     checkForValidToken(token) {
         let headers = new Headers();

@@ -16,24 +16,28 @@ import Moment from 'moment';
 
 const PatientRecord = Record({
     id: 0,
+    name: '',
     firstname: '',
     lastname: '',
     email: '',
     mobileNo: '',
     address: '',
-    dob: Moment(),
+    status: '',
+    caseId: '',
     createdUser: 0
 });
 
 export class Patient extends PatientRecord {
 
     id: number;
+    name: string;
     firstname: string;
     lastname: string;
     email: string;
     mobileNo: string;
     address: string;
-    dob: Date;
+    status: string;
+    caseId: string;
     createdUser: number;
 
     constructor(props) {
