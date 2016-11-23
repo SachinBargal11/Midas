@@ -7,14 +7,14 @@ namespace MIDAS.GBX.WebAPI
 {
     public interface IRequestHandler<T> 
     {
-        HttpResponseMessage ValidateInvitation(HttpRequestMessage request, JObject data);
+        HttpResponseMessage ValidateInvitation(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetGbObjects(HttpRequestMessage request,JObject data);
         HttpResponseMessage GetObject(HttpRequestMessage request, int id);
         HttpResponseMessage CreateGbObject(HttpRequestMessage request, JObject gbObject);
         HttpResponseMessage UpdateGbObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage DeleteGbObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage ValidateUniqueName(HttpRequestMessage request, T gbObject);
-        HttpResponseMessage SignUp(HttpRequestMessage request, JObject data);
+        HttpResponseMessage SignUp(HttpRequestMessage request, T gbObject);
         HttpResponseMessage Login(HttpRequestMessage request, JObject data);
 
         HttpResponseMessage GenerateToken(HttpRequestMessage request,int userId);

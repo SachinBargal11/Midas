@@ -39,32 +39,29 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region ValidatePassword
-
         public override Object ValidatePassword(JObject entity)
         {
             BO.PasswordToken passwordBO = entity["user"].ToObject<BO.PasswordToken>();
 
-            dynamic data_ = _context.PasswordTokens.Where(x => x.IsTokenUsed != true && x.TokenHash == passwordBO.UniqueID && x.UserName == passwordBO.UserName).FirstOrDefault();
+            PasswordToken data_ = _context.PasswordTokens.Where(x => x.IsTokenUsed != true && x.TokenHash == passwordBO.UniqueID).FirstOrDefault();
 
             if (data_ != null)
             {
-                passwordBO.Message = "Password link validated";
-                passwordBO.StatusCode = System.Net.HttpStatusCode.Created;
-                return passwordBO;
+                User usr = _context.Users.Where(x => x.UserName == data_.UserName).FirstOrDefault();
+
+                BO.User userBO = new BO.User { Message = "Password link validated", ID = usr.id, StatusCode = System.Net.HttpStatusCode.Created };
+                return userBO;
             }
             else
             {
-                passwordBO.Message = "Invalid password link.";
-                passwordBO.StatusCode = System.Net.HttpStatusCode.NotFound;
-                return passwordBO;
+                BO.User userBO = new BO.User { Message = "Invalid password link", StatusCode = System.Net.HttpStatusCode.NotFound };
+                return userBO;
             }
-
         }
         #endregion
 
 
         #region GeneratePasswordLink
-       
         public override Object GeneratePasswordLink(JObject entity)
         {
             BO.PasswordToken passwordBO = entity["user"].ToObject<BO.PasswordToken>();

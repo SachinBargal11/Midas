@@ -17,5 +17,21 @@ namespace MIDAS.GBX.BusinessObjects
         public bool IsExpired { get; set; }
         [JsonProperty("isActivated")]
         public bool IsActivated { get; set; }
+
+        public override List<BusinessValidation> Validate<T>(T entity)
+        {
+
+            List<BusinessValidation> validations = new List<BusinessValidation>();
+            BusinessValidation validation = new BusinessValidation();
+            //Implement logic for validation
+
+            Guid UniqueID_=new Guid();
+            if (!Guid.TryParse(UniqueID.ToString(), out UniqueID_))
+            {
+                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Invalid appkey." });
+            }
+
+            return validations;
+        }
     }
 }

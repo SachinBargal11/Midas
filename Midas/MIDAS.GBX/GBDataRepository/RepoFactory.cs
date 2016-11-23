@@ -19,6 +19,10 @@ namespace MIDAS.GBX
             {
                 repo = new CompanyRepository(context);
             }
+            if (typeof(T) == typeof(BO.Signup))
+            {
+                repo = new CompanyRepository(context);
+            }
             if (typeof(T) == typeof(BO.User))
             {
                 repo = new UserRepository(context);
@@ -54,6 +58,10 @@ namespace MIDAS.GBX
             if (typeof(T) == typeof(BO.DoctorSpeciality))
             {
                 repo = new PasswordTokenRepository(context);
+            }
+            if (typeof(T) == typeof(BO.Invitation))
+            {
+                repo = new InvitationRepository(context);
             }
             return repo;
         }

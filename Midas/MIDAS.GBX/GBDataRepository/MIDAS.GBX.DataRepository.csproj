@@ -63,6 +63,7 @@
     <Compile Include="DataAccessManager\IGbDataAccessManager.cs" />
     <Compile Include="EntityRepository\BaseEntityRepo.cs" />
     <Compile Include="EntityRepository\Company\CompanyRepository.cs" />
+    <Compile Include="EntityRepository\InvitationRepository.cs" />
     <Compile Include="EntityRepository\User\OTPRepository.cs" />
     <Compile Include="EntityRepository\User\PasswordTokenRepository.cs" />
     <Compile Include="EntityRepository\User\UserRepository.cs" />
