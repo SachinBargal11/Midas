@@ -1,22 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {Validators, FormGroup, FormBuilder} from '@angular/forms';
+import {Router} from '@angular/router';
 import {AppValidators} from '../../utils/AppValidators';
-import {LoaderComponent} from '../elements/loader';
-import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
+import {NotificationsService} from 'angular2-notifications';
 import {SessionStore} from '../../stores/session-store';
 
 @Component({
     selector: 'login',
     templateUrl: 'templates/pages/login.html',
-    directives: [
-        FORM_DIRECTIVES,
-        REACTIVE_FORM_DIRECTIVES,
-        ROUTER_DIRECTIVES,
-        LoaderComponent,
-        SimpleNotificationsComponent
-    ],
-    providers: [NotificationsService]
+    providers: [NotificationsService, FormBuilder]
 })
 
 export class LoginComponent implements OnInit {
@@ -24,7 +16,7 @@ export class LoginComponent implements OnInit {
     loginFormControls;
     isLoginInProgress;
     options = {
-        timeOut: 3000,
+        timeOut: 50000,
         showProgressBar: false,
         pauseOnHover: false,
         clickToClose: false,
@@ -44,11 +36,11 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit() {
-        
+
     }
 
     login() {
-        var result;
+        let result;
         this.isLoginInProgress = true;
         result = this._sessionStore.login(this.loginForm.value.email, this.loginForm.value.password);
 

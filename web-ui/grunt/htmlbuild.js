@@ -2,7 +2,8 @@ module.exports = {
 	development: {
         options: {
             data: {
-                externalComponentsDirectory: '..'
+                externalComponentsDirectory: '..',
+                base: '<%= compiledLocation %>'
             }
         },
 		src: '<%= srcLocation %>/index.html',
@@ -11,7 +12,8 @@ module.exports = {
 	dist: {
         options: {
             data: {
-                externalComponentsDirectory: '.'
+                externalComponentsDirectory: '.',
+                base: '<%= distLocation %>'
             }
         },
 		src: '<%= srcLocation %>/index.html',

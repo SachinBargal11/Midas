@@ -148,8 +148,7 @@
   border: 1px solid #d8e2e7;
   -webkit-border-radius: .25rem;
           border-radius: .25rem;
-  -o-background-clip: padding-box;
-     background-clip: padding-box;
+  background-clip: padding-box;
 }
 .typeahead-result.detached .typeahead-list {
   position: relative;

@@ -1,62 +1,336 @@
 <div class="page-center">
     <div class="page-center-in">
         <div class="container-fluid">
-            <form class="sign-box" [formGroup]="signupForm" (ngSubmit)="register()">
-                <div class="sign-avatar no-photo">+</div>
-                <header class="sign-title">Sign Up</header>
-                <div class="form-group" [class.error]="signupFormControls.name.touched && !signupFormControls.name.valid">
-                    <input formControlName="name" type="text" class="form-control" [class.error]="!signupFormControls.name.valid" placeholder="Name" />
-                    <div class='error-list' *ngIf="signupFormControls.name.touched && !signupFormControls.name.valid">
-                        <ul>
-                            <li *ngIf="signupFormControls.name.hasError('required')">Name is required.</li>
-                        </ul>
+            <form [formGroup]="signupform" (ngSubmit)="saveUser()">
+
+                <section class="card">
+                    <div class="text-center">
+                        <header class="card-header card-header-lg">Sign Up</header>
                     </div>
-                </div>
-                <div class="form-group" [class.error]="signupFormControls.email.touched && !signupFormControls.email.valid">
-                    <input formControlName="email" type="email" [class.error]="!signupFormControls.email.valid" class="form-control" placeholder="E-Mail" type="text" />
-                    <div class='error-list' *ngIf="signupFormControls.email.touched && !signupFormControls.email.valid">
-                        <ul>
-                            <li *ngIf="signupFormControls.email.hasError('required')">Email is required.</li>
-                            <li *ngIf="signupFormControls.email.hasError('emailValidator')">Email is invalid.</li>
-                        </ul>
+                    <div class="card-block">
+
+                        <h5 class="with-border">Account Information</h5>
+
+                        <div class="card-block" formGroupName="account">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group" [class.error]="userformControls.account.controls.accountName.touched && !userformControls.account.controls.accountName.valid">
+                                        <label class="form-label"> Account Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                                        <input formControlName="accountName" type="text" minlength='6' class="form-control" [class.error]="!userformControls.account.controls.accountName.valid"
+                                        />
+                                        <div class='error-list' *ngIf="userformControls.account.controls.accountName.touched && !userformControls.account.controls.accountName.valid">
+                                            <ul>
+                                                <li *ngIf="userformControls.account.controls.accountName.hasError('required')">Account Name is required.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <h5 class="with-border">
+                            User Information
+                        </h5>
+                        <div class="card-block" formGroupName="user">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <label class="form-label"> E-Mail
+                                            <span class="color-red">*</span>
+                                        </label>
+                                    <div class="form-group" [class.error]="userformControls.user.controls.email.touched && !userformControls.user.controls.email.valid">
+                                        <input formControlName="email" type="email" [class.error]="!userformControls.user.controls.email.valid" class="form-control"
+                                            placeholder="" type="text" />
+                                        <div class='error-list' *ngIf="userformControls.user.controls.email.touched && !userformControls.user.controls.email.valid">
+                                            <ul>
+                                                <li *ngIf="userformControls.user.controls.email.hasError('required')">Email is required.</li>
+                                                <li *ngIf="userformControls.user.controls.email.hasError('emailValidator')">Email is invalid.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!--<small class="text-muted">We'll never share your email with anyone else.</small>-->
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <label class="form-label"> Password
+                                            <span class="color-red">*</span>
+                                        </label>
+                                    <div class="form-group" [class.error]="userformControls.user.controls.password.touched && !userformControls.user.controls.password.valid">
+                                        <input formControlName="password" type="password" minlength='6' class="form-control" [class.error]="!userformControls.user.controls.password.valid"
+                                            placeholder="" />
+                                        <div class='error-list' *ngIf="userformControls.user.controls.password.touched && !userformControls.user.controls.password.valid">
+                                            <ul>
+                                                <li *ngIf="userformControls.user.controls.password.hasError('required')">Password is required.</li>
+                                                <li *ngIf="userformControls.user.controls.password.hasError('minlength')">Password should be minimum {{userformControls.user.controls.password.errors.minlength.requiredLength}}
+                                                    characters.
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label class="form-label"> Repeat Password
+                                            <span class="color-red">*</span>
+                                        </label>
+                                    <div class="form-group" [class.error]="userformControls.user.controls.confirmPassword.touched && userformControls.user.hasError('mismatchedPasswords')">
+                                        <input formControlName="confirmPassword" type="password" class="form-control" [class.error]="userformControls.user.hasError('mismatchedPasswords')"
+                                            placeholder="" />
+                                        <div class='error-list' *ngIf="userformControls.user.controls.confirmPassword.touched && userformControls.user.hasError('mismatchedPasswords')">
+                                            <ul>
+                                                <li *ngIf="userformControls.user.hasError('mismatchedPasswords')">Passwords do not match.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <label class="form-label"> First Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                                    <div class="form-group" [class.error]="userformControls.user.controls.firstname.touched && !userformControls.user.controls.firstname.valid">
+                                        <input formControlName="firstname" type="text" class="form-control" placeholder="" [class.error]="!userformControls.user.controls.firstname.valid">
+                                        <div class='error-list' *ngIf="userformControls.user.controls.firstname.touched && !userformControls.user.controls.firstname.valid">
+                                            <ul>
+                                                <li *ngIf="userformControls.user.controls.firstname.hasError('required')">First Name is required.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label class="form-label"> Middle Name</label>
+                                    <div class="form-group" [class.error]="userformControls.user.controls.middlename.touched && !userformControls.user.controls.middlename.valid">
+                                        <input formControlName="middlename" type="text" class="form-control" placeholder="" [class.error]="!userformControls.user.controls.middlename.valid">
+                                        <div class='error-list' *ngIf="userformControls.user.controls.middlename.touched && !userformControls.user.controls.middlename.valid">
+                                            <ul>
+                                                <li *ngIf="userformControls.user.controls.middlename.hasError('required')">Middle Name is required.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <label class="form-label"> Last Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                                    <div class="form-group" [class.error]="userformControls.user.controls.lastname.touched && !userformControls.user.controls.lastname.valid">
+                                        <input formControlName="lastname" type="text" class="form-control" placeholder="" [class.error]="!userformControls.user.controls.lastname.valid">
+                                        <div class='error-list' *ngIf="userformControls.user.controls.lastname.touched && !userformControls.user.controls.lastname.valid">
+                                            <ul>
+                                                <li *ngIf="userformControls.user.controls.lastname.hasError('required')">Last Name is required.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <!--<div class="col-lg-4">
+                                      <div class="form-group" [class.error]="userformControls.user.controls.gender.touched && !userformControls.user.controls.gender.valid">
+                                        <select formControlName="gender" class="selectpicker form-control" title="Select Gender." [class.error]="userformControls.user.controls.gender.touched && !userformControls.user.controls.gender.valid">
+                                             <option value="">-Select Gender-</option>
+                                             <option disabled>────────────────────</option>
+                                             <option value="Male">Male</option>
+                                             <option value="Female">Female</option>
+                                         </select>
+                                          <div class='error-list' *ngIf="userformControls.user.controls.gender.touched && !userformControls.user.controls.gender.valid">
+                                        <ul>
+                                            <li *ngIf="userformControls.user.controls.gender.hasError('required')">Gender is required.</li>
+                                        </ul>
+                                    </div>    
+                                    </div>
+                                 </div>                        
+                            
+                            <div class="col-lg-4">
+                                <div class="form-group" [class.error]="userformControls.user.controls.dob.touched && !userformControls.user.controls.dob.valid">
+                                    <div class='input-group date'>
+                                          <p-calendar formControlName="dob" 
+                                                      dateFormat="M d, yy" 
+                                                      minDate="Jan 1, 1900"
+                                                      maxDate="today"
+                                                      [monthNavigator]="true" 
+                                                      [yearNavigator]="true"
+                                                      [class.error]="userformControls.user.controls.dob.touched && !userformControls.user.controls.dob.valid" 
+                                                      placeholder="Date of birth"
+                                                      showAnim="slideDown"
+                                                      [showIcon]="true">
+                                          </p-calendar>
+                                    </div>
+                                    <div class='error-list' *ngIf="userformControls.user.controls.dob.touched && !userformControls.user.controls.dob.valid">
+                                        <ul>
+                                            <li *ngIf="userformControls.user.controls.dob.hasError('required')">Date of birth is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>-->
+                                <!--<div class="col-lg-4">
+                                    <div class="form-group" [class.error]="userformControls.user.controls.userType.touched && !userformControls.user.controls.userType.valid">
+                                        <select formControlName="userType" class="selectpicker form-control" title="Select User Type." [class.error]="userformControls.user.controls.userType.touched && !userformControls.user.controls.userType.valid">
+                                             <option value="">-Select UserType-</option>
+                                             <option disabled>────────────────────</option>
+                                             <option value="Admin">Admin</option>
+                                             <option value="Owner">Owner</option>
+                                             <option value="Doctor">Doctor</option>
+                                             <option value="Patient">Patient</option>
+                                             <option value="Attorney">Attorney</option>
+                                             <option value="Adjuster">Adjuster</option>
+                                             <option value="Accounts">Accounts</option>
+                                         </select>
+                                          <div class='error-list' *ngIf="userformControls.user.controls.userType.touched && !userformControls.user.controls.userType.valid">
+                                        <ul>
+                                            <li *ngIf="userformControls.user.controls.userType.hasError('required')">User Type is required.</li>
+                                        </ul>
+                                    </div>    
+                                    </div>
+                            </div>-->
+
+                            </div>
+                        </div>
+
+                        <h5 class="with-border">
+                            Contact Information
+                        </h5>
+                        <div class="card-block" formGroupName="contactInfo">
+                            <div class="row">
+
+                                <div class="col-lg-4">
+                                    <label class="form-label"> Mobile No
+                                            <span class="color-red">*</span>
+                                        </label>
+                                    <div class="form-group" [class.error]="userformControls.contactInfo.controls.cellPhone.touched && !userformControls.contactInfo.controls.cellPhone.valid">
+                                        <p-inputMask mask="999-999-9999" formControlName="cellPhone" [class.error]="userformControls.contactInfo.controls.cellPhone.touched && !userformControls.contactInfo.controls.cellPhone.valid"
+                                            placeholder="999-999-9999" styleClass="form-control" [options]="{showMaskOnHover:false}"></p-inputMask>
+                                        <div class='error-list' *ngIf="userformControls.contactInfo.controls.cellPhone.touched && !userformControls.contactInfo.controls.cellPhone.valid">
+                                            <ul>
+                                                <li *ngIf="userformControls.contactInfo.controls.cellPhone.hasError('required')">Cellphone number is required.</li>
+                                                <li *ngIf="userformControls.contactInfo.controls.cellPhone.hasError('mobileNoValidator')">Cellphone number is invalid.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="form-label"> Home Phone No</label>
+                                        <input formControlName="homePhone" type="text" class="form-control" placeholder="" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="form-label"> Work Phone No</label>
+                                        <input formControlName="workPhone" type="text" class="form-control" placeholder="" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label class="form-label"> Fax No</label>
+                                        <input formControlName="faxNo" type="text" class="form-control" placeholder="" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 class="with-border">
+                            Address Information
+                        </h5>
+                        <div class="card-block" formGroupName="address">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <label class="form-label"> Address1</label>
+                                    <div class="form-group" [class.error]="userformControls.address.controls.address1.touched && !userformControls.address.controls.address1.valid">
+                                        <input formControlName="address1" type="email" [class.error]="!userformControls.address.controls.address1.valid" class="form-control"
+                                            placeholder="" type="text" />
+                                        <div class='error-list' *ngIf="userformControls.address.controls.address1.touched && !userformControls.address.controls.address1.valid">
+                                            <ul>
+                                                <li *ngIf="userformControls.address.controls.address1.hasError('required')">Address1 is required.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!--<small class="text-muted">We'll never share your email with anyone else.</small>-->
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <label class="form-label"> Address2</label>
+                                    <div class="form-group" [class.error]="userformControls.address.controls.address2.touched && !userformControls.address.controls.address2.valid">
+                                        <input formControlName="address2" type="text" class="form-control" [class.error]="!userformControls.address.controls.address2.valid"
+                                            placeholder="" />
+                                        <div class='error-list' *ngIf="userformControls.address.controls.address2.touched && !userformControls.address.controls.address2.valid">
+                                            <ul>
+                                                <li *ngIf="userformControls.address.controls.address2.hasError('required')">Address2 is required.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label class="form-label"> City</label>
+                                    <div class="form-group" [class.error]="userformControls.address.controls.city.touched && !userformControls.address.controls.city.valid">
+                                        <input formControlName="city" type="text" class="form-control" [class.error]="!userformControls.address.controls.city.valid"
+                                            placeholder="" />
+                                        <div class='error-list' *ngIf="userformControls.address.controls.city.touched && !userformControls.address.controls.city.valid">
+                                            <ul>
+                                                <li *ngIf="userformControls.address.controls.city.hasError('required')">City is required.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <label class="form-label"> State</label>
+                                    <div class="form-group" [class.error]="userformControls.address.controls.state.touched && !userformControls.address.controls.state.valid">
+                                        <input formControlName="state" type="text" list="states" name="mystate" class="form-control" [class.error]="!userformControls.address.controls.state.valid"/>
+                                        <datalist id="states">
+                                        	<option *ngFor="let state of states">{{ state }}</option>
+                                        </datalist>
+                                        <div class='error-list' *ngIf="userformControls.address.controls.state.touched && !userformControls.address.controls.state.valid">
+                                            <ul>
+                                                <li *ngIf="userformControls.address.controls.state.hasError('required')">State is required.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label class="form-label"> Zip Code</label>
+                                    <div class="form-group" [class.error]="userformControls.address.controls.zipCode.touched && !userformControls.address.controls.zipCode.valid">
+                                        <input formControlName="zipCode" type="text" class="form-control" [class.error]="!userformControls.address.controls.zipCode.valid"
+                                            placeholder="" />
+                                        <div class='error-list' *ngIf="userformControls.address.controls.zipCode.touched && !userformControls.address.controls.zipCode.valid">
+                                            <ul>
+                                                <li *ngIf="userformControls.address.controls.zipCode.hasError('required')">ZipCode is required.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label class="form-label">Country</label>
+                                    <div class="form-group" [class.error]="userformControls.address.controls.country.touched && !userformControls.address.controls.country.valid">
+                                        <input formControlName="country" type="text" class="form-control" [class.error]="!userformControls.address.controls.country.valid"
+                                            placeholder="" />
+                                        <div class='error-list' *ngIf="userformControls.address.controls.country.touched && !userformControls.address.controls.country.valid">
+                                            <ul>
+                                                <li *ngIf="userformControls.address.controls.country.hasError('required')">Country is required.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="">
+                            <button [disabled]="!signupform.valid || isSignupInProgress" type="submit" class="btn btn-success sign-up">Sign up
+                                <loader [visible]="isSignupInProgress"></loader>
+                            </button>
+                            <span class="sign-note">Already have an account? <a [routerLink]="['/login']">Login</a></span>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group" [class.error]="signupFormControls.mobileNo.touched && !signupFormControls.mobileNo.valid">
-                    <input formControlName="mobileNo" type="text" class="form-control" [class.error]="!signupFormControls.mobileNo.valid" placeholder="Mobile No" />
-                    <div class='error-list' *ngIf="signupFormControls.mobileNo.touched && !signupFormControls.mobileNo.valid">
-                        <ul>
-                            <li *ngIf="signupFormControls.mobileNo.hasError('required')">Mobile number is required.</li>
-                            <li *ngIf="signupFormControls.mobileNo.hasError('mobileNoValidator')">Mobile number is invalid.</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="form-group" [class.error]="signupFormControls.password.touched && !signupFormControls.password.valid">
-                    <input formControlName="password" type="password" minlength='6' class="form-control" [class.error]="!signupFormControls.password.valid" placeholder="Password" />
-                    <div class='error-list' *ngIf="signupFormControls.password.touched && !signupFormControls.password.valid">
-                        <ul>
-                            <li *ngIf="signupFormControls.password.hasError('required')">Password is required.</li>
-                            <li *ngIf="signupFormControls.password.hasError('minlength')">Password should be minimum {{signupFormControls.password.errors.minlength.requiredLength}} characters.</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="form-group" [class.error]="signupFormControls.confirmPassword.touched && signupForm.hasError('mismatchedPasswords')">
-                    <input formControlName="confirmPassword" type="password" class="form-control" [class.error]="signupForm.hasError('mismatchedPasswords')" placeholder="Repeat password" />
-                    <div class='error-list' *ngIf="signupFormControls.confirmPassword.touched && signupForm.hasError('mismatchedPasswords')">
-                        <ul>
-                            <li *ngIf="signupForm.hasError('mismatchedPasswords')">Passwords do not match.</li>
-                        </ul>
-                    </div>
-                </div>
-                <button [disabled]="!signupForm.valid" type="submit" class="btn btn-success sign-up">Sign up
-                    <loader [visible]="isSignupInProgress"></loader>
-                </button>
-                <p class="sign-note">Already have an account? <a [routerLink]="['/login']">Login</a></p>
-                <!--<button type="button" class="close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>-->
+                </section>
             </form>
         </div>
     </div>
 </div>
-<!--.page-center-->
+
 <simple-notifications [options]="options"></simple-notifications>

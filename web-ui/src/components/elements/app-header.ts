@@ -1,19 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {LoaderComponent} from '../elements/loader';
 import {AuthenticationService} from '../../services/authentication-service';
-import {CORE_DIRECTIVES} from '@angular/common';
-import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap';
 import {SessionStore} from '../../stores/session-store';
 import {NotificationsStore} from '../../stores/notifications-store';
 
 @Component({
     selector: 'app-header',
     templateUrl: 'templates/elements/app-header.html',
-    directives: [
-        LoaderComponent, 
-        DROPDOWN_DIRECTIVES, 
-        CORE_DIRECTIVES],
     providers: [AuthenticationService]
 })
 
@@ -47,7 +40,7 @@ export class AppHeaderComponent implements OnInit {
 
     ngOnInit() {
         if (this._sessionStore.isAuthenticated()) {
-            this.user_name = this._sessionStore.session.user.displayName;
+            this.user_name = this._sessionStore.session.displayName;
         } else {
             this._router.navigate(['/login']);
         }
@@ -57,12 +50,11 @@ export class AppHeaderComponent implements OnInit {
         this._sessionStore.logout();
         this._router.navigate(['/login']);
     }
-    
-    changePassword(){
-        this._sessionStore.session;
+
+    changePassword() {
         this._router.navigate(['/change-password']);
     }
-    
+
     showNotifications() {
         this._notificationsStore.toggleVisibility();
     }

@@ -181,7 +181,6 @@ a.plus-link-circle:hover {
   color: #d8e2e7;
   cursor: pointer;
   -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   top: 51px;
@@ -591,7 +590,6 @@ a.plus-link-circle:hover {
   position: relative;
   top: -1px;
   -webkit-transition: all 0.2s ease-in-out;
-  -moz-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }

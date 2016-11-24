@@ -1,44 +1,48 @@
-import { provideRouter, RouterConfig } from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {LoginComponent} from '../components/pages/login';
 import {SignupComponent} from '../components/pages/signup';
-import {AddUserComponent} from '../components/pages/add-user';
 import {DashboardComponent} from '../components/pages/dashboard';
 import {PatientsShellRoutes} from './patient-routes';
+import {UsersRoutes} from './user-routes';
+import {ProvidersRoutes} from './provider-routes';
+import {MedicalFacilitiesRoutes} from './medical-facility-routes';
+import {DoctorsRoutes} from './doctor-routes';
+import {SpecialityRoutes} from './speciality-routes';
 import {ValidateActiveSession} from './guards/validate-active-session';
 import {ValidateInActiveSession} from './guards/validate-inactive-session';
 import {ChangePasswordComponent} from '../components/pages/change-password';
 
-export const appRoutes: RouterConfig = [
-    { 
-        path: '', 
-        redirectTo: '/dashboard', 
+export const appRoutes: Routes = [
+    {
+        path: '',
+        redirectTo: '/dashboard',
         pathMatch: 'full'
     },
-    { 
-        path: 'login', 
-        component: LoginComponent, 
-        canActivate: [ValidateInActiveSession] 
-    },
-    { 
-        path: 'signup', 
-        component: SignupComponent, 
-        canActivate: [ValidateInActiveSession] 
-    },
-    { 
-         path: 'change-password', 
-         component: ChangePasswordComponent, 
-         canActivate: [ValidateActiveSession] 
-    },    
-    { 
-        path: 'dashboard', 
-        component: DashboardComponent, 
-        canActivate: [ValidateActiveSession] 
+    {
+        path: 'login',
+        component: LoginComponent,
+        canActivate: [ValidateInActiveSession]
     },
     {
-        path: 'users/add',
-        component: AddUserComponent,
+        path: 'signup',
+        component: SignupComponent,
+        canActivate: [ValidateInActiveSession]
+    },
+    {
+        path: 'change-password',
+        component: ChangePasswordComponent,
         canActivate: [ValidateActiveSession]
     },
-    ...PatientsShellRoutes
+    {
+        path: 'dashboard',
+        component: DashboardComponent,
+        canActivate: [ValidateActiveSession]
+    },
+    ...DoctorsRoutes,
+    ...MedicalFacilitiesRoutes,
+    ...ProvidersRoutes,
+    ...UsersRoutes,
+    ...PatientsShellRoutes,
+    ...SpecialityRoutes
 ];
-export const APP_ROUTER_PROVIDER = provideRouter(appRoutes);
+export const APP_ROUTER_PROVIDER = RouterModule.forRoot(appRoutes);

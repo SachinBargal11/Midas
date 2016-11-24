@@ -1,56 +1,65 @@
 import {Record} from 'immutable';
-import Moment from 'moment';
+import moment from 'moment';
+// import {Address} from './address';
+// import {Contact} from './contact';
+import {UserType} from './enums/UserType';
+import {Gender} from './enums/Gender';
 
 const UserRecord = Record({
     id: 0,
-    userType: 1,
-    accountID: 1,
-    userName: "",
-    firstName: "",
-    middleName: "",
-    lastName: "",
-    gender: 1,
-    imageLink: "",
-    addressID: 7,
-    contactInfoID: 8,
-    dateOfBirth: Moment(),
-    password: "",
-    isDeleted: true,
-    createByUserID: 0,
-    updateByUserID: 0,
-    createDate: Moment(),
-    updateDate: Moment()
+    name: '',
+    userType: UserType.Owner,
+    accountId: '',
+    userName: '',
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    gender: Gender.Male,
+    imageLink: '',
+    // address: null, //Address
+    // contact: null, //Contact
+    dateOfBirth: moment(), //Moment
+    password: '',
+    isDeleted: 0,
+    createByUserId: 0,
+    updateByUserId: 0,
+    createDate: null, //Moment
+    updateDate: null //Moment
 });
 
 export class User extends UserRecord {
 
     id: number;
-    userType: number;
-    accountID: number;
-    userName: "";
-    firstName: "";
-    middleName: "";
-    lastName: "";
-    gender: number;
-    imageLink: "";
-    addressID: number;
-    contactInfoID: number;
-    dateOfBirth: Date;
+    name: string;
+    userType: UserType;
+    accountId: number;
+    userName: string;
+    firstName: string;
+    middleName: string;
+    lastName: string;
+    gender: Gender;
+    imageLink: string;
+    // address: Address;
+    // contact: Contact;
+    dateOfBirth: moment.MomentStatic;
     password: string;
     isDeleted: boolean;
-    createByUserID: number;
-    updateByUserID: number;
-    createDate: Date;
-    updateDate: Date;
+    createByUserId: number;
+    updateByUserId: number;
+    createDate: moment.MomentStatic;
+    updateDate: moment.MomentStatic;
 
     constructor(props) {
         super(props);
     }
 
 
-    public get displayName(): string {
-        return this.firstName + " " + this.lastName;
-    }
+    // public get displayName(): string {
+    //     return this.firstName + " " + this.lastName;
+    // }
 
+    // public get account_id(): number {
+    //     return this.accountId;
+    // }
 
 }

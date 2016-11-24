@@ -1,4 +1,4 @@
-import {RouterConfig} from '@angular/router';
+import {Routes} from '@angular/router';
 import {PatientsListComponent} from '../components/pages/patients/patients-list';
 import {PatientDetailsComponent} from '../components/pages/patients/patient-details';
 import {AddPatientComponent} from '../components/pages/patients/add-patient';
@@ -6,7 +6,7 @@ import {PatientsShellComponent} from '../components/pages/patients/patients-shel
 import {PatientProfileComponent} from '../components/pages/patients/profile-patient';
 import {ValidateActiveSession} from './guards/validate-active-session';
 
-export const PatientsShellRoutes: RouterConfig = [
+export const PatientsShellRoutes: Routes = [
     {
         path: 'patients',
         component: PatientsShellComponent,

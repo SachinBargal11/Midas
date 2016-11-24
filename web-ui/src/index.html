@@ -2,7 +2,10 @@
 <html class="no-js" lang="">
 
 <head>
-    <base href="/compiled/">
+
+    <!-- build:process -->
+    <base href="/<%= base %>/">
+    <!-- /build -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Green Your Bills</title>
@@ -11,24 +14,30 @@
     <meta name="format-detection" content="telephone=no">
 
     <!-- build:process -->
-    <link rel="stylesheet" href="<%= externalComponentsDirectory %>/node_modules/bootstrap/dist/css/bootstrap.min.css" type="text/css"
-        charset="utf-8">
-    <link rel="stylesheet" href="<%= externalComponentsDirectory %>/node_modules/font-awesome/css/font-awesome.min.css" type="text/css"
-        charset="utf-8">
-
+    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/bootstrap/dist/css/bootstrap.min.css"
+        charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/font-awesome/css/font-awesome.min.css"
+        charset="utf-8" />
     <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/primeui/primeui-ng-all.min.css"
-    />
+        charset="utf-8" />
     <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/primeui/themes/bootstrap/theme.css"
-    />
-
+        charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/datatables/media/css/jquery.dataTables.min.css"
+        charset="utf-8" />
     <!-- /build -->
-    <link rel="stylesheet" href="theme/css/main.css">
-    <link rel="stylesheet" href="styles/styles.css">
+
+    <link rel="stylesheet" type="text/css" href="theme/css/main.css" charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="styles/styles.css" charset="utf-8" />
 </head>
 
 <body class="application viewport with-side-menu-compact">
 
-    <app-root>Loading...</app-root>
+    <app-root>
+        <div style="position: fixed; z-index: 999; height: 2em; width: 2em; overflow: show; margin: auto; top: 0; left: 0; bottom: 0; right: 0;">
+            <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+            <span class="sr-only">Loading...</span>
+        </div>
+    </app-root>
 
     <!-- build:process -->
     <script src="<%= externalComponentsDirectory %>/node_modules/es6-shim/es6-shim.min.js"></script>
@@ -50,16 +59,21 @@
                     'underscore' : '<%= externalComponentsDirectory %>/node_modules/underscore/underscore.js',
                     'jquery': '<%= externalComponentsDirectory %>/node_modules/jquery/dist/jquery.min.js',
                     'primeng': '<%= externalComponentsDirectory %>/node_modules/primeng',
+                    'primeui': '<%= externalComponentsDirectory %>/node_modules/primeui/primeui-ng-all.min.js',
                     'jquery.inputmask': '<%= externalComponentsDirectory %>/node_modules/jquery.inputmask/dist/jquery.inputmask.bundle.js',
-                    'jquery.ui': '//code.jquery.com/ui/1.11.4/jquery-ui.min.js',                
-                    'jquery-ui-timepicker-addon': '<%= externalComponentsDirectory %>/node_modules/jquery-ui-timepicker-addon/dist/jquery-ui-timepicker-addon.js'                
+                    'jquery-ui': 'external/jquery-ui/jquery-ui.min.js',         
+                    'jquery-ui-timepicker-addon': '<%= externalComponentsDirectory %>/node_modules/jquery-ui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.js',
+                    'datatables': '<%= externalComponentsDirectory %>/node_modules/datatables/media/js/jquery.dataTables.min.js',
+                    'chart.js': '<%= externalComponentsDirectory %>/node_modules/chart.js/dist/Chart.js'
+
                 },
                 meta: 
                 {
                     'primeng' : {
                         deps: [
-                            'jquery.ui',
-                            'jquery-ui-timepicker-addon'
+                            'jquery-ui',
+                            'jquery-ui-timepicker-addon',
+                            'jquery.inputmask'
                         ]
                     },
                     'jquery-ui': {
@@ -67,9 +81,25 @@
                             'jquery'
                         ]
                     },
+                    'datatables': {
+                        deps: [
+                            'jquery'
+                        ]
+                    },
+                    'chart.js': {
+                        deps: [
+                            'jquery',
+                            'moment'
+                        ]
+                    },
+                    'jquery.inputmask': {
+                        deps: [
+                            'jquery'
+                        ]
+                    },
                     'jquery-ui-timepicker-addon': {
                         deps: [
-                            'jquery.ui'
+                            'jquery-ui'
                         ]
                     }
                 },
@@ -127,11 +157,7 @@
                         defaultExtension: 'js'
                     },
                     '@angular/router': {
-                        main: 'index.js',
-                        defaultExtension: 'js'
-                    },
-                    '@angular/router-deprecated': {
-                        main: 'bundles/router-deprecated.umd.js',
+                        main: 'bundles/router.umd.js',
                         defaultExtension: 'js'
                     },
                     '@angular/upgrade': {
@@ -155,16 +181,24 @@
                 }
             });
             
-            Promise.all([
-                System.import('jquery.ui'),
-                System.import('jquery-ui-timepicker-addon')
-            ])
-                .then(function()
+            System.import('moment').then(function(moment){
+                window.moment = moment;
+            }).then(function(){
+                return Promise.all([
+                    System.import('moment'),
+                    System.import('jquery-ui'),
+                    System.import('jquery-ui-timepicker-addon'),
+                    System.import('jquery.inputmask'),
+                    System.import('datatables')
+                    // System.import('chart.js')
+                ]);
+            }).then(function()
                 {
                     return System.import('scripts/bootstraper')
                 })
                 .catch(function(error)
                 {
+                    debugger;
                     console.error(error);
                 });
     </script>

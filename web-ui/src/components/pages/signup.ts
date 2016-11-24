@@ -1,21 +1,27 @@
-import {Component, OnInit} from '@angular/core';
-import {FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, Validators, FormGroup, FormBuilder, AbstractControl} from '@angular/forms';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import {Component, OnInit, ElementRef} from '@angular/core';
+import {Validators, FormGroup, FormBuilder} from '@angular/forms';
+import {Router} from '@angular/router';
 import {AppValidators} from '../../utils/AppValidators';
-import {LoaderComponent} from '../elements/loader';
 import {AuthenticationService} from '../../services/authentication-service';
-import {SimpleNotificationsComponent, NotificationsService} from 'angular2-notifications';
-import {SessionStore} from '../../stores/session-store';
+import {AccountDetail} from '../../models/account-details';
 import {User} from '../../models/user';
+import {ContactInfo} from '../../models/contact';
+import {Address} from '../../models/address';
+import {Account} from '../../models/account';
+import {StatesStore} from '../../stores/states-store';
+import {StateService} from '../../services/state-service';
+import {SessionStore} from '../../stores/session-store';
+import {NotificationsStore} from '../../stores/notifications-store';
+import {NotificationsService} from 'angular2-notifications';
 
 @Component({
     selector: 'signup',
     templateUrl: 'templates/pages/signup.html',
-    directives: [FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES, ROUTER_DIRECTIVES, LoaderComponent, SimpleNotificationsComponent],
-    providers: [AuthenticationService, NotificationsService]
+    providers: [NotificationsService, StateService, StatesStore, FormBuilder]
 })
 
 export class SignupComponent implements OnInit {
+    states: any[];
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -23,43 +29,94 @@ export class SignupComponent implements OnInit {
         clickToClose: false,
         maxLength: 10
     };
-    signupForm: FormGroup;
-    signupFormControls;
-    isSignupInProgress;
+    signupform: FormGroup;
+    userformControls;
+    isSignupInProgress = false;
+
     constructor(
         private fb: FormBuilder,
-        private _authenticationService: AuthenticationService,
+        private _router: Router,
+        private _notificationsStore: NotificationsStore,
         private _notificationsService: NotificationsService,
         private _sessionStore: SessionStore,
-        private _router: Router
+        private _authenticationService: AuthenticationService,
+        private _stateService: StateService,
+        private _statesStore: StatesStore,
+        private _elRef: ElementRef
     ) {
-        this.signupForm = this.fb.group({
-            name: ['', Validators.required],
-            email: ['', [Validators.required, AppValidators.emailValidator]],
-            mobileNo: ['', [Validators.required, AppValidators.mobileNoValidator]],
-            password: ['', Validators.required],
-            confirmPassword: ['', Validators.required]
-        }, { validator: AppValidators.matchingPasswords('password', 'confirmPassword') });
-        
-        this.signupFormControls = this.signupForm.controls;
+        this.signupform = this.fb.group({
+            user: this.fb.group({
+                // userName: ['', [Validators.required, AppValidators.emailValidator]],
+                password: ['', Validators.required],
+                confirmPassword: ['', Validators.required],
+                firstname: ['', Validators.required],
+                middlename: [''],
+                lastname: ['', Validators.required],
+                email: ['', [Validators.required, AppValidators.emailValidator]]
+            }, { validator: AppValidators.matchingPasswords('password', 'confirmPassword') }),
+            contactInfo: this.fb.group({
+
+                cellPhone: ['', [Validators.required]],
+                homePhone: [''],
+                workPhone: [''],
+                faxNo: ['']
+            }),
+            address: this.fb.group({
+                address1: [''],
+                address2: [''],
+                city: [''],
+                zipCode: [''],
+                state: [''],
+                country: ['']
+            }),
+            account: this.fb.group({
+                accountName: ['', Validators.required]
+
+            })
+        });
+
+        this.userformControls = this.signupform.controls;
+
     }
 
     ngOnInit() {
-        
+        this._stateService.getStates()
+            .subscribe(states => this.states = states);
     }
 
-    register() {
+
+    saveUser() {
         this.isSignupInProgress = true;
-        var result;
-        var user = new User({
-            'name': this.signupForm.value.name,
-            'email': this.signupForm.value.email,
-            'phone': this.signupForm.value.mobileNo,
-            'password': this.signupForm.value.password
+        let result;
+        let signupFormValues = this.signupform.value;
+        let accountDetail = new AccountDetail({
+            account: new Account({
+                name: signupFormValues.account.accountName
+            }),
+            user: new User({
+                firstName: signupFormValues.user.firstname,
+                middleName: signupFormValues.user.middlename,
+                lastName: signupFormValues.user.lastname,
+                userName: signupFormValues.user.email,
+                password: signupFormValues.user.password
+            }),
+            contactInfo: new ContactInfo({
+                cellPhone: signupFormValues.contactInfo.cellPhone,
+                emailAddress: signupFormValues.user.email,
+                faxNo: signupFormValues.contactInfo.faxNo,
+                homePhone: signupFormValues.contactInfo.homePhone,
+                workPhone: signupFormValues.contactInfo.workPhone
+            }),
+            address: new Address({
+                address1: signupFormValues.address.address1,
+                address2: signupFormValues.address.address2,
+                city: signupFormValues.address.city,
+                country: signupFormValues.address.country,
+                state: signupFormValues.address.state,
+                zipCode: signupFormValues.address.zipCode
+            })
         });
-        result = this._authenticationService.register(user);
-
-
+        result = this._authenticationService.register(accountDetail);
         result.subscribe(
             (response) => {
                 this._notificationsService.success('Welcome!', 'You have suceessfully registered!');
@@ -74,6 +131,7 @@ export class SignupComponent implements OnInit {
             () => {
                 this.isSignupInProgress = false;
             });
+
     }
 
 }
