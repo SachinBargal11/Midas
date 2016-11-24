@@ -1,0 +1,144 @@
+<div class="page-center">
+    <div class="page-center-in">
+        <div class="container-fluid">
+            <h5 class="with-border">Add Location</h5>
+            <form [formGroup]="addlocationform" (ngSubmit)="save()">
+                <section class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="form-label"> Office Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="addlocationformControls.officeName.touched && !addlocationformControls.officeName.valid">
+                                    <input formControlName="officeName" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.officeName.valid">
+                                    <div class='error-list' *ngIf="addlocationformControls.officeName.touched && !addlocationformControls.officeName.valid">
+                                        <ul>
+                                            <li *ngIf="addlocationformControls.officeName.hasError('required')">Office Name is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="col-lg-6">
+                                <label class="form-label"> Address
+                                        </label>
+                                <div class="form-group" [class.error]="addlocationformControls.address.touched && !addlocationformControls.address.valid">
+                                    <input formControlName="address" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.address.valid">
+                                    <div class='error-list' *ngIf="addlocationformControls.address.touched && !addlocationformControls.address.valid">
+                                        <ul>
+                                            <li *ngIf="addlocationformControls.address.hasError('required')">Address is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="form-label"> City
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="addlocationformControls.city.touched && !addlocationformControls.city.valid">
+                                    <input formControlName="city" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.city.valid">
+                                    <div class='error-list' *ngIf="addlocationformControls.city.touched && !addlocationformControls.city.valid">
+                                        <ul>
+                                            <li *ngIf="addlocationformControls.city.hasError('required')">City is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="form-label"> State
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="addlocationformControls.state.touched && !addlocationformControls.state.valid">
+                                    <input formControlName="state" list="states" name="mystate" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.state.valid">
+                                    <datalist id="states">
+                                        <option>New York</option>
+                                        <option>California</option>
+                                    </datalist> 
+                                    <div class='error-list' *ngIf="addlocationformControls.state.touched && !addlocationformControls.state.valid">
+                                        <ul>
+                                            <li *ngIf="addlocationformControls.state.hasError('required')">State is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="form-label"> Zip code
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="addlocationformControls.zipcode.touched && !addlocationformControls.zipcode.valid">
+                                    <input formControlName="zipcode" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.zipcode.valid">
+                                    <div class='error-list' *ngIf="addlocationformControls.zipcode.touched && !addlocationformControls.zipcode.valid">
+                                        <ul>
+                                            <li *ngIf="addlocationformControls.zipcode.hasError('required')">zipcode is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="form-label"> Office phone
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="addlocationformControls.officePhone.touched && !addlocationformControls.officePhone.valid">
+                                    <!--<input formControlName="officePhone" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.officePhone.valid">-->
+                                    <p-inputMask mask="999-999-9999" formControlName="officePhone" [class.error]="addlocationformControls.officePhone.touched && !addlocationformControls.officePhone.valid" 
+                                     placeholder="999-999-9999" styleClass="form-control" [options]="{showMaskOnHover:false}"></p-inputMask>
+                                    <div class='error-list' *ngIf="addlocationformControls.officePhone.touched && !addlocationformControls.officePhone.valid">
+                                        <ul>
+                                            <li *ngIf="addlocationformControls.officePhone.hasError('required')">Office Phone is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="form-label"> Fax
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="addlocationformControls.fax.touched && !addlocationformControls.fax.valid">
+                                    <input formControlName="fax" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.fax.valid">
+                                    <div class='error-list' *ngIf="addlocationformControls.fax.touched && !addlocationformControls.fax.valid">
+                                        <ul>
+                                            <li *ngIf="addlocationformControls.fax.hasError('required')">Fax is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="form-label"> Office type
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="addlocationformControls.officeType.touched && !addlocationformControls.officeType.valid">
+                                    <!--<input formControlName="officeType" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.officeType.valid">-->
+                                    <select formControlName="officeType" type="text" class="form-control" placeholder="" [class.error]="addlocationformControls.officeType.touched && !addlocationformControls.officeType.valid">
+                                        <option value="0">None</option>
+                                        <option value="1">Medical Office</option>
+                                        <option value="2">Medical Testing Facility</option>
+                                    </select>
+                                    <div class='error-list' *ngIf="addlocationformControls.officeType.touched && !addlocationformControls.officeType.valid">
+                                        <ul>
+                                            <li *ngIf="addlocationformControls.officeType.hasError('required')">Office type is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="text-center">
+                <button [disabled]="!addlocationform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+                    <loader [visible]="isSaveProgress"></loader>
+                </button>
+                <a [routerLink]="['/medicalProvider/locations']" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
