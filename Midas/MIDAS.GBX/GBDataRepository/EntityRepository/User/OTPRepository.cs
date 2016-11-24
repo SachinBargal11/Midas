@@ -62,10 +62,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Validate OTP
-        public override Object ValidateOTP(JObject entity)
+        public override Object ValidateOTP<T>(T entity)
         {
-            BO.OTP otpBO = entity["otp"].ToObject<BO.OTP>();
-            BO.User userBO = entity["user"].ToObject<BO.User>();
+            BO.ValidateOTP validateOTP = (BO.ValidateOTP)(object)entity;
+
+
+            BO.OTP otpBO = validateOTP.otp;
+            BO.User userBO = validateOTP.user;
 
             dynamic data_ = _context.OTPs.Where(x => x.OTP1 == otpBO.OTP1 && x.Pin==otpBO.Pin && (x.IsDeleted != true) && x.UserID== userBO.ID).FirstOrDefault();
 
@@ -105,9 +108,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Generate OTP
-        public override Object RegenerateOTP(JObject entity)
+        public override Object RegenerateOTP<T>(T entity)
         {
-            BO.User otpUser = entity["user"].ToObject<BO.User>();
+            BO.User otpUser = (BO.User)(object)entity;
 
 
                 var otpOld = _context.OTPs.Where(p => p.UserID == otpUser.ID).ToList<OTP>();

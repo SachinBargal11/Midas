@@ -19,21 +19,21 @@ namespace MIDAS.GBX.WebAPI
             dataAccessManager = new GbDataAccessManager<T>();
         }
 
-        public HttpResponseMessage CreateGbObject(HttpRequestMessage request, JObject gbObject)
+        public HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject)
         {
-            Object ID = dataAccessManager.Save(gbObject);
-
+            var objResult = dataAccessManager.Save(gbObject);
+ 
             try
             {
-                var res = (GbObject)(object)ID;
+                var res = (GbObject)(object)objResult;
                 if (res != null)
-                    return request.CreateResponse(HttpStatusCode.Created, ID);
+                    return request.CreateResponse(HttpStatusCode.Created, res);
                 else
-                    return request.CreateResponse(HttpStatusCode.NotFound, ID);
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
             }
             catch (Exception ex)
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
         
@@ -45,19 +45,18 @@ namespace MIDAS.GBX.WebAPI
         }
         public HttpResponseMessage GetObject(HttpRequestMessage request, int id)
         {
-
-            Object ID = dataAccessManager.Get(id);
+            var objResult = dataAccessManager.Get(id);
             try
             {
-                var res = (GbObject)(object)ID;
+                var res = (GbObject)(object)objResult;
                 if (res != null)
-                    return request.CreateResponse(HttpStatusCode.Created, ID);
+                    return request.CreateResponse(HttpStatusCode.Created, res);
                 else
-                    return request.CreateResponse(HttpStatusCode.NotFound, ID);
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
             }
             catch (Exception ex)
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
 
@@ -87,24 +86,20 @@ namespace MIDAS.GBX.WebAPI
             throw new NotImplementedException();
         }
 
-        public HttpResponseMessage GetGbObjects(HttpRequestMessage request,JObject data)
+        public HttpResponseMessage GetGbObjects(HttpRequestMessage request, T gbObject)
         {
-            Object objResult = dataAccessManager.Get(data);
-
+            var objResult = dataAccessManager.Get(gbObject);
             try
             {
-                var res = (GbObject)(object)objResult;
-                if (res != null)
-                    return request.CreateResponse(HttpStatusCode.Created, objResult);
-                else
-                    return request.CreateResponse(HttpStatusCode.NotFound, objResult);
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
             }
             catch (Exception ex)
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
 
+        #region Signup
         public HttpResponseMessage SignUp(HttpRequestMessage request, T gbObject)
         {
             Signup signUPBO = (Signup)(object)gbObject;
@@ -136,13 +131,20 @@ namespace MIDAS.GBX.WebAPI
             }
             catch (Exception ex)
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+        #endregion
 
-        public HttpResponseMessage Login(HttpRequestMessage request, JObject data)
+        #region Login
+        public HttpResponseMessage Login(HttpRequestMessage request, T gbObject)
         {
-            Object objResult = dataAccessManager.Login(data);
+            User userBO = (User)(object)gbObject;
+            if (userBO == null)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "User object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+            var objResult = dataAccessManager.Login(gbObject);
 
             try
             {
@@ -155,6 +157,7 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
             }
         }
+        #endregion
 
         public HttpResponseMessage ValidateInvitation(HttpRequestMessage request, T gbObject)
         {
@@ -175,7 +178,7 @@ namespace MIDAS.GBX.WebAPI
             }
             catch (Exception ex)
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
 
@@ -200,9 +203,14 @@ namespace MIDAS.GBX.WebAPI
             throw new NotImplementedException();
         }
 
-        public HttpResponseMessage ValidateOTP(HttpRequestMessage request, JObject data)
+        public HttpResponseMessage ValidateOTP(HttpRequestMessage request, T gbObject)
         {
-            Object objResult = dataAccessManager.ValidateOTP(data);
+            OTP otpBO = (OTP)(object)gbObject;
+            if (otpBO == null)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "OTP object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+            var objResult = dataAccessManager.ValidateOTP(gbObject);
 
             try
             {
@@ -211,13 +219,18 @@ namespace MIDAS.GBX.WebAPI
             }
             catch (Exception ex)
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
 
-        public HttpResponseMessage RegenerateOTP(HttpRequestMessage request, JObject data)
+        public HttpResponseMessage RegenerateOTP(HttpRequestMessage request, T gbObject)
         {
-            Object objResult = dataAccessManager.RegenerateOTP(data);
+            OTP otpBO = (OTP)(object)gbObject;
+            if (otpBO == null)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "OTP object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+            var objResult = dataAccessManager.RegenerateOTP(gbObject);
 
             try
             {
@@ -226,13 +239,18 @@ namespace MIDAS.GBX.WebAPI
             }
             catch (Exception ex)
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
 
-        public HttpResponseMessage GeneratePasswordLink(HttpRequestMessage request, JObject data)
+        public HttpResponseMessage GeneratePasswordLink(HttpRequestMessage request, T gbObject)
         {
-            Object objResult = dataAccessManager.GeneratePasswordLink(data);
+            OTP otpBO = (OTP)(object)gbObject;
+            if (otpBO == null)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "OTP object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+            var objResult = dataAccessManager.GeneratePasswordLink(gbObject);
 
             try
             {
@@ -241,13 +259,18 @@ namespace MIDAS.GBX.WebAPI
             }
             catch (Exception ex)
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
 
-        public HttpResponseMessage ValidatePassword(HttpRequestMessage request, JObject data)
+        public HttpResponseMessage ValidatePassword(HttpRequestMessage request, T gbObject)
         {
-            Object objResult = dataAccessManager.ValidatePassword(data);
+            OTP otpBO = (OTP)(object)gbObject;
+            if (otpBO == null)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "OTP object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+            var objResult = dataAccessManager.ValidatePassword(gbObject);
 
             try
             {
@@ -256,7 +279,7 @@ namespace MIDAS.GBX.WebAPI
             }
             catch (Exception ex)
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
         #endregion

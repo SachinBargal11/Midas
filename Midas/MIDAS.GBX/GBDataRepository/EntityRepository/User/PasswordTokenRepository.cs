@@ -39,9 +39,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region ValidatePassword
-        public override Object ValidatePassword(JObject entity)
+        public override Object ValidatePassword<T>(T entity)
         {
-            BO.PasswordToken passwordBO = entity["user"].ToObject<BO.PasswordToken>();
+            BO.PasswordToken passwordBO = (BO.PasswordToken)(object)entity;
 
             PasswordToken data_ = _context.PasswordTokens.Where(x => x.IsTokenUsed != true && x.TokenHash == passwordBO.UniqueID).FirstOrDefault();
 
@@ -62,9 +62,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
 
         #region GeneratePasswordLink
-        public override Object GeneratePasswordLink(JObject entity)
+        public override Object GeneratePasswordLink<T>(T entity)
         {
-            BO.PasswordToken passwordBO = entity["user"].ToObject<BO.PasswordToken>();
+            BO.PasswordToken passwordBO = (BO.PasswordToken)(object)entity;
 
             dynamic data_ = _context.Users.Where(x => x.UserName == passwordBO.UserName).FirstOrDefault();
             if (data_ == null)

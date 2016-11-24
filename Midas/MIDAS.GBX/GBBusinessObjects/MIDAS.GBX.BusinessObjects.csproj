@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -69,12 +69,14 @@
     <Compile Include="Speciality\CompanySpecialtyDetails.cs" />
     <Compile Include="Speciality\Specialty.cs" />
     <Compile Include="Speciality\SpecialtyDetails.cs" />
+    <Compile Include="User\AddUser.cs" />
     <Compile Include="User\OTP.cs" />
     <Compile Include="User\PasswordToken.cs" />
     <Compile Include="User\User.cs" />
     <Compile Include="User\UserCompany.cs" />
     <Compile Include="User\UserCompanyRole.cs" />
     <Compile Include="User\UserToken.cs" />
+    <Compile Include="ValidateOTP.cs" />
     <Compile Include="Validation\IValidation.cs" />
     <Compile Include="Validation\Validations.cs" />
   </ItemGroup>

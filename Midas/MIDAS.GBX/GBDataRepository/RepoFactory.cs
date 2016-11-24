@@ -37,7 +37,7 @@ namespace MIDAS.GBX
             }
             if (typeof(T) == typeof(BO.Location))
             {
-                repo = new PasswordTokenRepository(context);
+                repo = new LocationRepository(context);
             }
             if (typeof(T) == typeof(BO.MedicalProvider))
             {
@@ -62,6 +62,10 @@ namespace MIDAS.GBX
             if (typeof(T) == typeof(BO.Invitation))
             {
                 repo = new InvitationRepository(context);
+            }
+            if (typeof(T) == typeof(BO.SaveLocation))
+            {
+                repo = new LocationRepository(context);
             }
             return repo;
         }

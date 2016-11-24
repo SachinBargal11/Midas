@@ -126,25 +126,37 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Save Data
-        public override Object Save(JObject data)
+        #region Validate Entities
+        public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
-            BO.AddressInfo addressBO;
-            BO.ContactInfo contactinfoBO;
+            BO.AddUser addUser = (BO.AddUser)(object)entity;
+            var result = addUser.Validate(addUser);
+            return result;
+        }
+        #endregion
 
-            BO.User userBO = data["user"].ToObject<BO.User>();
+        #region Save Data
+        public override Object Save<T>(T entity)
+        {
+            BO.AddUser addUserBO = (BO.AddUser)(object)entity;
+            BO.AddressInfo addressBO = addUserBO.address;
+            BO.ContactInfo contactinfoBO = addUserBO.contactInfo;
 
-            addressBO = data["addressInfo"] == null ? new BO.AddressInfo() : data["address"].ToObject<BO.AddressInfo>();
-            contactinfoBO = data["contactinfo"] == null ? new BO.ContactInfo() : data["contactinfo"].ToObject<BO.ContactInfo>();
+            BO.User userBO = addUserBO.user;
+
+            if (addUserBO.user == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "User object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
 
             User userDB = new User();
             AddressInfo addressDB = new AddressInfo();
             ContactInfo contactinfoDB = new ContactInfo();
 
-                           if (_context.Users.Any(o => o.UserName == userBO.UserName))
-                {
-                    return new BO.GbObject { Message = Constants.UserAlreadyExists };
-                }
+            if (_context.Users.Any(o => o.UserName == userBO.UserName))
+            {
+                return new BO.GbObject { Message = Constants.UserAlreadyExists };
+            }
 
             #region Address
             addressDB.id = addressBO.ID;
@@ -176,7 +188,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             userDB.Gender = System.Convert.ToByte(userBO.Gender);
             userDB.UserType = System.Convert.ToByte(userBO.UserType);
             userDB.ImageLink = userBO.ImageLink;
-            userDB.UserStatus= System.Convert.ToByte(userBO.Status);
+            userDB.UserStatus = System.Convert.ToByte(userBO.Status);
             if (userBO.DateOfBirth.HasValue)
                 userDB.DateOfBirth = userBO.DateOfBirth.Value;
             userDB.Password = userBO.Password;
@@ -186,6 +198,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             userDB.AddressInfo = addressDB;
             userDB.ContactInfo = contactinfoDB;
+
+            switch (userBO.UserType)
+            {
+                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Admin:
+                    break;
+                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Owner:
+                    break;
+                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Doctor:
+                    break;
+                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Patient:
+                    break;
+                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Attorney:
+                    break;
+                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Adjuster:
+                    break;
+                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Accounts:
+                    break;
+                default:
+                    break;
+            }
             #endregion
             if (userDB.id > 0)
             {
@@ -199,9 +231,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         usr.UpdateByUserID = userBO.UpdateByUserID.Value;
                     usr.UpdateDate = DateTime.UtcNow;
                     usr.IsDeleted = userBO.IsDeleted;
-                    usr.UserName = userBO.UserName==null?usr.UserName: userBO.UserName;
+                    usr.UserName = userBO.UserName == null ? usr.UserName : userBO.UserName;
                     usr.FirstName = userBO.FirstName == null ? usr.FirstName : userBO.FirstName;
-                    usr.MiddleName = userBO.MiddleName == null? usr.MiddleName : userBO.MiddleName;
+                    usr.MiddleName = userBO.MiddleName == null ? usr.MiddleName : userBO.MiddleName;
                     usr.LastName = userBO.LastName == null ? usr.LastName : userBO.LastName;
                     usr.Gender = System.Convert.ToByte(userBO.Gender);
                     usr.UserType = System.Convert.ToByte(userBO.UserType);
@@ -284,6 +316,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var res = (BO.GbObject)(object)acc_;
             return (object)res;
         }
+
         #endregion
 
         #region Get User By ID
@@ -295,9 +328,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Login
-        public override Object Login(JObject entity)
+
+        public override Object Login<T>(T entity)
         {
-            BO.User userBO = entity["user"].ToObject<BO.User>();
+            BO.User userBO = (BO.User)(object)entity;
+
             string Pass = userBO.Password;
             dynamic data_ = _context.Users.Where(x => x.UserName == userBO.UserName).FirstOrDefault();
             if(data_==null)
@@ -368,10 +403,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get Users By parameters
-        public override object Get(JObject entity)
+        public override object Get<T>(T entity)
         {
             //To Do Search Query
-            BO.User userBO = entity["user"].ToObject<BO.User>();
+            BO.User userBO = (BO.User)(object)entity;
 
             dynamic data_ = _context.Users.Where(x => x.UserName == userBO.UserName).FirstOrDefault();
             if (data_ == null)

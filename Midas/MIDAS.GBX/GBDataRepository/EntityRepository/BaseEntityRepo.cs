@@ -25,7 +25,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object Save(JObject data)
+        public virtual Object Save<T>(T entity)
         {
             throw new NotImplementedException();
         }
@@ -69,7 +69,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object Login(JObject entity)
+        public virtual Object Login<T>(T entity)
         {
             throw new NotImplementedException();
         }
@@ -83,7 +83,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object Get(JObject entity)
+        public virtual Object Get<T>(T entity)
         {
             throw new NotImplementedException();
         }
@@ -109,20 +109,20 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object ValidateOTP(JObject entity)
+        public virtual Object ValidateOTP<T>(T entity)
         {
             throw new NotImplementedException();
         }
 
-        public virtual Object RegenerateOTP(JObject entity)
+        public virtual Object RegenerateOTP<T>(T entity)
         {
             throw new NotImplementedException();
         }
-        public virtual Object GeneratePasswordLink(JObject entity)
+        public virtual Object GeneratePasswordLink<T>(T entity)
         {
             throw new NotImplementedException();
         }
-        public virtual Object ValidatePassword(JObject entity)
+        public virtual Object ValidatePassword<T>(T entity)
         {
             throw new NotImplementedException();
         }

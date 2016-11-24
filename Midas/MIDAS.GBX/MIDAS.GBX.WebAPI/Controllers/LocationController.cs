@@ -24,15 +24,17 @@ namespace MIDAS.GBX.WebAPI.Controllers
     {
 
         private IRequestHandler<Location> requestHandler;
+        private IRequestHandler<SaveLocation> savelocationrequestHandler;
         public LocationController()
         {
             requestHandler = new GbApiRequestHandler<Location>();
+            savelocationrequestHandler = new GbApiRequestHandler<SaveLocation>();
         }
 
         [HttpPost]
         [Route("GetAll")]
         [AllowAnonymous]
-        public HttpResponseMessage Get(JObject data)
+        public HttpResponseMessage Get([FromBody]Location data)
         {
             return requestHandler.GetGbObjects(Request, data);
         }
@@ -49,9 +51,9 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpPost]
         [Route("Add")]
         [AllowAnonymous]
-        public HttpResponseMessage Post(JObject data)
+        public HttpResponseMessage Post([FromBody]SaveLocation location)
         {
-            return requestHandler.CreateGbObject(Request, data);
+            return savelocationrequestHandler.CreateGbObject(Request, location);
         }
 
         // PUT: api/Organizations/5

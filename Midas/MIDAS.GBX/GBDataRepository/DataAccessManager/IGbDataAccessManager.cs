@@ -9,13 +9,13 @@ namespace MIDAS.GBX.DataAccessManager
 {
     public interface IGbDataAccessManager<T>
     {
-        Object Save(JObject entity);
+        Object Save(T gbObject);
         int Delete(T entity);
         Object Get(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
 
-        Object Get(JObject data, int? nestingLevels = null);
+        Object Get(T gbObject, int? nestingLevels = null);
         Object Signup(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
-        Object Login(JObject data, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object Login(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object ValidateInvitation(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
 
         Object GenerateToken(int userId);
@@ -23,11 +23,11 @@ namespace MIDAS.GBX.DataAccessManager
         Object Kill(int tokenId);
         Object DeleteByUserId(int userId);
 
-        Object ValidateOTP(JObject data);
-        Object RegenerateOTP(JObject data);
+        Object ValidateOTP(T gbObject);
+        Object RegenerateOTP(T gbObject);
 
-        Object GeneratePasswordLink(JObject data);
-        Object ValidatePassword(JObject data);
+        Object GeneratePasswordLink(T gbObject);
+        Object ValidatePassword(T gbObject);
 
     }
 }

@@ -33,7 +33,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [Route("GetByUserName")]
         [Route("GetAll")]
         [AllowAnonymous]
-        public HttpResponseMessage Get(JObject data)
+        public HttpResponseMessage Get([FromBody]User data)
         {
             return requestHandler.GetGbObjects(Request, data);
         }
@@ -50,7 +50,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpPost]
         [Route("Add")]
         [AllowAnonymous]
-        public HttpResponseMessage Post(JObject data)
+        public HttpResponseMessage Post([FromBody]User data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }
@@ -76,9 +76,9 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpPost]
         [Route("Signin")]
         [AllowAnonymous]
-        public HttpResponseMessage Signin(JObject data)
+        public HttpResponseMessage Signin([FromBody]User user)
         {
-            return requestHandler.Login(Request, data);
+            return requestHandler.Login(Request, user);
         }
 
         // Unique Name Validation

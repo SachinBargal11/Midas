@@ -42,15 +42,6 @@ namespace MIDAS.GBX.DataAccessManager
 
                 baseRepo.PreSave(gbObject);
 
-                //List<BusinessValidation> validations = gbObject.Validate();
-                //var failedValidations = validations.Where(v => v.ValidationResult == BusinessValidationResult.Failure);
-
-                //if (failedValidations.Count() > 0)
-                //{
-                //    throw new GbValidationException();
-                //}
-
-
                 var gbSavedObject = baseRepo.Delete(gbObject);
 
                 //Excecute Object postsave 
@@ -90,32 +81,42 @@ namespace MIDAS.GBX.DataAccessManager
         }
         #endregion
 
-        public Object Get(JObject data, int? nestingLevels = default(int?))
+        public Object Get(T entity, int? nestingLevels = default(int?))
         {
 
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
 
-               var gbdata = baseRepo.Get(data);
+                var gbdata = baseRepo.Get(entity);
 
                 return gbdata;
             }
+            catch (DbEntityValidationException ex)
+            {
+                return ex;
+            }
+            catch (DbUpdateException ex)
+            {
+                var sqlex = ex.InnerException.InnerException as SqlException;
+
+                return new ErrorObject { ErrorMessage = "Unique key exception.Please refer error object for more details.", errorObject = sqlex, ErrorLevel = ErrorLevel.Exception };
+            }
             catch (GbException gbe)
             {
-                throw;
+                return gbe;
             }
             catch (Exception ex)
             {
-                throw;
+                return ex;
             }
         }
 
 
 
-        #region Save
+        #region Login
 
-        public Object Login(JObject data, int? nestingLevels = default(int?), bool includeAllVersions = false, bool applySecurity = false)
+        public Object Login(T data, int? nestingLevels = default(int?), bool includeAllVersions = false, bool applySecurity = false)
         {
             try
             {
@@ -126,20 +127,16 @@ namespace MIDAS.GBX.DataAccessManager
 
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
 
-                //List<BusinessValidation> validations = gbObject.Validate();
-                //var failedValidations = validations.Where(v => v.ValidationResult == BusinessValidationResult.Failure);
-
-                //if (failedValidations.Count() > 0)
-                //{
-                //    throw new GbValidationException();
-                //    //format the exception message
-                //    //throw new GbValidationException(CreateValidationExceptionMessage(failedValidations, typeof(T).Name));
-                //}
-
-
-                var gbSavedObject = baseRepo.Login(data);
-
-                return gbSavedObject;
+                List<MIDAS.GBX.BusinessObjects.BusinessValidation> validationResults = baseRepo.Validate(data);
+                if (validationResults.Count > 0)
+                {
+                    return new ErrorObject { ErrorMessage = "Please check error object for more details", errorObject = validationResults, ErrorLevel = ErrorLevel.Validation };
+                }
+                else
+                {
+                    var gbdata = baseRepo.Login(data);
+                    return gbdata;
+                }
             }
 
             catch (GbException gbe)
@@ -153,7 +150,9 @@ namespace MIDAS.GBX.DataAccessManager
                 throw new GbException(string.Format("An unknown Error occurred while saving {0} [{1}]", ((GbObject)(object)(data)).ID, ex.Message));
             }
         }
-        public Object Save(JObject data)
+#endregion
+        #region Save
+        public Object Save(T data)
         {
             try
             {
@@ -165,36 +164,36 @@ namespace MIDAS.GBX.DataAccessManager
 
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
 
-                baseRepo.PreSave(data);
-
-                //List<BusinessValidation> validations = gbObject.Validate();
-                //var failedValidations = validations.Where(v => v.ValidationResult == BusinessValidationResult.Failure);
-
-                //if (failedValidations.Count() > 0)
-                //{
-                //    throw new GbValidationException();
-                //    //format the exception message
-                //    //throw new GbValidationException(CreateValidationExceptionMessage(failedValidations, typeof(T).Name));
-                //}
-
-                var gbSavedObject = baseRepo.Save(data);
-
-                //Excecute Object postsave 
-                baseRepo.PostSave(data);
-
-                return gbSavedObject;
+                List<MIDAS.GBX.BusinessObjects.BusinessValidation> validationResults = baseRepo.Validate(data);
+                if (validationResults.Count > 0)
+                {
+                    return new ErrorObject { ErrorMessage = "Please check error object for more details", errorObject = validationResults, ErrorLevel = ErrorLevel.Validation };
+                }
+                else
+                {
+                    var gbdata = baseRepo.Save(data);
+                    return gbdata;
+                }
             }
 
+            catch (DbEntityValidationException ex)
+            {
+                return ex;
+            }
+            catch (DbUpdateException ex)
+            {
+                var sqlex = ex.InnerException.InnerException as SqlException;
+
+                return new ErrorObject { ErrorMessage = "Unique key exception.Please refer error object for more details.", errorObject = sqlex, ErrorLevel = ErrorLevel.Exception };
+            }
             catch (GbException gbe)
             {
-                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
                 return gbe;
             }
             catch (Exception ex)
             {
                 return ex;
             }
-
         }
         #endregion
         public Object Signup(T data, int? nestingLevels = default(int?), bool includeAllVersions = false, bool applySecurity = false)
@@ -287,13 +286,11 @@ namespace MIDAS.GBX.DataAccessManager
 
 
 
-        Object IGbDataAccessManager<T>.Get(int id, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+         public Object Get(int id, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-
-
                 var gbdata = baseRepo.Get(id);
 
                 return gbdata;
@@ -311,7 +308,7 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public object ValidateOTP(JObject data)
+        public object ValidateOTP(T data)
         {
             try
             {
@@ -322,10 +319,17 @@ namespace MIDAS.GBX.DataAccessManager
 
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
 
+                List<MIDAS.GBX.BusinessObjects.BusinessValidation> validationResults = baseRepo.Validate(data);
+                if (validationResults.Count > 0)
+                {
+                    return new ErrorObject { ErrorMessage = "Please check error object for more details", errorObject = validationResults, ErrorLevel = ErrorLevel.Validation };
+                }
+                else
+                {
+                    var gbSavedObject = baseRepo.ValidateOTP(data);
 
-                var gbSavedObject = baseRepo.ValidateOTP(data);
-
-                return gbSavedObject;
+                    return gbSavedObject;
+                }
             }
 
             catch (GbException gbe)
@@ -340,7 +344,7 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public object RegenerateOTP(JObject data)
+        public object RegenerateOTP(T data)
         {
             try
             {
@@ -351,10 +355,17 @@ namespace MIDAS.GBX.DataAccessManager
 
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
 
+                List<MIDAS.GBX.BusinessObjects.BusinessValidation> validationResults = baseRepo.Validate(data);
+                if (validationResults.Count > 0)
+                {
+                    return new ErrorObject { ErrorMessage = "Please check error object for more details", errorObject = validationResults, ErrorLevel = ErrorLevel.Validation };
+                }
+                else
+                {
+                    var gbSavedObject = baseRepo.RegenerateOTP(data);
 
-                var gbSavedObject = baseRepo.RegenerateOTP(data);
-
-                return gbSavedObject;
+                    return gbSavedObject;
+                }
             }
 
             catch (GbException gbe)
@@ -369,7 +380,7 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public object GeneratePasswordLink(JObject data)
+        public object GeneratePasswordLink(T data)
         {
             try
             {
@@ -378,10 +389,17 @@ namespace MIDAS.GBX.DataAccessManager
 
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
 
+                List<MIDAS.GBX.BusinessObjects.BusinessValidation> validationResults = baseRepo.Validate(data);
+                if (validationResults.Count > 0)
+                {
+                    return new ErrorObject { ErrorMessage = "Please check error object for more details", errorObject = validationResults, ErrorLevel = ErrorLevel.Validation };
+                }
+                else
+                {
+                    var gbSavedObject = baseRepo.GeneratePasswordLink(data);
 
-                var gbSavedObject = baseRepo.GeneratePasswordLink(data);
-
-                return gbSavedObject;
+                    return gbSavedObject;
+                }
             }
 
             catch (GbException gbe)
@@ -394,7 +412,7 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public object ValidatePassword(JObject data)
+        public object ValidatePassword(T data)
         {
             try
             {
@@ -403,10 +421,17 @@ namespace MIDAS.GBX.DataAccessManager
 
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
 
+                List<MIDAS.GBX.BusinessObjects.BusinessValidation> validationResults = baseRepo.Validate(data);
+                if (validationResults.Count > 0)
+                {
+                    return new ErrorObject { ErrorMessage = "Please check error object for more details", errorObject = validationResults, ErrorLevel = ErrorLevel.Validation };
+                }
+                else
+                {
+                    var gbSavedObject = baseRepo.ValidatePassword(data);
 
-                var gbSavedObject = baseRepo.ValidatePassword(data);
-
-                return gbSavedObject;
+                    return gbSavedObject;
+                }
             }
 
             catch (GbException gbe)

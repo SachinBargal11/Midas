@@ -101,7 +101,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Save Data
-        public override object Save(JObject data)
+        public override object Save<T>(T data)
         {
             return base.Save(data);
         }

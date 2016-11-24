@@ -32,7 +32,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpGet]
         [Route("GetAll")]
         [AllowAnonymous]
-        public HttpResponseMessage Get(JObject data)
+        public HttpResponseMessage Get([FromBody]PasswordToken data)
         {
             return requestHandler.GetGbObjects(Request, data);
         }
@@ -41,7 +41,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpPost]
         [Route("Add")]
         [AllowAnonymous]
-        public HttpResponseMessage Post(JObject data)
+        public HttpResponseMessage Post([FromBody]PasswordToken data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }
@@ -76,17 +76,17 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpPost]
         [Route("GeneratePasswordResetLink")]
         [AllowAnonymous]
-        public HttpResponseMessage GeneratePasswordLink(JObject data)
+        public HttpResponseMessage GeneratePasswordLink([FromBody]PasswordToken passwordToken)
         {
-            return requestHandler.GeneratePasswordLink(Request, data);
+            return requestHandler.GeneratePasswordLink(Request, passwordToken);
         }
 
         [HttpPost]
         [Route("ValidatePassword")]
         [AllowAnonymous]
-        public HttpResponseMessage ValidatePassword(JObject data)
+        public HttpResponseMessage ValidatePassword([FromBody]PasswordToken passwordToken)
         {
-            return requestHandler.ValidatePassword(Request, data);
+            return requestHandler.ValidatePassword(Request, passwordToken);
         }
 
         protected override void Dispose(bool disposing)

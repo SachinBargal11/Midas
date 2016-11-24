@@ -32,7 +32,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpPost]
         [Route("GetAll")]
         [AllowAnonymous]
-        public HttpResponseMessage Get(JObject data)
+        public HttpResponseMessage Get([FromBody]DoctorSpeciality data)
         {
             return requestHandler.GetGbObjects(Request, data);
         }
@@ -49,7 +49,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpPost]
         [Route("Add")]
         [AllowAnonymous]
-        public HttpResponseMessage Post(JObject data)
+        public HttpResponseMessage Post([FromBody]DoctorSpeciality data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }
