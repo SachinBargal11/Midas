@@ -1,7 +1,0 @@
-﻿CREATE TABLE [dbo].[EntityType]
-(
-	[Id] INT NOT NULL PRIMARY KEY IDENTITY(1,1),
-	[Name]	NVARCHAR(50) NOT NULL ,
-	[HasSchedule] BIT NOT NULL DEFAULT(0),
-	[IsBillable] BIT NOT NULL DEFAULT(0),
-)
