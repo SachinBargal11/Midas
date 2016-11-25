@@ -81,7 +81,7 @@
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.phone.touched && !basicformControls.phone.valid">
                                     <p-inputMask mask="999-999-9999" formControlName="phone" [class.error]="basicformControls.phone.touched && !basicformControls.phone.valid" 
-                                     placeholder="999-999-9999" styleClass="form-control" [options]="{showMaskOnHover:false}"></p-inputMask>
+                                     placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
                                     <div class='error-list' *ngIf="basicformControls.phone.touched && !basicformControls.phone.valid">
                                         <ul>
                                             <li *ngIf="basicformControls.phone.hasError('required')">Phone is required.</li>
