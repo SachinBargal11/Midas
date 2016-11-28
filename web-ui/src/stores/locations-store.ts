@@ -44,11 +44,33 @@ export class LocationsStore {
         return <Observable<LocationDetails[]>>Observable.fromPromise(promise);
     }
 
+    // getLocationById(id: number): Observable<LocationDetails[]> {
+    //     let promise = new Promise((resolve, reject) => {
+    //         let matchedLocation: LocationDetails = this.findLocationById(id);
+    //         if (matchedLocation) {
+    //             resolve(matchedLocation);
+    //         } else {
+    //             this._locationsService.getLocatio(id).subscribe((location: LocationDetails) => {
+    //                 resolve(location);
+    //             }, error => {
+    //                 reject(error);
+    //             });
+    //         }
+    //     });
+    //     return <Observable<LocationDetails>>Observable.fromPromise(promise);
+    // }
+
+    findLocationById(id: number) {
+        let locations = this._locations.getValue();
+        let index = locations.findIndex((currentPatient: LocationDetails) => currentPatient.location.id === id);
+        return locations.get(index);
+    }
+
     resetStore() {
         this._locations.next(this._locations.getValue().clear());
         this._selectedLocation.next(null);
     }
-    
+
     addLocation(basicInfo: LocationDetails): Observable<LocationDetails> {
         let promise = new Promise((resolve, reject) => {
             this._locationsService.addLocation(basicInfo).subscribe((location: LocationDetails) => {

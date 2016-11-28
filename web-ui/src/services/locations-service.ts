@@ -21,6 +21,25 @@ export class LocationsService {
         this._headers.append('Content-Type', 'application/json');
     }
 
+    // getLocation(id: Number): Observable<LocationDetails> {
+    //     let promise: Promise<LocationDetails> = new Promise((resolve, reject) => {
+    //         return this._http.get(this._url + '/Location/get/' + id).map(res => res.json())
+    //             .subscribe((data: Array<any>) => {
+    //                 let patient = null;
+    //                 if (data.length) {
+    //                     patient = PatientAdapter.parseResponse(data[0]);
+    //                     resolve(patient);
+    //                 } else {
+    //                     reject(new Error('NOT_FOUND'));
+    //                 }
+    //             }, (error) => {
+    //                 reject(error);
+    //             });
+
+    //     });
+    //     return <Observable<Patient>>Observable.fromPromise(promise);
+    // }
+
     getLocations(): Observable<LocationDetails[]> {
         let promise: Promise<LocationDetails[]> = new Promise((resolve, reject) => {
             return this._http.post(this._url + '/Location/getall', JSON.stringify({	"company": {"id":16}}), {

@@ -1,17 +1,19 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router, ActivatedRoute} from '@angular/router';
-import {AppValidators} from '../../../utils/AppValidators';
-import {LocationsStore} from '../../../stores/locations-store';
-import {Location} from '../../../models/location';
-import {Contact} from '../../../models/contact';
-import {Address} from '../../../models/address';
-import {SessionStore} from '../../../stores/session-store';
-import {NotificationsStore} from '../../../stores/notifications-store';
-import {Notification} from '../../../models/notification';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AppValidators } from '../../../utils/AppValidators';
+import { Company } from '../../../models/company';
+import { LocationsStore } from '../../../stores/locations-store';
+import { LocationDetails } from '../../../models/location-details';
+import { Location } from '../../../models/location';
+import { Contact } from '../../../models/contact';
+import { Address } from '../../../models/address';
+import { SessionStore } from '../../../stores/session-store';
+import { NotificationsStore } from '../../../stores/notifications-store';
+import { Notification } from '../../../models/notification';
 import moment from 'moment';
-import {StatesStore} from '../../../stores/states-store';
-import {StateService} from '../../../services/state-service';
+import { StatesStore } from '../../../stores/states-store';
+import { StateService } from '../../../services/state-service';
 
 @Component({
     selector: 'basic',
@@ -31,6 +33,7 @@ export class BasicComponent implements OnInit {
     basicform: FormGroup;
     basicformControls;
     isSaveProgress = false;
+    location: Location;
 
     constructor(
         private _statesStore: StatesStore,
@@ -42,19 +45,21 @@ export class BasicComponent implements OnInit {
         private _locationsStore: LocationsStore,
         private _elRef: ElementRef
     ) {
-        this._route.params.subscribe((routeParams: any) => {
-            console.log(routeParams.locationName);
+        this._route.parent.params.subscribe((params: any) => {
+            let locationId = params.locationId;
+
         });
+        // this.id = parentActivatedRoute.params.map(routeParams => routeParams.id);
         this.basicform = this.fb.group({
-                officeName: ['', Validators.required],
-                address: [''],
-                city: ['', Validators.required],
-                state: ['', Validators.required],
-                zipcode: ['', Validators.required],
-                officePhone: ['', Validators.required],
-                fax: ['', Validators.required],
-                officeType: ['', Validators.required]
-            });
+            officeName: ['xcvxc', Validators.required],
+            address: [''],
+            city: ['', Validators.required],
+            state: ['', Validators.required],
+            zipcode: ['', Validators.required],
+            officePhone: ['', Validators.required],
+            fax: ['', Validators.required],
+            officeType: ['', Validators.required]
+        });
 
         this.basicformControls = this.basicform.controls;
     }
@@ -64,19 +69,25 @@ export class BasicComponent implements OnInit {
 
 
     save() {
-        let basicformValues = this.basicform.value;
-        let basicInfo = new Location({
-            name: basicformValues.officeName,
-            locationType: parseInt(basicformValues.officeType),
+        let addlocationformValues = this.basicformControls.value;
+        let basicInfo = new LocationDetails({
+            location: new Location({
+                name: addlocationformValues.name,
+                LocationType: parseInt(addlocationformValues.LocationType)
+            }),
+            company: new Company({
+                // id: this._sessionStore.session.account_id, 
+                id: 1
+            }),
             contact: new Contact({
-                faxNo: basicformValues.fax,
-                workPhone: basicformValues.officePhone,
+                faxNo: addlocationformValues.fax,
+                workPhone: addlocationformValues.officePhone,
             }),
             address: new Address({
-                address1: basicformValues.address,
-                city: basicformValues.city,
-                state: basicformValues.state,
-                zipCode: basicformValues.zipCode,
+                address1: addlocationformValues.address,
+                city: addlocationformValues.city,
+                state: addlocationformValues.state,
+                zipCode: addlocationformValues.zipCode,
             })
         });
         this.isSaveProgress = true;
@@ -104,7 +115,6 @@ export class BasicComponent implements OnInit {
             () => {
                 this.isSaveProgress = false;
             });
-
     }
 
 }

@@ -18,7 +18,9 @@ export class LocationShellComponent implements OnInit {
     }
 
     ngOnInit() {
-
+        this._route.params.subscribe((routeParams: any) => {
+            console.log(routeParams);
+        });
     }
 
 }

@@ -97,10 +97,18 @@ export class RegisterCompanyComponent implements OnInit {
                 }, 3000);
             },
             (error) => {
-                let errorObj = JSON.parse(error._body);
+                debugger;
+                let errorBody = JSON.parse(error._body);
                 let errorString = 'Unable to register company.';
-                if (errorObj.message) {
-                    errorString = errorObj.message;
+                if (errorBody.errorObject) {
+                    errorString = '';
+                    let errorObjs = errorBody.errorObject;
+                    for (let errorObj of errorObjs) {
+                        errorString += errorObj.validationMessage + '<br>';
+                    }
+
+                } else {
+                    errorString = errorBody.message;
                 }
                 this.isRegistrationInProgress = false;
                 this._notificationsService.error('Oh No!', errorString);

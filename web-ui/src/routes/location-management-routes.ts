@@ -25,7 +25,7 @@ export const LocationManagementRoutes: Routes = [
         canActivate: [ValidateActiveSession]
     },
     {
-        path: 'locations/:locationName',
+        path: 'locations/:locationId',
         component: LocationShellComponent,
         children: [
             {
