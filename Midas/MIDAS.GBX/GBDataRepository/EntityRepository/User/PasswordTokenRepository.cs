@@ -49,13 +49,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 User usr = _context.Users.Where(x => x.UserName == data_.UserName).FirstOrDefault();
 
-                BO.User userBO = new BO.User { Message = "Password link validated", ID = usr.id, StatusCode = System.Net.HttpStatusCode.Created };
+                BO.User userBO = new BO.User { ID = usr.id };
                 return userBO;
             }
             else
             {
-                BO.User userBO = new BO.User { Message = "Invalid password link", StatusCode = System.Net.HttpStatusCode.NotFound };
-                return userBO;
+                return new BO.ErrorObject { ErrorMessage = "Invalid password link.", errorObject = "", ErrorLevel = ErrorLevel.Information };
             }
         }
         #endregion
@@ -69,7 +68,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             dynamic data_ = _context.Users.Where(x => x.UserName == passwordBO.UserName).FirstOrDefault();
             if (data_ == null)
             {
-                return new BO.User { ErrorMessage = "No record found for this username.", StatusCode = System.Net.HttpStatusCode.NoContent };
+                return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
             PasswordToken passwordDB = new PasswordToken();
@@ -86,16 +85,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             string Message = "Dear " + passwordBO.UserName + ",<br><br>You are receiving this email because you (or someone pretending to be you) requested that your password be reset on the " + Utility.GetConfigValue("Website") + " site.  If you do not wish to reset your password, please ignore this message.<br><br>To reset your password, please click the following link, or copy and paste it into your web browser:<br><br>" + Utility.GetConfigValue("ForgotPasswordLink") +"/"+ passwordDB.TokenHash+ " <br><br>Your username, in case you've forgotten: " + passwordDB.UserName+ "<br><br>Thanks";
             try
             {
-                acc.StatusCode = System.Net.HttpStatusCode.Created;
                 Utility.SendEmail(Message, "Password Reset on MIDAS GBX", passwordBO.UserName);
             }
             catch (Exception ex)
             {
-                acc.StatusCode = System.Net.HttpStatusCode.Created;
-                acc.Message = "Link Generated.Error sending mail.";
                 return acc;
             }
-            acc.Message = "Password reset link sent";
 
             return acc;
 

@@ -149,7 +149,7 @@ namespace MIDAS.GBX.WebAPI
             try
             {
                 var res = (GbObject)(object)objResult;
-                return request.CreateResponse(res.StatusCode, objResult);
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
 
             }
             catch (Exception ex)
@@ -205,7 +205,7 @@ namespace MIDAS.GBX.WebAPI
 
         public HttpResponseMessage ValidateOTP(HttpRequestMessage request, T gbObject)
         {
-            OTP otpBO = (OTP)(object)gbObject;
+            ValidateOTP otpBO = (ValidateOTP)(object)gbObject;
             if (otpBO == null)
             {
                 return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "OTP object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
@@ -215,7 +215,7 @@ namespace MIDAS.GBX.WebAPI
             try
             {
                 var res = (GbObject)(object)objResult;
-                return request.CreateResponse(res.StatusCode, objResult);
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
             }
             catch (Exception ex)
             {
@@ -235,7 +235,7 @@ namespace MIDAS.GBX.WebAPI
             try
             {
                 var res = (GbObject)(object)objResult;
-                return request.CreateResponse(res.StatusCode, objResult);
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
             }
             catch (Exception ex)
             {
@@ -255,7 +255,7 @@ namespace MIDAS.GBX.WebAPI
             try
             {
                 var res = (GbObject)(object)objResult;
-                return request.CreateResponse(res.StatusCode, res);
+                return request.CreateResponse(HttpStatusCode.Created, res);
             }
             catch (Exception ex)
             {
@@ -275,7 +275,7 @@ namespace MIDAS.GBX.WebAPI
             try
             {
                 var res = (GbObject)(object)objResult;
-                return request.CreateResponse(res.StatusCode, objResult);
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
             }
             catch (Exception ex)
             {

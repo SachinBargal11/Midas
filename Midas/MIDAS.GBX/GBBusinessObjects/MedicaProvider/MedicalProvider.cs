@@ -20,6 +20,6 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("npi")]
         public string NPI { get; set; }
 
-        public Company Company { get; set; }
+        public Company company { get; set; }
     }
 }

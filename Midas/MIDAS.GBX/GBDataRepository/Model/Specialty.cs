@@ -18,7 +18,6 @@ namespace MIDAS.GBX.DataRepository.Model
         {
             this.CompanySpecialtyDetails = new HashSet<CompanySpecialtyDetail>();
             this.DoctorSpecialities = new HashSet<DoctorSpeciality>();
-            this.SpecialtyDetails = new HashSet<SpecialtyDetail>();
         }
     
         public int id { get; set; }
@@ -33,6 +32,5 @@ namespace MIDAS.GBX.DataRepository.Model
     
         public virtual ICollection<CompanySpecialtyDetail> CompanySpecialtyDetails { get; set; }
         public virtual ICollection<DoctorSpeciality> DoctorSpecialities { get; set; }
-        public virtual ICollection<SpecialtyDetail> SpecialtyDetails { get; set; }
     }
 }

@@ -112,10 +112,6 @@
             <End Role="Company" EntitySet="Company" />
             <End Role="MedicalProvider" EntitySet="MedicalProvider" />
           </AssociationSet>
-          <AssociationSet Name="FK_SpecialtyDetails_Specialty" Association="MIDASGBXModel.Store.FK_SpecialtyDetails_Specialty">
-            <End Role="Specialty" EntitySet="Specialty" />
-            <End Role="SpecialtyDetails" EntitySet="SpecialtyDetails" />
-          </AssociationSet>
           <AssociationSet Name="FK_User_AddressInfo" Association="MIDASGBXModel.Store.FK_User_AddressInfo">
             <End Role="AddressInfo" EntitySet="AddressInfo" />
             <End Role="User" EntitySet="User" />
@@ -450,7 +446,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="SpecialtyId" Type="int" />
+          <Property Name="SpecialtyId" Type="int" Nullable="false" />
           <Property Name="ReevalDays" Type="int" />
           <Property Name="ReevalVisitCount" Type="int" />
           <Property Name="InitialDays" Type="int" />
@@ -735,18 +731,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SpecialtyDetails_Specialty">
-          <End Role="Specialty" Type="MIDASGBXModel.Store.Specialty" Multiplicity="0..1" />
-          <End Role="SpecialtyDetails" Type="MIDASGBXModel.Store.SpecialtyDetails" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Specialty">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="SpecialtyDetails">
-              <PropertyRef Name="SpecialtyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_User_AddressInfo">
           <End Role="AddressInfo" Type="MIDASGBXModel.Store.AddressInfo" Multiplicity="1" />
           <End Role="User" Type="MIDASGBXModel.Store.User" Multiplicity="*" />
@@ -938,10 +922,6 @@
           <AssociationSet Name="FK_UserCompanyRole_Role" Association="MIDASGBXModel.FK_UserCompanyRole_Role">
             <End Role="Role" EntitySet="Roles" />
             <End Role="UserCompanyRole" EntitySet="UserCompanyRoles" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SpecialtyDetails_Specialty" Association="MIDASGBXModel.FK_SpecialtyDetails_Specialty">
-            <End Role="Specialty" EntitySet="Specialties" />
-            <End Role="SpecialtyDetails" EntitySet="SpecialtyDetails" />
           </AssociationSet>
           <AssociationSet Name="FK_UserCompany_User" Association="MIDASGBXModel.FK_UserCompany_User">
             <End Role="User" EntitySet="Users" />
@@ -1283,14 +1263,13 @@
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="CompanySpecialtyDetails" Relationship="MIDASGBXModel.FK_CompanySpecialtyDetails_Specialty" FromRole="Specialty" ToRole="CompanySpecialtyDetails" />
           <NavigationProperty Name="DoctorSpecialities" Relationship="MIDASGBXModel.FK_DoctorSpecialities_Specialty" FromRole="Specialty" ToRole="DoctorSpecialities" />
-          <NavigationProperty Name="SpecialtyDetails" Relationship="MIDASGBXModel.FK_SpecialtyDetails_Specialty" FromRole="Specialty" ToRole="SpecialtyDetails" />
         </EntityType>
         <EntityType Name="SpecialtyDetail">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="SpecialtyId" Type="Int32" />
+          <Property Name="SpecialtyId" Type="Int32" Nullable="false" />
           <Property Name="ReevalDays" Type="Int32" />
           <Property Name="ReevalVisitCount" Type="Int32" />
           <Property Name="InitialDays" Type="Int32" />
@@ -1305,7 +1284,6 @@
           <Property Name="CreateDate" Type="DateTime" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Specialty" Relationship="MIDASGBXModel.FK_SpecialtyDetails_Specialty" FromRole="SpecialtyDetails" ToRole="Specialty" />
         </EntityType>
         <EntityType Name="SubscriptionPlan">
           <Key>
@@ -1634,18 +1612,6 @@
             </Principal>
             <Dependent Role="UserCompanyRole">
               <PropertyRef Name="RoleID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_SpecialtyDetails_Specialty">
-          <End Role="Specialty" Type="MIDASGBXModel.Specialty" Multiplicity="0..1" />
-          <End Role="SpecialtyDetails" Type="MIDASGBXModel.SpecialtyDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Specialty">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="SpecialtyDetails">
-              <PropertyRef Name="SpecialtyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
