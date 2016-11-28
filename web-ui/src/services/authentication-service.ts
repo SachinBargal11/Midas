@@ -113,9 +113,9 @@ export class AuthenticationService {
 
         let promise: Promise<User> = new Promise((resolve, reject) => {
             let autheticateRequestData = {
-                emailValidation: {
+              
                     appKey: token
-                }
+               
             };
             return this._http.post(this._url + '/Company/ValidateInvitation', JSON.stringify(autheticateRequestData), {
                 headers: headers
@@ -157,11 +157,9 @@ export class AuthenticationService {
 
         let promise: Promise<User> = new Promise((resolve, reject) => {
             let autheticateRequestData = {
-                user: {
                     'userName': email,
                     'password': password,
                     'forceLogin': forceLogin
-                }
             };
             return this._http.post(this._url + '/User/Signin', JSON.stringify(autheticateRequestData), {
                 headers: headers

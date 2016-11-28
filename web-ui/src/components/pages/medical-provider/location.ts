@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {MedicalProviderService} from '../../../services/medical-provider-service';
 import {Location} from '../../../models/location';
+import {LocationDetails} from '../../../models/location-details';
 import {LocationsStore} from '../../../stores/locations-store';
 
 @Component({
@@ -10,7 +11,7 @@ import {LocationsStore} from '../../../stores/locations-store';
 })
 
 export class LocationComponent implements OnInit {
-    locations: Location[];
+    locations: LocationDetails[];
     locationsLoading;
     constructor(
         private _router: Router,
@@ -36,7 +37,7 @@ export class LocationComponent implements OnInit {
             });
     }
     onRowSelect(location) {
-        this._router.navigate(['/medicalProvider/locations/' + location.name + '/basic']);
+        this._router.navigate(['/medicalProvider/locations/' + location.id + '/basic']);
     }
 
 }
