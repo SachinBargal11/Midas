@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
 import {Location} from '../models/location';
 import {LocationDetails} from '../models/location-details';
+import { LocationDetailAdapter } from './adapters/location-detail-adapter';
 
 @Injectable()
 export class LocationsService {
@@ -21,37 +22,36 @@ export class LocationsService {
         this._headers.append('Content-Type', 'application/json');
     }
 
-    // getLocation(id: Number): Observable<LocationDetails> {
-    //     let promise: Promise<LocationDetails> = new Promise((resolve, reject) => {
-    //         return this._http.get(this._url + '/Location/get/' + id).map(res => res.json())
-    //             .subscribe((data: Array<any>) => {
-    //                 let patient = null;
-    //                 if (data.length) {
-    //                     patient = PatientAdapter.parseResponse(data[0]);
-    //                     resolve(patient);
-    //                 } else {
-    //                     reject(new Error('NOT_FOUND'));
-    //                 }
-    //             }, (error) => {
-    //                 reject(error);
-    //             });
+    getLocation(id: Number): Observable<LocationDetails> {
+        let promise: Promise<LocationDetails> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Location/get/' + id).map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedLocation: LocationDetails = null;
+                    parsedLocation = LocationDetailAdapter.parseResponse(data);
+                    resolve(parsedLocation);
+                }, (error) => {
+                    reject(error);
+                });
 
-    //     });
-    //     return <Observable<Patient>>Observable.fromPromise(promise);
-    // }
+        });
+        return <Observable<LocationDetails>>Observable.fromPromise(promise);
+    }
 
-    getLocations(): Observable<LocationDetails[]> {
-        let promise: Promise<LocationDetails[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/Location/getall', JSON.stringify({	"company": {"id":16}}), {
+    getLocations(userId: Number): Observable<any[]> {
+        let promise: Promise<any[]> = new Promise((resolve, reject) => {
+            return this._http.post(this._url + '/Location/getall', JSON.stringify({	"company": { "id": userId }}), {
                 headers: this._headers
             }).map(res => res.json())
-                .subscribe((data) => {
-                 resolve(data);
-             }, (error) => {
-                 reject(error);
-            });
+                .subscribe((data: Array<Object>) => {
+                    let locations:any[] = (<Object[]>data).map((data: any) => {
+                        return LocationDetailAdapter.parseResponse(data);
+                    });
+                    resolve(locations);
+                }, (error) => {
+                    reject(error);
+                });
         });
-        return <Observable<LocationDetails[]>>Observable.fromPromise(promise);
+        return <Observable<any[]>>Observable.fromPromise(promise);
     }
     addLocation(location: LocationDetails): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
@@ -64,8 +64,31 @@ export class LocationsService {
             console.log(requestData);
             return this._http.post(this._url + '/Location/add', JSON.stringify(requestData), {
                 headers: this._headers
-            }).map(res => res.json()).subscribe((data) => {
-                resolve(data);
+            }).map(res => res.json()).subscribe((data: any) => {
+                    let parsedLocation: LocationDetails = null;
+                    parsedLocation = LocationDetailAdapter.parseResponse(data);
+                resolve(parsedLocation);
+            }, (error) => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+    updateLocation(location: LocationDetails): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+
+            let requestData: any = location.toJS();
+            requestData.contactInfo = requestData.contact;
+            requestData.addressInfo = requestData.address;
+            requestData = _.omit(requestData, 'contact');
+            requestData = _.omit(requestData, 'address');
+            console.log(requestData);
+            return this._http.post(this._url + '/Location/add', JSON.stringify(requestData), {
+                headers: this._headers
+            }).map(res => res.json()).subscribe((data: any) => {
+                    let parsedLocation: LocationDetails = null;
+                    parsedLocation = LocationDetailAdapter.parseResponse(data);
+                resolve(parsedLocation);
             }, (error) => {
                 reject(error);
             });

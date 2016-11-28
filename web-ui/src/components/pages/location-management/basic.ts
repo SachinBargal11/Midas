@@ -33,7 +33,7 @@ export class BasicComponent implements OnInit {
     basicform: FormGroup;
     basicformControls;
     isSaveProgress = false;
-    location: Location;
+    location: LocationDetails;
 
     constructor(
         private _statesStore: StatesStore,
@@ -47,6 +47,16 @@ export class BasicComponent implements OnInit {
     ) {
         this._route.parent.params.subscribe((params: any) => {
             let locationId = params.locationId;
+            let result = this._locationsStore.fetchLocationById(locationId);
+            result.subscribe(
+                (locationDetails: LocationDetails) => {
+                    this.location = locationDetails
+                },
+                (error) => {
+                    this._router.navigate(['/medicalProvider/locations']);
+                },
+                () => {
+                });
 
         });
         // this.id = parentActivatedRoute.params.map(routeParams => routeParams.id);
@@ -69,31 +79,36 @@ export class BasicComponent implements OnInit {
 
 
     save() {
-        let addlocationformValues = this.basicformControls.value;
+        let userId = this._sessionStore.session.user.id
+        let basicformValues = this.basicform.value;
         let basicInfo = new LocationDetails({
             location: new Location({
-                name: addlocationformValues.name,
-                LocationType: parseInt(addlocationformValues.LocationType)
+                id: this.location.location.id,
+                name: basicformValues.officeName,
+                LocationType: parseInt(basicformValues.officeType),
+  	            updateByUserID: userId
             }),
             company: new Company({
-                // id: this._sessionStore.session.account_id, 
-                id: 1
+                id: this.location.company.id
+                // id: 1
             }),
             contact: new Contact({
-                faxNo: addlocationformValues.fax,
-                workPhone: addlocationformValues.officePhone,
+                faxNo: basicformValues.fax,
+                workPhone: basicformValues.officePhone,
+  	            updateByUserID: userId
             }),
             address: new Address({
-                address1: addlocationformValues.address,
-                city: addlocationformValues.city,
-                state: addlocationformValues.state,
-                zipCode: addlocationformValues.zipCode,
+                address1: basicformValues.address,
+                city: basicformValues.city,
+                state: basicformValues.state,
+                zipCode: basicformValues.zipcode,
+  	            updateByUserID: userId
             })
         });
         this.isSaveProgress = true;
         let result;
 
-        result = this._locationsStore.addLocation(basicInfo);
+        result = this._locationsStore.updateLocation(basicInfo);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
