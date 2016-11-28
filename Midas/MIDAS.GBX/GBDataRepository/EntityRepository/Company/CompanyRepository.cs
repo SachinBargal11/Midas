@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
-using GBDataRepository.Model;
 using Newtonsoft.Json.Linq;
 using MIDAS.GBX.EntityRepository;
 using MIDAS.GBX.DataRepository.Model;
@@ -16,7 +15,7 @@ using MIDAS.GBX.Common;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
 {
-    internal class CompanyRepository : BaseEntityRepo
+    internal class CompanyRepository : BaseEntityRepo,IDisposable
     {
         private DbSet<Company> _dbSet;
         private DbSet<User> _dbuser;
@@ -132,7 +131,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             if (_context.Companies.Any(o => o.Name == companyBO.Name))
             {
-                return new BO.GbObject { Message = Constants.CompanyAlreadyExists };
+                return new BO.ErrorObject { ErrorMessage = "Company already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else if (_context.Users.Any(o => o.UserName == userBO.UserName))
             {
@@ -166,18 +165,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             #region Contact Info
 
-                        if(contactinfoBO!=null)
+            if (contactinfoBO != null)
             {
-            contactinfoDB.id = contactinfoBO.ID;
-            contactinfoDB.Name = contactinfoBO.Name;
-            contactinfoDB.CellPhone = contactinfoBO.CellPhone;
-            contactinfoDB.EmailAddress = contactinfoBO.EmailAddress;
-            contactinfoDB.HomePhone = contactinfoBO.HomePhone;
-            contactinfoDB.WorkPhone = contactinfoBO.WorkPhone;
-            contactinfoDB.FaxNo = contactinfoBO.FaxNo;
-            if (contactinfoBO.IsDeleted.HasValue)
-                contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
-                            }
+                contactinfoDB.id = contactinfoBO.ID;
+                contactinfoDB.Name = contactinfoBO.Name;
+                contactinfoDB.CellPhone = contactinfoBO.CellPhone;
+                contactinfoDB.EmailAddress = contactinfoBO.EmailAddress;
+                contactinfoDB.HomePhone = contactinfoBO.HomePhone;
+                contactinfoDB.WorkPhone = contactinfoBO.WorkPhone;
+                contactinfoDB.FaxNo = contactinfoBO.FaxNo;
+                if (contactinfoBO.IsDeleted.HasValue)
+                    contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
+            }
             #endregion
 
             #region User
@@ -285,12 +284,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 string VerificationLink = "<a href='"+ Utility.GetConfigValue("VerificationLink") + "/"+invitationDB.UniqueID+ "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
                 string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink+"</b><br><br>Thanks";
                 Utility.SendEmail(Message, "Company registered", userBO.UserName);
-                acc_.Message = "Mail sent";
                 #endregion
             }
             catch (Exception ex)
             {
-                acc_.Message = "Unable to send email.";
+
             }
 
             var res = (BO.GbObject)(object)acc_;
@@ -304,15 +302,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.Company acc_ = Convert<BO.Company, Company>(_context.Companies.Where(p => p.id == id).FirstOrDefault<Company>());
             if (acc_ == null)
             {
-                acc_.StatusCode = System.Net.HttpStatusCode.NoContent;
                 return acc_;
             }
             else
             {
-                acc_.StatusCode = System.Net.HttpStatusCode.Created;
                 return acc_;
             }
         }
         #endregion
+
+        public void Dispose()
+        {
+            Dispose();
+            GC.SuppressFinalize(this);
+        }
     }
 }

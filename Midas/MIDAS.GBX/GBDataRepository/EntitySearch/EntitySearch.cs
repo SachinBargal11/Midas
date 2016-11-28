@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MIDAS.GBX.DataRepository.EntitySearch;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
@@ -98,6 +99,5 @@ namespace MIDAS.GBX.EntityRepository
                 return Expression.Lambda<Func<T, bool>>(getValid, parameter);
             }
         }
-
     }
 }

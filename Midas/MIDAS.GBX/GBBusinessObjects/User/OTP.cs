@@ -16,5 +16,15 @@ namespace MIDAS.GBX.BusinessObjects
         public int Pin { get; set; }
         [JsonProperty("otp")]
         public int OTP1 { get; set; }
+
+        public override List<BusinessValidation> Validate<T>(T entity)
+        {
+
+            List<BusinessValidation> validations = new List<BusinessValidation>();
+            BusinessValidation validation = new BusinessValidation();
+            //Implement logic for validation
+
+            return validations;
+        }
     }
 }

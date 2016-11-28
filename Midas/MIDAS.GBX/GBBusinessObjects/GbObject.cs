@@ -55,12 +55,6 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("updateDate")]
         public DateTime? UpdateDate { get; set; }
-        [JsonProperty("statusCode")]
-        public HttpStatusCode StatusCode { get; set; }
-
-        public string Message { get; set; }
-        public string ErrorMessage { get; set; }
-        //var json = new JavaScriptSerializer().Serialize(obj);
 
         public virtual List<BusinessValidation> Validate<T>(T entity)
         {

@@ -11,7 +11,6 @@ using System.Data.SqlClient;
 using MIDAS.GBX.Common;
 using MIDAS.GBX.BusinessObjects;
 using MIDAS.GBX.EntityRepository;
-using GBDataRepository.Model;
 using System.Data.Entity.Infrastructure;
 
 namespace MIDAS.GBX.DataAccessManager
@@ -47,7 +46,7 @@ namespace MIDAS.GBX.DataAccessManager
                 //Excecute Object postsave 
                 baseRepo.PostSave(gbObject);
 
-                return ((GBDataObject)gbSavedObject).ID;
+                return 0;
             }
 
             catch (GbException gbe)

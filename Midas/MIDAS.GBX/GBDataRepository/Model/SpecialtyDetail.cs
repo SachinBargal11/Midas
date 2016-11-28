@@ -15,7 +15,7 @@ namespace MIDAS.GBX.DataRepository.Model
     public partial class SpecialtyDetail
     {
         public int id { get; set; }
-        public Nullable<int> SpecialtyId { get; set; }
+        public int SpecialtyId { get; set; }
         public Nullable<int> ReevalDays { get; set; }
         public Nullable<int> ReevalVisitCount { get; set; }
         public Nullable<int> InitialDays { get; set; }
@@ -30,7 +30,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-    
         public virtual Specialty Specialty { get; set; }
     }
 }
