@@ -33,7 +33,12 @@ export class BasicComponent implements OnInit {
     basicform: FormGroup;
     basicformControls;
     isSaveProgress = false;
-    location: LocationDetails;
+    locationDetails: LocationDetails = new LocationDetails({
+        location: new Location({}),
+        company: new Company({}),
+        contact: new Contact({}),
+        address: new Address({})
+    });
 
     constructor(
         private _statesStore: StatesStore,
@@ -46,11 +51,11 @@ export class BasicComponent implements OnInit {
         private _elRef: ElementRef
     ) {
         this._route.parent.params.subscribe((params: any) => {
-            let locationId = params.locationId;
+            let locationId = parseInt(params.locationId);
             let result = this._locationsStore.fetchLocationById(locationId);
             result.subscribe(
                 (locationDetails: LocationDetails) => {
-                    this.location = locationDetails
+                    this.locationDetails = locationDetails;
                 },
                 (error) => {
                     this._router.navigate(['/medicalProvider/locations']);
@@ -61,7 +66,7 @@ export class BasicComponent implements OnInit {
         });
         // this.id = parentActivatedRoute.params.map(routeParams => routeParams.id);
         this.basicform = this.fb.group({
-            officeName: ['xcvxc', Validators.required],
+            officeName: ['', Validators.required],
             address: [''],
             city: ['', Validators.required],
             state: ['', Validators.required],
@@ -79,30 +84,30 @@ export class BasicComponent implements OnInit {
 
 
     save() {
-        let userId = this._sessionStore.session.user.id
+        let userId = this._sessionStore.session.user.id;
         let basicformValues = this.basicform.value;
         let basicInfo = new LocationDetails({
             location: new Location({
-                id: this.location.location.id,
+                id: this.locationDetails.location.id,
                 name: basicformValues.officeName,
-                LocationType: parseInt(basicformValues.officeType),
-  	            updateByUserID: userId
+                locationType: parseInt(basicformValues.officeType),
+                updateByUserID: userId
             }),
             company: new Company({
-                id: this.location.company.id
+                id: this.locationDetails.company.id
                 // id: 1
             }),
             contact: new Contact({
                 faxNo: basicformValues.fax,
                 workPhone: basicformValues.officePhone,
-  	            updateByUserID: userId
+                updateByUserID: userId
             }),
             address: new Address({
                 address1: basicformValues.address,
                 city: basicformValues.city,
                 state: basicformValues.state,
                 zipCode: basicformValues.zipcode,
-  	            updateByUserID: userId
+                updateByUserID: userId
             })
         });
         this.isSaveProgress = true;

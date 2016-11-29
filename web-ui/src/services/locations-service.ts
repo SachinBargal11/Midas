@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {Http, Headers} from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http, Headers } from '@angular/http';
 import _ from 'underscore';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
-import {Location} from '../models/location';
-import {LocationDetails} from '../models/location-details';
+import { Location } from '../models/location';
+import { LocationDetails } from '../models/location-details';
 import { LocationDetailAdapter } from './adapters/location-detail-adapter';
 
 @Injectable()
@@ -39,11 +39,11 @@ export class LocationsService {
 
     getLocations(userId: Number): Observable<any[]> {
         let promise: Promise<any[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/Location/getall', JSON.stringify({	"company": { "id": userId }}), {
+            return this._http.post(this._url + '/Location/getall', JSON.stringify({ "company": { "id": 1 } }), {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: Array<Object>) => {
-                    let locations:any[] = (<Object[]>data).map((data: any) => {
+                    let locations: any[] = (<Object[]>data).map((data: any) => {
                         return LocationDetailAdapter.parseResponse(data);
                     });
                     resolve(locations);
@@ -61,12 +61,13 @@ export class LocationsService {
             requestData.addressInfo = requestData.address;
             requestData = _.omit(requestData, 'contact');
             requestData = _.omit(requestData, 'address');
+            requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
             console.log(requestData);
             return this._http.post(this._url + '/Location/add', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json()).subscribe((data: any) => {
-                    let parsedLocation: LocationDetails = null;
-                    parsedLocation = LocationDetailAdapter.parseResponse(data);
+                let parsedLocation: LocationDetails = null;
+                parsedLocation = LocationDetailAdapter.parseResponse(data);
                 resolve(parsedLocation);
             }, (error) => {
                 reject(error);
@@ -86,8 +87,8 @@ export class LocationsService {
             return this._http.post(this._url + '/Location/add', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json()).subscribe((data: any) => {
-                    let parsedLocation: LocationDetails = null;
-                    parsedLocation = LocationDetailAdapter.parseResponse(data);
+                let parsedLocation: LocationDetails = null;
+                parsedLocation = LocationDetailAdapter.parseResponse(data);
                 resolve(parsedLocation);
             }, (error) => {
                 reject(error);

@@ -97,7 +97,6 @@ export class RegisterCompanyComponent implements OnInit {
                 }, 3000);
             },
             (error) => {
-                debugger;
                 let errorBody = JSON.parse(error._body);
                 let errorString = 'Unable to register company.';
                 if (errorBody.errorObject) {

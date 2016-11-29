@@ -10,7 +10,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.officeName.touched && !basicformControls.officeName.valid">
-                                    <input formControlName="officeName" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.officeName.valid">
+                                    <input [ngModel]="locationDetails.location.name" formControlName="officeName" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.officeName.valid">
                                     <div class='error-list' *ngIf="basicformControls.officeName.touched && !basicformControls.officeName.valid">
                                         <ul>
                                             <li *ngIf="basicformControls.officeName.hasError('required')">Office Name is required.</li>
@@ -22,7 +22,7 @@
                                 <label class="form-label"> Address
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.address.touched && !basicformControls.address.valid">
-                                    <input formControlName="address" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.address.valid">
+                                    <input [ngModel]="locationDetails.address.address1" formControlName="address" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.address.valid">
                                     <div class='error-list' *ngIf="basicformControls.address.touched && !basicformControls.address.valid">
                                         <ul>
                                             <li *ngIf="basicformControls.address.hasError('required')">Address is required.</li>
@@ -38,7 +38,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.city.touched && !basicformControls.city.valid">
-                                    <input formControlName="city" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.city.valid">
+                                    <input [ngModel]="locationDetails.address.city" formControlName="city" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.city.valid">
                                     <div class='error-list' *ngIf="basicformControls.city.touched && !basicformControls.city.valid">
                                         <ul>
                                             <li *ngIf="basicformControls.city.hasError('required')">City is required.</li>
@@ -51,7 +51,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.state.touched && !basicformControls.state.valid">
-                                    <input formControlName="state" list="states" name="mystate" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.state.valid">
+                                    <input [ngModel]="locationDetails.address.state" formControlName="state" list="states" name="mystate" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.state.valid">
                                     <datalist id="states">
                                         <option>New York</option>
                                         <option>California</option>
@@ -71,7 +71,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.zipcode.touched && !basicformControls.zipcode.valid">
-                                    <input formControlName="zipcode" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.zipcode.valid">
+                                    <input [ngModel]="locationDetails.address.zipcode" formControlName="zipcode" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.zipcode.valid">
                                     <div class='error-list' *ngIf="basicformControls.zipcode.touched && !basicformControls.zipcode.valid">
                                         <ul>
                                             <li *ngIf="basicformControls.zipcode.hasError('required')">zipcode is required.</li>
@@ -85,7 +85,7 @@
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.officePhone.touched && !basicformControls.officePhone.valid">
                                     <!--<input formControlName="officePhone" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.officePhone.valid">-->
-                                    <p-inputMask mask="999-999-9999" formControlName="officePhone" [class.error]="basicformControls.officePhone.touched && !basicformControls.officePhone.valid" 
+                                    <p-inputMask [ngModel]="locationDetails.contact.workPhone" mask="999-999-9999" formControlName="officePhone" [class.error]="basicformControls.officePhone.touched && !basicformControls.officePhone.valid" 
                                      placeholder="999-999-9999" styleClass="form-control" ></p-inputMask>
                                     <div class='error-list' *ngIf="basicformControls.officePhone.touched && !basicformControls.officePhone.valid">
                                         <ul>
@@ -102,7 +102,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.fax.touched && !basicformControls.fax.valid">
-                                    <input formControlName="fax" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.fax.valid">
+                                    <input [ngModel]="locationDetails.contact.faxNo" formControlName="fax" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.fax.valid">
                                     <div class='error-list' *ngIf="basicformControls.fax.touched && !basicformControls.fax.valid">
                                         <ul>
                                             <li *ngIf="basicformControls.fax.hasError('required')">Fax is required.</li>
@@ -116,7 +116,7 @@
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.officeType.touched && !basicformControls.officeType.valid">
                                     <!--<input formControlName="officeType" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.officeType.valid">-->
-                                    <select formControlName="officeType" type="text" class="form-control" placeholder="" [class.error]="basicformControls.officeType.touched && !basicformControls.officeType.valid">
+                                    <select  [ngModel]="locationDetails.location.locationType" formControlName="officeType" type="text" class="form-control" placeholder="" [class.error]="basicformControls.officeType.touched && !basicformControls.officeType.valid">
                                         <option value="0">None</option>
                                         <option value="1">Medical Office</option>
                                         <option value="2">Medical Testing Facility</option>

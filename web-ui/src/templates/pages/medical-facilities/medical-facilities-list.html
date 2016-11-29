@@ -15,12 +15,11 @@
 
 <p-dataTable [value]="medicalfacilities" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>List of Medical Facilities</header>
-    <p-column field="medicalfacility.name" header="Medicalfacility Name" [sortable]="true" [filter]="true"></p-column>
-    <p-column field="medicalfacility.prefix" header="Prefix" [sortable]="true" [filter]="true"></p-column>
-    <p-column field="medicalfacility.id" header="Medicalfacility id" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
-    <p-column styleClass="col-button" header="Update Specialities">
+    <p-column field="name" header="Medicalfacility Name" [sortable]="true" [filter]="true"></p-column>
+    <p-column field="npi" header="NPI" [sortable]="true" [filter]="true"></p-column>
+    <p-column styleClass="col-button" header="Update">
         <template let-medicalfacility="rowData" pTemplate type="body">
-            <a [routerLink]="[medicalfacility.medicalfacility.id, 'specialities']"><i class="glyphicon glyphicon-edit"></i></a>
+            <a [routerLink]="['update', medicalfacility.id]"><i class="glyphicon glyphicon-edit"></i></a>
         </template>
     </p-column>   
 </p-dataTable>
