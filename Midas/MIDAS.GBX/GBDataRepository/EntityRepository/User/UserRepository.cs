@@ -13,7 +13,7 @@ using BO = MIDAS.GBX.BusinessObjects;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
 {
-    internal class UserRepository : BaseEntityRepo
+    internal class UserRepository : BaseEntityRepo,IDisposable
     {
         private DbSet<User> _dbSet;
         private DbSet<OTP> _dbOTP;
@@ -411,12 +411,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get User By ID
         public override Object Get(int id)
         {
-            BO.User acc_ = Convert<BO.User, User>(_context.Users.Include("AddressInfo").Include("ContactInfo").Where(p => p.id == id && p.IsDeleted == false).FirstOrDefault<User>());
-            if (acc_ == null)
+            var acc = _context.Users.Include("AddressInfo").Include("ContactInfo").Where(p => p.id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<User>();
+            if(acc==null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            return (object)acc_;
+            else
+            {
+                BO.User acc_ = Convert<BO.User, User>(acc);
+                return (object)acc_;
+            }
+
         }
         #endregion
 
@@ -501,6 +506,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 lstUsers.Add(Convert<BO.User, User>(item));
             }
             return lstUsers;
+        }
+
+        public void Dispose()
+        {
+            Dispose();
+            GC.SuppressFinalize(this);
         }
         #endregion
     }

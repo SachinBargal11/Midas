@@ -63,8 +63,10 @@
     <Compile Include="DataAccessManager\IGbDataAccessManager.cs" />
     <Compile Include="EntityRepository\BaseEntityRepo.cs" />
     <Compile Include="EntityRepository\Company\CompanyRepository.cs" />
-    <Compile Include="EntityRepository\InvitationRepository.cs" />
-    <Compile Include="EntityRepository\LocationRepository.cs" />
+    <Compile Include="EntityRepository\Doctor\DoctorRepository.cs" />
+    <Compile Include="EntityRepository\Doctor\DoctorSpecialityRepository.cs" />
+    <Compile Include="EntityRepository\Company\InvitationRepository.cs" />
+    <Compile Include="EntityRepository\Company\LocationRepository.cs" />
     <Compile Include="EntityRepository\MedicaProvider\MedicalProviderRepository.cs" />
     <Compile Include="EntityRepository\Speciality\CompanySpecialityDetailsRepository.cs" />
     <Compile Include="EntityRepository\Speciality\SpecialityDetailsRepository.cs" />
@@ -209,7 +211,6 @@
   <ItemGroup>
     <Folder Include="EntityRepository\AddressInfo\" />
     <Folder Include="EntityRepository\ContactInfo\" />
-    <Folder Include="EntityRepository\Doctor\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
