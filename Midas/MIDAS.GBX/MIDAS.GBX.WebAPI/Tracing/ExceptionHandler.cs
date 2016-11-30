@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,5 +43,5 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
 public class ErrorHelper
 {
-    private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+  //  private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 }

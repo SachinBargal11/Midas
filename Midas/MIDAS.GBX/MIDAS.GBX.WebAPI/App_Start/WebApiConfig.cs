@@ -58,7 +58,7 @@ namespace MIDAS.GBX.WebAPI
 }
 
 
-public abstract class PreflightRequestsHandler : DelegatingHandler
+public class PreflightRequestsHandler : DelegatingHandler
 {
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
@@ -74,24 +74,24 @@ public abstract class PreflightRequestsHandler : DelegatingHandler
         }
         return base.SendAsync(request, cancellationToken);
     }
-    protected abstract Task IncommingMessageAsync(string correlationId, string requestInfo, byte[] message);
-    protected abstract Task OutgoingMessageAsync(string correlationId, string requestInfo, byte[] message);
+    //protected abstract Task IncommingMessageAsync(string correlationId, string requestInfo, byte[] message);
+    //protected abstract Task OutgoingMessageAsync(string correlationId, string requestInfo, byte[] message);
 }
 
 public class MessageLoggingHandler : PreflightRequestsHandler
 {
-    protected override async Task IncommingMessageAsync(string correlationId, string requestInfo, byte[] message)
-    {
-        await Task.Run(() =>
-            Debug.WriteLine(string.Format("{0} - Request: {1}\r\n{2}", correlationId, requestInfo, Encoding.UTF8.GetString(message))));
-    }
+    //protected override async Task IncommingMessageAsync(string correlationId, string requestInfo, byte[] message)
+    //{
+    //    await Task.Run(() =>
+    //        Debug.WriteLine(string.Format("{0} - Request: {1}\r\n{2}", correlationId, requestInfo, Encoding.UTF8.GetString(message))));
+    //}
 
 
-    protected override async Task OutgoingMessageAsync(string correlationId, string requestInfo, byte[] message)
-    {
-        await Task.Run(() =>
-            Debug.WriteLine(string.Format("{0} - Response: {1}\r\n{2}", correlationId, requestInfo, Encoding.UTF8.GetString(message))));
-    }
+    //protected override async Task OutgoingMessageAsync(string correlationId, string requestInfo, byte[] message)
+    //{
+    //    await Task.Run(() =>
+    //        Debug.WriteLine(string.Format("{0} - Response: {1}\r\n{2}", correlationId, requestInfo, Encoding.UTF8.GetString(message))));
+    //}
 
 
 }
