@@ -225,7 +225,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     location.AddressInfo.ZipCode = addressBO.ZipCode;
                     location.AddressInfo.Country = addressBO.Country;
                     location.AddressInfo.UpdateDate = DateTime.UtcNow;
-                    locationDB.AddressInfo.UpdateByUserID = addressBO.UpdateByUserID;
+                    location.AddressInfo.UpdateByUserID = addressBO.UpdateByUserID;
                     #endregion
 
                     #region Contact Info
@@ -241,7 +241,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     location.ContactInfo.WorkPhone = contactinfoBO.WorkPhone;
                     location.ContactInfo.FaxNo = contactinfoBO.FaxNo;
                     location.ContactInfo.UpdateDate = DateTime.UtcNow;
-                    locationDB.ContactInfo.UpdateByUserID = contactinfoBO.UpdateByUserID;
+                    location.ContactInfo.UpdateByUserID = contactinfoBO.UpdateByUserID;
                     #endregion
                     _context.Entry(location).State = System.Data.Entity.EntityState.Modified;
                 }
@@ -301,12 +301,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             List<BO.Location> lstLocations = new List<BO.Location>();
             BO.Location locationBO = (BO.Location)(object)entity;
-            if (locationBO == null)
+            if (locationBO != null)
             {
                 if (locationBO.Company != null)
                 {
-                    var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Where(p => p.IsDeleted == false || p.IsDeleted == null && p.CompanyID==locationBO.Company.ID).ToList<Location>();
-                    if (acc_ == null)
+                    var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && (p.CompanyID==locationBO.Company.ID)).ToList<Location>();
+                    if (acc_ == null || acc_.Count < 1)
                     {
                         return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                     }
@@ -317,8 +317,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 else if (locationBO.Name != null)
                 {
-                    var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Where(p => p.IsDeleted == false || p.IsDeleted == null && p.Name == locationBO.Name).ToList<Location>();
-                    if (acc_ == null)
+                    var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.Name == locationBO.Name).ToList<Location>();
+                    if (acc_ == null || acc_.Count<1)
                     {
                         return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                     }
@@ -329,8 +329,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 else
                 {
-                    var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<Location>();
-                    if (acc_ == null)
+                    var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<Location>();
+                    if (acc_ == null || acc_.Count < 1)
                     {
                         return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                     }

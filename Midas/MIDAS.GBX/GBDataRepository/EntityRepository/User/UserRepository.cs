@@ -17,11 +17,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
     {
         private DbSet<User> _dbSet;
         private DbSet<OTP> _dbOTP;
+        private DbSet<UserCompany> _dbUserCompany;
+        private DbSet<UserCompanyRole> _dbUserCompanyRole;
+        private DbSet<Invitation> _dbInvitation;
         #region Constructor
         public UserRepository(MIDASGBXEntities context) : base(context)
         {
             _dbSet = context.Set<User>();
             _dbOTP= context.Set<OTP>();
+            _dbUserCompany = context.Set<UserCompany>();
+            _dbUserCompanyRole = context.Set<UserCompanyRole>();
+            _dbInvitation = context.Set<Invitation>();
             context.Configuration.ProxyCreationEnabled = false;
         }
         #endregion
@@ -150,15 +156,29 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.ContactInfo contactinfoBO = addUserBO.contactInfo;
 
             BO.User userBO = addUserBO.user;
+            BO.Role roleBO = addUserBO.role;
+            BO.Company companyBO = addUserBO.company;
 
             if (addUserBO.user == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "User object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
+            if (addUserBO.role == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Role object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            if (addUserBO.company == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Company object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
 
             User userDB = new User();
             AddressInfo addressDB = new AddressInfo();
             ContactInfo contactinfoDB = new ContactInfo();
+            UserCompany userCompanyDB = new UserCompany();
+            UserCompanyRole userCompanyRoleDB = new UserCompanyRole();
+            Role roleDB = new Role();
+            Invitation invitationDB = new Invitation();
 
             #region Address
             if (addressBO != null)
@@ -206,6 +226,28 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             userDB.AddressInfo = addressDB;
             userDB.ContactInfo = contactinfoDB;
+
+            #region Company
+            if (companyBO.ID > 0)
+            {
+                Company company = _context.Companies.Where(p => p.id == companyBO.ID).FirstOrDefault<Company>();
+                if (company != null)
+                {
+                    userCompanyDB.User = userDB;
+                    userCompanyDB.Company = company;
+                    invitationDB.Company = company;
+                }
+                else
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Speclity details.", ErrorLevel = ErrorLevel.Error };
+            }
+            #endregion
+
+            #region Role
+            roleDB.Name = roleBO.Name;
+            roleDB.RoleType = System.Convert.ToByte(roleBO.RoleType);
+            if (roleBO.IsDeleted.HasValue)
+                roleDB.IsDeleted = roleBO.IsDeleted.Value;
+            #endregion
 
             switch (userBO.UserType)
             {
@@ -292,9 +334,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Warning };
                 }
+
                 _context.Entry(usr).State = System.Data.Entity.EntityState.Modified;
                 userDB = usr;
                 _context.SaveChanges();
+
                 BO.User usr_ = Convert<BO.User, User>(userDB);
                 var res_ = (BO.GbObject)(object)usr_;
                 return (object)res_;
@@ -318,11 +362,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
             _context.SaveChanges();
+
+            #region Insert User Block
+            userCompanyDB.CreateDate = DateTime.UtcNow;
+            userCompanyDB.CreateByUserID = companyBO.CreateByUserID;
+            _dbUserCompany.Add(userCompanyDB);
+            _context.SaveChanges();
+            #endregion
+
+            #region Insert User Company Role
+            userCompanyRoleDB.User = userCompanyDB.User;
+            userCompanyRoleDB.Role = roleDB;
+            userCompanyRoleDB.CreateDate = DateTime.UtcNow;
+            userCompanyRoleDB.CreateByUserID = companyBO.CreateByUserID;
+            _dbUserCompanyRole.Add(userCompanyRoleDB);
+            _context.SaveChanges();
+            #endregion
+
+            #region Insert Invitation
+            invitationDB.User = userCompanyDB.User;
+
+            invitationDB.UniqueID = Guid.NewGuid();
+            invitationDB.CreateDate = DateTime.UtcNow;
+            invitationDB.CreateByUserID = companyBO.CreateByUserID;
+            _dbInvitation.Add(invitationDB);
+            _context.SaveChanges();
+            #endregion
+
             BO.User acc_ = Convert<BO.User, User>(userDB);
             try
             {
                 #region Send Email
-                string Message = "Dear " + userBO.FirstName + "," + Environment.NewLine + "Your user name is:- " + userBO.UserName + "" + Environment.NewLine + "Password:-" + userDB.Password + Environment.NewLine + "Thanks";
+                string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+                string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
                 Utility.SendEmail(Message, "User registered", userBO.UserName);
                 #endregion
             }
