@@ -37,7 +37,7 @@ export class LocationComponent implements OnInit {
             });
     }
     onRowSelect(location) {
-        this._router.navigate(['/medicalProvider/locations/' + location.id + '/basic']);
+        this._router.navigate(['/medicalProvider/locations/' + location.location.id + '/basic']);
     }
 
 }

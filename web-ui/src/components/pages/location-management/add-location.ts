@@ -52,7 +52,7 @@ export class AddLocationComponent implements OnInit {
                 zipCode: ['', Validators.required],
                 officePhone: ['', Validators.required],
                 fax: ['', Validators.required],
-                LocationType: ['', Validators.required]
+                locationType: ['', Validators.required]
             });
 
         this.addlocationformControls = this.addlocationform.controls;
@@ -67,10 +67,10 @@ export class AddLocationComponent implements OnInit {
         let basicInfo = new LocationDetails({
             location: new Location ({
                 name: addlocationformValues.name,
-                LocationType: parseInt(addlocationformValues.LocationType)
+                locationType: parseInt(addlocationformValues.locationType)
             }),
             company: new Company ({
-                // id: this._sessionStore.session.account_id, 
+                //  id: this._sessionStore.session.user.id 
                 id: 1
             }),
             contact: new Contact({

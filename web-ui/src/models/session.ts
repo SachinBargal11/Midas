@@ -30,5 +30,9 @@ export class Session extends SessionRecord {
         return this._user.accountId;
     }
 
+    public get userId(): number {
+        return this._user.id;
+    }
+
 
 }

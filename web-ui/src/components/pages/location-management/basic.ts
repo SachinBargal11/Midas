@@ -33,7 +33,12 @@ export class BasicComponent implements OnInit {
     basicform: FormGroup;
     basicformControls;
     isSaveProgress = false;
-    location: Location;
+    locationDetails: LocationDetails = new LocationDetails({
+        location: new Location({}),
+        company: new Company({}),
+        contact: new Contact({}),
+        address: new Address({})
+    });
 
     constructor(
         private _statesStore: StatesStore,
@@ -46,12 +51,22 @@ export class BasicComponent implements OnInit {
         private _elRef: ElementRef
     ) {
         this._route.parent.params.subscribe((params: any) => {
-            let locationId = params.locationId;
+            let locationId = parseInt(params.locationId);
+            let result = this._locationsStore.fetchLocationById(locationId);
+            result.subscribe(
+                (locationDetails: LocationDetails) => {
+                    this.locationDetails = locationDetails;
+                },
+                (error) => {
+                    this._router.navigate(['/medicalProvider/locations']);
+                },
+                () => {
+                });
 
         });
         // this.id = parentActivatedRoute.params.map(routeParams => routeParams.id);
         this.basicform = this.fb.group({
-            officeName: ['xcvxc', Validators.required],
+            officeName: ['', Validators.required],
             address: [''],
             city: ['', Validators.required],
             state: ['', Validators.required],
@@ -69,31 +84,36 @@ export class BasicComponent implements OnInit {
 
 
     save() {
-        let addlocationformValues = this.basicformControls.value;
+        let userId = this._sessionStore.session.user.id;
+        let basicformValues = this.basicform.value;
         let basicInfo = new LocationDetails({
             location: new Location({
-                name: addlocationformValues.name,
-                LocationType: parseInt(addlocationformValues.LocationType)
+                id: this.locationDetails.location.id,
+                name: basicformValues.officeName,
+                locationType: parseInt(basicformValues.officeType),
+                updateByUserID: userId
             }),
             company: new Company({
-                // id: this._sessionStore.session.account_id, 
-                id: 1
+                id: this.locationDetails.company.id
+                // id: 1
             }),
             contact: new Contact({
-                faxNo: addlocationformValues.fax,
-                workPhone: addlocationformValues.officePhone,
+                faxNo: basicformValues.fax,
+                workPhone: basicformValues.officePhone,
+                updateByUserID: userId
             }),
             address: new Address({
-                address1: addlocationformValues.address,
-                city: addlocationformValues.city,
-                state: addlocationformValues.state,
-                zipCode: addlocationformValues.zipCode,
+                address1: basicformValues.address,
+                city: basicformValues.city,
+                state: basicformValues.state,
+                zipCode: basicformValues.zipcode,
+                updateByUserID: userId
             })
         });
         this.isSaveProgress = true;
         let result;
 
-        result = this._locationsStore.addLocation(basicInfo);
+        result = this._locationsStore.updateLocation(basicInfo);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
