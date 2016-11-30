@@ -225,7 +225,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     location.AddressInfo.ZipCode = addressBO.ZipCode;
                     location.AddressInfo.Country = addressBO.Country;
                     location.AddressInfo.UpdateDate = DateTime.UtcNow;
-                    locationDB.AddressInfo.UpdateByUserID = addressBO.UpdateByUserID;
+                    location.AddressInfo.UpdateByUserID = addressBO.UpdateByUserID;
                     #endregion
 
                     #region Contact Info
@@ -241,7 +241,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     location.ContactInfo.WorkPhone = contactinfoBO.WorkPhone;
                     location.ContactInfo.FaxNo = contactinfoBO.FaxNo;
                     location.ContactInfo.UpdateDate = DateTime.UtcNow;
-                    locationDB.ContactInfo.UpdateByUserID = contactinfoBO.UpdateByUserID;
+                    location.ContactInfo.UpdateByUserID = contactinfoBO.UpdateByUserID;
                     #endregion
                     _context.Entry(location).State = System.Data.Entity.EntityState.Modified;
                 }
@@ -287,7 +287,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID
         public override object Get(int id)
         {
-            BO.Location acc_ = Convert<BO.Location, Location>(_context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Where(p => p.id == id).FirstOrDefault<Location>());
+            BO.Location acc_ = Convert<BO.Location, Location>(_context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Where(p => p.id == id && p.IsDeleted==false).FirstOrDefault<Location>());
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this location.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
             return (object)acc_;
         }
         #endregion
@@ -295,12 +299,48 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Filter
         public override object Get<T>(T entity)
         {
-            var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Where(p => p.IsDeleted == false).ToList<Location>();
             List<BO.Location> lstLocations = new List<BO.Location>();
-            foreach (Location item in acc_)
+            BO.Location locationBO = (BO.Location)(object)entity;
+            if (locationBO != null)
             {
-                lstLocations.Add(Convert<BO.Location, Location>(item));
+                if (locationBO.Company != null)
+                {
+                    var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && (p.CompanyID==locationBO.Company.ID)).ToList<Location>();
+                    if (acc_ == null || acc_.Count < 1)
+                    {
+                        return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    }
+                    foreach (Location item in acc_)
+                    {
+                        lstLocations.Add(Convert<BO.Location, Location>(item));
+                    }
+                }
+                else if (locationBO.Name != null)
+                {
+                    var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.Name == locationBO.Name).ToList<Location>();
+                    if (acc_ == null || acc_.Count<1)
+                    {
+                        return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    }
+                    foreach (Location item in acc_)
+                    {
+                        lstLocations.Add(Convert<BO.Location, Location>(item));
+                    }
+                }
+                else
+                {
+                    var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<Location>();
+                    if (acc_ == null || acc_.Count < 1)
+                    {
+                        return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    }
+                    foreach (Location item in acc_)
+                    {
+                        lstLocations.Add(Convert<BO.Location, Location>(item));
+                    }
+                }
             }
+            
             return lstLocations;
         }
         #endregion

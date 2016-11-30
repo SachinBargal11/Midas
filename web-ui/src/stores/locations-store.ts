@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { Location } from '../models/location';
+import { LocationDetails } from '../models/location-details';
 import { LocationsService } from '../services/locations-service';
 import { List } from 'immutable';
 import { BehaviorSubject } from 'rxjs/Rx';
@@ -11,8 +12,8 @@ import { SessionStore } from './session-store';
 @Injectable()
 export class LocationsStore {
 
-    private _locations: BehaviorSubject<List<Location>> = new BehaviorSubject(List([]));
-    private _selectedLocation: BehaviorSubject<Location> = new BehaviorSubject(null);
+    private _locations: BehaviorSubject<List<LocationDetails>> = new BehaviorSubject(List([]));
+    private _selectedLocation: BehaviorSubject<LocationDetails> = new BehaviorSubject(null);
 
     constructor(
         private _locationsService: LocationsService,
@@ -31,36 +32,70 @@ export class LocationsStore {
         return this._selectedLocation.asObservable();
     }
 
-    getLocations(): Observable<Location[]> {
+    getLocations(): Observable<LocationDetails[]> {
+        let userId: number = this._sessionStore.session.user.id;
         let promise = new Promise((resolve, reject) => {
-            this._locationsService.getLocations().subscribe((locations: Location[]) => {
+            this._locationsService.getLocations(userId).subscribe((locations: LocationDetails[]) => {
                 this._locations.next(List(locations));
                 resolve(locations);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<Location[]>>Observable.fromPromise(promise);
+        return <Observable<LocationDetails[]>>Observable.fromPromise(promise);
+    }
+
+    fetchLocationById(id: number): Observable<LocationDetails> {
+        let promise = new Promise((resolve, reject) => {
+            let matchedLocation: LocationDetails = this.findLocationById(id);
+            if (matchedLocation) {
+                resolve(matchedLocation);
+            } else {
+                this._locationsService.getLocation(id).subscribe((location: LocationDetails) => {
+                    resolve(location);
+                }, error => {
+                    reject(error);
+                });
+            }
+        });
+        return <Observable<LocationDetails>>Observable.fromPromise(promise);
+    }
+
+    findLocationById(id: number) {
+        let locations = this._locations.getValue();
+        let index = locations.findIndex((currentLocation: LocationDetails) => currentLocation.location.id === id);
+        return locations.get(index);
     }
 
     resetStore() {
         this._locations.next(this._locations.getValue().clear());
         this._selectedLocation.next(null);
     }
-    
-    addLocation(basicInfo: Location): Observable<Location> {
+
+    addLocation(basicInfo: LocationDetails): Observable<LocationDetails> {
         let promise = new Promise((resolve, reject) => {
-            this._locationsService.addLocation(basicInfo).subscribe((location: Location) => {
+            this._locationsService.addLocation(basicInfo).subscribe((location: LocationDetails) => {
                 this._locations.next(this._locations.getValue().push(location));
                 resolve(location);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<Location>>Observable.from(promise);
+        return <Observable<LocationDetails>>Observable.from(promise);
+    }
+    updateLocation(basicInfo: LocationDetails): Observable<LocationDetails> {
+        let promise = new Promise((resolve, reject) => {
+            this._locationsService.updateLocation(basicInfo).subscribe((location: LocationDetails) => {
+                this._locations.next(this._locations.getValue().push(location));
+                resolve(location);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<LocationDetails>>Observable.from(promise);
     }
 
-    selectLocation(location: Location) {
+    selectLocation(location: LocationDetails) {
         this._selectedLocation.next(location);
     }
 }

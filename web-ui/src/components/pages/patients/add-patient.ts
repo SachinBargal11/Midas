@@ -15,6 +15,8 @@ import Moment from 'moment';
 })
 
 export class AddPatientComponent implements OnInit {
+    minDate: Date;    
+    maxDate: Date;
     patient = new Patient({
         'firstname': '',
         'lastname': '',
@@ -56,9 +58,10 @@ export class AddPatientComponent implements OnInit {
     }
 
     ngOnInit() {
-        // $(this._elRef.nativeElement).find('.datepickerElem').datetimepicker({
-        //     format: 'll'
-        // });
+        let today = new Date();
+        let currentDate = today.getDate();
+        this.maxDate = new Date();
+        this.maxDate.setDate(currentDate);
     }
 
 

@@ -3,7 +3,9 @@ import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
 import {LocationsStore} from '../../../stores/locations-store';
+import { LocationDetails } from '../../../models/location-details';
 import {Location} from '../../../models/location';
+import { Company } from '../../../models/company';
 import {Contact} from '../../../models/contact';
 import {Address} from '../../../models/address';
 import {SessionStore} from '../../../stores/session-store';
@@ -43,14 +45,14 @@ export class AddLocationComponent implements OnInit {
         private _elRef: ElementRef
     ) {
         this.addlocationform = this.fb.group({
-                officeName: ['', Validators.required],
+                name: ['', Validators.required],
                 address: [''],
                 city: ['', Validators.required],
                 state: ['', Validators.required],
-                zipcode: ['', Validators.required],
+                zipCode: ['', Validators.required],
                 officePhone: ['', Validators.required],
                 fax: ['', Validators.required],
-                officeType: ['', Validators.required]
+                locationType: ['', Validators.required]
             });
 
         this.addlocationformControls = this.addlocationform.controls;
@@ -62,9 +64,15 @@ export class AddLocationComponent implements OnInit {
 
     save() {
         let addlocationformValues = this.addlocationform.value;
-        let basicInfo = new Location({
-            name: addlocationformValues.officeName,
-            locationType: parseInt(addlocationformValues.officeType),
+        let basicInfo = new LocationDetails({
+            location: new Location ({
+                name: addlocationformValues.name,
+                locationType: parseInt(addlocationformValues.locationType)
+            }),
+            company: new Company ({
+                //  id: this._sessionStore.session.user.id 
+                id: 1
+            }),
             contact: new Contact({
                 faxNo: addlocationformValues.fax,
                 workPhone: addlocationformValues.officePhone,

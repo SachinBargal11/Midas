@@ -24,9 +24,11 @@ namespace MIDAS.GBX.WebAPI.Controllers
     {
 
         private IRequestHandler<User> requestHandler;
+        private IRequestHandler<AddUser> adduserrequestHandler;
         public UserController()
         {
             requestHandler = new GbApiRequestHandler<User>();
+            adduserrequestHandler = new GbApiRequestHandler<AddUser>();
         }
 
         [HttpPost]
@@ -50,9 +52,9 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpPost]
         [Route("Add")]
         [AllowAnonymous]
-        public HttpResponseMessage Post([FromBody]User data)
+        public HttpResponseMessage Post([FromBody]AddUser data)
         {
-            return requestHandler.CreateGbObject(Request, data);
+            return adduserrequestHandler.CreateGbObject(Request, data);
         }
 
         // PUT: api/Organizations/5

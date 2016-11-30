@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
-using GBDataRepository.Model;
 using Newtonsoft.Json.Linq;
 using MIDAS.GBX.EntityRepository;
 using MIDAS.GBX.DataRepository.Model;
@@ -89,7 +88,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-
+                return new BO.ErrorObject { ErrorMessage = "Invalid appkey or other parameters.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             return (object)Convert<BO.Invitation, Invitation>(invitation); ;
         }

@@ -7,14 +7,14 @@
                     <div class="card-block">
                         <div class="row">
                             <div class="col-lg-6">
-                                <label class="form-label"> Office Name
+                                <label class="form-label"> Location Name
                                             <span class="color-red">*</span>
                                         </label>
-                                <div class="form-group" [class.error]="addlocationformControls.officeName.touched && !addlocationformControls.officeName.valid">
-                                    <input formControlName="officeName" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.officeName.valid">
-                                    <div class='error-list' *ngIf="addlocationformControls.officeName.touched && !addlocationformControls.officeName.valid">
+                                <div class="form-group" [class.error]="addlocationformControls.name.touched && !addlocationformControls.name.valid">
+                                    <input formControlName="name" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.name.valid">
+                                    <div class='error-list' *ngIf="addlocationformControls.name.touched && !addlocationformControls.name.valid">
                                         <ul>
-                                            <li *ngIf="addlocationformControls.officeName.hasError('required')">Office Name is required.</li>
+                                            <li *ngIf="addlocationformControls.name.hasError('required')">Location Name is required.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -71,23 +71,23 @@
                                 <label class="form-label"> Zip code
                                             <span class="color-red">*</span>
                                         </label>
-                                <div class="form-group" [class.error]="addlocationformControls.zipcode.touched && !addlocationformControls.zipcode.valid">
-                                    <input formControlName="zipcode" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.zipcode.valid">
-                                    <div class='error-list' *ngIf="addlocationformControls.zipcode.touched && !addlocationformControls.zipcode.valid">
+                                <div class="form-group" [class.error]="addlocationformControls.zipCode.touched && !addlocationformControls.zipCode.valid">
+                                    <input formControlName="zipCode" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.zipCode.valid">
+                                    <div class='error-list' *ngIf="addlocationformControls.zipCode.touched && !addlocationformControls.zipCode.valid">
                                         <ul>
-                                            <li *ngIf="addlocationformControls.zipcode.hasError('required')">zipcode is required.</li>
+                                            <li *ngIf="addlocationformControls.zipCode.hasError('required')">zipCode is required.</li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <label class="form-label"> Office phone
+                                <label class="form-label"> Phone
                                             <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="addlocationformControls.officePhone.touched && !addlocationformControls.officePhone.valid">
                                     <!--<input formControlName="officePhone" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.officePhone.valid">-->
                                     <p-inputMask mask="999-999-9999" formControlName="officePhone" [class.error]="addlocationformControls.officePhone.touched && !addlocationformControls.officePhone.valid" 
-                                     placeholder="999-999-9999" styleClass="form-control" [options]="{showMaskOnHover:false}"></p-inputMask>
+                                     placeholder="999-999-9999" styleClass="form-control" ></p-inputMask>
                                     <div class='error-list' *ngIf="addlocationformControls.officePhone.touched && !addlocationformControls.officePhone.valid">
                                         <ul>
                                             <li *ngIf="addlocationformControls.officePhone.hasError('required')">Office Phone is required.</li>
@@ -112,19 +112,18 @@
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <label class="form-label"> Office type
+                                <label class="form-label"> Location type
                                             <span class="color-red">*</span>
                                         </label>
-                                <div class="form-group" [class.error]="addlocationformControls.officeType.touched && !addlocationformControls.officeType.valid">
-                                    <!--<input formControlName="officeType" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.officeType.valid">-->
-                                    <select formControlName="officeType" type="text" class="form-control" placeholder="" [class.error]="addlocationformControls.officeType.touched && !addlocationformControls.officeType.valid">
-                                        <option value="0">None</option>
+                                <div class="form-group" [class.error]="addlocationformControls.locationType.touched && !addlocationformControls.locationType.valid">
+                                    <!--<input formControlName="locationType" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.locationType.valid">-->
+                                    <select formControlName="locationType" type="text" class="form-control" placeholder="" [class.error]="addlocationformControls.locationType.touched && !addlocationformControls.locationType.valid">
                                         <option value="1">Medical Office</option>
                                         <option value="2">Medical Testing Facility</option>
                                     </select>
-                                    <div class='error-list' *ngIf="addlocationformControls.officeType.touched && !addlocationformControls.officeType.valid">
+                                    <div class='error-list' *ngIf="addlocationformControls.locationType.touched && !addlocationformControls.locationType.valid">
                                         <ul>
-                                            <li *ngIf="addlocationformControls.officeType.hasError('required')">Office type is required.</li>
+                                            <li *ngIf="addlocationformControls.locationType.hasError('required')">Office type is required.</li>
                                         </ul>
                                     </div>
                                 </div>

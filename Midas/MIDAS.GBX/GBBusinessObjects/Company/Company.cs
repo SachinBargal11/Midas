@@ -11,6 +11,7 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class Company:GbObject
     {
+        public Company company { get; set; }
         [JsonProperty("status")]
         [JsonConverter(typeof(StringEnumConverter))]
         public GBEnums.AccountStatus Status { get; set; }
@@ -50,7 +51,7 @@ namespace MIDAS.GBX.BusinessObjects
 
             if (TaxID.Length!=10)
             {
-                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Please input valid 10 digit TaxID" });
+                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Please input valid TaxID" });
             }
 
             return validations;

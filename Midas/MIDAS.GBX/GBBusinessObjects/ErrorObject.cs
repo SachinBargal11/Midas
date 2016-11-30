@@ -11,6 +11,7 @@ namespace MIDAS.GBX.BusinessObjects
         public ErrorLevel ErrorLevel { get; set; }
         public string ErrorMessage { get; set; }
         public object errorObject { get; set; }
+        public System.Net.HttpStatusCode statusCode { get; set; }
     }
 }
 
@@ -21,5 +22,6 @@ public enum ErrorLevel
     Error=2,
     Critical=3,
     Validation=4,
-    Exception=5
+    Exception=5,
+    Information=6
 }

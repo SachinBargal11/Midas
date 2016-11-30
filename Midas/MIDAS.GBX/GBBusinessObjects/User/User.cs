@@ -58,10 +58,6 @@ namespace MIDAS.GBX.BusinessObjects
             BusinessValidation validation = new BusinessValidation();
             //Implement logic for validation
 
-            if (string.IsNullOrEmpty(UserName))
-            {
-                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Name is required" });
-            }
             return validations;
         }
     }
