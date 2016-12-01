@@ -45,16 +45,16 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonConverter(typeof(BoolConverter))]
         public bool? IsDeleted { get; set; }
         //public Dictionary<string, object> ExtensionProperties { get; set; }
-        [JsonProperty("createByUserID")]
+        [JsonProperty("createbyuserID")]
         public int CreateByUserID { get; set; }
 
-        [JsonProperty("updateByUserID")]
+        [JsonProperty("updatebyuserID")]
         public int? UpdateByUserID { get; set; }
         [JsonProperty("createDate")]
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get { return DateTime.Now; } }
 
         [JsonProperty("updateDate")]
-        public DateTime? UpdateDate { get; set; }
+        public DateTime? UpdateDate { get { return DateTime.Now; } }
 
         public virtual List<BusinessValidation> Validate<T>(T entity)
         {

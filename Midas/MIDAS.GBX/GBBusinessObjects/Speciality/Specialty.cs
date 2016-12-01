@@ -24,10 +24,6 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("isunitApply")]
         public bool IsUnitApply { get; set; }
 
-        [Required]
-        [JsonProperty("npi")]
-        public string NPI { get; set; }
-
         public List<Company> CompanySpecialtyDetails { get; set; }
         public List<Company> SpecialtyDetails { get; set; }
     }

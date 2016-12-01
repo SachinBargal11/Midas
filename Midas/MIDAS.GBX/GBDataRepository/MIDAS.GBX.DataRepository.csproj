@@ -39,8 +39,9 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\..\..\Working MIDAS\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -63,8 +64,10 @@
     <Compile Include="DataAccessManager\IGbDataAccessManager.cs" />
     <Compile Include="EntityRepository\BaseEntityRepo.cs" />
     <Compile Include="EntityRepository\Company\CompanyRepository.cs" />
-    <Compile Include="EntityRepository\InvitationRepository.cs" />
-    <Compile Include="EntityRepository\LocationRepository.cs" />
+    <Compile Include="EntityRepository\Doctor\DoctorRepository.cs" />
+    <Compile Include="EntityRepository\Doctor\DoctorSpecialityRepository.cs" />
+    <Compile Include="EntityRepository\Company\InvitationRepository.cs" />
+    <Compile Include="EntityRepository\Company\LocationRepository.cs" />
     <Compile Include="EntityRepository\MedicaProvider\MedicalProviderRepository.cs" />
     <Compile Include="EntityRepository\Speciality\CompanySpecialityDetailsRepository.cs" />
     <Compile Include="EntityRepository\Speciality\SpecialityDetailsRepository.cs" />
@@ -178,18 +181,8 @@
       <LastGenOutput>MIDASGBXEntities.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="App.Config" />
-    <None Include="Model\MIDASGBXEntities.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
-      <LastGenOutput>MIDASGBXEntities.Context.cs</LastGenOutput>
-    </None>
     <None Include="Model\MIDASGBXEntities.edmx.diagram">
       <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
-    </None>
-    <None Include="Model\MIDASGBXEntities.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
-      <LastGenOutput>MIDASGBXEntities.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -209,7 +202,18 @@
   <ItemGroup>
     <Folder Include="EntityRepository\AddressInfo\" />
     <Folder Include="EntityRepository\ContactInfo\" />
-    <Folder Include="EntityRepository\Doctor\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Model\MIDASGBXEntities.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
+      <LastGenOutput>MIDASGBXEntities.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Model\MIDASGBXEntities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
+      <LastGenOutput>MIDASGBXEntities.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

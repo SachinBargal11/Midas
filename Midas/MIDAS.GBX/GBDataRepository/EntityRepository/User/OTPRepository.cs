@@ -44,7 +44,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boUser.UserType = (BO.GBEnums.UserType)user_.UserType;
                 boUser.Gender = (BO.GBEnums.Gender)user_.UserType;
                 boUser.CreateByUserID = user_.CreateByUserID;
-                boUser.CreateDate = user_.CreateDate;
                 return (T)(object)boUser;
             }
             OTP user = entity as OTP;

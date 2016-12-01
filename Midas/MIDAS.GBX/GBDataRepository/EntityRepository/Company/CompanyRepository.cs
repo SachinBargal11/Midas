@@ -231,16 +231,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-                companyDB.CreateDate = DateTime.UtcNow;
                 companyDB.CreateByUserID = companyBO.CreateByUserID;
 
-                userDB.CreateDate = DateTime.UtcNow;
                 userDB.CreateByUserID = companyBO.CreateByUserID;
 
-                addressDB.CreateDate = DateTime.UtcNow;
                 addressDB.CreateByUserID = companyBO.CreateByUserID;
 
-                contactinfoDB.CreateDate = DateTime.UtcNow;
                 contactinfoDB.CreateByUserID = companyBO.CreateByUserID;
 
                 _dbSet.Add(companyDB);
@@ -288,7 +284,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             catch (Exception ex)
             {
-
+                //Message sending failed
             }
 
             var res = (BO.GbObject)(object)acc_;
@@ -313,7 +309,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
         public void Dispose()
         {
-            Dispose();
             GC.SuppressFinalize(this);
         }
     }

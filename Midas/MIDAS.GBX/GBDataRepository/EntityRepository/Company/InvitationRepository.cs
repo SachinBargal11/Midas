@@ -81,7 +81,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 invitation.IsActivated = true;
                 invitation.IsExpired = true;
-                invitation.UpdateDate = DateTime.UtcNow;
                 invitation.UpdateByUserID = 0;
                 _context.Entry(invitation).State = System.Data.Entity.EntityState.Modified;
                 _context.SaveChanges();

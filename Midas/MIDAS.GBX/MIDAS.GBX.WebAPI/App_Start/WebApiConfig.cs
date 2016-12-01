@@ -12,6 +12,8 @@ using System.Configuration;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Net;
+using System.Diagnostics;
+using System.Text;
 namespace MIDAS.GBX.WebAPI
 {
     public static class WebApiConfig
@@ -29,6 +31,7 @@ namespace MIDAS.GBX.WebAPI
             var cors = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(cors);
             config.MessageHandlers.Add(new PreflightRequestsHandler());
+
             //config.Routes.MapHttpRoute(
             //    name: "DefaultApi",
             //    routeTemplate: "api/{controller}/{id}",
@@ -71,4 +74,24 @@ public class PreflightRequestsHandler : DelegatingHandler
         }
         return base.SendAsync(request, cancellationToken);
     }
+    //protected abstract Task IncommingMessageAsync(string correlationId, string requestInfo, byte[] message);
+    //protected abstract Task OutgoingMessageAsync(string correlationId, string requestInfo, byte[] message);
+}
+
+public class MessageLoggingHandler : PreflightRequestsHandler
+{
+    //protected override async Task IncommingMessageAsync(string correlationId, string requestInfo, byte[] message)
+    //{
+    //    await Task.Run(() =>
+    //        Debug.WriteLine(string.Format("{0} - Request: {1}\r\n{2}", correlationId, requestInfo, Encoding.UTF8.GetString(message))));
+    //}
+
+
+    //protected override async Task OutgoingMessageAsync(string correlationId, string requestInfo, byte[] message)
+    //{
+    //    await Task.Run(() =>
+    //        Debug.WriteLine(string.Format("{0} - Response: {1}\r\n{2}", correlationId, requestInfo, Encoding.UTF8.GetString(message))));
+    //}
+
+
 }
