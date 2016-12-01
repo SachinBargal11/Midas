@@ -8,27 +8,7 @@
         <EntityContainer Name="MIDASGBXModelStoreContainer">
           <EntitySet Name="AddressInfo" EntityType="MIDASGBXModel.Store.AddressInfo" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Company" EntityType="MIDASGBXModel.Store.Company" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="CompanySpecialtyDetails" EntityType="MIDASGBXModel.Store.CompanySpecialtyDetails" store:Type="Tables" store:Schema="dbo" store:Name="CompanySpecialtyDetails">
-            <DefiningQuery>SELECT 
-      [CompanySpecialtyDetails].[id] AS [id], 
-      [CompanySpecialtyDetails].[SpecialtyId] AS [SpecialtyId], 
-      [CompanySpecialtyDetails].[CompanyID] AS [CompanyID], 
-      [CompanySpecialtyDetails].[ReevalDays] AS [ReevalDays], 
-      [CompanySpecialtyDetails].[ReevalVisitCount] AS [ReevalVisitCount], 
-      [CompanySpecialtyDetails].[InitialDays] AS [InitialDays], 
-      [CompanySpecialtyDetails].[InitialVisitCount] AS [InitialVisitCount], 
-      [CompanySpecialtyDetails].[MaxReval] AS [MaxReval], 
-      [CompanySpecialtyDetails].[IsInitialEvaluation] AS [IsInitialEvaluation], 
-      [CompanySpecialtyDetails].[Include1500] AS [Include1500], 
-      [CompanySpecialtyDetails].[AssociatedSpecialty] AS [AssociatedSpecialty], 
-      [CompanySpecialtyDetails].[AllowMultipleVisit] AS [AllowMultipleVisit], 
-      [CompanySpecialtyDetails].[IsDeleted] AS [IsDeleted], 
-      [CompanySpecialtyDetails].[CreateByUserID] AS [CreateByUserID], 
-      [CompanySpecialtyDetails].[CreateDate] AS [CreateDate], 
-      [CompanySpecialtyDetails].[UpdateByUserID] AS [UpdateByUserID], 
-      [CompanySpecialtyDetails].[UpdateDate] AS [UpdateDate]
-      FROM [dbo].[CompanySpecialtyDetails] AS [CompanySpecialtyDetails]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="CompanySpecialtyDetails" EntityType="MIDASGBXModel.Store.CompanySpecialtyDetails" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CompanyType" EntityType="MIDASGBXModel.Store.CompanyType" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ContactInfo" EntityType="MIDASGBXModel.Store.ContactInfo" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Doctor" EntityType="MIDASGBXModel.Store.Doctor" store:Type="Tables" Schema="dbo" />
@@ -177,13 +157,9 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
-        <!--Errors Found During Generation:
-      warning 6002: The table/view 'MIDASGBX.dbo.CompanySpecialtyDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
-      -->
         <EntityType Name="CompanySpecialtyDetails">
           <Key>
             <PropertyRef Name="id" />
-            <PropertyRef Name="CreateByUserID" />
           </Key>
           <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="SpecialtyId" Type="int" />
@@ -987,7 +963,6 @@
         <EntityType Name="CompanySpecialtyDetail">
           <Key>
             <PropertyRef Name="id" />
-            <PropertyRef Name="CreateByUserID" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="SpecialtyId" Type="Int32" />

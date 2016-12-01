@@ -45,8 +45,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 specialtyBO.IsDeleted = specialty.IsDeleted.Value;
             if (specialty.UpdateByUserID.HasValue)
                 specialtyBO.UpdateByUserID = specialty.UpdateByUserID.Value;
-            if (specialty.UpdateDate.HasValue)
-                specialtyBO.UpdateDate = specialty.UpdateDate.Value;
             return (T)(object)specialtyBO;
         }
         #endregion
@@ -71,7 +69,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             speclityDB.id = specialtyBO.ID;
             speclityDB.Name = specialtyBO.Name;
             speclityDB.SpecialityCode = specialtyBO.SpecialityCode;
-            speclityDB.IsDeleted = specialtyBO.IsDeleted.HasValue ? specialtyBO.IsDeleted : false;
+            speclityDB.IsUnitApply = specialtyBO.IsUnitApply;
+            speclityDB.IsDeleted = specialtyBO.IsDeleted.HasValue ? specialtyBO.IsDeleted.Value : false;
             #endregion
 
 
@@ -86,19 +85,23 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     #region Specialty
                     specialty.id = specialtyBO.ID;
                     specialty.Name = specialtyBO.Name != null ? specialtyBO.Name : specialty.Name;
-                    specialty.SpecialityCode = specialtyBO.NPI != null ? specialtyBO.NPI : specialty.SpecialityCode;
+                    specialty.IsUnitApply = specialtyBO.IsUnitApply != null ? specialtyBO.IsUnitApply : specialty.IsUnitApply;
+                    specialty.SpecialityCode = specialtyBO.SpecialityCode != null ? specialtyBO.SpecialityCode : specialty.SpecialityCode;
                     specialty.IsDeleted = specialtyBO.IsDeleted != null ? specialtyBO.IsDeleted : specialty.IsDeleted;
-                    specialty.UpdateDate = DateTime.UtcNow;
                     specialty.UpdateByUserID = specialtyBO.UpdateByUserID;
                     #endregion
 
                     _context.Entry(specialty).State = System.Data.Entity.EntityState.Modified;
+
+                }
+                else
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No record found for this Specialty.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
 
             }
             else
             {
-                speclityDB.CreateDate = DateTime.UtcNow;
                 speclityDB.CreateByUserID = specialtyBO.CreateByUserID;
 
                 _dbSet.Add(speclityDB);
@@ -157,7 +160,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
         public void Dispose()
         {
-            Dispose();
             // Use SupressFinalize in case a subclass 
             // of this type implements a finalizer.
             GC.SuppressFinalize(this);   

@@ -44,8 +44,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 locationBO.IsDeleted = location.IsDeleted.Value;
             if (location.UpdateByUserID.HasValue)
                 locationBO.UpdateByUserID = location.UpdateByUserID.Value;
-            if (location.UpdateDate.HasValue)
-                locationBO.UpdateDate = location.UpdateDate.Value;
 
             BO.Company boCompany = new BO.Company();
             boCompany.ID = location.Company.id;
@@ -62,14 +60,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boAddress.ZipCode = location.AddressInfo.ZipCode;
                 boAddress.Country = location.AddressInfo.Country;
                 boAddress.CreateByUserID = location.AddressInfo.CreateByUserID;
-                boAddress.CreateDate = location.AddressInfo.CreateDate;
                 boAddress.ID = location.AddressInfo.id;
                 if (location.AddressInfo.IsDeleted.HasValue)
                     boAddress.IsDeleted = location.AddressInfo.IsDeleted.Value;
                 if (location.AddressInfo.UpdateByUserID.HasValue)
                     boAddress.UpdateByUserID = location.AddressInfo.UpdateByUserID.Value;
-                if (location.AddressInfo.UpdateDate.HasValue)
-                    boAddress.UpdateDate = location.AddressInfo.UpdateDate;
                 locationBO.AddressInfo = boAddress;
             }
 
@@ -83,14 +78,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boContactInfo.WorkPhone = location.ContactInfo.WorkPhone;
                 boContactInfo.FaxNo = location.ContactInfo.FaxNo;
                 boContactInfo.CreateByUserID = location.ContactInfo.CreateByUserID;
-                boContactInfo.CreateDate = location.ContactInfo.CreateDate;
                 boContactInfo.ID = location.ContactInfo.id;
                 if (location.ContactInfo.IsDeleted.HasValue)
                     boContactInfo.IsDeleted = location.ContactInfo.IsDeleted.Value;
                 if (location.ContactInfo.UpdateByUserID.HasValue)
                     boContactInfo.UpdateByUserID = location.ContactInfo.UpdateByUserID.Value;
-                if (location.ContactInfo.UpdateDate.HasValue)
-                    boContactInfo.UpdateDate = location.ContactInfo.UpdateDate;
                 locationBO.ContactInfo = boContactInfo;
             }
 
@@ -240,7 +232,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     location.ContactInfo.HomePhone = contactinfoBO.HomePhone;
                     location.ContactInfo.WorkPhone = contactinfoBO.WorkPhone;
                     location.ContactInfo.FaxNo = contactinfoBO.FaxNo;
-                    location.ContactInfo.UpdateDate = DateTime.UtcNow;
                     location.ContactInfo.UpdateByUserID = contactinfoBO.UpdateByUserID;
                     #endregion
                     _context.Entry(location).State = System.Data.Entity.EntityState.Modified;

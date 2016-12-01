@@ -56,8 +56,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 companyspecialtyDetailBO.IsDeleted = companyspecialtydetail.IsDeleted.Value;
             if (companyspecialtydetail.UpdateByUserID.HasValue)
                 companyspecialtyDetailBO.UpdateByUserID = companyspecialtydetail.UpdateByUserID.Value;
-            if (companyspecialtydetail.UpdateDate.HasValue)
-                companyspecialtyDetailBO.UpdateDate = companyspecialtydetail.UpdateDate.Value;
 
             BO.Specialty boSpecialty = new BO.Specialty();
             using (SpecialityRepository sr = new SpecialityRepository(_context))
@@ -79,7 +77,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
-            BO.Specialty companyspecialtydetail = (BO.Specialty)(object)entity;
+            BO.CompanySpecialtyDetails companyspecialtydetail = (BO.CompanySpecialtyDetails)(object)entity;
             var result = companyspecialtydetail.Validate(companyspecialtydetail);
             return result;
         }
@@ -123,7 +121,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (speclity != null)
                 {
                     companyspeclityDetailDB.Specialty = speclity;
-                    _context.Entry(speclity).State = System.Data.Entity.EntityState.Modified;
                 }
                 else
                     return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Speclity details.", ErrorLevel = ErrorLevel.Error };
@@ -137,7 +134,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (company != null)
                 {
                     companyspeclityDetailDB.Company = company;
-                    _context.Entry(company).State = System.Data.Entity.EntityState.Modified;
                 }
                 else
                     return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Company details.", ErrorLevel = ErrorLevel.Error };
@@ -204,7 +200,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID
         public override object Get(int id)
         {
-            BO.CompanySpecialtyDetails acc_ = Convert<BO.CompanySpecialtyDetails, CompanySpecialtyDetail>(_context.CompanySpecialtyDetails.Where(p => p.id == id && p.IsDeleted == false).FirstOrDefault<CompanySpecialtyDetail>());
+            BO.CompanySpecialtyDetails acc_ = Convert<BO.CompanySpecialtyDetails, CompanySpecialtyDetail>(_context.CompanySpecialtyDetails.Include("Company").Include("Specialty").Where(p => p.id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<CompanySpecialtyDetail>());
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Specialty detail.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -223,7 +219,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 if (companyspecialtyDetailBO.Specialty != null)
                 {
-                    var acc_ = _context.CompanySpecialtyDetails.Include("Specialty").Where(p => p.IsDeleted == false || p.IsDeleted == null && p.SpecialtyId == companyspecialtyDetailBO.Specialty.ID).ToList<CompanySpecialtyDetail>();
+                    var acc_ = _context.CompanySpecialtyDetails.Include("Specialty").Include("Company").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.SpecialtyId == companyspecialtyDetailBO.Specialty.ID).ToList<CompanySpecialtyDetail>();
                     if (acc_ == null)
                     {
                         return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -235,7 +231,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 else
                 {
-                    var acc_ = _context.CompanySpecialtyDetails.Include("Specialty").Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<CompanySpecialtyDetail>();
+                    var acc_ = _context.CompanySpecialtyDetails.Include("Specialty").Include("Company").Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<CompanySpecialtyDetail>();
                     if (acc_ == null)
                     {
                         return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -244,6 +240,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         lstSpecialties.Add(Convert<BO.CompanySpecialtyDetails, CompanySpecialtyDetail>(item));
                     }
+                }
+            }
+            else
+            {
+                var acc_ = _context.CompanySpecialtyDetails.Include("Specialty").Include("Company").Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<CompanySpecialtyDetail>();
+                if (acc_ == null)
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+                foreach (CompanySpecialtyDetail item in acc_)
+                {
+                    lstSpecialties.Add(Convert<BO.CompanySpecialtyDetails, CompanySpecialtyDetail>(item));
                 }
             }
 

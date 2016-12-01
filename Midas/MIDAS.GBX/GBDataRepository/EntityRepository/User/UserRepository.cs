@@ -20,6 +20,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         private DbSet<UserCompany> _dbUserCompany;
         private DbSet<UserCompanyRole> _dbUserCompanyRole;
         private DbSet<Invitation> _dbInvitation;
+
         #region Constructor
         public UserRepository(MIDASGBXEntities context) : base(context)
         {
@@ -63,7 +64,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             boUser.UserType = (BO.GBEnums.UserType)user.UserType;
             boUser.Gender = (BO.GBEnums.Gender)user.UserType;
             boUser.CreateByUserID = user.CreateByUserID;
-            boUser.CreateDate = user.CreateDate;
 
             if (user.C2FactAuthEmailEnabled.HasValue)
                 boUser.C2FactAuthEmailEnabled = user.C2FactAuthEmailEnabled.Value;
@@ -77,8 +77,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boUser.IsDeleted = System.Convert.ToBoolean(user.IsDeleted.Value);
             if (user.UpdateByUserID.HasValue)
                 boUser.UpdateByUserID = user.UpdateByUserID.Value;
-            if (user.UpdateDate.HasValue)
-                boUser.UpdateDate = user.UpdateDate.Value;
 
             if (user.AddressInfo != null)
             {
@@ -91,7 +89,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boAddress.ZipCode = user.AddressInfo.ZipCode;
                 boAddress.Country = user.AddressInfo.Country;
                 boAddress.CreateByUserID = user.AddressInfo.CreateByUserID;
-                boAddress.CreateDate = user.AddressInfo.CreateDate;
                 boAddress.ID = user.AddressInfo.id;
                 boUser.AddressInfo = boAddress;
             }
@@ -106,7 +103,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boContactInfo.WorkPhone = user.ContactInfo.WorkPhone;
                 boContactInfo.FaxNo = user.ContactInfo.FaxNo;
                 boContactInfo.CreateByUserID = user.ContactInfo.CreateByUserID;
-                boContactInfo.CreateDate = user.ContactInfo.CreateDate;
                 boContactInfo.ID = user.ContactInfo.id;
                 boUser.ContactInfo = boContactInfo;
             }
@@ -510,7 +506,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
         public void Dispose()
         {
-            Dispose();
             GC.SuppressFinalize(this);
         }
         #endregion
