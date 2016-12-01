@@ -55,9 +55,9 @@ export class SpecialityDetailsComponent {
             let medicalFacilityId: number = parseInt(routeParams.id);
             let result = this._medicalFacilityStore.fetchMedicalFacilityById(medicalFacilityId);
             result.subscribe(
-                (medicalFacilityDetail: MedicalFacilityDetail) => {
-                    this.medicalFacilityDetail = medicalFacilityDetail;
-                },
+                // (medicalFacilityDetail: MedicalFacilityDetail) => {
+                //     this.medicalFacilityDetail = medicalFacilityDetail;
+                // },
                 (error) => {
                     this._router.navigate(['/medical-facilities']);
                 },
@@ -98,7 +98,7 @@ export class SpecialityDetailsComponent {
 
     deleteSpecialityDetail(specialityDetail: SpecialityDetail, medicalFacilityDetail: MedicalFacilityDetail) {
         let result: Observable<SpecialityDetail>;
-        result = this._medicalFacilityStore.deleteSpecialityDetail(specialityDetail, this.medicalFacilityDetail);
+        // result = this._medicalFacilityStore.deleteSpecialityDetail(specialityDetail, this.medicalFacilityDetail);
         result.subscribe(
             (response: SpecialityDetail) => {
                 let notification = new Notification({

@@ -13,8 +13,8 @@ import {BehaviorSubject} from 'rxjs/Rx';
 @Injectable()
 export class UsersStore {
 
-    private _users: BehaviorSubject<List<AccountDetail>> = new BehaviorSubject(List([]));
-    private _selectedUsers: BehaviorSubject<List<AccountDetail>> = new BehaviorSubject(List([]));
+    private _users: BehaviorSubject<List<Account>> = new BehaviorSubject(List([]));
+    private _selectedUsers: BehaviorSubject<List<Account>> = new BehaviorSubject(List([]));
     constructor(
         private _usersService: UsersService,
         private _sessionStore: SessionStore
@@ -37,76 +37,76 @@ export class UsersStore {
         return this._selectedUsers.asObservable();
     }
 
-    getUsers(): Observable<AccountDetail[]> {
+    getUsers(): Observable<Account[]> {
         let accountId: number = this._sessionStore.session.account_id;
         let promise = new Promise((resolve, reject) => {
-            this._usersService.getUsers().subscribe((users: any[]) => {
-                // this._usersService.getUsers(accountId).subscribe((users: AccountDetail[]) => {
+            this._usersService.getUsers().subscribe((users: Account[]) => {
+                // this._usersService.getUsers(accountId).subscribe((users: Account[]) => {
                 this._users.next(List(users));
                 resolve(users);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<AccountDetail[]>>Observable.fromPromise(promise);
+        return <Observable<Account[]>>Observable.fromPromise(promise);
     }
 
       findUserById(id: number) {
         let users = this._users.getValue();
-        let index = users.findIndex((currentUser: AccountDetail) => currentUser.user.id === id);
+        let index = users.findIndex((currentUser: any) => currentUser.id === id);
         return users.get(index);
     }
 
-    fetchUserById(id: number): Observable<AccountDetail> {
+    fetchUserById(id: number): Observable<Account> {
         let promise = new Promise((resolve, reject) => {
-            let matchedUser: AccountDetail = this.findUserById(id);
+            let matchedUser: Account = this.findUserById(id);
             if (matchedUser) {
                 resolve(matchedUser);
             } else {
                 this._usersService.getUser(id)
-                .subscribe((userDetail: AccountDetail) => {
+                .subscribe((userDetail: Account) => {
                     resolve(userDetail);
                 }, error => {
                     reject(error);
                 });
             }
         });
-        return <Observable<AccountDetail>>Observable.fromPromise(promise);
+        return <Observable<Account>>Observable.fromPromise(promise);
     }
 
 
-    addUser(userDetail: AccountDetail): Observable<AccountDetail> {
+    addUser(userDetail: Account): Observable<Account> {
         let promise = new Promise((resolve, reject) => {
-            this._usersService.addUser(userDetail).subscribe((user: AccountDetail) => {
+            this._usersService.addUser(userDetail).subscribe((user: Account) => {
                 this._users.next(this._users.getValue().push(user));
                 resolve(user);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<AccountDetail>>Observable.from(promise);
+        return <Observable<Account>>Observable.from(promise);
     }
-    updateUser(userDetail: AccountDetail): Observable<AccountDetail> {
+    updateUser(userDetail: Account): Observable<Account> {
         let promise = new Promise((resolve, reject) => {
-            this._usersService.updateUser(userDetail).subscribe((userDetail: AccountDetail) => {
+            this._usersService.updateUser(userDetail).subscribe((userDetail: Account) => {
                 this._users.next(this._users.getValue().push(userDetail));
                 resolve(userDetail);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<AccountDetail>>Observable.from(promise);
+        return <Observable<Account>>Observable.from(promise);
     }
-    updatePassword(userDetail: AccountDetail): Observable<AccountDetail> {
+    updatePassword(userDetail: Account): Observable<Account> {
         let promise = new Promise((resolve, reject) => {
-            this._usersService.updatePassword(userDetail).subscribe((userDetail: AccountDetail) => {
+            this._usersService.updatePassword(userDetail).subscribe((userDetail: Account) => {
                 this._users.next(this._users.getValue().push(userDetail));
                 resolve(userDetail);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<AccountDetail>>Observable.from(promise);
+        return <Observable<Account>>Observable.from(promise);
     }    
     deleteUser(user) {
         let users = this._users.getValue();
@@ -124,9 +124,9 @@ export class UsersStore {
         return <Observable<any>>Observable.from(promise);
     }
 
-    selectUser(userDetail: AccountDetail) {
+    selectUser(userDetail: Account) {
         let selectedUsers = this._selectedUsers.getValue();
-        let index = selectedUsers.findIndex((currentUser: AccountDetail) => currentUser.user.id === userDetail.user.id);
+        let index = selectedUsers.findIndex((currentUser: Account) => currentUser.user.id === userDetail.user.id);
         if (index < 0) {
             this._selectedUsers.next(this._selectedUsers.getValue().push(userDetail));
         }

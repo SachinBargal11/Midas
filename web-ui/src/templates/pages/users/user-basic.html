@@ -11,7 +11,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.firstName.touched && !basicformControls.firstName.valid">
-                                    <input formControlName="firstName" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.firstName.valid">
+                                    <input formControlName="firstName" [ngModel]="user.firstName" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.firstName.valid">
                                     <div class='error-list' *ngIf="basicformControls.firstName.touched && !basicformControls.firstName.valid">
                                         <ul>
                                             <li *ngIf="basicformControls.firstName.hasError('required')">First Name is required.</li>
@@ -27,7 +27,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.lastName.touched && !basicformControls.lastName.valid">
-                                    <input formControlName="lastName" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.lastName.valid">
+                                    <input formControlName="lastName" [ngModel]="user.lastName" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.lastName.valid">
                                     <div class='error-list' *ngIf="basicformControls.lastName.touched && !basicformControls.lastName.valid">
                                         <ul>
                                             <li *ngIf="basicformControls.lastName.hasError('required')">Last Name is required.</li>

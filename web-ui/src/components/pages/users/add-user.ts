@@ -7,6 +7,8 @@ import {User} from '../../../models/user';
 import {UsersService} from '../../../services/users-service';
 import {AccountDetail} from '../../../models/account-details';
 import {Account} from '../../../models/account';
+import {Company} from '../../../models/company';
+import {UserRole} from '../../../models/user-role';
 import {Contact} from '../../../models/contact';
 import {Address} from '../../../models/address';
 import {SessionStore} from '../../../stores/session-store';
@@ -49,12 +51,9 @@ export class AddUserComponent implements OnInit {
         this.userform = this.fb.group({
             userInfo: this.fb.group({
                 firstname: ['', Validators.required],
-                middlename: [''],
                 lastname: ['', Validators.required],
-                userType: ['', Validators.required],
-                password: ['', Validators.required],
-                confirmPassword: ['', Validators.required]
-            }, { validator: AppValidators.matchingPasswords('password', 'confirmPassword') }),
+                userType: ['', Validators.required]
+            }),
             contact: this.fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
                 cellPhone: ['', [Validators.required]],
@@ -69,6 +68,9 @@ export class AddUserComponent implements OnInit {
                 zipCode: [''],
                 state: [''],
                 country: ['']
+            }),
+            userRole: this.fb.group({
+                role: ['', Validators.required]
             })
         });
 
@@ -76,40 +78,43 @@ export class AddUserComponent implements OnInit {
     }
 
     ngOnInit() {
-        this._stateService.getStates()
-            .subscribe(states => this.states = states);
+        // this._stateService.getStates()
+        //     .subscribe(states => this.states = states);
     }
 
 
     saveUser() {
         let userFormValues = this.userform.value;
-        let userDetail = new AccountDetail({
-            account: new Account({
-               id: this._sessionStore.session.account_id
+        let userDetail = new Account({
+            company: new Company({
+                id: 1
             }),
             user: new User({
                 firstName: userFormValues.userInfo.firstname,
-                middleName: userFormValues.userInfo.middlename,
                 lastName: userFormValues.userInfo.lastname,
-                userType: parseInt(userFormValues.userInfo.userType), // UserType[1],//,                
-                password: userFormValues.userInfo.password,
-                userName: userFormValues.contact.email
+                userType: parseInt(userFormValues.userInfo.userType),
+                userName: userFormValues.contact.email,
+                contact: new Contact({
+                    cellPhone: userFormValues.contact.cellPhone,
+                    emailAddress: userFormValues.contact.email,
+                    faxNo: userFormValues.contact.faxNo,
+                    homePhone: userFormValues.contact.homePhone,
+                    workPhone: userFormValues.contact.workPhone,
+                }),
+                address: new Address({
+                    address1: userFormValues.address.address1,
+                    address2: userFormValues.address.address2,
+                    city: userFormValues.address.city,
+                    country: userFormValues.address.country,
+                    state: userFormValues.address.state,
+                    zipCode: userFormValues.address.zipCode,
+                })            
             }),
-            contactInfo: new Contact({
-                cellPhone: userFormValues.contact.cellPhone,
-                emailAddress: userFormValues.contact.email,
-                faxNo: userFormValues.contact.faxNo,
-                homePhone: userFormValues.contact.homePhone,
-                workPhone: userFormValues.contact.workPhone,
+            role: new UserRole({
+                name: 'Doctor',
+                roleType: 'Admin',
+                status: 'active'
             }),
-            address: new Address({
-                address1: userFormValues.address.address1,
-                address2: userFormValues.address.address2,
-                city: userFormValues.address.city,
-                country: userFormValues.address.country,
-                state: userFormValues.address.state,
-                zipCode: userFormValues.address.zipCode,
-            })
         });
         this.isSaveUserProgress = true;
         let result;
