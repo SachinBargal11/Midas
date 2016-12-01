@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {SessionStore} from '../../../stores/session-store';
 import {UsersStore} from '../../../stores/users-store';
 import {AccountDetail} from '../../../models/account-details';
+import { Account } from '../../../models/account';
 import {DoctorsStore} from '../../../stores/doctors-store';
 import {DoctorDetail} from '../../../models/doctor-details';
 import {ProvidersStore} from '../../../stores/providers-store';
@@ -19,7 +20,7 @@ import {NotificationsService} from 'angular2-notifications';
 export class UserStatisticsComponent {
 data: any;
 options: any;
-users: AccountDetail[];
+users: Account[];
 usersLoading;
 doctors: DoctorDetail[];
 doctorsLoading;

@@ -97,7 +97,7 @@ export class UpdateSpecialityDetailComponent {
         this.isSpecialityDetailSaveInProgress = true;
         let result: Observable<SpecialityDetail>;
 
-        result = this._medicalFacilityStore.updateSpecialityDetail(specialityDetail, this.medicalFacilityDetail);
+        // result = this._medicalFacilityStore.updateSpecialityDetail(specialityDetail, this.medicalFacilityDetail);
         result.subscribe(
             (response: SpecialityDetail) => {
                 let notification = new Notification({

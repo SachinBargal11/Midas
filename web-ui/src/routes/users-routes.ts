@@ -9,6 +9,7 @@ import { UserAccessComponent } from '../components/pages/users/user-access';
 import { RoomsComponent } from '../components/pages/rooms/rooms';
 import { RoomsRoutes } from './rooms-routes';
 import { AddUserComponent } from '../components/pages/users/add-user';
+import { UpdateUserComponent } from '../components/pages/users/update-user';
 import { LocationsComponent } from '../components/pages/users/locations';
 import { BillingComponent } from '../components/pages/users/Billing';
 
@@ -28,7 +29,12 @@ export const UsersRoutes: Routes = [
         canActivate: [ValidateActiveSession]
     },
     {
-        path: 'users/:userName',
+        path: 'users/edit/:id',
+        component: UpdateUserComponent,
+        canActivate: [ValidateActiveSession]
+    },
+    {
+        path: 'users/:userId',
         component: UserShellComponent,
         children: [
             {

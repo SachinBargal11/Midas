@@ -74,6 +74,11 @@ module.exports = {
 			dest: '<%= distLocation %>/node_modules/primeui/',
 			expand: true
     	}, {
+			cwd: 'node_modules/primeng/',
+			src: ['resources/primeng.min.css'],
+			dest: '<%= distLocation %>/node_modules/primeng/',
+			expand: true
+    	},{
 			cwd: 'node_modules/jquery-ui-timepicker-addon/',
 			src: ['dist/jquery-ui-timepicker-addon.min.js'],
 			dest: '<%= distLocation %>/node_modules/jquery-ui-timepicker-addon/',

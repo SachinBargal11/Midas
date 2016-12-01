@@ -17,12 +17,11 @@
     <p-column field="firstName" header="First Name" [sortable]="true" ></p-column>
     <p-column field="lastName" header="Last Name" [sortable]="true" ></p-column>
     <p-column field="userType" header="User Type" [sortable]="true" ></p-column>
-    <p-column field="email" header="Email" [sortable]="true" ></p-column>
-    <p-column field="status" header="Status" [sortable]="true" ></p-column>
-    <p-column field="" header="Send Reminder" [sortable]="true" ></p-column>
-   <!--<p-column styleClass="col-button" header="">
+    <p-column field="userName" header="Email" [sortable]="true" ></p-column>
+   <p-column styleClass="col-button" header="Edit">
         <template let-user="rowData" pTemplate type="body">
-            <a (click)="deleteUser(user)"><i class="fa fa-trash-o"></i></a>
+            <a routerLink="edit/{{user.id}}"><i class="glyphicon glyphicon-edit"></i></a>
+            <!--<a (click)="deleteUser(user)"><i class="fa fa-trash-o"></i></a>-->
         </template>
-    </p-column>-->
+    </p-column>
 </p-dataTable>

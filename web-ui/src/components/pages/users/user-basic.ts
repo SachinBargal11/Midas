@@ -23,6 +23,7 @@ import {StateService} from '../../../services/state-service';
 })
 
 export class UserBasicComponent implements OnInit {
+    user = new Account({});
     states: any[];
     options = {
         timeOut: 3000,
@@ -46,8 +47,18 @@ export class UserBasicComponent implements OnInit {
         private _usersStore: UsersStore,
         private _elRef: ElementRef
     ) {
-        this._route.params.subscribe((routeParams: any) => {
-            console.log(routeParams.userName);
+        this._route.parent.params.subscribe((routeParams: any) => {
+            let userId: number = parseInt(routeParams.userId);
+            let result = this._usersStore.fetchUserById(userId);
+            result.subscribe(
+                (userDetail: Account) => {
+                    this.user = userDetail;
+                },
+                (error) => {
+                    this._router.navigate(['/medicalProvider/users']);
+                },
+                () => {
+                });
         });
         this.basicform = this.fb.group({
                 firstName: ['', Validators.required],
