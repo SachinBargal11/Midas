@@ -1,0 +1,73 @@
+import {Component, OnInit, ElementRef} from '@angular/core';
+import {Validators, FormGroup, FormBuilder} from '@angular/forms';
+import {Router, ActivatedRoute} from '@angular/router';
+import {AppValidators} from '../../../utils/AppValidators';
+import {UsersStore} from '../../../stores/users-store';
+import {User} from '../../../models/user';
+import {UsersService} from '../../../services/users-service';
+import {AccountDetail} from '../../../models/account-details';
+import {Account} from '../../../models/account';
+import {Contact} from '../../../models/contact';
+import {Address} from '../../../models/address';
+import {SessionStore} from '../../../stores/session-store';
+import {NotificationsStore} from '../../../stores/notifications-store';
+import {Notification} from '../../../models/notification';
+import moment from 'moment';
+import {StatesStore} from '../../../stores/states-store';
+import {StateService} from '../../../services/state-service';
+
+@Component({
+    selector: 'basic',
+    templateUrl: 'templates/pages/users/user-basic.html',
+    providers: [UsersService, StateService, StatesStore, FormBuilder],
+})
+
+export class UserBasicComponent implements OnInit {
+    states: any[];
+    options = {
+        timeOut: 3000,
+        showProgressBar: true,
+        pauseOnHover: false,
+        clickToClose: false,
+        maxLength: 10
+    };
+    basicform: FormGroup;
+    basicformControls;
+    isSaveProgress = false;
+
+    constructor(
+        private _stateService: StateService,
+        private _statesStore: StatesStore,
+        private fb: FormBuilder,
+        private _router: Router,
+        public _route: ActivatedRoute,
+        private _notificationsStore: NotificationsStore,
+        private _sessionStore: SessionStore,
+        private _usersStore: UsersStore,
+        private _elRef: ElementRef
+    ) {
+        this._route.params.subscribe((routeParams: any) => {
+            console.log(routeParams.userName);
+        });
+        this.basicform = this.fb.group({
+                firstName: ['', Validators.required],
+                lastName: ['', Validators.required],
+                speciality: ['', Validators.required],
+                salutation: ['', Validators.required],
+                phone: ['', Validators.required],
+                photo: ['']
+            });
+
+        this.basicformControls = this.basicform.controls;
+    }
+
+    ngOnInit() {
+    }
+
+
+    save() {
+        let basicformValues = this.basicform.value;
+
+    }
+
+}

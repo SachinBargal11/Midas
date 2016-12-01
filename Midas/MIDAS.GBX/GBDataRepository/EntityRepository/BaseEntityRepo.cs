@@ -25,14 +25,18 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object Save(JObject data)
+        public virtual Object Save<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
             throw new NotImplementedException();
         }
 
         public virtual Object Delete<T>(T entity) where T : BO.GbObject
         {
-
             throw new NotImplementedException();
         }
 
@@ -55,7 +59,7 @@ namespace MIDAS.GBX.EntityRepository
         {
             //override and do the necessary operations needed after saving an object
         }
-        public virtual  Object Signup(JObject data)
+        public virtual  Object Signup<T>(T data)
         {
             throw new NotImplementedException();
         }
@@ -65,12 +69,12 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object Login(JObject entity)
+        public virtual Object Login<T>(T entity)
         {
             throw new NotImplementedException();
         }
 
-        public virtual Object ValidateInvitation(JObject entity)
+        public virtual Object ValidateInvitation<T>(T entity)
         {
             throw new NotImplementedException();
         }
@@ -79,7 +83,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object Get(JObject entity)
+        public virtual Object Get<T>(T entity)
         {
             throw new NotImplementedException();
         }
@@ -105,20 +109,20 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object ValidateOTP(JObject entity)
+        public virtual Object ValidateOTP<T>(T entity)
         {
             throw new NotImplementedException();
         }
 
-        public virtual Object RegenerateOTP(JObject entity)
+        public virtual Object RegenerateOTP<T>(T entity)
         {
             throw new NotImplementedException();
         }
-        public virtual Object GeneratePasswordLink(JObject entity)
+        public virtual Object GeneratePasswordLink<T>(T entity)
         {
             throw new NotImplementedException();
         }
-        public virtual Object ValidatePassword(JObject entity)
+        public virtual Object ValidatePassword<T>(T entity)
         {
             throw new NotImplementedException();
         }

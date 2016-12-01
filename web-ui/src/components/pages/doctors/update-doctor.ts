@@ -8,7 +8,7 @@ import {DoctorsService} from '../../../services/doctors-service';
 import {DoctorDetail} from '../../../models/doctor-details';
 import {Doctor} from '../../../models/doctor';
 import {User} from '../../../models/user';
-import {ContactInfo} from '../../../models/contact';
+import {Contact} from '../../../models/contact';
 import {Address} from '../../../models/address';
 import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
@@ -28,7 +28,7 @@ export class UpdateDoctorComponent implements OnInit {
     doctor = new Doctor({});
     doctorUser = new User({});
     address = new Address({});
-    contactInfo = new ContactInfo({});
+    contactInfo = new Contact({});
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -59,7 +59,7 @@ export class UpdateDoctorComponent implements OnInit {
             result.subscribe(
                 (doctorDetail: DoctorDetail) => {
                     this.doctor = doctorDetail.doctor;
-                    this.doctorUser = doctorDetail.doctor.doctorUser;
+                    // this.doctorUser = doctorDetail.doctor.userId;
                     this.address = doctorDetail.address;
                     this.contactInfo = doctorDetail.contactInfo;
                 },
@@ -136,7 +136,7 @@ export class UpdateDoctorComponent implements OnInit {
                 userType: parseInt(doctorFormValues.userInfo.userType),
                 password: doctorFormValues.userInfo.password
             }),
-            contactInfo: new ContactInfo({
+            contactInfo: new Contact({
                 cellPhone: doctorFormValues.contact.cellPhone,
                 emailAddress: doctorFormValues.contact.email,
                 faxNo: doctorFormValues.contact.faxNo,

@@ -1,9 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router} from '@angular/router';
-import {AppValidators} from '../../utils/AppValidators';
-import {NotificationsService} from 'angular2-notifications';
-import {SessionStore} from '../../stores/session-store';
+import { Component, OnInit } from '@angular/core';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AppValidators } from '../../utils/AppValidators';
+import { NotificationsService } from 'angular2-notifications';
+import { Session } from '../../models/session';
+import { SessionStore } from '../../stores/session-store';
+import { AuthenticationService } from '../../services/authentication-service';
 
 @Component({
     selector: 'login',
@@ -19,13 +21,13 @@ export class LoginComponent implements OnInit {
         timeOut: 50000,
         showProgressBar: false,
         pauseOnHover: false,
-        clickToClose: false,
-        maxLength: 10
+        clickToClose: false
     };
     constructor(
         private fb: FormBuilder,
         private _sessionStore: SessionStore,
         private _notificationsService: NotificationsService,
+        private _authenticationService: AuthenticationService,
         private _router: Router
     ) {
         this.loginForm = this.fb.group({
@@ -39,16 +41,31 @@ export class LoginComponent implements OnInit {
 
     }
 
+    checkSecuredLogin(email) {
+        if (!window.localStorage.getItem('device_verified_for' + email)) {
+            return true;
+        }
+        return false;
+    }
+
     login() {
         let result;
         this.isLoginInProgress = true;
-        result = this._sessionStore.login(this.loginForm.value.email, this.loginForm.value.password);
+        let forceLogin = true;
+        if (this.checkSecuredLogin(this.loginForm.value.email)) {
+            forceLogin = false;
+        }
+        result = this._sessionStore.login(this.loginForm.value.email, this.loginForm.value.password, forceLogin);
 
         result.subscribe(
-            response => {
-                this._router.navigate(['/dashboard']);
+            (session: Session) => {
+                if (this.checkSecuredLogin(this.loginForm.value.email)) {
+                    this._router.navigate(['/login/security-check']);
+                } else {
+                    this._router.navigate(['/dashboard']);
+                }
             },
-            error => {
+            (error: Error) => {
                 this.isLoginInProgress = false;
                 this._notificationsService.error('Oh No!', 'Unable to authenticate user.');
             },

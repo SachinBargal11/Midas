@@ -7,25 +7,25 @@ namespace MIDAS.GBX.WebAPI
 {
     public interface IRequestHandler<T> 
     {
-        HttpResponseMessage ValidateInvitation(HttpRequestMessage request, JObject data);
-        HttpResponseMessage GetGbObjects(HttpRequestMessage request,JObject data);
+        HttpResponseMessage ValidateInvitation(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage GetGbObjects(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetObject(HttpRequestMessage request, int id);
-        HttpResponseMessage CreateGbObject(HttpRequestMessage request, JObject gbObject);
+        HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage UpdateGbObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage DeleteGbObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage ValidateUniqueName(HttpRequestMessage request, T gbObject);
-        HttpResponseMessage SignUp(HttpRequestMessage request, JObject data);
-        HttpResponseMessage Login(HttpRequestMessage request, JObject data);
+        HttpResponseMessage SignUp(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage Login(HttpRequestMessage request, T gbObject);
 
         HttpResponseMessage GenerateToken(HttpRequestMessage request,int userId);
         HttpResponseMessage ValidateToken(HttpRequestMessage request,string tokenId);
         HttpResponseMessage Kill(HttpRequestMessage requeststring,int tokenId);
         HttpResponseMessage DeleteByUserId(HttpRequestMessage request,int userId);
 
-        HttpResponseMessage ValidateOTP(HttpRequestMessage request, JObject data);
-        HttpResponseMessage RegenerateOTP(HttpRequestMessage request, JObject data);
-        HttpResponseMessage GeneratePasswordLink(HttpRequestMessage request, JObject data);
-        HttpResponseMessage ValidatePassword(HttpRequestMessage request, JObject data);
+        HttpResponseMessage ValidateOTP(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage RegenerateOTP(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage GeneratePasswordLink(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage ValidatePassword(HttpRequestMessage request, T gbObject);
 
     }
 }

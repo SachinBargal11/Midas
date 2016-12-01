@@ -4,8 +4,7 @@ import moment from 'moment';
 const MedicalFacilityRecord = Record({
     id: 0,
     name: '',
-    prefix: '',
-    defaultAttorneyUserid: 0,
+    npi: '',
     isDeleted: 0,
     createByUserId: 0,
     updateByUserId: 0,
@@ -17,8 +16,7 @@ export class MedicalFacility extends MedicalFacilityRecord {
 
     id: number;
     name: string;
-    prefix: number;
-    defaultAttorneyUserid: number;
+    npi: string;
     isDeleted: boolean;
     createByUserId: number;
     updateByUserId: number;

@@ -8,11 +8,9 @@ const DoctorRecord = Record({
     wcbAuthorization: '',
     wcbRatingCode: '',
     npi: '',
-    federalTaxId: '',
     taxType: '',
-    assignNumber: '',
     title: '',
-    doctorUser: '',
+    userId: 0,
     isDeleted: 0,
     createByUserId: 0,
     updateByUserId: 0,
@@ -27,11 +25,9 @@ export class Doctor extends DoctorRecord {
     wcbAuthorization: string;
     wcbRatingCode: string;
     npi: string;
-    federalTaxId: string;
     taxType: string;
-    assignNumber: string;
     title: string;
-    doctorUser: User;
+    userId: number;
     isDeleted: boolean;
     createByUserId: number;
     updateByUserId: number;

@@ -11,6 +11,7 @@ import {AccountDetail} from '../../../models/account-details';
 
 
 export class UsersListComponent implements OnInit {
+    selectedUsers: any[];
     users: AccountDetail[];
     usersLoading;
     cols: any[];
@@ -34,5 +35,14 @@ export class UsersListComponent implements OnInit {
             () => {
                 this.usersLoading = false;
             });
+    }
+    // deleteUser(user) {
+    //     this._usersStore.deleteUser(user)
+    //         .subscribe(users => { 
+    //                 this.users.splice(this.users.indexOf(user), 1);
+    //         });
+    // }
+    onRowSelect(user) {
+        this._router.navigate(['/medicalProvider/users/' + user.firstName + '/basic']);
     }
 }

@@ -1,7 +1,7 @@
 import {Record} from 'immutable';
 import {User} from './user';
 import {Address} from './address';
-import {ContactInfo} from './contact';
+import {Contact} from './contact';
 import {Doctor} from './doctor';
 
 const DoctorDetailRecord = Record({
@@ -18,7 +18,7 @@ export class DoctorDetail extends DoctorDetailRecord {
     doctor: Doctor;
     user: User;
     address: Address;
-    contactInfo: ContactInfo;
+    contactInfo: Contact;
 
 
     constructor(props) {

@@ -4,7 +4,7 @@ import {Account} from './account';
 import {MedicalFacility} from './medical-facility';
 import {User} from './user';
 import {Address} from './address';
-import {ContactInfo} from './contact';
+import {Contact} from './contact';
 import {SpecialityDetail} from './speciality-details';
 
 const MedicalFacilityRecord = Record({
@@ -22,7 +22,7 @@ export class MedicalFacilityDetail extends MedicalFacilityRecord {
     account: Account;
     user: User;
     address: Address;
-    contactInfo: ContactInfo;
+    contactInfo: Contact;
     medicalfacility: MedicalFacility;
     specialityDetails: BehaviorSubject<List<SpecialityDetail>>;
 

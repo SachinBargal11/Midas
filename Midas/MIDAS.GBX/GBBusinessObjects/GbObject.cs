@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -54,17 +55,12 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("updateDate")]
         public DateTime? UpdateDate { get; set; }
-        [JsonProperty("statusCode")]
-        public HttpStatusCode StatusCode { get; set; }
 
-        public virtual List<BusinessValidation> Validate()
+        public virtual List<BusinessValidation> Validate<T>(T entity)
         {
             List<BusinessValidation> validations = new List<BusinessValidation>();
-            
+
             return validations;
-        }   
-        public string Message { get; set; }
-        public string ErrorMessage { get; set; }
-        //var json = new JavaScriptSerializer().Serialize(obj);
+        }
     }
 }

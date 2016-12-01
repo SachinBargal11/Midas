@@ -1,5 +1,5 @@
-<h1 class="with-border">Users
-<a class="pull-right m-b-md btn btn-primary" [routerLink]="['/users/add']">Add User</a>
+<h1>
+<a class="btn btn-primary" [routerLink]="['add']">Add User</a>
 </h1>
 <progress-bar [visible]="usersLoading" 
               style="position:fixed;
@@ -12,14 +12,17 @@
     <i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
     <input #gb type="text" pInputText size="50" style="float:left" placeholder="Search User">
 </div>
-<p-dataTable [value]="users" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+<p-dataTable [value]="users" [(selection)]="selectedUser" selectionMode="single" (onRowSelect)="onRowSelect(selectedUser)" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Users</header>
-    <p-column field="user.firstName" header="First Name" [sortable]="true" [filter]="true"></p-column>
-    <p-column field="user.lastName" header="Last Name" [sortable]="true" [filter]="true"></p-column>
-    <p-column field="user.id" header="User id" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
-   <p-column styleClass="col-button" header="Edit">
+    <p-column field="firstName" header="First Name" [sortable]="true" ></p-column>
+    <p-column field="lastName" header="Last Name" [sortable]="true" ></p-column>
+    <p-column field="userType" header="User Type" [sortable]="true" ></p-column>
+    <p-column field="email" header="Email" [sortable]="true" ></p-column>
+    <p-column field="status" header="Status" [sortable]="true" ></p-column>
+    <p-column field="" header="Send Reminder" [sortable]="true" ></p-column>
+   <!--<p-column styleClass="col-button" header="">
         <template let-user="rowData" pTemplate type="body">
-            <a [routerLink]="['/users/update/', user.user.id]"><i class="glyphicon glyphicon-edit"></i></a>
+            <a (click)="deleteUser(user)"><i class="fa fa-trash-o"></i></a>
         </template>
-    </p-column>
+    </p-column>-->
 </p-dataTable>

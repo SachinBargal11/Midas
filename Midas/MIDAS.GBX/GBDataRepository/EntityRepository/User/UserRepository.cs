@@ -9,20 +9,25 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static MIDAS.GBX.BusinessObjects.GBEnums;
 using BO = MIDAS.GBX.BusinessObjects;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
 {
-    internal class UserRepository : BaseEntityRepo
+    internal class UserRepository : BaseEntityRepo,IDisposable
     {
         private DbSet<User> _dbSet;
         private DbSet<OTP> _dbOTP;
+        private DbSet<UserCompany> _dbUserCompany;
+        private DbSet<UserCompanyRole> _dbUserCompanyRole;
+        private DbSet<Invitation> _dbInvitation;
         #region Constructor
         public UserRepository(MIDASGBXEntities context) : base(context)
         {
             _dbSet = context.Set<User>();
             _dbOTP= context.Set<OTP>();
+            _dbUserCompany = context.Set<UserCompany>();
+            _dbUserCompanyRole = context.Set<UserCompanyRole>();
+            _dbInvitation = context.Set<Invitation>();
             context.Configuration.ProxyCreationEnabled = false;
         }
         #endregion
@@ -39,10 +44,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 BO.OTP boOTP = new BO.OTP();
                 boOTP.Pin = otp.Pin;
-                boOTP.StatusCode = System.Net.HttpStatusCode.Accepted;
                 BO.User boUser_ = new BusinessObjects.User();
                 boUser_.ID = otp.UserID;
-                boOTP.Message = "OTP sent";
                 boOTP.User = boUser_;
                 return (T)(object)boOTP;
             }
@@ -127,46 +130,82 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Save Data
-        public override Object Save(JObject data)
+        #region Validate Entities
+        public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
-            BO.AddressInfo addressBO;
-            BO.ContactInfo contactinfoBO;
+            dynamic result=null;
+            if (typeof(T) == typeof(BO.AddUser))
+            {
+                BO.AddUser addUser = (BO.AddUser)(object)entity;
+                result = addUser.Validate(addUser);
+            }
+            if (typeof(T) == typeof(BO.User))
+            {
+                BO.User addUser = (BO.User)(object)entity;
+                result = addUser.Validate(addUser);
+            }
+            return result;
+        }
+        #endregion
 
-            BO.User userBO = data["user"].ToObject<BO.User>();
+        #region Save Data
+        public override Object Save<T>(T entity)
+        {
+            BO.AddUser addUserBO = (BO.AddUser)(object)entity;
+            BO.AddressInfo addressBO = addUserBO.address;
+            BO.ContactInfo contactinfoBO = addUserBO.contactInfo;
 
-            addressBO = data["addressInfo"] == null ? new BO.AddressInfo() : data["address"].ToObject<BO.AddressInfo>();
-            contactinfoBO = data["contactinfo"] == null ? new BO.ContactInfo() : data["contactinfo"].ToObject<BO.ContactInfo>();
+            BO.User userBO = addUserBO.user;
+            BO.Role roleBO = addUserBO.role;
+            BO.Company companyBO = addUserBO.company;
+
+            if (addUserBO.user == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "User object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            if (addUserBO.role == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Role object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            if (addUserBO.company == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Company object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
 
             User userDB = new User();
             AddressInfo addressDB = new AddressInfo();
             ContactInfo contactinfoDB = new ContactInfo();
-
-                           if (_context.Users.Any(o => o.UserName == userBO.UserName))
-                {
-                    return new BO.GbObject { Message = Constants.UserAlreadyExists };
-                }
+            UserCompany userCompanyDB = new UserCompany();
+            UserCompanyRole userCompanyRoleDB = new UserCompanyRole();
+            Role roleDB = new Role();
+            Invitation invitationDB = new Invitation();
 
             #region Address
-            addressDB.id = addressBO.ID;
-            addressDB.Name = addressBO.Name;
-            addressDB.Address1 = addressBO.Address1;
-            addressDB.Address2 = addressBO.Address2;
-            addressDB.City = addressBO.City;
-            addressDB.State = addressBO.State;
-            addressDB.ZipCode = addressBO.ZipCode;
-            addressDB.Country = addressBO.Country;
+            if (addressBO != null)
+            {
+                addressDB.id = addressBO.ID;
+                addressDB.Name = addressBO.Name;
+                addressDB.Address1 = addressBO.Address1;
+                addressDB.Address2 = addressBO.Address2;
+                addressDB.City = addressBO.City;
+                addressDB.State = addressBO.State;
+                addressDB.ZipCode = addressBO.ZipCode;
+                addressDB.Country = addressBO.Country;
+            }
             #endregion
 
             #region Contact Info
-            contactinfoDB.id = contactinfoBO.ID;
-            contactinfoDB.Name = contactinfoBO.Name;
-            contactinfoDB.CellPhone = contactinfoBO.CellPhone;
-            contactinfoDB.EmailAddress = contactinfoBO.EmailAddress;
-            contactinfoDB.HomePhone = contactinfoBO.HomePhone;
-            contactinfoDB.WorkPhone = contactinfoBO.WorkPhone;
-            contactinfoDB.FaxNo = contactinfoBO.FaxNo;
-            contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
+            if (contactinfoBO != null)
+            {
+                contactinfoDB.id = contactinfoBO.ID;
+                contactinfoDB.Name = contactinfoBO.Name;
+                contactinfoDB.CellPhone = contactinfoBO.CellPhone;
+                contactinfoDB.EmailAddress = contactinfoBO.EmailAddress;
+                contactinfoDB.HomePhone = contactinfoBO.HomePhone;
+                contactinfoDB.WorkPhone = contactinfoBO.WorkPhone;
+                contactinfoDB.FaxNo = contactinfoBO.FaxNo;
+                contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
+            }
             #endregion
 
             #region User
@@ -177,7 +216,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             userDB.Gender = System.Convert.ToByte(userBO.Gender);
             userDB.UserType = System.Convert.ToByte(userBO.UserType);
             userDB.ImageLink = userBO.ImageLink;
-            userDB.UserStatus= System.Convert.ToByte(userBO.Status);
+            userDB.UserStatus = System.Convert.ToByte(userBO.Status);
             if (userBO.DateOfBirth.HasValue)
                 userDB.DateOfBirth = userBO.DateOfBirth.Value;
             userDB.Password = userBO.Password;
@@ -187,6 +226,48 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             userDB.AddressInfo = addressDB;
             userDB.ContactInfo = contactinfoDB;
+
+            #region Company
+            if (companyBO.ID > 0)
+            {
+                Company company = _context.Companies.Where(p => p.id == companyBO.ID).FirstOrDefault<Company>();
+                if (company != null)
+                {
+                    userCompanyDB.User = userDB;
+                    userCompanyDB.Company = company;
+                    invitationDB.Company = company;
+                }
+                else
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Speclity details.", ErrorLevel = ErrorLevel.Error };
+            }
+            #endregion
+
+            #region Role
+            roleDB.Name = roleBO.Name;
+            roleDB.RoleType = System.Convert.ToByte(roleBO.RoleType);
+            if (roleBO.IsDeleted.HasValue)
+                roleDB.IsDeleted = roleBO.IsDeleted.Value;
+            #endregion
+
+            switch (userBO.UserType)
+            {
+                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Admin:
+                    break;
+                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Owner:
+                    break;
+                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Doctor:
+                    break;
+                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Patient:
+                    break;
+                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Attorney:
+                    break;
+                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Adjuster:
+                    break;
+                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Accounts:
+                    break;
+                default:
+                    break;
+            }
             #endregion
             if (userDB.id > 0)
             {
@@ -200,61 +281,74 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         usr.UpdateByUserID = userBO.UpdateByUserID.Value;
                     usr.UpdateDate = DateTime.UtcNow;
                     usr.IsDeleted = userBO.IsDeleted;
-                    usr.UserName = userBO.UserName==null?usr.UserName: userBO.UserName;
+                    usr.UserName = userBO.UserName == null ? usr.UserName : userBO.UserName;
                     usr.FirstName = userBO.FirstName == null ? usr.FirstName : userBO.FirstName;
-                    usr.MiddleName = userBO.MiddleName == null? usr.MiddleName : userBO.MiddleName;
+                    usr.MiddleName = userBO.MiddleName == null ? usr.MiddleName : userBO.MiddleName;
                     usr.LastName = userBO.LastName == null ? usr.LastName : userBO.LastName;
                     usr.Gender = System.Convert.ToByte(userBO.Gender);
                     usr.UserType = System.Convert.ToByte(userBO.UserType);
                     usr.UserStatus = System.Convert.ToByte(userBO.Status);
                     usr.ImageLink = userBO.ImageLink;
                     usr.DateOfBirth = userBO.DateOfBirth;
-                    usr.Password = PasswordHash.HashPassword(userBO.Password);
+                    if (userBO.Password != null)
+                        usr.Password = PasswordHash.HashPassword(userBO.Password);
                     usr.IsDeleted = userBO.IsDeleted;
                     #endregion
 
                     #region Address
-                    usr.AddressInfo.CreateByUserID = usr.CreateByUserID;
-                    usr.AddressInfo.CreateDate = usr.CreateDate;
-                    if (userBO.UpdateByUserID.HasValue)
-                        usr.AddressInfo.UpdateByUserID = userBO.UpdateByUserID.Value;
-                    usr.AddressInfo.UpdateDate = DateTime.UtcNow;
-                    usr.AddressInfo.Name = addressBO.Name;
-                    usr.AddressInfo.Address1 = addressBO.Address1;
-                    usr.AddressInfo.Address2 = addressBO.Address2;
-                    usr.AddressInfo.City = addressBO.City;
-                    usr.AddressInfo.State = addressBO.State;
-                    usr.AddressInfo.ZipCode = addressBO.ZipCode;
-                    usr.AddressInfo.Country = addressBO.Country;
+                    if (addressBO != null)
+                    {
+                        usr.AddressInfo.CreateByUserID = usr.CreateByUserID;
+                        usr.AddressInfo.CreateDate = usr.CreateDate;
+                        if (userBO.UpdateByUserID.HasValue)
+                            usr.AddressInfo.UpdateByUserID = userBO.UpdateByUserID.Value;
+                        usr.AddressInfo.UpdateDate = DateTime.UtcNow;
+                        usr.AddressInfo.Name = addressBO.Name == null ? usr.AddressInfo.Name : addressBO.Name;
+                        usr.AddressInfo.Address1 = addressBO.Address1 == null ? usr.AddressInfo.Address1 : addressBO.Address1;
+                        usr.AddressInfo.Address2 = addressBO.Address2 == null ? usr.AddressInfo.Address2 : addressBO.Address2;
+                        usr.AddressInfo.City = addressBO.City == null ? usr.AddressInfo.City : addressBO.City;
+                        usr.AddressInfo.State = addressBO.State == null ? usr.AddressInfo.State : addressBO.State;
+                        usr.AddressInfo.ZipCode = addressBO.ZipCode == null ? usr.AddressInfo.ZipCode : addressBO.ZipCode;
+                        usr.AddressInfo.Country = addressBO.Country;
+                    }
                     #endregion
 
-                    #region Contact Info
-                    usr.ContactInfo.CreateByUserID = usr.CreateByUserID;
-                    usr.ContactInfo.CreateDate = usr.CreateDate;
-                    if (userBO.UpdateByUserID.HasValue)
-                        usr.ContactInfo.UpdateByUserID = userBO.UpdateByUserID.Value;
-                    usr.ContactInfo.UpdateDate = DateTime.UtcNow;
-                    usr.ContactInfo.Name = contactinfoBO.Name;
-                    usr.ContactInfo.CellPhone = contactinfoBO.CellPhone;
-                    usr.ContactInfo.EmailAddress = contactinfoBO.EmailAddress;
-                    usr.ContactInfo.HomePhone = contactinfoBO.HomePhone;
-                    usr.ContactInfo.WorkPhone = contactinfoBO.WorkPhone;
-                    usr.ContactInfo.FaxNo = contactinfoBO.FaxNo;
+                    #region Contact Info 
+                    if (contactinfoBO != null)
+                    {
+                        usr.ContactInfo.CreateByUserID = usr.CreateByUserID;
+                        usr.ContactInfo.CreateDate = usr.CreateDate;
+                        if (userBO.UpdateByUserID.HasValue)
+                            usr.ContactInfo.UpdateByUserID = userBO.UpdateByUserID.Value;
+                        usr.ContactInfo.UpdateDate = DateTime.UtcNow;
+                        usr.ContactInfo.Name = contactinfoBO.Name;
+                        usr.ContactInfo.CellPhone = contactinfoBO.CellPhone;
+                        usr.ContactInfo.EmailAddress = contactinfoBO.EmailAddress;
+                        usr.ContactInfo.HomePhone = contactinfoBO.HomePhone;
+                        usr.ContactInfo.WorkPhone = contactinfoBO.WorkPhone;
+                        usr.ContactInfo.FaxNo = contactinfoBO.FaxNo;
+                    }
                     #endregion
                 }
                 else
                 {
-                    throw new GbException();
+                    return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Warning };
                 }
+
                 _context.Entry(usr).State = System.Data.Entity.EntityState.Modified;
                 userDB = usr;
                 _context.SaveChanges();
+
                 BO.User usr_ = Convert<BO.User, User>(userDB);
                 var res_ = (BO.GbObject)(object)usr_;
                 return (object)res_;
             }
             else
             {
+                if (_context.Users.Any(o => o.UserName == userBO.UserName))
+                {
+                    return new BO.ErrorObject { ErrorMessage = "User already exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+                }
                 userDB.CreateDate = DateTime.UtcNow;
                 userDB.CreateByUserID = userBO.CreateByUserID;
 
@@ -268,42 +362,80 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
             _context.SaveChanges();
+
+            #region Insert User Block
+            userCompanyDB.CreateDate = DateTime.UtcNow;
+            userCompanyDB.CreateByUserID = companyBO.CreateByUserID;
+            _dbUserCompany.Add(userCompanyDB);
+            _context.SaveChanges();
+            #endregion
+
+            #region Insert User Company Role
+            userCompanyRoleDB.User = userCompanyDB.User;
+            userCompanyRoleDB.Role = roleDB;
+            userCompanyRoleDB.CreateDate = DateTime.UtcNow;
+            userCompanyRoleDB.CreateByUserID = companyBO.CreateByUserID;
+            _dbUserCompanyRole.Add(userCompanyRoleDB);
+            _context.SaveChanges();
+            #endregion
+
+            #region Insert Invitation
+            invitationDB.User = userCompanyDB.User;
+
+            invitationDB.UniqueID = Guid.NewGuid();
+            invitationDB.CreateDate = DateTime.UtcNow;
+            invitationDB.CreateByUserID = companyBO.CreateByUserID;
+            _dbInvitation.Add(invitationDB);
+            _context.SaveChanges();
+            #endregion
+
             BO.User acc_ = Convert<BO.User, User>(userDB);
             try
             {
                 #region Send Email
-                string Message = "Dear " + userBO.FirstName + "," + Environment.NewLine + "Your user name is:- " + userBO.UserName + "" + Environment.NewLine + "Password:-" + userDB.Password + Environment.NewLine + "Thanks";
+                string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+                string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
                 Utility.SendEmail(Message, "User registered", userBO.UserName);
-                acc_.Message = "Mail sent";
                 #endregion
             }
             catch (Exception ex)
             {
-                acc_.ErrorMessage = "Unable to send email.";
 
             }
             var res = (BO.GbObject)(object)acc_;
             return (object)res;
         }
+
         #endregion
 
         #region Get User By ID
         public override Object Get(int id)
         {
-            BO.User acc_ = Convert<BO.User, User>(_context.Users.Include("Address").Include("ContactInfo").Where(p => p.id == id).FirstOrDefault<User>());
-            return (object)acc_;
+            var acc = _context.Users.Include("AddressInfo").Include("ContactInfo").Where(p => p.id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<User>();
+            if(acc==null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                BO.User acc_ = Convert<BO.User, User>(acc);
+                return (object)acc_;
+            }
+
         }
         #endregion
 
         #region Login
-        public override Object Login(JObject entity)
+
+        public override Object Login<T>(T entity)
         {
-            BO.User userBO = entity["user"].ToObject<BO.User>();
+            BO.User userBO = (BO.User)(object)entity;
+
             string Pass = userBO.Password;
             dynamic data_ = _context.Users.Where(x => x.UserName == userBO.UserName).FirstOrDefault();
             if(data_==null)
             {
-                return new BO.User { ErrorMessage = "No record found for this username.", StatusCode = System.Net.HttpStatusCode.NotFound };
+                return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             bool isPasswordCorrect = false;
             try
@@ -312,7 +444,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             catch
             {
-                return new BO.User { ErrorMessage = "Invalid credentials.Please check your password", StatusCode = System.Net.HttpStatusCode.NotFound };
+                return new BO.ErrorObject { ErrorMessage = "Invalid credentials.Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             BO.User acc_ = isPasswordCorrect ? Convert<BO.User, User>(data_) : null;
             if (!userBO.forceLogin)
@@ -341,8 +473,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     string Message = "Dear " + acc_.UserName + ",<br><br>As per your request, a One Time Password (OTP) has been generated and the same is <i><b>" + otpDB.OTP1.ToString() + "</b></i><br><br>Please use this OTP to complete the Login. Reference number is " + otpDB.Pin.ToString() + " <br><br>*** This is an auto-generated email. Please do not reply to this email.*** <br><br>Thanks";
                     Utility.SendEmail(Message, "Alert Message From GBX MIDAS", userBO.UserName);
-                    acc_.Message = "OTP sent";
-                    acc_.StatusCode = System.Net.HttpStatusCode.Accepted;
 
                     otpDB.UserID = acc_.ID;
                     otpDB.OTP1 = 0000;
@@ -356,36 +486,32 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     //Send OTP Via SMS
                 }
             }
-            if(acc_!=null)
-            acc_.StatusCode = System.Net.HttpStatusCode.Created;
-            else
-                acc_.StatusCode = System.Net.HttpStatusCode.NotFound;
 
             BO.OTP boOTP_ = new BusinessObjects.OTP();
             boOTP_.User = acc_;
-            boOTP_.StatusCode = System.Net.HttpStatusCode.Created;
             return boOTP_;
         }
         #endregion
 
-        #region Get Users By parameters
-        public override object Get(JObject entity)
+        #region Get By Filter
+        public override object Get<T>(T entity)
         {
-            //To Do Search Query
-            BO.User userBO = entity["user"].ToObject<BO.User>();
-
-            dynamic data_ = _context.Users.Where(x => x.UserName == userBO.UserName).FirstOrDefault();
-            if (data_ == null)
+            BO.User userBO = (BO.User)(object)entity;
+            var acc_ = _context.Users.Include("AddressInfo").Include("ContactInfo").Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<User>();
+            if(acc_==null)
+            return new BO.ErrorObject { ErrorMessage = "No records found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            List<BO.User> lstUsers = new List<BO.User>();
+            foreach (User item in acc_)
             {
-                return new BO.User { ErrorMessage = "No record found for this username.", StatusCode = System.Net.HttpStatusCode.NotFound };
+                lstUsers.Add(Convert<BO.User, User>(item));
             }
-            else
-            {
-                BO.User user = Convert<BO.User, User>(data_);
-                user.StatusCode = System.Net.HttpStatusCode.Created;
-                return user;
-            }
+            return lstUsers;
+        }
 
+        public void Dispose()
+        {
+            Dispose();
+            GC.SuppressFinalize(this);
         }
         #endregion
     }

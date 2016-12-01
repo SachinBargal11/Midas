@@ -1,0 +1,32 @@
+<section>
+    <div class="mobile-menu-left-overlay"></div>
+    <nav class="side-menu side-menu-compact">
+        <ul class="side-menu-list">
+            <li class="brown" [routerLinkActive]="['opened']">
+                <a [routerLink]="['/patientManager/patients']">
+                    <i class="fa fa-users"></i>
+                    <span class="lbl">Patients</span>
+                </a>
+            </li>
+            <li class="brown" [routerLinkActive]="['opened']">
+                <a [routerLink]="['/patientManager/cases']">
+                    <i class="fa fa-briefcase"></i>
+                    <span class="lbl">Cases</span>
+                </a>
+            </li>
+            <li class="brown" [routerLinkActive]="['opened']">
+                <a [routerLink]="['/patientManager/referals']">
+                    <i class="fa fa-refresh"></i>
+                    <span class="lbl">Referals</span>
+                </a>
+            </li>
+            <li class="brown" [routerLinkActive]="['opened']">
+                <a [routerLink]="['/patientManager/consentforms']">
+                    <i class="fa fa-file-text"></i>
+                    <span class="lbl">Consent Forms</span>
+                </a>
+            </li>
+        </ul>
+        
+    </nav>
+</section>

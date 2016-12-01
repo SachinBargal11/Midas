@@ -1,8 +1,7 @@
-import {Record} from 'immutable';
+import { Record } from 'immutable';
 import moment from 'moment';
 
 const ProviderRecord = Record({
-provider: {
     id: 0,
     name: '',
     npi: '',
@@ -14,11 +13,9 @@ provider: {
     updateByUserID: 0,
     createDate: null,
     updateDate: null
-    }
 });
 
 export class Provider extends ProviderRecord {
-provider: {
     id: number;
     name: string;
     npi: string;
@@ -30,7 +27,7 @@ provider: {
     updateByUserID: number;
     createDate: moment.MomentStatic;
     updateDate: moment.MomentStatic;
-};
+
     constructor(props) {
         super(props);
     }

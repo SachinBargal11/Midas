@@ -2,7 +2,7 @@ import {Record} from 'immutable';
 import {Account} from './account';
 import {User} from './user';
 import {Address} from './address';
-import {ContactInfo} from './contact';
+import {Contact} from './contact';
 
 const AccountDetailRecord = Record({
 
@@ -18,7 +18,7 @@ export class AccountDetail extends AccountDetailRecord {
     account: Account;
     user: User;
     address: Address;
-    contactInfo: ContactInfo;
+    contactInfo: Contact;
 
 
     constructor(props) {

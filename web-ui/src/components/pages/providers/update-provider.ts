@@ -72,7 +72,7 @@ export class UpdateProviderComponent implements OnInit {
         let providerFormValues = this.providerform.value;
         let providerDetail = new Provider({
             provider: {
-                id: this.provider.provider.id,
+                id: this.provider.id,
                 name: providerFormValues.provider.name,
                 npi: providerFormValues.provider.npi,
                 federalTaxID: providerFormValues.provider.federalTaxID,

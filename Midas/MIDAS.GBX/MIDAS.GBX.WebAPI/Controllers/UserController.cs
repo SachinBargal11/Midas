@@ -24,16 +24,18 @@ namespace MIDAS.GBX.WebAPI.Controllers
     {
 
         private IRequestHandler<User> requestHandler;
+        private IRequestHandler<AddUser> adduserrequestHandler;
         public UserController()
         {
             requestHandler = new GbApiRequestHandler<User>();
+            adduserrequestHandler = new GbApiRequestHandler<AddUser>();
         }
 
         [HttpPost]
         [Route("GetByUserName")]
         [Route("GetAll")]
         [AllowAnonymous]
-        public HttpResponseMessage Get(JObject data)
+        public HttpResponseMessage Get([FromBody]User data)
         {
             return requestHandler.GetGbObjects(Request, data);
         }
@@ -50,9 +52,9 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpPost]
         [Route("Add")]
         [AllowAnonymous]
-        public HttpResponseMessage Post(JObject data)
+        public HttpResponseMessage Post([FromBody]AddUser data)
         {
-            return requestHandler.CreateGbObject(Request, data);
+            return adduserrequestHandler.CreateGbObject(Request, data);
         }
 
         // PUT: api/Organizations/5
@@ -76,9 +78,9 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpPost]
         [Route("Signin")]
         [AllowAnonymous]
-        public HttpResponseMessage Signin(JObject data)
+        public HttpResponseMessage Signin([FromBody]User user)
         {
-            return requestHandler.Login(Request, data);
+            return requestHandler.Login(Request, user);
         }
 
         // Unique Name Validation

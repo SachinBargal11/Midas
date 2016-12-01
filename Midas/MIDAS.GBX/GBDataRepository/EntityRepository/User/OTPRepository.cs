@@ -9,7 +9,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static MIDAS.GBX.BusinessObjects.GBEnums;
 using BO = MIDAS.GBX.BusinessObjects;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
@@ -55,31 +54,47 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             BO.OTP boOTP = new BO.OTP();
             boOTP.Pin = user.Pin;
-            boOTP.StatusCode = System.Net.HttpStatusCode.Accepted;
-            boOTP.Message = "OTP sent";
 
             return (T)(object)boOTP;
         }
         #endregion
 
-        #region Validate OTP
-        public override Object ValidateOTP(JObject entity)
+        #region Validate
+        public override List<BO.BusinessValidation> Validate<T>(T entity)
         {
-            BO.OTP otpBO = entity["otp"].ToObject<BO.OTP>();
-            BO.User userBO = entity["user"].ToObject<BO.User>();
+            dynamic result = null;
+            if (typeof(T) == typeof(BO.ValidateOTP))
+            {
+                BO.ValidateOTP validateOTP = (BO.ValidateOTP)(object)entity;
+                result = validateOTP.Validate(validateOTP);
+            }
+            if (typeof(T) == typeof(BO.OTP))
+            {
+                BO.OTP otp = (BO.OTP)(object)entity;
+                result = otp.Validate(otp);
+            }
+            return result;
+        }
+        #endregion
+
+        #region Validate OTP
+        public override Object ValidateOTP<T>(T entity)
+        {
+            BO.ValidateOTP validateOTP = (BO.ValidateOTP)(object)entity;
+
+
+            BO.OTP otpBO = validateOTP.otp;
+            BO.User userBO = validateOTP.user;
 
             dynamic data_ = _context.OTPs.Where(x => x.OTP1 == otpBO.OTP1 && x.Pin==otpBO.Pin && (x.IsDeleted != true) && x.UserID== userBO.ID).FirstOrDefault();
 
             if (data_ == null)
             {
-                otpBO.Message = "Invalid OTP";
-                otpBO.StatusCode = System.Net.HttpStatusCode.NotFound;
-                return otpBO;
+                return new BO.ErrorObject { ErrorMessage = "Invalid OTP", errorObject = "", ErrorLevel = ErrorLevel.Information };
             }
             else
             {
                 BO.OTP acc_ = Convert<BO.OTP, OTP>(data_);
-                acc_.StatusCode = System.Net.HttpStatusCode.Created;
                 return acc_;
             }
 
@@ -93,25 +108,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             if(acc_!=null)
             {
-                acc_.StatusCode = System.Net.HttpStatusCode.Created;
+                return (object)acc_;
             }
             else
             {
-                acc_.Message = "Invalid details";
-                acc_.StatusCode = System.Net.HttpStatusCode.NotFound;
+                return new BO.ErrorObject { ErrorMessage = "Invalid OTP details", errorObject = "", ErrorLevel = ErrorLevel.Information };
             }
-            return (object)acc_;
-
         }
         #endregion
 
         #region Generate OTP
-        public override Object RegenerateOTP(JObject entity)
+        public override Object RegenerateOTP<T>(T entity)
         {
-            BO.User otpUser = entity["user"].ToObject<BO.User>();
+            BO.OTP otpUser = (BO.OTP)(object)entity;
 
 
-                var otpOld = _context.OTPs.Where(p => p.UserID == otpUser.ID).ToList<OTP>();
+                var otpOld = _context.OTPs.Where(p => p.UserID == otpUser.User.ID).ToList<OTP>();
                 otpOld.ForEach(a => { a.IsDeleted = true; a.UpdateDate = DateTime.UtcNow; a.UpdateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID"));});
                 if (otpOld != null)
                 {
@@ -121,7 +133,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 OTP otpDB = new OTP();
                 otpDB.OTP1 = Utility.GenerateRandomNumber(6);
                 otpDB.Pin = Utility.GenerateRandomNo();
-                otpDB.UserID = otpUser.ID;
+                otpDB.UserID = otpUser.User.ID;
                 otpDB.CreateDate = DateTime.UtcNow;
                 otpDB.CreateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID"));
 
@@ -130,21 +142,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 BO.OTP acc = Convert<BO.OTP, OTP>(otpDB);
 
-                dynamic data_ = _context.Users.Where(x => x.id == otpUser.ID && x.IsDeleted==null).FirstOrDefault();
+                dynamic data_ = _context.Users.Where(x => x.id == otpUser.User.ID && x.IsDeleted == null).FirstOrDefault();
                 BO.User acc_ = Convert<BO.User, User>(data_);
                 string Message = "Dear " + acc_.UserName + ",<br><br>As per your request, a One Time Password (OTP) has been generated and the same is <i><b>" + otpDB.OTP1.ToString() + "</b></i><br><br>Please use this OTP to complete the Login. Reference number is " + otpDB.Pin.ToString() + " <br><br>*** This is an auto-generated email. Please do not reply to this email.*** <br><br>Thanks";
                 try
                 {
-                acc_.StatusCode = System.Net.HttpStatusCode.Created;
                 Utility.SendEmail(Message, "Alert Message From GBX MIDAS", acc_.UserName);
                 }
                 catch(Exception ex)
                 {
-                acc_.StatusCode = System.Net.HttpStatusCode.Created;
-                    acc_.Message = "OTP Generated.Error sending mail.";
                     return acc;
                 }
-                acc_.Message = "OTP sent";
 
             return Convert<BO.OTP, OTP>(otpDB);
 

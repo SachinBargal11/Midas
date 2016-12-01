@@ -7,7 +7,7 @@ import {User} from '../../../models/user';
 import {UsersService} from '../../../services/users-service';
 import {AccountDetail} from '../../../models/account-details';
 import {Account} from '../../../models/account';
-import {ContactInfo} from '../../../models/contact';
+import {Contact} from '../../../models/contact';
 import {Address} from '../../../models/address';
 import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
@@ -26,7 +26,7 @@ export class UpdateUserComponent implements OnInit {
     states: any[];
     user = new User({});
     address = new Address({});
-    contactInfo = new ContactInfo({});
+    contactInfo = new Contact({});
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -113,7 +113,7 @@ export class UpdateUserComponent implements OnInit {
                 password: userFormValues.password,
                 userName: userFormValues.contact.emailAddress
             }),
-            contactInfo: new ContactInfo({
+            contactInfo: new Contact({
                 cellPhone: userFormValues.contact.cellPhone,
                 emailAddress: userFormValues.contact.emailAddress,
                 faxNo: userFormValues.contact.faxNo,

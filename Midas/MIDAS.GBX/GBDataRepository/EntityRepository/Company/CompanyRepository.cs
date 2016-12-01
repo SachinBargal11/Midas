@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
-using GBDataRepository.Model;
 using Newtonsoft.Json.Linq;
 using MIDAS.GBX.EntityRepository;
 using MIDAS.GBX.DataRepository.Model;
@@ -16,14 +15,13 @@ using MIDAS.GBX.Common;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
 {
-    internal class CompanyRepository : BaseEntityRepo
+    internal class CompanyRepository : BaseEntityRepo,IDisposable
     {
         private DbSet<Company> _dbSet;
         private DbSet<User> _dbuser;
         private DbSet<UserCompany> _dbUserCompany;
         private DbSet<UserCompanyRole> _dbUserCompanyRole;
         private DbSet<Invitation> _dbInvitation;
-
         #region Constructor
         public CompanyRepository(MIDASGBXEntities context) : base(context)
         {
@@ -31,8 +29,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             _dbuser = context.Set<User>();
             _dbUserCompany = context.Set<UserCompany>();
             _dbUserCompanyRole = context.Set<UserCompanyRole>();
-            _dbInvitation= context.Set<Invitation>();
-
+            _dbInvitation = context.Set<Invitation>();
             context.Configuration.ProxyCreationEnabled = false;
         }
         #endregion
@@ -88,26 +85,40 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+
+        #region Validate Entities
+        public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
+        {
+            BO.Signup signUPBO = (BO.Signup)(object)entity;
+            BO.Company companyBO = signUPBO.company;
+            BO.User userBO = signUPBO.user;
+
+
+            var result = companyBO.Validate(companyBO);
+            return result;
+        }
+        #endregion
+
         #region Save Data
-        public override object Save(JObject data)
+        public override object Save<T>(T data)
         {
             return base.Save(data);
         }
         #endregion
 
+
         #region Signup
-        public override Object Signup(JObject data)
+        public override Object Signup<T>(T data)
         {
-            BO.Role roleBO;
-            BO.AddressInfo addressBO;
-            BO.ContactInfo contactinfoBO;
+            BO.Signup signUPBO = (BO.Signup)(object)data;
 
-            BO.Company companyBO = data["company"].ToObject<BO.Company>();
-            BO.User userBO = data["user"].ToObject<BO.User>();
+            bool flagUser = false;
 
-            addressBO = data["addressinfo"] == null ? new BO.AddressInfo() : data["addressinfo"].ToObject<BO.AddressInfo>();
-            contactinfoBO = data["contactInfo"] == null ? new BO.ContactInfo() : data["contactInfo"].ToObject<BO.ContactInfo>();
-            roleBO = data["role"] == null ? new BO.Role() : data["role"].ToObject<BO.Role>();
+            BO.User userBO = signUPBO.user;
+            BO.Company companyBO = signUPBO.company;
+            BO.AddressInfo addressBO = signUPBO.addressInfo;
+            BO.ContactInfo contactinfoBO = signUPBO.contactInfo;
+            BO.Role roleBO = signUPBO.role;
 
             Company companyDB = new Company();
             User userDB = new User();
@@ -120,11 +131,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             if (_context.Companies.Any(o => o.Name == companyBO.Name))
             {
-                return new BO.GbObject { Message = Constants.CompanyAlreadyExists };
+                return new BO.ErrorObject { ErrorMessage = "Company already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else if (_context.Users.Any(o => o.UserName == userBO.UserName))
             {
-                return new BO.GbObject { Message = Constants.UserAlreadyExists };
+                flagUser = true;
             }
 
             #region Company
@@ -139,47 +150,66 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             #endregion
 
             #region Address
-            addressDB.id = addressBO.ID;
-            addressDB.Name = addressBO.Name;
-            addressDB.Address1 = addressBO.Address1;
-            addressDB.Address2 = addressBO.Address2;
-            addressDB.City = addressBO.City;
-            addressDB.State = addressBO.State;
-            addressDB.ZipCode = addressBO.ZipCode;
-            addressDB.Country = addressBO.Country;
+            if (addressBO != null)
+            {
+                addressDB.id = addressBO.ID;
+                addressDB.Name = addressBO.Name;
+                addressDB.Address1 = addressBO.Address1;
+                addressDB.Address2 = addressBO.Address2;
+                addressDB.City = addressBO.City;
+                addressDB.State = addressBO.State;
+                addressDB.ZipCode = addressBO.ZipCode;
+                addressDB.Country = addressBO.Country;
+            }
             #endregion
 
             #region Contact Info
-            contactinfoDB.id = contactinfoBO.ID;
-            contactinfoDB.Name = contactinfoBO.Name;
-            contactinfoDB.CellPhone = contactinfoBO.CellPhone;
-            contactinfoDB.EmailAddress = contactinfoBO.EmailAddress;
-            contactinfoDB.HomePhone = contactinfoBO.HomePhone;
-            contactinfoDB.WorkPhone = contactinfoBO.WorkPhone;
-            contactinfoDB.FaxNo = contactinfoBO.FaxNo;
-            if (contactinfoBO.IsDeleted.HasValue)
-                contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
+
+            if (contactinfoBO != null)
+            {
+                contactinfoDB.id = contactinfoBO.ID;
+                contactinfoDB.Name = contactinfoBO.Name;
+                contactinfoDB.CellPhone = contactinfoBO.CellPhone;
+                contactinfoDB.EmailAddress = contactinfoBO.EmailAddress;
+                contactinfoDB.HomePhone = contactinfoBO.HomePhone;
+                contactinfoDB.WorkPhone = contactinfoBO.WorkPhone;
+                contactinfoDB.FaxNo = contactinfoBO.FaxNo;
+                if (contactinfoBO.IsDeleted.HasValue)
+                    contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
+            }
             #endregion
 
             #region User
-            userDB.UserName = userBO.UserName;
-            userDB.MiddleName = userBO.MiddleName;
-            userDB.FirstName = userBO.FirstName;
-            userDB.LastName = userBO.LastName;
-            userDB.Gender = System.Convert.ToByte(userBO.Gender);
-            userDB.UserType = System.Convert.ToByte(userBO.UserType);
-            userDB.C2FactAuthEmailEnabled =System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactEmail"));
-            userDB.C2FactAuthSMSEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactSMS"));
-            userDB.ImageLink = userBO.ImageLink;
-            if (userBO.DateOfBirth.HasValue)
-                userDB.DateOfBirth = userBO.DateOfBirth.Value;
-            //userDB.Password = PasswordHash.HashPassword(userBO.Password);
+            if (!flagUser)
+            {
+                userDB.UserName = userBO.UserName;
+                userDB.MiddleName = userBO.MiddleName;
+                userDB.FirstName = userBO.FirstName;
+                userDB.LastName = userBO.LastName;
+                userDB.Gender = System.Convert.ToByte(userBO.Gender);
+                userDB.UserType = System.Convert.ToByte(userBO.UserType);
+                userDB.C2FactAuthEmailEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactEmail"));
+                userDB.C2FactAuthSMSEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactSMS"));
+                userDB.ImageLink = userBO.ImageLink;
+                if (userBO.DateOfBirth.HasValue)
+                    userDB.DateOfBirth = userBO.DateOfBirth.Value;
+                //userDB.Password = PasswordHash.HashPassword(userBO.Password);
 
-            if (userBO.IsDeleted.HasValue)
-                userDB.IsDeleted = userBO.IsDeleted.Value;
+                if (userBO.IsDeleted.HasValue)
+                    userDB.IsDeleted = userBO.IsDeleted.Value;
 
-            userDB.AddressInfo = addressDB;
-            userDB.ContactInfo = contactinfoDB;
+                userDB.AddressInfo = addressDB;
+                userDB.ContactInfo = contactinfoDB;
+                userCompanyDB.User = userDB;
+            }
+            else
+            {
+                ////Find Record By Name
+                User user_ = _context.Users.Where(p => p.UserName == userBO.UserName).FirstOrDefault<User>();
+                userCompanyDB.User = user_;
+                _context.Entry(user_).State = System.Data.Entity.EntityState.Modified;
+            }
+
             #endregion
 
             #region Role
@@ -191,8 +221,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             UserCompany cmp = new UserCompany();
             cmp.Company = companyDB;
-
-            userCompanyDB.User = userDB;
 
             companyDB.AddressInfo = addressDB;
             companyDB.ContactInfo = contactinfoDB;
@@ -256,12 +284,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 string VerificationLink = "<a href='"+ Utility.GetConfigValue("VerificationLink") + "/"+invitationDB.UniqueID+ "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
                 string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink+"</b><br><br>Thanks";
                 Utility.SendEmail(Message, "Company registered", userBO.UserName);
-                acc_.Message = "Mail sent";
                 #endregion
             }
             catch (Exception ex)
             {
-                acc_.Message = "Unable to send email.";
+
             }
 
             var res = (BO.GbObject)(object)acc_;
@@ -275,40 +302,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.Company acc_ = Convert<BO.Company, Company>(_context.Companies.Where(p => p.id == id).FirstOrDefault<Company>());
             if (acc_ == null)
             {
-                acc_.StatusCode = System.Net.HttpStatusCode.NotFound;
                 return acc_;
             }
             else
             {
-                acc_.StatusCode = System.Net.HttpStatusCode.Created;
                 return acc_;
             }
         }
         #endregion
 
-        #region Validate Company
-        public override object ValidateInvitation(JObject data)
+        public void Dispose()
         {
-            BO.Invitation invitationBO = data["emailValidation"].ToObject<BO.Invitation>();
-
-            //Find Record By UniqueID
-            Invitation invitation =  _context.Invitations.Where(p => p.UniqueID == invitationBO.UniqueID).FirstOrDefault<Invitation>();
-
-            if (invitation != null)
-            {
-                invitation.IsActivated = true;
-                invitation.IsExpired = true;
-                invitation.UpdateDate = DateTime.UtcNow;
-                invitation.UpdateByUserID = 0;
-                _context.Entry(invitation).State = System.Data.Entity.EntityState.Modified;
-                _context.SaveChanges();
-            }
-            else
-            {
-
-            }
-            return (object)Convert<BO.Invitation, Invitation>(invitation); ;
+            Dispose();
+            GC.SuppressFinalize(this);
         }
-        #endregion
     }
 }

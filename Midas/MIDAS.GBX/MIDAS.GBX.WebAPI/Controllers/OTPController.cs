@@ -14,10 +14,11 @@ namespace MIDAS.GBX.WebAPI.Controllers
     public class OTPController : ApiController
     {
         private IRequestHandler<OTP> requestHandler;
-
+        private IRequestHandler<ValidateOTP> validateotprequestHandler;
         public OTPController()
         {
             requestHandler = new GbApiRequestHandler<OTP>();
+            validateotprequestHandler = new GbApiRequestHandler<ValidateOTP>();
         }
 
         // GET: api/Organizations/5
@@ -32,7 +33,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpGet]
         [Route("GetAll")]
         [AllowAnonymous]
-        public HttpResponseMessage Get(JObject data)
+        public HttpResponseMessage Get([FromBody]OTP data)
         {
             return requestHandler.GetGbObjects(Request, data);
         }
@@ -41,7 +42,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpPost]
         [Route("Add")]
         [AllowAnonymous]
-        public HttpResponseMessage Post(JObject data)
+        public HttpResponseMessage Post([FromBody]OTP data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }
@@ -76,17 +77,17 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpPost]
         [Route("GenerateOTP")]
         [AllowAnonymous]
-        public HttpResponseMessage GenerateOTP(JObject data)
+        public HttpResponseMessage GenerateOTP([FromBody]OTP otp)
         {
-            return requestHandler.RegenerateOTP(Request, data);
+            return requestHandler.RegenerateOTP(Request, otp);
         }
 
         [HttpPost]
         [Route("ValidateOTP")]
         [AllowAnonymous]
-        public HttpResponseMessage ValidateOTP(JObject data)
+        public HttpResponseMessage ValidateOTP([FromBody]ValidateOTP otp)
         {
-            return requestHandler.ValidateOTP(Request, data);
+            return validateotprequestHandler.ValidateOTP(Request, otp);
         }
 
         protected override void Dispose(bool disposing)

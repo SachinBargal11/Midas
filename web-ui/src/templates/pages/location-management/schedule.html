@@ -1,0 +1,282 @@
+<div class="page-center">
+    <div class="page-center-in">
+        <div class="container-fluid">
+            <form [formGroup]="scheduleform" (ngSubmit)="save()">
+                <section class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-lg-2 text-center">
+                                <label class="form-label"> Sunday</label>                                
+                            </div> 
+                            <div class="col-lg-2">
+                                <div class='input-group date'>
+                                      <p-calendar formControlName="sundayFrom"
+                                                  hourFormat="12"
+                                                  timeFormat="hh:mm tt"
+                                                  [timeOnly]="true"
+                                                  [showIcon]="true"
+                                                  icon="fa fa-clock-o">
+                                      </p-calendar>
+                                </div>                                
+                            </div>
+                            <div class="col-lg-2 text-center">
+                                <label class="form-label"> To</label>                                
+                            </div>
+                            <div class="col-lg-2">                                
+                                    <div class='input-group date'>
+                                          <p-calendar formControlName="sundayTo"
+                                                      hourFormat="12"
+                                                      timeFormat="hh:mm tt"
+                                                      [timeOnly]="true"
+                                                      [showIcon]="true"
+                                                      icon="fa fa-clock-o">
+                                          </p-calendar>
+                                    </div>
+                            </div>
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-2 text-center">
+                                <select formControlName="sunday" class="select2-arrow form-control">
+                                             <option value="Closed">Closed</option>
+                                             <option value="Specific Hours">Specific Hours</option>
+                                </select>                                
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-2 text-center">
+                                <label class="form-label"> Monday</label>                                
+                            </div> 
+                            <div class="col-lg-2">
+                                    <div class='input-group date'>
+                                          <p-calendar formControlName="mondayFrom"
+                                                      hourFormat="12"
+                                                      timeFormat="hh:mm tt"
+                                                      [timeOnly]="true"
+                                                      [showIcon]="true"
+                                                      icon="fa fa-clock-o">
+                                          </p-calendar>
+                                    </div>                               
+                            </div>
+                            <div class="col-lg-2 text-center">
+                                <label class="form-label"> To</label>                                
+                            </div>
+                            <div class="col-lg-2">                                
+                                    <div class='input-group date'>
+                                          <p-calendar formControlName="mondayTo"
+                                                      hourFormat="12"
+                                                      timeFormat="hh:mm tt"
+                                                      [timeOnly]="true"
+                                                      [showIcon]="true"
+                                                      icon="fa fa-clock-o">
+                                          </p-calendar>
+                                    </div>            
+                            </div>
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-2 text-center">
+                                <select formControlName="monday" class="select2-arrow form-control">
+                                             <option value="Closed">Closed</option>
+                                             <option value="Specific Hours">Specific Hours</option>
+                                </select>                                
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-2 text-center">
+                                <label class="form-label"> Tuesday</label>                                
+                            </div> 
+                            <div class="col-lg-2">
+                                    <div class='input-group date'>
+                                          <p-calendar formControlName="tuesdayFrom"
+                                                      hourFormat="12"
+                                                      timeFormat="hh:mm tt"
+                                                      [timeOnly]="true"
+                                                      [showIcon]="true"
+                                                      icon="fa fa-clock-o">
+                                          </p-calendar>
+                                    </div>                                
+                            </div>
+                            <div class="col-lg-2 text-center">
+                                <label class="form-label"> To</label>                                
+                            </div>
+                            <div class="col-lg-2">                                
+                                    <div class='input-group date'>
+                                          <p-calendar formControlName="tuesdayTo"
+                                                      hourFormat="12"
+                                                      timeFormat="hh:mm tt"
+                                                      [timeOnly]="true"
+                                                      [showIcon]="true"
+                                                      icon="fa fa-clock-o">
+                                          </p-calendar>
+                                    </div>          
+                            </div>
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-2 text-center">
+                                <select formControlName="tuesday" class="select2-arrow form-control">
+                                             <option value="Closed">Closed</option>
+                                             <option value="Specific Hours">Specific Hours</option>
+                                </select>                                
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-2 text-center">
+                                <label class="form-label"> Wednesday</label>                                
+                            </div> 
+                            <div class="col-lg-2">
+                                    <div class='input-group date'>
+                                          <p-calendar formControlName="wednesdayFrom"
+                                                      hourFormat="12"
+                                                      timeFormat="hh:mm tt"
+                                                      [timeOnly]="true"
+                                                      [showIcon]="true"
+                                                      icon="fa fa-clock-o">
+                                          </p-calendar>
+                                    </div>                               
+                            </div>
+                            <div class="col-lg-2 text-center">
+                                <label class="form-label"> To</label>                                
+                            </div>
+                            <div class="col-lg-2">                                
+                                    <div class='input-group date'>
+                                          <p-calendar formControlName="wednesdayTo"
+                                                      hourFormat="12"
+                                                      timeFormat="hh:mm tt"
+                                                      [timeOnly]="true"
+                                                      [showIcon]="true"
+                                                      icon="fa fa-clock-o">
+                                          </p-calendar>
+                                    </div>          
+                            </div>
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-2 text-center">
+                                <select formControlName="wednesday" class="select2-arrow form-control">
+                                             <option value="Closed">Closed</option>
+                                             <option value="Specific Hours">Specific Hours</option>
+                                </select>                                
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-2 text-center">
+                                <label class="form-label"> Thursday</label>                                
+                            </div> 
+                            <div class="col-lg-2">
+                                    <div class='input-group date'>
+                                          <p-calendar formControlName="ThursdayFrom"
+                                                      hourFormat="12"
+                                                      timeFormat="hh:mm tt"
+                                                      [timeOnly]="true"
+                                                      [showIcon]="true"
+                                                      icon="fa fa-clock-o">
+                                          </p-calendar>
+                                    </div>                                
+                            </div>
+                            <div class="col-lg-2 text-center">
+                                <label class="form-label"> To</label>                                
+                            </div>
+                            <div class="col-lg-2">                                
+                                    <div class='input-group date'>
+                                          <p-calendar formControlName="ThursdayTo"
+                                                      hourFormat="12"
+                                                      timeFormat="hh:mm tt"
+                                                      [timeOnly]="true"
+                                                      [showIcon]="true"
+                                                      icon="fa fa-clock-o">
+                                          </p-calendar>
+                                    </div>           
+                            </div>
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-2 text-center">
+                                <select formControlName="Thursday" class="select2-arrow form-control">
+                                             <option value="Closed">Closed</option>
+                                             <option value="Specific Hours">Specific Hours</option>
+                                </select>                                
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-2 text-center">
+                                <label class="form-label"> Friday</label>                                
+                            </div> 
+                            <div class="col-lg-2">
+                                    <div class='input-group date'>
+                                          <p-calendar formControlName="fridayFrom"
+                                                      hourFormat="12"
+                                                      timeFormat="hh:mm tt"
+                                                      [timeOnly]="true"
+                                                      [showIcon]="true"
+                                                      icon="fa fa-clock-o">
+                                          </p-calendar>
+                                    </div>                                
+                            </div>
+                            <div class="col-lg-2 text-center">
+                                <label class="form-label"> To</label>                                
+                            </div>
+                            <div class="col-lg-2">                                
+                                    <div class='input-group date'>
+                                          <p-calendar formControlName="fridayTo"
+                                                      hourFormat="12"
+                                                      timeFormat="hh:mm tt"
+                                                      [timeOnly]="true"
+                                                      [showIcon]="true"
+                                                      icon="fa fa-clock-o">
+                                          </p-calendar>
+                                    </div>            
+                            </div>
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-2 text-center">
+                                <select formControlName="friday" class="select2-arrow form-control">
+                                             <option value="Closed">Closed</option>
+                                             <option value="Specific Hours">Specific Hours</option>
+                                </select>                                
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-2 text-center">
+                                <label class="form-label"> Saturday</label>                                
+                            </div> 
+                            <div class="col-lg-2">
+                                    <div class='input-group date'>
+                                          <p-calendar formControlName="saturdayFrom"
+                                                      hourFormat="12"
+                                                      timeFormat="hh:mm tt"
+                                                      [timeOnly]="true"
+                                                      [showIcon]="true"
+                                                      icon="fa fa-clock-o">
+                                          </p-calendar>
+                                    </div>                               
+                            </div>
+                            <div class="col-lg-2 text-center">
+                                <label class="form-label"> To</label>                                
+                            </div>
+                            <div class="col-lg-2">                                
+                                    <div class='input-group date'>
+                                          <p-calendar formControlName="saturdayTo"
+                                                      hourFormat="12"
+                                                      timeFormat="hh:mm tt"
+                                                      [timeOnly]="true"
+                                                      [showIcon]="true"
+                                                      icon="fa fa-clock-o">
+                                          </p-calendar>
+                                    </div>            
+                            </div>
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-2 text-center">
+                                <select formControlName="saturday" class="select2-arrow form-control">
+                                             <option value="Closed">Closed</option>
+                                             <option value="Specific Hours">Specific Hours</option>
+                                </select>                                
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="text-center">
+                <button [disabled]="!scheduleform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+                    <loader [visible]="isSaveProgress"></loader>
+                </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

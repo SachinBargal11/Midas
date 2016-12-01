@@ -1,22 +1,26 @@
-import {Record} from 'immutable';
+import { Record } from 'immutable';
 
 const SpecialityDetailRecord = Record({
     id: 0,
-    isUnitApply: 1,
-    followUpDays: 0,
-    followupTime: 0,
+    reevalDays: 0,
+    reevalVisitCount: 0,
     initialDays: 0,
-    initialTime: 0,
-    isInitialEvaluation: 1,
-    include1500: 1,
-    associatedSpeciality: 0,
-    allowMultipleVisit: 1,
-    isDeleted: 0
+    initialVisitCount: 0,
+    maxReval: 0,
+    isInitialEvaluation: false,
+    include1500: false,
+    associatedSpecialty: 0,
+    allowMultipleVisit: false,
+    medicalFacilitiesID: 0,
+    isDeleted: false,
+    createByUserID: 0,
+    createDate: null,
+    updateByUserID: 0,
+    updateDate: null
 });
 
 export class SpecialityDetail extends SpecialityDetailRecord {
     id: number;
-    isUnitApply: number;
     followUpDays: number;
     followupTime: number;
     initialDays: number;
@@ -25,7 +29,11 @@ export class SpecialityDetail extends SpecialityDetailRecord {
     include1500: number;
     associatedSpeciality: number;
     allowMultipleVisit: number;
-    isDeleted: number;
+    isDeleted: boolean;
+    createByUserID: number;
+    createDate: moment.MomentStatic;
+    updateByUserID: number;
+    updateDate: moment.MomentStatic;
 
     constructor(props) {
         super(props);

@@ -37,14 +37,15 @@
                         <label for="signed-in">Keep me signed in</label>
                     </div>
                     <div class="float-right reset">
-                        <a href="#">Reset Password</a>
+                        <a [routerLink]="['/forgot-password']">Forgot Password</a>
                     </div>
                 </div>
                 <button [disabled]="!loginForm.valid" type="submit" class="btn btn-success">Sign in
                     
                     <loader [visible]="isLoginInProgress"></loader>
                 </button>
-                <p class="sign-note">New to our website? <a [routerLink]="['/signup']">Sign up</a></p>
+                <p class="sign-note">New to our website? <a [routerLink]="['/register-company']">Register now</a></p>
+
             </form>
         </div>
     </div>

@@ -19,6 +19,10 @@ namespace MIDAS.GBX
             {
                 repo = new CompanyRepository(context);
             }
+            if (typeof(T) == typeof(BO.Signup))
+            {
+                repo = new CompanyRepository(context);
+            }
             if (typeof(T) == typeof(BO.User))
             {
                 repo = new UserRepository(context);
@@ -30,6 +34,30 @@ namespace MIDAS.GBX
             if (typeof(T) == typeof(BO.PasswordToken))
             {
                 repo = new PasswordTokenRepository(context);
+            }
+            if (typeof(T) == typeof(BO.Location))
+            {
+                repo = new LocationRepository(context);
+            }
+            if (typeof(T) == typeof(BO.Invitation))
+            {
+                repo = new InvitationRepository(context);
+            }
+            if (typeof(T) == typeof(BO.SaveLocation))
+            {
+                repo = new LocationRepository(context);
+            }
+            if (typeof(T) == typeof(BO.AddUser))
+            {
+                repo = new UserRepository(context);
+            }
+            if (typeof(T) == typeof(BO.ValidateOTP))
+            {
+                repo = new OTPRepository(context);
+            }
+            if (typeof(T) == typeof(BO.MedicalProvider))
+            {
+                repo = new MedicalProviderRepository(context);
             }
             return repo;
         }

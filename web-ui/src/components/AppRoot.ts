@@ -29,10 +29,10 @@ export class AppRoot implements OnInit {
 
             },
             error => {
-                this._router.navigate(['/login']);
+                // this._router.navigate(['/login']);
             }
-        ),
-        this._specialityStore.getSpecialities();
-        this._statesStore.getStates();
+        );
+        // this._specialityStore.getSpecialities();
+        // this._statesStore.getStates();
     }
 }

@@ -81,5 +81,22 @@ namespace MIDAS.GBX.BusinessObjects
             Limited = 4
         }
         #endregion
+
+        #region Location Type
+        public enum LocationType
+        {
+            Billing = 1,
+            Testing = 2
+        }
+        #endregion
+
+        #region Error Type
+        public enum ErrorType
+        {
+            Validation = 1,
+            InvalidParameters = 1,
+            Unknown = 2
+        }
+        #endregion
     }
 }

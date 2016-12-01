@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {MedicalFacilityStore} from '../../../stores/medical-facilities-store';
 import {SessionStore} from '../../../stores/session-store';
-import {MedicalFacilityDetail} from '../../../models/medical-facility-details';
+import {MedicalFacility} from '../../../models/medical-facility';
 
 @Component({
     selector: 'medical-facilities-list',
@@ -11,7 +11,7 @@ import {MedicalFacilityDetail} from '../../../models/medical-facility-details';
 
 
 export class MedicalFacilitiesListComponent implements OnInit {
-    medicalfacilities: MedicalFacilityDetail[];
+    medicalfacilities: MedicalFacility[];
     medicalfacilitiesLoading;
     constructor(
         private _router: Router,

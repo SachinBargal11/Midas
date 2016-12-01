@@ -1,7 +1,7 @@
 import {Record} from 'immutable';
 import moment from 'moment';
 
-const ContactInfoRecord = Record({
+const ContactRecord = Record({
     id: 0,
     name: '',
     cellPhone: '',
@@ -12,11 +12,11 @@ const ContactInfoRecord = Record({
     isDeleted: 0,
     createByUserId: 0,
     updateByUserId: 0,
-    createDate: null, //Moment
-    updateDate: null //Moment
+    // createDate: null, //Moment
+    // updateDate: null //Moment
 });
 
-export class ContactInfo extends ContactInfoRecord {
+export class Contact extends ContactRecord {
 
     id: number;
     name: string;
@@ -28,8 +28,8 @@ export class ContactInfo extends ContactInfoRecord {
     isDeleted: boolean;
     createByUserId: number;
     updateByUserId: number;
-    createDate: moment.MomentStatic;
-    updateDate: moment.MomentStatic;
+    // createDate: moment.MomentStatic;
+    // updateDate: moment.MomentStatic;
 
     constructor(props) {
         super(props);

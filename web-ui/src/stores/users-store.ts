@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
+import { Account } from '../models/account';
 import {AccountDetail} from '../models/account-details';
 import {UsersService} from '../services/users-service';
 import {SessionStore} from './session-store';
@@ -39,7 +40,8 @@ export class UsersStore {
     getUsers(): Observable<AccountDetail[]> {
         let accountId: number = this._sessionStore.session.account_id;
         let promise = new Promise((resolve, reject) => {
-            this._usersService.getUsers(accountId).subscribe((users: AccountDetail[]) => {
+            this._usersService.getUsers().subscribe((users: any[]) => {
+                // this._usersService.getUsers(accountId).subscribe((users: AccountDetail[]) => {
                 this._users.next(List(users));
                 resolve(users);
             }, error => {
@@ -105,6 +107,21 @@ export class UsersStore {
             });
         });
         return <Observable<AccountDetail>>Observable.from(promise);
+    }    
+    deleteUser(user) {
+        let users = this._users.getValue();
+        // let index = users.findIndex((currentUser: any) => currentUser.id === user.id);
+        let index = users.indexOf(user);
+        let promise = new Promise((resolve, reject) => {
+            this._usersService.deleteUser(user)
+            .subscribe((user: any) => {
+                this._users.next(users.delete(index));
+                resolve(user);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.from(promise);
     }
 
     selectUser(userDetail: AccountDetail) {

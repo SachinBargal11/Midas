@@ -51,5 +51,14 @@ namespace MIDAS.GBX.BusinessObjects
         public bool C2FactAuthSMSEnabled { get; set; }
         [JsonProperty("forceLogin")]
         public bool forceLogin { get; set; }
+
+        public override List<BusinessValidation> Validate<T>(T entity)
+        {
+            List<BusinessValidation> validations = new List<BusinessValidation>();
+            BusinessValidation validation = new BusinessValidation();
+            //Implement logic for validation
+
+            return validations;
+        }
     }
 }

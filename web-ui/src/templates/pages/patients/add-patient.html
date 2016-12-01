@@ -36,11 +36,11 @@
                                 <div class="form-group" [class.error]="patientformControls.dob.touched && !patientformControls.dob.valid">
                                     <div class='input-group date'>
                                           <p-calendar formControlName="dob" 
-                                                      dateFormat="M d, yy" 
-                                                      minDate="Jan 1, 1900"
-                                                      maxDate="today" 
+                                                      dateFormat="M d, yy"
+                                                      [maxDate]="maxDate" 
                                                       [monthNavigator]="true" 
-                                                      [yearNavigator]="true"
+                                                      [yearNavigator]="true" 
+                                                      yearRange="1920:2050"
                                                       [class.error]="patientformControls.dob.touched && !patientformControls.dob.valid" 
                                                       placeholder="Date of Birth"
                                                       showAnim="slideDown"
@@ -106,7 +106,7 @@
                 </button>
                 <!--<button type="button" class="btn btn-secondary" [RouterLinkWithHref]="['/dashboard']">Cancel
                 </button>-->
-                <a [routerLink]="['/patients']" class="btn btn-secondary">Cancel</a>
+                <a [routerLink]="['/patientManager/patients']" class="btn btn-secondary">Cancel</a>
             </form>
         </div>
     </div>
