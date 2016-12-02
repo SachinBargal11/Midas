@@ -7,11 +7,10 @@ export class SpecialityAdapter {
         let speciality = null;
         if (specialityData) {
             speciality = new Speciality({
-                speciality: {
                     id: specialityData.id,
                     name: specialityData.name,
-                    specialityCode: specialityData.specialityCode
-                }
+                    specialityCode: specialityData.specialityCode,
+                    isunitApply: specialityData.isunitApply
             });
         }
         return speciality;

@@ -24,7 +24,7 @@ export class AddSpecialityComponent implements OnInit {
     };
     specialityform: FormGroup;
     specialityformControls;
-    isSaveDoctorProgress = false;
+    isSaveSpecialityProgress = false;
 
     constructor(
         private _specialityStore: SpecialityStore,
@@ -36,7 +36,8 @@ export class AddSpecialityComponent implements OnInit {
     ) {
         this.specialityform = this.fb.group({
                 name: ['', Validators.required],
-                specialityCode: ['', Validators.required]
+                specialityCode: ['', Validators.required],
+                isunitApply: ['', Validators.required] 
         });
 
         this.specialityformControls = this.specialityform.controls;
@@ -49,12 +50,11 @@ export class AddSpecialityComponent implements OnInit {
     saveSpeciality() {
         let specialityformValues = this.specialityform.value;
         let speciality = new Speciality({
-            speciality: {
                 name: specialityformValues.name,
-                specialityCode: specialityformValues.specialityCode
-            }
+                specialityCode: specialityformValues.specialityCode,
+                isunitApply: specialityformValues.isunitApply
         });
-        this.isSaveDoctorProgress = true;
+        this.isSaveSpecialityProgress = true;
         let result;
 
         result = this._specialityStore.addSpeciality(speciality);
@@ -77,7 +77,7 @@ export class AddSpecialityComponent implements OnInit {
                 this._notificationsStore.addNotification(notification);
             },
             () => {
-                this.isSaveDoctorProgress = false;
+                this.isSaveSpecialityProgress = false;
             });
 
     }
