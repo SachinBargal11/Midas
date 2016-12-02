@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {SessionStore} from '../../../stores/session-store';
 import {UsersStore} from '../../../stores/users-store';
 import {AccountDetail} from '../../../models/account-details';
+import { Account } from '../../../models/account';
 
 @Component({
     selector: 'users-list',
@@ -12,7 +13,7 @@ import {AccountDetail} from '../../../models/account-details';
 
 export class UsersListComponent implements OnInit {
     selectedUsers: any[];
-    users: AccountDetail[];
+    users: Account[];
     usersLoading;
     cols: any[];
     constructor(
@@ -43,6 +44,6 @@ export class UsersListComponent implements OnInit {
     //         });
     // }
     onRowSelect(user) {
-        this._router.navigate(['/medicalProvider/users/' + user.firstName + '/basic']);
+        this._router.navigate(['/medicalProvider/users/' + user.id + '/basic']);
     }
 }

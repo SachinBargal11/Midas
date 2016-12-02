@@ -7,6 +7,8 @@ import {User} from '../../../models/user';
 import {UsersService} from '../../../services/users-service';
 import {AccountDetail} from '../../../models/account-details';
 import {Account} from '../../../models/account';
+import {Company} from '../../../models/company';
+import {UserRole} from '../../../models/user-role';
 import {Contact} from '../../../models/contact';
 import {Address} from '../../../models/address';
 import {SessionStore} from '../../../stores/session-store';
@@ -24,7 +26,7 @@ import {StateService} from '../../../services/state-service';
 
 export class UpdateUserComponent implements OnInit {
     states: any[];
-    user = new User({});
+    user: any;
     address = new Address({});
     contactInfo = new Contact({});
     options = {
@@ -54,26 +56,23 @@ export class UpdateUserComponent implements OnInit {
             let userId: number = parseInt(routeParams.id);
             let result = this._usersStore.fetchUserById(userId);
             result.subscribe(
-                (userDetail: AccountDetail) => {
-                    this.user = userDetail.user;
-                    this.address = userDetail.address;
-                    this.contactInfo = userDetail.contactInfo;
+                (userDetail: Account) => {
+                    this.user = userDetail;
                 },
                 (error) => {
-                    this._router.navigate(['/users']);
+                    this._router.navigate(['/medicalProvider/users']);
                 },
                 () => {
                 });
         });
         this.userform = this.fb.group({
-            firstName: ['', Validators.required],
-            middleName: [''],
-            lastName: ['', Validators.required],
-            userType: ['', Validators.required],
-            password: ['', Validators.required],
-            confirmPassword: ['', Validators.required],
+            userInfo: this.fb.group({
+                firstName: ['', Validators.required],
+                lastName: ['', Validators.required],
+                userType: ['', Validators.required]
+            }),
             contact: this.fb.group({
-                emailAddress: ['', [Validators.required, AppValidators.emailValidator]],
+                email: ['', [Validators.required, AppValidators.emailValidator]],
                 cellPhone: ['', [Validators.required]],
                 homePhone: [''],
                 workPhone: [''],
@@ -86,48 +85,54 @@ export class UpdateUserComponent implements OnInit {
                 zipCode: [''],
                 state: [''],
                 country: ['']
+            }),
+            userRole: this.fb.group({
+                role: ['', Validators.required]
             })
-        }, { validator: AppValidators.matchingPasswords('password', 'confirmPassword') });
+        });
 
         this.userformControls = this.userform.controls;
     }
 
     ngOnInit() {
-        this._stateService.getStates()
-            .subscribe(states => this.states = states);
+        // this._stateService.getStates()
+        //     .subscribe(states => this.states = states);
     }
 
 
     updateUser() {
         let userFormValues = this.userform.value;
-        let userDetail = new AccountDetail({
-            account: new Account({
-                id: this._sessionStore.session.account_id
+        let userDetail = new Account({
+            company: new Company({
+                id: 1
             }),
             user: new User({
                 id: this.user.id,
-                firstName: userFormValues.firstName,
-                middleName: userFormValues.middleName,
-                lastName: userFormValues.lastName,
-                userType: parseInt(userFormValues.userType), // UserType[1],//,                
-                password: userFormValues.password,
-                userName: userFormValues.contact.emailAddress
+                firstName: userFormValues.userInfo.firstName,
+                lastName: userFormValues.userInfo.lastName,
+                userType: parseInt(userFormValues.userInfo.userType),
+                userName: userFormValues.contact.email,
+                contact: new Contact({
+                    cellPhone: userFormValues.contact.cellPhone,
+                    emailAddress: userFormValues.contact.email,
+                    faxNo: userFormValues.contact.faxNo,
+                    homePhone: userFormValues.contact.homePhone,
+                    workPhone: userFormValues.contact.workPhone,
+                }),
+                address: new Address({
+                    address1: userFormValues.address.address1,
+                    address2: userFormValues.address.address2,
+                    city: userFormValues.address.city,
+                    country: userFormValues.address.country,
+                    state: userFormValues.address.state,
+                    zipCode: userFormValues.address.zipCode,
+                })            
             }),
-            contactInfo: new Contact({
-                cellPhone: userFormValues.contact.cellPhone,
-                emailAddress: userFormValues.contact.emailAddress,
-                faxNo: userFormValues.contact.faxNo,
-                homePhone: userFormValues.contact.homePhone,
-                workPhone: userFormValues.contact.workPhone,
+            role: new UserRole({
+                name: 'Doctor',
+                roleType: 'Admin',
+                status: 'active'
             }),
-            address: new Address({
-                address1: userFormValues.address.address1,
-                address2: userFormValues.address.address2,
-                city: userFormValues.address.city,
-                country: userFormValues.address.country,
-                state: userFormValues.address.state,
-                zipCode: userFormValues.address.zipCode,
-            })
         });
         this.isSaveUserProgress = true;
         let result;
@@ -141,7 +146,7 @@ export class UpdateUserComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/users']);
+                this._router.navigate(['/medicalProvider/users']);
             },
             (error) => {
                 let notification = new Notification({

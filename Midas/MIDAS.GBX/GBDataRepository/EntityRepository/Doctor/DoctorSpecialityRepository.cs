@@ -39,8 +39,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             doctorspecilityBO.IsDeleted = doctorspecility.IsDeleted;
             if (doctorspecilityBO.UpdateByUserID.HasValue)
                 doctorspecilityBO.UpdateByUserID = doctorspecility.UpdateByUserID.Value;
-            if (doctorspecility.UpdateDate.HasValue)
-                doctorspecilityBO.UpdateDate = doctorspecility.UpdateDate.Value;
 
             BO.Doctor boDoctor = new BO.Doctor();
             using (DoctorRepository sr = new DoctorRepository(_context))
@@ -164,7 +162,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
         public void Dispose()
         {
-            Dispose();
             // Use SupressFinalize in case a subclass 
             // of this type implements a finalizer.
             GC.SuppressFinalize(this);

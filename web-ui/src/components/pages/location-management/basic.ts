@@ -117,7 +117,7 @@ export class BasicComponent implements OnInit {
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'Location added successfully!',
+                    'title': 'Location updated successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
@@ -126,7 +126,7 @@ export class BasicComponent implements OnInit {
             },
             (error) => {
                 let notification = new Notification({
-                    'title': 'Unable to add location.',
+                    'title': 'Unable to update location.',
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

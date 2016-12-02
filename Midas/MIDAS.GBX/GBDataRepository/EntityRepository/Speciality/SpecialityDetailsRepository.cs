@@ -56,15 +56,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 specialtyDetailBO.IsDeleted = specialtydetail.IsDeleted.Value;
             if (specialtydetail.UpdateByUserID.HasValue)
                 specialtyDetailBO.UpdateByUserID = specialtydetail.UpdateByUserID.Value;
-            if (specialtydetail.UpdateDate.HasValue)
-                specialtyDetailBO.UpdateDate = specialtydetail.UpdateDate.Value;
 
             BO.Specialty boSpecialty = new BO.Specialty();
-            using (SpecialityRepository sr = new SpecialityRepository(_context))
-            {
-                boSpecialty = sr.Convert<BO.Specialty, Specialty>(specialtydetail.Specialty);
-                specialtyDetailBO.Specialty = boSpecialty;
-            }
+            //using (SpecialityRepository sr = new SpecialityRepository(_context))
+            //{
+            //    boSpecialty = sr.Convert<BO.Specialty, Specialty>(specialtydetail.Specialty);
+            //    specialtyDetailBO.Specialty = boSpecialty;
+            //}
             return (T)(object)specialtyDetailBO;
         }
         #endregion
@@ -72,7 +70,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
-            BO.Specialty specialtydetail = (BO.Specialty)(object)entity;
+            BO.SpecialtyDetails specialtydetail = (BO.SpecialtyDetails)(object)entity;
             var result = specialtydetail.Validate(specialtydetail);
             return result;
         }
@@ -107,14 +105,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             #region Specialty
             if (specilityBO.ID > 0)
             {
-                Specialty speclity = _context.Specialties.Where(p => p.id == specilityBO.ID).FirstOrDefault<Specialty>();
-                if (speclity != null)
-                {
-                    speclityDetailDB.Specialty = speclity;
-                    _context.Entry(speclity).State = System.Data.Entity.EntityState.Modified;
-                }
-                else
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Speclity details.", ErrorLevel = ErrorLevel.Error };
+                //Specialty speclity = _context.Specialties.Where(p => p.id == specilityBO.ID).FirstOrDefault<Specialty>();
+                //if (speclity != null)
+                //{
+                //    speclityDetailDB.Specialty = speclity;
+                //    _context.Entry(speclity).State = System.Data.Entity.EntityState.Modified;
+                //}
+                //else
+                //    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Speclity details.", ErrorLevel = ErrorLevel.Error };
             }
             #endregion
 

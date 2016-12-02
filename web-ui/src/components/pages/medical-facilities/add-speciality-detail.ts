@@ -92,7 +92,7 @@ export class AddSpecialityDetailComponent {
         this.isSpecialityDetailSaveInProgress = true;
         let result: Observable<SpecialityDetail>;
 
-        result = this._medicalFacilityStore.addSpecialityDetail(specialityDetail, this.medicalFacilityDetail);
+        // result = this._medicalFacilityStore.addSpecialityDetail(specialityDetail, this.medicalFacilityDetail);
         result.subscribe(
             (response: SpecialityDetail) => {
                 let notification = new Notification({

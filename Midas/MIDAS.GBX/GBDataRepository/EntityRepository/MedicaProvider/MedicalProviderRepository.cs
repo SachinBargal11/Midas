@@ -43,8 +43,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 providerBO.IsDeleted = provider.IsDeleted.Value;
             if (provider.UpdateByUserID.HasValue)
                 providerBO.UpdateByUserID = provider.UpdateByUserID.Value;
-            if (provider.UpdateDate.HasValue)
-                providerBO.UpdateDate = provider.UpdateDate.Value;
 
             BO.Company boCompany = new BO.Company();
             boCompany.ID = provider.Company.id;
