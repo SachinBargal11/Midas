@@ -93,7 +93,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     doctor.DoctorID = DoctorSpecialityBO.Doctor.ID;
                     doctor.SpecialityID = DoctorSpecialityBO.Specialty.ID;
                     doctorSpecilityDB.IsDeleted = DoctorSpecialityBO.IsDeleted.HasValue ? DoctorSpecialityBO.IsDeleted.Value : false;
-                    doctor.UpdateDate = DateTime.UtcNow;
+                    doctor.UpdateDate = DoctorSpecialityBO.UpdateDate;
                     doctor.UpdateByUserID = DoctorSpecialityBO.UpdateByUserID;
                     #endregion
 
@@ -103,7 +103,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-                doctorSpecilityDB.CreateDate = DateTime.UtcNow;
+                doctorSpecilityDB.CreateDate = DoctorSpecialityBO.CreateDate;
                 doctorSpecilityDB.CreateByUserID = DoctorSpecialityBO.CreateByUserID;
 
                 _dbSet.Add(doctorSpecilityDB);

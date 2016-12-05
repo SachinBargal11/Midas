@@ -104,7 +104,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     doctor.Title = doctorBO.Title != null ? doctorBO.Title : doctor.Title;
                     doctor.TaxType = System.Convert.ToByte(doctorBO.TaxType);
                     doctor.IsDeleted = doctorBO.IsDeleted.HasValue ? doctorBO.IsDeleted : false;
-                    doctor.UpdateDate = DateTime.UtcNow;
+                    doctor.UpdateDate = doctorBO.UpdateDate;
                     doctor.UpdateByUserID = doctorBO.UpdateByUserID;
                     #endregion
 
@@ -114,7 +114,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-                doctorDB.CreateDate = DateTime.UtcNow;
+                doctorDB.CreateDate = doctorBO.CreateDate;
                 doctorDB.CreateByUserID = doctorBO.CreateByUserID;
 
                 _dbSet.Add(doctorDB);

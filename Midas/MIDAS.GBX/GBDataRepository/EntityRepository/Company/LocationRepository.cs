@@ -199,7 +199,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     locationDB.LocationType = locationBO.LocationType == null ? System.Convert.ToByte(locationBO.LocationType) : System.Convert.ToByte(locationDB.LocationType);
                     locationDB.IsDefault = locationBO.IsDefault == null ? locationBO.IsDefault : locationDB.IsDefault;
                     locationDB.IsDeleted = locationBO.IsDeleted == null ? locationBO.IsDeleted : locationDB.IsDeleted;
-                    locationDB.UpdateDate = DateTime.UtcNow;
+                    locationDB.UpdateDate = locationBO.UpdateDate;
                     locationDB.UpdateByUserID = locationBO.UpdateByUserID;
                     #endregion
 
@@ -216,7 +216,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     location.AddressInfo.State = addressBO.State;
                     location.AddressInfo.ZipCode = addressBO.ZipCode;
                     location.AddressInfo.Country = addressBO.Country;
-                    location.AddressInfo.UpdateDate = DateTime.UtcNow;
+                    location.AddressInfo.UpdateDate = addressBO.UpdateDate;
                     location.AddressInfo.UpdateByUserID = addressBO.UpdateByUserID;
                     #endregion
 
@@ -232,6 +232,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     location.ContactInfo.HomePhone = contactinfoBO.HomePhone;
                     location.ContactInfo.WorkPhone = contactinfoBO.WorkPhone;
                     location.ContactInfo.FaxNo = contactinfoBO.FaxNo;
+                    location.ContactInfo.UpdateDate = contactinfoBO.UpdateDate;
                     location.ContactInfo.UpdateByUserID = contactinfoBO.UpdateByUserID;
                     #endregion
                     _context.Entry(location).State = System.Data.Entity.EntityState.Modified;
@@ -240,13 +241,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-                locationDB.CreateDate = DateTime.UtcNow;
+                locationDB.CreateDate = companyBO.CreateDate;
                 locationDB.CreateByUserID = companyBO.CreateByUserID;
 
-                addressDB.CreateDate = DateTime.UtcNow;
+                addressDB.CreateDate = companyBO.CreateDate;
                 addressDB.CreateByUserID = companyBO.CreateByUserID;
 
-                contactinfoDB.CreateDate = DateTime.UtcNow;
+                contactinfoDB.CreateDate = companyBO.CreateDate;
                 contactinfoDB.CreateByUserID = companyBO.CreateByUserID;
 
                 locationDB.AddressInfo = addressDB;

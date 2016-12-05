@@ -65,10 +65,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
 
-
-
-
-
         #region Validate Company
         public override object ValidateInvitation<T>(T data)
         {
@@ -82,6 +78,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 invitation.IsActivated = true;
                 invitation.IsExpired = true;
                 invitation.UpdateByUserID = 0;
+                invitation.UpdateDate = invitationBO.UpdateDate;
                 _context.Entry(invitation).State = System.Data.Entity.EntityState.Modified;
                 _context.SaveChanges();
             }

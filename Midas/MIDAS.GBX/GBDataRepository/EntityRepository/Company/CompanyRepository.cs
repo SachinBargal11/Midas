@@ -22,6 +22,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         private DbSet<UserCompany> _dbUserCompany;
         private DbSet<UserCompanyRole> _dbUserCompanyRole;
         private DbSet<Invitation> _dbInvitation;
+
         #region Constructor
         public CompanyRepository(MIDASGBXEntities context) : base(context)
         {
@@ -231,12 +232,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
+                companyDB.CreateDate = companyBO.CreateDate;
                 companyDB.CreateByUserID = companyBO.CreateByUserID;
 
+                userDB.CreateDate = companyBO.CreateDate;
                 userDB.CreateByUserID = companyBO.CreateByUserID;
 
+                addressDB.CreateDate = companyBO.CreateDate;
                 addressDB.CreateByUserID = companyBO.CreateByUserID;
 
+                contactinfoDB.CreateDate = companyBO.CreateDate;
                 contactinfoDB.CreateByUserID = companyBO.CreateByUserID;
 
                 _dbSet.Add(companyDB);
@@ -247,7 +252,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             #region Insert User Block
             userCompanyDB.Company = companyDB;
-            userCompanyDB.CreateDate = DateTime.UtcNow;
+            userCompanyDB.CreateDate = companyBO.CreateDate;
             userCompanyDB.CreateByUserID = companyBO.CreateByUserID;
             _dbUserCompany.Add(userCompanyDB);
             _context.SaveChanges();
@@ -256,7 +261,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             #region Insert User Company Role
             userCompanyRoleDB.User = userCompanyDB.User;
             userCompanyRoleDB.Role = roleDB;
-            userCompanyRoleDB.CreateDate = DateTime.UtcNow;
+            userCompanyRoleDB.CreateDate = companyBO.CreateDate;
             userCompanyRoleDB.CreateByUserID = companyBO.CreateByUserID;
             _dbUserCompanyRole.Add(userCompanyRoleDB);
             _context.SaveChanges();
@@ -266,7 +271,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             invitationDB.User = userCompanyDB.User;
             invitationDB.Company = companyDB;
             invitationDB.UniqueID = Guid.NewGuid();
-            invitationDB.CreateDate = DateTime.UtcNow;
+            invitationDB.CreateDate = companyBO.CreateDate;
             invitationDB.CreateByUserID = companyBO.CreateByUserID;
             _dbInvitation.Add(invitationDB);
             _context.SaveChanges();

@@ -110,7 +110,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     provider.Name = medicalProviderBO.Name != null ? medicalProviderBO.Name : provider.Name;
                     provider.NPI = medicalProviderBO.NPI != null ? medicalProviderBO.NPI : provider.NPI;
                     provider.IsDeleted = medicalProviderBO.IsDeleted != null ? medicalProviderBO.IsDeleted : provider.IsDeleted;
-                    provider.UpdateDate = DateTime.UtcNow;
+                    provider.UpdateDate = medicalProviderBO.UpdateDate;
                     provider.UpdateByUserID = medicalProviderBO.UpdateByUserID;
                     #endregion
 
@@ -120,7 +120,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-                medicalProviderDB.CreateDate = DateTime.UtcNow;
+                medicalProviderDB.CreateDate = companyBO.CreateDate;
                 medicalProviderDB.CreateByUserID = companyBO.CreateByUserID;
 
                 _dbSet.Add(medicalProviderDB);
