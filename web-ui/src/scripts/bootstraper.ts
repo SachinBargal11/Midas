@@ -47,6 +47,9 @@ import { LocationsService } from '../services/locations-service';
 import { RoomsStore } from '../stores/rooms-store';
 import { RoomsService } from '../services/rooms-service';
 
+import { SpecialityDetailsStore } from '../stores/speciality-details-store';
+import { SpecialityDetailsService } from '../services/speciality-details-service';
+
 import { NotificationsStore } from '../stores/notifications-store';
 import { APP_ROUTER_PROVIDER } from '../routes/app-routes';
 import { ValidateActiveSession } from '../routes/guards/validate-active-session';
@@ -128,6 +131,10 @@ import { AccessComponent } from '../components/pages/location-management/access'
 import { RoomsComponent } from '../components/pages/rooms/rooms';
 import { AddRoomComponent } from '../components/pages/rooms/add-room';
 import { EditRoomComponent } from '../components/pages/rooms/edit-room';
+
+import { SpecialityDetailComponent } from '../components/pages/speciality-details/speciality-details';
+import { AddSpecialityDetailsComponent } from '../components/pages/speciality-details/add-speciality-detail';
+import { EditSpecialityDetailsComponent } from '../components/pages/speciality-details/edit-speciality-detail';
 
 import { LimitPipe } from '../pipes/limit-array-pipe';
 import { TimeAgoPipe } from '../pipes/time-ago-pipe';
@@ -231,6 +238,9 @@ enableProdMode();
         RoomsComponent,
         AddRoomComponent,
         EditRoomComponent,
+        SpecialityDetailComponent,
+        AddSpecialityDetailsComponent,
+        EditSpecialityDetailsComponent,
         TimeAgoPipe,
         ReversePipe,
         LimitPipe,
@@ -263,6 +273,8 @@ enableProdMode();
         LocationsStore,
         RoomsService,
         RoomsStore,
+        SpecialityDetailsStore,
+        SpecialityDetailsService,
         FormBuilder
     ],
     bootstrap: [
