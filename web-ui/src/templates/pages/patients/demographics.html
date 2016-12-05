@@ -172,8 +172,7 @@
                                 <label class="form-label"> Emergency Contact Phone
                                         </label>
                                 <div class="form-group" [class.error]="demographicsformControls.emergencyContactPhone.touched && !demographicsformControls.emergencyContactPhone.valid">
-                                    <p-inputMask mask="999-999-9999" formControlName="emergencyContactPhone" [class.error]="demographicsformControls.emergencyContactPhone.touched && !demographicsformControls.emergencyContactPhone.valid" 
-                                     placeholder="999-999-9999" styleClass="form-control" ></p-inputMask>
+                                    <input type="text" formControlName="emergencyContactPhone" [class.error]="demographicsformControls.emergencyContactPhone.touched && !demographicsformControls.emergencyContactPhone.valid" />
                                     <div class='error-list' *ngIf="demographicsformControls.emergencyContactPhone.touched && !demographicsformControls.emergencyContactPhone.valid">
                                         <ul>
                                             <li *ngIf="demographicsformControls.emergencyContactPhone.hasError('required')">Emergency contact phone is required.</li>

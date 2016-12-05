@@ -90,8 +90,9 @@
                                             <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="userformControls.contact.controls.cellPhone.touched && !userformControls.contact.controls.cellPhone.valid">
-                                    <p-inputMask mask="999-999-9999" formControlName="cellPhone" [ngModel]="contact.cellPhone" [class.error]="userformControls.contact.controls.cellPhone.touched && !userformControls.contact.controls.cellPhone.valid" 
-                                     placeholder="999-999-9999" styleClass="form-control" ></p-inputMask>
+                                    <input type="text" formControlName="cellPhone" [ngModel]="contact.cellPhone" [class.error]="userformControls.contact.controls.cellPhone.touched && !userformControls.contact.controls.cellPhone.valid" />
+                                    <!--<p-inputMask mask="999-999-9999" formControlName="cellPhone" [ngModel]="contact.cellPhone" [class.error]="userformControls.contact.controls.cellPhone.touched && !userformControls.contact.controls.cellPhone.valid" 
+                                     placeholder="999-999-9999" styleClass="form-control" ></p-inputMask>-->
                                     <div class='error-list' *ngIf="userformControls.contact.controls.cellPhone.touched && !userformControls.contact.controls.cellPhone.valid">
                                         <ul>
                                             <li *ngIf="userformControls.contact.controls.cellPhone.hasError('required')">Cellphone number is required.</li>

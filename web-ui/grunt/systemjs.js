@@ -8,29 +8,29 @@ module.exports = {
         },
         builder: {
             baseURL: '<%= compiledLocation %>',
-			paths: {
-				'node_modules/*': './node_modules/*'
-			},
+            paths: {
+                'node_modules/*': './node_modules/*'
+            },
             map: {
                 '@angular': 'node_modules/@angular',
                 'rxjs': 'node_modules/rxjs',
                 'reflect-metadata': 'node_modules/reflect-metadata/Reflect.js',
                 'angular2-notifications': 'node_modules/angular2-notifications',
                 'ng2-bootstrap': 'node_modules/ng2-bootstrap',
-                'moment' : 'node_modules/moment/moment.js',
-                'immutable' : 'node_modules/immutable/dist/immutable.js',
-                'underscore' : 'node_modules/underscore/underscore.js',
+                'moment': 'node_modules/moment/moment.js',
+                'immutable': 'node_modules/immutable/dist/immutable.js',
+                'underscore': 'node_modules/underscore/underscore.js',
                 'jquery': 'node_modules/jquery/dist/jquery.min.js',
                 'primeng': 'node_modules/primeng',
                 'jquery.inputmask': 'node_modules/jquery.inputmask/dist/jquery.inputmask.bundle.js',
                 'jquery-ui': 'external/jquery-ui/jquery-ui.min.js',
                 'jquery-ui-timepicker-addon': 'node_modules/jquery-ui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.js',
                 'datatables': 'node_modules/datatables/media/js/jquery.dataTables.min.js',
-				'chart.js': 'node_modules/chart.js/dist/Chart.js'				
+                'chart.js': 'node_modules/chart.js/dist/Chart.js'
             },
-            meta: 
+            meta:
             {
-                'primeng' : {
+                'primeng': {
                     deps: [
                         'jquery-ui',
                         'jquery-ui-timepicker-addon',
@@ -45,14 +45,14 @@ module.exports = {
                 'datatables': {
                     deps: [
                         'jquery'
-                       ]
+                    ]
                 },
-				'chart.js': {
-					deps: [
-						'jquery',
-						'moment'
-					]
-				},
+                'chart.js': {
+                    deps: [
+                        'jquery',
+                        'moment'
+                    ]
+                },
                 'jquery.inputmask': {
                     deps: [
                         'jquery'
@@ -118,11 +118,7 @@ module.exports = {
                     defaultExtension: 'js'
                 },
                 '@angular/router': {
-                    main: 'index.js',
-                    defaultExtension: 'js'
-                },
-                '@angular/router-deprecated': {
-                    main: 'bundles/router-deprecated.umd.js',
+                    main: 'bundles/router.umd.js',
                     defaultExtension: 'js'
                 },
                 '@angular/upgrade': {
@@ -132,9 +128,9 @@ module.exports = {
                 'rxjs': {
                     defaultExtension: 'js'
                 },
-                'angular2-notifications': { 
-                    main: 'components.js', 
-                    defaultExtension: 'js' 
+                'angular2-notifications': {
+                    main: 'components.js',
+                    defaultExtension: 'js'
                 },
                 'ng2-bootstrap': {
                     main: 'ng2-bootstrap.js',
