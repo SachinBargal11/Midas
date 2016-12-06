@@ -26,7 +26,7 @@
                                     <!--<input formControlName="phone" type="text" class="form-control" placeholder="" [class.error]="!editroomformControls.phone.valid">-->
                                     <!--<p-inputMask mask="999-999-9999" formControlName="phone" [ngModel]="room.phone" [class.error]="editroomformControls.phone.touched && !editroomformControls.phone.valid" 
                                      placeholder="999-999-9999" styleClass="form-control"></p-inputMask>-->
-                                    <input type="text" formControlName="phone" [ngModel]="room.phone" [class.error]="editroomformControls.phone.touched && !editroomformControls.phone.valid" />
+                                    <input class="form-control" type="text" formControlName="phone" [ngModel]="room.phone" [class.error]="editroomformControls.phone.touched && !editroomformControls.phone.valid" />
                                     <div class='error-list' *ngIf="editroomformControls.phone.touched && !editroomformControls.phone.valid">
                                         <ul>
                                             <li *ngIf="editroomformControls.phone.hasError('required')">Phone is required.</li>
