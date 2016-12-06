@@ -84,6 +84,9 @@
     <Build Include="Tables\CompanySpecialtyDetails.sql" />
     <Build Include="Tables\Room.sql" />
     <Build Include="Tables\RoomDetails.sql" />
+    <Build Include="Tables\Schedule.sql" />
+    <Build Include="Tables\LocationSchedule.sql" />
+    <Build Include="Tables\DoctorLocationSchedule.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />
