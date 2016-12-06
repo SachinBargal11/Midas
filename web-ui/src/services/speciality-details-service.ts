@@ -23,8 +23,10 @@ export class SpecialityDetailsService {
     getSpecialityDetail(id: Number): Observable<SpecialityDetail> {
         let promise: Promise<SpecialityDetail> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/CompanySpecialtyDetails/get/' + id).map(res => res.json())
-                .subscribe((data: any) => {
-                    resolve(data);
+                .subscribe((specialityDetailData: any) => {
+                    let parsedData: SpecialityDetail = null
+                    parsedData = SpecialityDetailAdapter.parseResponse(specialityDetailData);
+                    resolve(parsedData);
                 }, (error) => {
                     reject(error);
                 });
@@ -38,8 +40,11 @@ export class SpecialityDetailsService {
             return this._http.post(this._url + '/CompanySpecialtyDetails/getall', JSON.stringify({}), {
                 headers: this._headers
             }).map(res => res.json())
-                .subscribe((data: any) => {
-                    resolve(data);
+                .subscribe((specialityDetailData: Array<Object>) => {
+                    let specialityDetails: any[] = (<Object[]>specialityDetailData).map((specialityDetailData: any) => {
+                        return SpecialityDetailAdapter.parseResponse(specialityDetailData);
+                    });
+                    resolve(specialityDetails);
                 }, (error) => {
                     reject(error);
                 });

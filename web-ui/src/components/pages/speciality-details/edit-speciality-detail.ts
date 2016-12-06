@@ -23,12 +23,13 @@ import {Notification} from '../../../models/notification';
 
 
 export class EditSpecialityDetailsComponent {
-    specialityDetail: any;
+    speciality = new Speciality({});
+    specialityDetail = new SpecialityDetail({});
     isSpecialityDetailSaveInProgress = false;
-    specialities: Observable<List<Speciality>>;
+    // specialities: Observable<List<Speciality>>;
+    specialities: Speciality[];
     specialityDetailForm: FormGroup;
     specialityDetailFormControls: any;
-
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -45,7 +46,7 @@ export class EditSpecialityDetailsComponent {
         private _specialityDetailsStore: SpecialityDetailsStore,
         private _specialityStore: SpecialityStore
     ) {
-        this.specialities = this._specialityStore.specialities;
+        // this.specialities = this._specialityStore.specialities;
         
         this._route.params.subscribe((routeParams: any) => {
             let specialityDetailId: number = parseInt(routeParams.id);
@@ -53,6 +54,7 @@ export class EditSpecialityDetailsComponent {
             result.subscribe(
                 (specialityDetail: any) => {
                     this.specialityDetail = specialityDetail;
+                    this.speciality = specialityDetail.specialty;
                 },
                 (error) => {
                     this._router.navigate(['/specialitydetails']);
@@ -62,7 +64,7 @@ export class EditSpecialityDetailsComponent {
         });
         this.specialityDetailForm = this.fb.group({
             isUnitApply: [''],
-            reevalDays: ['', Validators.required],
+            ReevalDays: ['', Validators.required],
             reevalvisitCount: ['', Validators.required],
             initialDays: ['', Validators.required],
             initialvisitCount: ['', Validators.required],
@@ -75,6 +77,10 @@ export class EditSpecialityDetailsComponent {
 
         this.specialityDetailFormControls = this.specialityDetailForm.controls;
     }
+    ngOnInit() {
+        this._specialityStore.getSpecialities()
+            .subscribe(specialities => { this.specialities = specialities; });
+    }
 
     saveSpecialityDetail() {
         let specialityDetailFormValues = this.specialityDetailForm.value;
@@ -85,7 +91,7 @@ export class EditSpecialityDetailsComponent {
             reevalvisitCount: parseInt(specialityDetailFormValues.reevalvisitCount),
             initialDays: parseInt(specialityDetailFormValues.initialDays),
             initialvisitCount: parseInt(specialityDetailFormValues.initialvisitCount),
-            isInitialEvaluation: parseInt(specialityDetailFormValues.isInitialEvaluation),
+            isnitialEvaluation: parseInt(specialityDetailFormValues.isInitialEvaluation),
             include1500: parseInt(specialityDetailFormValues.include1500),
             allowmultipleVisit: parseInt(specialityDetailFormValues.allowMultipleVisit),
             maxReval: parseInt(specialityDetailFormValues.maxReval),
@@ -99,7 +105,7 @@ export class EditSpecialityDetailsComponent {
         this.isSpecialityDetailSaveInProgress = true;
         let result: Observable<SpecialityDetail>;
 
-        result = this._specialityDetailsStore.addSpecialityDetail(specialityDetail);
+        result = this._specialityDetailsStore.updateSpecialityDetail(specialityDetail);
         result.subscribe(
             (response: SpecialityDetail) => {
                 let notification = new Notification({

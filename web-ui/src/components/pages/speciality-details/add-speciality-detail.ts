@@ -24,7 +24,8 @@ import {Notification} from '../../../models/notification';
 
 export class AddSpecialityDetailsComponent {
     isSpecialityDetailSaveInProgress = false;
-    specialities: Observable<List<Speciality>>;
+    // specialities: Observable<List<Speciality>>;
+    specialities: Speciality[];
     specialityDetailForm: FormGroup;
     specialityDetailFormControls: any;
 
@@ -44,7 +45,7 @@ export class AddSpecialityDetailsComponent {
         private _specialityDetailsStore: SpecialityDetailsStore,
         private _specialityStore: SpecialityStore
     ) {
-        this.specialities = this._specialityStore.specialities;
+        // this.specialities = this._specialityStore.specialities;
         this.specialityDetailForm = this.fb.group({
             isUnitApply: [''],
             ReevalDays: ['', Validators.required],
@@ -60,6 +61,10 @@ export class AddSpecialityDetailsComponent {
 
         this.specialityDetailFormControls = this.specialityDetailForm.controls;
     }
+    ngOnInit() {
+        this._specialityStore.getSpecialities()
+            .subscribe(specialities => { this.specialities = specialities; });
+    }
 
     saveSpecialityDetail() {
         let specialityDetailFormValues = this.specialityDetailForm.value;
@@ -69,7 +74,7 @@ export class AddSpecialityDetailsComponent {
             reevalvisitCount: parseInt(specialityDetailFormValues.reevalvisitCount),
             initialDays: parseInt(specialityDetailFormValues.initialDays),
             initialvisitCount: parseInt(specialityDetailFormValues.initialvisitCount),
-            isInitialEvaluation: parseInt(specialityDetailFormValues.isInitialEvaluation),
+            isnitialEvaluation: parseInt(specialityDetailFormValues.isInitialEvaluation),
             include1500: parseInt(specialityDetailFormValues.include1500),
             allowmultipleVisit: parseInt(specialityDetailFormValues.allowMultipleVisit),
             maxReval: parseInt(specialityDetailFormValues.maxReval),

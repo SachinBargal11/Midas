@@ -1,5 +1,5 @@
-<h1>
-<a class="btn btn-primary" routerLink="add">Add Speciality detail</a>
+<h1 class="with-border">Speciality Details
+<a class="pull-right btn btn-primary" routerLink="add">Add Speciality detail</a>
 </h1>
 <progress-bar [visible]="specialityDetailsLoading" 
               style="position:fixed;
@@ -14,7 +14,7 @@
 </div>
 <p-dataTable [value]="specialityDetails" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Speciality Details</header>
-    <p-column field="reevalDays" header="Reeval Days" [sortable]="true"></p-column>
+    <p-column field="ReevalDays" header="Reeval Days" [sortable]="true"></p-column>
     <p-column field="initialDays" header="Initial Days" [sortable]="true"></p-column>
     <p-column field="maxReval" header="Max Reval" [sortable]="true"></p-column>
     <p-column styleClass="col-button" header="Edit">

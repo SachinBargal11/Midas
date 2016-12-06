@@ -22,7 +22,7 @@ export class SpecialityService {
 
     getSpeciality(specialityId: Number): Observable<Speciality> {
         let promise: Promise<Speciality> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Speciality/Get/' + specialityId).map(res => res.json())
+            return this._http.get(this._url + '/Specialty/get/' + specialityId).map(res => res.json())
                 .subscribe((specialityData: any) => {
                     let parsedSpeciality: Speciality = null;
                     parsedSpeciality = SpecialityAdapter.parseResponse(specialityData);

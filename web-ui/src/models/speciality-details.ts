@@ -4,16 +4,16 @@ import { Company } from './company';
 
 const SpecialityDetailRecord = Record({
     id: 0,
-    reevalDays: 0,
-    reevalVisitCount: 0,
+    ReevalDays: 0,
+    reevalvisitCount: 0,
     initialDays: 0,
-    initialVisitCount: 0,
+    initialvisitCount: 0,
     maxReval: 0,
-    isInitialEvaluation: false,
+    isnitialEvaluation: false,
     include1500: false,
-    allowMultipleVisit: false,
-    Specialty: null,
-    Company: null,
+    allowmultipleVisit: false,
+    specialty: null,
+    company: null,
     isDeleted: false,
     createByUserID: 0,
     createDate: null,
@@ -23,16 +23,16 @@ const SpecialityDetailRecord = Record({
 
 export class SpecialityDetail extends SpecialityDetailRecord {
     id: number;
-    reevalDays: number;
-    reevalVisitCount: number;
+    ReevalDays: number;
+    reevalvisitCount: number;
     initialDays: number;
-    initialVisitCount: number;
+    initialvisitCount: number;
     maxReval: number;
-    isInitialEvaluation: number;
+    isnitialEvaluation: number;
     include1500: number;
-    allowMultipleVisit: number;
-    Specialty: Speciality;
-    Company: Company;
+    allowmultipleVisit: number;
+    specialty: Speciality;
+    company: Company;
     isDeleted: boolean;
     createByUserID: number;
     createDate: moment.MomentStatic;

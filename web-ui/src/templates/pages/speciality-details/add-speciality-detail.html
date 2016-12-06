@@ -11,7 +11,7 @@
                             <div class="form-group" [class.error]="specialityDetailFormControls.associatedSpeciality.touched && !specialityDetailFormControls.associatedSpeciality.valid">
                                 <select formControlName="associatedSpeciality" class="selectpicker form-control" [class.error]="specialityDetailFormControls.associatedSpeciality.touched && !specialityDetailFormControls.associatedSpeciality.valid">
                                         <option value="0">-Select Speciality-</option>
-                                        <option *ngFor="let speciality of specialities | async" value="{{speciality.id}}">{{speciality.specialityCode}} - {{speciality.name}}</option>
+                                        <option *ngFor="let speciality of specialities" value="{{speciality.id}}">{{speciality.specialityCode}} - {{speciality.name}}</option>
                                     </select>
                                 <div class='error-list' *ngIf="specialityDetailFormControls.associatedSpeciality.touched && !specialityDetailFormControls.associatedSpeciality.valid">
                                     <ul>
@@ -23,29 +23,37 @@
                         <div class="col-lg-4">
                             <label class="form-label"> Does Unit Apply? </label>
                             <div class="form-group">
-                                <p-radioButton formControlName="isUnitApply" name="isUnitApply" value="1" label="Yes" ></p-radioButton>
-                                <p-radioButton formControlName="isUnitApply" name="isUnitApply" value="0" label="No" ></p-radioButton>
+                                <!--<p-radioButton formControlName="isUnitApply" name="isUnitApply" value="1" label="Yes" ></p-radioButton>
+                                <p-radioButton formControlName="isUnitApply" name="isUnitApply" value="0" label="No" ></p-radioButton>-->
+                                <input type="radio" formControlName="isUnitApply" name="isUnitApply" value="1">Yes
+                                <input type="radio" formControlName="isUnitApply" name="isUnitApply" value="0" >No
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <label class="form-label"> Is Initial Evaluation? </label>
                             <div class="form-group">
-                                <p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="1" label="Yes"></p-radioButton>
-                                <p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="0" label="No" ></p-radioButton>
+                                <!--<p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="1" label="Yes"></p-radioButton>
+                                <p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="0" label="No" ></p-radioButton>-->
+                                <input type="radio" formControlName="isInitialEvaluation" name="isInitialEvaluation" value="1">Yes
+                                <input type="radio" formControlName="isInitialEvaluation" name="isInitialEvaluation" value="0" >No
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <label class="form-label"> Allow Multiple Visits? </label>
                             <div class="form-group">
-                                <p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="1" label="Yes"></p-radioButton>
-                                <p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="0" label="No"></p-radioButton>
+                                <!--<p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="1" label="Yes"></p-radioButton>
+                                <p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="0" label="No"></p-radioButton>-->
+                                <input type="radio" formControlName="allowMultipleVisit" name="allowMultipleVisit" value="1">Yes
+                                <input type="radio" formControlName="allowMultipleVisit" name="allowMultipleVisit" value="0" >No
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <label class="form-label"> Include 1500? </label>
                             <div class="form-group">
-                                <p-radioButton formControlName="include1500" name="include1500" value="1" label="Yes" ></p-radioButton>
-                                <p-radioButton formControlName="include1500" name="include1500" value="0" label="No" ></p-radioButton>
+                                <!--<p-radioButton formControlName="include1500" name="include1500" value="1" label="Yes" ></p-radioButton>
+                                <p-radioButton formControlName="include1500" name="include1500" value="0" label="No" ></p-radioButton>-->
+                                <input type="radio" formControlName="include1500" name="include1500" value="1">Yes
+                                <input type="radio" formControlName="include1500" name="include1500" value="0" >No
                             </div>
                         </div>
                     </div>
@@ -86,6 +94,8 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-lg-4">
                             <label class="form-label">InitialvisitCount</label>
                             <div class="form-group" [class.error]="specialityDetailFormControls.initialvisitCount.touched && !specialityDetailFormControls.initialvisitCount.valid">
