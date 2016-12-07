@@ -195,12 +195,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     #region Location
                     locationDB.id = locationBO.ID;
-                    locationDB.Name = locationBO.Name==null?location.Name:locationBO.Name;
-                    locationDB.LocationType = locationBO.LocationType == null ? System.Convert.ToByte(locationBO.LocationType) : System.Convert.ToByte(locationDB.LocationType);
-                    locationDB.IsDefault = locationBO.IsDefault == null ? locationBO.IsDefault : locationDB.IsDefault;
-                    locationDB.IsDeleted = locationBO.IsDeleted == null ? locationBO.IsDeleted : locationDB.IsDeleted;
-                    locationDB.UpdateDate = locationBO.UpdateDate;
-                    locationDB.UpdateByUserID = locationBO.UpdateByUserID;
+                    location.Name = locationBO.Name==null?location.Name:locationBO.Name;
+                    switch (locationBO.LocationType)
+                    {
+                        case BO.GBEnums.LocationType.Billing:
+                            location.LocationType = System.Convert.ToByte(locationBO.LocationType);
+                            break;
+                        case BO.GBEnums.LocationType.Testing:
+                            location.LocationType = System.Convert.ToByte(locationBO.LocationType);
+                            break;
+                        default:
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Location type.", ErrorLevel = ErrorLevel.Error };
+                    }
+                    location.IsDefault = locationBO.IsDefault;
+                    location.IsDeleted = locationBO.IsDeleted == null ? locationBO.IsDeleted : locationDB.IsDeleted;
+                    location.UpdateDate = locationBO.UpdateDate;
+                    location.UpdateByUserID = locationBO.UpdateByUserID;
                     #endregion
 
                     #region Address

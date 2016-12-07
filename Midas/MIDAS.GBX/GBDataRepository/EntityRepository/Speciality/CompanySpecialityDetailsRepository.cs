@@ -16,6 +16,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
     internal class CompanySpecialityDetailsRepository : BaseEntityRepo
     {
         private DbSet<CompanySpecialtyDetail> _dbSet;
+
         #region Constructor
         public CompanySpecialityDetailsRepository(MIDASGBXEntities context)
             : base(context)

@@ -52,6 +52,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("forceLogin")]
         public bool forceLogin { get; set; }
 
+        public List<UserCompany> UserCompanies { get; set; }
+
         public override List<BusinessValidation> Validate<T>(T entity)
         {
             List<BusinessValidation> validations = new List<BusinessValidation>();

@@ -56,7 +56,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 doctorBO.User = boUser;
             }
 
-            return (T)(object)boUser;
+            return (T)(object)doctorBO;
         }
         #endregion
 
@@ -73,10 +73,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Save<T>(T entity)
         {
             BO.Doctor doctorBO = (BO.Doctor)(object)entity;
-
+            
             Doctor doctorDB = new Doctor();
+            User userDB = new User();
 
-            #region Specialty
+            #region Doctor
             doctorDB.id = doctorBO.ID;
             doctorDB.LicenseNumber = doctorBO.LicenseNumber;
             doctorDB.WCBAuthorization = doctorBO.WCBAuthorization;
@@ -85,8 +86,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             doctorDB.Title = doctorBO.Title;
             doctorDB.TaxType = System.Convert.ToByte(doctorBO.TaxType);
             doctorDB.IsDeleted = doctorBO.IsDeleted.HasValue ? doctorBO.IsDeleted : false;
+            userDB.id = doctorBO.User.ID;
             #endregion
 
+            ////Find Record By ID
+            User user_ = _context.Users.Where(p => p.id == doctorBO.User.ID).FirstOrDefault<User>();
+            doctorDB.User = user_;
+            _context.Entry(user_).State = System.Data.Entity.EntityState.Modified;
 
             if (doctorDB.id > 0)
             {
@@ -144,7 +150,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID
         public override object Get(int id)
         {
-            BO.Doctor acc_ = Convert<BO.Doctor, Doctor>(_context.Doctors.Where(p => p.id == id && p.IsDeleted == false).FirstOrDefault<Doctor>());
+            BO.Doctor acc_ = Convert<BO.Doctor, Doctor>(_context.Doctors.Include("User").Include("DoctorSpecialities").Where(p => p.id == id && p.IsDeleted == false).FirstOrDefault<Doctor>());
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Specialty.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -156,7 +162,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Filter
         public override object Get<T>(T entity)
         {
-            var acc_ = _context.Doctors.Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<Doctor>();
+            BO.Doctor doctorBO = (BO.Doctor)(object)entity;
+
+            var acc_ = _context.Doctors.Include("User").Include("DoctorSpecialities").Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<Doctor>();
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };

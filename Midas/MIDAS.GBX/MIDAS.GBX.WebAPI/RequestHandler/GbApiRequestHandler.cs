@@ -245,7 +245,7 @@ namespace MIDAS.GBX.WebAPI
 
         public HttpResponseMessage GeneratePasswordLink(HttpRequestMessage request, T gbObject)
         {
-            OTP otpBO = (OTP)(object)gbObject;
+            PasswordToken otpBO = (PasswordToken)(object)gbObject;
             if (otpBO == null)
             {
                 return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "OTP object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
@@ -265,7 +265,7 @@ namespace MIDAS.GBX.WebAPI
 
         public HttpResponseMessage ValidatePassword(HttpRequestMessage request, T gbObject)
         {
-            OTP otpBO = (OTP)(object)gbObject;
+            PasswordToken otpBO = (PasswordToken)(object)gbObject;
             if (otpBO == null)
             {
                 return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "OTP object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });

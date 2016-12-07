@@ -64,6 +64,9 @@
     <Compile Include="GBEnums.cs" />
     <Compile Include="GbObject.cs" />
     <Compile Include="Invitation\Invitation.cs" />
+    <Compile Include="Location\DoctorLocationSchedule.cs" />
+    <Compile Include="Location\LocationSchedule.cs" />
+    <Compile Include="Location\Schedule.cs" />
     <Compile Include="MedicaProvider\MedicalProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role\Role.cs" />

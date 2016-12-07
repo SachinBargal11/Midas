@@ -61,7 +61,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
-            BO.Doctor doctor = (BO.Doctor)(object)entity;
+            BO.DoctorSpeciality doctor = (BO.DoctorSpeciality)(object)entity;
             var result = doctor.Validate(doctor);
             return result;
         }
@@ -70,31 +70,51 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Save
         public override object Save<T>(T entity)
         {
-            BO.DoctorSpeciality DoctorSpecialityBO = (BO.DoctorSpeciality)(object)entity;
+            BO.DoctorSpeciality doctorSpecialityBO = (BO.DoctorSpeciality)(object)entity;
+
+            Doctor doctorDB = new Doctor();
+            Specialty specilityDB = new Specialty();
 
             DoctorSpeciality doctorSpecilityDB = new DoctorSpeciality();
-            #region DoctorSpeciality
-            doctorSpecilityDB.id = DoctorSpecialityBO.ID;
-            doctorSpecilityDB.DoctorID = DoctorSpecialityBO.Doctor.ID;
-            doctorSpecilityDB.SpecialityID = DoctorSpecialityBO.Specialty.ID;
-            doctorSpecilityDB.IsDeleted = DoctorSpecialityBO.IsDeleted.HasValue ? DoctorSpecialityBO.IsDeleted.Value : false;
+            #region Doctor
+            doctorSpecilityDB.IsDeleted = doctorSpecialityBO.IsDeleted.HasValue ? doctorSpecialityBO.IsDeleted.Value : false;
             #endregion
+
+            //Find existsing record
+            DoctorSpeciality doctor_ = _context.DoctorSpecialities.Where(p => (p.DoctorID == doctorSpecialityBO.Doctor.ID) && (p.SpecialityID == doctorSpecialityBO.Specialty.ID)).FirstOrDefault<DoctorSpeciality>();
+            if (doctor_ != null)
+                return new BO.ErrorObject { ErrorMessage = "Record already exists for this doctor and specility.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+
+            //Find Record By ID
+            Doctor doctor = _context.Doctors.Include("User").Where(p => p.id == doctorSpecialityBO.Doctor.ID).FirstOrDefault<Doctor>();
+            if (doctor == null)
+                return new BO.ErrorObject { ErrorMessage = "Invalid doctor details.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+
+            doctorSpecilityDB.Doctor = doctor;
+            _context.Entry(doctor).State = System.Data.Entity.EntityState.Modified;
+
+            //Find Record By ID
+            Specialty speclity= _context.Specialties.Where(p => p.id == doctorSpecialityBO.Specialty.ID).FirstOrDefault<Specialty>();
+            if (speclity == null)
+                return new BO.ErrorObject { ErrorMessage = "Invalid specility details.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+
+            doctorSpecilityDB.Specialty = speclity;
+            _context.Entry(speclity).State = System.Data.Entity.EntityState.Modified;
 
 
             if (doctorSpecilityDB.id > 0)
             {
 
                 //Find Doctor By ID
-                DoctorSpeciality doctor = _context.DoctorSpecialities.Where(p => p.id == doctorSpecilityDB.id).FirstOrDefault<DoctorSpeciality>();
+                doctor_ = _context.DoctorSpecialities.Where(p => p.id == doctorSpecilityDB.id).FirstOrDefault<DoctorSpeciality>();
 
-                if (doctor != null)
+                if (doctor_ != null)
                 {
                     #region Doctor
-                    doctor.DoctorID = DoctorSpecialityBO.Doctor.ID;
-                    doctor.SpecialityID = DoctorSpecialityBO.Specialty.ID;
-                    doctorSpecilityDB.IsDeleted = DoctorSpecialityBO.IsDeleted.HasValue ? DoctorSpecialityBO.IsDeleted.Value : false;
-                    doctor.UpdateDate = DoctorSpecialityBO.UpdateDate;
-                    doctor.UpdateByUserID = DoctorSpecialityBO.UpdateByUserID;
+                    doctor_.id = doctorSpecialityBO.Doctor.ID;
+                    doctorSpecilityDB.IsDeleted = doctorSpecialityBO.IsDeleted.HasValue ? doctorSpecialityBO.IsDeleted.Value : false;
+                    doctor.UpdateDate = doctorSpecialityBO.UpdateDate;
+                    doctor.UpdateByUserID = doctorSpecialityBO.UpdateByUserID;
                     #endregion
 
                     _context.Entry(doctor).State = System.Data.Entity.EntityState.Modified;
@@ -103,8 +123,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-                doctorSpecilityDB.CreateDate = DoctorSpecialityBO.CreateDate;
-                doctorSpecilityDB.CreateByUserID = DoctorSpecialityBO.CreateByUserID;
+                doctorSpecilityDB.CreateDate = doctorSpecialityBO.CreateDate;
+                doctorSpecilityDB.CreateByUserID = doctorSpecialityBO.CreateByUserID;
 
                 _dbSet.Add(doctorSpecilityDB);
             }

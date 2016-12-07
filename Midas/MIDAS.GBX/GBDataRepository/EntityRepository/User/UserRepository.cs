@@ -163,10 +163,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 return new BO.ErrorObject { ErrorMessage = "Role object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            if (addUserBO.company == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "Company object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
 
             User userDB = new User();
             AddressInfo addressDB = new AddressInfo();
@@ -224,6 +220,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             userDB.ContactInfo = contactinfoDB;
 
             #region Company
+            if(companyBO!=null)
             if (companyBO.ID > 0)
             {
                 Company company = _context.Companies.Where(p => p.id == companyBO.ID).FirstOrDefault<Company>();
@@ -265,6 +262,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     break;
             }
             #endregion
+
             if (userDB.id > 0)
             {
                 //Find User By ID
@@ -493,15 +491,81 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Get<T>(T entity)
         {
             BO.User userBO = (BO.User)(object)entity;
-            var acc_ = _context.Users.Include("AddressInfo").Include("ContactInfo").Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<User>();
-            if(acc_==null)
-            return new BO.ErrorObject { ErrorMessage = "No records found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             List<BO.User> lstUsers = new List<BO.User>();
-            foreach (User item in acc_)
+
+            if (userBO.UserCompanies != null)
             {
-                lstUsers.Add(Convert<BO.User, User>(item));
+                if (userBO.UserCompanies[0].Company.ID > 0)
+                {
+                    int CompID = userBO.UserCompanies[0].Company.ID;
+                    byte UserTpe = System.Convert.ToByte(userBO.UserType);
+                    switch (userBO.UserType)
+                    {
+                        case BO.GBEnums.UserType.Attorney:
+                        case BO.GBEnums.UserType.Adjuster:
+                        case BO.GBEnums.UserType.Accounts:
+                        case BO.GBEnums.UserType.Patient:
+                        case BO.GBEnums.UserType.Admin:
+                        case BO.GBEnums.UserType.Owner:
+                        case BO.GBEnums.UserType.Doctor:
+
+                            var data = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.UserType == UserTpe && p.UserCompanies.Any(d => d.CompanyID == CompID)).ToList<User>();
+                            if (data == null || data.Count == 0)
+                                return new BO.ErrorObject { ErrorMessage = "No records found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                            foreach (User item in data)
+                            {
+                                lstUsers.Add(Convert<BO.User, User>(item));
+                            }
+                            return lstUsers;
+                        default:
+                            var data1 = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.UserCompanies.Any(d => d.CompanyID == CompID)).ToList<User>();
+                            if (data1 == null || data1.Count == 0)
+                                return new BO.ErrorObject { ErrorMessage = "No records found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                            foreach (User item in data1)
+                            {
+                                lstUsers.Add(Convert<BO.User, User>(item));
+                            }
+                            return lstUsers;
+                    }
+
+                }
+                return null;
             }
-            return lstUsers;
+            else
+            {
+                switch (userBO.UserType)
+                {
+                    case BO.GBEnums.UserType.Attorney:
+                    case BO.GBEnums.UserType.Adjuster:
+                    case BO.GBEnums.UserType.Accounts:
+                    case BO.GBEnums.UserType.Patient:
+                    case BO.GBEnums.UserType.Admin:
+                    case BO.GBEnums.UserType.Owner:
+                    case BO.GBEnums.UserType.Doctor:
+                        byte UserTpe = System.Convert.ToByte(userBO.UserType);
+                        var acc_ = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.UserType == UserTpe).ToList<User>();
+                        if (acc_ == null || acc_.Count == 0)
+                            return new BO.ErrorObject { ErrorMessage = "No records found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                        foreach (User item in acc_)
+                        {
+                            lstUsers.Add(Convert<BO.User, User>(item));
+                        }
+
+                        return lstUsers;
+                    default:
+                        {
+                            var acc1 = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<User>();
+                            if (acc1 == null || acc1.Count == 0)
+                                return new BO.ErrorObject { ErrorMessage = "No records found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                            foreach (User item in acc1)
+                            {
+                                lstUsers.Add(Convert<BO.User, User>(item));
+                            }
+
+                            return lstUsers;
+                        }
+                }
+            }
         }
 
         public void Dispose()

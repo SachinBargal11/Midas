@@ -38,6 +38,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Validate
+        public override List<BO.BusinessValidation> Validate<T>(T entity)
+        {
+            BO.PasswordToken passwordTokenBO = (BO.PasswordToken)(object)entity;
+            var result = passwordTokenBO.Validate(passwordTokenBO);
+            return result;
+        }
+        #endregion
+
         #region ValidatePassword
         public override Object ValidatePassword<T>(T entity)
         {

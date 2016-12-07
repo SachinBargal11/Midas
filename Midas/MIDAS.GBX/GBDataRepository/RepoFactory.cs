@@ -71,6 +71,14 @@ namespace MIDAS.GBX
             {
                 repo = new CompanySpecialityDetailsRepository(context);
             }
+            if (typeof(T) == typeof(BO.Doctor))
+            {
+                repo = new DoctorRepository(context);
+            } 
+            if (typeof(T) == typeof(BO.DoctorSpeciality))
+            {
+                repo = new DoctorSpecialityRepository(context);
+            }
             return repo;
         }
     }
