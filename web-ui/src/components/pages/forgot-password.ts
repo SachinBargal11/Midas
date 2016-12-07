@@ -49,9 +49,7 @@ export class ForgotPasswordComponent implements OnInit {
 
     checkUser() {
         let requestData = {
-            user: {
-                userName: this.forgotPasswordForm.value.email
-            }
+            userName: this.forgotPasswordForm.value.email
         };
         this.isForgotPasswordInProgress = true;
 

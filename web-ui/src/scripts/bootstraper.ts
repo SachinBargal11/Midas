@@ -1,5 +1,6 @@
 /** Angular Modules */
 
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { enableProdMode, NgModule } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { BrowserModule } from '@angular/platform-browser';
@@ -60,7 +61,7 @@ import { ValidateInActiveSession } from '../routes/guards/validate-inactive-sess
 import { AccountActivationComponent } from '../components/pages/account-activation';
 import { RegisterCompanyComponent } from '../components/pages/register-company';
 import { LoginComponent } from '../components/pages/login';
-import { SecurityCheckComponent  } from '../components/pages/security-check';
+import { SecurityCheckComponent } from '../components/pages/security-check';
 import { SignupComponent } from '../components/pages/signup';
 import { DashboardComponent } from '../components/pages/dashboard';
 import { CasesComponent } from '../components/pages/patient-manager/cases';
@@ -247,6 +248,7 @@ enableProdMode();
         MapToJSPipe
     ],
     providers: [
+        {provide: LocationStrategy, useClass: HashLocationStrategy},
         SessionStore,
         AuthenticationService,
         CompanyStore,

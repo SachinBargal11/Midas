@@ -40,9 +40,7 @@ export class ResetPasswordComponent implements OnInit {
         this._route.params.subscribe((routeParams: any) => {
             let token = routeParams.token;
             let autheticateRequestData = {
-                user: {
-                    appKey: token
-                }
+                appKey: token
             };
             let result = this._authenticationService.checkForValidResetPasswordToken(autheticateRequestData);
             result.subscribe(
