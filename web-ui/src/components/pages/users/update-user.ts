@@ -26,9 +26,9 @@ import {StateService} from '../../../services/state-service';
 
 export class UpdateUserComponent implements OnInit {
     states: any[];
-    user: any;
+    user = new User({});
     address = new Address({});
-    contactInfo = new Contact({});
+    contact = new Contact({});
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -56,8 +56,10 @@ export class UpdateUserComponent implements OnInit {
             let userId: number = parseInt(routeParams.id);
             let result = this._usersStore.fetchUserById(userId);
             result.subscribe(
-                (userDetail: Account) => {
+                (userDetail: any) => {
                     this.user = userDetail;
+                    this.contact = userDetail.contactInfo,
+                    this.address = userDetail.addressInfo
                 },
                 (error) => {
                     this._router.navigate(['/medicalProvider/users']);

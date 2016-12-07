@@ -1,20 +1,24 @@
 import {SpecialityDetail} from '../../models/speciality-details';
+import { Speciality } from '../../models/speciality';
+import { Company } from '../../models/company';
 
 export class SpecialityDetailAdapter {
     static parseResponse(specialityDetailData: any): SpecialityDetail {
-        let specialityDetail: SpecialityDetail = null;
+        let specialityDetail = null;
         if (specialityDetailData) {
             specialityDetail = new SpecialityDetail({
-                id: specialityDetailData.id,
-                isUnitApply: specialityDetailData.isUnitApply ? 1 : 0,
-                followUpDays: specialityDetailData.followUpDays,
-                followupTime: specialityDetailData.followupTime,
+                // isUnitApply: specialityDetailData.isUnitApply ? 1 : 0,
+                ReevalDays: specialityDetailData.reevalDays,
+                reevalvisitCount: specialityDetailData.reevalvisitCount,
                 initialDays: specialityDetailData.initialDays,
-                initialTime: specialityDetailData.initialTime,
-                isInitialEvaluation: specialityDetailData.isInitialEvaluation ? 1 : 0,
+                initialvisitCount: specialityDetailData.initialvisitCount,
+                maxReval: specialityDetailData.maxReval,
+                isInitialEvaluation: specialityDetailData.isnitialEvaluation ? 1 : 0,
                 include1500: specialityDetailData.include1500 ? 1 : 0,
-                associatedSpeciality: specialityDetailData.associatedSpeciality,
-                allowMultipleVisit: specialityDetailData.allowMultipleVisit ? 1 : 0
+                // associatedSpeciality: specialityDetailData.associatedSpeciality,
+                allowmultipleVisit: specialityDetailData.allowmultipleVisit ? 1 : 0,
+                specialty: specialityDetailData.specialty,
+                company: specialityDetailData.company
             });
         }
         return specialityDetail;

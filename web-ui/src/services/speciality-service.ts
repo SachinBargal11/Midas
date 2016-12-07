@@ -22,7 +22,7 @@ export class SpecialityService {
 
     getSpeciality(specialityId: Number): Observable<Speciality> {
         let promise: Promise<Speciality> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Speciality/Get/' + specialityId).map(res => res.json())
+            return this._http.get(this._url + '/Specialty/get/' + specialityId).map(res => res.json())
                 .subscribe((specialityData: any) => {
                     let parsedSpeciality: Speciality = null;
                     parsedSpeciality = SpecialityAdapter.parseResponse(specialityData);
@@ -36,7 +36,7 @@ export class SpecialityService {
 
     getSpecialities(): Observable<Speciality[]> {
               let promise: Promise<Speciality[]> = new Promise((resolve, reject) => {
-             return this._http.post(this._url + '/Speciality/GetAll', JSON.stringify({'speciality': [{}]}), {
+             return this._http.post(this._url + '/Specialty/getall', JSON.stringify({}), {
                 headers: this._headers
               })
                 .map(res => res.json())
@@ -59,9 +59,9 @@ export class SpecialityService {
             let specialityRequestData = speciality.toJS();
 
             // remove unneeded keys 
-            specialityRequestData.speciality = _.omit(specialityRequestData.speciality, 'createDate', 'updateByUserID', 'updateDate');
+            specialityRequestData = _.omit(specialityRequestData, 'createDate', 'updateByUserID', 'updateDate');
 
-            return this._http.post(this._url + '/Speciality/Add', JSON.stringify(specialityRequestData), {
+            return this._http.post(this._url + '/Specialty/add', JSON.stringify(specialityRequestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -83,9 +83,9 @@ export class SpecialityService {
             let specialityRequestData = speciality.toJS();
 
             // remove unneeded keys 
-            specialityRequestData.speciality = _.omit(specialityRequestData.speciality, 'createDate', 'updateByUserID', 'updateDate');
+            specialityRequestData = _.omit(specialityRequestData, 'createDate', 'updateByUserID', 'updateDate');
 
-            return this._http.post(this._url + '/Speciality/Add', JSON.stringify(specialityRequestData), {
+            return this._http.post(this._url + '/Specialty/add', JSON.stringify(specialityRequestData), {
                 headers: this._headers
             })
                 .map(res => res.json())

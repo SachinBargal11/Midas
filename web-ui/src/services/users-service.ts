@@ -68,8 +68,8 @@ export class UsersService {
 
             let requestData: any = userDetail.toJS();
 
-            requestData.user.contactInfo = requestData.user.contact;
-            requestData.user.addressInfo = requestData.user.address;
+            requestData.contactInfo = requestData.user.contact;
+            requestData.address = requestData.user.address;
             requestData.user = _.omit(requestData.user, 'contact', 'address');
             requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
             requestData = _.omit(requestData, 'accountStatus', 'subscriptionPlan');
@@ -93,8 +93,8 @@ export class UsersService {
 
             let requestData: any = userDetail.toJS();
 
-            requestData.user.contactInfo = requestData.user.contact;
-            requestData.user.addressInfo = requestData.user.address;
+            requestData.contactInfo = requestData.user.contact;
+            requestData.address = requestData.user.address;
             requestData.user = _.omit(requestData.user, 'contact', 'address');
             requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
             requestData = _.omit(requestData, 'accountStatus', 'subscriptionPlan');

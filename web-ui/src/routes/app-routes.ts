@@ -18,6 +18,7 @@ import { ResetPasswordComponent } from '../components/pages/reset-password';
 import { RegisterCompanyComponent } from '../components/pages/register-company';
 import { AccountActivationComponent } from '../components/pages/account-activation';
 import { SecurityCheckComponent } from '../components/pages/security-check';
+import { SpecialityDetailsRoutes } from './speciality-details-routes';
 
 export const appRoutes: Routes = [
     {
@@ -77,6 +78,7 @@ export const appRoutes: Routes = [
     ...ProvidersRoutes,
     ...UsersRoutes,
     ...PatientsShellRoutes,
-    ...SpecialityRoutes
+    ...SpecialityRoutes,
+    ...SpecialityDetailsRoutes
 ];
 export const APP_ROUTER_PROVIDER = RouterModule.forRoot(appRoutes);

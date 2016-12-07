@@ -1,5 +1,6 @@
 /** Angular Modules */
 
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { enableProdMode, NgModule } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { BrowserModule } from '@angular/platform-browser';
@@ -47,6 +48,9 @@ import { LocationsService } from '../services/locations-service';
 import { RoomsStore } from '../stores/rooms-store';
 import { RoomsService } from '../services/rooms-service';
 
+import { SpecialityDetailsStore } from '../stores/speciality-details-store';
+import { SpecialityDetailsService } from '../services/speciality-details-service';
+
 import { NotificationsStore } from '../stores/notifications-store';
 import { APP_ROUTER_PROVIDER } from '../routes/app-routes';
 import { ValidateActiveSession } from '../routes/guards/validate-active-session';
@@ -57,7 +61,7 @@ import { ValidateInActiveSession } from '../routes/guards/validate-inactive-sess
 import { AccountActivationComponent } from '../components/pages/account-activation';
 import { RegisterCompanyComponent } from '../components/pages/register-company';
 import { LoginComponent } from '../components/pages/login';
-import { SecurityCheckComponent  } from '../components/pages/security-check';
+import { SecurityCheckComponent } from '../components/pages/security-check';
 import { SignupComponent } from '../components/pages/signup';
 import { DashboardComponent } from '../components/pages/dashboard';
 import { CasesComponent } from '../components/pages/patient-manager/cases';
@@ -128,6 +132,10 @@ import { AccessComponent } from '../components/pages/location-management/access'
 import { RoomsComponent } from '../components/pages/rooms/rooms';
 import { AddRoomComponent } from '../components/pages/rooms/add-room';
 import { EditRoomComponent } from '../components/pages/rooms/edit-room';
+
+import { SpecialityDetailComponent } from '../components/pages/speciality-details/speciality-details';
+import { AddSpecialityDetailsComponent } from '../components/pages/speciality-details/add-speciality-detail';
+import { EditSpecialityDetailsComponent } from '../components/pages/speciality-details/edit-speciality-detail';
 
 import { LimitPipe } from '../pipes/limit-array-pipe';
 import { TimeAgoPipe } from '../pipes/time-ago-pipe';
@@ -231,12 +239,16 @@ enableProdMode();
         RoomsComponent,
         AddRoomComponent,
         EditRoomComponent,
+        SpecialityDetailComponent,
+        AddSpecialityDetailsComponent,
+        EditSpecialityDetailsComponent,
         TimeAgoPipe,
         ReversePipe,
         LimitPipe,
         MapToJSPipe
     ],
     providers: [
+        {provide: LocationStrategy, useClass: HashLocationStrategy},
         SessionStore,
         AuthenticationService,
         CompanyStore,
@@ -263,6 +275,8 @@ enableProdMode();
         LocationsStore,
         RoomsService,
         RoomsStore,
+        SpecialityDetailsStore,
+        SpecialityDetailsService,
         FormBuilder
     ],
     bootstrap: [
