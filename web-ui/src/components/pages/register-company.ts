@@ -47,7 +47,7 @@ export class RegisterCompanyComponent implements OnInit {
             companyName: ['', [Validators.required]],
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
-            taxId: ['', Validators.required],
+            taxId: ['', [Validators.required, Validators.maxLength(10)]],
             phoneNo: ['', Validators.required],
             companyType: ['', Validators.required],
             email: ['', [Validators.required, AppValidators.emailValidator]],
@@ -75,7 +75,7 @@ export class RegisterCompanyComponent implements OnInit {
                 userName: registercompanyformValues.email,
                 firstName: registercompanyformValues.firstName,
                 lastName: registercompanyformValues.lastName,
-                userType: UserType.ADMIN,
+                userType: UserType.Admin,
                 contact: new Contact({
                     cellPhone: registercompanyformValues.phoneNo,
                     emailAddress: registercompanyformValues.email

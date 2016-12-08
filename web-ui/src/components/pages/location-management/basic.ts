@@ -14,6 +14,7 @@ import { Notification } from '../../../models/notification';
 import moment from 'moment';
 import { StatesStore } from '../../../stores/states-store';
 import { StateService } from '../../../services/state-service';
+import { LocationType } from '../../../models/enums/location-type';
 
 @Component({
     selector: 'basic',
@@ -22,6 +23,7 @@ import { StateService } from '../../../services/state-service';
 })
 
 export class BasicComponent implements OnInit {
+    locationType: any;
     states: any[];
     options = {
         timeOut: 3000,
@@ -56,9 +58,10 @@ export class BasicComponent implements OnInit {
             result.subscribe(
                 (locationDetails: LocationDetails) => {
                     this.locationDetails = locationDetails;
+                    this.locationType = LocationType[locationDetails.location.locationType];
                 },
                 (error) => {
-                    this._router.navigate(['/medicalProvider/locations']);
+                    this._router.navigate(['/medical-provider/locations']);
                 },
                 () => {
                 });
@@ -122,7 +125,7 @@ export class BasicComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/medicalProvider/locations']);
+                this._router.navigate(['/medical-provider/locations']);
             },
             (error) => {
                 let notification = new Notification({

@@ -44,6 +44,6 @@ export class UsersListComponent implements OnInit {
     //         });
     // }
     onRowSelect(user) {
-        this._router.navigate(['/medicalProvider/users/' + user.id + '/basic']);
+        this._router.navigate(['/medical-provider/users/' + user.id + '/basic']);
     }
 }

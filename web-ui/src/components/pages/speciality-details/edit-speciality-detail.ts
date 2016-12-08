@@ -57,13 +57,12 @@ export class EditSpecialityDetailsComponent {
                     this.speciality = specialityDetail.specialty;
                 },
                 (error) => {
-                    this._router.navigate(['/specialitydetails']);
+                    this._router.navigate(['/speciality-details']);
                 },
                 () => {
                 });
         });
         this.specialityDetailForm = this.fb.group({
-            isUnitApply: [''],
             ReevalDays: ['', Validators.required],
             reevalvisitCount: ['', Validators.required],
             initialDays: ['', Validators.required],
@@ -86,7 +85,6 @@ export class EditSpecialityDetailsComponent {
         let specialityDetailFormValues = this.specialityDetailForm.value;
         let specialityDetail = new SpecialityDetail({
             id: this.specialityDetail.id,
-            // isUnitApply: parseInt(specialityDetailFormValues.isUnitApply),
             ReevalDays: parseInt(specialityDetailFormValues.ReevalDays),
             reevalvisitCount: parseInt(specialityDetailFormValues.reevalvisitCount),
             initialDays: parseInt(specialityDetailFormValues.initialDays),
@@ -95,10 +93,10 @@ export class EditSpecialityDetailsComponent {
             include1500: parseInt(specialityDetailFormValues.include1500),
             allowmultipleVisit: parseInt(specialityDetailFormValues.allowMultipleVisit),
             maxReval: parseInt(specialityDetailFormValues.maxReval),
-            Specialty: new Speciality({            
+            specialty: new Speciality({            
             	id: parseInt(specialityDetailFormValues.associatedSpeciality)
             }),
-            Company: new Company ({            
+            company: new Company ({            
             	id:1
             })
         });
@@ -114,7 +112,7 @@ export class EditSpecialityDetailsComponent {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/specialitydetails']);
+                this._router.navigate(['/speciality-details']);
 
             },
             (error) => {

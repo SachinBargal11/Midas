@@ -57,8 +57,8 @@ export class SpecialityDetailsService {
             let requestData: any = location.toJS();
             // requestData.Company = requestData.contact;
             // requestData.Specialty = requestData.address;
-            requestData.Company = _.omit(requestData.Company, 'companyType', 'name', 'taxId');
-            requestData.Specialty = _.omit(requestData.Specialty, 'createByUserID', 'createDate', 'isDeleted', 'isUnitApply', 'name', 'specialityCode', 'updateByUserID', 'updateDate');
+            requestData.company = _.omit(requestData.company, 'companyType', 'name', 'taxId');
+            requestData.specialty = _.omit(requestData.specialty, 'createByUserID', 'createDate', 'isDeleted', 'isUnitApply', 'name', 'specialityCode', 'updateByUserID', 'updateDate');
             // requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
             // console.log(requestData);
             return this._http.post(this._url + '/CompanySpecialtyDetails/add', JSON.stringify(requestData), {
@@ -78,8 +78,8 @@ export class SpecialityDetailsService {
             let requestData: any = location.toJS();
             // requestData.contactInfo = requestData.contact;
             // requestData.addressInfo = requestData.address;
-             requestData.Company = _.omit(requestData.Company, 'companyType', 'name', 'taxId');
-            requestData.Specialty = _.omit(requestData.Specialty, 'createByUserID', 'createDate', 'isDeleted', 'isUnitApply', 'name', 'specialityCode', 'updateByUserID', 'updateDate');
+             requestData.company = _.omit(requestData.company, 'companyType', 'name', 'taxId');
+            requestData.specialty = _.omit(requestData.specialty, 'createByUserID', 'createDate', 'isDeleted', 'isUnitApply', 'name', 'specialityCode', 'updateByUserID', 'updateDate');
            // console.log(requestData);
             return this._http.post(this._url + '/CompanySpecialtyDetails/add', JSON.stringify(requestData), {
                 headers: this._headers

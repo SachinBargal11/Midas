@@ -47,7 +47,6 @@ export class AddSpecialityDetailsComponent {
     ) {
         // this.specialities = this._specialityStore.specialities;
         this.specialityDetailForm = this.fb.group({
-            isUnitApply: [''],
             ReevalDays: ['', Validators.required],
             reevalvisitCount: ['', Validators.required],
             initialDays: ['', Validators.required],
@@ -69,7 +68,6 @@ export class AddSpecialityDetailsComponent {
     saveSpecialityDetail() {
         let specialityDetailFormValues = this.specialityDetailForm.value;
         let specialityDetail = new SpecialityDetail({
-            // isUnitApply: parseInt(specialityDetailFormValues.isUnitApply),
             ReevalDays: parseInt(specialityDetailFormValues.ReevalDays),
             reevalvisitCount: parseInt(specialityDetailFormValues.reevalvisitCount),
             initialDays: parseInt(specialityDetailFormValues.initialDays),
@@ -78,10 +76,10 @@ export class AddSpecialityDetailsComponent {
             include1500: parseInt(specialityDetailFormValues.include1500),
             allowmultipleVisit: parseInt(specialityDetailFormValues.allowMultipleVisit),
             maxReval: parseInt(specialityDetailFormValues.maxReval),
-            Specialty: new Speciality({            
+            specialty: new Speciality({            
             	id: parseInt(specialityDetailFormValues.associatedSpeciality)
             }),
-            Company: new Company ({            
+            company: new Company ({            
             	id:1
             })
         });
@@ -97,7 +95,7 @@ export class AddSpecialityDetailsComponent {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/specialitydetails']);
+                this._router.navigate(['/speciality-details']);
 
             },
             (error) => {

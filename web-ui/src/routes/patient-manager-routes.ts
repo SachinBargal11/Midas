@@ -8,7 +8,7 @@ import { ConsentFormsShellRoutes } from './consent-forms-routes';
 
 export const PatientManagerRoutes: Routes = [
     {
-        path: 'patientManager',
+        path: 'patient-manager',
         component: PatientsManagerShellComponent,
         canActivate: [ValidateActiveSession],
         children: [

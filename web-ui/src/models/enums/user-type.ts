@@ -1,9 +1,9 @@
 export enum UserType {
-    ADMIN = 1,
-    OWNER = 2,
-    DOCTOR = 3,
-    PATIENT = 4,
-    ATTORNEY = 5,
-    ADJUSTER = 6,
-    ACCOUNTS = 7
+    Admin = 1,
+    Owner = 2,
+    Doctor = 3,
+    Patient = 4,
+    Attorney = 5,
+    Adjuster = 6,
+    Accounts = 7
 }

@@ -96,7 +96,7 @@ export class AddLocationComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/medicalProvider/locations']);
+                this._router.navigate(['/medical-provider/locations']);
             },
             (error) => {
                 let notification = new Notification({

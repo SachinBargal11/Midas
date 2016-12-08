@@ -17,6 +17,7 @@ import {Notification} from '../../../models/notification';
 import moment from 'moment';
 import {StatesStore} from '../../../stores/states-store';
 import {StateService} from '../../../services/state-service';
+import { UserType } from '../../../models/enums/user-type';
 
 @Component({
     selector: 'update-user',
@@ -24,7 +25,8 @@ import {StateService} from '../../../services/state-service';
     providers: [UsersService, StateService, StatesStore, FormBuilder]
 })
 
-export class UpdateUserComponent implements OnInit {
+export class UpdateUserComponent implements OnInit { 
+     userType: any;
     states: any[];
     user = new User({});
     address = new Address({});
@@ -59,10 +61,11 @@ export class UpdateUserComponent implements OnInit {
                 (userDetail: any) => {
                     this.user = userDetail;
                     this.contact = userDetail.contactInfo,
-                    this.address = userDetail.addressInfo
+                    this.address = userDetail.addressInfo,
+                    this.userType = UserType[userDetail.userType];
                 },
                 (error) => {
-                    this._router.navigate(['/medicalProvider/users']);
+                    this._router.navigate(['/medical-provider/users']);
                 },
                 () => {
                 });
@@ -148,7 +151,7 @@ export class UpdateUserComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/medicalProvider/users']);
+                this._router.navigate(['/medical-provider/users']);
             },
             (error) => {
                 let notification = new Notification({

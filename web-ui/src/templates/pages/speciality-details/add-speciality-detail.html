@@ -20,41 +20,26 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
-                            <label class="form-label"> Does Unit Apply? </label>
-                            <div class="form-group">
-                                <!--<p-radioButton formControlName="isUnitApply" name="isUnitApply" value="1" label="Yes" ></p-radioButton>
-                                <p-radioButton formControlName="isUnitApply" name="isUnitApply" value="0" label="No" ></p-radioButton>-->
-                                <input type="radio" formControlName="isUnitApply" name="isUnitApply" value="1">Yes
-                                <input type="radio" formControlName="isUnitApply" name="isUnitApply" value="0" >No
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <label class="form-label"> Is Initial Evaluation? </label>
                             <div class="form-group">
-                                <!--<p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="1" label="Yes"></p-radioButton>
-                                <p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="0" label="No" ></p-radioButton>-->
-                                <input type="radio" formControlName="isInitialEvaluation" name="isInitialEvaluation" value="1">Yes
-                                <input type="radio" formControlName="isInitialEvaluation" name="isInitialEvaluation" value="0" >No
-                            </div>
+                                <p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="1" label="Yes"></p-radioButton>
+                                <p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="0" label="No" ></p-radioButton>
+                                </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <label class="form-label"> Allow Multiple Visits? </label>
                             <div class="form-group">
-                                <!--<p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="1" label="Yes"></p-radioButton>
-                                <p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="0" label="No"></p-radioButton>-->
-                                <input type="radio" formControlName="allowMultipleVisit" name="allowMultipleVisit" value="1">Yes
-                                <input type="radio" formControlName="allowMultipleVisit" name="allowMultipleVisit" value="0" >No
-                            </div>
+                                <p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="1" label="Yes"></p-radioButton>
+                                <p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="0" label="No"></p-radioButton>
+                                 </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-2">
                             <label class="form-label"> Include 1500? </label>
                             <div class="form-group">
-                                <!--<p-radioButton formControlName="include1500" name="include1500" value="1" label="Yes" ></p-radioButton>
-                                <p-radioButton formControlName="include1500" name="include1500" value="0" label="No" ></p-radioButton>-->
-                                <input type="radio" formControlName="include1500" name="include1500" value="1">Yes
-                                <input type="radio" formControlName="include1500" name="include1500" value="0" >No
-                            </div>
+                                <p-radioButton formControlName="include1500" name="include1500" value="1" label="Yes" ></p-radioButton>
+                                <p-radioButton formControlName="include1500" name="include1500" value="0" label="No" ></p-radioButton>
+                              </div>
                         </div>
                     </div>
                     <div class="row">
@@ -124,7 +109,7 @@
                     <button [disabled]="!specialityDetailForm.valid || isSpecialityDetailSaveInProgress" type="submit" class="btn btn-success sign-up">Save
                             <loader [visible]="isSpecialityDetailSaveInProgress"></loader>
                         </button>
-                <a [routerLink]="['/specialitydetails']" class="btn btn-secondary">Cancel</a>
+                <a [routerLink]="['/speciality-details']" class="btn btn-secondary">Cancel</a>
                 </div>
                 </section>
             </form>

@@ -7,7 +7,7 @@ export class SpecialityDetailAdapter {
         let specialityDetail = null;
         if (specialityDetailData) {
             specialityDetail = new SpecialityDetail({
-                // isUnitApply: specialityDetailData.isUnitApply ? 1 : 0,
+                id: specialityDetailData.id,
                 ReevalDays: specialityDetailData.reevalDays,
                 reevalvisitCount: specialityDetailData.reevalvisitCount,
                 initialDays: specialityDetailData.initialDays,
@@ -15,7 +15,6 @@ export class SpecialityDetailAdapter {
                 maxReval: specialityDetailData.maxReval,
                 isInitialEvaluation: specialityDetailData.isnitialEvaluation ? 1 : 0,
                 include1500: specialityDetailData.include1500 ? 1 : 0,
-                // associatedSpeciality: specialityDetailData.associatedSpeciality,
                 allowmultipleVisit: specialityDetailData.allowmultipleVisit ? 1 : 0,
                 specialty: specialityDetailData.specialty,
                 company: specialityDetailData.company

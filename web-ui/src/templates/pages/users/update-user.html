@@ -41,7 +41,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                                     <div class="form-group" [class.error]="userformControls.userInfo.controls.userType.touched && !userformControls.userInfo.controls.userType.valid">
-                                        <select formControlName="userType" [ngModel]="user.userType" class="select2-arrow form-control" [class.error]="userformControls.userInfo.controls.userType.touched && !userformControls.userInfo.controls.userType.valid">
+                                        <select formControlName="userType" [ngModel]="userType" class="select2-arrow form-control" [class.error]="userformControls.userInfo.controls.userType.touched && !userformControls.userInfo.controls.userType.valid">
                                              <option value="">-Select UserType-</option>
                                              <option disabled>────────────────────</option>
                                              <option value="1">Admin</option>
@@ -248,7 +248,7 @@
                 <button [disabled]="!userform.valid || isSaveUserProgress" type="submit" class="btn btn-success sign-up">Update
                     <loader [visible]="isSaveUserProgress"></loader>
                 </button>
-                <a [routerLink]="['/medicalProvider/users']" class="btn btn-secondary">Cancel</a>
+                <a [routerLink]="['/medical-provider/users']" class="btn btn-secondary">Cancel</a>
             </form>
         </div>
     </div>
