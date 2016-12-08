@@ -11,7 +11,7 @@
                                 <div class="form-group" [class.error]="specialityDetailFormControls.associatedSpeciality.touched && !specialityDetailFormControls.associatedSpeciality.valid">
                                     <select formControlName="associatedSpeciality" class="selectpicker form-control" [(ngModel)]="specialityDetailJS.specialty.id" [class.error]="specialityDetailFormControls.associatedSpeciality.touched && !specialityDetailFormControls.associatedSpeciality.valid">
                                         <option value="0">-Select Speciality-</option>
-                                        <option disabled>────────────────────</option>
+                                        <option disabled>--------------------</option>
                                         <option *ngFor="let speciality of specialities" value="{{speciality.id}}">{{speciality.specialityCode}} - {{speciality.name}}</option>
                                     </select>
                                     <div class='error-list' *ngIf="specialityDetailFormControls.associatedSpeciality.touched && !specialityDetailFormControls.associatedSpeciality.valid">

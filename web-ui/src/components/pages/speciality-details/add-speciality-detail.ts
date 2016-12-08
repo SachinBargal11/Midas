@@ -1,3 +1,4 @@
+import * as console from 'console';
 import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
@@ -48,6 +49,7 @@ export class AddSpecialityDetailsComponent {
         private _specialityStore: SpecialityStore
     ) {
         this.specialityDetailJS = this.specialityDetail.toJS();
+        debugger;
         // this.specialities = this._specialityStore.specialities;
         this.specialityDetailForm = this.fb.group({
             ReevalDays: ['', Validators.required],
