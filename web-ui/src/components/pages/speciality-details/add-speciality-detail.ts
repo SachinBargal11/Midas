@@ -28,6 +28,8 @@ export class AddSpecialityDetailsComponent {
     specialities: Speciality[];
     specialityDetailForm: FormGroup;
     specialityDetailFormControls: any;
+    specialityDetail = new SpecialityDetail({});
+    specialityDetailJS;
 
     options = {
         timeOut: 3000,
@@ -45,6 +47,7 @@ export class AddSpecialityDetailsComponent {
         private _specialityDetailsStore: SpecialityDetailsStore,
         private _specialityStore: SpecialityStore
     ) {
+        this.specialityDetailJS = this.specialityDetail.toJS();
         // this.specialities = this._specialityStore.specialities;
         this.specialityDetailForm = this.fb.group({
             ReevalDays: ['', Validators.required],

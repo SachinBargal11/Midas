@@ -24,7 +24,7 @@ export class SpecialityDetailsService {
         let promise: Promise<SpecialityDetail> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/CompanySpecialtyDetails/get/' + id).map(res => res.json())
                 .subscribe((specialityDetailData: any) => {
-                    let parsedData: SpecialityDetail = null
+                    let parsedData: SpecialityDetail = null;
                     parsedData = SpecialityDetailAdapter.parseResponse(specialityDetailData);
                     resolve(parsedData);
                 }, (error) => {
