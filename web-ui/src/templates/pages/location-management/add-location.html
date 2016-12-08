@@ -117,7 +117,9 @@
                                         </label>
                                 <div class="form-group" [class.error]="addlocationformControls.locationType.touched && !addlocationformControls.locationType.valid">
                                     <!--<input formControlName="locationType" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.locationType.valid">-->
-                                    <select formControlName="locationType" type="text" class="form-control" placeholder="" [class.error]="addlocationformControls.locationType.touched && !addlocationformControls.locationType.valid">
+                                    <select formControlName="locationType" [(ngModel)]="locationJS.id" type="text" class="form-control" placeholder="" [class.error]="addlocationformControls.locationType.touched && !addlocationformControls.locationType.valid">
+                                        <option value="0">-Select Location-</option>
+                                        <option disabled>────────────────────</option>
                                         <option value="1">Medical Office</option>
                                         <option value="2">Medical Testing Facility</option>
                                     </select>

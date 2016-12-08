@@ -36,6 +36,8 @@
                                         </label>
                                 <div class="form-group" [class.error]="demographicsformControls.sex.touched && !demographicsformControls.sex.valid">
                                     <select formControlName="sex" class="select2-arrow form-control" [class.error]="demographicsformControls.sex.touched && !demographicsformControls.sex.valid">
+                                             <option value="">-Select Gender-</option>
+                                             <option disabled>────────────────────</option>
                                              <option >Male</option>
                                              <option >Female</option>
                                          </select>
@@ -51,6 +53,8 @@
                                         </label>
                                 <div class="form-group" [class.error]="demographicsformControls.maritalStatus.touched && !demographicsformControls.maritalStatus.valid">
                                     <select formControlName="maritalStatus" class="select2-arrow form-control" [class.error]="demographicsformControls.maritalStatus.touched && !demographicsformControls.maritalStatus.valid">
+                                             <option value="">-Select Marital staus-</option>
+                                             <option disabled>────────────────────</option>
                                              <option >Married</option>
                                              <option >Un-Married</option>
                                          </select>
@@ -68,6 +72,8 @@
                                         </label>
                                 <div class="form-group" [class.error]="demographicsformControls.race.touched && !demographicsformControls.race.valid">
                                     <select formControlName="race" class="select2-arrow form-control" [class.error]="demographicsformControls.race.touched && !demographicsformControls.race.valid">
+                                             <option value="">-Select Race-</option>
+                                             <option disabled>────────────────────</option>
                                              <option >Black</option>
                                              <option >White</option>
                                          </select>
@@ -83,6 +89,8 @@
                                         </label>
                                 <div class="form-group" [class.error]="demographicsformControls.ethinicity.touched && !demographicsformControls.ethinicity.valid">
                                     <select formControlName="ethinicity" class="select2-arrow form-control" [class.error]="demographicsformControls.ethinicity.touched && !demographicsformControls.ethinicity.valid">
+                                             <option value="">-Select Ethinicity-</option>
+                                             <option disabled>────────────────────</option>
                                              <option >Not Hispanic or Latino</option>
                                          </select>
                                     <div class='error-list' *ngIf="demographicsformControls.ethinicity.touched && !demographicsformControls.ethinicity.valid">
@@ -172,7 +180,7 @@
                                 <label class="form-label"> Emergency Contact Phone
                                         </label>
                                 <div class="form-group" [class.error]="demographicsformControls.emergencyContactPhone.touched && !demographicsformControls.emergencyContactPhone.valid">
-                                    <input type="text" formControlName="emergencyContactPhone" [class.error]="demographicsformControls.emergencyContactPhone.touched && !demographicsformControls.emergencyContactPhone.valid" />
+                                    <input type="text" formControlName="emergencyContactPhone" class="form-control" [class.error]="demographicsformControls.emergencyContactPhone.touched && !demographicsformControls.emergencyContactPhone.valid" />
                                     <div class='error-list' *ngIf="demographicsformControls.emergencyContactPhone.touched && !demographicsformControls.emergencyContactPhone.valid">
                                         <ul>
                                             <li *ngIf="demographicsformControls.emergencyContactPhone.hasError('required')">Emergency contact phone is required.</li>

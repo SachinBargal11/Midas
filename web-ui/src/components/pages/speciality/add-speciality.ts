@@ -15,6 +15,8 @@ import moment from 'moment';
 })
 
 export class AddSpecialityComponent implements OnInit {
+    speciality = new Speciality({});
+    specialityJS;
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -34,6 +36,7 @@ export class AddSpecialityComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _elRef: ElementRef
     ) {
+        this.specialityJS = this.speciality.toJS();
         this.specialityform = this.fb.group({
                 name: ['', Validators.required],
                 specialityCode: ['', Validators.required],

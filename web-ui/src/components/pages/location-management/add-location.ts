@@ -23,6 +23,8 @@ import {StateService} from '../../../services/state-service';
 
 export class AddLocationComponent implements OnInit {
     states: any[];
+    location = new Location({});
+    locationJS;
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -44,6 +46,7 @@ export class AddLocationComponent implements OnInit {
         private _locationsStore: LocationsStore,
         private _elRef: ElementRef
     ) {
+        this.locationJS = this.location.toJS();
         this.addlocationform = this.fb.group({
                 name: ['', Validators.required],
                 address: [''],

@@ -86,7 +86,7 @@ export class AddPatientComponent implements OnInit {
                     'createdAt': Moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/patients']);
+                this._router.navigate(['/patient-manager/patients']);
             },
             (error) => {
                 let notification = new Notification({

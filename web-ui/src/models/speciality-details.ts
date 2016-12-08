@@ -12,7 +12,7 @@ const SpecialityDetailRecord = Record({
     isnitialEvaluation: false,
     include1500: false,
     allowmultipleVisit: false,
-    specialty: null,
+    specialty: new Speciality({}),
     company: null,
     isDeleted: false,
     createByUserID: 0,
