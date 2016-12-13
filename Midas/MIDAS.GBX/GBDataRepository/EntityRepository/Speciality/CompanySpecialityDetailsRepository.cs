@@ -216,7 +216,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             List<BO.CompanySpecialtyDetails> lstSpecialties = new List<BO.CompanySpecialtyDetails>();
             BO.CompanySpecialtyDetails companyspecialtyDetailBO = (BO.CompanySpecialtyDetails)(object)entity;
-            if (companyspecialtyDetailBO == null)
+            if (companyspecialtyDetailBO != null)
             {
                 if (companyspecialtyDetailBO.Specialty != null)
                 {

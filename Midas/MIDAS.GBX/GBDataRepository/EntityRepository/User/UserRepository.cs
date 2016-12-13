@@ -435,11 +435,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             try
             {
                 isPasswordCorrect = PasswordHash.ValidatePassword(userBO.Password, ((User)data_).Password);
+
+                if(!isPasswordCorrect)
+                    return new BO.ErrorObject { ErrorMessage = "Invalid credentials.Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             catch
             {
                 return new BO.ErrorObject { ErrorMessage = "Invalid credentials.Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
+           
             BO.User acc_ = isPasswordCorrect ? Convert<BO.User, User>(data_) : null;
             if (!userBO.forceLogin)
             {
@@ -472,6 +476,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     otpDB.OTP1 = 0000;
 
                     BO.OTP boOTP = Convert<BO.OTP, OTP>(otpDB);
+                    using (UserCompanyRepository sr = new UserCompanyRepository(_context))
+                    {
+                        boOTP.company = ((BO.UserCompany)sr.Get(acc_.ID)).Company;
+                    }
                     boOTP.User = acc_;
                     return boOTP;
                 }

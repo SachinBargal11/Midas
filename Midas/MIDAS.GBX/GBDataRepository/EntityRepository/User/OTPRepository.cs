@@ -94,6 +94,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             else
             {
                 BO.OTP acc_ = Convert<BO.OTP, OTP>(data_);
+                using (UserCompanyRepository sr = new UserCompanyRepository(_context))
+                {
+                    acc_.company = ((BO.UserCompany)sr.Get(userBO.ID)).Company;
+                    acc_.User = ((BO.UserCompany)sr.Get(userBO.ID)).User;
+                }
                 return acc_;
             }
 

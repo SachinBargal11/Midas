@@ -18,7 +18,7 @@
 GO
 
 ALTER TABLE [dbo].[DoctorLocationSchedule]  WITH CHECK ADD  CONSTRAINT [FK_DoctorLocationSchedule_Doctor] FOREIGN KEY([LocationID])
-REFERENCES [dbo].[Doctor] ([id])
+REFERENCES [dbo].[Location] ([id])
 GO
 
 ALTER TABLE [dbo].[DoctorLocationSchedule] CHECK CONSTRAINT [FK_DoctorLocationSchedule_Doctor]
@@ -37,5 +37,3 @@ GO
 
 ALTER TABLE [dbo].[DoctorLocationSchedule] CHECK CONSTRAINT [FK_DoctorLocationSchedule_Schedule]
 GO
-
-

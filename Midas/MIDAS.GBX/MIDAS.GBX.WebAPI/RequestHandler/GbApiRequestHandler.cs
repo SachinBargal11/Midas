@@ -154,7 +154,7 @@ namespace MIDAS.GBX.WebAPI
             }
             catch (Exception ex)
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
         #endregion

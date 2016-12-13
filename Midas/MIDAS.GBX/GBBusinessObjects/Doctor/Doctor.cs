@@ -27,7 +27,7 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("npi")]
         public string NPI { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
+        
         [JsonProperty("taxType")]
         public GBEnums.TaxType TaxType { get; set; }
 

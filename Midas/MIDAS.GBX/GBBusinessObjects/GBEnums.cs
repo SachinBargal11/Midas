@@ -85,8 +85,8 @@ namespace MIDAS.GBX.BusinessObjects
         #region Location Type
         public enum LocationType
         {
-            Billing = 1,
-            Testing = 2
+            MEDICAL_OFFICE = 1, 
+            MEDICAL_TESTING_FACILITY = 2
         }
         #endregion
 

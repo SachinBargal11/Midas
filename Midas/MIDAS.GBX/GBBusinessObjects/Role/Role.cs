@@ -15,7 +15,7 @@ namespace MIDAS.GBX.BusinessObjects
         public string Name { get; set; }
         [Required]
         [JsonProperty("roleType")]
-        [JsonConverter(typeof(StringEnumConverter))]
+        
 
         public GBEnums.RoleType RoleType { get; set; }
         public Company Company { get; set; }

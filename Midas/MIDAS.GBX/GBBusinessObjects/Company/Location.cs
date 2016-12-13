@@ -18,7 +18,7 @@ namespace MIDAS.GBX.BusinessObjects
 
         [Required]
         [JsonProperty("locationType")]
-        [JsonConverter(typeof(StringEnumConverter))]
+        
         public GBEnums.LocationType LocationType { get; set; }
 
         [Required]

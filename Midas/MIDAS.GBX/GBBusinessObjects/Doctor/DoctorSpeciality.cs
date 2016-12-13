@@ -10,5 +10,6 @@ namespace MIDAS.GBX.BusinessObjects
     {
         public Doctor Doctor { get; set; }
         public Specialty Specialty { get; set; }
+        public int [] Specialties { get; set; }
     }
 }

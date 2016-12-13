@@ -198,10 +198,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     location.Name = locationBO.Name==null?location.Name:locationBO.Name;
                     switch (locationBO.LocationType)
                     {
-                        case BO.GBEnums.LocationType.Billing:
-                            location.LocationType = System.Convert.ToByte(locationBO.LocationType);
-                            break;
-                        case BO.GBEnums.LocationType.Testing:
+                        case BO.GBEnums.LocationType.MEDICAL_TESTING_FACILITY:
+                        case BO.GBEnums.LocationType.MEDICAL_OFFICE:
                             location.LocationType = System.Convert.ToByte(locationBO.LocationType);
                             break;
                         default:
