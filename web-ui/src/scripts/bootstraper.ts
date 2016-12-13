@@ -84,6 +84,7 @@ import { AppHeaderComponent } from '../components/elements/app-header';
 import { MainNavComponent } from '../components/elements/main-nav';
 import { LoaderComponent } from '../components/elements/loader';
 import { ProgressBarComponent } from '../components/elements/progress-bar';
+import { BreadcrumbComponent } from '../components/elements/breadcrumb';
 
 import { NotificationComponent } from '../components/elements/notification';
 import { ForgotPasswordComponent } from '../components/pages/forgot-password';
@@ -196,6 +197,7 @@ enableProdMode();
         MainNavComponent,
         LoaderComponent,
         ProgressBarComponent,
+        BreadcrumbComponent,
         ForgotPasswordComponent,
         ResetPasswordComponent,
         ChangePasswordComponent,
@@ -248,7 +250,7 @@ enableProdMode();
         MapToJSPipe
     ],
     providers: [
-        {provide: LocationStrategy, useClass: HashLocationStrategy},
+        { provide: LocationStrategy, useClass: HashLocationStrategy },
         SessionStore,
         AuthenticationService,
         CompanyStore,

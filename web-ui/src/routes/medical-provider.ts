@@ -17,6 +17,9 @@ export const MedicalProviderRoutes: Routes = [
                    ...CalendarShellRoutes,
                    ...ReportsShellRoutes,
                    ...DoctorsRoutes
-        ]
+        ],
+        data: {
+            breadcrumb: 'Medical Provider'
+        }
     },
 ];

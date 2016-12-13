@@ -14,6 +14,7 @@ export class NotificationsStore {
     recentlyAdded = false;
     isOpen = false;
     recentlyAddedCount = 0;
+    highlightAddition = false;
 
     constructor(
         private _sessionStore: SessionStore
@@ -21,6 +22,13 @@ export class NotificationsStore {
         this._sessionStore.userLogoutEvent.subscribe(() => {
             this.resetStore();
         });
+    }
+
+    highlightNewNotification() {
+        this.highlightAddition = true;
+        setTimeout(() => {
+            this.highlightAddition = false;
+        }, 1000);
     }
 
     resetStore() {
@@ -36,6 +44,7 @@ export class NotificationsStore {
 
     addNotification(notification: Notification) {
         this.readAllNotifications();
+        this.highlightNewNotification();
         this.recentlyAddedCount = 0;
         this.recentlyAdded = this.isOpen ? false : true;
         this.recentlyAddedCount++;

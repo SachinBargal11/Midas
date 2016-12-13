@@ -8,16 +8,25 @@ export const SpecialityDetailsRoutes: Routes = [
     {
         path: 'speciality-details',
         component: SpecialityDetailComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Speciality Details'
+        }
     },
     {
         path: 'speciality-details/add',
         component: AddSpecialityDetailsComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Add Speciality Detail'
+        }
     },
     {
         path: 'speciality-details/edit/:id',
         component: EditSpecialityDetailsComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Edit Speciality Detail'
+        }
     }
 ];

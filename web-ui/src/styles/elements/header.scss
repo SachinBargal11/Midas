@@ -7,7 +7,7 @@
 {
     .site-header-collapsed
     {
-        margin-right: -250px;
+        margin-right: -250px;        
     }
 
     .site-header-content .site-header-content-in
@@ -21,6 +21,10 @@
         {
             line-height: 30px;
             color: #adb7be;
+            &.active
+            {
+                color:#00a8ff;
+            }
         }
     }
 }
