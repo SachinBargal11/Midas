@@ -9,7 +9,7 @@ import { DoctorsRoutes } from './doctors-routes';
 
 export const MedicalProviderRoutes: Routes = [
     {
-        path: 'medicalProvider',
+        path: 'medical-provider',
         component: MedicalProviderShellComponent,
         canActivate: [ValidateActiveSession],
         children: [...LocationManagementRoutes,

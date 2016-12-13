@@ -37,10 +37,9 @@ export class UsersStore {
         return this._selectedUsers.asObservable();
     }
 
-    getUsers(): Observable<Account[]> {
-        let accountId: number = this._sessionStore.session.account_id;
+    getUsers(requestData): Observable<Account[]> {
         let promise = new Promise((resolve, reject) => {
-            this._usersService.getUsers().subscribe((users: Account[]) => {
+            this._usersService.getUsers(requestData).subscribe((users: Account[]) => {
                 // this._usersService.getUsers(accountId).subscribe((users: Account[]) => {
                 this._users.next(List(users));
                 resolve(users);

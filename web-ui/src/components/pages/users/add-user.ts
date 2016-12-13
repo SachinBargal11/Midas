@@ -128,7 +128,7 @@ export class AddUserComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/medicalProvider/users']);
+                this._router.navigate(['/medical-provider/users']);
             },
             (error) => {
                 let notification = new Notification({

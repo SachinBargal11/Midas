@@ -35,6 +35,6 @@ export class PatientsListComponent implements OnInit {
             });
     }
     onRowSelect(patient) {
-        this._router.navigate(['/patientManager/patients/' + patient.firstname + '/basic']);
+        this._router.navigate(['/patient-manager/patients/' + patient.firstname + '/basic']);
     }
 }

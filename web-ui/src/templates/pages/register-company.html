@@ -29,10 +29,13 @@
                                             <span class="color-red">*</span>
                                         </label>
                                     <div class="form-group" [class.error]="userformControls.taxId.touched && !userformControls.taxId.valid">
-                                        <input formControlName="taxId" type="text" class="form-control" [class.error]="!userformControls.taxId.valid" />
+                                        <input formControlName="taxId" type="text" class="form-control" [class.error]="!userformControls.taxId.valid"
+                                        minlength="10" />
                                         <div class='error-list' *ngIf="userformControls.taxId.touched && !userformControls.taxId.valid">
                                             <ul>
                                                 <li *ngIf="userformControls.taxId.hasError('required')">Tax Id is required.</li>
+											<li *ngIf="userformControls.taxId.hasError('minlength')">Tax Id should be minimum {{userformControls.taxId.errors.minlength.requiredLength}} characters.</li>
+											<li *ngIf="userformControls.taxId.hasError('maxlength')">Tax Id should be maximum {{userformControls.taxId.errors.maxlength.requiredLength}} characters.</li>
                                             </ul>
                                         </div>
                                     </div>

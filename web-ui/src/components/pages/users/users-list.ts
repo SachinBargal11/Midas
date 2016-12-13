@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {SessionStore} from '../../../stores/session-store';
-import {UsersStore} from '../../../stores/users-store';
-import {AccountDetail} from '../../../models/account-details';
+import { Company } from '../../../models/company';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { SessionStore } from '../../../stores/session-store';
+import { UsersStore } from '../../../stores/users-store';
+import { AccountDetail } from '../../../models/account-details';
 import { Account } from '../../../models/account';
 
 @Component({
@@ -28,7 +29,18 @@ export class UsersListComponent implements OnInit {
 
     loadUsers() {
         this.usersLoading = true;
-        this._usersStore.getUsers()
+        let requestData = {
+            userCompanies: [
+                {
+                    company:
+                    {
+                        id: 1
+                    }
+                }
+            ]
+            // userType: 3
+        };
+        this._usersStore.getUsers(requestData)
             .subscribe(users => {
                 this.users = users;
             },
@@ -44,6 +56,6 @@ export class UsersListComponent implements OnInit {
     //         });
     // }
     onRowSelect(user) {
-        this._router.navigate(['/medicalProvider/users/' + user.id + '/basic']);
+        this._router.navigate(['/medical-provider/users/' + user.id + '/basic']);
     }
 }

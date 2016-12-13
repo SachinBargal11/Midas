@@ -1,14 +1,14 @@
-import {Injectable} from '@angular/core';
-import {Http, Headers} from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http, Headers } from '@angular/http';
 import _ from 'underscore';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
-import {AccountDetail} from '../models/account-details';
+import { AccountDetail } from '../models/account-details';
 import { Account } from '../models/account';
-import {UserAdapter} from './adapters/user-adapter';
-import {UserType} from '../models/enums/user-type';
+import { UserAdapter } from './adapters/user-adapter';
+import { UserType } from '../models/enums/user-type';
 
 @Injectable()
 export class UsersService {
@@ -34,9 +34,9 @@ export class UsersService {
         });
         return <Observable<Account>>Observable.fromPromise(promise);
     }
-    getUsers(): Observable<Account[]> {
+    getUsers(requestData): Observable<Account[]> {
         let promise: Promise<Account[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/user/GetAll', JSON.stringify({}), {
+            return this._http.post(this._url + '/user/GetAll', requestData, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -86,7 +86,7 @@ export class UsersService {
         return <Observable<any>>Observable.fromPromise(promise);
 
     }
-    
+
     updateUser(userDetail: Account): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
 

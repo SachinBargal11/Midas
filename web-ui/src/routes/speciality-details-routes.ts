@@ -6,17 +6,17 @@ import {SpecialityDetailComponent} from '../components/pages/speciality-details/
 
 export const SpecialityDetailsRoutes: Routes = [
     {
-        path: 'specialitydetails',
+        path: 'speciality-details',
         component: SpecialityDetailComponent,
         canActivate: [ValidateActiveSession]
     },
     {
-        path: 'specialitydetails/add',
+        path: 'speciality-details/add',
         component: AddSpecialityDetailsComponent,
         canActivate: [ValidateActiveSession]
     },
     {
-        path: 'specialitydetails/edit/:id',
+        path: 'speciality-details/edit/:id',
         component: EditSpecialityDetailsComponent,
         canActivate: [ValidateActiveSession]
     }

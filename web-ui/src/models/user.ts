@@ -8,7 +8,7 @@ import { Gender } from './enums/Gender';
 const UserRecord = Record({
     id: 0,
     name: '',
-    userType: UserType.OWNER,
+    userType: UserType.Owner,
     accountId: '',
     userName: '',
     firstName: '',

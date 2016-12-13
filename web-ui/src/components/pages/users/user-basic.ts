@@ -55,7 +55,7 @@ export class UserBasicComponent implements OnInit {
                     this.user = userDetail;
                 },
                 (error) => {
-                    this._router.navigate(['/medicalProvider/users']);
+                    this._router.navigate(['/medical-provider/users']);
                 },
                 () => {
                 });
