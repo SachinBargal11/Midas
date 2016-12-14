@@ -63,19 +63,6 @@ namespace MIDAS.GBX.BusinessObjects
             }
         }
 
-        private List<RoomTest> _locationrooms;
-        public List<RoomTest> locationRooms
-        {
-            get
-            {
-                return this._locationrooms;
-            }
-            set
-            {
-                _locationrooms = value;
-            }
-        }
-
         public override List<BusinessValidation> Validate<T>(T entity)
         {
             List<BusinessValidation> validations = new List<BusinessValidation>();

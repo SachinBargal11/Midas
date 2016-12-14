@@ -75,6 +75,19 @@ namespace MIDAS.GBX.BusinessObjects
             }
         }
 
+        private GBEnums.ScheduleStatus _schedulestatus;
+        public GBEnums.ScheduleStatus scheduleStatus
+        {
+            get
+            {
+                return this._schedulestatus;
+            }
+            set
+            {
+                _schedulestatus = value;
+            }
+        }
+
         public Schedule Schedule { get; set; }
 
         public override List<BusinessValidation> Validate<T>(T entity)

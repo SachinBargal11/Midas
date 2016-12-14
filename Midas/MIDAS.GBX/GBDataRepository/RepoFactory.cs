@@ -87,6 +87,10 @@ namespace MIDAS.GBX
             {
                 repo = new RoomRepository(context);
             }
+            if (typeof(T) == typeof(BO.LocationRoom))
+            {
+                repo = new LocationRoomRepository(context);
+            }
             return repo;
         }
     }

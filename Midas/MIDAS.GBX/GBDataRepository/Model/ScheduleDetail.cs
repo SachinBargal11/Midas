@@ -21,7 +21,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public System.TimeSpan SlotStart { get; set; }
         public System.TimeSpan SlotEnd { get; set; }
         public Nullable<System.DateTime> SlotDate { get; set; }
-        public int Status { get; set; }
+        public byte Status { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }

@@ -41,6 +41,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             scheduledetailBO.slotStart = scheduledetail.SlotStart;
             scheduledetailBO.slotEnd = scheduledetail.SlotEnd;
             scheduledetailBO.slotDate = scheduledetail.SlotDate;
+            scheduledetailBO.scheduleStatus = (BO.GBEnums.ScheduleStatus)scheduledetail.Status;
 
             if (scheduledetail.IsDeleted.HasValue)
                 scheduledetailBO.IsDeleted = scheduledetail.IsDeleted.Value;
@@ -79,6 +80,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             scheduledetailDB.SlotStart = scheduledetailBO.slotStart;
             scheduledetailDB.SlotEnd = scheduledetailBO.slotEnd;
             scheduledetailDB.SlotDate = scheduledetailBO.slotDate;
+            scheduledetailDB.Status = System.Convert.ToByte(scheduledetailBO.scheduleStatus);
             scheduledetailDB.IsDeleted = scheduledetailBO.IsDeleted.HasValue ? scheduledetailBO.IsDeleted : false;
             #endregion
 

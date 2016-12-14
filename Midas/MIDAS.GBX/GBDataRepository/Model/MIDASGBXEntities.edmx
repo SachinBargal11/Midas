@@ -366,7 +366,7 @@
           <Property Name="SlotStart" Type="time" Precision="7" Nullable="false" />
           <Property Name="SlotEnd" Type="time" Precision="7" Nullable="false" />
           <Property Name="SlotDate" Type="datetime2" Precision="7" />
-          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="Status" Type="tinyint" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -1491,7 +1491,7 @@
           <Property Name="SlotStart" Type="Time" Nullable="false" Precision="7" />
           <Property Name="SlotEnd" Type="Time" Nullable="false" Precision="7" />
           <Property Name="SlotDate" Type="DateTime" Precision="7" />
-          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Byte" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />

@@ -78,7 +78,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             roomtestDB.Name = roomtestBO.name;
             roomtestDB.IsDeleted = roomtestBO.IsDeleted.HasValue ? roomtestBO.IsDeleted : false;
             #endregion
-
             if (roomtestDB.id > 0)
             {
                 //For Update Record

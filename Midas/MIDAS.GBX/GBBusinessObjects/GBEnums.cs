@@ -98,5 +98,14 @@ namespace MIDAS.GBX.BusinessObjects
             Unknown = 2
         }
         #endregion
+
+        #region Schedule Status
+        public enum ScheduleStatus
+        {
+            Open = 1,
+            Closed = 1,
+            SpecificHours = 2
+        }
+        #endregion
     }
 }

@@ -11,6 +11,19 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class LocationRoom : GbObject
     {
+        private string _name;
+        public string name
+        {
+            get
+            {
+                return this._name;
+            }
+            set
+            {
+                _name = value;
+            }
+        }
+
         private Location _location;
         public Location location
         {

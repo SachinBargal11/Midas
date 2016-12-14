@@ -13,7 +13,7 @@ using BO = MIDAS.GBX.BusinessObjects;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
 {
-    internal class LocationRepository : BaseEntityRepo
+    internal class LocationRepository : BaseEntityRepo,IDisposable
     {
         private DbSet<Location> _dbSet;
 
@@ -86,6 +86,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 locationBO.ContactInfo = boContactInfo;
             }
 
+            BO.Schedule boSchedule = new BO.Schedule();
+            using (ScheduleRepository cmp = new ScheduleRepository(_context))
+            {
+                boSchedule = cmp.Convert<BO.Schedule, Schedule>(location.Schedule);
+                locationBO.Schedule = boSchedule;
+
+            }
             return (T)(object)locationBO;
         }
         #endregion
@@ -301,7 +308,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID
         public override object Get(int id)
         {
-            BO.Location acc_ = Convert<BO.Location, Location>(_context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Where(p => p.id == id && p.IsDeleted==false).FirstOrDefault<Location>());
+            BO.Location acc_ = Convert<BO.Location, Location>(_context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Include("Schedule").Where(p => p.id == id && p.IsDeleted==false).FirstOrDefault<Location>());
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this location.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -319,7 +326,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 if (locationBO.Company != null)
                 {
-                    var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && (p.CompanyID==locationBO.Company.ID)).ToList<Location>();
+                    var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Include("Schedule").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && (p.CompanyID==locationBO.Company.ID)).ToList<Location>();
                     if (acc_ == null || acc_.Count < 1)
                     {
                         return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -331,7 +338,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 else if (locationBO.Name != null)
                 {
-                    var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.Name == locationBO.Name).ToList<Location>();
+                    var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Include("Schedule").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.Name == locationBO.Name).ToList<Location>();
                     if (acc_ == null || acc_.Count<1)
                     {
                         return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -343,7 +350,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 else
                 {
-                    var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<Location>();
+                    var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Include("Schedule").Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<Location>();
                     if (acc_ == null || acc_.Count < 1)
                     {
                         return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -358,6 +365,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return lstLocations;
         }
         #endregion
-
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
     }
 }

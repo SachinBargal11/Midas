@@ -185,14 +185,29 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<BO.Room> lstRoom = new List<BO.Room>();
             BO.Room scheduleBO = (BO.Room)(object)entity;
 
-            var acc_ = _context.Rooms.Include("RoomTest").Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<Room>();
-            if (acc_ == null || acc_.Count < 1)
+            if (scheduleBO.roomTest.ID > 0)
             {
-                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                var acc_ = _context.Rooms.Include("RoomTest").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.RoomTestID == scheduleBO.roomTest.ID).ToList<Room>();
+                if (acc_ == null || acc_.Count < 1)
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+                foreach (Room item in acc_)
+                {
+                    lstRoom.Add(Convert<BO.Room, Room>(item));
+                }
             }
-            foreach (Room item in acc_)
+            else
             {
-                lstRoom.Add(Convert<BO.Room, Room>(item));
+                var acc_ = _context.Rooms.Include("RoomTest").Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<Room>();
+                if (acc_ == null || acc_.Count < 1)
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+                foreach (Room item in acc_)
+                {
+                    lstRoom.Add(Convert<BO.Room, Room>(item));
+                }
             }
 
             return lstRoom;
