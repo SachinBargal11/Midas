@@ -8,16 +8,25 @@ export const ProvidersRoutes: Routes = [
     {
         path: 'providers',
         component: ProvidersListComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Providers'
+        }
     },
     {
         path: 'providers/add',
         component: AddProviderComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Add Provider'
+        }
     },
     {
         path: 'providers/update/:id',
         component: UpdateProviderComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Edit Provider'
+        }
     }
 ];

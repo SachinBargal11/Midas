@@ -13,16 +13,25 @@ export const DoctorsRoutes: Routes = [
     {
         path: 'doctors',
         component: DoctorsListComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Doctors'
+        }
     },
     {
         path: 'doctors/add',
         component: AddDoctorComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Add Doctor'
+        }
     },
     {
         path: 'doctors/edit/:id',
         component: UpdateDoctorComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Edit Doctor'
+        }
     }
 ];

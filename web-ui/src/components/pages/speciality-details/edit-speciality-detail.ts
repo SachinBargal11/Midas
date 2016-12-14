@@ -85,7 +85,6 @@ export class EditSpecialityDetailsComponent {
     }
 
     saveSpecialityDetail() {
-        debugger;
         let specialityDetailFormValues = this.specialityDetailForm.value;
         let specialityDetail = new SpecialityDetail({
             id: this.specialityDetail.id,

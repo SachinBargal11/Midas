@@ -35,24 +35,24 @@ constructor(
     private _notificationsService: NotificationsService
 ) {
     this.usersLoading = true;
-    this._usersStore.getUsers().subscribe(users => {
-        this.users = users;
-        let groupedUsers: Array<any> = _.chain(this.users).groupBy(function (user) {
-            return user.toJS().user.createDate.format('Do MMM YY');
-        }).map(function (value: Array<any>, key: string) {
-            return {
-                x: moment(key, 'Do MMM YY'),
-                y: value.length
-            };
-        })
-        .value();
-        this.data.datasets[0].data = groupedUsers;
-    },
-        null,
-        () => {
-            this.usersLoading = false;
-        }
-    );
+    // this._usersStore.getUsers().subscribe(users => {
+    //     this.users = users;
+    //     let groupedUsers: Array<any> = _.chain(this.users).groupBy(function (user) {
+    //         return user.toJS().user.createDate.format('Do MMM YY');
+    //     }).map(function (value: Array<any>, key: string) {
+    //         return {
+    //             x: moment(key, 'Do MMM YY'),
+    //             y: value.length
+    //         };
+    //     })
+    //     .value();
+    //     this.data.datasets[0].data = groupedUsers;
+    // },
+    //     null,
+    //     () => {
+    //         this.usersLoading = false;
+    //     }
+    // );
     this.doctorsLoading = true;
     this._doctorsStore.getDoctors().subscribe(doctors => {
         this.doctors = doctors;

@@ -24,7 +24,10 @@ export const appRoutes: Routes = [
     {
         path: 'activation/:token',
         component: AccountActivationComponent,
-        canActivate: [ValidateInActiveSession]
+        canActivate: [ValidateInActiveSession],
+        data: {
+          breadcrumb: 'Account Activation'
+        }
     },
     {
         path: '',
@@ -34,12 +37,18 @@ export const appRoutes: Routes = [
     {
         path: 'login',
         component: LoginComponent,
-        canActivate: [ValidateInActiveSession]
+        canActivate: [ValidateInActiveSession],
+        data: {
+          breadcrumb: 'Login'
+        }
     },
     {
         path: 'login/security-check',
         component: SecurityCheckComponent,
-        canActivate: [ValidateInActiveSession]
+        canActivate: [ValidateInActiveSession],
+        data: {
+          breadcrumb: 'Security Check'
+        }
     },
     // {
     //     path: 'signup',
@@ -49,27 +58,42 @@ export const appRoutes: Routes = [
     {
         path: 'register-company',
         component: RegisterCompanyComponent,
-        canActivate: [ValidateInActiveSession]
+        canActivate: [ValidateInActiveSession],
+        data: {
+          breadcrumb: 'Register'
+        }
     },
     {
         path: 'forgot-password',
         component: ForgotPasswordComponent,
-        canActivate: [ValidateInActiveSession]
+        canActivate: [ValidateInActiveSession],
+        data: {
+          breadcrumb: 'Forgot Password'
+        }
     },
     {
         path: 'reset-password/:token',
         component: ResetPasswordComponent,
-        canActivate: [ValidateInActiveSession]
+        canActivate: [ValidateInActiveSession],
+        data: {
+          breadcrumb: 'Reset Password'
+        }
     },
     {
         path: 'change-password',
         component: ChangePasswordComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+          breadcrumb: 'Change Password'
+        }
     },
     {
         path: 'dashboard',
         component: DashboardComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+          breadcrumb: 'Dashboard'
+        }
     },
     ...PatientManagerRoutes,
     ...DoctorsRoutes,

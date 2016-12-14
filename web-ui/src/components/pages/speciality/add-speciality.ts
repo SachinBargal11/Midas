@@ -40,7 +40,7 @@ export class AddSpecialityComponent implements OnInit {
         this.specialityform = this.fb.group({
                 name: ['', Validators.required],
                 specialityCode: ['', Validators.required],
-                isunitApply: [''] 
+                isunitApply: ['']
         });
 
         this.specialityformControls = this.specialityform.controls;

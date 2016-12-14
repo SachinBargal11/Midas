@@ -8,16 +8,25 @@ export const RoomsRoutes: Routes = [
     {
         path: 'rooms',
         component: RoomsComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Rooms'
+        }
     },
     {
         path: 'rooms/add',
         component: AddRoomComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Add Room'
+        }
     },
     {
         path: 'rooms/edit/:id',
         component: EditRoomComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Edit Room'
+        }
     }
 ];

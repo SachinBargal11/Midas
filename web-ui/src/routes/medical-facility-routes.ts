@@ -9,12 +9,18 @@ export const MedicalFacilitiesRoutes: Routes = [
     {
         path: 'medical-facilities',
         component: MedicalFacilitiesListComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Medical Facilities'
+        }
     },
     {
         path: 'medical-facilities/add',
         component: AddMedicalFacilityComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Add Medical Facility'
+        }
     },
     {
         path: 'medical-facilities/:id/specialities',
@@ -24,6 +30,9 @@ export const MedicalFacilitiesRoutes: Routes = [
     {
         path: 'medical-facilities/update/:id',
         component: UpdateMedicalFacilityComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Update Medical Facility'
+        }
     }
 ];

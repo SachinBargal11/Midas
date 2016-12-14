@@ -23,12 +23,15 @@
   background: #F4F8FB;
   overflow: hidden;
   border-left: solid 1px #c5d6de;
-  padding-top: 50px;
+  padding-top: 80px;
 
 
   .control-item-content {
          padding: 10px;
          background: #F3F7FA;
+         .dropdown-menu-notif-header {
+             margin-bottom: 8px;
+         }
       }
 
       .control-item-content.open {
@@ -48,6 +51,16 @@
          &.unread {
              padding-left: 24px;
              position: relative;
+         }
+
+         &.success {
+             border-color: #46c35f;
+             background: #edf9ee;
+         }
+
+         &.warning {
+             border-color: #f29824;
+             background: #fdf4e6;
          }
 
          .dot {  

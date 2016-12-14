@@ -8,16 +8,25 @@ export const SpecialityRoutes: Routes = [
     {
         path: 'specialities',
         component: SpecialityListComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Specialities'
+        }
     },
     {
         path: 'specialities/add',
         component: AddSpecialityComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Add Speciality'
+        }
     },
     {
         path: 'specialities/update/:id',
         component: UpdateSpecialityComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Edit Speciality'
+        }
     }
 ];

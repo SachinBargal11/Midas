@@ -21,17 +21,26 @@ export const UsersRoutes: Routes = [
     },
     {
         path: 'users',
-        component: UsersListComponent
+        component: UsersListComponent,
+        data: {
+            breadcrumb: 'Users'
+        }
     },
     {
         path: 'users/add',
         component: AddUserComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Add User'
+        }
     },
     {
         path: 'users/edit/:id',
         component: UpdateUserComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Edit User'
+        }
     },
     {
         path: 'users/:userId',
@@ -44,22 +53,34 @@ export const UsersRoutes: Routes = [
             {
                 path: 'basic',
                 component: UserBasicComponent,
-                canActivate: [ValidateActiveSession]
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Basic'
+                }
             },
             {
                 path: 'access',
                 component: UserAccessComponent,
-                canActivate: [ValidateActiveSession]
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Access'
+                }
             },
             {
                 path: 'locations',
                 component: LocationsComponent,
-                canActivate: [ValidateActiveSession]
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Locations'
+                }
             },
             {
                 path: 'billing',
                 component: BillingComponent,
-                canActivate: [ValidateActiveSession]
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Billing'
+                }
             }
         ]
     }
