@@ -184,6 +184,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             #endregion
 
+            #region Schedule
+            if (locationBO.Schedule != null)
+                if (locationBO.Schedule.ID > 0)
+                {
+                    Schedule schedule = _context.Schedules.Where(p => p.id == locationBO.Schedule.ID).FirstOrDefault<Schedule>();
+                    if (schedule != null)
+                    {
+                        locationDB.Schedule = schedule;
+                    }
+                    else
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Schedule.", ErrorLevel = ErrorLevel.Error };
+                }
+            #endregion
+
             if (locationDB.id > 0)
             {
                 //For Update Record

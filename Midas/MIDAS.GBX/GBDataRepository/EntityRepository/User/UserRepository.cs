@@ -389,7 +389,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 #region Send Email
                 string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
                 string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
-                Utility.SendEmail(Message, "User registered", userBO.UserName);
+                BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "User registered", Body = Message };
+                objEmail.SendMail();
                 #endregion
             }
             catch (Exception ex)
@@ -470,8 +471,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     _context.SaveChanges();
 
                     string Message = "Dear " + acc_.UserName + ",<br><br>As per your request, a One Time Password (OTP) has been generated and the same is <i><b>" + otpDB.OTP1.ToString() + "</b></i><br><br>Please use this OTP to complete the Login. Reference number is " + otpDB.Pin.ToString() + " <br><br>*** This is an auto-generated email. Please do not reply to this email.*** <br><br>Thanks";
-                    Utility.SendEmail(Message, "Alert Message From GBX MIDAS", userBO.UserName);
 
+                    BO.Email objEmail = new BO.Email { ToEmail = acc_.UserName, Subject = "Alert Message From GBX MIDAS", Body = Message };
+                    objEmail.SendMail();
+                   
                     otpDB.UserID = acc_.ID;
                     otpDB.OTP1 = 0000;
 

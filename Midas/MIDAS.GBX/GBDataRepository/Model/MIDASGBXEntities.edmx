@@ -104,6 +104,10 @@
             <End Role="ContactInfo" EntitySet="ContactInfo" />
             <End Role="Location" EntitySet="Location" />
           </AssociationSet>
+          <AssociationSet Name="FK_Location_Schedule" Association="MIDASGBXModel.Store.FK_Location_Schedule">
+            <End Role="Schedule" EntitySet="Schedule" />
+            <End Role="Location" EntitySet="Location" />
+          </AssociationSet>
           <AssociationSet Name="FK_MedicalProvider_Company" Association="MIDASGBXModel.Store.FK_MedicalProvider_Company">
             <End Role="Company" EntitySet="Company" />
             <End Role="MedicalProvider" EntitySet="MedicalProvider" />
@@ -816,6 +820,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Location_Schedule">
+          <End Role="Schedule" Type="MIDASGBXModel.Store.Schedule" Multiplicity="0..1" />
+          <End Role="Location" Type="MIDASGBXModel.Store.Location" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Location">
+              <PropertyRef Name="ScheduleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_MedicalProvider_Company">
           <End Role="Company" Type="MIDASGBXModel.Store.Company" Multiplicity="1" />
           <End Role="MedicalProvider" Type="MIDASGBXModel.Store.MedicalProvider" Multiplicity="*" />
@@ -1043,6 +1059,10 @@
           <AssociationSet Name="FK_Invitation_User_Invitation" Association="MIDASGBXModel.FK_Invitation_User_Invitation">
             <End Role="User" EntitySet="Users" />
             <End Role="Invitation" EntitySet="Invitations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Location_Schedule" Association="MIDASGBXModel.FK_Location_Schedule">
+            <End Role="Schedule" EntitySet="Schedules" />
+            <End Role="Location" EntitySet="Locations" />
           </AssociationSet>
           <AssociationSet Name="FK_UserCompanyRole_Role" Association="MIDASGBXModel.FK_UserCompanyRole_Role">
             <End Role="Role" EntitySet="Roles" />
@@ -1319,6 +1339,7 @@
           <NavigationProperty Name="Company" Relationship="MIDASGBXModel.FK_Location_Company" FromRole="Location" ToRole="Company" />
           <NavigationProperty Name="ContactInfo" Relationship="MIDASGBXModel.FK_Location_ContactInfo" FromRole="Location" ToRole="ContactInfo" />
           <NavigationProperty Name="DoctorLocationSchedules" Relationship="MIDASGBXModel.FK_DoctorLocationSchedule_Location" FromRole="Location" ToRole="DoctorLocationSchedule" />
+          <NavigationProperty Name="Schedule" Relationship="MIDASGBXModel.FK_Location_Schedule" FromRole="Location" ToRole="Schedule" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -1408,6 +1429,7 @@
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="DoctorLocationSchedules" Relationship="MIDASGBXModel.FK_DoctorLocationSchedule_Schedule" FromRole="Schedule" ToRole="DoctorLocationSchedule" />
+          <NavigationProperty Name="Locations" Relationship="MIDASGBXModel.FK_Location_Schedule" FromRole="Schedule" ToRole="Location" />
           <NavigationProperty Name="ScheduleDetails" Relationship="MIDASGBXModel.FK_ScheduleDetail_Schedule" FromRole="Schedule" ToRole="ScheduleDetail" />
         </EntityType>
         <EntityType Name="ScheduleDetail">
@@ -1837,6 +1859,18 @@
             </Principal>
             <Dependent Role="Invitation">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Location_Schedule">
+          <End Role="Schedule" Type="MIDASGBXModel.Schedule" Multiplicity="0..1" />
+          <End Role="Location" Type="MIDASGBXModel.Location" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Location">
+              <PropertyRef Name="ScheduleID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

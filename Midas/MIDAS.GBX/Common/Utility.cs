@@ -32,23 +32,6 @@ namespace MIDAS.GBX.Common
             return false;
         }
 
-        public static void SendEmail(string Message, string Subject, string ToEmail)
-        {
-            var client = new SmtpClient("smtp.zoho.com", 587)
-            {
-                Credentials = new NetworkCredential("mangesh.s@codearray.tech", "mangesh123 "),
-                EnableSsl = true,
-               
-            };
-
-            var mail = new System.Net.Mail.MailMessage("mangesh.s@codearray.tech", ToEmail);
-            mail.Subject = Subject;
-            mail.Body = Message;
-            mail.IsBodyHtml = true;
-                client.Send(mail);
-
-        }
-
         public static string GetConfigValue(string name)
         {
             string VerificationLink = "";

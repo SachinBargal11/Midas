@@ -151,9 +151,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 string Message = "Dear " + acc_.UserName + ",<br><br>As per your request, a One Time Password (OTP) has been generated and the same is <i><b>" + otpDB.OTP1.ToString() + "</b></i><br><br>Please use this OTP to complete the Login. Reference number is " + otpDB.Pin.ToString() + " <br><br>*** This is an auto-generated email. Please do not reply to this email.*** <br><br>Thanks";
                 try
                 {
-                Utility.SendEmail(Message, "Alert Message From GBX MIDAS", acc_.UserName);
+                BO.Email objEmail = new BO.Email { ToEmail = acc_.UserName, Subject = "Alert Message From GBX MIDAS", Body = Message };
+                objEmail.SendMail();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     return acc;
                 }

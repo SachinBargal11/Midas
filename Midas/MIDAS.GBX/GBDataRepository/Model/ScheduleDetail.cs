@@ -12,31 +12,21 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Location
+    public partial class ScheduleDetail
     {
-        public Location()
-        {
-            this.DoctorLocationSchedules = new HashSet<DoctorLocationSchedule>();
-        }
-    
         public int id { get; set; }
         public string Name { get; set; }
-        public int CompanyID { get; set; }
-        public Nullable<int> ScheduleID { get; set; }
-        public int AddressInfoID { get; set; }
-        public int ContactInfoID { get; set; }
-        public byte LocationType { get; set; }
-        public bool IsDefault { get; set; }
+        public int ScheduleID { get; set; }
+        public int DayOfWeek { get; set; }
+        public System.TimeSpan SlotStart { get; set; }
+        public System.TimeSpan SlotEnd { get; set; }
+        public Nullable<System.DateTime> SlotDate { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
-        public virtual AddressInfo AddressInfo { get; set; }
-        public virtual Company Company { get; set; }
-        public virtual ContactInfo ContactInfo { get; set; }
-        public virtual ICollection<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }
         public virtual Schedule Schedule { get; set; }
     }
 }

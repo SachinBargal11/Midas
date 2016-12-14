@@ -11,6 +11,7 @@ using MIDAS.GBX.DataRepository.Model;
 using BO = MIDAS.GBX.BusinessObjects;
 using MIDAS.GBX.EN;
 using MIDAS.GBX.Common;
+
 #endregion
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
@@ -284,7 +285,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 
                 string VerificationLink = "<a href='"+ Utility.GetConfigValue("VerificationLink") + "/"+invitationDB.UniqueID+ "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
                 string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink+"</b><br><br>Thanks";
-                Utility.SendEmail(Message, "Company registered", userBO.UserName);
+                BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "Company registered", Body = Message };
+                objEmail.SendMail();
                 #endregion
             }
             catch (Exception ex)

@@ -17,6 +17,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public Schedule()
         {
             this.DoctorLocationSchedules = new HashSet<DoctorLocationSchedule>();
+            this.Locations = new HashSet<Location>();
             this.ScheduleDetails = new HashSet<ScheduleDetail>();
         }
     
@@ -29,6 +30,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
         public virtual ICollection<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }
+        public virtual ICollection<Location> Locations { get; set; }
         public virtual ICollection<ScheduleDetail> ScheduleDetails { get; set; }
     }
 }

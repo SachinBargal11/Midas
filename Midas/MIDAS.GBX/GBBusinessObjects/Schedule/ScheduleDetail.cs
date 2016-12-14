@@ -9,8 +9,21 @@ using System.Threading.Tasks;
 
 namespace MIDAS.GBX.BusinessObjects
 {
-    public class Schedule : GbObject
+    public class ScheduleDetail : GbObject
     {
+        public string _name;
+        public string Name
+        {
+            get
+            {
+                return this._name;
+            }
+            set
+            {
+                _name = value;
+            }
+        }
+
         public int _dayofWeek = 0;
         public int dayofWeek
         {
@@ -49,8 +62,8 @@ namespace MIDAS.GBX.BusinessObjects
             }
         }
 
-        public DateTime ? _slotDate;
-        public DateTime ? slotDate
+        public DateTime? _slotDate;
+        public DateTime? slotDate
         {
             get
             {
@@ -61,6 +74,8 @@ namespace MIDAS.GBX.BusinessObjects
                 _slotDate = value;
             }
         }
+
+        public Schedule Schedule { get; set; }
 
         public override List<BusinessValidation> Validate<T>(T entity)
         {
