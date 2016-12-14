@@ -41,7 +41,6 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             //doctorspeciality.Specialty.CompanySpecialtyDetails ="";
             //doctorspeciality.Specialty.IsUnitApply=;
             doctorspeciality.Specialty.Name="";
-            doctorspeciality.Specialty.NPI="";
             doctorspeciality.Specialty.SpecialityCode="";
             //doctorspeciality.Specialty.SpecialtyDetails="";
 
@@ -77,7 +76,6 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             //doctorspeciality.Specialty.CompanySpecialtyDetails ="";
             //doctorspeciality.Specialty.IsUnitApply=;
             doctorspeciality.Specialty.Name = "";
-            doctorspeciality.Specialty.NPI = "";
             doctorspeciality.Specialty.SpecialityCode = "";
             //doctorspeciality.Specialty.SpecialtyDetails="";
 
@@ -113,7 +111,6 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             //doctorspeciality.Specialty.CompanySpecialtyDetails ="";
             //doctorspeciality.Specialty.IsUnitApply=;
             doctorspeciality.Specialty.Name = "";
-            doctorspeciality.Specialty.NPI = "";
             doctorspeciality.Specialty.SpecialityCode = "";
             //doctorspeciality.Specialty.SpecialtyDetails="";
 
@@ -149,7 +146,6 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             //doctorspeciality.Specialty.CompanySpecialtyDetails ="";
             //doctorspeciality.Specialty.IsUnitApply=;
             doctorspeciality.Specialty.Name = "";
-            doctorspeciality.Specialty.NPI = "";
             doctorspeciality.Specialty.SpecialityCode = "";
             //doctorspeciality.Specialty.SpecialtyDetails="";
 
@@ -185,7 +181,6 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             //doctorspeciality.Specialty.CompanySpecialtyDetails ="";
             //doctorspeciality.Specialty.IsUnitApply=;
             doctorspeciality.Specialty.Name = "";
-            doctorspeciality.Specialty.NPI = "";
             doctorspeciality.Specialty.SpecialityCode = "";
             //doctorspeciality.Specialty.SpecialtyDetails="";
 

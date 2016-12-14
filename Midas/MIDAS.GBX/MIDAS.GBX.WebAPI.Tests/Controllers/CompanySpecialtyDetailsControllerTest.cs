@@ -56,7 +56,6 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             CSDetails.Specialty.Name = "";
             CSDetails.Specialty.SpecialityCode = "";
             CSDetails.Specialty.IsUnitApply = true;
-            CSDetails.Specialty.NPI = "";
             //CSDetails.Specialty.CompanySpecialtyDetails = ;
             //CSDetails.Specialty.SpecialtyDetails = "";
 

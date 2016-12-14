@@ -30,7 +30,6 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             speciality.Specialty.Name = "";
             speciality.Specialty.SpecialityCode = "";
             speciality.Specialty.IsUnitApply = true;
-            speciality.Specialty.NPI = "";
             //speciality.CompanySpecialtyDetails = ;
             //speciality.SpecialtyDetails = "";
 
@@ -54,7 +53,6 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             speciality.Specialty.Name = "";
             speciality.Specialty.SpecialityCode = "";
             speciality.Specialty.IsUnitApply = true;
-            speciality.Specialty.NPI = "";
             //speciality.CompanySpecialtyDetails = ;
             //speciality.SpecialtyDetails = "";
 
@@ -78,7 +76,6 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             speciality.Specialty.Name = "";
             speciality.Specialty.SpecialityCode = "";
             speciality.Specialty.IsUnitApply = true;
-            speciality.Specialty.NPI = "";
             //speciality.CompanySpecialtyDetails = ;
             //speciality.SpecialtyDetails = "";
 
@@ -102,7 +99,6 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             speciality.Specialty.Name = "";
             speciality.Specialty.SpecialityCode = "";
             speciality.Specialty.IsUnitApply = true;
-            speciality.Specialty.NPI = "";
             //speciality.CompanySpecialtyDetails = ;
             //speciality.SpecialtyDetails = "";
 

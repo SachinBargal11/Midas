@@ -19,7 +19,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             Location Loc = new Location();
             Loc.ID = 10;
             Loc.Name = "New York";
-            Loc.LocationType = GBEnums.LocationType.Testing;
+            Loc.LocationType = GBEnums.LocationType.MEDICAL_TESTING_FACILITY;
             Loc.IsDefault = false;
             Loc.IsDeleted = false;
             //Loc.UpdateDate=;
@@ -56,7 +56,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             savelocation.location = new Location();
             savelocation.location.ID = 10;
             savelocation.location.Name = "New York";
-            savelocation.location.LocationType = GBEnums.LocationType.Testing;
+            savelocation.location.LocationType = GBEnums.LocationType.MEDICAL_TESTING_FACILITY;
             savelocation.location.IsDefault = false;
             savelocation.location.IsDeleted = false;
             //Loc.UpdateDate=;
@@ -159,7 +159,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             Location Loc = new Location();
             Loc.ID = 10;
             Loc.Name = "New York";
-            Loc.LocationType = GBEnums.LocationType.Testing;
+            Loc.LocationType = GBEnums.LocationType.MEDICAL_TESTING_FACILITY;
             Loc.IsDefault = false;
             Loc.IsDeleted = false;
             //Loc.UpdateDate=;
@@ -194,7 +194,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             Location Loc = new Location();
             Loc.ID = 10;
             Loc.Name = "New York";
-            Loc.LocationType = GBEnums.LocationType.Testing;
+            Loc.LocationType = GBEnums.LocationType.MEDICAL_TESTING_FACILITY;
             Loc.IsDefault = false;
             Loc.IsDeleted = false;
             //Loc.UpdateDate=;
@@ -229,7 +229,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             Location Loc = new Location();
             Loc.ID = 10;
             Loc.Name = "New York";
-            Loc.LocationType = GBEnums.LocationType.Testing;
+            Loc.LocationType = GBEnums.LocationType.MEDICAL_TESTING_FACILITY;
             Loc.IsDefault = false;
             Loc.IsDeleted = false;
             //Loc.UpdateDate=;
