@@ -12,16 +12,19 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class EmailTemplate
+    public partial class LocationRoom
     {
         public int id { get; set; }
-        public string Body { get; set; }
-        public Nullable<bool> IsHTML { get; set; }
-        public Nullable<int> ProfileID { get; set; }
+        public string Name { get; set; }
+        public int LocationID { get; set; }
+        public int RoomID { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
-        public System.DateTime CreateDate { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
+    
+        public virtual Location Location { get; set; }
+        public virtual Room Room { get; set; }
     }
 }

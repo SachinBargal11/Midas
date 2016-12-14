@@ -258,6 +258,8 @@
     <Compile Include="Controllers\MedicalProviderController.cs" />
     <Compile Include="Controllers\OTPController.cs" />
     <Compile Include="Controllers\PasswordTokenController.cs" />
+    <Compile Include="Controllers\Room\RoomController.cs" />
+    <Compile Include="Controllers\Room\RoomTestController.cs" />
     <Compile Include="Controllers\SpecialtyController.cs" />
     <Compile Include="Controllers\SpecialtyDetailsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -354,6 +356,8 @@
     <Folder Include="App_Data\" />
     <Folder Include="Views\OTP\" />
     <Folder Include="Views\PasswordToken\" />
+    <Folder Include="Views\RoomTest\" />
+    <Folder Include="Views\Room\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

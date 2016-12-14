@@ -41,6 +41,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -67,6 +68,9 @@
     <Compile Include="Location\Location.cs" />
     <Compile Include="Location\LocationSchedule.cs" />
     <Compile Include="Location\SaveLocation.cs" />
+    <Compile Include="Room\LocationRoom.cs" />
+    <Compile Include="Room\Room.cs" />
+    <Compile Include="Room\RoomTest.cs" />
     <Compile Include="Schedule\Schedule.cs" />
     <Compile Include="Schedule\ScheduleDetail.cs" />
     <Compile Include="MedicaProvider\MedicalProvider.cs" />

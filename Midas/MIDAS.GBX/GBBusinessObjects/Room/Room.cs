@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace MIDAS.GBX.BusinessObjects
 {
-    public class ScheduleDetail : GbObject
+    public class Room : GbObject
     {
         private string _name;
-        public string Name
+        public string name
         {
             get
             {
@@ -24,58 +24,57 @@ namespace MIDAS.GBX.BusinessObjects
             }
         }
 
-        private int _dayofWeek = 0;
-        public int dayofWeek
+        private string _contactpersonname;
+        public string contactersonName
         {
             get
             {
-                return this._dayofWeek;
+                return this._contactpersonname;
             }
             set
             {
-                _dayofWeek = value;
-            }
-        }
-        private TimeSpan _slotStart;
-        public TimeSpan slotStart
-        {
-            get
-            {
-                return this._slotStart;
-            }
-            set
-            {
-                _slotStart = value;
+                _contactpersonname = value;
             }
         }
 
-        private TimeSpan _slotEnd;
-        public TimeSpan slotEnd
+        private string _phone;
+        public string phone
         {
             get
             {
-                return this._slotEnd;
+                return this._phone;
             }
             set
             {
-                _slotEnd = value;
+                _phone = value;
             }
         }
 
-        private DateTime? _slotDate;
-        public DateTime? slotDate
+        private RoomTest _roomtest;
+        public RoomTest roomTest
         {
             get
             {
-                return this._slotDate;
+                return this._roomtest;
             }
             set
             {
-                _slotDate = value;
+                _roomtest = value;
             }
         }
 
-        public Schedule Schedule { get; set; }
+        private List<RoomTest> _locationrooms;
+        public List<RoomTest> locationRooms
+        {
+            get
+            {
+                return this._locationrooms;
+            }
+            set
+            {
+                _locationrooms = value;
+            }
+        }
 
         public override List<BusinessValidation> Validate<T>(T entity)
         {

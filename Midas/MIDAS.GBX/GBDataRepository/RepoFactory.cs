@@ -79,6 +79,14 @@ namespace MIDAS.GBX
             {
                 repo = new DoctorSpecialityRepository(context);
             }
+            if (typeof(T) == typeof(BO.RoomTest))
+            {
+                repo = new RoomTestRepository(context);
+            }
+            if (typeof(T) == typeof(BO.Room))
+            {
+                repo = new RoomRepository(context);
+            }
             return repo;
         }
     }
