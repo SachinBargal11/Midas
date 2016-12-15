@@ -65,7 +65,7 @@ export class UserBasicComponent implements OnInit {
                 lastName: ['', Validators.required],
                 speciality: ['', Validators.required],
                 salutation: ['', Validators.required],
-                phone: ['', Validators.required],
+                phone: ['', [Validators.required, AppValidators.mobileNoValidator]],
                 photo: ['']
             });
 

@@ -36,6 +36,18 @@ export class LocationsService {
         });
         return <Observable<LocationDetails>>Observable.fromPromise(promise);
     }
+    getSchedule(scheduleId: Number): Observable<any> {
+        let promise: Promise<LocationDetails> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Schedule/get/' + scheduleId).map(res => res.json())
+                .subscribe((data: any) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<LocationDetails>>Observable.fromPromise(promise);
+    }
 
     getLocations(userId: Number): Observable<any[]> {
         let promise: Promise<any[]> = new Promise((resolve, reject) => {

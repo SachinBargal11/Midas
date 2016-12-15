@@ -74,7 +74,7 @@ export class BasicComponent implements OnInit {
             city: ['', Validators.required],
             state: ['', Validators.required],
             zipcode: ['', Validators.required],
-            officePhone: ['', Validators.required],
+            officePhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
             fax: ['', Validators.required],
             officeType: ['', Validators.required]
         });

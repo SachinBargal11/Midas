@@ -11,6 +11,7 @@
                             <div class="col-lg-2">
                                 <div class='input-group date'>
                                       <p-calendar formControlName="sundayFrom"
+                                                  [ngModel]="scheduleDetails.slotStart"
                                                   hourFormat="12"
                                                   timeFormat="hh:mm tt"
                                                   [timeOnly]="true"
@@ -25,6 +26,7 @@
                             <div class="col-lg-2">                                
                                     <div class='input-group date'>
                                           <p-calendar formControlName="sundayTo"
+                                                      [ngModel]="scheduleDetails.slotEnd"
                                                       hourFormat="12"
                                                       timeFormat="hh:mm tt"
                                                       [timeOnly]="true"
@@ -36,8 +38,8 @@
                             <div class="col-lg-1"></div>
                             <div class="col-lg-2 text-center">
                                 <select formControlName="sunday" class="select2-arrow form-control">
-                                             <option value="Closed">Closed</option>
-                                             <option value="Specific Hours">Specific Hours</option>
+                                             <option value="0">Closed</option>
+                                             <option value="1">Specific Hours</option>
                                 </select>                                
                             </div>
                         </div>
@@ -74,8 +76,8 @@
                             <div class="col-lg-1"></div>
                             <div class="col-lg-2 text-center">
                                 <select formControlName="monday" class="select2-arrow form-control">
-                                             <option value="Closed">Closed</option>
-                                             <option value="Specific Hours">Specific Hours</option>
+                                             <option value="0">Closed</option>
+                                             <option value="1">Specific Hours</option>
                                 </select>                                
                             </div>
                         </div>
@@ -112,8 +114,8 @@
                             <div class="col-lg-1"></div>
                             <div class="col-lg-2 text-center">
                                 <select formControlName="tuesday" class="select2-arrow form-control">
-                                             <option value="Closed">Closed</option>
-                                             <option value="Specific Hours">Specific Hours</option>
+                                             <option value="0">Closed</option>
+                                             <option value="1">Specific Hours</option>
                                 </select>                                
                             </div>
                         </div>
@@ -150,8 +152,8 @@
                             <div class="col-lg-1"></div>
                             <div class="col-lg-2 text-center">
                                 <select formControlName="wednesday" class="select2-arrow form-control">
-                                             <option value="Closed">Closed</option>
-                                             <option value="Specific Hours">Specific Hours</option>
+                                             <option value="0">Closed</option>
+                                             <option value="1">Specific Hours</option>
                                 </select>                                
                             </div>
                         </div>
@@ -188,8 +190,8 @@
                             <div class="col-lg-1"></div>
                             <div class="col-lg-2 text-center">
                                 <select formControlName="Thursday" class="select2-arrow form-control">
-                                             <option value="Closed">Closed</option>
-                                             <option value="Specific Hours">Specific Hours</option>
+                                             <option value="0">Closed</option>
+                                             <option value="1">Specific Hours</option>
                                 </select>                                
                             </div>
                         </div>
@@ -226,8 +228,8 @@
                             <div class="col-lg-1"></div>
                             <div class="col-lg-2 text-center">
                                 <select formControlName="friday" class="select2-arrow form-control">
-                                             <option value="Closed">Closed</option>
-                                             <option value="Specific Hours">Specific Hours</option>
+                                             <option value="0">Closed</option>
+                                             <option value="1">Specific Hours</option>
                                 </select>                                
                             </div>
                         </div>
@@ -264,8 +266,8 @@
                             <div class="col-lg-1"></div>
                             <div class="col-lg-2 text-center">
                                 <select formControlName="saturday" class="select2-arrow form-control">
-                                             <option value="Closed">Closed</option>
-                                             <option value="Specific Hours">Specific Hours</option>
+                                             <option value="0">Closed</option>
+                                             <option value="1">Specific Hours</option>
                                 </select>                                
                             </div>
                         </div>
