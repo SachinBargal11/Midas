@@ -45,11 +45,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (location.UpdateByUserID.HasValue)
                 locationBO.UpdateByUserID = location.UpdateByUserID.Value;
 
-            BO.Company boCompany = new BO.Company();
-            boCompany.ID = location.Company.id;
-            locationBO.Company = boCompany;
 
-            if (location.AddressInfo != null)
+
+            if (location.Company != null)
+            {
+                BO.Company boCompany = new BO.Company();
+                boCompany.ID = location.Company.id;
+                locationBO.Company = boCompany;
+            }
+
+                if (location.AddressInfo != null)
             {
                 BO.AddressInfo boAddress = new BO.AddressInfo();
                 boAddress.Name = location.AddressInfo.Name;
@@ -91,7 +96,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 boSchedule = cmp.Convert<BO.Schedule, Schedule>(location.Schedule);
                 locationBO.Schedule = boSchedule;
-
             }
             return (T)(object)locationBO;
         }
@@ -203,19 +207,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             if (locationDB.id > 0)
             {
-                #region Schedule
-                if (locationBO.Schedule != null)
-                    if (locationBO.Schedule.ID > 0)
-                    {
-                        Schedule schedule = _context.Schedules.Where(p => p.id == locationBO.Schedule.ID).FirstOrDefault<Schedule>();
-                        if (schedule != null)
-                        {
-                            locationDB.Schedule = schedule;
-                        }
-                        else
-                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Schedule.", ErrorLevel = ErrorLevel.Error };
-                    }
-                #endregion
                 //For Update Record
 
                 //Find Location By ID
@@ -226,15 +217,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     #region Location
                     locationDB.id = locationBO.ID;
                     location.Name = locationBO.Name==null?location.Name:locationBO.Name;
-                    switch (locationBO.LocationType)
-                    {
-                        case BO.GBEnums.LocationType.MEDICAL_TESTING_FACILITY:
-                        case BO.GBEnums.LocationType.MEDICAL_OFFICE:
-                            location.LocationType = System.Convert.ToByte(locationBO.LocationType);
-                            break;
-                        default:
-                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Location type.", ErrorLevel = ErrorLevel.Error };
-                    }
+                    location.LocationType = locationBO.LocationType==null? location.LocationType: System.Convert.ToByte(locationBO.LocationType);
                     location.IsDefault = locationBO.IsDefault;
                     location.IsDeleted = locationBO.IsDeleted == null ? locationBO.IsDeleted : locationDB.IsDeleted;
                     location.UpdateDate = locationBO.UpdateDate;
@@ -272,6 +255,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     location.ContactInfo.FaxNo = contactinfoBO.FaxNo;
                     location.ContactInfo.UpdateDate = contactinfoBO.UpdateDate;
                     location.ContactInfo.UpdateByUserID = contactinfoBO.UpdateByUserID;
+                    #endregion
+
+                    #region Schedule
+                    if (saveLocationBO.schedule != null)
+                        if (saveLocationBO.schedule.ID > 0)
+                        {
+                            Schedule schedule = _context.Schedules.Where(p => p.id == saveLocationBO.schedule.ID).FirstOrDefault<Schedule>();
+                            if (schedule != null)
+                            {
+                                location.Schedule = schedule;
+                            }
+                            else
+                                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Schedule.", ErrorLevel = ErrorLevel.Error };
+                        }
                     #endregion
 
                     _context.Entry(location).State = System.Data.Entity.EntityState.Modified;

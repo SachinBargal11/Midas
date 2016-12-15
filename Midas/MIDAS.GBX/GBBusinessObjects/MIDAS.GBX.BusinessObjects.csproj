@@ -68,6 +68,7 @@
     <Compile Include="Invitation\Invitation.cs" />
     <Compile Include="Location\Location.cs" />
     <Compile Include="Location\LocationSchedule.cs" />
+    <Compile Include="Location\LocationSpeciality.cs" />
     <Compile Include="Location\SaveLocation.cs" />
     <Compile Include="Room\LocationRoom.cs" />
     <Compile Include="Room\Room.cs" />

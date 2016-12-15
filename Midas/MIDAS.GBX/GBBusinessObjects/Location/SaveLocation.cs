@@ -29,7 +29,11 @@ namespace MIDAS.GBX.BusinessObjects
             get;
             set;
         }
-
+        public Schedule schedule
+        {
+            get;
+            set;
+        }
         public SaveLocation()
         {
         }
@@ -38,29 +42,32 @@ namespace MIDAS.GBX.BusinessObjects
         {
             List<BusinessValidation> businessValidations = new List<BusinessValidation>();
             BusinessValidation businessValidation = new BusinessValidation();
-            if (string.IsNullOrEmpty(this.location.Name))
+            if (location.ID == 0)
             {
-                businessValidations.Add(new BusinessValidation()
+                if (string.IsNullOrEmpty(this.location.Name))
                 {
-                    ValidationResult = BusinessValidationResult.Failure,
-                    ValidationMessage = "Location name is required"
-                });
-            }
-            if (string.IsNullOrEmpty(this.location.LocationType.ToString()))
-            {
-                businessValidations.Add(new BusinessValidation()
+                    businessValidations.Add(new BusinessValidation()
+                    {
+                        ValidationResult = BusinessValidationResult.Failure,
+                        ValidationMessage = "Location name is required"
+                    });
+                }
+                if (string.IsNullOrEmpty(this.location.LocationType.ToString()))
                 {
-                    ValidationResult = BusinessValidationResult.Failure,
-                    ValidationMessage = "Location type is required"
-                });
-            }
-            if (string.IsNullOrEmpty(this.location.IsDefault.ToString()))
-            {
-                businessValidations.Add(new BusinessValidation()
+                    businessValidations.Add(new BusinessValidation()
+                    {
+                        ValidationResult = BusinessValidationResult.Failure,
+                        ValidationMessage = "Location type is required"
+                    });
+                }
+                if (string.IsNullOrEmpty(this.location.IsDefault.ToString()))
                 {
-                    ValidationResult = BusinessValidationResult.Failure,
-                    ValidationMessage = "Default location  is required"
-                });
+                    businessValidations.Add(new BusinessValidation()
+                    {
+                        ValidationResult = BusinessValidationResult.Failure,
+                        ValidationMessage = "Default location  is required"
+                    });
+                }
             }
             return businessValidations;
         }

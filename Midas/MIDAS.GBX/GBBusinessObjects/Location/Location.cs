@@ -33,7 +33,7 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("locationType")]
         [Required]
-        public GBEnums.LocationType LocationType
+        public GBEnums.LocationType? LocationType
         {
             get;
             set;

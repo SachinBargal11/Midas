@@ -255,6 +255,7 @@
     <Compile Include="Controllers\DoctorSpecialityController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
+    <Compile Include="Controllers\LocationSpeclityController.cs" />
     <Compile Include="Controllers\MedicalProviderController.cs" />
     <Compile Include="Controllers\OTPController.cs" />
     <Compile Include="Controllers\PasswordTokenController.cs" />
@@ -357,6 +358,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\LocationRoom\" />
+    <Folder Include="Views\LocationSpeclity\" />
     <Folder Include="Views\OTP\" />
     <Folder Include="Views\PasswordToken\" />
     <Folder Include="Views\RoomTest\" />

@@ -95,6 +95,10 @@ namespace MIDAS.GBX
             {
                 repo = new ScheduleRepository(context);
             }
+            if (typeof(T) == typeof(BO.LocationSpeciality))
+            {
+                repo = new LocationSpecialityRepository(context);
+            }
             return repo;
         }
     }

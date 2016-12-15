@@ -69,6 +69,7 @@
     <Compile Include="EntityRepository\Doctor\DoctorSpecialityRepository.cs" />
     <Compile Include="EntityRepository\Company\InvitationRepository.cs" />
     <Compile Include="EntityRepository\Location\LocationRepository.cs" />
+    <Compile Include="EntityRepository\Location\LocationSpecialityRepository.cs" />
     <Compile Include="EntityRepository\Room\LocationRoom.cs" />
     <Compile Include="EntityRepository\Room\RoomRepository.cs" />
     <Compile Include="EntityRepository\Room\RoomTestRepository.cs" />
