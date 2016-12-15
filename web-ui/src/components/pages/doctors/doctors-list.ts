@@ -28,4 +28,7 @@ export class DoctorsListComponent implements OnInit {
             () => { this.doctorsLoading = false; });
         return doctor;
     }
+    onRowSelect(doctor) {
+        this._router.navigate(['/doctors/edit/' + doctor.id]);
+    }
 }

@@ -112,6 +112,7 @@ import { AddSpecialityDetailComponent } from '../components/pages/medical-facili
 import { AddDoctorComponent } from '../components/pages/doctors/add-doctor';
 import { UpdateDoctorComponent } from '../components/pages/doctors/update-doctor';
 import { DoctorsListComponent } from '../components/pages/doctors/doctors-list';
+import { DoctorSpecialityComponent } from '../components/pages/doctors/doctor-speciality';
 import { SpecialityListComponent } from '../components/pages/speciality/speciality-list';
 import { AddSpecialityComponent } from '../components/pages/speciality/add-speciality';
 import { UpdateSpecialityComponent } from '../components/pages/speciality/update-speciality';
@@ -224,6 +225,7 @@ enableProdMode();
         AddDoctorComponent,
         UpdateDoctorComponent,
         DoctorsListComponent,
+        DoctorSpecialityComponent,
         SpecialityListComponent,
         AddSpecialityComponent,
         UpdateSpecialityComponent,

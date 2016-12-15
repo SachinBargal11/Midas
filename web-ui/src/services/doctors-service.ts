@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
 import {DoctorDetail} from '../models/doctor-details';
 import {Doctor} from '../models/doctor';
+import {DoctorSpeciality} from '../models/doctor-speciality';
 import {DoctorAdapter} from './adapters/doctor-adapter';
 import {UserType} from '../models/enums/user-type';
 
@@ -117,6 +118,24 @@ export class DoctorsService {
                 });
         });
         return <Observable<Doctor>>Observable.fromPromise(promise);
+
+    }
+    addDoctorSpeciality(doctorDetail: DoctorSpeciality): Observable<DoctorSpeciality> {
+        let promise: Promise<DoctorSpeciality> = new Promise((resolve, reject) => {
+
+
+            let doctorDetailRequestData = doctorDetail.toJS();
+            return this._http.post(this._url + '/DoctorSpeciality/add', JSON.stringify(doctorDetailRequestData), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((doctorData: any) => {
+                    resolve(doctorData);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<DoctorSpeciality>>Observable.fromPromise(promise);
 
     }
 

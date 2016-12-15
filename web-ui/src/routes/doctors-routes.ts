@@ -3,6 +3,7 @@ import {ValidateActiveSession} from './guards/validate-active-session';
 import {AddDoctorComponent} from '../components/pages/doctors/add-doctor';
 import {UpdateDoctorComponent} from '../components/pages/doctors/update-doctor';
 import {DoctorsListComponent} from '../components/pages/doctors/doctors-list';
+import {DoctorSpecialityComponent} from '../components/pages/doctors/doctor-speciality';
 
 export const DoctorsRoutes: Routes = [
     {
@@ -32,6 +33,14 @@ export const DoctorsRoutes: Routes = [
         canActivate: [ValidateActiveSession],
         data: {
             breadcrumb: 'Edit Doctor'
+        }
+    },
+    {
+        path: 'doctors/speciality/:id',
+        component: DoctorSpecialityComponent,
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Assign Speciality'
         }
     }
 ];
