@@ -56,7 +56,7 @@ export class AddUserComponent implements OnInit {
             }),
             contact: this.fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
-                cellPhone: ['', [Validators.required]],
+                cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
                 homePhone: [''],
                 workPhone: [''],
                 faxNo: ['']

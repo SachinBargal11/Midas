@@ -53,7 +53,7 @@ export class AddLocationComponent implements OnInit {
                 city: ['', Validators.required],
                 state: ['', Validators.required],
                 zipCode: ['', Validators.required],
-                officePhone: ['', Validators.required],
+                officePhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
                 fax: ['', Validators.required],
                 locationType: ['', Validators.required]
             });
