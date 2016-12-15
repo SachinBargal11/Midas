@@ -58,5 +58,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<UserCompanyRole> UserCompanyRoles { get; set; }
         public virtual DbSet<UserToken> UserTokens { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
+        public virtual DbSet<LocationSpeciality> LocationSpecialities { get; set; }
     }
 }

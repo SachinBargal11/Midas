@@ -45,11 +45,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (room.UpdateByUserID.HasValue)
                 roomBO.UpdateByUserID = room.UpdateByUserID.Value;
 
-            using (RoomTestRepository sr = new RoomTestRepository(_context))
-            {
-                roomBO.roomTest = sr.Convert<BO.RoomTest, RoomTest>(room.RoomTest);
-            }
+            BO.RoomTest roomtestBO = new BO.RoomTest();
+            roomtestBO.name = room.RoomTest.Name;
+            roomtestBO.ID = room.RoomTest.id;
 
+            if (room.RoomTest.IsDeleted.HasValue)
+                roomtestBO.IsDeleted = room.RoomTest.IsDeleted.Value;
+            if (room.RoomTest.UpdateByUserID.HasValue)
+                roomtestBO.UpdateByUserID = room.RoomTest.UpdateByUserID.Value;
+            roomBO.roomTest = roomtestBO;
             return (T)(object)roomBO;
         }
         #endregion
@@ -92,6 +96,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.Room roomBO = (BO.Room)(object)entity;
 
             Room roomDB = new Room();
+            RoomTest roomtestDB = new RoomTest();
 
             #region room
             roomDB.id = roomBO.ID;
@@ -101,23 +106,28 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             roomDB.IsDeleted = roomBO.IsDeleted.HasValue ? roomBO.IsDeleted : false;
             #endregion
 
-            #region RoomTest
-            if (roomBO.roomTest != null)
-                if (roomBO.roomTest.ID > 0)
-                {
-                    RoomTest roomtest = _context.RoomTests.Where(p => p.id == roomBO.roomTest.ID).FirstOrDefault<RoomTest>();
-                    if (roomtest != null)
-                    {
-                        roomDB.RoomTest = roomtest;
-                    }
-                    else
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid roomtest detail.", ErrorLevel = ErrorLevel.Error };
-                }
+            #region Room Test
+            roomtestDB.id = roomBO.roomTest.ID;
+            roomtestDB.Name = roomBO.roomTest.name;
+            roomtestDB.IsDeleted = roomBO.roomTest.IsDeleted.HasValue ? roomBO.roomTest.IsDeleted : false;
             #endregion
+
+            if (roomBO.roomTest.ID > 0)
+            {
+                RoomTest roomtest = _context.RoomTests.Where(p => p.id == roomBO.roomTest.ID && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<RoomTest>();
+                if (roomtest != null)
+                {
+                    _context.Entry(roomtest).State = System.Data.Entity.EntityState.Modified;
+                    roomtestDB = roomtest;
+                }
+                else
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid roomtest detail.", ErrorLevel = ErrorLevel.Error };
+            }
+            roomDB.RoomTest = roomtestDB;
 
             if (roomDB.id > 0)
             {
-                //For Update Record
+               //For Update Record
 
                 //Find Room By ID
                 Room room = _context.Rooms.Where(p => p.id == roomDB.id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<Room>();
@@ -133,6 +143,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     room.UpdateDate = roomBO.UpdateDate;
                     room.UpdateByUserID = roomBO.UpdateByUserID;
                     #endregion
+
+                    #region RoomTest
+                    if (roomBO.roomTest != null)
+                        if (roomBO.roomTest.ID > 0)
+                        {
+                            RoomTest roomtest = _context.RoomTests.Where(p => p.id == roomBO.roomTest.ID).FirstOrDefault<RoomTest>();
+                            if (roomtest != null)
+                            {
+                                room.RoomTest = roomtest;
+                            }
+                            else
+                                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid roomtest detail.", ErrorLevel = ErrorLevel.Error };
+                        }
+                    #endregion
+
                     _context.Entry(room).State = System.Data.Entity.EntityState.Modified;
                 }
                 else
@@ -141,6 +166,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
+                if (_context.Rooms.Any(o => o.Name == roomBO.name))
+                {
+                    return new BO.ErrorObject { ErrorMessage = "Room already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
                 roomDB.CreateDate = roomBO.CreateDate;
                 roomDB.CreateByUserID = roomBO.CreateByUserID;
                 _dbSet.Add(roomDB);
@@ -185,16 +215,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<BO.Room> lstRoom = new List<BO.Room>();
             BO.Room scheduleBO = (BO.Room)(object)entity;
 
-            if (scheduleBO.roomTest.ID > 0)
+            if (scheduleBO != null)
             {
-                var acc_ = _context.Rooms.Include("RoomTest").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.RoomTestID == scheduleBO.roomTest.ID).ToList<Room>();
-                if (acc_ == null || acc_.Count < 1)
+                if (scheduleBO.roomTest.ID > 0)
                 {
-                    return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                }
-                foreach (Room item in acc_)
-                {
-                    lstRoom.Add(Convert<BO.Room, Room>(item));
+                    var acc_ = _context.Rooms.Include("RoomTest").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.RoomTestID == scheduleBO.roomTest.ID).ToList<Room>();
+                    if (acc_ == null || acc_.Count < 1)
+                    {
+                        return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    }
+                    foreach (Room item in acc_)
+                    {
+                        lstRoom.Add(Convert<BO.Room, Room>(item));
+                    }
                 }
             }
             else

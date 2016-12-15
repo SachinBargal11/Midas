@@ -9,36 +9,44 @@ using System.Threading.Tasks;
 
 namespace MIDAS.GBX.BusinessObjects
 {
-    public class Schedule : GbObject
+    public class DoctorLocationSchedule : GbObject
     {
-        private string _name;
-        public string Name
+        public Doctor _doctor;
+        public Doctor doctor
         {
             get
             {
-                return this._name;
+                return this._doctor;
             }
             set
             {
-                _name = value;
+                _doctor = value;
             }
         }
-        private bool _isdefault;
-        public bool isDefault
+        public Location _location;
+        public Location location
         {
             get
             {
-                return this._isdefault;
+                return this._location;
             }
             set
             {
-                _isdefault = value;
+                _location = value;
             }
         }
-
-        //public List<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }
-        public List<Location> Locations { get; set; }
-        public List<ScheduleDetail> ScheduleDetails { get; set; }
+        public Schedule _schedule;
+        public Schedule schedule
+        {
+            get
+            {
+                return this._schedule;
+            }
+            set
+            {
+                _schedule = value;
+            }
+        }
 
         public override List<BusinessValidation> Validate<T>(T entity)
         {

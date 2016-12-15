@@ -493,6 +493,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
             BO.OTP boOTP_ = new BusinessObjects.OTP();
+            using (UserCompanyRepository sr = new UserCompanyRepository(_context))
+            {
+                boOTP_.company = ((BO.UserCompany)sr.Get(acc_.ID)).Company;
+            }
             boOTP_.User = acc_;
             return boOTP_;
         }

@@ -131,6 +131,9 @@
     <Compile Include="Model\LocationRoom.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\LocationSpeciality.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Log.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
