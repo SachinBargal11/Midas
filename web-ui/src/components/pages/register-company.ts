@@ -48,7 +48,7 @@ export class RegisterCompanyComponent implements OnInit {
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
             taxId: ['', [Validators.required, Validators.maxLength(10)]],
-            phoneNo: ['', Validators.required],
+            phoneNo: ['', [Validators.required, AppValidators.mobileNoValidator]],
             companyType: ['', Validators.required],
             email: ['', [Validators.required, AppValidators.emailValidator]],
             subscriptionPlan: ['', Validators.required]

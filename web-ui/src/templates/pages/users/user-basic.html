@@ -86,6 +86,7 @@
                                     <div class='error-list' *ngIf="basicformControls.phone.touched && !basicformControls.phone.valid">
                                         <ul>
                                             <li *ngIf="basicformControls.phone.hasError('required')">Phone is required.</li>
+                                            <li *ngIf="basicformControls.phone.hasError('mobileNoValidator')">Phone is invalid.</li>
                                         </ul>
                                     </div>
                                 </div>
