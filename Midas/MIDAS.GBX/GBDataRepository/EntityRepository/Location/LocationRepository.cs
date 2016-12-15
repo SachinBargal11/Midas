@@ -191,22 +191,31 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             #endregion
 
-            #region Schedule
-            if (locationBO.Schedule != null)
-                if (locationBO.Schedule.ID > 0)
-                {
-                    Schedule schedule = _context.Schedules.Where(p => p.id == locationBO.Schedule.ID).FirstOrDefault<Schedule>();
-                    if (schedule != null)
-                    {
-                        locationDB.Schedule = schedule;
-                    }
-                    else
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Schedule.", ErrorLevel = ErrorLevel.Error };
-                }
-            #endregion
+            //Default schedule
+
+            Schedule defaultschedule = _context.Schedules.Where(p => p.IsDefault == true).FirstOrDefault<Schedule>();
+            if (defaultschedule != null)
+            {
+                locationDB.Schedule = defaultschedule;
+            }
+            else
+                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please set default schedule in database.", ErrorLevel = ErrorLevel.Error };
 
             if (locationDB.id > 0)
             {
+                #region Schedule
+                if (locationBO.Schedule != null)
+                    if (locationBO.Schedule.ID > 0)
+                    {
+                        Schedule schedule = _context.Schedules.Where(p => p.id == locationBO.Schedule.ID).FirstOrDefault<Schedule>();
+                        if (schedule != null)
+                        {
+                            locationDB.Schedule = schedule;
+                        }
+                        else
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Schedule.", ErrorLevel = ErrorLevel.Error };
+                    }
+                #endregion
                 //For Update Record
 
                 //Find Location By ID
@@ -264,6 +273,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     location.ContactInfo.UpdateDate = contactinfoBO.UpdateDate;
                     location.ContactInfo.UpdateByUserID = contactinfoBO.UpdateByUserID;
                     #endregion
+
                     _context.Entry(location).State = System.Data.Entity.EntityState.Modified;
                 }
 

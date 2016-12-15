@@ -19,6 +19,7 @@ namespace MIDAS.GBX.DataRepository.Model
         {
             this.DoctorLocationSchedules = new HashSet<DoctorLocationSchedule>();
             this.LocationRooms = new HashSet<LocationRoom>();
+            this.LocationSpecialities = new HashSet<LocationSpeciality>();
         }
     
         public int id { get; set; }
@@ -43,5 +44,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual Schedule Schedule { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LocationRoom> LocationRooms { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LocationSpeciality> LocationSpecialities { get; set; }
     }
 }

@@ -37,11 +37,33 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.Schedule scheduleBO = new BO.Schedule();
             scheduleBO.Name = schedule.Name;
             scheduleBO.ID = schedule.id;
+            scheduleBO.isDefault = schedule.IsDefault;
 
             if (schedule.IsDeleted.HasValue)
                 scheduleBO.IsDeleted = schedule.IsDeleted.Value;
             if (schedule.UpdateByUserID.HasValue)
                 scheduleBO.UpdateByUserID = schedule.UpdateByUserID.Value;
+
+            BO.ScheduleDetail scheduledetailBO = null;
+            List<BO.ScheduleDetail> lstscheduledetailBO = new List<BO.ScheduleDetail>();
+            foreach (var scheduledetail in schedule.ScheduleDetails)
+            {
+                scheduledetailBO = new BO.ScheduleDetail();
+                scheduledetailBO.ID = scheduledetail.id;
+                scheduledetailBO.Name = scheduledetail.Name;
+                scheduledetailBO.dayofWeek = scheduledetail.DayOfWeek;
+                scheduledetailBO.slotStart = scheduledetail.SlotStart;
+                scheduledetailBO.slotEnd = scheduledetail.SlotEnd;
+                scheduledetailBO.slotDate = scheduledetail.SlotDate;
+                scheduledetailBO.scheduleStatus = (BO.GBEnums.ScheduleStatus)scheduledetail.Status;
+
+                if (scheduledetail.IsDeleted.HasValue)
+                    scheduledetailBO.IsDeleted = scheduledetail.IsDeleted.Value;
+                if (scheduledetail.UpdateByUserID.HasValue)
+                    scheduledetailBO.UpdateByUserID = scheduledetail.UpdateByUserID.Value;
+                lstscheduledetailBO.Add(scheduledetailBO);
+            }
+            scheduleBO.ScheduleDetails = lstscheduledetailBO;
 
             return (T)(object)scheduleBO;
         }
@@ -60,15 +82,38 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Save<T>(T entity)
         {
             BO.Schedule scheduleBO = (BO.Schedule)(object)entity;
-
+           
             Schedule scheduleDB = new Schedule();
+            ScheduleDetail scheduledetailDB = null;
 
             #region Schedule
             scheduleDB.id = scheduleBO.ID;
             scheduleDB.Name = scheduleBO.Name;
+            scheduleDB.IsDefault = scheduleBO.isDefault;
             scheduleDB.IsDeleted = scheduleBO.IsDeleted.HasValue ? scheduleBO.IsDeleted : false;
             #endregion
 
+            if (_context.Schedules.Any(o => o.Name == scheduleBO.Name))
+            {
+                return new BO.ErrorObject { ErrorMessage = "Schedule already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            #region Schedule Detail
+            foreach (var scheduledetailBO in scheduleBO.ScheduleDetails)
+            {
+                scheduledetailDB = new ScheduleDetail();
+                scheduledetailDB.id = scheduledetailBO.ID;
+                scheduledetailDB.Name = scheduledetailBO.Name;
+                scheduledetailDB.DayOfWeek = scheduledetailBO.dayofWeek;
+                scheduledetailDB.SlotStart = scheduledetailBO.slotStart;
+                scheduledetailDB.SlotEnd = scheduledetailBO.slotEnd;
+                scheduledetailDB.SlotDate = scheduledetailBO.slotDate;
+                scheduledetailDB.Status = System.Convert.ToByte(scheduledetailBO.scheduleStatus);
+                scheduledetailDB.IsDeleted = scheduledetailBO.IsDeleted.HasValue ? scheduledetailBO.IsDeleted : false;
+                scheduleDB.ScheduleDetails.Add(scheduledetailDB);
+            }
+
+            #endregion
             if (scheduleDB.id > 0)
             {
                 //For Update Record
@@ -76,7 +121,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 //Find Schedule By ID
                 Schedule schedule = _context.Schedules.Where(p => p.id == scheduleDB.id).FirstOrDefault<Schedule>();
 
-                if (schedule != null)
+                if (schedule != null && !schedule.IsDefault)
                 {
                     #region Location
                     schedule.id = scheduleBO.ID;
@@ -87,6 +132,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     #endregion
                     _context.Entry(schedule).State = System.Data.Entity.EntityState.Modified;
                 }
+                else
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Invalid schedule details or default schdule.", ErrorLevel = ErrorLevel.Error };
 
             }
             else
@@ -120,7 +167,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID
         public override object Get(int id)
         {
-            BO.Schedule acc_ = Convert<BO.Schedule, Schedule>(_context.Schedules.Where(p => p.id == id && p.IsDeleted == false).FirstOrDefault<Schedule>());
+            BO.Schedule acc_ = Convert<BO.Schedule, Schedule>(_context.Schedules.Include("ScheduleDetails").Where(p => p.id == id && p.IsDeleted == false).FirstOrDefault<Schedule>());
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this schedule.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -135,14 +182,44 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<BO.Schedule> lstSchedules = new List<BO.Schedule>();
             BO.Schedule scheduleBO = (BO.Schedule)(object)entity;
 
-            var acc_ = _context.Schedules.Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<Schedule>();
-            if (acc_ == null || acc_.Count < 1)
+            if (scheduleBO != null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                if (scheduleBO.ID == 0)
+                {
+                    var acc_ = _context.Schedules.Include("ScheduleDetails").Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<Schedule>();
+                    if (acc_ == null || acc_.Count < 1)
+                    {
+                        return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    }
+                    foreach (Schedule item in acc_)
+                    {
+                        lstSchedules.Add(Convert<BO.Schedule, Schedule>(item));
+                    }
+                }
+                else
+                {
+                    var acc_ = _context.Schedules.Include("ScheduleDetails").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.ScheduleDetails.Any(x => x.ScheduleID == scheduleBO.ID)).ToList<Schedule>();
+                    if (acc_ == null || acc_.Count < 1)
+                    {
+                        return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    }
+                    foreach (Schedule item in acc_)
+                    {
+                        lstSchedules.Add(Convert<BO.Schedule, Schedule>(item));
+                    }
+                }
             }
-            foreach (Schedule item in acc_)
+            else
             {
-                lstSchedules.Add(Convert<BO.Schedule, Schedule>(item));
+                var acc_ = _context.Schedules.Include("ScheduleDetails").Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<Schedule>();
+                if (acc_ == null || acc_.Count < 1)
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+                foreach (Schedule item in acc_)
+                {
+                    lstSchedules.Add(Convert<BO.Schedule, Schedule>(item));
+                }
             }
 
             return lstSchedules;

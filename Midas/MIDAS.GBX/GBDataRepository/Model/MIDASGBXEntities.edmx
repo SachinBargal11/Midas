@@ -242,6 +242,27 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="LocationSpeciality">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="LocationID" />
+            <PropertyRef Name="SpecialityID" />
+            <PropertyRef Name="CreateByUserID" />
+            <PropertyRef Name="CreateDate" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LocationID" Type="int" Nullable="false" />
+          <Property Name="SpecialityID" Type="int" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
         <EntityType Name="Log">
           <Key>
             <PropertyRef Name="id" />
@@ -353,6 +374,7 @@
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="IsDefault" Type="bit" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="ScheduleDetail">
@@ -758,6 +780,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_LocationSpeciality_Location">
+          <End Role="Location" Type="Self.Location" Multiplicity="1" />
+          <End Role="LocationSpeciality" Type="Self.LocationSpeciality" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="LocationSpeciality">
+              <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LocationSpeciality_Specialty">
+          <End Role="Specialty" Type="Self.Specialty" Multiplicity="1" />
+          <End Role="LocationSpeciality" Type="Self.LocationSpeciality" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Specialty">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="LocationSpeciality">
+              <PropertyRef Name="SpecialityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_MedicalProvider_Company">
           <End Role="Company" Type="Self.Company" Multiplicity="1" />
           <End Role="MedicalProvider" Type="Self.MedicalProvider" Multiplicity="*" />
@@ -948,6 +994,19 @@
           <EntitySet Name="UserCompanyRole" EntityType="Self.UserCompanyRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserToken" EntityType="Self.UserToken" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LocationSpeciality" EntityType="Self.LocationSpeciality" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [LocationSpeciality].[id] AS [id], 
+    [LocationSpeciality].[Name] AS [Name], 
+    [LocationSpeciality].[LocationID] AS [LocationID], 
+    [LocationSpeciality].[SpecialityID] AS [SpecialityID], 
+    [LocationSpeciality].[IsDeleted] AS [IsDeleted], 
+    [LocationSpeciality].[CreateByUserID] AS [CreateByUserID], 
+    [LocationSpeciality].[CreateDate] AS [CreateDate], 
+    [LocationSpeciality].[UpdateByUserID] AS [UpdateByUserID], 
+    [LocationSpeciality].[UpdateDate] AS [UpdateDate]
+    FROM [dbo].[LocationSpeciality] AS [LocationSpeciality]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_Company_AddressInfo" Association="Self.FK_Company_AddressInfo">
             <End Role="AddressInfo" EntitySet="AddressInfo" />
             <End Role="Company" EntitySet="Company" />
@@ -1027,6 +1086,14 @@
           <AssociationSet Name="FK_LocationRoom_Room" Association="Self.FK_LocationRoom_Room">
             <End Role="Room" EntitySet="Room" />
             <End Role="LocationRoom" EntitySet="LocationRoom" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LocationSpeciality_Location" Association="Self.FK_LocationSpeciality_Location">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="LocationSpeciality" EntitySet="LocationSpeciality" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LocationSpeciality_Specialty" Association="Self.FK_LocationSpeciality_Specialty">
+            <End Role="Specialty" EntitySet="Specialty" />
+            <End Role="LocationSpeciality" EntitySet="LocationSpeciality" />
           </AssociationSet>
           <AssociationSet Name="FK_MedicalProvider_Company" Association="Self.FK_MedicalProvider_Company">
             <End Role="Company" EntitySet="Company" />
@@ -1342,6 +1409,7 @@
           <NavigationProperty Name="DoctorLocationSchedules" Relationship="Self.FK_DoctorLocationSchedule_Location" FromRole="Location" ToRole="DoctorLocationSchedule" />
           <NavigationProperty Name="Schedule" Relationship="Self.FK_Location_Schedule" FromRole="Location" ToRole="Schedule" />
           <NavigationProperty Name="LocationRooms" Relationship="Self.FK_LocationRoom_LocationRoom" FromRole="Location" ToRole="LocationRoom" />
+          <NavigationProperty Name="LocationSpecialities" Relationship="Self.FK_LocationSpeciality_Location" FromRole="Location" ToRole="LocationSpeciality" />
         </EntityType>
         <EntityType Name="LocationRoom">
           <Key>
@@ -1475,6 +1543,7 @@
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="IsDefault" Type="Boolean" Nullable="false" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="DoctorLocationSchedules" Relationship="Self.FK_DoctorLocationSchedule_Schedule" FromRole="Schedule" ToRole="DoctorLocationSchedule" />
           <NavigationProperty Name="Locations" Relationship="Self.FK_Location_Schedule" FromRole="Schedule" ToRole="Location" />
@@ -1537,6 +1606,7 @@
           <NavigationProperty Name="CompanySpecialtyDetails" Relationship="Self.FK_CompanySpecialtyDetails_Specialty" FromRole="Specialty" ToRole="CompanySpecialtyDetails" />
           <NavigationProperty Name="DoctorSpecialities" Relationship="Self.FK_DoctorSpecialities_Specialty" FromRole="Specialty" ToRole="DoctorSpecialities" />
           <NavigationProperty Name="SpecialityDetails" Relationship="Self.FK_SpecialityDetails_Specialty" FromRole="Specialty" ToRole="SpecialityDetails" />
+          <NavigationProperty Name="LocationSpecialities" Relationship="Self.FK_LocationSpeciality_Specialty" FromRole="Specialty" ToRole="LocationSpeciality" />
           <NavigationProperty Name="Specialty1" Relationship="Self.FK_Specialty_Specialty" FromRole="Specialty" ToRole="Specialty1" />
           <NavigationProperty Name="Specialty2" Relationship="Self.FK_Specialty_Specialty" FromRole="Specialty1" ToRole="Specialty" />
           <NavigationProperty Name="SpecialtyDetails" Relationship="Self.FK_SpecialtyDetails_Specialty" FromRole="Specialty" ToRole="SpecialtyDetails" />
@@ -1664,6 +1734,27 @@
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+        </EntityType>
+        <EntityType Name="LocationSpeciality">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="LocationID" />
+            <PropertyRef Name="SpecialityID" />
+            <PropertyRef Name="CreateByUserID" />
+            <PropertyRef Name="CreateDate" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LocationID" Type="Int32" Nullable="false" />
+          <Property Name="SpecialityID" Type="Int32" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Location" Relationship="Self.FK_LocationSpeciality_Location" FromRole="LocationSpeciality" ToRole="Location" />
+          <NavigationProperty Name="Specialty" Relationship="Self.FK_LocationSpeciality_Specialty" FromRole="LocationSpeciality" ToRole="Specialty" />
         </EntityType>
         <Association Name="FK_Company_AddressInfo">
           <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="1" />
@@ -1941,6 +2032,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_LocationSpeciality_Location">
+          <End Role="Location" Type="Self.Location" Multiplicity="1" />
+          <End Role="LocationSpeciality" Type="Self.LocationSpeciality" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="LocationSpeciality">
+              <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_LocationRoom_Room">
           <End Role="Room" Type="Self.Room" Multiplicity="1" />
           <End Role="LocationRoom" Type="Self.LocationRoom" Multiplicity="*" />
@@ -1998,6 +2101,18 @@
             </Principal>
             <Dependent Role="SpecialityDetails">
               <PropertyRef Name="SpecialtyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LocationSpeciality_Specialty">
+          <End Role="Specialty" Type="Self.Specialty" Multiplicity="1" />
+          <End Role="LocationSpeciality" Type="Self.LocationSpeciality" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Specialty">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="LocationSpeciality">
+              <PropertyRef Name="SpecialityID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2095,6 +2210,7 @@
           <EntitySet Name="UserCompanyRoles" EntityType="Self.UserCompanyRole" />
           <EntitySet Name="UserTokens" EntityType="Self.UserToken" />
           <EntitySet Name="UserTypes" EntityType="Self.UserType" />
+          <EntitySet Name="LocationSpecialities" EntityType="Self.LocationSpeciality" />
           <AssociationSet Name="FK_Company_AddressInfo" Association="Self.FK_Company_AddressInfo">
             <End Role="AddressInfo" EntitySet="AddressInfoes" />
             <End Role="Company" EntitySet="Companies" />
@@ -2187,6 +2303,10 @@
             <End Role="Location" EntitySet="Locations" />
             <End Role="LocationRoom" EntitySet="LocationRooms" />
           </AssociationSet>
+          <AssociationSet Name="FK_LocationSpeciality_Location" Association="Self.FK_LocationSpeciality_Location">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="LocationSpeciality" EntitySet="LocationSpecialities" />
+          </AssociationSet>
           <AssociationSet Name="FK_LocationRoom_Room" Association="Self.FK_LocationRoom_Room">
             <End Role="Room" EntitySet="Rooms" />
             <End Role="LocationRoom" EntitySet="LocationRooms" />
@@ -2206,6 +2326,10 @@
           <AssociationSet Name="FK_SpecialityDetails_Specialty" Association="Self.FK_SpecialityDetails_Specialty">
             <End Role="Specialty" EntitySet="Specialties" />
             <End Role="SpecialityDetails" EntitySet="SpecialityDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LocationSpeciality_Specialty" Association="Self.FK_LocationSpeciality_Specialty">
+            <End Role="Specialty" EntitySet="Specialties" />
+            <End Role="LocationSpeciality" EntitySet="LocationSpecialities" />
           </AssociationSet>
           <AssociationSet Name="FK_Specialty_Specialty" Association="Self.FK_Specialty_Specialty">
             <End Role="Specialty" EntitySet="Specialties" />
@@ -2603,6 +2727,7 @@
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2772,6 +2897,21 @@
               <MappingFragment StoreEntitySet="UserType">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LocationSpecialities">
+            <EntityTypeMapping TypeName="MIDASGBXModel.LocationSpeciality">
+              <MappingFragment StoreEntitySet="LocationSpeciality">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="SpecialityID" ColumnName="SpecialityID" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />

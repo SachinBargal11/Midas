@@ -107,5 +107,6 @@ namespace MIDAS.GBX.BusinessObjects
             SpecificHours = 2
         }
         #endregion
+
     }
 }
