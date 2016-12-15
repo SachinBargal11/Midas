@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {SpecialityStore} from '../../../stores/speciality-store';
-import {Speciality} from '../../../models/speciality';
+import {SpecialityStore} from '../../../../stores/speciality-store';
+import {Speciality} from '../../../../models/speciality';
 
 @Component({
     selector: 'speciality-list',
-    templateUrl: 'templates/pages/speciality/speciality-list.html'
+    templateUrl: 'templates/pages/account-setup/speciality/speciality-list.html'
 })
 
 

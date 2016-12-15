@@ -1,16 +1,16 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
 import {Router} from '@angular/router';
 import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {SpecialityStore} from '../../../stores/speciality-store';
-import {Speciality} from '../../../models/speciality';
-import {SessionStore} from '../../../stores/session-store';
-import {NotificationsStore} from '../../../stores/notifications-store';
-import {Notification} from '../../../models/notification';
+import {SpecialityStore} from '../../../../stores/speciality-store';
+import {Speciality} from '../../../../models/speciality';
+import {SessionStore} from '../../../../stores/session-store';
+import {NotificationsStore} from '../../../../stores/notifications-store';
+import {Notification} from '../../../../models/notification';
 import moment from 'moment';
 
 @Component({
     selector: 'add-speciality',
-    templateUrl: 'templates/pages/speciality/add-speciality.html',
+    templateUrl: 'templates/pages/account-setup/speciality/add-speciality.html',
     providers: [FormBuilder]
 })
 
@@ -69,7 +69,7 @@ export class AddSpecialityComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/specialities']);
+                this._router.navigate(['/account-setup/specialities']);
             },
             (error) => {
                 let notification = new Notification({

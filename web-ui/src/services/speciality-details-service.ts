@@ -35,9 +35,9 @@ export class SpecialityDetailsService {
         return <Observable<SpecialityDetail>>Observable.fromPromise(promise);
     }
 
-    getSpecialityDetails(): Observable<any[]> {
+    getSpecialityDetails(requestData): Observable<any[]> {
         let promise: Promise<any[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/CompanySpecialtyDetails/getall', JSON.stringify({}), {
+            return this._http.post(this._url + '/CompanySpecialtyDetails/getall', requestData, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((specialityDetailData: Array<Object>) => {

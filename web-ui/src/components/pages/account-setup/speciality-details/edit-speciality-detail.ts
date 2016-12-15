@@ -1,43 +1,42 @@
-import * as console from 'console';
-import {Component, Input, Output, EventEmitter} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs/Observable';
-import {List} from 'immutable';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+import { List } from 'immutable';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import moment from 'moment';
-import {NotificationsService} from 'angular2-notifications';
-import {SpecialityStore} from '../../../stores/speciality-store';
-import {SpecialityDetail} from '../../../models/speciality-details';
-import {Speciality} from '../../../models/speciality';
-import { Company }  from '../../../models/company';
-import {SpecialityDetailsStore} from '../../../stores/speciality-details-store';
-import {AppValidators} from '../../../utils/AppValidators';
+import { NotificationsService } from 'angular2-notifications';
+import { SpecialityStore } from '../../../../stores/speciality-store';
+import { SpecialityDetail } from '../../../../models/speciality-details';
+import { Speciality } from '../../../../models/speciality';
+import { Company } from '../../../../models/company';
+import { SpecialityDetailsStore } from '../../../../stores/speciality-details-store';
+import { AppValidators } from '../../../../utils/AppValidators';
 
-import {NotificationsStore} from '../../../stores/notifications-store';
-import {Notification} from '../../../models/notification';
+import { NotificationsStore } from '../../../../stores/notifications-store';
+import { Notification } from '../../../../models/notification';
 
 @Component({
-    selector: 'add-speciality-details',
-    templateUrl: 'templates/pages/speciality-details/add-speciality-detail.html',
+    selector: 'edit-speciality-details',
+    templateUrl: 'templates/pages/account-setup/speciality-details/edit-speciality-detail.html',
     providers: [FormBuilder]
 })
 
 
-export class AddSpecialityDetailsComponent {
+export class EditSpecialityDetailsComponent {
+    speciality = new Speciality({});
+    specialityDetail = new SpecialityDetail({});
     isSpecialityDetailSaveInProgress = false;
     // specialities: Observable<List<Speciality>>;
     specialities: Speciality[];
     specialityDetailForm: FormGroup;
     specialityDetailFormControls: any;
-    specialityDetail = new SpecialityDetail({});
-    specialityDetailJS;
-
     options = {
         timeOut: 3000,
         showProgressBar: true,
         pauseOnHover: false,
         clickToClose: false
     };
+    specialityDetailJS;
 
     constructor(
         public _route: ActivatedRoute,
@@ -48,8 +47,23 @@ export class AddSpecialityDetailsComponent {
         private _specialityDetailsStore: SpecialityDetailsStore,
         private _specialityStore: SpecialityStore
     ) {
-        this.specialityDetailJS = this.specialityDetail.toJS();
         // this.specialities = this._specialityStore.specialities;
+
+        this._route.params.subscribe((routeParams: any) => {
+            let specialityDetailId: number = parseInt(routeParams.id);
+            let result = this._specialityDetailsStore.fetchSpecialityDetailById(specialityDetailId);
+            result.subscribe(
+                (specialityDetail: any) => {
+                    this.specialityDetail = specialityDetail;
+                    this.speciality = specialityDetail.specialty;
+                    this.specialityDetailJS = this.specialityDetail.toJS();
+                },
+                (error) => {
+                    this._router.navigate(['/speciality-details']);
+                },
+                () => {
+                });
+        });
         this.specialityDetailForm = this.fb.group({
             ReevalDays: ['', Validators.required],
             reevalvisitCount: ['', Validators.required],
@@ -72,39 +86,40 @@ export class AddSpecialityDetailsComponent {
     saveSpecialityDetail() {
         let specialityDetailFormValues = this.specialityDetailForm.value;
         let specialityDetail = new SpecialityDetail({
+            id: this.specialityDetail.id,
             ReevalDays: parseInt(specialityDetailFormValues.ReevalDays),
             reevalvisitCount: parseInt(specialityDetailFormValues.reevalvisitCount),
             initialDays: parseInt(specialityDetailFormValues.initialDays),
             initialvisitCount: parseInt(specialityDetailFormValues.initialvisitCount),
-            isnitialEvaluation: parseInt(specialityDetailFormValues.isInitialEvaluation),
-            include1500: parseInt(specialityDetailFormValues.include1500),
-            allowmultipleVisit: parseInt(specialityDetailFormValues.allowMultipleVisit),
+            isnitialEvaluation: parseInt(specialityDetailFormValues.isInitialEvaluation) ? true : false,
+            include1500: parseInt(specialityDetailFormValues.include1500) ? true : false,
+            allowmultipleVisit: parseInt(specialityDetailFormValues.allowMultipleVisit) ? true : false,
             maxReval: parseInt(specialityDetailFormValues.maxReval),
-            specialty: new Speciality({            
-            	id: parseInt(specialityDetailFormValues.associatedSpeciality)
+            specialty: new Speciality({
+                id: parseInt(specialityDetailFormValues.associatedSpeciality)
             }),
-            company: new Company ({            
-            	id:1
+            company: new Company({
+                id: 1
             })
         });
+
         this.isSpecialityDetailSaveInProgress = true;
         let result: Observable<SpecialityDetail>;
 
-        result = this._specialityDetailsStore.addSpecialityDetail(specialityDetail);
+        result = this._specialityDetailsStore.updateSpecialityDetail(specialityDetail);
         result.subscribe(
             (response: SpecialityDetail) => {
                 let notification = new Notification({
-                    'title': 'Speciality Details added successfully!',
+                    'title': 'Speciality Details updated successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/speciality-details']);
-
+                this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
                 let notification = new Notification({
-                    'title': 'Unable to add Speciality Details.',
+                    'title': 'Unable to update Speciality Details.',
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
@@ -113,6 +128,5 @@ export class AddSpecialityDetailsComponent {
             () => {
                 this.isSpecialityDetailSaveInProgress = false;
             });
-
     }
 }
