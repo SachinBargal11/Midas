@@ -24,9 +24,10 @@ import {StateService} from '../../../services/state-service';
 })
 
 export class UpdateDoctorComponent implements OnInit {
+    users: any[];
     states: any[];
     doctor = new Doctor({});
-    doctorUser = new User({});
+    user = new User({});
     address = new Address({});
     contactInfo = new Contact({});
     options = {
@@ -57,11 +58,11 @@ export class UpdateDoctorComponent implements OnInit {
             let doctorId: number = parseInt(routeParams.id);
             let result = this._doctorsStore.fetchDoctorById(doctorId);
             result.subscribe(
-                (doctorDetail: DoctorDetail) => {
-                    this.doctor = doctorDetail.doctor;
-                    // this.doctorUser = doctorDetail.doctor.userId;
-                    this.address = doctorDetail.address;
-                    this.contactInfo = doctorDetail.contactInfo;
+                (doctorDetail: Doctor) => {
+                    this.doctor = doctorDetail;
+                    this.user = doctorDetail.user;
+                    // this.address = doctorDetail.address;
+                    // this.contactInfo = doctorDetail.contactInfo;
                 },
                 (error) => {
                     this._router.navigate(['/doctors']);
@@ -75,82 +76,97 @@ export class UpdateDoctorComponent implements OnInit {
                 wcbAuthorization: ['', Validators.required],
                 wcbRatingCode: ['', Validators.required],
                 npi: ['', Validators.required],
-                federalTaxId: ['', Validators.required],
+                // federalTaxId: ['', Validators.required],
                 taxType: ['', Validators.required],
-                assignNumber: ['', Validators.required],
-                title: ['', Validators.required]
-            }),
-            userInfo: this.fb.group({
-                firstName: ['', Validators.required],
-                middleName: [''],
-                lastName: ['', Validators.required],
-                userType: ['', Validators.required],
-                password: ['', Validators.required],
-                confirmPassword: ['', Validators.required],
-            }, { validator: AppValidators.matchingPasswords('password', 'confirmPassword') }),
-            contact: this.fb.group({
-                email: ['', [Validators.required, AppValidators.emailValidator]],
-                cellPhone: ['', [Validators.required]],
-                homePhone: [''],
-                workPhone: [''],
-                faxNo: ['']
-            }),
-            address: this.fb.group({
-                address1: [''],
-                address2: [''],
-                city: [''],
-                zipCode: [''],
-                state: [''],
-                country: ['']
+                // assignNumber: ['', Validators.required],
+                title: ['', Validators.required],
+                user: ['', [Validators.required, AppValidators.selectedValueValidator]]
             })
+            // userInfo: this.fb.group({
+            //     firstName: ['', Validators.required],
+            //     middleName: [''],
+            //     lastName: ['', Validators.required],
+            //     userType: ['', Validators.required],
+            //     password: ['', Validators.required],
+            //     confirmPassword: ['', Validators.required],
+            // }, { validator: AppValidators.matchingPasswords('password', 'confirmPassword') }),
+            // contact: this.fb.group({
+            //     email: ['', [Validators.required, AppValidators.emailValidator]],
+            //     cellPhone: ['', [Validators.required]],
+            //     homePhone: [''],
+            //     workPhone: [''],
+            //     faxNo: ['']
+            // }),
+            // address: this.fb.group({
+            //     address1: [''],
+            //     address2: [''],
+            //     city: [''],
+            //     zipCode: [''],
+            //     state: [''],
+            //     country: ['']
+            // })
         });
 
         this.doctorformControls = this.doctorform.controls;
     }
 
     ngOnInit() {
-        this._stateService.getStates()
-            .subscribe(states => this.states = states);
+        // this._stateService.getStates()
+        //     .subscribe(states => this.states = states);
+        let requestData = {
+            userCompanies: [
+                {
+                    company:
+                    {
+                        id: 1
+                    }
+                }
+            ]
+            // userType: 3
+        };
+        this._usersStore.getUsers(requestData)
+            .subscribe(users => {
+                this.users = users;
+            });
     }
 
 
     updateDoctor() {
         let doctorFormValues = this.doctorform.value;
-        let doctorDetail = new DoctorDetail({
-            doctor: new Doctor({
+        let doctorDetail = new Doctor({
+            // doctor: new Doctor({
                 id: this.doctor.id,
                 licenseNumber: doctorFormValues.doctor.licenseNumber,
                 wcbAuthorization: doctorFormValues.doctor.wcbAuthorization,
                 wcbRatingCode: doctorFormValues.doctor.wcbRatingCode,
                 npi: doctorFormValues.doctor.npi,
-                federalTaxId: doctorFormValues.doctor.federalTaxId,
                 taxType: doctorFormValues.doctor.taxType,
-                assignNumber: doctorFormValues.doctor.assignNumber,
                 title: doctorFormValues.doctor.title,
-            }),
+            // }),
             user: new User({
-                userName: doctorFormValues.contact.email,
-                firstName: doctorFormValues.userInfo.firstName,
-                middleName: doctorFormValues.userInfo.middleName,
-                lastName: doctorFormValues.userInfo.lastName,
-                userType: parseInt(doctorFormValues.userInfo.userType),
-                password: doctorFormValues.userInfo.password
-            }),
-            contactInfo: new Contact({
-                cellPhone: doctorFormValues.contact.cellPhone,
-                emailAddress: doctorFormValues.contact.email,
-                faxNo: doctorFormValues.contact.faxNo,
-                homePhone: doctorFormValues.contact.homePhone,
-                workPhone: doctorFormValues.contact.workPhone,
-            }),
-            address: new Address({
-                address1: doctorFormValues.address.address1,
-                address2: doctorFormValues.address.address2,
-                city: doctorFormValues.address.city,
-                country: doctorFormValues.address.country,
-                state: doctorFormValues.address.state,
-                zipCode: doctorFormValues.address.zipCode,
+                id: doctorFormValues.doctor.user
+                // userName: doctorFormValues.contact.email,
+                // firstName: doctorFormValues.userInfo.firstName,
+                // middleName: doctorFormValues.userInfo.middleName,
+                // lastName: doctorFormValues.userInfo.lastName,
+                // userType: parseInt(doctorFormValues.userInfo.userType),
+                // password: doctorFormValues.userInfo.password
             })
+            // contactInfo: new Contact({
+            //     cellPhone: doctorFormValues.contact.cellPhone,
+            //     emailAddress: doctorFormValues.contact.email,
+            //     faxNo: doctorFormValues.contact.faxNo,
+            //     homePhone: doctorFormValues.contact.homePhone,
+            //     workPhone: doctorFormValues.contact.workPhone,
+            // }),
+            // address: new Address({
+            //     address1: doctorFormValues.address.address1,
+            //     address2: doctorFormValues.address.address2,
+            //     city: doctorFormValues.address.city,
+            //     country: doctorFormValues.address.country,
+            //     state: doctorFormValues.address.state,
+            //     zipCode: doctorFormValues.address.zipCode,
+            // })
         });
         this.isSaveDoctorProgress = true;
         let result;

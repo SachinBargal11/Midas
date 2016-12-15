@@ -15,6 +15,7 @@ import {Notification} from '../../../models/notification';
 import moment from 'moment';
 import {StatesStore} from '../../../stores/states-store';
 import {StateService} from '../../../services/state-service';
+import { UsersStore } from '../../../stores/users-store';
 
 @Component({
     selector: 'add-doctor',
@@ -23,6 +24,9 @@ import {StateService} from '../../../services/state-service';
 })
 
 export class AddDoctorComponent implements OnInit {
+    user = new User({});
+    userJS;
+    users: any[];
     states: any[];
     options = {
         timeOut: 3000,
@@ -44,41 +48,19 @@ export class AddDoctorComponent implements OnInit {
         private _router: Router,
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
-        private _elRef: ElementRef
+        private _elRef: ElementRef,
+        private _usersStore: UsersStore
     ) {
+        this.userJS = this.user.toJS();
         this.doctorform = this.fb.group({
             doctor: this.fb.group({
                 licenseNumber: ['', Validators.required],
                 wcbAuthorization: ['', Validators.required],
                 wcbRatingCode: ['', Validators.required],
                 npi: ['', Validators.required],
-                federalTaxId: ['', Validators.required],
                 taxType: ['', Validators.required],
-                assignNumber: ['', Validators.required],
-                title: ['', Validators.required]
-            }),
-            userInfo: this.fb.group({
-                firstname: ['', Validators.required],
-                middlename: [''],
-                lastname: ['', Validators.required],
-                userType: ['', Validators.required],
-                password: ['', Validators.required],
-                confirmPassword: ['', Validators.required],
-            }, { validator: AppValidators.matchingPasswords('password', 'confirmPassword') }),
-            contact: this.fb.group({
-                email: ['', [Validators.required, AppValidators.emailValidator]],
-                cellPhone: ['', [Validators.required]],
-                homePhone: [''],
-                workPhone: [''],
-                faxNo: ['']
-            }),
-            address: this.fb.group({
-                address1: [''],
-                address2: [''],
-                city: [''],
-                zipCode: [''],
-                state: [''],
-                country: ['']
+                title: ['', Validators.required],
+                user: ['', Validators.required]
             })
         });
 
@@ -86,46 +68,37 @@ export class AddDoctorComponent implements OnInit {
     }
 
     ngOnInit() {
-        this._stateService.getStates()
-            .subscribe(states => this.states = states);
+        // this._stateService.getStates()
+        //     .subscribe(states => this.states = states);
+        let requestData = {
+            userCompanies: [
+                {
+                    company:
+                    {
+                        id: 1
+                    }
+                }
+            ]
+            // userType: 3
+        };
+        this._usersStore.getUsers(requestData)
+            .subscribe(users => {
+                this.users = users;
+            });
     }
 
 
     saveDoctor() {
         let doctorFormValues = this.doctorform.value;
-        let doctorDetail = new DoctorDetail({
-            doctor: new Doctor({
+        let doctorDetail = new Doctor({
                 licenseNumber: doctorFormValues.doctor.licenseNumber,
                 wcbAuthorization: doctorFormValues.doctor.wcbAuthorization,
                 wcbRatingCode: doctorFormValues.doctor.wcbRatingCode,
                 npi: doctorFormValues.doctor.npi,
-                federalTaxId: doctorFormValues.doctor.federalTaxId,
                 taxType: doctorFormValues.doctor.taxType,
-                assignNumber: doctorFormValues.doctor.assignNumber,
-                title: doctorFormValues.doctor.title
-            }),
+                title: doctorFormValues.doctor.title,
             user: new User({
-                userName: doctorFormValues.contact.email,
-                firstName: doctorFormValues.userInfo.firstname,
-                middleName: doctorFormValues.userInfo.middlename,
-                lastName: doctorFormValues.userInfo.lastname,
-                userType: parseInt(doctorFormValues.userInfo.userType),
-                password: doctorFormValues.userInfo.password
-            }),
-            contactInfo: new Contact({
-                cellPhone: doctorFormValues.contact.cellPhone,
-                emailAddress: doctorFormValues.contact.email,
-                faxNo: doctorFormValues.contact.faxNo,
-                homePhone: doctorFormValues.contact.homePhone,
-                workPhone: doctorFormValues.contact.workPhone,
-            }),
-            address: new Address({
-                address1: doctorFormValues.address.address1,
-                address2: doctorFormValues.address.address2,
-                city: doctorFormValues.address.city,
-                country: doctorFormValues.address.country,
-                state: doctorFormValues.address.state,
-                zipCode: doctorFormValues.address.zipCode,
+                id: doctorFormValues.doctor.user
             })
         });
         this.isSaveDoctorProgress = true;

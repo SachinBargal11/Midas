@@ -28,52 +28,52 @@ constructor(
     private _sessionStore: SessionStore,
     private _notificationsService: NotificationsService
 ) {
-    this.doctorsLoading = true;
-    this._doctorsStore.getDoctors().subscribe(doctors => {
-        this.doctors = doctors;
-        let groupedDoctors: Array<any> = _.chain(this.doctors).groupBy(function (doctor) {
-            return doctor.toJS().doctor.createDate.format('Do MMM YY');
-        }).map(function (value: Array<any>, key: string) {
-            return {
-                x: moment(key, 'Do MMM YY'),
-                y: value.length
-            };
-        })
-        .value();
-        this.data.datasets[0].data = groupedDoctors;
-    },
-        null,
-        () => {
-            this.doctorsLoading = false;
-        }
-    );
-    this.options = {
-        scales: {
-            xAxes: [{
-                type: 'time',
-                time: {
-                    unit: 'week'
-                }
-            }]
-        },
-        tooltips: {
-                callbacks: {
-                    title: function (tooltipItem, data) {
-                        return tooltipItem[0].xLabel.format('Do MMM YY');
-                    }
-                }
-            }
-    };
-    this.data = {
-        datasets: [
-            {
-                label: 'Doctors',
-                backgroundColor: '#42A5F5',
-                borderColor: '#1E88E5',
-                data: []
-            }
-        ]
-    };
+    // this.doctorsLoading = true;
+    // this._doctorsStore.getDoctors().subscribe(doctors => {
+    //     this.doctors = doctors;
+    //     let groupedDoctors: Array<any> = _.chain(this.doctors).groupBy(function (doctor) {
+    //         return doctor.toJS().doctor.createDate.format('Do MMM YY');
+    //     }).map(function (value: Array<any>, key: string) {
+    //         return {
+    //             x: moment(key, 'Do MMM YY'),
+    //             y: value.length
+    //         };
+    //     })
+    //     .value();
+    //     this.data.datasets[0].data = groupedDoctors;
+    // },
+    //     null,
+    //     () => {
+    //         this.doctorsLoading = false;
+    //     }
+    // );
+    // this.options = {
+    //     scales: {
+    //         xAxes: [{
+    //             type: 'time',
+    //             time: {
+    //                 unit: 'week'
+    //             }
+    //         }]
+    //     },
+    //     tooltips: {
+    //             callbacks: {
+    //                 title: function (tooltipItem, data) {
+    //                     return tooltipItem[0].xLabel.format('Do MMM YY');
+    //                 }
+    //             }
+    //         }
+    // };
+    // this.data = {
+    //     datasets: [
+    //         {
+    //             label: 'Doctors',
+    //             backgroundColor: '#42A5F5',
+    //             borderColor: '#1E88E5',
+    //             data: []
+    //         }
+    //     ]
+    // };
 }
   newDate(days) {
     return moment().add(days, 'd');

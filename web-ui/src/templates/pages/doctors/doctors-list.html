@@ -12,14 +12,14 @@
     <i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
     <input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Doctor">
 </div>
-<p-dataTable [value]="doctors" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+<p-dataTable [value]="doctors" [(selection)]="selectedDoctor" selectionMode="single" (onRowSelect)="onRowSelect(selectedDoctor)" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>List of Doctors</header>
-    <p-column field="doctor.doctorUser.firstName" header="First name" [sortable]="true" [filter]="true"></p-column>
-    <p-column field="doctor.doctorUser.lastName" header="Last name" [sortable]="true" [filter]="true"></p-column>
-    <p-column field="doctor.id" header="Doctor Id" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
-   <p-column styleClass="col-button" header="Edit">
+    <p-column field="user.firstName" header="First name" [sortable]="true"></p-column>
+    <p-column field="user.lastName" header="Last name" [sortable]="true"></p-column>
+    <p-column field="id" header="Doctor Id" [sortable]="true"></p-column>
+   <p-column styleClass="col-button" header="Assign Speciality">
         <template let-doctor="rowData" pTemplate type="body">
-        <a [routerLink]="['/doctors/update/', doctor.doctor.id]"><i class="glyphicon glyphicon-edit"></i></a>
+        <a [routerLink]="['/doctors/speciality/', doctor.id]"><i class="glyphicon glyphicon-edit"></i></a>
         </template>
     </p-column>
 </p-dataTable>

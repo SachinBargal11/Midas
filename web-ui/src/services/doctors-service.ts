@@ -6,6 +6,8 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
 import {DoctorDetail} from '../models/doctor-details';
+import {Doctor} from '../models/doctor';
+import {DoctorSpeciality} from '../models/doctor-speciality';
 import {DoctorAdapter} from './adapters/doctor-adapter';
 import {UserType} from '../models/enums/user-type';
 
@@ -21,101 +23,119 @@ export class DoctorsService {
         this._headers.append('Content-Type', 'application/json');
     }
 
-    getDoctor(doctorId: Number): Observable<DoctorDetail> {
-        let promise: Promise<DoctorDetail> = new Promise((resolve, reject) => {
+    getDoctor(doctorId: Number): Observable<Doctor> {
+        let promise: Promise<Doctor> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/Doctor/Get/' + doctorId).map(res => res.json())
                 .subscribe((data: any) => {
-                    let parsedDoctor: DoctorDetail = null;
-                    parsedDoctor = DoctorAdapter.parseResponse(data);
-                    resolve(parsedDoctor);
+                    // let parsedDoctor: Doctor = null;
+                    // parsedDoctor = DoctorAdapter.parseResponse(data);
+                    resolve(data);
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<DoctorDetail>>Observable.fromPromise(promise);
+        return <Observable<Doctor>>Observable.fromPromise(promise);
     }
-    getDoctors(): Observable<DoctorDetail[]> {
-        let promise: Promise<DoctorDetail[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/Doctor/GetAll', JSON.stringify({ 'doctor': [{}] }), {
+    getDoctors(): Observable<Doctor[]> {
+        let promise: Promise<Doctor[]> = new Promise((resolve, reject) => {
+            return this._http.post(this._url + '/Doctor/getall', JSON.stringify({}), {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: Array<Object>) => {
-                    let doctors = (<Object[]>data).map((doctorData: any) => {
-                        return DoctorAdapter.parseResponse(doctorData);
-                    });
-                    resolve(doctors);
+                    // let doctors = (<Object[]>data).map((doctorData: any) => {
+                    //     return DoctorAdapter.parseResponse(doctorData);
+                    // });
+                    resolve(data);
                 }, (error) => {
                     reject(error);
                 });
 
         });
-        return <Observable<DoctorDetail[]>>Observable.fromPromise(promise);
+        return <Observable<Doctor[]>>Observable.fromPromise(promise);
     }
 
-    addDoctor(doctorDetail: DoctorDetail): Observable<DoctorDetail> {
-        let promise: Promise<DoctorDetail> = new Promise((resolve, reject) => {
+    addDoctor(doctorDetail: Doctor): Observable<Doctor> {
+        let promise: Promise<Doctor> = new Promise((resolve, reject) => {
 
 
             let doctorDetailRequestData = doctorDetail.toJS();
 
             // add/replace values which need to be changed
-            _.extend(doctorDetailRequestData.user, {
-                userType: UserType[doctorDetailRequestData.user.userType],
-                dateOfBirth: doctorDetailRequestData.user.dateOfBirth ? doctorDetailRequestData.user.dateOfBirth.toISOString() : null
-            });
+            // _.extend(doctorDetailRequestData.user, {
+            //     userType: UserType[doctorDetailRequestData.user.userType],
+            //     dateOfBirth: doctorDetailRequestData.user.dateOfBirth ? doctorDetailRequestData.user.dateOfBirth.toISOString() : null
+            // });
 
             // remove unneeded keys 
             doctorDetailRequestData.user = _.omit(doctorDetailRequestData.user, 'accountId', 'gender', 'status', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
-            doctorDetailRequestData.address = _.omit(doctorDetailRequestData.address, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
-            doctorDetailRequestData.contactInfo = _.omit(doctorDetailRequestData.contactInfo, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
-            doctorDetailRequestData.doctor = _.omit(doctorDetailRequestData.doctor, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+            // doctorDetailRequestData.address = _.omit(doctorDetailRequestData.address, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+            // doctorDetailRequestData.contactInfo = _.omit(doctorDetailRequestData.contactInfo, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+            // doctorDetailRequestData = _.omit(doctorDetailRequestData.doctor, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
 
-            return this._http.post(this._url + '/Doctor/Add', JSON.stringify(doctorDetailRequestData), {
+            return this._http.post(this._url + '/Doctor/add', JSON.stringify(doctorDetailRequestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
                 .subscribe((doctorData: any) => {
-                    let parsedDoctor: DoctorDetail = null;
-                    parsedDoctor = DoctorAdapter.parseResponse(doctorData);
-                    resolve(parsedDoctor);
+                    // let parsedDoctor: Doctor = null;
+                    // parsedDoctor = DoctorAdapter.parseResponse(doctorData);
+                    resolve(doctorData);
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<DoctorDetail>>Observable.fromPromise(promise);
+        return <Observable<Doctor>>Observable.fromPromise(promise);
 
     }
-    updateDoctor(doctorDetail: DoctorDetail): Observable<DoctorDetail> {
-        let promise: Promise<DoctorDetail> = new Promise((resolve, reject) => {
+    updateDoctor(doctorDetail: Doctor): Observable<Doctor> {
+        let promise: Promise<Doctor> = new Promise((resolve, reject) => {
 
 
             let doctorDetailRequestData = doctorDetail.toJS();
 
             // add/replace values which need to be changed
-            _.extend(doctorDetailRequestData.user, {
-                userType: UserType[doctorDetailRequestData.user.userType],
-                dateOfBirth: doctorDetailRequestData.user.dateOfBirth ? doctorDetailRequestData.user.dateOfBirth.toISOString() : null
-            });
+            // _.extend(doctorDetailRequestData.user, {
+            //     userType: UserType[doctorDetailRequestData.user.userType],
+            //     dateOfBirth: doctorDetailRequestData.user.dateOfBirth ? doctorDetailRequestData.user.dateOfBirth.toISOString() : null
+            // });
 
             // remove unneeded keys 
             doctorDetailRequestData.user = _.omit(doctorDetailRequestData.user, 'accountId', 'gender', 'status', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
-            doctorDetailRequestData.address = _.omit(doctorDetailRequestData.address, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
-            doctorDetailRequestData.contactInfo = _.omit(doctorDetailRequestData.contactInfo, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
-            doctorDetailRequestData.doctor = _.omit(doctorDetailRequestData.doctor, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+            // doctorDetailRequestData.address = _.omit(doctorDetailRequestData.address, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+            // doctorDetailRequestData.contactInfo = _.omit(doctorDetailRequestData.contactInfo, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+            // doctorDetailRequestData.doctor = _.omit(doctorDetailRequestData.doctor, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
 
-            return this._http.post(this._url + '/Doctor/Add', JSON.stringify(doctorDetailRequestData), {
+            return this._http.post(this._url + '/Doctor/add', JSON.stringify(doctorDetailRequestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
                 .subscribe((doctorData: any) => {
-                    let parsedDoctor: DoctorDetail = null;
-                    parsedDoctor = DoctorAdapter.parseResponse(doctorData);
-                    resolve(parsedDoctor);
+                    // let parsedDoctor: Doctor = null;
+                    // parsedDoctor = DoctorAdapter.parseResponse(doctorData);
+                    resolve(doctorData);
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<DoctorDetail>>Observable.fromPromise(promise);
+        return <Observable<Doctor>>Observable.fromPromise(promise);
+
+    }
+    addDoctorSpeciality(doctorDetail: DoctorSpeciality): Observable<DoctorSpeciality> {
+        let promise: Promise<DoctorSpeciality> = new Promise((resolve, reject) => {
+
+
+            let doctorDetailRequestData = doctorDetail.toJS();
+            return this._http.post(this._url + '/DoctorSpeciality/add', JSON.stringify(doctorDetailRequestData), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((doctorData: any) => {
+                    resolve(doctorData);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<DoctorSpeciality>>Observable.fromPromise(promise);
 
     }
 
