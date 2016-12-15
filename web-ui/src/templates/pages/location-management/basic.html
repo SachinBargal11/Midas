@@ -117,7 +117,7 @@
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.officeType.touched && !basicformControls.officeType.valid">
                                     <!--<input formControlName="officeType" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.officeType.valid">-->
-                                    <select  [ngModel]="locationType" formControlName="officeType" type="text" class="form-control" placeholder="" [class.error]="basicformControls.officeType.touched && !basicformControls.officeType.valid">
+                                    <select [ngModel]="locationDetails.location.locationType" formControlName="officeType" type="text" class="form-control" placeholder="" [class.error]="basicformControls.officeType.touched && !basicformControls.officeType.valid">
                                         <option value="0">-Select Speciality-</option>
                                         <option disabled>────────────────────</option>
                                         <option value="1">Medical Office</option>
