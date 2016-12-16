@@ -159,6 +159,16 @@ namespace MIDAS.GBX.WebAPI
         }
         #endregion
 
+        #region Login
+        public object Login(T gbObject)
+        {
+            User userBO = (User)(object)gbObject;
+
+            var objResult = dataAccessManager.Login(gbObject);
+            return objResult;
+        }
+        #endregion
+
         public HttpResponseMessage ValidateInvitation(HttpRequestMessage request, T gbObject)
         {
             Invitation invitationBO = (Invitation)(object)gbObject;

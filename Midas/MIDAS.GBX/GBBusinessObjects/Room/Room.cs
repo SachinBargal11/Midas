@@ -62,6 +62,18 @@ namespace MIDAS.GBX.BusinessObjects
                 _roomtest = value;
             }
         }
+        private Location _location;
+        public Location location
+        {
+            get
+            {
+                return this._location;
+            }
+            set
+            {
+                _location = value;
+            }
+        }
 
         public override List<BusinessValidation> Validate<T>(T entity)
         {

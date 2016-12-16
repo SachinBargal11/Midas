@@ -24,6 +24,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public string Name { get; set; }
         public string ContactPersonName { get; set; }
         public string Phone { get; set; }
+        public int LocationID { get; set; }
         public int RoomTestID { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
@@ -31,6 +32,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
+        public virtual Location Location { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LocationRoom> LocationRooms { get; set; }
         public virtual RoomTest RoomTest { get; set; }
