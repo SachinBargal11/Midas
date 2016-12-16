@@ -38,7 +38,8 @@ export const PatientsShellRoutes: Routes = [
         children: [
             {
                 path: '',
-                redirectTo: 'basic'
+                redirectTo: 'basic',
+                pathMatch: 'full'
             },
             {
                 path: 'basic',

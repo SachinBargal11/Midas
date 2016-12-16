@@ -28,9 +28,9 @@ export class ScheduleDetails extends ScheduleDetailsRecord {
     scheduleStatus: number;
     isDeleted: boolean;
     createByUserID: number;
-    createDate: moment.MomentStatic;
+    createDate: moment.Moment;
     updateByUserID: number;
-    updateDate: moment.MomentStatic;
+    updateDate: moment.Moment;
 
     constructor(props) {
         super(props);

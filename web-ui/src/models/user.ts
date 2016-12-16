@@ -40,12 +40,12 @@ export class User extends UserRecord {
     imageLink: string;
     address: Address;
     contact: Contact;
-    dateOfBirth: moment.MomentStatic;
+    dateOfBirth: moment.Moment;
     isDeleted: boolean;
     createByUserId: number;
     updateByUserId: number;
-    // createDate: moment.MomentStatic;
-    // updateDate: moment.MomentStatic;
+    // createDate: moment.Moment;
+    // updateDate: moment.Moment;
 
     constructor(props) {
         super(props);

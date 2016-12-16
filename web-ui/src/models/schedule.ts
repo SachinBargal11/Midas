@@ -22,9 +22,9 @@ export class Schedule extends ScheduleRecord {
     isDefault: boolean;
     scheduleDetails: ScheduleDetails;
     createByUserID: number;
-    createDate: moment.MomentStatic;
+    createDate: moment.Moment;
     updateByUserID: number;
-    updateDate: moment.MomentStatic;
+    updateDate: moment.Moment;
 
     constructor(props) {
         super(props);

@@ -41,7 +41,8 @@ export const SpecialityRoutes: Routes = [
         children: [
             {
                 path: '',
-                redirectTo: 'speciality-details'
+                redirectTo: 'speciality-details',
+                pathMatch: 'full'
             },
             {
                 path: 'basic',

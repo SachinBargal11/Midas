@@ -1,9 +1,9 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router, ActivatedRoute} from '@angular/router';
-import {SessionStore} from '../../../stores/session-store';
-import {NotificationsStore} from '../../../stores/notifications-store';
-import {Notification} from '../../../models/notification';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { SessionStore } from '../../../stores/session-store';
+import { NotificationsStore } from '../../../stores/notifications-store';
+import { Notification } from '../../../models/notification';
 import moment from 'moment';
 import { LocationsStore } from '../../../stores/locations-store';
 import { LocationsService } from '../../../services/locations-service';
@@ -55,20 +55,21 @@ export class ScheduleComponent implements OnInit {
             result.subscribe(
                 (locationDetails: LocationDetails) => {
                     this.locationDetails = locationDetails;
-                    let scheduleId: number = locationDetails.location.schedule.id;
+                    // let scheduleId: number = locationDetails.location.schedule.id;
+                    let scheduleId = 1;
                     this._locationsService.getSchedule(scheduleId)
-                            .subscribe(
-                                (schedule: Schedule) =>{
-                                    this.scheduleDetails = schedule.scheduleDetails;
-                                    // this.scheduleDetailsJS = this.scheduleDetails.toJS();
-                                    this.monday = this.scheduleDetails[0];
-                                    this.tuesday = this.scheduleDetails[1];
-                                    this.wednesday = this.scheduleDetails[2];
-                                    this.thursday = this.scheduleDetails[3];
-                                    this.friday = this.scheduleDetails[4];
-                                    this.saturday = this.scheduleDetails[5];
-                                    this.sunday = this.scheduleDetails[6];
-                                });
+                        .subscribe(
+                        (schedule: Schedule) => {
+                            this.scheduleDetails = schedule.scheduleDetails;
+                            // this.scheduleDetailsJS = this.scheduleDetails.toJS();
+                            this.monday = this.scheduleDetails[0];
+                            this.tuesday = this.scheduleDetails[1];
+                            this.wednesday = this.scheduleDetails[2];
+                            this.thursday = this.scheduleDetails[3];
+                            this.friday = this.scheduleDetails[4];
+                            this.saturday = this.scheduleDetails[5];
+                            this.sunday = this.scheduleDetails[6];
+                        });
                 },
                 (error) => {
                     this._router.navigate(['/medical-provider/locations']);
@@ -77,28 +78,28 @@ export class ScheduleComponent implements OnInit {
                 });
         });
         this.scheduleform = this.fb.group({
-                sundayFrom: [''],
-                sundayTo: [''],
-                sunday: [''],
-                mondayFrom: [''],
-                mondayTo: [''],
-                monday: [''],
-                tuesdayFrom: [''],
-                tuesdayTo: [''],
-                tuesday: [''],
-                wednesdayFrom: [''],
-                wednesdayTo: [''],
-                wednesday: [''],
-                thursdayFrom: [''],
-                thursdayTo: [''],
-                thursday: [''],
-                fridayFrom: [''],
-                fridayTo: [''],
-                friday: [''],
-                saturdayFrom: [''],
-                saturdayTo: [''],
-                saturday: [''],
-            });
+            sundayFrom: [''],
+            sundayTo: [''],
+            sunday: [''],
+            mondayFrom: [''],
+            mondayTo: [''],
+            monday: [''],
+            tuesdayFrom: [''],
+            tuesdayTo: [''],
+            tuesday: [''],
+            wednesdayFrom: [''],
+            wednesdayTo: [''],
+            wednesday: [''],
+            thursdayFrom: [''],
+            thursdayTo: [''],
+            thursday: [''],
+            fridayFrom: [''],
+            fridayTo: [''],
+            friday: [''],
+            saturdayFrom: [''],
+            saturdayTo: [''],
+            saturday: [''],
+        });
         this.scheduleformControls = this.scheduleform.controls;
     }
 

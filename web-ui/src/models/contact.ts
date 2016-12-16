@@ -28,8 +28,8 @@ export class Contact extends ContactRecord {
     isDeleted: boolean;
     createByUserId: number;
     updateByUserId: number;
-    // createDate: moment.MomentStatic;
-    // updateDate: moment.MomentStatic;
+    // createDate: moment.Moment;
+    // updateDate: moment.Moment;
 
     constructor(props) {
         super(props);
