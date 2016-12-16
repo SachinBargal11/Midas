@@ -52,15 +52,6 @@ export class SpecialityDetailComponent {
         });
     }
     ngOnInit() {
-        // this.loadSpecialityDetails();
-    }
-
-
-    loadSpecialityDetails() {
-        this._specialityDetailsStore.getSpecialityDetails()
-            .subscribe(specialityDetails => { this.specialityDetails = specialityDetails; },
-            null,
-            () => { });
     }
 
 }

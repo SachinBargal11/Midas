@@ -9,6 +9,7 @@ import { AccountDetail } from '../models/account-details';
 import { Account } from '../models/account';
 import { UserAdapter } from './adapters/user-adapter';
 import { UserType } from '../models/enums/user-type';
+import { SessionStore } from '../stores/session-store';
 
 @Injectable()
 export class UsersService {
@@ -18,7 +19,8 @@ export class UsersService {
     private _headers: Headers = new Headers();
 
     constructor(
-        private _http: Http
+        private _http: Http,
+        private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
     }
@@ -34,7 +36,14 @@ export class UsersService {
         });
         return <Observable<Account>>Observable.fromPromise(promise);
     }
-    getUsers(requestData): Observable<Account[]> {
+    getUsers(): Observable<Account[]> {
+        let requestData = {
+            userCompanies: [{
+                company: {
+                    id: this._sessionStore.session.company.id
+                }
+            }]
+        };
         let promise: Promise<Account[]> = new Promise((resolve, reject) => {
             return this._http.post(this._url + '/user/GetAll', requestData, {
                 headers: this._headers

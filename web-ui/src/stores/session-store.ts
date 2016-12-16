@@ -1,3 +1,5 @@
+import { Company } from '../models/company';
+import { Account } from '../models/account';
 import { Spinner } from 'primeng/primeng';
 import { debounce } from 'rxjs/operator/debounce';
 import { Injectable, Output, EventEmitter } from '@angular/core';
@@ -6,6 +8,7 @@ import moment from 'moment';
 import { AuthenticationService } from '../services/authentication-service';
 import { User } from '../models/user';
 import { Session } from '../models/session';
+import { AccountAdapter } from '../services/adapters/account-adapter';
 
 @Injectable()
 export class SessionStore {
@@ -14,7 +17,7 @@ export class SessionStore {
 
     private _session: Session = new Session();
 
-    private __USER_STORAGE_KEY__ = 'logged_user';
+    private __ACCOUNT_STORAGE_KEY__ = 'logged_account';
 
     public get session(): Session {
         return this._session;
@@ -27,13 +30,12 @@ export class SessionStore {
 
         let promise = new Promise((resolve, reject) => {
 
-            let storedUser = window.localStorage.getItem(this.__USER_STORAGE_KEY__);
+            let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
 
-            if (storedUser) {
-                let user = new User(JSON.parse(storedUser));
-
-                this._populateSession(user);
-
+            if (storedAccount) {
+                let storedAccountData: any = JSON.parse(storedAccount);
+                let account: Account = AccountAdapter.parseResponse(storedAccountData);
+                this._populateSession(account);
                 resolve(this._session);
             }
             else {
@@ -49,12 +51,13 @@ export class SessionStore {
             if (!window.sessionStorage.getItem('logged_user_with_pending_security_review')) {
                 reject(new Error('INVALID_REDIRECTION'));
             } else {
-                let user: User = new User(JSON.parse(window.sessionStorage.getItem('logged_user_with_pending_security_review')));
+                let storedAccountData: any = new Account(JSON.parse(window.sessionStorage.getItem('logged_user_with_pending_security_review')));
+                let account: Account = AccountAdapter.parseResponse(storedAccountData);
                 let pin = window.sessionStorage.getItem('pin');
-                this._authenticationService.validateSecurityCode(user.id, securityCode, pin).subscribe(
+                this._authenticationService.validateSecurityCode(account.user.id, securityCode, pin).subscribe(
                     (response: boolean) => {
-                        window.localStorage.setItem('device_verified_for' + user.userName, moment().toISOString());
-                        this._populateSession(user);
+                        window.localStorage.setItem('device_verified_for' + account.user.userName, moment().toISOString());
+                        this._populateSession(account);
                         window.sessionStorage.removeItem('logged_user_with_pending_security_review');
                         resolve(this._session);
                     },
@@ -69,11 +72,11 @@ export class SessionStore {
 
     login(userId, password, forceLogin) {
         let promise = new Promise((resolve, reject) => {
-            this._authenticationService.authenticate(userId, password, forceLogin).subscribe((user: User) => {
+            this._authenticationService.authenticate(userId, password, forceLogin).subscribe((account: Account) => {
                 if (!forceLogin) {
-                    window.sessionStorage.setItem('logged_user_with_pending_security_review', JSON.stringify(user.toJS()));
+                    window.sessionStorage.setItem('logged_user_with_pending_security_review', JSON.stringify(account.toJS()));
                 } else {
-                    this._populateSession(user);
+                    this._populateSession(account);
                 }
                 resolve(this._session);
             }, (error) => {
@@ -85,7 +88,7 @@ export class SessionStore {
 
     logout() {
         this._resetSession();
-        window.localStorage.removeItem(this.__USER_STORAGE_KEY__);
+        window.localStorage.removeItem(this.__ACCOUNT_STORAGE_KEY__);
     }
 
     authenticatePassword(userName, oldpassword) {
@@ -109,13 +112,13 @@ export class SessionStore {
         return Observable.from(promise);
     }
 
-    private _populateSession(user: User) {
-        this._session.user = user;
-        window.localStorage.setItem(this.__USER_STORAGE_KEY__, JSON.stringify(user.toJS()));
+    private _populateSession(account: Account) {
+        this._session.account = account;
+        window.localStorage.setItem(this.__ACCOUNT_STORAGE_KEY__, JSON.stringify(account.toJS()));
     }
 
     private _resetSession() {
-        this.session.user = null;
+        this.session.account = null;
         this.userLogoutEvent.emit(null);
     }
 }
