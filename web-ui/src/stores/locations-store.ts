@@ -33,9 +33,8 @@ export class LocationsStore {
     }
 
     getLocations(): Observable<LocationDetails[]> {
-        let userId: number = this._sessionStore.session.user.id;
         let promise = new Promise((resolve, reject) => {
-            this._locationsService.getLocations(userId).subscribe((locations: LocationDetails[]) => {
+            this._locationsService.getLocations().subscribe((locations: LocationDetails[]) => {
                 this._locations.next(List(locations));
                 resolve(locations);
             }, error => {

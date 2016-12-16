@@ -29,18 +29,7 @@ export class UsersListComponent implements OnInit {
 
     loadUsers() {
         this.usersLoading = true;
-        let requestData = {
-            userCompanies: [
-                {
-                    company:
-                    {
-                        id: 1
-                    }
-                }
-            ]
-            // userType: 3
-        };
-        this._usersStore.getUsers(requestData)
+        this._usersStore.getUsers()
             .subscribe(users => {
                 this.users = users;
             },

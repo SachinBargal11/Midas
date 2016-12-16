@@ -9,9 +9,9 @@ export class UserAdapter {
 
         let user: User = null;
         if (userData) {
-            let tempUser: any = userData.user;
+            let tempUser: any = userData;
             user = new User(_.extend(tempUser, {
-                createDate: moment.utc(tempUser.createDate)
+                createDate: tempUser.createDate ? moment.utc(tempUser.createDate) : null
             }));
         }
         return user;
@@ -38,7 +38,7 @@ export class UserAdapter {
 
         if (userData) {
             if (userData.user) {
-                user = this.parseUserResponse(userData);
+                user = this.parseUserResponse(userData.user);
             }
         }
         return user;

@@ -45,6 +45,9 @@ export const UsersRoutes: Routes = [
     {
         path: 'users/:userId',
         component: UserShellComponent,
+        data: {
+            breadcrumb: 'Users'
+        },
         children: [
             {
                 path: '',

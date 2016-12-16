@@ -1,3 +1,4 @@
+import { SessionStore } from '../stores/session-store';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import _ from 'underscore';
@@ -17,7 +18,8 @@ export class LocationsService {
     private _headers: Headers = new Headers();
 
     constructor(
-        private _http: Http
+        private _http: Http,
+        private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
     }
@@ -49,9 +51,14 @@ export class LocationsService {
         return <Observable<LocationDetails>>Observable.fromPromise(promise);
     }
 
-    getLocations(userId: Number): Observable<any[]> {
+    getLocations(): Observable<any[]> {
+        let requestData = {
+            company: {
+                id: this._sessionStore.session.company.id
+            }
+        };
         let promise: Promise<any[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/Location/getall', JSON.stringify({ "company": { "id": 1 } }), {
+            return this._http.post(this._url + '/Location/getall', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: Array<Object>) => {

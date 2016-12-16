@@ -28,9 +28,9 @@ export class SpecialityDetail extends SpecialityDetailRecord {
     initialDays: number;
     initialvisitCount: number;
     maxReval: number;
-    isnitialEvaluation: number;
-    include1500: number;
-    allowmultipleVisit: number;
+    isnitialEvaluation: boolean;
+    include1500: boolean;
+    allowmultipleVisit: boolean;
     specialty: Speciality;
     company: Company;
     isDeleted: boolean;

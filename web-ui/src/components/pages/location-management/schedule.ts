@@ -18,6 +18,13 @@ import { ScheduleDetails } from '../../../models/schedule-details';
 })
 
 export class ScheduleComponent implements OnInit {
+    monday = new ScheduleDetails({});
+    tuesday = new ScheduleDetails({});
+    wednesday = new ScheduleDetails({});
+    thursday = new ScheduleDetails({});
+    friday = new ScheduleDetails({});
+    saturday = new ScheduleDetails({});
+    sunday = new ScheduleDetails({});
     locationDetails = new LocationDetails({});
     scheduleDetails = new ScheduleDetails({});
     scheduleId: any;
@@ -30,6 +37,7 @@ export class ScheduleComponent implements OnInit {
     scheduleform: FormGroup;
     scheduleformControls;
     isSaveProgress = false;
+    scheduleDetailsJS;
 
     constructor(
         private fb: FormBuilder,
@@ -52,6 +60,14 @@ export class ScheduleComponent implements OnInit {
                             .subscribe(
                                 (schedule: Schedule) =>{
                                     this.scheduleDetails = schedule.scheduleDetails;
+                                    // this.scheduleDetailsJS = this.scheduleDetails.toJS();
+                                    this.monday = this.scheduleDetails[0];
+                                    this.tuesday = this.scheduleDetails[1];
+                                    this.wednesday = this.scheduleDetails[2];
+                                    this.thursday = this.scheduleDetails[3];
+                                    this.friday = this.scheduleDetails[4];
+                                    this.saturday = this.scheduleDetails[5];
+                                    this.sunday = this.scheduleDetails[6];
                                 });
                 },
                 (error) => {
@@ -73,9 +89,9 @@ export class ScheduleComponent implements OnInit {
                 wednesdayFrom: [''],
                 wednesdayTo: [''],
                 wednesday: [''],
-                ThursdayFrom: [''],
-                ThursdayTo: [''],
-                Thursday: [''],
+                thursdayFrom: [''],
+                thursdayTo: [''],
+                thursday: [''],
                 fridayFrom: [''],
                 fridayTo: [''],
                 friday: [''],

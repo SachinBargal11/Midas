@@ -51,4 +51,8 @@ export class User extends UserRecord {
         super(props);
     }
 
+    public get displayName(): string {
+        return this.firstName + ' ' + this.lastName;
+    }
+
 }

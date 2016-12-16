@@ -1,5 +1,5 @@
 <h1 class="with-border">Specialities
-<a class="pull-right m-b-md btn btn-primary" [routerLink]="['/specialities/add']">Add Speciality</a>
+<!--<a class="pull-right btn btn-primary" [routerLink]="['add']">Add Speciality</a>-->
 </h1>
 <progress-bar [visible]="specialityLoading" 
               style="position:fixed;
@@ -16,9 +16,9 @@
     <header>List of Specialities</header>
     <p-column field="name" header="Name" [sortable]="true"></p-column>
     <p-column field="specialityCode" header="Speciality Code" [sortable]="true"></p-column>
-   <p-column styleClass="col-button" header="Edit">
+   <p-column styleClass="col-button" header="Actions">
         <template let-speciality="rowData" pTemplate type="body">
-        <a [routerLink]="['/specialities/update/', speciality.id]"><i class="glyphicon glyphicon-edit"></i></a>
+        <a [routerLink]="['/account-setup/specialities/', speciality.id]"><i class="glyphicon glyphicon-list"></i></a>
         </template>
     </p-column>
 

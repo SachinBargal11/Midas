@@ -10,14 +10,15 @@
                             </div> 
                             <div class="col-lg-2">
                                 <div class='input-group date'>
-                                      <p-calendar formControlName="sundayFrom"
+                                    <input type="text" formControlName="sundayFrom" [ngModel]="sunday.slotStart" class="form-control">
+                                      <!--<p-calendar formControlName="sundayFrom"
                                                   [ngModel]="scheduleDetails.slotStart"
                                                   hourFormat="12"
                                                   timeFormat="hh:mm tt"
                                                   [timeOnly]="true"
                                                   [showIcon]="true"
                                                   icon="fa fa-clock-o">
-                                      </p-calendar>
+                                      </p-calendar>-->
                                 </div>                                
                             </div>
                             <div class="col-lg-2 text-center">
@@ -25,19 +26,20 @@
                             </div>
                             <div class="col-lg-2">                                
                                     <div class='input-group date'>
-                                          <p-calendar formControlName="sundayTo"
-                                                      [ngModel]="scheduleDetails.slotEnd"
+                                    <input type="text" formControlName="sundayTo" [ngModel]="sunday.slotEnd" class="form-control">
+                                          <!--<p-calendar formControlName="sundayTo"
+                                                      [ngModel]="sunday.slotEnd"
                                                       hourFormat="12"
                                                       timeFormat="hh:mm tt"
                                                       [timeOnly]="true"
                                                       [showIcon]="true"
                                                       icon="fa fa-clock-o">
-                                          </p-calendar>
+                                          </p-calendar>-->
                                     </div>
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-2 text-center">
-                                <select formControlName="sunday" class="select2-arrow form-control">
+                                <select formControlName="sunday" [ngModel]="sunday.scheduleStatus" class="select2-arrow form-control">
                                              <option value="0">Closed</option>
                                              <option value="1">Specific Hours</option>
                                 </select>                                
@@ -50,13 +52,14 @@
                             </div> 
                             <div class="col-lg-2">
                                     <div class='input-group date'>
-                                          <p-calendar formControlName="mondayFrom"
+                                    <input type="text" formControlName="mondayFrom" [ngModel]="sunday.slotStart" class="form-control">
+                                          <!--<p-calendar formControlName="mondayFrom"
                                                       hourFormat="12"
                                                       timeFormat="hh:mm tt"
                                                       [timeOnly]="true"
                                                       [showIcon]="true"
                                                       icon="fa fa-clock-o">
-                                          </p-calendar>
+                                          </p-calendar>-->
                                     </div>                               
                             </div>
                             <div class="col-lg-2 text-center">
@@ -64,18 +67,19 @@
                             </div>
                             <div class="col-lg-2">                                
                                     <div class='input-group date'>
-                                          <p-calendar formControlName="mondayTo"
+                                    <input type="text" formControlName="mondayTo" [ngModel]="sunday.slotStart" class="form-control">
+                                          <!--<p-calendar formControlName="mondayTo"
                                                       hourFormat="12"
                                                       timeFormat="hh:mm tt"
                                                       [timeOnly]="true"
                                                       [showIcon]="true"
                                                       icon="fa fa-clock-o">
-                                          </p-calendar>
+                                          </p-calendar>-->
                                     </div>            
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-2 text-center">
-                                <select formControlName="monday" class="select2-arrow form-control">
+                                <select formControlName="monday" [ngModel]="monday.scheduleStatus" class="select2-arrow form-control">
                                              <option value="0">Closed</option>
                                              <option value="1">Specific Hours</option>
                                 </select>                                
@@ -88,13 +92,14 @@
                             </div> 
                             <div class="col-lg-2">
                                     <div class='input-group date'>
-                                          <p-calendar formControlName="tuesdayFrom"
+                                    <input type="text" formControlName="tuesdayFrom" [ngModel]="tuesday.slotStart" class="form-control">
+                                          <!--<p-calendar formControlName="tuesdayFrom"
                                                       hourFormat="12"
                                                       timeFormat="hh:mm tt"
                                                       [timeOnly]="true"
                                                       [showIcon]="true"
                                                       icon="fa fa-clock-o">
-                                          </p-calendar>
+                                          </p-calendar>-->
                                     </div>                                
                             </div>
                             <div class="col-lg-2 text-center">
@@ -102,18 +107,19 @@
                             </div>
                             <div class="col-lg-2">                                
                                     <div class='input-group date'>
-                                          <p-calendar formControlName="tuesdayTo"
+                                    <input type="text" formControlName="tuesdayTo" [ngModel]="tuesday.slotStart" class="form-control">
+                                          <!--<p-calendar formControlName="tuesdayTo"
                                                       hourFormat="12"
                                                       timeFormat="hh:mm tt"
                                                       [timeOnly]="true"
                                                       [showIcon]="true"
                                                       icon="fa fa-clock-o">
-                                          </p-calendar>
+                                          </p-calendar>-->
                                     </div>          
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-2 text-center">
-                                <select formControlName="tuesday" class="select2-arrow form-control">
+                                <select formControlName="tuesday" [ngModel]="tuesday.scheduleStatus" class="select2-arrow form-control">
                                              <option value="0">Closed</option>
                                              <option value="1">Specific Hours</option>
                                 </select>                                
@@ -126,13 +132,14 @@
                             </div> 
                             <div class="col-lg-2">
                                     <div class='input-group date'>
-                                          <p-calendar formControlName="wednesdayFrom"
+                                    <input type="text" formControlName="wednesdayFrom" [ngModel]="wednesday.slotStart" class="form-control">
+                                          <!--<p-calendar formControlName="wednesdayFrom"
                                                       hourFormat="12"
                                                       timeFormat="hh:mm tt"
                                                       [timeOnly]="true"
                                                       [showIcon]="true"
                                                       icon="fa fa-clock-o">
-                                          </p-calendar>
+                                          </p-calendar>-->
                                     </div>                               
                             </div>
                             <div class="col-lg-2 text-center">
@@ -140,18 +147,19 @@
                             </div>
                             <div class="col-lg-2">                                
                                     <div class='input-group date'>
-                                          <p-calendar formControlName="wednesdayTo"
+                                    <input type="text" formControlName="wednesdayTo" [ngModel]="wednesday.slotStart" class="form-control">
+                                          <!--<p-calendar formControlName="wednesdayTo"
                                                       hourFormat="12"
                                                       timeFormat="hh:mm tt"
                                                       [timeOnly]="true"
                                                       [showIcon]="true"
                                                       icon="fa fa-clock-o">
-                                          </p-calendar>
+                                          </p-calendar>-->
                                     </div>          
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-2 text-center">
-                                <select formControlName="wednesday" class="select2-arrow form-control">
+                                <select formControlName="wednesday" [ngModel]="wednesday.scheduleStatus" class="select2-arrow form-control">
                                              <option value="0">Closed</option>
                                              <option value="1">Specific Hours</option>
                                 </select>                                
@@ -164,13 +172,14 @@
                             </div> 
                             <div class="col-lg-2">
                                     <div class='input-group date'>
-                                          <p-calendar formControlName="ThursdayFrom"
+                                    <input type="text" formControlName="thursdayFrom" [ngModel]="thursday.slotStart" class="form-control">
+                                          <!--<p-calendar formControlName="thursdayFrom"
                                                       hourFormat="12"
                                                       timeFormat="hh:mm tt"
                                                       [timeOnly]="true"
                                                       [showIcon]="true"
                                                       icon="fa fa-clock-o">
-                                          </p-calendar>
+                                          </p-calendar>-->
                                     </div>                                
                             </div>
                             <div class="col-lg-2 text-center">
@@ -178,18 +187,19 @@
                             </div>
                             <div class="col-lg-2">                                
                                     <div class='input-group date'>
-                                          <p-calendar formControlName="ThursdayTo"
+                                    <input type="text" formControlName="thursdayTo" [ngModel]="thursday.slotStart" class="form-control">
+                                          <!--<p-calendar formControlName="thursdayTo"
                                                       hourFormat="12"
                                                       timeFormat="hh:mm tt"
                                                       [timeOnly]="true"
                                                       [showIcon]="true"
                                                       icon="fa fa-clock-o">
-                                          </p-calendar>
+                                          </p-calendar>-->
                                     </div>           
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-2 text-center">
-                                <select formControlName="Thursday" class="select2-arrow form-control">
+                                <select formControlName="thursday" [ngModel]="thursday.scheduleStatus" class="select2-arrow form-control">
                                              <option value="0">Closed</option>
                                              <option value="1">Specific Hours</option>
                                 </select>                                
@@ -202,13 +212,14 @@
                             </div> 
                             <div class="col-lg-2">
                                     <div class='input-group date'>
-                                          <p-calendar formControlName="fridayFrom"
+                                    <input type="text" formControlName="fridayFrom" [ngModel]="friday.slotStart" class="form-control">
+                                          <!--<p-calendar formControlName="fridayFrom"
                                                       hourFormat="12"
                                                       timeFormat="hh:mm tt"
                                                       [timeOnly]="true"
                                                       [showIcon]="true"
                                                       icon="fa fa-clock-o">
-                                          </p-calendar>
+                                          </p-calendar>-->
                                     </div>                                
                             </div>
                             <div class="col-lg-2 text-center">
@@ -216,18 +227,19 @@
                             </div>
                             <div class="col-lg-2">                                
                                     <div class='input-group date'>
-                                          <p-calendar formControlName="fridayTo"
+                                    <input type="text" formControlName="fridayTo" [ngModel]="friday.slotStart" class="form-control">
+                                          <!--<p-calendar formControlName="fridayTo"
                                                       hourFormat="12"
                                                       timeFormat="hh:mm tt"
                                                       [timeOnly]="true"
                                                       [showIcon]="true"
                                                       icon="fa fa-clock-o">
-                                          </p-calendar>
+                                          </p-calendar>-->
                                     </div>            
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-2 text-center">
-                                <select formControlName="friday" class="select2-arrow form-control">
+                                <select formControlName="friday" [ngModel]="friday.scheduleStatus" class="select2-arrow form-control">
                                              <option value="0">Closed</option>
                                              <option value="1">Specific Hours</option>
                                 </select>                                
@@ -240,13 +252,14 @@
                             </div> 
                             <div class="col-lg-2">
                                     <div class='input-group date'>
-                                          <p-calendar formControlName="saturdayFrom"
+                                    <input type="text" formControlName="saturdayFrom" [ngModel]="saturday.slotStart" class="form-control">
+                                          <!--<p-calendar formControlName="saturdayFrom"
                                                       hourFormat="12"
                                                       timeFormat="hh:mm tt"
                                                       [timeOnly]="true"
                                                       [showIcon]="true"
                                                       icon="fa fa-clock-o">
-                                          </p-calendar>
+                                          </p-calendar>-->
                                     </div>                               
                             </div>
                             <div class="col-lg-2 text-center">
@@ -254,18 +267,19 @@
                             </div>
                             <div class="col-lg-2">                                
                                     <div class='input-group date'>
-                                          <p-calendar formControlName="saturdayTo"
+                                    <input type="text" formControlName="saturdayTo" [ngModel]="saturday.slotStart" class="form-control">
+                                          <!--<p-calendar formControlName="saturdayTo"
                                                       hourFormat="12"
                                                       timeFormat="hh:mm tt"
                                                       [timeOnly]="true"
                                                       [showIcon]="true"
                                                       icon="fa fa-clock-o">
-                                          </p-calendar>
+                                          </p-calendar>-->
                                     </div>            
                             </div>
                             <div class="col-lg-1"></div>
                             <div class="col-lg-2 text-center">
-                                <select formControlName="saturday" class="select2-arrow form-control">
+                                <select formControlName="saturday" [ngModel]="saturday.scheduleStatus" class="select2-arrow form-control">
                                              <option value="0">Closed</option>
                                              <option value="1">Specific Hours</option>
                                 </select>                                

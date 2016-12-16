@@ -80,9 +80,9 @@ export class DoctorSpecialityComponent implements OnInit {
             doctor: {
 	        	id: this.doctor.id
 	        },
-	        specialty: {
-	        	id: doctorspecialityformValues.speciality	
-	        }
+	        specialties: [
+	        	doctorspecialityformValues.speciality	
+            ]
         });
         this.isSaveDoctorProgress = true;
         let result;
