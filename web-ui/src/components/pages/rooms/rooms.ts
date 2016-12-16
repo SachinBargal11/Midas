@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import {Room} from '../../../models/room';
 import {RoomsStore} from '../../../stores/rooms-store';
 import { RoomsService } from '../../../services/rooms-service';
+import {LocationsStore} from '../../../stores/locations-store';
+import {LocationDetails} from '../../../models/location-details';
 
 @Component({
     selector: 'rooms',
@@ -12,12 +14,19 @@ import { RoomsService } from '../../../services/rooms-service';
 export class RoomsComponent implements OnInit {
     selectedRooms: Room[];
     rooms: Room[];
+    locationDetails = new LocationDetails({});
+    locationId: number;
     roomsLoading;
     constructor(
         private _router: Router,
+        public _route: ActivatedRoute,
         private _roomsStore: RoomsStore,
+        private _locationsStore: LocationsStore,
         private _roomsService: RoomsService
         ) {
+        this._route.parent.params.subscribe((params: any) => {
+            this.locationId = parseInt(params.locationId);
+        });
 
     }
 
@@ -27,7 +36,7 @@ export class RoomsComponent implements OnInit {
 
     loadRooms() {
         this.roomsLoading = true;
-        this._roomsStore.getRooms()
+        this._roomsStore.getRooms(this.locationId)
             .subscribe(rooms => {
                 this.rooms = rooms;
             },
