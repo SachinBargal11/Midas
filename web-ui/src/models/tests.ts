@@ -1,4 +1,6 @@
 import {Record} from 'immutable';
+import moment from 'moment';
+
 const TestsRecord = Record({
     id: 0,
     name: '',
@@ -15,9 +17,9 @@ export class Tests extends TestsRecord {
     name: string;
     isDeleted: boolean;
     createByUserID: number;
-    createDate: moment.MomentStatic;
+    createDate: moment.Moment;
     updateByUserID: number;
-    updateDate: moment.MomentStatic;
+    updateDate: moment.Moment;
 
     constructor(props) {
         super(props);

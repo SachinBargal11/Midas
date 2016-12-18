@@ -21,8 +21,8 @@ export class Speciality extends SpecialityRecord {
     isDeleted: boolean;
     createByUserID: number;
     updateByUserID: number;
-    createDate: moment.MomentStatic;
-    updateDate: moment.MomentStatic;
+    createDate: moment.Moment;
+    updateDate: moment.Moment;
 
     constructor(props) {
         super(props);

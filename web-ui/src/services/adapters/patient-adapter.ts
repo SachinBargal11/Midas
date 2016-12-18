@@ -1,4 +1,4 @@
-import {Patient} from '../../models/patient';
+import { Patient } from '../../models/patient';
 import Moment from 'moment';
 
 
@@ -9,7 +9,7 @@ export class PatientAdapter {
         if (patientData) {
             patient = new Patient({
                 id: patientData.id,
-                name: patientData.firstname+' '+patientData.lastname,
+                name: patientData.firstname + ' ' + patientData.lastname,
                 firstname: patientData.firstname,
                 lastname: patientData.lastname,
                 email: patientData.email,

@@ -1,3 +1,4 @@
+import { Schedule } from '../models/schedule';
 import { SessionStore } from '../stores/session-store';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
@@ -31,18 +32,6 @@ export class LocationsService {
                     let parsedLocation: LocationDetails = null;
                     parsedLocation = LocationDetailAdapter.parseResponse(data);
                     resolve(parsedLocation);
-                }, (error) => {
-                    reject(error);
-                });
-
-        });
-        return <Observable<LocationDetails>>Observable.fromPromise(promise);
-    }
-    getSchedule(scheduleId: Number): Observable<any> {
-        let promise: Promise<LocationDetails> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Schedule/get/' + scheduleId).map(res => res.json())
-                .subscribe((data: any) => {
-                    resolve(data);
                 }, (error) => {
                     reject(error);
                 });
@@ -103,6 +92,27 @@ export class LocationsService {
             requestData = _.omit(requestData, 'contact');
             requestData = _.omit(requestData, 'address');
             console.log(requestData);
+            return this._http.post(this._url + '/Location/add', JSON.stringify(requestData), {
+                headers: this._headers
+            }).map(res => res.json()).subscribe((data: any) => {
+                let parsedLocation: LocationDetails = null;
+                parsedLocation = LocationDetailAdapter.parseResponse(data);
+                resolve(parsedLocation);
+            }, (error) => {
+                reject(error);
+            });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+
+    updateScheduleForLocation(location: LocationDetails, schedule: Schedule): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+
+            let requestData: any = location.toJS();
+            requestData.schedule = {
+                id: schedule.id
+            };
+            requestData = _.omit(requestData, 'company', 'contact', 'address');
             return this._http.post(this._url + '/Location/add', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json()).subscribe((data: any) => {

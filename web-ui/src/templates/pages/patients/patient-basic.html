@@ -69,9 +69,9 @@
                                 <label class="form-label"> Home Phone
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.homePhone.touched && !basicformControls.homePhone.valid">
-                                    <input class="form-control" type="text" formControlName="homePhone" [class.error]="basicformControls.homePhone.touched && !basicformControls.homePhone.valid" />
-                                    <!--<p-inputMask mask="999-999-9999" formControlName="homePhone" [class.error]="basicformControls.homePhone.touched && !basicformControls.homePhone.valid" 
-                                     placeholder="999-999-9999" styleClass="form-control" ></p-inputMask>-->
+                                    <!--<input class="form-control" type="text" formControlName="homePhone" [class.error]="basicformControls.homePhone.touched && !basicformControls.homePhone.valid" />-->
+                                    <p-inputMask mask="999-999-9999" formControlName="homePhone" [class.error]="basicformControls.homePhone.touched && !basicformControls.homePhone.valid" 
+                                     placeholder="999-999-9999" styleClass="form-control" ></p-inputMask>
                                     <div class='error-list' *ngIf="basicformControls.homePhone.touched && !basicformControls.homePhone.valid">
                                         <ul>
                                             <li *ngIf="basicformControls.homePhone.hasError('required')">Home Phone is required.</li>

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { List } from 'immutable';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import moment from 'moment';
+import _ from 'underscore';
 import { NotificationsService } from 'angular2-notifications';
 import { MedicalFacilityService } from '../../../services/medical-facility-service';
 import { MedicalFacilityStore } from '../../../stores/medical-facilities-store';
