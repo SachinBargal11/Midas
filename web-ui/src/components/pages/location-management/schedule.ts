@@ -1,15 +1,16 @@
+import { ScheduleDetail } from '../../../models/schedule-detail';
+import { ScheduleStore } from '../../../stores/schedule-store';
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SessionStore } from '../../../stores/session-store';
 import { NotificationsStore } from '../../../stores/notifications-store';
-import { Notification } from '../../../models/notification';
 import moment from 'moment';
 import { LocationsStore } from '../../../stores/locations-store';
-import { LocationsService } from '../../../services/locations-service';
 import { LocationDetails } from '../../../models/location-details';
 import { Schedule } from '../../../models/schedule';
-import { ScheduleDetails } from '../../../models/schedule-details';
+import { Notification } from '../../../models/notification';
+import { Location } from '../../../models/location';
 
 @Component({
     selector: 'schedule',
@@ -18,16 +19,6 @@ import { ScheduleDetails } from '../../../models/schedule-details';
 })
 
 export class ScheduleComponent implements OnInit {
-    monday = new ScheduleDetails({});
-    tuesday = new ScheduleDetails({});
-    wednesday = new ScheduleDetails({});
-    thursday = new ScheduleDetails({});
-    friday = new ScheduleDetails({});
-    saturday = new ScheduleDetails({});
-    sunday = new ScheduleDetails({});
-    locationDetails = new LocationDetails({});
-    scheduleDetails = new ScheduleDetails({});
-    scheduleId: any;
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -37,7 +28,9 @@ export class ScheduleComponent implements OnInit {
     scheduleform: FormGroup;
     scheduleformControls;
     isSaveProgress = false;
-    scheduleDetailsJS;
+    scheduleJS: any;
+    testDate = moment().toDate();
+    locationDetails: LocationDetails;
 
     constructor(
         private fb: FormBuilder,
@@ -46,7 +39,7 @@ export class ScheduleComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _locationsStore: LocationsStore,
-        private _locationsService: LocationsService,
+        private _scheduleStore: ScheduleStore,
         private _elRef: ElementRef
     ) {
         this._route.parent.params.subscribe((params: any) => {
@@ -55,20 +48,14 @@ export class ScheduleComponent implements OnInit {
             result.subscribe(
                 (locationDetails: LocationDetails) => {
                     this.locationDetails = locationDetails;
-                    // let scheduleId: number = locationDetails.location.schedule.id;
-                    let scheduleId = 1;
-                    this._locationsService.getSchedule(scheduleId)
+                    let scheduleId: number = locationDetails.schedule.id;
+                    this._scheduleStore.fetchScheduleById(scheduleId)
                         .subscribe(
                         (schedule: Schedule) => {
-                            this.scheduleDetails = schedule.scheduleDetails;
-                            // this.scheduleDetailsJS = this.scheduleDetails.toJS();
-                            this.monday = this.scheduleDetails[0];
-                            this.tuesday = this.scheduleDetails[1];
-                            this.wednesday = this.scheduleDetails[2];
-                            this.thursday = this.scheduleDetails[3];
-                            this.friday = this.scheduleDetails[4];
-                            this.saturday = this.scheduleDetails[5];
-                            this.sunday = this.scheduleDetails[6];
+                            this.scheduleJS = schedule.toJS();
+                            for (let scheduleDetail of schedule.scheduleDetails) {
+                                this.addScheduleDetails(scheduleDetail);
+                            }
                         });
                 },
                 (error) => {
@@ -78,29 +65,26 @@ export class ScheduleComponent implements OnInit {
                 });
         });
         this.scheduleform = this.fb.group({
-            sundayFrom: [''],
-            sundayTo: [''],
-            sunday: [''],
-            mondayFrom: [''],
-            mondayTo: [''],
-            monday: [''],
-            tuesdayFrom: [''],
-            tuesdayTo: [''],
-            tuesday: [''],
-            wednesdayFrom: [''],
-            wednesdayTo: [''],
-            wednesday: [''],
-            thursdayFrom: [''],
-            thursdayTo: [''],
-            thursday: [''],
-            fridayFrom: [''],
-            fridayTo: [''],
-            friday: [''],
-            saturdayFrom: [''],
-            saturdayTo: [''],
-            saturday: [''],
+            name: ['', [Validators.required]],
+            scheduleDetails: this.fb.array([
+            ])
         });
+
         this.scheduleformControls = this.scheduleform.controls;
+    }
+
+    initScheduleDetails(scheduleDetail: ScheduleDetail): FormGroup {
+        return this.fb.group({
+            dayofWeek: [],
+            slotStart: [''],
+            slotEnd: [''],
+            scheduleStatus: ['']
+        });
+    }
+
+    addScheduleDetails(scheduleDetail: ScheduleDetail): void {
+        const control: FormArray = <FormArray>this.scheduleform.controls['scheduleDetails'];
+        control.push(this.initScheduleDetails(scheduleDetail));
     }
 
     ngOnInit() {
@@ -108,6 +92,58 @@ export class ScheduleComponent implements OnInit {
 
 
     save() {
+        let scheduleFormValues = this.scheduleform.value;
+        let scheduleDetails: ScheduleDetail[] = [];
+        for (let scheduleDetail of scheduleFormValues.scheduleDetails) {
+            let sd = new ScheduleDetail({
+                dayofWeek: scheduleDetail.dayofWeek,
+                slotStart: moment(scheduleDetail.slotStart),
+                slotEnd: moment(scheduleDetail.slotEnd),
+                scheduleStatus: scheduleDetail.scheduleStatus,
+            });
+            scheduleDetails.push(sd);
+        }
+        let schedule = new Schedule({
+            name: scheduleFormValues.name,
+            scheduleDetails: scheduleDetails
+        });
+
+        this.isSaveProgress = true;
+        let result;
+
+        result = this._scheduleStore.addSchedule(schedule, this.locationDetails);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Schedule added successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                // this._router.navigate(['/rooms']);
+            },
+            (error) => {
+                this.isSaveProgress = false;
+                let errorBody = JSON.parse(error._body);
+                let errorString = 'Unable to add Schedule.';
+                if (errorBody.errorLevel === 2) {
+                    if (errorBody.errorMessage) {
+                        errorString = errorBody.errorMessage;
+                    }
+                } else {
+                    // errorString = errorBody.errorMessage;
+                    errorString = 'Unable to add Schedule.';
+                }
+                let notification = new Notification({
+                    'title': errorString,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+            },
+            () => {
+                this.isSaveProgress = false;
+            });
     }
 
 }

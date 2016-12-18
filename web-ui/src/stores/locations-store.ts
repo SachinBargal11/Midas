@@ -13,7 +13,6 @@ import { SessionStore } from './session-store';
 export class LocationsStore {
 
     private _locations: BehaviorSubject<List<LocationDetails>> = new BehaviorSubject(List([]));
-    private _selectedLocation: BehaviorSubject<LocationDetails> = new BehaviorSubject(null);
 
     constructor(
         private _locationsService: LocationsService,
@@ -26,10 +25,6 @@ export class LocationsStore {
 
     get locations() {
         return this._locations.asObservable();
-    }
-
-    get selectedLocation() {
-        return this._selectedLocation.asObservable();
     }
 
     getLocations(): Observable<LocationDetails[]> {
@@ -68,7 +63,6 @@ export class LocationsStore {
 
     resetStore() {
         this._locations.next(this._locations.getValue().clear());
-        this._selectedLocation.next(null);
     }
 
     addLocation(basicInfo: LocationDetails): Observable<LocationDetails> {
@@ -94,7 +88,4 @@ export class LocationsStore {
         return <Observable<LocationDetails>>Observable.from(promise);
     }
 
-    selectLocation(location: LocationDetails) {
-        this._selectedLocation.next(location);
-    }
 }

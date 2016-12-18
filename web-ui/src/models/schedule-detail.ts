@@ -2,13 +2,14 @@ import moment from 'moment';
 import { Record } from 'immutable';
 
 
-const ScheduleDetailsRecord = Record({
+const ScheduleDetailRecord = Record({
     id: 0,
     name: '',
     dayofWeek: 0,
-    slotStart: '',
-    slotEnd: '',
-    slotDate: '',
+    // dayofWeekString: null,
+    slotStart: null,
+    slotEnd: null,
+    slotDate: null,
     scheduleStatus: 0,
     isDeleted: false,
     createByUserID: 0,
@@ -17,14 +18,15 @@ const ScheduleDetailsRecord = Record({
     updateDate: null
 });
 
-export class ScheduleDetails extends ScheduleDetailsRecord {
+export class ScheduleDetail extends ScheduleDetailRecord {
 
     id: number;
     name: string;
     dayofWeek: number;
-    slotStart: string;
-    slotEnd: string;
-    slotDate: string;
+    // dayofWeekString: string;
+    slotStart: moment.Moment;
+    slotEnd: moment.Moment;
+    slotDate: moment.Moment;
     scheduleStatus: number;
     isDeleted: boolean;
     createByUserID: number;

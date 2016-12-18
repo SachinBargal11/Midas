@@ -1,7 +1,6 @@
 import moment from 'moment';
 import { Record } from 'immutable';
-import { LocationType } from './enums/location-type';
-import { ScheduleDetails } from './schedule-details';
+import { ScheduleDetail } from './schedule-detail';
 
 
 const ScheduleRecord = Record({
@@ -20,7 +19,7 @@ export class Schedule extends ScheduleRecord {
     id: number;
     name: string;
     isDefault: boolean;
-    scheduleDetails: ScheduleDetails;
+    scheduleDetails: ScheduleDetail[];
     createByUserID: number;
     createDate: moment.Moment;
     updateByUserID: number;
