@@ -1,8 +1,6 @@
 {
   "exclude": [
     "node_modules",
-    "typings/main",
-    "typings/main.d.ts",
     "grunt"
   ],
   "compilerOptions": {
@@ -13,6 +11,7 @@
     "emitDecoratorMetadata": true,
     "removeComments": false,
     "noImplicitAny": false,
+    "lib": [ "es2015", "dom" ],
     "sourceMap": true,
     "rootDir": "src",
     "outDir": "compiled"

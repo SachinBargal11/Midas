@@ -8,15 +8,15 @@ export class AccountAdapter {
 
     static parseResponse(accountData: any): Account {
 
-        let user = null;
+        let account = null;
 
         if (accountData) {
-            user = new Account({
+            account = new Account({
                 user: UserAdapter.parseUserResponse(accountData.user),
                 company: CompanyAdapter.parseResponse(accountData.company)
             });
         }
-        return user;
+        return account;
     }
 
 }

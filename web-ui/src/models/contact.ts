@@ -12,8 +12,8 @@ const ContactRecord = Record({
     isDeleted: 0,
     createByUserId: 0,
     updateByUserId: 0,
-    // createDate: null, //Moment
-    // updateDate: null //Moment
+    createDate: null, //Moment
+    updateDate: null //Moment
 });
 
 export class Contact extends ContactRecord {
@@ -28,8 +28,8 @@ export class Contact extends ContactRecord {
     isDeleted: boolean;
     createByUserId: number;
     updateByUserId: number;
-    // createDate: moment.MomentStatic;
-    // updateDate: moment.MomentStatic;
+    createDate: moment.Moment;
+    updateDate: moment.Moment;
 
     constructor(props) {
         super(props);

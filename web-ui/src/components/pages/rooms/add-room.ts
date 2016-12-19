@@ -1,17 +1,17 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { Location } from '@angular/common';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router, ActivatedRoute} from '@angular/router';
-import {AppValidators} from '../../../utils/AppValidators';
-import {RoomsStore} from '../../../stores/rooms-store';
-import {RoomsService} from '../../../services/rooms-service';
-import {Room} from '../../../models/room';
-import {Tests} from '../../../models/tests';
-import {LocationsStore} from '../../../stores/locations-store';
-import {LocationDetails} from '../../../models/location-details';
-import {SessionStore} from '../../../stores/session-store';
-import {NotificationsStore} from '../../../stores/notifications-store';
-import {Notification} from '../../../models/notification';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AppValidators } from '../../../utils/AppValidators';
+import { RoomsStore } from '../../../stores/rooms-store';
+import { RoomsService } from '../../../services/rooms-service';
+import { Room } from '../../../models/room';
+import { Tests } from '../../../models/tests';
+import { LocationsStore } from '../../../stores/locations-store';
+import { LocationDetails } from '../../../models/location-details';
+import { SessionStore } from '../../../stores/session-store';
+import { NotificationsStore } from '../../../stores/notifications-store';
+import { Notification } from '../../../models/notification';
 import moment from 'moment';
 
 @Component({
@@ -59,11 +59,11 @@ export class AddRoomComponent implements OnInit {
                 });
         });
         this.addroomform = this.fb.group({
-                name: ['', Validators.required],
-                contactPersonName: ['', Validators.required],
-                phone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                tests: ['', Validators.required]
-            });
+            name: ['', Validators.required],
+            contactPersonName: ['', Validators.required],
+            phone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            tests: ['', Validators.required]
+        });
 
         this.addroomformControls = this.addroomform.controls;
     }
@@ -80,15 +80,15 @@ export class AddRoomComponent implements OnInit {
     save() {
         let addroomformValues = this.addroomform.value;
         let roomDetail = new Room({
-                name: addroomformValues.name,
-                contactPersonName: addroomformValues.contactPersonName,
-                phone: addroomformValues.phone,
-                roomTest:{
-                    id: addroomformValues.tests
-                },
-                location: {
-                    id: this.locationDetails.location.id
-                }
+            name: addroomformValues.name,
+            contactPersonName: addroomformValues.contactPersonName,
+            phone: addroomformValues.phone,
+            roomTest: {
+                id: addroomformValues.tests
+            },
+            location: {
+                id: this.locationDetails.location.id
+            }
         });
         this.isSaveProgress = true;
         let result;

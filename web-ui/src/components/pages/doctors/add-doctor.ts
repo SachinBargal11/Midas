@@ -1,20 +1,20 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router} from '@angular/router';
-import {AppValidators} from '../../../utils/AppValidators';
-import {DoctorsStore} from '../../../stores/doctors-store';
-import {DoctorsService} from '../../../services/doctors-service';
-import {DoctorDetail} from '../../../models/doctor-details';
-import {Doctor} from '../../../models/doctor';
-import {User} from '../../../models/user';
-import {Contact} from '../../../models/contact';
-import {Address} from '../../../models/address';
-import {SessionStore} from '../../../stores/session-store';
-import {NotificationsStore} from '../../../stores/notifications-store';
-import {Notification} from '../../../models/notification';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AppValidators } from '../../../utils/AppValidators';
+import { DoctorsStore } from '../../../stores/doctors-store';
+import { DoctorsService } from '../../../services/doctors-service';
+import { DoctorDetail } from '../../../models/doctor-details';
+import { Doctor } from '../../../models/doctor';
+import { User } from '../../../models/user';
+import { Contact } from '../../../models/contact';
+import { Address } from '../../../models/address';
+import { SessionStore } from '../../../stores/session-store';
+import { NotificationsStore } from '../../../stores/notifications-store';
+import { Notification } from '../../../models/notification';
 import moment from 'moment';
-import {StatesStore} from '../../../stores/states-store';
-import {StateService} from '../../../services/state-service';
+import { StatesStore } from '../../../stores/states-store';
+import { StateService } from '../../../services/state-service';
 import { UsersStore } from '../../../stores/users-store';
 
 @Component({
@@ -68,20 +68,7 @@ export class AddDoctorComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this._stateService.getStates()
-        //     .subscribe(states => this.states = states);
-        let requestData = {
-            userCompanies: [
-                {
-                    company:
-                    {
-                        id: 1
-                    }
-                }
-            ]
-            // userType: 3
-        };
-        this._usersStore.getUsers(requestData)
+        this._usersStore.getUsers()
             .subscribe(users => {
                 this.users = users;
             });
@@ -91,12 +78,12 @@ export class AddDoctorComponent implements OnInit {
     saveDoctor() {
         let doctorFormValues = this.doctorform.value;
         let doctorDetail = new Doctor({
-                licenseNumber: doctorFormValues.doctor.licenseNumber,
-                wcbAuthorization: doctorFormValues.doctor.wcbAuthorization,
-                wcbRatingCode: doctorFormValues.doctor.wcbRatingCode,
-                npi: doctorFormValues.doctor.npi,
-                taxType: doctorFormValues.doctor.taxType,
-                title: doctorFormValues.doctor.title,
+            licenseNumber: doctorFormValues.doctor.licenseNumber,
+            wcbAuthorization: doctorFormValues.doctor.wcbAuthorization,
+            wcbRatingCode: doctorFormValues.doctor.wcbRatingCode,
+            npi: doctorFormValues.doctor.npi,
+            taxType: doctorFormValues.doctor.taxType,
+            title: doctorFormValues.doctor.title,
             user: new User({
                 id: doctorFormValues.doctor.user
             })

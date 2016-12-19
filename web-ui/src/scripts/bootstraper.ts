@@ -45,6 +45,9 @@ import { MedicalProviderService } from '../services/medical-provider-service';
 import { LocationsStore } from '../stores/locations-store';
 import { LocationsService } from '../services/locations-service';
 
+import { ScheduleStore } from '../stores/schedule-store';
+import { ScheduleService } from '../services/schedule-service';
+
 import { RoomsStore } from '../stores/rooms-store';
 import { RoomsService } from '../services/rooms-service';
 
@@ -285,6 +288,8 @@ enableProdMode();
         MedicalProviderService,
         LocationsService,
         LocationsStore,
+        ScheduleService,
+        ScheduleStore,
         RoomsService,
         RoomsStore,
         SpecialityDetailsStore,
