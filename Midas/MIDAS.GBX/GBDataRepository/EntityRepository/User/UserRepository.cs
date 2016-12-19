@@ -482,6 +482,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     using (UserCompanyRepository sr = new UserCompanyRepository(_context))
                     {
                         BO.UserCompany usrComp = new BO.UserCompany();
+                        usrComp.User = new BO.User();
                         usrComp.User.ID = acc_.ID;
                         boOTP.company = ((BO.UserCompany)sr.Get(usrComp)).Company;
                     }
