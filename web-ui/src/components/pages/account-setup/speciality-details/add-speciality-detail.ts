@@ -82,9 +82,6 @@ export class AddSpecialityDetailsComponent {
             maxReval: parseInt(specialityDetailFormValues.maxReval),
             specialty: new Speciality({
                 id: parseInt(specialityDetailFormValues.associatedSpeciality)
-            }),
-            company: new Company({
-                id: 1
             })
         });
         this.isSpecialityDetailSaveInProgress = true;

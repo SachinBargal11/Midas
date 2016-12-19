@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
 import { SpecialityDetail } from '../models/speciality-details';
 import { SpecialityDetailAdapter } from './adapters/speciality-detail-adapter';
+import { SessionStore } from '../stores/session-store';
 
 @Injectable()
 export class SpecialityDetailsService {
@@ -15,7 +16,8 @@ export class SpecialityDetailsService {
     private _headers: Headers = new Headers();
 
     constructor(
-        private _http: Http
+        private _http: Http,
+        private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
     }
@@ -57,7 +59,10 @@ export class SpecialityDetailsService {
             let requestData: any = location.toJS();
             // requestData.Company = requestData.contact;
             // requestData.Specialty = requestData.address;
-            requestData.company = _.omit(requestData.company, 'companyType', 'name', 'taxId');
+            requestData.company = {
+                id: this._sessionStore.session.company.id
+            };
+            requestData.isnitialEvaluation = requestData.isInitialEvaluation;
             requestData.specialty = _.omit(requestData.specialty, 'createByUserID', 'createDate', 'isDeleted', 'isUnitApply', 'name', 'specialityCode', 'updateByUserID', 'updateDate');
             // requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
             // console.log(requestData);
@@ -78,9 +83,13 @@ export class SpecialityDetailsService {
             let requestData: any = location.toJS();
             // requestData.contactInfo = requestData.contact;
             // requestData.addressInfo = requestData.address;
-             requestData.company = _.omit(requestData.company, 'companyType', 'name', 'taxId');
+            requestData.company = {
+                id: this._sessionStore.session.company.id
+            };
+            requestData.isnitialEvaluation = requestData.isInitialEvaluation;
+
             requestData.specialty = _.omit(requestData.specialty, 'createByUserID', 'createDate', 'isDeleted', 'isUnitApply', 'name', 'specialityCode', 'updateByUserID', 'updateDate');
-           // console.log(requestData);
+            // console.log(requestData);
             return this._http.post(this._url + '/CompanySpecialtyDetails/add', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json())

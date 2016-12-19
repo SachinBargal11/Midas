@@ -171,6 +171,7 @@ export class AuthenticationService {
             }).map(res => res.json())
                 .subscribe((data: any) => {
                     if (data) {
+                        data.company = data.usercompanies[0].company;
                         let user = AccountAdapter.parseResponse(data);
                         window.sessionStorage.setItem('pin', data.pin);
                         resolve(user);

@@ -98,7 +98,6 @@ export class BasicComponent implements OnInit {
             }),
             company: new Company({
                 id: this.locationDetails.company.id
-                // id: 1
             }),
             contact: new Contact({
                 faxNo: basicformValues.fax,

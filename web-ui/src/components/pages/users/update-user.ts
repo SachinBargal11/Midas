@@ -109,7 +109,7 @@ export class UpdateUserComponent implements OnInit {
         let userFormValues = this.userform.value;
         let userDetail = new Account({
             company: new Company({
-                id: 1
+                 id: this._sessionStore.session.company.id
             }),
             user: new User({
                 id: this.user.id,

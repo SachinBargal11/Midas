@@ -6,7 +6,7 @@ const ScheduleDetailRecord = Record({
     id: 0,
     name: '',
     dayofWeek: 0,
-    // dayofWeekString: null,
+    dayofWeekString: null,
     slotStart: null,
     slotEnd: null,
     slotDate: null,
@@ -23,7 +23,7 @@ export class ScheduleDetail extends ScheduleDetailRecord {
     id: number;
     name: string;
     dayofWeek: number;
-    // dayofWeekString: string;
+    dayofWeekString: string;
     slotStart: moment.Moment;
     slotEnd: moment.Moment;
     slotDate: moment.Moment;
@@ -36,6 +36,10 @@ export class ScheduleDetail extends ScheduleDetailRecord {
 
     constructor(props) {
         super(props);
+    }
+
+    getLabelForDayOfWeek(dayofWeek) {
+        return moment().weekday(dayofWeek - 1).format('dddd');
     }
 
 }

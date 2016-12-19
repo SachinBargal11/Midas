@@ -50,11 +50,15 @@ export class LocationsService {
             return this._http.post(this._url + '/Location/getall', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json())
-                .subscribe((data: Array<Object>) => {
-                    let locations: any[] = (<Object[]>data).map((data: any) => {
-                        return LocationDetailAdapter.parseResponse(data);
-                    });
-                    resolve(locations);
+                .subscribe((data: any) => {
+                    if (data.errorMessage) {
+                        reject(new Error(data.errorMessage));
+                    } else {
+                        let locations: any[] = (<Object[]>data).map((data: any) => {
+                            return LocationDetailAdapter.parseResponse(data);
+                        });
+                        resolve(locations);
+                    }
                 }, (error) => {
                     reject(error);
                 });
@@ -112,7 +116,11 @@ export class LocationsService {
             requestData.schedule = {
                 id: schedule.id
             };
-            requestData = _.omit(requestData, 'company', 'contact', 'address');
+            requestData.contactInfo = requestData.contact;
+            requestData.addressInfo = requestData.address;
+            requestData = _.omit(requestData, 'contact');
+            requestData = _.omit(requestData, 'address');
+            // requestData = _.omit(requestData, 'company', 'contact', 'address');
             return this._http.post(this._url + '/Location/add', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json()).subscribe((data: any) => {

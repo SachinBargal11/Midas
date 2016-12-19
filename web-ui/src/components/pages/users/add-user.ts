@@ -87,7 +87,7 @@ export class AddUserComponent implements OnInit {
         let userFormValues = this.userform.value;
         let userDetail = new Account({
             company: new Company({
-                id: 1
+                 id: this._sessionStore.session.company.id
             }),
             user: new User({
                 firstName: userFormValues.userInfo.firstname,

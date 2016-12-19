@@ -36,7 +36,7 @@ export const DoctorsRoutes: Routes = [
         }
     },
     {
-        path: 'doctors/speciality/:id',
+        path: 'doctors/:id/specialities',
         component: DoctorSpecialityComponent,
         canActivate: [ValidateActiveSession],
         data: {

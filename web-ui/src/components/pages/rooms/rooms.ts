@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import {Room} from '../../../models/room';
-import {RoomsStore} from '../../../stores/rooms-store';
+import { Room } from '../../../models/room';
+import { RoomsStore } from '../../../stores/rooms-store';
 import { RoomsService } from '../../../services/rooms-service';
-import {LocationsStore} from '../../../stores/locations-store';
-import {LocationDetails} from '../../../models/location-details';
+import { LocationsStore } from '../../../stores/locations-store';
+import { LocationDetails } from '../../../models/location-details';
 
 @Component({
     selector: 'rooms',
@@ -23,7 +23,7 @@ export class RoomsComponent implements OnInit {
         private _roomsStore: RoomsStore,
         private _locationsStore: LocationsStore,
         private _roomsService: RoomsService
-        ) {
+    ) {
         this._route.parent.params.subscribe((params: any) => {
             this.locationId = parseInt(params.locationId);
         });
@@ -46,11 +46,11 @@ export class RoomsComponent implements OnInit {
             });
     }
     deleteRooms() {
-        if(this.selectedRooms !== undefined) {
+        if (this.selectedRooms !== undefined) {
             this.selectedRooms.forEach(room => {
                 this._roomsStore.deleteRoom(room)
-                    .subscribe(rooms => { 
-                            this.rooms.splice(this.rooms.indexOf(room), 1);
+                    .subscribe(rooms => {
+                        this.rooms.splice(this.rooms.indexOf(room), 1);
                     });
             });
         }
@@ -58,7 +58,7 @@ export class RoomsComponent implements OnInit {
             console.log('select rooms first to delete');
         }
     }
-    
+
     findSelectedRoomIndex(room): number {
         return this.rooms.indexOf(room);
     }

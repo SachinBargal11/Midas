@@ -9,6 +9,7 @@ import { AccountDetail } from '../models/account-details';
 import { Account } from '../models/account';
 import { UserAdapter } from './adapters/user-adapter';
 import { UserType } from '../models/enums/user-type';
+import { User } from '../models/user';
 import { SessionStore } from '../stores/session-store';
 
 @Injectable()
@@ -49,6 +50,9 @@ export class UsersService {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
+                    _.forEach(data, function (currentUser: any) {
+                        currentUser.userTypeLabel = User.getUserTypeLabel(currentUser.userType);
+                    });
                     resolve(data);
                 }, (error) => {
                     reject(error);

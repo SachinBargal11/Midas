@@ -29,7 +29,7 @@ export class ScheduleComponent implements OnInit {
     scheduleformControls;
     isSaveProgress = false;
     scheduleJS: any;
-    testDate = moment().toDate();
+    testDate = moment('11:00:00', 'hh:mm:ss').utc().toDate();
     locationDetails: LocationDetails;
 
     constructor(
@@ -43,6 +43,7 @@ export class ScheduleComponent implements OnInit {
         private _elRef: ElementRef
     ) {
         this._route.parent.params.subscribe((params: any) => {
+            console.log(this.testDate);
             let locationId = parseInt(params.locationId);
             let result = this._locationsStore.fetchLocationById(locationId);
             result.subscribe(
@@ -107,7 +108,6 @@ export class ScheduleComponent implements OnInit {
             name: scheduleFormValues.name,
             scheduleDetails: scheduleDetails
         });
-
         this.isSaveProgress = true;
         let result;
 
@@ -120,7 +120,7 @@ export class ScheduleComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                // this._router.navigate(['/rooms']);
+                this._router.navigate(['/medical-provider/locations']);
             },
             (error) => {
                 this.isSaveProgress = false;

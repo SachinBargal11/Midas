@@ -24,10 +24,10 @@
                             <div class="row form-group" [formGroupName]="i" *ngFor="let scheduleDetail of scheduleform.controls.scheduleDetails.controls; let i=index">
                                 <div>
                                     <div class="col-lg-2">
-                                        <label class="form-label"> {{scheduleJS.scheduleDetails[i].dayofWeek.format('dddd')}}</label>
+                                        <label class="form-label"> {{scheduleJS.scheduleDetails[i].dayofWeekString}}</label>
                                     </div>
                                     <div class="col-lg-3">
-                                        <input type="hidden" [ngModel]="scheduleJS.dayofWeek" formControlName="dayofWeek">
+                                        <input type="hidden" [ngModel]="scheduleJS.scheduleDetails[i].dayofWeek" formControlName="dayofWeek">
                                         <select formControlName="scheduleStatus" [(ngModel)]="scheduleJS.scheduleDetails[i].scheduleStatus" class="select2-arrow form-control">
                                              <option value="1">Specific Hours</option>
                                              <option value="0">Closed</option>                                             
@@ -36,7 +36,7 @@
                                     <div class="col-lg-3" *ngIf="scheduleJS.scheduleDetails[i].scheduleStatus == 1">
                                         <div class='input-group date'>
 
-                                            <p-calendar formControlName="slotStart" [ngModel]="scheduleJS.scheduleDetails[i].slotStart" hourFormat="12" timeFormat="hh:mm tt"
+                                            <p-calendar formControlName="slotStart" [ngModel]="scheduleJS.scheduleDetails[i].slotStart"
                                                 [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o">
                                             </p-calendar>
                                         </div>
@@ -47,7 +47,7 @@
                                     <div class="col-lg-3" *ngIf="scheduleJS.scheduleDetails[i].scheduleStatus == 1">
                                         <div class='input-group date'>
 
-                                            <p-calendar formControlName="slotEnd" [ngModel]="scheduleJS.scheduleDetails[i].slotEnd" hourFormat="12" timeFormat="hh:mm tt"
+                                            <p-calendar formControlName="slotEnd" [ngModel]="scheduleJS.scheduleDetails[i].slotEnd"
                                                 [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o">
                                             </p-calendar>
                                         </div>
