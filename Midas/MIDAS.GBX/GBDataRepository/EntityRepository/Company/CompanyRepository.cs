@@ -303,14 +303,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override Object Get(int id)
         {
             BO.Company acc_ = Convert<BO.Company, Company>(_context.Companies.Where(p => p.id == id).FirstOrDefault<Company>());
-            if (acc_ == null)
-            {
-                return acc_;
-            }
-            else
-            {
-                return acc_;
-            }
+            return acc_;
         }
         #endregion
 

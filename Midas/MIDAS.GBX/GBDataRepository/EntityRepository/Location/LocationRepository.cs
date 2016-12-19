@@ -141,6 +141,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
             }
 
+
             BO.Location locationBO = saveLocationBO.location;
             BO.Company companyBO = saveLocationBO.company;
             BO.AddressInfo addressBO = saveLocationBO.addressInfo;
@@ -362,7 +363,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (locationBO.Company != null)
                 {
                     var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Include("Schedule").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && (p.CompanyID==locationBO.Company.ID)).ToList<Location>();
-                    if (acc_ == null || acc_.Count < 1)
+                    if (acc_ == null)
                     {
                         return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                     }
@@ -374,7 +375,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 else if (locationBO.Name != null)
                 {
                     var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Include("Schedule").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.Name == locationBO.Name).ToList<Location>();
-                    if (acc_ == null || acc_.Count<1)
+                    if (acc_ == null)
                     {
                         return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                     }
@@ -386,7 +387,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 else
                 {
                     var acc_ = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Include("Schedule").Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<Location>();
-                    if (acc_ == null || acc_.Count < 1)
+                    if (acc_ == null)
                     {
                         return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                     }

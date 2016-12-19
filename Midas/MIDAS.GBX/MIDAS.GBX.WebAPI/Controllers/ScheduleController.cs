@@ -19,7 +19,7 @@ using MIDAS.GBX.BusinessObjects;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/Schedule")]
-    [AllowAnonymous]
+    
     public class ScheduleController : ApiController
     {
 
@@ -31,7 +31,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("GetAll")]
-        [AllowAnonymous]
+        
         public HttpResponseMessage Get([FromBody]Schedule data)
         {
             return requestHandler.GetGbObjects(Request, data);
@@ -39,7 +39,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("Get/{id}")]
-        [AllowAnonymous]
+        
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -48,7 +48,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // POST: api/Organizations
         [HttpPost]
         [Route("Add")]
-        [AllowAnonymous]
+        
         public HttpResponseMessage Post([FromBody]Schedule data)
         {
             return requestHandler.CreateGbObject(Request, data);
@@ -57,7 +57,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // PUT: api/Organizations/5
         [Route("Update")]
         [HttpPut]
-        [AllowAnonymous]
+        
         public HttpResponseMessage Put([FromBody]Schedule User)
         {
             return requestHandler.UpdateGbObject(Request, User);
@@ -66,7 +66,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // DELETE: api/Organizations/id={organizationId}
         [HttpDelete]
         [Route("Delete")]
-        [AllowAnonymous]
+        
         public HttpResponseMessage Delete([FromBody]Schedule User)
         {
             return requestHandler.DeleteGbObject(Request, User);

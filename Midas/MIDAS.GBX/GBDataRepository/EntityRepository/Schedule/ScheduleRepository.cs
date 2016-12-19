@@ -187,7 +187,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (scheduleBO.ID == 0)
                 {
                     var acc_ = _context.Schedules.Include("ScheduleDetails").Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<Schedule>();
-                    if (acc_ == null || acc_.Count < 1)
+                    if (acc_ == null)
                     {
                         return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                     }
@@ -199,7 +199,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 else
                 {
                     var acc_ = _context.Schedules.Include("ScheduleDetails").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.ScheduleDetails.Any(x => x.ScheduleID == scheduleBO.ID)).ToList<Schedule>();
-                    if (acc_ == null || acc_.Count < 1)
+                    if (acc_ == null)
                     {
                         return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                     }
@@ -212,7 +212,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             else
             {
                 var acc_ = _context.Schedules.Include("ScheduleDetails").Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<Schedule>();
-                if (acc_ == null || acc_.Count < 1)
+                if (acc_ == null)
                 {
                     return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }

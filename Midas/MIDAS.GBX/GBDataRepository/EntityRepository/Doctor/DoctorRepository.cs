@@ -56,6 +56,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 doctorBO.User = boUser;
             }
 
+            List<BO.DoctorSpeciality> lstDoctorSpecility = new List<BO.DoctorSpeciality>();
+            foreach (var item in doctor.DoctorSpecialities)
+            {
+                using (DoctorSpecialityRepository sr = new DoctorSpecialityRepository(_context))
+                {
+                    lstDoctorSpecility.Add(sr.ObjectConvert<BO.DoctorSpeciality, DoctorSpeciality>(item));
+                }
+            }
+            doctorBO.DoctorSpecialities = lstDoctorSpecility;
+
             return (T)(object)doctorBO;
         }
         #endregion

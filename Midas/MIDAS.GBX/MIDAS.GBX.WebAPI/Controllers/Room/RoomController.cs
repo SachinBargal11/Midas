@@ -29,7 +29,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
             requestHandler = new GbApiRequestHandler<Room>();
         }
 
-        [AllowAnonymous]
+        
         [HttpPost]
         [Route("GetAll")]
         public HttpResponseMessage Get([FromBody]Room data)
@@ -37,7 +37,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetGbObjects(Request, data);
         }
 
-        [AllowAnonymous]
+        
         [HttpGet]
         [Route("Get/{id}")]
         public HttpResponseMessage Get(int id)
@@ -46,7 +46,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         // POST: api/Organizations
-        [AllowAnonymous]
+        
         [HttpPost]
         [Route("Add")]
         public HttpResponseMessage Post([FromBody]Room data)
@@ -55,7 +55,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         // PUT: api/Organizations/5
-        [AllowAnonymous]
+        
         [Route("Update")]
         [HttpPut]
         public HttpResponseMessage Put([FromBody]Room User)
@@ -64,7 +64,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         // DELETE: api/Organizations/id={organizationId}
-        [AllowAnonymous]
+        
         [HttpDelete]
         [Route("Delete")]
         public HttpResponseMessage Delete([FromBody]Room User)
@@ -74,7 +74,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
 
         // Unique Name Validation
-        [AllowAnonymous]
+        
         [HttpGet]
         [Route("IsUnique")]
         public HttpResponseMessage IsUnique([FromBody]Room User)

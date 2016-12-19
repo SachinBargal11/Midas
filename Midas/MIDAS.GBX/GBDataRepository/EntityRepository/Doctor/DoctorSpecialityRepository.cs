@@ -58,6 +58,31 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Entity Conversion
+        public override T ObjectConvert<T, U>(U entity)
+        {
+            DoctorSpeciality doctorspecility = entity as DoctorSpeciality;
+
+            if (doctorspecility == null)
+                return default(T);
+
+            BO.DoctorSpeciality doctorspecilityBO = new BO.DoctorSpeciality();
+
+            doctorspecilityBO.IsDeleted = doctorspecility.IsDeleted;
+            if (doctorspecilityBO.UpdateByUserID.HasValue)
+                doctorspecilityBO.UpdateByUserID = doctorspecility.UpdateByUserID.Value;
+
+            BO.Specialty boSpecliality = new BO.Specialty();
+            using (SpecialityRepository sr = new SpecialityRepository(_context))
+            {
+                boSpecliality = sr.Convert<BO.Specialty, Specialty>(doctorspecility.Specialty);
+                doctorspecilityBO.Specialty = boSpecliality;
+            }
+
+            return (T)(object)doctorspecilityBO;
+        }
+        #endregion
+
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
@@ -75,6 +100,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             DoctorSpeciality doctorSpecilityDB = null;
             Doctor doctorDB = null;
             Specialty specilityDB = null;
+
+            var oldDoctorSpecilities = _context.DoctorSpecialities.Where(p => p.DoctorID == doctorSpecialityBO.Doctor.ID && p.IsDeleted == false).ToList<DoctorSpeciality>();
+            oldDoctorSpecilities.ForEach(a => { a.IsDeleted = true; a.UpdateDate = DateTime.UtcNow; a.UpdateByUserID = System.Convert.ToInt32(Utility.GetConfigValue("DefaultAdminUserID")); });
+            if (oldDoctorSpecilities != null)
+            {
+                _context.SaveChanges();
+            }
+
             if (doctorSpecialityBO.Specialties.Count() > 0)
             {
                 foreach (int item in doctorSpecialityBO.Specialties)
@@ -82,13 +115,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     doctorDB = new Doctor();
                     specilityDB = new Specialty();
                     doctorSpecilityDB = new DoctorSpeciality();
+
                     #region Doctor
                     doctorSpecilityDB.IsDeleted = doctorSpecialityBO.IsDeleted.HasValue ? doctorSpecialityBO.IsDeleted.Value : false;
                     #endregion
                     //Find existsing record
                     DoctorSpeciality doctor_ = _context.DoctorSpecialities.Where(p => (p.DoctorID == doctorSpecialityBO.Doctor.ID) && (p.SpecialityID == item)).FirstOrDefault<DoctorSpeciality>();
                     if (doctor_ != null)
-                        return new BO.ErrorObject { ErrorMessage = "Record already exists for this doctor and specility " + item .ToString()+ ".", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    {
+                        continue;
+                        //return new BO.ErrorObject { ErrorMessage = "Record already exists for this doctor and specility " + item.ToString() + ".", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    }
 
                     //Find Record By ID
                     Doctor doctor = _context.Doctors.Include("User").Where(p => p.id == doctorSpecialityBO.Doctor.ID).FirstOrDefault<Doctor>();

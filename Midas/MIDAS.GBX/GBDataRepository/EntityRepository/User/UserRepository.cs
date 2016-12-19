@@ -159,9 +159,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 return new BO.ErrorObject { ErrorMessage = "User object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            if (addUserBO.role == null)
+            if (userBO.ID == 0)
             {
-                return new BO.ErrorObject { ErrorMessage = "Role object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                if (addUserBO.role == null)
+                {
+                    return new BO.ErrorObject { ErrorMessage = "Role object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
             }
 
             User userDB = new User();
@@ -236,10 +239,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             #endregion
 
             #region Role
-            roleDB.Name = roleBO.Name;
-            roleDB.RoleType = System.Convert.ToByte(roleBO.RoleType);
-            if (roleBO.IsDeleted.HasValue)
-                roleDB.IsDeleted = roleBO.IsDeleted.Value;
+            if (roleBO != null)
+            {
+                roleDB.Name = roleBO.Name;
+                roleDB.RoleType = System.Convert.ToByte(roleBO.RoleType);
+                if (roleBO.IsDeleted.HasValue)
+                    roleDB.IsDeleted = roleBO.IsDeleted.Value;
+            }
             #endregion
 
             switch (userBO.UserType)
@@ -484,7 +490,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         BO.UserCompany usrComp = new BO.UserCompany();
                         usrComp.User = new BO.User();
                         usrComp.User.ID = acc_.ID;
-                        boOTP.company = ((BO.UserCompany)sr.Get(usrComp)).Company;
+                        boOTP.usercompanies = ((List<BO.UserCompany>)sr.Get(usrComp)).ToList();
+                        boOTP.company = boOTP.usercompanies[0].Company;
                     }
                     boOTP.User = acc_;
                     return boOTP;
@@ -498,7 +505,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.OTP boOTP_ = new BusinessObjects.OTP();
             using (UserCompanyRepository sr = new UserCompanyRepository(_context))
             {
-                boOTP_.company = ((BO.UserCompany)sr.Get(acc_.ID)).Company;
+                BO.UserCompany usrComp = new BO.UserCompany();
+                usrComp.User = new BO.User();
+                usrComp.User.ID = acc_.ID;
+                boOTP_.usercompanies = ((List<BO.UserCompany>)sr.Get(usrComp)).ToList();
+                boOTP_.company = boOTP_.usercompanies[0].Company;
             }
             boOTP_.User = acc_;
             return boOTP_;

@@ -10,7 +10,7 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/PasswordToken")]
-    [AllowAnonymous]
+    
     public class PasswordTokenController : ApiController
     {
         private IRequestHandler<PasswordToken> requestHandler;
@@ -23,7 +23,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // GET: api/Organizations/5
         [HttpGet]
         [Route("Get/{id}")]
-        [AllowAnonymous]
+        
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -31,7 +31,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("GetAll")]
-        [AllowAnonymous]
+        
         public HttpResponseMessage Get([FromBody]PasswordToken data)
         {
             return requestHandler.GetGbObjects(Request, data);
@@ -40,7 +40,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // POST: api/Organizations
         [HttpPost]
         [Route("Add")]
-        [AllowAnonymous]
+        
         public HttpResponseMessage Post([FromBody]PasswordToken data)
         {
             return requestHandler.CreateGbObject(Request, data);
@@ -49,7 +49,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // PUT: api/Organizations/5
         [Route("Update")]
         [HttpPut]
-        [AllowAnonymous]
+        
         public HttpResponseMessage Put([FromBody]PasswordToken account)
         {
             return requestHandler.UpdateGbObject(Request, account);
@@ -58,7 +58,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // DELETE: api/Organizations/id={organizationId}
         [HttpDelete]
         [Route("Delete")]
-        [AllowAnonymous]
+        
         public HttpResponseMessage Delete([FromBody]PasswordToken account)
         {
             return requestHandler.DeleteGbObject(Request, account);
@@ -67,7 +67,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // Unique Name Validation
         [HttpPost]
         [Route("IsUnique")]
-        [AllowAnonymous]
+        
         public HttpResponseMessage IsUnique([FromBody]PasswordToken account)
         {
             return requestHandler.ValidateUniqueName(Request, account);
