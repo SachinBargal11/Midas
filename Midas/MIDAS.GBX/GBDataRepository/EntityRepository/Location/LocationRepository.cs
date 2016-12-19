@@ -119,17 +119,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 return new BO.ErrorObject { ErrorMessage = "Location object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            if (saveLocationBO.addressInfo == null)
+            if (saveLocationBO.location.ID == 0)
             {
-                return new BO.ErrorObject { ErrorMessage = "Addressinfo object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                if (saveLocationBO.addressInfo == null)
+                {
+                    return new BO.ErrorObject { ErrorMessage = "Addressinfo object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
             }
-            else if (saveLocationBO.contactInfo == null)
+            if (saveLocationBO.location.ID == 0)
             {
-                return new BO.ErrorObject { ErrorMessage = "Contactinfo object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                if (saveLocationBO.contactInfo == null)
+                {
+                    return new BO.ErrorObject { ErrorMessage = "Contactinfo object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
             }
-            else if (saveLocationBO.company == null)
+            if (saveLocationBO.location.ID == 0)
             {
-                return new BO.ErrorObject { ErrorMessage = "Company object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+             if (saveLocationBO.company == null)
+                {
+                    return new BO.ErrorObject { ErrorMessage = "Company object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
             }
 
             BO.Location locationBO = saveLocationBO.location;

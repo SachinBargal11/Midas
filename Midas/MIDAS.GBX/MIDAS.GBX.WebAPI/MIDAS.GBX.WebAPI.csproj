@@ -265,6 +265,7 @@
     <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Controllers\SpecialtyController.cs" />
     <Compile Include="Controllers\SpecialtyDetailsController.cs" />
+    <Compile Include="Controllers\UserCompanyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="ErrorHelper\ApiBusinessException.cs" />
@@ -365,6 +366,7 @@
     <Folder Include="Views\RoomTest\" />
     <Folder Include="Views\Room\" />
     <Folder Include="Views\Schedule\" />
+    <Folder Include="Views\UserCompany\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
