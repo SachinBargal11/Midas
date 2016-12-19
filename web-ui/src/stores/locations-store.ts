@@ -78,9 +78,14 @@ export class LocationsStore {
     }
     updateLocation(basicInfo: LocationDetails): Observable<LocationDetails> {
         let promise = new Promise((resolve, reject) => {
-            this._locationsService.updateLocation(basicInfo).subscribe((location: LocationDetails) => {
-                this._locations.next(this._locations.getValue().push(location));
-                resolve(location);
+            this._locationsService.updateLocation(basicInfo).subscribe((updatedLocation: LocationDetails) => {
+                let locationDetails: List<LocationDetails> = this._locations.getValue();
+                let index = locationDetails.findIndex((currentLocation: LocationDetails) => currentLocation.location.id === updatedLocation.location.id);
+                locationDetails = locationDetails.update(index, function () {
+                    return updatedLocation;
+                });
+                this._locations.next(locationDetails);
+                resolve(basicInfo);
             }, error => {
                 reject(error);
             });

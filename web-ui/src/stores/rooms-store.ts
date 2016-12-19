@@ -90,8 +90,13 @@ export class RoomsStore {
     }
     updateRoom(roomDetail: Room): Observable<Room> {
         let promise = new Promise((resolve, reject) => {
-            this._roomsService.updateRoom(roomDetail).subscribe((roomDetail: Room) => {
-                this._rooms.next(this._rooms.getValue().push(roomDetail));
+            this._roomsService.updateRoom(roomDetail).subscribe((updatedRoom: Room) => {
+                let roomDetails: List<Room> = this._rooms.getValue();
+                let index = roomDetails.findIndex((currentRoom: Room) => currentRoom.id === updatedRoom.id);
+                roomDetails = roomDetails.update(index, function () {
+                    return updatedRoom;
+                });
+                this._rooms.next(roomDetails);
                 resolve(roomDetail);
             }, error => {
                 reject(error);

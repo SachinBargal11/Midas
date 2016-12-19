@@ -3,6 +3,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppValidators } from '../../utils/AppValidators';
+import { ErrorMessageValidator } from '../../utils/ErrorMessageValidator';
 import { AuthenticationService } from '../../services/authentication-service';
 import { RegistrationService } from '../../services/registration-service';
 import { CompanyStore } from '../../stores/company-store';
@@ -97,23 +98,8 @@ export class RegisterCompanyComponent implements OnInit {
                 }, 3000);
             },
             (error) => {
-                let errorBody = JSON.parse(error._body);
-                let errorString = 'Unable to register company.';
-                if (errorBody.errorLevel === 4) {
-                    if (errorBody.errorObject) {
-                        errorString = '';
-                        let errorObjs = errorBody.errorObject;
-                        for (let errorObj of errorObjs) {
-                            errorString += errorObj.validationMessage + '<br>';
-                        }
-
-                    }
-                } else {
-                    // errorString = errorBody.errorMessage;
-                    errorString = 'Unable to register company.';
-                }
                 this.isRegistrationInProgress = false;
-                this._notificationsService.error('Oh No!', errorString);
+                this._notificationsService.error('Oh No!', ErrorMessageValidator.errorMessage(error));
             },
             () => {
                 this.isRegistrationInProgress = false;

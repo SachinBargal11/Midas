@@ -3,6 +3,7 @@ import { Location } from '@angular/common';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppValidators } from '../../../utils/AppValidators';
+import { ErrorMessageValidator } from '../../../utils/ErrorMessageValidator';
 import { RoomsStore } from '../../../stores/rooms-store';
 import { RoomsService } from '../../../services/rooms-service';
 import { Room } from '../../../models/room';
@@ -106,18 +107,8 @@ export class AddRoomComponent implements OnInit {
                 this.location.back();
             },
             (error) => {
-                let errorBody = JSON.parse(error._body);
-                let errorString = 'Unable to add Room.';
-                if (errorBody.errorLevel === 2) {
-                    if (errorBody.errorMessage) {
-                        errorString = errorBody.errorMessage;
-                    }
-                } else {
-                    // errorString = errorBody.errorMessage;
-                    errorString = 'Unable to add Room.';
-                }
                 let notification = new Notification({
-                    'title': errorString,
+                    'title': ErrorMessageValidator.errorMessage(error),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

@@ -87,8 +87,13 @@ export class UsersStore {
     }
     updateUser(userDetail: Account): Observable<Account> {
         let promise = new Promise((resolve, reject) => {
-            this._usersService.updateUser(userDetail).subscribe((userDetail: Account) => {
-                this._users.next(this._users.getValue().push(userDetail));
+            this._usersService.updateUser(userDetail).subscribe((updatedUserDetail: Account) => {
+                let userDetails: List<Account> = this._users.getValue();
+                let index = userDetails.findIndex((currentUser: Account) => currentUser.user.id === updatedUserDetail.user.id);
+                userDetails = userDetails.update(index, function () {
+                    return updatedUserDetail;
+                });
+                this._users.next(userDetails);
                 resolve(userDetail);
             }, error => {
                 reject(error);
@@ -98,8 +103,13 @@ export class UsersStore {
     }
     updatePassword(userDetail: Account): Observable<Account> {
         let promise = new Promise((resolve, reject) => {
-            this._usersService.updatePassword(userDetail).subscribe((userDetail: Account) => {
-                this._users.next(this._users.getValue().push(userDetail));
+            this._usersService.updatePassword(userDetail).subscribe((updatedUserDetail: Account) => {
+                let userDetails: List<Account> = this._users.getValue();
+                let index = userDetails.findIndex((currentUser: Account) => currentUser.user.id === updatedUserDetail.user.id);
+                userDetails = userDetails.update(index, function () {
+                    return updatedUserDetail;
+                });
+                this._users.next(userDetails);
                 resolve(userDetail);
             }, error => {
                 reject(error);
