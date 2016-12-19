@@ -118,26 +118,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.UserCompany usercompanyBO = (BO.UserCompany)(object)entity;
             List<BO.UserCompany> lstUserCompanies = new List<BO.UserCompany>();
             dynamic result = null;
-            var acc_ = _context.UserCompanies.Include("User").Include("Companies").Where(p => p.IsDeleted == false || p.IsDeleted == null) as IQueryable<UserCompany>;
-            if (acc_ == null || acc_.Count()==0)
+            var acc_ = _context.UserCompanies.Include("User").Include("Company").Where(p => p.IsDeleted == false || p.IsDeleted == null) as IQueryable<UserCompany>;
+            if (acc_ == null || acc_.Count() == 0)
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            else if (usercompanyBO.Company.ID > 0 || usercompanyBO.User.ID > 0)
+            if (usercompanyBO.Company != null)
             {
-                if (usercompanyBO.Company.ID > 0)
+             if (usercompanyBO.Company.ID > 0)
                 {
-                    result = acc_.Where(x => x.Company.id == usercompanyBO.Company.ID);
-                }
-                else if (usercompanyBO.User.ID > 0)
-                {
+                    if (usercompanyBO.Company.ID > 0)
+                    {
+                        result = acc_.Where(x => x.Company.id == usercompanyBO.Company.ID);
+                    }
+                }   
+            }
+            else if(usercompanyBO.User!=null)
+            {
+                if (usercompanyBO.User.ID > 0)
                     result = acc_.Where(x => x.User.id == usercompanyBO.User.ID);
-                }
-                else
-                {
-                    result = acc_.Where(x => x.User.id == usercompanyBO.User.ID && x.Company.id == usercompanyBO.Company.ID);
-                }
             }
             else
             {

@@ -99,6 +99,10 @@ namespace MIDAS.GBX
             {
                 repo = new LocationSpecialityRepository(context);
             }
+            if (typeof(T) == typeof(BO.UserCompany))
+            {
+                repo = new UserCompanyRepository(context);
+            }
             return repo;
         }
     }

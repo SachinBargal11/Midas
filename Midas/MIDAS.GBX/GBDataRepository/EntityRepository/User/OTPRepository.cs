@@ -146,7 +146,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 BO.OTP acc = Convert<BO.OTP, OTP>(otpDB);
 
-                dynamic data_ = _context.Users.Where(x => x.id == otpUser.User.ID && x.IsDeleted == null).FirstOrDefault();
+                dynamic data_ = _context.Users.Where(x => x.id == otpUser.User.ID && (x.IsDeleted == null || x.IsDeleted == false)).FirstOrDefault();
                 BO.User acc_ = Convert<BO.User, User>(data_);
                 string Message = "Dear " + acc_.UserName + ",<br><br>As per your request, a One Time Password (OTP) has been generated and the same is <i><b>" + otpDB.OTP1.ToString() + "</b></i><br><br>Please use this OTP to complete the Login. Reference number is " + otpDB.Pin.ToString() + " <br><br>*** This is an auto-generated email. Please do not reply to this email.*** <br><br>Thanks";
                 try

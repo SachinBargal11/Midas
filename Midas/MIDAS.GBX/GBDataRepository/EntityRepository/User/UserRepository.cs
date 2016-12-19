@@ -231,7 +231,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     invitationDB.Company = company;
                 }
                 else
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Speclity details.", ErrorLevel = ErrorLevel.Error };
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid company details.", ErrorLevel = ErrorLevel.Error };
             }
             #endregion
 
@@ -481,7 +481,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     BO.OTP boOTP = Convert<BO.OTP, OTP>(otpDB);
                     using (UserCompanyRepository sr = new UserCompanyRepository(_context))
                     {
-                        boOTP.company = ((BO.UserCompany)sr.Get(acc_.ID)).Company;
+                        BO.UserCompany usrComp = new BO.UserCompany();
+                        usrComp.User.ID = acc_.ID;
+                        boOTP.company = ((BO.UserCompany)sr.Get(usrComp)).Company;
                     }
                     boOTP.User = acc_;
                     return boOTP;
