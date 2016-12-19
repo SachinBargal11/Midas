@@ -74,8 +74,13 @@ export class ScheduleStore {
     }
     updateSchedule(scheduleDetail: Schedule): Observable<Schedule> {
         let promise = new Promise((resolve, reject) => {
-            this._scheduleService.updateSchedule(scheduleDetail).subscribe((scheduleDetail: Schedule) => {
-                this._schedules.next(this._schedules.getValue().push(scheduleDetail));
+            this._scheduleService.updateSchedule(scheduleDetail).subscribe((updatedScheduleDetail: Schedule) => {
+                let scheduleDetails: List<Schedule> = this._schedules.getValue();
+                let index = scheduleDetails.findIndex((currentSchedule: Schedule) => currentSchedule.id === updatedScheduleDetail.id);
+                scheduleDetails = scheduleDetails.update(index, function () {
+                    return updatedScheduleDetail;
+                });
+                this._schedules.next(scheduleDetails);
                 resolve(scheduleDetail);
             }, error => {
                 reject(error);

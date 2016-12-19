@@ -59,9 +59,14 @@ export class MedicalFacilityStore {
     }
     updateMedicalFacility(medicalFacility: MedicalFacility): Observable<MedicalFacility> {
         let promise = new Promise((resolve, reject) => {
-            this._medicalFacilitiesService.updateMedicalFacility(medicalFacility).subscribe((medicalFacilityDetail: MedicalFacility) => {
-                this._medicalFacilities.next(this._medicalFacilities.getValue().push(medicalFacilityDetail));
-                resolve(medicalFacilityDetail);
+            this._medicalFacilitiesService.updateMedicalFacility(medicalFacility).subscribe((updatedMedicalFacilityDetail: MedicalFacility) => {
+                let MedicalFacilityDetails: List<MedicalFacility> = this._medicalFacilities.getValue();
+                let index = MedicalFacilityDetails.findIndex((currentMedicalFacility: MedicalFacility) => currentMedicalFacility.id === updatedMedicalFacilityDetail.id);
+                MedicalFacilityDetails = MedicalFacilityDetails.update(index, function () {
+                    return updatedMedicalFacilityDetail;
+                });
+                this._medicalFacilities.next(MedicalFacilityDetails);
+                resolve(medicalFacility);
             }, error => {
                 reject(error);
             });
