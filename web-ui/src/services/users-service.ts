@@ -26,8 +26,8 @@ export class UsersService {
         this._headers.append('Content-Type', 'application/json');
     }
 
-    getUser(userId: Number): Observable<Account> {
-        let promise: Promise<Account> = new Promise((resolve, reject) => {
+    getUser(userId: Number): Observable<User> {
+        let promise: Promise<User> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/user/get/' + userId).map(res => res.json())
                 .subscribe((userData: any) => {
                     resolve(userData);
@@ -35,9 +35,9 @@ export class UsersService {
                     reject(error);
                 });
         });
-        return <Observable<Account>>Observable.fromPromise(promise);
+        return <Observable<User>>Observable.fromPromise(promise);
     }
-    getUsers(): Observable<Account[]> {
+    getUsers(): Observable<User[]> {
         let requestData = {
             userCompanies: [{
                 company: {
@@ -45,7 +45,7 @@ export class UsersService {
                 }
             }]
         };
-        let promise: Promise<Account[]> = new Promise((resolve, reject) => {
+        let promise: Promise<User[]> = new Promise((resolve, reject) => {
             return this._http.post(this._url + '/user/GetAll', requestData, {
                 headers: this._headers
             }).map(res => res.json())
@@ -58,7 +58,7 @@ export class UsersService {
                     reject(error);
                 });
         });
-        return <Observable<Account[]>>Observable.fromPromise(promise);
+        return <Observable<User[]>>Observable.fromPromise(promise);
     }
     // getUsers(accountId: number): Observable<AccountDetail[]> {
     //     let promise: Promise<AccountDetail[]> = new Promise((resolve, reject) => {

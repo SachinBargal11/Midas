@@ -1,8 +1,21 @@
 <h1 class="with-border">Speciality Details
-<a class="pull-right btn btn-danger" (click)="deleteSpecialityDetails()">Delete speciality details
+<div class="btn-group pull-right row">
+  <div class="col-md-4">
+      <a class="btn btn-primary" routerLink="add">Add Speciality detail
+      </a>
+  </div>
+  <div class="col-md-1"></div>
+  <div class="col-md-3">
+      <a class="btn btn-danger" (click)="deleteSpecialityDetails()">
+        <i class="fa fa-trash-o fa-1x"></i> Delete speciality details
+        <loader [visible]="isDeleteProgress"></loader>
+      </a>
+  </div>
+ </div>
+<!--<a class="pull-right btn btn-danger" (click)="deleteSpecialityDetails()">Delete speciality details
     <loader [visible]="isDeleteProgress"></loader>
 </a>
-<a class="pull-right btn btn-primary" routerLink="add">Add Speciality detail</a>
+<a class="pull-right btn btn-primary" routerLink="add">Add Speciality detail</a>-->
 </h1>
 <progress-bar [visible]="specialityDetailsLoading" 
               style="position:fixed;

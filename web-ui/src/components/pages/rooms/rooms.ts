@@ -105,7 +105,7 @@ export class RoomsComponent implements OnInit {
         else {
             let notification = new Notification({
                 'title': 'select rooms to delete',
-                'type': 'ALERT',
+                'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
