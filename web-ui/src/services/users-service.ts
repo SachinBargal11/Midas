@@ -41,7 +41,7 @@ export class UsersService {
         let requestData = {
             userCompanies: [{
                 company: {
-                    id: this._sessionStore.session.company.id
+                    id: this._sessionStore.session.currentCompany.id
                 }
             }]
         };

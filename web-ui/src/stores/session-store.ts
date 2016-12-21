@@ -31,7 +31,7 @@ export class SessionStore {
 
             if (storedAccount) {
                 let storedAccountData: any = JSON.parse(storedAccount);
-                let account: Account = AccountAdapter.parseResponse(storedAccountData);
+                let account: Account = AccountAdapter.parseStoredData(storedAccountData);
                 this._populateSession(account);
                 resolve(this._session);
             }
@@ -48,8 +48,8 @@ export class SessionStore {
             if (!window.sessionStorage.getItem('logged_user_with_pending_security_review')) {
                 reject(new Error('INVALID_REDIRECTION'));
             } else {
-                let storedAccountData: any = new Account(JSON.parse(window.sessionStorage.getItem('logged_user_with_pending_security_review')));
-                let account: Account = AccountAdapter.parseResponse(storedAccountData);
+                let storedAccountData: any = JSON.parse(window.sessionStorage.getItem('logged_user_with_pending_security_review'));
+                let account: Account = AccountAdapter.parseStoredData(storedAccountData);
                 let pin = window.sessionStorage.getItem('pin');
                 this._authenticationService.validateSecurityCode(account.user.id, securityCode, pin).subscribe(
                     (response: boolean) => {
@@ -111,6 +111,7 @@ export class SessionStore {
 
     private _populateSession(account: Account) {
         this._session.account = account;
+        this._session.currentCompany = account.companies[0];
         window.localStorage.setItem(this.__ACCOUNT_STORAGE_KEY__, JSON.stringify(account.toJS()));
     }
 

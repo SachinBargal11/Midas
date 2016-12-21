@@ -3,16 +3,10 @@ import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
 import {AppValidators} from '../../../utils/AppValidators';
 import {UsersStore} from '../../../stores/users-store';
-import {User} from '../../../models/user';
 import {UsersService} from '../../../services/users-service';
-import {AccountDetail} from '../../../models/account-details';
 import {Account} from '../../../models/account';
-import {Contact} from '../../../models/contact';
-import {Address} from '../../../models/address';
 import {SessionStore} from '../../../stores/session-store';
 import {NotificationsStore} from '../../../stores/notifications-store';
-import {Notification} from '../../../models/notification';
-import moment from 'moment';
 import {StatesStore} from '../../../stores/states-store';
 import {StateService} from '../../../services/state-service';
 
@@ -77,7 +71,7 @@ export class UserBasicComponent implements OnInit {
 
 
     save() {
-        let basicformValues = this.basicform.value;
+        // let basicformValues = this.basicform.value;
 
     }
 

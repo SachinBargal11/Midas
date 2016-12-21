@@ -7,7 +7,6 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
-import { Location } from '../models/location';
 import { LocationDetails } from '../models/location-details';
 import { LocationDetailAdapter } from './adapters/location-detail-adapter';
 
@@ -43,7 +42,7 @@ export class LocationsService {
     getLocations(): Observable<any[]> {
         let requestData = {
             company: {
-                id: this._sessionStore.session.company.id
+                id: this._sessionStore.session.currentCompany.id
             }
         };
         let promise: Promise<any[]> = new Promise((resolve, reject) => {

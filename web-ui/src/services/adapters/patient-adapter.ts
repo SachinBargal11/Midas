@@ -1,5 +1,4 @@
 import { Patient } from '../../models/patient';
-import Moment from 'moment';
 
 
 export class PatientAdapter {

@@ -1,14 +1,10 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AppValidators } from '../../../utils/AppValidators';
 import { DoctorsStore } from '../../../stores/doctors-store';
 import { DoctorsService } from '../../../services/doctors-service';
-import { DoctorDetail } from '../../../models/doctor-details';
 import { Doctor } from '../../../models/doctor';
 import { User } from '../../../models/user';
-import { Contact } from '../../../models/contact';
-import { Address } from '../../../models/address';
 import { SessionStore } from '../../../stores/session-store';
 import { NotificationsStore } from '../../../stores/notifications-store';
 import { Notification } from '../../../models/notification';

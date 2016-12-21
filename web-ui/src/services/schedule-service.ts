@@ -1,5 +1,4 @@
 import { LocationDetails } from '../models/location-details';
-import { request } from 'https';
 import { SessionStore } from '../stores/session-store';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';

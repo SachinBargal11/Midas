@@ -12,7 +12,6 @@ import {NotificationsStore} from '../../stores/notifications-store';
 
 export class AppHeaderComponent implements OnInit {
 
-    user_name;
     disabled: boolean = false;
     status: { isopen: boolean } = { isopen: false };
 
@@ -57,5 +56,9 @@ export class AppHeaderComponent implements OnInit {
 
     showNotifications() {
         this._notificationsStore.toggleVisibility();
+    }
+
+    selectCurrentCompany() {
+        // debugger;
     }
 }

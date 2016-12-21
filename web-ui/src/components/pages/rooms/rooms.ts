@@ -5,8 +5,8 @@ import { RoomsStore } from '../../../stores/rooms-store';
 import { RoomsService } from '../../../services/rooms-service';
 import { LocationsStore } from '../../../stores/locations-store';
 import { LocationDetails } from '../../../models/location-details';
-import {NotificationsStore} from '../../../stores/notifications-store';
-import {Notification} from '../../../models/notification';
+import { NotificationsStore } from '../../../stores/notifications-store';
+import { Notification } from '../../../models/notification';
 import moment from 'moment';
 
 @Component({
@@ -62,52 +62,52 @@ export class RoomsComponent implements OnInit {
         if (this.selectedRooms !== undefined) {
             this.selectedRooms.forEach(room => {
                 let roomDetail = new Room({
-                id: room.id,
-                name: room.name,
-                contactPersonName: room.contactPersonName,
-                phone: room.phone,
-                isDeleted: 1,
-                roomTest:{
-                    id: room.roomTest.id
-                },
-                location: {
-                    id: room.location.id
-                }
-        });
-        this.isDeleteProgress = true;
-        let result;
-
-        result = this._roomsStore.deleteRoom(roomDetail);
-            result.subscribe(
-                (response) => {
-                    let notification = new Notification({
-                        'title': 'Room ' + room.name + ' deleted successfully!',
-                        'type': 'SUCCESS',
-                        'createdAt': moment()
-                    });
-                    this.rooms.splice(this.rooms.indexOf(room), 1);
-                    this._notificationsStore.addNotification(notification);
-                    console.log(this._roomsStore.rooms);
-                },
-                (error) => {
-                    let notification = new Notification({
-                        'title': 'Unable ' + room.name + ' to delete room!',
-                        'type': 'ERROR',
-                        'createdAt': moment()
-                    });
-                    this._notificationsStore.addNotification(notification);
-                },
-                () => {
-                    this.isDeleteProgress = false;
+                    id: room.id,
+                    name: room.name,
+                    contactPersonName: room.contactPersonName,
+                    phone: room.phone,
+                    isDeleted: 1,
+                    roomTest: {
+                        id: room.roomTest.id
+                    },
+                    location: {
+                        id: room.location.id
+                    }
                 });
+                this.isDeleteProgress = true;
+                let result;
+
+                result = this._roomsStore.deleteRoom(roomDetail);
+                result.subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            'title': 'Room ' + room.name + ' deleted successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        this.rooms.splice(this.rooms.indexOf(room), 1);
+                        this._notificationsStore.addNotification(notification);
+                        console.log(this._roomsStore.rooms);
+                    },
+                    (error) => {
+                        let notification = new Notification({
+                            'title': 'Unable ' + room.name + ' to delete room!',
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._notificationsStore.addNotification(notification);
+                    },
+                    () => {
+                        this.isDeleteProgress = false;
+                    });
             });
         }
         else {
             let notification = new Notification({
-                    'title': 'select rooms to delete',
-                    'type': 'ALERT',
-                    'createdAt': moment()
-                });
+                'title': 'select rooms to delete',
+                'type': 'ALERT',
+                'createdAt': moment()
+            });
             this._notificationsStore.addNotification(notification);
         }
     }

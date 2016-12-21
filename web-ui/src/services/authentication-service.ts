@@ -1,5 +1,4 @@
 import { AccountAdapter } from './adapters/account-adapter';
-import { access } from 'fs';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -17,7 +16,6 @@ import { UserType } from '../models/enums/user-type';
 export class AuthenticationService {
     companies: any[];
     private _url: string = `${Environment.SERVICE_BASE_URL}`;
-    private _url1: string = 'http://localhost:3004';
 
     constructor(private _http: Http) { }
 
@@ -171,7 +169,7 @@ export class AuthenticationService {
             }).map(res => res.json())
                 .subscribe((data: any) => {
                     if (data) {
-                        data.company = data.usercompanies[0].company;
+                        // data.company = data.usercompanies[0].company;
                         let user = AccountAdapter.parseResponse(data);
                         window.sessionStorage.setItem('pin', data.pin);
                         resolve(user);

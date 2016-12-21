@@ -1,11 +1,11 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router, ActivatedRoute} from '@angular/router';
-import {SpecialityStore} from '../../../../stores/speciality-store';
-import {Speciality} from '../../../../models/speciality';
-import {SessionStore} from '../../../../stores/session-store';
-import {NotificationsStore} from '../../../../stores/notifications-store';
-import {Notification} from '../../../../models/notification';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { SpecialityStore } from '../../../../stores/speciality-store';
+import { Speciality } from '../../../../models/speciality';
+import { SessionStore } from '../../../../stores/session-store';
+import { NotificationsStore } from '../../../../stores/notifications-store';
+import { Notification } from '../../../../models/notification';
 import moment from 'moment';
 
 @Component({
@@ -41,7 +41,7 @@ export class UpdateSpecialityComponent implements OnInit {
             let result = this._specialityStore.fetchSpecialityById(specialityId);
             result.subscribe(
                 (speciality: Speciality) => {
-                   this.speciality = speciality;
+                    this.speciality = speciality;
                 },
                 (error) => {
                     this._router.navigate(['/account-setup/specialities']);
@@ -51,9 +51,9 @@ export class UpdateSpecialityComponent implements OnInit {
         });
 
         this.specialityform = this.fb.group({
-                name: ['', Validators.required],
-                specialityCode: ['', Validators.required],
-                isunitApply: [''] 
+            name: ['', Validators.required],
+            specialityCode: ['', Validators.required],
+            isunitApply: ['']
         });
 
         this.specialityformControls = this.specialityform.controls;
@@ -66,10 +66,10 @@ export class UpdateSpecialityComponent implements OnInit {
     updateSpeciality() {
         let specialityformValues = this.specialityform.value;
         let speciality = new Speciality({
-                id: this.speciality.id,
-                name: specialityformValues.name,
-                specialityCode: specialityformValues.specialityCode,
-                isunitApply: specialityformValues.isunitApply
+            id: this.speciality.id,
+            name: specialityformValues.name,
+            specialityCode: specialityformValues.specialityCode,
+            isunitApply: specialityformValues.isunitApply
         });
         this.isSaveSpecialityProgress = true;
         let result;

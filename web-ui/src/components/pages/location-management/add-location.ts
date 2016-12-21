@@ -73,7 +73,7 @@ export class AddLocationComponent implements OnInit {
                 locationType: parseInt(addlocationformValues.locationType)
             }),
             company: new Company ({
-                 id: this._sessionStore.session.company.id
+                 id: this._sessionStore.session.currentCompany.id
             }),
             contact: new Contact({
                 faxNo: addlocationformValues.fax,

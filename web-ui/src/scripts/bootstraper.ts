@@ -156,7 +156,7 @@ import { InputTextModule, ChartModule, DataTableModule, SharedModule, ButtonModu
 
 
 
-enableProdMode();
+// enableProdMode();
 
 @NgModule({
     imports: [

@@ -1,11 +1,9 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router} from '@angular/router';
-import {AppValidators} from '../../../utils/AppValidators';
-import {SessionStore} from '../../../stores/session-store';
-import {NotificationsStore} from '../../../stores/notifications-store';
-import {Notification} from '../../../models/notification';
-import moment from 'moment';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { SessionStore } from '../../../stores/session-store';
+import { NotificationsStore } from '../../../stores/notifications-store';
+
 @Component({
     selector: 'access',
     templateUrl: 'templates/pages/users/user-access.html',
@@ -31,8 +29,8 @@ export class UserAccessComponent implements OnInit {
         private _elRef: ElementRef
     ) {
         this.accessform = this.fb.group({
-                role: ['']
-            });
+            role: ['']
+        });
 
         this.accessformControls = this.accessform.controls;
     }
@@ -42,7 +40,7 @@ export class UserAccessComponent implements OnInit {
 
 
     save() {
-        let accessformValues = this.accessform.value;
+        // let accessformValues = this.accessform.value;
     }
 
 }

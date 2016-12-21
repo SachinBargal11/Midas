@@ -5,7 +5,6 @@ import { AppValidators } from '../../../utils/AppValidators';
 import { UsersStore } from '../../../stores/users-store';
 import { DoctorsStore } from '../../../stores/doctors-store';
 import { DoctorsService } from '../../../services/doctors-service';
-import { DoctorDetail } from '../../../models/doctor-details';
 import { Doctor } from '../../../models/doctor';
 import { User } from '../../../models/user';
 import { Contact } from '../../../models/contact';

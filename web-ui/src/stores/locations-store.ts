@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import { Location } from '../models/location';
 import { LocationDetails } from '../models/location-details';
 import { LocationsService } from '../services/locations-service';
 import { List } from 'immutable';

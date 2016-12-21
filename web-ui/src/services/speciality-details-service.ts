@@ -60,7 +60,7 @@ export class SpecialityDetailsService {
             // requestData.Company = requestData.contact;
             // requestData.Specialty = requestData.address;
             requestData.company = {
-                id: this._sessionStore.session.company.id
+                id: this._sessionStore.session.currentCompany.id
             };
             requestData.isnitialEvaluation = requestData.isInitialEvaluation;
             requestData.specialty = _.omit(requestData.specialty, 'createByUserID', 'createDate', 'isDeleted', 'isUnitApply', 'name', 'specialityCode', 'updateByUserID', 'updateDate');
@@ -84,7 +84,7 @@ export class SpecialityDetailsService {
             // requestData.contactInfo = requestData.contact;
             // requestData.addressInfo = requestData.address;
             requestData.company = {
-                id: this._sessionStore.session.company.id
+                id: this._sessionStore.session.currentCompany.id
             };
             requestData.isnitialEvaluation = requestData.isInitialEvaluation;
 

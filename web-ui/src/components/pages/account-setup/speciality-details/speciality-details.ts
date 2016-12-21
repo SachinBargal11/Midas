@@ -1,7 +1,5 @@
-import { List } from 'immutable';
-import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SpecialityDetailsStore } from '../../../../stores/speciality-details-store';
 import { SpecialityDetail } from '../../../../models/speciality-details';
@@ -40,7 +38,7 @@ export class SpecialityDetailComponent {
                 speciality: {
                     id: specialityId
                 }
-            }
+            };
             let result = this._specialityDetailsStore.getSpecialityDetails(requestData);
             result.subscribe(
                 (specialityDetails: SpecialityDetail[]) => {
@@ -56,47 +54,47 @@ export class SpecialityDetailComponent {
     }
     ngOnInit() {
     }
-    
+
     deleteSpecialityDetails() {
         if (this.selectedSpecialityDetails !== undefined) {
             this.selectedSpecialityDetails.forEach(specialityDetail => {
-               let selectedSpecialityDetail = new SpecialityDetail({
-                   id: specialityDetail.id,
-                   isDeleted: 1
-               });
-        this.isDeleteProgress = true;
-        let result;
+                let selectedSpecialityDetail = new SpecialityDetail({
+                    id: specialityDetail.id,
+                    isDeleted: 1
+                });
+                this.isDeleteProgress = true;
+                let result;
 
-        result = this._specialityDetailsStore.deleteSpecialityDetail(selectedSpecialityDetail);
-        result.subscribe(
-            (response) => {
-                let notification = new Notification({
-                    'title': 'Speciality Detail deleted successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
-                });
-                this.specialityDetails.splice(this.specialityDetails.indexOf(specialityDetail), 1);
-                this._notificationsStore.addNotification(notification);
-            },
-            (error) => {
-                let notification = new Notification({
-                    'title': 'Unable to delete Speciality Detail!',
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-            },
-            () => {
-                this.isDeleteProgress = false;
-            });
+                result = this._specialityDetailsStore.deleteSpecialityDetail(selectedSpecialityDetail);
+                result.subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            'title': 'Speciality Detail deleted successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        this.specialityDetails.splice(this.specialityDetails.indexOf(specialityDetail), 1);
+                        this._notificationsStore.addNotification(notification);
+                    },
+                    (error) => {
+                        let notification = new Notification({
+                            'title': 'Unable to delete Speciality Detail!',
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._notificationsStore.addNotification(notification);
+                    },
+                    () => {
+                        this.isDeleteProgress = false;
+                    });
             });
         }
         else {
             let notification = new Notification({
-                    'title': 'select speciality details to delete',
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
+                'title': 'select speciality details to delete',
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
             this._notificationsStore.addNotification(notification);
         }
     }

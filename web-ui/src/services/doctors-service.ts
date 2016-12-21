@@ -5,11 +5,8 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
-import {DoctorDetail} from '../models/doctor-details';
 import {Doctor} from '../models/doctor';
 import {DoctorSpeciality} from '../models/doctor-speciality';
-import {DoctorAdapter} from './adapters/doctor-adapter';
-import {UserType} from '../models/enums/user-type';
 
 @Injectable()
 export class DoctorsService {

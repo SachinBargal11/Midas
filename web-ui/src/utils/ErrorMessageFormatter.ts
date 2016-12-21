@@ -8,7 +8,7 @@ export class ErrorMessageFormatter {
                         let errorObjs = errorBody.errorObject;
                         for (let errorObj of errorObjs) {
                             // errorString += errorObj.validationMessage + '<br>';
-                            errorString.push(errorObj.validationMessage)
+                            errorString.push(errorObj.validationMessage);
                         }
                        return errorString;
                     }

@@ -1,7 +1,7 @@
 import { ScheduleDetail } from '../../../models/schedule-detail';
 import { ScheduleStore } from '../../../stores/schedule-store';
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SessionStore } from '../../../stores/session-store';
 import { NotificationsStore } from '../../../stores/notifications-store';
@@ -10,7 +10,6 @@ import { LocationsStore } from '../../../stores/locations-store';
 import { LocationDetails } from '../../../models/location-details';
 import { Schedule } from '../../../models/schedule';
 import { Notification } from '../../../models/notification';
-import { Location } from '../../../models/location';
 
 @Component({
     selector: 'schedule',

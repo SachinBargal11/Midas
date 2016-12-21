@@ -12,13 +12,22 @@ export class Session extends SessionRecord {
 
     // private _user: User = null;
     private _account: Account = null;
+    private _currentCompany: Company = null;
 
     public get user(): User {
         return this._account ? this._account.user : null;
     }
 
-    public get company(): Company {
-        return this._account ? this._account.company : null;
+    public get currentCompany(): Company {
+        return this._currentCompany;
+    }
+
+    public set currentCompany(value: Company) {
+        this._currentCompany = value;
+    }
+
+    public get companies(): Company[] {
+        return this._account ? this._account.companies : null;
     }
 
     public get account(): Account {

@@ -1,9 +1,5 @@
-import { request } from 'http';
-import { MedicalFacilityDetail } from '../models/medical-facility-details';
-import { MedicalFacilityStore } from '../stores/medical-facilities-store';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
-import _ from 'underscore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
@@ -12,7 +8,6 @@ import { MedicalFacility } from '../models/medical-facility';
 // import {SpecialityDetail} from '../models/speciality-details';
 import { MedicalFacilityAdapter } from './adapters/medical-facility-adapter';
 // import {SpecialityDetailAdapter} from './adapters/speciality-detail-adapter';
-import { UserType } from '../models/enums/user-type';
 
 @Injectable()
 export class MedicalFacilityService {
