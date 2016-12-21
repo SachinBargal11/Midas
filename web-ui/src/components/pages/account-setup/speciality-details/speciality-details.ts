@@ -16,8 +16,10 @@ import { Notification } from '../../../../models/notification';
 })
 
 export class SpecialityDetailComponent {
+    selectedSpecialityDetails: SpecialityDetail[];
     specialityDetails: SpecialityDetail[];
     specialityDetailsLoading;
+    isDeleteProgress = false;
 
     options = {
         timeOut: 3000,
@@ -28,6 +30,7 @@ export class SpecialityDetailComponent {
     constructor(
         public _route: ActivatedRoute,
         public _router: Router,
+        private _notificationsStore: NotificationsStore,
         public _specialityDetailsStore: SpecialityDetailsStore
     ) {
         this.specialityDetailsLoading = true;
@@ -52,6 +55,50 @@ export class SpecialityDetailComponent {
         });
     }
     ngOnInit() {
+    }
+    
+    deleteSpecialityDetails() {
+        if (this.selectedSpecialityDetails !== undefined) {
+            this.selectedSpecialityDetails.forEach(specialityDetail => {
+               let selectedSpecialityDetail = new SpecialityDetail({
+                   id: specialityDetail.id,
+                   isDeleted: 1
+               });
+        this.isDeleteProgress = true;
+        let result;
+
+        result = this._specialityDetailsStore.deleteSpecialityDetail(selectedSpecialityDetail);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Speciality Detail deleted successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this.specialityDetails.splice(this.specialityDetails.indexOf(specialityDetail), 1);
+                this._notificationsStore.addNotification(notification);
+            },
+            (error) => {
+                let notification = new Notification({
+                    'title': 'Unable to delete Speciality Detail!',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+            },
+            () => {
+                this.isDeleteProgress = false;
+            });
+            });
+        }
+        else {
+            let notification = new Notification({
+                    'title': 'select speciality details to delete',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+            this._notificationsStore.addNotification(notification);
+        }
     }
 
 }

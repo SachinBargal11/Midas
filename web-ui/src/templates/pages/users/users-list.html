@@ -1,4 +1,7 @@
 <h1 class="with-border">Users
+<a class="pull-right btn btn-danger" (click)="deleteUser()">Delete selected Users
+    <loader [visible]="isDeleteProgress"></loader>
+</a>
 <a class="pull-right btn btn-primary" [routerLink]="['add']">Add User</a>
 </h1>
 <progress-bar [visible]="usersLoading" 
@@ -12,8 +15,9 @@
     <i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
     <input #gb type="text" pInputText size="50" style="float:left" placeholder="Search User">
 </div>
-<p-dataTable [value]="users" [(selection)]="selectedUser" selectionMode="single" (onRowSelect)="onRowSelect(selectedUser)" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+<p-dataTable [value]="users" [(selection)]="selectedUsers" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Users</header>
+    <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
     <p-column field="firstName" header="First Name" [sortable]="true" ></p-column>
     <p-column field="lastName" header="Last Name" [sortable]="true" ></p-column>
     <p-column field="userTypeLabel" header="User Type" [sortable]="true" ></p-column>

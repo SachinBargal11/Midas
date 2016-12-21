@@ -1,4 +1,7 @@
 <h1 class="with-border">Speciality Details
+<a class="pull-right btn btn-danger" (click)="deleteSpecialityDetails()">Delete speciality details
+    <loader [visible]="isDeleteProgress"></loader>
+</a>
 <a class="pull-right btn btn-primary" routerLink="add">Add Speciality detail</a>
 </h1>
 <progress-bar [visible]="specialityDetailsLoading" 
@@ -12,8 +15,9 @@
     <i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
     <input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Speciality Details">
 </div>
-<p-dataTable [value]="specialityDetails" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+<p-dataTable [value]="specialityDetails" [(selection)]="selectedSpecialityDetails" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Speciality Details</header>
+    <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
     <p-column field="ReevalDays" header="Reeval Days" [sortable]="true"></p-column>
     <p-column field="initialDays" header="Initial Days" [sortable]="true"></p-column>
     <p-column field="maxReval" header="Max Reval" [sortable]="true"></p-column>

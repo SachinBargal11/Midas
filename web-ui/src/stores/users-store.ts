@@ -87,9 +87,9 @@ export class UsersStore {
     }
     updateUser(userDetail: Account): Observable<Account> {
         let promise = new Promise((resolve, reject) => {
-            this._usersService.updateUser(userDetail).subscribe((updatedUserDetail: Account) => {
+            this._usersService.updateUser(userDetail).subscribe((updatedUserDetail: any) => {
                 let userDetails: List<Account> = this._users.getValue();
-                let index = userDetails.findIndex((currentUser: Account) => currentUser.user.id === updatedUserDetail.user.id);
+                let index = userDetails.findIndex((currentUser: any) => currentUser.id === updatedUserDetail.id);
                 userDetails = userDetails.update(index, function () {
                     return updatedUserDetail;
                 });
@@ -117,20 +117,19 @@ export class UsersStore {
         });
         return <Observable<Account>>Observable.from(promise);
     }    
-    deleteUser(user) {
+    deleteUser(userDetail: Account): Observable<Account> {
         let users = this._users.getValue();
-        // let index = users.findIndex((currentUser: any) => currentUser.id === user.id);
-        let index = users.indexOf(user);
+        let index = users.findIndex((currentUser: any) => currentUser.id === userDetail.user.id);
         let promise = new Promise((resolve, reject) => {
-            this._usersService.deleteUser(user)
-            .subscribe((user: any) => {
+            this._usersService.deleteUser(userDetail)
+            .subscribe((user: Account) => {
                 this._users.next(users.delete(index));
                 resolve(user);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<any>>Observable.from(promise);
+        return <Observable<Account>>Observable.from(promise);
     }
 
     selectUser(userDetail: Account) {

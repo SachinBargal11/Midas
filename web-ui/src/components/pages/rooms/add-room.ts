@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AppValidators } from '../../../utils/AppValidators';
-import { ErrorMessageValidator } from '../../../utils/ErrorMessageValidator';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { RoomsStore } from '../../../stores/rooms-store';
 import { RoomsService } from '../../../services/rooms-service';
 import { Room } from '../../../models/room';
@@ -108,7 +108,7 @@ export class AddRoomComponent implements OnInit {
             },
             (error) => {
                 let notification = new Notification({
-                    'title': ErrorMessageValidator.errorMessage(error),
+                    'title': ErrorMessageFormatter.getErrorMessages(error),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

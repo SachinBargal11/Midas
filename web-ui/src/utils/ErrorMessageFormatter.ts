@@ -1,23 +1,25 @@
-export class ErrorMessageValidator {
-    static errorMessage(error) {
+export class ErrorMessageFormatter {
+    static getErrorMessages(error): any {
         let errorBody = JSON.parse(error._body);
-                let errorString = 'Server error.';
+                // let errorString = 'Server error.';
+                let errorString: string[] = [];
                 if (errorBody.errorLevel === 4) {
                     if (errorBody.errorObject) {
-                        errorString = '';
                         let errorObjs = errorBody.errorObject;
                         for (let errorObj of errorObjs) {
-                            errorString += errorObj.validationMessage + '<br>';
+                            // errorString += errorObj.validationMessage + '<br>';
+                            errorString.push(errorObj.validationMessage)
                         }
                        return errorString;
                     }
                 } else if (errorBody.errorLevel === 2) {
                     if (errorBody.errorMessage) {
-                        errorString = errorBody.errorMessage;
+                        errorString.push(errorBody.errorMessage);
                        return errorString;
                     }
                 } else {
-                    return errorString = 'Server error.';
+                    errorString.push('Server error.');
+                    return errorString;
                 }
     }
 }

@@ -12,7 +12,8 @@ export class RoomsAdapter {
                     contactPersonName: roomsData.contactersonName,
                     phone: roomsData.phone,
                     roomTest: roomsData.roomTest,
-                    location: roomsData.location
+                    location: roomsData.location,
+                    isDeleted: roomsData.isDeleted
             });
         }
         return room;

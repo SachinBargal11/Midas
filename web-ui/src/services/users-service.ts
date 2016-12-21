@@ -191,17 +191,29 @@ export class UsersService {
         return <Observable<any>>Observable.fromPromise(promise);
 
     }
-    deleteUser(user: any): Observable<any> {
-        let promise = new Promise((resolve, reject) => {
-            return this._http.delete(`${this._url}/${user.id}`)
+    deleteUser(userDetail: Account): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+
+
+            let requestData: any = userDetail.toJS();
+
+            requestData.contactInfo = requestData.user.contact;
+            requestData.address = requestData.user.address;
+            requestData.user = _.omit(requestData.user, 'contact', 'address');
+            requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
+            requestData = _.omit(requestData, 'accountStatus', 'subscriptionPlan');
+            return this._http.post(this._url + '/User/Add', JSON.stringify(requestData), {
+                headers: this._headers
+            })
                 .map(res => res.json())
-                .subscribe((user) => {
-                    resolve(user);
+                .subscribe((userData: any) => {
+                    resolve(userData);
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<any>>Observable.from(promise);
+        return <Observable<any>>Observable.fromPromise(promise);
+
     }
 
 }

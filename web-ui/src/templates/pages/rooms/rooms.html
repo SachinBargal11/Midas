@@ -1,6 +1,8 @@
 <h1>
 <a class="btn btn-primary" routerLink="add">Add Room</a>
-<!--<a class="btn btn-danger" (click)="deleteRooms()">Delete selected rooms</a>-->
+<a class="btn btn-danger" (click)="deleteRooms()">Delete selected rooms
+    <loader [visible]="isDeleteProgress"></loader>
+</a>
 </h1>
 <progress-bar [visible]="locationsLoading" 
               style="position:fixed;
@@ -14,7 +16,7 @@
     <input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Rooms">
 </div>-->
 <p-dataTable [value]="rooms" [(selection)]="selectedRooms" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
-    <!--<p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>-->
+    <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
     <p-column field="name" header="Name" [sortable]="true"></p-column>
     <p-column field="phone" header="Phone" [sortable]="true"></p-column>
     <p-column field="roomTest.name" header="Tests Provided" [sortable]="true"></p-column>

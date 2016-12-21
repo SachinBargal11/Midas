@@ -101,6 +101,30 @@ export class SpecialityDetailsService {
         });
         return <Observable<any>>Observable.fromPromise(promise);
     }
+    deleteSpecialityDetail(specialityDetail: SpecialityDetail): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+
+            let requestData: any = specialityDetail.toJS();
+            // requestData.contactInfo = requestData.contact;
+            // requestData.addressInfo = requestData.address;
+            requestData.company = {
+                id: this._sessionStore.session.company.id
+            };
+            requestData.isnitialEvaluation = requestData.isInitialEvaluation;
+
+            requestData.specialty = _.omit(requestData.specialty, 'createByUserID', 'createDate', 'isDeleted', 'isUnitApply', 'name', 'specialityCode', 'updateByUserID', 'updateDate');
+            // console.log(requestData);
+            return this._http.post(this._url + '/CompanySpecialtyDetails/add', JSON.stringify(requestData), {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
 
 }
 
