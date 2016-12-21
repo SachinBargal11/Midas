@@ -18,7 +18,7 @@
     <p-column field="user.lastName" header="Last name" [sortable]="true"></p-column>
     <p-column field="id" header="Doctor Id" [sortable]="true"></p-column>
    <p-column styleClass="col-button" header="Assign Speciality">
-        <template let-doctor="rowData" pTemplate type="body">
+        <template let-doctor="rowData" pTemplate="body">
         <a [routerLink]="['/doctors/', doctor.id, 'specialities']"><i class="glyphicon glyphicon-edit"></i></a>
         </template>
     </p-column>

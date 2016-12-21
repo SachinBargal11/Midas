@@ -4,6 +4,7 @@ import { UsersListComponent } from '../components/pages/users/users-list';
 import { UserShellComponent } from '../components/pages/users/users-shell';
 import { UserBasicComponent } from '../components/pages/users/user-basic';
 import { UserAccessComponent } from '../components/pages/users/user-access';
+import { DoctorSpecificInformationComponent } from '../components/pages/users/doctor-specific-information';
 import { AddUserComponent } from '../components/pages/users/add-user';
 import { UpdateUserComponent } from '../components/pages/users/update-user';
 import { LocationsComponent } from '../components/pages/users/locations';
@@ -64,6 +65,14 @@ export const UsersRoutes: Routes = [
                 canActivate: [ValidateActiveSession],
                 data: {
                     breadcrumb: 'Access'
+                }
+            },
+            {
+                path: 'doctorSpecificInformation',
+                component: DoctorSpecificInformationComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: "Doctor's Information"
                 }
             },
             {

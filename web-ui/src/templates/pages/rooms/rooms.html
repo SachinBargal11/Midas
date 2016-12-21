@@ -21,7 +21,7 @@
     <p-column field="phone" header="Phone" [sortable]="true"></p-column>
     <p-column field="roomTest.name" header="Tests Provided" [sortable]="true"></p-column>
     <p-column styleClass="col-button" header="Edit">
-        <template let-room="rowData" pTemplate type="body">
+        <template let-room="rowData" pTemplate="body">
             <a routerLink="edit/{{room.id}}"><i class="glyphicon glyphicon-edit"></i></a>
         </template>
     </p-column>

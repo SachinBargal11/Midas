@@ -32,7 +32,7 @@
     <p-column field="userTypeLabel" header="User Type" [sortable]="true" ></p-column>
     <p-column field="userName" header="Email" [sortable]="true" ></p-column>
    <p-column styleClass="col-button" header="Edit">
-        <template let-user="rowData" pTemplate type="body">
+        <template let-user="rowData" pTemplate="body">
             <a routerLink="{{user.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
             <!--<a routerLink="edit/{{user.id}}"><i class="glyphicon glyphicon-edit"></i></a>-->
         </template>

@@ -4,8 +4,8 @@ import { MedicalProviderService } from '../../../services/medical-provider-servi
 import { LocationDetails } from '../../../models/location-details';
 import { LocationsStore } from '../../../stores/locations-store';
 import { SessionStore } from '../../../stores/session-store';
-import {NotificationsStore} from '../../../stores/notifications-store';
-import {Notification} from '../../../models/notification';
+import { NotificationsStore } from '../../../stores/notifications-store';
+import { Notification } from '../../../models/notification';
 import moment from 'moment';
 
 
@@ -22,9 +22,11 @@ export class LocationComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _medicalProviderService: MedicalProviderService,
         private _locationsStore: LocationsStore,
-        public sessionStore: SessionStore
+        public _sessionStore: SessionStore
     ) {
-
+        this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+            this.loadLocations();
+        });
     }
 
     ngOnInit() {
@@ -39,6 +41,7 @@ export class LocationComponent implements OnInit {
                 this.locations = data;
             },
             (error) => {
+                this.locations = [];
                 this.locationsLoading = false;
                 let notification = new Notification({
                     'title': error.message,

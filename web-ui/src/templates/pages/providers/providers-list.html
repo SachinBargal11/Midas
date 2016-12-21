@@ -19,7 +19,7 @@
     <p-column field="prefix" header="Prefix" [sortable]="true" [filter]="true"></p-column>
     <p-column field="id" header="Provider id" [sortable]="true" [filter]="true" filterMatchMode="contains"></p-column>
     <p-column styleClass="col-button" header="Edit">
-        <template let-provider="rowData" pTemplate type="body">
+        <template let-provider="rowData" pTemplate="body">
         <a [routerLink]="['/providers/update/', provider.id]"><i class="glyphicon glyphicon-edit"></i></a>
         </template>
     </p-column>

@@ -1,16 +1,19 @@
-import { Account } from '../models/account';
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
 import { AuthenticationService } from '../services/authentication-service';
 import { User } from '../models/user';
 import { Session } from '../models/session';
+import { Company } from '../models/company';
+import { Account } from '../models/account';
 import { AccountAdapter } from '../services/adapters/account-adapter';
+import _ from 'underscore';
 
 @Injectable()
 export class SessionStore {
 
     @Output() userLogoutEvent: EventEmitter<{}> = new EventEmitter(true);
+    @Output() userCompanyChangeEvent: EventEmitter<{}> = new EventEmitter(true);
 
     private _session: Session = new Session();
 
@@ -118,5 +121,11 @@ export class SessionStore {
     private _resetSession() {
         this.session.account = null;
         this.userLogoutEvent.emit(null);
+    }
+
+    selectCurrentCompany(event) {
+        let company: Company = _.find(this.session.companies, {id: parseInt(event.target.value)});
+        this._session.currentCompany = company;
+        this.userCompanyChangeEvent.emit(null);
     }
 }

@@ -35,7 +35,7 @@
     <p-column field="initialDays" header="Initial Days" [sortable]="true"></p-column>
     <p-column field="maxReval" header="Max Reval" [sortable]="true"></p-column>
     <p-column styleClass="col-button" header="Edit">
-        <template let-specialityDetail="rowData" pTemplate type="body">
+        <template let-specialityDetail="rowData" pTemplate="body">
             <a routerLink="edit/{{specialityDetail.id}}"><i class="glyphicon glyphicon-edit"></i></a>
         </template>
     </p-column>

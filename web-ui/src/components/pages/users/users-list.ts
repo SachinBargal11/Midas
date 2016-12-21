@@ -28,6 +28,9 @@ export class UsersListComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore
     ) {
+        this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+            this.loadUsers();
+        });
     }
     ngOnInit() {
         this.loadUsers();

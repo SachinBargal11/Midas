@@ -17,7 +17,7 @@
     <p-column field="name" header="Name" [sortable]="true"></p-column>
     <p-column field="specialityCode" header="Speciality Code" [sortable]="true"></p-column>
    <p-column styleClass="col-button" header="Actions">
-        <template let-speciality="rowData" pTemplate type="body">
+        <template let-speciality="rowData" pTemplate="body">
         <a [routerLink]="['/account-setup/specialities/', speciality.id]"><i class="glyphicon glyphicon-list"></i></a>
         </template>
     </p-column>
