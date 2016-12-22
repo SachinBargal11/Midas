@@ -73,6 +73,7 @@ export class LocationComponent implements OnInit {
                         this.loadLocations();
                         this._notificationsStore.addNotification(notification);
                         console.log(this._locationsStore.locations);
+                        this.selectedLocations = undefined;
                     },
                     (error) => {
                         let notification = new Notification({

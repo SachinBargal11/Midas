@@ -238,6 +238,7 @@ export class UsersService {
                     }
             };
 
+            requestData.user.isDeleted = 1;
             requestData.contactInfo = requestData.user.contact;
             requestData.address = requestData.user.address;
             requestData.user = _.omit(requestData.user, 'contact', 'address');

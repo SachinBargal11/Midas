@@ -110,6 +110,7 @@ export class SpecialityDetailsService {
             requestData.company = {
                 id: this._sessionStore.session.currentCompany.id
             };
+            requestData.isDeleted = 1;
             requestData.isnitialEvaluation = requestData.isInitialEvaluation;
 
             requestData.specialty = _.omit(requestData.specialty, 'createByUserID', 'createDate', 'isDeleted', 'isUnitApply', 'name', 'specialityCode', 'updateByUserID', 'updateDate');

@@ -60,8 +60,8 @@ export class UserBasicComponent implements OnInit {
             result.subscribe(
                 (userDetail: any) => {
                     this.user = userDetail;
-                    this.contact = userDetail.contactInfo,
-                    this.address = userDetail.addressInfo,
+                    this.contact = userDetail.contact,
+                    this.address = userDetail.address,
                     this.userType = UserType[userDetail.userType];
                 },
                 (error) => {

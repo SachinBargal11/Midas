@@ -31,6 +31,11 @@ export class SpecialityDetailComponent {
         private _notificationsStore: NotificationsStore,
         public _specialityDetailsStore: SpecialityDetailsStore
     ) {
+    }
+    ngOnInit() {
+        this.loadSpecialityDetails();
+    }
+    loadSpecialityDetails() {  
         this.specialityDetailsLoading = true;
         this._route.parent.params.subscribe((params: any) => {
             let specialityId: number = parseInt(params.id);
@@ -50,22 +55,16 @@ export class SpecialityDetailComponent {
                 () => {
                     this.specialityDetailsLoading = false;
                 });
-        });
-    }
-    ngOnInit() {
+        });      
     }
 
     deleteSpecialityDetails() {
         if (this.selectedSpecialityDetails !== undefined) {
-            this.selectedSpecialityDetails.forEach(specialityDetail => {
-                let selectedSpecialityDetail = new SpecialityDetail({
-                    id: specialityDetail.id,
-                    isDeleted: 1
-                });
+            this.selectedSpecialityDetails.forEach(currentSpecialityDetail => {
                 this.isDeleteProgress = true;
                 let result;
 
-                result = this._specialityDetailsStore.deleteSpecialityDetail(selectedSpecialityDetail);
+                result = this._specialityDetailsStore.deleteSpecialityDetail(currentSpecialityDetail);
                 result.subscribe(
                     (response) => {
                         let notification = new Notification({
@@ -73,8 +72,9 @@ export class SpecialityDetailComponent {
                             'type': 'SUCCESS',
                             'createdAt': moment()
                         });
-                        this.specialityDetails.splice(this.specialityDetails.indexOf(specialityDetail), 1);
+                        this.loadSpecialityDetails();
                         this._notificationsStore.addNotification(notification);
+                        this.selectedSpecialityDetails = undefined;
                     },
                     (error) => {
                         let notification = new Notification({

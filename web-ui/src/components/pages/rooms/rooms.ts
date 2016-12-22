@@ -60,38 +60,24 @@ export class RoomsComponent implements OnInit {
     }
     deleteRooms() {
         if (this.selectedRooms !== undefined) {
-            this.selectedRooms.forEach(room => {
-                let roomDetail = new Room({
-                    id: room.id,
-                    name: room.name,
-                    contactPersonName: room.contactPersonName,
-                    phone: room.phone,
-                    isDeleted: 1,
-                    roomTest: {
-                        id: room.roomTest.id
-                    },
-                    location: {
-                        id: room.location.id
-                    }
-                });
+            this.selectedRooms.forEach(currentRoom => {
                 this.isDeleteProgress = true;
                 let result;
-
-                result = this._roomsStore.deleteRoom(roomDetail);
+                result = this._roomsStore.deleteRoom(currentRoom);
                 result.subscribe(
                     (response) => {
                         let notification = new Notification({
-                            'title': 'Room ' + room.name + ' deleted successfully!',
+                            'title': 'Room ' + currentRoom.name + ' deleted successfully!',
                             'type': 'SUCCESS',
                             'createdAt': moment()
                         });
-                        this.rooms.splice(this.rooms.indexOf(room), 1);
+                        this.loadRooms();
                         this._notificationsStore.addNotification(notification);
-                        console.log(this._roomsStore.rooms);
+                        this.selectedRooms = undefined;
                     },
                     (error) => {
                         let notification = new Notification({
-                            'title': 'Unable ' + room.name + ' to delete room!',
+                            'title': 'Unable ' + currentRoom.name + ' to delete room!',
                             'type': 'ERROR',
                             'createdAt': moment()
                         });

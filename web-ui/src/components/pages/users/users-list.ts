@@ -17,10 +17,9 @@ import moment from 'moment';
 
 
 export class UsersListComponent implements OnInit {
-    selectedUsers: any[];
+    selectedUsers: User[];
     users: User[];
     usersLoading;
-    cols: any[];
     isDeleteProgress = false;
     constructor(
         private _router: Router,
@@ -49,32 +48,25 @@ export class UsersListComponent implements OnInit {
     }
     deleteUser() {
         if (this.selectedUsers !== undefined) {
-            this.selectedUsers.forEach(user => {
-                   let userDetail = new User({
-                        id: user.id,
-                        firstName: user.firstName,
-                        lastName: user.lastName,
-                        userType: user.userType,
-                        userName: user.userName,
-                        isDeleted: 1
-                    });
+            this.selectedUsers.forEach(currentUser => {
                 this.isDeleteProgress = true;
                 let result;
-
-                result = this._usersStore.deleteUser(userDetail);
+                result = this._usersStore.deleteUser(currentUser);
                 result.subscribe(
                     (response) => {
                         let notification = new Notification({
-                            'title': 'User ' + user.firstName + ' ' + user.lastName + ' deleted successfully!',
+                            'title': 'User ' + currentUser.firstName + ' ' + currentUser.lastName + ' deleted successfully!',
                             'type': 'SUCCESS',
                             'createdAt': moment()
                         });
+                        this.loadUsers();
                         this._notificationsStore.addNotification(notification);
-                        this.users.splice(this.users.indexOf(user), 1);
+                        this.selectedUsers = undefined;
+                        // this.users.splice(this.users.indexOf(currentUser), 1);
                     },
                     (error) => {
                         let notification = new Notification({
-                            'title': 'Unable to delete user ' + user.firstName + ' ' + user.lastName,
+                            'title': 'Unable to delete user ' + currentUser.firstName + ' ' + currentUser.lastName,
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
