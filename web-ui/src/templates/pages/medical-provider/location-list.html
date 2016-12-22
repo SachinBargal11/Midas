@@ -1,28 +1,31 @@
 <h1 class="with-border">Locations
-<a class="pull-right btn btn-primary" [routerLink]="['add']">Add Location</a>
+    <a class="pull-right btn btn-danger" (click)="deleteLocations()">
+        <i class="fa fa-trash-o fa-1x"></i> Delete selected Locations
+        <loader [visible]="isDeleteProgress"></loader>
+    </a>
+    <a class="pull-right btn-inline btn btn-primary" [routerLink]="['add']">Add Location</a>    
 </h1>
-<progress-bar [visible]="locationsLoading" 
-              style="position:fixed;
+<progress-bar [visible]="locationsLoading" style="position:fixed;
                      top:0;
                      width:100%;
                      z-index:100;">
-    <span class="sr-only">Loading Locations...</span>
+<span class="sr-only">Loading Locations...</span>
 </progress-bar>
 <div class="ui-widget-header ui-helper-clearfix" style="padding:4px 10px;border-bottom: 0 none">
-    <i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
-    <input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Locations">
+<i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
+<input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Locations">
 </div>
-<p-dataTable [value]="locations" [(selection)]="selectedLocation" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+<p-dataTable [value]="locations" [(selection)]="selectedLocations" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
+    [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Locations</header>
-    <!--<p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>-->
+    <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
     <p-column field="location.name" header="Name" [sortable]="true"></p-column>
     <p-column field="address.address1" header="Address" [sortable]="true"></p-column>
     <p-column field="contact.workPhone" header="Phone" [sortable]="true"></p-column>
-    <p-column styleClass="col-button" header="Edit">
+    <p-column styleClass="col-button" header="Actions">
         <template let-location="rowData" pTemplate type="body">
             <a routerLink="{{location.location.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
             <!--<a routerLink="edit/{{user.id}}"><i class="glyphicon glyphicon-edit"></i></a>-->
         </template>
     </p-column>
 </p-dataTable>
-

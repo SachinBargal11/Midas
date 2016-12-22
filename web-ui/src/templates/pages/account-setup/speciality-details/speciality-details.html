@@ -1,44 +1,33 @@
 <h1 class="with-border">Speciality Details
-<div class="btn-group pull-right row">
-  <div class="col-md-4">
-      <a class="btn btn-primary" routerLink="add">Add Speciality detail
-      </a>
-  </div>
-  <div class="col-md-1"></div>
-  <div class="col-md-3">
-      <a class="btn btn-danger" (click)="deleteSpecialityDetails()">
+    <a class="btn btn-danger pull-right" (click)="deleteSpecialityDetails()">
         <i class="fa fa-trash-o fa-1x"></i> Delete speciality details
         <loader [visible]="isDeleteProgress"></loader>
+    </a>
+    <a class="btn btn-primary btn-inline pull-right" routerLink="add">Add Speciality detail
       </a>
-  </div>
- </div>
-<!--<a class="pull-right btn btn-danger" (click)="deleteSpecialityDetails()">Delete speciality details
-    <loader [visible]="isDeleteProgress"></loader>
-</a>
-<a class="pull-right btn btn-primary" routerLink="add">Add Speciality detail</a>-->
+
 </h1>
-<progress-bar [visible]="specialityDetailsLoading" 
-              style="position:fixed;
+<progress-bar [visible]="specialityDetailsLoading" style="position:fixed;
                      top:0;
                      width:100%;
                      z-index:100;">
-    <span class="sr-only">Loading Speciality details...</span>
+<span class="sr-only">Loading Speciality details...</span>
 </progress-bar>
 <div class="ui-widget-header ui-helper-clearfix" style="padding:4px 10px;border-bottom: 0 none">
-    <i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
-    <input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Speciality Details">
+<i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
+<input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Speciality Details">
 </div>
-<p-dataTable [value]="specialityDetails" [(selection)]="selectedSpecialityDetails" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+<p-dataTable [value]="specialityDetails" [(selection)]="selectedSpecialityDetails" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]"
+    [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Speciality Details</header>
     <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
     <p-column field="ReevalDays" header="Reeval Days" [sortable]="true"></p-column>
     <p-column field="initialDays" header="Initial Days" [sortable]="true"></p-column>
     <p-column field="maxReval" header="Max Reval" [sortable]="true"></p-column>
-    <p-column styleClass="col-button" header="Edit">
+    <p-column styleClass="col-button" header="Actions">
         <template let-specialityDetail="rowData" pTemplate="body">
             <a routerLink="edit/{{specialityDetail.id}}"><i class="glyphicon glyphicon-edit"></i></a>
         </template>
     </p-column>
 </p-dataTable>
 <router-outlet></router-outlet>
-

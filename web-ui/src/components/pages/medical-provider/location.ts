@@ -15,8 +15,10 @@ import moment from 'moment';
 })
 
 export class LocationComponent implements OnInit {
+    selectedLocations: LocationDetails[];
     locations: LocationDetails[];
     locationsLoading;
+    isDeleteProgress = false;
     constructor(
         private _router: Router,
         private _notificationsStore: NotificationsStore,
@@ -54,8 +56,45 @@ export class LocationComponent implements OnInit {
                 this.locationsLoading = false;
             });
     }
-    onRowSelect(location) {
-        this._router.navigate(['/medical-provider/locations/' + location.location.id + '/basic']);
+
+    deleteLocations() {
+        if (this.selectedLocations !== undefined) {
+            this.selectedLocations.forEach(currentLocation => {
+                this.isDeleteProgress = true;
+                let result;
+                result = this._locationsStore.deleteLocation(currentLocation);
+                result.subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            'title': 'Location ' + currentLocation.location.name + ' deleted successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        this.loadLocations();
+                        this._notificationsStore.addNotification(notification);
+                        console.log(this._locationsStore.locations);
+                    },
+                    (error) => {
+                        let notification = new Notification({
+                            'title': 'Unable to delete' + currentLocation.location.name + ' location!',
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._notificationsStore.addNotification(notification);
+                    },
+                    () => {
+                        this.isDeleteProgress = false;
+                    });
+            });
+        }
+        else {
+            let notification = new Notification({
+                'title': 'select locations to delete',
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+        }
     }
 
 }
