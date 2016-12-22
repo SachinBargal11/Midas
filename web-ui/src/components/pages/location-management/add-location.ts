@@ -77,13 +77,13 @@ export class AddLocationComponent implements OnInit {
             }),
             contact: new Contact({
                 faxNo: addlocationformValues.fax,
-                workPhone: addlocationformValues.officePhone,
+                workPhone: addlocationformValues.officePhone
             }),
             address: new Address({
                 address1: addlocationformValues.address,
                 city: addlocationformValues.city,
                 state: addlocationformValues.state,
-                zipCode: addlocationformValues.zipCode,
+                zipCode: addlocationformValues.zipCode
             })
         });
         this.isSaveProgress = true;

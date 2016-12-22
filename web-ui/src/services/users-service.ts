@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
-import { AccountDetail } from '../models/account-details';
 import { Account } from '../models/account';
 import { UserAdapter } from './adapters/user-adapter';
 import { UserType } from '../models/enums/user-type';
@@ -30,7 +29,9 @@ export class UsersService {
         let promise: Promise<User> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/user/get/' + userId).map(res => res.json())
                 .subscribe((userData: any) => {
-                    resolve(userData);
+                    let parsedUser: User = null;
+                    parsedUser = UserAdapter.parseResponse(userData);
+                    resolve(parsedUser);
                 }, (error) => {
                     reject(error);
                 });
@@ -53,7 +54,10 @@ export class UsersService {
                     _.forEach(data, function (currentUser: any) {
                         currentUser.userTypeLabel = User.getUserTypeLabel(currentUser.userType);
                     });
-                    resolve(data);
+                        let users: any[] = (<Object[]>data).map((data: any) => {
+                            return UserAdapter.parseResponse(data);
+                        });
+                        resolve(users);
                 }, (error) => {
                     reject(error);
                 });
@@ -75,23 +79,36 @@ export class UsersService {
     //     return <Observable<AccountDetail[]>>Observable.fromPromise(promise);
     // }
 
-    addUser(userDetail: Account): Observable<any> {
+    addUser(userDetail: User): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
 
 
             let requestData: any = userDetail.toJS();
+            requestData = {
+                    user: requestData,
+                    company: {
+                        id: this._sessionStore.session.currentCompany.id
+                    },
+                    role: {
+                        name: 'Doctor',
+                        roleType: 'Admin',
+                        status: 'active'
+                    }
+            };
 
             requestData.contactInfo = requestData.user.contact;
             requestData.address = requestData.user.address;
             requestData.user = _.omit(requestData.user, 'contact', 'address');
-            requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
-            requestData = _.omit(requestData, 'accountStatus', 'subscriptionPlan');
+            // requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
+            // requestData = _.omit(requestData, 'accountStatus', 'subscriptionPlan', 'companies');
             return this._http.post(this._url + '/User/Add', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
                 .subscribe((userData: any) => {
-                    resolve(userData);
+                let parsedUser: User = null;
+                parsedUser = UserAdapter.parseResponse(userData);
+                resolve(parsedUser);
                 }, (error) => {
                     reject(error);
                 });
@@ -105,18 +122,31 @@ export class UsersService {
 
 
             let requestData: any = userDetail.toJS();
+            requestData = {
+                    user: requestData,
+                    company: {
+                        id: this._sessionStore.session.currentCompany.id
+                    },
+                    role: {
+                        name: 'Doctor',
+                        roleType: 'Admin',
+                        status: 'active'
+                    }
+            };
 
             requestData.contactInfo = requestData.user.contact;
             requestData.address = requestData.user.address;
             requestData.user = _.omit(requestData.user, 'contact', 'address');
-            requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
-            requestData = _.omit(requestData, 'accountStatus', 'subscriptionPlan');
+            // requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
+            // requestData = _.omit(requestData, 'accountStatus', 'subscriptionPlan');
             return this._http.post(this._url + '/User/Add', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
                 .subscribe((userData: any) => {
-                    resolve(userData);
+                    let parsedUser: User = null;
+                    parsedUser = UserAdapter.parseResponse(userData);
+                    resolve(parsedUser);
                 }, (error) => {
                     reject(error);
                 });
@@ -181,7 +211,7 @@ export class UsersService {
             })
                 .map(res => res.json())
                 .subscribe((userData: any) => {
-                    let parsedUser: AccountDetail = null;
+                    let parsedUser: User = null;
                     parsedUser = UserAdapter.parseResponse(userData);
                     resolve(parsedUser);
                 }, (error) => {
@@ -191,23 +221,36 @@ export class UsersService {
         return <Observable<any>>Observable.fromPromise(promise);
 
     }
-    deleteUser(userDetail: Account): Observable<any> {
+    deleteUser(userDetail: User): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
 
 
             let requestData: any = userDetail.toJS();
+            requestData = {
+                    user: requestData,
+                    company: {
+                        id: this._sessionStore.session.currentCompany.id
+                    },
+                    role: {
+                        name: 'Doctor',
+                        roleType: 'Admin',
+                        status: 'active'
+                    }
+            };
 
             requestData.contactInfo = requestData.user.contact;
             requestData.address = requestData.user.address;
             requestData.user = _.omit(requestData.user, 'contact', 'address');
-            requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
-            requestData = _.omit(requestData, 'accountStatus', 'subscriptionPlan');
+            // requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
+            // requestData = _.omit(requestData, 'accountStatus', 'subscriptionPlan');
             return this._http.post(this._url + '/User/Add', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
                 .subscribe((userData: any) => {
-                    resolve(userData);
+                    let parsedUser: User = null;
+                    parsedUser = UserAdapter.parseResponse(userData);
+                    resolve(parsedUser);
                 }, (error) => {
                     reject(error);
                 });

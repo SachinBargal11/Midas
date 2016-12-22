@@ -18,7 +18,7 @@ import moment from 'moment';
 
 export class UsersListComponent implements OnInit {
     selectedUsers: any[];
-    users: Account[];
+    users: User[];
     usersLoading;
     cols: any[];
     isDeleteProgress = false;
@@ -50,24 +50,14 @@ export class UsersListComponent implements OnInit {
     deleteUser() {
         if (this.selectedUsers !== undefined) {
             this.selectedUsers.forEach(user => {
-                let userDetail = new Account({
-                    company: new Company({
-                        id: this._sessionStore.session.currentCompany.id
-                    }),
-                    user: new User({
+                   let userDetail = new User({
                         id: user.id,
                         firstName: user.firstName,
                         lastName: user.lastName,
                         userType: user.userType,
                         userName: user.userName,
                         isDeleted: 1
-                    }),
-                    role: new UserRole({
-                        name: 'Doctor',
-                        roleType: 'Admin',
-                        status: 'active'
-                    }),
-                });
+                    });
                 this.isDeleteProgress = true;
                 let result;
 

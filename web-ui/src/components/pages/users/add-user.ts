@@ -84,11 +84,7 @@ export class AddUserComponent implements OnInit {
 
     saveUser() {
         let userFormValues = this.userform.value;
-        let userDetail = new Account({
-            company: new Company({
-                id: this._sessionStore.session.currentCompany.id
-            }),
-            user: new User({
+           let userDetail = new User({
                 firstName: userFormValues.userInfo.firstname,
                 lastName: userFormValues.userInfo.lastname,
                 userType: parseInt(userFormValues.userInfo.userType),
@@ -108,13 +104,7 @@ export class AddUserComponent implements OnInit {
                     state: userFormValues.address.state,
                     zipCode: userFormValues.address.zipCode,
                 })
-            }),
-            role: new UserRole({
-                name: 'Doctor',
-                roleType: 'Admin',
-                status: 'active'
-            }),
-        });
+            });
         this.isSaveUserProgress = true;
         let result;
 

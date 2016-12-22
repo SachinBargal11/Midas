@@ -54,8 +54,8 @@ export class UserBasicComponent implements OnInit {
         private _usersStore: UsersStore,
         private _elRef: ElementRef
     ) {
-        this._route.params.subscribe((routeParams: any) => {
-            let userId: number = parseInt(routeParams.id);
+        this._route.parent.params.subscribe((routeParams: any) => {
+            let userId: number = parseInt(routeParams.userId);
             let result = this._usersStore.fetchUserById(userId);
             result.subscribe(
                 (userDetail: any) => {
@@ -107,11 +107,7 @@ export class UserBasicComponent implements OnInit {
 
     updateUser() {
         let userFormValues = this.userform.value;
-        let userDetail = new Account({
-            company: new Company({
-                 id: this._sessionStore.session.company.id
-            }),
-            user: new User({
+            let userDetail = new User({
                 id: this.user.id,
                 firstName: userFormValues.userInfo.firstName,
                 lastName: userFormValues.userInfo.lastName,
@@ -132,13 +128,7 @@ export class UserBasicComponent implements OnInit {
                     state: userFormValues.address.state,
                     zipCode: userFormValues.address.zipCode,
                 })            
-            }),
-            role: new UserRole({
-                name: 'Doctor',
-                roleType: 'Admin',
-                status: 'active'
-            }),
-        });
+            });
         this.isSaveUserProgress = true;
         let result;
 

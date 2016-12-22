@@ -40,7 +40,7 @@ export class DoctorSpecificInformationComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _doctorsStore: DoctorsStore,
         private _specialityStore: SpecialityStore,
-        private _route: ActivatedRoute,
+        private _route: ActivatedRoute
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.userId = parseInt(routeParams.userId);

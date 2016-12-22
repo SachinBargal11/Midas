@@ -1,6 +1,8 @@
 import * as moment from 'moment';
 import { User } from '../../models/user';
 import { AccountDetail } from '../../models/account-details';
+import { AddressAdapter } from './address-adapter';
+import { ContactAdapter } from './contact-adapter';
 import _ from 'underscore';
 
 
@@ -33,8 +35,8 @@ export class UserAdapter {
                 imageLink: userData.imageLink,
                 dateOfBirth: userData.dateOfBirth,
                 isDeleted: userData.isDeleted,
-                address: userData.addressInfo,
-                contact: userData.contactInfo
+                contact: ContactAdapter.parseResponse(userData.contactInfo),
+                address: AddressAdapter.parseResponse(userData.addressInfo)
             });
         }
         return user;

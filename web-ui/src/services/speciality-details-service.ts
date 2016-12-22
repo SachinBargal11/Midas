@@ -108,7 +108,7 @@ export class SpecialityDetailsService {
             // requestData.contactInfo = requestData.contact;
             // requestData.addressInfo = requestData.address;
             requestData.company = {
-                id: this._sessionStore.session.company.id
+                id: this._sessionStore.session.currentCompany.id
             };
             requestData.isnitialEvaluation = requestData.isInitialEvaluation;
 

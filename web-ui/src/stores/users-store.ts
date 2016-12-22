@@ -75,7 +75,7 @@ export class UsersStore {
     }
 
 
-    addUser(userDetail: Account): Observable<User> {
+    addUser(userDetail: User): Observable<User> {
         let promise = new Promise((resolve, reject) => {
             this._usersService.addUser(userDetail).subscribe((user: User) => {
                 this._users.next(this._users.getValue().push(user));
@@ -86,7 +86,7 @@ export class UsersStore {
         });
         return <Observable<User>>Observable.from(promise);
     }
-    updateUser(userDetail: Account): Observable<User> {
+    updateUser(userDetail: User): Observable<User> {
         let promise = new Promise((resolve, reject) => {
             this._usersService.updateUser(userDetail).subscribe((updatedUserDetail: User) => {
                 let userDetails: List<User> = this._users.getValue();
@@ -118,9 +118,9 @@ export class UsersStore {
         });
         return <Observable<User>>Observable.from(promise);
     }    
-    deleteUser(userDetail: Account): Observable<User> {
+    deleteUser(userDetail: User): Observable<User> {
         let users = this._users.getValue();
-        let index = users.findIndex((currentUser: User) => currentUser.id === userDetail.user.id);
+        let index = users.findIndex((currentUser: User) => currentUser.id === userDetail.id);
         let promise = new Promise((resolve, reject) => {
             this._usersService.deleteUser(userDetail)
             .subscribe((user: User) => {
@@ -133,11 +133,11 @@ export class UsersStore {
         return <Observable<User>>Observable.from(promise);
     }
 
-    selectUser(userDetail: Account) {
+    selectUser(userDetail: User) {
         let selectedUsers = this._selectedUsers.getValue();
-        let index = selectedUsers.findIndex((currentUser: User) => currentUser.id === userDetail.user.id);
+        let index = selectedUsers.findIndex((currentUser: User) => currentUser.id === userDetail.id);
         if (index < 0) {
-            this._selectedUsers.next(this._selectedUsers.getValue().push(userDetail.user));
+            this._selectedUsers.next(this._selectedUsers.getValue().push(userDetail));
         }
     }
 
