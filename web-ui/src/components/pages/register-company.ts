@@ -3,7 +3,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppValidators } from '../../utils/AppValidators';
-import { ErrorMessageValidator } from '../../utils/ErrorMessageValidator';
+import { ErrorMessageFormatter } from '../../utils/ErrorMessageFormatter';
 import { AuthenticationService } from '../../services/authentication-service';
 import { RegistrationService } from '../../services/registration-service';
 import { CompanyStore } from '../../stores/company-store';
@@ -99,7 +99,7 @@ export class RegisterCompanyComponent implements OnInit {
             },
             (error) => {
                 this.isRegistrationInProgress = false;
-                this._notificationsService.error('Oh No!', ErrorMessageValidator.errorMessage(error));
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error));
             },
             () => {
                 this.isRegistrationInProgress = false;

@@ -26,8 +26,9 @@ export class ScheduleAdapter {
         let sd = new ScheduleDetail({
             id: scheduleDetail.id,
             name: scheduleDetail.name,
-            dayofWeek: moment().weekday(scheduleDetail.dayofWeek - 1),
-            // dayofWeekString: moment().weekday(scheduleDetail.dayofWeek - 1),
+            dayofWeek: scheduleDetail.dayofWeek,
+            // dayofWeek: moment().weekday(scheduleDetail.dayofWeek - 1),
+            dayofWeekString: moment().weekday(scheduleDetail.dayofWeek - 1).format('dddd'),
             slotStart: moment(scheduleDetail.slotStart, 'hh:mm:ss').toDate(),
             slotEnd: moment(scheduleDetail.slotEnd, 'hh:mm:ss').toDate(),
             slotDate: scheduleDetail.slotDate,

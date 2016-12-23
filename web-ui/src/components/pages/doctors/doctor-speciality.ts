@@ -1,20 +1,18 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router, ActivatedRoute} from '@angular/router';
-import {AppValidators} from '../../../utils/AppValidators';
-import {DoctorsStore} from '../../../stores/doctors-store';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AppValidators } from '../../../utils/AppValidators';
+import { DoctorsStore } from '../../../stores/doctors-store';
 import { DoctorsService } from '../../../services/doctors-service';
-import {DoctorDetail} from '../../../models/doctor-details';
-import {Doctor} from '../../../models/doctor';
-import {User} from '../../../models/user';
-import {DoctorSpeciality} from '../../../models/doctor-speciality';
-import {SessionStore} from '../../../stores/session-store';
-import {NotificationsStore} from '../../../stores/notifications-store';
-import {Notification} from '../../../models/notification';
+import { Doctor } from '../../../models/doctor';
+import { DoctorSpeciality } from '../../../models/doctor-speciality';
+import { SessionStore } from '../../../stores/session-store';
+import { NotificationsStore } from '../../../stores/notifications-store';
+import { Notification } from '../../../models/notification';
 import moment from 'moment';
 import { UsersStore } from '../../../stores/users-store';
-import {SpecialityStore} from '../../../stores/speciality-store';
-import {Speciality} from '../../../models/speciality';
+import { SpecialityStore } from '../../../stores/speciality-store';
+import { Speciality } from '../../../models/speciality';
 
 @Component({
     selector: 'doctor-speciality',
@@ -62,7 +60,7 @@ export class DoctorSpecialityComponent implements OnInit {
                 });
         });
         this.doctorspecialityform = this.fb.group({
-                speciality: ['', [Validators.required, AppValidators.selectedValueValidator]]
+            speciality: ['', [Validators.required, AppValidators.selectedValueValidator]]
         });
 
         this.doctorspecialityformControls = this.doctorspecialityform.controls;
@@ -78,11 +76,9 @@ export class DoctorSpecialityComponent implements OnInit {
         let doctorspecialityformValues = this.doctorspecialityform.value;
         let doctorSpeciality = new DoctorSpeciality({
             doctor: {
-	        	id: this.doctor.id
-	        },
-	        specialties: [
-	        	doctorspecialityformValues.speciality	
-            ]
+                id: this.doctor.id
+            },
+            specialties: doctorspecialityformValues.speciality
         });
         this.isSaveDoctorProgress = true;
         let result;
@@ -99,6 +95,7 @@ export class DoctorSpecialityComponent implements OnInit {
                 this._router.navigate(['/doctors']);
             },
             (error) => {
+                this.isSaveDoctorProgress = false;
                 let notification = new Notification({
                     'title': 'Unable to add Doctor Speciality.',
                     'type': 'ERROR',

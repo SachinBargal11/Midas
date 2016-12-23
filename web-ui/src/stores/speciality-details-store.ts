@@ -97,6 +97,20 @@ export class SpecialityDetailsStore {
         });
         return <Observable<SpecialityDetail>>Observable.from(promise);
     }
+    deleteSpecialityDetail(specialityDetail: SpecialityDetail): Observable<SpecialityDetail> {
+        let specialityDetails = this._specialityDetails.getValue();
+        let index = specialityDetails.findIndex((currentSpecialityDetail: SpecialityDetail) => currentSpecialityDetail.id === specialityDetail.id);
+        let promise = new Promise((resolve, reject) => {
+            this._specialityDetailsService.deleteSpecialityDetail(specialityDetail)
+            .subscribe((specialityDetail: SpecialityDetail) => {
+                this._specialityDetails.next(specialityDetails.delete(index));
+                resolve(specialityDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<SpecialityDetail>>Observable.from(promise);
+    }
 
 
 }

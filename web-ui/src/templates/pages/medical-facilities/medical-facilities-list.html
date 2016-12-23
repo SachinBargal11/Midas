@@ -18,7 +18,7 @@
     <p-column field="name" header="Medical Facility Name" [sortable]="true" [filter]="true"></p-column>
     <p-column field="npi" header="NPI" [sortable]="true" [filter]="true"></p-column>
     <p-column styleClass="col-button" header="Update">
-        <template let-medicalfacility="rowData" pTemplate type="body">
+        <template let-medicalfacility="rowData" pTemplate="body">
             <a [routerLink]="['update', medicalfacility.id]"><i class="glyphicon glyphicon-edit"></i></a>
         </template>
     </p-column>   

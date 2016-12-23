@@ -1,7 +1,7 @@
 import { ScheduleDetail } from '../../../models/schedule-detail';
 import { ScheduleStore } from '../../../stores/schedule-store';
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SessionStore } from '../../../stores/session-store';
 import { NotificationsStore } from '../../../stores/notifications-store';
@@ -10,7 +10,6 @@ import { LocationsStore } from '../../../stores/locations-store';
 import { LocationDetails } from '../../../models/location-details';
 import { Schedule } from '../../../models/schedule';
 import { Notification } from '../../../models/notification';
-import { Location } from '../../../models/location';
 
 @Component({
     selector: 'schedule',
@@ -29,7 +28,7 @@ export class ScheduleComponent implements OnInit {
     scheduleformControls;
     isSaveProgress = false;
     scheduleJS: any;
-    testDate = moment().toDate();
+    testDate = moment('11:00:00', 'hh:mm:ss').utc().toDate();
     locationDetails: LocationDetails;
 
     constructor(
@@ -43,6 +42,7 @@ export class ScheduleComponent implements OnInit {
         private _elRef: ElementRef
     ) {
         this._route.parent.params.subscribe((params: any) => {
+            console.log(this.testDate);
             let locationId = parseInt(params.locationId);
             let result = this._locationsStore.fetchLocationById(locationId);
             result.subscribe(
@@ -107,7 +107,6 @@ export class ScheduleComponent implements OnInit {
             name: scheduleFormValues.name,
             scheduleDetails: scheduleDetails
         });
-
         this.isSaveProgress = true;
         let result;
 
@@ -120,7 +119,7 @@ export class ScheduleComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                // this._router.navigate(['/rooms']);
+                this._router.navigate(['/medical-provider/locations']);
             },
             (error) => {
                 this.isSaveProgress = false;

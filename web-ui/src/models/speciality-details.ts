@@ -10,7 +10,7 @@ const SpecialityDetailRecord = Record({
     initialDays: 0,
     initialvisitCount: 0,
     maxReval: 0,
-    isnitialEvaluation: false,
+    isInitialEvaluation: false,
     include1500: false,
     allowmultipleVisit: false,
     specialty: new Speciality({}),

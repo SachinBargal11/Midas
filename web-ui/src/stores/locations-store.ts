@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import { Location } from '../models/location';
 import { LocationDetails } from '../models/location-details';
 import { LocationsService } from '../services/locations-service';
 import { List } from 'immutable';
@@ -92,5 +91,21 @@ export class LocationsStore {
         });
         return <Observable<LocationDetails>>Observable.from(promise);
     }
+
+    deleteLocation(location: LocationDetails) {
+        let locations = this._locations.getValue();
+        let index = locations.findIndex((currentLocation: LocationDetails) => currentLocation.location.id === location.location.id);
+        let promise = new Promise((resolve, reject) => {
+            this._locationsService.deleteLocation(location)
+                .subscribe((location: LocationDetails) => {
+                    this._locations.next(locations.delete(index));
+                    resolve(location);
+                }, error => {
+                    reject(error);
+                });
+        });
+        return <Observable<LocationDetails>>Observable.from(promise);
+    }
+
 
 }

@@ -1,6 +1,8 @@
 import * as moment from 'moment';
 import { User } from '../../models/user';
 import { AccountDetail } from '../../models/account-details';
+import { AddressAdapter } from './address-adapter';
+import { ContactAdapter } from './contact-adapter';
 import _ from 'underscore';
 
 
@@ -17,16 +19,24 @@ export class UserAdapter {
         return user;
     }
 
-    static parseResponse(userData: any): AccountDetail {
+    static parseResponse(userData: any): User {
 
         let user = null;
         let tempUser = this.parseUserResponse(userData);
 
         if (userData) {
-            user = new AccountDetail({
-                user: tempUser,
-                address: userData.address,
-                contactInfo: userData.contactInfo
+            user = new User({
+                id: userData.id,
+                userType: userData.userType,
+                userName: userData.userName,
+                firstName: userData.firstName,
+                lastName: userData.lastName,
+                gender: userData.gender,
+                imageLink: userData.imageLink,
+                dateOfBirth: userData.dateOfBirth,
+                isDeleted: userData.isDeleted,
+                contact: ContactAdapter.parseResponse(userData.contactInfo),
+                address: AddressAdapter.parseResponse(userData.addressInfo)
             });
         }
         return user;

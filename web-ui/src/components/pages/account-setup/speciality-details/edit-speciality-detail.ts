@@ -1,14 +1,12 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { List } from 'immutable';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import moment from 'moment';
 import { NotificationsService } from 'angular2-notifications';
 import { SpecialityStore } from '../../../../stores/speciality-store';
 import { SpecialityDetail } from '../../../../models/speciality-details';
 import { Speciality } from '../../../../models/speciality';
-import { Company } from '../../../../models/company';
 import { SpecialityDetailsStore } from '../../../../stores/speciality-details-store';
 import { AppValidators } from '../../../../utils/AppValidators';
 
@@ -97,9 +95,6 @@ export class EditSpecialityDetailsComponent {
             maxReval: parseInt(specialityDetailFormValues.maxReval),
             specialty: new Speciality({
                 id: parseInt(specialityDetailFormValues.associatedSpeciality)
-            }),
-            company: new Company({
-                id: 1
             })
         });
 

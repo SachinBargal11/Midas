@@ -1,32 +1,38 @@
 <header class="site-header">
 	<div class="container-fluid">
+
+
 		<button class="hamburger hamburger--htla"> <!-- Toggle mobile menu -->
             <span>toggle menu</span>
         </button>
 		<div class="site-header-content">
 			<div class="site-header-content-in">
 				<div class="site-header-shown" *ngIf="sessionStore.session.user">
-					<!--<notification></notification>-->
 					<div class="dropdown dropdown-notification notif">
 						<a (click)="showNotifications()" class="header-alarm" [class.active]="_notificationsStore.recentlyAdded" [class.swing]="_notificationsStore.highlightAddition"
 							[class.animated]="_notificationsStore.highlightAddition">
 							<i class="font-icon-alarm"></i>
 						</a>
-
 					</div>
+
 					<div class="dropdown user-menu" dropdown>
 						<button dropdownToggle class="dropdown-toggle" id="dd-user-menu" type="button" data-toggle="dropdown" aria-haspopup="true"
 							aria-expanded="false">
                             Welcome ,<b> {{ sessionStore.session.user.displayName }} </b>
                         </button>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd-user-menu">
-							<div class="dropdown-header">Company</div>
-							<span class="dropdown-item">{{sessionStore.session.company.name}}</span>
-							<div class="dropdown-divider"></div>
+							<!--<div class="dropdown-header">Company</div>
+							<span class="dropdown-item">{{sessionStore.session.currentCompany.name}}</span>
+							<div class="dropdown-divider"></div>-->
 							<a (click)="changePassword()" class="dropdown-item"><span class="font-icon glyphicon glyphicon-edit"></span>Change Password</a>
 							<a (click)="logout()" class="dropdown-item"><span class="font-icon glyphicon glyphicon-log-out"></span>Logout</a>
 						</div>
 					</div>
+				</div>
+				<div style="float: right;">
+					<select class="form-control" [ngModel]="sessionStore.session.currentCompany.id" (change)="sessionStore.selectCurrentCompany($event)">
+							<option *ngFor="let company of sessionStore.session.companies" [value]="company.id">{{company.name}}</option>
+					</select>
 				</div>
 				<div class="mobile-menu-right-overlay"></div>
 				<div class="site-header-collapsed">
@@ -41,7 +47,7 @@
                                 Medical Office Manager
 							</a>
 						</div>
-						<div class="dropdown dropdown-typical">
+						<!--<div class="dropdown dropdown-typical">
 							<a [routerLink]="['/doctors']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
                                 Doctors
 							</a>
@@ -50,7 +56,7 @@
 							<a [routerLink]="['/medical-facilities']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
                                 Medical Facilities
 							</a>
-						</div>
+						</div>-->
 						<div class="dropdown dropdown-typical">
 							<a [routerLink]="['/account-setup']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
                                 Account Setup

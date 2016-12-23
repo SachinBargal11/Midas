@@ -1,22 +1,21 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router} from '@angular/router';
-import {AppValidators} from '../../../utils/AppValidators';
-import {UsersStore} from '../../../stores/users-store';
-import {User} from '../../../models/user';
-import {UsersService} from '../../../services/users-service';
-import {AccountDetail} from '../../../models/account-details';
-import {Account} from '../../../models/account';
-import {Company} from '../../../models/company';
-import {UserRole} from '../../../models/user-role';
-import {Contact} from '../../../models/contact';
-import {Address} from '../../../models/address';
-import {SessionStore} from '../../../stores/session-store';
-import {NotificationsStore} from '../../../stores/notifications-store';
-import {Notification} from '../../../models/notification';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AppValidators } from '../../../utils/AppValidators';
+import { UsersStore } from '../../../stores/users-store';
+import { User } from '../../../models/user';
+import { UsersService } from '../../../services/users-service';
+import { Account } from '../../../models/account';
+import { Company } from '../../../models/company';
+import { UserRole } from '../../../models/user-role';
+import { Contact } from '../../../models/contact';
+import { Address } from '../../../models/address';
+import { SessionStore } from '../../../stores/session-store';
+import { NotificationsStore } from '../../../stores/notifications-store';
+import { Notification } from '../../../models/notification';
 import moment from 'moment';
-import {StatesStore} from '../../../stores/states-store';
-import {StateService} from '../../../services/state-service';
+import { StatesStore } from '../../../stores/states-store';
+import { StateService } from '../../../services/state-service';
 
 @Component({
     selector: 'add-user',
@@ -85,11 +84,7 @@ export class AddUserComponent implements OnInit {
 
     saveUser() {
         let userFormValues = this.userform.value;
-        let userDetail = new Account({
-            company: new Company({
-                id: 1
-            }),
-            user: new User({
+           let userDetail = new User({
                 firstName: userFormValues.userInfo.firstname,
                 lastName: userFormValues.userInfo.lastname,
                 userType: parseInt(userFormValues.userInfo.userType),
@@ -108,14 +103,8 @@ export class AddUserComponent implements OnInit {
                     country: userFormValues.address.country,
                     state: userFormValues.address.state,
                     zipCode: userFormValues.address.zipCode,
-                })            
-            }),
-            role: new UserRole({
-                name: 'Doctor',
-                roleType: 'Admin',
-                status: 'active'
-            }),
-        });
+                })
+            });
         this.isSaveUserProgress = true;
         let result;
 

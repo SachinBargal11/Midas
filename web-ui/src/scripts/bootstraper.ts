@@ -96,6 +96,7 @@ import { ChangePasswordComponent } from '../components/pages/change-password';
 import { UserShellComponent } from '../components/pages/users/users-shell';
 import { UserBasicComponent } from '../components/pages/users/user-basic';
 import { UserAccessComponent } from '../components/pages/users/user-access';
+import { DoctorSpecificInformationComponent } from '../components/pages/users/doctor-specific-information';
 import { AddUserComponent } from '../components/pages/users/add-user';
 import { UsersListComponent } from '../components/pages/users/users-list';
 import { UpdateUserComponent } from '../components/pages/users/update-user';
@@ -156,7 +157,7 @@ import { InputTextModule, ChartModule, DataTableModule, SharedModule, ButtonModu
 
 
 
-enableProdMode();
+// enableProdMode();
 
 @NgModule({
     imports: [
@@ -214,6 +215,7 @@ enableProdMode();
         UserShellComponent,
         UserBasicComponent,
         UserAccessComponent,
+        DoctorSpecificInformationComponent,
         AddUserComponent,
         UpdateUserComponent,
         UsersListComponent,

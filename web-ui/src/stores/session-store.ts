@@ -1,16 +1,19 @@
-import { Account } from '../models/account';
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import moment from 'moment';
 import { AuthenticationService } from '../services/authentication-service';
 import { User } from '../models/user';
 import { Session } from '../models/session';
+import { Company } from '../models/company';
+import { Account } from '../models/account';
 import { AccountAdapter } from '../services/adapters/account-adapter';
+import _ from 'underscore';
 
 @Injectable()
 export class SessionStore {
 
     @Output() userLogoutEvent: EventEmitter<{}> = new EventEmitter(true);
+    @Output() userCompanyChangeEvent: EventEmitter<{}> = new EventEmitter(true);
 
     private _session: Session = new Session();
 
@@ -31,7 +34,7 @@ export class SessionStore {
 
             if (storedAccount) {
                 let storedAccountData: any = JSON.parse(storedAccount);
-                let account: Account = AccountAdapter.parseResponse(storedAccountData);
+                let account: Account = AccountAdapter.parseStoredData(storedAccountData);
                 this._populateSession(account);
                 resolve(this._session);
             }
@@ -48,8 +51,8 @@ export class SessionStore {
             if (!window.sessionStorage.getItem('logged_user_with_pending_security_review')) {
                 reject(new Error('INVALID_REDIRECTION'));
             } else {
-                let storedAccountData: any = new Account(JSON.parse(window.sessionStorage.getItem('logged_user_with_pending_security_review')));
-                let account: Account = AccountAdapter.parseResponse(storedAccountData);
+                let storedAccountData: any = JSON.parse(window.sessionStorage.getItem('logged_user_with_pending_security_review'));
+                let account: Account = AccountAdapter.parseStoredData(storedAccountData);
                 let pin = window.sessionStorage.getItem('pin');
                 this._authenticationService.validateSecurityCode(account.user.id, securityCode, pin).subscribe(
                     (response: boolean) => {
@@ -111,11 +114,18 @@ export class SessionStore {
 
     private _populateSession(account: Account) {
         this._session.account = account;
+        this._session.currentCompany = account.companies[0];
         window.localStorage.setItem(this.__ACCOUNT_STORAGE_KEY__, JSON.stringify(account.toJS()));
     }
 
     private _resetSession() {
         this.session.account = null;
         this.userLogoutEvent.emit(null);
+    }
+
+    selectCurrentCompany(event) {
+        let company: Company = _.find(this.session.companies, {id: parseInt(event.target.value)});
+        this._session.currentCompany = company;
+        this.userCompanyChangeEvent.emit(null);
     }
 }

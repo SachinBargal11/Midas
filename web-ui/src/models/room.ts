@@ -7,7 +7,8 @@ const RoomRecord = Record({
     contactPersonName: '',
     phone: '',
     roomTest: null,
-    location: null
+    location: null,
+    isDeleted: 0
 });
 
 export class Room extends RoomRecord {
@@ -18,6 +19,7 @@ export class Room extends RoomRecord {
     phone: string;
     roomTest: Tests;
     location: Location;
+    isDeleted: boolean;
 
     constructor(props) {
         super(props);

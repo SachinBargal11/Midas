@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {Http, Headers} from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http, Headers } from '@angular/http';
 import _ from 'underscore';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
-import {Room} from '../models/room';
-import {Tests} from '../models/tests';
+import { Room } from '../models/room';
+import { Tests } from '../models/tests';
 import { RoomsAdapter } from '../services/adapters/rooms-adapter';
 import { TestsAdapter } from '../services/adapters/tests-adapter';
 
@@ -39,14 +39,18 @@ export class RoomsService {
     }
     getRooms(locationId: number): Observable<Room[]> {
         let promise: Promise<Room[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/Room/GetAll', JSON.stringify({	location: {id: locationId}}), {
+            return this._http.post(this._url + '/Room/GetAll', JSON.stringify({ location: { id: locationId } }), {
                 headers: this._headers
-            }).map(res => res.json())                
-                .subscribe((roomsData: Array<Object>) => {
-                    let rooms: any[] = (<Object[]>roomsData).map((roomsData: any) => {
-                        return RoomsAdapter.parseResponse(roomsData);
-                    });
-                    resolve(rooms);
+            }).map(res => res.json())
+                .subscribe((roomsData: any) => {
+                    if (roomsData.errorMessage) {
+                        reject(new Error(roomsData.errorMessage));
+                    } else {
+                        let rooms: any[] = (<Object[]>roomsData).map((roomsData: any) => {
+                            return RoomsAdapter.parseResponse(roomsData);
+                        });
+                        resolve(rooms);
+                    }
                 }, (error) => {
                     reject(error);
                 });
@@ -58,7 +62,7 @@ export class RoomsService {
             return this._http.post(this._url + '/RoomTest/GetAll', JSON.stringify({}), {
                 headers: this._headers
             }).map(res => res.json())
-            .subscribe((testsData: Array<Object>) => {
+                .subscribe((testsData: Array<Object>) => {
                     let tests: any[] = (<Object[]>testsData).map((testsData: any) => {
                         return TestsAdapter.parseResponse(testsData);
                     });
@@ -72,7 +76,7 @@ export class RoomsService {
     addRoom(roomDetail: Room): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let requestData: any = roomDetail.toJS();
-            requestData.contactersonName =  requestData.contactPersonName;
+            requestData.contactersonName = requestData.contactPersonName;
             requestData = _.omit(requestData, 'contactPersonName');
             return this._http.post(this._url + '/Room/Add', JSON.stringify(requestData), {
                 headers: this._headers
@@ -90,7 +94,7 @@ export class RoomsService {
     updateRoom(roomDetail: Room): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let requestData: any = roomDetail.toJS();
-            requestData.contactersonName =  requestData.contactPersonName;
+            requestData.contactersonName = requestData.contactPersonName;
             requestData = _.omit(requestData, 'contactPersonName');
             return this._http.post(this._url + '/Room/Add', JSON.stringify(requestData), {
                 headers: this._headers
@@ -105,18 +109,37 @@ export class RoomsService {
         });
         return <Observable<any>>Observable.fromPromise(promise);
     }
-    deleteRoom(room: Room): Observable<Room> {
-        let promise = new Promise((resolve, reject) => {
-            return this._http.delete(`${this._url}/${room.id}`)
-                .map(res => res.json())
-                .subscribe((room) => {
-                    resolve(room);
+    deleteRoom(roomDetail: Room): Observable<Room> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            let requestData: any = roomDetail.toJS();
+            requestData.isDeleted = 1,
+            requestData.contactersonName = requestData.contactPersonName;
+            requestData = _.omit(requestData, 'contactPersonName');
+            return this._http.post(this._url + '/Room/Add', JSON.stringify(requestData), {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((roomsData: any) => {
+                    let parsedRoom: Room = null;
+                    parsedRoom = RoomsAdapter.parseResponse(roomsData);
+                    resolve(parsedRoom);
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<Room>>Observable.from(promise);
+        return <Observable<any>>Observable.fromPromise(promise);
     }
+    // deleteRoom(room: Room): Observable<Room> {
+    //     let promise = new Promise((resolve, reject) => {
+    //         return this._http.delete(`${this._url}/${room.id}`)
+    //             .map(res => res.json())
+    //             .subscribe((room) => {
+    //                 resolve(room);
+    //             }, (error) => {
+    //                 reject(error);
+    //             });
+    //     });
+    //     return <Observable<Room>>Observable.from(promise);
+    // }
 
 }
 

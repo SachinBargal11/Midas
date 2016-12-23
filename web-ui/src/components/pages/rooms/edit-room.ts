@@ -1,18 +1,18 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { Location } from '@angular/common';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router, ActivatedRoute} from '@angular/router';
-import {AppValidators} from '../../../utils/AppValidators';
-import {ErrorMessageValidator} from '../../../utils/ErrorMessageValidator';
-import {RoomsStore} from '../../../stores/rooms-store';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AppValidators } from '../../../utils/AppValidators';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
+import { RoomsStore } from '../../../stores/rooms-store';
 import { RoomsService } from '../../../services/rooms-service';
-import {Room} from '../../../models/room';
-import {Tests} from '../../../models/tests';
-import {LocationsStore} from '../../../stores/locations-store';
-import {LocationDetails} from '../../../models/location-details';
-import {SessionStore} from '../../../stores/session-store';
-import {NotificationsStore} from '../../../stores/notifications-store';
-import {Notification} from '../../../models/notification';
+import { Room } from '../../../models/room';
+import { Tests } from '../../../models/tests';
+import { LocationsStore } from '../../../stores/locations-store';
+import { LocationDetails } from '../../../models/location-details';
+import { SessionStore } from '../../../stores/session-store';
+import { NotificationsStore } from '../../../stores/notifications-store';
+import { Notification } from '../../../models/notification';
 import moment from 'moment';
 
 @Component({
@@ -66,11 +66,11 @@ export class EditRoomComponent implements OnInit {
                 });
         });
         this.editroomform = this.fb.group({
-                name: ['', Validators.required],
-                contactPersonName: ['', Validators.required],
-                phone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                tests: ['', Validators.required]
-            });
+            name: ['', Validators.required],
+            contactPersonName: ['', Validators.required],
+            phone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            tests: ['', Validators.required]
+        });
 
         this.editroomformControls = this.editroomform.controls;
     }
@@ -87,16 +87,16 @@ export class EditRoomComponent implements OnInit {
     update() {
         let editroomformValues = this.editroomform.value;
         let roomDetail = new Room({
-                id: this.room.id,
-                name: editroomformValues.name,
-                contactPersonName: editroomformValues.contactPersonName,
-                phone: editroomformValues.phone,
-                roomTest:{
-                    id: editroomformValues.tests
-                },
-                location: {
-                    id: this.room.location.id
-                }
+            id: this.room.id,
+            name: editroomformValues.name,
+            contactPersonName: editroomformValues.contactPersonName,
+            phone: editroomformValues.phone,
+            roomTest: {
+                id: editroomformValues.tests
+            },
+            location: {
+                id: this.room.location.id
+            }
         });
         this.isSaveProgress = true;
         let result;
@@ -115,7 +115,7 @@ export class EditRoomComponent implements OnInit {
             },
             (error) => {
                 let notification = new Notification({
-                    'title': ErrorMessageValidator.errorMessage(error),
+                    'title': ErrorMessageFormatter.getErrorMessages(error),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

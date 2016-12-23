@@ -1,22 +1,21 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router, ActivatedRoute} from '@angular/router';
-import {AppValidators} from '../../../utils/AppValidators';
-import {UsersStore} from '../../../stores/users-store';
-import {User} from '../../../models/user';
-import {UsersService} from '../../../services/users-service';
-import {AccountDetail} from '../../../models/account-details';
-import {Account} from '../../../models/account';
-import {Company} from '../../../models/company';
-import {UserRole} from '../../../models/user-role';
-import {Contact} from '../../../models/contact';
-import {Address} from '../../../models/address';
-import {SessionStore} from '../../../stores/session-store';
-import {NotificationsStore} from '../../../stores/notifications-store';
-import {Notification} from '../../../models/notification';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AppValidators } from '../../../utils/AppValidators';
+import { UsersStore } from '../../../stores/users-store';
+import { User } from '../../../models/user';
+import { UsersService } from '../../../services/users-service';
+import { Account } from '../../../models/account';
+import { Company } from '../../../models/company';
+import { UserRole } from '../../../models/user-role';
+import { Contact } from '../../../models/contact';
+import { Address } from '../../../models/address';
+import { SessionStore } from '../../../stores/session-store';
+import { NotificationsStore } from '../../../stores/notifications-store';
+import { Notification } from '../../../models/notification';
 import moment from 'moment';
-import {StatesStore} from '../../../stores/states-store';
-import {StateService} from '../../../services/state-service';
+import { StatesStore } from '../../../stores/states-store';
+import { StateService } from '../../../services/state-service';
 import { UserType } from '../../../models/enums/user-type';
 
 @Component({
@@ -25,8 +24,8 @@ import { UserType } from '../../../models/enums/user-type';
     providers: [UsersService, StateService, StatesStore, FormBuilder]
 })
 
-export class UpdateUserComponent implements OnInit { 
-     userType: any;
+export class UpdateUserComponent implements OnInit {
+    userType: any;
     states: any[];
     user = new User({});
     address = new Address({});
@@ -61,8 +60,8 @@ export class UpdateUserComponent implements OnInit {
                 (userDetail: any) => {
                     this.user = userDetail;
                     this.contact = userDetail.contactInfo,
-                    this.address = userDetail.addressInfo,
-                    this.userType = UserType[userDetail.userType];
+                        this.address = userDetail.addressInfo,
+                        this.userType = UserType[userDetail.userType];
                 },
                 (error) => {
                     this._router.navigate(['/medical-provider/users']);
@@ -109,7 +108,7 @@ export class UpdateUserComponent implements OnInit {
         let userFormValues = this.userform.value;
         let userDetail = new Account({
             company: new Company({
-                id: 1
+                id: this._sessionStore.session.currentCompany.id
             }),
             user: new User({
                 id: this.user.id,
@@ -131,7 +130,7 @@ export class UpdateUserComponent implements OnInit {
                     country: userFormValues.address.country,
                     state: userFormValues.address.state,
                     zipCode: userFormValues.address.zipCode,
-                })            
+                })
             }),
             role: new UserRole({
                 name: 'Doctor',

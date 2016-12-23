@@ -73,18 +73,17 @@ export class AddLocationComponent implements OnInit {
                 locationType: parseInt(addlocationformValues.locationType)
             }),
             company: new Company ({
-                //  id: this._sessionStore.session.user.id 
-                id: 1
+                 id: this._sessionStore.session.currentCompany.id
             }),
             contact: new Contact({
                 faxNo: addlocationformValues.fax,
-                workPhone: addlocationformValues.officePhone,
+                workPhone: addlocationformValues.officePhone
             }),
             address: new Address({
                 address1: addlocationformValues.address,
                 city: addlocationformValues.city,
                 state: addlocationformValues.state,
-                zipCode: addlocationformValues.zipCode,
+                zipCode: addlocationformValues.zipCode
             })
         });
         this.isSaveProgress = true;

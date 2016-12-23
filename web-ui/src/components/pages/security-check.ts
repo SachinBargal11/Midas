@@ -62,8 +62,8 @@ export class SecurityCheckComponent implements OnInit {
     }
 
     regenrateCode() {
-        let storedAccountData: any = new Account(JSON.parse(window.sessionStorage.getItem('logged_user_with_pending_security_review')));
-        let account: Account = AccountAdapter.parseResponse(storedAccountData);
+        let storedAccountData: any = JSON.parse(window.sessionStorage.getItem('logged_user_with_pending_security_review'));
+        let account: Account = AccountAdapter.parseStoredData(storedAccountData);
 
         this.isRegenrateCodeInProgress = true;
         let result = this._authenticationService.generateCode(account.user.id);

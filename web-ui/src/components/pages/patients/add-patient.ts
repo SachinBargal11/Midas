@@ -1,12 +1,12 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router} from '@angular/router';
-import {AppValidators} from '../../../utils/AppValidators';
-import {PatientsStore} from '../../../stores/patients-store';
-import {Patient} from '../../../models/patient';
-import {SessionStore} from '../../../stores/session-store';
-import {NotificationsStore} from '../../../stores/notifications-store';
-import {Notification} from '../../../models/notification';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AppValidators } from '../../../utils/AppValidators';
+import { PatientsStore } from '../../../stores/patients-store';
+import { Patient } from '../../../models/patient';
+import { SessionStore } from '../../../stores/session-store';
+import { NotificationsStore } from '../../../stores/notifications-store';
+import { Notification } from '../../../models/notification';
 import Moment from 'moment';
 
 @Component({
@@ -15,7 +15,7 @@ import Moment from 'moment';
 })
 
 export class AddPatientComponent implements OnInit {
-    minDate: Date;    
+    minDate: Date;
     maxDate: Date;
     patient = new Patient({
         'firstname': '',

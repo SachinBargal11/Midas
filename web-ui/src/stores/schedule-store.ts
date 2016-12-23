@@ -47,17 +47,17 @@ export class ScheduleStore {
 
     fetchScheduleById(id: number): Observable<Schedule> {
         let promise = new Promise((resolve, reject) => {
-            let matchedSchedule: Schedule = this.findScheduleById(id);
-            if (matchedSchedule) {
-                resolve(matchedSchedule);
-            } else {
+            // let matchedSchedule: Schedule = this.findScheduleById(id);
+            // if (matchedSchedule) {
+            //     resolve(matchedSchedule);
+            // } else {
                 this._scheduleService.getSchedule(id)
                     .subscribe((schedule: Schedule) => {
                         resolve(schedule);
                     }, error => {
                         reject(error);
                     });
-            }
+            // }
         });
         return <Observable<Schedule>>Observable.fromPromise(promise);
     }

@@ -7,7 +7,6 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
-import { Location } from '../models/location';
 import { LocationDetails } from '../models/location-details';
 import { LocationDetailAdapter } from './adapters/location-detail-adapter';
 
@@ -43,18 +42,22 @@ export class LocationsService {
     getLocations(): Observable<any[]> {
         let requestData = {
             company: {
-                id: this._sessionStore.session.company.id
+                id: this._sessionStore.session.currentCompany.id
             }
         };
         let promise: Promise<any[]> = new Promise((resolve, reject) => {
             return this._http.post(this._url + '/Location/getall', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json())
-                .subscribe((data: Array<Object>) => {
-                    let locations: any[] = (<Object[]>data).map((data: any) => {
-                        return LocationDetailAdapter.parseResponse(data);
-                    });
-                    resolve(locations);
+                .subscribe((data: any) => {
+                    if (data.errorMessage) {
+                        reject(new Error(data.errorMessage));
+                    } else {
+                        let locations: any[] = (<Object[]>data).map((data: any) => {
+                            return LocationDetailAdapter.parseResponse(data);
+                        });
+                        resolve(locations);
+                    }
                 }, (error) => {
                     reject(error);
                 });
@@ -112,7 +115,11 @@ export class LocationsService {
             requestData.schedule = {
                 id: schedule.id
             };
-            requestData = _.omit(requestData, 'company', 'contact', 'address');
+            requestData.contactInfo = requestData.contact;
+            requestData.addressInfo = requestData.address;
+            requestData = _.omit(requestData, 'contact');
+            requestData = _.omit(requestData, 'address');
+            // requestData = _.omit(requestData, 'company', 'contact', 'address');
             return this._http.post(this._url + '/Location/add', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json()).subscribe((data: any) => {
@@ -122,6 +129,29 @@ export class LocationsService {
             }, (error) => {
                 reject(error);
             });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+
+    deleteLocation(locationDetail: LocationDetails): Observable<LocationDetails> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+            let requestData: any = locationDetail.toJS();
+            requestData.location.isDeleted = 1;
+            requestData.contactInfo = requestData.contact;
+            requestData.addressInfo = requestData.address;
+            requestData = _.omit(requestData, 'contact');
+            requestData = _.omit(requestData, 'address');
+            debugger;
+            return this._http.post(this._url + '/Location/Add', JSON.stringify(requestData), {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((locationsData: any) => {
+                    let parsedLocation: LocationDetails = null;
+                    parsedLocation = LocationDetailAdapter.parseResponse(locationsData);
+                    resolve(parsedLocation);
+                }, (error) => {
+                    reject(error);
+                });
         });
         return <Observable<any>>Observable.fromPromise(promise);
     }
