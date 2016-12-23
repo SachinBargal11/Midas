@@ -63,7 +63,7 @@ export class DoctorSpecificInformationComponent implements OnInit {
             npi: ['', Validators.required],
             taxType: ['', [Validators.required, AppValidators.selectedValueValidator]],
             title: ['', Validators.required],
-            speciality: ['', [Validators.required, AppValidators.selectedValueValidator]]
+            speciality: ['']
         });
 
         this.doctorformControls = this.doctorform.controls;
@@ -76,6 +76,11 @@ export class DoctorSpecificInformationComponent implements OnInit {
 
     updateDoctor() {
         let doctorFormValues = this.doctorform.value;
+           var doctorSpecialities = [];
+           let input = doctorFormValues.speciality;
+           for (var i=0; i < input.length ; ++i) {
+               doctorSpecialities.push({'id':parseInt(input[i])});
+           }
         let doctorDetail = new Doctor({
             id: this.doctor.id,
             licenseNumber: doctorFormValues.licenseNumber,
@@ -84,7 +89,7 @@ export class DoctorSpecificInformationComponent implements OnInit {
             npi: doctorFormValues.npi,
             taxType: doctorFormValues.taxType,
             title: doctorFormValues.title,
-            specialties: doctorFormValues.speciality,
+            doctorSpecialities: doctorSpecialities,
             user: new User({
                 id: this.userId
             })
@@ -109,6 +114,7 @@ export class DoctorSpecificInformationComponent implements OnInit {
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
+                this.isSaveDoctorProgress = false;
                 this._notificationsStore.addNotification(notification);
             },
             () => {

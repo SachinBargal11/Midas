@@ -106,11 +106,7 @@ export class UpdateUserComponent implements OnInit {
 
     updateUser() {
         let userFormValues = this.userform.value;
-        let userDetail = new Account({
-            company: new Company({
-                id: this._sessionStore.session.currentCompany.id
-            }),
-            user: new User({
+        let userDetail = new User({
                 id: this.user.id,
                 firstName: userFormValues.userInfo.firstName,
                 lastName: userFormValues.userInfo.lastName,
@@ -131,12 +127,6 @@ export class UpdateUserComponent implements OnInit {
                     state: userFormValues.address.state,
                     zipCode: userFormValues.address.zipCode,
                 })
-            }),
-            role: new UserRole({
-                name: 'Doctor',
-                roleType: 'Admin',
-                status: 'active'
-            }),
         });
         this.isSaveUserProgress = true;
         let result;

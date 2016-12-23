@@ -102,7 +102,7 @@ export class UsersStore {
         });
         return <Observable<User>>Observable.from(promise);
     }
-    updatePassword(userDetail: Account): Observable<User> {
+    updatePassword(userDetail: User): Observable<User> {
         let promise = new Promise((resolve, reject) => {
             this._usersService.updatePassword(userDetail).subscribe((updatedUserDetail: User) => {
                 let userDetails: List<User> = this._users.getValue();

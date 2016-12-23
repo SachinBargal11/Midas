@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
-import { Account } from '../models/account';
 import { UserAdapter } from './adapters/user-adapter';
 import { UserType } from '../models/enums/user-type';
 import { User } from '../models/user';
@@ -117,7 +116,7 @@ export class UsersService {
 
     }
 
-    updateUser(userDetail: Account): Observable<any> {
+    updateUser(userDetail: User): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
 
 
@@ -188,7 +187,7 @@ export class UsersService {
 
     // }
 
-    updatePassword(userDetail: Account): Observable<any> {
+    updatePassword(userDetail: User): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
 
 

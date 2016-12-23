@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppValidators } from '../../../utils/AppValidators';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { UsersStore } from '../../../stores/users-store';
 import { User } from '../../../models/user';
 import { UsersService } from '../../../services/users-service';
@@ -121,10 +122,11 @@ export class AddUserComponent implements OnInit {
             },
             (error) => {
                 let notification = new Notification({
-                    'title': 'Unable to add user.',
+                    'title': ErrorMessageFormatter.getErrorMessages(error),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
+                this.isSaveUserProgress = false;
                 this._notificationsStore.addNotification(notification);
             },
             () => {

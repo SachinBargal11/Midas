@@ -74,10 +74,10 @@ export class UserBasicComponent implements OnInit {
             userInfo: this.fb.group({
                 firstName: ['', Validators.required],
                 lastName: ['', Validators.required],
-                userType: ['', Validators.required]
+                userType: [{value: '', disabled: true}, Validators.required]
             }),
             contact: this.fb.group({
-                email: ['', [Validators.required, AppValidators.emailValidator]],
+                email: [{value: '', disabled: true}, [Validators.required, AppValidators.emailValidator]],
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
                 homePhone: [''],
                 workPhone: [''],
@@ -90,9 +90,6 @@ export class UserBasicComponent implements OnInit {
                 zipCode: [''],
                 state: [''],
                 country: ['']
-            }),
-            userRole: this.fb.group({
-                role: ['', Validators.required]
             })
         });
 
@@ -111,11 +108,11 @@ export class UserBasicComponent implements OnInit {
                 id: this.user.id,
                 firstName: userFormValues.userInfo.firstName,
                 lastName: userFormValues.userInfo.lastName,
-                userType: parseInt(userFormValues.userInfo.userType),
-                userName: userFormValues.contact.email,
+                userType: this.user.userType,
+                userName: this.user.userName,
                 contact: new Contact({
                     cellPhone: userFormValues.contact.cellPhone,
-                    emailAddress: userFormValues.contact.email,
+                    emailAddress: this.contact.emailAddress,
                     faxNo: userFormValues.contact.faxNo,
                     homePhone: userFormValues.contact.homePhone,
                     workPhone: userFormValues.contact.workPhone,
