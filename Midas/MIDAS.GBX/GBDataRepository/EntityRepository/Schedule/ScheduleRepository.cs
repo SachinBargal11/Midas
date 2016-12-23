@@ -16,12 +16,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
     internal class ScheduleRepository : BaseEntityRepo, IDisposable
     {
         private DbSet<Schedule> _dbSet;
-
+        private DbSet<ScheduleDetail> _dbSetScheduleDetail;
         #region Constructor
         public ScheduleRepository(MIDASGBXEntities context)
             : base(context)
         {
             _dbSet = context.Set<Schedule>();
+            _dbSetScheduleDetail = context.Set<ScheduleDetail>();
             context.Configuration.ProxyCreationEnabled = false;
         }
         #endregion
@@ -93,6 +94,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             scheduleDB.IsDeleted = scheduleBO.IsDeleted.HasValue ? scheduleBO.IsDeleted : false;
             #endregion
 
+            if(scheduleDB.id==0)
             if (_context.Schedules.Any(o => o.Name == scheduleBO.Name))
             {
                 return new BO.ErrorObject { ErrorMessage = "Schedule already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -116,6 +118,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             #endregion
             if (scheduleDB.id > 0)
             {
+                _dbSetScheduleDetail.RemoveRange(_context.ScheduleDetails.Where(c => c.ScheduleID == scheduleBO.ID));
+                _context.SaveChanges();
                 //For Update Record
 
                 //Find Schedule By ID
@@ -134,7 +138,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 else
                     return new BO.ErrorObject { errorObject = "", ErrorMessage = "Invalid schedule details or default schdule.", ErrorLevel = ErrorLevel.Error };
-
+                schedule.ScheduleDetails = scheduleDB.ScheduleDetails;
             }
             else
             {

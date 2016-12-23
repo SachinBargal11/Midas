@@ -6,7 +6,7 @@
 	[NPI] [nvarchar](50) NULL,
 	[TaxType] [tinyint] NULL,
 	[Title] [nvarchar](10) NULL,
-	[IsDeleted] [bit] NULL,
+	[IsDeleted] [bit] NULL CONSTRAINT [DF_Doctor_IsDeleted]  DEFAULT ((0)),
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NOT NULL,
 	[UpdateByUserID] [int] NULL,
@@ -26,5 +26,3 @@ GO
 
 ALTER TABLE [dbo].[Doctor] CHECK CONSTRAINT [FK_Doctor_User]
 GO
-
-

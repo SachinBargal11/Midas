@@ -74,6 +74,18 @@ namespace MIDAS.GBX.BusinessObjects
                 _location = value;
             }
         }
+        private Schedule _schedule;
+        public Schedule schedule
+        {
+            get
+            {
+                return this._schedule;
+            }
+            set
+            {
+                _schedule = value;
+            }
+        }
 
         public override List<BusinessValidation> Validate<T>(T entity)
         {

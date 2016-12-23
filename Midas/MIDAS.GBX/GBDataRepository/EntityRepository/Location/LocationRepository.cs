@@ -90,11 +90,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     boContactInfo.UpdateByUserID = location.ContactInfo.UpdateByUserID.Value;
                 locationBO.ContactInfo = boContactInfo;
             }
-
             BO.Schedule boSchedule = new BO.Schedule();
             using (ScheduleRepository cmp = new ScheduleRepository(_context))
             {
                 boSchedule = cmp.Convert<BO.Schedule, Schedule>(location.Schedule);
+                // cmp.Save(boSchedule);
                 locationBO.Schedule = boSchedule;
             }
             return (T)(object)locationBO;
@@ -344,7 +344,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID
         public override object Get(int id)
         {
-            BO.Location acc_ = Convert<BO.Location, Location>(_context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Include("Schedule").Where(p => p.id == id && p.IsDeleted==false).FirstOrDefault<Location>());
+            BO.Location acc_ = Convert<BO.Location, Location>(_context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Include("Schedule").Where(p => p.id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<Location>());
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this location.", errorObject = "", ErrorLevel = ErrorLevel.Error };

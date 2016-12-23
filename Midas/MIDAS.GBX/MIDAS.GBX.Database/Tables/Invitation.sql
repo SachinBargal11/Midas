@@ -5,7 +5,7 @@
 	[UniqueID] [uniqueidentifier] NOT NULL,
 	[IsExpired] [bit] NULL,
 	[IsActivated] [bit] NOT NULL,
-	[IsDeleted] [bit] NULL,
+	[IsDeleted] [bit] NULL CONSTRAINT [DF_Invitation_IsDeleted]  DEFAULT ((0)),
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NOT NULL,
 	[UpdateByUserID] [int] NULL,

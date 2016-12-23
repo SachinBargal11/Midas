@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[CompanyType](
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [nvarchar](50) NOT NULL,
-	[IsDeleted] [bit] NULL,
+	[IsDeleted] [bit] NULL CONSTRAINT [DF_CompanyType_IsDeleted]  DEFAULT ((0)),
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NOT NULL,
 	[UpdateByUserID] [int] NULL,

@@ -250,19 +250,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             switch (userBO.UserType)
             {
-                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Admin:
-                    break;
-                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Owner:
-                    break;
-                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Doctor:
-                    break;
-                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Patient:
-                    break;
-                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Attorney:
-                    break;
-                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Adjuster:
-                    break;
-                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Accounts:
+                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Staff:
                     break;
                 default:
                     break;
@@ -530,14 +518,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     byte UserTpe = System.Convert.ToByte(userBO.UserType);
                     switch (userBO.UserType)
                     {
-                        case BO.GBEnums.UserType.Attorney:
-                        case BO.GBEnums.UserType.Adjuster:
-                        case BO.GBEnums.UserType.Accounts:
                         case BO.GBEnums.UserType.Patient:
-                        case BO.GBEnums.UserType.Admin:
-                        case BO.GBEnums.UserType.Owner:
-                        case BO.GBEnums.UserType.Doctor:
-
+                        case BO.GBEnums.UserType.Staff:
                             var data = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.UserType == UserTpe && p.UserCompanies.Any(d => d.CompanyID == CompID)).ToList<User>();
                             if (data == null || data.Count == 0)
                                 return new BO.ErrorObject { ErrorMessage = "No records found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -564,13 +546,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 switch (userBO.UserType)
                 {
-                    case BO.GBEnums.UserType.Attorney:
-                    case BO.GBEnums.UserType.Adjuster:
-                    case BO.GBEnums.UserType.Accounts:
                     case BO.GBEnums.UserType.Patient:
-                    case BO.GBEnums.UserType.Admin:
-                    case BO.GBEnums.UserType.Owner:
-                    case BO.GBEnums.UserType.Doctor:
+                    case BO.GBEnums.UserType.Staff:
                         byte UserTpe = System.Convert.ToByte(userBO.UserType);
                         var acc_ = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.UserType == UserTpe).ToList<User>();
                         if (acc_ == null || acc_.Count == 0)

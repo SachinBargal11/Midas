@@ -253,13 +253,12 @@
     <Compile Include="Controllers\CompanySpecialtyDetailsController.cs" />
     <Compile Include="Controllers\DoctorController.cs" />
     <Compile Include="Controllers\DoctorSpecialityController.cs" />
+    <Compile Include="Controllers\DoctorLocationScheduleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\LocationSpeclityController.cs" />
-    <Compile Include="Controllers\MedicalProviderController.cs" />
     <Compile Include="Controllers\OTPController.cs" />
     <Compile Include="Controllers\PasswordTokenController.cs" />
-    <Compile Include="Controllers\Room\LocationRoomController.cs" />
     <Compile Include="Controllers\Room\RoomController.cs" />
     <Compile Include="Controllers\Room\RoomTestController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
@@ -359,6 +358,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\DoctorSpecility\" />
     <Folder Include="Views\LocationRoom\" />
     <Folder Include="Views\LocationSpeclity\" />
     <Folder Include="Views\OTP\" />

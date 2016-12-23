@@ -12,16 +12,26 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class EmailTemplate
+    public partial class Patient
     {
         public int id { get; set; }
-        public string Body { get; set; }
-        public Nullable<bool> IsHTML { get; set; }
-        public Nullable<int> ProfileID { get; set; }
+        public int PatientID { get; set; }
+        public string SSN { get; set; }
+        public string WCBNo { get; set; }
+        public string JobTitle { get; set; }
+        public string WorkActivities { get; set; }
+        public string CarrierCaseNo { get; set; }
+        public string ChartNo { get; set; }
+        public int CompanyID { get; set; }
+        public int LocationID { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
+    
+        public virtual Company Company { get; set; }
+        public virtual Location Location { get; set; }
+        public virtual User User { get; set; }
     }
 }

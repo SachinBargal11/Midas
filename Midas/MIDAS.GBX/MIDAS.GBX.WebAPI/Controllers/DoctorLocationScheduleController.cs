@@ -15,68 +15,69 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Linq;
 using MIDAS.GBX.BusinessObjects;
+using MIDAS.GBX.WebAPI.Filters;
 
 namespace MIDAS.GBX.WebAPI.Controllers
 {
-    [RoutePrefix("midasapi/LocationRoom")]
-    
-    public class LocationRoomController : ApiController
+    [RoutePrefix("midasapi/DoctorLocationSchedule")]
+    public class DoctorLocationScheduleController : ApiController
     {
 
-        private IRequestHandler<LocationRoom> requestHandler;
-        public LocationRoomController()
+        private IRequestHandler<DoctorLocationSchedule> requestHandler;
+        public DoctorLocationScheduleController()
         {
-            requestHandler = new GbApiRequestHandler<LocationRoom>();
+            requestHandler = new GbApiRequestHandler<DoctorLocationSchedule>();
         }
+
 
         [HttpPost]
         [Route("GetAll")]
-        
-        public HttpResponseMessage Get([FromBody]LocationRoom data)
+        public HttpResponseMessage Get([FromBody]DoctorLocationSchedule data)
         {
             return requestHandler.GetGbObjects(Request, data);
         }
 
+
         [HttpGet]
         [Route("Get/{id}")]
-        
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
         }
 
         // POST: api/Organizations
+
         [HttpPost]
         [Route("Add")]
-        
-        public HttpResponseMessage Post([FromBody]LocationRoom data)
+        public HttpResponseMessage Post([FromBody]DoctorLocationSchedule data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }
 
         // PUT: api/Organizations/5
+
         [Route("Update")]
         [HttpPut]
-        
-        public HttpResponseMessage Put([FromBody]LocationRoom User)
+        public HttpResponseMessage Put([FromBody]DoctorLocationSchedule User)
         {
             return requestHandler.UpdateGbObject(Request, User);
         }
 
         // DELETE: api/Organizations/id={organizationId}
+
         [HttpDelete]
         [Route("Delete")]
-        
-        public HttpResponseMessage Delete([FromBody]LocationRoom User)
+        public HttpResponseMessage Delete([FromBody]DoctorLocationSchedule User)
         {
             return requestHandler.DeleteGbObject(Request, User);
         }
 
 
         // Unique Name Validation
+
         [HttpGet]
         [Route("IsUnique")]
-        public HttpResponseMessage IsUnique([FromBody]LocationRoom User)
+        public HttpResponseMessage IsUnique([FromBody]DoctorLocationSchedule User)
         {
             return requestHandler.ValidateUniqueName(Request, User);
         }

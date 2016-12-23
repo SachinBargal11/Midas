@@ -20,19 +20,19 @@ namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/DoctorSpeciality")]
     
-    public class DoctorSpecialityController : ApiController
+    public class DoctorSpeciality : ApiController
     {
 
-        private IRequestHandler<DoctorSpeciality> requestHandler;
-        public DoctorSpecialityController()
+        private IRequestHandler<BusinessObjects.DoctorSpeciality> requestHandler;
+        public DoctorSpeciality()
         {
-            requestHandler = new GbApiRequestHandler<DoctorSpeciality>();
+            requestHandler = new GbApiRequestHandler<BusinessObjects.DoctorSpeciality>();
         }
 
         [HttpPost]
         [Route("GetAll")]
         
-        public HttpResponseMessage Get([FromBody]DoctorSpeciality data)
+        public HttpResponseMessage Get([FromBody] BusinessObjects.DoctorSpeciality data)
         {
             return requestHandler.GetGbObjects(Request, data);
         }
@@ -49,7 +49,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpPost]
         [Route("Add")]
         
-        public HttpResponseMessage Post([FromBody]DoctorSpeciality data)
+        public HttpResponseMessage Post([FromBody] BusinessObjects.DoctorSpeciality data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }
@@ -58,7 +58,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [Route("Update")]
         [HttpPut]
         
-        public HttpResponseMessage Put([FromBody]DoctorSpeciality User)
+        public HttpResponseMessage Put([FromBody] BusinessObjects.DoctorSpeciality User)
         {
             return requestHandler.UpdateGbObject(Request, User);
         }
@@ -67,7 +67,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpDelete]
         [Route("Delete")]
         
-        public HttpResponseMessage Delete([FromBody]DoctorSpeciality User)
+        public HttpResponseMessage Delete([FromBody] BusinessObjects.DoctorSpeciality User)
         {
             return requestHandler.DeleteGbObject(Request, User);
         }
@@ -76,7 +76,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // Unique Name Validation
         [HttpGet]
         [Route("IsUnique")]
-        public HttpResponseMessage IsUnique([FromBody]DoctorSpeciality User)
+        public HttpResponseMessage IsUnique([FromBody] BusinessObjects.DoctorSpeciality User)
         {
             return requestHandler.ValidateUniqueName(Request, User);
         }
