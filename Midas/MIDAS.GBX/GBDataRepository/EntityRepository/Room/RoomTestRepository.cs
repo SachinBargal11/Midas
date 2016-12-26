@@ -147,7 +147,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.RoomTest scheduleBO = (BO.RoomTest)(object)entity;
 
             var acc_ = _context.RoomTests.Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<RoomTest>();
-            if (acc_ == null || acc_.Count < 1)
+            if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }

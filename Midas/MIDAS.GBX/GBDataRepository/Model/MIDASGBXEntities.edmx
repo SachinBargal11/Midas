@@ -137,51 +137,6 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
-        <EntityType Name="EmailFields">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FieldName" Type="varchar" MaxLength="50" />
-          <Property Name="SQLQuery" Type="varchar" MaxLength="200" />
-          <Property Name="IsDeleted" Type="bit" />
-          <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-        </EntityType>
-        <EntityType Name="EmailProfile">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ProfileName" Type="varchar" MaxLength="20" />
-          <Property Name="SMTPServer" Type="varchar" MaxLength="50" />
-          <Property Name="SMTPPort" Type="int" />
-          <Property Name="SSLEnabled" Type="bit" />
-          <Property Name="AuthenticationUsername" Type="varchar" MaxLength="50" />
-          <Property Name="Password" Type="varchar" MaxLength="50" />
-          <Property Name="SMTPAuthenticationRequired" Type="bit" Nullable="false" />
-          <Property Name="IsDeleted" Type="bit" />
-          <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-        </EntityType>
-        <EntityType Name="EmailTemplate">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Body" Type="varchar(max)" />
-          <Property Name="IsHTML" Type="bit" />
-          <Property Name="ProfileID" Type="int" />
-          <Property Name="IsDeleted" Type="bit" />
-          <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-        </EntityType>
         <EntityType Name="Invitation">
           <Key>
             <PropertyRef Name="InvitationID" />
@@ -228,41 +183,6 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
-        <EntityType Name="LocationRoom">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" />
-          <Property Name="LocationID" Type="int" Nullable="false" />
-          <Property Name="RoomID" Type="int" Nullable="false" />
-          <Property Name="IsDeleted" Type="bit" />
-          <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" />
-          <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="LocationSpeciality">
-          <Key>
-            <PropertyRef Name="id" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="LocationID" />
-            <PropertyRef Name="SpecialityID" />
-            <PropertyRef Name="CreateByUserID" />
-            <PropertyRef Name="CreateDate" />
-          </Key>
-          <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="LocationID" Type="int" Nullable="false" />
-          <Property Name="SpecialityID" Type="int" Nullable="false" />
-          <Property Name="IsDeleted" Type="bit" />
-          <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-        </EntityType>
         <EntityType Name="Log">
           <Key>
             <PropertyRef Name="id" />
@@ -275,20 +195,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <Property Name="MachineName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="RequestURL" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="IsDeleted" Type="bit" />
-          <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-        </EntityType>
-        <EntityType Name="MedicalProvider">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="NPI" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CompanyID" Type="int" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -323,14 +229,29 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
-        <EntityType Name="Role">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MIDASGBX.dbo.Patient' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Patient">
           <Key>
             <PropertyRef Name="id" />
+            <PropertyRef Name="PatientID" />
+            <PropertyRef Name="SSN" />
+            <PropertyRef Name="ChartNo" />
+            <PropertyRef Name="CompanyID" />
+            <PropertyRef Name="LocationID" />
+            <PropertyRef Name="CreateByUserID" />
+            <PropertyRef Name="CreateDate" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="RoleType" Type="tinyint" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="PatientID" Type="int" Nullable="false" />
+          <Property Name="SSN" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="WCBNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="JobTitle" Type="nvarchar" MaxLength="50" />
+          <Property Name="WorkActivities" Type="nvarchar" MaxLength="50" />
+          <Property Name="CarrierCaseNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="ChartNo" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="CompanyID" Type="int" Nullable="false" />
+          <Property Name="LocationID" Type="int" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -345,6 +266,8 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ContactPersonName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Phone" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="ScheduleID" Type="int" />
+          <Property Name="LocationID" Type="int" Nullable="false" />
           <Property Name="RoomTestID" Type="int" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
@@ -514,20 +437,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
-        <EntityType Name="UserToken">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="AuthToken" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="IssuedOn" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="ExpiresOn" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-        </EntityType>
         <EntityType Name="UserType">
           <Key>
             <PropertyRef Name="id" />
@@ -661,10 +570,10 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DoctorSpecialities_Doctor">
-          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="DoctorSpecialities" Type="Self.DoctorSpecialities" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Doctor">
+            <Principal Role="User">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="DoctorSpecialities">
@@ -756,63 +665,51 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LocationRoom_LocationRoom">
-          <End Role="Location" Type="Self.Location" Multiplicity="1" />
-          <End Role="LocationRoom" Type="Self.LocationRoom" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Location">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="LocationRoom">
-              <PropertyRef Name="LocationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LocationRoom_Room">
-          <End Role="Room" Type="Self.Room" Multiplicity="1" />
-          <End Role="LocationRoom" Type="Self.LocationRoom" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Room">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="LocationRoom">
-              <PropertyRef Name="RoomID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LocationSpeciality_Location">
-          <End Role="Location" Type="Self.Location" Multiplicity="1" />
-          <End Role="LocationSpeciality" Type="Self.LocationSpeciality" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Location">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="LocationSpeciality">
-              <PropertyRef Name="LocationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LocationSpeciality_Specialty">
-          <End Role="Specialty" Type="Self.Specialty" Multiplicity="1" />
-          <End Role="LocationSpeciality" Type="Self.LocationSpeciality" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Specialty">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="LocationSpeciality">
-              <PropertyRef Name="SpecialityID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MedicalProvider_Company">
+        <Association Name="FK_Patient_Company">
           <End Role="Company" Type="Self.Company" Multiplicity="1" />
-          <End Role="MedicalProvider" Type="Self.MedicalProvider" Multiplicity="*" />
+          <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="MedicalProvider">
+            <Dependent Role="Patient">
               <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Patient_Location">
+          <End Role="Location" Type="Self.Location" Multiplicity="1" />
+          <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Patient">
+              <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Patient_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Patient">
+              <PropertyRef Name="PatientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Room_Location">
+          <End Role="Location" Type="Self.Location" Multiplicity="1" />
+          <End Role="Room" Type="Self.Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Room">
+              <PropertyRef Name="LocationID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -825,6 +722,18 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
             </Principal>
             <Dependent Role="Room">
               <PropertyRef Name="RoomTestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Room_Schedule">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="0..1" />
+          <End Role="Room" Type="Self.Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Room">
+              <PropertyRef Name="ScheduleID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -924,18 +833,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserCompanyRole_Role">
-          <End Role="Role" Type="Self.Role" Multiplicity="1" />
-          <End Role="UserCompanyRole" Type="Self.UserCompanyRole" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Role">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="UserCompanyRole">
-              <PropertyRef Name="RoleID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserCompanyRole_User">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="UserCompanyRole" Type="Self.UserCompanyRole" Multiplicity="*" />
@@ -948,18 +845,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserToken_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="UserToken" Type="Self.UserToken" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="UserToken">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="MIDASGBXModelStoreContainer">
           <EntitySet Name="AddressInfo" EntityType="Self.AddressInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
@@ -969,18 +854,12 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DoctorLocationSchedule" EntityType="Self.DoctorLocationSchedule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DoctorSpecialities" EntityType="Self.DoctorSpecialities" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="EmailFields" EntityType="Self.EmailFields" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="EmailProfile" EntityType="Self.EmailProfile" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="EmailTemplate" EntityType="Self.EmailTemplate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Invitation" EntityType="Self.Invitation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InvitationType" EntityType="Self.InvitationType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="LocationRoom" EntityType="Self.LocationRoom" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="MedicalProvider" EntityType="Self.MedicalProvider" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OTP" EntityType="Self.OTP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PasswordToken" EntityType="Self.PasswordToken" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Room" EntityType="Self.Room" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoomTest" EntityType="Self.RoomTest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Schedule" EntityType="Self.Schedule" Schema="dbo" store:Type="Tables" />
@@ -992,20 +871,25 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserCompany" EntityType="Self.UserCompany" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserCompanyRole" EntityType="Self.UserCompanyRole" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserToken" EntityType="Self.UserToken" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="LocationSpeciality" EntityType="Self.LocationSpeciality" store:Type="Tables" store:Schema="dbo">
+          <EntitySet Name="Patient" EntityType="Self.Patient" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [LocationSpeciality].[id] AS [id], 
-    [LocationSpeciality].[Name] AS [Name], 
-    [LocationSpeciality].[LocationID] AS [LocationID], 
-    [LocationSpeciality].[SpecialityID] AS [SpecialityID], 
-    [LocationSpeciality].[IsDeleted] AS [IsDeleted], 
-    [LocationSpeciality].[CreateByUserID] AS [CreateByUserID], 
-    [LocationSpeciality].[CreateDate] AS [CreateDate], 
-    [LocationSpeciality].[UpdateByUserID] AS [UpdateByUserID], 
-    [LocationSpeciality].[UpdateDate] AS [UpdateDate]
-    FROM [dbo].[LocationSpeciality] AS [LocationSpeciality]</DefiningQuery>
+    [Patient].[id] AS [id], 
+    [Patient].[PatientID] AS [PatientID], 
+    [Patient].[SSN] AS [SSN], 
+    [Patient].[WCBNo] AS [WCBNo], 
+    [Patient].[JobTitle] AS [JobTitle], 
+    [Patient].[WorkActivities] AS [WorkActivities], 
+    [Patient].[CarrierCaseNo] AS [CarrierCaseNo], 
+    [Patient].[ChartNo] AS [ChartNo], 
+    [Patient].[CompanyID] AS [CompanyID], 
+    [Patient].[LocationID] AS [LocationID], 
+    [Patient].[IsDeleted] AS [IsDeleted], 
+    [Patient].[CreateByUserID] AS [CreateByUserID], 
+    [Patient].[CreateDate] AS [CreateDate], 
+    [Patient].[UpdateByUserID] AS [UpdateByUserID], 
+    [Patient].[UpdateDate] AS [UpdateDate]
+    FROM [dbo].[Patient] AS [Patient]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_Company_AddressInfo" Association="Self.FK_Company_AddressInfo">
             <End Role="AddressInfo" EntitySet="AddressInfo" />
@@ -1048,7 +932,7 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
             <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedule" />
           </AssociationSet>
           <AssociationSet Name="FK_DoctorSpecialities_Doctor" Association="Self.FK_DoctorSpecialities_Doctor">
-            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="User" EntitySet="User" />
             <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
           </AssociationSet>
           <AssociationSet Name="FK_DoctorSpecialities_Specialty" Association="Self.FK_DoctorSpecialities_Specialty">
@@ -1079,28 +963,28 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
             <End Role="Schedule" EntitySet="Schedule" />
             <End Role="Location" EntitySet="Location" />
           </AssociationSet>
-          <AssociationSet Name="FK_LocationRoom_LocationRoom" Association="Self.FK_LocationRoom_LocationRoom">
-            <End Role="Location" EntitySet="Location" />
-            <End Role="LocationRoom" EntitySet="LocationRoom" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LocationRoom_Room" Association="Self.FK_LocationRoom_Room">
-            <End Role="Room" EntitySet="Room" />
-            <End Role="LocationRoom" EntitySet="LocationRoom" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LocationSpeciality_Location" Association="Self.FK_LocationSpeciality_Location">
-            <End Role="Location" EntitySet="Location" />
-            <End Role="LocationSpeciality" EntitySet="LocationSpeciality" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LocationSpeciality_Specialty" Association="Self.FK_LocationSpeciality_Specialty">
-            <End Role="Specialty" EntitySet="Specialty" />
-            <End Role="LocationSpeciality" EntitySet="LocationSpeciality" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MedicalProvider_Company" Association="Self.FK_MedicalProvider_Company">
+          <AssociationSet Name="FK_Patient_Company" Association="Self.FK_Patient_Company">
             <End Role="Company" EntitySet="Company" />
-            <End Role="MedicalProvider" EntitySet="MedicalProvider" />
+            <End Role="Patient" EntitySet="Patient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_Location" Association="Self.FK_Patient_Location">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="Patient" EntitySet="Patient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_User" Association="Self.FK_Patient_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Patient" EntitySet="Patient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_Location" Association="Self.FK_Room_Location">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="Room" EntitySet="Room" />
           </AssociationSet>
           <AssociationSet Name="FK_Room_RoomTest" Association="Self.FK_Room_RoomTest">
             <End Role="RoomTest" EntitySet="RoomTest" />
+            <End Role="Room" EntitySet="Room" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_Schedule" Association="Self.FK_Room_Schedule">
+            <End Role="Schedule" EntitySet="Schedule" />
             <End Role="Room" EntitySet="Room" />
           </AssociationSet>
           <AssociationSet Name="FK_ScheduleDetail_Schedule" Association="Self.FK_ScheduleDetail_Schedule">
@@ -1135,17 +1019,9 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
             <End Role="User" EntitySet="User" />
             <End Role="UserCompany" EntitySet="UserCompany" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserCompanyRole_Role" Association="Self.FK_UserCompanyRole_Role">
-            <End Role="Role" EntitySet="Role" />
-            <End Role="UserCompanyRole" EntitySet="UserCompanyRole" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserCompanyRole_User" Association="Self.FK_UserCompanyRole_User">
             <End Role="User" EntitySet="User" />
             <End Role="UserCompanyRole" EntitySet="UserCompanyRole" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserToken_User" Association="Self.FK_UserToken_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="UserToken" EntitySet="UserToken" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -1198,7 +1074,7 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <NavigationProperty Name="CompanySpecialtyDetails" Relationship="Self.FK_CompanySpecialtyDetails_Company" FromRole="Company" ToRole="CompanySpecialtyDetails" />
           <NavigationProperty Name="Invitations" Relationship="Self.FK_Invitation_Company" FromRole="Company" ToRole="Invitation" />
           <NavigationProperty Name="Locations" Relationship="Self.FK_Location_Company" FromRole="Company" ToRole="Location" />
-          <NavigationProperty Name="MedicalProviders" Relationship="Self.FK_MedicalProvider_Company" FromRole="Company" ToRole="MedicalProvider" />
+          <NavigationProperty Name="Patients" Relationship="Self.FK_Patient_Company" FromRole="Company" ToRole="Patient" />
           <NavigationProperty Name="UserCompanies" Relationship="Self.FK_UserCompany_Company" FromRole="Company" ToRole="UserCompany" />
         </EntityType>
         <EntityType Name="CompanySpecialtyDetail">
@@ -1277,7 +1153,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <Property Name="UserID" Type="Int32" />
           <NavigationProperty Name="User" Relationship="Self.FK_Doctor_User" FromRole="Doctor" ToRole="User" />
           <NavigationProperty Name="DoctorLocationSchedules" Relationship="Self.FK_DoctorLocationSchedule_Doctor" FromRole="Doctor" ToRole="DoctorLocationSchedule" />
-          <NavigationProperty Name="DoctorSpecialities" Relationship="Self.FK_DoctorSpecialities_Doctor" FromRole="Doctor" ToRole="DoctorSpecialities" />
         </EntityType>
         <EntityType Name="DoctorLocationSchedule">
           <Key>
@@ -1308,53 +1183,8 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Doctor" Relationship="Self.FK_DoctorSpecialities_Doctor" FromRole="DoctorSpecialities" ToRole="Doctor" />
+          <NavigationProperty Name="User" Relationship="Self.FK_DoctorSpecialities_Doctor" FromRole="DoctorSpecialities" ToRole="User" />
           <NavigationProperty Name="Specialty" Relationship="Self.FK_DoctorSpecialities_Specialty" FromRole="DoctorSpecialities" ToRole="Specialty" />
-        </EntityType>
-        <EntityType Name="EmailField">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FieldName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="SQLQuery" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdateByUserID" Type="Int32" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-        </EntityType>
-        <EntityType Name="EmailProfile">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProfileName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="SMTPServer" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="SMTPPort" Type="Int32" />
-          <Property Name="SSLEnabled" Type="Boolean" />
-          <Property Name="AuthenticationUsername" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="SMTPAuthenticationRequired" Type="Boolean" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdateByUserID" Type="Int32" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-        </EntityType>
-        <EntityType Name="EmailTemplate">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="IsHTML" Type="Boolean" />
-          <Property Name="ProfileID" Type="Int32" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdateByUserID" Type="Int32" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
         </EntityType>
         <EntityType Name="Invitation">
           <Key>
@@ -1408,24 +1238,8 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <NavigationProperty Name="ContactInfo" Relationship="Self.FK_Location_ContactInfo" FromRole="Location" ToRole="ContactInfo" />
           <NavigationProperty Name="DoctorLocationSchedules" Relationship="Self.FK_DoctorLocationSchedule_Location" FromRole="Location" ToRole="DoctorLocationSchedule" />
           <NavigationProperty Name="Schedule" Relationship="Self.FK_Location_Schedule" FromRole="Location" ToRole="Schedule" />
-          <NavigationProperty Name="LocationRooms" Relationship="Self.FK_LocationRoom_LocationRoom" FromRole="Location" ToRole="LocationRoom" />
-          <NavigationProperty Name="LocationSpecialities" Relationship="Self.FK_LocationSpeciality_Location" FromRole="Location" ToRole="LocationSpeciality" />
-        </EntityType>
-        <EntityType Name="LocationRoom">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="LocationID" Type="Int32" Nullable="false" />
-          <Property Name="RoomID" Type="Int32" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Precision="7" />
-          <Property Name="UpdateByUserID" Type="Int32" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Location" Relationship="Self.FK_LocationRoom_LocationRoom" FromRole="LocationRoom" ToRole="Location" />
-          <NavigationProperty Name="Room" Relationship="Self.FK_LocationRoom_Room" FromRole="LocationRoom" ToRole="Room" />
+          <NavigationProperty Name="Patients" Relationship="Self.FK_Patient_Location" FromRole="Location" ToRole="Patient" />
+          <NavigationProperty Name="Rooms" Relationship="Self.FK_Room_Location" FromRole="Location" ToRole="Room" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
@@ -1444,21 +1258,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-        </EntityType>
-        <EntityType Name="MedicalProvider">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="NPI" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CompanyID" Type="Int32" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdateByUserID" Type="Int32" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Company" Relationship="Self.FK_MedicalProvider_Company" FromRole="MedicalProvider" ToRole="Company" />
         </EntityType>
         <EntityType Name="OTP">
           <Key>
@@ -1488,21 +1287,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
         </EntityType>
-        <EntityType Name="Role">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="RoleType" Type="Byte" Nullable="false" />
-          <Property Name="CompanyID" Type="Int32" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdateByUserID" Type="Int32" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="UserCompanyRoles" Relationship="Self.FK_UserCompanyRole_Role" FromRole="Role" ToRole="UserCompanyRole" />
-        </EntityType>
         <EntityType Name="Room">
           <Key>
             <PropertyRef Name="id" />
@@ -1511,14 +1295,17 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ContactPersonName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ScheduleID" Type="Int32" />
+          <Property Name="LocationID" Type="Int32" Nullable="false" />
           <Property Name="RoomTestID" Type="Int32" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="LocationRooms" Relationship="Self.FK_LocationRoom_Room" FromRole="Room" ToRole="LocationRoom" />
+          <NavigationProperty Name="Location" Relationship="Self.FK_Room_Location" FromRole="Room" ToRole="Location" />
           <NavigationProperty Name="RoomTest" Relationship="Self.FK_Room_RoomTest" FromRole="Room" ToRole="RoomTest" />
+          <NavigationProperty Name="Schedule" Relationship="Self.FK_Room_Schedule" FromRole="Room" ToRole="Schedule" />
         </EntityType>
         <EntityType Name="RoomTest">
           <Key>
@@ -1547,6 +1334,7 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="DoctorLocationSchedules" Relationship="Self.FK_DoctorLocationSchedule_Schedule" FromRole="Schedule" ToRole="DoctorLocationSchedule" />
           <NavigationProperty Name="Locations" Relationship="Self.FK_Location_Schedule" FromRole="Schedule" ToRole="Location" />
+          <NavigationProperty Name="Rooms" Relationship="Self.FK_Room_Schedule" FromRole="Schedule" ToRole="Room" />
           <NavigationProperty Name="ScheduleDetails" Relationship="Self.FK_ScheduleDetail_Schedule" FromRole="Schedule" ToRole="ScheduleDetail" />
         </EntityType>
         <EntityType Name="ScheduleDetail">
@@ -1606,7 +1394,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <NavigationProperty Name="CompanySpecialtyDetails" Relationship="Self.FK_CompanySpecialtyDetails_Specialty" FromRole="Specialty" ToRole="CompanySpecialtyDetails" />
           <NavigationProperty Name="DoctorSpecialities" Relationship="Self.FK_DoctorSpecialities_Specialty" FromRole="Specialty" ToRole="DoctorSpecialities" />
           <NavigationProperty Name="SpecialityDetails" Relationship="Self.FK_SpecialityDetails_Specialty" FromRole="Specialty" ToRole="SpecialityDetails" />
-          <NavigationProperty Name="LocationSpecialities" Relationship="Self.FK_LocationSpeciality_Specialty" FromRole="Specialty" ToRole="LocationSpeciality" />
           <NavigationProperty Name="Specialty1" Relationship="Self.FK_Specialty_Specialty" FromRole="Specialty" ToRole="Specialty1" />
           <NavigationProperty Name="Specialty2" Relationship="Self.FK_Specialty_Specialty" FromRole="Specialty1" ToRole="Specialty" />
           <NavigationProperty Name="SpecialtyDetails" Relationship="Self.FK_SpecialtyDetails_Specialty" FromRole="Specialty" ToRole="SpecialtyDetails" />
@@ -1673,10 +1460,11 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <NavigationProperty Name="AddressInfo" Relationship="Self.FK_User_AddressInfo" FromRole="User" ToRole="AddressInfo" />
           <NavigationProperty Name="ContactInfo" Relationship="Self.FK_User_ContactInfo" FromRole="User" ToRole="ContactInfo" />
           <NavigationProperty Name="Doctors" Relationship="Self.FK_Doctor_User" FromRole="User" ToRole="Doctor" />
+          <NavigationProperty Name="DoctorSpecialities" Relationship="Self.FK_DoctorSpecialities_Doctor" FromRole="User" ToRole="DoctorSpecialities" />
           <NavigationProperty Name="Invitations" Relationship="Self.FK_Invitation_User_Invitation" FromRole="User" ToRole="Invitation" />
+          <NavigationProperty Name="Patients" Relationship="Self.FK_Patient_User" FromRole="User" ToRole="Patient" />
           <NavigationProperty Name="UserCompanies" Relationship="Self.FK_UserCompany_User" FromRole="User" ToRole="UserCompany" />
           <NavigationProperty Name="UserCompanyRoles" Relationship="Self.FK_UserCompanyRole_User" FromRole="User" ToRole="UserCompanyRole" />
-          <NavigationProperty Name="UserTokens" Relationship="Self.FK_UserToken_User" FromRole="User" ToRole="UserToken" />
         </EntityType>
         <EntityType Name="UserCompany">
           <Key>
@@ -1705,23 +1493,7 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Role" Relationship="Self.FK_UserCompanyRole_Role" FromRole="UserCompanyRole" ToRole="Role" />
           <NavigationProperty Name="User" Relationship="Self.FK_UserCompanyRole_User" FromRole="UserCompanyRole" ToRole="User" />
-        </EntityType>
-        <EntityType Name="UserToken">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="AuthToken" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="IssuedOn" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="ExpiresOn" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdateByUserID" Type="Int32" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="User" Relationship="Self.FK_UserToken_User" FromRole="UserToken" ToRole="User" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
@@ -1735,26 +1507,35 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
         </EntityType>
-        <EntityType Name="LocationSpeciality">
+        <EntityType Name="Patient">
           <Key>
             <PropertyRef Name="id" />
-            <PropertyRef Name="Name" />
+            <PropertyRef Name="PatientID" />
+            <PropertyRef Name="SSN" />
+            <PropertyRef Name="ChartNo" />
+            <PropertyRef Name="CompanyID" />
             <PropertyRef Name="LocationID" />
-            <PropertyRef Name="SpecialityID" />
             <PropertyRef Name="CreateByUserID" />
             <PropertyRef Name="CreateDate" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PatientID" Type="Int32" Nullable="false" />
+          <Property Name="SSN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="WCBNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="JobTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WorkActivities" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CarrierCaseNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ChartNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyID" Type="Int32" Nullable="false" />
           <Property Name="LocationID" Type="Int32" Nullable="false" />
-          <Property Name="SpecialityID" Type="Int32" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Location" Relationship="Self.FK_LocationSpeciality_Location" FromRole="LocationSpeciality" ToRole="Location" />
-          <NavigationProperty Name="Specialty" Relationship="Self.FK_LocationSpeciality_Specialty" FromRole="LocationSpeciality" ToRole="Specialty" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_Patient_Company" FromRole="Patient" ToRole="Company" />
+          <NavigationProperty Name="Location" Relationship="Self.FK_Patient_Location" FromRole="Patient" ToRole="Location" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Patient_User" FromRole="Patient" ToRole="User" />
         </EntityType>
         <Association Name="FK_Company_AddressInfo">
           <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="1" />
@@ -1864,14 +1645,14 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_MedicalProvider_Company">
+        <Association Name="FK_Patient_Company">
           <End Role="Company" Type="Self.Company" Multiplicity="1" />
-          <End Role="MedicalProvider" Type="Self.MedicalProvider" Multiplicity="*" />
+          <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="MedicalProvider">
+            <Dependent Role="Patient">
               <PropertyRef Name="CompanyID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1948,18 +1729,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_DoctorSpecialities_Doctor">
-          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
-          <End Role="DoctorSpecialities" Type="Self.DoctorSpeciality" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Doctor">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="DoctorSpecialities">
-              <PropertyRef Name="DoctorID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_DoctorLocationSchedule_Location">
           <End Role="Location" Type="Self.Location" Multiplicity="1" />
           <End Role="DoctorLocationSchedule" Type="Self.DoctorLocationSchedule" Multiplicity="*" />
@@ -1981,6 +1750,18 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
             </Principal>
             <Dependent Role="DoctorLocationSchedule">
               <PropertyRef Name="ScheduleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DoctorSpecialities_Doctor">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="DoctorSpecialities" Type="Self.DoctorSpeciality" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DoctorSpecialities">
+              <PropertyRef Name="DoctorID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2020,51 +1801,27 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LocationRoom_LocationRoom">
+        <Association Name="FK_Patient_Location">
           <End Role="Location" Type="Self.Location" Multiplicity="1" />
-          <End Role="LocationRoom" Type="Self.LocationRoom" Multiplicity="*" />
+          <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Location">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="LocationRoom">
+            <Dependent Role="Patient">
               <PropertyRef Name="LocationID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LocationSpeciality_Location">
+        <Association Name="FK_Room_Location">
           <End Role="Location" Type="Self.Location" Multiplicity="1" />
-          <End Role="LocationSpeciality" Type="Self.LocationSpeciality" Multiplicity="*" />
+          <End Role="Room" Type="Self.Room" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Location">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="LocationSpeciality">
+            <Dependent Role="Room">
               <PropertyRef Name="LocationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LocationRoom_Room">
-          <End Role="Room" Type="Self.Room" Multiplicity="1" />
-          <End Role="LocationRoom" Type="Self.LocationRoom" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Room">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="LocationRoom">
-              <PropertyRef Name="RoomID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserCompanyRole_Role">
-          <End Role="Role" Type="Self.Role" Multiplicity="1" />
-          <End Role="UserCompanyRole" Type="Self.UserCompanyRole" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Role">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="UserCompanyRole">
-              <PropertyRef Name="RoleID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2077,6 +1834,18 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
             </Principal>
             <Dependent Role="Room">
               <PropertyRef Name="RoomTestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Room_Schedule">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="0..1" />
+          <End Role="Room" Type="Self.Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Room">
+              <PropertyRef Name="ScheduleID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2104,18 +1873,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LocationSpeciality_Specialty">
-          <End Role="Specialty" Type="Self.Specialty" Multiplicity="1" />
-          <End Role="LocationSpeciality" Type="Self.LocationSpeciality" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Specialty">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="LocationSpeciality">
-              <PropertyRef Name="SpecialityID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Specialty_Specialty">
           <End Role="Specialty" Type="Self.Specialty" Multiplicity="1" />
           <End Role="Specialty1" Type="Self.Specialty" Multiplicity="0..1" />
@@ -2137,6 +1894,18 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
             </Principal>
             <Dependent Role="SpecialtyDetails">
               <PropertyRef Name="SpecialtyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Patient_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Patient">
+              <PropertyRef Name="PatientID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2164,18 +1933,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserToken_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="UserToken" Type="Self.UserToken" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="UserToken">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="MIDASGBXEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AddressInfoes" EntityType="Self.AddressInfo" />
           <EntitySet Name="Companies" EntityType="Self.Company" />
@@ -2185,18 +1942,12 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <EntitySet Name="Doctors" EntityType="Self.Doctor" />
           <EntitySet Name="DoctorLocationSchedules" EntityType="Self.DoctorLocationSchedule" />
           <EntitySet Name="DoctorSpecialities" EntityType="Self.DoctorSpeciality" />
-          <EntitySet Name="EmailFields" EntityType="Self.EmailField" />
-          <EntitySet Name="EmailProfiles" EntityType="Self.EmailProfile" />
-          <EntitySet Name="EmailTemplates" EntityType="Self.EmailTemplate" />
           <EntitySet Name="Invitations" EntityType="Self.Invitation" />
           <EntitySet Name="InvitationTypes" EntityType="Self.InvitationType" />
           <EntitySet Name="Locations" EntityType="Self.Location" />
-          <EntitySet Name="LocationRooms" EntityType="Self.LocationRoom" />
           <EntitySet Name="Logs" EntityType="Self.Log" />
-          <EntitySet Name="MedicalProviders" EntityType="Self.MedicalProvider" />
           <EntitySet Name="OTPs" EntityType="Self.OTP" />
           <EntitySet Name="PasswordTokens" EntityType="Self.PasswordToken" />
-          <EntitySet Name="Roles" EntityType="Self.Role" />
           <EntitySet Name="Rooms" EntityType="Self.Room" />
           <EntitySet Name="RoomTests" EntityType="Self.RoomTest" />
           <EntitySet Name="Schedules" EntityType="Self.Schedule" />
@@ -2208,9 +1959,8 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="UserCompanies" EntityType="Self.UserCompany" />
           <EntitySet Name="UserCompanyRoles" EntityType="Self.UserCompanyRole" />
-          <EntitySet Name="UserTokens" EntityType="Self.UserToken" />
           <EntitySet Name="UserTypes" EntityType="Self.UserType" />
-          <EntitySet Name="LocationSpecialities" EntityType="Self.LocationSpeciality" />
+          <EntitySet Name="Patients" EntityType="Self.Patient" />
           <AssociationSet Name="FK_Company_AddressInfo" Association="Self.FK_Company_AddressInfo">
             <End Role="AddressInfo" EntitySet="AddressInfoes" />
             <End Role="Company" EntitySet="Companies" />
@@ -2247,9 +1997,9 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
             <End Role="Company" EntitySet="Companies" />
             <End Role="Location" EntitySet="Locations" />
           </AssociationSet>
-          <AssociationSet Name="FK_MedicalProvider_Company" Association="Self.FK_MedicalProvider_Company">
+          <AssociationSet Name="FK_Patient_Company" Association="Self.FK_Patient_Company">
             <End Role="Company" EntitySet="Companies" />
-            <End Role="MedicalProvider" EntitySet="MedicalProviders" />
+            <End Role="Patient" EntitySet="Patients" />
           </AssociationSet>
           <AssociationSet Name="FK_UserCompany_Company" Association="Self.FK_UserCompany_Company">
             <End Role="Company" EntitySet="Companies" />
@@ -2275,10 +2025,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
             <End Role="Doctor" EntitySet="Doctors" />
             <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedules" />
           </AssociationSet>
-          <AssociationSet Name="FK_DoctorSpecialities_Doctor" Association="Self.FK_DoctorSpecialities_Doctor">
-            <End Role="Doctor" EntitySet="Doctors" />
-            <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
-          </AssociationSet>
           <AssociationSet Name="FK_DoctorLocationSchedule_Location" Association="Self.FK_DoctorLocationSchedule_Location">
             <End Role="Location" EntitySet="Locations" />
             <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedules" />
@@ -2286,6 +2032,10 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <AssociationSet Name="FK_DoctorLocationSchedule_Schedule" Association="Self.FK_DoctorLocationSchedule_Schedule">
             <End Role="Schedule" EntitySet="Schedules" />
             <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DoctorSpecialities_Doctor" Association="Self.FK_DoctorSpecialities_Doctor">
+            <End Role="User" EntitySet="Users" />
+            <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
           </AssociationSet>
           <AssociationSet Name="FK_DoctorSpecialities_Specialty" Association="Self.FK_DoctorSpecialities_Specialty">
             <End Role="Specialty" EntitySet="Specialties" />
@@ -2299,24 +2049,20 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
             <End Role="Schedule" EntitySet="Schedules" />
             <End Role="Location" EntitySet="Locations" />
           </AssociationSet>
-          <AssociationSet Name="FK_LocationRoom_LocationRoom" Association="Self.FK_LocationRoom_LocationRoom">
+          <AssociationSet Name="FK_Patient_Location" Association="Self.FK_Patient_Location">
             <End Role="Location" EntitySet="Locations" />
-            <End Role="LocationRoom" EntitySet="LocationRooms" />
+            <End Role="Patient" EntitySet="Patients" />
           </AssociationSet>
-          <AssociationSet Name="FK_LocationSpeciality_Location" Association="Self.FK_LocationSpeciality_Location">
+          <AssociationSet Name="FK_Room_Location" Association="Self.FK_Room_Location">
             <End Role="Location" EntitySet="Locations" />
-            <End Role="LocationSpeciality" EntitySet="LocationSpecialities" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LocationRoom_Room" Association="Self.FK_LocationRoom_Room">
             <End Role="Room" EntitySet="Rooms" />
-            <End Role="LocationRoom" EntitySet="LocationRooms" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserCompanyRole_Role" Association="Self.FK_UserCompanyRole_Role">
-            <End Role="Role" EntitySet="Roles" />
-            <End Role="UserCompanyRole" EntitySet="UserCompanyRoles" />
           </AssociationSet>
           <AssociationSet Name="FK_Room_RoomTest" Association="Self.FK_Room_RoomTest">
             <End Role="RoomTest" EntitySet="RoomTests" />
+            <End Role="Room" EntitySet="Rooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_Schedule" Association="Self.FK_Room_Schedule">
+            <End Role="Schedule" EntitySet="Schedules" />
             <End Role="Room" EntitySet="Rooms" />
           </AssociationSet>
           <AssociationSet Name="FK_ScheduleDetail_Schedule" Association="Self.FK_ScheduleDetail_Schedule">
@@ -2327,10 +2073,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
             <End Role="Specialty" EntitySet="Specialties" />
             <End Role="SpecialityDetails" EntitySet="SpecialityDetails" />
           </AssociationSet>
-          <AssociationSet Name="FK_LocationSpeciality_Specialty" Association="Self.FK_LocationSpeciality_Specialty">
-            <End Role="Specialty" EntitySet="Specialties" />
-            <End Role="LocationSpeciality" EntitySet="LocationSpecialities" />
-          </AssociationSet>
           <AssociationSet Name="FK_Specialty_Specialty" Association="Self.FK_Specialty_Specialty">
             <End Role="Specialty" EntitySet="Specialties" />
             <End Role="Specialty1" EntitySet="Specialties" />
@@ -2339,6 +2081,10 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
             <End Role="Specialty" EntitySet="Specialties" />
             <End Role="SpecialtyDetails" EntitySet="SpecialtyDetails" />
           </AssociationSet>
+          <AssociationSet Name="FK_Patient_User" Association="Self.FK_Patient_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Patient" EntitySet="Patients" />
+          </AssociationSet>
           <AssociationSet Name="FK_UserCompany_User" Association="Self.FK_UserCompany_User">
             <End Role="User" EntitySet="Users" />
             <End Role="UserCompany" EntitySet="UserCompanies" />
@@ -2346,10 +2092,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
           <AssociationSet Name="FK_UserCompanyRole_User" Association="Self.FK_UserCompanyRole_User">
             <End Role="User" EntitySet="Users" />
             <End Role="UserCompanyRole" EntitySet="UserCompanyRoles" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserToken_User" Association="Self.FK_UserToken_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="UserToken" EntitySet="UserTokens" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -2498,54 +2240,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="EmailFields">
-            <EntityTypeMapping TypeName="MIDASGBXModel.EmailField">
-              <MappingFragment StoreEntitySet="EmailFields">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
-                <ScalarProperty Name="SQLQuery" ColumnName="SQLQuery" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EmailProfiles">
-            <EntityTypeMapping TypeName="MIDASGBXModel.EmailProfile">
-              <MappingFragment StoreEntitySet="EmailProfile">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="ProfileName" ColumnName="ProfileName" />
-                <ScalarProperty Name="SMTPServer" ColumnName="SMTPServer" />
-                <ScalarProperty Name="SMTPPort" ColumnName="SMTPPort" />
-                <ScalarProperty Name="SSLEnabled" ColumnName="SSLEnabled" />
-                <ScalarProperty Name="AuthenticationUsername" ColumnName="AuthenticationUsername" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="SMTPAuthenticationRequired" ColumnName="SMTPAuthenticationRequired" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EmailTemplates">
-            <EntityTypeMapping TypeName="MIDASGBXModel.EmailTemplate">
-              <MappingFragment StoreEntitySet="EmailTemplate">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Body" ColumnName="Body" />
-                <ScalarProperty Name="IsHTML" ColumnName="IsHTML" />
-                <ScalarProperty Name="ProfileID" ColumnName="ProfileID" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Invitations">
             <EntityTypeMapping TypeName="MIDASGBXModel.Invitation">
               <MappingFragment StoreEntitySet="Invitation">
@@ -2595,21 +2289,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="LocationRooms">
-            <EntityTypeMapping TypeName="MIDASGBXModel.LocationRoom">
-              <MappingFragment StoreEntitySet="LocationRoom">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-                <ScalarProperty Name="RoomID" ColumnName="RoomID" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Logs">
             <EntityTypeMapping TypeName="MIDASGBXModel.Log">
               <MappingFragment StoreEntitySet="Log">
@@ -2621,21 +2300,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
                 <ScalarProperty Name="MachineName" ColumnName="MachineName" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="RequestURL" ColumnName="RequestURL" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MedicalProviders">
-            <EntityTypeMapping TypeName="MIDASGBXModel.MedicalProvider">
-              <MappingFragment StoreEntitySet="MedicalProvider">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="NPI" ColumnName="NPI" />
-                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -2674,21 +2338,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Roles">
-            <EntityTypeMapping TypeName="MIDASGBXModel.Role">
-              <MappingFragment StoreEntitySet="Role">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="RoleType" ColumnName="RoleType" />
-                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Rooms">
             <EntityTypeMapping TypeName="MIDASGBXModel.Room">
               <MappingFragment StoreEntitySet="Room">
@@ -2696,6 +2345,8 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="ContactPersonName" ColumnName="ContactPersonName" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="ScheduleID" ColumnName="ScheduleID" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
                 <ScalarProperty Name="RoomTestID" ColumnName="RoomTestID" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
@@ -2877,21 +2528,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserTokens">
-            <EntityTypeMapping TypeName="MIDASGBXModel.UserToken">
-              <MappingFragment StoreEntitySet="UserToken">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="AuthToken" ColumnName="AuthToken" />
-                <ScalarProperty Name="IssuedOn" ColumnName="IssuedOn" />
-                <ScalarProperty Name="ExpiresOn" ColumnName="ExpiresOn" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="UserTypes">
             <EntityTypeMapping TypeName="MIDASGBXModel.UserType">
               <MappingFragment StoreEntitySet="UserType">
@@ -2905,13 +2541,19 @@ warning 6002: The table/view 'MIDASGBX.dbo.LocationSpeciality' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="LocationSpecialities">
-            <EntityTypeMapping TypeName="MIDASGBXModel.LocationSpeciality">
-              <MappingFragment StoreEntitySet="LocationSpeciality">
+          <EntitySetMapping Name="Patients">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Patient">
+              <MappingFragment StoreEntitySet="Patient">
                 <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="SSN" ColumnName="SSN" />
+                <ScalarProperty Name="WCBNo" ColumnName="WCBNo" />
+                <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
+                <ScalarProperty Name="WorkActivities" ColumnName="WorkActivities" />
+                <ScalarProperty Name="CarrierCaseNo" ColumnName="CarrierCaseNo" />
+                <ScalarProperty Name="ChartNo" ColumnName="ChartNo" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
                 <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-                <ScalarProperty Name="SpecialityID" ColumnName="SpecialityID" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />

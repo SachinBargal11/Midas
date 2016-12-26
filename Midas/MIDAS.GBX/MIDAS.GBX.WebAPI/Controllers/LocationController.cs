@@ -19,7 +19,7 @@ using MIDAS.GBX.BusinessObjects;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/Location")]
-    [AllowAnonymous]
+    
     public class LocationController : ApiController
     {
 
@@ -33,7 +33,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("GetAll")]
-        [AllowAnonymous]
+        
         public HttpResponseMessage Get([FromBody]Location data)
         {
             return requestHandler.GetGbObjects(Request, data);
@@ -41,7 +41,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpGet]
         [Route("Get/{id}")]
-        [AllowAnonymous]
+        
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
@@ -50,7 +50,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // POST: api/Organizations
         [HttpPost]
         [Route("Add")]
-        [AllowAnonymous]
+        
         public HttpResponseMessage Post([FromBody]SaveLocation location)
         {
             return savelocationrequestHandler.CreateGbObject(Request, location);
@@ -59,7 +59,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // PUT: api/Organizations/5
         [Route("Update")]
         [HttpPut]
-        [AllowAnonymous]
+        
         public HttpResponseMessage Put([FromBody]Location User)
         {
             return requestHandler.UpdateGbObject(Request, User);
@@ -68,7 +68,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // DELETE: api/Organizations/id={organizationId}
         [HttpDelete]
         [Route("Delete")]
-        [AllowAnonymous]
+        
         public HttpResponseMessage Delete([FromBody]Location User)
         {
             return requestHandler.DeleteGbObject(Request, User);

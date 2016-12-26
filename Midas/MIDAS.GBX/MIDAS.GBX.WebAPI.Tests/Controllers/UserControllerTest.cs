@@ -23,7 +23,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             userBO.FirstName = "MILIND";
             userBO.LastName = "Kate";
             userBO.Gender = GBEnums.Gender.Male;
-            userBO.UserType = GBEnums.UserType.Admin;
+            userBO.UserType = GBEnums.UserType.Staff;
             userBO.Status = GBEnums.UserStatus.Active;
 
             userBO.ContactInfo = new ContactInfo();
@@ -46,7 +46,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             adduser.user.FirstName = "MILIND";
             adduser.user.LastName = "Kate";
             adduser.user.Gender = GBEnums.Gender.Male;
-            adduser.user.UserType = GBEnums.UserType.Admin;
+            adduser.user.UserType = GBEnums.UserType.Staff;
             adduser.user.Status = GBEnums.UserStatus.Active;
 
             adduser.contactInfo = new ContactInfo();
@@ -98,7 +98,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             userBO.FirstName = "MILIND";
             userBO.LastName = "Kate";
             userBO.Gender = GBEnums.Gender.Male;
-            userBO.UserType = GBEnums.UserType.Admin;
+            userBO.UserType = GBEnums.UserType.Staff;
             userBO.Status = GBEnums.UserStatus.Active;
 
             controller.Put(userBO);
@@ -118,7 +118,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             userBO.FirstName = "MILIND";
             userBO.LastName = "Kate";
             userBO.Gender = GBEnums.Gender.Male;
-            userBO.UserType = GBEnums.UserType.Admin;
+            userBO.UserType = GBEnums.UserType.Staff;
             userBO.Status = GBEnums.UserStatus.Active;
 
             controller.Delete(userBO);
@@ -137,7 +137,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             userBO.FirstName = "MILIND";
             userBO.LastName = "Kate";
             userBO.Gender = GBEnums.Gender.Male;
-            userBO.UserType = GBEnums.UserType.Admin;
+            userBO.UserType = GBEnums.UserType.Staff;
             userBO.Status = GBEnums.UserStatus.Active;
 
             controller.IsUnique(userBO);

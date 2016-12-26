@@ -21,9 +21,9 @@ export class Location extends LocationRecord {
     locationType: LocationType;
     isDeleted: boolean;
     createByUserID: number;
-    createDate: moment.MomentStatic;
+    createDate: moment.Moment;
     updateByUserID: number;
-    updateDate: moment.MomentStatic;
+    updateDate: moment.Moment;
 
     constructor(props) {
         super(props);

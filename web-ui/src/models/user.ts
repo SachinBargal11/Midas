@@ -40,15 +40,42 @@ export class User extends UserRecord {
     imageLink: string;
     address: Address;
     contact: Contact;
-    dateOfBirth: moment.MomentStatic;
+    dateOfBirth: moment.Moment;
     isDeleted: boolean;
     createByUserId: number;
     updateByUserId: number;
-    // createDate: moment.MomentStatic;
-    // updateDate: moment.MomentStatic;
+    // createDate: moment.Moment;
+    // updateDate: moment.Moment;
 
     constructor(props) {
         super(props);
+    }
+
+    get userTypeLabel(): string {
+        return User.getUserTypeLabel(this.userType);
+    }
+
+    get displayName(): string {
+        return this.firstName + ' ' + this.lastName;
+    }
+
+    static getUserTypeLabel(userType: UserType): string {
+        switch (userType) {
+            case UserType.Admin:
+                return 'Admin';
+            case UserType.Owner:
+                return 'Owner';
+            case UserType.Doctor:
+                return 'Doctor';
+            case UserType.Patient:
+                return 'Patient';
+            case UserType.Attorney:
+                return 'Attorney';
+            case UserType.Adjuster:
+                return 'Adjuster';
+            case UserType.Accounts:
+                return 'Accounts';
+        }
     }
 
 }

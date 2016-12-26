@@ -1,27 +1,32 @@
 <h1 class="with-border">Users
-<a class="pull-right btn btn-primary" [routerLink]="['add']">Add User</a>
+    <a class="btn btn-danger pull-right" (click)="deleteUser()">
+        <i class="fa fa-trash-o fa-1x"></i> Delete selected Users
+        <loader [visible]="isDeleteProgress"></loader>
+    </a>
+    <a class="pull-right btn btn-primary btn-inline" [routerLink]="['add']"><i class="fa fa-plus" aria-hidden="true"></i> Add User</a>
 </h1>
-<progress-bar [visible]="usersLoading" 
-              style="position:fixed;
+<progress-bar [visible]="usersLoading" style="position:fixed;
                      top:0;
                      width:100%;
                      z-index:100;">
-    <span class="sr-only">Loading users...</span>
+<span class="sr-only">Loading users...</span>
 </progress-bar>
 <div class="ui-widget-header ui-helper-clearfix" style="padding:4px 10px;border-bottom: 0 none">
-    <i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
-    <input #gb type="text" pInputText size="50" style="float:left" placeholder="Search User">
+<i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
+<input #gb type="text" pInputText size="50" style="float:left" placeholder="Search User">
 </div>
-<p-dataTable [value]="users" [(selection)]="selectedUser" selectionMode="single" (onRowSelect)="onRowSelect(selectedUser)" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+<p-dataTable [value]="users" [(selection)]="selectedUsers" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
+    [stacked]="stacked">
     <header>Users</header>
-    <p-column field="firstName" header="First Name" [sortable]="true" ></p-column>
-    <p-column field="lastName" header="Last Name" [sortable]="true" ></p-column>
-    <p-column field="userType" header="User Type" [sortable]="true" ></p-column>
-    <p-column field="userName" header="Email" [sortable]="true" ></p-column>
-   <p-column styleClass="col-button" header="Edit">
-        <template let-user="rowData" pTemplate type="body">
-            <a routerLink="edit/{{user.id}}"><i class="glyphicon glyphicon-edit"></i></a>
-            <!--<a (click)="deleteUser(user)"><i class="fa fa-trash-o"></i></a>-->
+    <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
+    <p-column field="firstName" header="First Name" [sortable]="true"></p-column>
+    <p-column field="lastName" header="Last Name" [sortable]="true"></p-column>
+    <p-column field="userTypeLabel" header="User Type" [sortable]="true"></p-column>
+    <p-column field="userName" header="Email" [sortable]="true"></p-column>
+    <p-column styleClass="col-button" header="Actions">
+        <template let-user="rowData" pTemplate="body">
+            <a routerLink="{{user.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
+            <!--<a routerLink="edit/{{user.id}}"><i class="glyphicon glyphicon-edit"></i></a>-->
         </template>
     </p-column>
 </p-dataTable>

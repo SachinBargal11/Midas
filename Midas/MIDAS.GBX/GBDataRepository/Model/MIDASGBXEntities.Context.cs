@@ -33,18 +33,12 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<Doctor> Doctors { get; set; }
         public virtual DbSet<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }
         public virtual DbSet<DoctorSpeciality> DoctorSpecialities { get; set; }
-        public virtual DbSet<EmailField> EmailFields { get; set; }
-        public virtual DbSet<EmailProfile> EmailProfiles { get; set; }
-        public virtual DbSet<EmailTemplate> EmailTemplates { get; set; }
         public virtual DbSet<Invitation> Invitations { get; set; }
         public virtual DbSet<InvitationType> InvitationTypes { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
-        public virtual DbSet<LocationRoom> LocationRooms { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
-        public virtual DbSet<MedicalProvider> MedicalProviders { get; set; }
         public virtual DbSet<OTP> OTPs { get; set; }
         public virtual DbSet<PasswordToken> PasswordTokens { get; set; }
-        public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
         public virtual DbSet<RoomTest> RoomTests { get; set; }
         public virtual DbSet<Schedule> Schedules { get; set; }
@@ -56,8 +50,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserCompany> UserCompanies { get; set; }
         public virtual DbSet<UserCompanyRole> UserCompanyRoles { get; set; }
-        public virtual DbSet<UserToken> UserTokens { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
-        public virtual DbSet<LocationSpeciality> LocationSpecialities { get; set; }
+        public virtual DbSet<Patient> Patients { get; set; }
     }
 }

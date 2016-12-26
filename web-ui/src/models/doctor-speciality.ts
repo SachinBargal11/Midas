@@ -5,14 +5,14 @@ import {Doctor} from './doctor';
 const DoctorSpecialityRecord = Record({
 
     doctor: null,
-    specialty: null
+    specialties: null
 
 });
 
 export class DoctorSpeciality extends DoctorSpecialityRecord {
 
     doctor: Doctor;
-    specialty: Speciality;
+    specialties: Speciality[];
 
 
     constructor(props) {

@@ -45,6 +45,9 @@ import { MedicalProviderService } from '../services/medical-provider-service';
 import { LocationsStore } from '../stores/locations-store';
 import { LocationsService } from '../services/locations-service';
 
+import { ScheduleStore } from '../stores/schedule-store';
+import { ScheduleService } from '../services/schedule-service';
+
 import { RoomsStore } from '../stores/rooms-store';
 import { RoomsService } from '../services/rooms-service';
 
@@ -93,6 +96,7 @@ import { ChangePasswordComponent } from '../components/pages/change-password';
 import { UserShellComponent } from '../components/pages/users/users-shell';
 import { UserBasicComponent } from '../components/pages/users/user-basic';
 import { UserAccessComponent } from '../components/pages/users/user-access';
+import { DoctorSpecificInformationComponent } from '../components/pages/users/doctor-specific-information';
 import { AddUserComponent } from '../components/pages/users/add-user';
 import { UsersListComponent } from '../components/pages/users/users-list';
 import { UpdateUserComponent } from '../components/pages/users/update-user';
@@ -113,9 +117,11 @@ import { AddDoctorComponent } from '../components/pages/doctors/add-doctor';
 import { UpdateDoctorComponent } from '../components/pages/doctors/update-doctor';
 import { DoctorsListComponent } from '../components/pages/doctors/doctors-list';
 import { DoctorSpecialityComponent } from '../components/pages/doctors/doctor-speciality';
-import { SpecialityListComponent } from '../components/pages/speciality/speciality-list';
-import { AddSpecialityComponent } from '../components/pages/speciality/add-speciality';
-import { UpdateSpecialityComponent } from '../components/pages/speciality/update-speciality';
+
+import { SpecialityShellComponent } from '../components/pages/account-setup/speciality/speciality-shell';
+import { SpecialityListComponent } from '../components/pages/account-setup/speciality/speciality-list';
+import { AddSpecialityComponent } from '../components/pages/account-setup/speciality/add-speciality';
+import { UpdateSpecialityComponent } from '../components/pages/account-setup/speciality/update-speciality';
 
 import { UserStatisticsComponent } from '../components/pages/users/user-statistics';
 import { DoctorsStatisticsComponent } from '../components/pages/doctors/doctors-statistics';
@@ -135,9 +141,12 @@ import { RoomsComponent } from '../components/pages/rooms/rooms';
 import { AddRoomComponent } from '../components/pages/rooms/add-room';
 import { EditRoomComponent } from '../components/pages/rooms/edit-room';
 
-import { SpecialityDetailComponent } from '../components/pages/speciality-details/speciality-details';
-import { AddSpecialityDetailsComponent } from '../components/pages/speciality-details/add-speciality-detail';
-import { EditSpecialityDetailsComponent } from '../components/pages/speciality-details/edit-speciality-detail';
+import { AccountSetupShellComponent } from '../components/pages/account-setup/account-setup-shell';
+import { AccountSetupNavComponent } from '../components/pages/account-setup/account-setup-nav-bar';
+
+import { SpecialityDetailComponent } from '../components/pages/account-setup/speciality-details/speciality-details';
+import { AddSpecialityDetailsComponent } from '../components/pages/account-setup/speciality-details/add-speciality-detail';
+import { EditSpecialityDetailsComponent } from '../components/pages/account-setup/speciality-details/edit-speciality-detail';
 
 import { LimitPipe } from '../pipes/limit-array-pipe';
 import { TimeAgoPipe } from '../pipes/time-ago-pipe';
@@ -148,7 +157,7 @@ import { InputTextModule, ChartModule, DataTableModule, SharedModule, ButtonModu
 
 
 
-enableProdMode();
+// enableProdMode();
 
 @NgModule({
     imports: [
@@ -206,6 +215,7 @@ enableProdMode();
         UserShellComponent,
         UserBasicComponent,
         UserAccessComponent,
+        DoctorSpecificInformationComponent,
         AddUserComponent,
         UpdateUserComponent,
         UsersListComponent,
@@ -226,6 +236,7 @@ enableProdMode();
         UpdateDoctorComponent,
         DoctorsListComponent,
         DoctorSpecialityComponent,
+        SpecialityShellComponent,
         SpecialityListComponent,
         AddSpecialityComponent,
         UpdateSpecialityComponent,
@@ -243,6 +254,8 @@ enableProdMode();
         RoomsComponent,
         AddRoomComponent,
         EditRoomComponent,
+        AccountSetupShellComponent,
+        AccountSetupNavComponent,
         SpecialityDetailComponent,
         AddSpecialityDetailsComponent,
         EditSpecialityDetailsComponent,
@@ -277,6 +290,8 @@ enableProdMode();
         MedicalProviderService,
         LocationsService,
         LocationsStore,
+        ScheduleService,
+        ScheduleStore,
         RoomsService,
         RoomsStore,
         SpecialityDetailsStore,

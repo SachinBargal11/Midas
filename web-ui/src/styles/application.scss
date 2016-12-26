@@ -12,6 +12,11 @@ body
     padding: 0;
 }
 
+label
+{
+    display: inline-block;
+}
+
 .simple-notification  
 {
     .sn-title, .sn-content 

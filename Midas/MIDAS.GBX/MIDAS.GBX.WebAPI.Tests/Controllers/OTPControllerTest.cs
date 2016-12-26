@@ -23,7 +23,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             otp.User.FirstName = "MILIND";
             otp.User.LastName = "Kate";
             otp.User.Gender = GBEnums.Gender.Male;
-            otp.User.UserType = GBEnums.UserType.Admin;
+            otp.User.UserType = GBEnums.UserType.Patient;
             otp.User.Status = GBEnums.UserStatus.Active;
 
             otp.User.ContactInfo = new ContactInfo();
@@ -47,7 +47,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             otp.User.FirstName = "MILIND";
             otp.User.LastName = "Kate";
             otp.User.Gender = GBEnums.Gender.Male;
-            otp.User.UserType = GBEnums.UserType.Admin;
+            otp.User.UserType = GBEnums.UserType.Staff;
             otp.User.Status = GBEnums.UserStatus.Active;
 
             otp.User.ContactInfo = new ContactInfo();
@@ -71,7 +71,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             otp.User.FirstName = "MILIND";
             otp.User.LastName = "Kate";
             otp.User.Gender = GBEnums.Gender.Male;
-            otp.User.UserType = GBEnums.UserType.Admin;
+            otp.User.UserType = GBEnums.UserType.Staff;
             otp.User.Status = GBEnums.UserStatus.Active;
 
             otp.User.ContactInfo = new ContactInfo();
@@ -95,7 +95,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             otp.User.FirstName = "MILIND";
             otp.User.LastName = "Kate";
             otp.User.Gender = GBEnums.Gender.Male;
-            otp.User.UserType = GBEnums.UserType.Admin;
+            otp.User.UserType = GBEnums.UserType.Staff;
             otp.User.Status = GBEnums.UserStatus.Active;
 
             otp.User.ContactInfo = new ContactInfo();
@@ -119,7 +119,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             otp.User.FirstName = "MILIND";
             otp.User.LastName = "Kate";
             otp.User.Gender = GBEnums.Gender.Male;
-            otp.User.UserType = GBEnums.UserType.Admin;
+            otp.User.UserType = GBEnums.UserType.Staff;
             otp.User.Status = GBEnums.UserStatus.Active;
 
             otp.User.ContactInfo = new ContactInfo();
@@ -144,7 +144,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             validate.otp.User.FirstName = "MILIND";
             validate.otp.User.LastName = "Kate";
             validate.otp.User.Gender = GBEnums.Gender.Male;
-            validate.otp.User.UserType = GBEnums.UserType.Admin;
+            validate.otp.User.UserType = GBEnums.UserType.Staff;
             validate.otp.User.Status = GBEnums.UserStatus.Active;
 
             validate.otp.User.ContactInfo = new ContactInfo();
@@ -159,7 +159,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             validate.user.FirstName = "MILIND";
             validate.user.LastName = "Kate";
             validate.user.Gender = GBEnums.Gender.Male;
-            validate.user.UserType = GBEnums.UserType.Admin;
+            validate.user.UserType = GBEnums.UserType.Staff;
             validate.user.Status = GBEnums.UserStatus.Active;
 
             validate.user.ContactInfo = new ContactInfo();

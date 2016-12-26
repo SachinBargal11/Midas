@@ -1,37 +1,45 @@
-import {Record} from 'immutable';
-import {User} from './user';
+import { Company } from './company';
+import { Account } from './account';
+import { Record } from 'immutable';
+import { User } from './user';
 
 const SessionRecord = Record({
-    user: null,
+    account: null,
     isSecurityCheckVerified: false
 });
 
 export class Session extends SessionRecord {
 
-    private _user: User = null;
+    // private _user: User = null;
+    private _account: Account = null;
+    private _currentCompany: Company = null;
 
     public get user(): User {
-        return this._user;
+        return this._account ? this._account.user : null;
     }
 
-    public set user(value: User) {
-        this._user = value;
+    public get currentCompany(): Company {
+        return this._currentCompany;
+    }
+
+    public set currentCompany(value: Company) {
+        this._currentCompany = value;
+    }
+
+    public get companies(): Company[] {
+        return this._account ? this._account.companies : null;
+    }
+
+    public get account(): Account {
+        return this._account;
+    }
+
+    public set account(value: Account) {
+        this._account = value;
     }
 
     get isAuthenticated() {
-        return this.user ? true : false;
-    }
-
-    public get displayName(): string {
-        return this._user.firstName + ' ' + this._user.lastName;
-    }
-
-    public get account_id(): number {
-        return this._user.accountId;
-    }
-
-    public get userId(): number {
-        return this._user.id;
+        return this.account ? true : false;
     }
 
 

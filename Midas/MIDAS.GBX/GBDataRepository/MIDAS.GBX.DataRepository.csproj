@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="DataAccessManager\DataAccessManager.cs" />
     <Compile Include="DataAccessManager\DBContextProvider.cs" />
     <Compile Include="DataAccessManager\GbDataAccessManager.cs" />
     <Compile Include="DataAccessManager\IDBContextProvider.cs" />
@@ -69,14 +70,16 @@
     <Compile Include="EntityRepository\Doctor\DoctorSpecialityRepository.cs" />
     <Compile Include="EntityRepository\Company\InvitationRepository.cs" />
     <Compile Include="EntityRepository\Location\LocationRepository.cs" />
+<<<<<<< HEAD
     <Compile Include="EntityRepository\Location\LocationSpecialityRepository.cs" />
     <Compile Include="EntityRepository\Log\LogRepository.cs" />
     <Compile Include="EntityRepository\Room\LocationRoom.cs" />
+=======
+>>>>>>> 522ebdb13207e0fad34097d633de9af2392cc3d9
     <Compile Include="EntityRepository\Room\RoomRepository.cs" />
     <Compile Include="EntityRepository\Room\RoomTestRepository.cs" />
     <Compile Include="EntityRepository\Schedule\ScheduleDetailRepository.cs" />
     <Compile Include="EntityRepository\Schedule\ScheduleRepository.cs" />
-    <Compile Include="EntityRepository\MedicaProvider\MedicalProviderRepository.cs" />
     <Compile Include="EntityRepository\Speciality\CompanySpecialityDetailsRepository.cs" />
     <Compile Include="EntityRepository\Speciality\SpecialityDetailsRepository.cs" />
     <Compile Include="EntityRepository\Speciality\SpecialityRepository.cs" />
@@ -84,7 +87,6 @@
     <Compile Include="EntityRepository\User\PasswordTokenRepository.cs" />
     <Compile Include="EntityRepository\User\UserCompanyRepository.cs" />
     <Compile Include="EntityRepository\User\UserRepository.cs" />
-    <Compile Include="EntityRepository\User\UserTokenRepository.cs" />
     <Compile Include="EntitySearch\EntitySearch.cs" />
     <Compile Include="EntitySearch\EntitySearchParameters.cs" />
     <Compile Include="EntitySearch\FilterDefination.cs" />
@@ -112,15 +114,6 @@
     <Compile Include="Model\DoctorSpeciality.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\EmailField.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\EmailProfile.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\EmailTemplate.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\Invitation.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
@@ -130,16 +123,7 @@
     <Compile Include="Model\Location.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\LocationRoom.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\LocationSpeciality.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\Log.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\MedicalProvider.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\MIDASGBXEntities.Context.cs">
@@ -163,7 +147,7 @@
     <Compile Include="Model\PasswordToken.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Role.cs">
+    <Compile Include="Model\Patient.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Room.cs">
@@ -197,9 +181,6 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\UserCompanyRole.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\UserToken.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\UserType.cs">

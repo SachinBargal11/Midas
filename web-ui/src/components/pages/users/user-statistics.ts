@@ -1,9 +1,8 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
-
+import moment from 'moment';
 import {SessionStore} from '../../../stores/session-store';
 import {UsersStore} from '../../../stores/users-store';
-import {AccountDetail} from '../../../models/account-details';
 import { Account } from '../../../models/account';
 import {DoctorsStore} from '../../../stores/doctors-store';
 import {DoctorDetail} from '../../../models/doctor-details';

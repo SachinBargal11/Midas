@@ -1,18 +1,18 @@
 <div class="page-center">
     <div class="page-center-in">
         <div class="container-fluid">
-            <h5 class="with-border">Add Doctor</h5>
+            <!--<h5 class="with-border">Doctor Specialities</h5>-->
             <form [formGroup]="doctorspecialityform" (ngSubmit)="saveDoctorSpeciality()">
                 <section class="card">
                     <header class="card-header card-header-lg">
-                        Doctor Information
+                        Doctor Specialities
                     </header>
                     <div class="card-block">
                         <div class="row"> 
                             <div class="col-lg-4">
                                 <label class="form-label"> Speciality <span class="color-red">*</span></label>
                                 <div class="form-group" [class.error]="doctorspecialityformControls.speciality.touched && !doctorspecialityformControls.speciality.valid">
-                                    <select formControlName="speciality" class="selectpicker form-control" [class.error]="doctorspecialityformControls.speciality.touched && !doctorspecialityformControls.speciality.valid">
+                                    <select multiple formControlName="speciality" class="selectpicker form-control" [class.error]="doctorspecialityformControls.speciality.touched && !doctorspecialityformControls.speciality.valid">
                                         <option value="">-Select Speciality-</option>
                                         <option disabled>────────────────────</option>
                                         <option *ngFor="let speciality of specialities" value="{{speciality.id}}">{{speciality.specialityCode}} - {{speciality.name}}</option>

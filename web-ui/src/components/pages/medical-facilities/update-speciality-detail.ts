@@ -1,20 +1,21 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs/Observable';
-import {List} from 'immutable';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
+import { List } from 'immutable';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import moment from 'moment';
-import {NotificationsService} from 'angular2-notifications';
-import {MedicalFacilityService} from '../../../services/medical-facility-service';
-import {MedicalFacilityStore} from '../../../stores/medical-facilities-store';
-import {SpecialityDetail} from '../../../models/speciality-details';
-import {Speciality} from '../../../models/speciality';
-import {MedicalFacilityDetail} from '../../../models/medical-facility-details';
-import {SpecialityStore} from '../../../stores/speciality-store';
-import {AppValidators} from '../../../utils/AppValidators';
+import _ from 'underscore';
+import { NotificationsService } from 'angular2-notifications';
+import { MedicalFacilityService } from '../../../services/medical-facility-service';
+import { MedicalFacilityStore } from '../../../stores/medical-facilities-store';
+import { SpecialityDetail } from '../../../models/speciality-details';
+import { Speciality } from '../../../models/speciality';
+import { MedicalFacilityDetail } from '../../../models/medical-facility-details';
+import { SpecialityStore } from '../../../stores/speciality-store';
+import { AppValidators } from '../../../utils/AppValidators';
 
-import {NotificationsStore} from '../../../stores/notifications-store';
-import {Notification} from '../../../models/notification';
+import { NotificationsStore } from '../../../stores/notifications-store';
+import { Notification } from '../../../models/notification';
 
 @Component({
     selector: 'update-speciality-detail',
@@ -108,7 +109,7 @@ export class UpdateSpecialityDetailComponent {
                 this._notificationsStore.addNotification(notification);
                 this.resetForm();
                 this.updateSpecialityDetailSuccess.emit(response);
-
+                this._router.navigate(['/account-setup/speciality-details']);
             },
             (error) => {
                 this.isSpecialityDetailSaveInProgress = false;

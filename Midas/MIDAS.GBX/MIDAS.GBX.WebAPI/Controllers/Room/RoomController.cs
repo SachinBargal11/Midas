@@ -15,11 +15,11 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Linq;
 using MIDAS.GBX.BusinessObjects;
+using MIDAS.GBX.WebAPI.Filters;
 
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/Room")]
-    [AllowAnonymous]
     public class RoomController : ApiController
     {
 
@@ -29,44 +29,44 @@ namespace MIDAS.GBX.WebAPI.Controllers
             requestHandler = new GbApiRequestHandler<Room>();
         }
 
+        
         [HttpPost]
         [Route("GetAll")]
-        [AllowAnonymous]
         public HttpResponseMessage Get([FromBody]Room data)
         {
             return requestHandler.GetGbObjects(Request, data);
         }
 
+        
         [HttpGet]
         [Route("Get/{id}")]
-        [AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
         }
 
         // POST: api/Organizations
+        
         [HttpPost]
         [Route("Add")]
-        [AllowAnonymous]
         public HttpResponseMessage Post([FromBody]Room data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }
 
         // PUT: api/Organizations/5
+        
         [Route("Update")]
         [HttpPut]
-        [AllowAnonymous]
         public HttpResponseMessage Put([FromBody]Room User)
         {
             return requestHandler.UpdateGbObject(Request, User);
         }
 
         // DELETE: api/Organizations/id={organizationId}
+        
         [HttpDelete]
         [Route("Delete")]
-        [AllowAnonymous]
         public HttpResponseMessage Delete([FromBody]Room User)
         {
             return requestHandler.DeleteGbObject(Request, User);
@@ -74,6 +74,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
 
         // Unique Name Validation
+        
         [HttpGet]
         [Route("IsUnique")]
         public HttpResponseMessage IsUnique([FromBody]Room User)

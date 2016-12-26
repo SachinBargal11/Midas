@@ -11,7 +11,7 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class DoctorLocationSchedule : GbObject
     {
-        public Doctor _doctor;
+        private Doctor _doctor;
         public Doctor doctor
         {
             get
@@ -23,7 +23,7 @@ namespace MIDAS.GBX.BusinessObjects
                 _doctor = value;
             }
         }
-        public Location _location;
+        private Location _location;
         public Location location
         {
             get
@@ -35,7 +35,7 @@ namespace MIDAS.GBX.BusinessObjects
                 _location = value;
             }
         }
-        public Schedule _schedule;
+        private Schedule _schedule;
         public Schedule schedule
         {
             get
