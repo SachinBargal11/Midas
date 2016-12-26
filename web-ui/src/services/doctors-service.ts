@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
 import {Doctor} from '../models/doctor';
 import {DoctorSpeciality} from '../models/doctor-speciality';
+import { DoctorAdapter } from './adapters/doctor-adapter';
 
 @Injectable()
 export class DoctorsService {
@@ -24,9 +25,9 @@ export class DoctorsService {
         let promise: Promise<Doctor> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/Doctor/Get/' + doctorId).map(res => res.json())
                 .subscribe((data: any) => {
-                    // let parsedDoctor: Doctor = null;
-                    // parsedDoctor = DoctorAdapter.parseResponse(data);
-                    resolve(data);
+                    let parsedDoctor: Doctor = null;
+                    parsedDoctor = DoctorAdapter.parseResponse(data);
+                    resolve(parsedDoctor);
                 }, (error) => {
                     reject(error);
                 });
@@ -39,10 +40,10 @@ export class DoctorsService {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: Array<Object>) => {
-                    // let doctors = (<Object[]>data).map((doctorData: any) => {
-                    //     return DoctorAdapter.parseResponse(doctorData);
-                    // });
-                    resolve(data);
+                    let doctors = (<Object[]>data).map((doctorData: any) => {
+                        return DoctorAdapter.parseResponse(doctorData);
+                    });
+                    resolve(doctors);
                 }, (error) => {
                     reject(error);
                 });
@@ -74,9 +75,9 @@ export class DoctorsService {
             })
                 .map(res => res.json())
                 .subscribe((doctorData: any) => {
-                    // let parsedDoctor: Doctor = null;
-                    // parsedDoctor = DoctorAdapter.parseResponse(doctorData);
-                    resolve(doctorData);
+                    let parsedDoctor: Doctor = null;
+                    parsedDoctor = DoctorAdapter.parseResponse(doctorData);
+                    resolve(parsedDoctor);
                 }, (error) => {
                     reject(error);
                 });
@@ -97,7 +98,9 @@ export class DoctorsService {
             // });
 
             // remove unneeded keys 
+            doctorDetailRequestData.user.doctorSpecialities = doctorDetailRequestData.doctorSpecialities;
             doctorDetailRequestData.user = _.omit(doctorDetailRequestData.user, 'accountId', 'gender', 'status', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+            doctorDetailRequestData = _.omit(doctorDetailRequestData, 'doctorSpecialities');
             // doctorDetailRequestData.address = _.omit(doctorDetailRequestData.address, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
             // doctorDetailRequestData.contactInfo = _.omit(doctorDetailRequestData.contactInfo, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
             // doctorDetailRequestData.doctor = _.omit(doctorDetailRequestData.doctor, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
@@ -107,9 +110,9 @@ export class DoctorsService {
             })
                 .map(res => res.json())
                 .subscribe((doctorData: any) => {
-                    // let parsedDoctor: Doctor = null;
-                    // parsedDoctor = DoctorAdapter.parseResponse(doctorData);
-                    resolve(doctorData);
+                    let parsedDoctor: Doctor = null;
+                    parsedDoctor = DoctorAdapter.parseResponse(doctorData);
+                    resolve(parsedDoctor);
                 }, (error) => {
                     reject(error);
                 });

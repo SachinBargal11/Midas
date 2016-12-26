@@ -17,6 +17,11 @@ export class ErrorMessageFormatter {
                         errorString.push(errorBody.errorMessage);
                        return errorString;
                     }
+                } else if (errorBody.errorLevel === 6) {
+                    if (errorBody.errorMessage) {
+                        errorString.push(errorBody.errorMessage);
+                       return errorString;
+                    }
                 } else {
                     errorString.push('Server error.');
                     return errorString;
