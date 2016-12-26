@@ -62,6 +62,21 @@ namespace MIDAS.GBX.Common
               .Select(s => s[generator.Next(s.Length)]).ToArray());
         }
 
+        public static int GetIpaddress()
+        {
+            string strHostName = System.Net.Dns.GetHostName();
+            string clientIPAddress = System.Net.Dns.GetHostAddresses(strHostName).GetValue(1).ToString();
+            int ipadd = Convert.ToInt16(clientIPAddress);
+            return ipadd;
+        }
+
+        public static string MachineName()
+        {
+            string strHostName = System.Net.Dns.GetHostName();
+            string macname = strHostName;
+            return macname;
+        }
+
     }
 
     public class LowercaseContractResolver : DefaultContractResolver
