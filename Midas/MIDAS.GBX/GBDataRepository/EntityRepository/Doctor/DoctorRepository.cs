@@ -128,7 +128,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             #endregion
 
             ////Find Record By ID
-            User user_ = _context.Users.Include(r => r.UserCompanyRoles).Where(p => p.id == doctorBO.user.ID && p.UserCompanyRoles.Any(x => x.RoleID == (int)BO.GBEnums.RoleType.Doctor)).FirstOrDefault<User>();
+            User user_ = _context.Users.Include("UserCompanyRoles").Where(p => p.id == doctorBO.user.ID && p.UserCompanyRoles.Any(x => x.RoleID == (int)BO.GBEnums.RoleType.Doctor)).FirstOrDefault<User>();
             if (user_ != null)
             {
                 doctorDB.User = user_;

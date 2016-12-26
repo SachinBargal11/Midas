@@ -128,7 +128,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             ContactInfo contactinfoDB = new ContactInfo();
             UserCompany userCompanyDB = new UserCompany();
             UserCompanyRole userCompanyRoleDB = new UserCompanyRole();
-            Role roleDB = new Role();
             Invitation invitationDB = new Invitation();
 
             if (_context.Companies.Any(o => o.Name == companyBO.Name))
@@ -214,13 +213,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             #endregion
 
-            #region Role
-            roleDB.Name = roleBO.Name;
-            roleDB.RoleType = System.Convert.ToByte(roleBO.RoleType);
-            if (roleBO.IsDeleted.HasValue)
-                roleDB.IsDeleted = roleBO.IsDeleted.Value;
-            #endregion
-
             UserCompany cmp = new UserCompany();
             cmp.Company = companyDB;
 
@@ -261,7 +253,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             #region Insert User Company Role
             userCompanyRoleDB.User = userCompanyDB.User;
-            userCompanyRoleDB.Role = roleDB;
+            userCompanyRoleDB.RoleID = (int)roleBO.RoleType;
             userCompanyRoleDB.CreateDate = companyBO.CreateDate;
             userCompanyRoleDB.CreateByUserID = companyBO.CreateByUserID;
             _dbUserCompanyRole.Add(userCompanyRoleDB);

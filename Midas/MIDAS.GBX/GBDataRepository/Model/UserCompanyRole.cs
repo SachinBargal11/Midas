@@ -23,7 +23,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
-        public virtual Role Role { get; set; }
         public virtual User User { get; set; }
     }
 }

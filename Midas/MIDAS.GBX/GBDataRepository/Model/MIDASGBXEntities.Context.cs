@@ -39,7 +39,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<OTP> OTPs { get; set; }
         public virtual DbSet<PasswordToken> PasswordTokens { get; set; }
-        public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
         public virtual DbSet<RoomTest> RoomTests { get; set; }
         public virtual DbSet<Schedule> Schedules { get; set; }

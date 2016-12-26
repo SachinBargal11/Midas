@@ -172,7 +172,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             ContactInfo contactinfoDB = new ContactInfo();
             UserCompany userCompanyDB = new UserCompany();
             UserCompanyRole userCompanyRoleDB = new UserCompanyRole();
-            Role roleDB = new Role();
             Invitation invitationDB = new Invitation();
 
             #region Address
@@ -235,16 +234,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 else
                     return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid company details.", ErrorLevel = ErrorLevel.Error };
-            }
-            #endregion
-
-            #region Role
-            if (roleBO != null)
-            {
-                roleDB.Name = roleBO.Name;
-                roleDB.RoleType = System.Convert.ToByte(roleBO.RoleType);
-                if (roleBO.IsDeleted.HasValue)
-                    roleDB.IsDeleted = roleBO.IsDeleted.Value;
             }
             #endregion
 
@@ -360,7 +349,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             #region Insert User Company Role
             userCompanyRoleDB.User = userCompanyDB.User;
-            userCompanyRoleDB.Role = roleDB;
+            userCompanyRoleDB.RoleID =(int)(roleBO.RoleType);
             userCompanyRoleDB.CreateDate = DateTime.UtcNow;
             userCompanyRoleDB.CreateByUserID = companyBO.CreateByUserID;
             _dbUserCompanyRole.Add(userCompanyRoleDB);

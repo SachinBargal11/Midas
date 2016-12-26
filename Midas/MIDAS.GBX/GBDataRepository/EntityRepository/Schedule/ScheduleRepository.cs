@@ -118,8 +118,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             #endregion
             if (scheduleDB.id > 0)
             {
-                _dbSetScheduleDetail.RemoveRange(_context.ScheduleDetails.Where(c => c.ScheduleID == scheduleBO.ID));
-                _context.SaveChanges();
                 //For Update Record
 
                 //Find Schedule By ID
@@ -127,6 +125,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 if (schedule != null && !schedule.IsDefault)
                 {
+                    _dbSetScheduleDetail.RemoveRange(_context.ScheduleDetails.Where(c => c.ScheduleID == scheduleBO.ID));
+                    _context.SaveChanges();
+
                     #region Location
                     schedule.id = scheduleBO.ID;
                     schedule.Name = scheduleBO.Name == null ? schedule.Name : scheduleBO.Name;
@@ -171,7 +172,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID
         public override object Get(int id)
         {
-            BO.Schedule acc_ = Convert<BO.Schedule, Schedule>(_context.Schedules.Include("ScheduleDetails").Where(p => p.id == id && p.IsDeleted == false).FirstOrDefault<Schedule>());
+            BO.Schedule acc_ = Convert<BO.Schedule, Schedule>(_context.Schedules.Include("ScheduleDetails").Where(p => p.id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<Schedule>());
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this schedule.", errorObject = "", ErrorLevel = ErrorLevel.Error };

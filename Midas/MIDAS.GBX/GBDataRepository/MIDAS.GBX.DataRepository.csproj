@@ -144,9 +144,6 @@
     <Compile Include="Model\Patient.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Role.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\Room.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>

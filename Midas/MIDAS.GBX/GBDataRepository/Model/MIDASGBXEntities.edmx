@@ -258,20 +258,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.Patient' does not have a primary key 
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
-        <EntityType Name="Role">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="RoleType" Type="tinyint" Nullable="false" />
-          <Property Name="CompanyID" Type="int" Nullable="false" />
-          <Property Name="IsDeleted" Type="bit" />
-          <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-        </EntityType>
         <EntityType Name="Room">
           <Key>
             <PropertyRef Name="id" />
@@ -847,18 +833,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.Patient' does not have a primary key 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserCompanyRole_Role">
-          <End Role="Role" Type="Self.Role" Multiplicity="1" />
-          <End Role="UserCompanyRole" Type="Self.UserCompanyRole" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Role">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="UserCompanyRole">
-              <PropertyRef Name="RoleID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserCompanyRole_User">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="UserCompanyRole" Type="Self.UserCompanyRole" Multiplicity="*" />
@@ -886,7 +860,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.Patient' does not have a primary key 
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OTP" EntityType="Self.OTP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PasswordToken" EntityType="Self.PasswordToken" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Room" EntityType="Self.Room" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoomTest" EntityType="Self.RoomTest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Schedule" EntityType="Self.Schedule" Schema="dbo" store:Type="Tables" />
@@ -1045,10 +1018,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.Patient' does not have a primary key 
           <AssociationSet Name="FK_UserCompany_User" Association="Self.FK_UserCompany_User">
             <End Role="User" EntitySet="User" />
             <End Role="UserCompany" EntitySet="UserCompany" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserCompanyRole_Role" Association="Self.FK_UserCompanyRole_Role">
-            <End Role="Role" EntitySet="Role" />
-            <End Role="UserCompanyRole" EntitySet="UserCompanyRole" />
           </AssociationSet>
           <AssociationSet Name="FK_UserCompanyRole_User" Association="Self.FK_UserCompanyRole_User">
             <End Role="User" EntitySet="User" />
@@ -1318,21 +1287,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.Patient' does not have a primary key 
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
         </EntityType>
-        <EntityType Name="Role">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="RoleType" Type="Byte" Nullable="false" />
-          <Property Name="CompanyID" Type="Int32" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdateByUserID" Type="Int32" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="UserCompanyRoles" Relationship="Self.FK_UserCompanyRole_Role" FromRole="Role" ToRole="UserCompanyRole" />
-        </EntityType>
         <EntityType Name="Room">
           <Key>
             <PropertyRef Name="id" />
@@ -1539,7 +1493,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.Patient' does not have a primary key 
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Role" Relationship="Self.FK_UserCompanyRole_Role" FromRole="UserCompanyRole" ToRole="Role" />
           <NavigationProperty Name="User" Relationship="Self.FK_UserCompanyRole_User" FromRole="UserCompanyRole" ToRole="User" />
         </EntityType>
         <EntityType Name="UserType">
@@ -1872,18 +1825,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.Patient' does not have a primary key 
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserCompanyRole_Role">
-          <End Role="Role" Type="Self.Role" Multiplicity="1" />
-          <End Role="UserCompanyRole" Type="Self.UserCompanyRole" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Role">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="UserCompanyRole">
-              <PropertyRef Name="RoleID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Room_RoomTest">
           <End Role="RoomTest" Type="Self.RoomTest" Multiplicity="1" />
           <End Role="Room" Type="Self.Room" Multiplicity="*" />
@@ -2007,7 +1948,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.Patient' does not have a primary key 
           <EntitySet Name="Logs" EntityType="Self.Log" />
           <EntitySet Name="OTPs" EntityType="Self.OTP" />
           <EntitySet Name="PasswordTokens" EntityType="Self.PasswordToken" />
-          <EntitySet Name="Roles" EntityType="Self.Role" />
           <EntitySet Name="Rooms" EntityType="Self.Room" />
           <EntitySet Name="RoomTests" EntityType="Self.RoomTest" />
           <EntitySet Name="Schedules" EntityType="Self.Schedule" />
@@ -2116,10 +2056,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.Patient' does not have a primary key 
           <AssociationSet Name="FK_Room_Location" Association="Self.FK_Room_Location">
             <End Role="Location" EntitySet="Locations" />
             <End Role="Room" EntitySet="Rooms" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserCompanyRole_Role" Association="Self.FK_UserCompanyRole_Role">
-            <End Role="Role" EntitySet="Roles" />
-            <End Role="UserCompanyRole" EntitySet="UserCompanyRoles" />
           </AssociationSet>
           <AssociationSet Name="FK_Room_RoomTest" Association="Self.FK_Room_RoomTest">
             <End Role="RoomTest" EntitySet="RoomTests" />
@@ -2394,21 +2330,6 @@ warning 6002: The table/view 'MIDASGBX.dbo.Patient' does not have a primary key 
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="TokenHash" ColumnName="TokenHash" />
                 <ScalarProperty Name="IsTokenUsed" ColumnName="IsTokenUsed" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Roles">
-            <EntityTypeMapping TypeName="MIDASGBXModel.Role">
-              <MappingFragment StoreEntitySet="Role">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="RoleType" ColumnName="RoleType" />
-                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
