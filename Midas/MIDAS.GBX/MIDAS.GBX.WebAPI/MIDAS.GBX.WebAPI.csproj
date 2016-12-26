@@ -253,19 +253,18 @@
     <Compile Include="Controllers\CompanySpecialtyDetailsController.cs" />
     <Compile Include="Controllers\DoctorController.cs" />
     <Compile Include="Controllers\DoctorSpecialityController.cs" />
+    <Compile Include="Controllers\DoctorLocationScheduleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\LocationSpeclityController.cs" />
-    <Compile Include="Controllers\LogController.cs" />
-    <Compile Include="Controllers\MedicalProviderController.cs" />
     <Compile Include="Controllers\OTPController.cs" />
     <Compile Include="Controllers\PasswordTokenController.cs" />
-    <Compile Include="Controllers\Room\LocationRoomController.cs" />
     <Compile Include="Controllers\Room\RoomController.cs" />
     <Compile Include="Controllers\Room\RoomTestController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Controllers\SpecialtyController.cs" />
     <Compile Include="Controllers\SpecialtyDetailsController.cs" />
+    <Compile Include="Controllers\UserCompanyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="ErrorHelper\ApiBusinessException.cs" />
@@ -280,6 +279,7 @@
     </Compile>
     <Compile Include="Helper\JSONHelper.cs" />
     <Compile Include="Helper\ServiceStatus.cs" />
+    <Compile Include="MidasAuthorize.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -358,6 +358,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\DoctorSpecility\" />
     <Folder Include="Views\LocationRoom\" />
     <Folder Include="Views\LocationSpeclity\" />
     <Folder Include="Views\OTP\" />
@@ -365,6 +366,7 @@
     <Folder Include="Views\RoomTest\" />
     <Folder Include="Views\Room\" />
     <Folder Include="Views\Schedule\" />
+    <Folder Include="Views\UserCompany\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

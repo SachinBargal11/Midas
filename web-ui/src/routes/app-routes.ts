@@ -8,8 +8,8 @@ import { UsersRoutes } from './user-routes';
 import { ProvidersRoutes } from './provider-routes';
 import { MedicalFacilitiesRoutes } from './medical-facility-routes';
 import { DoctorsRoutes } from './doctors-routes';
-import { SpecialityRoutes } from './speciality-routes';
-import { MedicalProviderRoutes } from './medical-provider';
+import { MedicalProviderRoutes } from './medical-provider-routes';
+import { AccountSetupRoutes } from './account-setup-routes';
 import { ValidateActiveSession } from './guards/validate-active-session';
 import { ValidateInActiveSession } from './guards/validate-inactive-session';
 import { ChangePasswordComponent } from '../components/pages/change-password';
@@ -18,7 +18,6 @@ import { ResetPasswordComponent } from '../components/pages/reset-password';
 import { RegisterCompanyComponent } from '../components/pages/register-company';
 import { AccountActivationComponent } from '../components/pages/account-activation';
 import { SecurityCheckComponent } from '../components/pages/security-check';
-import { SpecialityDetailsRoutes } from './speciality-details-routes';
 
 export const appRoutes: Routes = [
     {
@@ -98,11 +97,10 @@ export const appRoutes: Routes = [
     ...PatientManagerRoutes,
     ...DoctorsRoutes,
     ...MedicalProviderRoutes,
+    ...AccountSetupRoutes,
     ...MedicalFacilitiesRoutes,
     ...ProvidersRoutes,
     ...UsersRoutes,
-    ...PatientsShellRoutes,
-    ...SpecialityRoutes,
-    ...SpecialityDetailsRoutes
+    ...PatientsShellRoutes
 ];
 export const APP_ROUTER_PROVIDER = RouterModule.forRoot(appRoutes);

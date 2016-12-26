@@ -14,16 +14,12 @@ namespace MIDAS.GBX.DataRepository.Model
     
     public partial class Room
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Room()
-        {
-            this.LocationRooms = new HashSet<LocationRoom>();
-        }
-    
         public int id { get; set; }
         public string Name { get; set; }
         public string ContactPersonName { get; set; }
         public string Phone { get; set; }
+        public Nullable<int> ScheduleID { get; set; }
+        public int LocationID { get; set; }
         public int RoomTestID { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
@@ -31,8 +27,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LocationRoom> LocationRooms { get; set; }
+        public virtual Location Location { get; set; }
         public virtual RoomTest RoomTest { get; set; }
+        public virtual Schedule Schedule { get; set; }
     }
 }

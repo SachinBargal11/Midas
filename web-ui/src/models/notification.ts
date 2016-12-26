@@ -9,7 +9,8 @@ const NotificationRecord = Record({
     title: '',
     createdAt: Moment(),
     type: '',
-    isRead: false
+    isRead: false,
+    messages: ['']
 });
 
 export class Notification extends NotificationRecord {
@@ -18,6 +19,7 @@ export class Notification extends NotificationRecord {
     createdAt: Date;
     type: string;
     isRead: boolean;
+    messages: string[];
 
     constructor(props) {
         super(props);

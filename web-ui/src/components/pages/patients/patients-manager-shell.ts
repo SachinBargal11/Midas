@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {PatientsStore} from '../../../stores/patients-store';
-import {Patient} from '../../../models/patient';
 
 @Component({
     selector: 'patients-manager-shell',

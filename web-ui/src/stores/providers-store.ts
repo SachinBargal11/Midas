@@ -81,8 +81,13 @@ export class ProvidersStore {
 
     updateProvider(provider: Provider): Observable<Provider> {
         let promise = new Promise((resolve, reject) => {
-            this._providersService.updateProvider(provider).subscribe((currentProvider: Provider) => {
-                this._providers.next(this._providers.getValue().push(currentProvider));
+            this._providersService.updateProvider(provider).subscribe((updatedProvider: Provider) => {
+                let providerDetails: List<Provider> = this._providers.getValue();
+                let index = providerDetails.findIndex((currentProvider: Provider) => currentProvider.id === updatedProvider.id);
+                providerDetails = providerDetails.update(index, function () {
+                    return updatedProvider;
+                });
+                this._providers.next(providerDetails);
                 resolve(provider);
             }, error => {
                 reject(error);

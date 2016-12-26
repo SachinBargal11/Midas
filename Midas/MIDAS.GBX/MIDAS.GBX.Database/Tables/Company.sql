@@ -1,4 +1,5 @@
-﻿CREATE TABLE [dbo].[Company](
+﻿
+CREATE TABLE [dbo].[Company](
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [nvarchar](50) NOT NULL,
 	[Status] [tinyint] NOT NULL,
@@ -7,7 +8,7 @@
 	[TaxID] [nvarchar](10) NOT NULL,
 	[AddressId] [int] NOT NULL,
 	[ContactInfoID] [int] NOT NULL,
-	[IsDeleted] [bit] NULL,
+	[IsDeleted] [bit] NULL CONSTRAINT [DF_Company_IsDeleted]  DEFAULT ((0)),
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NOT NULL,
 	[UpdateByUserID] [int] NULL,

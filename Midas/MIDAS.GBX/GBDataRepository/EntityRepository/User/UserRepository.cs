@@ -159,9 +159,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 return new BO.ErrorObject { ErrorMessage = "User object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            if (addUserBO.role == null)
+            if (userBO.ID == 0)
             {
-                return new BO.ErrorObject { ErrorMessage = "Role object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                if (addUserBO.role == null)
+                {
+                    return new BO.ErrorObject { ErrorMessage = "Role object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
             }
 
             User userDB = new User();
@@ -231,32 +234,23 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     invitationDB.Company = company;
                 }
                 else
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Speclity details.", ErrorLevel = ErrorLevel.Error };
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid company details.", ErrorLevel = ErrorLevel.Error };
             }
             #endregion
 
             #region Role
-            roleDB.Name = roleBO.Name;
-            roleDB.RoleType = System.Convert.ToByte(roleBO.RoleType);
-            if (roleBO.IsDeleted.HasValue)
-                roleDB.IsDeleted = roleBO.IsDeleted.Value;
+            if (roleBO != null)
+            {
+                roleDB.Name = roleBO.Name;
+                roleDB.RoleType = System.Convert.ToByte(roleBO.RoleType);
+                if (roleBO.IsDeleted.HasValue)
+                    roleDB.IsDeleted = roleBO.IsDeleted.Value;
+            }
             #endregion
 
             switch (userBO.UserType)
             {
-                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Admin:
-                    break;
-                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Owner:
-                    break;
-                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Doctor:
-                    break;
-                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Patient:
-                    break;
-                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Attorney:
-                    break;
-                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Adjuster:
-                    break;
-                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Accounts:
+                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Staff:
                     break;
                 default:
                     break;
@@ -481,7 +475,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     BO.OTP boOTP = Convert<BO.OTP, OTP>(otpDB);
                     using (UserCompanyRepository sr = new UserCompanyRepository(_context))
                     {
-                        boOTP.company = ((BO.UserCompany)sr.Get(acc_.ID)).Company;
+                        BO.UserCompany usrComp = new BO.UserCompany();
+                        usrComp.User = new BO.User();
+                        usrComp.User.ID = acc_.ID;
+                        boOTP.usercompanies = ((List<BO.UserCompany>)sr.Get(usrComp)).ToList();
+                        boOTP.company = boOTP.usercompanies[0].Company;
                     }
                     boOTP.User = acc_;
                     return boOTP;
@@ -495,7 +493,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.OTP boOTP_ = new BusinessObjects.OTP();
             using (UserCompanyRepository sr = new UserCompanyRepository(_context))
             {
-                boOTP_.company = ((BO.UserCompany)sr.Get(acc_.ID)).Company;
+                BO.UserCompany usrComp = new BO.UserCompany();
+                usrComp.User = new BO.User();
+                usrComp.User.ID = acc_.ID;
+                boOTP_.usercompanies = ((List<BO.UserCompany>)sr.Get(usrComp)).ToList();
+                boOTP_.company = boOTP_.usercompanies[0].Company;
             }
             boOTP_.User = acc_;
             return boOTP_;
@@ -516,14 +518,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     byte UserTpe = System.Convert.ToByte(userBO.UserType);
                     switch (userBO.UserType)
                     {
-                        case BO.GBEnums.UserType.Attorney:
-                        case BO.GBEnums.UserType.Adjuster:
-                        case BO.GBEnums.UserType.Accounts:
                         case BO.GBEnums.UserType.Patient:
-                        case BO.GBEnums.UserType.Admin:
-                        case BO.GBEnums.UserType.Owner:
-                        case BO.GBEnums.UserType.Doctor:
-
+                        case BO.GBEnums.UserType.Staff:
                             var data = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.UserType == UserTpe && p.UserCompanies.Any(d => d.CompanyID == CompID)).ToList<User>();
                             if (data == null || data.Count == 0)
                                 return new BO.ErrorObject { ErrorMessage = "No records found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -550,13 +546,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 switch (userBO.UserType)
                 {
-                    case BO.GBEnums.UserType.Attorney:
-                    case BO.GBEnums.UserType.Adjuster:
-                    case BO.GBEnums.UserType.Accounts:
                     case BO.GBEnums.UserType.Patient:
-                    case BO.GBEnums.UserType.Admin:
-                    case BO.GBEnums.UserType.Owner:
-                    case BO.GBEnums.UserType.Doctor:
+                    case BO.GBEnums.UserType.Staff:
                         byte UserTpe = System.Convert.ToByte(userBO.UserType);
                         var acc_ = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.UserType == UserTpe).ToList<User>();
                         if (acc_ == null || acc_.Count == 0)

@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { PatientsListComponent } from '../components/pages/patients/patients-list';
-import { PatientDetailsComponent } from '../components/pages/patients/patient-details';
 import { AddPatientComponent } from '../components/pages/patients/add-patient';
 import { PatientsShellComponent } from '../components/pages/patients/patients-shell';
 import { PatientBasicComponent } from '../components/pages/patients/patient-basic';
@@ -9,7 +8,6 @@ import { InsurancesComponent } from '../components/pages/patients/insurances';
 import { BalancesComponent } from '../components/pages/patients/balances';
 import { DocumentsComponent } from '../components/pages/patients/documents';
 import { AppointmentsComponent } from '../components/pages/patients/appointments';
-import { PatientProfileComponent } from '../components/pages/patients/profile-patient';
 import { ValidateActiveSession } from './guards/validate-active-session';
 
 export const PatientsShellRoutes: Routes = [
@@ -38,7 +36,8 @@ export const PatientsShellRoutes: Routes = [
         children: [
             {
                 path: '',
-                redirectTo: 'basic'
+                redirectTo: 'basic',
+                pathMatch: 'full'
             },
             {
                 path: 'basic',

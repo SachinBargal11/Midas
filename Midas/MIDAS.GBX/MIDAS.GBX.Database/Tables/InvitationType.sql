@@ -13,3 +13,6 @@
 ) ON [PRIMARY]
 
 GO
+
+ALTER TABLE [dbo].[InvitationType] ADD  CONSTRAINT [DF_InvitationType_IsDeleted]  DEFAULT ((0)) FOR [IsDeleted]
+GO

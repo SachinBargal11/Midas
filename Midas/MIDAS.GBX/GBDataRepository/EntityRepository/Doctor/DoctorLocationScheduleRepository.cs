@@ -43,14 +43,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 doctorlocationscheduleBO.UpdateByUserID = doctorlocationschedule.UpdateByUserID.Value;
 
             BO.Doctor boDoctor = new BO.Doctor();
-            using (UserRepository cmp = new UserRepository(_context))
+            using (DoctorRepository cmp = new DoctorRepository(_context))
             {
-                boDoctor = cmp.Convert<BO.Doctor, Doctor>(doctorlocationschedule.Doctor);
+                boDoctor = cmp.ObjectConvert<BO.Doctor, Doctor>(doctorlocationschedule.Doctor);
                 doctorlocationscheduleBO.doctor = boDoctor;
             }
 
             BO.Location boLocation = new BO.Location();
-            using (ScheduleRepository cmp = new ScheduleRepository(_context))
+            using (LocationRepository cmp = new LocationRepository(_context))
             {
                 boLocation = cmp.Convert<BO.Location, Location>(doctorlocationschedule.Location);
                 doctorlocationscheduleBO.location = boLocation;
@@ -84,7 +84,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             DoctorLocationSchedule doctorlocationscheduleDB = new DoctorLocationSchedule();
 
-            #region LocationRoom
+            #region LocationSchedule
             doctorlocationscheduleDB.id = doctorlocationscheduleBO.ID;
             doctorlocationscheduleDB.IsDeleted = doctorlocationscheduleBO.IsDeleted.HasValue ? doctorlocationscheduleBO.IsDeleted : false;
             #endregion
@@ -103,21 +103,40 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
             #endregion
 
-            //Default schedule
-
-            Schedule defaultschedule = _context.Schedules.Where(p => p.IsDefault == true).FirstOrDefault<Schedule>();
-            if (defaultschedule != null)
+            if (doctorlocationscheduleBO.schedule != null)
             {
-                doctorlocationscheduleDB.Schedule = defaultschedule;
+                #region Schedule
+                if (doctorlocationscheduleBO.schedule != null)
+                    if (doctorlocationscheduleBO.schedule.ID > 0)
+                    {
+                        Schedule schedule = _context.Schedules.Where(p => p.id == doctorlocationscheduleBO.schedule.ID).FirstOrDefault<Schedule>();
+                        if (schedule != null)
+                        {
+                            doctorlocationscheduleDB.Schedule = schedule;
+                        }
+                        else
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Schedule.", ErrorLevel = ErrorLevel.Error };
+                    }
+                #endregion
             }
             else
-                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please set default schedule in database.", ErrorLevel = ErrorLevel.Error };
+            {
+                //Default schedule
+
+                Schedule defaultschedule = _context.Schedules.Where(p => p.IsDefault == true).FirstOrDefault<Schedule>();
+                if (defaultschedule != null)
+                {
+                    doctorlocationscheduleDB.Schedule = defaultschedule;
+                }
+                else
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please set default schedule in database.", ErrorLevel = ErrorLevel.Error };
+            }
 
             #region Doctor
             if (doctorlocationscheduleBO.doctor != null)
                 if (doctorlocationscheduleBO.doctor.ID > 0)
                 {
-                    Doctor doctor = _context.Doctors.Where(p => p.id == doctorlocationscheduleBO.location.ID).FirstOrDefault<Doctor>();
+                    Doctor doctor = _context.Doctors.Where(p => p.id == doctorlocationscheduleBO.doctor.ID && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<Doctor>();
                     if (doctor != null)
                     {
                         doctorlocationscheduleDB.Doctor = doctor;
@@ -142,6 +161,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     doctorlocationschedule.UpdateDate = doctorlocationscheduleBO.UpdateDate;
                     doctorlocationschedule.UpdateByUserID = doctorlocationscheduleBO.UpdateByUserID;
                     #endregion
+
                     _context.Entry(doctorlocationschedule).State = System.Data.Entity.EntityState.Modified;
                 }
                 else
@@ -179,7 +199,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID
         public override object Get(int id)
         {
-            BO.DoctorLocationSchedule acc_ = Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(_context.DoctorLocationSchedules.Where(p => p.id == id && p.IsDeleted == false).FirstOrDefault<DoctorLocationSchedule>());
+            BO.DoctorLocationSchedule acc_ = Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(_context.DoctorLocationSchedules.Include("Doctor").Include("Location").Include("Schedule").Where(p => p.id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<DoctorLocationSchedule>());
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this DoctorLocationSchedule.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -193,7 +213,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             List<BO.DoctorLocationSchedule> lstDoctorLocationSchedule = new List<BO.DoctorLocationSchedule>();
             BO.DoctorLocationSchedule doctorlocationscheduleBO = (BO.DoctorLocationSchedule)(object)entity;
-            var acc_ = _context.DoctorLocationSchedules.Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<DoctorLocationSchedule>();
+            var acc_ = _context.DoctorLocationSchedules.Include("Doctor").Include("Location").Include("Schedule").Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<DoctorLocationSchedule>();
             if (acc_ == null || acc_.Count < 1)
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };

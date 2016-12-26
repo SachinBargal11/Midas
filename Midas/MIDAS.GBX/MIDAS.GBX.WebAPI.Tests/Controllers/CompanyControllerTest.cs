@@ -24,7 +24,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
            userBO.FirstName = "MILIND";
            userBO.LastName = "Kate";
            userBO.Gender = GBEnums.Gender.Male;
-           userBO.UserType = GBEnums.UserType.Admin;
+           userBO.UserType = GBEnums.UserType.Staff;
            userBO.Status = GBEnums.UserStatus.Active;
 
            userBO.ContactInfo = new ContactInfo();
@@ -306,7 +306,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
            invitation.User.FirstName = "MILIND";
            invitation.User.LastName = "Kate";
            invitation.User.Gender = GBEnums.Gender.Male;
-           invitation.User.UserType = GBEnums.UserType.Admin;
+           invitation.User.UserType = GBEnums.UserType.Staff;
            invitation.User.Status = GBEnums.UserStatus.Active;
 
            invitation.User.ContactInfo = new ContactInfo();

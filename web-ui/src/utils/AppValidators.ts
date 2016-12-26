@@ -49,14 +49,14 @@ export class AppValidators {
     }
 
     static companyNameTaken = (company: any[]) => {
-        function getFields(input, field) {
-            let output = [];
-            for (let i = 0; i < input.length; ++i)
-                output.push(input[i][field]);
-            return output;
-        }
+        // function getFields(input, field) {
+        //     let output = [];
+        //     for (let i = 0; i < input.length; ++i)
+        //         output.push(input[i][field]);
+        //     return output;
+        // }
         return (control: FormControl) => {
-            let companyNames = getFields(company, 'companyName');
+            // let companyNames = getFields(company, 'companyName');
 
             for (let i = 0; i < company.length; i += 1) {
                 let val = company[i].toString();

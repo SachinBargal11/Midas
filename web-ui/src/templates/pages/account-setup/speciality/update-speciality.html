@@ -1,0 +1,63 @@
+<div class="page-center">
+    <div class="page-center-in">
+        <div class="container-fluid">
+            <h5 class="with-border">Edit Speciality</h5>
+            <form [formGroup]="specialityform" (ngSubmit)="updateSpeciality()">
+                <section class="card">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label class="form-label"> Speciality Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group" [class.error]="specialityformControls.name.touched && !specialityformControls.name.valid">
+                                    <input formControlName="name" [ngModel]="speciality.name" type="text" class="form-control" placeholder="" [class.error]="!specialityformControls.name.valid">
+                                    <div class='error-list' *ngIf="specialityformControls.name.touched && !specialityformControls.name.valid">
+                                        <ul>
+                                            <li *ngIf="specialityformControls.name.hasError('required')">Speciality name is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <label class="form-label"> Speciality Code
+                                            <span class="color-red">*</span>
+                                        </label>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group" [class.error]="specialityformControls.specialityCode.touched && !specialityformControls.specialityCode.valid">
+                                    <input formControlName="specialityCode" [ngModel]="speciality.specialityCode" type="text" class="form-control" placeholder="" [class.error]="!specialityformControls.specialityCode.valid">
+                                    <div class='error-list' *ngIf="specialityformControls.specialityCode.touched && !specialityformControls.specialityCode.valid">
+                                        <ul>
+                                            <li *ngIf="specialityformControls.specialityCode.hasError('required')">Speciality code is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row"> 
+                            <div class="col-lg-4">
+                                <div class="form-group" [class.error]="specialityformControls.isunitApply.touched && !specialityformControls.isunitApply.valid">
+                                <input type="checkbox" formControlName="isunitApply" [ngModel]="speciality.isunitApply" name="isunitApply" [class.error]="!specialityformControls.isunitApply.valid" value="isunitApply"> IsUnitApply <br>
+                                <div class='error-list' *ngIf="specialityformControls.isunitApply.touched && !specialityformControls.isunitApply.valid">
+                                        <ul>
+                                            <li *ngIf="specialityformControls.isunitApply.hasError('required')">IsUnitApply is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </section>
+                <button [disabled]="!specialityform.valid || isSaveSpecialityProgress" type="submit" class="btn btn-success sign-up">Update
+                    <loader [visible]="isSaveSpecialityProgress"></loader>
+                </button>
+                <a [routerLink]="['/account-setup/specialities']" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>

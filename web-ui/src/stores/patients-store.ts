@@ -84,11 +84,14 @@ export class PatientsStore {
     }
 
     updatePatient(patient: Patient): Observable<Patient> {
-        let patients = this._patients.getValue();
-        let index = patients.findIndex((currentPatient: Patient) => currentPatient.id === patient.id);
         let promise = new Promise((resolve, reject) => {
-            this._patientsService.updatePatient(patient).subscribe((patient: Patient) => {
-                this._patients.next(patients.set(index, patient));
+            this._patientsService.updatePatient(patient).subscribe((updatedPatient: Patient) => {
+                let patientDetails: List<Patient> = this._patients.getValue();
+                let index = patientDetails.findIndex((currentPatient: Patient) => currentPatient.id === updatedPatient.id);
+                patientDetails = patientDetails.update(index, function () {
+                    return updatedPatient;
+                });
+                this._patients.next(patientDetails);
                 resolve(patient);
             }, error => {
                 reject(error);

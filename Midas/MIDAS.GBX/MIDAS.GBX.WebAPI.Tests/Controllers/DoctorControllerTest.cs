@@ -24,18 +24,18 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             doctor.NPI = "";
             doctor.TaxType = GBEnums.TaxType.Tax1;
             doctor.Title = "abcd";
-            doctor.User = new User();
+            doctor.user = new User();
 
-            doctor.User.UserName = "milind.k@codearray.tech";
-            doctor.User.MiddleName = "Micheal";
-            doctor.User.FirstName = "MILIND";
-            doctor.User.LastName = "Kate";
-            doctor.User.Gender = GBEnums.Gender.Male;
-            doctor.User.UserType = GBEnums.UserType.Admin;
-            doctor.User.Status = GBEnums.UserStatus.Active;
+            doctor.user.UserName = "milind.k@codearray.tech";
+            doctor.user.MiddleName = "Micheal";
+            doctor.user.FirstName = "MILIND";
+            doctor.user.LastName = "Kate";
+            doctor.user.Gender = GBEnums.Gender.Male;
+            doctor.user.UserType = GBEnums.UserType.Staff;
+            doctor.user.Status = GBEnums.UserStatus.Active;
 
-            doctor.User.ContactInfo = new ContactInfo();
-            doctor.User.ContactInfo.EmailAddress = "milind.k@codearray.tech";
+            doctor.user.ContactInfo = new ContactInfo();
+            doctor.user.ContactInfo.EmailAddress = "milind.k@codearray.tech";
 
             controller.Post(doctor);
         }
@@ -51,18 +51,18 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             doctor.NPI = "";
             doctor.TaxType = GBEnums.TaxType.Tax1;
             doctor.Title = "abcd";
-            doctor.User = new User();
+            doctor.user = new User();
 
-            doctor.User.UserName = "milind.k@codearray.tech";
-            doctor.User.MiddleName = "Micheal";
-            doctor.User.FirstName = "MILIND";
-            doctor.User.LastName = "Kate";
-            doctor.User.Gender = GBEnums.Gender.Male;
-            doctor.User.UserType = GBEnums.UserType.Admin;
-            doctor.User.Status = GBEnums.UserStatus.Active;
+            doctor.user.UserName = "milind.k@codearray.tech";
+            doctor.user.MiddleName = "Micheal";
+            doctor.user.FirstName = "MILIND";
+            doctor.user.LastName = "Kate";
+            doctor.user.Gender = GBEnums.Gender.Male;
+            doctor.user.UserType = GBEnums.UserType.Staff;
+            doctor.user.Status = GBEnums.UserStatus.Active;
 
-            doctor.User.ContactInfo = new ContactInfo();
-            doctor.User.ContactInfo.EmailAddress = "milind.k@codearray.tech";
+            doctor.user.ContactInfo = new ContactInfo();
+            doctor.user.ContactInfo.EmailAddress = "milind.k@codearray.tech";
 
             controller.Put(doctor);
         }
@@ -79,18 +79,18 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             doctor.NPI = "";
             doctor.TaxType = GBEnums.TaxType.Tax1;
             doctor.Title = "abcd";
-            doctor.User = new User();
+            doctor.user = new User();
 
-            doctor.User.UserName = "milind.k@codearray.tech";
-            doctor.User.MiddleName = "Micheal";
-            doctor.User.FirstName = "MILIND";
-            doctor.User.LastName = "Kate";
-            doctor.User.Gender = GBEnums.Gender.Male;
-            doctor.User.UserType = GBEnums.UserType.Admin;
-            doctor.User.Status = GBEnums.UserStatus.Active;
+            doctor.user.UserName = "milind.k@codearray.tech";
+            doctor.user.MiddleName = "Micheal";
+            doctor.user.FirstName = "MILIND";
+            doctor.user.LastName = "Kate";
+            doctor.user.Gender = GBEnums.Gender.Male;
+            doctor.user.UserType = GBEnums.UserType.Staff;
+            doctor.user.Status = GBEnums.UserStatus.Active;
 
-            doctor.User.ContactInfo = new ContactInfo();
-            doctor.User.ContactInfo.EmailAddress = "milind.k@codearray.tech";
+            doctor.user.ContactInfo = new ContactInfo();
+            doctor.user.ContactInfo.EmailAddress = "milind.k@codearray.tech";
 
             controller.Delete(doctor);
         }
@@ -106,18 +106,18 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             doctor.NPI = "";
             doctor.TaxType = GBEnums.TaxType.Tax1;
             doctor.Title = "abcd";
-            doctor.User = new User();
+            doctor.user = new User();
 
-            doctor.User.UserName = "milind.k@codearray.tech";
-            doctor.User.MiddleName = "Micheal";
-            doctor.User.FirstName = "MILIND";
-            doctor.User.LastName = "Kate";
-            doctor.User.Gender = GBEnums.Gender.Male;
-            doctor.User.UserType = GBEnums.UserType.Admin;
-            doctor.User.Status = GBEnums.UserStatus.Active;
+            doctor.user.UserName = "milind.k@codearray.tech";
+            doctor.user.MiddleName = "Micheal";
+            doctor.user.FirstName = "MILIND";
+            doctor.user.LastName = "Kate";
+            doctor.user.Gender = GBEnums.Gender.Male;
+            doctor.user.UserType = GBEnums.UserType.Staff;
+            doctor.user.Status = GBEnums.UserStatus.Active;
 
-            doctor.User.ContactInfo = new ContactInfo();
-            doctor.User.ContactInfo.EmailAddress = "milind.k@codearray.tech";
+            doctor.user.ContactInfo = new ContactInfo();
+            doctor.user.ContactInfo.EmailAddress = "milind.k@codearray.tech";
 
             controller.IsUnique(doctor);
         }
