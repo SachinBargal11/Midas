@@ -1,6 +1,6 @@
 import * as moment from 'moment';
-import {Doctor} from '../../models/doctor';
-import {DoctorDetail} from '../../models/doctor-details';
+import { Doctor } from '../../models/doctor';
+import { DoctorDetail } from '../../models/doctor-details';
 import { UserAdapter } from './user-adapter';
 import _ from 'underscore';
 
@@ -33,7 +33,7 @@ export class DoctorAdapter {
                 wcbRatingCode: doctorData.wcbratingCode,
                 npi: doctorData.npi,
                 taxType: doctorData.taxType,
-                title: doctorData.title,               
+                title: doctorData.title,
                 user: UserAdapter.parseResponse(doctorData.user),
                 doctorSpecialities: doctorData.user.doctorSpecialities,
                 isDeleted: doctorData.isDeleted

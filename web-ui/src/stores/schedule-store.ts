@@ -27,9 +27,9 @@ export class ScheduleStore {
         return this._schedules.asObservable();
     }
 
-    getSchedules(locationId: number): Observable<Schedule[]> {
+    getSchedules(): Observable<Schedule[]> {
         let promise = new Promise((resolve, reject) => {
-            this._scheduleService.getSchedules(locationId).subscribe((schedules: Schedule[]) => {
+            this._scheduleService.getSchedules().subscribe((schedules: Schedule[]) => {
                 this._schedules.next(List(schedules));
                 resolve(schedules);
             }, error => {
@@ -72,9 +72,9 @@ export class ScheduleStore {
         });
         return <Observable<Schedule>>Observable.from(promise);
     }
-    updateSchedule(scheduleDetail: Schedule): Observable<Schedule> {
+    updateSchedule(scheduleDetail: Schedule, locationDetails: LocationDetails): Observable<Schedule> {
         let promise = new Promise((resolve, reject) => {
-            this._scheduleService.updateSchedule(scheduleDetail).subscribe((updatedScheduleDetail: Schedule) => {
+            this._scheduleService.updateSchedule(scheduleDetail, locationDetails).subscribe((updatedScheduleDetail: Schedule) => {
                 let scheduleDetails: List<Schedule> = this._schedules.getValue();
                 let index = scheduleDetails.findIndex((currentSchedule: Schedule) => currentSchedule.id === updatedScheduleDetail.id);
                 scheduleDetails = scheduleDetails.update(index, function () {

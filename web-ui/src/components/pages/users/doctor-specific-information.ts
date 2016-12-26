@@ -1,6 +1,7 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 import { AppValidators } from '../../../utils/AppValidators';
 import { SessionStore } from '../../../stores/session-store';
 import { NotificationsStore } from '../../../stores/notifications-store';
@@ -11,6 +12,8 @@ import { User } from '../../../models/user';
 import { Notification } from '../../../models/notification';
 import moment from 'moment';
 import { Speciality } from '../../../models/speciality';
+import _ from 'underscore';
+import { SelectItem } from 'primeng/primeng';
 
 @Component({
     selector: 'access',
@@ -30,8 +33,14 @@ export class DoctorSpecificInformationComponent implements OnInit {
     isSaveDoctorProgress = false;
     doctor = new Doctor({});
     user = new User({});
-    userId:number;
-    specialities: Speciality[];
+    userId: number;
+    // specialities: SelectItem[];
+    specialities: Speciality[] = [];
+    specialitiesArr: SelectItem[];
+    selectedSpecialities: string[] = ['1', '2'];
+
+    cities: SelectItem[];
+    selectedCity: number[] = [1, 2, 3];
 
     constructor(
         private fb: FormBuilder,
@@ -42,13 +51,37 @@ export class DoctorSpecificInformationComponent implements OnInit {
         private _specialityStore: SpecialityStore,
         private _route: ActivatedRoute
     ) {
+        this.specialitiesArr = [];
+        this.cities = [];
+        this.cities.push({ label: 'New York', value: 1 });
+        this.cities.push({ label: 'Rome', value: 2 });
+        this.cities.push({ label: 'London', value: 3 });
+        this.cities.push({ label: 'Istanbul', value: 4 });
+        this.cities.push({ label: 'Paris', value: 5 });
+
         this._route.parent.params.subscribe((routeParams: any) => {
             this.userId = parseInt(routeParams.userId);
-            let result = this._doctorsStore.fetchDoctorById(this.userId);
-            result.subscribe(
-                (doctorDetail: Doctor) => {
+
+            let fetchDoctorDetails = this._doctorsStore.fetchDoctorById(this.userId);
+            let fetchSpecialities = this._specialityStore.getSpecialities();
+
+            Observable.forkJoin([fetchSpecialities, fetchDoctorDetails])
+                .subscribe((results) => {
+                    let specialities: Speciality[] = results[0];
+                    let doctorDetail: Doctor = results[1];
+
                     this.doctor = doctorDetail;
-                    this.user = doctorDetail.user;
+                    this.selectedSpecialities = _.map(doctorDetail.doctorSpecialities, (currentDoctorSpeciality: Speciality) => {
+                        return currentDoctorSpeciality.id.toString();
+                    });
+
+                    this.specialities = specialities;
+                    this.specialitiesArr = _.map(specialities, (currentSpeciality: Speciality) => {
+                        return {
+                            label: `${currentSpeciality.specialityCode} - ${currentSpeciality.name}`,
+                            value: currentSpeciality.id.toString()
+                        };
+                    });
                 },
                 (error) => {
                     this._router.navigate(['../../']);
@@ -56,6 +89,7 @@ export class DoctorSpecificInformationComponent implements OnInit {
                 () => {
                 });
         });
+
         this.doctorform = this.fb.group({
             licenseNumber: ['', Validators.required],
             wcbAuthorization: ['', Validators.required],
@@ -63,24 +97,24 @@ export class DoctorSpecificInformationComponent implements OnInit {
             npi: ['', Validators.required],
             taxType: ['', [Validators.required, AppValidators.selectedValueValidator]],
             title: ['', Validators.required],
-            speciality: ['']
+            speciality: [''],
+            speciality1: ['']
         });
 
         this.doctorformControls = this.doctorform.controls;
     }
 
     ngOnInit() {
-        this._specialityStore.getSpecialities()
-            .subscribe(specialities => { this.specialities = specialities; });
     }
 
     updateDoctor() {
+        debugger;
         let doctorFormValues = this.doctorform.value;
-           var doctorSpecialities = [];
-           let input = doctorFormValues.speciality;
-           for (var i=0; i < input.length ; ++i) {
-               doctorSpecialities.push({'id':parseInt(input[i])});
-           }
+        let doctorSpecialities = [];
+        let input = doctorFormValues.speciality;
+        for (let i = 0; i < input.length; ++i) {
+            doctorSpecialities.push({ 'id': parseInt(input[i]) });
+        }
         let doctorDetail = new Doctor({
             id: this.doctor.id,
             licenseNumber: doctorFormValues.licenseNumber,

@@ -41,9 +41,9 @@ export class ScheduleService {
         return <Observable<Schedule>>Observable.fromPromise(promise);
     }
 
-    getSchedules(locationId: number): Observable<Schedule[]> {
+    getSchedules(): Observable<Schedule[]> {
         let promise: Promise<Schedule[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/Schedule/GetAll', JSON.stringify({ location: { id: locationId } }), {
+            return this._http.post(this._url + '/Schedule/GetAll', null, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((schedulesData: Array<Object>) => {
@@ -64,8 +64,8 @@ export class ScheduleService {
             requestData.scheduleDetails = _.map(requestData.scheduleDetails, function (currentScheduleDetail: ScheduleDetail) {
                 let currentScheduleDetailData: any = currentScheduleDetail.toJS();
                 return _.extend(currentScheduleDetailData, {
-                    slotStart: currentScheduleDetailData.slotStart.format('HH:mm:ss'),
-                    slotEnd: currentScheduleDetailData.slotEnd.format('HH:mm:ss'),
+                    slotStart: currentScheduleDetailData.slotStart ? currentScheduleDetailData.slotStart.format('HH:mm:ss') : null,
+                    slotEnd: currentScheduleDetailData.slotEnd ? currentScheduleDetailData.slotEnd.format('HH:mm:ss') : null,
                 });
             });
             return this._http.post(this._url + '/Schedule/Add', JSON.stringify(requestData), {
@@ -85,11 +85,16 @@ export class ScheduleService {
                 return this._locationsService.updateScheduleForLocation(locationDetails, schedule);
             });
     }
-    updateSchedule(scheduleDetail: Schedule): Observable<any> {
+    updateSchedule(scheduleDetail: Schedule, locationDetails: LocationDetails): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let requestData: any = scheduleDetail.toJS();
-            requestData.contactersonName = requestData.contactPersonName;
-            requestData = _.omit(requestData, 'contactPersonName');
+            requestData.scheduleDetails = _.map(requestData.scheduleDetails, function (currentScheduleDetail: ScheduleDetail) {
+                let currentScheduleDetailData: any = currentScheduleDetail.toJS();
+                return _.extend(currentScheduleDetailData, {
+                    slotStart: currentScheduleDetailData.slotStart ? currentScheduleDetailData.slotStart.format('HH:mm:ss') : null,
+                    slotEnd: currentScheduleDetailData.slotEnd ? currentScheduleDetailData.slotEnd.format('HH:mm:ss') : null,
+                });
+            });
             return this._http.post(this._url + '/Schedule/Add', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json())
@@ -101,7 +106,10 @@ export class ScheduleService {
                     reject(error);
                 });
         });
-        return <Observable<any>>Observable.fromPromise(promise);
+        return <Observable<any>>Observable.fromPromise(promise)
+            .flatMap((schedule: Schedule) => {
+                return this._locationsService.updateScheduleForLocation(locationDetails, schedule);
+            });
     }
     deleteSchedule(schedule: Schedule): Observable<Schedule> {
         let promise = new Promise((resolve, reject) => {

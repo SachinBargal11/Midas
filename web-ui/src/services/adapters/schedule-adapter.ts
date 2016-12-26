@@ -10,7 +10,8 @@ export class ScheduleAdapter {
         if (scheduleData) {
             if (scheduleData.scheduleDetails) {
                 for (let scheduleDetail of scheduleData.scheduleDetails) {
-                    scheduleDetails.push(ScheduleAdapter.parseScheduleDetails(scheduleDetail).toJS());
+                    scheduleDetails.push(ScheduleAdapter.parseScheduleDetails(scheduleDetail));
+                    // scheduleDetails.push(ScheduleAdapter.parseScheduleDetails(scheduleDetail).toJS());
                 }
             }
             schedule = new Schedule({
