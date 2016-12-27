@@ -109,7 +109,6 @@ export class DoctorSpecificInformationComponent implements OnInit {
     }
 
     updateDoctor() {
-        debugger;
         let doctorFormValues = this.doctorform.value;
         let doctorSpecialities = [];
         let input = doctorFormValues.speciality;

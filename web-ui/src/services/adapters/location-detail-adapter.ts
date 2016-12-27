@@ -8,7 +8,6 @@ import { LocationDetails } from '../../models/location-details';
 
 export class LocationDetailAdapter {
     static parseResponse(data: any): LocationDetails {
-
         let locationDetails = null;
         if (data) {
             locationDetails = new LocationDetails({

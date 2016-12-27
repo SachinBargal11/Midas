@@ -55,7 +55,7 @@ export class BasicComponent implements OnInit {
     ) {
         this._route.parent.params.subscribe((params: any) => {
             let locationId = parseInt(params.locationId);
-            let result = this._locationsStore.fetchLocationById(locationId);
+            let result = this._locationsStore.getLocationById(locationId);
             result.subscribe(
                 (locationDetails: LocationDetails) => {
                     this.locationDetails = locationDetails;

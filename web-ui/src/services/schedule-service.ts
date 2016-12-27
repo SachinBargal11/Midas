@@ -1,3 +1,4 @@
+import { LocationsStore } from '../stores/locations-store';
 import { LocationDetails } from '../models/location-details';
 import { SessionStore } from '../stores/session-store';
 import { Injectable } from '@angular/core';
@@ -10,7 +11,6 @@ import Environment from '../scripts/environment';
 import { Schedule } from '../models/schedule';
 import { ScheduleDetail } from '../models/schedule-detail';
 import { ScheduleAdapter } from './adapters/schedule-adapter';
-import { LocationsService } from './locations-service';
 
 @Injectable()
 export class ScheduleService {
@@ -20,7 +20,7 @@ export class ScheduleService {
 
     constructor(
         private _http: Http,
-        private _locationsService: LocationsService,
+        private _locationsStore: LocationsStore,
         private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
@@ -82,7 +82,7 @@ export class ScheduleService {
 
         return <Observable<any>>Observable.fromPromise(promise)
             .flatMap((schedule: Schedule) => {
-                return this._locationsService.updateScheduleForLocation(locationDetails, schedule);
+                return this._locationsStore.updateScheduleForLocation(locationDetails, schedule);
             });
     }
     updateSchedule(scheduleDetail: Schedule, locationDetails: LocationDetails): Observable<any> {
@@ -108,7 +108,7 @@ export class ScheduleService {
         });
         return <Observable<any>>Observable.fromPromise(promise)
             .flatMap((schedule: Schedule) => {
-                return this._locationsService.updateScheduleForLocation(locationDetails, schedule);
+                return this._locationsStore.updateScheduleForLocation(locationDetails, schedule);
             });
     }
     deleteSchedule(schedule: Schedule): Observable<Schedule> {

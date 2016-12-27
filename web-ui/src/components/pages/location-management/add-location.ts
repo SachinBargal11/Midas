@@ -49,14 +49,14 @@ export class AddLocationComponent implements OnInit {
     ) {
         this.locationJS = this.location.toJS();
         this.addlocationform = this.fb.group({
-                name: ['', Validators.required],
+                name: [''],
                 address: [''],
-                city: ['', Validators.required],
-                state: ['', Validators.required],
-                zipCode: ['', Validators.required],
-                officePhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                fax: ['', Validators.required],
-                locationType: ['', Validators.required]
+                city: [''],
+                state: [''],
+                zipCode: [''],
+                officePhone: [''],
+                fax: [''],
+                locationType: ['']
             });
 
         this.addlocationformControls = this.addlocationform.controls;
