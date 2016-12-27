@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { AppValidators } from '../../../utils/AppValidators';
 import { SessionStore } from '../../../stores/session-store';
 import { NotificationsStore } from '../../../stores/notifications-store';
@@ -143,8 +144,9 @@ export class DoctorSpecificInformationComponent implements OnInit {
                 this._router.navigate(['/medical-provider/users']);
             },
             (error) => {
+                let errString = 'Unable to update Doctor.';
                 let notification = new Notification({
-                    'title': 'Unable to update Doctor.',
+                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

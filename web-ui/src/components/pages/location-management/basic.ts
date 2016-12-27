@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { AppValidators } from '../../../utils/AppValidators';
 import { Company } from '../../../models/company';
 import { LocationsStore } from '../../../stores/locations-store';
@@ -127,11 +128,13 @@ export class BasicComponent implements OnInit {
                 this._router.navigate(['/medical-provider/locations']);
             },
             (error) => {
+                let errString = 'Unable to update location.';
                 let notification = new Notification({
-                    'title': 'Unable to update location.',
+                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
+                this.isSaveProgress = false;
                 this._notificationsStore.addNotification(notification);
             },
             () => {

@@ -3,6 +3,7 @@ import { Location } from '@angular/common';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
+import { ErrorMessageFormatter } from '../../utils/ErrorMessageFormatter';
 import { AuthenticationService } from '../../services/authentication-service';
 import { SessionStore } from '../../stores/session-store';
 import { AccountAdapter } from '../../services/adapters/account-adapter';
@@ -54,7 +55,8 @@ export class SecurityCheckComponent implements OnInit {
             },
             (error) => {
                 this.isSecurityCheckInProgress = false;
-                this._notificationsService.error('Oh No!', 'Unable to verify security code.');
+                let errString = 'Unable to verify security code.';
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
             },
             () => {
                 this.isSecurityCheckInProgress = false;
@@ -74,7 +76,8 @@ export class SecurityCheckComponent implements OnInit {
             },
             (error) => {
                 this.isRegenrateCodeInProgress = false;
-                this._notificationsService.error('Oh No!', 'Unable to regenerate security code.');
+                let errString = 'Unable to regenerate security code.';
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
             },
             () => {
                 this.isRegenrateCodeInProgress = false;

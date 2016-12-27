@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { MedicalFacility } from '../../../models/medical-facility';
 import { SessionStore } from '../../../stores/session-store';
 import { NotificationsStore } from '../../../stores/notifications-store';
@@ -87,8 +88,9 @@ export class UpdateMedicalFacilityComponent implements OnInit {
             },
             (error) => {
                 this.isSaveMedicalFacilityProgress = false;
+                let errString = 'Unable to update Medical facility.';
                 let notification = new Notification({
-                    'title': 'Unable to update Medical facility.',
+                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

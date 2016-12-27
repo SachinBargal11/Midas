@@ -1,6 +1,7 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
 import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import {ProvidersStore} from '../../../stores/providers-store';
 import {Provider} from '../../../models/provider';
 import {ProvidersService} from '../../../services/providers-service';
@@ -95,11 +96,13 @@ export class UpdateProviderComponent implements OnInit {
                 this._router.navigate(['/providers']);
             },
             (error) => {
+                let errString = 'Unable to update Provider.';
                 let notification = new Notification({
-                    'title': 'Unable to update Provider.',
+                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
+                this.isSaveProviderProgress = false;
                 this._notificationsStore.addNotification(notification);
             },
             () => {

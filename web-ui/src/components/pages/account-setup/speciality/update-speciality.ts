@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ErrorMessageFormatter } from '../../../../utils/ErrorMessageFormatter';
 import { SpecialityStore } from '../../../../stores/speciality-store';
 import { Speciality } from '../../../../models/speciality';
 import { SessionStore } from '../../../../stores/session-store';
@@ -86,11 +87,13 @@ export class UpdateSpecialityComponent implements OnInit {
                 this._router.navigate(['/account-setup/specialities']);
             },
             (error) => {
+                let errString = 'Unable to update Speciality.';
                 let notification = new Notification({
-                    'title': 'Unable to update Speciality.',
+                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
+                this.isSaveSpecialityProgress = false;
                 this._notificationsStore.addNotification(notification);
             },
             () => {

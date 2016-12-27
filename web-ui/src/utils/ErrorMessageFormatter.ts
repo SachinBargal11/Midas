@@ -1,5 +1,5 @@
 export class ErrorMessageFormatter {
-    static getErrorMessages(error): any {
+    static getErrorMessages(error, errString): any {
         let errorBody = JSON.parse(error._body);
                 // let errorString = 'Server error.';
                 let errorString: string[] = [];
@@ -23,8 +23,9 @@ export class ErrorMessageFormatter {
                        return errorString;
                     }
                 } else {
-                    errorString.push('Server error.');
-                    return errorString;
+                    // errorString.push('Server error.');
+                    // return errorString;
+                    return errString;
                 }
     }
 }

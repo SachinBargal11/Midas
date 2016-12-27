@@ -3,6 +3,7 @@ import { ScheduleStore } from '../../../stores/schedule-store';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { SessionStore } from '../../../stores/session-store';
 import { NotificationsStore } from '../../../stores/notifications-store';
 import moment from 'moment';
@@ -165,17 +166,9 @@ export class ScheduleComponent implements OnInit {
             },
             (error) => {
                 this.isSaveProgress = false;
-                let errorBody = JSON.parse(error._body);
-                let errorString = 'Unable to add Schedule.';
-                if (errorBody.errorLevel === 2) {
-                    if (errorBody.errorMessage) {
-                        errorString = errorBody.errorMessage;
-                    }
-                } else {
-                    errorString = 'Unable to update Schedule.';
-                }
+                let errString = 'Unable to update Schedule.';
                 let notification = new Notification({
-                    'title': errorString,
+                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
@@ -210,17 +203,9 @@ export class ScheduleComponent implements OnInit {
             },
             (error) => {
                 this.isSaveProgress = false;
-                let errorBody = JSON.parse(error._body);
-                let errorString = 'Unable to add Schedule.';
-                if (errorBody.errorLevel === 2) {
-                    if (errorBody.errorMessage) {
-                        errorString = errorBody.errorMessage;
-                    }
-                } else {
-                    errorString = 'Unable to add Schedule.';
-                }
+                let errString = 'Unable to add Schedule.';
                 let notification = new Notification({
-                    'title': errorString,
+                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

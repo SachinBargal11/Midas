@@ -5,6 +5,7 @@ import {Component, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import { ModalDirective } from 'ng2-bootstrap/ng2-bootstrap';
 import {NotificationsService} from 'angular2-notifications';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import {MedicalFacilityStore} from '../../../stores/medical-facilities-store';
 import {SpecialityDetail} from '../../../models/speciality-details';
 import {MedicalFacilityDetail} from '../../../models/medical-facility-details';
@@ -109,8 +110,9 @@ export class SpecialityDetailsComponent {
                 this._notificationsStore.addNotification(notification);
             },
             (error) => {
+                let errString = 'Unable to delete Speciality Detail.';
                 let notification = new Notification({
-                    'title': 'Unable to delete Speciality Detail.',
+                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

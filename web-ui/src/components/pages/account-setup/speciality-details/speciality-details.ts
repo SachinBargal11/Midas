@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ErrorMessageFormatter } from '../../../../utils/ErrorMessageFormatter';
 import { SpecialityDetailsStore } from '../../../../stores/speciality-details-store';
 import { SpecialityDetail } from '../../../../models/speciality-details';
 
@@ -77,11 +78,13 @@ export class SpecialityDetailComponent {
                         this.selectedSpecialityDetails = undefined;
                     },
                     (error) => {
+                        let errString = 'Unable to delete Speciality Detail!';
                         let notification = new Notification({
-                            'title': 'Unable to delete Speciality Detail!',
+                            'title': ErrorMessageFormatter.getErrorMessages(error, errString),
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
+                        this.isDeleteProgress = false;
                         this._notificationsStore.addNotification(notification);
                     },
                     () => {

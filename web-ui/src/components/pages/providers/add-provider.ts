@@ -1,6 +1,7 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
 import {Router} from '@angular/router';
 import {Validators, FormGroup, FormBuilder} from '@angular/forms';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import {ProvidersStore} from '../../../stores/providers-store';
 import {Provider} from '../../../models/provider';
 import {ProvidersService} from '../../../services/providers-service';
@@ -78,11 +79,13 @@ export class AddProviderComponent implements OnInit {
                 this._router.navigate(['/providers']);
             },
             (error) => {
+                let errString = 'Unable to add Provider.';
                 let notification = new Notification({
-                    'title': 'Unable to add Provider.',
+                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
+                this.isSaveProviderProgress = false;
                 this._notificationsStore.addNotification(notification);
             },
             () => {

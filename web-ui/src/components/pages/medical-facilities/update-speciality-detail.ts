@@ -6,6 +6,7 @@ import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import moment from 'moment';
 import _ from 'underscore';
 import { NotificationsService } from 'angular2-notifications';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { MedicalFacilityService } from '../../../services/medical-facility-service';
 import { MedicalFacilityStore } from '../../../stores/medical-facilities-store';
 import { SpecialityDetail } from '../../../models/speciality-details';
@@ -113,8 +114,9 @@ export class UpdateSpecialityDetailComponent {
             },
             (error) => {
                 this.isSpecialityDetailSaveInProgress = false;
+                let errString = 'Unable to update Speciality Details.';
                 let notification = new Notification({
-                    'title': 'Unable to update Speciality Details.',
+                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

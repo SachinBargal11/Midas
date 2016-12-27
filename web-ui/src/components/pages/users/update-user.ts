@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { AppValidators } from '../../../utils/AppValidators';
 import { UsersStore } from '../../../stores/users-store';
 import { User } from '../../../models/user';
@@ -143,11 +144,13 @@ export class UpdateUserComponent implements OnInit {
                 this._router.navigate(['/medical-provider/users']);
             },
             (error) => {
+                let errString = 'Unable to update user.';
                 let notification = new Notification({
-                    'title': 'Unable to update user.',
+                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
+                this.isSaveUserProgress = false;
                 this._notificationsStore.addNotification(notification);
             },
             () => {

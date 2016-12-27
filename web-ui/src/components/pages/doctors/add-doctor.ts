@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { DoctorsStore } from '../../../stores/doctors-store';
 import { DoctorsService } from '../../../services/doctors-service';
 import { Doctor } from '../../../models/doctor';
@@ -99,11 +100,13 @@ export class AddDoctorComponent implements OnInit {
                 this._router.navigate(['/doctors']);
             },
             (error) => {
+                let errString = 'Unable to add Doctor.';
                 let notification = new Notification({
-                    'title': 'Unable to add Doctor.',
+                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
+                this.isSaveDoctorProgress = false;
                 this._notificationsStore.addNotification(notification);
             },
             () => {

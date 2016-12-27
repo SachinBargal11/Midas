@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { MedicalFacility } from '../../../models/medical-facility';
 import { SessionStore } from '../../../stores/session-store';
 import { NotificationsStore } from '../../../stores/notifications-store';
@@ -68,11 +69,13 @@ export class AddMedicalFacilityComponent implements OnInit {
                 this._router.navigate(['/medical-facilities']);
             },
             (error) => {
+                let errString = 'Unable to add Medical facility.';
                 let notification = new Notification({
-                    'title': 'Unable to add Medical facility.',
+                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
+                this.isSaveMedicalFacilityProgress = false;
                 this._notificationsStore.addNotification(notification);
             },
             () => {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppValidators } from '../../utils/AppValidators';
+import { ErrorMessageFormatter } from '../../utils/ErrorMessageFormatter';
 import { NotificationsService } from 'angular2-notifications';
 import { Session } from '../../models/session';
 import { SessionStore } from '../../stores/session-store';
@@ -67,7 +68,8 @@ export class LoginComponent implements OnInit {
             },
             (error: Error) => {
                 this.isLoginInProgress = false;
-                this._notificationsService.error('Oh No!', 'Unable to authenticate user.');
+                let errString = 'Unable to authenticate user.';
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
             },
             () => {
                 this.isLoginInProgress = false;

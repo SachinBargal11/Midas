@@ -1,6 +1,7 @@
 import { Company } from '../../../models/company';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { SessionStore } from '../../../stores/session-store';
 import { UsersStore } from '../../../stores/users-store';
 import { Account } from '../../../models/account';
@@ -65,11 +66,13 @@ export class UsersListComponent implements OnInit {
                         // this.users.splice(this.users.indexOf(currentUser), 1);
                     },
                     (error) => {
+                        let errString = 'Unable to delete user ' + currentUser.firstName + ' ' + currentUser.lastName;
                         let notification = new Notification({
-                            'title': 'Unable to delete user ' + currentUser.firstName + ' ' + currentUser.lastName,
+                            'title': ErrorMessageFormatter.getErrorMessages(error, errString),
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
+                        this.isDeleteProgress = false;
                         this._notificationsStore.addNotification(notification);
                     },
                     () => {

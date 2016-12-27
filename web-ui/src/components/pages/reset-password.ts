@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ErrorMessageFormatter } from '../../utils/ErrorMessageFormatter';
 import { AppValidators } from '../../utils/AppValidators';
 import { NotificationsService } from 'angular2-notifications';
 
@@ -87,7 +88,9 @@ export class ResetPasswordComponent implements OnInit {
                 }, 3000);
             },
             error => {
-                this._notificationsService.error('Error!', 'Unable to set your password.');
+                this.isResetPasswordInProgress = false;
+                let errString = 'Unable to set your password.';
+                this._notificationsService.error('Error!', ErrorMessageFormatter.getErrorMessages(error, errString));
             },
             () => {
                 this.isResetPasswordInProgress = false;
