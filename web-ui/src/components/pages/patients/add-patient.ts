@@ -92,7 +92,7 @@ export class AddPatientComponent implements OnInit {
             (error) => {
                 let errString = 'Unable to add patient.';
                 let notification = new Notification({
-                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': Moment()
                 });

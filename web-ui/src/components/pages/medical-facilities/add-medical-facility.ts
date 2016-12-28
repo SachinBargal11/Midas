@@ -71,7 +71,7 @@ export class AddMedicalFacilityComponent implements OnInit {
             (error) => {
                 let errString = 'Unable to add Medical facility.';
                 let notification = new Notification({
-                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

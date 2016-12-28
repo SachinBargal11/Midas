@@ -68,7 +68,7 @@ export class UsersListComponent implements OnInit {
                     (error) => {
                         let errString = 'Unable to delete user ' + currentUser.firstName + ' ' + currentUser.lastName;
                         let notification = new Notification({
-                            'title': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                             'type': 'ERROR',
                             'createdAt': moment()
                         });

@@ -112,7 +112,7 @@ export class AddSpecialityDetailComponent {
                 let errString = 'Unable to add Speciality Details.';
                 this.isSpecialityDetailSaveInProgress = false;
                 let notification = new Notification({
-                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

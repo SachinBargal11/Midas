@@ -134,7 +134,7 @@ export class DoctorSpecificInformationComponent implements OnInit {
             (error) => {
                 let errString = 'Unable to update Doctor.';
                 let notification = new Notification({
-                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

@@ -23,9 +23,9 @@ export class ErrorMessageFormatter {
                        return errorString;
                     }
                 } else {
-                    // errorString.push('Server error.');
-                    // return errorString;
-                    return errString;
+                    errorString.push(errString);
+                    return errorString;
+                    // return errString;
                 }
     }
 }

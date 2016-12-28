@@ -168,7 +168,7 @@ export class ScheduleComponent implements OnInit {
                 this.isSaveProgress = false;
                 let errString = 'Unable to update Schedule.';
                 let notification = new Notification({
-                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
@@ -205,7 +205,7 @@ export class ScheduleComponent implements OnInit {
                 this.isSaveProgress = false;
                 let errString = 'Unable to add Schedule.';
                 let notification = new Notification({
-                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

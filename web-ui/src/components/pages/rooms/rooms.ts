@@ -79,7 +79,7 @@ export class RoomsComponent implements OnInit {
                     (error) => {
                         let errString = 'Unable ' + currentRoom.name + ' to delete room!';
                         let notification = new Notification({
-                            'title': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                             'type': 'ERROR',
                             'createdAt': moment()
                         });

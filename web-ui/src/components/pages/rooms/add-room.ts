@@ -109,7 +109,7 @@ export class AddRoomComponent implements OnInit {
             (error) => {
                 let errString = 'Unable to add room.';
                 let notification = new Notification({
-                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

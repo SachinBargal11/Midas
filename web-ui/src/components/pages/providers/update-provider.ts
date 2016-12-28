@@ -98,7 +98,7 @@ export class UpdateProviderComponent implements OnInit {
             (error) => {
                 let errString = 'Unable to update Provider.';
                 let notification = new Notification({
-                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

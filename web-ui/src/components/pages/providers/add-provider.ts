@@ -81,7 +81,7 @@ export class AddProviderComponent implements OnInit {
             (error) => {
                 let errString = 'Unable to add Provider.';
                 let notification = new Notification({
-                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

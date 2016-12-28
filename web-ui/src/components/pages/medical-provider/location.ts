@@ -79,7 +79,7 @@ export class LocationComponent implements OnInit {
                     (error) => {
                         let errString = 'Unable to delete' + currentLocation.location.name + ' location!';
                         let notification = new Notification({
-                            'title': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                             'type': 'ERROR',
                             'createdAt': moment()
                         });

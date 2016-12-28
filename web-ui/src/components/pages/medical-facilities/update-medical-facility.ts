@@ -90,7 +90,7 @@ export class UpdateMedicalFacilityComponent implements OnInit {
                 this.isSaveMedicalFacilityProgress = false;
                 let errString = 'Unable to update Medical facility.';
                 let notification = new Notification({
-                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

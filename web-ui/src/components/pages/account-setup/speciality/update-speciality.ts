@@ -89,7 +89,7 @@ export class UpdateSpecialityComponent implements OnInit {
             (error) => {
                 let errString = 'Unable to update Speciality.';
                 let notification = new Notification({
-                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

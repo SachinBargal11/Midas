@@ -116,7 +116,7 @@ export class EditRoomComponent implements OnInit {
             (error) => {
                 let errString = 'Unable to update room.';
                 let notification = new Notification({
-                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

@@ -75,7 +75,7 @@ export class AddSpecialityComponent implements OnInit {
             (error) => {
                 let errString = 'Unable to add Speciality.';
                 let notification = new Notification({
-                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

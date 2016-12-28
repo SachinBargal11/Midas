@@ -99,7 +99,7 @@ export class DoctorSpecialityComponent implements OnInit {
                 let errString = 'Unable to add Doctor Speciality.';
                 this.isSaveDoctorProgress = false;
                 let notification = new Notification({
-                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

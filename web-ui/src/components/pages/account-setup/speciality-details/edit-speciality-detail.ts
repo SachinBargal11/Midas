@@ -116,7 +116,7 @@ export class EditSpecialityDetailsComponent {
             (error) => {
                 let errString = 'Unable to update Speciality Details.';
                 let notification = new Notification({
-                    'title': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
