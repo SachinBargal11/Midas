@@ -15,21 +15,7 @@
 <i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
 <input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Locations">
 </div>
-<!--<div *ngFor="let location of _locationsStore.locations | async">
-    <pre>{{location | json}}</pre>
-</div>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Name</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let location of _locationsStore.locations | async">
-            <td>{{ location.location.name }}</td>
-        </tr>
-    </tbody>
-</table>-->
+
 <p-dataTable [value]="locations" [(selection)]="selectedLocations" [rows]="10" [paginator]="true"
     [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Locations</header>

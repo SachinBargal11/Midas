@@ -49,14 +49,14 @@ export class AddLocationComponent implements OnInit {
     ) {
         this.locationJS = this.location.toJS();
         this.addlocationform = this.fb.group({
-                name: [''],
+                name: ['', Validators.required],
                 address: [''],
-                city: [''],
-                state: [''],
-                zipCode: [''],
-                officePhone: [''],
-                fax: [''],
-                locationType: ['']
+                city: ['', Validators.required],
+                state: ['', Validators.required],
+                zipCode: ['', Validators.required],
+                officePhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+                fax: ['', Validators.required],
+                locationType: ['', Validators.required]
             });
 
         this.addlocationformControls = this.addlocationform.controls;
@@ -78,7 +78,7 @@ export class AddLocationComponent implements OnInit {
             }),
             contact: new Contact({
                 faxNo: addlocationformValues.fax,
-                workPhone: addlocationformValues.officePhone
+                workPhone: addlocationformValues.officePhone.replace(/\-/g, '')
             }),
             address: new Address({
                 address1: addlocationformValues.address,

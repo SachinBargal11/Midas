@@ -88,6 +88,7 @@ export class BasicComponent implements OnInit {
 
 
     save() {
+        debugger;
         let userId = this._sessionStore.session.user.id;
         let basicformValues = this.basicform.value;
         let basicInfo = new LocationDetails({
@@ -102,7 +103,7 @@ export class BasicComponent implements OnInit {
             }),
             contact: new Contact({
                 faxNo: basicformValues.fax,
-                workPhone: basicformValues.officePhone,
+                workPhone: basicformValues.officePhone.replace(/\-/g, ''),
                 updateByUserID: userId
             }),
             address: new Address({

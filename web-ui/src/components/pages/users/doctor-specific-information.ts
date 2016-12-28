@@ -1,3 +1,5 @@
+import { runInThisContext } from 'vm';
+import { _do } from 'rxjs/operator/do';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -35,13 +37,9 @@ export class DoctorSpecificInformationComponent implements OnInit {
     doctor = new Doctor({});
     user = new User({});
     userId: number;
-    // specialities: SelectItem[];
     specialities: Speciality[] = [];
-    specialitiesArr: SelectItem[];
-    selectedSpecialities: string[] = ['1', '2'];
-
-    cities: SelectItem[];
-    selectedCity: number[] = [1, 2, 3];
+    specialitiesArr: SelectItem[] = [];
+    selectedSpecialities: string[] = [];
 
     constructor(
         private fb: FormBuilder,
@@ -52,14 +50,6 @@ export class DoctorSpecificInformationComponent implements OnInit {
         private _specialityStore: SpecialityStore,
         private _route: ActivatedRoute
     ) {
-        this.specialitiesArr = [];
-        this.cities = [];
-        this.cities.push({ label: 'New York', value: 1 });
-        this.cities.push({ label: 'Rome', value: 2 });
-        this.cities.push({ label: 'London', value: 3 });
-        this.cities.push({ label: 'Istanbul', value: 4 });
-        this.cities.push({ label: 'Paris', value: 5 });
-
         this._route.parent.params.subscribe((routeParams: any) => {
             this.userId = parseInt(routeParams.userId);
 
@@ -76,13 +66,13 @@ export class DoctorSpecificInformationComponent implements OnInit {
                         return currentDoctorSpeciality.id.toString();
                     });
 
-                    this.specialities = specialities;
                     this.specialitiesArr = _.map(specialities, (currentSpeciality: Speciality) => {
                         return {
                             label: `${currentSpeciality.specialityCode} - ${currentSpeciality.name}`,
                             value: currentSpeciality.id.toString()
                         };
                     });
+
                 },
                 (error) => {
                     this._router.navigate(['../../']);
@@ -98,8 +88,7 @@ export class DoctorSpecificInformationComponent implements OnInit {
             npi: ['', Validators.required],
             taxType: ['', [Validators.required, AppValidators.selectedValueValidator]],
             title: ['', Validators.required],
-            speciality: [''],
-            speciality1: ['']
+            speciality: ['']
         });
 
         this.doctorformControls = this.doctorform.controls;

@@ -90,7 +90,7 @@ export class EditRoomComponent implements OnInit {
             id: this.room.id,
             name: editroomformValues.name,
             contactPersonName: editroomformValues.contactPersonName,
-            phone: editroomformValues.phone,
+            phone: editroomformValues.phone.replace(/\-/g, ''),
             roomTest: {
                 id: editroomformValues.tests
             },

@@ -1,4 +1,3 @@
-import { Schedule } from 'primeng';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
@@ -8,6 +7,7 @@ import { LocationsService } from '../services/locations-service';
 import { List } from 'immutable';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { SessionStore } from './session-store';
+import { Schedule } from '../models/schedule';
 
 @Injectable()
 export class LocationsStore {

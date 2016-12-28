@@ -83,7 +83,7 @@ export class AddRoomComponent implements OnInit {
         let roomDetail = new Room({
             name: addroomformValues.name,
             contactPersonName: addroomformValues.contactPersonName,
-            phone: addroomformValues.phone,
+            phone: addroomformValues.phone.replace(/\-/g, ''),
             roomTest: {
                 id: addroomformValues.tests
             },

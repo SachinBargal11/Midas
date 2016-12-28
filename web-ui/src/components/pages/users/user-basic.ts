@@ -112,7 +112,7 @@ export class UserBasicComponent implements OnInit {
                 userType: this.user.userType,
                 userName: this.user.userName,
                 contact: new Contact({
-                    cellPhone: userFormValues.contact.cellPhone,
+                    cellPhone: userFormValues.contact.cellPhone.replace(/\-/g, ''),
                     emailAddress: this.contact.emailAddress,
                     faxNo: userFormValues.contact.faxNo,
                     homePhone: userFormValues.contact.homePhone,
