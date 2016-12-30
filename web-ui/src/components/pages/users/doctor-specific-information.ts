@@ -1,9 +1,8 @@
-import { runInThisContext } from 'vm';
-import { _do } from 'rxjs/operator/do';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { SelectItem } from 'primeng/primeng';
 import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { AppValidators } from '../../../utils/AppValidators';
 import { SessionStore } from '../../../stores/session-store';
@@ -16,7 +15,6 @@ import { Notification } from '../../../models/notification';
 import moment from 'moment';
 import { Speciality } from '../../../models/speciality';
 import _ from 'underscore';
-import { SelectItem } from 'primeng/primeng';
 
 @Component({
     selector: 'access',

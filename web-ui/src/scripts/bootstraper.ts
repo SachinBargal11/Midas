@@ -153,7 +153,7 @@ import { TimeAgoPipe } from '../pipes/time-ago-pipe';
 import { ReversePipe } from '../pipes/reverse-array-pipe';
 import { MapToJSPipe } from '../pipes/map-to-js';
 
-import { InputTextModule, ChartModule, DataTableModule, SharedModule, ButtonModule, DialogModule, CalendarModule, InputMaskModule, RadioButtonModule, MultiSelectModule } from 'primeng/primeng';
+import { InputTextModule, ChartModule, DataTableModule, SharedModule, ButtonModule, DialogModule, CalendarModule, InputMaskModule, RadioButtonModule, MultiSelectModule, DropdownModule } from 'primeng/primeng';
 
 
 
@@ -176,6 +176,7 @@ import { InputTextModule, ChartModule, DataTableModule, SharedModule, ButtonModu
         CalendarModule,
         RadioButtonModule,
         MultiSelectModule,
+        DropdownModule,
         HttpModule,
         SharedModule
     ],

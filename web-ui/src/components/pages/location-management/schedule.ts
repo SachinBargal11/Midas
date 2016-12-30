@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Rx';
 import { ScheduleDetail } from '../../../models/schedule-detail';
 import { ScheduleStore } from '../../../stores/schedule-store';
 import { Component, OnInit, ElementRef } from '@angular/core';
@@ -11,6 +12,7 @@ import { LocationsStore } from '../../../stores/locations-store';
 import { LocationDetails } from '../../../models/location-details';
 import { Schedule } from '../../../models/schedule';
 import { Notification } from '../../../models/notification';
+import _ from 'underscore';
 
 @Component({
     selector: 'schedule',
@@ -28,10 +30,13 @@ export class ScheduleComponent implements OnInit {
     scheduleform: FormGroup;
     scheduleformControls;
     isSaveProgress = false;
+    currentSchedule: Schedule = null;
     scheduleJS: any;
-    scheduleDetailJS: any = [];
-    testDate = moment('11:00:00', 'hh:mm:ss').utc().toDate();
     locationDetails: LocationDetails;
+    isInEditMode: boolean = false;
+    saveAsNew: boolean = false;
+    hightlightChange: boolean = false;
+
 
     constructor(
         private fb: FormBuilder,
@@ -43,23 +48,17 @@ export class ScheduleComponent implements OnInit {
         private _scheduleStore: ScheduleStore,
         private _elRef: ElementRef
     ) {
+
         this._route.parent.params.subscribe((params: any) => {
-            console.log(this.testDate);
             let locationId = parseInt(params.locationId);
-            let result = this._locationsStore.getLocationById(locationId);
-            result.subscribe(
-                (locationDetails: LocationDetails) => {
-                    this.locationDetails = locationDetails;
-                    let scheduleId: number = locationDetails.schedule.id;
-                    this._scheduleStore.fetchScheduleById(scheduleId)
-                        .subscribe(
-                        (schedule: Schedule) => {
-                            this.scheduleJS = schedule.toJS();
-                            for (let scheduleDetail of schedule.scheduleDetails) {
-                                this.scheduleDetailJS.push(scheduleDetail.toJS());
-                                this.addScheduleDetails(scheduleDetail);
-                            }
-                        });
+            let fetchSchedules = this._scheduleStore.getSchedules();
+            let fetchLocation = this._locationsStore.getLocationById(locationId);
+
+            Observable.forkJoin([fetchSchedules, fetchLocation])
+                .subscribe((results) => {
+                    this.locationDetails = results[1];
+                    let scheduleId: number = this.locationDetails.schedule.id;
+                    this._fetchScheduleWithDetails(scheduleId);
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -68,8 +67,7 @@ export class ScheduleComponent implements OnInit {
                 });
         });
         this.scheduleform = this.fb.group({
-            schedule: [''],
-            addAsNew: [''],
+            schedule: [],
             name: ['', [Validators.required]],
             scheduleDetails: this.fb.array([
             ])
@@ -78,35 +76,71 @@ export class ScheduleComponent implements OnInit {
         this.scheduleformControls = this.scheduleform.controls;
     }
 
-    selectSchedule(event) {
-        let scheduleId = event.target.value;
+    private _fetchScheduleWithDetails(scheduleId: number): void {
         this._scheduleStore.fetchScheduleById(scheduleId)
-            .subscribe(
-            (schedule: Schedule) => {
-                this.scheduleJS = schedule.toJS();
-                this.deleteScheduleDetails();
-                for (let scheduleDetail of schedule.scheduleDetails) {
-                    this.addScheduleDetails(scheduleDetail);
-                }
-            });
+            .subscribe(_.bind((schedule: Schedule) => {
+                this.currentSchedule = schedule;
+                this.hightlightChange = true;
+                setTimeout(() => {
+                    this.hightlightChange = false;
+                }, 1000);
+            }, this));
     }
 
-    initScheduleDetails(scheduleDetail: ScheduleDetail): FormGroup {
+    private _populateScheduleDetailsInEditForm(): void {
+        this.resetScheduleDetailsForm();
+        let scheduleJS = _.extend(this.currentSchedule.toJS(), {
+            scheduleDetails: _.map(this.currentSchedule.scheduleDetails, (scheduleDetail: ScheduleDetail) => {
+                this.addScheduleDetails();
+                return _.extend(scheduleDetail.toJS(), {
+                    slotStart: scheduleDetail.slotStart.toDate(),
+                    slotEnd: scheduleDetail.slotEnd.toDate()
+                });
+            })
+        });
+        if (this.saveAsNew) {
+            scheduleJS.name = `${scheduleJS.name} - Copy`;
+        }
+        this.scheduleJS = scheduleJS;
+    }
+
+    enableSaveAsNew() {
+        this.isInEditMode = true;
+        this.saveAsNew = true;
+        this._populateScheduleDetailsInEditForm();
+    }
+
+    enableEdit() {
+        this.isInEditMode = true;
+        this._populateScheduleDetailsInEditForm();
+    }
+
+    resetEditMode() {
+        this.isInEditMode = false;
+        this.saveAsNew = false;
+    }
+
+    selectSchedule(event) {
+        let scheduleId = event.target.value;
+        this._fetchScheduleWithDetails(scheduleId);
+    }
+
+    initScheduleDetails(): FormGroup {
         return this.fb.group({
             scheduleDetailId: [],
             dayofWeek: [],
-            slotStart: [''],
-            slotEnd: [''],
-            scheduleStatus: ['']
+            slotStart: [],
+            slotEnd: [],
+            scheduleStatus: []
         });
     }
 
-    addScheduleDetails(scheduleDetail: ScheduleDetail): void {
+    addScheduleDetails(): void {
         const control: FormArray = <FormArray>this.scheduleform.controls['scheduleDetails'];
-        control.push(this.initScheduleDetails(scheduleDetail));
+        control.push(this.initScheduleDetails());
     }
 
-    deleteScheduleDetails() {
+    resetScheduleDetailsForm() {
         const controls: FormArray = <FormArray>this.scheduleform.controls['scheduleDetails'];
         while (controls.length) {
             controls.removeAt(0);
@@ -114,7 +148,7 @@ export class ScheduleComponent implements OnInit {
     }
 
     ngOnInit() {
-        this._scheduleStore.getSchedules();
+
     }
 
     getScheduleDetails() {
@@ -122,7 +156,7 @@ export class ScheduleComponent implements OnInit {
         let scheduleDetails: ScheduleDetail[] = [];
         for (let scheduleDetail of scheduleFormValues.scheduleDetails) {
             let sd = new ScheduleDetail({
-                id: scheduleFormValues.addAsNew ? 0 : scheduleDetail.scheduleDetailId,
+                id: this.saveAsNew ? 0 : scheduleDetail.scheduleDetailId,
                 dayofWeek: scheduleDetail.dayofWeek,
                 slotStart: scheduleDetail.scheduleStatus ? moment(scheduleDetail.slotStart) : null,
                 slotEnd: scheduleDetail.scheduleStatus ? moment(scheduleDetail.slotEnd) : null,
@@ -134,8 +168,8 @@ export class ScheduleComponent implements OnInit {
     }
 
     submitSchedule() {
-        let scheduleFormValues = this.scheduleform.value;
-        if (scheduleFormValues.addAsNew) {
+        debugger;
+        if (this.saveAsNew) {
             this.saveAsNewSchedule();
         } else {
             this.updateSchedule();
@@ -148,7 +182,7 @@ export class ScheduleComponent implements OnInit {
         let schedule = new Schedule({
             name: scheduleFormValues.name,
             scheduleDetails: scheduleDetails,
-            id: this.scheduleJS.id
+            id: this.currentSchedule.id
         });
         this.isSaveProgress = true;
         let result;
@@ -216,4 +250,7 @@ export class ScheduleComponent implements OnInit {
             });
     }
 
+    getScheduleStatusLabel(scheduleStatus: number): string {
+        return ScheduleDetail.getScheduleStatusLabel(scheduleStatus);
+    }
 }
