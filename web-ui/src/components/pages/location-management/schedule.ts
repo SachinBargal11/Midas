@@ -8,11 +8,12 @@ import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { SessionStore } from '../../../stores/session-store';
 import { NotificationsStore } from '../../../stores/notifications-store';
 import moment from 'moment';
+import _ from 'underscore';
 import { LocationsStore } from '../../../stores/locations-store';
 import { LocationDetails } from '../../../models/location-details';
 import { Schedule } from '../../../models/schedule';
 import { Notification } from '../../../models/notification';
-import _ from 'underscore';
+import { AppValidators } from '../../../utils/AppValidators';
 
 @Component({
     selector: 'schedule',
@@ -132,7 +133,7 @@ export class ScheduleComponent implements OnInit {
             slotStart: [],
             slotEnd: [],
             scheduleStatus: []
-        });
+        }, { validator: AppValidators.timeValidation('slotStart', 'slotEnd') });
     }
 
     addScheduleDetails(): void {

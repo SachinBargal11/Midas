@@ -64,8 +64,8 @@
                                         <td>{{currentScheduleDetail.dayofWeekString}}</td>
                                         <td><span class="label" [class.label-success]="currentScheduleDetail.scheduleStatus == 1"
                                                 [class.label-default]="currentScheduleDetail.scheduleStatus == 0">{{getScheduleStatusLabel(currentScheduleDetail.scheduleStatus)}}</span></td>
-                                        <td>{{currentScheduleDetail.slotStart.format('HH:mm')}}</td>
-                                        <td>{{currentScheduleDetail.slotEnd.format('HH:mm')}}</td>
+                                        <td><span *ngIf="currentScheduleDetail.scheduleStatus == 1">{{currentScheduleDetail.slotStart.format('HH:mm')}}</span></td>
+                                        <td><span *ngIf="currentScheduleDetail.scheduleStatus == 1">{{currentScheduleDetail.slotEnd.format('HH:mm')}}</span></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -73,7 +73,6 @@
 
                         <div *ngIf="isInEditMode" formArrayName="scheduleDetails">
                             <div class="row form-group" [formGroupName]="i" *ngFor="let currentScheduleDetail of scheduleJS.scheduleDetails; let i=index">
-                                <!--{{currentScheduleDetail}}-->
                                 <div>
                                     <div class="col-lg-2">
                                         <label class="form-label"> {{currentScheduleDetail.dayofWeekString}}</label>
@@ -81,7 +80,7 @@
                                     <div class="col-lg-3">
                                         <input type="hidden" [ngModel]="currentScheduleDetail.dayofWeek" formControlName="dayofWeek">
                                         <input type="hidden" [ngModel]="currentScheduleDetail.id" formControlName="scheduleDetailId">
-                                        <select *ngIf="isInEditMode" formControlName="scheduleStatus" [ngModel]="currentScheduleDetail.scheduleStatus" class="select2-arrow form-control">
+                                        <select *ngIf="isInEditMode" formControlName="scheduleStatus" [(ngModel)]="currentScheduleDetail.scheduleStatus" class="select2-arrow form-control">
                                              <option value="1">Specific Hours</option>
                                              <option value="0">Closed</option>                                             
                                         </select>
@@ -97,10 +96,15 @@
                                         <label class="form-label"> To</label>
                                     </div>
                                     <div class="col-lg-3" *ngIf="currentScheduleDetail.scheduleStatus == 1">
-                                        <div class='input-group date' *ngIf="isInEditMode">
+                                        <div class='input-group date' *ngIf="isInEditMode" [class.error]="scheduleformControls.scheduleDetails.controls[i].controls.slotEnd.touched && scheduleformControls.scheduleDetails.controls[i].hasError('timeValidation')">
 
                                             <p-calendar formControlName="slotEnd" [ngModel]="currentScheduleDetail.slotEnd" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o">
                                             </p-calendar>
+                                            <div class='error-list' *ngIf="scheduleformControls.scheduleDetails.controls[i].controls.slotEnd.touched && scheduleformControls.scheduleDetails.controls[i].hasError('timeValidation')">
+                                                <ul>
+                                                    <li *ngIf="scheduleformControls.scheduleDetails.controls[i].hasError('timeValidation')">EndTime should be greater than StartTime.</li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

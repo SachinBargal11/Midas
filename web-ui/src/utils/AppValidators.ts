@@ -2,6 +2,7 @@ import { Directive } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CompanyStore } from '../stores/company-store';
 import { Company } from '../models/company';
+import moment from 'moment';
 
 export class AppValidators {
     company: Company[];
@@ -39,6 +40,18 @@ export class AppValidators {
                     mismatchedPasswords: true
                 };
             }
+        };
+    }
+
+    static timeValidation(slotStartKey: any, slotEndKey: any) {
+        return (group: FormGroup): { [key: string]: any } => {
+            let slotStart = group.controls[slotStartKey];
+            let slotEnd = group.controls[slotEndKey];
+
+            if (!moment(slotStart.value).isBefore(moment(slotEnd.value))) {
+                return { timeValidation: true };
+            }
+
         };
     }
 
