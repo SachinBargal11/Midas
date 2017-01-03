@@ -117,7 +117,8 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                         <label class="form-label"> Fax No</label>
-                                    <input formControlName="faxNo" [ngModel]="contact.faxNo" type="text" class="form-control" placeholder="" />
+                                    <!--<input formControlName="faxNo" [ngModel]="contact.faxNo" type="text" class="form-control" placeholder="" />-->
+                                    <p-inputMask mask="9-999-999 9999" formControlName="faxNo" [ngModel]="contact.faxNo" placeholder="9-999-999 9999" styleClass="form-control" ></p-inputMask>
                                 </div>
                             </div>
                           </div> 

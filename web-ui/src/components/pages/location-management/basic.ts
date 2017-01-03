@@ -76,7 +76,7 @@ export class BasicComponent implements OnInit {
             state: ['', Validators.required],
             zipcode: ['', Validators.required],
             officePhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-            fax: ['', Validators.required],
+            fax: [''],
             officeType: ['', Validators.required]
         });
 
@@ -102,7 +102,7 @@ export class BasicComponent implements OnInit {
                 id: this.locationDetails.company.id
             }),
             contact: new Contact({
-                faxNo: basicformValues.fax,
+                faxNo: basicformValues.fax.replace(/\-/g, ''),
                 workPhone: basicformValues.officePhone.replace(/\-/g, ''),
                 updateByUserID: userId
             }),

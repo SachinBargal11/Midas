@@ -55,7 +55,7 @@ export class AddLocationComponent implements OnInit {
                 state: ['', Validators.required],
                 zipCode: ['', Validators.required],
                 officePhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                fax: ['', Validators.required],
+                fax: [''],
                 locationType: ['', Validators.required]
             });
 
@@ -77,7 +77,7 @@ export class AddLocationComponent implements OnInit {
                  id: this._sessionStore.session.currentCompany.id
             }),
             contact: new Contact({
-                faxNo: addlocationformValues.fax,
+                faxNo: addlocationformValues.fax.replace(/\-\s+/g, ''),
                 workPhone: addlocationformValues.officePhone.replace(/\-/g, '')
             }),
             address: new Address({

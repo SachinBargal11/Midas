@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import { Doctor } from '../../models/doctor';
-import { DoctorDetail } from '../../models/doctor-details';
+// import { DoctorDetail } from '../../models/doctor-details';
 import { UserAdapter } from './user-adapter';
 import _ from 'underscore';
 

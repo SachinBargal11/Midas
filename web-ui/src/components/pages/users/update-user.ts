@@ -6,9 +6,9 @@ import { AppValidators } from '../../../utils/AppValidators';
 import { UsersStore } from '../../../stores/users-store';
 import { User } from '../../../models/user';
 import { UsersService } from '../../../services/users-service';
-import { Account } from '../../../models/account';
-import { Company } from '../../../models/company';
-import { UserRole } from '../../../models/user-role';
+// import { Account } from '../../../models/account';
+// import { Company } from '../../../models/company';
+// import { UserRole } from '../../../models/user-role';
 import { Contact } from '../../../models/contact';
 import { Address } from '../../../models/address';
 import { SessionStore } from '../../../stores/session-store';
@@ -108,26 +108,26 @@ export class UpdateUserComponent implements OnInit {
     updateUser() {
         let userFormValues = this.userform.value;
         let userDetail = new User({
-                id: this.user.id,
-                firstName: userFormValues.userInfo.firstName,
-                lastName: userFormValues.userInfo.lastName,
-                userType: parseInt(userFormValues.userInfo.userType),
-                userName: userFormValues.contact.email,
-                contact: new Contact({
-                    cellPhone: userFormValues.contact.cellPhone,
-                    emailAddress: userFormValues.contact.email,
-                    faxNo: userFormValues.contact.faxNo,
-                    homePhone: userFormValues.contact.homePhone,
-                    workPhone: userFormValues.contact.workPhone,
-                }),
-                address: new Address({
-                    address1: userFormValues.address.address1,
-                    address2: userFormValues.address.address2,
-                    city: userFormValues.address.city,
-                    country: userFormValues.address.country,
-                    state: userFormValues.address.state,
-                    zipCode: userFormValues.address.zipCode,
-                })
+            id: this.user.id,
+            firstName: userFormValues.userInfo.firstName,
+            lastName: userFormValues.userInfo.lastName,
+            userType: parseInt(userFormValues.userInfo.userType),
+            userName: userFormValues.contact.email,
+            contact: new Contact({
+                cellPhone: userFormValues.contact.cellPhone.replace(/\-/g, ''),
+                emailAddress: userFormValues.contact.email,
+                faxNo: userFormValues.contact.faxNo.replace(/\-/g, ''),
+                homePhone: userFormValues.contact.homePhone,
+                workPhone: userFormValues.contact.workPhone,
+            }),
+            address: new Address({
+                address1: userFormValues.address.address1,
+                address2: userFormValues.address.address2,
+                city: userFormValues.address.city,
+                country: userFormValues.address.country,
+                state: userFormValues.address.state,
+                zipCode: userFormValues.address.zipCode,
+            })
         });
         this.isSaveUserProgress = true;
         let result;

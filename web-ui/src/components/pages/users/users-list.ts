@@ -1,12 +1,12 @@
-import { Company } from '../../../models/company';
+// import { Company } from '../../../models/company';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { SessionStore } from '../../../stores/session-store';
 import { UsersStore } from '../../../stores/users-store';
-import { Account } from '../../../models/account';
+// import { Account } from '../../../models/account';
 import { User } from '../../../models/user';
-import { UserRole } from '../../../models/user-role';
+// import { UserRole } from '../../../models/user-role';
 import { NotificationsStore } from '../../../stores/notifications-store';
 import { Notification } from '../../../models/notification';
 import moment from 'moment';

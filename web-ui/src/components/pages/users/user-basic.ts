@@ -1,33 +1,33 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
-import {AppValidators} from '../../../utils/AppValidators';
-import {UsersStore} from '../../../stores/users-store';
-import {User} from '../../../models/user';
-import {UsersService} from '../../../services/users-service';
-import {AccountDetail} from '../../../models/account-details';
-import {Account} from '../../../models/account';
-import {Company} from '../../../models/company';
-import {UserRole} from '../../../models/user-role';
-import {Contact} from '../../../models/contact';
-import {Address} from '../../../models/address';
-import {SessionStore} from '../../../stores/session-store';
-import {NotificationsStore} from '../../../stores/notifications-store';
-import {Notification} from '../../../models/notification';
+import { AppValidators } from '../../../utils/AppValidators';
+import { UsersStore } from '../../../stores/users-store';
+import { User } from '../../../models/user';
+import { UsersService } from '../../../services/users-service';
+// import { AccountDetail } from '../../../models/account-details';
+// import { Account } from '../../../models/account';
+// import { Company } from '../../../models/company';
+// import { UserRole } from '../../../models/user-role';
+import { Contact } from '../../../models/contact';
+import { Address } from '../../../models/address';
+import { SessionStore } from '../../../stores/session-store';
+import { NotificationsStore } from '../../../stores/notifications-store';
+import { Notification } from '../../../models/notification';
 import moment from 'moment';
-import {StatesStore} from '../../../stores/states-store';
-import {StateService} from '../../../services/state-service';
+import { StatesStore } from '../../../stores/states-store';
+import { StateService } from '../../../services/state-service';
 import { UserType } from '../../../models/enums/user-type';
 
-@Component({    
+@Component({
     selector: 'basic',
     templateUrl: 'templates/pages/users/user-basic.html',
     providers: [UsersService, StateService, StatesStore, FormBuilder]
 })
 
-export class UserBasicComponent implements OnInit { 
-     userType: any;
+export class UserBasicComponent implements OnInit {
+    userType: any;
     states: any[];
     user = new User({});
     address = new Address({});
@@ -62,8 +62,8 @@ export class UserBasicComponent implements OnInit {
                 (userDetail: any) => {
                     this.user = userDetail;
                     this.contact = userDetail.contact,
-                    this.address = userDetail.address,
-                    this.userType = UserType[userDetail.userType];
+                        this.address = userDetail.address,
+                        this.userType = UserType[userDetail.userType];
                 },
                 (error) => {
                     this._router.navigate(['/medical-provider/users']);
@@ -75,10 +75,10 @@ export class UserBasicComponent implements OnInit {
             userInfo: this.fb.group({
                 firstName: ['', Validators.required],
                 lastName: ['', Validators.required],
-                userType: [{value: '', disabled: true}, Validators.required]
+                userType: [{ value: '', disabled: true }, Validators.required]
             }),
             contact: this.fb.group({
-                email: [{value: '', disabled: true}, [Validators.required, AppValidators.emailValidator]],
+                email: [{ value: '', disabled: true }, [Validators.required, AppValidators.emailValidator]],
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
                 homePhone: [''],
                 workPhone: [''],
@@ -105,28 +105,28 @@ export class UserBasicComponent implements OnInit {
 
     updateUser() {
         let userFormValues = this.userform.value;
-            let userDetail = new User({
-                id: this.user.id,
-                firstName: userFormValues.userInfo.firstName,
-                lastName: userFormValues.userInfo.lastName,
-                userType: this.user.userType,
-                userName: this.user.userName,
-                contact: new Contact({
-                    cellPhone: userFormValues.contact.cellPhone.replace(/\-/g, ''),
-                    emailAddress: this.contact.emailAddress,
-                    faxNo: userFormValues.contact.faxNo,
-                    homePhone: userFormValues.contact.homePhone,
-                    workPhone: userFormValues.contact.workPhone,
-                }),
-                address: new Address({
-                    address1: userFormValues.address.address1,
-                    address2: userFormValues.address.address2,
-                    city: userFormValues.address.city,
-                    country: userFormValues.address.country,
-                    state: userFormValues.address.state,
-                    zipCode: userFormValues.address.zipCode,
-                })            
-            });
+        let userDetail = new User({
+            id: this.user.id,
+            firstName: userFormValues.userInfo.firstName,
+            lastName: userFormValues.userInfo.lastName,
+            userType: this.user.userType,
+            userName: this.user.userName,
+            contact: new Contact({
+                cellPhone: userFormValues.contact.cellPhone.replace(/\-/g, ''),
+                emailAddress: this.contact.emailAddress,
+                faxNo: userFormValues.contact.faxNo.replace(/\-/g, ''),
+                homePhone: userFormValues.contact.homePhone,
+                workPhone: userFormValues.contact.workPhone,
+            }),
+            address: new Address({
+                address1: userFormValues.address.address1,
+                address2: userFormValues.address.address2,
+                city: userFormValues.address.city,
+                country: userFormValues.address.country,
+                state: userFormValues.address.state,
+                zipCode: userFormValues.address.zipCode,
+            })
+        });
         this.isSaveUserProgress = true;
         let result;
 

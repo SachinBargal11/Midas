@@ -6,9 +6,9 @@ import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { UsersStore } from '../../../stores/users-store';
 import { User } from '../../../models/user';
 import { UsersService } from '../../../services/users-service';
-import { Account } from '../../../models/account';
-import { Company } from '../../../models/company';
-import { UserRole } from '../../../models/user-role';
+// import { Account } from '../../../models/account';
+// import { Company } from '../../../models/company';
+// import { UserRole } from '../../../models/user-role';
 import { Contact } from '../../../models/contact';
 import { Address } from '../../../models/address';
 import { SessionStore } from '../../../stores/session-store';
@@ -68,10 +68,10 @@ export class AddUserComponent implements OnInit {
                 zipCode: [''],
                 state: [''],
                 country: ['']
-            }),
-            userRole: this.fb.group({
-                role: ['', Validators.required]
             })
+            // userRole: this.fb.group({
+            //     role: ['', Validators.required]
+            // })
         });
 
         this.userformControls = this.userform.controls;
@@ -91,9 +91,9 @@ export class AddUserComponent implements OnInit {
                 userType: parseInt(userFormValues.userInfo.userType),
                 userName: userFormValues.contact.email,
                 contact: new Contact({
-                    cellPhone: userFormValues.contact.cellPhone,
+                    cellPhone: userFormValues.contact.cellPhone.replace(/\-/g, ''),
                     emailAddress: userFormValues.contact.email,
-                    faxNo: userFormValues.contact.faxNo,
+                    faxNo: userFormValues.contact.faxNo.replace(/\-/g, ''),
                     homePhone: userFormValues.contact.homePhone,
                     workPhone: userFormValues.contact.workPhone,
                 }),
