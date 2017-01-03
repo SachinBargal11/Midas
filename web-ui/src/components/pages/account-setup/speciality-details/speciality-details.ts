@@ -36,7 +36,7 @@ export class SpecialityDetailComponent {
     ngOnInit() {
         this.loadSpecialityDetails();
     }
-    loadSpecialityDetails() {  
+    loadSpecialityDetails() {
         this.specialityDetailsLoading = true;
         this._route.parent.params.subscribe((params: any) => {
             let specialityId: number = parseInt(params.id);
@@ -56,7 +56,7 @@ export class SpecialityDetailComponent {
                 () => {
                     this.specialityDetailsLoading = false;
                 });
-        });      
+        });
     }
 
     deleteSpecialityDetails() {

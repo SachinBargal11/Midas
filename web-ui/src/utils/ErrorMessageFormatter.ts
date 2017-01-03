@@ -22,6 +22,11 @@ export class ErrorMessageFormatter {
                         errorString.push(errorBody.errorMessage);
                        return errorString;
                     }
+                } else if (errorBody.errorLevel === 5) {
+                    if (errorBody.errorMessage) {
+                        errorString.push(errorBody.errorMessage);
+                       return errorString;
+                    }
                 } else {
                     errorString.push(errString);
                     return errorString;
