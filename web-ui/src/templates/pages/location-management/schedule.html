@@ -1,69 +1,135 @@
 <div class="page-center">
     <div class="page-center-in">
         <div class="container-fluid">
-            <form [formGroup]="scheduleform" (ngSubmit)="save()" *ngIf="scheduleJS">
-                <section class="card">
+            <form [formGroup]="scheduleform" (ngSubmit)="submitSchedule()" *ngIf="currentSchedule">
+                <section class="card" *ngIf="!isInEditMode">
+                    <header class="card-header card-header-lg">
+                        Available Schedules
+                    </header>
                     <div class="card-block">
+
                         <div class="row">
                             <div class="col-lg-6">
-                                <div class="form-group" [class.error]="scheduleformControls.name.touched && !scheduleformControls.name.valid">
-                                    <label class="form-label"> Schedule Name
+                                <div class="form-group" *ngIf="currentSchedule">
+                                    <label class="form-label"> Select a Schedule 
                                         <span class="color-red">*</span>
                                     </label>
-                                    <input [ngModel]="scheduleJS.name" formControlName="name" type="text" class="form-control" placeholder="" [class.error]="!scheduleformControls.name.valid">
-                                    <div class='error-list' *ngIf="scheduleformControls.name.touched && !scheduleformControls.name.valid">
-                                        <ul>
-                                            <li *ngIf="scheduleformControls.name.hasError('required')">Name is required.</li>
-                                        </ul>
+                                    <select formControlName="schedule" [ngModel]="currentSchedule.id" class="select2-arrow form-control" (change)="selectSchedule($event)">
+                                             <option *ngFor="let schedule of _scheduleStore.schedules | async" [value]="schedule.id">{{schedule.name}}</option>                                       
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="card card-blue" [class.pulse]="hightlightChange" [class.animated]="hightlightChange">
+                    <header class="card-header card-header-lg clearfix">
+                        Details for {{currentSchedule.name}}
+                        <div class="pull-right" *ngIf="!isInEditMode">
+                            <button type="button" class="btn btn-sm btn-primary-outline" (click)="enableSaveAsNew()">Duplicate</button>
+                            <button type="button" class="btn btn-sm btn-primary" (click)="enableEdit()">Edit</button>
+                        </div>
+                        <div class="pull-right" *ngIf="isInEditMode">
+                            <!--<button type="button" class="btn btn-sm btn-secondary" (click)="resetEditMode()">Cancel</button>                            {{scheduleform.valid}}
+                            <button type="submit" class="btn btn-success btn-sm">Save
+                                <loader [visible]="isSaveProgress"></loader>
+                            </button>-->
+                        </div>
+                    </header>
+                    <div class="card-block">
+
+                        <div class="table-responsive" *ngIf="currentSchedule && !isInEditMode">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Day of Week</th>
+                                        <th>Schedule Status</th>
+                                        <th>Start Time</th>
+                                        <th>End Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let currentScheduleDetail of currentSchedule.scheduleDetails">
+                                        <td>{{currentScheduleDetail.dayofWeekString}}</td>
+                                        <td><span class="label" [class.label-success]="currentScheduleDetail.scheduleStatus == 1"
+                                                [class.label-default]="currentScheduleDetail.scheduleStatus == 0">{{getScheduleStatusLabel(currentScheduleDetail.scheduleStatus)}}</span></td>
+                                        <td><span *ngIf="currentScheduleDetail.scheduleStatus == 1">{{currentScheduleDetail.slotStart.format('HH:mm')}}</span></td>
+                                        <td><span *ngIf="currentScheduleDetail.scheduleStatus == 1">{{currentScheduleDetail.slotEnd.format('HH:mm')}}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div *ngIf="isInEditMode">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group" [class.error]="scheduleformControls.name.touched && !scheduleformControls.name.valid">
+                                        <label class="form-label"> Schedule Name
+                                        <span class="color-red">*</span>
+                                    </label>
+                                        <input [ngModel]="scheduleJS.name" formControlName="name" type="text" class="form-control" placeholder="" [class.error]="!scheduleformControls.name.valid">
+                                        <div class='error-list' *ngIf="scheduleformControls.name.touched && !scheduleformControls.name.valid">
+                                            <ul>
+                                                <li *ngIf="scheduleformControls.name.hasError('required')">Name is required.</li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <hr />
-                        <div formArrayName="scheduleDetails">
-                            <div class="row form-group" [formGroupName]="i" *ngFor="let scheduleDetail of scheduleform.controls.scheduleDetails.controls; let i=index">
-                                <div>
-                                    <div class="col-lg-2">
-                                        <label class="form-label"> {{scheduleJS.scheduleDetails[i].dayofWeekString}}</label>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <input type="hidden" [ngModel]="scheduleJS.scheduleDetails[i].dayofWeek" formControlName="dayofWeek">
-                                        <select formControlName="scheduleStatus" [(ngModel)]="scheduleJS.scheduleDetails[i].scheduleStatus" class="select2-arrow form-control">
+                            
+                            <div formArrayName="scheduleDetails" class="m-t-md">
+
+                                <div class="row form-group" [formGroupName]="i" *ngFor="let currentScheduleDetail of scheduleJS.scheduleDetails; let i=index">
+                                    <div>
+                                        <div class="col-lg-2">
+                                            <label class="form-label"> {{currentScheduleDetail.dayofWeekString}}</label>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input type="hidden" [ngModel]="currentScheduleDetail.dayofWeek" formControlName="dayofWeek">
+                                            <input type="hidden" [ngModel]="currentScheduleDetail.id" formControlName="scheduleDetailId">
+                                            <select *ngIf="isInEditMode" formControlName="scheduleStatus" [(ngModel)]="currentScheduleDetail.scheduleStatus" class="select2-arrow form-control">
                                              <option value="1">Specific Hours</option>
                                              <option value="0">Closed</option>                                             
                                         </select>
-                                    </div>
-                                    <div class="col-lg-3" *ngIf="scheduleJS.scheduleDetails[i].scheduleStatus == 1">
-                                        <div class='input-group date'>
+                                        </div>
+                                        <div class="col-lg-3" *ngIf="currentScheduleDetail.scheduleStatus == 1">
+                                            <div class='input-group date' *ngIf="isInEditMode">
 
-                                            <p-calendar formControlName="slotStart" [ngModel]="scheduleJS.scheduleDetails[i].slotStart"
-                                                [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o">
-                                            </p-calendar>
+                                                <p-calendar formControlName="slotStart" [ngModel]="currentScheduleDetail.slotStart" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o">
+                                                </p-calendar>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-1 text-center" *ngIf="currentScheduleDetail.scheduleStatus == 1">
+                                            <label class="form-label"> To</label>
+                                        </div>
+                                        <div class="col-lg-3" *ngIf="currentScheduleDetail.scheduleStatus == 1">
+                                            <div class='input-group date' *ngIf="isInEditMode" [class.error]="scheduleformControls.scheduleDetails.controls[i].controls.slotEnd.touched && scheduleformControls.scheduleDetails.controls[i].hasError('timeValidation')">
+
+                                                <p-calendar formControlName="slotEnd" [ngModel]="currentScheduleDetail.slotEnd" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o">
+                                                </p-calendar>
+                                                <div class='error-list' *ngIf="scheduleformControls.scheduleDetails.controls[i].controls.slotEnd.touched && scheduleformControls.scheduleDetails.controls[i].hasError('timeValidation')">
+                                                    <ul>
+                                                        <li *ngIf="scheduleformControls.scheduleDetails.controls[i].hasError('timeValidation')">EndTime should be greater than StartTime.</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-1 text-center" *ngIf="scheduleJS.scheduleDetails[i].scheduleStatus == 1">
-                                        <label class="form-label"> To</label>
-                                    </div>
-                                    <div class="col-lg-3" *ngIf="scheduleJS.scheduleDetails[i].scheduleStatus == 1">
-                                        <div class='input-group date'>
 
-                                            <p-calendar formControlName="slotEnd" [ngModel]="scheduleJS.scheduleDetails[i].slotEnd"
-                                                [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o">
-                                            </p-calendar>
-                                        </div>
-                                    </div>
                                 </div>
+
+
 
                             </div>
                         </div>
-
-
                     </div>
                 </section>
-                <div class="text-center">
-                    <button [disabled]="!scheduleform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
-                    <loader [visible]="isSaveProgress"></loader>
-                </button>
+                <div class="text-center" *ngIf="isInEditMode">
+                    <button type="submit" class="btn btn-success">Save
+                                <loader [visible]="isSaveProgress"></loader>
+                            </button>
+                    <button type="button" class="btn btn-secondary" (click)="resetEditMode()">Cancel</button>
+
                 </div>
             </form>
         </div>

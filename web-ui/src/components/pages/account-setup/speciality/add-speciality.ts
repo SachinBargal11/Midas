@@ -1,6 +1,7 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
 import {Router} from '@angular/router';
 import {Validators, FormGroup, FormBuilder} from '@angular/forms';
+import { ErrorMessageFormatter } from '../../../../utils/ErrorMessageFormatter';
 import {SpecialityStore} from '../../../../stores/speciality-store';
 import {Speciality} from '../../../../models/speciality';
 import {SessionStore} from '../../../../stores/session-store';
@@ -10,8 +11,7 @@ import moment from 'moment';
 
 @Component({
     selector: 'add-speciality',
-    templateUrl: 'templates/pages/account-setup/speciality/add-speciality.html',
-    providers: [FormBuilder]
+    templateUrl: 'templates/pages/account-setup/speciality/add-speciality.html'
 })
 
 export class AddSpecialityComponent implements OnInit {
@@ -72,11 +72,13 @@ export class AddSpecialityComponent implements OnInit {
                 this._router.navigate(['/account-setup/specialities']);
             },
             (error) => {
+                let errString = 'Unable to add Speciality.';
                 let notification = new Notification({
-                    'title': 'Unable to add Speciality.',
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
+                this.isSaveSpecialityProgress = false;
                 this._notificationsStore.addNotification(notification);
             },
             () => {

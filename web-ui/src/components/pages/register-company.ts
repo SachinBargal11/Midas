@@ -18,8 +18,7 @@ import { NotificationsService } from 'angular2-notifications';
 
 @Component({
     selector: 'register-company',
-    templateUrl: 'templates/pages/register-company.html',
-    providers: [NotificationsService, FormBuilder]
+    templateUrl: 'templates/pages/register-company.html'
 })
 
 export class RegisterCompanyComponent implements OnInit {
@@ -67,7 +66,7 @@ export class RegisterCompanyComponent implements OnInit {
         let result;
         let registercompanyformValues = this.registercompanyform.value;
         let company = new Account({
-            company: new Company({
+            companies: new Company({
                 name: registercompanyformValues.companyName,
                 taxId: registercompanyformValues.taxId,
                 companyType: registercompanyformValues.companyType
@@ -78,7 +77,7 @@ export class RegisterCompanyComponent implements OnInit {
                 lastName: registercompanyformValues.lastName,
                 userType: UserType.Admin,
                 contact: new Contact({
-                    cellPhone: registercompanyformValues.phoneNo,
+                    cellPhone: registercompanyformValues.phoneNo.replace(/\-/g, ''),
                     emailAddress: registercompanyformValues.email
                 })
             }),
@@ -99,7 +98,8 @@ export class RegisterCompanyComponent implements OnInit {
             },
             (error) => {
                 this.isRegistrationInProgress = false;
-                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error));
+                let errString = 'Unable to Register User.';
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
             },
             () => {
                 this.isRegistrationInProgress = false;

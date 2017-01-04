@@ -118,7 +118,8 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                         <label class="form-label"> Fax No</label>
-                                    <input formControlName="faxNo" type="text" class="form-control" placeholder="" />
+                                    <!--<input formControlName="faxNo" type="text" class="form-control" placeholder="" />-->
+                                    <p-inputMask mask="9-999-999 9999" formControlName="faxNo" placeholder="9-999-999 9999" styleClass="form-control" ></p-inputMask>
                                 </div>
                             </div>
                           </div> 
@@ -217,7 +218,7 @@
                           </div>
                         </div>
                       </section>
-                      <section class="card">
+                      <!--<section class="card">
                          <header class="card-header card-header-lg">
                             User Role
                          </header>
@@ -244,7 +245,7 @@
                                    </div>
                                </div>
                          </div>
-                      </section>
+                      </section>-->
                 <button [disabled]="!userform.valid || isSaveUserProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveUserProgress"></loader>
                 </button>

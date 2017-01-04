@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import { Account } from '../models/account';
+// import { Account } from '../models/account';
 import { User } from '../models/user';
-import { AccountDetail } from '../models/account-details';
+// import { AccountDetail } from '../models/account-details';
 import { UsersService } from '../services/users-service';
 import { SessionStore } from './session-store';
 import { List } from 'immutable';
@@ -34,7 +34,7 @@ export class UsersStore {
         return this._users.asObservable();
     }
 
-    get selectedUsers(){
+    get selectedUsers() {
         return this._selectedUsers.asObservable();
     }
 
@@ -51,7 +51,7 @@ export class UsersStore {
         return <Observable<User[]>>Observable.fromPromise(promise);
     }
 
-      findUserById(id: number) {
+    findUserById(id: number) {
         let users = this._users.getValue();
         let index = users.findIndex((currentUser: any) => currentUser.id === id);
         return users.get(index);
@@ -64,11 +64,11 @@ export class UsersStore {
                 resolve(matchedUser);
             } else {
                 this._usersService.getUser(id)
-                .subscribe((userDetail: User) => {
-                    resolve(userDetail);
-                }, error => {
-                    reject(error);
-                });
+                    .subscribe((userDetail: User) => {
+                        resolve(userDetail);
+                    }, error => {
+                        reject(error);
+                    });
             }
         });
         return <Observable<User>>Observable.fromPromise(promise);
@@ -117,18 +117,18 @@ export class UsersStore {
             });
         });
         return <Observable<User>>Observable.from(promise);
-    }    
+    }
     deleteUser(userDetail: User): Observable<User> {
         let users = this._users.getValue();
         let index = users.findIndex((currentUser: User) => currentUser.id === userDetail.id);
         let promise = new Promise((resolve, reject) => {
             this._usersService.deleteUser(userDetail)
-            .subscribe((user: User) => {
-                this._users.next(users.delete(index));
-                resolve(user);
-            }, error => {
-                reject(error);
-            });
+                .subscribe((user: User) => {
+                    this._users.next(users.delete(index));
+                    resolve(user);
+                }, error => {
+                    reject(error);
+                });
         });
         return <Observable<User>>Observable.from(promise);
     }

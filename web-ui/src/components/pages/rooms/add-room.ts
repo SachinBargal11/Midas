@@ -17,8 +17,7 @@ import moment from 'moment';
 
 @Component({
     selector: 'add-room',
-    templateUrl: 'templates/pages/rooms/add-room.html',
-    providers: [FormBuilder],
+    templateUrl: 'templates/pages/rooms/add-room.html'
 })
 
 export class AddRoomComponent implements OnInit {
@@ -83,7 +82,7 @@ export class AddRoomComponent implements OnInit {
         let roomDetail = new Room({
             name: addroomformValues.name,
             contactPersonName: addroomformValues.contactPersonName,
-            phone: addroomformValues.phone,
+            phone: addroomformValues.phone.replace(/\-/g, ''),
             roomTest: {
                 id: addroomformValues.tests
             },
@@ -107,11 +106,13 @@ export class AddRoomComponent implements OnInit {
                 this.location.back();
             },
             (error) => {
+                let errString = 'Unable to add room.';
                 let notification = new Notification({
-                    'title': ErrorMessageFormatter.getErrorMessages(error),
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
+                this.isSaveProgress = false;
                 this._notificationsStore.addNotification(notification);
             },
             () => {

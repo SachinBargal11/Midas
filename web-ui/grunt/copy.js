@@ -75,7 +75,7 @@ module.exports = {
 			expand: true
     	}, {
 			cwd: 'node_modules/primeng/',
-			src: ['resources/primeng.min.css'],
+			src: ['resources/primeng.min.css', 'resources/images/**/*.*', 'resources/themes/bootstrap/**/*.*'],
 			dest: '<%= distLocation %>/node_modules/primeng/',
 			expand: true
     	},{

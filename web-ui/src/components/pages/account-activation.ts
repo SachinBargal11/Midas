@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ErrorMessageFormatter } from '../../utils/ErrorMessageFormatter';
 import { AppValidators } from '../../utils/AppValidators';
 import { NotificationsService } from 'angular2-notifications';
 
@@ -10,8 +11,7 @@ import { UsersService } from '../../services/users-service';
 
 @Component({
     selector: 'account-activation',
-    templateUrl: 'templates/pages/account-activation.html',
-    providers: [FormBuilder, AuthenticationService, NotificationsService]
+    templateUrl: 'templates/pages/account-activation.html'
 })
 
 export class AccountActivationComponent implements OnInit {
@@ -87,7 +87,9 @@ export class AccountActivationComponent implements OnInit {
                 }, 3000);
             },
             error => {
-                this._notificationsService.error('Error!', 'Unable to set your password.');
+                this.isPassChangeInProgress = false;
+                let errString = 'Unable to set your password.';
+                this._notificationsService.error('Error!', ErrorMessageFormatter.getErrorMessages(error, errString));
             },
             () => {
                 this.isPassChangeInProgress = false;

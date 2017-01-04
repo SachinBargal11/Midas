@@ -96,11 +96,8 @@
                         <div class="col-lg-4">
                             <label class="form-label"> Speciality <span class="color-red">*</span></label>
                             <div class="form-group" [class.error]="doctorformControls.speciality.touched && !doctorformControls.speciality.valid">
-                                <select multiple formControlName="speciality" class="selectpicker form-control" [class.error]="doctorformControls.speciality.touched && !doctorformControls.speciality.valid">
-                                        <option value="">-Select Speciality-</option>
-                                        <option disabled>────────────────────</option>
-                                        <option *ngFor="let speciality of specialities" value="{{speciality.id}}">{{speciality.specialityCode}} - {{speciality.name}}</option>
-                                    </select>
+                                <p-multiSelect [ngModel]="selectedSpecialities" [options]="specialitiesArr" defaultLabel="Select Speciality"
+                                    formControlName="speciality"></p-multiSelect>
                                 <div class='error-list' *ngIf="doctorformControls.speciality.touched && !doctorformControls.speciality.valid">
                                     <ul>
                                         <li *ngIf="doctorformControls.speciality.hasError('selectedValueValidator')">Speciality is required.</li>
@@ -113,7 +110,7 @@
                 <button [disabled]="!doctorform.valid || isSaveDoctorProgress" type="submit" class="btn btn-success sign-up">Update
                     <loader [visible]="isSaveDoctorProgress"></loader>
                 </button>
-                <a [routerLink]="['/doctors']" class="btn btn-secondary">Cancel</a>
+                <a [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
             </form>
         </div>
     </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { AppValidators } from '../../../utils/AppValidators';
 import { UsersStore } from '../../../stores/users-store';
 import { DoctorsStore } from '../../../stores/doctors-store';
@@ -18,8 +19,7 @@ import { StateService } from '../../../services/state-service';
 
 @Component({
     selector: 'update-doctor',
-    templateUrl: 'templates/pages/doctors/update-doctor.html',
-    providers: [DoctorsService, StateService, StatesStore, FormBuilder]
+    templateUrl: 'templates/pages/doctors/update-doctor.html'
 })
 
 export class UpdateDoctorComponent implements OnInit {
@@ -170,11 +170,13 @@ export class UpdateDoctorComponent implements OnInit {
                 this._router.navigate(['/doctors']);
             },
             (error) => {
+                let errString = 'Unable to update Doctor.';
                 let notification = new Notification({
-                    'title': 'Unable to update Doctor.',
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
+                this.isSaveDoctorProgress = false;
                 this._notificationsStore.addNotification(notification);
             },
             () => {

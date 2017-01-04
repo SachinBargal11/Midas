@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { Room } from '../../../models/room';
 import { RoomsStore } from '../../../stores/rooms-store';
 import { RoomsService } from '../../../services/rooms-service';
@@ -76,11 +77,13 @@ export class RoomsComponent implements OnInit {
                         this.selectedRooms = undefined;
                     },
                     (error) => {
+                        let errString = 'Unable ' + currentRoom.name + ' to delete room!';
                         let notification = new Notification({
-                            'title': 'Unable ' + currentRoom.name + ' to delete room!',
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
+                        this.isDeleteProgress = false;
                         this._notificationsStore.addNotification(notification);
                     },
                     () => {

@@ -1,20 +1,23 @@
+import { Observable } from 'rxjs/Rx';
 import { ScheduleDetail } from '../../../models/schedule-detail';
 import { ScheduleStore } from '../../../stores/schedule-store';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { SessionStore } from '../../../stores/session-store';
 import { NotificationsStore } from '../../../stores/notifications-store';
 import moment from 'moment';
+import _ from 'underscore';
 import { LocationsStore } from '../../../stores/locations-store';
 import { LocationDetails } from '../../../models/location-details';
 import { Schedule } from '../../../models/schedule';
 import { Notification } from '../../../models/notification';
+import { AppValidators } from '../../../utils/AppValidators';
 
 @Component({
     selector: 'schedule',
-    templateUrl: 'templates/pages/location-management/schedule.html',
-    providers: [FormBuilder],
+    templateUrl: 'templates/pages/location-management/schedule.html'
 })
 
 export class ScheduleComponent implements OnInit {
@@ -27,9 +30,13 @@ export class ScheduleComponent implements OnInit {
     scheduleform: FormGroup;
     scheduleformControls;
     isSaveProgress = false;
+    currentSchedule: Schedule = null;
     scheduleJS: any;
-    testDate = moment('11:00:00', 'hh:mm:ss').utc().toDate();
     locationDetails: LocationDetails;
+    isInEditMode: boolean = false;
+    saveAsNew: boolean = false;
+    hightlightChange: boolean = false;
+
 
     constructor(
         private fb: FormBuilder,
@@ -41,30 +48,26 @@ export class ScheduleComponent implements OnInit {
         private _scheduleStore: ScheduleStore,
         private _elRef: ElementRef
     ) {
+
         this._route.parent.params.subscribe((params: any) => {
-            console.log(this.testDate);
             let locationId = parseInt(params.locationId);
-            let result = this._locationsStore.fetchLocationById(locationId);
-            result.subscribe(
-                (locationDetails: LocationDetails) => {
-                    this.locationDetails = locationDetails;
-                    let scheduleId: number = locationDetails.schedule.id;
-                    this._scheduleStore.fetchScheduleById(scheduleId)
-                        .subscribe(
-                        (schedule: Schedule) => {
-                            this.scheduleJS = schedule.toJS();
-                            for (let scheduleDetail of schedule.scheduleDetails) {
-                                this.addScheduleDetails(scheduleDetail);
-                            }
-                        });
+            let fetchSchedules = this._scheduleStore.getSchedules();
+            let fetchLocation = this._locationsStore.getLocationById(locationId);
+
+            Observable.forkJoin([fetchSchedules, fetchLocation])
+                .subscribe((results) => {
+                    this.locationDetails = results[1];
+                    let scheduleId: number = this.locationDetails.schedule.id;
+                    this._fetchScheduleWithDetails(scheduleId);
                 },
                 (error) => {
-                    this._router.navigate(['/medical-provider/locations']);
+                    this._router.navigate(['../'], { relativeTo: this._route });
                 },
                 () => {
                 });
         });
         this.scheduleform = this.fb.group({
+            schedule: [],
             name: ['', [Validators.required]],
             scheduleDetails: this.fb.array([
             ])
@@ -73,36 +76,147 @@ export class ScheduleComponent implements OnInit {
         this.scheduleformControls = this.scheduleform.controls;
     }
 
-    initScheduleDetails(scheduleDetail: ScheduleDetail): FormGroup {
-        return this.fb.group({
-            dayofWeek: [],
-            slotStart: [''],
-            slotEnd: [''],
-            scheduleStatus: ['']
-        });
+    private _fetchScheduleWithDetails(scheduleId: number): void {
+        this._scheduleStore.fetchScheduleById(scheduleId)
+            .subscribe(_.bind((schedule: Schedule) => {
+                this.currentSchedule = schedule;
+                this.hightlightChange = true;
+                setTimeout(() => {
+                    this.hightlightChange = false;
+                }, 1000);
+            }, this));
     }
 
-    addScheduleDetails(scheduleDetail: ScheduleDetail): void {
+    private _populateScheduleDetailsInEditForm(): void {
+        this.resetScheduleDetailsForm();
+        let scheduleJS = _.extend(this.currentSchedule.toJS(), {
+            scheduleDetails: _.map(this.currentSchedule.scheduleDetails, (scheduleDetail: ScheduleDetail) => {
+                this.addScheduleDetails();
+                return _.extend(scheduleDetail.toJS(), {
+                    slotStart: scheduleDetail.slotStart.toDate(),
+                    slotEnd: scheduleDetail.slotEnd.toDate()
+                });
+            })
+        });
+        if (this.saveAsNew) {
+            scheduleJS.name = `${scheduleJS.name} - Copy`;
+        }
+        this.scheduleJS = scheduleJS;
+    }
+
+    enableSaveAsNew() {
+        this.isInEditMode = true;
+        this.saveAsNew = true;
+        this._populateScheduleDetailsInEditForm();
+    }
+
+    enableEdit() {
+        this.isInEditMode = true;
+        this._populateScheduleDetailsInEditForm();
+    }
+
+    resetEditMode() {
+        this.isInEditMode = false;
+        this.saveAsNew = false;
+    }
+
+    selectSchedule(event) {
+        let scheduleId = event.target.value;
+        this._fetchScheduleWithDetails(scheduleId);
+    }
+
+    initScheduleDetails(): FormGroup {
+        return this.fb.group({
+            scheduleDetailId: [],
+            dayofWeek: [],
+            slotStart: [],
+            slotEnd: [],
+            scheduleStatus: []
+        }, { validator: AppValidators.timeValidation('slotStart', 'slotEnd') });
+    }
+
+    addScheduleDetails(): void {
         const control: FormArray = <FormArray>this.scheduleform.controls['scheduleDetails'];
-        control.push(this.initScheduleDetails(scheduleDetail));
+        control.push(this.initScheduleDetails());
+    }
+
+    resetScheduleDetailsForm() {
+        const controls: FormArray = <FormArray>this.scheduleform.controls['scheduleDetails'];
+        while (controls.length) {
+            controls.removeAt(0);
+        }
     }
 
     ngOnInit() {
+
     }
 
-
-    save() {
+    getScheduleDetails() {
         let scheduleFormValues = this.scheduleform.value;
         let scheduleDetails: ScheduleDetail[] = [];
         for (let scheduleDetail of scheduleFormValues.scheduleDetails) {
             let sd = new ScheduleDetail({
+                id: this.saveAsNew ? 0 : scheduleDetail.scheduleDetailId,
                 dayofWeek: scheduleDetail.dayofWeek,
-                slotStart: moment(scheduleDetail.slotStart),
-                slotEnd: moment(scheduleDetail.slotEnd),
+                slotStart: scheduleDetail.scheduleStatus ? moment(scheduleDetail.slotStart) : null,
+                slotEnd: scheduleDetail.scheduleStatus ? moment(scheduleDetail.slotEnd) : null,
                 scheduleStatus: scheduleDetail.scheduleStatus,
             });
             scheduleDetails.push(sd);
         }
+        return scheduleDetails;
+    }
+
+    submitSchedule() {
+        debugger;
+        if (this.saveAsNew) {
+            this.saveAsNewSchedule();
+        } else {
+            this.updateSchedule();
+        }
+    }
+
+    updateSchedule() {
+        let scheduleFormValues = this.scheduleform.value;
+        let scheduleDetails = this.getScheduleDetails();
+        let schedule = new Schedule({
+            name: scheduleFormValues.name,
+            scheduleDetails: scheduleDetails,
+            id: this.currentSchedule.id
+        });
+        this.isSaveProgress = true;
+        let result;
+
+        result = this._scheduleStore.updateSchedule(schedule, this.locationDetails);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Schedule updated successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._router.navigate(['../'], { relativeTo: this._route });
+            },
+            (error) => {
+                this.isSaveProgress = false;
+                let errString = 'Unable to update Schedule.';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+            },
+            () => {
+                this.isSaveProgress = false;
+            });
+    }
+
+
+    saveAsNewSchedule() {
+        let scheduleFormValues = this.scheduleform.value;
+        let scheduleDetails = this.getScheduleDetails();
         let schedule = new Schedule({
             name: scheduleFormValues.name,
             scheduleDetails: scheduleDetails
@@ -119,22 +233,13 @@ export class ScheduleComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/medical-provider/locations']);
+                this._router.navigate(['../'], { relativeTo: this._route });
             },
             (error) => {
                 this.isSaveProgress = false;
-                let errorBody = JSON.parse(error._body);
-                let errorString = 'Unable to add Schedule.';
-                if (errorBody.errorLevel === 2) {
-                    if (errorBody.errorMessage) {
-                        errorString = errorBody.errorMessage;
-                    }
-                } else {
-                    // errorString = errorBody.errorMessage;
-                    errorString = 'Unable to add Schedule.';
-                }
+                let errString = 'Unable to add Schedule.';
                 let notification = new Notification({
-                    'title': errorString,
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
@@ -145,4 +250,7 @@ export class ScheduleComponent implements OnInit {
             });
     }
 
+    getScheduleStatusLabel(scheduleStatus: number): string {
+        return ScheduleDetail.getScheduleStatusLabel(scheduleStatus);
+    }
 }

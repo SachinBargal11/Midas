@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { AppValidators } from '../../../utils/AppValidators';
 import { Company } from '../../../models/company';
 import { LocationsStore } from '../../../stores/locations-store';
@@ -13,13 +14,12 @@ import { NotificationsStore } from '../../../stores/notifications-store';
 import { Notification } from '../../../models/notification';
 import moment from 'moment';
 import { StatesStore } from '../../../stores/states-store';
-import { StateService } from '../../../services/state-service';
+// import { StateService } from '../../../services/state-service';
 import { LocationType } from '../../../models/enums/location-type';
 
 @Component({
     selector: 'basic',
-    templateUrl: 'templates/pages/location-management/basic.html',
-    providers: [StateService, StatesStore, FormBuilder],
+    templateUrl: 'templates/pages/location-management/basic.html'
 })
 
 export class BasicComponent implements OnInit {
@@ -54,7 +54,7 @@ export class BasicComponent implements OnInit {
     ) {
         this._route.parent.params.subscribe((params: any) => {
             let locationId = parseInt(params.locationId);
-            let result = this._locationsStore.fetchLocationById(locationId);
+            let result = this._locationsStore.getLocationById(locationId);
             result.subscribe(
                 (locationDetails: LocationDetails) => {
                     this.locationDetails = locationDetails;
@@ -75,7 +75,7 @@ export class BasicComponent implements OnInit {
             state: ['', Validators.required],
             zipcode: ['', Validators.required],
             officePhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-            fax: ['', Validators.required],
+            fax: [''],
             officeType: ['', Validators.required]
         });
 
@@ -87,6 +87,7 @@ export class BasicComponent implements OnInit {
 
 
     save() {
+        debugger;
         let userId = this._sessionStore.session.user.id;
         let basicformValues = this.basicform.value;
         let basicInfo = new LocationDetails({
@@ -100,8 +101,8 @@ export class BasicComponent implements OnInit {
                 id: this.locationDetails.company.id
             }),
             contact: new Contact({
-                faxNo: basicformValues.fax,
-                workPhone: basicformValues.officePhone,
+                faxNo: basicformValues.fax.replace(/\-|\s/g, ''),
+                workPhone: basicformValues.officePhone.replace(/\-/g, ''),
                 updateByUserID: userId
             }),
             address: new Address({
@@ -127,11 +128,13 @@ export class BasicComponent implements OnInit {
                 this._router.navigate(['/medical-provider/locations']);
             },
             (error) => {
+                let errString = 'Unable to update location.';
                 let notification = new Notification({
-                    'title': 'Unable to update location.',
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
+                this.isSaveProgress = false;
                 this._notificationsStore.addNotification(notification);
             },
             () => {

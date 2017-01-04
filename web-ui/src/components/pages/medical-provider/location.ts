@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { MedicalProviderService } from '../../../services/medical-provider-service';
 import { LocationDetails } from '../../../models/location-details';
 import { LocationsStore } from '../../../stores/locations-store';
@@ -76,11 +77,13 @@ export class LocationComponent implements OnInit {
                         this.selectedLocations = undefined;
                     },
                     (error) => {
+                        let errString = 'Unable to delete' + currentLocation.location.name + ' location!';
                         let notification = new Notification({
-                            'title': 'Unable to delete' + currentLocation.location.name + ' location!',
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
+                        this.isDeleteProgress = false;
                         this._notificationsStore.addNotification(notification);
                     },
                     () => {

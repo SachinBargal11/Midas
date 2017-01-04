@@ -6,7 +6,6 @@ import { PatientManagerRoutes } from './patient-manager-routes';
 import { PatientsShellRoutes } from './patient-routes';
 import { UsersRoutes } from './user-routes';
 import { ProvidersRoutes } from './provider-routes';
-import { MedicalFacilitiesRoutes } from './medical-facility-routes';
 import { DoctorsRoutes } from './doctors-routes';
 import { MedicalProviderRoutes } from './medical-provider-routes';
 import { AccountSetupRoutes } from './account-setup-routes';
@@ -98,7 +97,6 @@ export const appRoutes: Routes = [
     ...DoctorsRoutes,
     ...MedicalProviderRoutes,
     ...AccountSetupRoutes,
-    ...MedicalFacilitiesRoutes,
     ...ProvidersRoutes,
     ...UsersRoutes,
     ...PatientsShellRoutes
