@@ -48,6 +48,7 @@ namespace MIDAS.GBX.BusinessObjects
                 validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "TaxID is required" });
             }
 
+
             if (TaxID.Length!=10)
             {
                 validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Please input valid TaxID" });

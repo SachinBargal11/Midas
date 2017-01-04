@@ -63,8 +63,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boCompany.ID = company.id;
                 boCompany.Name = company.Name;
                 boCompany.Status = (BO.GBEnums.AccountStatus)company.Status;
-                boCompany.CompanyType = (BO.GBEnums.CompanyType)company.Status;
-                boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.Status;
+                boCompany.CompanyType = (BO.GBEnums.CompanyType)company.CompanyType;
+                boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;
                 return (T)(object)boCompany;
             }
 
@@ -129,6 +129,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             UserCompany userCompanyDB = new UserCompany();
             UserCompanyRole userCompanyRoleDB = new UserCompanyRole();
             Invitation invitationDB = new Invitation();
+
+            if (_context.Companies.Any(o => o.TaxID == companyBO.TaxID))
+            {
+                return new BO.ErrorObject { ErrorMessage = "TaxID already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
 
             if (_context.Companies.Any(o => o.Name == companyBO.Name))
             {

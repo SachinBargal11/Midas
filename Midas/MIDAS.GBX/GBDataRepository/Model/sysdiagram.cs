@@ -12,14 +12,12 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class InvitationType
+    public partial class sysdiagram
     {
-        public int id { get; set; }
-        public string Name { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
-        public int CreateByUserID { get; set; }
-        public System.DateTime CreateDate { get; set; }
-        public Nullable<int> UpdateByUserID { get; set; }
-        public Nullable<System.DateTime> UpdateDate { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

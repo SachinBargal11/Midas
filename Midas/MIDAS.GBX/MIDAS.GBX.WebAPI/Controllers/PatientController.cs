@@ -18,21 +18,21 @@ using MIDAS.GBX.BusinessObjects;
 
 namespace MIDAS.GBX.WebAPI.Controllers
 {
-    [RoutePrefix("midasapi/Log")]
+    [RoutePrefix("midasapi/Patient")]
     [AllowAnonymous]
-    public class LogController : ApiController
+    public class PatientController : ApiController
     {
 
-        private IRequestHandler<Log> requestHandler;
-        public LogController()
+        private IRequestHandler<Patient> requestHandler;
+        public PatientController()
         {
-            requestHandler = new GbApiRequestHandler<Log>();
+            requestHandler = new GbApiRequestHandler<Patient>();
         }
 
         [HttpPost]
         [Route("GetAll")]
         [AllowAnonymous]
-        public HttpResponseMessage Get([FromBody]Log data)
+        public HttpResponseMessage Get([FromBody]Patient data)
         {
             return requestHandler.GetGbObjects(Request, data);
         }
@@ -49,7 +49,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpPost]
         [Route("Add")]
         [AllowAnonymous]
-        public HttpResponseMessage Post([FromBody]Log data)
+        public HttpResponseMessage Post([FromBody]Patient data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }
@@ -57,29 +57,26 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [Route("Update")]
         [HttpPut]
         [AllowAnonymous]
-        public HttpResponseMessage Put([FromBody]Log User)
+        public HttpResponseMessage Put([FromBody]Patient patient)
         {
-            return requestHandler.UpdateGbObject(Request, User);
+            return requestHandler.UpdateGbObject(Request, patient);
         }
 
+        
         [HttpDelete]
         [Route("Delete")]
         [AllowAnonymous]
-        public HttpResponseMessage Delete([FromBody]Log User)
+        public HttpResponseMessage Delete([FromBody]Patient patient)
         {
-            return requestHandler.DeleteGbObject(Request, User);
+            return requestHandler.DeleteGbObject(Request, patient);
         }
 
         [HttpGet]
         [Route("IsUnique")]
-        public HttpResponseMessage IsUnique([FromBody]Log User)
+        public HttpResponseMessage IsUnique([FromBody]Patient patient)
         {
-            return requestHandler.ValidateUniqueName(Request, User);
+            return requestHandler.ValidateUniqueName(Request, patient);
         }
-
-        
-
-
 
         protected override void Dispose(bool disposing)
         {

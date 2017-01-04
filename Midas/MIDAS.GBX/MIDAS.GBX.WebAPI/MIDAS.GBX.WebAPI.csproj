@@ -257,13 +257,10 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\LocationSpeclityController.cs" />
-<<<<<<< HEAD
     <Compile Include="Controllers\LogController.cs" />
-    <Compile Include="Controllers\MedicalProviderController.cs" />
-=======
->>>>>>> 522ebdb13207e0fad34097d633de9af2392cc3d9
     <Compile Include="Controllers\OTPController.cs" />
     <Compile Include="Controllers\PasswordTokenController.cs" />
+    <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="Controllers\Room\RoomController.cs" />
     <Compile Include="Controllers\Room\RoomTestController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />

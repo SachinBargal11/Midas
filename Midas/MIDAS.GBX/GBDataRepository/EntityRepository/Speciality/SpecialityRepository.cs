@@ -108,6 +108,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             _context.SaveChanges();
 
+            BO.Log log = new BO.Log();
+
+            using (LogRepository lg = new LogRepository(_context))
+            {
+                log.requestId = "3";
+                log.responseId = "3";
+                log.machinename = Utility.MachineName();
+                //log.ipaddress = Utility.GetIpaddress().ToString();
+                log.ipaddress = "190.2.12.104";
+                log.country = "YY";
+                log.userId = 2;
+                log.requestUrl = "www.ost.in";
+                log.IsDeleted = false;
+
+                lg.Save(log);
+
+            }
+
+
+
+
             var res = Convert<BO.Specialty, Specialty>(speclityDB);
             return (object)res;
         }
