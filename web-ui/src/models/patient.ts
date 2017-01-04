@@ -12,7 +12,6 @@
 
 
 import {Record} from 'immutable';
-import Moment from 'moment';
 
 const PatientRecord = Record({
     id: 0,

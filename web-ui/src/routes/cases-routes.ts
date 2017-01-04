@@ -6,6 +6,9 @@ export const CasesShellRoutes: Routes = [
     {
         path: 'cases',
         component: CasesComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Cases'
+        }
     }
 ];

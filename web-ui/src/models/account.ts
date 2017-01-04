@@ -6,7 +6,7 @@ import { AccountStatus } from './enums/account-status';
 import { SubscriptionPlan } from './enums/subscription-plan';
 
 const AccountRecord = Record({
-    company: null,
+    companies: null,
     user: null,
     role: null,
     accountStatus: AccountStatus.IN_ACTIVE,
@@ -14,7 +14,7 @@ const AccountRecord = Record({
 });
 
 export class Account extends AccountRecord {
-    company: Company;
+    companies: Company[];
     user: User;
     role: UserRole;
     accountStatus: AccountStatus;

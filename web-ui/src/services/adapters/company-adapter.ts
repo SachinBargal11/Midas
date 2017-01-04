@@ -1,4 +1,4 @@
-import {Company} from '../../models/company';
+import { Company } from '../../models/company';
 
 export class CompanyAdapter {
     static parseResponse(companyData: any): Company {
@@ -7,13 +7,9 @@ export class CompanyAdapter {
         if (companyData) {
             company = new Company({
                 id: companyData.id,
-                companyName: companyData.companyName,
-                contactName: companyData.contactName,
+                name: companyData.name,
                 taxId: companyData.taxId,
-                phoneNo: companyData.phoneNo,
-                companyType: companyData.companyType,
-                email: companyData.email,
-                subscriptionPlan: companyData.subscriptionPlan
+                companyType: companyData.companyType
             });
         }
         return company;

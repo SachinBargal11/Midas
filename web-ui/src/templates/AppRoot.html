@@ -6,6 +6,7 @@
     <notification *ngIf="_sessionStore.session.user"></notification>
     <div class="page-content">
         <div class="container-fluid">
+            <breadcrumb *ngIf="_sessionStore.session.user"></breadcrumb>
             <router-outlet></router-outlet>
         </div>
     </div>

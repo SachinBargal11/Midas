@@ -1,5 +1,12 @@
-<h1 class="with-border">Patients
+<!--<h1 class="with-border">Patients
 <a class="pull-right btn btn-primary" routerLink="add">Add Patient</a>
+</h1>-->
+<h1 class="with-border">Patients
+    <a class="pull-right btn btn-danger" (click)="deletePatients()">
+        <i class="fa fa-trash-o fa-1x"></i> Delete selected Patients
+        <loader [visible]="isDeleteProgress"></loader>
+    </a>
+    <a class="pull-right btn-inline btn btn-primary" [routerLink]="add"><i class="fa fa-plus" aria-hidden="true"></i> Add Patient</a>    
 </h1>
 <progress-bar [visible]="patientsLoading" 
               style="position:fixed;

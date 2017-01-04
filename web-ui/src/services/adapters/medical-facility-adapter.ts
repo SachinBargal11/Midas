@@ -1,6 +1,4 @@
 import { MedicalFacility } from '../../models/medical-facility';
-import _ from 'underscore';
-import { List } from 'immutable';
 // import {SpecialityDetailAdapter} from './speciality-detail-adapter';
 // import {SpecialityDetail} from '../../models/speciality-details';
 

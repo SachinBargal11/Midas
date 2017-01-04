@@ -11,6 +11,7 @@ using MIDAS.GBX.DataRepository.Model;
 using BO = MIDAS.GBX.BusinessObjects;
 using MIDAS.GBX.EN;
 using MIDAS.GBX.Common;
+
 #endregion
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
@@ -62,8 +63,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boCompany.ID = company.id;
                 boCompany.Name = company.Name;
                 boCompany.Status = (BO.GBEnums.AccountStatus)company.Status;
-                boCompany.CompanyType = (BO.GBEnums.CompanyType)company.Status;
-                boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.Status;
+                boCompany.CompanyType = (BO.GBEnums.CompanyType)company.CompanyType;
+                boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;
                 return (T)(object)boCompany;
             }
 
@@ -127,8 +128,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             ContactInfo contactinfoDB = new ContactInfo();
             UserCompany userCompanyDB = new UserCompany();
             UserCompanyRole userCompanyRoleDB = new UserCompanyRole();
-            Role roleDB = new Role();
             Invitation invitationDB = new Invitation();
+
+            if (_context.Companies.Any(o => o.TaxID == companyBO.TaxID))
+            {
+                return new BO.ErrorObject { ErrorMessage = "TaxID already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
 
             if (_context.Companies.Any(o => o.Name == companyBO.Name))
             {
@@ -213,13 +218,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             #endregion
 
-            #region Role
-            roleDB.Name = roleBO.Name;
-            roleDB.RoleType = System.Convert.ToByte(roleBO.RoleType);
-            if (roleBO.IsDeleted.HasValue)
-                roleDB.IsDeleted = roleBO.IsDeleted.Value;
-            #endregion
-
             UserCompany cmp = new UserCompany();
             cmp.Company = companyDB;
 
@@ -260,7 +258,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             #region Insert User Company Role
             userCompanyRoleDB.User = userCompanyDB.User;
-            userCompanyRoleDB.Role = roleDB;
+            userCompanyRoleDB.RoleID = (int)roleBO.RoleType;
             userCompanyRoleDB.CreateDate = companyBO.CreateDate;
             userCompanyRoleDB.CreateByUserID = companyBO.CreateByUserID;
             _dbUserCompanyRole.Add(userCompanyRoleDB);
@@ -284,7 +282,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 
                 string VerificationLink = "<a href='"+ Utility.GetConfigValue("VerificationLink") + "/"+invitationDB.UniqueID+ "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
                 string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink+"</b><br><br>Thanks";
-                Utility.SendEmail(Message, "Company registered", userBO.UserName);
+                BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "Company registered", Body = Message };
+                objEmail.SendMail();
                 #endregion
             }
             catch (Exception ex)
@@ -301,14 +300,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override Object Get(int id)
         {
             BO.Company acc_ = Convert<BO.Company, Company>(_context.Companies.Where(p => p.id == id).FirstOrDefault<Company>());
-            if (acc_ == null)
-            {
-                return acc_;
-            }
-            else
-            {
-                return acc_;
-            }
+            return acc_;
         }
         #endregion
 

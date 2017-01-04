@@ -5,7 +5,7 @@ const SpecialityRecord = Record({
     id: 0,
     name: '',
     specialityCode: '',
-    isUnitApply: false,
+    isunitApply: false,
     isDeleted: 0,
     createByUserID: 0,
     updateByUserID: 0,
@@ -17,12 +17,12 @@ export class Speciality extends SpecialityRecord {
     id: number;
     name: string;
     specialityCode: string;
-    isUnitApply: boolean;
+    isunitApply: boolean;
     isDeleted: boolean;
     createByUserID: number;
     updateByUserID: number;
-    createDate: moment.MomentStatic;
-    updateDate: moment.MomentStatic;
+    createDate: moment.Moment;
+    updateDate: moment.Moment;
 
     constructor(props) {
         super(props);

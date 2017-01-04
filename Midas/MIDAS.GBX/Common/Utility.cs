@@ -32,23 +32,6 @@ namespace MIDAS.GBX.Common
             return false;
         }
 
-        public static void SendEmail(string Message, string Subject, string ToEmail)
-        {
-            var client = new SmtpClient("smtp.zoho.com", 587)
-            {
-                Credentials = new NetworkCredential("mangesh.s@codearray.tech", "mangesh123 "),
-                EnableSsl = true,
-               
-            };
-
-            var mail = new System.Net.Mail.MailMessage("mangesh.s@codearray.tech", ToEmail);
-            mail.Subject = Subject;
-            mail.Body = Message;
-            mail.IsBodyHtml = true;
-                client.Send(mail);
-
-        }
-
         public static string GetConfigValue(string name)
         {
             string VerificationLink = "";
@@ -77,6 +60,21 @@ namespace MIDAS.GBX.Common
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[generator.Next(s.Length)]).ToArray());
+        }
+
+        public static int GetIpaddress()
+        {
+            string strHostName = System.Net.Dns.GetHostName();
+            string clientIPAddress = System.Net.Dns.GetHostAddresses(strHostName).GetValue(1).ToString();
+            int ipadd = Convert.ToInt16(clientIPAddress);
+            return ipadd;
+        }
+
+        public static string MachineName()
+        {
+            string strHostName = System.Net.Dns.GetHostName();
+            string macname = strHostName;
+            return macname;
         }
 
     }

@@ -3,7 +3,7 @@ import {Http, Headers} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import Environment from '../scripts/environment';
+// import Environment from '../scripts/environment';
 import {Patient} from '../models/patient';
 import {SessionStore} from '../stores/session-store';
 import {PatientAdapter} from './adapters/patient-adapter';

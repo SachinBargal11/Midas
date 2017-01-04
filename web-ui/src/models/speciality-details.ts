@@ -1,6 +1,7 @@
 import { Record } from 'immutable';
 import { Speciality } from './speciality';
 import { Company } from './company';
+import moment from 'moment';
 
 const SpecialityDetailRecord = Record({
     id: 0,
@@ -9,7 +10,7 @@ const SpecialityDetailRecord = Record({
     initialDays: 0,
     initialvisitCount: 0,
     maxReval: 0,
-    isnitialEvaluation: false,
+    isInitialEvaluation: false,
     include1500: false,
     allowmultipleVisit: false,
     specialty: new Speciality({}),
@@ -28,16 +29,16 @@ export class SpecialityDetail extends SpecialityDetailRecord {
     initialDays: number;
     initialvisitCount: number;
     maxReval: number;
-    isnitialEvaluation: number;
-    include1500: number;
-    allowmultipleVisit: number;
+    isnitialEvaluation: boolean;
+    include1500: boolean;
+    allowmultipleVisit: boolean;
     specialty: Speciality;
     company: Company;
     isDeleted: boolean;
     createByUserID: number;
-    createDate: moment.MomentStatic;
+    createDate: moment.Moment;
     updateByUserID: number;
-    updateDate: moment.MomentStatic;
+    updateDate: moment.Moment;
 
     constructor(props) {
         super(props);

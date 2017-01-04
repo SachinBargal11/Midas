@@ -6,6 +6,9 @@ export const ConsentFormsShellRoutes: Routes = [
     {
         path: 'consentforms',
         component: ConsentFormsComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Consent'
+        }
     }
 ];

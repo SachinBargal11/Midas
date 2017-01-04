@@ -1,4 +1,4 @@
-import { access } from 'fs';
+import { AccountAdapter } from './adapters/account-adapter';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -7,7 +7,6 @@ import Environment from '../scripts/environment';
 import { AccountDetail } from '../models/account-details';
 import { User } from '../models/user';
 import { UserAdapter } from './adapters/user-adapter';
-import { CompanyAdapter } from './adapters/company-adapter';
 import _ from 'underscore';
 import { Account } from '../models/account';
 import { AccountStatus } from '../models/enums/account-status';
@@ -17,7 +16,6 @@ import { UserType } from '../models/enums/user-type';
 export class AuthenticationService {
     companies: any[];
     private _url: string = `${Environment.SERVICE_BASE_URL}`;
-    private _url1: string = 'http://localhost:3004';
 
     constructor(private _http: Http) { }
 
@@ -156,11 +154,11 @@ export class AuthenticationService {
 
     }
 
-    authenticate(email: string, password: string, forceLogin: boolean): Observable<User> {
+    authenticate(email: string, password: string, forceLogin: boolean): Observable<Account> {
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
 
-        let promise: Promise<User> = new Promise((resolve, reject) => {
+        let promise: Promise<Account> = new Promise((resolve, reject) => {
             let autheticateRequestData = {
                 'userName': email,
                 'password': password,
@@ -171,7 +169,8 @@ export class AuthenticationService {
             }).map(res => res.json())
                 .subscribe((data: any) => {
                     if (data) {
-                        let user = UserAdapter.parseSignInResponse(data);
+                        // data.company = data.usercompanies[0].company;
+                        let user = AccountAdapter.parseResponse(data);
                         window.sessionStorage.setItem('pin', data.pin);
                         resolve(user);
                     }
@@ -183,7 +182,7 @@ export class AuthenticationService {
                 });
         });
 
-        return <Observable<User>>Observable.fromPromise(promise);
+        return <Observable<Account>>Observable.fromPromise(promise);
     }
 
     authenticatePassword(userName: string, oldpassword: string): Observable<User> {

@@ -5,13 +5,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AppValidators } from '../../utils/AppValidators';
 import { NotificationsService } from 'angular2-notifications';
 
+import { ErrorMessageFormatter } from '../../utils/ErrorMessageFormatter';
 import { AuthenticationService } from '../../services/authentication-service';
 import { UsersService } from '../../services/users-service';
 
 @Component({
     selector: 'forgot-password',
-    templateUrl: 'templates/pages/forgot-password.html',
-    providers: [FormBuilder, AuthenticationService, NotificationsService]
+    templateUrl: 'templates/pages/forgot-password.html'
 })
 
 export class ForgotPasswordComponent implements OnInit {
@@ -62,7 +62,9 @@ export class ForgotPasswordComponent implements OnInit {
                 }, 3000);
             },
             error => {
-                this._notificationsService.error('Error!', 'Sorry! User does not exist!');
+                this.isForgotPasswordInProgress = false;
+                let errString = 'Sorry! User does not exist!';
+                this._notificationsService.error('Error!', ErrorMessageFormatter.getErrorMessages(error, errString));
             },
             () => {
                 this.isForgotPasswordInProgress = false;

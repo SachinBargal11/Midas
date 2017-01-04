@@ -12,7 +12,7 @@ namespace MIDAS.GBX.BusinessObjects
     public class User:GbObject
     {
         [Required]
-        [JsonConverter(typeof(StringEnumConverter))]
+        
         [JsonProperty("userType")]
         public GBEnums.UserType UserType { get; set; }
 
@@ -30,7 +30,7 @@ namespace MIDAS.GBX.BusinessObjects
         [Required]
         [JsonProperty("lastName")]
         public string LastName { get; set; }
-        [JsonConverter(typeof(StringEnumConverter))]
+        
         [JsonProperty("gender")]
         public GBEnums.Gender Gender { get; set; }
         [JsonProperty("imageLink")]
@@ -41,7 +41,7 @@ namespace MIDAS.GBX.BusinessObjects
         public string Password /*Need to be updated to SecureString*/ { get; set; }
         [Required]
         [JsonProperty("status")]
-        [JsonConverter(typeof(StringEnumConverter))]
+        
         public GBEnums.UserStatus Status { get; set; }
 
         [JsonProperty("2factEmail")]
@@ -53,7 +53,7 @@ namespace MIDAS.GBX.BusinessObjects
         public bool forceLogin { get; set; }
 
         public List<UserCompany> UserCompanies { get; set; }
-
+        public List<DoctorSpeciality> DoctorSpecialities { get; set; }
         public override List<BusinessValidation> Validate<T>(T entity)
         {
             List<BusinessValidation> validations = new List<BusinessValidation>();

@@ -16,8 +16,7 @@ import {NotificationsService} from 'angular2-notifications';
 
 @Component({
     selector: 'signup',
-    templateUrl: 'templates/pages/signup.html',
-    providers: [NotificationsService, StateService, StatesStore, FormBuilder]
+    templateUrl: 'templates/pages/signup.html'
 })
 
 export class SignupComponent implements OnInit {

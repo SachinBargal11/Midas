@@ -154,8 +154,18 @@ namespace MIDAS.GBX.WebAPI
             }
             catch (Exception ex)
             {
-                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "Exception thrown.Please check error object for more details.", errorObject = ex, ErrorLevel = ErrorLevel.Exception });
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
+        }
+        #endregion
+
+        #region Login
+        public object Login(T gbObject)
+        {
+            User userBO = (User)(object)gbObject;
+
+            var objResult = dataAccessManager.Login(gbObject);
+            return objResult;
         }
         #endregion
 
