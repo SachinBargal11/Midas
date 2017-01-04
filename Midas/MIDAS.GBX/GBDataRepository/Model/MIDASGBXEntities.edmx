@@ -4,12 +4,162 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="MIDASGBXModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="MIDASGBXModelStoreContainer">
+          <EntitySet Name="AddressInfo" EntityType="MIDASGBXModel.Store.AddressInfo" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Company" EntityType="MIDASGBXModel.Store.Company" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CompanySpecialtyDetails" EntityType="MIDASGBXModel.Store.CompanySpecialtyDetails" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CompanyType" EntityType="MIDASGBXModel.Store.CompanyType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ContactInfo" EntityType="MIDASGBXModel.Store.ContactInfo" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Doctor" EntityType="MIDASGBXModel.Store.Doctor" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="DoctorLocationSchedule" EntityType="MIDASGBXModel.Store.DoctorLocationSchedule" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="DoctorSpecialities" EntityType="MIDASGBXModel.Store.DoctorSpecialities" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Invitation" EntityType="MIDASGBXModel.Store.Invitation" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="InvitationType" EntityType="MIDASGBXModel.Store.InvitationType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Location" EntityType="MIDASGBXModel.Store.Location" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Log" EntityType="MIDASGBXModel.Store.Log" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="OTP" EntityType="MIDASGBXModel.Store.OTP" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PasswordToken" EntityType="MIDASGBXModel.Store.PasswordToken" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Patient" EntityType="MIDASGBXModel.Store.Patient" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Room" EntityType="MIDASGBXModel.Store.Room" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="RoomTest" EntityType="MIDASGBXModel.Store.RoomTest" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Schedule" EntityType="MIDASGBXModel.Store.Schedule" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ScheduleDetail" EntityType="MIDASGBXModel.Store.ScheduleDetail" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SpecialityDetails" EntityType="MIDASGBXModel.Store.SpecialityDetails" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Specialty" EntityType="MIDASGBXModel.Store.Specialty" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SpecialtyDetails" EntityType="MIDASGBXModel.Store.SpecialtyDetails" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="SubscriptionPlan" EntityType="MIDASGBXModel.Store.SubscriptionPlan" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="sysdiagrams" EntityType="MIDASGBXModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="User" EntityType="MIDASGBXModel.Store.User" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserCompany" EntityType="MIDASGBXModel.Store.UserCompany" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserCompanyRole" EntityType="MIDASGBXModel.Store.UserCompanyRole" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserType" EntityType="MIDASGBXModel.Store.UserType" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Company_AddressInfo" Association="MIDASGBXModel.Store.FK_Company_AddressInfo">
+            <End Role="AddressInfo" EntitySet="AddressInfo" />
+            <End Role="Company" EntitySet="Company" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Company_CompanyType" Association="MIDASGBXModel.Store.FK_Company_CompanyType">
+            <End Role="CompanyType" EntitySet="CompanyType" />
+            <End Role="Company" EntitySet="Company" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Company_ContactInfo" Association="MIDASGBXModel.Store.FK_Company_ContactInfo">
+            <End Role="ContactInfo" EntitySet="ContactInfo" />
+            <End Role="Company" EntitySet="Company" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Company_SubscriptionPlan" Association="MIDASGBXModel.Store.FK_Company_SubscriptionPlan">
+            <End Role="SubscriptionPlan" EntitySet="SubscriptionPlan" />
+            <End Role="Company" EntitySet="Company" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanySpecialtyDetails_Company" Association="MIDASGBXModel.Store.FK_CompanySpecialtyDetails_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="CompanySpecialtyDetails" EntitySet="CompanySpecialtyDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanySpecialtyDetails_Specialty" Association="MIDASGBXModel.Store.FK_CompanySpecialtyDetails_Specialty">
+            <End Role="Specialty" EntitySet="Specialty" />
+            <End Role="CompanySpecialtyDetails" EntitySet="CompanySpecialtyDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Doctor_User" Association="MIDASGBXModel.Store.FK_Doctor_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Doctor" EntitySet="Doctor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DoctorLocationSchedule_Doctor" Association="MIDASGBXModel.Store.FK_DoctorLocationSchedule_Doctor">
+            <End Role="Doctor" EntitySet="Doctor" />
+            <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DoctorLocationSchedule_Location" Association="MIDASGBXModel.Store.FK_DoctorLocationSchedule_Location">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DoctorLocationSchedule_Schedule" Association="MIDASGBXModel.Store.FK_DoctorLocationSchedule_Schedule">
+            <End Role="Schedule" EntitySet="Schedule" />
+            <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DoctorSpecialities_Doctor" Association="MIDASGBXModel.Store.FK_DoctorSpecialities_Doctor">
+            <End Role="User" EntitySet="User" />
+            <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DoctorSpecialities_Specialty" Association="MIDASGBXModel.Store.FK_DoctorSpecialities_Specialty">
+            <End Role="Specialty" EntitySet="Specialty" />
+            <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invitation_Company" Association="MIDASGBXModel.Store.FK_Invitation_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Invitation" EntitySet="Invitation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invitation_User_Invitation" Association="MIDASGBXModel.Store.FK_Invitation_User_Invitation">
+            <End Role="User" EntitySet="User" />
+            <End Role="Invitation" EntitySet="Invitation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Location_AddressInfo" Association="MIDASGBXModel.Store.FK_Location_AddressInfo">
+            <End Role="AddressInfo" EntitySet="AddressInfo" />
+            <End Role="Location" EntitySet="Location" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Location_Company" Association="MIDASGBXModel.Store.FK_Location_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Location" EntitySet="Location" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Location_ContactInfo" Association="MIDASGBXModel.Store.FK_Location_ContactInfo">
+            <End Role="ContactInfo" EntitySet="ContactInfo" />
+            <End Role="Location" EntitySet="Location" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Location_Schedule" Association="MIDASGBXModel.Store.FK_Location_Schedule">
+            <End Role="Schedule" EntitySet="Schedule" />
+            <End Role="Location" EntitySet="Location" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_Company" Association="MIDASGBXModel.Store.FK_Patient_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Patient" EntitySet="Patient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_Location" Association="MIDASGBXModel.Store.FK_Patient_Location">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="Patient" EntitySet="Patient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_User" Association="MIDASGBXModel.Store.FK_Patient_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Patient" EntitySet="Patient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_Location" Association="MIDASGBXModel.Store.FK_Room_Location">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="Room" EntitySet="Room" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_RoomTest" Association="MIDASGBXModel.Store.FK_Room_RoomTest">
+            <End Role="RoomTest" EntitySet="RoomTest" />
+            <End Role="Room" EntitySet="Room" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_Schedule" Association="MIDASGBXModel.Store.FK_Room_Schedule">
+            <End Role="Schedule" EntitySet="Schedule" />
+            <End Role="Room" EntitySet="Room" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScheduleDetail_Schedule" Association="MIDASGBXModel.Store.FK_ScheduleDetail_Schedule">
+            <End Role="Schedule" EntitySet="Schedule" />
+            <End Role="ScheduleDetail" EntitySet="ScheduleDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_AddressInfo" Association="MIDASGBXModel.Store.FK_User_AddressInfo">
+            <End Role="AddressInfo" EntitySet="AddressInfo" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_ContactInfo" Association="MIDASGBXModel.Store.FK_User_ContactInfo">
+            <End Role="ContactInfo" EntitySet="ContactInfo" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserCompany_Company" Association="MIDASGBXModel.Store.FK_UserCompany_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="UserCompany" EntitySet="UserCompany" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserCompany_User" Association="MIDASGBXModel.Store.FK_UserCompany_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserCompany" EntitySet="UserCompany" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserCompanyRole_User" Association="MIDASGBXModel.Store.FK_UserCompanyRole_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserCompanyRole" EntitySet="UserCompanyRole" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="AddressInfo">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="Address1" Type="nvarchar" MaxLength="200" />
           <Property Name="Address2" Type="nvarchar" MaxLength="200" />
@@ -19,33 +169,33 @@
           <Property Name="Country" Type="nvarchar" MaxLength="10" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="Status" Type="tinyint" Nullable="false" />
           <Property Name="CompanyType" Type="int" Nullable="false" />
           <Property Name="SubscriptionPlanType" Type="int" Nullable="false" />
-          <Property Name="TaxID" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="TaxID" Type="nvarchar" Nullable="false" MaxLength="10" />
           <Property Name="AddressId" Type="int" Nullable="false" />
           <Property Name="ContactInfoID" Type="int" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
         <EntityType Name="CompanySpecialtyDetails">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="SpecialtyId" Type="int" />
           <Property Name="CompanyID" Type="int" />
           <Property Name="ReevalDays" Type="int" />
@@ -59,27 +209,27 @@
           <Property Name="AllowMultipleVisit" Type="bit" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" />
+          <Property Name="CreateDate" Type="datetime2" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
         <EntityType Name="CompanyType">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
         <EntityType Name="ContactInfo">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="CellPhone" Type="nvarchar" MaxLength="50" />
           <Property Name="EmailAddress" Type="nvarchar" MaxLength="200" />
@@ -88,15 +238,15 @@
           <Property Name="FaxNo" Type="nvarchar" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
         <EntityType Name="Doctor">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="LicenseNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="WCBAuthorization" Type="nvarchar" MaxLength="50" />
           <Property Name="WcbRatingCode" Type="nvarchar" MaxLength="50" />
@@ -105,89 +255,43 @@
           <Property Name="Title" Type="nvarchar" MaxLength="10" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
           <Property Name="UserID" Type="int" />
         </EntityType>
         <EntityType Name="DoctorLocationSchedule">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="DoctorID" Type="int" Nullable="false" />
           <Property Name="LocationID" Type="int" Nullable="false" />
           <Property Name="ScheduleID" Type="int" Nullable="false" />
-          <Property Name="DoctorID" Type="int" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
         <EntityType Name="DoctorSpecialities">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="DoctorID" Type="int" Nullable="false" />
           <Property Name="SpecialityID" Type="int" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-        </EntityType>
-        <EntityType Name="EmailFields">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FieldName" Type="varchar" MaxLength="50" />
-          <Property Name="SQLQuery" Type="varchar" MaxLength="200" />
-          <Property Name="IsDeleted" Type="bit" />
-          <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-        </EntityType>
-        <EntityType Name="EmailProfile">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ProfileName" Type="varchar" MaxLength="20" />
-          <Property Name="SMTPServer" Type="varchar" MaxLength="50" />
-          <Property Name="SMTPPort" Type="int" />
-          <Property Name="SSLEnabled" Type="bit" />
-          <Property Name="AuthenticationUsername" Type="varchar" MaxLength="50" />
-          <Property Name="Password" Type="varchar" MaxLength="50" />
-          <Property Name="SMTPAuthenticationRequired" Type="bit" Nullable="false" />
-          <Property Name="IsDeleted" Type="bit" />
-          <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-        </EntityType>
-        <EntityType Name="EmailTemplate">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Body" Type="varchar(max)" />
-          <Property Name="IsHTML" Type="bit" />
-          <Property Name="ProfileID" Type="int" />
-          <Property Name="IsDeleted" Type="bit" />
-          <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
         <EntityType Name="Invitation">
           <Key>
             <PropertyRef Name="InvitationID" />
           </Key>
-          <Property Name="InvitationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InvitationID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="CompanyID" Type="int" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="UniqueID" Type="uniqueidentifier" Nullable="false" />
@@ -195,148 +299,171 @@
           <Property Name="IsActivated" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
         <EntityType Name="InvitationType">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
           <Property Name="CompanyID" Type="int" Nullable="false" />
+          <Property Name="ScheduleID" Type="int" />
           <Property Name="AddressInfoID" Type="int" Nullable="false" />
           <Property Name="ContactInfoID" Type="int" Nullable="false" />
           <Property Name="LocationType" Type="tinyint" Nullable="false" />
           <Property Name="IsDefault" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-        </EntityType>
-        <EntityType Name="LocationSchedule">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="LocationID" Type="int" Nullable="false" />
-          <Property Name="ScheduleID" Type="int" Nullable="false" />
-          <Property Name="IsDeleted" Type="bit" />
-          <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RequestID" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="ResponseID" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="IpAddress" Type="nvarchar" MaxLength="15" Nullable="false" />
-          <Property Name="Country" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="MachineName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RequestID" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="ResponseID" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="IpAddress" Type="nvarchar" Nullable="false" MaxLength="15" />
+          <Property Name="Country" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="MachineName" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="UserID" Type="int" Nullable="false" />
-          <Property Name="RequestURL" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="RequestURL" Type="nvarchar" Nullable="false" MaxLength="200" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-        </EntityType>
-        <EntityType Name="MedicalProvider">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="NPI" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="CompanyID" Type="int" Nullable="false" />
-          <Property Name="IsDeleted" Type="bit" />
-          <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
         <EntityType Name="OTP">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="Pin" Type="int" Nullable="false" />
           <Property Name="OTP" Type="int" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
         <EntityType Name="PasswordToken">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserName" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="200" />
           <Property Name="TokenHash" Type="uniqueidentifier" Nullable="false" />
           <Property Name="IsTokenUsed" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
-        <EntityType Name="Role">
+        <EntityType Name="Patient">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="RoleType" Type="tinyint" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PatientID" Type="int" Nullable="false" />
+          <Property Name="SSN" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="WCBNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="JobTitle" Type="nvarchar" MaxLength="50" />
+          <Property Name="WorkActivities" Type="nvarchar" MaxLength="50" />
+          <Property Name="CarrierCaseNo" Type="nvarchar" MaxLength="50" />
+          <Property Name="ChartNo" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="CompanyID" Type="int" Nullable="false" />
+          <Property Name="LocationID" Type="int" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
+        </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="ContactPersonName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" Nullable="false" MaxLength="20" />
+          <Property Name="ScheduleID" Type="int" />
+          <Property Name="LocationID" Type="int" Nullable="false" />
+          <Property Name="RoomTestID" Type="int" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" />
+        </EntityType>
+        <EntityType Name="RoomTest">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
         <EntityType Name="Schedule">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="DayOfWeek" Type="int" Nullable="false" />
-          <Property Name="SlotStart" Type="time" Precision="7" Nullable="false" />
-          <Property Name="SlotEnd" Type="time" Precision="7" Nullable="false" />
-          <Property Name="SlotDate" Type="datetime2" Precision="7" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="IsDefault" Type="bit" Nullable="false" />
+          <Property Name="UpdateDate" Type="datetime2" />
+        </EntityType>
+        <EntityType Name="ScheduleDetail">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="ScheduleID" Type="int" Nullable="false" />
+          <Property Name="DayOfWeek" Type="int" Nullable="false" />
+          <Property Name="SlotStart" Type="time" Nullable="false" />
+          <Property Name="SlotEnd" Type="time" Nullable="false" />
+          <Property Name="SlotDate" Type="datetime2" />
+          <Property Name="Status" Type="tinyint" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
         <EntityType Name="SpecialityDetails">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="SpecialtyId" Type="int" />
           <Property Name="ReevalDays" Type="int" />
           <Property Name="ReevalVisitCount" Type="int" />
@@ -349,29 +476,29 @@
           <Property Name="AllowMultipleVisit" Type="bit" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" />
+          <Property Name="CreateDate" Type="datetime2" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
         <EntityType Name="Specialty">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="SpecialityCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="SpecialityCode" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="IsUnitApply" Type="bit" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" />
+          <Property Name="CreateDate" Type="datetime2" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
         <EntityType Name="SpecialtyDetails">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="SpecialtyId" Type="int" Nullable="false" />
           <Property Name="ReevalDays" Type="int" />
           <Property Name="ReevalVisitCount" Type="int" />
@@ -384,44 +511,54 @@
           <Property Name="AllowMultipleVisit" Type="bit" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" />
+          <Property Name="CreateDate" Type="datetime2" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
         <EntityType Name="SubscriptionPlan">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="FirstName" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
-          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="Gender" Type="tinyint" />
           <Property Name="UserType" Type="tinyint" Nullable="false" />
           <Property Name="UserStatus" Type="tinyint" />
           <Property Name="ImageLink" Type="nvarchar" MaxLength="200" />
           <Property Name="AddressId" Type="int" Nullable="false" />
           <Property Name="ContactInfoId" Type="int" Nullable="false" />
-          <Property Name="DateOfBirth" Type="datetime2" Precision="7" />
+          <Property Name="DateOfBirth" Type="datetime2" />
           <Property Name="Password" Type="varchar" MaxLength="2000" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
           <Property Name="2FactAuthEmailEnabled" Type="bit" />
           <Property Name="2FactAuthSMSEnabled" Type="bit" />
         </EntityType>
@@ -429,57 +566,43 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="CompanyID" Type="int" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
         <EntityType Name="UserCompanyRole">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="RoleID" Type="int" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-        </EntityType>
-        <EntityType Name="UserToken">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserId" Type="int" Nullable="false" />
-          <Property Name="AuthToken" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="IssuedOn" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="ExpiresOn" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" />
         </EntityType>
         <Association Name="FK_Company_AddressInfo">
-          <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="1" />
-          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <End Role="AddressInfo" Type="MIDASGBXModel.Store.AddressInfo" Multiplicity="1" />
+          <End Role="Company" Type="MIDASGBXModel.Store.Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AddressInfo">
               <PropertyRef Name="id" />
@@ -490,8 +613,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Company_CompanyType">
-          <End Role="CompanyType" Type="Self.CompanyType" Multiplicity="1" />
-          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <End Role="CompanyType" Type="MIDASGBXModel.Store.CompanyType" Multiplicity="1" />
+          <End Role="Company" Type="MIDASGBXModel.Store.Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CompanyType">
               <PropertyRef Name="id" />
@@ -502,8 +625,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Company_ContactInfo">
-          <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="1" />
-          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <End Role="ContactInfo" Type="MIDASGBXModel.Store.ContactInfo" Multiplicity="1" />
+          <End Role="Company" Type="MIDASGBXModel.Store.Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ContactInfo">
               <PropertyRef Name="id" />
@@ -514,8 +637,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Company_SubscriptionPlan">
-          <End Role="SubscriptionPlan" Type="Self.SubscriptionPlan" Multiplicity="1" />
-          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <End Role="SubscriptionPlan" Type="MIDASGBXModel.Store.SubscriptionPlan" Multiplicity="1" />
+          <End Role="Company" Type="MIDASGBXModel.Store.Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SubscriptionPlan">
               <PropertyRef Name="id" />
@@ -526,8 +649,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CompanySpecialtyDetails_Company">
-          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
-          <End Role="CompanySpecialtyDetails" Type="Self.CompanySpecialtyDetails" Multiplicity="*" />
+          <End Role="Company" Type="MIDASGBXModel.Store.Company" Multiplicity="0..1" />
+          <End Role="CompanySpecialtyDetails" Type="MIDASGBXModel.Store.CompanySpecialtyDetails" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="id" />
@@ -538,8 +661,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CompanySpecialtyDetails_Specialty">
-          <End Role="Specialty" Type="Self.Specialty" Multiplicity="0..1" />
-          <End Role="CompanySpecialtyDetails" Type="Self.CompanySpecialtyDetails" Multiplicity="*" />
+          <End Role="Specialty" Type="MIDASGBXModel.Store.Specialty" Multiplicity="0..1" />
+          <End Role="CompanySpecialtyDetails" Type="MIDASGBXModel.Store.CompanySpecialtyDetails" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Specialty">
               <PropertyRef Name="id" />
@@ -550,8 +673,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Doctor_User">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
-          <End Role="Doctor" Type="Self.Doctor" Multiplicity="*" />
+          <End Role="User" Type="MIDASGBXModel.Store.User" Multiplicity="0..1" />
+          <End Role="Doctor" Type="MIDASGBXModel.Store.Doctor" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="id" />
@@ -562,20 +685,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DoctorLocationSchedule_Doctor">
-          <End Role="Location" Type="Self.Location" Multiplicity="1" />
-          <End Role="DoctorLocationSchedule" Type="Self.DoctorLocationSchedule" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Location">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="DoctorLocationSchedule">
-              <PropertyRef Name="LocationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DoctorLocationSchedule_Doctor1">
-          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
-          <End Role="DoctorLocationSchedule" Type="Self.DoctorLocationSchedule" Multiplicity="*" />
+          <End Role="Doctor" Type="MIDASGBXModel.Store.Doctor" Multiplicity="1" />
+          <End Role="DoctorLocationSchedule" Type="MIDASGBXModel.Store.DoctorLocationSchedule" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Doctor">
               <PropertyRef Name="id" />
@@ -585,9 +696,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DoctorLocationSchedule_Location">
+          <End Role="Location" Type="MIDASGBXModel.Store.Location" Multiplicity="1" />
+          <End Role="DoctorLocationSchedule" Type="MIDASGBXModel.Store.DoctorLocationSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DoctorLocationSchedule">
+              <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DoctorLocationSchedule_Schedule">
-          <End Role="Schedule" Type="Self.Schedule" Multiplicity="1" />
-          <End Role="DoctorLocationSchedule" Type="Self.DoctorLocationSchedule" Multiplicity="*" />
+          <End Role="Schedule" Type="MIDASGBXModel.Store.Schedule" Multiplicity="1" />
+          <End Role="DoctorLocationSchedule" Type="MIDASGBXModel.Store.DoctorLocationSchedule" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Schedule">
               <PropertyRef Name="id" />
@@ -598,10 +721,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DoctorSpecialities_Doctor">
-          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
-          <End Role="DoctorSpecialities" Type="Self.DoctorSpecialities" Multiplicity="*" />
+          <End Role="User" Type="MIDASGBXModel.Store.User" Multiplicity="1" />
+          <End Role="DoctorSpecialities" Type="MIDASGBXModel.Store.DoctorSpecialities" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Doctor">
+            <Principal Role="User">
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="DoctorSpecialities">
@@ -610,8 +733,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DoctorSpecialities_Specialty">
-          <End Role="Specialty" Type="Self.Specialty" Multiplicity="1" />
-          <End Role="DoctorSpecialities" Type="Self.DoctorSpecialities" Multiplicity="*" />
+          <End Role="Specialty" Type="MIDASGBXModel.Store.Specialty" Multiplicity="1" />
+          <End Role="DoctorSpecialities" Type="MIDASGBXModel.Store.DoctorSpecialities" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Specialty">
               <PropertyRef Name="id" />
@@ -622,8 +745,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Invitation_Company">
-          <End Role="Company" Type="Self.Company" Multiplicity="1" />
-          <End Role="Invitation" Type="Self.Invitation" Multiplicity="*" />
+          <End Role="Company" Type="MIDASGBXModel.Store.Company" Multiplicity="1" />
+          <End Role="Invitation" Type="MIDASGBXModel.Store.Invitation" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="id" />
@@ -634,8 +757,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Invitation_User_Invitation">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Invitation" Type="Self.Invitation" Multiplicity="*" />
+          <End Role="User" Type="MIDASGBXModel.Store.User" Multiplicity="1" />
+          <End Role="Invitation" Type="MIDASGBXModel.Store.Invitation" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="id" />
@@ -646,8 +769,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Location_AddressInfo">
-          <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="1" />
-          <End Role="Location" Type="Self.Location" Multiplicity="*" />
+          <End Role="AddressInfo" Type="MIDASGBXModel.Store.AddressInfo" Multiplicity="1" />
+          <End Role="Location" Type="MIDASGBXModel.Store.Location" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AddressInfo">
               <PropertyRef Name="id" />
@@ -658,8 +781,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Location_Company">
-          <End Role="Company" Type="Self.Company" Multiplicity="1" />
-          <End Role="Location" Type="Self.Location" Multiplicity="*" />
+          <End Role="Company" Type="MIDASGBXModel.Store.Company" Multiplicity="1" />
+          <End Role="Location" Type="MIDASGBXModel.Store.Location" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="id" />
@@ -670,8 +793,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Location_ContactInfo">
-          <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="1" />
-          <End Role="Location" Type="Self.Location" Multiplicity="*" />
+          <End Role="ContactInfo" Type="MIDASGBXModel.Store.ContactInfo" Multiplicity="1" />
+          <End Role="Location" Type="MIDASGBXModel.Store.Location" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ContactInfo">
               <PropertyRef Name="id" />
@@ -681,93 +804,105 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LocationSchedule_Location">
-          <End Role="Location" Type="Self.Location" Multiplicity="1" />
-          <End Role="LocationSchedule" Type="Self.LocationSchedule" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Location">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="LocationSchedule">
-              <PropertyRef Name="LocationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LocationSchedule_Schedule">
-          <End Role="Schedule" Type="Self.Schedule" Multiplicity="1" />
-          <End Role="LocationSchedule" Type="Self.LocationSchedule" Multiplicity="*" />
+        <Association Name="FK_Location_Schedule">
+          <End Role="Schedule" Type="MIDASGBXModel.Store.Schedule" Multiplicity="0..1" />
+          <End Role="Location" Type="MIDASGBXModel.Store.Location" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Schedule">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="LocationSchedule">
+            <Dependent Role="Location">
               <PropertyRef Name="ScheduleID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_MedicalProvider_Company">
-          <End Role="Company" Type="Self.Company" Multiplicity="1" />
-          <End Role="MedicalProvider" Type="Self.MedicalProvider" Multiplicity="*" />
+        <Association Name="FK_Patient_Company">
+          <End Role="Company" Type="MIDASGBXModel.Store.Company" Multiplicity="1" />
+          <End Role="Patient" Type="MIDASGBXModel.Store.Patient" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="MedicalProvider">
+            <Dependent Role="Patient">
               <PropertyRef Name="CompanyID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SpecialityDetails_Specialty">
-          <End Role="Specialty" Type="Self.Specialty" Multiplicity="0..1" />
-          <End Role="SpecialityDetails" Type="Self.SpecialityDetails" Multiplicity="*" />
+        <Association Name="FK_Patient_Location">
+          <End Role="Location" Type="MIDASGBXModel.Store.Location" Multiplicity="1" />
+          <End Role="Patient" Type="MIDASGBXModel.Store.Patient" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Specialty">
+            <Principal Role="Location">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="SpecialityDetails">
-              <PropertyRef Name="SpecialtyId" />
+            <Dependent Role="Patient">
+              <PropertyRef Name="LocationID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Specialty_Specialty">
-          <End Role="Specialty" Type="Self.Specialty" Multiplicity="1" />
-          <End Role="Specialty1" Type="Self.Specialty" Multiplicity="0..1" />
+        <Association Name="FK_Patient_User">
+          <End Role="User" Type="MIDASGBXModel.Store.User" Multiplicity="1" />
+          <End Role="Patient" Type="MIDASGBXModel.Store.Patient" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Specialty">
+            <Principal Role="User">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="Specialty1">
-              <PropertyRef Name="id" />
+            <Dependent Role="Patient">
+              <PropertyRef Name="PatientID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SpecialtyDetails_Specialty">
-          <End Role="Specialty" Type="Self.Specialty" Multiplicity="1" />
-          <End Role="SpecialtyDetails" Type="Self.SpecialtyDetails" Multiplicity="*" />
+        <Association Name="FK_Room_Location">
+          <End Role="Location" Type="MIDASGBXModel.Store.Location" Multiplicity="1" />
+          <End Role="Room" Type="MIDASGBXModel.Store.Room" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Specialty">
+            <Principal Role="Location">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="SpecialtyDetails">
-              <PropertyRef Name="SpecialtyId" />
+            <Dependent Role="Room">
+              <PropertyRef Name="LocationID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SpecialtyDetails_Specialty1">
-          <End Role="Specialty" Type="Self.Specialty" Multiplicity="1" />
-          <End Role="SpecialtyDetails" Type="Self.SpecialtyDetails" Multiplicity="*" />
+        <Association Name="FK_Room_RoomTest">
+          <End Role="RoomTest" Type="MIDASGBXModel.Store.RoomTest" Multiplicity="1" />
+          <End Role="Room" Type="MIDASGBXModel.Store.Room" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Specialty">
+            <Principal Role="RoomTest">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="SpecialtyDetails">
-              <PropertyRef Name="SpecialtyId" />
+            <Dependent Role="Room">
+              <PropertyRef Name="RoomTestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Room_Schedule">
+          <End Role="Schedule" Type="MIDASGBXModel.Store.Schedule" Multiplicity="0..1" />
+          <End Role="Room" Type="MIDASGBXModel.Store.Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Room">
+              <PropertyRef Name="ScheduleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScheduleDetail_Schedule">
+          <End Role="Schedule" Type="MIDASGBXModel.Store.Schedule" Multiplicity="1" />
+          <End Role="ScheduleDetail" Type="MIDASGBXModel.Store.ScheduleDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ScheduleDetail">
+              <PropertyRef Name="ScheduleID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_User_AddressInfo">
-          <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="1" />
-          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <End Role="AddressInfo" Type="MIDASGBXModel.Store.AddressInfo" Multiplicity="1" />
+          <End Role="User" Type="MIDASGBXModel.Store.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AddressInfo">
               <PropertyRef Name="id" />
@@ -778,8 +913,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_User_ContactInfo">
-          <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="1" />
-          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <End Role="ContactInfo" Type="MIDASGBXModel.Store.ContactInfo" Multiplicity="1" />
+          <End Role="User" Type="MIDASGBXModel.Store.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ContactInfo">
               <PropertyRef Name="id" />
@@ -790,8 +925,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserCompany_Company">
-          <End Role="Company" Type="Self.Company" Multiplicity="1" />
-          <End Role="UserCompany" Type="Self.UserCompany" Multiplicity="*" />
+          <End Role="Company" Type="MIDASGBXModel.Store.Company" Multiplicity="1" />
+          <End Role="UserCompany" Type="MIDASGBXModel.Store.UserCompany" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="id" />
@@ -802,8 +937,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserCompany_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="UserCompany" Type="Self.UserCompany" Multiplicity="*" />
+          <End Role="User" Type="MIDASGBXModel.Store.User" Multiplicity="1" />
+          <End Role="UserCompany" Type="MIDASGBXModel.Store.UserCompany" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="id" />
@@ -813,21 +948,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserCompanyRole_Role">
-          <End Role="Role" Type="Self.Role" Multiplicity="1" />
-          <End Role="UserCompanyRole" Type="Self.UserCompanyRole" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Role">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="UserCompanyRole">
-              <PropertyRef Name="RoleID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserCompanyRole_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="UserCompanyRole" Type="Self.UserCompanyRole" Multiplicity="*" />
+          <End Role="User" Type="MIDASGBXModel.Store.User" Multiplicity="1" />
+          <End Role="UserCompanyRole" Type="MIDASGBXModel.Store.UserCompanyRole" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="id" />
@@ -837,210 +960,192 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserToken_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="UserToken" Type="Self.UserToken" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="UserToken">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="MIDASGBXModelStoreContainer">
-          <EntitySet Name="AddressInfo" EntityType="Self.AddressInfo" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CompanySpecialtyDetails" EntityType="Self.CompanySpecialtyDetails" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CompanyType" EntityType="Self.CompanyType" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ContactInfo" EntityType="Self.ContactInfo" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="DoctorLocationSchedule" EntityType="Self.DoctorLocationSchedule" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="DoctorSpecialities" EntityType="Self.DoctorSpecialities" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="EmailFields" EntityType="Self.EmailFields" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="EmailProfile" EntityType="Self.EmailProfile" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="EmailTemplate" EntityType="Self.EmailTemplate" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Invitation" EntityType="Self.Invitation" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="InvitationType" EntityType="Self.InvitationType" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="LocationSchedule" EntityType="Self.LocationSchedule" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="MedicalProvider" EntityType="Self.MedicalProvider" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="OTP" EntityType="Self.OTP" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PasswordToken" EntityType="Self.PasswordToken" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Schedule" EntityType="Self.Schedule" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="SpecialityDetails" EntityType="Self.SpecialityDetails" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Specialty" EntityType="Self.Specialty" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="SpecialtyDetails" EntityType="Self.SpecialtyDetails" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="SubscriptionPlan" EntityType="Self.SubscriptionPlan" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserCompany" EntityType="Self.UserCompany" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserCompanyRole" EntityType="Self.UserCompanyRole" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserToken" EntityType="Self.UserToken" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Company_AddressInfo" Association="Self.FK_Company_AddressInfo">
-            <End Role="AddressInfo" EntitySet="AddressInfo" />
-            <End Role="Company" EntitySet="Company" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Company_CompanyType" Association="Self.FK_Company_CompanyType">
-            <End Role="CompanyType" EntitySet="CompanyType" />
-            <End Role="Company" EntitySet="Company" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Company_ContactInfo" Association="Self.FK_Company_ContactInfo">
-            <End Role="ContactInfo" EntitySet="ContactInfo" />
-            <End Role="Company" EntitySet="Company" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Company_SubscriptionPlan" Association="Self.FK_Company_SubscriptionPlan">
-            <End Role="SubscriptionPlan" EntitySet="SubscriptionPlan" />
-            <End Role="Company" EntitySet="Company" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CompanySpecialtyDetails_Company" Association="Self.FK_CompanySpecialtyDetails_Company">
-            <End Role="Company" EntitySet="Company" />
-            <End Role="CompanySpecialtyDetails" EntitySet="CompanySpecialtyDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CompanySpecialtyDetails_Specialty" Association="Self.FK_CompanySpecialtyDetails_Specialty">
-            <End Role="Specialty" EntitySet="Specialty" />
-            <End Role="CompanySpecialtyDetails" EntitySet="CompanySpecialtyDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Doctor_User" Association="Self.FK_Doctor_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="Doctor" EntitySet="Doctor" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorLocationSchedule_Doctor" Association="Self.FK_DoctorLocationSchedule_Doctor">
-            <End Role="Location" EntitySet="Location" />
-            <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedule" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorLocationSchedule_Doctor1" Association="Self.FK_DoctorLocationSchedule_Doctor1">
-            <End Role="Doctor" EntitySet="Doctor" />
-            <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedule" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorLocationSchedule_Schedule" Association="Self.FK_DoctorLocationSchedule_Schedule">
-            <End Role="Schedule" EntitySet="Schedule" />
-            <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedule" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorSpecialities_Doctor" Association="Self.FK_DoctorSpecialities_Doctor">
-            <End Role="Doctor" EntitySet="Doctor" />
-            <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorSpecialities_Specialty" Association="Self.FK_DoctorSpecialities_Specialty">
-            <End Role="Specialty" EntitySet="Specialty" />
-            <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Invitation_Company" Association="Self.FK_Invitation_Company">
-            <End Role="Company" EntitySet="Company" />
-            <End Role="Invitation" EntitySet="Invitation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Invitation_User_Invitation" Association="Self.FK_Invitation_User_Invitation">
-            <End Role="User" EntitySet="User" />
-            <End Role="Invitation" EntitySet="Invitation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Location_AddressInfo" Association="Self.FK_Location_AddressInfo">
-            <End Role="AddressInfo" EntitySet="AddressInfo" />
-            <End Role="Location" EntitySet="Location" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Location_Company" Association="Self.FK_Location_Company">
-            <End Role="Company" EntitySet="Company" />
-            <End Role="Location" EntitySet="Location" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Location_ContactInfo" Association="Self.FK_Location_ContactInfo">
-            <End Role="ContactInfo" EntitySet="ContactInfo" />
-            <End Role="Location" EntitySet="Location" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LocationSchedule_Location" Association="Self.FK_LocationSchedule_Location">
-            <End Role="Location" EntitySet="Location" />
-            <End Role="LocationSchedule" EntitySet="LocationSchedule" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LocationSchedule_Schedule" Association="Self.FK_LocationSchedule_Schedule">
-            <End Role="Schedule" EntitySet="Schedule" />
-            <End Role="LocationSchedule" EntitySet="LocationSchedule" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MedicalProvider_Company" Association="Self.FK_MedicalProvider_Company">
-            <End Role="Company" EntitySet="Company" />
-            <End Role="MedicalProvider" EntitySet="MedicalProvider" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SpecialityDetails_Specialty" Association="Self.FK_SpecialityDetails_Specialty">
-            <End Role="Specialty" EntitySet="Specialty" />
-            <End Role="SpecialityDetails" EntitySet="SpecialityDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Specialty_Specialty" Association="Self.FK_Specialty_Specialty">
-            <End Role="Specialty" EntitySet="Specialty" />
-            <End Role="Specialty1" EntitySet="Specialty" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SpecialtyDetails_Specialty" Association="Self.FK_SpecialtyDetails_Specialty">
-            <End Role="Specialty" EntitySet="Specialty" />
-            <End Role="SpecialtyDetails" EntitySet="SpecialtyDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SpecialtyDetails_Specialty1" Association="Self.FK_SpecialtyDetails_Specialty1">
-            <End Role="Specialty" EntitySet="Specialty" />
-            <End Role="SpecialtyDetails" EntitySet="SpecialtyDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_User_AddressInfo" Association="Self.FK_User_AddressInfo">
-            <End Role="AddressInfo" EntitySet="AddressInfo" />
-            <End Role="User" EntitySet="User" />
-          </AssociationSet>
-          <AssociationSet Name="FK_User_ContactInfo" Association="Self.FK_User_ContactInfo">
-            <End Role="ContactInfo" EntitySet="ContactInfo" />
-            <End Role="User" EntitySet="User" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserCompany_Company" Association="Self.FK_UserCompany_Company">
-            <End Role="Company" EntitySet="Company" />
-            <End Role="UserCompany" EntitySet="UserCompany" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserCompany_User" Association="Self.FK_UserCompany_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="UserCompany" EntitySet="UserCompany" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserCompanyRole_Role" Association="Self.FK_UserCompanyRole_Role">
-            <End Role="Role" EntitySet="Role" />
-            <End Role="UserCompanyRole" EntitySet="UserCompanyRole" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserCompanyRole_User" Association="Self.FK_UserCompanyRole_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="UserCompanyRole" EntitySet="UserCompanyRole" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserToken_User" Association="Self.FK_UserToken_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="UserToken" EntitySet="UserToken" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="MIDASGBXModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="MIDASGBXModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="MIDASGBXEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="AddressInfoes" EntityType="MIDASGBXModel.AddressInfo" />
+          <EntitySet Name="Companies" EntityType="MIDASGBXModel.Company" />
+          <EntitySet Name="CompanySpecialtyDetails" EntityType="MIDASGBXModel.CompanySpecialtyDetail" />
+          <EntitySet Name="CompanyTypes" EntityType="MIDASGBXModel.CompanyType" />
+          <EntitySet Name="ContactInfoes" EntityType="MIDASGBXModel.ContactInfo" />
+          <EntitySet Name="Doctors" EntityType="MIDASGBXModel.Doctor" />
+          <EntitySet Name="DoctorLocationSchedules" EntityType="MIDASGBXModel.DoctorLocationSchedule" />
+          <EntitySet Name="DoctorSpecialities" EntityType="MIDASGBXModel.DoctorSpeciality" />
+          <EntitySet Name="Invitations" EntityType="MIDASGBXModel.Invitation" />
+          <EntitySet Name="InvitationTypes" EntityType="MIDASGBXModel.InvitationType" />
+          <EntitySet Name="Locations" EntityType="MIDASGBXModel.Location" />
+          <EntitySet Name="Logs" EntityType="MIDASGBXModel.Log" />
+          <EntitySet Name="OTPs" EntityType="MIDASGBXModel.OTP" />
+          <EntitySet Name="PasswordTokens" EntityType="MIDASGBXModel.PasswordToken" />
+          <EntitySet Name="Patients" EntityType="MIDASGBXModel.Patient" />
+          <EntitySet Name="Rooms" EntityType="MIDASGBXModel.Room" />
+          <EntitySet Name="RoomTests" EntityType="MIDASGBXModel.RoomTest" />
+          <EntitySet Name="Schedules" EntityType="MIDASGBXModel.Schedule" />
+          <EntitySet Name="ScheduleDetails" EntityType="MIDASGBXModel.ScheduleDetail" />
+          <EntitySet Name="SpecialityDetails" EntityType="MIDASGBXModel.SpecialityDetail" />
+          <EntitySet Name="Specialties" EntityType="MIDASGBXModel.Specialty" />
+          <EntitySet Name="SpecialtyDetails" EntityType="MIDASGBXModel.SpecialtyDetail" />
+          <EntitySet Name="SubscriptionPlans" EntityType="MIDASGBXModel.SubscriptionPlan" />
+          <EntitySet Name="sysdiagrams" EntityType="MIDASGBXModel.sysdiagram" />
+          <EntitySet Name="Users" EntityType="MIDASGBXModel.User" />
+          <EntitySet Name="UserCompanies" EntityType="MIDASGBXModel.UserCompany" />
+          <EntitySet Name="UserCompanyRoles" EntityType="MIDASGBXModel.UserCompanyRole" />
+          <EntitySet Name="UserTypes" EntityType="MIDASGBXModel.UserType" />
+          <AssociationSet Name="FK_Company_AddressInfo" Association="MIDASGBXModel.FK_Company_AddressInfo">
+            <End Role="AddressInfo" EntitySet="AddressInfoes" />
+            <End Role="Company" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Location_AddressInfo" Association="MIDASGBXModel.FK_Location_AddressInfo">
+            <End Role="AddressInfo" EntitySet="AddressInfoes" />
+            <End Role="Location" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_AddressInfo" Association="MIDASGBXModel.FK_User_AddressInfo">
+            <End Role="AddressInfo" EntitySet="AddressInfoes" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Company_CompanyType" Association="MIDASGBXModel.FK_Company_CompanyType">
+            <End Role="CompanyType" EntitySet="CompanyTypes" />
+            <End Role="Company" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Company_ContactInfo" Association="MIDASGBXModel.FK_Company_ContactInfo">
+            <End Role="ContactInfo" EntitySet="ContactInfoes" />
+            <End Role="Company" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Company_SubscriptionPlan" Association="MIDASGBXModel.FK_Company_SubscriptionPlan">
+            <End Role="SubscriptionPlan" EntitySet="SubscriptionPlans" />
+            <End Role="Company" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanySpecialtyDetails_Company" Association="MIDASGBXModel.FK_CompanySpecialtyDetails_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="CompanySpecialtyDetails" EntitySet="CompanySpecialtyDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invitation_Company" Association="MIDASGBXModel.FK_Invitation_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Invitation" EntitySet="Invitations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Location_Company" Association="MIDASGBXModel.FK_Location_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Location" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_Company" Association="MIDASGBXModel.FK_Patient_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Patient" EntitySet="Patients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserCompany_Company" Association="MIDASGBXModel.FK_UserCompany_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="UserCompany" EntitySet="UserCompanies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanySpecialtyDetails_Specialty" Association="MIDASGBXModel.FK_CompanySpecialtyDetails_Specialty">
+            <End Role="Specialty" EntitySet="Specialties" />
+            <End Role="CompanySpecialtyDetails" EntitySet="CompanySpecialtyDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Location_ContactInfo" Association="MIDASGBXModel.FK_Location_ContactInfo">
+            <End Role="ContactInfo" EntitySet="ContactInfoes" />
+            <End Role="Location" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_ContactInfo" Association="MIDASGBXModel.FK_User_ContactInfo">
+            <End Role="ContactInfo" EntitySet="ContactInfoes" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Doctor_User" Association="MIDASGBXModel.FK_Doctor_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Doctor" EntitySet="Doctors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DoctorLocationSchedule_Doctor" Association="MIDASGBXModel.FK_DoctorLocationSchedule_Doctor">
+            <End Role="Doctor" EntitySet="Doctors" />
+            <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DoctorLocationSchedule_Location" Association="MIDASGBXModel.FK_DoctorLocationSchedule_Location">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DoctorLocationSchedule_Schedule" Association="MIDASGBXModel.FK_DoctorLocationSchedule_Schedule">
+            <End Role="Schedule" EntitySet="Schedules" />
+            <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DoctorSpecialities_Doctor" Association="MIDASGBXModel.FK_DoctorSpecialities_Doctor">
+            <End Role="User" EntitySet="Users" />
+            <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DoctorSpecialities_Specialty" Association="MIDASGBXModel.FK_DoctorSpecialities_Specialty">
+            <End Role="Specialty" EntitySet="Specialties" />
+            <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invitation_User_Invitation" Association="MIDASGBXModel.FK_Invitation_User_Invitation">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Invitation" EntitySet="Invitations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Location_Schedule" Association="MIDASGBXModel.FK_Location_Schedule">
+            <End Role="Schedule" EntitySet="Schedules" />
+            <End Role="Location" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_Location" Association="MIDASGBXModel.FK_Patient_Location">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="Patient" EntitySet="Patients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_Location" Association="MIDASGBXModel.FK_Room_Location">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="Room" EntitySet="Rooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_User" Association="MIDASGBXModel.FK_Patient_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Patient" EntitySet="Patients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_RoomTest" Association="MIDASGBXModel.FK_Room_RoomTest">
+            <End Role="RoomTest" EntitySet="RoomTests" />
+            <End Role="Room" EntitySet="Rooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_Schedule" Association="MIDASGBXModel.FK_Room_Schedule">
+            <End Role="Schedule" EntitySet="Schedules" />
+            <End Role="Room" EntitySet="Rooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScheduleDetail_Schedule" Association="MIDASGBXModel.FK_ScheduleDetail_Schedule">
+            <End Role="Schedule" EntitySet="Schedules" />
+            <End Role="ScheduleDetail" EntitySet="ScheduleDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserCompany_User" Association="MIDASGBXModel.FK_UserCompany_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserCompany" EntitySet="UserCompanies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserCompanyRole_User" Association="MIDASGBXModel.FK_UserCompanyRole_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserCompanyRole" EntitySet="UserCompanyRoles" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="AddressInfo">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Address1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Address2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ZipCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Country" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Address1" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Address2" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="City" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="State" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="ZipCode" Type="String" MaxLength="10" Unicode="true" FixedLength="false" />
+          <Property Name="Country" Type="String" MaxLength="10" Unicode="true" FixedLength="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Companies" Relationship="Self.FK_Company_AddressInfo" FromRole="AddressInfo" ToRole="Company" />
-          <NavigationProperty Name="Locations" Relationship="Self.FK_Location_AddressInfo" FromRole="AddressInfo" ToRole="Location" />
-          <NavigationProperty Name="Users" Relationship="Self.FK_User_AddressInfo" FromRole="AddressInfo" ToRole="User" />
+          <NavigationProperty Name="Companies" Relationship="MIDASGBXModel.FK_Company_AddressInfo" FromRole="AddressInfo" ToRole="Company" />
+          <NavigationProperty Name="Locations" Relationship="MIDASGBXModel.FK_Location_AddressInfo" FromRole="AddressInfo" ToRole="Location" />
+          <NavigationProperty Name="Users" Relationship="MIDASGBXModel.FK_User_AddressInfo" FromRole="AddressInfo" ToRole="User" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="Status" Type="Byte" Nullable="false" />
           <Property Name="CompanyType" Type="Int32" Nullable="false" />
           <Property Name="SubscriptionPlanType" Type="Int32" Nullable="false" />
-          <Property Name="TaxID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TaxID" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
           <Property Name="AddressId" Type="Int32" Nullable="false" />
           <Property Name="ContactInfoID" Type="Int32" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
@@ -1048,21 +1153,21 @@
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="AddressInfo" Relationship="Self.FK_Company_AddressInfo" FromRole="Company" ToRole="AddressInfo" />
-          <NavigationProperty Name="CompanyType1" Relationship="Self.FK_Company_CompanyType" FromRole="Company" ToRole="CompanyType" />
-          <NavigationProperty Name="ContactInfo" Relationship="Self.FK_Company_ContactInfo" FromRole="Company" ToRole="ContactInfo" />
-          <NavigationProperty Name="SubscriptionPlan" Relationship="Self.FK_Company_SubscriptionPlan" FromRole="Company" ToRole="SubscriptionPlan" />
-          <NavigationProperty Name="CompanySpecialtyDetails" Relationship="Self.FK_CompanySpecialtyDetails_Company" FromRole="Company" ToRole="CompanySpecialtyDetails" />
-          <NavigationProperty Name="Invitations" Relationship="Self.FK_Invitation_Company" FromRole="Company" ToRole="Invitation" />
-          <NavigationProperty Name="Locations" Relationship="Self.FK_Location_Company" FromRole="Company" ToRole="Location" />
-          <NavigationProperty Name="MedicalProviders" Relationship="Self.FK_MedicalProvider_Company" FromRole="Company" ToRole="MedicalProvider" />
-          <NavigationProperty Name="UserCompanies" Relationship="Self.FK_UserCompany_Company" FromRole="Company" ToRole="UserCompany" />
+          <NavigationProperty Name="AddressInfo" Relationship="MIDASGBXModel.FK_Company_AddressInfo" FromRole="Company" ToRole="AddressInfo" />
+          <NavigationProperty Name="CompanyType1" Relationship="MIDASGBXModel.FK_Company_CompanyType" FromRole="Company" ToRole="CompanyType" />
+          <NavigationProperty Name="ContactInfo" Relationship="MIDASGBXModel.FK_Company_ContactInfo" FromRole="Company" ToRole="ContactInfo" />
+          <NavigationProperty Name="SubscriptionPlan" Relationship="MIDASGBXModel.FK_Company_SubscriptionPlan" FromRole="Company" ToRole="SubscriptionPlan" />
+          <NavigationProperty Name="CompanySpecialtyDetails" Relationship="MIDASGBXModel.FK_CompanySpecialtyDetails_Company" FromRole="Company" ToRole="CompanySpecialtyDetails" />
+          <NavigationProperty Name="Invitations" Relationship="MIDASGBXModel.FK_Invitation_Company" FromRole="Company" ToRole="Invitation" />
+          <NavigationProperty Name="Locations" Relationship="MIDASGBXModel.FK_Location_Company" FromRole="Company" ToRole="Location" />
+          <NavigationProperty Name="Patients" Relationship="MIDASGBXModel.FK_Patient_Company" FromRole="Company" ToRole="Patient" />
+          <NavigationProperty Name="UserCompanies" Relationship="MIDASGBXModel.FK_UserCompany_Company" FromRole="Company" ToRole="UserCompany" />
         </EntityType>
         <EntityType Name="CompanySpecialtyDetail">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="SpecialtyId" Type="Int32" />
           <Property Name="CompanyID" Type="Int32" />
           <Property Name="ReevalDays" Type="Int32" />
@@ -1079,86 +1184,84 @@
           <Property Name="CreateDate" Type="DateTime" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Company" Relationship="Self.FK_CompanySpecialtyDetails_Company" FromRole="CompanySpecialtyDetails" ToRole="Company" />
-          <NavigationProperty Name="Specialty" Relationship="Self.FK_CompanySpecialtyDetails_Specialty" FromRole="CompanySpecialtyDetails" ToRole="Specialty" />
+          <NavigationProperty Name="Company" Relationship="MIDASGBXModel.FK_CompanySpecialtyDetails_Company" FromRole="CompanySpecialtyDetails" ToRole="Company" />
+          <NavigationProperty Name="Specialty" Relationship="MIDASGBXModel.FK_CompanySpecialtyDetails_Specialty" FromRole="CompanySpecialtyDetails" ToRole="Specialty" />
         </EntityType>
         <EntityType Name="CompanyType">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Companies" Relationship="Self.FK_Company_CompanyType" FromRole="CompanyType" ToRole="Company" />
+          <NavigationProperty Name="Companies" Relationship="MIDASGBXModel.FK_Company_CompanyType" FromRole="CompanyType" ToRole="Company" />
         </EntityType>
         <EntityType Name="ContactInfo">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="CellPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EmailAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="HomePhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WorkPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FaxNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="CellPhone" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="EmailAddress" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="HomePhone" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="WorkPhone" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="FaxNo" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Companies" Relationship="Self.FK_Company_ContactInfo" FromRole="ContactInfo" ToRole="Company" />
-          <NavigationProperty Name="Locations" Relationship="Self.FK_Location_ContactInfo" FromRole="ContactInfo" ToRole="Location" />
-          <NavigationProperty Name="Users" Relationship="Self.FK_User_ContactInfo" FromRole="ContactInfo" ToRole="User" />
+          <NavigationProperty Name="Companies" Relationship="MIDASGBXModel.FK_Company_ContactInfo" FromRole="ContactInfo" ToRole="Company" />
+          <NavigationProperty Name="Locations" Relationship="MIDASGBXModel.FK_Location_ContactInfo" FromRole="ContactInfo" ToRole="Location" />
+          <NavigationProperty Name="Users" Relationship="MIDASGBXModel.FK_User_ContactInfo" FromRole="ContactInfo" ToRole="User" />
         </EntityType>
         <EntityType Name="Doctor">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LicenseNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WCBAuthorization" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WcbRatingCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="NPI" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="LicenseNumber" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="WCBAuthorization" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="WcbRatingCode" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="NPI" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="TaxType" Type="Byte" />
-          <Property Name="Title" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Title" Type="String" MaxLength="10" Unicode="true" FixedLength="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="UserID" Type="Int32" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Doctor_User" FromRole="Doctor" ToRole="User" />
-          <NavigationProperty Name="DoctorLocationSchedules" Relationship="Self.FK_DoctorLocationSchedule_Doctor1" FromRole="Doctor" ToRole="DoctorLocationSchedule" />
-          <NavigationProperty Name="DoctorSpecialities" Relationship="Self.FK_DoctorSpecialities_Doctor" FromRole="Doctor" ToRole="DoctorSpecialities" />
+          <NavigationProperty Name="User" Relationship="MIDASGBXModel.FK_Doctor_User" FromRole="Doctor" ToRole="User" />
+          <NavigationProperty Name="DoctorLocationSchedules" Relationship="MIDASGBXModel.FK_DoctorLocationSchedule_Doctor" FromRole="Doctor" ToRole="DoctorLocationSchedule" />
         </EntityType>
         <EntityType Name="DoctorLocationSchedule">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="DoctorID" Type="Int32" Nullable="false" />
           <Property Name="LocationID" Type="Int32" Nullable="false" />
           <Property Name="ScheduleID" Type="Int32" Nullable="false" />
-          <Property Name="DoctorID" Type="Int32" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Doctor" Relationship="Self.FK_DoctorLocationSchedule_Doctor1" FromRole="DoctorLocationSchedule" ToRole="Doctor" />
-          <NavigationProperty Name="Location" Relationship="Self.FK_DoctorLocationSchedule_Doctor" FromRole="DoctorLocationSchedule" ToRole="Location" />
-          <NavigationProperty Name="Schedule" Relationship="Self.FK_DoctorLocationSchedule_Schedule" FromRole="DoctorLocationSchedule" ToRole="Schedule" />
+          <NavigationProperty Name="Doctor" Relationship="MIDASGBXModel.FK_DoctorLocationSchedule_Doctor" FromRole="DoctorLocationSchedule" ToRole="Doctor" />
+          <NavigationProperty Name="Location" Relationship="MIDASGBXModel.FK_DoctorLocationSchedule_Location" FromRole="DoctorLocationSchedule" ToRole="Location" />
+          <NavigationProperty Name="Schedule" Relationship="MIDASGBXModel.FK_DoctorLocationSchedule_Schedule" FromRole="DoctorLocationSchedule" ToRole="Schedule" />
         </EntityType>
         <EntityType Name="DoctorSpeciality">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="DoctorID" Type="Int32" Nullable="false" />
           <Property Name="SpecialityID" Type="Int32" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
@@ -1166,59 +1269,14 @@
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Doctor" Relationship="Self.FK_DoctorSpecialities_Doctor" FromRole="DoctorSpecialities" ToRole="Doctor" />
-          <NavigationProperty Name="Specialty" Relationship="Self.FK_DoctorSpecialities_Specialty" FromRole="DoctorSpecialities" ToRole="Specialty" />
-        </EntityType>
-        <EntityType Name="EmailField">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FieldName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="SQLQuery" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdateByUserID" Type="Int32" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-        </EntityType>
-        <EntityType Name="EmailProfile">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProfileName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="SMTPServer" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="SMTPPort" Type="Int32" />
-          <Property Name="SSLEnabled" Type="Boolean" />
-          <Property Name="AuthenticationUsername" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="SMTPAuthenticationRequired" Type="Boolean" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdateByUserID" Type="Int32" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-        </EntityType>
-        <EntityType Name="EmailTemplate">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="IsHTML" Type="Boolean" />
-          <Property Name="ProfileID" Type="Int32" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdateByUserID" Type="Int32" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="User" Relationship="MIDASGBXModel.FK_DoctorSpecialities_Doctor" FromRole="DoctorSpecialities" ToRole="User" />
+          <NavigationProperty Name="Specialty" Relationship="MIDASGBXModel.FK_DoctorSpecialities_Specialty" FromRole="DoctorSpecialities" ToRole="Specialty" />
         </EntityType>
         <EntityType Name="Invitation">
           <Key>
             <PropertyRef Name="InvitationID" />
           </Key>
-          <Property Name="InvitationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvitationID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="CompanyID" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="UniqueID" Type="Guid" Nullable="false" />
@@ -1229,15 +1287,15 @@
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Company" Relationship="Self.FK_Invitation_Company" FromRole="Invitation" ToRole="Company" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Invitation_User_Invitation" FromRole="Invitation" ToRole="User" />
+          <NavigationProperty Name="Company" Relationship="MIDASGBXModel.FK_Invitation_Company" FromRole="Invitation" ToRole="Company" />
+          <NavigationProperty Name="User" Relationship="MIDASGBXModel.FK_Invitation_User_Invitation" FromRole="Invitation" ToRole="User" />
         </EntityType>
         <EntityType Name="InvitationType">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
@@ -1248,9 +1306,10 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
           <Property Name="CompanyID" Type="Int32" Nullable="false" />
+          <Property Name="ScheduleID" Type="Int32" />
           <Property Name="AddressInfoID" Type="Int32" Nullable="false" />
           <Property Name="ContactInfoID" Type="Int32" Nullable="false" />
           <Property Name="LocationType" Type="Byte" Nullable="false" />
@@ -1260,66 +1319,37 @@
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="AddressInfo" Relationship="Self.FK_Location_AddressInfo" FromRole="Location" ToRole="AddressInfo" />
-          <NavigationProperty Name="Company" Relationship="Self.FK_Location_Company" FromRole="Location" ToRole="Company" />
-          <NavigationProperty Name="ContactInfo" Relationship="Self.FK_Location_ContactInfo" FromRole="Location" ToRole="ContactInfo" />
-          <NavigationProperty Name="DoctorLocationSchedules" Relationship="Self.FK_DoctorLocationSchedule_Doctor" FromRole="Location" ToRole="DoctorLocationSchedule" />
-          <NavigationProperty Name="LocationSchedules" Relationship="Self.FK_LocationSchedule_Location" FromRole="Location" ToRole="LocationSchedule" />
-        </EntityType>
-        <EntityType Name="LocationSchedule">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LocationID" Type="Int32" Nullable="false" />
-          <Property Name="ScheduleID" Type="Int32" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdateByUserID" Type="Int32" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Location" Relationship="Self.FK_LocationSchedule_Location" FromRole="LocationSchedule" ToRole="Location" />
-          <NavigationProperty Name="Schedule" Relationship="Self.FK_LocationSchedule_Schedule" FromRole="LocationSchedule" ToRole="Schedule" />
+          <NavigationProperty Name="AddressInfo" Relationship="MIDASGBXModel.FK_Location_AddressInfo" FromRole="Location" ToRole="AddressInfo" />
+          <NavigationProperty Name="Company" Relationship="MIDASGBXModel.FK_Location_Company" FromRole="Location" ToRole="Company" />
+          <NavigationProperty Name="ContactInfo" Relationship="MIDASGBXModel.FK_Location_ContactInfo" FromRole="Location" ToRole="ContactInfo" />
+          <NavigationProperty Name="DoctorLocationSchedules" Relationship="MIDASGBXModel.FK_DoctorLocationSchedule_Location" FromRole="Location" ToRole="DoctorLocationSchedule" />
+          <NavigationProperty Name="Schedule" Relationship="MIDASGBXModel.FK_Location_Schedule" FromRole="Location" ToRole="Schedule" />
+          <NavigationProperty Name="Patients" Relationship="MIDASGBXModel.FK_Patient_Location" FromRole="Location" ToRole="Patient" />
+          <NavigationProperty Name="Rooms" Relationship="MIDASGBXModel.FK_Room_Location" FromRole="Location" ToRole="Room" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RequestID" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ResponseID" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="IpAddress" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="MachineName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="RequestID" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="ResponseID" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="IpAddress" Type="String" Nullable="false" MaxLength="15" Unicode="true" FixedLength="false" />
+          <Property Name="Country" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="MachineName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="RequestURL" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RequestURL" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-        </EntityType>
-        <EntityType Name="MedicalProvider">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="NPI" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CompanyID" Type="Int32" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdateByUserID" Type="Int32" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Company" Relationship="Self.FK_MedicalProvider_Company" FromRole="MedicalProvider" ToRole="Company" />
         </EntityType>
         <EntityType Name="OTP">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="Pin" Type="Int32" Nullable="false" />
           <Property Name="OTP1" Type="Int32" Nullable="false" />
@@ -1333,8 +1363,8 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
           <Property Name="TokenHash" Type="Guid" Nullable="false" />
           <Property Name="IsTokenUsed" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
@@ -1343,44 +1373,103 @@
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
         </EntityType>
-        <EntityType Name="Role">
+        <EntityType Name="Patient">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="RoleType" Type="Byte" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientID" Type="Int32" Nullable="false" />
+          <Property Name="SSN" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="WCBNo" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="JobTitle" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="WorkActivities" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="CarrierCaseNo" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="ChartNo" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="CompanyID" Type="Int32" Nullable="false" />
+          <Property Name="LocationID" Type="Int32" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="UserCompanyRoles" Relationship="Self.FK_UserCompanyRole_Role" FromRole="Role" ToRole="UserCompanyRole" />
+          <NavigationProperty Name="Company" Relationship="MIDASGBXModel.FK_Patient_Company" FromRole="Patient" ToRole="Company" />
+          <NavigationProperty Name="Location" Relationship="MIDASGBXModel.FK_Patient_Location" FromRole="Patient" ToRole="Location" />
+          <NavigationProperty Name="User" Relationship="MIDASGBXModel.FK_Patient_User" FromRole="Patient" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="ContactPersonName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Phone" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="ScheduleID" Type="Int32" />
+          <Property Name="LocationID" Type="Int32" Nullable="false" />
+          <Property Name="RoomTestID" Type="Int32" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Location" Relationship="MIDASGBXModel.FK_Room_Location" FromRole="Room" ToRole="Location" />
+          <NavigationProperty Name="RoomTest" Relationship="MIDASGBXModel.FK_Room_RoomTest" FromRole="Room" ToRole="RoomTest" />
+          <NavigationProperty Name="Schedule" Relationship="MIDASGBXModel.FK_Room_Schedule" FromRole="Room" ToRole="Schedule" />
+        </EntityType>
+        <EntityType Name="RoomTest">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Rooms" Relationship="MIDASGBXModel.FK_Room_RoomTest" FromRole="RoomTest" ToRole="Room" />
         </EntityType>
         <EntityType Name="Schedule">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="IsDefault" Type="Boolean" Nullable="false" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="DoctorLocationSchedules" Relationship="MIDASGBXModel.FK_DoctorLocationSchedule_Schedule" FromRole="Schedule" ToRole="DoctorLocationSchedule" />
+          <NavigationProperty Name="Locations" Relationship="MIDASGBXModel.FK_Location_Schedule" FromRole="Schedule" ToRole="Location" />
+          <NavigationProperty Name="Rooms" Relationship="MIDASGBXModel.FK_Room_Schedule" FromRole="Schedule" ToRole="Room" />
+          <NavigationProperty Name="ScheduleDetails" Relationship="MIDASGBXModel.FK_ScheduleDetail_Schedule" FromRole="Schedule" ToRole="ScheduleDetail" />
+        </EntityType>
+        <EntityType Name="ScheduleDetail">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="ScheduleID" Type="Int32" Nullable="false" />
           <Property Name="DayOfWeek" Type="Int32" Nullable="false" />
           <Property Name="SlotStart" Type="Time" Nullable="false" Precision="7" />
           <Property Name="SlotEnd" Type="Time" Nullable="false" Precision="7" />
           <Property Name="SlotDate" Type="DateTime" Precision="7" />
+          <Property Name="Status" Type="Byte" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="DoctorLocationSchedules" Relationship="Self.FK_DoctorLocationSchedule_Schedule" FromRole="Schedule" ToRole="DoctorLocationSchedule" />
-          <NavigationProperty Name="LocationSchedules" Relationship="Self.FK_LocationSchedule_Schedule" FromRole="Schedule" ToRole="LocationSchedule" />
+          <NavigationProperty Name="Schedule" Relationship="MIDASGBXModel.FK_ScheduleDetail_Schedule" FromRole="ScheduleDetail" ToRole="Schedule" />
         </EntityType>
         <EntityType Name="SpecialityDetail">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="SpecialtyId" Type="Int32" />
           <Property Name="ReevalDays" Type="Int32" />
           <Property Name="ReevalVisitCount" Type="Int32" />
@@ -1396,34 +1485,28 @@
           <Property Name="CreateDate" Type="DateTime" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Specialty" Relationship="Self.FK_SpecialityDetails_Specialty" FromRole="SpecialityDetails" ToRole="Specialty" />
         </EntityType>
         <EntityType Name="Specialty">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="SpecialityCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="SpecialityCode" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="IsUnitApply" Type="Boolean" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="CompanySpecialtyDetails" Relationship="Self.FK_CompanySpecialtyDetails_Specialty" FromRole="Specialty" ToRole="CompanySpecialtyDetails" />
-          <NavigationProperty Name="DoctorSpecialities" Relationship="Self.FK_DoctorSpecialities_Specialty" FromRole="Specialty" ToRole="DoctorSpecialities" />
-          <NavigationProperty Name="SpecialityDetails" Relationship="Self.FK_SpecialityDetails_Specialty" FromRole="Specialty" ToRole="SpecialityDetails" />
-          <NavigationProperty Name="Specialty1" Relationship="Self.FK_Specialty_Specialty" FromRole="Specialty" ToRole="Specialty1" />
-          <NavigationProperty Name="Specialty2" Relationship="Self.FK_Specialty_Specialty" FromRole="Specialty1" ToRole="Specialty" />
-          <NavigationProperty Name="SpecialtyDetails" Relationship="Self.FK_SpecialtyDetails_Specialty" FromRole="Specialty" ToRole="SpecialtyDetails" />
-          <NavigationProperty Name="SpecialtyDetails1" Relationship="Self.FK_SpecialtyDetails_Specialty1" FromRole="Specialty" ToRole="SpecialtyDetails" />
+          <NavigationProperty Name="CompanySpecialtyDetails" Relationship="MIDASGBXModel.FK_CompanySpecialtyDetails_Specialty" FromRole="Specialty" ToRole="CompanySpecialtyDetails" />
+          <NavigationProperty Name="DoctorSpecialities" Relationship="MIDASGBXModel.FK_DoctorSpecialities_Specialty" FromRole="Specialty" ToRole="DoctorSpecialities" />
         </EntityType>
         <EntityType Name="SpecialtyDetail">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="SpecialtyId" Type="Int32" Nullable="false" />
           <Property Name="ReevalDays" Type="Int32" />
           <Property Name="ReevalVisitCount" Type="Int32" />
@@ -1439,39 +1522,47 @@
           <Property Name="CreateDate" Type="DateTime" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Specialty" Relationship="Self.FK_SpecialtyDetails_Specialty" FromRole="SpecialtyDetails" ToRole="Specialty" />
-          <NavigationProperty Name="Specialty1" Relationship="Self.FK_SpecialtyDetails_Specialty1" FromRole="SpecialtyDetails" ToRole="Specialty" />
         </EntityType>
         <EntityType Name="SubscriptionPlan">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Companies" Relationship="Self.FK_Company_SubscriptionPlan" FromRole="SubscriptionPlan" ToRole="Company" />
+          <NavigationProperty Name="Companies" Relationship="MIDASGBXModel.FK_Company_SubscriptionPlan" FromRole="SubscriptionPlan" ToRole="Company" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="Gender" Type="Byte" />
           <Property Name="UserType" Type="Byte" Nullable="false" />
           <Property Name="UserStatus" Type="Byte" />
-          <Property Name="ImageLink" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ImageLink" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
           <Property Name="AddressId" Type="Int32" Nullable="false" />
           <Property Name="ContactInfoId" Type="Int32" Nullable="false" />
           <Property Name="DateOfBirth" Type="DateTime" Precision="7" />
-          <Property Name="Password" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="2000" Unicode="false" FixedLength="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
@@ -1479,19 +1570,20 @@
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="C2FactAuthEmailEnabled" Type="Boolean" />
           <Property Name="C2FactAuthSMSEnabled" Type="Boolean" />
-          <NavigationProperty Name="AddressInfo" Relationship="Self.FK_User_AddressInfo" FromRole="User" ToRole="AddressInfo" />
-          <NavigationProperty Name="ContactInfo" Relationship="Self.FK_User_ContactInfo" FromRole="User" ToRole="ContactInfo" />
-          <NavigationProperty Name="Doctors" Relationship="Self.FK_Doctor_User" FromRole="User" ToRole="Doctor" />
-          <NavigationProperty Name="Invitations" Relationship="Self.FK_Invitation_User_Invitation" FromRole="User" ToRole="Invitation" />
-          <NavigationProperty Name="UserCompanies" Relationship="Self.FK_UserCompany_User" FromRole="User" ToRole="UserCompany" />
-          <NavigationProperty Name="UserCompanyRoles" Relationship="Self.FK_UserCompanyRole_User" FromRole="User" ToRole="UserCompanyRole" />
-          <NavigationProperty Name="UserTokens" Relationship="Self.FK_UserToken_User" FromRole="User" ToRole="UserToken" />
+          <NavigationProperty Name="AddressInfo" Relationship="MIDASGBXModel.FK_User_AddressInfo" FromRole="User" ToRole="AddressInfo" />
+          <NavigationProperty Name="ContactInfo" Relationship="MIDASGBXModel.FK_User_ContactInfo" FromRole="User" ToRole="ContactInfo" />
+          <NavigationProperty Name="Doctors" Relationship="MIDASGBXModel.FK_Doctor_User" FromRole="User" ToRole="Doctor" />
+          <NavigationProperty Name="DoctorSpecialities" Relationship="MIDASGBXModel.FK_DoctorSpecialities_Doctor" FromRole="User" ToRole="DoctorSpecialities" />
+          <NavigationProperty Name="Invitations" Relationship="MIDASGBXModel.FK_Invitation_User_Invitation" FromRole="User" ToRole="Invitation" />
+          <NavigationProperty Name="Patients" Relationship="MIDASGBXModel.FK_Patient_User" FromRole="User" ToRole="Patient" />
+          <NavigationProperty Name="UserCompanies" Relationship="MIDASGBXModel.FK_UserCompany_User" FromRole="User" ToRole="UserCompany" />
+          <NavigationProperty Name="UserCompanyRoles" Relationship="MIDASGBXModel.FK_UserCompanyRole_User" FromRole="User" ToRole="UserCompanyRole" />
         </EntityType>
         <EntityType Name="UserCompany">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="CompanyID" Type="Int32" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
@@ -1499,14 +1591,14 @@
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Company" Relationship="Self.FK_UserCompany_Company" FromRole="UserCompany" ToRole="Company" />
-          <NavigationProperty Name="User" Relationship="Self.FK_UserCompany_User" FromRole="UserCompany" ToRole="User" />
+          <NavigationProperty Name="Company" Relationship="MIDASGBXModel.FK_UserCompany_Company" FromRole="UserCompany" ToRole="Company" />
+          <NavigationProperty Name="User" Relationship="MIDASGBXModel.FK_UserCompany_User" FromRole="UserCompany" ToRole="User" />
         </EntityType>
         <EntityType Name="UserCompanyRole">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="RoleID" Type="Int32" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
@@ -1514,30 +1606,14 @@
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Role" Relationship="Self.FK_UserCompanyRole_Role" FromRole="UserCompanyRole" ToRole="Role" />
-          <NavigationProperty Name="User" Relationship="Self.FK_UserCompanyRole_User" FromRole="UserCompanyRole" ToRole="User" />
-        </EntityType>
-        <EntityType Name="UserToken">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <Property Name="AuthToken" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="IssuedOn" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="ExpiresOn" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdateByUserID" Type="Int32" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="User" Relationship="Self.FK_UserToken_User" FromRole="UserToken" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="MIDASGBXModel.FK_UserCompanyRole_User" FromRole="UserCompanyRole" ToRole="User" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
@@ -1545,8 +1621,8 @@
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
         </EntityType>
         <Association Name="FK_Company_AddressInfo">
-          <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="1" />
-          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <End Role="AddressInfo" Type="MIDASGBXModel.AddressInfo" Multiplicity="1" />
+          <End Role="Company" Type="MIDASGBXModel.Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AddressInfo">
               <PropertyRef Name="id" />
@@ -1557,8 +1633,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Location_AddressInfo">
-          <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="1" />
-          <End Role="Location" Type="Self.Location" Multiplicity="*" />
+          <End Role="AddressInfo" Type="MIDASGBXModel.AddressInfo" Multiplicity="1" />
+          <End Role="Location" Type="MIDASGBXModel.Location" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AddressInfo">
               <PropertyRef Name="id" />
@@ -1569,8 +1645,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_User_AddressInfo">
-          <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="1" />
-          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <End Role="AddressInfo" Type="MIDASGBXModel.AddressInfo" Multiplicity="1" />
+          <End Role="User" Type="MIDASGBXModel.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AddressInfo">
               <PropertyRef Name="id" />
@@ -1581,8 +1657,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Company_CompanyType">
-          <End Role="CompanyType" Type="Self.CompanyType" Multiplicity="1" />
-          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <End Role="CompanyType" Type="MIDASGBXModel.CompanyType" Multiplicity="1" />
+          <End Role="Company" Type="MIDASGBXModel.Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CompanyType">
               <PropertyRef Name="id" />
@@ -1593,8 +1669,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Company_ContactInfo">
-          <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="1" />
-          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <End Role="ContactInfo" Type="MIDASGBXModel.ContactInfo" Multiplicity="1" />
+          <End Role="Company" Type="MIDASGBXModel.Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ContactInfo">
               <PropertyRef Name="id" />
@@ -1605,8 +1681,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Company_SubscriptionPlan">
-          <End Role="SubscriptionPlan" Type="Self.SubscriptionPlan" Multiplicity="1" />
-          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <End Role="SubscriptionPlan" Type="MIDASGBXModel.SubscriptionPlan" Multiplicity="1" />
+          <End Role="Company" Type="MIDASGBXModel.Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SubscriptionPlan">
               <PropertyRef Name="id" />
@@ -1617,8 +1693,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CompanySpecialtyDetails_Company">
-          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
-          <End Role="CompanySpecialtyDetails" Type="Self.CompanySpecialtyDetail" Multiplicity="*" />
+          <End Role="Company" Type="MIDASGBXModel.Company" Multiplicity="0..1" />
+          <End Role="CompanySpecialtyDetails" Type="MIDASGBXModel.CompanySpecialtyDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="id" />
@@ -1629,8 +1705,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Invitation_Company">
-          <End Role="Company" Type="Self.Company" Multiplicity="1" />
-          <End Role="Invitation" Type="Self.Invitation" Multiplicity="*" />
+          <End Role="Company" Type="MIDASGBXModel.Company" Multiplicity="1" />
+          <End Role="Invitation" Type="MIDASGBXModel.Invitation" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="id" />
@@ -1641,8 +1717,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Location_Company">
-          <End Role="Company" Type="Self.Company" Multiplicity="1" />
-          <End Role="Location" Type="Self.Location" Multiplicity="*" />
+          <End Role="Company" Type="MIDASGBXModel.Company" Multiplicity="1" />
+          <End Role="Location" Type="MIDASGBXModel.Location" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="id" />
@@ -1652,21 +1728,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_MedicalProvider_Company">
-          <End Role="Company" Type="Self.Company" Multiplicity="1" />
-          <End Role="MedicalProvider" Type="Self.MedicalProvider" Multiplicity="*" />
+        <Association Name="FK_Patient_Company">
+          <End Role="Company" Type="MIDASGBXModel.Company" Multiplicity="1" />
+          <End Role="Patient" Type="MIDASGBXModel.Patient" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="MedicalProvider">
+            <Dependent Role="Patient">
               <PropertyRef Name="CompanyID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserCompany_Company">
-          <End Role="Company" Type="Self.Company" Multiplicity="1" />
-          <End Role="UserCompany" Type="Self.UserCompany" Multiplicity="*" />
+          <End Role="Company" Type="MIDASGBXModel.Company" Multiplicity="1" />
+          <End Role="UserCompany" Type="MIDASGBXModel.UserCompany" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="id" />
@@ -1677,8 +1753,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CompanySpecialtyDetails_Specialty">
-          <End Role="Specialty" Type="Self.Specialty" Multiplicity="0..1" />
-          <End Role="CompanySpecialtyDetails" Type="Self.CompanySpecialtyDetail" Multiplicity="*" />
+          <End Role="Specialty" Type="MIDASGBXModel.Specialty" Multiplicity="0..1" />
+          <End Role="CompanySpecialtyDetails" Type="MIDASGBXModel.CompanySpecialtyDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Specialty">
               <PropertyRef Name="id" />
@@ -1689,8 +1765,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Location_ContactInfo">
-          <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="1" />
-          <End Role="Location" Type="Self.Location" Multiplicity="*" />
+          <End Role="ContactInfo" Type="MIDASGBXModel.ContactInfo" Multiplicity="1" />
+          <End Role="Location" Type="MIDASGBXModel.Location" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ContactInfo">
               <PropertyRef Name="id" />
@@ -1701,8 +1777,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_User_ContactInfo">
-          <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="1" />
-          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <End Role="ContactInfo" Type="MIDASGBXModel.ContactInfo" Multiplicity="1" />
+          <End Role="User" Type="MIDASGBXModel.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ContactInfo">
               <PropertyRef Name="id" />
@@ -1713,8 +1789,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Doctor_User">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
-          <End Role="Doctor" Type="Self.Doctor" Multiplicity="*" />
+          <End Role="User" Type="MIDASGBXModel.User" Multiplicity="0..1" />
+          <End Role="Doctor" Type="MIDASGBXModel.Doctor" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="id" />
@@ -1724,9 +1800,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_DoctorLocationSchedule_Doctor1">
-          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
-          <End Role="DoctorLocationSchedule" Type="Self.DoctorLocationSchedule" Multiplicity="*" />
+        <Association Name="FK_DoctorLocationSchedule_Doctor">
+          <End Role="Doctor" Type="MIDASGBXModel.Doctor" Multiplicity="1" />
+          <End Role="DoctorLocationSchedule" Type="MIDASGBXModel.DoctorLocationSchedule" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Doctor">
               <PropertyRef Name="id" />
@@ -1736,21 +1812,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_DoctorSpecialities_Doctor">
-          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
-          <End Role="DoctorSpecialities" Type="Self.DoctorSpeciality" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Doctor">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="DoctorSpecialities">
-              <PropertyRef Name="DoctorID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DoctorLocationSchedule_Doctor">
-          <End Role="Location" Type="Self.Location" Multiplicity="1" />
-          <End Role="DoctorLocationSchedule" Type="Self.DoctorLocationSchedule" Multiplicity="*" />
+        <Association Name="FK_DoctorLocationSchedule_Location">
+          <End Role="Location" Type="MIDASGBXModel.Location" Multiplicity="1" />
+          <End Role="DoctorLocationSchedule" Type="MIDASGBXModel.DoctorLocationSchedule" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Location">
               <PropertyRef Name="id" />
@@ -1761,8 +1825,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DoctorLocationSchedule_Schedule">
-          <End Role="Schedule" Type="Self.Schedule" Multiplicity="1" />
-          <End Role="DoctorLocationSchedule" Type="Self.DoctorLocationSchedule" Multiplicity="*" />
+          <End Role="Schedule" Type="MIDASGBXModel.Schedule" Multiplicity="1" />
+          <End Role="DoctorLocationSchedule" Type="MIDASGBXModel.DoctorLocationSchedule" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Schedule">
               <PropertyRef Name="id" />
@@ -1772,9 +1836,21 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DoctorSpecialities_Doctor">
+          <End Role="User" Type="MIDASGBXModel.User" Multiplicity="1" />
+          <End Role="DoctorSpecialities" Type="MIDASGBXModel.DoctorSpeciality" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DoctorSpecialities">
+              <PropertyRef Name="DoctorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DoctorSpecialities_Specialty">
-          <End Role="Specialty" Type="Self.Specialty" Multiplicity="1" />
-          <End Role="DoctorSpecialities" Type="Self.DoctorSpeciality" Multiplicity="*" />
+          <End Role="Specialty" Type="MIDASGBXModel.Specialty" Multiplicity="1" />
+          <End Role="DoctorSpecialities" Type="MIDASGBXModel.DoctorSpeciality" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Specialty">
               <PropertyRef Name="id" />
@@ -1785,8 +1861,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Invitation_User_Invitation">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Invitation" Type="Self.Invitation" Multiplicity="*" />
+          <End Role="User" Type="MIDASGBXModel.User" Multiplicity="1" />
+          <End Role="Invitation" Type="MIDASGBXModel.Invitation" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="id" />
@@ -1796,93 +1872,93 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LocationSchedule_Location">
-          <End Role="Location" Type="Self.Location" Multiplicity="1" />
-          <End Role="LocationSchedule" Type="Self.LocationSchedule" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Location">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="LocationSchedule">
-              <PropertyRef Name="LocationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LocationSchedule_Schedule">
-          <End Role="Schedule" Type="Self.Schedule" Multiplicity="1" />
-          <End Role="LocationSchedule" Type="Self.LocationSchedule" Multiplicity="*" />
+        <Association Name="FK_Location_Schedule">
+          <End Role="Schedule" Type="MIDASGBXModel.Schedule" Multiplicity="0..1" />
+          <End Role="Location" Type="MIDASGBXModel.Location" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Schedule">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="LocationSchedule">
+            <Dependent Role="Location">
               <PropertyRef Name="ScheduleID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserCompanyRole_Role">
-          <End Role="Role" Type="Self.Role" Multiplicity="1" />
-          <End Role="UserCompanyRole" Type="Self.UserCompanyRole" Multiplicity="*" />
+        <Association Name="FK_Patient_Location">
+          <End Role="Location" Type="MIDASGBXModel.Location" Multiplicity="1" />
+          <End Role="Patient" Type="MIDASGBXModel.Patient" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Role">
+            <Principal Role="Location">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="UserCompanyRole">
-              <PropertyRef Name="RoleID" />
+            <Dependent Role="Patient">
+              <PropertyRef Name="LocationID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SpecialityDetails_Specialty">
-          <End Role="Specialty" Type="Self.Specialty" Multiplicity="0..1" />
-          <End Role="SpecialityDetails" Type="Self.SpecialityDetail" Multiplicity="*" />
+        <Association Name="FK_Room_Location">
+          <End Role="Location" Type="MIDASGBXModel.Location" Multiplicity="1" />
+          <End Role="Room" Type="MIDASGBXModel.Room" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Specialty">
+            <Principal Role="Location">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="SpecialityDetails">
-              <PropertyRef Name="SpecialtyId" />
+            <Dependent Role="Room">
+              <PropertyRef Name="LocationID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Specialty_Specialty">
-          <End Role="Specialty" Type="Self.Specialty" Multiplicity="1" />
-          <End Role="Specialty1" Type="Self.Specialty" Multiplicity="0..1" />
+        <Association Name="FK_Patient_User">
+          <End Role="User" Type="MIDASGBXModel.User" Multiplicity="1" />
+          <End Role="Patient" Type="MIDASGBXModel.Patient" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Specialty">
+            <Principal Role="User">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="Specialty1">
-              <PropertyRef Name="id" />
+            <Dependent Role="Patient">
+              <PropertyRef Name="PatientID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SpecialtyDetails_Specialty">
-          <End Role="Specialty" Type="Self.Specialty" Multiplicity="1" />
-          <End Role="SpecialtyDetails" Type="Self.SpecialtyDetail" Multiplicity="*" />
+        <Association Name="FK_Room_RoomTest">
+          <End Role="RoomTest" Type="MIDASGBXModel.RoomTest" Multiplicity="1" />
+          <End Role="Room" Type="MIDASGBXModel.Room" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Specialty">
+            <Principal Role="RoomTest">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="SpecialtyDetails">
-              <PropertyRef Name="SpecialtyId" />
+            <Dependent Role="Room">
+              <PropertyRef Name="RoomTestID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SpecialtyDetails_Specialty1">
-          <End Role="Specialty" Type="Self.Specialty" Multiplicity="1" />
-          <End Role="SpecialtyDetails" Type="Self.SpecialtyDetail" Multiplicity="*" />
+        <Association Name="FK_Room_Schedule">
+          <End Role="Schedule" Type="MIDASGBXModel.Schedule" Multiplicity="0..1" />
+          <End Role="Room" Type="MIDASGBXModel.Room" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Specialty">
+            <Principal Role="Schedule">
               <PropertyRef Name="id" />
             </Principal>
-            <Dependent Role="SpecialtyDetails">
-              <PropertyRef Name="SpecialtyId" />
+            <Dependent Role="Room">
+              <PropertyRef Name="ScheduleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScheduleDetail_Schedule">
+          <End Role="Schedule" Type="MIDASGBXModel.Schedule" Multiplicity="1" />
+          <End Role="ScheduleDetail" Type="MIDASGBXModel.ScheduleDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ScheduleDetail">
+              <PropertyRef Name="ScheduleID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserCompany_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="UserCompany" Type="Self.UserCompany" Multiplicity="*" />
+          <End Role="User" Type="MIDASGBXModel.User" Multiplicity="1" />
+          <End Role="UserCompany" Type="MIDASGBXModel.UserCompany" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="id" />
@@ -1893,8 +1969,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserCompanyRole_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="UserCompanyRole" Type="Self.UserCompanyRole" Multiplicity="*" />
+          <End Role="User" Type="MIDASGBXModel.User" Multiplicity="1" />
+          <End Role="UserCompanyRole" Type="MIDASGBXModel.UserCompanyRole" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="id" />
@@ -1904,174 +1980,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserToken_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="UserToken" Type="Self.UserToken" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="UserToken">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="MIDASGBXEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="AddressInfoes" EntityType="Self.AddressInfo" />
-          <EntitySet Name="Companies" EntityType="Self.Company" />
-          <EntitySet Name="CompanySpecialtyDetails" EntityType="Self.CompanySpecialtyDetail" />
-          <EntitySet Name="CompanyTypes" EntityType="Self.CompanyType" />
-          <EntitySet Name="ContactInfoes" EntityType="Self.ContactInfo" />
-          <EntitySet Name="Doctors" EntityType="Self.Doctor" />
-          <EntitySet Name="DoctorLocationSchedules" EntityType="Self.DoctorLocationSchedule" />
-          <EntitySet Name="DoctorSpecialities" EntityType="Self.DoctorSpeciality" />
-          <EntitySet Name="EmailFields" EntityType="Self.EmailField" />
-          <EntitySet Name="EmailProfiles" EntityType="Self.EmailProfile" />
-          <EntitySet Name="EmailTemplates" EntityType="Self.EmailTemplate" />
-          <EntitySet Name="Invitations" EntityType="Self.Invitation" />
-          <EntitySet Name="InvitationTypes" EntityType="Self.InvitationType" />
-          <EntitySet Name="Locations" EntityType="Self.Location" />
-          <EntitySet Name="LocationSchedules" EntityType="Self.LocationSchedule" />
-          <EntitySet Name="Logs" EntityType="Self.Log" />
-          <EntitySet Name="MedicalProviders" EntityType="Self.MedicalProvider" />
-          <EntitySet Name="OTPs" EntityType="Self.OTP" />
-          <EntitySet Name="PasswordTokens" EntityType="Self.PasswordToken" />
-          <EntitySet Name="Roles" EntityType="Self.Role" />
-          <EntitySet Name="Schedules" EntityType="Self.Schedule" />
-          <EntitySet Name="SpecialityDetails" EntityType="Self.SpecialityDetail" />
-          <EntitySet Name="Specialties" EntityType="Self.Specialty" />
-          <EntitySet Name="SpecialtyDetails" EntityType="Self.SpecialtyDetail" />
-          <EntitySet Name="SubscriptionPlans" EntityType="Self.SubscriptionPlan" />
-          <EntitySet Name="Users" EntityType="Self.User" />
-          <EntitySet Name="UserCompanies" EntityType="Self.UserCompany" />
-          <EntitySet Name="UserCompanyRoles" EntityType="Self.UserCompanyRole" />
-          <EntitySet Name="UserTokens" EntityType="Self.UserToken" />
-          <EntitySet Name="UserTypes" EntityType="Self.UserType" />
-          <AssociationSet Name="FK_Company_AddressInfo" Association="Self.FK_Company_AddressInfo">
-            <End Role="AddressInfo" EntitySet="AddressInfoes" />
-            <End Role="Company" EntitySet="Companies" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Location_AddressInfo" Association="Self.FK_Location_AddressInfo">
-            <End Role="AddressInfo" EntitySet="AddressInfoes" />
-            <End Role="Location" EntitySet="Locations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_User_AddressInfo" Association="Self.FK_User_AddressInfo">
-            <End Role="AddressInfo" EntitySet="AddressInfoes" />
-            <End Role="User" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Company_CompanyType" Association="Self.FK_Company_CompanyType">
-            <End Role="CompanyType" EntitySet="CompanyTypes" />
-            <End Role="Company" EntitySet="Companies" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Company_ContactInfo" Association="Self.FK_Company_ContactInfo">
-            <End Role="ContactInfo" EntitySet="ContactInfoes" />
-            <End Role="Company" EntitySet="Companies" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Company_SubscriptionPlan" Association="Self.FK_Company_SubscriptionPlan">
-            <End Role="SubscriptionPlan" EntitySet="SubscriptionPlans" />
-            <End Role="Company" EntitySet="Companies" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CompanySpecialtyDetails_Company" Association="Self.FK_CompanySpecialtyDetails_Company">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="CompanySpecialtyDetails" EntitySet="CompanySpecialtyDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Invitation_Company" Association="Self.FK_Invitation_Company">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="Invitation" EntitySet="Invitations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Location_Company" Association="Self.FK_Location_Company">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="Location" EntitySet="Locations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MedicalProvider_Company" Association="Self.FK_MedicalProvider_Company">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="MedicalProvider" EntitySet="MedicalProviders" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserCompany_Company" Association="Self.FK_UserCompany_Company">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="UserCompany" EntitySet="UserCompanies" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CompanySpecialtyDetails_Specialty" Association="Self.FK_CompanySpecialtyDetails_Specialty">
-            <End Role="Specialty" EntitySet="Specialties" />
-            <End Role="CompanySpecialtyDetails" EntitySet="CompanySpecialtyDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Location_ContactInfo" Association="Self.FK_Location_ContactInfo">
-            <End Role="ContactInfo" EntitySet="ContactInfoes" />
-            <End Role="Location" EntitySet="Locations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_User_ContactInfo" Association="Self.FK_User_ContactInfo">
-            <End Role="ContactInfo" EntitySet="ContactInfoes" />
-            <End Role="User" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Doctor_User" Association="Self.FK_Doctor_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Doctor" EntitySet="Doctors" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorLocationSchedule_Doctor1" Association="Self.FK_DoctorLocationSchedule_Doctor1">
-            <End Role="Doctor" EntitySet="Doctors" />
-            <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedules" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorSpecialities_Doctor" Association="Self.FK_DoctorSpecialities_Doctor">
-            <End Role="Doctor" EntitySet="Doctors" />
-            <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorLocationSchedule_Doctor" Association="Self.FK_DoctorLocationSchedule_Doctor">
-            <End Role="Location" EntitySet="Locations" />
-            <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedules" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorLocationSchedule_Schedule" Association="Self.FK_DoctorLocationSchedule_Schedule">
-            <End Role="Schedule" EntitySet="Schedules" />
-            <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedules" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorSpecialities_Specialty" Association="Self.FK_DoctorSpecialities_Specialty">
-            <End Role="Specialty" EntitySet="Specialties" />
-            <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Invitation_User_Invitation" Association="Self.FK_Invitation_User_Invitation">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Invitation" EntitySet="Invitations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LocationSchedule_Location" Association="Self.FK_LocationSchedule_Location">
-            <End Role="Location" EntitySet="Locations" />
-            <End Role="LocationSchedule" EntitySet="LocationSchedules" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LocationSchedule_Schedule" Association="Self.FK_LocationSchedule_Schedule">
-            <End Role="Schedule" EntitySet="Schedules" />
-            <End Role="LocationSchedule" EntitySet="LocationSchedules" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserCompanyRole_Role" Association="Self.FK_UserCompanyRole_Role">
-            <End Role="Role" EntitySet="Roles" />
-            <End Role="UserCompanyRole" EntitySet="UserCompanyRoles" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SpecialityDetails_Specialty" Association="Self.FK_SpecialityDetails_Specialty">
-            <End Role="Specialty" EntitySet="Specialties" />
-            <End Role="SpecialityDetails" EntitySet="SpecialityDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Specialty_Specialty" Association="Self.FK_Specialty_Specialty">
-            <End Role="Specialty" EntitySet="Specialties" />
-            <End Role="Specialty1" EntitySet="Specialties" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SpecialtyDetails_Specialty" Association="Self.FK_SpecialtyDetails_Specialty">
-            <End Role="Specialty" EntitySet="Specialties" />
-            <End Role="SpecialtyDetails" EntitySet="SpecialtyDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_SpecialtyDetails_Specialty1" Association="Self.FK_SpecialtyDetails_Specialty1">
-            <End Role="Specialty" EntitySet="Specialties" />
-            <End Role="SpecialtyDetails" EntitySet="SpecialtyDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserCompany_User" Association="Self.FK_UserCompany_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="UserCompany" EntitySet="UserCompanies" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserCompanyRole_User" Association="Self.FK_UserCompanyRole_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="UserCompanyRole" EntitySet="UserCompanyRoles" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserToken_User" Association="Self.FK_UserToken_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="UserToken" EntitySet="UserTokens" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2193,10 +2101,9 @@
             <EntityTypeMapping TypeName="MIDASGBXModel.DoctorLocationSchedule">
               <MappingFragment StoreEntitySet="DoctorLocationSchedule">
                 <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DoctorID" ColumnName="DoctorID" />
                 <ScalarProperty Name="LocationID" ColumnName="LocationID" />
                 <ScalarProperty Name="ScheduleID" ColumnName="ScheduleID" />
-                <ScalarProperty Name="DoctorID" ColumnName="DoctorID" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -2211,54 +2118,6 @@
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="DoctorID" ColumnName="DoctorID" />
                 <ScalarProperty Name="SpecialityID" ColumnName="SpecialityID" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EmailFields">
-            <EntityTypeMapping TypeName="MIDASGBXModel.EmailField">
-              <MappingFragment StoreEntitySet="EmailFields">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
-                <ScalarProperty Name="SQLQuery" ColumnName="SQLQuery" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EmailProfiles">
-            <EntityTypeMapping TypeName="MIDASGBXModel.EmailProfile">
-              <MappingFragment StoreEntitySet="EmailProfile">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="ProfileName" ColumnName="ProfileName" />
-                <ScalarProperty Name="SMTPServer" ColumnName="SMTPServer" />
-                <ScalarProperty Name="SMTPPort" ColumnName="SMTPPort" />
-                <ScalarProperty Name="SSLEnabled" ColumnName="SSLEnabled" />
-                <ScalarProperty Name="AuthenticationUsername" ColumnName="AuthenticationUsername" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="SMTPAuthenticationRequired" ColumnName="SMTPAuthenticationRequired" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EmailTemplates">
-            <EntityTypeMapping TypeName="MIDASGBXModel.EmailTemplate">
-              <MappingFragment StoreEntitySet="EmailTemplate">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Body" ColumnName="Body" />
-                <ScalarProperty Name="IsHTML" ColumnName="IsHTML" />
-                <ScalarProperty Name="ProfileID" ColumnName="ProfileID" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -2303,25 +2162,11 @@
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="ScheduleID" ColumnName="ScheduleID" />
                 <ScalarProperty Name="AddressInfoID" ColumnName="AddressInfoID" />
                 <ScalarProperty Name="ContactInfoID" ColumnName="ContactInfoID" />
                 <ScalarProperty Name="LocationType" ColumnName="LocationType" />
                 <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="LocationSchedules">
-            <EntityTypeMapping TypeName="MIDASGBXModel.LocationSchedule">
-              <MappingFragment StoreEntitySet="LocationSchedule">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-                <ScalarProperty Name="ScheduleID" ColumnName="ScheduleID" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -2341,21 +2186,6 @@
                 <ScalarProperty Name="MachineName" ColumnName="MachineName" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="RequestURL" ColumnName="RequestURL" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MedicalProviders">
-            <EntityTypeMapping TypeName="MIDASGBXModel.MedicalProvider">
-              <MappingFragment StoreEntitySet="MedicalProvider">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="NPI" ColumnName="NPI" />
-                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -2394,13 +2224,50 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Roles">
-            <EntityTypeMapping TypeName="MIDASGBXModel.Role">
-              <MappingFragment StoreEntitySet="Role">
+          <EntitySetMapping Name="Patients">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Patient">
+              <MappingFragment StoreEntitySet="Patient">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="SSN" ColumnName="SSN" />
+                <ScalarProperty Name="WCBNo" ColumnName="WCBNo" />
+                <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
+                <ScalarProperty Name="WorkActivities" ColumnName="WorkActivities" />
+                <ScalarProperty Name="CarrierCaseNo" ColumnName="CarrierCaseNo" />
+                <ScalarProperty Name="ChartNo" ColumnName="ChartNo" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rooms">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Room">
+              <MappingFragment StoreEntitySet="Room">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="RoleType" ColumnName="RoleType" />
-                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="ContactPersonName" ColumnName="ContactPersonName" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="ScheduleID" ColumnName="ScheduleID" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="RoomTestID" ColumnName="RoomTestID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoomTests">
+            <EntityTypeMapping TypeName="MIDASGBXModel.RoomTest">
+              <MappingFragment StoreEntitySet="RoomTest">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -2414,10 +2281,26 @@
               <MappingFragment StoreEntitySet="Schedule">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScheduleDetails">
+            <EntityTypeMapping TypeName="MIDASGBXModel.ScheduleDetail">
+              <MappingFragment StoreEntitySet="ScheduleDetail">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ScheduleID" ColumnName="ScheduleID" />
                 <ScalarProperty Name="DayOfWeek" ColumnName="DayOfWeek" />
                 <ScalarProperty Name="SlotStart" ColumnName="SlotStart" />
                 <ScalarProperty Name="SlotEnd" ColumnName="SlotEnd" />
                 <ScalarProperty Name="SlotDate" ColumnName="SlotDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -2498,6 +2381,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="MIDASGBXModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="MIDASGBXModel.User">
               <MappingFragment StoreEntitySet="User">
@@ -2552,21 +2446,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserTokens">
-            <EntityTypeMapping TypeName="MIDASGBXModel.UserToken">
-              <MappingFragment StoreEntitySet="UserToken">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="AuthToken" ColumnName="AuthToken" />
-                <ScalarProperty Name="IssuedOn" ColumnName="IssuedOn" />
-                <ScalarProperty Name="ExpiresOn" ColumnName="ExpiresOn" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="UserTypes">
             <EntityTypeMapping TypeName="MIDASGBXModel.UserType">
               <MappingFragment StoreEntitySet="UserType">
@@ -2594,9 +2473,8 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="true" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
-        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>

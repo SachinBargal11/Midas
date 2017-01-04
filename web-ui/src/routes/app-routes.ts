@@ -6,10 +6,9 @@ import { PatientManagerRoutes } from './patient-manager-routes';
 import { PatientsShellRoutes } from './patient-routes';
 import { UsersRoutes } from './user-routes';
 import { ProvidersRoutes } from './provider-routes';
-import { MedicalFacilitiesRoutes } from './medical-facility-routes';
 import { DoctorsRoutes } from './doctors-routes';
-import { SpecialityRoutes } from './speciality-routes';
-import { MedicalProviderRoutes } from './medical-provider';
+import { MedicalProviderRoutes } from './medical-provider-routes';
+import { AccountSetupRoutes } from './account-setup-routes';
 import { ValidateActiveSession } from './guards/validate-active-session';
 import { ValidateInActiveSession } from './guards/validate-inactive-session';
 import { ChangePasswordComponent } from '../components/pages/change-password';
@@ -18,13 +17,15 @@ import { ResetPasswordComponent } from '../components/pages/reset-password';
 import { RegisterCompanyComponent } from '../components/pages/register-company';
 import { AccountActivationComponent } from '../components/pages/account-activation';
 import { SecurityCheckComponent } from '../components/pages/security-check';
-import { SpecialityDetailsRoutes } from './speciality-details-routes';
 
 export const appRoutes: Routes = [
     {
         path: 'activation/:token',
         component: AccountActivationComponent,
-        canActivate: [ValidateInActiveSession]
+        canActivate: [ValidateInActiveSession],
+        data: {
+          breadcrumb: 'Account Activation'
+        }
     },
     {
         path: '',
@@ -34,12 +35,18 @@ export const appRoutes: Routes = [
     {
         path: 'login',
         component: LoginComponent,
-        canActivate: [ValidateInActiveSession]
+        canActivate: [ValidateInActiveSession],
+        data: {
+          breadcrumb: 'Login'
+        }
     },
     {
         path: 'login/security-check',
         component: SecurityCheckComponent,
-        canActivate: [ValidateInActiveSession]
+        canActivate: [ValidateInActiveSession],
+        data: {
+          breadcrumb: 'Security Check'
+        }
     },
     // {
     //     path: 'signup',
@@ -49,36 +56,49 @@ export const appRoutes: Routes = [
     {
         path: 'register-company',
         component: RegisterCompanyComponent,
-        canActivate: [ValidateInActiveSession]
+        canActivate: [ValidateInActiveSession],
+        data: {
+          breadcrumb: 'Register'
+        }
     },
     {
         path: 'forgot-password',
         component: ForgotPasswordComponent,
-        canActivate: [ValidateInActiveSession]
+        canActivate: [ValidateInActiveSession],
+        data: {
+          breadcrumb: 'Forgot Password'
+        }
     },
     {
         path: 'reset-password/:token',
         component: ResetPasswordComponent,
-        canActivate: [ValidateInActiveSession]
+        canActivate: [ValidateInActiveSession],
+        data: {
+          breadcrumb: 'Reset Password'
+        }
     },
     {
         path: 'change-password',
         component: ChangePasswordComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+          breadcrumb: 'Change Password'
+        }
     },
     {
         path: 'dashboard',
         component: DashboardComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+          breadcrumb: 'Dashboard'
+        }
     },
     ...PatientManagerRoutes,
     ...DoctorsRoutes,
     ...MedicalProviderRoutes,
-    ...MedicalFacilitiesRoutes,
+    ...AccountSetupRoutes,
     ...ProvidersRoutes,
     ...UsersRoutes,
-    ...PatientsShellRoutes,
-    ...SpecialityRoutes,
-    ...SpecialityDetailsRoutes
+    ...PatientsShellRoutes
 ];
 export const APP_ROUTER_PROVIDER = RouterModule.forRoot(appRoutes);

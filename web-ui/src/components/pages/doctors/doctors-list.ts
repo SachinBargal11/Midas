@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {DoctorsStore} from '../../../stores/doctors-store';
-import {DoctorDetail} from '../../../models/doctor-details';
+import {Doctor} from '../../../models/doctor';
 
 @Component({
     selector: 'doctors-list',
@@ -10,7 +10,7 @@ import {DoctorDetail} from '../../../models/doctor-details';
 
 
 export class DoctorsListComponent implements OnInit {
-    doctors: DoctorDetail[];
+    doctors: Doctor[];
     doctorsLoading;
     constructor(
         private _router: Router,
@@ -27,5 +27,8 @@ export class DoctorsListComponent implements OnInit {
             null,
             () => { this.doctorsLoading = false; });
         return doctor;
+    }
+    onRowSelect(doctor) {
+        this._router.navigate(['/doctors/edit/' + doctor.id]);
     }
 }

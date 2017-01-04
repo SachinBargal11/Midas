@@ -63,20 +63,6 @@
                                     </div>
                                 </div>
                             </div> 
-                                        
-                            <div class="col-lg-4">
-                                <label class="form-label"> Federal Tax Id
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="doctorformControls.doctor.controls.federalTaxId.touched && !doctorformControls.doctor.controls.federalTaxId.valid">
-                                    <input formControlName="federalTaxId" type="text" class="form-control" placeholder="" [class.error]="!doctorformControls.doctor.controls.federalTaxId.valid">
-                                    <div class='error-list' *ngIf="doctorformControls.doctor.controls.federalTaxId.touched && !doctorformControls.doctor.controls.federalTaxId.valid">
-                                        <ul>
-                                            <li *ngIf="doctorformControls.doctor.controls.federalTaxId.hasError('required')">Federal Tax Id is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div> 
                             <div class="col-lg-4">
                                 <label class="form-label"> Tax type
                                             <span class="color-red">*</span>
@@ -85,8 +71,8 @@
                                         <select formControlName="taxType" class="selectpicker form-control" title="Select Tax Type." [class.error]="doctorformControls.doctor.controls.taxType.touched && !doctorformControls.doctor.controls.taxType.valid">
                                              <option value="">-Select Tax Type-</option>
                                              <option disabled>────────────────────</option>
-                                             <option value="Tax1">Tax1</option>
-                                             <option value="Tax2">Tax2</option>
+                                             <option value="1">Tax1</option>
+                                             <option value="2">Tax2</option>
                                          </select>
                                           <div class='error-list' *ngIf="doctorformControls.doctor.controls.taxType.touched && !doctorformControls.doctor.controls.taxType.valid">
                                         <ul>
@@ -99,19 +85,6 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-4">
-                                <label class="form-label"> Assign Number
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="doctorformControls.doctor.controls.assignNumber.touched && !doctorformControls.doctor.controls.assignNumber.valid">
-                                    <input formControlName="assignNumber" type="text" class="form-control" placeholder="" [class.error]="!doctorformControls.doctor.controls.assignNumber.valid">
-                                    <div class='error-list' *ngIf="doctorformControls.doctor.controls.assignNumber.touched && !doctorformControls.doctor.controls.assignNumber.valid">
-                                        <ul>
-                                            <li *ngIf="doctorformControls.doctor.controls.assignNumber.hasError('required')">Assign Number is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div> 
-                            <div class="col-lg-4">
                                 <label class="form-label"> Title
                                             <span class="color-red">*</span>
                                         </label>
@@ -123,12 +96,27 @@
                                         </ul>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="form-label"> User <span class="color-red">*</span></label>
+                                <div class="form-group" [class.error]="doctorformControls.doctor.controls.user.touched && !doctorformControls.doctor.controls.user.valid">
+                                    <select formControlName="user" [(ngModel)]="userJS.id" class="selectpicker form-control" [class.error]="doctorformControls.doctor.controls.user.touched && !doctorformControls.doctor.controls.user.valid">
+                                        <option value="0">-Select User-</option>
+                                        <option disabled>────────────────────</option>
+                                        <option *ngFor="let user of users" value="{{user.id}}">{{user.firstName}} - {{user.lastName}}</option>
+                                    </select>
+                                    <div class='error-list' *ngIf="doctorformControls.doctor.controls.user.touched && !doctorformControls.doctor.controls.user.valid">
+                                        <ul>
+                                            <li *ngIf="doctorformControls.doctor.controls.user.hasError('selectedValueValidator')">User is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div> 
                                                        
                         </div>
                     </div>
                 </section>
-                <section class="card">
+                <!--<section class="card">
                     <header class="card-header card-header-lg">
                         User Information
                     </header>
@@ -176,44 +164,6 @@
                           </div>
                          
                           <div class="row">
-                               <!-- <div class="col-lg-4">
-                                      <div class="form-group" [class.error]="doctorformControls.userInfo.controls.gender.touched && !doctorformControls.userInfo.controls.gender.valid">
-                                        <select formControlName="gender" class="selectpicker form-control" title="Select Gender." [class.error]="doctorformControls.userInfo.controls.gender.touched && !doctorformControls.userInfo.controls.gender.valid">
-                                             <option value="">-Select Gender-</option>
-                                             <option disabled>────────────────────</option>
-                                             <option value="1">Male</option>
-                                             <option value="2">Female</option>
-                                         </select>
-                                          <div class='error-list' *ngIf="doctorformControls.userInfo.controls.gender.touched && !doctorformControls.userInfo.controls.gender.valid">
-                                        <ul>
-                                            <li *ngIf="doctorformControls.userInfo.controls.gender.hasError('required')">Gender is required.</li>
-                                        </ul>
-                                    </div>    
-                                    </div>
-                                 </div>                        
-                            
-                            <div class="col-lg-4">
-                                <div class="form-group" [class.error]="doctorformControls.userInfo.controls.dob.touched && !doctorformControls.userInfo.controls.dob.valid">
-                                    <div class='input-group date'>
-                                          <p-calendar formControlName="dob" 
-                                                      dateFormat="M d, yy" 
-                                                      minDate="Jan 1, 1900"
-                                                      maxDate="today" 
-                                                      [monthNavigator]="true" 
-                                                      [yearNavigator]="true"
-                                                      [class.error]="doctorformControls.userInfo.controls.dob.touched && !doctorformControls.userInfo.controls.dob.valid" 
-                                                      placeholder="Date of birth"
-                                                      showAnim="slideDown"
-                                                      [showIcon]="true">
-                                          </p-calendar>
-                                    </div>
-                                    <div class='error-list' *ngIf="doctorformControls.userInfo.controls.dob.touched && !doctorformControls.userInfo.controls.dob.valid">
-                                        <ul>
-                                            <li *ngIf="doctorformControls.userInfo.controls.dob.hasError('required')">Date of birth is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>-->
                             <div class="col-lg-4">
                                 <label class="form-label"> Usertype
                                             <span class="color-red">*</span>
@@ -424,11 +374,11 @@
                             </div>
                           </div>
                         </div>
-                      </section>
+                      </section>-->
                 <button [disabled]="!doctorform.valid || isSaveDoctorProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveDoctorProgress"></loader>
                 </button>
-                <!--<a [routerLink]="['/doctors']" class="btn btn-secondary">Cancel</a>-->
+                <a [routerLink]="['/doctors']" class="btn btn-secondary">Cancel</a>
             </form>
         </div>
     </div>

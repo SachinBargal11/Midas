@@ -12,6 +12,8 @@ namespace MIDAS.GBX.BusinessObjects
     public class OTP : GbObject
     {
         public User User { get; set; }
+        public Company company { get; set; }
+        public List<UserCompany> usercompanies { get; set; }
         [JsonProperty("pin")]
         public int Pin { get; set; }
         [JsonProperty("otp")]

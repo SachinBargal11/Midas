@@ -82,6 +82,10 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+        public virtual T ObjectConvert<T, U>(U entity)
+        {
+            throw new NotImplementedException();
+        }
 
         public virtual Object Get<T>(T entity)
         {

@@ -16,6 +16,6 @@ export const PatientManagerRoutes: Routes = [
             ...CasesShellRoutes,
             ...ReferalsShellRoutes,
             ...ConsentFormsShellRoutes
-            ]
+        ]
     },
 ];

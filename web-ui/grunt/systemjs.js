@@ -74,6 +74,9 @@ module.exports = {
                 'models': {
                     defaultExtension: 'js'
                 },
+                'modules': {
+                    defaultExtension: 'js'
+                },
                 'stores': {
                     defaultExtension: 'js'
                 },

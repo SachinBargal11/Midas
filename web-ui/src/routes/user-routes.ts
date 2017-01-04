@@ -8,16 +8,25 @@ export const UsersRoutes: Routes = [
     {
         path: 'users',
         component: UsersListComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Users'
+        }
     },
     {
         path: 'users/add',
         component: AddUserComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Add User'
+        }
     },
     {
         path: 'users/update/:id',
         component: UpdateUserComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Edit User'
+        }
     }
 ];

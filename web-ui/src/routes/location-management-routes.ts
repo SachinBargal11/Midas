@@ -18,41 +18,63 @@ export const LocationManagementRoutes: Routes = [
     {
         path: 'locations',
         component: LocationComponent,
+        data: {
+            breadcrumb: 'Locations'
+        }
     },
     {
         path: 'locations/add',
         component: AddLocationComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Add Location'
+        }
     },
     {
         path: 'locations/:locationId',
         component: LocationShellComponent,
+        data: {
+            breadcrumb: 'Locations'
+        },
         children: [
             {
                 path: '',
-                redirectTo: 'basic'
+                redirectTo: 'basic',
+                pathMatch: 'full'
             },
             {
                 path: 'basic',
                 component: BasicComponent,
-                canActivate: [ValidateActiveSession]
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Basic'
+                }
             },
             {
                 path: 'schedule',
                 component: ScheduleComponent,
-                canActivate: [ValidateActiveSession]
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Schedule'
+                }
             },
             ...RoomsRoutes,
             // ...DoctorsRoutes,
             {
                 path: 'settings',
                 component: SettingsComponent,
-                canActivate: [ValidateActiveSession]
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Settings'
+                }
             },
             {
                 path: 'access',
                 component: AccessComponent,
-                canActivate: [ValidateActiveSession]
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Access'
+                }
             }
         ]
     }

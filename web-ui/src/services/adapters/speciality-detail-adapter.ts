@@ -1,6 +1,4 @@
 import {SpecialityDetail} from '../../models/speciality-details';
-import { Speciality } from '../../models/speciality';
-import { Company } from '../../models/company';
 
 export class SpecialityDetailAdapter {
     static parseResponse(specialityDetailData: any): SpecialityDetail {

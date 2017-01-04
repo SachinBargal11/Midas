@@ -2,6 +2,7 @@ import { Directive } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CompanyStore } from '../stores/company-store';
 import { Company } from '../models/company';
+import moment from 'moment';
 
 export class AppValidators {
     company: Company[];
@@ -42,6 +43,18 @@ export class AppValidators {
         };
     }
 
+    static timeValidation(slotStartKey: any, slotEndKey: any) {
+        return (group: FormGroup): { [key: string]: any } => {
+            let slotStart = group.controls[slotStartKey];
+            let slotEnd = group.controls[slotEndKey];
+
+            if (!moment(slotStart.value).isBefore(moment(slotEnd.value))) {
+                return { timeValidation: true };
+            }
+
+        };
+    }
+
     static selectedValueValidator(control: FormControl) {
         if (!parseInt(control.value)) {
             return { selectedValueValidator: true };
@@ -49,14 +62,14 @@ export class AppValidators {
     }
 
     static companyNameTaken = (company: any[]) => {
-        function getFields(input, field) {
-            let output = [];
-            for (let i = 0; i < input.length; ++i)
-                output.push(input[i][field]);
-            return output;
-        }
+        // function getFields(input, field) {
+        //     let output = [];
+        //     for (let i = 0; i < input.length; ++i)
+        //         output.push(input[i][field]);
+        //     return output;
+        // }
         return (control: FormControl) => {
-            let companyNames = getFields(company, 'companyName');
+            // let companyNames = getFields(company, 'companyName');
 
             for (let i = 0; i < company.length; i += 1) {
                 let val = company[i].toString();

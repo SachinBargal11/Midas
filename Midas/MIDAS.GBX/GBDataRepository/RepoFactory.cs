@@ -55,10 +55,6 @@ namespace MIDAS.GBX
             {
                 repo = new OTPRepository(context);
             }
-            if (typeof(T) == typeof(BO.MedicalProvider))
-            {
-                repo = new MedicalProviderRepository(context);
-            }
             if (typeof(T) == typeof(BO.Specialty))
             {
                 repo = new SpecialityRepository(context);
@@ -79,6 +75,39 @@ namespace MIDAS.GBX
             {
                 repo = new DoctorSpecialityRepository(context);
             }
+            if (typeof(T) == typeof(BO.RoomTest))
+            {
+                repo = new RoomTestRepository(context);
+            }
+            if (typeof(T) == typeof(BO.Room))
+            {
+                repo = new RoomRepository(context);
+            }
+            if (typeof(T) == typeof(BO.Schedule))
+            {
+                repo = new ScheduleRepository(context);
+            }
+            if (typeof(T) == typeof(BO.UserCompany))
+            {
+                repo = new UserCompanyRepository(context);
+            }
+            if (typeof(T) == typeof(BO.DoctorLocationSchedule))
+            {
+                repo = new DoctorLocationScheduleRepository(context);
+            }
+            if (typeof(T) == typeof(BO.Patient))
+            {
+                repo = new PatientRepository(context);
+            }
+            if (typeof(T) == typeof(BO.Log))
+            {
+                repo = new LogRepository(context);
+            }
+            if (typeof(T) == typeof(BO.UserCompany))
+            {
+                repo = new UserCompanyRepository(context);
+            }
+           
             return repo;
         }
     }

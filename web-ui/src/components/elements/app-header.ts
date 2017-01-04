@@ -6,13 +6,11 @@ import {NotificationsStore} from '../../stores/notifications-store';
 
 @Component({
     selector: 'app-header',
-    templateUrl: 'templates/elements/app-header.html',
-    providers: [AuthenticationService]
+    templateUrl: 'templates/elements/app-header.html'
 })
 
 export class AppHeaderComponent implements OnInit {
 
-    user_name;
     disabled: boolean = false;
     status: { isopen: boolean } = { isopen: false };
 
@@ -57,5 +55,9 @@ export class AppHeaderComponent implements OnInit {
 
     showNotifications() {
         this._notificationsStore.toggleVisibility();
+    }
+
+    selectCurrentCompany() {
+        // debugger;
     }
 }
