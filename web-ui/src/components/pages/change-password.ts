@@ -12,8 +12,7 @@ import { AuthenticationService } from '../../services/authentication-service';
 
 @Component({
     selector: 'change-password',
-    templateUrl: 'templates/pages/change-password.html',
-    providers: [FormBuilder, AuthenticationService, NotificationsService]
+    templateUrl: 'templates/pages/change-password.html'
 })
 
 export class ChangePasswordComponent implements OnInit {

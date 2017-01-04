@@ -12,8 +12,7 @@ import moment from 'moment';
 
 @Component({
     selector: 'add-provider',
-    templateUrl: 'templates/pages/providers/add-provider.html',
-    providers: [ProvidersService, ProvidersStore, FormBuilder]
+    templateUrl: 'templates/pages/providers/add-provider.html'
 })
 
 export class AddProviderComponent implements OnInit {

@@ -22,8 +22,7 @@ import { UserType } from '../../../models/enums/user-type';
 
 @Component({
     selector: 'basic',
-    templateUrl: 'templates/pages/users/user-basic.html',
-    providers: [UsersService, StateService, StatesStore, FormBuilder]
+    templateUrl: 'templates/pages/users/user-basic.html'
 })
 
 export class UserBasicComponent implements OnInit {
@@ -114,7 +113,7 @@ export class UserBasicComponent implements OnInit {
             contact: new Contact({
                 cellPhone: userFormValues.contact.cellPhone.replace(/\-/g, ''),
                 emailAddress: this.contact.emailAddress,
-                faxNo: userFormValues.contact.faxNo.replace(/\-/g, ''),
+                faxNo: userFormValues.contact.faxNo.replace(/\-|\s/g, ''),
                 homePhone: userFormValues.contact.homePhone,
                 workPhone: userFormValues.contact.workPhone,
             }),

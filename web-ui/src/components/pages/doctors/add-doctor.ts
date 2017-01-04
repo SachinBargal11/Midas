@@ -16,8 +16,7 @@ import { UsersStore } from '../../../stores/users-store';
 
 @Component({
     selector: 'add-doctor',
-    templateUrl: 'templates/pages/doctors/add-doctor.html',
-    providers: [DoctorsService, StateService, StatesStore, FormBuilder]
+    templateUrl: 'templates/pages/doctors/add-doctor.html'
 })
 
 export class AddDoctorComponent implements OnInit {

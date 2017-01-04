@@ -12,8 +12,7 @@ import moment from 'moment';
 
 @Component({
     selector: 'update-provider',
-    templateUrl: 'templates/pages/providers/update-provider.html',
-    providers: [ProvidersService, ProvidersStore, FormBuilder]
+    templateUrl: 'templates/pages/providers/update-provider.html'
 })
 
 export class UpdateProviderComponent implements OnInit {

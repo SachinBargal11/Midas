@@ -6,8 +6,7 @@ import { NotificationsStore } from '../../../stores/notifications-store';
 
 @Component({
     selector: 'settings',
-    templateUrl: 'templates/pages/location-management/settings.html',
-    providers: [FormBuilder],
+    templateUrl: 'templates/pages/location-management/settings.html'
 })
 
 export class SettingsComponent implements OnInit {

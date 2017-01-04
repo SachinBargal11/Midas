@@ -11,8 +11,7 @@ import moment from 'moment';
 
 @Component({
     selector: 'update-speciality',
-    templateUrl: 'templates/pages/account-setup/speciality/update-speciality.html',
-    providers: [FormBuilder]
+    templateUrl: 'templates/pages/account-setup/speciality/update-speciality.html'
 })
 
 export class UpdateSpecialityComponent implements OnInit {

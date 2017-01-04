@@ -1,7 +1,8 @@
 /** Angular Modules */
 
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { enableProdMode, NgModule } from '@angular/core';
+// import { enableProdMode, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { AppRoot } from '../components/AppRoot';

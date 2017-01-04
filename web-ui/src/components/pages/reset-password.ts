@@ -11,8 +11,7 @@ import { UsersService } from '../../services/users-service';
 
 @Component({
     selector: 'reset-password',
-    templateUrl: 'templates/pages/reset-password.html',
-    providers: [FormBuilder, AuthenticationService, NotificationsService]
+    templateUrl: 'templates/pages/reset-password.html'
 })
 
 export class ResetPasswordComponent implements OnInit {

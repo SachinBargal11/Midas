@@ -14,12 +14,11 @@ import {NotificationsStore} from '../../../stores/notifications-store';
 import {Notification} from '../../../models/notification';
 import moment from 'moment';
 import {StatesStore} from '../../../stores/states-store';
-import {StateService} from '../../../services/state-service';
+// import {StateService} from '../../../services/state-service';
 
 @Component({
     selector: 'add-location',
-    templateUrl: 'templates/pages/location-management/add-location.html',
-    providers: [StateService, StatesStore, FormBuilder],
+    templateUrl: 'templates/pages/location-management/add-location.html'
 })
 
 export class AddLocationComponent implements OnInit {
@@ -77,7 +76,7 @@ export class AddLocationComponent implements OnInit {
                  id: this._sessionStore.session.currentCompany.id
             }),
             contact: new Contact({
-                faxNo: addlocationformValues.fax.replace(/\-\s+/g, ''),
+                faxNo: addlocationformValues.fax.replace(/\-|\s/g, ''),
                 workPhone: addlocationformValues.officePhone.replace(/\-/g, '')
             }),
             address: new Address({

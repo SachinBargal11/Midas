@@ -6,8 +6,7 @@ import {NotificationsStore} from '../../../stores/notifications-store';
 
 @Component({
     selector: 'demographics',
-    templateUrl: 'templates/pages/patients/demographics.html',
-    providers: [FormBuilder],
+    templateUrl: 'templates/pages/patients/demographics.html'
 })
 
 export class DemographicsComponent implements OnInit {

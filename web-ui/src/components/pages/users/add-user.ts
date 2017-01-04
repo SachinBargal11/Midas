@@ -20,8 +20,7 @@ import { StateService } from '../../../services/state-service';
 
 @Component({
     selector: 'add-user',
-    templateUrl: 'templates/pages/users/add-user.html',
-    providers: [UsersService, StateService, StatesStore, FormBuilder],
+    templateUrl: 'templates/pages/users/add-user.html'
 })
 
 export class AddUserComponent implements OnInit {
@@ -93,7 +92,7 @@ export class AddUserComponent implements OnInit {
                 contact: new Contact({
                     cellPhone: userFormValues.contact.cellPhone.replace(/\-/g, ''),
                     emailAddress: userFormValues.contact.email,
-                    faxNo: userFormValues.contact.faxNo.replace(/\-/g, ''),
+                    faxNo: userFormValues.contact.faxNo.replace(/\-|\s/g, ''),
                     homePhone: userFormValues.contact.homePhone,
                     workPhone: userFormValues.contact.workPhone,
                 }),

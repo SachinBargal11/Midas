@@ -16,8 +16,7 @@ import { Notification } from '../../../../models/notification';
 
 @Component({
     selector: 'edit-speciality-details',
-    templateUrl: 'templates/pages/account-setup/speciality-details/edit-speciality-detail.html',
-    providers: [FormBuilder]
+    templateUrl: 'templates/pages/account-setup/speciality-details/edit-speciality-detail.html'
 })
 
 

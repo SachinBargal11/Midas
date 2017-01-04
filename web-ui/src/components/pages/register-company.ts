@@ -18,8 +18,7 @@ import { NotificationsService } from 'angular2-notifications';
 
 @Component({
     selector: 'register-company',
-    templateUrl: 'templates/pages/register-company.html',
-    providers: [NotificationsService, FormBuilder]
+    templateUrl: 'templates/pages/register-company.html'
 })
 
 export class RegisterCompanyComponent implements OnInit {

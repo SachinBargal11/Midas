@@ -18,8 +18,7 @@ import _ from 'underscore';
 
 @Component({
     selector: 'access',
-    templateUrl: 'templates/pages/users/doctor-specific-information.html',
-    providers: [FormBuilder],
+    templateUrl: 'templates/pages/users/doctor-specific-information.html'
 })
 
 export class DoctorSpecificInformationComponent implements OnInit {

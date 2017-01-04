@@ -6,8 +6,7 @@ import { NotificationsStore } from '../../../stores/notifications-store';
 
 @Component({
     selector: 'access',
-    templateUrl: 'templates/pages/users/user-access.html',
-    providers: [FormBuilder],
+    templateUrl: 'templates/pages/users/user-access.html'
 })
 
 export class UserAccessComponent implements OnInit {

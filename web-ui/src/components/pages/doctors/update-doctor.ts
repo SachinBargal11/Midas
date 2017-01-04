@@ -19,8 +19,7 @@ import { StateService } from '../../../services/state-service';
 
 @Component({
     selector: 'update-doctor',
-    templateUrl: 'templates/pages/doctors/update-doctor.html',
-    providers: [DoctorsService, StateService, StatesStore, FormBuilder]
+    templateUrl: 'templates/pages/doctors/update-doctor.html'
 })
 
 export class UpdateDoctorComponent implements OnInit {

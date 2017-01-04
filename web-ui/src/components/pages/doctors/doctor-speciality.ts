@@ -17,8 +17,7 @@ import { Speciality } from '../../../models/speciality';
 
 @Component({
     selector: 'doctor-speciality',
-    templateUrl: 'templates/pages/doctors/doctor-speciality.html',
-    providers: [FormBuilder]
+    templateUrl: 'templates/pages/doctors/doctor-speciality.html'
 })
 
 export class DoctorSpecialityComponent implements OnInit {

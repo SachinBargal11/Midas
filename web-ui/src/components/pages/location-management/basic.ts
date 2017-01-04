@@ -14,13 +14,12 @@ import { NotificationsStore } from '../../../stores/notifications-store';
 import { Notification } from '../../../models/notification';
 import moment from 'moment';
 import { StatesStore } from '../../../stores/states-store';
-import { StateService } from '../../../services/state-service';
+// import { StateService } from '../../../services/state-service';
 import { LocationType } from '../../../models/enums/location-type';
 
 @Component({
     selector: 'basic',
-    templateUrl: 'templates/pages/location-management/basic.html',
-    providers: [StateService, StatesStore, FormBuilder],
+    templateUrl: 'templates/pages/location-management/basic.html'
 })
 
 export class BasicComponent implements OnInit {
@@ -102,7 +101,7 @@ export class BasicComponent implements OnInit {
                 id: this.locationDetails.company.id
             }),
             contact: new Contact({
-                faxNo: basicformValues.fax.replace(/\-/g, ''),
+                faxNo: basicformValues.fax.replace(/\-|\s/g, ''),
                 workPhone: basicformValues.officePhone.replace(/\-/g, ''),
                 updateByUserID: userId
             }),

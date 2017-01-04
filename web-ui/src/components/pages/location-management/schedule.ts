@@ -17,8 +17,7 @@ import { AppValidators } from '../../../utils/AppValidators';
 
 @Component({
     selector: 'schedule',
-    templateUrl: 'templates/pages/location-management/schedule.html',
-    providers: [FormBuilder],
+    templateUrl: 'templates/pages/location-management/schedule.html'
 })
 
 export class ScheduleComponent implements OnInit {

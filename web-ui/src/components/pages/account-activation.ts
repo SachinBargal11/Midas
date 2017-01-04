@@ -11,8 +11,7 @@ import { UsersService } from '../../services/users-service';
 
 @Component({
     selector: 'account-activation',
-    templateUrl: 'templates/pages/account-activation.html',
-    providers: [FormBuilder, AuthenticationService, NotificationsService]
+    templateUrl: 'templates/pages/account-activation.html'
 })
 
 export class AccountActivationComponent implements OnInit {

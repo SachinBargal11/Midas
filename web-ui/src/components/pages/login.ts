@@ -10,8 +10,7 @@ import { AuthenticationService } from '../../services/authentication-service';
 
 @Component({
     selector: 'login',
-    templateUrl: 'templates/pages/login.html',
-    providers: [NotificationsService, FormBuilder]
+    templateUrl: 'templates/pages/login.html'
 })
 
 export class LoginComponent implements OnInit {

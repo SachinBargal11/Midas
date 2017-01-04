@@ -11,8 +11,7 @@ import moment from 'moment';
 
 @Component({
     selector: 'add-speciality',
-    templateUrl: 'templates/pages/account-setup/speciality/add-speciality.html',
-    providers: [FormBuilder]
+    templateUrl: 'templates/pages/account-setup/speciality/add-speciality.html'
 })
 
 export class AddSpecialityComponent implements OnInit {

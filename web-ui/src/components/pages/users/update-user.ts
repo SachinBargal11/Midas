@@ -21,8 +21,7 @@ import { UserType } from '../../../models/enums/user-type';
 
 @Component({
     selector: 'update-user',
-    templateUrl: 'templates/pages/users/update-user.html',
-    providers: [UsersService, StateService, StatesStore, FormBuilder]
+    templateUrl: 'templates/pages/users/update-user.html'
 })
 
 export class UpdateUserComponent implements OnInit {
@@ -116,7 +115,7 @@ export class UpdateUserComponent implements OnInit {
             contact: new Contact({
                 cellPhone: userFormValues.contact.cellPhone.replace(/\-/g, ''),
                 emailAddress: userFormValues.contact.email,
-                faxNo: userFormValues.contact.faxNo.replace(/\-/g, ''),
+                faxNo: userFormValues.contact.faxNo.replace(/\-|\s/g, ''),
                 homePhone: userFormValues.contact.homePhone,
                 workPhone: userFormValues.contact.workPhone,
             }),

@@ -17,8 +17,7 @@ import moment from 'moment';
 
 @Component({
     selector: 'add-room',
-    templateUrl: 'templates/pages/rooms/add-room.html',
-    providers: [FormBuilder],
+    templateUrl: 'templates/pages/rooms/add-room.html'
 })
 
 export class AddRoomComponent implements OnInit {
