@@ -7,6 +7,7 @@ import { SpecialityDetail } from '../../../../models/speciality-details';
 
 import { NotificationsStore } from '../../../../stores/notifications-store';
 import { Notification } from '../../../../models/notification';
+import { ProgressBarService } from '../../../../services/progress-bar-service';
 
 
 @Component({
@@ -17,8 +18,6 @@ import { Notification } from '../../../../models/notification';
 export class SpecialityDetailComponent {
     selectedSpecialityDetails: SpecialityDetail[];
     specialityDetails: SpecialityDetail[];
-    specialityDetailsLoading;
-    isDeleteProgress = false;
 
     options = {
         timeOut: 3000,
@@ -30,14 +29,15 @@ export class SpecialityDetailComponent {
         public _route: ActivatedRoute,
         public _router: Router,
         private _notificationsStore: NotificationsStore,
-        public _specialityDetailsStore: SpecialityDetailsStore
+        public _specialityDetailsStore: SpecialityDetailsStore,
+        private _progressBarService: ProgressBarService
     ) {
     }
     ngOnInit() {
         this.loadSpecialityDetails();
     }
     loadSpecialityDetails() {
-        this.specialityDetailsLoading = true;
+        this._progressBarService.start();
         this._route.parent.params.subscribe((params: any) => {
             let specialityId: number = parseInt(params.id);
             let requestData = {
@@ -54,7 +54,7 @@ export class SpecialityDetailComponent {
                     this._router.navigate(['/account-setup/specialities']);
                 },
                 () => {
-                    this.specialityDetailsLoading = false;
+                    this._progressBarService.stop();
                 });
         });
     }
@@ -62,7 +62,7 @@ export class SpecialityDetailComponent {
     deleteSpecialityDetails() {
         if (this.selectedSpecialityDetails !== undefined) {
             this.selectedSpecialityDetails.forEach(currentSpecialityDetail => {
-                this.isDeleteProgress = true;
+                this._progressBarService.start();
                 let result;
 
                 result = this._specialityDetailsStore.deleteSpecialityDetail(currentSpecialityDetail);
@@ -84,11 +84,11 @@ export class SpecialityDetailComponent {
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
-                        this.isDeleteProgress = false;
+                        this._progressBarService.stop();
                         this._notificationsStore.addNotification(notification);
                     },
                     () => {
-                        this.isDeleteProgress = false;
+                        this._progressBarService.stop();
                     });
             });
         }

@@ -7,6 +7,7 @@ import { Account } from '../../../models/account';
 import { DoctorsStore } from '../../../stores/doctors-store';
 import { DoctorDetail } from '../../../models/doctor-details';
 import { NotificationsService } from 'angular2-notifications';
+import { ProgressBarService } from '../../../services/progress-bar-service';
 
 
 @Component({
@@ -18,18 +19,16 @@ export class UserStatisticsComponent {
     data: any;
     options: any;
     users: Account[];
-    usersLoading;
     doctors: DoctorDetail[];
-    doctorsLoading;
-    providersLoading;
     constructor(
         private _router: Router,
         private _usersStore: UsersStore,
         private _doctorsStore: DoctorsStore,
         private _sessionStore: SessionStore,
-        private _notificationsService: NotificationsService
+        private _notificationsService: NotificationsService,
+        private _progressBarService: ProgressBarService
     ) {
-        this.usersLoading = true;
+        this._progressBarService.start();
         // this._usersStore.getUsers().subscribe(users => {
         //     this.users = users;
         //     let groupedUsers: Array<any> = _.chain(this.users).groupBy(function (user) {
@@ -45,10 +44,10 @@ export class UserStatisticsComponent {
         // },
         //     null,
         //     () => {
-        //         this.usersLoading = false;
+        //           this._progressBarService.stop();
         //     }
         // );
-        this.doctorsLoading = true;
+        this._progressBarService.start();
         // this._doctorsStore.getDoctors().subscribe(doctors => {
         //     this.doctors = doctors;
         //     let groupedDoctors: Array<any> = _.chain(this.doctors).groupBy(function (doctor) {
@@ -64,7 +63,7 @@ export class UserStatisticsComponent {
         // },
         //     null,
         //     () => {
-        //         this.doctorsLoading = false;
+        //         this._progressBarService.stop();
         //     }
         // );
         // this.options = {

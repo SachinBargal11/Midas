@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {DoctorsStore} from '../../../stores/doctors-store';
 import {Doctor} from '../../../models/doctor';
+import { ProgressBarService } from '../../../services/progress-bar-service';
 
 @Component({
     selector: 'doctors-list',
@@ -11,21 +12,21 @@ import {Doctor} from '../../../models/doctor';
 
 export class DoctorsListComponent implements OnInit {
     doctors: Doctor[];
-    doctorsLoading;
     constructor(
         private _router: Router,
-        private _doctorsStore: DoctorsStore
+        private _doctorsStore: DoctorsStore,
+        private _progressBarService: ProgressBarService
     ) {
     }
     ngOnInit() {
         this.loadDoctors();
     }
     loadDoctors() {
-        this.doctorsLoading = true;
+        this._progressBarService.start();
         let doctor = this._doctorsStore.getDoctors()
             .subscribe(doctors => { this.doctors = doctors; },
             null,
-            () => { this.doctorsLoading = false; });
+            () => { this._progressBarService.stop(); });
         return doctor;
     }
     onRowSelect(doctor) {

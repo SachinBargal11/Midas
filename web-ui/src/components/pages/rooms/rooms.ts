@@ -9,6 +9,7 @@ import { LocationDetails } from '../../../models/location-details';
 import { NotificationsStore } from '../../../stores/notifications-store';
 import { Notification } from '../../../models/notification';
 import moment from 'moment';
+import { ProgressBarService } from '../../../services/progress-bar-service';
 
 @Component({
     selector: 'rooms',
@@ -20,15 +21,14 @@ export class RoomsComponent implements OnInit {
     rooms: Room[];
     locationDetails = new LocationDetails({});
     locationId: number;
-    roomsLoading;
-    isDeleteProgress = false;
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
         private _roomsStore: RoomsStore,
         private _locationsStore: LocationsStore,
         private _notificationsStore: NotificationsStore,
-        private _roomsService: RoomsService
+        private _roomsService: RoomsService,
+        private _progressBarService: ProgressBarService
     ) {
         this._route.parent.params.subscribe((params: any) => {
             this.locationId = parseInt(params.locationId);
@@ -41,13 +41,13 @@ export class RoomsComponent implements OnInit {
     }
 
     loadRooms() {
-        this.roomsLoading = true;
+        this._progressBarService.start();
         this._roomsStore.getRooms(this.locationId)
             .subscribe(rooms => {
                 this.rooms = rooms;
             },
             (error) => {
-                this.roomsLoading = false;
+                this._progressBarService.stop();
                 let notification = new Notification({
                     'title': error.message,
                     'type': 'ERROR',
@@ -56,13 +56,13 @@ export class RoomsComponent implements OnInit {
                 this._notificationsStore.addNotification(notification);
             },
             () => {
-                this.roomsLoading = false;
+                this._progressBarService.stop();
             });
     }
     deleteRooms() {
         if (this.selectedRooms !== undefined) {
             this.selectedRooms.forEach(currentRoom => {
-                this.isDeleteProgress = true;
+                this._progressBarService.start();
                 let result;
                 result = this._roomsStore.deleteRoom(currentRoom);
                 result.subscribe(
@@ -83,11 +83,11 @@ export class RoomsComponent implements OnInit {
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
-                        this.isDeleteProgress = false;
+                        this._progressBarService.stop();
                         this._notificationsStore.addNotification(notification);
                     },
                     () => {
-                        this.isDeleteProgress = false;
+                        this._progressBarService.stop();
                     });
             });
         }

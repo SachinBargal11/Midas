@@ -4,6 +4,7 @@ import {SessionStore} from '../stores/session-store';
 import {NotificationsStore} from '../stores/notifications-store';
 import {StatesStore} from '../stores/states-store';
 import {SpecialityStore} from '../stores/speciality-store';
+import { ProgressBarService } from '../services/progress-bar-service';
 
 @Component({
     selector: 'app-root',
@@ -18,7 +19,8 @@ export class AppRoot implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _statesStore: StatesStore,
         private _specialityStore: SpecialityStore,
-        private viewContainerRef: ViewContainerRef
+        private viewContainerRef: ViewContainerRef,
+        private _progressBarService: ProgressBarService
     ) {
     }
 
