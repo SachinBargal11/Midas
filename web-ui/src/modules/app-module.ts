@@ -16,7 +16,6 @@ import { MedicalProviderModule } from './medical-provider-module';
 import { AccountSetupModule } from './account-setup-module';
 import { DoctorsModule } from './doctors-module';
 import { PatientModule } from './patient-module';
-import { ProviderModule } from './provider-module';
 import { AccountModule } from './account-module';
 
 /** Application Services and Providers */
@@ -51,7 +50,6 @@ import { BreadcrumbComponent } from '../components/elements/breadcrumb';
         DoctorsModule,
         MedicalProviderModule,
         PatientModule,
-        ProviderModule,
         AccountModule
     ],
     declarations: [

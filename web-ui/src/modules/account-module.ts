@@ -7,7 +7,6 @@ import { AccountActivationComponent } from '../components/pages/account-activati
 import { RegisterCompanyComponent } from '../components/pages/register-company';
 import { LoginComponent } from '../components/pages/login';
 import { SecurityCheckComponent } from '../components/pages/security-check';
-import { SignupComponent } from '../components/pages/signup';
 import { ForgotPasswordComponent } from '../components/pages/forgot-password';
 import { ResetPasswordComponent } from '../components/pages/reset-password';
 import { ChangePasswordComponent } from '../components/pages/change-password';
@@ -24,7 +23,6 @@ import { CompanyStore } from '../stores/company-store';
             AccountActivationComponent,
             SecurityCheckComponent,
             LoginComponent,
-            SignupComponent,
             ForgotPasswordComponent,
             ResetPasswordComponent,
             ChangePasswordComponent
