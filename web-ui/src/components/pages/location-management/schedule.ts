@@ -168,7 +168,6 @@ export class ScheduleComponent implements OnInit {
     }
 
     submitSchedule() {
-        debugger;
         if (this.saveAsNew) {
             this.saveAsNewSchedule();
         } else {
