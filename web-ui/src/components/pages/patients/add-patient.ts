@@ -9,6 +9,7 @@ import { SessionStore } from '../../../stores/session-store';
 import { NotificationsStore } from '../../../stores/notifications-store';
 import { Notification } from '../../../models/notification';
 import Moment from 'moment';
+import { ProgressBarService } from '../../../services/progress-bar-service';
 
 @Component({
     selector: 'add-patient',
@@ -44,6 +45,7 @@ export class AddPatientComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _patientsStore: PatientsStore,
+        private _progressBarService: ProgressBarService,
         private _elRef: ElementRef
     ) {
         this.patientform = this.fb.group({
@@ -78,6 +80,7 @@ export class AddPatientComponent implements OnInit {
             'dob': this.patientform.value.dob,
             'createdUser': this._sessionStore.session.user.id
         });
+        this._progressBarService.show();
         result = this._patientsStore.addPatient(patient);
         result.subscribe(
             (response) => {
@@ -98,9 +101,11 @@ export class AddPatientComponent implements OnInit {
                 });
                 this.isSavePatientProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
             },
             () => {
                 this.isSavePatientProgress = false;
+                this._progressBarService.hide();
             });
 
     }

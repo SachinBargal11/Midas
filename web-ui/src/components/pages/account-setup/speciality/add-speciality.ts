@@ -8,6 +8,7 @@ import {SessionStore} from '../../../../stores/session-store';
 import {NotificationsStore} from '../../../../stores/notifications-store';
 import {Notification} from '../../../../models/notification';
 import moment from 'moment';
+import { ProgressBarService } from '../../../../services/progress-bar-service';
 
 @Component({
     selector: 'add-speciality',
@@ -34,7 +35,8 @@ export class AddSpecialityComponent implements OnInit {
         private _router: Router,
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
-        private _elRef: ElementRef
+        private _elRef: ElementRef,
+        private _progressBarService: ProgressBarService
     ) {
         this.specialityJS = this.speciality.toJS();
         this.specialityform = this.fb.group({
@@ -57,6 +59,7 @@ export class AddSpecialityComponent implements OnInit {
                 specialityCode: specialityformValues.specialityCode,
                 isunitApply: specialityformValues.isunitApply
         });
+        this._progressBarService.show();
         this.isSaveSpecialityProgress = true;
         let result;
 
@@ -80,9 +83,11 @@ export class AddSpecialityComponent implements OnInit {
                 });
                 this.isSaveSpecialityProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
             },
             () => {
                 this.isSaveSpecialityProgress = false;
+                this._progressBarService.hide();
             });
 
     }

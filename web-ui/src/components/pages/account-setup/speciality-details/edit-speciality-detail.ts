@@ -13,6 +13,7 @@ import { AppValidators } from '../../../../utils/AppValidators';
 
 import { NotificationsStore } from '../../../../stores/notifications-store';
 import { Notification } from '../../../../models/notification';
+import { ProgressBarService } from '../../../../services/progress-bar-service';
 
 @Component({
     selector: 'edit-speciality-details',
@@ -43,12 +44,14 @@ export class EditSpecialityDetailsComponent {
         private _notificationsStore: NotificationsStore,
         private _notificationsService: NotificationsService,
         private _specialityDetailsStore: SpecialityDetailsStore,
+        private _progressBarService: ProgressBarService,
         private _specialityStore: SpecialityStore
     ) {
         // this.specialities = this._specialityStore.specialities;
 
         this._route.params.subscribe((routeParams: any) => {
             let specialityDetailId: number = parseInt(routeParams.id);
+            this._progressBarService.show();
             let result = this._specialityDetailsStore.fetchSpecialityDetailById(specialityDetailId);
             result.subscribe(
                 (specialityDetail: any) => {
@@ -58,8 +61,10 @@ export class EditSpecialityDetailsComponent {
                 },
                 (error) => {
                     this._router.navigate(['/speciality-details']);
+                    this._progressBarService.hide();
                 },
                 () => {
+                    this._progressBarService.hide();
                 });
         });
         this.specialityDetailForm = this.fb.group({
@@ -98,6 +103,7 @@ export class EditSpecialityDetailsComponent {
             })
         });
 
+        this._progressBarService.show();
         this.isSpecialityDetailSaveInProgress = true;
         let result: Observable<SpecialityDetail>;
 
@@ -121,9 +127,11 @@ export class EditSpecialityDetailsComponent {
                 });
                 this.isSpecialityDetailSaveInProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
             },
             () => {
                 this.isSpecialityDetailSaveInProgress = false;
+                this._progressBarService.hide();
             });
     }
 }

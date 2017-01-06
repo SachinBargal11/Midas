@@ -16,6 +16,7 @@ import { Notification } from '../../../models/notification';
 import moment from 'moment';
 import { StatesStore } from '../../../stores/states-store';
 import { StateService } from '../../../services/state-service';
+import { ProgressBarService } from '../../../services/progress-bar-service';
 
 @Component({
     selector: 'update-doctor',
@@ -51,10 +52,12 @@ export class UpdateDoctorComponent implements OnInit {
         private _route: ActivatedRoute,
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
+        private _progressBarService: ProgressBarService,
         private _elRef: ElementRef
     ) {
         this._route.params.subscribe((routeParams: any) => {
             let doctorId: number = parseInt(routeParams.id);
+            this._progressBarService.show();
             let result = this._doctorsStore.fetchDoctorById(doctorId);
             result.subscribe(
                 (doctorDetail: Doctor) => {
@@ -65,8 +68,10 @@ export class UpdateDoctorComponent implements OnInit {
                 },
                 (error) => {
                     this._router.navigate(['/doctors']);
+                    this._progressBarService.hide();
                 },
                 () => {
+                    this._progressBarService.hide();
                 });
         });
         this.doctorform = this.fb.group({
@@ -155,6 +160,7 @@ export class UpdateDoctorComponent implements OnInit {
             //     zipCode: doctorFormValues.address.zipCode,
             // })
         });
+        this._progressBarService.show();
         this.isSaveDoctorProgress = true;
         let result;
 
@@ -178,9 +184,11 @@ export class UpdateDoctorComponent implements OnInit {
                 });
                 this.isSaveDoctorProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
             },
             () => {
                 this.isSaveDoctorProgress = false;
+                this._progressBarService.hide();
             });
 
     }

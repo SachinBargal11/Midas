@@ -16,6 +16,7 @@ import moment from 'moment';
 import { StatesStore } from '../../../stores/states-store';
 // import { StateService } from '../../../services/state-service';
 import { LocationType } from '../../../models/enums/location-type';
+import { ProgressBarService } from '../../../services/progress-bar-service';
 
 @Component({
     selector: 'basic',
@@ -50,10 +51,12 @@ export class BasicComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _locationsStore: LocationsStore,
+        private _progressBarService: ProgressBarService,
         private _elRef: ElementRef
     ) {
         this._route.parent.params.subscribe((params: any) => {
             let locationId = parseInt(params.locationId);
+            this._progressBarService.show();
             let result = this._locationsStore.getLocationById(locationId);
             result.subscribe(
                 (locationDetails: LocationDetails) => {
@@ -62,8 +65,10 @@ export class BasicComponent implements OnInit {
                 },
                 (error) => {
                     this._router.navigate(['/medical-provider/locations']);
+                    this._progressBarService.hide();
                 },
                 () => {
+                    this._progressBarService.hide();
                 });
 
         });
@@ -113,6 +118,7 @@ export class BasicComponent implements OnInit {
                 updateByUserID: userId
             })
         });
+        this._progressBarService.show();
         this.isSaveProgress = true;
         let result;
 
@@ -136,9 +142,11 @@ export class BasicComponent implements OnInit {
                 });
                 this.isSaveProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
             },
             () => {
                 this.isSaveProgress = false;
+                this._progressBarService.hide();
             });
     }
 

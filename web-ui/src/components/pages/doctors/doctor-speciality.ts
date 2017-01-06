@@ -14,6 +14,7 @@ import moment from 'moment';
 import { UsersStore } from '../../../stores/users-store';
 import { SpecialityStore } from '../../../stores/speciality-store';
 import { Speciality } from '../../../models/speciality';
+import { ProgressBarService } from '../../../services/progress-bar-service';
 
 @Component({
     selector: 'doctor-speciality',
@@ -44,10 +45,12 @@ export class DoctorSpecialityComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _elRef: ElementRef,
         private _usersStore: UsersStore,
+        private _progressBarService: ProgressBarService,
         private _specialityStore: SpecialityStore
     ) {
         this._route.params.subscribe((routeParams: any) => {
             let doctorId: number = parseInt(routeParams.id);
+            this._progressBarService.show();
             let result = this._doctorsStore.fetchDoctorById(doctorId);
             result.subscribe(
                 (doctorDetail: Doctor) => {
@@ -55,8 +58,10 @@ export class DoctorSpecialityComponent implements OnInit {
                 },
                 (error) => {
                     this._router.navigate(['/doctors']);
+                    this._progressBarService.hide();
                 },
                 () => {
+                    this._progressBarService.hide();
                 });
         });
         this.doctorspecialityform = this.fb.group({
@@ -80,6 +85,7 @@ export class DoctorSpecialityComponent implements OnInit {
             },
             specialties: doctorspecialityformValues.speciality
         });
+        this._progressBarService.show();
         this.isSaveDoctorProgress = true;
         let result;
 
@@ -103,9 +109,10 @@ export class DoctorSpecialityComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
             },
             () => {
-                this.isSaveDoctorProgress = false;
+                this._progressBarService.hide();
             });
 
     }

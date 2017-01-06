@@ -37,7 +37,7 @@ export class SpecialityDetailComponent {
         this.loadSpecialityDetails();
     }
     loadSpecialityDetails() {
-        this._progressBarService.start();
+        this._progressBarService.show();
         this._route.parent.params.subscribe((params: any) => {
             let specialityId: number = parseInt(params.id);
             let requestData = {
@@ -52,9 +52,10 @@ export class SpecialityDetailComponent {
                 },
                 (error) => {
                     this._router.navigate(['/account-setup/specialities']);
+                    this._progressBarService.hide();
                 },
                 () => {
-                    this._progressBarService.stop();
+                    this._progressBarService.hide();
                 });
         });
     }
@@ -62,7 +63,7 @@ export class SpecialityDetailComponent {
     deleteSpecialityDetails() {
         if (this.selectedSpecialityDetails !== undefined) {
             this.selectedSpecialityDetails.forEach(currentSpecialityDetail => {
-                this._progressBarService.start();
+                this._progressBarService.show();
                 let result;
 
                 result = this._specialityDetailsStore.deleteSpecialityDetail(currentSpecialityDetail);
@@ -84,11 +85,11 @@ export class SpecialityDetailComponent {
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
-                        this._progressBarService.stop();
+                        this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
                     },
                     () => {
-                        this._progressBarService.stop();
+                        this._progressBarService.hide();
                     });
             });
         }

@@ -14,6 +14,7 @@ import { LocationDetails } from '../../../models/location-details';
 import { Schedule } from '../../../models/schedule';
 import { Notification } from '../../../models/notification';
 import { AppValidators } from '../../../utils/AppValidators';
+import { ProgressBarService } from '../../../services/progress-bar-service';
 
 @Component({
     selector: 'schedule',
@@ -46,11 +47,13 @@ export class ScheduleComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _locationsStore: LocationsStore,
         private _scheduleStore: ScheduleStore,
+        private _progressBarService: ProgressBarService,
         private _elRef: ElementRef
     ) {
 
         this._route.parent.params.subscribe((params: any) => {
             let locationId = parseInt(params.locationId);
+            this._progressBarService.show();
             let fetchSchedules = this._scheduleStore.getSchedules();
             let fetchLocation = this._locationsStore.getLocationById(locationId);
 
@@ -62,8 +65,10 @@ export class ScheduleComponent implements OnInit {
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
                 },
                 () => {
+                    this._progressBarService.hide();
                 });
         });
         this.scheduleform = this.fb.group({
@@ -184,6 +189,7 @@ export class ScheduleComponent implements OnInit {
             scheduleDetails: scheduleDetails,
             id: this.currentSchedule.id
         });
+        this._progressBarService.show();
         this.isSaveProgress = true;
         let result;
 
@@ -207,9 +213,11 @@ export class ScheduleComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
             },
             () => {
                 this.isSaveProgress = false;
+                this._progressBarService.hide();
             });
     }
 
@@ -221,6 +229,7 @@ export class ScheduleComponent implements OnInit {
             name: scheduleFormValues.name,
             scheduleDetails: scheduleDetails
         });
+        this._progressBarService.show();
         this.isSaveProgress = true;
         let result;
 
@@ -244,9 +253,11 @@ export class ScheduleComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
             },
             () => {
                 this.isSaveProgress = false;
+                this._progressBarService.hide();
             });
     }
 

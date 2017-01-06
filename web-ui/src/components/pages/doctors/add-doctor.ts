@@ -13,6 +13,7 @@ import moment from 'moment';
 import { StatesStore } from '../../../stores/states-store';
 import { StateService } from '../../../services/state-service';
 import { UsersStore } from '../../../stores/users-store';
+import { ProgressBarService } from '../../../services/progress-bar-service';
 
 @Component({
     selector: 'add-doctor',
@@ -45,6 +46,7 @@ export class AddDoctorComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _elRef: ElementRef,
+        private _progressBarService: ProgressBarService,
         private _usersStore: UsersStore
     ) {
         this.userJS = this.user.toJS();
@@ -84,6 +86,7 @@ export class AddDoctorComponent implements OnInit {
                 id: doctorFormValues.doctor.user
             })
         });
+        this._progressBarService.show();
         this.isSaveDoctorProgress = true;
         let result;
 
@@ -107,9 +110,11 @@ export class AddDoctorComponent implements OnInit {
                 });
                 this.isSaveDoctorProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
             },
             () => {
                 this.isSaveDoctorProgress = false;
+                this._progressBarService.hide();
             });
 
     }

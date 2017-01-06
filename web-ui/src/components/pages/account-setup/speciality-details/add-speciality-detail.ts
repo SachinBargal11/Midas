@@ -13,6 +13,7 @@ import { AppValidators } from '../../../../utils/AppValidators';
 
 import { NotificationsStore } from '../../../../stores/notifications-store';
 import { Notification } from '../../../../models/notification';
+import { ProgressBarService } from '../../../../services/progress-bar-service';
 
 @Component({
     selector: 'add-speciality-details',
@@ -43,6 +44,7 @@ export class AddSpecialityDetailsComponent {
         private _notificationsStore: NotificationsStore,
         private _notificationsService: NotificationsService,
         private _specialityDetailsStore: SpecialityDetailsStore,
+        private _progressBarService: ProgressBarService,
         private _specialityStore: SpecialityStore
     ) {
         this.specialityDetailJS = this.specialityDetail.toJS();
@@ -81,6 +83,7 @@ export class AddSpecialityDetailsComponent {
                 id: parseInt(specialityDetailFormValues.associatedSpeciality)
             })
         });
+        this._progressBarService.show();
         this.isSpecialityDetailSaveInProgress = true;
         let result: Observable<SpecialityDetail>;
 
@@ -104,9 +107,11 @@ export class AddSpecialityDetailsComponent {
                 });
                 this.isSpecialityDetailSaveInProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
             },
             () => {
                 this.isSpecialityDetailSaveInProgress = false;
+                this._progressBarService.hide();
             });
 
     }

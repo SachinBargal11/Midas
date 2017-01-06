@@ -5,10 +5,10 @@ import 'rxjs/add/operator/map';
 export class ProgressBarService {
     counter: number = 0;
     constructor() { }
-    start() {
+    show() {
         this.counter++;
     }
-    stop() {
-        this.counter--;
+    hide() {
+        this.counter = 0;
     }
 }

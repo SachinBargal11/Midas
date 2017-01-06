@@ -36,7 +36,7 @@ export class LocationComponent implements OnInit {
     }
 
     loadLocations() {
-        this._progressBarService.start();
+        this._progressBarService.show();
         this._locationsStore.getLocations()
             .subscribe(
             (data) => {
@@ -50,17 +50,17 @@ export class LocationComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._progressBarService.stop();
+                this._progressBarService.hide();
             },
             () => {
-            this._progressBarService.stop();
+            this._progressBarService.hide();
             });
     }
 
     deleteLocations() {
         if (this.selectedLocations !== undefined) {
             this.selectedLocations.forEach(currentLocation => {
-                this._progressBarService.start();
+                this._progressBarService.show();
                 let result;
                 result = this._locationsStore.deleteLocation(currentLocation);
                 result.subscribe(
@@ -82,11 +82,11 @@ export class LocationComponent implements OnInit {
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
-                        this._progressBarService.stop();
+                        this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
                     },
                     () => {
-                          this._progressBarService.stop();
+                          this._progressBarService.hide();
                     });
             });
         }

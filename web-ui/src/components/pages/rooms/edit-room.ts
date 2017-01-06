@@ -14,6 +14,7 @@ import { SessionStore } from '../../../stores/session-store';
 import { NotificationsStore } from '../../../stores/notifications-store';
 import { Notification } from '../../../models/notification';
 import moment from 'moment';
+import { ProgressBarService } from '../../../services/progress-bar-service';
 
 @Component({
     selector: 'edit-room',
@@ -46,10 +47,12 @@ export class EditRoomComponent implements OnInit {
         private _roomsStore: RoomsStore,
         private _roomsService: RoomsService,
         private _locationsStore: LocationsStore,
+        private _progressBarService: ProgressBarService,
         private _elRef: ElementRef
     ) {
         this._route.params.subscribe((routeParams: any) => {
             let roomId: number = parseInt(routeParams.id);
+            this._progressBarService.show();
             let result = this._roomsStore.fetchRoomById(roomId);
             result.subscribe(
                 (room: Room) => {
@@ -60,8 +63,10 @@ export class EditRoomComponent implements OnInit {
                 (error) => {
                     // this._router.navigate(['/rooms']);
                     this.location.back();
+                    this._progressBarService.hide();
                 },
                 () => {
+                     this._progressBarService.hide();
                 });
         });
         this.editroomform = this.fb.group({
@@ -97,6 +102,7 @@ export class EditRoomComponent implements OnInit {
                 id: this.room.location.id
             }
         });
+        this._progressBarService.show();
         this.isSaveProgress = true;
         let result;
 
@@ -121,9 +127,11 @@ export class EditRoomComponent implements OnInit {
                 });
                 this.isSaveProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
             },
             () => {
                 this.isSaveProgress = false;
+                this._progressBarService.hide();
             });
 
     }

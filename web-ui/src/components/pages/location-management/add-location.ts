@@ -15,6 +15,7 @@ import {Notification} from '../../../models/notification';
 import moment from 'moment';
 import {StatesStore} from '../../../stores/states-store';
 // import {StateService} from '../../../services/state-service';
+import { ProgressBarService } from '../../../services/progress-bar-service';
 
 @Component({
     selector: 'add-location',
@@ -44,6 +45,7 @@ export class AddLocationComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _locationsStore: LocationsStore,
+        private _progressBarService: ProgressBarService,
         private _elRef: ElementRef
     ) {
         this.locationJS = this.location.toJS();
@@ -86,6 +88,7 @@ export class AddLocationComponent implements OnInit {
                 zipCode: addlocationformValues.zipCode
             })
         });
+        this._progressBarService.show();
         this.isSaveProgress = true;
         let result;
 
@@ -109,9 +112,11 @@ export class AddLocationComponent implements OnInit {
                 });
                 this.isSaveProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
             },
             () => {
                 this.isSaveProgress = false;
+                this._progressBarService.hide();
             });
 
     }

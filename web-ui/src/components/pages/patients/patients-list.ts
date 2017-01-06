@@ -25,14 +25,14 @@ export class PatientsListComponent implements OnInit {
     }
 
     loadPatients() {
-        this._progressBarService.start();
+        this._progressBarService.show();
         this._patientsStore.getPatients()
             .subscribe(patients => {
                 this.patients = patients;
             },
             null,
             () => {
-        this._progressBarService.stop();
+        this._progressBarService.hide();
             });
     }
     onRowSelect(patient) {

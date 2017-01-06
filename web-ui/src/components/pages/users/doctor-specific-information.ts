@@ -15,6 +15,7 @@ import { Notification } from '../../../models/notification';
 import moment from 'moment';
 import { Speciality } from '../../../models/speciality';
 import _ from 'underscore';
+import { ProgressBarService } from '../../../services/progress-bar-service';
 
 @Component({
     selector: 'access',
@@ -45,10 +46,12 @@ export class DoctorSpecificInformationComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _doctorsStore: DoctorsStore,
         private _specialityStore: SpecialityStore,
+        private _progressBarService: ProgressBarService,
         private _route: ActivatedRoute
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.userId = parseInt(routeParams.userId);
+            this._progressBarService.show();
 
             let fetchDoctorDetails = this._doctorsStore.fetchDoctorById(this.userId);
             let fetchSpecialities = this._specialityStore.getSpecialities();
@@ -73,8 +76,10 @@ export class DoctorSpecificInformationComponent implements OnInit {
                 },
                 (error) => {
                     this._router.navigate(['../../']);
+                    this._progressBarService.hide();
                 },
                 () => {
+                    this._progressBarService.hide();
                 });
         });
 
@@ -114,6 +119,7 @@ export class DoctorSpecificInformationComponent implements OnInit {
                 id: this.userId
             })
         });
+        this._progressBarService.show();
         this.isSaveDoctorProgress = true;
         let result;
 
@@ -137,9 +143,11 @@ export class DoctorSpecificInformationComponent implements OnInit {
                 });
                 this.isSaveDoctorProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
             },
             () => {
                 this.isSaveDoctorProgress = false;
+                this._progressBarService.hide();
             });
 
     }

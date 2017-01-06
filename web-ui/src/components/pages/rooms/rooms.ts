@@ -41,28 +41,28 @@ export class RoomsComponent implements OnInit {
     }
 
     loadRooms() {
-        this._progressBarService.start();
+        this._progressBarService.show();
         this._roomsStore.getRooms(this.locationId)
             .subscribe(rooms => {
                 this.rooms = rooms;
             },
             (error) => {
-                this._progressBarService.stop();
                 let notification = new Notification({
                     'title': error.message,
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
             },
             () => {
-                this._progressBarService.stop();
+                this._progressBarService.hide();
             });
     }
     deleteRooms() {
         if (this.selectedRooms !== undefined) {
             this.selectedRooms.forEach(currentRoom => {
-                this._progressBarService.start();
+                this._progressBarService.show();
                 let result;
                 result = this._roomsStore.deleteRoom(currentRoom);
                 result.subscribe(
@@ -83,11 +83,11 @@ export class RoomsComponent implements OnInit {
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
-                        this._progressBarService.stop();
+                        this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
                     },
                     () => {
-                        this._progressBarService.stop();
+                        this._progressBarService.hide();
                     });
             });
         }
@@ -100,9 +100,4 @@ export class RoomsComponent implements OnInit {
             this._notificationsStore.addNotification(notification);
         }
     }
-
-    findSelectedRoomIndex(room): number {
-        return this.rooms.indexOf(room);
-    }
-
 }

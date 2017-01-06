@@ -25,10 +25,10 @@ export class SpecialityListComponent implements OnInit {
     }
 
     loadSpeciality() {
-        this._progressBarService.start();
+        this._progressBarService.show();
         this._specialityStore.getSpecialities()
             .subscribe(specialities => { this.specialities = specialities; },
             null,
-            () => { this._progressBarService.stop(); });
+            () => { this._progressBarService.hide(); });
     }
 }

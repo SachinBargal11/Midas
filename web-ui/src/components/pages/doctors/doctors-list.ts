@@ -22,11 +22,11 @@ export class DoctorsListComponent implements OnInit {
         this.loadDoctors();
     }
     loadDoctors() {
-        this._progressBarService.start();
+        this._progressBarService.show();
         let doctor = this._doctorsStore.getDoctors()
             .subscribe(doctors => { this.doctors = doctors; },
             null,
-            () => { this._progressBarService.stop(); });
+            () => { this._progressBarService.hide(); });
         return doctor;
     }
     onRowSelect(doctor) {

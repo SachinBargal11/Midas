@@ -18,6 +18,7 @@ import moment from 'moment';
 import { StatesStore } from '../../../stores/states-store';
 import { StateService } from '../../../services/state-service';
 import { UserType } from '../../../models/enums/user-type';
+import { ProgressBarService } from '../../../services/progress-bar-service';
 
 @Component({
     selector: 'update-user',
@@ -51,10 +52,12 @@ export class UpdateUserComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _usersStore: UsersStore,
+        private _progressBarService: ProgressBarService,
         private _elRef: ElementRef
     ) {
         this._route.params.subscribe((routeParams: any) => {
             let userId: number = parseInt(routeParams.id);
+            this._progressBarService.show();
             let result = this._usersStore.fetchUserById(userId);
             result.subscribe(
                 (userDetail: any) => {
@@ -65,8 +68,10 @@ export class UpdateUserComponent implements OnInit {
                 },
                 (error) => {
                     this._router.navigate(['/medical-provider/users']);
+                    this._progressBarService.hide();
                 },
                 () => {
+                    this._progressBarService.hide();
                 });
         });
         this.userform = this.fb.group({
@@ -128,6 +133,7 @@ export class UpdateUserComponent implements OnInit {
                 zipCode: userFormValues.address.zipCode,
             })
         });
+        this._progressBarService.show();
         this.isSaveUserProgress = true;
         let result;
 
@@ -151,9 +157,11 @@ export class UpdateUserComponent implements OnInit {
                 });
                 this.isSaveUserProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
             },
             () => {
                 this.isSaveUserProgress = false;
+                this._progressBarService.hide();
             });
 
     }

@@ -37,20 +37,20 @@ export class UsersListComponent implements OnInit {
     }
 
     loadUsers() {
-        this._progressBarService.start();
+        this._progressBarService.show();
         this._usersStore.getUsers()
             .subscribe(users => {
                 this.users = users;
             },
             null,
             () => {
-            this._progressBarService.stop();
+            this._progressBarService.hide();
             });
     }
     deleteUser() {
         if (this.selectedUsers !== undefined) {
             this.selectedUsers.forEach(currentUser => {
-                this._progressBarService.start();
+                this._progressBarService.show();
                 let result;
                 result = this._usersStore.deleteUser(currentUser);
                 result.subscribe(
@@ -72,11 +72,11 @@ export class UsersListComponent implements OnInit {
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
-                        this._progressBarService.stop();
+                        this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
                     },
                     () => {
-                        this._progressBarService.stop();
+                        this._progressBarService.hide();
                     });
             });
         }

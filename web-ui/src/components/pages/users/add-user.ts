@@ -17,6 +17,7 @@ import { Notification } from '../../../models/notification';
 import moment from 'moment';
 import { StatesStore } from '../../../stores/states-store';
 import { StateService } from '../../../services/state-service';
+import { ProgressBarService } from '../../../services/progress-bar-service';
 
 @Component({
     selector: 'add-user',
@@ -45,6 +46,7 @@ export class AddUserComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _usersStore: UsersStore,
+        private _progressBarService: ProgressBarService,
         private _elRef: ElementRef
     ) {
         this.userform = this.fb.group({
@@ -105,6 +107,7 @@ export class AddUserComponent implements OnInit {
                     zipCode: userFormValues.address.zipCode,
                 })
             });
+        this._progressBarService.show();
         this.isSaveUserProgress = true;
         let result;
 
@@ -128,9 +131,11 @@ export class AddUserComponent implements OnInit {
                 });
                 this.isSaveUserProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
             },
             () => {
                 this.isSaveUserProgress = false;
+                this._progressBarService.hide();
             });
 
     }

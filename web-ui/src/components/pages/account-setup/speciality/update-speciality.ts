@@ -8,6 +8,7 @@ import { SessionStore } from '../../../../stores/session-store';
 import { NotificationsStore } from '../../../../stores/notifications-store';
 import { Notification } from '../../../../models/notification';
 import moment from 'moment';
+import { ProgressBarService } from '../../../../services/progress-bar-service';
 
 @Component({
     selector: 'update-speciality',
@@ -34,10 +35,12 @@ export class UpdateSpecialityComponent implements OnInit {
         private _route: ActivatedRoute,
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
+        private _progressBarService: ProgressBarService,
         private _elRef: ElementRef
     ) {
         this._route.params.subscribe((routeParams: any) => {
             let specialityId: number = parseInt(routeParams.id);
+            this._progressBarService.show();
             let result = this._specialityStore.fetchSpecialityById(specialityId);
             result.subscribe(
                 (speciality: Speciality) => {
@@ -45,8 +48,10 @@ export class UpdateSpecialityComponent implements OnInit {
                 },
                 (error) => {
                     this._router.navigate(['/account-setup/specialities']);
+                    this._progressBarService.hide();
                 },
                 () => {
+                    this._progressBarService.hide();
                 });
         });
 
@@ -71,6 +76,7 @@ export class UpdateSpecialityComponent implements OnInit {
             specialityCode: specialityformValues.specialityCode,
             isunitApply: specialityformValues.isunitApply
         });
+        this._progressBarService.show();
         this.isSaveSpecialityProgress = true;
         let result;
 
@@ -94,9 +100,11 @@ export class UpdateSpecialityComponent implements OnInit {
                 });
                 this.isSaveSpecialityProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
             },
             () => {
                 this.isSaveSpecialityProgress = false;
+                this._progressBarService.hide();
             });
 
     }

@@ -28,7 +28,7 @@ export class UserStatisticsComponent {
         private _notificationsService: NotificationsService,
         private _progressBarService: ProgressBarService
     ) {
-        this._progressBarService.start();
+        this._progressBarService.show();
         // this._usersStore.getUsers().subscribe(users => {
         //     this.users = users;
         //     let groupedUsers: Array<any> = _.chain(this.users).groupBy(function (user) {
@@ -44,10 +44,10 @@ export class UserStatisticsComponent {
         // },
         //     null,
         //     () => {
-        //           this._progressBarService.stop();
+        //           this._progressBarService.hide();
         //     }
         // );
-        this._progressBarService.start();
+        this._progressBarService.show();
         // this._doctorsStore.getDoctors().subscribe(doctors => {
         //     this.doctors = doctors;
         //     let groupedDoctors: Array<any> = _.chain(this.doctors).groupBy(function (doctor) {
@@ -63,7 +63,7 @@ export class UserStatisticsComponent {
         // },
         //     null,
         //     () => {
-        //         this._progressBarService.stop();
+        //         this._progressBarService.hide();
         //     }
         // );
         // this.options = {
