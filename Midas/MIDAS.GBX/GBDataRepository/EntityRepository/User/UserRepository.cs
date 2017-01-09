@@ -468,7 +468,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         usrComp.User = new BO.User();
                         usrComp.User.ID = acc_.ID;
                         boOTP.usercompanies = ((List<BO.UserCompany>)sr.Get(usrComp)).ToList();
-                        boOTP.company = boOTP.usercompanies[0].Company;
+                        //boOTP.company = boOTP.usercompanies[0].Company;
                     }
                     boOTP.User = acc_;
                     return boOTP;
@@ -486,7 +486,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 usrComp.User = new BO.User();
                 usrComp.User.ID = acc_.ID;
                 boOTP_.usercompanies = ((List<BO.UserCompany>)sr.Get(usrComp)).ToList();
-                boOTP_.company = boOTP_.usercompanies[0].Company;
             }
             boOTP_.User = acc_;
             return boOTP_;
