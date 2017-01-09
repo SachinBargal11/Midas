@@ -21,8 +21,8 @@ import { Notification } from '../../../../models/notification';
 
 
 export class EditSpecialityDetailsComponent {
-    speciality = new Speciality({});
-    specialityDetail = new SpecialityDetail({});
+    speciality: Speciality = null;
+    specialityDetail: SpecialityDetail = null;
     isSpecialityDetailSaveInProgress = false;
     // specialities: Observable<List<Speciality>>;
     specialities: Speciality[];
@@ -34,7 +34,7 @@ export class EditSpecialityDetailsComponent {
         pauseOnHover: false,
         clickToClose: false
     };
-    specialityDetailJS;
+    specialityDetailJS: any = null;
 
     constructor(
         public _route: ActivatedRoute,

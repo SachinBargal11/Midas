@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {PatientsStore} from '../../../stores/patients-store';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { PatientsStore } from '../../../stores/patients-store';
 import { Patient } from '../../../models/patient';
 import { ProgressBarService } from '../../../services/progress-bar-service';
 
@@ -30,9 +30,11 @@ export class PatientsListComponent implements OnInit {
             .subscribe(patients => {
                 this.patients = patients;
             },
-            null,
+            (error) => {
+                this._progressBarService.stop();
+            },
             () => {
-        this._progressBarService.stop();
+                this._progressBarService.stop();
             });
     }
     onRowSelect(patient) {

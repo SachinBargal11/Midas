@@ -18,7 +18,7 @@ export class ValidateActiveSession implements CanActivate {
             return true;
         }
 
-        this._router.navigate(['/login']);
+        this._router.navigate(['/account/login']);
         return false;
     }
 }

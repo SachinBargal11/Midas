@@ -1,20 +1,19 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
-import {AppValidators} from '../../../utils/AppValidators';
-import {LocationsStore} from '../../../stores/locations-store';
+import { AppValidators } from '../../../utils/AppValidators';
+import { LocationsStore } from '../../../stores/locations-store';
 import { LocationDetails } from '../../../models/location-details';
-import {Location} from '../../../models/location';
+import { Location } from '../../../models/location';
 import { Company } from '../../../models/company';
-import {Contact} from '../../../models/contact';
-import {Address} from '../../../models/address';
-import {SessionStore} from '../../../stores/session-store';
-import {NotificationsStore} from '../../../stores/notifications-store';
-import {Notification} from '../../../models/notification';
+import { Contact } from '../../../models/contact';
+import { Address } from '../../../models/address';
+import { SessionStore } from '../../../stores/session-store';
+import { NotificationsStore } from '../../../stores/notifications-store';
+import { Notification } from '../../../models/notification';
 import moment from 'moment';
-import {StatesStore} from '../../../stores/states-store';
-// import {StateService} from '../../../services/state-service';
+import { StatesStore } from '../../../stores/states-store';
 
 @Component({
     selector: 'add-location',
@@ -48,15 +47,15 @@ export class AddLocationComponent implements OnInit {
     ) {
         this.locationJS = this.location.toJS();
         this.addlocationform = this.fb.group({
-                name: ['', Validators.required],
-                address: [''],
-                city: ['', Validators.required],
-                state: ['', Validators.required],
-                zipCode: ['', Validators.required],
-                officePhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                fax: [''],
-                locationType: ['', Validators.required]
-            });
+            name: ['', Validators.required],
+            address: [''],
+            city: ['', Validators.required],
+            state: ['', Validators.required],
+            zipCode: ['', Validators.required],
+            officePhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            fax: [''],
+            locationType: ['', Validators.required]
+        });
 
         this.addlocationformControls = this.addlocationform.controls;
     }
@@ -68,16 +67,16 @@ export class AddLocationComponent implements OnInit {
     save() {
         let addlocationformValues = this.addlocationform.value;
         let basicInfo = new LocationDetails({
-            location: new Location ({
+            location: new Location({
                 name: addlocationformValues.name,
                 locationType: parseInt(addlocationformValues.locationType)
             }),
-            company: new Company ({
-                 id: this._sessionStore.session.currentCompany.id
+            company: new Company({
+                id: this._sessionStore.session.currentCompany.id
             }),
             contact: new Contact({
-                faxNo: addlocationformValues.fax.replace(/\-|\s/g, ''),
-                workPhone: addlocationformValues.officePhone.replace(/\-/g, '')
+                faxNo: addlocationformValues.fax ? addlocationformValues.fax.replace(/\-|\s/g, '') : null,
+                workPhone: addlocationformValues.officePhone ? addlocationformValues.officePhone.replace(/\-/g, '') : null
             }),
             address: new Address({
                 address1: addlocationformValues.address,

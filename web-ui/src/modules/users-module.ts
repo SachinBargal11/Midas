@@ -14,8 +14,7 @@ import { UserBasicComponent } from '../components/pages/users/user-basic';
 import { UserStatisticsComponent } from '../components/pages/users/user-statistics';
 import { UsersListComponent } from '../components/pages/users/users-list';
 import { UserShellComponent } from '../components/pages/users/users-shell';
-import { UsersService } from '../services/users-service';
-import { UsersStore } from '../stores/users-store';
+
 @NgModule({
   imports: [CommonModule, RouterModule, SharedModule],
   declarations: [
@@ -32,6 +31,6 @@ import { UsersStore } from '../stores/users-store';
     UsersListComponent,
     UserShellComponent
   ],
-  providers: [UsersService, UsersStore]
+  providers: []
 })
 export class UsersModule { }

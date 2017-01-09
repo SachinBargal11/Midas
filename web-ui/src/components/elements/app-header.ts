@@ -37,20 +37,15 @@ export class AppHeaderComponent implements OnInit {
     }
 
     ngOnInit() {
-        // if (this._sessionStore.isAuthenticated()) {
-        //     this.user_name = this._sessionStore.session.displayName;
-        // } else {
-        //     this._router.navigate(['/login']);
-        // }
     }
 
     logout() {
         this.sessionStore.logout();
-        this._router.navigate(['/login']);
+        this._router.navigate(['/account/login']);
     }
 
     changePassword() {
-        this._router.navigate(['/change-password']);
+        this._router.navigate(['/account/change-password']);
     }
 
     showNotifications() {

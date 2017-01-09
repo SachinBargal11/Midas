@@ -89,6 +89,6 @@ export class SecurityCheckComponent implements OnInit {
 
     goBack(): void {
         // this.location.back();
-        this._router.navigate(['/login']);
+        this._router.navigate(['/account/login']);
     }
 }

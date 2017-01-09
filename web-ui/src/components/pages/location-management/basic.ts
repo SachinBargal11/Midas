@@ -14,7 +14,6 @@ import { NotificationsStore } from '../../../stores/notifications-store';
 import { Notification } from '../../../models/notification';
 import moment from 'moment';
 import { StatesStore } from '../../../stores/states-store';
-// import { StateService } from '../../../services/state-service';
 import { LocationType } from '../../../models/enums/location-type';
 
 @Component({
@@ -100,8 +99,8 @@ export class BasicComponent implements OnInit {
                 id: this.locationDetails.company.id
             }),
             contact: new Contact({
-                faxNo: basicformValues.fax.replace(/\-|\s/g, ''),
-                workPhone: basicformValues.officePhone.replace(/\-/g, ''),
+                faxNo: basicformValues.fax ? basicformValues.fax.replace(/\-|\s/g, '') : null,
+                workPhone: basicformValues.officePhone ? basicformValues.officePhone.replace(/\-/g, '') : null,
                 updateByUserID: userId
             }),
             address: new Address({

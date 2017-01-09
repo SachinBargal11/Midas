@@ -113,9 +113,9 @@ export class UpdateUserComponent implements OnInit {
             userType: parseInt(userFormValues.userInfo.userType),
             userName: userFormValues.contact.email,
             contact: new Contact({
-                cellPhone: userFormValues.contact.cellPhone.replace(/\-/g, ''),
+                cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,
                 emailAddress: userFormValues.contact.email,
-                faxNo: userFormValues.contact.faxNo.replace(/\-|\s/g, ''),
+                faxNo: userFormValues.contact.faxNo ? userFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
                 homePhone: userFormValues.contact.homePhone,
                 workPhone: userFormValues.contact.workPhone,
             }),
