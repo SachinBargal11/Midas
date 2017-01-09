@@ -68,6 +68,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             BO.DoctorSpeciality doctorspecilityBO = new BO.DoctorSpeciality();
             doctorspecilityBO.ID = doctorspecility.id;
+
             doctorspecilityBO.IsDeleted = doctorspecility.IsDeleted;
             if (doctorspecilityBO.UpdateByUserID.HasValue)
                 doctorspecilityBO.UpdateByUserID = doctorspecility.UpdateByUserID.Value;

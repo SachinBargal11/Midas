@@ -259,13 +259,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     if (locationBO.UpdateByUserID.HasValue)
                         location.AddressInfo.UpdateByUserID = locationBO.UpdateByUserID.Value;
                     location.AddressInfo.UpdateDate = DateTime.UtcNow;
-                    location.AddressInfo.Name = addressBO.Name;
-                    location.AddressInfo.Address1 = addressBO.Address1;
-                    location.AddressInfo.Address2 = addressBO.Address2;
-                    location.AddressInfo.City = addressBO.City;
-                    location.AddressInfo.State = addressBO.State;
-                    location.AddressInfo.ZipCode = addressBO.ZipCode;
-                    location.AddressInfo.Country = addressBO.Country;
+                    location.AddressInfo.Name = string.IsNullOrEmpty(addressBO.Name) ? location.AddressInfo.Name : addressBO.Name;
+                    location.AddressInfo.Address1 = string.IsNullOrEmpty(addressBO.Address1) ? location.AddressInfo.Address1 : addressBO.Address1;
+                    location.AddressInfo.Address2 = string.IsNullOrEmpty(addressBO.Address2) ? location.AddressInfo.Address2 : addressBO.Address2;
+                    location.AddressInfo.City = string.IsNullOrEmpty(addressBO.City) ? location.AddressInfo.City : addressBO.City;
+                    location.AddressInfo.State = string.IsNullOrEmpty(addressBO.State) ? location.AddressInfo.State : addressBO.State;
+                    location.AddressInfo.ZipCode = string.IsNullOrEmpty(addressBO.ZipCode) ? location.AddressInfo.ZipCode : addressBO.ZipCode;
+                    location.AddressInfo.Country = string.IsNullOrEmpty(addressBO.Country) ? location.AddressInfo.Country : addressBO.Country;
                     location.AddressInfo.UpdateDate = addressBO.UpdateDate;
                     location.AddressInfo.UpdateByUserID = addressBO.UpdateByUserID;
                     #endregion
@@ -276,12 +276,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     if (locationBO.UpdateByUserID.HasValue)
                         location.ContactInfo.UpdateByUserID = locationBO.UpdateByUserID.Value;
                     location.ContactInfo.UpdateDate = DateTime.UtcNow;
-                    location.ContactInfo.Name = contactinfoBO.Name;
-                    location.ContactInfo.CellPhone = contactinfoBO.CellPhone;
-                    location.ContactInfo.EmailAddress = contactinfoBO.EmailAddress;
-                    location.ContactInfo.HomePhone = contactinfoBO.HomePhone;
-                    location.ContactInfo.WorkPhone = contactinfoBO.WorkPhone;
-                    location.ContactInfo.FaxNo = contactinfoBO.FaxNo;
+                    location.ContactInfo.Name = string.IsNullOrEmpty(contactinfoBO.Name) ? location.ContactInfo.Name : contactinfoBO.Name;
+                    location.ContactInfo.CellPhone = string.IsNullOrEmpty(contactinfoBO.CellPhone) ? location.ContactInfo.CellPhone : contactinfoBO.CellPhone;
+                    location.ContactInfo.EmailAddress = string.IsNullOrEmpty(contactinfoBO.EmailAddress) ? location.ContactInfo.EmailAddress : contactinfoBO.EmailAddress;
+                    location.ContactInfo.HomePhone = string.IsNullOrEmpty(contactinfoBO.HomePhone) ? location.ContactInfo.HomePhone : contactinfoBO.HomePhone;
+                    location.ContactInfo.WorkPhone = string.IsNullOrEmpty(contactinfoBO.WorkPhone) ? location.ContactInfo.WorkPhone : contactinfoBO.WorkPhone;
+                    location.ContactInfo.FaxNo = string.IsNullOrEmpty(contactinfoBO.FaxNo) ? location.ContactInfo.FaxNo : contactinfoBO.FaxNo;
                     location.ContactInfo.UpdateDate = contactinfoBO.UpdateDate;
                     location.ContactInfo.UpdateByUserID = contactinfoBO.UpdateByUserID;
                     #endregion
@@ -302,7 +302,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     _context.Entry(location).State = System.Data.Entity.EntityState.Modified;
                 }
+                locationDB = location;
+                _context.SaveChanges();
 
+                var res = Convert<BO.Location, Location>(locationDB);
+                var res_ = (BO.GbObject)(object)res;
+                return (object)res_;
             }
             else
             {
@@ -321,8 +326,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             _context.SaveChanges();
 
-            var res = Convert<BO.Location, Location>(locationDB);
-            return (object)res;
+            var res__ = Convert<BO.Location, Location>(locationDB);
+            return (object)res__;
         }
         #endregion
 
