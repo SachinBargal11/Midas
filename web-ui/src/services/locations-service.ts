@@ -141,7 +141,6 @@ export class LocationsService {
             requestData.addressInfo = requestData.address;
             requestData = _.omit(requestData, 'contact');
             requestData = _.omit(requestData, 'address');
-            debugger;
             return this._http.post(this._url + '/Location/Add', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json())

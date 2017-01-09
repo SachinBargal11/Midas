@@ -10,7 +10,8 @@ export class ScheduleAdapter {
         if (scheduleData) {
             if (scheduleData.scheduleDetails) {
                 for (let scheduleDetail of scheduleData.scheduleDetails) {
-                    scheduleDetails.push(ScheduleAdapter.parseScheduleDetails(scheduleDetail).toJS());
+                    scheduleDetails.push(ScheduleAdapter.parseScheduleDetails(scheduleDetail));
+                    // scheduleDetails.push(ScheduleAdapter.parseScheduleDetails(scheduleDetail).toJS());
                 }
             }
             schedule = new Schedule({
@@ -29,8 +30,8 @@ export class ScheduleAdapter {
             dayofWeek: scheduleDetail.dayofWeek,
             // dayofWeek: moment().weekday(scheduleDetail.dayofWeek - 1),
             dayofWeekString: moment().weekday(scheduleDetail.dayofWeek - 1).format('dddd'),
-            slotStart: moment(scheduleDetail.slotStart, 'hh:mm:ss').toDate(),
-            slotEnd: moment(scheduleDetail.slotEnd, 'hh:mm:ss').toDate(),
+            slotStart: moment(scheduleDetail.slotStart, 'hh:mm:ss'),
+            slotEnd: moment(scheduleDetail.slotEnd, 'hh:mm:ss'),
             slotDate: scheduleDetail.slotDate,
             scheduleStatus: scheduleDetail.scheduleStatus,
             isDeleted: scheduleDetail.isDeleted,

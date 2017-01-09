@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import moment from 'moment';
 import { NotificationsService } from 'angular2-notifications';
+import { ErrorMessageFormatter } from '../../../../utils/ErrorMessageFormatter';
 import { SpecialityStore } from '../../../../stores/speciality-store';
 import { SpecialityDetail } from '../../../../models/speciality-details';
 import { Speciality } from '../../../../models/speciality';
@@ -15,8 +16,7 @@ import { Notification } from '../../../../models/notification';
 
 @Component({
     selector: 'edit-speciality-details',
-    templateUrl: 'templates/pages/account-setup/speciality-details/edit-speciality-detail.html',
-    providers: [FormBuilder]
+    templateUrl: 'templates/pages/account-setup/speciality-details/edit-speciality-detail.html'
 })
 
 
@@ -113,11 +113,13 @@ export class EditSpecialityDetailsComponent {
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
+                let errString = 'Unable to update Speciality Details.';
                 let notification = new Notification({
-                    'title': 'Unable to update Speciality Details.',
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
+                this.isSpecialityDetailSaveInProgress = false;
                 this._notificationsStore.addNotification(notification);
             },
             () => {

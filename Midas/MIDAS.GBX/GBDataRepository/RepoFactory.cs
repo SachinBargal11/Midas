@@ -95,15 +95,19 @@ namespace MIDAS.GBX
             {
                 repo = new DoctorLocationScheduleRepository(context);
             }
-            //if (typeof(T) == typeof(BO.Log))
-            //{
-            //    repo = new LogRepository(context);
-            //}
+            if (typeof(T) == typeof(BO.Patient))
+            {
+                repo = new PatientRepository(context);
+            }
+            if (typeof(T) == typeof(BO.Log))
+            {
+                repo = new LogRepository(context);
+            }
             if (typeof(T) == typeof(BO.UserCompany))
             {
                 repo = new UserCompanyRepository(context);
-
             }
+           
             return repo;
         }
     }

@@ -1,6 +1,7 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
 import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import {AppValidators} from '../../../utils/AppValidators';
 import {LocationsStore} from '../../../stores/locations-store';
 import { LocationDetails } from '../../../models/location-details';
@@ -13,12 +14,11 @@ import {NotificationsStore} from '../../../stores/notifications-store';
 import {Notification} from '../../../models/notification';
 import moment from 'moment';
 import {StatesStore} from '../../../stores/states-store';
-import {StateService} from '../../../services/state-service';
+// import {StateService} from '../../../services/state-service';
 
 @Component({
     selector: 'add-location',
-    templateUrl: 'templates/pages/location-management/add-location.html',
-    providers: [StateService, StatesStore, FormBuilder],
+    templateUrl: 'templates/pages/location-management/add-location.html'
 })
 
 export class AddLocationComponent implements OnInit {
@@ -54,7 +54,7 @@ export class AddLocationComponent implements OnInit {
                 state: ['', Validators.required],
                 zipCode: ['', Validators.required],
                 officePhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                fax: ['', Validators.required],
+                fax: [''],
                 locationType: ['', Validators.required]
             });
 
@@ -76,8 +76,8 @@ export class AddLocationComponent implements OnInit {
                  id: this._sessionStore.session.currentCompany.id
             }),
             contact: new Contact({
-                faxNo: addlocationformValues.fax,
-                workPhone: addlocationformValues.officePhone
+                faxNo: addlocationformValues.fax.replace(/\-|\s/g, ''),
+                workPhone: addlocationformValues.officePhone.replace(/\-/g, '')
             }),
             address: new Address({
                 address1: addlocationformValues.address,
@@ -101,11 +101,13 @@ export class AddLocationComponent implements OnInit {
                 this._router.navigate(['/medical-provider/locations']);
             },
             (error) => {
+                let errString = 'Unable to add location.';
                 let notification = new Notification({
-                    'title': 'Unable to add location.',
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
+                this.isSaveProgress = false;
                 this._notificationsStore.addNotification(notification);
             },
             () => {

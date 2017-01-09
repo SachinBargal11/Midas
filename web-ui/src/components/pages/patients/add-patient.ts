@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { AppValidators } from '../../../utils/AppValidators';
 import { PatientsStore } from '../../../stores/patients-store';
 import { Patient } from '../../../models/patient';
@@ -89,11 +90,13 @@ export class AddPatientComponent implements OnInit {
                 this._router.navigate(['/patient-manager/patients']);
             },
             (error) => {
+                let errString = 'Unable to add patient.';
                 let notification = new Notification({
-                    'title': 'Unable to add patient.',
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': Moment()
                 });
+                this.isSavePatientProgress = false;
                 this._notificationsStore.addNotification(notification);
             },
             () => {

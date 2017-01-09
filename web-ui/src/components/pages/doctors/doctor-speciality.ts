@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { AppValidators } from '../../../utils/AppValidators';
 import { DoctorsStore } from '../../../stores/doctors-store';
 import { DoctorsService } from '../../../services/doctors-service';
@@ -16,8 +17,7 @@ import { Speciality } from '../../../models/speciality';
 
 @Component({
     selector: 'doctor-speciality',
-    templateUrl: 'templates/pages/doctors/doctor-speciality.html',
-    providers: [FormBuilder]
+    templateUrl: 'templates/pages/doctors/doctor-speciality.html'
 })
 
 export class DoctorSpecialityComponent implements OnInit {
@@ -95,9 +95,10 @@ export class DoctorSpecialityComponent implements OnInit {
                 this._router.navigate(['/doctors']);
             },
             (error) => {
+                let errString = 'Unable to add Doctor Speciality.';
                 this.isSaveDoctorProgress = false;
                 let notification = new Notification({
-                    'title': 'Unable to add Doctor Speciality.',
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });

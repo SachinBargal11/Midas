@@ -6,8 +6,12 @@
         </div>
         <div class="control-item-content-text" [class.success]="notification.type == 'SUCCESS'" [class.warning]="notification.type == 'ERROR'" [class.unread]="!notification.isRead" *ngFor="let notification of _notificationsStore.notifications | async | reverse">
             <div class="dot" *ngIf="!notification.isRead"></div>
-            <div>{{notification.title}}</div>
-            <div class="color-blue-grey-lighter">{{notification.createdAt | amTimeAgo}}</div>
+            <div *ngIf="notification.title != null">{{notification.title}}</div>
+            <div *ngIf="notification.title != null" class="color-blue-grey-lighter">{{notification.createdAt | amTimeAgo}}</div>
+            <div *ngIf="notification.messages != null">
+                <div *ngFor="let message of notification.messages">{{message}} <br></div>
+                <div class="color-blue-grey-lighter">{{notification.createdAt | amTimeAgo}}</div>
+            </div>
         </div>
     </div>
 </div>

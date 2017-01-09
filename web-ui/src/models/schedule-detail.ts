@@ -42,4 +42,15 @@ export class ScheduleDetail extends ScheduleDetailRecord {
         return moment().weekday(dayofWeek - 1).format('dddd');
     }
 
+    static getScheduleStatusLabel(scheduleStatus: number): string {
+        switch (scheduleStatus) {
+            case 0:
+                return 'Closed';
+            case 1:
+                return 'Specific Hours';
+            default:
+                return 'N/A';
+        }
+    }
+
 }

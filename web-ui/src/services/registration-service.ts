@@ -19,11 +19,12 @@ export class RegistrationService {
 
             let requestData: any = account.toJS();
             requestData.contactInfo = requestData.user.contact;
+            requestData.company = requestData.companies,
             requestData.company.subsCriptionType = requestData.subscriptionPlan;
             requestData.company.status = requestData.accountStatus;
             requestData.user = _.omit(requestData.user, 'contact');
-            requestData = _.omit(requestData, 'subscriptionPlan');
-            requestData = _.omit(requestData, 'accountStatus');
+            requestData = _.omit(requestData, 'companies', 'subscriptionPlan', 'accountStatus');
+            // requestData = _.omit(requestData, 'accountStatus');
             console.log(requestData);
             return this._http.post(this._url + '/Company/Signup', JSON.stringify(requestData), {
                 headers: headers

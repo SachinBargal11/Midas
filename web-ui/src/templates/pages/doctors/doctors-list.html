@@ -1,13 +1,6 @@
 <h1 class="with-border">Doctors
 <a class="pull-right m-b-md btn btn-primary" [routerLink]="['add']">Add Doctor</a>
 </h1>
-<progress-bar [visible]="doctorsLoading" 
-              style="position:fixed;
-                     top:0;
-                     width:100%;
-                     z-index:100;">
-    <span class="sr-only">Loading doctors...</span>
-</progress-bar>
 <div class="ui-widget-header ui-helper-clearfix" style="padding:4px 10px;border-bottom: 0 none">
     <i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
     <input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Doctor">

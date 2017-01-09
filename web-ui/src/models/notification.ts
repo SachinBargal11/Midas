@@ -6,11 +6,11 @@ const NotificationRecord = Record({
     // actionTakenBy: null,
     // actedTakenUpon: null,
     // actionType: "",
-    title: '',
+    title: null,
     createdAt: Moment(),
     type: '',
     isRead: false,
-    messages: ['']
+    messages: null
 });
 
 export class Notification extends NotificationRecord {

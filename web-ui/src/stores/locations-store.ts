@@ -7,6 +7,7 @@ import { LocationsService } from '../services/locations-service';
 import { List } from 'immutable';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { SessionStore } from './session-store';
+import { Schedule } from '../models/schedule';
 
 @Injectable()
 export class LocationsStore {
@@ -37,6 +38,18 @@ export class LocationsStore {
         });
         return <Observable<LocationDetails[]>>Observable.fromPromise(promise);
     }
+
+    getLocationById(id: number): Observable<LocationDetails> {
+        let promise = new Promise((resolve, reject) => {
+            this._locationsService.getLocation(id).subscribe((location: LocationDetails) => {
+                resolve(location);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<LocationDetails>>Observable.fromPromise(promise);
+    }
+
 
     fetchLocationById(id: number): Observable<LocationDetails> {
         let promise = new Promise((resolve, reject) => {
@@ -78,6 +91,23 @@ export class LocationsStore {
     updateLocation(basicInfo: LocationDetails): Observable<LocationDetails> {
         let promise = new Promise((resolve, reject) => {
             this._locationsService.updateLocation(basicInfo).subscribe((updatedLocation: LocationDetails) => {
+                let locationDetails: List<LocationDetails> = this._locations.getValue();
+                let index = locationDetails.findIndex((currentLocation: LocationDetails) => currentLocation.location.id === updatedLocation.location.id);
+                locationDetails = locationDetails.update(index, function () {
+                    return updatedLocation;
+                });
+                this._locations.next(locationDetails);
+                resolve(basicInfo);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<LocationDetails>>Observable.from(promise);
+    }
+
+    updateScheduleForLocation(basicInfo: LocationDetails, schedule: Schedule): Observable<LocationDetails> {
+        let promise = new Promise((resolve, reject) => {
+            this._locationsService.updateScheduleForLocation(basicInfo, schedule).subscribe((updatedLocation: LocationDetails) => {
                 let locationDetails: List<LocationDetails> = this._locations.getValue();
                 let index = locationDetails.findIndex((currentLocation: LocationDetails) => currentLocation.location.id === updatedLocation.location.id);
                 locationDetails = locationDetails.update(index, function () {

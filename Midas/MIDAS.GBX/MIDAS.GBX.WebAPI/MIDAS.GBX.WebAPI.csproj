@@ -257,8 +257,10 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\LocationSpeclityController.cs" />
+    <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Controllers\OTPController.cs" />
     <Compile Include="Controllers\PasswordTokenController.cs" />
+    <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="Controllers\Room\RoomController.cs" />
     <Compile Include="Controllers\Room\RoomTestController.cs" />
     <Compile Include="Controllers\ScheduleController.cs" />

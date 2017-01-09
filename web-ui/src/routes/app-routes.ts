@@ -1,12 +1,8 @@
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from '../components/pages/login';
-// import {SignupComponent} from '../components/pages/signup';
 import { DashboardComponent } from '../components/pages/dashboard';
 import { PatientManagerRoutes } from './patient-manager-routes';
 import { PatientsShellRoutes } from './patient-routes';
-import { UsersRoutes } from './user-routes';
-import { ProvidersRoutes } from './provider-routes';
-import { MedicalFacilitiesRoutes } from './medical-facility-routes';
 import { DoctorsRoutes } from './doctors-routes';
 import { MedicalProviderRoutes } from './medical-provider-routes';
 import { AccountSetupRoutes } from './account-setup-routes';
@@ -49,11 +45,6 @@ export const appRoutes: Routes = [
           breadcrumb: 'Security Check'
         }
     },
-    // {
-    //     path: 'signup',
-    //     component: SignupComponent,
-    //     canActivate: [ValidateInActiveSession]
-    // },
     {
         path: 'register-company',
         component: RegisterCompanyComponent,
@@ -98,9 +89,6 @@ export const appRoutes: Routes = [
     ...DoctorsRoutes,
     ...MedicalProviderRoutes,
     ...AccountSetupRoutes,
-    ...MedicalFacilitiesRoutes,
-    ...ProvidersRoutes,
-    ...UsersRoutes,
     ...PatientsShellRoutes
 ];
 export const APP_ROUTER_PROVIDER = RouterModule.forRoot(appRoutes);

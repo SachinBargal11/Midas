@@ -17,8 +17,7 @@ import moment from 'moment';
 
 @Component({
     selector: 'edit-room',
-    templateUrl: 'templates/pages/rooms/edit-room.html',
-    providers: [FormBuilder],
+    templateUrl: 'templates/pages/rooms/edit-room.html'
 })
 
 export class EditRoomComponent implements OnInit {
@@ -90,7 +89,7 @@ export class EditRoomComponent implements OnInit {
             id: this.room.id,
             name: editroomformValues.name,
             contactPersonName: editroomformValues.contactPersonName,
-            phone: editroomformValues.phone,
+            phone: editroomformValues.phone.replace(/\-/g, ''),
             roomTest: {
                 id: editroomformValues.tests
             },
@@ -114,11 +113,13 @@ export class EditRoomComponent implements OnInit {
                 this.location.back();
             },
             (error) => {
+                let errString = 'Unable to update room.';
                 let notification = new Notification({
-                    'title': ErrorMessageFormatter.getErrorMessages(error),
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
+                this.isSaveProgress = false;
                 this._notificationsStore.addNotification(notification);
             },
             () => {

@@ -62,7 +62,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             boUser.LastName = user.LastName;
             boUser.ImageLink = user.ImageLink;
             boUser.UserType = (BO.GBEnums.UserType)user.UserType;
-            boUser.Gender = (BO.GBEnums.Gender)user.UserType;
+            boUser.Gender = (BO.GBEnums.Gender)user.Gender;
             boUser.CreateByUserID = user.CreateByUserID;
 
             if (user.C2FactAuthEmailEnabled.HasValue)
@@ -468,7 +468,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         usrComp.User = new BO.User();
                         usrComp.User.ID = acc_.ID;
                         boOTP.usercompanies = ((List<BO.UserCompany>)sr.Get(usrComp)).ToList();
-                        //boOTP.company = boOTP.usercompanies[0].Company;
                     }
                     boOTP.User = acc_;
                     return boOTP;
