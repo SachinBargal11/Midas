@@ -33,7 +33,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetObject(Request, id);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetAll")]
         
         public HttpResponseMessage Get([FromBody]Company data)
