@@ -14,7 +14,6 @@ import { PhoneFormatPipe } from '../pipes/phone-format-pipe';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { LoaderComponent } from '../components/elements/loader';
 import { NotificationComponent } from '../components/elements/notification';
-import { ProgressBarComponent } from '../components/elements/progress-bar';
 import { InputTextModule, ChartModule, DataTableModule, ButtonModule, DialogModule, CalendarModule, InputMaskModule, RadioButtonModule, MultiSelectModule, DropdownModule } from 'primeng/primeng';
 
 @NgModule({
@@ -35,8 +34,7 @@ import { InputTextModule, ChartModule, DataTableModule, ButtonModule, DialogModu
     // BreadcrumbComponent,
     // MainNavComponent,
     LoaderComponent,
-    NotificationComponent,
-    ProgressBarComponent
+    NotificationComponent
   ],
   exports: [
     CommonModule,
@@ -53,7 +51,6 @@ import { InputTextModule, ChartModule, DataTableModule, ButtonModule, DialogModu
     SimpleNotificationsModule,
     LoaderComponent,
     NotificationComponent,
-    ProgressBarComponent,
     ReactiveFormsModule,
     InputTextModule, ChartModule, DataTableModule, ButtonModule, DialogModule, CalendarModule, InputMaskModule, RadioButtonModule, MultiSelectModule, DropdownModule
   ]

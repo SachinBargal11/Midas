@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {SpecialityStore} from '../../../../stores/speciality-store';
 import {Speciality} from '../../../../models/speciality';
+import { ProgressBarService } from '../../../../services/progress-bar-service';
 
 @Component({
     selector: 'speciality-list',
@@ -11,10 +12,10 @@ import {Speciality} from '../../../../models/speciality';
 
 export class SpecialityListComponent implements OnInit {
     specialities: Speciality[];
-    specialityLoading;
     constructor(
         private _router: Router,
-        private _specialityStore: SpecialityStore
+        private _specialityStore: SpecialityStore,
+        private _progressBarService: ProgressBarService
     ) {
 
     }
@@ -24,10 +25,10 @@ export class SpecialityListComponent implements OnInit {
     }
 
     loadSpeciality() {
-        this.specialityLoading = true;
+        this._progressBarService.start();
         this._specialityStore.getSpecialities()
             .subscribe(specialities => { this.specialities = specialities; },
             null,
-            () => { this.specialityLoading = false; });
+            () => { this._progressBarService.stop(); });
     }
 }

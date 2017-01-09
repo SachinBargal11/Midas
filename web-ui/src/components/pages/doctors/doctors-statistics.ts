@@ -9,6 +9,7 @@ import { SessionStore } from '../../../stores/session-store';
 import { DoctorsStore } from '../../../stores/doctors-store';
 import { DoctorDetail } from '../../../models/doctor-details';
 import { NotificationsService } from 'angular2-notifications';
+import { ProgressBarService } from '../../../services/progress-bar-service';
 
 
 @Component({
@@ -20,15 +21,15 @@ export class DoctorsStatisticsComponent {
     data: any;
     options: any;
     doctors: DoctorDetail[];
-    doctorsLoading;
     constructor(
         private _router: Router,
         private _doctorsStore: DoctorsStore,
         private _doctorsService: DoctorsService,
         private _sessionStore: SessionStore,
-        private _notificationsService: NotificationsService
+        private _notificationsService: NotificationsService,
+        private _progressBarService: ProgressBarService
     ) {
-        // this.doctorsLoading = true;
+        // this._progressBarService.start();
         // this._doctorsStore.getDoctors().subscribe(doctors => {
         //     this.doctors = doctors;
         //     let groupedDoctors: Array<any> = _.chain(this.doctors).groupBy(function (doctor) {
@@ -44,7 +45,7 @@ export class DoctorsStatisticsComponent {
         // },
         //     null,
         //     () => {
-        //         this.doctorsLoading = false;
+        //         this._progressBarService.stop();
         //     }
         // );
         // this.options = {

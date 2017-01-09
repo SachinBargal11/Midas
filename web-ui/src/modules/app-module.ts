@@ -16,7 +16,6 @@ import { MedicalProviderModule } from './medical-provider-module';
 import { AccountSetupModule } from './account-setup-module';
 import { DoctorsModule } from './doctors-module';
 import { PatientModule } from './patient-module';
-import { ProviderModule } from './provider-module';
 import { AccountModule } from './account-module';
 
 /** Application Services and Providers */
@@ -28,6 +27,8 @@ import { NotificationsStore } from '../stores/notifications-store';
 import { APP_ROUTER_PROVIDER } from '../routes/app-routes';
 import { ValidateActiveSession } from '../routes/guards/validate-active-session';
 import { ValidateInActiveSession } from '../routes/guards/validate-inactive-session';
+import { ProgressBarService } from '../services/progress-bar-service';
+import { ProgressBarComponent } from '../components/elements/progress-bar';
 
 /** Components */
 
@@ -51,7 +52,6 @@ import { BreadcrumbComponent } from '../components/elements/breadcrumb';
         DoctorsModule,
         MedicalProviderModule,
         PatientModule,
-        ProviderModule,
         AccountModule
     ],
     declarations: [
@@ -59,10 +59,12 @@ import { BreadcrumbComponent } from '../components/elements/breadcrumb';
         DashboardComponent,
         AppHeaderComponent,
         MainNavComponent,
-        BreadcrumbComponent
+        BreadcrumbComponent,
+        ProgressBarComponent
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
+        ProgressBarService,
         StatesStore,
         StateService,
         NotificationsStore,

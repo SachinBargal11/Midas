@@ -87,7 +87,6 @@ export class BasicComponent implements OnInit {
 
 
     save() {
-        debugger;
         let userId = this._sessionStore.session.user.id;
         let basicformValues = this.basicform.value;
         let basicInfo = new LocationDetails({

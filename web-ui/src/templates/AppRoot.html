@@ -2,7 +2,7 @@
     
     <app-header *ngIf="_sessionStore.session.user"></app-header>
     <!--<main-nav *ngIf="_sessionStore.session.user"></main-nav>-->
-    
+    <progress-bar *ngIf="_progressBarService.counter > 0"></progress-bar>
     <notification *ngIf="_sessionStore.session.user"></notification>
     <div class="page-content">
         <div class="container-fluid">

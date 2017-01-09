@@ -8,7 +8,7 @@ import { SessionStore } from '../../../stores/session-store';
 import { NotificationsStore } from '../../../stores/notifications-store';
 import { Notification } from '../../../models/notification';
 import moment from 'moment';
-
+import { ProgressBarService } from '../../../services/progress-bar-service';
 
 @Component({
     selector: 'location-list',
@@ -18,14 +18,13 @@ import moment from 'moment';
 export class LocationComponent implements OnInit {
     selectedLocations: LocationDetails[];
     locations: LocationDetails[];
-    locationsLoading;
-    isDeleteProgress = false;
     constructor(
         private _router: Router,
         private _notificationsStore: NotificationsStore,
         private _medicalProviderService: MedicalProviderService,
         private _locationsStore: LocationsStore,
-        public _sessionStore: SessionStore
+        public _sessionStore: SessionStore,
+        private _progressBarService: ProgressBarService
     ) {
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadLocations();
@@ -37,7 +36,7 @@ export class LocationComponent implements OnInit {
     }
 
     loadLocations() {
-        this.locationsLoading = true;
+        this._progressBarService.start();
         this._locationsStore.getLocations()
             .subscribe(
             (data) => {
@@ -45,23 +44,23 @@ export class LocationComponent implements OnInit {
             },
             (error) => {
                 this.locations = [];
-                this.locationsLoading = false;
                 let notification = new Notification({
                     'title': error.message,
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._progressBarService.stop();
             },
             () => {
-                this.locationsLoading = false;
+            this._progressBarService.stop();
             });
     }
 
     deleteLocations() {
         if (this.selectedLocations !== undefined) {
             this.selectedLocations.forEach(currentLocation => {
-                this.isDeleteProgress = true;
+                this._progressBarService.start();
                 let result;
                 result = this._locationsStore.deleteLocation(currentLocation);
                 result.subscribe(
@@ -83,11 +82,11 @@ export class LocationComponent implements OnInit {
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
-                        this.isDeleteProgress = false;
+                        this._progressBarService.stop();
                         this._notificationsStore.addNotification(notification);
                     },
                     () => {
-                        this.isDeleteProgress = false;
+                          this._progressBarService.stop();
                     });
             });
         }
