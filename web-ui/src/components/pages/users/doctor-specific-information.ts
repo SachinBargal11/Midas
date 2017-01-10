@@ -16,6 +16,7 @@ import moment from 'moment';
 import { Speciality } from '../../../models/speciality';
 import _ from 'underscore';
 import { ProgressBarService } from '../../../services/progress-bar-service';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
     selector: 'access',
@@ -47,6 +48,7 @@ export class DoctorSpecificInformationComponent implements OnInit {
         private _doctorsStore: DoctorsStore,
         private _specialityStore: SpecialityStore,
         private _progressBarService: ProgressBarService,
+        private _notificationsService: NotificationsService,
         private _route: ActivatedRoute
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
@@ -143,6 +145,7 @@ export class DoctorSpecificInformationComponent implements OnInit {
                 });
                 this.isSaveDoctorProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 this._progressBarService.hide();
             },
             () => {

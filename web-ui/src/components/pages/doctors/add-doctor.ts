@@ -14,6 +14,7 @@ import { StatesStore } from '../../../stores/states-store';
 import { StateService } from '../../../services/state-service';
 import { UsersStore } from '../../../stores/users-store';
 import { ProgressBarService } from '../../../services/progress-bar-service';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
     selector: 'add-doctor',
@@ -44,6 +45,7 @@ export class AddDoctorComponent implements OnInit {
         private fb: FormBuilder,
         private _router: Router,
         private _notificationsStore: NotificationsStore,
+        private _notificationsService: NotificationsService,
         private _sessionStore: SessionStore,
         private _elRef: ElementRef,
         private _progressBarService: ProgressBarService,
@@ -110,6 +112,7 @@ export class AddDoctorComponent implements OnInit {
                 });
                 this.isSaveDoctorProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 this._progressBarService.hide();
             },
             () => {

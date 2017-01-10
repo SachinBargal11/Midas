@@ -15,6 +15,7 @@ import { UsersStore } from '../../../stores/users-store';
 import { SpecialityStore } from '../../../stores/speciality-store';
 import { Speciality } from '../../../models/speciality';
 import { ProgressBarService } from '../../../services/progress-bar-service';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
     selector: 'doctor-speciality',
@@ -46,6 +47,7 @@ export class DoctorSpecialityComponent implements OnInit {
         private _elRef: ElementRef,
         private _usersStore: UsersStore,
         private _progressBarService: ProgressBarService,
+        private _notificationsService: NotificationsService,
         private _specialityStore: SpecialityStore
     ) {
         this._route.params.subscribe((routeParams: any) => {
@@ -109,6 +111,7 @@ export class DoctorSpecialityComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 this._progressBarService.hide();
             },
             () => {

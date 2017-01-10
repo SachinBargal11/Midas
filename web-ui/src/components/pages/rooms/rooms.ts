@@ -10,6 +10,7 @@ import { NotificationsStore } from '../../../stores/notifications-store';
 import { Notification } from '../../../models/notification';
 import moment from 'moment';
 import { ProgressBarService } from '../../../services/progress-bar-service';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
     selector: 'rooms',
@@ -28,6 +29,7 @@ export class RoomsComponent implements OnInit {
         private _locationsStore: LocationsStore,
         private _notificationsStore: NotificationsStore,
         private _roomsService: RoomsService,
+        private _notificationsService: NotificationsService,
         private _progressBarService: ProgressBarService
     ) {
         this._route.parent.params.subscribe((params: any) => {
@@ -53,6 +55,7 @@ export class RoomsComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Error!', error.message);
                 this._progressBarService.hide();
             },
             () => {
@@ -85,6 +88,7 @@ export class RoomsComponent implements OnInit {
                         });
                         this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
                         this._progressBarService.hide();
@@ -98,6 +102,7 @@ export class RoomsComponent implements OnInit {
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Error!', 'select rooms to delete');
         }
     }
 }

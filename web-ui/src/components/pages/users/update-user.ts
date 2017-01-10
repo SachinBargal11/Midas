@@ -19,6 +19,7 @@ import { StatesStore } from '../../../stores/states-store';
 import { StateService } from '../../../services/state-service';
 import { UserType } from '../../../models/enums/user-type';
 import { ProgressBarService } from '../../../services/progress-bar-service';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
     selector: 'update-user',
@@ -53,6 +54,7 @@ export class UpdateUserComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _usersStore: UsersStore,
         private _progressBarService: ProgressBarService,
+        private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
         this._route.params.subscribe((routeParams: any) => {
@@ -157,6 +159,7 @@ export class UpdateUserComponent implements OnInit {
                 });
                 this.isSaveUserProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 this._progressBarService.hide();
             },
             () => {

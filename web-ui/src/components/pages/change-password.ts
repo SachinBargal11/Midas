@@ -91,6 +91,7 @@ export class ChangePasswordComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Error!', ErrorMessageFormatter.getErrorMessages(error, errString));
                         this._progressBarService.hide();
                     },
                     () => {
@@ -107,6 +108,7 @@ export class ChangePasswordComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Error!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 this._progressBarService.hide();
             },
             () => {

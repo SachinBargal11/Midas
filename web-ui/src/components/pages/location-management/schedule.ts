@@ -15,6 +15,7 @@ import { Schedule } from '../../../models/schedule';
 import { Notification } from '../../../models/notification';
 import { AppValidators } from '../../../utils/AppValidators';
 import { ProgressBarService } from '../../../services/progress-bar-service';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
     selector: 'schedule',
@@ -48,6 +49,7 @@ export class ScheduleComponent implements OnInit {
         private _locationsStore: LocationsStore,
         private _scheduleStore: ScheduleStore,
         private _progressBarService: ProgressBarService,
+        private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
 
@@ -212,6 +214,7 @@ export class ScheduleComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 this._progressBarService.hide();
             },
             () => {
@@ -252,6 +255,7 @@ export class ScheduleComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 this._progressBarService.hide();
             },
             () => {

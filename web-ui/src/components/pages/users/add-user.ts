@@ -17,6 +17,7 @@ import { Notification } from '../../../models/notification';
 import moment from 'moment';
 import { StatesStore } from '../../../stores/states-store';
 import { ProgressBarService } from '../../../services/progress-bar-service';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
     selector: 'add-user',
@@ -45,6 +46,7 @@ export class AddUserComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _usersStore: UsersStore,
         private _progressBarService: ProgressBarService,
+        private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
         this.userform = this.fb.group({
@@ -129,6 +131,7 @@ export class AddUserComponent implements OnInit {
                 });
                 this.isSaveUserProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 this._progressBarService.hide();
             },
             () => {

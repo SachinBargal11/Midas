@@ -8,6 +8,7 @@ import { SpecialityDetail } from '../../../../models/speciality-details';
 import { NotificationsStore } from '../../../../stores/notifications-store';
 import { Notification } from '../../../../models/notification';
 import { ProgressBarService } from '../../../../services/progress-bar-service';
+import { NotificationsService } from 'angular2-notifications';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class SpecialityDetailComponent {
         public _router: Router,
         private _notificationsStore: NotificationsStore,
         public _specialityDetailsStore: SpecialityDetailsStore,
+        private _notificationsService: NotificationsService,
         private _progressBarService: ProgressBarService
     ) {
     }
@@ -87,6 +89,7 @@ export class SpecialityDetailComponent {
                         });
                         this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
                         this._progressBarService.hide();
@@ -100,6 +103,7 @@ export class SpecialityDetailComponent {
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'select speciality details to delete');
         }
     }
 

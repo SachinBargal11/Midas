@@ -10,6 +10,7 @@ import { NotificationsStore } from '../../../stores/notifications-store';
 import { Notification } from '../../../models/notification';
 import Moment from 'moment';
 import { ProgressBarService } from '../../../services/progress-bar-service';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
     selector: 'add-patient',
@@ -46,6 +47,7 @@ export class AddPatientComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _patientsStore: PatientsStore,
         private _progressBarService: ProgressBarService,
+        private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
         this.patientform = this.fb.group({
@@ -101,6 +103,7 @@ export class AddPatientComponent implements OnInit {
                 });
                 this.isSavePatientProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 this._progressBarService.hide();
             },
             () => {

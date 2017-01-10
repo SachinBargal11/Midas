@@ -9,6 +9,7 @@ import {NotificationsStore} from '../../../../stores/notifications-store';
 import {Notification} from '../../../../models/notification';
 import moment from 'moment';
 import { ProgressBarService } from '../../../../services/progress-bar-service';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
     selector: 'add-speciality',
@@ -36,6 +37,7 @@ export class AddSpecialityComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _elRef: ElementRef,
+        private _notificationsService: NotificationsService,
         private _progressBarService: ProgressBarService
     ) {
         this.specialityJS = this.speciality.toJS();
@@ -83,6 +85,7 @@ export class AddSpecialityComponent implements OnInit {
                 });
                 this.isSaveSpecialityProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 this._progressBarService.hide();
             },
             () => {

@@ -16,6 +16,7 @@ import moment from 'moment';
 import { StatesStore } from '../../../stores/states-store';
 import { LocationType } from '../../../models/enums/location-type';
 import { ProgressBarService } from '../../../services/progress-bar-service';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
     selector: 'basic',
@@ -51,6 +52,7 @@ export class BasicComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _locationsStore: LocationsStore,
         private _progressBarService: ProgressBarService,
+        private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
         this._route.parent.params.subscribe((params: any) => {
@@ -140,6 +142,7 @@ export class BasicComponent implements OnInit {
                 });
                 this.isSaveProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 this._progressBarService.hide();
             },
             () => {

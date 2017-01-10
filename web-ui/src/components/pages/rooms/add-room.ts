@@ -15,6 +15,7 @@ import { NotificationsStore } from '../../../stores/notifications-store';
 import { Notification } from '../../../models/notification';
 import moment from 'moment';
 import { ProgressBarService } from '../../../services/progress-bar-service';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
     selector: 'add-room',
@@ -45,6 +46,7 @@ export class AddRoomComponent implements OnInit {
         private _roomsService: RoomsService,
         private _locationsStore: LocationsStore,
         private _progressBarService: ProgressBarService,
+        private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
         this._route.parent.params.subscribe((params: any) => {
@@ -120,7 +122,8 @@ export class AddRoomComponent implements OnInit {
                 });
                 this.isSaveProgress = false;
                 this._notificationsStore.addNotification(notification);
-            this._progressBarService.hide();
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                this._progressBarService.hide();
             },
             () => {
                 this.isSaveProgress = false;

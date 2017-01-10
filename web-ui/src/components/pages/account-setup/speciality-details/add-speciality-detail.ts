@@ -107,6 +107,7 @@ export class AddSpecialityDetailsComponent {
                 });
                 this.isSpecialityDetailSaveInProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 this._progressBarService.hide();
             },
             () => {

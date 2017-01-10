@@ -9,6 +9,7 @@ import { NotificationsStore } from '../../../stores/notifications-store';
 import { Notification } from '../../../models/notification';
 import moment from 'moment';
 import { ProgressBarService } from '../../../services/progress-bar-service';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
     selector: 'location-list',
@@ -24,6 +25,7 @@ export class LocationComponent implements OnInit {
         private _medicalProviderService: MedicalProviderService,
         private _locationsStore: LocationsStore,
         public _sessionStore: SessionStore,
+        private _notificationsService: NotificationsService,
         private _progressBarService: ProgressBarService
     ) {
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
@@ -50,6 +52,7 @@ export class LocationComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', error.message);
                 this._progressBarService.hide();
             },
             () => {
@@ -84,6 +87,7 @@ export class LocationComponent implements OnInit {
                         });
                         this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
                           this._progressBarService.hide();
@@ -97,6 +101,7 @@ export class LocationComponent implements OnInit {
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'select locations to delete');
         }
     }
 

@@ -17,6 +17,7 @@ import moment from 'moment';
 import { StatesStore } from '../../../stores/states-store';
 import { StateService } from '../../../services/state-service';
 import { ProgressBarService } from '../../../services/progress-bar-service';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
     selector: 'update-doctor',
@@ -53,6 +54,7 @@ export class UpdateDoctorComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _progressBarService: ProgressBarService,
+        private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
         this._route.params.subscribe((routeParams: any) => {
@@ -184,6 +186,7 @@ export class UpdateDoctorComponent implements OnInit {
                 });
                 this.isSaveDoctorProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 this._progressBarService.hide();
             },
             () => {
