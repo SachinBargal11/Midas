@@ -42,7 +42,8 @@ export class UsersListComponent implements OnInit {
             .subscribe(users => {
                 this.users = users;
             },
-            null,
+            (error) => {
+            },
             () => {
             this._progressBarService.hide();
             });

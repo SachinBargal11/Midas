@@ -50,13 +50,16 @@ export class UsersService {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
-                    _.forEach(data, function (currentUser: any) {
-                        currentUser.userTypeLabel = User.getUserTypeLabel(currentUser.userType);
-                    });
-                        let users: any[] = (<Object[]>data).map((data: any) => {
+                    let users: any[] = [];
+                    if (data) {
+                        _.forEach(data, function (currentUser: any) {
+                            currentUser.userTypeLabel = User.getUserTypeLabel(currentUser.userType);
+                        });
+                        users = (<Object[]>data).map((data: any) => {
                             return UserAdapter.parseResponse(data);
                         });
-                        resolve(users);
+                    }
+                    resolve(users);
                 }, (error) => {
                     reject(error);
                 });
@@ -84,15 +87,15 @@ export class UsersService {
 
             let requestData: any = userDetail.toJS();
             requestData = {
-                    user: requestData,
-                    company: {
-                        id: this._sessionStore.session.currentCompany.id
-                    },
-                    role: {
-                        name: 'Doctor',
-                        roleType: 'Admin',
-                        status: 'active'
-                    }
+                user: requestData,
+                company: {
+                    id: this._sessionStore.session.currentCompany.id
+                },
+                role: {
+                    name: 'Doctor',
+                    roleType: 'Admin',
+                    status: 'active'
+                }
             };
 
             requestData.contactInfo = requestData.user.contact;
@@ -105,9 +108,9 @@ export class UsersService {
             })
                 .map(res => res.json())
                 .subscribe((userData: any) => {
-                let parsedUser: User = null;
-                parsedUser = UserAdapter.parseResponse(userData);
-                resolve(parsedUser);
+                    let parsedUser: User = null;
+                    parsedUser = UserAdapter.parseResponse(userData);
+                    resolve(parsedUser);
                 }, (error) => {
                     reject(error);
                 });
@@ -122,15 +125,15 @@ export class UsersService {
 
             let requestData: any = userDetail.toJS();
             requestData = {
-                    user: requestData,
-                    company: {
-                        id: this._sessionStore.session.currentCompany.id
-                    },
-                    role: {
-                        name: 'Doctor',
-                        roleType: 'Admin',
-                        status: 'active'
-                    }
+                user: requestData,
+                company: {
+                    id: this._sessionStore.session.currentCompany.id
+                },
+                role: {
+                    name: 'Doctor',
+                    roleType: 'Admin',
+                    status: 'active'
+                }
             };
 
             requestData.contactInfo = requestData.user.contact;
@@ -226,15 +229,15 @@ export class UsersService {
 
             let requestData: any = userDetail.toJS();
             requestData = {
-                    user: requestData,
-                    company: {
-                        id: this._sessionStore.session.currentCompany.id
-                    },
-                    role: {
-                        name: 'Doctor',
-                        roleType: 'Admin',
-                        status: 'active'
-                    }
+                user: requestData,
+                company: {
+                    id: this._sessionStore.session.currentCompany.id
+                },
+                role: {
+                    name: 'Doctor',
+                    roleType: 'Admin',
+                    status: 'active'
+                }
             };
 
             requestData.user.isDeleted = 1;

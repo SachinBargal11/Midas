@@ -20,8 +20,16 @@ import { ConsentFormsComponent } from '../components/pages/patient-manager/conse
 import { ReferalsComponent } from '../components/pages/patient-manager/referals';
 import { PatientsService } from '../services/patients-service';
 import { PatientsStore } from '../stores/patients-store';
+
+import { PatientRoutingModule } from '../routes/patient-manager-routes';
+
 @NgModule({
-    imports: [CommonModule, RouterModule, SharedModule],
+    imports: [
+        CommonModule,
+        RouterModule,
+        SharedModule,
+        PatientRoutingModule
+    ],
     declarations: [
         AddPatientComponent,
         AppointmentsComponent,

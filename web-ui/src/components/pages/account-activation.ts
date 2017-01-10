@@ -51,7 +51,7 @@ export class AccountActivationComponent implements OnInit {
                     this.isTokenValidated = true;
                     // this._notificationsService.error('Error!', 'Activation code is invalid.');
                     // setTimeout(() => {
-                    //     this._router.navigate(['/login']);
+                    //     this._router.navigate(['/account/login']);
                     // }, 3000);
                 },
                 () => {
@@ -83,7 +83,7 @@ export class AccountActivationComponent implements OnInit {
             (response) => {
                 this._notificationsService.success('Success', 'Your password has been set successfully!');
                 setTimeout(() => {
-                    this._router.navigate(['/login']);
+                    this._router.navigate(['/account/login']);
                 }, 3000);
             },
             error => {
@@ -98,7 +98,7 @@ export class AccountActivationComponent implements OnInit {
 
     goBack(): void {
         // this.location.back();
-        this._router.navigate(['/login']);
+        this._router.navigate(['/account/login']);
     }
 
 }

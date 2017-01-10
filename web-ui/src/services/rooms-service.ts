@@ -43,14 +43,14 @@ export class RoomsService {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((roomsData: any) => {
-                    if (roomsData.errorMessage) {
-                        reject(new Error(roomsData.errorMessage));
-                    } else {
-                        let rooms: any[] = (<Object[]>roomsData).map((roomsData: any) => {
+                    let rooms: any[] = [];
+                    if (_.isArray(roomsData)) {
+                        rooms = (<Object[]>roomsData).map((roomsData: any) => {
                             return RoomsAdapter.parseResponse(roomsData);
                         });
-                        resolve(rooms);
                     }
+                    resolve(rooms);
+
                 }, (error) => {
                     reject(error);
                 });
@@ -113,7 +113,7 @@ export class RoomsService {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let requestData: any = roomDetail.toJS();
             requestData.isDeleted = 1,
-            requestData.contactersonName = requestData.contactPersonName;
+                requestData.contactersonName = requestData.contactPersonName;
             requestData = _.omit(requestData, 'contactPersonName');
             return this._http.post(this._url + '/Room/Add', JSON.stringify(requestData), {
                 headers: this._headers

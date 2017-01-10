@@ -103,7 +103,7 @@
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.fax.touched && !basicformControls.fax.valid">
                                     <!--<input [ngModel]="locationDetails.contact.faxNo" formControlName="fax" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.fax.valid">-->
-                                    <p-inputMask [ngModel]="locationDetails.contact.faxNo" mask="9-999-999 9999" formControlName="officePhone" [class.error]="basicformControls.fax.touched && !basicformControls.fax.valid" styleClass="form-control" placeholder="9-999-999 9999"></p-inputMask>
+                                    <p-inputMask [ngModel]="locationDetails.contact.faxNo" mask="9-999-999 9999" formControlName="fax" [class.error]="basicformControls.fax.touched && !basicformControls.fax.valid" styleClass="form-control" placeholder="9-999-999 9999"></p-inputMask>
                                     <div class='error-list' *ngIf="basicformControls.fax.touched && !basicformControls.fax.valid">
                                         <ul>
                                             <li *ngIf="basicformControls.fax.hasError('required')">Fax is required.</li>

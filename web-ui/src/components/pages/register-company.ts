@@ -93,7 +93,7 @@ export class RegisterCompanyComponent implements OnInit {
             (response) => {
                 this._notificationsService.success('Welcome!', 'Your company has been registered successfully! Check your email for activation.');
                 setTimeout(() => {
-                    this._router.navigate(['/login']);
+                    this._router.navigate(['/account/login']);
                 }, 3000);
             },
             (error) => {
@@ -108,6 +108,6 @@ export class RegisterCompanyComponent implements OnInit {
     }
     goBack(): void {
         // this.location.back();
-        this._router.navigate(['/login']);
+        this._router.navigate(['/account/login']);
     }
 }

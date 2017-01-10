@@ -21,7 +21,7 @@ export class UserAdapter {
 
     static parseResponse(userData: any): User {
 
-        let user = null;
+        let user: User = null;
         // let tempUser = this.parseUserResponse(userData);
 
         if (userData) {

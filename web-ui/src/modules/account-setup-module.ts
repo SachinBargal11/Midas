@@ -15,8 +15,15 @@ import { SpecialityStore } from '../stores/speciality-store';
 import { SpecialityDetailsStore } from '../stores/speciality-details-store';
 import { AccountSetupNavComponent } from '../components/pages/account-setup/account-setup-nav-bar';
 import { AccountSetupShellComponent } from '../components/pages/account-setup/account-setup-shell';
+import { AccountSetupRoutingModule } from '../routes/account-setup-routes';
+
 @NgModule({
-    imports: [CommonModule, RouterModule, SharedModule],
+    imports: [
+        CommonModule,
+        RouterModule,
+        SharedModule,
+        AccountSetupRoutingModule
+    ],
     declarations: [
         AccountSetupNavComponent,
         AccountSetupShellComponent,

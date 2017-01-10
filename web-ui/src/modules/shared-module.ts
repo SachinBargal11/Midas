@@ -8,17 +8,21 @@ import { TimeAgoPipe } from '../pipes/time-ago-pipe';
 import { ReversePipe } from '../pipes/reverse-array-pipe';
 import { PhoneFormatPipe } from '../pipes/phone-format-pipe';
 
-// import { AppHeaderComponent } from '../components/elements/app-header';
-// import { BreadcrumbComponent } from '../components/elements/breadcrumb';
-// import { MainNavComponent } from '../components/elements/main-nav';
+import { AppHeaderComponent } from '../components/elements/app-header';
+import { BreadcrumbComponent } from '../components/elements/breadcrumb';
+import { MainNavComponent } from '../components/elements/main-nav';
+import { ProgressBarComponent } from '../components/elements/progress-bar';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { LoaderComponent } from '../components/elements/loader';
 import { NotificationComponent } from '../components/elements/notification';
-import { InputTextModule, ChartModule, DataTableModule, ButtonModule, DialogModule, CalendarModule, InputMaskModule, RadioButtonModule, MultiSelectModule, DropdownModule } from 'primeng/primeng';
+import { InputTextModule, ChartModule, DataTableModule, ButtonModule, DialogModule, CalendarModule, InputMaskModule, RadioButtonModule, MultiSelectModule } from 'primeng/primeng';
+import { DropdownModule } from 'ng2-bootstrap';
+
 
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     RouterModule,
     SimpleNotificationsModule,
@@ -30,9 +34,10 @@ import { InputTextModule, ChartModule, DataTableModule, ButtonModule, DialogModu
     TimeAgoPipe,
     ReversePipe,
     PhoneFormatPipe,
-    // AppHeaderComponent,
-    // BreadcrumbComponent,
-    // MainNavComponent,
+    AppHeaderComponent,
+    BreadcrumbComponent,
+    MainNavComponent,
+    ProgressBarComponent,
     LoaderComponent,
     NotificationComponent
   ],
@@ -45,9 +50,10 @@ import { InputTextModule, ChartModule, DataTableModule, ButtonModule, DialogModu
     TimeAgoPipe,
     ReversePipe,
     PhoneFormatPipe,
-    // AppHeaderComponent,
-    // BreadcrumbComponent,
-    // MainNavComponent,
+    AppHeaderComponent,
+    BreadcrumbComponent,
+    MainNavComponent,
+    ProgressBarComponent,
     SimpleNotificationsModule,
     LoaderComponent,
     NotificationComponent,

@@ -1,4 +1,5 @@
-import {SpecialityDetail} from '../../models/speciality-details';
+import { SpecialityAdapter } from './speciality-adapter';
+import { SpecialityDetail } from '../../models/speciality-details';
 
 export class SpecialityDetailAdapter {
     static parseResponse(specialityDetailData: any): SpecialityDetail {
@@ -14,7 +15,7 @@ export class SpecialityDetailAdapter {
                 isInitialEvaluation: specialityDetailData.isnitialEvaluation ? 1 : 0,
                 include1500: specialityDetailData.include1500 ? 1 : 0,
                 allowmultipleVisit: specialityDetailData.allowmultipleVisit ? 1 : 0,
-                specialty: specialityDetailData.specialty,
+                specialty: SpecialityAdapter.parseResponse(specialityDetailData.specialty),
                 company: specialityDetailData.company
             });
         }

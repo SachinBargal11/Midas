@@ -24,7 +24,7 @@ export class AppValidators {
     }
 
     static passwordValidator(control: FormControl) {
-        let regEx = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\S+$).{8,}$/;
+        let regEx = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~])(?=\S+$).{8,}$/;
         if (control.value && !regEx.test(control.value)) {
             return { passwordValidator: true };
         }

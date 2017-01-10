@@ -1,5 +1,5 @@
-import { NgModule }           from '@angular/core';
-import { CommonModule }       from '@angular/common';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from './shared-module';
 
@@ -11,13 +11,20 @@ import { ForgotPasswordComponent } from '../components/pages/forgot-password';
 import { ResetPasswordComponent } from '../components/pages/reset-password';
 import { ChangePasswordComponent } from '../components/pages/change-password';
 
-import { SessionStore } from '../stores/session-store';
-import { AuthenticationService } from '../services/authentication-service';
-import { RegistrationService } from '../services/registration-service';
-import { CompanyStore } from '../stores/company-store';
+// import { SessionStore } from '../stores/session-store';
+// import { AuthenticationService } from '../services/authentication-service';
+// import { RegistrationService } from '../services/registration-service';
+// import { CompanyStore } from '../stores/company-store';
+
+import { AccountRoutingModule } from '../routes/account-routes';
 
 @NgModule({
-      imports: [CommonModule, RouterModule, SharedModule],
+      imports: [
+            CommonModule,
+            RouterModule,
+            SharedModule,
+            AccountRoutingModule
+      ],
       declarations: [
             RegisterCompanyComponent,
             AccountActivationComponent,
@@ -26,12 +33,6 @@ import { CompanyStore } from '../stores/company-store';
             ForgotPasswordComponent,
             ResetPasswordComponent,
             ChangePasswordComponent
-      ],
-      providers: [
-            SessionStore,
-            AuthenticationService,
-            CompanyStore,
-            RegistrationService
       ]
 })
 export class AccountModule { }

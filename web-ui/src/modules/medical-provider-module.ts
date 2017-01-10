@@ -8,6 +8,8 @@ import { RoomsModule } from './rooms-module';
 import { MedicalProviderNavComponent } from '../components/pages/medical-provider/medical-provider-nav-bar';
 import { MedicalProviderShellComponent } from '../components/pages/medical-provider/medical-provider-shell';
 import { MedicalProviderService } from '../services/medical-provider-service';
+import { MedicalProviderRoutingModule } from '../routes/medical-provider-routes';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -15,7 +17,8 @@ import { MedicalProviderService } from '../services/medical-provider-service';
     SharedModule,
     LocationModule,
     UsersModule,
-    RoomsModule
+    RoomsModule,
+    MedicalProviderRoutingModule
   ],
   declarations: [
     MedicalProviderNavComponent,
