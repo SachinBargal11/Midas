@@ -166,7 +166,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (patient != null)
                 {
                     #region Patient
-                    //patient.id = patientBO.ID;
                     patient.SSN = patientBO.SSN != null ? patientBO.SSN : patient.SSN;
                     patient.WCBNo = patientBO.WCBNo != null ? patientBO.WCBNo : patient.WCBNo;
                     patient.JobTitle = patientBO.JobTitle != null ? patientBO.JobTitle : patient.JobTitle;

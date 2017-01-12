@@ -152,6 +152,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (companyspecialtydetail != null)
                 {
                     #region Specialty
+                    companyspecialtydetail.SpecialtyId = companyspecialtyDetailBO.Specialty.ID != null ? companyspecialtyDetailBO.Specialty.ID : companyspecialtydetail.Specialty.id;
                     companyspecialtydetail.ReevalDays = companyspecialtyDetailBO.ReevalDays != null ? companyspecialtyDetailBO.ReevalDays : companyspecialtydetail.ReevalDays;
                     companyspecialtydetail.ReevalVisitCount = companyspecialtyDetailBO.ReevalVisitCount != null ? companyspecialtyDetailBO.ReevalVisitCount : companyspecialtydetail.ReevalVisitCount;
                     companyspecialtydetail.InitialDays = companyspecialtyDetailBO.InitialDays != null ? companyspecialtyDetailBO.InitialDays : companyspecialtydetail.InitialDays;
