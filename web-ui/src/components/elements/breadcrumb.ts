@@ -62,6 +62,7 @@ export class BreadcrumbComponent implements OnInit {
      */
     private getBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: IBreadcrumb[] = []): IBreadcrumb[] {
         const ROUTE_DATA_BREADCRUMB: string = 'breadcrumb';
+        const ROUTE_DATA_URL: string = 'shell';
 
         //get the child routes
         let children: ActivatedRoute[] = route.children;
@@ -79,7 +80,7 @@ export class BreadcrumbComponent implements OnInit {
             }
 
             //verify the custom data property "breadcrumb" is specified on the route
-            if (!child.snapshot.data.hasOwnProperty(ROUTE_DATA_BREADCRUMB)) {
+            if (!child.snapshot.data.hasOwnProperty(ROUTE_DATA_BREADCRUMB) && !child.snapshot.data.hasOwnProperty(ROUTE_DATA_URL)) {
                 continue;
             }
 
@@ -87,18 +88,33 @@ export class BreadcrumbComponent implements OnInit {
             let routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
 
             //append route URL to URL
-            url += `/${routeURL}`;
+                url += `/${routeURL}`;
 
-            //add breadcrumb
-            let breadcrumb: IBreadcrumb = {
-                label: child.snapshot.data[ROUTE_DATA_BREADCRUMB],
-                params: child.snapshot.params,
-                url: url
-            };
-            breadcrumbs.push(breadcrumb);
+            let shell = child.snapshot.data[ROUTE_DATA_URL];
+                if (Object.keys(child.snapshot.params).length !== 0 && shell === true) {
+                    if (null != url && url.length > 0 ) {
+                        let endIndex = url.lastIndexOf('/');
+                        if (endIndex !== -1) {
+                            let newstr = url.substring(0, endIndex);
+                            let breadcrumb: IBreadcrumb = {
+                                label: child.snapshot.data[ROUTE_DATA_BREADCRUMB],
+                                params: child.snapshot.params,
+                                url: newstr
+                            };
+                            breadcrumbs.push(breadcrumb);
+                        }
+                    }
+                } else {
+                      let breadcrumb: IBreadcrumb = {
+                          label: child.snapshot.data[ROUTE_DATA_BREADCRUMB],
+                          params: child.snapshot.params,
+                          url: url
+                      };
+                      breadcrumbs.push(breadcrumb);
+                }
 
             //recursive
-            return this.getBreadcrumbs(child, url, breadcrumbs);
+             return this.getBreadcrumbs(child, url, breadcrumbs);
         }
     }
 

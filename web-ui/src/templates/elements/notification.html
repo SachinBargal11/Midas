@@ -1,7 +1,7 @@
 <div class="notification-panel-container">
     <div class="control-item-content">
         <div class="dropdown-menu-notif-header">
-            Notifications <a class="pull-right" (click)="closeNotificaion()"><i class="fa fa-times" aria-hidden="true"></i></a>
+            Notifications <i (click)="closeNotificaion()" class="glyphicon glyphicon-remove pull-right" aria-hidden="true" style="opacity:0.40;"></i>
             <span class="label label-pill label-danger" *ngIf="_notificationsStore.recentlyAddedCount > 0">{{_notificationsStore.recentlyAddedCount}}</span>
         </div>
         <div class="control-item-content-text" [class.success]="notification.type == 'SUCCESS'" [class.warning]="notification.type == 'ERROR'" [class.unread]="!notification.isRead" *ngFor="let notification of _notificationsStore.notifications | async | reverse">

@@ -56,7 +56,7 @@
     "@angular/router": "3.4.1",
     "@angular/upgrade": "2.4.1",
     "angular2-notifications": "^0.4.4",
-    "bootstrap": "4.0.0-alpha.5",
+    "bootstrap": "^4.0.0-alpha.5",
     "chart.js": "^2.4.0",
     "datatables": "^1.10.13",
     "font-awesome": "^4.7.0",
