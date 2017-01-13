@@ -6,6 +6,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { AppRoot } from '../components/AppRoot';
+import { NoContentComponent } from '../components/pages/no-content/no-content-component';
 import { HttpModule } from '@angular/http';
 
 import { RootRoutingModule } from '../routes/root-routes';
@@ -55,7 +56,8 @@ import { UsersStore } from '../stores/users-store';
         MedicalProviderModule
     ],
     declarations: [
-        AppRoot
+        AppRoot,
+        NoContentComponent
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
