@@ -38,3 +38,4 @@ GO
 
 ALTER TABLE [dbo].[Patient] CHECK CONSTRAINT [FK_Patient_User]
 GO
+
