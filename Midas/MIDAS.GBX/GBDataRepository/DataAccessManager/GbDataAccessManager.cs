@@ -12,7 +12,6 @@ using MIDAS.GBX.Common;
 using MIDAS.GBX.BusinessObjects;
 using MIDAS.GBX.EntityRepository;
 using System.Data.Entity.Infrastructure;
-
 namespace MIDAS.GBX.DataAccessManager
 {
     public class GbDataAccessManager<T> : IGbDataAccessManager<T>

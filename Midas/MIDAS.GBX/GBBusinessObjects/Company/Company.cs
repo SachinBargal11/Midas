@@ -11,20 +11,19 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class Company:GbObject
     {
-        public Company company { get; set; }
         [JsonProperty("status")]
-        [JsonConverter(typeof(StringEnumConverter))]
+        
         public GBEnums.AccountStatus Status { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
 
         [JsonProperty("companyType")]
-        [JsonConverter(typeof(StringEnumConverter))]
+        
         public GBEnums.CompanyType CompanyType { get; set; }
 
         [JsonProperty("subscriptionType")]
-        [JsonConverter(typeof(StringEnumConverter))]
+        
         public GBEnums.SubsCriptionType SubsCriptionType { get; set; }
 
         [JsonProperty("taxId")]
@@ -48,6 +47,7 @@ namespace MIDAS.GBX.BusinessObjects
             {
                 validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "TaxID is required" });
             }
+
 
             if (TaxID.Length!=10)
             {

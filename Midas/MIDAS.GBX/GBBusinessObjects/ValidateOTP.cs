@@ -20,7 +20,3 @@ namespace MIDAS.GBX.BusinessObjects
         }
     }
 }
-
-
-
-

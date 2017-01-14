@@ -1,4 +1,4 @@
-﻿// Default code generation is disabled for model 'E:\SVN Data For Publish\MIDAS\Midas\Midas\MIDAS.GBX\GBDataRepository\Model\MIDASGBXEntities.edmx'. 
+﻿// Default code generation is disabled for model 'D:\Working Data\Mangesh\Midas\Midas\MIDAS.GBX\GBDataRepository\Model\MIDASGBXEntities.edmx'. 
 // To enable default code generation, change the value of the 'Code Generation Strategy' designer
 // property to an alternate value. This property is available in the Properties Window when the model is
 // open in the designer.

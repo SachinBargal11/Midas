@@ -38,6 +38,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Validate
+        public override List<BO.BusinessValidation> Validate<T>(T entity)
+        {
+            BO.PasswordToken passwordTokenBO = (BO.PasswordToken)(object)entity;
+            var result = passwordTokenBO.Validate(passwordTokenBO);
+            return result;
+        }
+        #endregion
+
         #region ValidatePassword
         public override Object ValidatePassword<T>(T entity)
         {
@@ -85,7 +94,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             string Message = "Dear " + passwordBO.UserName + ",<br><br>You are receiving this email because you (or someone pretending to be you) requested that your password be reset on the " + Utility.GetConfigValue("Website") + " site.  If you do not wish to reset your password, please ignore this message.<br><br>To reset your password, please click the following link, or copy and paste it into your web browser:<br><br>" + Utility.GetConfigValue("ForgotPasswordLink") +"/"+ passwordDB.TokenHash+ " <br><br>Your username, in case you've forgotten: " + passwordDB.UserName+ "<br><br>Thanks";
             try
             {
-                Utility.SendEmail(Message, "Password Reset on MIDAS GBX", passwordBO.UserName);
+                BO.Email objEmail = new BO.Email { ToEmail = passwordBO.UserName, Subject = "Password Reset on MIDAS GBX", Body = Message };
+                objEmail.SendMail();
             }
             catch (Exception ex)
             {

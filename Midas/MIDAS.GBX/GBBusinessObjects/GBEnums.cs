@@ -21,14 +21,9 @@ namespace MIDAS.GBX.BusinessObjects
         #region User Type
             public enum UserType
             {
-                Admin = 1,
-                Owner = 2,
-                Doctor = 3,
-                Patient = 4 ,
-                Attorney = 5,
-                Adjuster = 6,
-                Accounts = 7
-        }
+                Patient = 1,
+                Staff = 2
+            }
         #endregion
 
         #region Gender
@@ -68,7 +63,8 @@ namespace MIDAS.GBX.BusinessObjects
         public enum RoleType
         {
             Admin = 1,
-            Manager = 2
+            Manager = 2,
+            Doctor=3
         }
         #endregion
 
@@ -85,8 +81,8 @@ namespace MIDAS.GBX.BusinessObjects
         #region Location Type
         public enum LocationType
         {
-            Billing = 1,
-            Testing = 2
+            MEDICAL_OFFICE = 1, 
+            MEDICAL_TESTING_FACILITY = 2
         }
         #endregion
 
@@ -98,5 +94,15 @@ namespace MIDAS.GBX.BusinessObjects
             Unknown = 2
         }
         #endregion
+
+        #region Schedule Status
+        public enum ScheduleStatus
+        {
+            Open = 1,
+            Closed = 1,
+            SpecificHours = 2
+        }
+        #endregion
+
     }
 }

@@ -39,11 +39,10 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -59,24 +58,31 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="DataAccessManager\DataAccessManager.cs" />
     <Compile Include="DataAccessManager\DBContextProvider.cs" />
     <Compile Include="DataAccessManager\GbDataAccessManager.cs" />
     <Compile Include="DataAccessManager\IDBContextProvider.cs" />
     <Compile Include="DataAccessManager\IGbDataAccessManager.cs" />
     <Compile Include="EntityRepository\BaseEntityRepo.cs" />
     <Compile Include="EntityRepository\Company\CompanyRepository.cs" />
+    <Compile Include="EntityRepository\Doctor\DoctorLocationScheduleRepository.cs" />
     <Compile Include="EntityRepository\Doctor\DoctorRepository.cs" />
     <Compile Include="EntityRepository\Doctor\DoctorSpecialityRepository.cs" />
     <Compile Include="EntityRepository\Company\InvitationRepository.cs" />
-    <Compile Include="EntityRepository\Company\LocationRepository.cs" />
-    <Compile Include="EntityRepository\MedicaProvider\MedicalProviderRepository.cs" />
+    <Compile Include="EntityRepository\Location\LocationRepository.cs" />
+    <Compile Include="EntityRepository\Log\LogRepository.cs" />
+    <Compile Include="EntityRepository\Patient\PatientRepository.cs" />
+    <Compile Include="EntityRepository\Room\RoomRepository.cs" />
+    <Compile Include="EntityRepository\Room\RoomTestRepository.cs" />
+    <Compile Include="EntityRepository\Schedule\ScheduleDetailRepository.cs" />
+    <Compile Include="EntityRepository\Schedule\ScheduleRepository.cs" />
     <Compile Include="EntityRepository\Speciality\CompanySpecialityDetailsRepository.cs" />
     <Compile Include="EntityRepository\Speciality\SpecialityDetailsRepository.cs" />
     <Compile Include="EntityRepository\Speciality\SpecialityRepository.cs" />
     <Compile Include="EntityRepository\User\OTPRepository.cs" />
     <Compile Include="EntityRepository\User\PasswordTokenRepository.cs" />
+    <Compile Include="EntityRepository\User\UserCompanyRepository.cs" />
     <Compile Include="EntityRepository\User\UserRepository.cs" />
-    <Compile Include="EntityRepository\User\UserTokenRepository.cs" />
     <Compile Include="EntitySearch\EntitySearch.cs" />
     <Compile Include="EntitySearch\EntitySearchParameters.cs" />
     <Compile Include="EntitySearch\FilterDefination.cs" />
@@ -98,16 +104,10 @@
     <Compile Include="Model\Doctor.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\DoctorLocationSchedule.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\DoctorSpeciality.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\EmailField.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\EmailProfile.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\EmailTemplate.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Invitation.cs">
@@ -120,9 +120,6 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Log.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\MedicalProvider.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\MIDASGBXEntities.Context.cs">
@@ -146,7 +143,22 @@
     <Compile Include="Model\PasswordToken.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Role.cs">
+    <Compile Include="Model\Patient.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Room.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\RoomTest.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Schedule.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ScheduleDetail.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\SpecialityDetail.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Specialty.cs">
@@ -158,6 +170,9 @@
     <Compile Include="Model\SubscriptionPlan.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\sysdiagram.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\User.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
@@ -165,9 +180,6 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\UserCompanyRole.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\UserToken.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\UserType.cs">
@@ -182,8 +194,18 @@
       <LastGenOutput>MIDASGBXEntities.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="App.Config" />
+    <None Include="Model\MIDASGBXEntities.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
+      <LastGenOutput>MIDASGBXEntities.Context.cs</LastGenOutput>
+    </None>
     <None Include="Model\MIDASGBXEntities.edmx.diagram">
       <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
+    </None>
+    <None Include="Model\MIDASGBXEntities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
+      <LastGenOutput>MIDASGBXEntities.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -203,18 +225,6 @@
   <ItemGroup>
     <Folder Include="EntityRepository\AddressInfo\" />
     <Folder Include="EntityRepository\ContactInfo\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Model\MIDASGBXEntities.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
-      <LastGenOutput>MIDASGBXEntities.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Model\MIDASGBXEntities.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
-      <LastGenOutput>MIDASGBXEntities.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -17,10 +17,11 @@ namespace MIDAS.GBX.DataRepository.Model
         public User()
         {
             this.Doctors = new HashSet<Doctor>();
+            this.DoctorSpecialities = new HashSet<DoctorSpeciality>();
             this.Invitations = new HashSet<Invitation>();
+            this.Patients = new HashSet<Patient>();
             this.UserCompanies = new HashSet<UserCompany>();
             this.UserCompanyRoles = new HashSet<UserCompanyRole>();
-            this.UserTokens = new HashSet<UserToken>();
         }
     
         public int id { get; set; }
@@ -47,9 +48,10 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual AddressInfo AddressInfo { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual ICollection<Doctor> Doctors { get; set; }
+        public virtual ICollection<DoctorSpeciality> DoctorSpecialities { get; set; }
         public virtual ICollection<Invitation> Invitations { get; set; }
+        public virtual ICollection<Patient> Patients { get; set; }
         public virtual ICollection<UserCompany> UserCompanies { get; set; }
         public virtual ICollection<UserCompanyRole> UserCompanyRoles { get; set; }
-        public virtual ICollection<UserToken> UserTokens { get; set; }
     }
 }

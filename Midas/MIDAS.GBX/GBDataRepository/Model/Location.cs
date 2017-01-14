@@ -14,9 +14,17 @@ namespace MIDAS.GBX.DataRepository.Model
     
     public partial class Location
     {
+        public Location()
+        {
+            this.DoctorLocationSchedules = new HashSet<DoctorLocationSchedule>();
+            this.Patients = new HashSet<Patient>();
+            this.Rooms = new HashSet<Room>();
+        }
+    
         public int id { get; set; }
         public string Name { get; set; }
         public int CompanyID { get; set; }
+        public Nullable<int> ScheduleID { get; set; }
         public int AddressInfoID { get; set; }
         public int ContactInfoID { get; set; }
         public byte LocationType { get; set; }
@@ -30,5 +38,9 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual AddressInfo AddressInfo { get; set; }
         public virtual Company Company { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
+        public virtual ICollection<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }
+        public virtual Schedule Schedule { get; set; }
+        public virtual ICollection<Patient> Patients { get; set; }
+        public virtual ICollection<Room> Rooms { get; set; }
     }
 }

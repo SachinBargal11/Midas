@@ -31,25 +31,27 @@ namespace MIDAS.GBX.DataRepository.Model
         public DbSet<CompanyType> CompanyTypes { get; set; }
         public DbSet<ContactInfo> ContactInfoes { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }
         public DbSet<DoctorSpeciality> DoctorSpecialities { get; set; }
-        public DbSet<EmailField> EmailFields { get; set; }
-        public DbSet<EmailProfile> EmailProfiles { get; set; }
-        public DbSet<EmailTemplate> EmailTemplates { get; set; }
         public DbSet<Invitation> Invitations { get; set; }
         public DbSet<InvitationType> InvitationTypes { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Log> Logs { get; set; }
-        public DbSet<MedicalProvider> MedicalProviders { get; set; }
         public DbSet<OTP> OTPs { get; set; }
         public DbSet<PasswordToken> PasswordTokens { get; set; }
-        public DbSet<Role> Roles { get; set; }
+        public DbSet<Patient> Patients { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<RoomTest> RoomTests { get; set; }
+        public DbSet<Schedule> Schedules { get; set; }
+        public DbSet<ScheduleDetail> ScheduleDetails { get; set; }
+        public DbSet<SpecialityDetail> SpecialityDetails { get; set; }
         public DbSet<Specialty> Specialties { get; set; }
         public DbSet<SpecialtyDetail> SpecialtyDetails { get; set; }
         public DbSet<SubscriptionPlan> SubscriptionPlans { get; set; }
+        public DbSet<sysdiagram> sysdiagrams { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserCompany> UserCompanies { get; set; }
         public DbSet<UserCompanyRole> UserCompanyRoles { get; set; }
-        public DbSet<UserToken> UserTokens { get; set; }
         public DbSet<UserType> UserTypes { get; set; }
     }
 }
