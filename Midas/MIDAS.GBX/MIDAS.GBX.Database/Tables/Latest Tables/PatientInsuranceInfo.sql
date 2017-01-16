@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[PatientInsuranceInfo]
 (
-	[id] [int] NOT NULL,
+	[Id] [int] NOT NULL,
 	[PatientID] [int] NOT NULL,
 	[InsuranceCode] [nvarchar](10) NULL,
 	[InsuranceType] [int] NOT NULL,
@@ -11,7 +11,7 @@
 	[CreateDate] [datetime2](7) NOT NULL,
 	[UpdateByUserID] [int] NULL,
 	[UpdateDate] [datetime2](7) NULL, 
-    CONSTRAINT [PK_PatientInsuranceInfo] PRIMARY KEY ([id])
+    CONSTRAINT [PK_PatientInsuranceInfo] PRIMARY KEY ([Id])
 )
 GO
 

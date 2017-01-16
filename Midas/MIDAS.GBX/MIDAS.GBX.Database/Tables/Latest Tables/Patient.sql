@@ -10,7 +10,7 @@
 	[CompanyID] [int] NOT NULL,
 	[LocationID] [int] NOT NULL,
 	[Weight] [DECIMAL](3, 2) NOT NULL,
-	[MaritalStatus] [INT] NULL,
+	[MaritalStatus] [TINYINT] NULL,
 	[DrivingLicence] [NVARCHAR](15) NULL,
 	[EmergenceyContact] [NVARCHAR](50) NULL,
 	[EmergenceyContactNumber] [NVARCHAR](50) NULL,
@@ -49,7 +49,7 @@ ALTER TABLE [dbo].[Patient]  WITH CHECK ADD  CONSTRAINT [FK_Patient_MaritalStatu
 REFERENCES [dbo].[MaritalStatus] ([id])
 GO
 
-ALTER TABLE [dbo].[Patient] CHECK CONSTRAINT [FK_Patient_MaritialStatus]
+ALTER TABLE [dbo].[Patient] CHECK CONSTRAINT [FK_Patient_MaritalStatus]
 GO
 
 ALTER TABLE [dbo].[User]  WITH CHECK ADD  CONSTRAINT [FK_User_UserType] FOREIGN KEY([UserType])

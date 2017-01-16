@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[UserType](
-	[id] [int] IDENTITY(1,1) NOT NULL,
+	[id] [tinyint] IDENTITY(1,1) NOT NULL,
 	[Name] [nvarchar](50) NOT NULL,
 	[IsDeleted] [bit] NULL,
 	[CreateByUserID] [int] NOT NULL,

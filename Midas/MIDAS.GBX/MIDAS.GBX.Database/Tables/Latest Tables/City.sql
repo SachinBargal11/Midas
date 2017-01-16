@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[City]
 (
-	[Id] INT NOT NULL,
+	[Id] [TINYINT] NOT NULL,
 	[StateCode] [NVARCHAR](2) NOT NULL,
 	[CityText] [NVARCHAR](50) NOT NULL,
 	[IsDeleted] [BIT] NULL,
@@ -9,7 +9,7 @@
 	--[UpdateByUserID] [INT] NULL,
 	--[UpdateDate] [DATETIME2](7) NULL,
 	CONSTRAINT [UK_State_City] UNIQUE ([StateCode], [CityText]),
-    CONSTRAINT [PK_City] PRIMARY KEY ([id])
+    CONSTRAINT [PK_City] PRIMARY KEY ([Id])
 )
 GO
 
