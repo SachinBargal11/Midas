@@ -34,7 +34,8 @@ export const LocationManagementRoutes: Routes = [
         path: 'locations/:locationId',
         component: LocationShellComponent,
         data: {
-            breadcrumb: 'Locations'
+            breadcrumb: 'Locations',
+            shell: true
         },
         children: [
             {

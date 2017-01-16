@@ -43,7 +43,8 @@ export const UsersRoutes: Routes = [
         path: 'users/:userId',
         component: UserShellComponent,
         data: {
-            breadcrumb: 'Users'
+            breadcrumb: 'Users',
+            shell: true
         },
         children: [
             {
