@@ -92,6 +92,7 @@
     <Build Include="Tables\Latest Tables\State.sql" />
     <Build Include="Tables\Latest Tables\City.sql" />
     <Build Include="Tables\Latest Tables\MaritalStatus.sql" />
+    <Build Include="Tables\Latest Tables\Gender.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />
