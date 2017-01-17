@@ -132,6 +132,15 @@ namespace MIDAS.GBX.EntityRepository
         }
 
 
+        public virtual Object Get()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object Get(string param1)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

@@ -54,6 +54,7 @@
     <Compile Include="BoolConverter.cs" />
     <Compile Include="BusinessValidation.cs" />
     <Compile Include="BusinessValidationResult.cs" />
+    <Compile Include="Common\State.cs" />
     <Compile Include="Company\Company.cs" />
     <Compile Include="Company\Signup.cs" />
     <Compile Include="ContactInfo\ContactInfo.cs" />

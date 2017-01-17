@@ -293,5 +293,44 @@ namespace MIDAS.GBX.WebAPI
             }
         }
         #endregion
+
+
+        public HttpResponseMessage GetObjects(HttpRequestMessage request)
+        {
+            var objResult = dataAccessManager.Get();
+            try
+            {
+                //var res = (GbObject)(object)objResult;
+                var res = (object)objResult;
+
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetObjects(HttpRequestMessage request, string param1)
+        {
+            var objResult = dataAccessManager.Get(param1);
+            try
+            {
+                //var res = (GbObject)(object)objResult;
+                var res = (object)objResult;
+
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
     }
 }

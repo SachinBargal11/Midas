@@ -1,8 +1,7 @@
 ﻿CREATE TABLE [dbo].[State]
 (
 	[Id] [TINYINT] NOT NULL,
-	--[StateCode] [NVARCHAR](2) NOT NULL UNIQUE,
-	[StateCode] [NVARCHAR](2) NULL,
+	[StateCode] [NVARCHAR](2) NOT NULL UNIQUE,
 	[StateText] [NVARCHAR](50) NOT NULL,
 	[IsDeleted] [BIT] NULL,
 	--[CreateByUserID] [INT] NOT NULL,
