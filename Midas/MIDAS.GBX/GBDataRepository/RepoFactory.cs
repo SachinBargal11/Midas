@@ -115,6 +115,11 @@ namespace MIDAS.GBX
                 repo = new StateRepository(context);
             }
 
+            if (typeof(T) == typeof(BO.Common.City))
+            {
+                repo = new CityRepository(context);
+            }
+
             return repo;
         }
     }

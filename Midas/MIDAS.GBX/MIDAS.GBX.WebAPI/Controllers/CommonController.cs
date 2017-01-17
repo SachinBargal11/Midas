@@ -13,10 +13,12 @@ namespace MIDAS.GBX.WebAPI.Controllers
     public class CommonController : ApiController
     {
         private IRequestHandler<State> requestStateHandler;
+        private IRequestHandler<City> requestCityHandler;
 
         public CommonController()
         {
             requestStateHandler = new GbApiRequestHandler<State>();
+            requestCityHandler = new GbApiRequestHandler<City>();
         }
 
         [HttpGet]
@@ -27,10 +29,24 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getstatesbycity/{City}")]
+        [Route("getstatesbycity/{city}")]
         public HttpResponseMessage GetStatesByCity(string City)
         {
             return requestStateHandler.GetObjects(Request, City);
+        }
+
+        [HttpGet]
+        [Route("getcities")]
+        public HttpResponseMessage GetCities()
+        {
+            return requestCityHandler.GetObjects(Request);
+        }
+
+        [HttpGet]
+        [Route("getcitiesbystates/{state}")]
+        public HttpResponseMessage GetCitiesByStates(string State)
+        {
+            return requestCityHandler.GetObjects(Request, State);
         }
     }
 }
