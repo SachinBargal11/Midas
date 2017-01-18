@@ -10,5 +10,7 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
     public interface IRequestHandler<T>
     {
         HttpResponseMessage Login(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage RegenerateOTP(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage ValidateOTP(HttpRequestMessage request, T gbObject);
     }
 }
