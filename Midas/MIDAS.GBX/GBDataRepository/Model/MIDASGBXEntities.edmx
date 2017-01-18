@@ -146,6 +146,14 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
+        <EntityType Name="Gender">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" Nullable="false" />
+          <Property Name="GenderText" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
         <EntityType Name="Invitation">
           <Key>
             <PropertyRef Name="InvitationID" />
@@ -841,6 +849,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DoctorLocationSchedule" EntityType="Self.DoctorLocationSchedule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DoctorSpecialities" EntityType="Self.DoctorSpecialities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Gender" EntityType="Self.Gender" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Invitation" EntityType="Self.Invitation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InvitationType" EntityType="Self.InvitationType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
@@ -1138,6 +1147,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </AssociationSet>
           <EntitySet Name="Cities" EntityType="MIDASGBXModel.City" />
           <EntitySet Name="States" EntityType="MIDASGBXModel.State" />
+          <EntitySet Name="Genders" EntityType="MIDASGBXModel.Gender" />
         </EntityContainer>
         <EntityType Name="AddressInfo">
           <Key>
@@ -2022,6 +2032,14 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="StateText" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsDeleted" Type="Boolean" />
         </EntityType>
+        <EntityType Name="Gender">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" />
+          <Property Name="GenderText" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2517,6 +2535,15 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="StateText" ColumnName="StateText" />
                 <ScalarProperty Name="StateCode" ColumnName="StateCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genders">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Gender">
+              <MappingFragment StoreEntitySet="Gender">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="GenderText" ColumnName="GenderText" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
