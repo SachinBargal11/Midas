@@ -3,9 +3,11 @@ import { Location } from '@angular/common';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
+import { ErrorMessageFormatter } from '../../utils/ErrorMessageFormatter';
 import { AuthenticationService } from '../../services/authentication-service';
 import { SessionStore } from '../../stores/session-store';
-import { User } from '../../models/user';
+import { AccountAdapter } from '../../services/adapters/account-adapter';
+import { Account } from '../../models/account';
 
 @Component({
     selector: 'security-check',
@@ -53,7 +55,8 @@ export class SecurityCheckComponent implements OnInit {
             },
             (error) => {
                 this.isSecurityCheckInProgress = false;
-                this._notificationsService.error('Oh No!', 'Unable to verify security code.');
+                let errString = 'Unable to verify security code.';
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
             },
             () => {
                 this.isSecurityCheckInProgress = false;
@@ -61,9 +64,11 @@ export class SecurityCheckComponent implements OnInit {
     }
 
     regenrateCode() {
-        let user: User = new User(JSON.parse(window.sessionStorage.getItem('logged_user_with_pending_security_review')));
+        let storedAccountData: any = JSON.parse(window.sessionStorage.getItem('logged_user_with_pending_security_review'));
+        let account: Account = AccountAdapter.parseStoredData(storedAccountData);
+
         this.isRegenrateCodeInProgress = true;
-        let result = this._authenticationService.generateCode(user.id);
+        let result = this._authenticationService.generateCode(account.user.id);
         result.subscribe(
             (response) => {
                 this.referenceNumber = window.sessionStorage.getItem('pin');
@@ -71,7 +76,8 @@ export class SecurityCheckComponent implements OnInit {
             },
             (error) => {
                 this.isRegenrateCodeInProgress = false;
-                this._notificationsService.error('Oh No!', 'Unable to regenerate security code.');
+                let errString = 'Unable to regenerate security code.';
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
             },
             () => {
                 this.isRegenrateCodeInProgress = false;
@@ -83,6 +89,6 @@ export class SecurityCheckComponent implements OnInit {
 
     goBack(): void {
         // this.location.back();
-        this._router.navigate(['/login']);
+        this._router.navigate(['/account/login']);
     }
 }

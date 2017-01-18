@@ -64,6 +64,8 @@
     <Compile Include="DataAccessManager\IDBContextProvider.cs" />
     <Compile Include="DataAccessManager\IGbDataAccessManager.cs" />
     <Compile Include="EntityRepository\BaseEntityRepo.cs" />
+    <Compile Include="EntityRepository\Common\CityRepository.cs" />
+    <Compile Include="EntityRepository\Common\StateRepository.cs" />
     <Compile Include="EntityRepository\Company\CompanyRepository.cs" />
     <Compile Include="EntityRepository\Doctor\DoctorLocationScheduleRepository.cs" />
     <Compile Include="EntityRepository\Doctor\DoctorRepository.cs" />
@@ -87,6 +89,9 @@
     <Compile Include="EntitySearch\EntitySearchParameters.cs" />
     <Compile Include="EntitySearch\FilterDefination.cs" />
     <Compile Include="Model\AddressInfo.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\City.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Company.cs">
@@ -165,6 +170,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SpecialtyDetail.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\State.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SubscriptionPlan.cs">

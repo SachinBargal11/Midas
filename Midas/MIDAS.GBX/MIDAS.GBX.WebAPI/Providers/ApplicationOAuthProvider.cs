@@ -10,44 +10,57 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using MIDAS.GBX.WebAPI.Models;
+using MIDAS.GBX.BusinessObjects;
 
 namespace MIDAS.GBX.WebAPI.Providers
 {
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
     {
         private readonly string _publicClientId;
-
+        MIDAS.GBX.DataRepository.DataAccessManager dataAccessManager;
         public ApplicationOAuthProvider(string publicClientId)
         {
             if (publicClientId == null)
             {
                 throw new ArgumentNullException("publicClientId");
             }
-
+            dataAccessManager = new DataRepository.DataAccessManager();
             _publicClientId = publicClientId;
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
-
-            ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
-
-            if (user == null)
+            var identity = new ClaimsIdentity(context.Options.AuthenticationType);
+            if(string.IsNullOrEmpty(context.UserName))
             {
-                context.SetError("invalid_grant", "The user name or password is incorrect.");
+                context.SetError("invalid_grant", "Provided username and password is incorrect");
                 return;
             }
+            if (string.IsNullOrEmpty(context.Password))
+            {
+                context.SetError("invalid_grant", "Provided username and password is incorrect");
+                return;
+            }
+            User user = new User { UserName = context.UserName, Password = context.Password,forceLogin=true };
 
-            ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
-               OAuthDefaults.AuthenticationType);
-            ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
-                CookieAuthenticationDefaults.AuthenticationType);
-
-            AuthenticationProperties properties = CreateProperties(user.UserName);
-            AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
-            context.Validated(ticket);
-            context.Request.Context.Authentication.SignIn(cookiesIdentity);
+            var res = dataAccessManager.Login(user);
+            if (res == null)
+            {
+                context.SetError("invalid_grant", "Provided username and password is incorrect");
+                return;
+            }
+            try
+            {
+                var res_ = (OTP)(object)res;
+                identity.AddClaim(new Claim("username", context.UserName));
+                identity.AddClaim(new Claim(ClaimTypes.Name, res_.User.FirstName));
+                context.Validated(identity);
+            }
+            catch
+            {
+                context.SetError("invalid_grant", "Provided username and password is incorrect");
+                return;
+            }
         }
 
         public override Task TokenEndpoint(OAuthTokenEndpointContext context)
@@ -60,16 +73,12 @@ namespace MIDAS.GBX.WebAPI.Providers
             return Task.FromResult<object>(null);
         }
 
-        public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
+        public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
-            // Resource owner password credentials does not provide a client ID.
-            if (context.ClientId == null)
-            {
-                context.Validated();
-            }
-
-            return Task.FromResult<object>(null);
+            context.Validated(); // 
         }
+
+
 
         public override Task ValidateClientRedirectUri(OAuthValidateClientRedirectUriContext context)
         {

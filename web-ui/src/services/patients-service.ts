@@ -11,8 +11,8 @@ import {PatientAdapter} from './adapters/patient-adapter';
 @Injectable()
 export class PatientsService {
 
-    // private _url: string = `${Environment.SERVICE_BASE_URL}/patients`;
-    private _url: string = 'http://localhost:3004/patients';
+    private _url: string = `${Environment.SERVICE_BASE_URL}/patients`;
+    // private _url: string = 'http://localhost:3004/patients';
     private _headers: Headers = new Headers();
 
     constructor(

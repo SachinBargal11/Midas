@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
 import { AppValidators } from '../../../utils/AppValidators';
 import { Company } from '../../../models/company';
 import { LocationsStore } from '../../../stores/locations-store';
@@ -13,15 +14,17 @@ import { NotificationsStore } from '../../../stores/notifications-store';
 import { Notification } from '../../../models/notification';
 import moment from 'moment';
 import { StatesStore } from '../../../stores/states-store';
-import { StateService } from '../../../services/state-service';
+import { LocationType } from '../../../models/enums/location-type';
+import { ProgressBarService } from '../../../services/progress-bar-service';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
     selector: 'basic',
-    templateUrl: 'templates/pages/location-management/basic.html',
-    providers: [StateService, StatesStore, FormBuilder],
+    templateUrl: 'templates/pages/location-management/basic.html'
 })
 
 export class BasicComponent implements OnInit {
+    locationType: any;
     states: any[];
     options = {
         timeOut: 3000,
@@ -48,19 +51,25 @@ export class BasicComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _locationsStore: LocationsStore,
+        private _progressBarService: ProgressBarService,
+        private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
         this._route.parent.params.subscribe((params: any) => {
             let locationId = parseInt(params.locationId);
-            let result = this._locationsStore.fetchLocationById(locationId);
+            this._progressBarService.show();
+            let result = this._locationsStore.getLocationById(locationId);
             result.subscribe(
                 (locationDetails: LocationDetails) => {
                     this.locationDetails = locationDetails;
+                    this.locationType = LocationType[locationDetails.location.locationType];
                 },
                 (error) => {
-                    this._router.navigate(['/medicalProvider/locations']);
+                    this._router.navigate(['/medical-provider/locations']);
+                    this._progressBarService.hide();
                 },
                 () => {
+                    this._progressBarService.hide();
                 });
 
         });
@@ -71,8 +80,8 @@ export class BasicComponent implements OnInit {
             city: ['', Validators.required],
             state: ['', Validators.required],
             zipcode: ['', Validators.required],
-            officePhone: ['', Validators.required],
-            fax: ['', Validators.required],
+            officePhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            fax: [''],
             officeType: ['', Validators.required]
         });
 
@@ -95,11 +104,10 @@ export class BasicComponent implements OnInit {
             }),
             company: new Company({
                 id: this.locationDetails.company.id
-                // id: 1
             }),
             contact: new Contact({
-                faxNo: basicformValues.fax,
-                workPhone: basicformValues.officePhone,
+                faxNo: basicformValues.fax ? basicformValues.fax.replace(/\-|\s/g, '') : null,
+                workPhone: basicformValues.officePhone ? basicformValues.officePhone.replace(/\-/g, '') : null,
                 updateByUserID: userId
             }),
             address: new Address({
@@ -110,6 +118,7 @@ export class BasicComponent implements OnInit {
                 updateByUserID: userId
             })
         });
+        this._progressBarService.show();
         this.isSaveProgress = true;
         let result;
 
@@ -122,18 +131,23 @@ export class BasicComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/medicalProvider/locations']);
+                this._router.navigate(['/medical-provider/locations']);
             },
             (error) => {
+                let errString = 'Unable to update location.';
                 let notification = new Notification({
-                    'title': 'Unable to update location.',
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
+                this.isSaveProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                this._progressBarService.hide();
             },
             () => {
                 this.isSaveProgress = false;
+                this._progressBarService.hide();
             });
     }
 

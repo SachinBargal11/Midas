@@ -53,5 +53,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public DbSet<UserCompany> UserCompanies { get; set; }
         public DbSet<UserCompanyRole> UserCompanyRoles { get; set; }
         public DbSet<UserType> UserTypes { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<State> States { get; set; }
     }
 }

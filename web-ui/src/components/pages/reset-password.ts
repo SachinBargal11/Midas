@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ErrorMessageFormatter } from '../../utils/ErrorMessageFormatter';
 import { AppValidators } from '../../utils/AppValidators';
 import { NotificationsService } from 'angular2-notifications';
 
@@ -10,8 +11,7 @@ import { UsersService } from '../../services/users-service';
 
 @Component({
     selector: 'reset-password',
-    templateUrl: 'templates/pages/reset-password.html',
-    providers: [FormBuilder, AuthenticationService, NotificationsService]
+    templateUrl: 'templates/pages/reset-password.html'
 })
 
 export class ResetPasswordComponent implements OnInit {
@@ -40,9 +40,7 @@ export class ResetPasswordComponent implements OnInit {
         this._route.params.subscribe((routeParams: any) => {
             let token = routeParams.token;
             let autheticateRequestData = {
-                user: {
-                    appKey: token
-                }
+                appKey: token
             };
             let result = this._authenticationService.checkForValidResetPasswordToken(autheticateRequestData);
             result.subscribe(
@@ -85,11 +83,13 @@ export class ResetPasswordComponent implements OnInit {
             (response) => {
                 this._notificationsService.success('Success', 'Your password has been set successfully!');
                 setTimeout(() => {
-                    this._router.navigate(['/login']);
+                    this._router.navigate(['/account/login']);
                 }, 3000);
             },
             error => {
-                this._notificationsService.error('Error!', 'Unable to set your password.');
+                this.isResetPasswordInProgress = false;
+                let errString = 'Unable to set your password.';
+                this._notificationsService.error('Error!', ErrorMessageFormatter.getErrorMessages(error, errString));
             },
             () => {
                 this.isResetPasswordInProgress = false;
@@ -98,7 +98,7 @@ export class ResetPasswordComponent implements OnInit {
 
     goBack(): void {
         // this.location.back();
-        this._router.navigate(['/login']);
+        this._router.navigate(['/account/login']);
     }
 
 }

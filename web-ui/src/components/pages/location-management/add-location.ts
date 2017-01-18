@@ -1,28 +1,31 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router, ActivatedRoute} from '@angular/router';
-import {AppValidators} from '../../../utils/AppValidators';
-import {LocationsStore} from '../../../stores/locations-store';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
+import { AppValidators } from '../../../utils/AppValidators';
+import { LocationsStore } from '../../../stores/locations-store';
 import { LocationDetails } from '../../../models/location-details';
-import {Location} from '../../../models/location';
+import { Location } from '../../../models/location';
 import { Company } from '../../../models/company';
-import {Contact} from '../../../models/contact';
-import {Address} from '../../../models/address';
-import {SessionStore} from '../../../stores/session-store';
-import {NotificationsStore} from '../../../stores/notifications-store';
-import {Notification} from '../../../models/notification';
+import { Contact } from '../../../models/contact';
+import { Address } from '../../../models/address';
+import { SessionStore } from '../../../stores/session-store';
+import { NotificationsStore } from '../../../stores/notifications-store';
+import { Notification } from '../../../models/notification';
 import moment from 'moment';
-import {StatesStore} from '../../../stores/states-store';
-import {StateService} from '../../../services/state-service';
+import { StatesStore } from '../../../stores/states-store';
+import { ProgressBarService } from '../../../services/progress-bar-service';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
     selector: 'add-location',
-    templateUrl: 'templates/pages/location-management/add-location.html',
-    providers: [StateService, StatesStore, FormBuilder],
+    templateUrl: 'templates/pages/location-management/add-location.html'
 })
 
 export class AddLocationComponent implements OnInit {
     states: any[];
+    location = new Location({});
+    locationJS;
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -42,18 +45,21 @@ export class AddLocationComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _locationsStore: LocationsStore,
+        private _progressBarService: ProgressBarService,
+        private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
+        this.locationJS = this.location.toJS();
         this.addlocationform = this.fb.group({
-                name: ['', Validators.required],
-                address: [''],
-                city: ['', Validators.required],
-                state: ['', Validators.required],
-                zipCode: ['', Validators.required],
-                officePhone: ['', Validators.required],
-                fax: ['', Validators.required],
-                locationType: ['', Validators.required]
-            });
+            name: ['', Validators.required],
+            address: [''],
+            city: ['', Validators.required],
+            state: ['', Validators.required],
+            zipCode: ['', Validators.required],
+            officePhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            fax: [''],
+            locationType: ['', Validators.required]
+        });
 
         this.addlocationformControls = this.addlocationform.controls;
     }
@@ -65,25 +71,25 @@ export class AddLocationComponent implements OnInit {
     save() {
         let addlocationformValues = this.addlocationform.value;
         let basicInfo = new LocationDetails({
-            location: new Location ({
+            location: new Location({
                 name: addlocationformValues.name,
                 locationType: parseInt(addlocationformValues.locationType)
             }),
-            company: new Company ({
-                //  id: this._sessionStore.session.user.id 
-                id: 1
+            company: new Company({
+                id: this._sessionStore.session.currentCompany.id
             }),
             contact: new Contact({
-                faxNo: addlocationformValues.fax,
-                workPhone: addlocationformValues.officePhone,
+                faxNo: addlocationformValues.fax ? addlocationformValues.fax.replace(/\-|\s/g, '') : null,
+                workPhone: addlocationformValues.officePhone ? addlocationformValues.officePhone.replace(/\-/g, '') : null
             }),
             address: new Address({
                 address1: addlocationformValues.address,
                 city: addlocationformValues.city,
                 state: addlocationformValues.state,
-                zipCode: addlocationformValues.zipCode,
+                zipCode: addlocationformValues.zipCode
             })
         });
+        this._progressBarService.show();
         this.isSaveProgress = true;
         let result;
 
@@ -96,18 +102,23 @@ export class AddLocationComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/medicalProvider/locations']);
+                this._router.navigate(['/medical-provider/locations']);
             },
             (error) => {
+                let errString = 'Unable to add location.';
                 let notification = new Notification({
-                    'title': 'Unable to add location.',
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
+                this.isSaveProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                this._progressBarService.hide();
             },
             () => {
                 this.isSaveProgress = false;
+                this._progressBarService.hide();
             });
 
     }

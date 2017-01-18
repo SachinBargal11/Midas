@@ -7,6 +7,7 @@ using BO = MIDAS.GBX.BusinessObjects;
 using MIDAS.GBX.EntityRepository;
 using MIDAS.GBX.DataRepository.Model;
 using MIDAS.GBX.DataRepository.EntityRepository;
+using MIDAS.GBX.DataRepository.EntityRepository.Common;
 
 namespace MIDAS.GBX
 {
@@ -107,7 +108,17 @@ namespace MIDAS.GBX
             {
                 repo = new UserCompanyRepository(context);
             }
-           
+
+
+            if (typeof(T) == typeof(BO.Common.State))
+            {
+                repo = new StateRepository(context);
+            }
+            else if (typeof(T) == typeof(BO.Common.City))
+            {
+                repo = new CityRepository(context);
+            }
+
             return repo;
         }
     }

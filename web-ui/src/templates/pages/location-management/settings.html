@@ -25,6 +25,8 @@
                             <div class="col-lg-4">
                                 <div class="form-group" [class.error]="settingsformControls.primaryProvider.touched && !settingsformControls.primaryProvider.valid">
                                     <select formControlName="primaryProvider" type="text" class="form-control" placeholder="" [class.error]="settingsformControls.primaryProvider.touched && !settingsformControls.primaryProvider.valid">
+                                        <option value="">-Select Primary Provider-</option>
+                                        <option disabled>────────────────────</option>
                                         <option>Regina Moshe</option>
                                     </select>
                                     <div class='error-list' *ngIf="settingsformControls.primaryProvider.touched && !settingsformControls.primaryProvider.valid">

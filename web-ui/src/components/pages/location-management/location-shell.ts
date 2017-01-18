@@ -9,6 +9,7 @@ import { SessionStore } from '../../../stores/session-store';
 
 export class LocationShellComponent implements OnInit {
 
+    test: boolean = true;
     constructor(
         public router: Router,
         public _route: ActivatedRoute,

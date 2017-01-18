@@ -2,7 +2,7 @@
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[DoctorID] [int] NOT NULL,
 	[SpecialityID] [int] NOT NULL,
-	[IsDeleted] [bit] NOT NULL,
+	[IsDeleted] [bit] NOT NULL CONSTRAINT [DF_DoctorSpecialities_IsDeleted]  DEFAULT ((0)),
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NOT NULL,
 	[UpdateByUserID] [int] NULL,
@@ -15,4 +15,16 @@
 
 GO
 
+ALTER TABLE [dbo].[DoctorSpecialities]  WITH CHECK ADD  CONSTRAINT [FK_DoctorSpecialities_Doctor] FOREIGN KEY([DoctorID])
+REFERENCES [dbo].[User] ([id])
+GO
 
+ALTER TABLE [dbo].[DoctorSpecialities] CHECK CONSTRAINT [FK_DoctorSpecialities_Doctor]
+GO
+
+ALTER TABLE [dbo].[DoctorSpecialities]  WITH CHECK ADD  CONSTRAINT [FK_DoctorSpecialities_Specialty] FOREIGN KEY([SpecialityID])
+REFERENCES [dbo].[Specialty] ([id])
+GO
+
+ALTER TABLE [dbo].[DoctorSpecialities] CHECK CONSTRAINT [FK_DoctorSpecialities_Specialty]
+GO

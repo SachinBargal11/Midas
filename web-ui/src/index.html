@@ -13,17 +13,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <!-- build:process -->
     <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/bootstrap/dist/css/bootstrap.min.css"
         charset="utf-8" />
     <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/font-awesome/css/font-awesome.min.css"
         charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/primeui/primeui-ng-all.min.css"
+    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/primeng/resources/themes/bootstrap/theme.css"
         charset="utf-8" />
+    <!--<link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/primeui/primeui-ng-all.min.css"
+        charset="utf-8" />-->
     <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/primeng/resources/primeng.min.css"
         charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/primeui/themes/bootstrap/theme.css"
-        charset="utf-8" />
+    <!--<link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/primeui/themes/bootstrap/theme.css"
+        charset="utf-8" />-->
     <link rel="stylesheet" type="text/css" href="<%= externalComponentsDirectory %>/node_modules/datatables/media/css/jquery.dataTables.min.css"
         charset="utf-8" />
     <!-- /build -->
@@ -42,7 +45,6 @@
     </app-root>
 
     <!-- build:process -->
-    <script src="<%= externalComponentsDirectory %>/node_modules/es6-shim/es6-shim.min.js"></script>
 
     <script src="<%= externalComponentsDirectory %>/node_modules/zone.js/dist/zone.js"></script>
     <script src="<%= externalComponentsDirectory %>/node_modules/reflect-metadata/Reflect.js"></script>
@@ -112,6 +114,9 @@
                         defaultExtension: 'js'
                     },
                     'models': {
+                        defaultExtension: 'js'
+                    },
+                    'modules': {
                         defaultExtension: 'js'
                     },
                     'stores': {
@@ -187,6 +192,7 @@
             }).then(function(){
                 return Promise.all([
                     System.import('moment'),
+                    System.import('jquery'),
                     System.import('jquery-ui'),
                     System.import('jquery-ui-timepicker-addon'),
                     System.import('jquery.inputmask'),

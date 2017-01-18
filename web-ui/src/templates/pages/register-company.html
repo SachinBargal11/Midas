@@ -26,12 +26,16 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <label class="form-label"> Tax Id
+                                            <span class="color-red">*</span>
                                         </label>
                                     <div class="form-group" [class.error]="userformControls.taxId.touched && !userformControls.taxId.valid">
-                                        <input formControlName="taxId" type="text" class="form-control" [class.error]="!userformControls.taxId.valid" />
+                                        <input formControlName="taxId" type="text" class="form-control" [class.error]="!userformControls.taxId.valid"
+                                        minlength="10" />
                                         <div class='error-list' *ngIf="userformControls.taxId.touched && !userformControls.taxId.valid">
                                             <ul>
                                                 <li *ngIf="userformControls.taxId.hasError('required')">Tax Id is required.</li>
+											<li *ngIf="userformControls.taxId.hasError('minlength')">Tax Id should be minimum {{userformControls.taxId.errors.minlength.requiredLength}} characters.</li>
+											<li *ngIf="userformControls.taxId.hasError('maxlength')">Tax Id should be maximum {{userformControls.taxId.errors.maxlength.requiredLength}} characters.</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -97,6 +101,7 @@
                                     <div class="form-group" [class.error]="userformControls.phoneNo.touched && !userformControls.phoneNo.valid">
                                         <p-inputMask mask="999-999-9999" formControlName="phoneNo" [class.error]="userformControls.phoneNo.touched && !userformControls.phoneNo.valid"
                                             placeholder="999-999-9999" styleClass="form-control" ></p-inputMask>
+                                        <!--<input formControlName="phoneNo" type="text" class="form-control" [class.error]="userformControls.phoneNo.touched && !userformControls.phoneNo.valid" />-->
                                         <div class='error-list' *ngIf="userformControls.phoneNo.touched && !userformControls.phoneNo.valid">
                                             <ul>
                                                 <li *ngIf="userformControls.phoneNo.hasError('required')">Phone number is required.</li>
@@ -151,7 +156,7 @@
                                 <button type="button" class="btn btn-secondary" (click)="goBack()">Cancel</button>
                             </div>
                             <div class="text-center">
-                                <span class="sign-note">Already have an account? <a [routerLink]="['/login']">Login</a></span>
+                                <span class="sign-note">Already have an account? <a routerLink="../login">Login</a></span>
                             </div>
                         </div>
                     </div>
@@ -161,5 +166,3 @@
     </div>
 </div>
 <!--</div>-->
-
-<simple-notifications [options]="options"></simple-notifications>

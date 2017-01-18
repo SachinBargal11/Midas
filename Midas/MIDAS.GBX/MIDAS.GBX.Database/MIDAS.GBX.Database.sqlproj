@@ -54,6 +54,7 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Tables" />
+    <Folder Include="Tables\Latest Tables" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\AddressInfo.sql" />
@@ -62,9 +63,6 @@
     <Build Include="Tables\ContactInfo.sql" />
     <Build Include="Tables\Doctor.sql" />
     <Build Include="Tables\DoctorSpecialities.sql" />
-    <Build Include="Tables\EmailFields.sql" />
-    <Build Include="Tables\EmailProfile.sql" />
-    <Build Include="Tables\EmailTemplate.sql" />
     <Build Include="Tables\Invitation.sql" />
     <Build Include="Tables\InvitationType.sql" />
     <Build Include="Tables\Location.sql" />
@@ -84,6 +82,17 @@
     <Build Include="Tables\CompanySpecialtyDetails.sql" />
     <Build Include="Tables\Room.sql" />
     <Build Include="Tables\RoomDetails.sql" />
+    <Build Include="Tables\Schedule.sql" />
+    <Build Include="Tables\DoctorLocationSchedule.sql" />
+    <Build Include="Tables\RoomTest.sql" />
+    <Build Include="Tables\ScheduleDetail.sql" />
+    <Build Include="Tables\Latest Tables\Patient.sql" />
+    <Build Include="Tables\Latest Tables\PatientEmpInfo.sql" />
+    <Build Include="Tables\Latest Tables\PatientInsuranceInfo.sql" />
+    <Build Include="Tables\Latest Tables\State.sql" />
+    <Build Include="Tables\Latest Tables\City.sql" />
+    <Build Include="Tables\Latest Tables\MaritalStatus.sql" />
+    <Build Include="Tables\Latest Tables\Gender.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />

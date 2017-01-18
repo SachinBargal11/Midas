@@ -1,13 +1,16 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router} from '@angular/router';
-import {AppValidators} from '../../../utils/AppValidators';
-import {PatientsStore} from '../../../stores/patients-store';
-import {Patient} from '../../../models/patient';
-import {SessionStore} from '../../../stores/session-store';
-import {NotificationsStore} from '../../../stores/notifications-store';
-import {Notification} from '../../../models/notification';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ErrorMessageFormatter } from '../../../utils/ErrorMessageFormatter';
+import { AppValidators } from '../../../utils/AppValidators';
+import { PatientsStore } from '../../../stores/patients-store';
+import { Patient } from '../../../models/patient';
+import { SessionStore } from '../../../stores/session-store';
+import { NotificationsStore } from '../../../stores/notifications-store';
+import { Notification } from '../../../models/notification';
 import Moment from 'moment';
+import { ProgressBarService } from '../../../services/progress-bar-service';
+import { NotificationsService } from 'angular2-notifications';
 
 @Component({
     selector: 'add-patient',
@@ -15,7 +18,7 @@ import Moment from 'moment';
 })
 
 export class AddPatientComponent implements OnInit {
-    minDate: Date;    
+    minDate: Date;
     maxDate: Date;
     patient = new Patient({
         'firstname': '',
@@ -43,6 +46,8 @@ export class AddPatientComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _patientsStore: PatientsStore,
+        private _progressBarService: ProgressBarService,
+        private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
         this.patientform = this.fb.group({
@@ -77,6 +82,7 @@ export class AddPatientComponent implements OnInit {
             'dob': this.patientform.value.dob,
             'createdUser': this._sessionStore.session.user.id
         });
+        this._progressBarService.show();
         result = this._patientsStore.addPatient(patient);
         result.subscribe(
             (response) => {
@@ -86,18 +92,23 @@ export class AddPatientComponent implements OnInit {
                     'createdAt': Moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/patients']);
+                this._router.navigate(['/patient-manager/patients']);
             },
             (error) => {
+                let errString = 'Unable to add patient.';
                 let notification = new Notification({
-                    'title': 'Unable to add patient.',
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
                     'createdAt': Moment()
                 });
+                this.isSavePatientProgress = false;
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                this._progressBarService.hide();
             },
             () => {
                 this.isSavePatientProgress = false;
+                this._progressBarService.hide();
             });
 
     }

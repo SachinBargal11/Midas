@@ -11,7 +11,7 @@ using System.Web.Http;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/Company")]
-    [AllowAnonymous]
+    
     public class CompanyController : ApiController
     {
         private IRequestHandler<Company> requestHandler;
@@ -27,15 +27,15 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // GET: api/Organizations/5
         [HttpGet]
         [Route("Get/{id}")]
-        [AllowAnonymous]
+        
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetAll")]
-        [AllowAnonymous]
+        
         public HttpResponseMessage Get([FromBody]Company data)
         {
             return requestHandler.GetGbObjects(Request, data);
@@ -44,7 +44,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // POST: api/Organizations
         [HttpPost]
         [Route("Add")]
-        [AllowAnonymous]
+        
         public HttpResponseMessage Post([FromBody]Company data)
         {
             return requestHandler.CreateGbObject(Request, data);
@@ -53,7 +53,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // PUT: api/Organizations/5
         [Route("Update")]
         [HttpPut]
-        [AllowAnonymous]
+        
         public HttpResponseMessage Put([FromBody]Company account)
         {
             return requestHandler.UpdateGbObject(Request, account);
@@ -62,7 +62,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // DELETE: api/Organizations/id={organizationId}
         [HttpDelete]
         [Route("Delete")]
-        [AllowAnonymous]
+        
         public HttpResponseMessage Delete([FromBody]Company account)
         {
             return requestHandler.DeleteGbObject(Request, account);
@@ -71,16 +71,16 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // Unique Name Validation
         [HttpPost]
         [Route("IsUnique")]
-        [AllowAnonymous]
+        
         public HttpResponseMessage IsUnique([FromBody]Company account)
         {
             return requestHandler.ValidateUniqueName(Request, account);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("RegisterCompany")]
         [Route("Signup")]
-        [AllowAnonymous]
         public HttpResponseMessage Signup([FromBody]Signup data)
         {
             if (data != null)

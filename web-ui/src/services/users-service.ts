@@ -1,14 +1,14 @@
-import {Injectable} from '@angular/core';
-import {Http, Headers} from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http, Headers } from '@angular/http';
 import _ from 'underscore';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import Environment from '../scripts/environment';
-import {AccountDetail} from '../models/account-details';
-import { Account } from '../models/account';
-import {UserAdapter} from './adapters/user-adapter';
-import {UserType} from '../models/enums/user-type';
+import { UserAdapter } from './adapters/user-adapter';
+import { UserType } from '../models/enums/user-type';
+import { User } from '../models/user';
+import { SessionStore } from '../stores/session-store';
 
 @Injectable()
 export class UsersService {
@@ -18,34 +18,53 @@ export class UsersService {
     private _headers: Headers = new Headers();
 
     constructor(
-        private _http: Http
+        private _http: Http,
+        private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
     }
 
-    getUser(userId: Number): Observable<Account> {
-        let promise: Promise<Account> = new Promise((resolve, reject) => {
+    getUser(userId: Number): Observable<User> {
+        let promise: Promise<User> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/user/get/' + userId).map(res => res.json())
                 .subscribe((userData: any) => {
-                    resolve(userData);
+                    let parsedUser: User = null;
+                    parsedUser = UserAdapter.parseResponse(userData);
+                    resolve(parsedUser);
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<Account>>Observable.fromPromise(promise);
+        return <Observable<User>>Observable.fromPromise(promise);
     }
-    getUsers(): Observable<Account[]> {
-        let promise: Promise<Account[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/user/GetAll', JSON.stringify({}), {
+    getUsers(): Observable<User[]> {
+        let requestData = {
+            userCompanies: [{
+                company: {
+                    id: this._sessionStore.session.currentCompany.id
+                }
+            }]
+        };
+        let promise: Promise<User[]> = new Promise((resolve, reject) => {
+            return this._http.post(this._url + '/user/GetAll', requestData, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
-                    resolve(data);
+                    let users: any[] = [];
+                    if (data) {
+                        _.forEach(data, function (currentUser: any) {
+                            currentUser.userTypeLabel = User.getUserTypeLabel(currentUser.userType);
+                        });
+                        users = (<Object[]>data).map((data: any) => {
+                            return UserAdapter.parseResponse(data);
+                        });
+                    }
+                    resolve(users);
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<Account[]>>Observable.fromPromise(promise);
+        return <Observable<User[]>>Observable.fromPromise(promise);
     }
     // getUsers(accountId: number): Observable<AccountDetail[]> {
     //     let promise: Promise<AccountDetail[]> = new Promise((resolve, reject) => {
@@ -62,23 +81,36 @@ export class UsersService {
     //     return <Observable<AccountDetail[]>>Observable.fromPromise(promise);
     // }
 
-    addUser(userDetail: Account): Observable<any> {
+    addUser(userDetail: User): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
 
 
             let requestData: any = userDetail.toJS();
+            requestData = {
+                user: requestData,
+                company: {
+                    id: this._sessionStore.session.currentCompany.id
+                },
+                role: {
+                    name: 'Doctor',
+                    roleType: 'Admin',
+                    status: 'active'
+                }
+            };
 
-            requestData.user.contactInfo = requestData.user.contact;
-            requestData.user.addressInfo = requestData.user.address;
+            requestData.contactInfo = requestData.user.contact;
+            requestData.address = requestData.user.address;
             requestData.user = _.omit(requestData.user, 'contact', 'address');
-            requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
-            requestData = _.omit(requestData, 'accountStatus', 'subscriptionPlan');
+            // requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
+            // requestData = _.omit(requestData, 'accountStatus', 'subscriptionPlan', 'companies');
             return this._http.post(this._url + '/User/Add', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
                 .subscribe((userData: any) => {
-                    resolve(userData);
+                    let parsedUser: User = null;
+                    parsedUser = UserAdapter.parseResponse(userData);
+                    resolve(parsedUser);
                 }, (error) => {
                     reject(error);
                 });
@@ -86,24 +118,37 @@ export class UsersService {
         return <Observable<any>>Observable.fromPromise(promise);
 
     }
-    
-    updateUser(userDetail: Account): Observable<any> {
+
+    updateUser(userDetail: User): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
 
 
             let requestData: any = userDetail.toJS();
+            requestData = {
+                user: requestData,
+                company: {
+                    id: this._sessionStore.session.currentCompany.id
+                },
+                role: {
+                    name: 'Doctor',
+                    roleType: 'Admin',
+                    status: 'active'
+                }
+            };
 
-            requestData.user.contactInfo = requestData.user.contact;
-            requestData.user.addressInfo = requestData.user.address;
+            requestData.contactInfo = requestData.user.contact;
+            requestData.address = requestData.user.address;
             requestData.user = _.omit(requestData.user, 'contact', 'address');
-            requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
-            requestData = _.omit(requestData, 'accountStatus', 'subscriptionPlan');
+            // requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
+            // requestData = _.omit(requestData, 'accountStatus', 'subscriptionPlan');
             return this._http.post(this._url + '/User/Add', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
                 .subscribe((userData: any) => {
-                    resolve(userData);
+                    let parsedUser: User = null;
+                    parsedUser = UserAdapter.parseResponse(userData);
+                    resolve(parsedUser);
                 }, (error) => {
                     reject(error);
                 });
@@ -145,7 +190,7 @@ export class UsersService {
 
     // }
 
-    updatePassword(userDetail: Account): Observable<any> {
+    updatePassword(userDetail: User): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
 
 
@@ -168,7 +213,7 @@ export class UsersService {
             })
                 .map(res => res.json())
                 .subscribe((userData: any) => {
-                    let parsedUser: AccountDetail = null;
+                    let parsedUser: User = null;
                     parsedUser = UserAdapter.parseResponse(userData);
                     resolve(parsedUser);
                 }, (error) => {
@@ -178,17 +223,43 @@ export class UsersService {
         return <Observable<any>>Observable.fromPromise(promise);
 
     }
-    deleteUser(user: any): Observable<any> {
-        let promise = new Promise((resolve, reject) => {
-            return this._http.delete(`${this._url}/${user.id}`)
+    deleteUser(userDetail: User): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+
+
+            let requestData: any = userDetail.toJS();
+            requestData = {
+                user: requestData,
+                company: {
+                    id: this._sessionStore.session.currentCompany.id
+                },
+                role: {
+                    name: 'Doctor',
+                    roleType: 'Admin',
+                    status: 'active'
+                }
+            };
+
+            requestData.user.isDeleted = 1;
+            requestData.contactInfo = requestData.user.contact;
+            requestData.address = requestData.user.address;
+            requestData.user = _.omit(requestData.user, 'contact', 'address');
+            // requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
+            // requestData = _.omit(requestData, 'accountStatus', 'subscriptionPlan');
+            return this._http.post(this._url + '/User/Add', JSON.stringify(requestData), {
+                headers: this._headers
+            })
                 .map(res => res.json())
-                .subscribe((user) => {
-                    resolve(user);
+                .subscribe((userData: any) => {
+                    let parsedUser: User = null;
+                    parsedUser = UserAdapter.parseResponse(userData);
+                    resolve(parsedUser);
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<any>>Observable.from(promise);
+        return <Observable<any>>Observable.fromPromise(promise);
+
     }
 
 }

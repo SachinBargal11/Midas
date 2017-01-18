@@ -1,12 +1,13 @@
 ﻿CREATE TABLE [dbo].[Location](
-	[id] [int] NOT NULL,
+	[id] [int] IDENTITY(1,1) NOT NULL,
 	[Name] [nvarchar](100) NOT NULL,
 	[CompanyID] [int] NOT NULL,
+	[ScheduleID] [int] NULL,
 	[AddressInfoID] [int] NOT NULL,
 	[ContactInfoID] [int] NOT NULL,
 	[LocationType] [tinyint] NOT NULL,
 	[IsDefault] [bit] NOT NULL,
-	[IsDeleted] [bit] NULL,
+	[IsDeleted] [bit] NULL CONSTRAINT [DF_Location_IsDeleted]  DEFAULT ((0)),
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NOT NULL,
 	[UpdateByUserID] [int] NULL,
@@ -40,9 +41,9 @@ GO
 ALTER TABLE [dbo].[Location] CHECK CONSTRAINT [FK_Location_ContactInfo]
 GO
 
-ALTER TABLE [dbo].[Location]  WITH CHECK ADD  CONSTRAINT [FK_Location_Location] FOREIGN KEY([id])
-REFERENCES [dbo].[Location] ([id])
+ALTER TABLE [dbo].[Location]  WITH CHECK ADD  CONSTRAINT [FK_Location_Schedule] FOREIGN KEY([ScheduleID])
+REFERENCES [dbo].[Schedule] ([id])
 GO
 
-ALTER TABLE [dbo].[Location] CHECK CONSTRAINT [FK_Location_Location]
+ALTER TABLE [dbo].[Location] CHECK CONSTRAINT [FK_Location_Schedule]
 GO

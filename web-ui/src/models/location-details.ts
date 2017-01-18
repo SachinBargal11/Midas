@@ -3,12 +3,14 @@ import { Company } from './company';
 import { Location } from './location';
 import { Contact } from './contact';
 import { Address } from './address';
+import { Schedule } from './schedule';
 
 const LocationDetailsRecord = Record({
     company: null,
     location: null,
     contact: null,
-    address: null
+    address: null,
+    schedule: null
 });
 
 export class LocationDetails extends LocationDetailsRecord {
@@ -16,6 +18,7 @@ export class LocationDetails extends LocationDetailsRecord {
     location: Location;
     contact: Contact;
     address: Address;
+    schedule: Schedule;
 
     constructor(props) {
         super(props);

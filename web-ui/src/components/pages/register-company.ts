@@ -3,6 +3,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppValidators } from '../../utils/AppValidators';
+import { ErrorMessageFormatter } from '../../utils/ErrorMessageFormatter';
 import { AuthenticationService } from '../../services/authentication-service';
 import { RegistrationService } from '../../services/registration-service';
 import { CompanyStore } from '../../stores/company-store';
@@ -17,8 +18,7 @@ import { NotificationsService } from 'angular2-notifications';
 
 @Component({
     selector: 'register-company',
-    templateUrl: 'templates/pages/register-company.html',
-    providers: [NotificationsService, FormBuilder]
+    templateUrl: 'templates/pages/register-company.html'
 })
 
 export class RegisterCompanyComponent implements OnInit {
@@ -47,8 +47,8 @@ export class RegisterCompanyComponent implements OnInit {
             companyName: ['', [Validators.required]],
             firstName: ['', Validators.required],
             lastName: ['', Validators.required],
-            taxId: ['', Validators.required],
-            phoneNo: ['', Validators.required],
+            taxId: ['', [Validators.required, Validators.maxLength(10)]],
+            phoneNo: ['', [Validators.required, AppValidators.mobileNoValidator]],
             companyType: ['', Validators.required],
             email: ['', [Validators.required, AppValidators.emailValidator]],
             subscriptionPlan: ['', Validators.required]
@@ -66,7 +66,7 @@ export class RegisterCompanyComponent implements OnInit {
         let result;
         let registercompanyformValues = this.registercompanyform.value;
         let company = new Account({
-            company: new Company({
+            companies: new Company({
                 name: registercompanyformValues.companyName,
                 taxId: registercompanyformValues.taxId,
                 companyType: registercompanyformValues.companyType
@@ -75,9 +75,9 @@ export class RegisterCompanyComponent implements OnInit {
                 userName: registercompanyformValues.email,
                 firstName: registercompanyformValues.firstName,
                 lastName: registercompanyformValues.lastName,
-                userType: UserType.ADMIN,
+                userType: UserType.Admin,
                 contact: new Contact({
-                    cellPhone: registercompanyformValues.phoneNo,
+                    cellPhone: registercompanyformValues.phoneNo.replace(/\-/g, ''),
                     emailAddress: registercompanyformValues.email
                 })
             }),
@@ -93,24 +93,13 @@ export class RegisterCompanyComponent implements OnInit {
             (response) => {
                 this._notificationsService.success('Welcome!', 'Your company has been registered successfully! Check your email for activation.');
                 setTimeout(() => {
-                    this._router.navigate(['/login']);
+                    this._router.navigate(['/account/login']);
                 }, 3000);
             },
             (error) => {
-                let errorBody = JSON.parse(error._body);
-                let errorString = 'Unable to register company.';
-                if (errorBody.errorObject) {
-                    errorString = '';
-                    let errorObjs = errorBody.errorObject;
-                    for (let errorObj of errorObjs) {
-                        errorString += errorObj.validationMessage + '<br>';
-                    }
-
-                } else {
-                    errorString = errorBody.message;
-                }
                 this.isRegistrationInProgress = false;
-                this._notificationsService.error('Oh No!', errorString);
+                let errString = 'Unable to Register User.';
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
             },
             () => {
                 this.isRegistrationInProgress = false;
@@ -119,6 +108,6 @@ export class RegisterCompanyComponent implements OnInit {
     }
     goBack(): void {
         // this.location.back();
-        this._router.navigate(['/login']);
+        this._router.navigate(['/account/login']);
     }
 }

@@ -62,7 +62,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             boUser.LastName = user.LastName;
             boUser.ImageLink = user.ImageLink;
             boUser.UserType = (BO.GBEnums.UserType)user.UserType;
-            boUser.Gender = (BO.GBEnums.Gender)user.UserType;
+            boUser.Gender = (BO.GBEnums.Gender)user.Gender;
             boUser.CreateByUserID = user.CreateByUserID;
 
             if (user.C2FactAuthEmailEnabled.HasValue)

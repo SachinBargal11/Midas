@@ -6,6 +6,9 @@ export const ReferalsShellRoutes: Routes = [
     {
         path: 'referals',
         component: ReferalsComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Referals'
+        }
     }
 ];

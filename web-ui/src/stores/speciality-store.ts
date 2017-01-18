@@ -87,8 +87,13 @@ export class SpecialityStore {
 
     updateSpeciality(speciality: Speciality): Observable<Speciality> {
         let promise = new Promise((resolve, reject) => {
-            this._specialityService.updateSpeciality(speciality).subscribe((currentSpeciality: Speciality) => {
-                this._specialities.next(this._specialities.getValue().push(currentSpeciality));
+            this._specialityService.updateSpeciality(speciality).subscribe((updatedSpeciality: Speciality) => {
+                let specialityDetails: List<Speciality> = this._specialities.getValue();
+                let index = specialityDetails.findIndex((currentSpeciality: Speciality) => currentSpeciality.id === updatedSpeciality.id);
+                specialityDetails = specialityDetails.update(index, function () {
+                    return updatedSpeciality;
+                });
+                this._specialities.next(specialityDetails);
                 resolve(speciality);
             }, error => {
                 reject(error);

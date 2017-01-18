@@ -27,5 +27,8 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GeneratePasswordLink(HttpRequestMessage request, T gbObject);
         HttpResponseMessage ValidatePassword(HttpRequestMessage request, T gbObject);
 
+
+        HttpResponseMessage GetObjects(HttpRequestMessage request);
+        HttpResponseMessage GetObjects(HttpRequestMessage request, string param1);
     }
 }

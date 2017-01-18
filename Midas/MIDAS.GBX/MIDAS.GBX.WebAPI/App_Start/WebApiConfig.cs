@@ -14,12 +14,16 @@ using System.Threading;
 using System.Net;
 using System.Diagnostics;
 using System.Text;
+using System.Web.Configuration;
+
 namespace MIDAS.GBX.WebAPI
 {
     public static class WebApiConfig
     {
         public static void Register(HttpConfiguration config)
         {
+            if(Convert.ToBoolean(WebConfigurationManager.AppSettings["isServiceSecured"]))
+            config.Filters.Add(new AuthorizeAttribute());
             // Web API configuration and services
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();

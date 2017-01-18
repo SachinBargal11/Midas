@@ -69,6 +69,7 @@
                                 <label class="form-label"> Home Phone
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.homePhone.touched && !basicformControls.homePhone.valid">
+                                    <!--<input class="form-control" type="text" formControlName="homePhone" [class.error]="basicformControls.homePhone.touched && !basicformControls.homePhone.valid" />-->
                                     <p-inputMask mask="999-999-9999" formControlName="homePhone" [class.error]="basicformControls.homePhone.touched && !basicformControls.homePhone.valid" 
                                      placeholder="999-999-9999" styleClass="form-control" ></p-inputMask>
                                     <div class='error-list' *ngIf="basicformControls.homePhone.touched && !basicformControls.homePhone.valid">
@@ -85,8 +86,9 @@
                                 <label class="form-label">Cell Phone
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.cellphone.touched && !basicformControls.cellphone.valid">
-                                    <p-inputMask mask="999-999-9999" formControlName="cellphone" [class.error]="basicformControls.cellphone.touched && !basicformControls.cellphone.valid" 
-                                     placeholder="999-999-9999" styleClass="form-control" ></p-inputMask>
+                                    <input class="form-control" type="text" formControlName="cellphone" [class.error]="basicformControls.cellphone.touched && !basicformControls.cellphone.valid" />
+                                    <!--<p-inputMask mask="999-999-9999" formControlName="cellphone" [class.error]="basicformControls.cellphone.touched && !basicformControls.cellphone.valid" 
+                                     placeholder="999-999-9999" styleClass="form-control" ></p-inputMask>-->
                                     <div class='error-list' *ngIf="basicformControls.cellphone.touched && !basicformControls.cellphone.valid">
                                         <ul>
                                             <li *ngIf="basicformControls.cellphone.hasError('required')">Cellphone is required.</li>
@@ -126,7 +128,7 @@
                     <button [disabled]="!basicform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                         <loader [visible]="isSaveProgress"></loader>
                     </button>
-                    <a [routerLink]="['/patientManager/patients']" class="btn btn-secondary">Cancel</a>
+                    <a [routerLink]="['/patient-manager/patients']" class="btn btn-secondary">Cancel</a>
                 </div>
             </form>
         </div>

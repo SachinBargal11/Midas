@@ -19,29 +19,51 @@
                                 </div>
                             </div>
                             <div class="col-lg-4">
-                                <label class="form-label"> Phone
+                                <label class="form-label"> Contact person name
                                             <span class="color-red">*</span>
                                         </label>
-                                <div class="form-group" [class.error]="addroomformControls.phone.touched && !addroomformControls.phone.valid">
-                                    <!--<input formControlName="phone" type="text" class="form-control" placeholder="" [class.error]="!addroomformControls.phone.valid">-->
-                                    <p-inputMask mask="999-999-9999" formControlName="phone" [class.error]="addroomformControls.phone.touched && !addroomformControls.phone.valid" 
-                                     placeholder="999-999-9999" styleClass="form-control" ></p-inputMask>
-                                    <div class='error-list' *ngIf="addroomformControls.phone.touched && !addroomformControls.phone.valid">
+                                <div class="form-group" [class.error]="addroomformControls.contactPersonName.touched && !addroomformControls.contactPersonName.valid">
+                                    <input formControlName="contactPersonName" type="text" class="form-control" placeholder="" [class.error]="!addroomformControls.contactPersonName.valid">
+                                    <div class='error-list' *ngIf="addroomformControls.contactPersonName.touched && !addroomformControls.contactPersonName.valid">
                                         <ul>
-                                            <li *ngIf="addroomformControls.phone.hasError('required')">Phone is required.</li>
+                                            <li *ngIf="addroomformControls.contactPersonName.hasError('required')">contact person name is required.</li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-4">
-                                <label class="form-label"> Tests Provided
+                                <label class="form-label"> Phone
                                             <span class="color-red">*</span>
                                         </label>
-                                <div class="form-group" [class.error]="addroomformControls.testsProvided.touched && !addroomformControls.testsProvided.valid">
-                                    <input formControlName="testsProvided" type="text" class="form-control" placeholder="" [class.error]="!addroomformControls.testsProvided.valid">
-                                    <div class='error-list' *ngIf="addroomformControls.testsProvided.touched && !addroomformControls.testsProvided.valid">
+                                <div class="form-group" [class.error]="addroomformControls.phone.touched && !addroomformControls.phone.valid">
+                                    <!--<input formControlName="phone" type="text" class="form-control" placeholder="" [class.error]="!addroomformControls.phone.valid">-->
+                                    <!--<input type="text" formControlName="phone" [class.error]="addroomformControls.phone.touched && !addroomformControls.phone.valid" class="form-control"/>-->
+                                    <p-inputMask mask="999-999-9999" formControlName="phone" [class.error]="addroomformControls.phone.touched && !addroomformControls.phone.valid" 
+                                     placeholder="999-999-9999" styleClass="form-control" ></p-inputMask>
+                                    <div class='error-list' *ngIf="addroomformControls.phone.touched && !addroomformControls.phone.valid">
                                         <ul>
-                                            <li *ngIf="addroomformControls.testsProvided.hasError('required')">Tests Provided is required.</li>
+                                            <li *ngIf="addroomformControls.phone.hasError('required')">Phone is required.</li>
+                                            <li *ngIf="addroomformControls.phone.hasError('mobileNoValidator')">Phone is invalid.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label class="form-label"> Tests
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="addroomformControls.tests.touched && !addroomformControls.tests.valid">
+                                    <!--<input formControlName="tests" type="text" class="form-control" placeholder="" [class.error]="!addroomformControls.tests.valid">-->
+                                    <select formControlName="tests" class="selectpicker form-control" [class.error]="addroomformControls.tests.touched && !addroomformControls.tests.valid">
+                                        <option value="">-Select Tests-</option>
+                                        <option disabled>────────────────────</option>
+                                        <option *ngFor="let test of tests" value="{{test.id}}">{{test.name}}</option>
+                                    </select>
+                                    <div class='error-list' *ngIf="addroomformControls.tests.touched && !addroomformControls.tests.valid">
+                                        <ul>
+                                            <li *ngIf="addroomformControls.tests.hasError('required')">Tests is required.</li>
                                         </ul>
                                     </div>
                                 </div>

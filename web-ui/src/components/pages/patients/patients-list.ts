@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {PatientsStore} from '../../../stores/patients-store';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { PatientsStore } from '../../../stores/patients-store';
 import { Patient } from '../../../models/patient';
+import { ProgressBarService } from '../../../services/progress-bar-service';
 
 @Component({
     selector: 'patients-list',
@@ -11,11 +12,11 @@ import { Patient } from '../../../models/patient';
 export class PatientsListComponent implements OnInit {
     selectedPatients: Patient[];
     patients: Patient[];
-    patientsLoading;
 
     constructor(
         private _router: Router,
-        private _patientsStore: PatientsStore
+        private _patientsStore: PatientsStore,
+        private _progressBarService: ProgressBarService
     ) {
     }
 
@@ -24,17 +25,19 @@ export class PatientsListComponent implements OnInit {
     }
 
     loadPatients() {
-        this.patientsLoading = true;
+        this._progressBarService.show();
         this._patientsStore.getPatients()
             .subscribe(patients => {
                 this.patients = patients;
             },
-            null,
+            (error) => {
+                this._progressBarService.hide();
+            },
             () => {
-                this.patientsLoading = false;
+        this._progressBarService.hide();
             });
     }
     onRowSelect(patient) {
-        this._router.navigate(['/patientManager/patients/' + patient.firstname + '/basic']);
+        this._router.navigate(['/patient-manager/patients/' + patient.firstname + '/basic']);
     }
 }

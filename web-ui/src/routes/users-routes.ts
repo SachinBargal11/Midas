@@ -3,11 +3,8 @@ import { ValidateActiveSession } from './guards/validate-active-session';
 import { UsersListComponent } from '../components/pages/users/users-list';
 import { UserShellComponent } from '../components/pages/users/users-shell';
 import { UserBasicComponent } from '../components/pages/users/user-basic';
-import { ScheduleComponent } from '../components/pages/location-management/schedule';
-import { SettingsComponent } from '../components/pages/location-management/settings';
 import { UserAccessComponent } from '../components/pages/users/user-access';
-import { RoomsComponent } from '../components/pages/rooms/rooms';
-import { RoomsRoutes } from './rooms-routes';
+import { DoctorSpecificInformationComponent } from '../components/pages/users/doctor-specific-information';
 import { AddUserComponent } from '../components/pages/users/add-user';
 import { UpdateUserComponent } from '../components/pages/users/update-user';
 import { LocationsComponent } from '../components/pages/users/locations';
@@ -21,45 +18,79 @@ export const UsersRoutes: Routes = [
     },
     {
         path: 'users',
-        component: UsersListComponent
+        component: UsersListComponent,
+        data: {
+            breadcrumb: 'Users'
+        }
     },
     {
         path: 'users/add',
         component: AddUserComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Add User'
+        }
     },
     {
         path: 'users/edit/:id',
         component: UpdateUserComponent,
-        canActivate: [ValidateActiveSession]
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'Edit User'
+        }
     },
     {
         path: 'users/:userId',
         component: UserShellComponent,
+        data: {
+            breadcrumb: 'Users',
+            shell: true
+        },
         children: [
             {
                 path: '',
-                redirectTo: 'basic'
+                redirectTo: 'basic',
+                pathMatch: 'full'
             },
             {
                 path: 'basic',
                 component: UserBasicComponent,
-                canActivate: [ValidateActiveSession]
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Basic'
+                }
             },
             {
                 path: 'access',
                 component: UserAccessComponent,
-                canActivate: [ValidateActiveSession]
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Access'
+                }
+            },
+            {
+                path: 'doctorSpecificInformation',
+                component: DoctorSpecificInformationComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: "Doctor's Information"
+                }
             },
             {
                 path: 'locations',
                 component: LocationsComponent,
-                canActivate: [ValidateActiveSession]
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Locations'
+                }
             },
             {
                 path: 'billing',
                 component: BillingComponent,
-                canActivate: [ValidateActiveSession]
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Billing'
+                }
             }
         ]
     }

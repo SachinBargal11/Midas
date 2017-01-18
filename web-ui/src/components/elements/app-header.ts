@@ -6,13 +6,11 @@ import {NotificationsStore} from '../../stores/notifications-store';
 
 @Component({
     selector: 'app-header',
-    templateUrl: 'templates/elements/app-header.html',
-    providers: [AuthenticationService]
+    templateUrl: 'templates/elements/app-header.html'
 })
 
 export class AppHeaderComponent implements OnInit {
 
-    user_name;
     disabled: boolean = false;
     status: { isopen: boolean } = { isopen: false };
 
@@ -39,23 +37,22 @@ export class AppHeaderComponent implements OnInit {
     }
 
     ngOnInit() {
-        // if (this._sessionStore.isAuthenticated()) {
-        //     this.user_name = this._sessionStore.session.displayName;
-        // } else {
-        //     this._router.navigate(['/login']);
-        // }
     }
 
     logout() {
         this.sessionStore.logout();
-        this._router.navigate(['/login']);
+        this._router.navigate(['/account/login']);
     }
 
     changePassword() {
-        this._router.navigate(['/change-password']);
+        this._router.navigate(['/account/change-password']);
     }
 
     showNotifications() {
         this._notificationsStore.toggleVisibility();
+    }
+
+    selectCurrentCompany() {
+        // debugger;
     }
 }

@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
-import {UsersStore} from '../../stores/users-store';
-import {DoctorsStore} from '../../stores/doctors-store';
-import {ProvidersStore} from '../../stores/providers-store';
-import {MedicalFacilityStore} from '../../stores/medical-facilities-store';
+// import {UsersStore} from '../../stores/users-store';
+// import {DoctorsStore} from '../../stores/doctors-store';
 
 @Component({
     selector: 'dashboard',
@@ -15,10 +13,8 @@ doctors: any;
 providers: any;
 medicalfacilities: any;
     constructor(
-        private _usersStore: UsersStore,
-        private _doctorsStore: DoctorsStore,
-        private _providersStore: ProvidersStore,
-        private _medicalFacilityStore: MedicalFacilityStore
+        // private _usersStore: UsersStore,
+        // private _doctorsStore: DoctorsStore
     ) {
         // this._usersStore.getUsers().subscribe(users => {
         // this.users = users.length;

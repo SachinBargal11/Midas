@@ -62,6 +62,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 boCompany.ID = company.id;
                 boCompany.Name = company.Name;
+                boCompany.TaxID = company.TaxID;
                 boCompany.Status = (BO.GBEnums.AccountStatus)company.Status;
                 boCompany.CompanyType = (BO.GBEnums.CompanyType)company.CompanyType;
                 boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;

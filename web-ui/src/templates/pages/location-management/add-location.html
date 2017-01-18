@@ -85,12 +85,13 @@
                                             <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="addlocationformControls.officePhone.touched && !addlocationformControls.officePhone.valid">
-                                    <!--<input formControlName="officePhone" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.officePhone.valid">-->
+                                    <!--<input type="text" formControlName="officePhone" [class.error]="addlocationformControls.officePhone.touched && !addlocationformControls.officePhone.valid" class="form-control"/>-->
                                     <p-inputMask mask="999-999-9999" formControlName="officePhone" [class.error]="addlocationformControls.officePhone.touched && !addlocationformControls.officePhone.valid" 
                                      placeholder="999-999-9999" styleClass="form-control" ></p-inputMask>
                                     <div class='error-list' *ngIf="addlocationformControls.officePhone.touched && !addlocationformControls.officePhone.valid">
                                         <ul>
                                             <li *ngIf="addlocationformControls.officePhone.hasError('required')">Office Phone is required.</li>
+                                            <li *ngIf="addlocationformControls.officePhone.hasError('mobileNoValidator')">Office Phone is invalid.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -100,10 +101,11 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <label class="form-label"> Fax
-                                            <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="addlocationformControls.fax.touched && !addlocationformControls.fax.valid">
-                                    <input formControlName="fax" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.fax.valid">
+                                    <!--<input formControlName="fax" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.fax.valid">-->
+                                    <p-inputMask mask="9-999-999 9999" formControlName="fax" [class.error]="addlocationformControls.fax.touched && !addlocationformControls.fax.valid" 
+                                     placeholder="9-999-999 9999" styleClass="form-control" ></p-inputMask>
                                     <div class='error-list' *ngIf="addlocationformControls.fax.touched && !addlocationformControls.fax.valid">
                                         <ul>
                                             <li *ngIf="addlocationformControls.fax.hasError('required')">Fax is required.</li>
@@ -117,7 +119,9 @@
                                         </label>
                                 <div class="form-group" [class.error]="addlocationformControls.locationType.touched && !addlocationformControls.locationType.valid">
                                     <!--<input formControlName="locationType" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.locationType.valid">-->
-                                    <select formControlName="locationType" type="text" class="form-control" placeholder="" [class.error]="addlocationformControls.locationType.touched && !addlocationformControls.locationType.valid">
+                                    <select formControlName="locationType" [(ngModel)]="locationJS.id" type="text" class="form-control" placeholder="" [class.error]="addlocationformControls.locationType.touched && !addlocationformControls.locationType.valid">
+                                        <option value="0">-Select Location-</option>
+                                        <option disabled>────────────────────</option>
                                         <option value="1">Medical Office</option>
                                         <option value="2">Medical Testing Facility</option>
                                     </select>
@@ -135,7 +139,7 @@
                 <button [disabled]="!addlocationform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveProgress"></loader>
                 </button>
-                <a [routerLink]="['/medicalProvider/locations']" class="btn btn-secondary">Cancel</a>
+                <a [routerLink]="['/medical-provider/locations']" class="btn btn-secondary">Cancel</a>
                 </div>
             </form>
         </div>

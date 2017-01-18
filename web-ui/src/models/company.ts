@@ -1,6 +1,5 @@
 import { Record } from 'immutable';
 import { CompanyType } from './enums/company-type';
-import moment from 'moment';
 
 const CompanyRecord = Record({
     id: 0,

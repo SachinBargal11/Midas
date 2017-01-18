@@ -237,9 +237,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (locationDB.id > 0)
             {
                 //For Update Record
-
+                
                 //Find Location By ID
-                Location location = _context.Locations.Include("AddressInfo").Include("ContactInfo").Include("Company").Where(p => p.id == locationDB.id).FirstOrDefault<Location>();
+                Location location = _context.Locations.Include("Company").Include("ContactInfo").Include("AddressInfo").Where(p => p.id == locationDB.id).FirstOrDefault<Location>();
 
                 if (location != null)
                 {
@@ -253,7 +253,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     location.UpdateByUserID = locationBO.UpdateByUserID;
                     #endregion
 
-                    #region Address
+                    #region AddressInfo
                     location.AddressInfo.CreateByUserID = location.CreateByUserID;
                     location.AddressInfo.CreateDate = location.CreateDate;
                     if (locationBO.UpdateByUserID.HasValue)

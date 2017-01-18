@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {NotificationsStore} from '../../stores/notifications-store';
+import { Component, OnInit } from '@angular/core';
+import { NotificationsStore } from '../../stores/notifications-store';
 
 @Component({
     selector: 'notification',
@@ -16,6 +16,9 @@ export class NotificationComponent implements OnInit {
 
     ngOnInit() {
 
+    }
+    closeNotificaion() {
+        this._notificationsStore.toggleVisibility();
     }
 
 

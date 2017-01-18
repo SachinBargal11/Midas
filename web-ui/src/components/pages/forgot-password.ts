@@ -5,13 +5,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AppValidators } from '../../utils/AppValidators';
 import { NotificationsService } from 'angular2-notifications';
 
+import { ErrorMessageFormatter } from '../../utils/ErrorMessageFormatter';
 import { AuthenticationService } from '../../services/authentication-service';
 import { UsersService } from '../../services/users-service';
 
 @Component({
     selector: 'forgot-password',
-    templateUrl: 'templates/pages/forgot-password.html',
-    providers: [FormBuilder, AuthenticationService, NotificationsService]
+    templateUrl: 'templates/pages/forgot-password.html'
 })
 
 export class ForgotPasswordComponent implements OnInit {
@@ -49,9 +49,7 @@ export class ForgotPasswordComponent implements OnInit {
 
     checkUser() {
         let requestData = {
-            user: {
-                userName: this.forgotPasswordForm.value.email
-            }
+            userName: this.forgotPasswordForm.value.email
         };
         this.isForgotPasswordInProgress = true;
 
@@ -60,11 +58,13 @@ export class ForgotPasswordComponent implements OnInit {
             (response) => {
                 this._notificationsService.success('Success', 'Check your email to change your password.');
                 setTimeout(() => {
-                    this._router.navigate(['/login']);
+                    this._router.navigate(['/account/login']);
                 }, 3000);
             },
             error => {
-                this._notificationsService.error('Error!', 'Sorry! User does not exist!');
+                this.isForgotPasswordInProgress = false;
+                let errString = 'Sorry! User does not exist!';
+                this._notificationsService.error('Error!', ErrorMessageFormatter.getErrorMessages(error, errString));
             },
             () => {
                 this.isForgotPasswordInProgress = false;
@@ -73,7 +73,7 @@ export class ForgotPasswordComponent implements OnInit {
 
     goBack(): void {
         // this.location.back();
-        this._router.navigate(['/login']);
+        this._router.navigate(['/account/login']);
     }
 
 }

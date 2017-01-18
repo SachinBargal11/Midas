@@ -2,18 +2,17 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import { Location } from '../models/location';
 import { LocationDetails } from '../models/location-details';
 import { LocationsService } from '../services/locations-service';
 import { List } from 'immutable';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { SessionStore } from './session-store';
+import { Schedule } from '../models/schedule';
 
 @Injectable()
 export class LocationsStore {
 
     private _locations: BehaviorSubject<List<LocationDetails>> = new BehaviorSubject(List([]));
-    private _selectedLocation: BehaviorSubject<LocationDetails> = new BehaviorSubject(null);
 
     constructor(
         private _locationsService: LocationsService,
@@ -28,14 +27,9 @@ export class LocationsStore {
         return this._locations.asObservable();
     }
 
-    get selectedLocation() {
-        return this._selectedLocation.asObservable();
-    }
-
     getLocations(): Observable<LocationDetails[]> {
-        let userId: number = this._sessionStore.session.user.id;
         let promise = new Promise((resolve, reject) => {
-            this._locationsService.getLocations(userId).subscribe((locations: LocationDetails[]) => {
+            this._locationsService.getLocations().subscribe((locations: LocationDetails[]) => {
                 this._locations.next(List(locations));
                 resolve(locations);
             }, error => {
@@ -44,6 +38,18 @@ export class LocationsStore {
         });
         return <Observable<LocationDetails[]>>Observable.fromPromise(promise);
     }
+
+    getLocationById(id: number): Observable<LocationDetails> {
+        let promise = new Promise((resolve, reject) => {
+            this._locationsService.getLocation(id).subscribe((location: LocationDetails) => {
+                resolve(location);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<LocationDetails>>Observable.fromPromise(promise);
+    }
+
 
     fetchLocationById(id: number): Observable<LocationDetails> {
         let promise = new Promise((resolve, reject) => {
@@ -69,7 +75,6 @@ export class LocationsStore {
 
     resetStore() {
         this._locations.next(this._locations.getValue().clear());
-        this._selectedLocation.next(null);
     }
 
     addLocation(basicInfo: LocationDetails): Observable<LocationDetails> {
@@ -85,9 +90,14 @@ export class LocationsStore {
     }
     updateLocation(basicInfo: LocationDetails): Observable<LocationDetails> {
         let promise = new Promise((resolve, reject) => {
-            this._locationsService.updateLocation(basicInfo).subscribe((location: LocationDetails) => {
-                this._locations.next(this._locations.getValue().push(location));
-                resolve(location);
+            this._locationsService.updateLocation(basicInfo).subscribe((updatedLocation: LocationDetails) => {
+                let locationDetails: List<LocationDetails> = this._locations.getValue();
+                let index = locationDetails.findIndex((currentLocation: LocationDetails) => currentLocation.location.id === updatedLocation.location.id);
+                locationDetails = locationDetails.update(index, function () {
+                    return updatedLocation;
+                });
+                this._locations.next(locationDetails);
+                resolve(basicInfo);
             }, error => {
                 reject(error);
             });
@@ -95,7 +105,37 @@ export class LocationsStore {
         return <Observable<LocationDetails>>Observable.from(promise);
     }
 
-    selectLocation(location: LocationDetails) {
-        this._selectedLocation.next(location);
+    updateScheduleForLocation(basicInfo: LocationDetails, schedule: Schedule): Observable<LocationDetails> {
+        let promise = new Promise((resolve, reject) => {
+            this._locationsService.updateScheduleForLocation(basicInfo, schedule).subscribe((updatedLocation: LocationDetails) => {
+                let locationDetails: List<LocationDetails> = this._locations.getValue();
+                let index = locationDetails.findIndex((currentLocation: LocationDetails) => currentLocation.location.id === updatedLocation.location.id);
+                locationDetails = locationDetails.update(index, function () {
+                    return updatedLocation;
+                });
+                this._locations.next(locationDetails);
+                resolve(basicInfo);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<LocationDetails>>Observable.from(promise);
     }
+
+    deleteLocation(location: LocationDetails) {
+        let locations = this._locations.getValue();
+        let index = locations.findIndex((currentLocation: LocationDetails) => currentLocation.location.id === location.location.id);
+        let promise = new Promise((resolve, reject) => {
+            this._locationsService.deleteLocation(location)
+                .subscribe((location: LocationDetails) => {
+                    this._locations.next(locations.delete(index));
+                    resolve(location);
+                }, error => {
+                    reject(error);
+                });
+        });
+        return <Observable<LocationDetails>>Observable.from(promise);
+    }
+
+
 }
