@@ -115,6 +115,9 @@
     <Compile Include="Model\DoctorSpeciality.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\Gender.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Invitation.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
