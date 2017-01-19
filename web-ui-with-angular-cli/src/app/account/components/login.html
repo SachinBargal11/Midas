@@ -1,0 +1,53 @@
+<div class="page-center">
+    <div class="page-center-in">
+        <div class="container-fluid">
+            <form class="sign-box" [formGroup]="loginForm" (ngSubmit)="login()">
+                <div class="sign-avatar">
+                    <img src="assets/theme/img/avatar-sign.png" alt="">
+                </div>
+                <header class="sign-title">Sign In</header>
+                <div class="form-group" [class.error]="loginFormControls.email.touched && !loginFormControls.email.valid">
+                    <label class="form-label"> E-Mail
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <input formControlName="email" type="email" [class.error]="!loginFormControls.email.valid" class="form-control" placeholder=""
+                        type="text">
+                    <div class='error-list' *ngIf="loginFormControls.email.touched && !loginFormControls.email.valid">
+                        <ul>
+                            <li *ngIf="loginFormControls.email.hasError('required')">Email is required.</li>
+                            <li *ngIf="loginFormControls.email.hasError('emailValidator')">Email is invalid.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-group" [class.error]="loginFormControls.password.touched && !loginFormControls.password.valid">
+                    <label class="form-label"> Password
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <input formControlName="password" type="password" class="form-control" [class.error]="!loginFormControls.password.valid"
+                        placeholder="">
+                    <div class='error-list' *ngIf="loginFormControls.password.touched && !loginFormControls.password.valid">
+                        <ul>
+                            <li *ngIf="loginFormControls.password.hasError('required')">Password is required.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox float-left">
+                        <input type="checkbox" id="signed-in" />
+                        <label for="signed-in">Keep me signed in</label>
+                    </div>
+                    <div class="float-right reset">
+                        <a routerLink="../forgot-password">Forgot Password</a>
+                    </div>
+                </div>
+                <button [disabled]="!loginForm.valid" type="submit" class="btn btn-success">Sign in
+                    
+                    <loader [visible]="isLoginInProgress"></loader>
+                </button>
+                <p class="sign-note">New to our website? <a routerLink="../register-company">Register now</a></p>
+
+            </form>
+        </div>
+    </div>
+</div>
+<!--.page-center-->
