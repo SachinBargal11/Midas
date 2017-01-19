@@ -4,7 +4,7 @@ import * as _ from 'underscore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import Environment from '../../scripts/environment';
+import {environment} from '../../../environments/environment';
 import { SpecialityDetail } from '../models/speciality-details';
 import { SpecialityDetailAdapter } from './adapters/speciality-detail-adapter';
 import { SessionStore } from '../../commons/stores/session-store';
@@ -12,7 +12,7 @@ import { SessionStore } from '../../commons/stores/session-store';
 @Injectable()
 export class SpecialityDetailsService {
 
-    private _url: string = `${Environment.SERVICE_BASE_URL}`;
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
     private _headers: Headers = new Headers();
 
     constructor(

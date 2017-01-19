@@ -3,7 +3,7 @@ import {Http, Headers} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import Environment from '../../../scripts/environment';
+import {environment} from '../../../../environments/environment';
 import {Patient} from '../models/patient';
 import {SessionStore} from '../../../commons/stores/session-store';
 import {PatientAdapter} from './adapters/patient-adapter';
@@ -11,7 +11,7 @@ import {PatientAdapter} from './adapters/patient-adapter';
 @Injectable()
 export class PatientsService {
 
-    private _url: string = `${Environment.SERVICE_BASE_URL}/patients`;
+    private _url: string = `${environment.SERVICE_BASE_URL}/patients`;
     // private _url: string = 'http://localhost:3004/patients';
     private _headers: Headers = new Headers();
 

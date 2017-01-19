@@ -5,7 +5,7 @@ import { ValidateActiveSession } from '../commons/guards/validate-active-session
 
 export const dashboardRoutes: Routes = [
     {
-        path: 'dashboard',
+        path: '',
         component: DashboardComponent,
         canActivate: [ValidateActiveSession],
         data: {

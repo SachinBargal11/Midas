@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import Environment from '../../scripts/environment';
+import {environment} from '../../../environments/environment';
 import { User } from '../../commons/models/user';
 import { UserAdapter } from '../../medical-provider/users/services/adapters/user-adapter';
 import * as _ from 'underscore';
@@ -12,7 +12,7 @@ import { Account } from '../models/account';
 @Injectable()
 export class AuthenticationService {
     companies: any[];
-    private _url: string = `${Environment.SERVICE_BASE_URL}`;
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
 
     constructor(private _http: Http) { }
 

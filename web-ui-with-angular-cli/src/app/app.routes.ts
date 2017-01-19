@@ -4,19 +4,20 @@ import { NoContentComponent } from './no-content-component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+    { path: 'dashboard', loadChildren: 'app/dashboard/dashboard-module#DashboardModule' },
     { path: 'account', loadChildren: 'app/account/account-module#AccountModule' },
     { path: 'patient-manager', loadChildren: 'app/patient-manager/patient-manager-module#PatientManagerModule' },
     { path: 'medical-provider', loadChildren: 'app/medical-provider/medical-provider-module#MedicalProviderModule' },
     { path: 'account-setup', loadChildren: 'app/account-setup/account-setup-module#AccountSetupModule' },
     { path: '404', component: NoContentComponent },
-    { path: '**', redirectTo: '/404' }
+    { path: '**',  redirectTo: '/404' }
 ];
 
 @NgModule({
     imports: [RouterModule.forRoot(routes)],
     exports: [RouterModule]
 })
-export class RootRoutingModule { }
+export class AppRoutingModule { }
 
 
 /*

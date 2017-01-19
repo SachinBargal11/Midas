@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 
 import { NoContentComponent } from './no-content-component';
 
-import { RootRoutingModule } from './app.routes';
+import { AppRoutingModule } from './app.routes';
 import { CommonsModule } from './commons/commons-module';
 import { DashboardModule } from './dashboard/dashboard-module';
 
@@ -46,7 +46,7 @@ import { UsersStore } from './medical-provider/users/stores/users-store';
     HttpModule,
     ReactiveFormsModule,
     CommonsModule,
-    RootRoutingModule,
+    AppRoutingModule,
     DashboardModule
   ],
   providers: [

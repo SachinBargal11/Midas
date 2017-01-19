@@ -4,7 +4,7 @@ import * as _ from 'underscore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import Environment from '../../../scripts/environment';
+import {environment} from '../../../../environments/environment';
 import { Room } from '../models/room';
 import { Tests } from '../models/tests';
 import { RoomsAdapter } from './adapters/rooms-adapter';
@@ -13,7 +13,7 @@ import { TestsAdapter } from './adapters/tests-adapter';
 @Injectable()
 export class RoomsService {
 
-    private _url: string = `${Environment.SERVICE_BASE_URL}`;
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
     // private _url: string = 'http://localhost:3004/rooms';
     private _headers: Headers = new Headers();
 

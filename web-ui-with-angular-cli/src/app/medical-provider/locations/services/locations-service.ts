@@ -6,14 +6,14 @@ import * as _ from 'underscore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import Environment from '../../../scripts/environment';
+import {environment} from '../../../../environments/environment';
 import { LocationDetails } from '../models/location-details';
 import { LocationDetailAdapter } from './adapters/location-detail-adapter';
 
 @Injectable()
 export class LocationsService {
 
-    private _url: string = `${Environment.SERVICE_BASE_URL}`;
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
     // private _url: string = 'http://localhost:3004/locations';
     private _headers: Headers = new Headers();
 

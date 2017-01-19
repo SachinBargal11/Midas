@@ -5,7 +5,5 @@
 
 export const environment = {
   production: false,
-  LOCAL_DEV_ENV: {
-    SERVICE_BASE_URL: 'http://midas.codearray.tk/midasapi'
-  }
+  SERVICE_BASE_URL: 'http://midas.codearray.tk/midasapi'
 };

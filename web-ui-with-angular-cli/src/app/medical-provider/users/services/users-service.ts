@@ -4,7 +4,7 @@ import * as _ from 'underscore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import Environment from '../../../scripts/environment';
+import {environment} from '../../../../environments/environment';
 import { UserAdapter } from './adapters/user-adapter';
 import { UserType } from '../../../commons/models/enums/user-type';
 import { User } from '../../../commons/models/user';
@@ -13,7 +13,7 @@ import { SessionStore } from '../../../commons/stores/session-store';
 @Injectable()
 export class UsersService {
 
-    private _url: string = `${Environment.SERVICE_BASE_URL}`;
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
     // private _url: string = 'http://localhost:3004/users';
     private _headers: Headers = new Headers();
 

@@ -3,13 +3,13 @@ import {Http} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import Environment from '../../scripts/environment';
+import {environment} from '../../../environments/environment';
 import {States} from '../models/states';
 
 @Injectable()
 export class StateService {
 
-    private _url: string = `${Environment.SERVICE_BASE_URL}`;
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
 
     constructor(
         private _http: Http

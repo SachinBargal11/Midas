@@ -2,12 +2,12 @@ import {Injectable} from '@angular/core';
 import {Http, Headers} from '@angular/http';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-// import Environment from '../scripts/environment';
+// import {environment} from '../../environments/environment';
 
 @Injectable()
 export class MedicalProviderService {
 
-    // private _url: string = `${Environment.SERVICE_BASE_URL}`;
+    // private _url: string = `${environment.SERVICE_BASE_URL}`;
     private _headers: Headers = new Headers();
 
     constructor(

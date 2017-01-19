@@ -4,14 +4,14 @@ import * as _ from 'underscore';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import Environment from '../../scripts/environment';
+import {environment} from '../../../environments/environment';
 import {Speciality} from '../models/speciality';
 import {SpecialityAdapter} from './adapters/speciality-adapter';
 
 @Injectable()
 export class SpecialityService {
 
-    private _url: string = `${Environment.SERVICE_BASE_URL}`;
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
     private _headers: Headers = new Headers();
 
     constructor(
