@@ -427,7 +427,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 return new BO.ErrorObject { ErrorMessage = "Invalid credentials.Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-           
+
+            ////Check if the User even if valid is logging as invalid User Type
+            //bool isUserTypeValid = false;
+            //try
+            //{
+            //    if (userBO.UserType == (BO.GBEnums.UserType)((User)data_).UserType)
+            //    {
+            //        isUserTypeValid = true;
+            //    }
+            //}
+            //catch
+            //{
+            //    return new BO.ErrorObject { ErrorMessage = "Invalid user type. Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            //}
+
+
             BO.User acc_ = isPasswordCorrect ? Convert<BO.User, User>(data_) : null;
             if (!userBO.forceLogin)
             {

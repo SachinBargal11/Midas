@@ -14,10 +14,12 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
     public class UserController : ApiController
     {
         private IRequestHandler<User> requestHandler;
+        private IRequestHandler<AddUser> adduserrequestHandler;
 
         public UserController()
         {
             requestHandler = new GbApiRequestHandler<User>();
+            adduserrequestHandler = new GbApiRequestHandler<AddUser>();
         }
 
         [AllowAnonymous]
@@ -25,7 +27,41 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         [Route("Signin")]
         public HttpResponseMessage Signin([FromBody]User user)
         {
+            //if (user != null)
+            //{
+            //    //Since the API should only validate for Patient Users.
+            //    //Rest all other even if valid are not Authorised.
+            //    user.UserType = GBEnums.UserType.Patient;
+            //}
+
             return requestHandler.Login(Request, user);
         }
+
+        [HttpPost]
+        [Route("Add")]
+        [AllowAnonymous]
+        public HttpResponseMessage Post([FromBody]AddUser data)
+        {
+            return adduserrequestHandler.CreateGbObject(Request, data);
+        }
+
+        [HttpPost]
+        [Route("GetByUserName")]
+        [Route("GetAll")]
+
+        public HttpResponseMessage Get([FromBody]User data)
+        {
+            return requestHandler.GetGbObjects(Request, data);
+        }
+
+        [HttpGet]
+        [Route("Get/{id}")]
+
+        public HttpResponseMessage Get(int id)
+        {
+            return requestHandler.GetObject(Request, id);
+        }
+
+        
     }
 }
