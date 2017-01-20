@@ -62,14 +62,14 @@ export const SpecialityRoutes: Routes = [
                     breadcrumb: 'Speciality Details'
                 }
             },
-            {
-                path: 'speciality-details',
-                component: ShellComponent,
-                canActivate: [ValidateActiveSession],
-                data: {
-                    breadcrumb: 'Speciality Details'
-                },
-                children: [
+            // {
+            //     path: 'speciality-details',
+            //     component: ShellComponent,
+            //     canActivate: [ValidateActiveSession],
+            //     data: {
+            //         breadcrumb: 'Speciality Details'
+            //     },
+            //     children: [
                     {
                         path: 'add',
                         component: AddSpecialityDetailsComponent,
@@ -86,8 +86,8 @@ export const SpecialityRoutes: Routes = [
                             breadcrumb: 'Edit Speciality Detail'
                         }
                     }
-                ]
-            }
+            //     ]
+            // }
         ]
     }
     // {
