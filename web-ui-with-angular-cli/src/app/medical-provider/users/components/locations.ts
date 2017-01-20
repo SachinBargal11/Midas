@@ -1,0 +1,19 @@
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {SessionStore} from '../../../commons/stores/session-store';
+
+@Component({
+    selector: 'locations',
+    templateUrl: './locations.html'
+})
+
+
+export class LocationsComponent implements OnInit {
+    constructor(
+        private _router: Router,
+        private _sessionStore: SessionStore
+    ) {
+    }
+    ngOnInit() {
+    }
+}

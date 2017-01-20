@@ -1,0 +1,205 @@
+<div class="page-center">
+    <div class="page-center-in">
+        <div class="container-fluid">
+            <form [formGroup]="demographicsform" (ngSubmit)="save()">
+                <section class="col-md-12">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="form-label"> Patient SSN
+                                        </label>
+                                <div class="form-group" [class.error]="demographicsformControls.ssn.touched && !demographicsformControls.ssn.valid">
+                                    <input formControlName="ssn" type="text" class="form-control" placeholder="" [class.error]="!demographicsformControls.ssn.valid">
+                                    <div class='error-list' *ngIf="demographicsformControls.ssn.touched && !demographicsformControls.ssn.valid">
+                                        <ul>
+                                            <li *ngIf="demographicsformControls.ssn.hasError('required')">Patient SSN is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="form-label"> Date Of Birth
+                                        </label>
+                                <div class="form-group" [class.error]="demographicsformControls.dob.touched && !demographicsformControls.dob.valid">
+                                    <input formControlName="dob" type="text" class="form-control" placeholder="" [class.error]="!demographicsformControls.dob.valid">
+                                    <div class='error-list' *ngIf="demographicsformControls.dob.touched && !demographicsformControls.dob.valid">
+                                        <ul>
+                                            <li *ngIf="demographicsformControls.dob.hasError('required')">Date Of Birth is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="form-label"> Sex
+                                        </label>
+                                <div class="form-group" [class.error]="demographicsformControls.sex.touched && !demographicsformControls.sex.valid">
+                                    <select formControlName="sex" class="select2-arrow form-control" [class.error]="demographicsformControls.sex.touched && !demographicsformControls.sex.valid">
+                                             <option value="">-Select Gender-</option>
+                                             <option disabled>────────────────────</option>
+                                             <option >Male</option>
+                                             <option >Female</option>
+                                         </select>
+                                    <div class='error-list' *ngIf="demographicsformControls.sex.touched && !demographicsformControls.sex.valid">
+                                        <ul>
+                                            <li *ngIf="demographicsformControls.sex.hasError('required')">Sex is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>                                  
+                            <div class="col-lg-6">
+                                <label class="form-label"> Marital Status
+                                        </label>
+                                <div class="form-group" [class.error]="demographicsformControls.maritalStatus.touched && !demographicsformControls.maritalStatus.valid">
+                                    <select formControlName="maritalStatus" class="select2-arrow form-control" [class.error]="demographicsformControls.maritalStatus.touched && !demographicsformControls.maritalStatus.valid">
+                                             <option value="">-Select Marital staus-</option>
+                                             <option disabled>────────────────────</option>
+                                             <option >Married</option>
+                                             <option >Un-Married</option>
+                                         </select>
+                                    <div class='error-list' *ngIf="demographicsformControls.maritalStatus.touched && !demographicsformControls.maritalStatus.valid">
+                                        <ul>
+                                            <li *ngIf="demographicsformControls.maritalStatus.hasError('required')">Marital status is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                      
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="form-label"> Race
+                                        </label>
+                                <div class="form-group" [class.error]="demographicsformControls.race.touched && !demographicsformControls.race.valid">
+                                    <select formControlName="race" class="select2-arrow form-control" [class.error]="demographicsformControls.race.touched && !demographicsformControls.race.valid">
+                                             <option value="">-Select Race-</option>
+                                             <option disabled>────────────────────</option>
+                                             <option >Black</option>
+                                             <option >White</option>
+                                         </select>
+                                    <div class='error-list' *ngIf="demographicsformControls.race.touched && !demographicsformControls.race.valid">
+                                        <ul>
+                                            <li *ngIf="demographicsformControls.race.hasError('required')">Race is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="form-label"> Ethinicity
+                                        </label>
+                                <div class="form-group" [class.error]="demographicsformControls.ethinicity.touched && !demographicsformControls.ethinicity.valid">
+                                    <select formControlName="ethinicity" class="select2-arrow form-control" [class.error]="demographicsformControls.ethinicity.touched && !demographicsformControls.ethinicity.valid">
+                                             <option value="">-Select Ethinicity-</option>
+                                             <option disabled>────────────────────</option>
+                                             <option >Not Hispanic or Latino</option>
+                                         </select>
+                                    <div class='error-list' *ngIf="demographicsformControls.ethinicity.touched && !demographicsformControls.ethinicity.valid">
+                                        <ul>
+                                            <li *ngIf="demographicsformControls.ethinicity.hasError('required')">Ethinicity is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="form-label"> Street Address
+                                        </label>
+                                <div class="form-group" [class.error]="demographicsformControls.streetAddress.touched && !demographicsformControls.streetAddress.valid">
+                                    <input formControlName="streetAddress" type="text" class="form-control" placeholder="" [class.error]="!demographicsformControls.streetAddress.valid">
+                                    <div class='error-list' *ngIf="demographicsformControls.streetAddress.touched && !demographicsformControls.streetAddress.valid">
+                                        <ul>
+                                            <li *ngIf="demographicsformControls.streetAddress.hasError('required')">Street Address is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="form-label"> City
+                                        </label>
+                                <div class="form-group" [class.error]="demographicsformControls.city.touched && !demographicsformControls.city.valid">
+                                    <input formControlName="city" type="text" class="form-control" placeholder="" [class.error]="!demographicsformControls.city.valid">
+                                    <div class='error-list' *ngIf="demographicsformControls.city.touched && !demographicsformControls.city.valid">
+                                        <ul>
+                                            <li *ngIf="demographicsformControls.city.hasError('required')">City is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">                            
+                            <div class="col-lg-6">
+                                <label class="form-label"> Zip Code
+                                        </label>
+                                <div class="form-group" [class.error]="demographicsformControls.zipcode.touched && !demographicsformControls.zipcode.valid">
+                                    <input formControlName="zipcode" type="text" class="form-control" placeholder="" [class.error]="!demographicsformControls.zipcode.valid">
+                                    <div class='error-list' *ngIf="demographicsformControls.zipcode.touched && !demographicsformControls.zipcode.valid">
+                                        <ul>
+                                            <li *ngIf="demographicsformControls.zipcode.hasError('required')">Zip code is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="form-label"> State
+                                        </label>
+                                <div class="form-group" [class.error]="demographicsformControls.state.touched && !demographicsformControls.state.valid">
+                                   <input formControlName="state" type="text" list="states" name="mystate" class="form-control" [class.error]="demographicsformControls.state.touched && !demographicsformControls.state.valid"/>
+                                        <datalist id="states">
+                                        	<!--<option *ngFor="let state of states">{{ state }}</option>-->
+                                            <option>New York</option>
+                                            <option>California</option>
+                                            <option>Nevada</option>
+                                            <option>Mexico</option>
+                                        </datalist>
+                                    <div class='error-list' *ngIf="demographicsformControls.state.touched && !demographicsformControls.state.valid">
+                                        <ul>
+                                            <li *ngIf="demographicsformControls.state.hasError('required')">State is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="form-label"> Emergency Contact
+                                        </label>
+                                <div class="form-group" [class.error]="demographicsformControls.emergencyContact.touched && !demographicsformControls.emergencyContact.valid">
+                                    <input formControlName="emergencyContact" type="text" class="form-control" placeholder="" [class.error]="!demographicsformControls.emergencyContact.valid">
+                                    <div class='error-list' *ngIf="demographicsformControls.emergencyContact.touched && !demographicsformControls.emergencyContact.valid">
+                                        <ul>
+                                            <li *ngIf="demographicsformControls.emergencyContact.hasError('required')">Emergency contact is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="form-label"> Emergency Contact Phone
+                                        </label>
+                                <div class="form-group" [class.error]="demographicsformControls.emergencyContactPhone.touched && !demographicsformControls.emergencyContactPhone.valid">
+                                    <!--<input type="text" formControlName="emergencyContactPhone" class="form-control" [class.error]="demographicsformControls.emergencyContactPhone.touched && !demographicsformControls.emergencyContactPhone.valid" />-->
+                                    <p-inputMask mask="999-999-9999" formControlName="emergencyContactPhone" [class.error]="demographicsformControls.emergencyContactPhone.touched && !demographicsformControls.emergencyContactPhone.valid" 
+                                     placeholder="999-999-9999" styleClass="form-control" ></p-inputMask>
+                                    <div class='error-list' *ngIf="demographicsformControls.emergencyContactPhone.touched && !demographicsformControls.emergencyContactPhone.valid">
+                                        <ul>
+                                            <li *ngIf="demographicsformControls.emergencyContactPhone.hasError('required')">Emergency contact phone is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section> 
+                <div class="text-center">
+                    <button [disabled]="!demographicsform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+                        <loader [visible]="isSaveProgress"></loader>
+                    </button>
+                    <!--<a [routerLink]="['/patient-manager/patients']" class="btn btn-secondary">Cancel</a>-->
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
