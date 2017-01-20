@@ -11,8 +11,9 @@
     <p-column field="specialityCode" header="Speciality Code" [sortable]="true"></p-column>
    <p-column styleClass="col-button" header="Actions">
         <template let-speciality="rowData" pTemplate="body">
-        <a [routerLink]="['/account-setup/specialities/', speciality.id]"><i class="glyphicon glyphicon-list"></i></a>
+        <!--<a [routerLink]="['/account-setup/specialities/', speciality.id]"><i class="glyphicon glyphicon-list"></i></a>-->
+        <a (click)="loadAddEditSpeciality(speciality)"><i class="glyphicon glyphicon-edit"></i></a>
         </template>
-    </p-column>
+    </p-column> 
 
 </p-dataTable>

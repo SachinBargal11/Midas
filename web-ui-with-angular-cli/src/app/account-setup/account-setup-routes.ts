@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ValidateActiveSession } from '../commons/guards/validate-active-session';
 import { AccountSetupShellComponent } from './account-setup-shell';
 import { SpecialityRoutes } from './components/speciality/speciality-routes';
-import { SpecialityDetailsRoutes } from './components/speciality-details/speciality-details-routes';
+// import { SpecialityDetailsRoutes } from './components/speciality-details/speciality-details-routes';
 
 
 let AccountSetupRoutes: Routes = [
@@ -12,8 +12,8 @@ let AccountSetupRoutes: Routes = [
         component: AccountSetupShellComponent,
         canActivate: [ValidateActiveSession],
         children: [
-            ...SpecialityRoutes,
-            ...SpecialityDetailsRoutes
+            ...SpecialityRoutes
+            
         ],
         data: {
             breadcrumb: 'Account Setup'
