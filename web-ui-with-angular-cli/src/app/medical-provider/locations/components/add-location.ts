@@ -9,6 +9,8 @@ import { Location } from '../models/location';
 import { Company } from '../../../account/models/company';
 import { Contact } from '../../../commons/models/contact';
 import { Address } from '../../../commons/models/address';
+import { States } from '../../../commons/models/states';
+import { Cities } from '../../../commons/models/cities';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
@@ -24,6 +26,8 @@ import { NotificationsService } from 'angular2-notifications';
 
 export class AddLocationComponent implements OnInit {
     states: any[];
+    cities: any[];
+    selectedCity = 0;
     location = new Location({});
     locationJS;
     options = {
@@ -36,6 +40,7 @@ export class AddLocationComponent implements OnInit {
     addlocationform: FormGroup;
     addlocationformControls;
     isSaveProgress = false;
+    isCitiesLoading = true;
 
     constructor(
         private _statesStore: StatesStore,
@@ -65,6 +70,23 @@ export class AddLocationComponent implements OnInit {
     }
 
     ngOnInit() {
+        this._statesStore.getStates()
+                .subscribe(states => this.states = states);
+    }
+
+    selectState(event) {
+        this.selectedCity = 0;
+        let currentState = event.target.value;
+        this.loadCities(currentState);
+    }
+    loadCities(stateName) {
+        if ( stateName !== '') {
+        this._statesStore.getCitiesByStates(stateName)
+                .subscribe(cities => this.cities = cities);
+        } else {
+            this.cities = [];
+        }
+        this.isCitiesLoading = false;
     }
 
 

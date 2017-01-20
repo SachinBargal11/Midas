@@ -43,7 +43,7 @@ export class SpecialityDetailComponent {
         this._route.parent.params.subscribe((params: any) => {
             let specialityId: number = parseInt(params.id);
             let requestData = {
-                speciality: {
+                specialty: {
                     id: specialityId
                 }
             };
@@ -95,8 +95,7 @@ export class SpecialityDetailComponent {
                         this._progressBarService.hide();
                     });
             });
-        }
-        else {
+        } else {
             let notification = new Notification({
                 'title': 'select speciality details to delete',
                 'type': 'ERROR',

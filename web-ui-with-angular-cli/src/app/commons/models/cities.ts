@@ -1,14 +1,14 @@
 import {Record} from 'immutable';
-const StatesRecord = Record({
+const CitiesRecord = Record({
     id: 0,
     statecode: '',
-    statetext: ''
+    citytext: ''
 
 });
-export class States extends StatesRecord {
+export class Cities extends CitiesRecord {
     id: number;
     statecode: string;
-    statetext: string;
+    citytext: string;
 
     constructor(props) {
         super(props);

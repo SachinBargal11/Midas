@@ -8,6 +8,7 @@ import { ScheduleComponent } from './components/schedule';
 import { SettingsComponent } from './components/settings';
 import { AccessComponent } from './components/access';
 import { AddLocationComponent } from './components/add-location';
+import { RoomsRoutes } from '../rooms/rooms-routes';
 
 export const LocationManagementRoutes: Routes = [
     {
@@ -74,7 +75,8 @@ export const LocationManagementRoutes: Routes = [
                 data: {
                     breadcrumb: 'Access'
                 }
-            }
+            },
+            ...RoomsRoutes
         ]
     }
 ];

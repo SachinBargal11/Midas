@@ -17,11 +17,10 @@ let MedicalProviderRoutes: Routes = [
             ...LocationManagementRoutes,
             ...UsersRoutes,
             ...CalendarRoutes,
-            ...ReportsRoutes,
-            ...RoomsRoutes
+            ...ReportsRoutes
         ],
         data: {
-            breadcrumb: 'Account Setup'
+            breadcrumb: 'Medical-Provider'
         }
     }
 ];
