@@ -1,0 +1,24 @@
+import { Record } from 'immutable';
+import { UserRole } from '../../commons/models/user-role';
+import { User } from '../../commons/models/user';
+import { AccountStatus } from '../../commons/models/enums/account-status';
+import { SubscriptionPlan } from '../../commons/models/enums/subscription-plan';
+
+const AccountRecord = Record({
+    user: null,
+    role: null,
+    accountStatus: AccountStatus.IN_ACTIVE,
+    subscriptionPlan: SubscriptionPlan.TRIAL
+});
+
+export class Account extends AccountRecord {
+    user: User;
+    role: UserRole;
+    accountStatus: AccountStatus;
+    subscriptionPlan: SubscriptionPlan;
+
+    constructor(props) {
+        super(props);
+    }
+
+}
