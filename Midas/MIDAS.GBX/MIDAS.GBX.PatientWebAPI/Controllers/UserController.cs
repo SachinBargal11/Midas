@@ -27,12 +27,12 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         [Route("Signin")]
         public HttpResponseMessage Signin([FromBody]User user)
         {
-            //if (user != null)
-            //{
-            //    //Since the API should only validate for Patient Users.
-            //    //Rest all other even if valid are not Authorised.
-            //    user.UserType = GBEnums.UserType.Patient;
-            //}
+            if (user != null)
+            {
+                //Since the API should only validate for Patient Users.
+                //Rest all other even if valid are not Authorised.
+                user.UserType = GBEnums.UserType.Patient;
+            }
 
             return requestHandler.Login(Request, user);
         }
