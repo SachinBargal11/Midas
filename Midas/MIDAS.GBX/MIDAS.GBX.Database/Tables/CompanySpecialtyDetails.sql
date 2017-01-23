@@ -37,3 +37,9 @@ GO
 
 ALTER TABLE [dbo].[CompanySpecialtyDetails] CHECK CONSTRAINT [FK_CompanySpecialtyDetails_Specialty]
 GO
+
+ALTER TABLE [dbo].[CompanySpecialtyDetails]  WITH CHECK ADD CONSTRAINT [UK_SpecialtyId_CompanyID] UNIQUE ([SpecialtyId], [CompanyID])
+GO
+
+ALTER TABLE [dbo].[CompanySpecialtyDetails] CHECK CONSTRAINT [UK_SpecialtyId_CompanyID]
+GO
