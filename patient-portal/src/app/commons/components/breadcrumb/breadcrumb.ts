@@ -62,6 +62,7 @@ export class BreadcrumbComponent implements OnInit {
      */
     private getBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: IBreadcrumb[] = []): IBreadcrumb[] {
         const ROUTE_DATA_BREADCRUMB: string = 'breadcrumb';
+        const ROUTE_DATA_URL: string = 'shell';
 
         //get the child routes
         let children: ActivatedRoute[] = route.children;
@@ -90,12 +91,41 @@ export class BreadcrumbComponent implements OnInit {
             url += `/${routeURL}`;
 
             //add breadcrumb
-            let breadcrumb: IBreadcrumb = {
-                label: child.snapshot.data[ROUTE_DATA_BREADCRUMB],
-                params: child.snapshot.params,
-                url: url
-            };
-            breadcrumbs.push(breadcrumb);
+
+            let shell = child.snapshot.data[ROUTE_DATA_URL];
+                if (Object.keys(child.snapshot.params).length !== 0 && shell === true) {
+                    if (null != url && url.length > 0 ) {
+                        let endIndex = url.lastIndexOf('/');
+                        if (endIndex !== -1) {
+                            let newstr = url.substring(0, endIndex);
+                            let breadcrumb: IBreadcrumb = {
+                                label: child.snapshot.data[ROUTE_DATA_BREADCRUMB],
+                                params: child.snapshot.params,
+                                url: newstr
+                            };
+                             if (breadcrumb.label !== 'root') {
+                             breadcrumbs.push(breadcrumb);
+                             }
+                        }
+                    }
+                } else {
+                      let breadcrumb: IBreadcrumb = {
+                          label: child.snapshot.data[ROUTE_DATA_BREADCRUMB],
+                          params: child.snapshot.params,
+                          url: url
+                      };
+                       if (breadcrumb.label !== 'root') {
+                       breadcrumbs.push(breadcrumb);
+                       }
+                }
+
+
+            // let breadcrumb: IBreadcrumb = {
+            //     label: child.snapshot.data[ROUTE_DATA_BREADCRUMB],
+            //     params: child.snapshot.params,
+            //     url: url
+            // };
+            // breadcrumbs.push(breadcrumb);
 
             //recursive
             return this.getBreadcrumbs(child, url, breadcrumbs);

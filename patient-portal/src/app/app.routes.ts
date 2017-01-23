@@ -4,8 +4,8 @@ import { NoContentComponent } from './no-content-component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-    { path: 'dashboard', loadChildren: 'app/dashboard/dashboard-module#DashboardModule' },
-    { path: 'account', loadChildren: 'app/account/account-module#AccountModule' },
+    { path: 'dashboard', loadChildren: 'app/dashboard/dashboard-module#DashboardModule', data: { breadcrumb: 'root' } },
+    { path: 'account', loadChildren: 'app/account/account-module#AccountModule', data: { breadcrumb: 'root' } },
     { path: '404', component: NoContentComponent },
     { path: '**',  redirectTo: '/404' }
 ];
