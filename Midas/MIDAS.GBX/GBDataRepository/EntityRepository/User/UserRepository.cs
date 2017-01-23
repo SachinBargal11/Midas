@@ -428,22 +428,30 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { ErrorMessage = "Invalid credentials.Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            ////Check if the User even if valid is logging as invalid User Type
-            //bool isUserTypeValid = false;
-            //try
-            //{
-            //    if (userBO.UserType == (BO.GBEnums.UserType)((User)data_).UserType)
-            //    {
-            //        isUserTypeValid = true;
-            //    }
-            //}
-            //catch
-            //{
-            //    return new BO.ErrorObject { ErrorMessage = "Invalid user type. Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            //}
+            //Check if the User even if valid is logging as invalid User Type
+            bool isUserTypeValid = false;
+            try
+            {
+                if (userBO.UserType == (BO.GBEnums.UserType)((User)data_).UserType)
+                {
+                    isUserTypeValid = true;
+                }
+                else if (userBO.UserType == 0) //Since ADMIN API dosent check for usertype. Need to be removed later.
+                {
+                    isUserTypeValid = true;
+                }
 
+                if (!isUserTypeValid)
+                    return new BO.ErrorObject { ErrorMessage = "Invalid user type.Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            catch
+            {
+                return new BO.ErrorObject { ErrorMessage = "Invalid user type. Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
 
-            BO.User acc_ = isPasswordCorrect ? Convert<BO.User, User>(data_) : null;
+            //Check if the User even if valid is logging as invalid User Type
+            BO.User acc_ = isPasswordCorrect && isUserTypeValid ? Convert<BO.User, User>(data_) : null;
+
             if (!userBO.forceLogin)
             {
                 if (acc_.C2FactAuthEmailEnabled)

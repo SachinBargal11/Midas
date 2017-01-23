@@ -80,6 +80,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [Route("Signin")]
         public HttpResponseMessage Signin([FromBody]User user)
         {
+            if (user != null)
+            {
+                //Since the API should only validate for Staff Users.
+                //Rest all other even if valid are not Authorised.
+                user.UserType = GBEnums.UserType.Staff;
+            }
+
             return requestHandler.Login(Request, user);
         }
 
