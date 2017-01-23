@@ -10,6 +10,7 @@ import { AddUserComponent } from './components/add-user';
 import { UpdateUserComponent } from './components/update-user';
 import { LocationsComponent } from './components/locations';
 import { BillingComponent } from './components/Billing';
+import { ShellComponent } from '../../commons/shell-component';
 
 export const UsersRoutes: Routes = [
     {
@@ -25,12 +26,21 @@ export const UsersRoutes: Routes = [
         }
     },
     {
-        path: 'users/add',
-        component: AddUserComponent,
-        canActivate: [ValidateActiveSession],
+        path: 'users',
+        component: ShellComponent,
         data: {
-            breadcrumb: 'Add User'
-        }
+            breadcrumb: 'Users'
+        },
+        children: [
+            {
+                path: 'add',
+                component: AddUserComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Add User'
+                }
+            }
+        ]
     },
     {
         path: 'users/edit/:id',
@@ -44,7 +54,8 @@ export const UsersRoutes: Routes = [
         path: 'users/:userId',
         component: UserShellComponent,
         data: {
-            breadcrumb: 'Users'
+            breadcrumb: 'Users',
+            shell: true
         },
         children: [
             {

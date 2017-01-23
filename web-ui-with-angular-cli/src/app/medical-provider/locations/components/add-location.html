@@ -35,28 +35,14 @@
 
                         <div class="row">
                             <div class="col-lg-6">
-                                <label class="form-label"> City
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="addlocationformControls.city.touched && !addlocationformControls.city.valid">
-                                    <input formControlName="city" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.city.valid">
-                                    <div class='error-list' *ngIf="addlocationformControls.city.touched && !addlocationformControls.city.valid">
-                                        <ul>
-                                            <li *ngIf="addlocationformControls.city.hasError('required')">City is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
                                 <label class="form-label"> State
                                             <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="addlocationformControls.state.touched && !addlocationformControls.state.valid">
-                                    <input formControlName="state" list="states" name="mystate" type="text" class="form-control" placeholder="" [class.error]="!addlocationformControls.state.valid">
-                                    <datalist id="states">
-                                        <option>New York</option>
-                                        <option>California</option>
-                                    </datalist> 
+                                    <select formControlName="state" type="text" (change)="selectState($event)" class="form-control" placeholder="" [class.error]="addlocationformControls.state.touched && !addlocationformControls.state.valid">
+                                        <option value="">-Select State-</option>
+                                        <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
+                                    </select> 
                                     <div class='error-list' *ngIf="addlocationformControls.state.touched && !addlocationformControls.state.valid">
                                         <ul>
                                             <li *ngIf="addlocationformControls.state.hasError('required')">State is required.</li>
@@ -64,6 +50,23 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-lg-5">
+                                <label class="form-label"> City
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="addlocationformControls.city.touched && !addlocationformControls.city.valid">
+                                    <select formControlName="city" type="text" [(ngModel)]="selectedCity" class="form-control" placeholder="" [class.error]="addlocationformControls.city.touched && !addlocationformControls.city.valid">
+                                        <option value="0">-Select City-</option>
+                                        <option *ngFor="let city of cities" value="{{city.citytext}}">{{city.citytext}}</option>
+                                    </select> 
+                                    <div class='error-list' *ngIf="addlocationformControls.city.touched && !addlocationformControls.city.valid">
+                                        <ul>
+                                            <li *ngIf="addlocationformControls.city.hasError('required')">City is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-1 m-t-lg"><loader [visible]="isCitiesLoading"></loader></div>
                         </div>
 
                         <div class="row">

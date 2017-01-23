@@ -9,6 +9,7 @@ import { AddUserComponent } from '../components/pages/users/add-user';
 import { UpdateUserComponent } from '../components/pages/users/update-user';
 import { LocationsComponent } from '../components/pages/users/locations';
 import { BillingComponent } from '../components/pages/users/Billing';
+import { ShellComponent } from '../components/elements/shell-component';
 
 export const UsersRoutes: Routes = [
     {
@@ -24,12 +25,21 @@ export const UsersRoutes: Routes = [
         }
     },
     {
-        path: 'users/add',
-        component: AddUserComponent,
-        canActivate: [ValidateActiveSession],
+        path: 'users',
+        component: ShellComponent,
         data: {
-            breadcrumb: 'Add User'
-        }
+            breadcrumb: 'Users'
+        },
+        children: [
+            {
+                path: 'add',
+                component: AddUserComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Add User'
+                }
+            }
+        ]
     },
     {
         path: 'users/edit/:id',

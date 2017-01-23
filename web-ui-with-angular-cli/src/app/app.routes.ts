@@ -4,11 +4,11 @@ import { NoContentComponent } from './no-content-component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-    { path: 'dashboard', loadChildren: 'app/dashboard/dashboard-module#DashboardModule' },
-    { path: 'account', loadChildren: 'app/account/account-module#AccountModule' },
-    { path: 'patient-manager', loadChildren: 'app/patient-manager/patient-manager-module#PatientManagerModule' },
-    { path: 'medical-provider', loadChildren: 'app/medical-provider/medical-provider-module#MedicalProviderModule' },
-    { path: 'account-setup', loadChildren: 'app/account-setup/account-setup-module#AccountSetupModule' },
+    { path: 'dashboard', loadChildren: 'app/dashboard/dashboard-module#DashboardModule', data: { breadcrumb: 'root' } },
+    { path: 'account', loadChildren: 'app/account/account-module#AccountModule', data: { breadcrumb: 'root' } },
+    { path: 'patient-manager', loadChildren: 'app/patient-manager/patient-manager-module#PatientManagerModule', data: { breadcrumb: 'root' } },
+    { path: 'medical-provider', loadChildren: 'app/medical-provider/medical-provider-module#MedicalProviderModule', data: { breadcrumb: 'root' } },
+    { path: 'account-setup', loadChildren: 'app/account-setup/account-setup-module#AccountSetupModule', data: { breadcrumb: 'root' } },
     { path: '404', component: NoContentComponent },
     { path: '**',  redirectTo: '/404' }
 ];

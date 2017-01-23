@@ -5,9 +5,9 @@ import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import * as moment from 'moment';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-import { SpecialityStore } from '../../stores/speciality-store';
+import {SpecialityStore} from '../../stores/speciality-store';
 import { SpecialityDetail } from '../../models/speciality-details';
-import { Speciality } from '../../models/speciality';
+import {Speciality} from '../../models/speciality';
 import { SpecialityDetailsStore } from '../../stores/speciality-details-store';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 
@@ -56,11 +56,11 @@ export class EditSpecialityDetailsComponent {
             result.subscribe(
                 (specialityDetail: any) => {
                     this.specialityDetail = specialityDetail;
-                    this.speciality = specialityDetail.specialty;
+                    this.speciality = specialityDetail.specialty.name;
                     this.specialityDetailJS = this.specialityDetail.toJS();
                 },
                 (error) => {
-                    this._router.navigate(['/speciality-details']);
+                    this._router.navigate(['/account-setup/specialities']);
                     this._progressBarService.hide();
                 },
                 () => {
@@ -75,7 +75,7 @@ export class EditSpecialityDetailsComponent {
             maxReval: ['', Validators.required],
             isInitialEvaluation: [''],
             include1500: [''],
-            associatedSpeciality: ['', [Validators.required, AppValidators.selectedValueValidator]],
+            speciality: [{ value: '', disabled: true }],
             allowMultipleVisit: ['']
         });
 
@@ -99,7 +99,8 @@ export class EditSpecialityDetailsComponent {
             allowmultipleVisit: parseInt(specialityDetailFormValues.allowMultipleVisit) ? true : false,
             maxReval: parseInt(specialityDetailFormValues.maxReval),
             specialty: new Speciality({
-                id: parseInt(specialityDetailFormValues.associatedSpeciality)
+                // id: parseInt(specialityDetailFormValues.associatedSpeciality)
+                id: this.specialityDetail.specialty.id
             })
         });
 
@@ -116,7 +117,8 @@ export class EditSpecialityDetailsComponent {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../../'], { relativeTo: this._route });
+                // this._router.navigate(['../../'], { relativeTo: this._route });
+                   this._router.navigate(['/account-setup/specialities']);
             },
             (error) => {
                 let errString = 'Unable to update Speciality Details.';

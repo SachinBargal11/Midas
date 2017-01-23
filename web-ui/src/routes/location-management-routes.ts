@@ -8,6 +8,7 @@ import { SettingsComponent } from '../components/pages/location-management/setti
 import { AccessComponent } from '../components/pages/location-management/access';
 import { AddLocationComponent } from '../components/pages/location-management/add-location';
 import { RoomsRoutes } from './rooms-routes';
+import { ShellComponent } from '../components/elements/shell-component';
 
 export const LocationManagementRoutes: Routes = [
     {
@@ -23,12 +24,20 @@ export const LocationManagementRoutes: Routes = [
         }
     },
     {
-        path: 'locations/add',
-        component: AddLocationComponent,
-        canActivate: [ValidateActiveSession],
+        path: 'locations',
+        component: ShellComponent,
         data: {
-            breadcrumb: 'Add Location'
-        }
+            breadcrumb: 'Locations'
+        },
+        children: [
+            {
+                path: 'add',
+                component: AddLocationComponent,
+                data: {
+                    breadcrumb: 'Add Location'
+                }
+            }
+        ]
     },
     {
         path: 'locations/:locationId',

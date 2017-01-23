@@ -17,6 +17,7 @@ import { LoaderComponent } from '../components/elements/loader';
 import { NotificationComponent } from '../components/elements/notification';
 import { InputTextModule, ChartModule, DataTableModule, ButtonModule, DialogModule, CalendarModule, InputMaskModule, RadioButtonModule, MultiSelectModule } from 'primeng/primeng';
 import { DropdownModule } from 'ng2-bootstrap';
+import { ShellComponent } from '../components/elements/shell-component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { DropdownModule } from 'ng2-bootstrap';
     MainNavComponent,
     ProgressBarComponent,
     LoaderComponent,
-    NotificationComponent
+    NotificationComponent,
+    ShellComponent
   ],
   exports: [
     CommonModule,
@@ -58,6 +60,7 @@ import { DropdownModule } from 'ng2-bootstrap';
     LoaderComponent,
     NotificationComponent,
     ReactiveFormsModule,
+    ShellComponent,
     InputTextModule, ChartModule, DataTableModule, ButtonModule, DialogModule, CalendarModule, InputMaskModule, RadioButtonModule, MultiSelectModule, DropdownModule
   ]
 })

@@ -12,9 +12,9 @@ import { AppHeaderComponent } from '../elements/app-header/app-header';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb';
 import { MainNavComponent } from './components/main-nav/main-nav';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar';
-import { SimpleNotificationsModule } from 'angular2-notifications';
 import { LoaderComponent } from './components/loader/loader';
 import { NotificationComponent } from './components/notification/notification';
+import { ShellComponent } from './shell-component';
 
 import {
   InputTextModule,
@@ -36,7 +36,6 @@ import { DropdownModule } from 'ng2-bootstrap';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    SimpleNotificationsModule,
     InputTextModule,
     ChartModule,
     DataTableModule,
@@ -59,7 +58,8 @@ import { DropdownModule } from 'ng2-bootstrap';
     MainNavComponent,
     ProgressBarComponent,
     LoaderComponent,
-    NotificationComponent
+    NotificationComponent,
+    ShellComponent
   ],
   exports: [
     CommonModule,
@@ -74,7 +74,6 @@ import { DropdownModule } from 'ng2-bootstrap';
     BreadcrumbComponent,
     MainNavComponent,
     ProgressBarComponent,
-    SimpleNotificationsModule,
     LoaderComponent,
     NotificationComponent,
     ReactiveFormsModule,
@@ -87,7 +86,8 @@ import { DropdownModule } from 'ng2-bootstrap';
     InputMaskModule,
     RadioButtonModule,
     MultiSelectModule,
-    DropdownModule
+    DropdownModule,
+    ShellComponent
   ]
 })
 export class CommonsModule { }

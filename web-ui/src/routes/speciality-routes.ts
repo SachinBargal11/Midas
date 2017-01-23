@@ -8,6 +8,7 @@ import { SpecialityListComponent } from '../components/pages/account-setup/speci
 import { AddSpecialityDetailsComponent } from '../components/pages/account-setup/speciality-details/add-speciality-detail';
 import { EditSpecialityDetailsComponent } from '../components/pages/account-setup/speciality-details/edit-speciality-detail';
 import { SpecialityDetailComponent } from '../components/pages/account-setup/speciality-details/speciality-details';
+import { ShellComponent } from '../components/elements/shell-component';
 
 export const SpecialityRoutes: Routes = [
     {
@@ -61,22 +62,32 @@ export const SpecialityRoutes: Routes = [
                     breadcrumb: 'Speciality Details'
                 }
             },
-            {
-                path: 'speciality-details/add',
-                component: AddSpecialityDetailsComponent,
-                canActivate: [ValidateActiveSession],
-                data: {
-                    breadcrumb: 'Add Speciality Detail'
-                }
-            },
-            {
-                path: 'speciality-details/edit/:id',
-                component: EditSpecialityDetailsComponent,
-                canActivate: [ValidateActiveSession],
-                data: {
-                    breadcrumb: 'Edit Speciality Detail'
-                }
-            }
+            // {
+            //     path: 'speciality-details',
+            //     component: ShellComponent,
+            //     canActivate: [ValidateActiveSession],
+            //     data: {
+            //         breadcrumb: 'Speciality Details'
+            //     },
+            //     children: [
+                    {
+                        path: 'add',
+                        component: AddSpecialityDetailsComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Add Speciality Detail'
+                        }
+                    },
+                    {
+                        path: 'edit/:id',
+                        component: EditSpecialityDetailsComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Edit Speciality Detail'
+                        }
+                    }
+            //     ]
+            // }
         ]
     }
     // {

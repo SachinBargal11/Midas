@@ -2,13 +2,13 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CommonsModule } from '../commons/commons-module';
-import { AddSpecialityComponent } from './components/speciality/add-speciality';
+// import { AddSpecialityComponent } from './components/speciality/add-speciality';
 import { SpecialityListComponent } from './components/speciality/speciality-list';
 import { SpecialityShellComponent } from './components/speciality/speciality-shell';
-import { UpdateSpecialityComponent } from './components/speciality/update-speciality';
+// import { UpdateSpecialityComponent } from './components/speciality/update-speciality';
 import { AddSpecialityDetailsComponent } from './components/speciality-details/add-speciality-detail';
 import { EditSpecialityDetailsComponent } from './components/speciality-details/edit-speciality-detail';
-import { SpecialityDetailComponent } from './components/speciality-details/speciality-details';
+// import { SpecialityDetailComponent } from './components/speciality-details/speciality-details';
 import { AccountSetupNavComponent } from './components/navigation/account-setup-nav-bar';
 import { AccountSetupShellComponent } from './account-setup-shell';
 import { AccountSetupRoutingModule } from './account-setup-routes';
@@ -27,13 +27,11 @@ import { SpecialityDetailsStore } from './stores/speciality-details-store';
     declarations: [
         AccountSetupNavComponent,
         AccountSetupShellComponent,
-        AddSpecialityComponent,
         SpecialityListComponent,
         SpecialityShellComponent,
-        UpdateSpecialityComponent,
         AddSpecialityDetailsComponent,
-        EditSpecialityDetailsComponent,
-        SpecialityDetailComponent
+        EditSpecialityDetailsComponent
+       
     ],
     providers: [
         SpecialityService,

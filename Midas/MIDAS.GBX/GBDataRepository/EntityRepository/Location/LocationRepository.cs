@@ -205,6 +205,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             #endregion
 
+            //Added code to get data in AddressInfo and ContactInfo
+            locationDB.AddressInfo = addressDB;
+            locationDB.ContactInfo = contactinfoDB;
+
             if (saveLocationBO.schedule != null)
             {
                 #region Schedule

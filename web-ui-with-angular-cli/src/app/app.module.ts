@@ -35,6 +35,8 @@ import { SpecialityService } from './account-setup/services/speciality-service';
 import { UsersService } from './medical-provider/users/services/users-service';
 import { UsersStore } from './medical-provider/users/stores/users-store';
 
+import { SimpleNotificationsModule } from 'angular2-notifications';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +49,8 @@ import { UsersStore } from './medical-provider/users/stores/users-store';
     ReactiveFormsModule,
     CommonsModule,
     AppRoutingModule,
-    DashboardModule
+    DashboardModule,
+    SimpleNotificationsModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

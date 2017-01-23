@@ -26,6 +26,7 @@ import { NotificationsService } from 'angular2-notifications';
 export class UserBasicComponent implements OnInit {
     userType: any;
     states: any[];
+    cities: any[];
     user = new User({});
     address = new Address({});
     contact = new Contact({});
@@ -39,6 +40,7 @@ export class UserBasicComponent implements OnInit {
     userform: FormGroup;
     userformControls;
     isSaveUserProgress = false;
+    isCitiesLoading = true;
 
     constructor(
         private _stateService: StateService,
@@ -64,6 +66,7 @@ export class UserBasicComponent implements OnInit {
                     this.contact = userDetail.contact,
                         this.address = userDetail.address,
                         this.userType = UserType[userDetail.userType];
+                        this.loadCities(userDetail.address.state);
                 },
                 (error) => {
                     this._router.navigate(['/medical-provider/users']);
@@ -100,8 +103,25 @@ export class UserBasicComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this._stateService.getStates()
-        //     .subscribe(states => this.states = states);
+        this._statesStore.getStates()
+                .subscribe(states => this.states = states);
+        // this._statesStore.getCities()
+        //         .subscribe(cities => this.cities = cities);
+    }
+
+    selectState(event) {
+        // this.selectedCity = 0;
+        let currentState = event.target.value;
+        this.loadCities(currentState);
+    }
+    loadCities(stateName) {
+        if ( stateName !== '') {
+        this._statesStore.getCitiesByStates(stateName)
+                .subscribe(cities => this.cities = cities);
+        } else {
+            this.cities = [];
+        }
+        this.isCitiesLoading = false;
     }
 
 

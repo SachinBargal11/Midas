@@ -26,6 +26,8 @@ import { NotificationsService } from 'angular2-notifications';
 
 export class AddUserComponent implements OnInit {
     states: any[];
+    cities: any[];
+    selectedCity = 0;
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -36,6 +38,7 @@ export class AddUserComponent implements OnInit {
     userform: FormGroup;
     userformControls;
     isSaveUserProgress = false;
+    isCitiesLoading = true;
 
     constructor(
         private _statesStore: StatesStore,
@@ -79,8 +82,23 @@ export class AddUserComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this._stateService.getStates()
-        //     .subscribe(states => this.states = states);
+        this._statesStore.getStates()
+                .subscribe(states => this.states = states);
+    }
+
+    selectState(event) {
+        this.selectedCity = 0;
+        let currentState = event.target.value;
+        this.loadCities(currentState);
+    }
+    loadCities(stateName) {
+        if ( stateName !== '') {
+        this._statesStore.getCitiesByStates(stateName)
+                .subscribe(cities => this.cities = cities);
+        } else {
+            this.cities = [];
+        }
+        this.isCitiesLoading = false;
     }
 
 
