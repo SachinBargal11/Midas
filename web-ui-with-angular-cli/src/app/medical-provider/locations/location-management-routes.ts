@@ -9,6 +9,7 @@ import { SettingsComponent } from './components/settings';
 import { AccessComponent } from './components/access';
 import { AddLocationComponent } from './components/add-location';
 import { RoomsRoutes } from '../rooms/rooms-routes';
+import { ShellComponent } from '../../commons/shell-component';
 
 export const LocationManagementRoutes: Routes = [
     {
@@ -24,12 +25,20 @@ export const LocationManagementRoutes: Routes = [
         }
     },
     {
-        path: 'locations/add',
-        component: AddLocationComponent,
-        canActivate: [ValidateActiveSession],
+        path: 'locations',
+        component: ShellComponent,
         data: {
-            breadcrumb: 'Add Location'
-        }
+            breadcrumb: 'Locations'
+        },
+        children: [
+            {
+                path: 'add',
+                component: AddLocationComponent,
+                data: {
+                    breadcrumb: 'Add Location'
+                }
+            }
+        ]
     },
     {
         path: 'locations/:locationId',

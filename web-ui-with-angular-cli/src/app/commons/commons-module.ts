@@ -14,6 +14,7 @@ import { MainNavComponent } from './components/main-nav/main-nav';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar';
 import { LoaderComponent } from './components/loader/loader';
 import { NotificationComponent } from './components/notification/notification';
+import { ShellComponent } from './shell-component';
 
 import {
   InputTextModule,
@@ -57,7 +58,8 @@ import { DropdownModule } from 'ng2-bootstrap';
     MainNavComponent,
     ProgressBarComponent,
     LoaderComponent,
-    NotificationComponent
+    NotificationComponent,
+    ShellComponent
   ],
   exports: [
     CommonModule,
@@ -84,7 +86,8 @@ import { DropdownModule } from 'ng2-bootstrap';
     InputMaskModule,
     RadioButtonModule,
     MultiSelectModule,
-    DropdownModule
+    DropdownModule,
+    ShellComponent
   ]
 })
 export class CommonsModule { }

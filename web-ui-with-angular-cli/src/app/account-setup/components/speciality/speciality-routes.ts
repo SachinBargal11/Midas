@@ -36,7 +36,8 @@ export const SpecialityRoutes: Routes = [
         component: SpecialityShellComponent,
         canActivate: [ValidateActiveSession],
         data: {
-            breadcrumb: 'Specialities'
+            breadcrumb: 'Specialities',
+            shell: true
         },
         children: [
             {

@@ -9,6 +9,7 @@ import { BalancesComponent } from './components/balances';
 import { DocumentsComponent } from './components/documents';
 import { AppointmentsComponent } from './components/appointments';
 import { ValidateActiveSession } from '../../commons/guards/validate-active-session';
+import { ShellComponent } from '../../commons/shell-component';
 
 export const PatientsShellRoutes: Routes = [
     {
@@ -24,15 +25,28 @@ export const PatientsShellRoutes: Routes = [
         }
     },
     {
-        path: 'patients/add',
-        component: AddPatientComponent,
+        path: 'patients',
+        component: ShellComponent,
         data: {
-            breadcrumb: 'Add Patient'
-        }
+            breadcrumb: 'Patients'
+        },
+        children: [
+            {
+                path: 'add',
+                component: AddPatientComponent,
+                data: {
+                    breadcrumb: 'Add Patient'
+                }
+            }
+        ]
     },
     {
         path: 'patients/:patientName',
         component: PatientsShellComponent,
+        data: {
+            breadcrumb: 'Patients',
+            shell: true
+        },
         children: [
             {
                 path: '',
