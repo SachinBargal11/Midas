@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, style } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../account/services/authentication-service';
 import { SessionStore } from '../../commons/stores/session-store';
@@ -13,6 +13,7 @@ export class AppHeaderComponent implements OnInit {
 
     disabled: boolean = false;
     status: { isopen: boolean } = { isopen: false };
+    menu_right_opened: boolean = false;
 
     toggleDropdown($event: MouseEvent): void {
         $event.preventDefault();
@@ -30,6 +31,25 @@ export class AppHeaderComponent implements OnInit {
     }
 
     ngOnInit() {
+        
+    }
+
+    onBurgerClick() {
+        if (this.menu_right_opened) {
+            this.menu_right_opened = false;
+            document.getElementsByTagName('body')[0].classList.remove('menu-right-opened');
+            document.getElementsByTagName('html')[0].style.overflow = 'auto';
+        } else {
+            this.menu_right_opened = true;
+            document.getElementsByTagName('body')[0].classList.remove('menu-left-opened');
+            document.getElementsByTagName('body')[0].classList.add('menu-right-opened');
+            document.getElementsByTagName('html')[0].style.overflow = 'hidden';
+        }
+    }
+
+    hideMobileMenu() {
+        document.getElementsByTagName('body')[0].classList.remove('menu-right-opened');
+        document.getElementsByTagName('html')[0].style.overflow = 'auto';
     }
 
     logout() {

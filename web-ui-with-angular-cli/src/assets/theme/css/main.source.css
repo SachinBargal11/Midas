@@ -19578,7 +19578,7 @@ body {
     -o-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
     float: none;
-    margin: 0;
+    margin: 0 !important;
   }
   .site-header .site-header-collapsed .site-header-collapsed-in {
     margin: 0;
