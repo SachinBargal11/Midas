@@ -215,49 +215,69 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Filter
         public override object Get<T>(T entity)
         {
-            List<BO.CompanySpecialtyDetails> lstSpecialties = new List<BO.CompanySpecialtyDetails>();
+            //List<BO.CompanySpecialtyDetails> lstSpecialties = new List<BO.CompanySpecialtyDetails>();
+            BO.CompanySpecialtyDetails Specialties = new BO.CompanySpecialtyDetails();
+
             BO.CompanySpecialtyDetails companyspecialtyDetailBO = (BO.CompanySpecialtyDetails)(object)entity;
             if (companyspecialtyDetailBO != null)
             {
-                if (companyspecialtyDetailBO.Specialty != null)
+                if (companyspecialtyDetailBO.Specialty != null && companyspecialtyDetailBO.Company != null)
                 {
-                    var acc_ = _context.CompanySpecialtyDetails.Include("Specialty").Include("Company").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.SpecialtyId == companyspecialtyDetailBO.Specialty.ID).ToList<CompanySpecialtyDetail>();
+                    var acc_ = _context.CompanySpecialtyDetails.Include("Specialty").Include("Company").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.SpecialtyId == companyspecialtyDetailBO.Specialty.ID && p.CompanyID == companyspecialtyDetailBO.Company.ID).ToList<CompanySpecialtyDetail>();
                     if (acc_ == null)
                     {
                         return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                     }
-                    foreach (CompanySpecialtyDetail item in acc_)
+                    else
                     {
-                        lstSpecialties.Add(Convert<BO.CompanySpecialtyDetails, CompanySpecialtyDetail>(item));
+                        if (acc_.Count > 0)
+                        {
+                            Specialties = Convert<BO.CompanySpecialtyDetails, CompanySpecialtyDetail>(acc_[0]);
+                        }
+                        else
+                        {
+                            return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                        }
                     }
+
+                    //foreach (CompanySpecialtyDetail item in acc_)
+                    //{
+                    //    //lstSpecialties.Add(Convert<BO.CompanySpecialtyDetails, CompanySpecialtyDetail>(item));
+                    //    Specialties = Convert<BO.CompanySpecialtyDetails, CompanySpecialtyDetail>(item);
+                    //}
                 }
                 else
                 {
-                    var acc_ = _context.CompanySpecialtyDetails.Include("Specialty").Include("Company").Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<CompanySpecialtyDetail>();
-                    if (acc_ == null)
-                    {
-                        return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                    }
-                    foreach (CompanySpecialtyDetail item in acc_)
-                    {
-                        lstSpecialties.Add(Convert<BO.CompanySpecialtyDetails, CompanySpecialtyDetail>(item));
-                    }
+                    //var acc_ = _context.CompanySpecialtyDetails.Include("Specialty").Include("Company").Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<CompanySpecialtyDetail>();
+                    //if (acc_ == null)
+                    //{
+                    //    return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    //}
+                    //foreach (CompanySpecialtyDetail item in acc_)
+                    //{
+                    //    //lstSpecialties.Add(Convert<BO.CompanySpecialtyDetails, CompanySpecialtyDetail>(item));
+                    //    Specialties = Convert<BO.CompanySpecialtyDetails, CompanySpecialtyDetail>(item);
+                    //}
+                    return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+
                 }
             }
             else
             {
-                var acc_ = _context.CompanySpecialtyDetails.Include("Specialty").Include("Company").Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<CompanySpecialtyDetail>();
-                if (acc_ == null)
-                {
-                    return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                }
-                foreach (CompanySpecialtyDetail item in acc_)
-                {
-                    lstSpecialties.Add(Convert<BO.CompanySpecialtyDetails, CompanySpecialtyDetail>(item));
-                }
+                //    var acc_ = _context.CompanySpecialtyDetails.Include("Specialty").Include("Company").Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<CompanySpecialtyDetail>();
+                //    if (acc_ == null)
+                //    {
+                //        return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                //    }
+                //    //foreach (CompanySpecialtyDetail item in acc_)
+                //    //{
+                //    //    //lstSpecialties.Add(Convert<BO.CompanySpecialtyDetails, CompanySpecialtyDetail>(item));
+                //    //    Specialties = Convert<BO.CompanySpecialtyDetails, CompanySpecialtyDetail>(item);//
+                //    //}
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            return lstSpecialties;
+            return Specialties;
         }
         #endregion
 
