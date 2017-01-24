@@ -28,13 +28,14 @@
 							<a (click)="logout()" class="dropdown-item"><span class="font-icon glyphicon glyphicon-log-out"></span>Logout</a>
 						</div>
 					</div>
+					<button type="button" class="burger-right" (click)="onBurgerClick()"><i class="font-icon-menu-addl"></i></button>
 				</div>
 				<div style="float: right;">
 					<select class="form-control" [ngModel]="sessionStore.session.currentCompany.id" (change)="sessionStore.selectCurrentCompany($event)">
 							<option *ngFor="let company of sessionStore.session.companies" [value]="company.id">{{company.name}}</option>
 					</select>
 				</div>
-				<div class="mobile-menu-right-overlay"></div>
+				<div class="mobile-menu-right-overlay" (click)="hideMobileMenu()"></div>
 				<div class="site-header-collapsed">
 					<div class="site-header-collapsed-in">
 						<div class="dropdown dropdown-typical">
