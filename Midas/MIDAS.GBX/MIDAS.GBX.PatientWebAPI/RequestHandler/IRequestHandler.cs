@@ -16,5 +16,6 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetObject(HttpRequestMessage request, int id);
         HttpResponseMessage ValidatePassword(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage ValidateInvitation(HttpRequestMessage request, T gbObject);
     }
 }
