@@ -37,7 +37,7 @@ export class BasicComponent implements OnInit {
     basicform: FormGroup;
     basicformControls;
     isSaveProgress = false;
-    isCitiesLoading = true;
+    isCitiesLoading = false;
     locationDetails: LocationDetails = new LocationDetails({
         location: new Location({}),
         company: new Company({}),
@@ -104,13 +104,16 @@ export class BasicComponent implements OnInit {
         this.loadCities(currentState);
     }
     loadCities(stateName) {
+        this.isCitiesLoading = true;
         if ( stateName !== '') {
         this._statesStore.getCitiesByStates(stateName)
-                .subscribe(cities => this.cities = cities);
+                .subscribe((cities) => { this.cities = cities; },
+                null,
+                () => { this.isCitiesLoading = false; });
         } else {
             this.cities = [];
+            this.isCitiesLoading = false;
         }
-        this.isCitiesLoading = false;
     }
 
 

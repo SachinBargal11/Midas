@@ -40,7 +40,7 @@ export class UserBasicComponent implements OnInit {
     userform: FormGroup;
     userformControls;
     isSaveUserProgress = false;
-    isCitiesLoading = true;
+    isCitiesLoading = false;
 
     constructor(
         private _stateService: StateService,
@@ -115,13 +115,16 @@ export class UserBasicComponent implements OnInit {
         this.loadCities(currentState);
     }
     loadCities(stateName) {
+        this.isCitiesLoading = true;
         if ( stateName !== '') {
         this._statesStore.getCitiesByStates(stateName)
-                .subscribe(cities => this.cities = cities);
+                .subscribe((cities) => { this.cities = cities; },
+                null,
+                () => { this.isCitiesLoading = false; });
         } else {
             this.cities = [];
+            this.isCitiesLoading = false;
         }
-        this.isCitiesLoading = false;
     }
 
 

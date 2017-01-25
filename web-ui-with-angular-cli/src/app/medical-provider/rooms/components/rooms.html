@@ -1,9 +1,11 @@
+<div class="input-group">
 <h1>
 <a class="btn btn-danger pull-right" (click)="deleteRooms()"><i class="fa fa-trash-o fa-1x"></i> Delete selected rooms
     <loader [visible]="isDeleteProgress"></loader>
 </a>
     <a class="btn btn-primary pull-right btn-inline" routerLink="add"><i class="fa fa-plus" aria-hidden="true"></i> Add Room</a>
 </h1>
+</div>
 <!--<div class="ui-widget-header ui-helper-clearfix" style="padding:4px 10px;border-bottom: 0 none">
     <i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
     <input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Rooms">
