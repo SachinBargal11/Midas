@@ -37,21 +37,25 @@ export class SpecialityDetailsService {
         return <Observable<SpecialityDetail>>Observable.fromPromise(promise);
     }
 
-    getSpecialityDetails(requestData): Observable<any[]> {
-        let promise: Promise<any[]> = new Promise((resolve, reject) => {
+    getSpecialityDetails(requestData): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
             return this._http.post(this._url + '/CompanySpecialtyDetails/getall', requestData, {
                 headers: this._headers
             }).map(res => res.json())
-                .subscribe((specialityDetailData: Array<Object>) => {
-                    let specialityDetails: any[] = (<Object[]>specialityDetailData).map((specialityDetailData: any) => {
-                        return SpecialityDetailAdapter.parseResponse(specialityDetailData);
-                    });
-                    resolve(specialityDetails);
+                .subscribe((specialityDetailData: any) => {
+                // .subscribe((specialityDetailData: Array<Object>) => {
+                    // let specialityDetails: any[] = (<Object[]>specialityDetailData).map((specialityDetailData: any) => {
+                    //     return SpecialityDetailAdapter.parseResponse(specialityDetailData);
+                    // });
+                    // resolve(specialityDetails);
+                    let parsedData: SpecialityDetail = null;
+                    parsedData = SpecialityDetailAdapter.parseResponse(specialityDetailData);
+                    resolve(parsedData);
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<any[]>>Observable.fromPromise(promise);
+        return <Observable<any>>Observable.fromPromise(promise);
     }
     addSpecialityDetail(location: SpecialityDetail): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
