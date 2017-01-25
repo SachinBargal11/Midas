@@ -32,17 +32,17 @@ export class SpecialityDetailsStore {
         return this._specialityDetails.asObservable();
     }
 
-    getSpecialityDetails(requestData): Observable<SpecialityDetail[]> {
+    getSpecialityDetails(requestData): Observable<SpecialityDetail> {
         let promise = new Promise((resolve, reject) => {
             this._specialityDetailsService.getSpecialityDetails(requestData)
-                .subscribe((specialities: SpecialityDetail[]) => {
+                .subscribe((specialities: SpecialityDetail) => {
                     this._specialityDetails.next(List(specialities));
                     resolve(specialities);
                 }, error => {
                     reject(error);
                 });
         });
-        return <Observable<SpecialityDetail[]>>Observable.fromPromise(promise);
+        return <Observable<SpecialityDetail>>Observable.fromPromise(promise);
     }
 
     findSpecialityDetailById(id: number): SpecialityDetail {
@@ -53,17 +53,17 @@ export class SpecialityDetailsStore {
 
     fetchSpecialityDetailById(id: number): Observable<SpecialityDetail> {
         let promise = new Promise((resolve, reject) => {
-            let matchedSpeciality: SpecialityDetail = this.findSpecialityDetailById(id);
-            if (matchedSpeciality) {
-                resolve(matchedSpeciality);
-            } else {
+            // let matchedSpeciality: SpecialityDetail = this.findSpecialityDetailById(id);
+            // if (matchedSpeciality) {
+            //     resolve(matchedSpeciality);
+            // } else {
                 this._specialityDetailsService.getSpecialityDetail(id)
                     .subscribe((speciality: SpecialityDetail) => {
                         resolve(speciality);
                     }, error => {
                         reject(error);
                     });
-            }
+            // }
         });
         return <Observable<SpecialityDetail>>Observable.fromPromise(promise);
     }

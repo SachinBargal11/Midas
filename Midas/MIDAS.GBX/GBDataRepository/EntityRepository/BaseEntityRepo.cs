@@ -141,6 +141,11 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+
+        public virtual Object Update<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

@@ -13,3 +13,9 @@
 ) ON [PRIMARY]
 
 GO
+/*
+INSERT INTO [dbo].[UserType] ([Name], [IsDeleted], [CreateByUserID], [CreateDate]) VALUES ('Patient', NULL, 0, GETDATE())
+GO
+INSERT INTO [dbo].[UserType] ([Name], [IsDeleted], [CreateByUserID], [CreateDate]) VALUES ('Staff', NULL, 0, GETDATE())
+GO
+*/
