@@ -436,13 +436,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     isUserTypeValid = true;
                 }
-                else if (userBO.UserType == 0) //Since ADMIN API dosent check for usertype. Need to be removed later.
-                {
-                    isUserTypeValid = true;
-                }
+                //else if (userBO.UserType == 0) //Since ADMIN API dosent check for usertype. Need to be removed later.
+                //{
+                //    isUserTypeValid = true;
+                //}
 
                 if (!isUserTypeValid)
-                    return new BO.ErrorObject { ErrorMessage = "Invalid user type.Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    return new BO.ErrorObject { ErrorMessage = "Invalid user type. Please check details..", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             catch
             {

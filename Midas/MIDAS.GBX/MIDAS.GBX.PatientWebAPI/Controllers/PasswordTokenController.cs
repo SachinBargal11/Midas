@@ -20,6 +20,14 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         }
 
         [HttpPost]
+        [Route("GeneratePasswordResetLink")]
+        [AllowAnonymous]
+        public HttpResponseMessage GeneratePasswordLink([FromBody]PasswordToken passwordToken)
+        {
+            return requestHandler.GeneratePasswordLink(Request, passwordToken);
+        }
+
+        [HttpPost]
         [Route("ValidatePassword")]
         [AllowAnonymous]
         public HttpResponseMessage ValidatePassword([FromBody]PasswordToken passwordToken)
