@@ -51,11 +51,3 @@ GO
 
 ALTER TABLE [dbo].[Patient] CHECK CONSTRAINT [FK_Patient_MaritalStatus]
 GO
-
-ALTER TABLE [dbo].[User]  WITH CHECK ADD  CONSTRAINT [FK_User_UserType] FOREIGN KEY([UserType])
-REFERENCES [dbo].[UserType] ([id])
-GO
-
-ALTER TABLE [dbo].[User] CHECK CONSTRAINT [FK_User_UserType]
-GO
-

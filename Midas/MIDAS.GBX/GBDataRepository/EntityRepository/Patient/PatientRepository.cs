@@ -254,12 +254,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID
         public override object Get(int id)
         {
-            BO.Patient acc_ = Convert<BO.Patient, Patient>(_context.Patients.Include("User").Include("Company").Include("Location").Where(p => p.id == id && p.IsDeleted == false).FirstOrDefault<Patient>());
-            if (acc_ == null)
+            var acc = _context.Patients.Include("User").Include("Company").Include("Location").Where(p => p.id == id && p.IsDeleted == false).FirstOrDefault<Patient>();
+
+            if (acc == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No record found for this Specialty.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            return (object)acc_;
+            else
+            {
+                BO.Patient acc_ = Convert<BO.Patient, Patient>(acc);
+                return (object)acc_;
+            }            
         }
         #endregion
 
@@ -281,6 +286,64 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Update
+        public override object Update<T>(T entity)
+        {
+            BO.Patient patientBO = (BO.Patient)(object)entity;
+            BO.Company companyBO = patientBO.Company;
+            BO.Location locationBO = patientBO.Location;
+            BO.User userBO = patientBO.User;
+
+            Patient patient = _context.Patients.Include("Company").Include("Location").Include("User")
+                                      .Where(p => p.id == patientBO.ID)
+                                      .FirstOrDefault<Patient>();
+
+            #region Patient
+            patient.id = patientBO.ID;
+            patient.PatientID = patientBO.PatientID;
+            patient.SSN = patientBO.SSN;
+            patient.WCBNo = patientBO.WCBNo;
+            patient.JobTitle = patientBO.JobTitle;
+            patient.WorkActivities = patientBO.WorkActivities;
+            patient.CarrierCaseNo = patientBO.CarrierCaseNo;
+            patient.ChartNo = patientBO.ChartNo;
+
+            if (patientBO.Company == null)
+            {
+                patient.CompanyID = patientBO.CompanyID != 0 ? patientBO.CompanyID : patient.CompanyID;
+            }
+            else
+            {
+                patient.CompanyID = companyBO.ID != 0 ? companyBO.ID : patient.CompanyID;
+            }
+
+            if (patientBO.Location == null)
+            {
+                patient.LocationID = patientBO.LocationID;
+            }
+            else
+            {
+                patient.LocationID = locationBO.ID;
+            }
+
+            patient.IsDeleted = patientBO.IsDeleted.HasValue ? patientBO.IsDeleted : false;
+            patient.UpdateDate = patientBO.UpdateDate;
+            patient.UpdateByUserID = patientBO.UpdateByUserID;
+            #endregion
+
+            _context.Entry(patient).State = System.Data.Entity.EntityState.Modified;
+
+            _context.SaveChanges();
+
+            patient = _context.Patients.Include("Company").Include("Location").Include("User")
+                                       .Where(p => p.id == patientBO.ID)
+                                       .FirstOrDefault<Patient>();
+
+            var res = Convert<BO.Patient, Patient>(patient);
+
+            return (object)res;
+        }
+        #endregion
 
         public void Dispose()
         {
