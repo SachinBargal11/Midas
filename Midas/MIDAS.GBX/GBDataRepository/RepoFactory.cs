@@ -122,7 +122,10 @@ namespace MIDAS.GBX
             {
                 repo = new MaritalStatusRepository(context);
             }
-
+            if (typeof(T) == typeof(BO.Common.Gender))
+            {
+                repo = new GenderRepository(context);
+            }
 
 
 

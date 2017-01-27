@@ -16,12 +16,14 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         private IRequestHandler<State> requestStateHandler;
         private IRequestHandler<City> requestCityHandler;
         private IRequestHandler<MaritalStatus> requestMaritalStatusHandler;
+        private IRequestHandler<Gender> requestGenderHandler;
 
         public CommonController()
         {
             requestStateHandler = new GbApiRequestHandler<State>();
             requestCityHandler = new GbApiRequestHandler<City>();
-            requestMaritalStatusHandler = new GbApiRequestHandler<MaritalStatus>(); 
+            requestMaritalStatusHandler = new GbApiRequestHandler<MaritalStatus>();
+            requestGenderHandler = new GbApiRequestHandler<Gender>();
         }
 
         [HttpGet]
@@ -53,7 +55,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getall")]
+        [Route("Mstatusgetall")]
         public HttpResponseMessage GetMstatusAll()
         {
             return requestMaritalStatusHandler.GetObjects(Request);
@@ -65,6 +67,21 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         {
             return requestMaritalStatusHandler.GetObject(Request, id);
         }
+
+        [HttpGet]
+        [Route("Gendergetall")]
+        public HttpResponseMessage GenderGetAll()
+        {
+            return requestGenderHandler.GetObjects(Request);
+        }
+
+        [HttpGet]
+        [Route("getgender/{id}")]
+        public HttpResponseMessage GetGenderById(int id)
+        {
+            return requestGenderHandler.GetObject(Request, id);
+        }
+
 
 
     }

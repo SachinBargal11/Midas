@@ -65,6 +65,7 @@
     <Compile Include="DataAccessManager\IGbDataAccessManager.cs" />
     <Compile Include="EntityRepository\BaseEntityRepo.cs" />
     <Compile Include="EntityRepository\Common\CityRepository.cs" />
+    <Compile Include="EntityRepository\Common\GenderRepository.cs" />
     <Compile Include="EntityRepository\Common\MaritalStatusRepository.cs" />
     <Compile Include="EntityRepository\Common\StateRepository.cs" />
     <Compile Include="EntityRepository\Company\CompanyRepository.cs" />
