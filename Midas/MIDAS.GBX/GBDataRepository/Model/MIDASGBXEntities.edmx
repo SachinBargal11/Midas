@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AddressInfo">
           <Key>
             <PropertyRef Name="id" />
@@ -218,6 +218,14 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
+        <EntityType Name="MaritalStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" Nullable="false" />
+          <Property Name="StatusText" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
         <EntityType Name="OTP">
           <Key>
             <PropertyRef Name="id" />
@@ -265,6 +273,12 @@
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="Weight" Type="decimal" Precision="3" Scale="2" />
+          <Property Name="MaritalStatus" Type="tinyint" />
+          <Property Name="DrivingLicence" Type="nvarchar" MaxLength="15" />
+          <Property Name="EmergenceyContact" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmergenceyContactNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmergenceyContactRelation" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Room">
           <Key>
@@ -468,7 +482,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
@@ -719,6 +733,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Patient_MaritalStatus">
+          <End Role="MaritalStatus" Type="Self.MaritalStatus" Multiplicity="0..1" />
+          <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MaritalStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Patient">
+              <PropertyRef Name="MaritalStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Patient_User">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
@@ -779,6 +805,42 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SpecialityDetails_Specialty">
+          <End Role="Specialty" Type="Self.Specialty" Multiplicity="0..1" />
+          <End Role="SpecialityDetails" Type="Self.SpecialityDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Specialty">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="SpecialityDetails">
+              <PropertyRef Name="SpecialtyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Specialty_Specialty">
+          <End Role="Specialty" Type="Self.Specialty" Multiplicity="1" />
+          <End Role="Specialty1" Type="Self.Specialty" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Specialty">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Specialty1">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SpecialtyDetails_Specialty">
+          <End Role="Specialty" Type="Self.Specialty" Multiplicity="1" />
+          <End Role="SpecialtyDetails" Type="Self.SpecialtyDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Specialty">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="SpecialtyDetails">
+              <PropertyRef Name="SpecialtyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_User_AddressInfo">
           <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
@@ -800,6 +862,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="User">
               <PropertyRef Name="ContactInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_UserType">
+          <End Role="UserType" Type="Self.UserType" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserType">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="UserType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -854,6 +928,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="InvitationType" EntityType="Self.InvitationType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MaritalStatus" EntityType="Self.MaritalStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OTP" EntityType="Self.OTP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PasswordToken" EntityType="Self.PasswordToken" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient" EntityType="Self.Patient" Schema="dbo" store:Type="Tables" />
@@ -951,6 +1026,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Location" EntitySet="Location" />
             <End Role="Patient" EntitySet="Patient" />
           </AssociationSet>
+          <AssociationSet Name="FK_Patient_MaritalStatus" Association="Self.FK_Patient_MaritalStatus">
+            <End Role="MaritalStatus" EntitySet="MaritalStatus" />
+            <End Role="Patient" EntitySet="Patient" />
+          </AssociationSet>
           <AssociationSet Name="FK_Patient_User" Association="Self.FK_Patient_User">
             <End Role="User" EntitySet="User" />
             <End Role="Patient" EntitySet="Patient" />
@@ -971,12 +1050,28 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Schedule" EntitySet="Schedule" />
             <End Role="ScheduleDetail" EntitySet="ScheduleDetail" />
           </AssociationSet>
+          <AssociationSet Name="FK_SpecialityDetails_Specialty" Association="Self.FK_SpecialityDetails_Specialty">
+            <End Role="Specialty" EntitySet="Specialty" />
+            <End Role="SpecialityDetails" EntitySet="SpecialityDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Specialty_Specialty" Association="Self.FK_Specialty_Specialty">
+            <End Role="Specialty" EntitySet="Specialty" />
+            <End Role="Specialty1" EntitySet="Specialty" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SpecialtyDetails_Specialty" Association="Self.FK_SpecialtyDetails_Specialty">
+            <End Role="Specialty" EntitySet="Specialty" />
+            <End Role="SpecialtyDetails" EntitySet="SpecialtyDetails" />
+          </AssociationSet>
           <AssociationSet Name="FK_User_AddressInfo" Association="Self.FK_User_AddressInfo">
             <End Role="AddressInfo" EntitySet="AddressInfo" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
           <AssociationSet Name="FK_User_ContactInfo" Association="Self.FK_User_ContactInfo">
             <End Role="ContactInfo" EntitySet="ContactInfo" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_UserType" Association="Self.FK_User_UserType">
+            <End Role="UserType" EntitySet="UserType" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
           <AssociationSet Name="FK_UserCompany_Company" Association="Self.FK_UserCompany_Company">
@@ -992,194 +1087,51 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="UserCompanyRole" EntitySet="UserCompanyRole" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="MIDASGBXModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="MIDASGBXEntities" p1:LazyLoadingEnabled="true">
-          <EntitySet Name="AddressInfoes" EntityType="MIDASGBXModel.AddressInfo" />
-          <EntitySet Name="Companies" EntityType="MIDASGBXModel.Company" />
-          <EntitySet Name="CompanySpecialtyDetails" EntityType="MIDASGBXModel.CompanySpecialtyDetail" />
-          <EntitySet Name="CompanyTypes" EntityType="MIDASGBXModel.CompanyType" />
-          <EntitySet Name="ContactInfoes" EntityType="MIDASGBXModel.ContactInfo" />
-          <EntitySet Name="Doctors" EntityType="MIDASGBXModel.Doctor" />
-          <EntitySet Name="DoctorLocationSchedules" EntityType="MIDASGBXModel.DoctorLocationSchedule" />
-          <EntitySet Name="DoctorSpecialities" EntityType="MIDASGBXModel.DoctorSpeciality" />
-          <EntitySet Name="Invitations" EntityType="MIDASGBXModel.Invitation" />
-          <EntitySet Name="InvitationTypes" EntityType="MIDASGBXModel.InvitationType" />
-          <EntitySet Name="Locations" EntityType="MIDASGBXModel.Location" />
-          <EntitySet Name="Logs" EntityType="MIDASGBXModel.Log" />
-          <EntitySet Name="OTPs" EntityType="MIDASGBXModel.OTP" />
-          <EntitySet Name="PasswordTokens" EntityType="MIDASGBXModel.PasswordToken" />
-          <EntitySet Name="Patients" EntityType="MIDASGBXModel.Patient" />
-          <EntitySet Name="Rooms" EntityType="MIDASGBXModel.Room" />
-          <EntitySet Name="RoomTests" EntityType="MIDASGBXModel.RoomTest" />
-          <EntitySet Name="Schedules" EntityType="MIDASGBXModel.Schedule" />
-          <EntitySet Name="ScheduleDetails" EntityType="MIDASGBXModel.ScheduleDetail" />
-          <EntitySet Name="SpecialityDetails" EntityType="MIDASGBXModel.SpecialityDetail" />
-          <EntitySet Name="Specialties" EntityType="MIDASGBXModel.Specialty" />
-          <EntitySet Name="SpecialtyDetails" EntityType="MIDASGBXModel.SpecialtyDetail" />
-          <EntitySet Name="SubscriptionPlans" EntityType="MIDASGBXModel.SubscriptionPlan" />
-          <EntitySet Name="sysdiagrams" EntityType="MIDASGBXModel.sysdiagram" />
-          <EntitySet Name="Users" EntityType="MIDASGBXModel.User" />
-          <EntitySet Name="UserCompanies" EntityType="MIDASGBXModel.UserCompany" />
-          <EntitySet Name="UserCompanyRoles" EntityType="MIDASGBXModel.UserCompanyRole" />
-          <EntitySet Name="UserTypes" EntityType="MIDASGBXModel.UserType" />
-          <AssociationSet Name="FK_Company_AddressInfo" Association="MIDASGBXModel.FK_Company_AddressInfo">
-            <End Role="AddressInfo" EntitySet="AddressInfoes" />
-            <End Role="Company" EntitySet="Companies" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Location_AddressInfo" Association="MIDASGBXModel.FK_Location_AddressInfo">
-            <End Role="AddressInfo" EntitySet="AddressInfoes" />
-            <End Role="Location" EntitySet="Locations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_User_AddressInfo" Association="MIDASGBXModel.FK_User_AddressInfo">
-            <End Role="AddressInfo" EntitySet="AddressInfoes" />
-            <End Role="User" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Company_CompanyType" Association="MIDASGBXModel.FK_Company_CompanyType">
-            <End Role="CompanyType" EntitySet="CompanyTypes" />
-            <End Role="Company" EntitySet="Companies" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Company_ContactInfo" Association="MIDASGBXModel.FK_Company_ContactInfo">
-            <End Role="ContactInfo" EntitySet="ContactInfoes" />
-            <End Role="Company" EntitySet="Companies" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Company_SubscriptionPlan" Association="MIDASGBXModel.FK_Company_SubscriptionPlan">
-            <End Role="SubscriptionPlan" EntitySet="SubscriptionPlans" />
-            <End Role="Company" EntitySet="Companies" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CompanySpecialtyDetails_Company" Association="MIDASGBXModel.FK_CompanySpecialtyDetails_Company">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="CompanySpecialtyDetails" EntitySet="CompanySpecialtyDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Invitation_Company" Association="MIDASGBXModel.FK_Invitation_Company">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="Invitation" EntitySet="Invitations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Location_Company" Association="MIDASGBXModel.FK_Location_Company">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="Location" EntitySet="Locations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Patient_Company" Association="MIDASGBXModel.FK_Patient_Company">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="Patient" EntitySet="Patients" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserCompany_Company" Association="MIDASGBXModel.FK_UserCompany_Company">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="UserCompany" EntitySet="UserCompanies" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CompanySpecialtyDetails_Specialty" Association="MIDASGBXModel.FK_CompanySpecialtyDetails_Specialty">
-            <End Role="Specialty" EntitySet="Specialties" />
-            <End Role="CompanySpecialtyDetails" EntitySet="CompanySpecialtyDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Location_ContactInfo" Association="MIDASGBXModel.FK_Location_ContactInfo">
-            <End Role="ContactInfo" EntitySet="ContactInfoes" />
-            <End Role="Location" EntitySet="Locations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_User_ContactInfo" Association="MIDASGBXModel.FK_User_ContactInfo">
-            <End Role="ContactInfo" EntitySet="ContactInfoes" />
-            <End Role="User" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Doctor_User" Association="MIDASGBXModel.FK_Doctor_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Doctor" EntitySet="Doctors" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorLocationSchedule_Doctor" Association="MIDASGBXModel.FK_DoctorLocationSchedule_Doctor">
-            <End Role="Doctor" EntitySet="Doctors" />
-            <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedules" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorLocationSchedule_Location" Association="MIDASGBXModel.FK_DoctorLocationSchedule_Location">
-            <End Role="Location" EntitySet="Locations" />
-            <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedules" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorLocationSchedule_Schedule" Association="MIDASGBXModel.FK_DoctorLocationSchedule_Schedule">
-            <End Role="Schedule" EntitySet="Schedules" />
-            <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedules" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorSpecialities_Doctor" Association="MIDASGBXModel.FK_DoctorSpecialities_Doctor">
-            <End Role="User" EntitySet="Users" />
-            <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorSpecialities_Specialty" Association="MIDASGBXModel.FK_DoctorSpecialities_Specialty">
-            <End Role="Specialty" EntitySet="Specialties" />
-            <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Invitation_User_Invitation" Association="MIDASGBXModel.FK_Invitation_User_Invitation">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Invitation" EntitySet="Invitations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Location_Schedule" Association="MIDASGBXModel.FK_Location_Schedule">
-            <End Role="Schedule" EntitySet="Schedules" />
-            <End Role="Location" EntitySet="Locations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Patient_Location" Association="MIDASGBXModel.FK_Patient_Location">
-            <End Role="Location" EntitySet="Locations" />
-            <End Role="Patient" EntitySet="Patients" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Room_Location" Association="MIDASGBXModel.FK_Room_Location">
-            <End Role="Location" EntitySet="Locations" />
-            <End Role="Room" EntitySet="Rooms" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Patient_User" Association="MIDASGBXModel.FK_Patient_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Patient" EntitySet="Patients" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Room_RoomTest" Association="MIDASGBXModel.FK_Room_RoomTest">
-            <End Role="RoomTest" EntitySet="RoomTests" />
-            <End Role="Room" EntitySet="Rooms" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Room_Schedule" Association="MIDASGBXModel.FK_Room_Schedule">
-            <End Role="Schedule" EntitySet="Schedules" />
-            <End Role="Room" EntitySet="Rooms" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ScheduleDetail_Schedule" Association="MIDASGBXModel.FK_ScheduleDetail_Schedule">
-            <End Role="Schedule" EntitySet="Schedules" />
-            <End Role="ScheduleDetail" EntitySet="ScheduleDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserCompany_User" Association="MIDASGBXModel.FK_UserCompany_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="UserCompany" EntitySet="UserCompanies" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserCompanyRole_User" Association="MIDASGBXModel.FK_UserCompanyRole_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="UserCompanyRole" EntitySet="UserCompanyRoles" />
-          </AssociationSet>
-          <EntitySet Name="Cities" EntityType="MIDASGBXModel.City" />
-          <EntitySet Name="States" EntityType="MIDASGBXModel.State" />
-          <EntitySet Name="Genders" EntityType="MIDASGBXModel.Gender" />
-        </EntityContainer>
+      <Schema Namespace="MIDASGBXModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="AddressInfo">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Address1" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
-          <Property Name="Address2" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
-          <Property Name="City" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="State" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="ZipCode" Type="String" MaxLength="10" Unicode="true" FixedLength="false" />
-          <Property Name="Country" Type="String" MaxLength="10" Unicode="true" FixedLength="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Address2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ZipCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Companies" Relationship="MIDASGBXModel.FK_Company_AddressInfo" FromRole="AddressInfo" ToRole="Company" />
-          <NavigationProperty Name="Locations" Relationship="MIDASGBXModel.FK_Location_AddressInfo" FromRole="AddressInfo" ToRole="Location" />
-          <NavigationProperty Name="Users" Relationship="MIDASGBXModel.FK_User_AddressInfo" FromRole="AddressInfo" ToRole="User" />
+          <NavigationProperty Name="Companies" Relationship="Self.FK_Company_AddressInfo" FromRole="AddressInfo" ToRole="Company" />
+          <NavigationProperty Name="Locations" Relationship="Self.FK_Location_AddressInfo" FromRole="AddressInfo" ToRole="Location" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_User_AddressInfo" FromRole="AddressInfo" ToRole="User" />
+        </EntityType>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" />
+          <Property Name="StateCode" Type="String" MaxLength="2" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CityText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Status" Type="Byte" Nullable="false" />
           <Property Name="CompanyType" Type="Int32" Nullable="false" />
           <Property Name="SubscriptionPlanType" Type="Int32" Nullable="false" />
-          <Property Name="TaxID" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
+          <Property Name="TaxID" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="AddressId" Type="Int32" Nullable="false" />
           <Property Name="ContactInfoID" Type="Int32" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
@@ -1187,21 +1139,21 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="AddressInfo" Relationship="MIDASGBXModel.FK_Company_AddressInfo" FromRole="Company" ToRole="AddressInfo" />
-          <NavigationProperty Name="CompanyType1" Relationship="MIDASGBXModel.FK_Company_CompanyType" FromRole="Company" ToRole="CompanyType" />
-          <NavigationProperty Name="ContactInfo" Relationship="MIDASGBXModel.FK_Company_ContactInfo" FromRole="Company" ToRole="ContactInfo" />
-          <NavigationProperty Name="SubscriptionPlan" Relationship="MIDASGBXModel.FK_Company_SubscriptionPlan" FromRole="Company" ToRole="SubscriptionPlan" />
-          <NavigationProperty Name="CompanySpecialtyDetails" Relationship="MIDASGBXModel.FK_CompanySpecialtyDetails_Company" FromRole="Company" ToRole="CompanySpecialtyDetails" />
-          <NavigationProperty Name="Invitations" Relationship="MIDASGBXModel.FK_Invitation_Company" FromRole="Company" ToRole="Invitation" />
-          <NavigationProperty Name="Locations" Relationship="MIDASGBXModel.FK_Location_Company" FromRole="Company" ToRole="Location" />
-          <NavigationProperty Name="Patients" Relationship="MIDASGBXModel.FK_Patient_Company" FromRole="Company" ToRole="Patient" />
-          <NavigationProperty Name="UserCompanies" Relationship="MIDASGBXModel.FK_UserCompany_Company" FromRole="Company" ToRole="UserCompany" />
+          <NavigationProperty Name="AddressInfo" Relationship="Self.FK_Company_AddressInfo" FromRole="Company" ToRole="AddressInfo" />
+          <NavigationProperty Name="CompanyType1" Relationship="Self.FK_Company_CompanyType" FromRole="Company" ToRole="CompanyType" />
+          <NavigationProperty Name="ContactInfo" Relationship="Self.FK_Company_ContactInfo" FromRole="Company" ToRole="ContactInfo" />
+          <NavigationProperty Name="SubscriptionPlan" Relationship="Self.FK_Company_SubscriptionPlan" FromRole="Company" ToRole="SubscriptionPlan" />
+          <NavigationProperty Name="CompanySpecialtyDetails" Relationship="Self.FK_CompanySpecialtyDetails_Company" FromRole="Company" ToRole="CompanySpecialtyDetails" />
+          <NavigationProperty Name="Invitations" Relationship="Self.FK_Invitation_Company" FromRole="Company" ToRole="Invitation" />
+          <NavigationProperty Name="Locations" Relationship="Self.FK_Location_Company" FromRole="Company" ToRole="Location" />
+          <NavigationProperty Name="Patients" Relationship="Self.FK_Patient_Company" FromRole="Company" ToRole="Patient" />
+          <NavigationProperty Name="UserCompanies" Relationship="Self.FK_UserCompany_Company" FromRole="Company" ToRole="UserCompany" />
         </EntityType>
         <EntityType Name="CompanySpecialtyDetail">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SpecialtyId" Type="Int32" />
           <Property Name="CompanyID" Type="Int32" />
           <Property Name="ReevalDays" Type="Int32" />
@@ -1218,67 +1170,67 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Company" Relationship="MIDASGBXModel.FK_CompanySpecialtyDetails_Company" FromRole="CompanySpecialtyDetails" ToRole="Company" />
-          <NavigationProperty Name="Specialty" Relationship="MIDASGBXModel.FK_CompanySpecialtyDetails_Specialty" FromRole="CompanySpecialtyDetails" ToRole="Specialty" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_CompanySpecialtyDetails_Company" FromRole="CompanySpecialtyDetails" ToRole="Company" />
+          <NavigationProperty Name="Specialty" Relationship="Self.FK_CompanySpecialtyDetails_Specialty" FromRole="CompanySpecialtyDetails" ToRole="Specialty" />
         </EntityType>
         <EntityType Name="CompanyType">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Companies" Relationship="MIDASGBXModel.FK_Company_CompanyType" FromRole="CompanyType" ToRole="Company" />
+          <NavigationProperty Name="Companies" Relationship="Self.FK_Company_CompanyType" FromRole="CompanyType" ToRole="Company" />
         </EntityType>
         <EntityType Name="ContactInfo">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="CellPhone" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="EmailAddress" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
-          <Property Name="HomePhone" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="WorkPhone" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="FaxNo" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CellPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmailAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="HomePhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WorkPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FaxNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Companies" Relationship="MIDASGBXModel.FK_Company_ContactInfo" FromRole="ContactInfo" ToRole="Company" />
-          <NavigationProperty Name="Locations" Relationship="MIDASGBXModel.FK_Location_ContactInfo" FromRole="ContactInfo" ToRole="Location" />
-          <NavigationProperty Name="Users" Relationship="MIDASGBXModel.FK_User_ContactInfo" FromRole="ContactInfo" ToRole="User" />
+          <NavigationProperty Name="Companies" Relationship="Self.FK_Company_ContactInfo" FromRole="ContactInfo" ToRole="Company" />
+          <NavigationProperty Name="Locations" Relationship="Self.FK_Location_ContactInfo" FromRole="ContactInfo" ToRole="Location" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_User_ContactInfo" FromRole="ContactInfo" ToRole="User" />
         </EntityType>
         <EntityType Name="Doctor">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="LicenseNumber" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="WCBAuthorization" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="WcbRatingCode" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="NPI" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LicenseNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WCBAuthorization" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WcbRatingCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NPI" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="TaxType" Type="Byte" />
-          <Property Name="Title" Type="String" MaxLength="10" Unicode="true" FixedLength="false" />
+          <Property Name="Title" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="UserID" Type="Int32" />
-          <NavigationProperty Name="User" Relationship="MIDASGBXModel.FK_Doctor_User" FromRole="Doctor" ToRole="User" />
-          <NavigationProperty Name="DoctorLocationSchedules" Relationship="MIDASGBXModel.FK_DoctorLocationSchedule_Doctor" FromRole="Doctor" ToRole="DoctorLocationSchedule" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Doctor_User" FromRole="Doctor" ToRole="User" />
+          <NavigationProperty Name="DoctorLocationSchedules" Relationship="Self.FK_DoctorLocationSchedule_Doctor" FromRole="Doctor" ToRole="DoctorLocationSchedule" />
         </EntityType>
         <EntityType Name="DoctorLocationSchedule">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DoctorID" Type="Int32" Nullable="false" />
           <Property Name="LocationID" Type="Int32" Nullable="false" />
           <Property Name="ScheduleID" Type="Int32" Nullable="false" />
@@ -1287,15 +1239,15 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Doctor" Relationship="MIDASGBXModel.FK_DoctorLocationSchedule_Doctor" FromRole="DoctorLocationSchedule" ToRole="Doctor" />
-          <NavigationProperty Name="Location" Relationship="MIDASGBXModel.FK_DoctorLocationSchedule_Location" FromRole="DoctorLocationSchedule" ToRole="Location" />
-          <NavigationProperty Name="Schedule" Relationship="MIDASGBXModel.FK_DoctorLocationSchedule_Schedule" FromRole="DoctorLocationSchedule" ToRole="Schedule" />
+          <NavigationProperty Name="Doctor" Relationship="Self.FK_DoctorLocationSchedule_Doctor" FromRole="DoctorLocationSchedule" ToRole="Doctor" />
+          <NavigationProperty Name="Location" Relationship="Self.FK_DoctorLocationSchedule_Location" FromRole="DoctorLocationSchedule" ToRole="Location" />
+          <NavigationProperty Name="Schedule" Relationship="Self.FK_DoctorLocationSchedule_Schedule" FromRole="DoctorLocationSchedule" ToRole="Schedule" />
         </EntityType>
         <EntityType Name="DoctorSpeciality">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DoctorID" Type="Int32" Nullable="false" />
           <Property Name="SpecialityID" Type="Int32" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
@@ -1303,14 +1255,22 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="User" Relationship="MIDASGBXModel.FK_DoctorSpecialities_Doctor" FromRole="DoctorSpecialities" ToRole="User" />
-          <NavigationProperty Name="Specialty" Relationship="MIDASGBXModel.FK_DoctorSpecialities_Specialty" FromRole="DoctorSpecialities" ToRole="Specialty" />
+          <NavigationProperty Name="User" Relationship="Self.FK_DoctorSpecialities_Doctor" FromRole="DoctorSpecialities" ToRole="User" />
+          <NavigationProperty Name="Specialty" Relationship="Self.FK_DoctorSpecialities_Specialty" FromRole="DoctorSpecialities" ToRole="Specialty" />
+        </EntityType>
+        <EntityType Name="Gender">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" />
+          <Property Name="GenderText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
         </EntityType>
         <EntityType Name="Invitation">
           <Key>
             <PropertyRef Name="InvitationID" />
           </Key>
-          <Property Name="InvitationID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="InvitationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CompanyID" Type="Int32" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="UniqueID" Type="Guid" Nullable="false" />
@@ -1321,15 +1281,15 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Company" Relationship="MIDASGBXModel.FK_Invitation_Company" FromRole="Invitation" ToRole="Company" />
-          <NavigationProperty Name="User" Relationship="MIDASGBXModel.FK_Invitation_User_Invitation" FromRole="Invitation" ToRole="User" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_Invitation_Company" FromRole="Invitation" ToRole="Company" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Invitation_User_Invitation" FromRole="Invitation" ToRole="User" />
         </EntityType>
         <EntityType Name="InvitationType">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
@@ -1340,8 +1300,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CompanyID" Type="Int32" Nullable="false" />
           <Property Name="ScheduleID" Type="Int32" />
           <Property Name="AddressInfoID" Type="Int32" Nullable="false" />
@@ -1353,37 +1313,46 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="AddressInfo" Relationship="MIDASGBXModel.FK_Location_AddressInfo" FromRole="Location" ToRole="AddressInfo" />
-          <NavigationProperty Name="Company" Relationship="MIDASGBXModel.FK_Location_Company" FromRole="Location" ToRole="Company" />
-          <NavigationProperty Name="ContactInfo" Relationship="MIDASGBXModel.FK_Location_ContactInfo" FromRole="Location" ToRole="ContactInfo" />
-          <NavigationProperty Name="DoctorLocationSchedules" Relationship="MIDASGBXModel.FK_DoctorLocationSchedule_Location" FromRole="Location" ToRole="DoctorLocationSchedule" />
-          <NavigationProperty Name="Schedule" Relationship="MIDASGBXModel.FK_Location_Schedule" FromRole="Location" ToRole="Schedule" />
-          <NavigationProperty Name="Patients" Relationship="MIDASGBXModel.FK_Patient_Location" FromRole="Location" ToRole="Patient" />
-          <NavigationProperty Name="Rooms" Relationship="MIDASGBXModel.FK_Room_Location" FromRole="Location" ToRole="Room" />
+          <NavigationProperty Name="AddressInfo" Relationship="Self.FK_Location_AddressInfo" FromRole="Location" ToRole="AddressInfo" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_Location_Company" FromRole="Location" ToRole="Company" />
+          <NavigationProperty Name="ContactInfo" Relationship="Self.FK_Location_ContactInfo" FromRole="Location" ToRole="ContactInfo" />
+          <NavigationProperty Name="DoctorLocationSchedules" Relationship="Self.FK_DoctorLocationSchedule_Location" FromRole="Location" ToRole="DoctorLocationSchedule" />
+          <NavigationProperty Name="Schedule" Relationship="Self.FK_Location_Schedule" FromRole="Location" ToRole="Schedule" />
+          <NavigationProperty Name="Patients" Relationship="Self.FK_Patient_Location" FromRole="Location" ToRole="Patient" />
+          <NavigationProperty Name="Rooms" Relationship="Self.FK_Room_Location" FromRole="Location" ToRole="Room" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="RequestID" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
-          <Property Name="ResponseID" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
-          <Property Name="IpAddress" Type="String" Nullable="false" MaxLength="15" Unicode="true" FixedLength="false" />
-          <Property Name="Country" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="MachineName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RequestID" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ResponseID" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IpAddress" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MachineName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="RequestURL" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="RequestURL" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
         </EntityType>
+        <EntityType Name="MaritalStatu">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" />
+          <Property Name="StatusText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="Patients" Relationship="Self.FK_Patient_MaritalStatus" FromRole="MaritalStatus" ToRole="Patient" />
+        </EntityType>
         <EntityType Name="OTP">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="Pin" Type="Int32" Nullable="false" />
           <Property Name="OTP1" Type="Int32" Nullable="false" />
@@ -1397,8 +1366,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="TokenHash" Type="Guid" Nullable="false" />
           <Property Name="IsTokenUsed" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
@@ -1411,14 +1380,14 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PatientID" Type="Int32" Nullable="false" />
-          <Property Name="SSN" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="WCBNo" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="JobTitle" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="WorkActivities" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="CarrierCaseNo" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="ChartNo" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="SSN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="WCBNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="JobTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WorkActivities" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CarrierCaseNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ChartNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CompanyID" Type="Int32" Nullable="false" />
           <Property Name="LocationID" Type="Int32" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
@@ -1426,18 +1395,25 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Company" Relationship="MIDASGBXModel.FK_Patient_Company" FromRole="Patient" ToRole="Company" />
-          <NavigationProperty Name="Location" Relationship="MIDASGBXModel.FK_Patient_Location" FromRole="Patient" ToRole="Location" />
-          <NavigationProperty Name="User" Relationship="MIDASGBXModel.FK_Patient_User" FromRole="Patient" ToRole="User" />
+          <Property Name="Weight" Type="Decimal" Precision="3" Scale="2" />
+          <Property Name="MaritalStatus" Type="Byte" />
+          <Property Name="DrivingLicence" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="EmergenceyContact" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmergenceyContactNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmergenceyContactRelation" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_Patient_Company" FromRole="Patient" ToRole="Company" />
+          <NavigationProperty Name="Location" Relationship="Self.FK_Patient_Location" FromRole="Patient" ToRole="Location" />
+          <NavigationProperty Name="MaritalStatu" Relationship="Self.FK_Patient_MaritalStatus" FromRole="Patient" ToRole="MaritalStatus" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Patient_User" FromRole="Patient" ToRole="User" />
         </EntityType>
         <EntityType Name="Room">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="ContactPersonName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Phone" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ContactPersonName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ScheduleID" Type="Int32" />
           <Property Name="LocationID" Type="Int32" Nullable="false" />
           <Property Name="RoomTestID" Type="Int32" Nullable="false" />
@@ -1446,46 +1422,46 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Location" Relationship="MIDASGBXModel.FK_Room_Location" FromRole="Room" ToRole="Location" />
-          <NavigationProperty Name="RoomTest" Relationship="MIDASGBXModel.FK_Room_RoomTest" FromRole="Room" ToRole="RoomTest" />
-          <NavigationProperty Name="Schedule" Relationship="MIDASGBXModel.FK_Room_Schedule" FromRole="Room" ToRole="Schedule" />
+          <NavigationProperty Name="Location" Relationship="Self.FK_Room_Location" FromRole="Room" ToRole="Location" />
+          <NavigationProperty Name="RoomTest" Relationship="Self.FK_Room_RoomTest" FromRole="Room" ToRole="RoomTest" />
+          <NavigationProperty Name="Schedule" Relationship="Self.FK_Room_Schedule" FromRole="Room" ToRole="Schedule" />
         </EntityType>
         <EntityType Name="RoomTest">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Rooms" Relationship="MIDASGBXModel.FK_Room_RoomTest" FromRole="RoomTest" ToRole="Room" />
+          <NavigationProperty Name="Rooms" Relationship="Self.FK_Room_RoomTest" FromRole="RoomTest" ToRole="Room" />
         </EntityType>
         <EntityType Name="Schedule">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="IsDefault" Type="Boolean" Nullable="false" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="DoctorLocationSchedules" Relationship="MIDASGBXModel.FK_DoctorLocationSchedule_Schedule" FromRole="Schedule" ToRole="DoctorLocationSchedule" />
-          <NavigationProperty Name="Locations" Relationship="MIDASGBXModel.FK_Location_Schedule" FromRole="Schedule" ToRole="Location" />
-          <NavigationProperty Name="Rooms" Relationship="MIDASGBXModel.FK_Room_Schedule" FromRole="Schedule" ToRole="Room" />
-          <NavigationProperty Name="ScheduleDetails" Relationship="MIDASGBXModel.FK_ScheduleDetail_Schedule" FromRole="Schedule" ToRole="ScheduleDetail" />
+          <NavigationProperty Name="DoctorLocationSchedules" Relationship="Self.FK_DoctorLocationSchedule_Schedule" FromRole="Schedule" ToRole="DoctorLocationSchedule" />
+          <NavigationProperty Name="Locations" Relationship="Self.FK_Location_Schedule" FromRole="Schedule" ToRole="Location" />
+          <NavigationProperty Name="Rooms" Relationship="Self.FK_Room_Schedule" FromRole="Schedule" ToRole="Room" />
+          <NavigationProperty Name="ScheduleDetails" Relationship="Self.FK_ScheduleDetail_Schedule" FromRole="Schedule" ToRole="ScheduleDetail" />
         </EntityType>
         <EntityType Name="ScheduleDetail">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ScheduleID" Type="Int32" Nullable="false" />
           <Property Name="DayOfWeek" Type="Int32" Nullable="false" />
           <Property Name="SlotStart" Type="Time" Nullable="false" Precision="7" />
@@ -1497,13 +1473,13 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Schedule" Relationship="MIDASGBXModel.FK_ScheduleDetail_Schedule" FromRole="ScheduleDetail" ToRole="Schedule" />
+          <NavigationProperty Name="Schedule" Relationship="Self.FK_ScheduleDetail_Schedule" FromRole="ScheduleDetail" ToRole="Schedule" />
         </EntityType>
         <EntityType Name="SpecialityDetail">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SpecialtyId" Type="Int32" />
           <Property Name="ReevalDays" Type="Int32" />
           <Property Name="ReevalVisitCount" Type="Int32" />
@@ -1519,28 +1495,33 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Specialty" Relationship="Self.FK_SpecialityDetails_Specialty" FromRole="SpecialityDetails" ToRole="Specialty" />
         </EntityType>
         <EntityType Name="Specialty">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="SpecialityCode" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SpecialityCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsUnitApply" Type="Boolean" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="CompanySpecialtyDetails" Relationship="MIDASGBXModel.FK_CompanySpecialtyDetails_Specialty" FromRole="Specialty" ToRole="CompanySpecialtyDetails" />
-          <NavigationProperty Name="DoctorSpecialities" Relationship="MIDASGBXModel.FK_DoctorSpecialities_Specialty" FromRole="Specialty" ToRole="DoctorSpecialities" />
+          <NavigationProperty Name="CompanySpecialtyDetails" Relationship="Self.FK_CompanySpecialtyDetails_Specialty" FromRole="Specialty" ToRole="CompanySpecialtyDetails" />
+          <NavigationProperty Name="DoctorSpecialities" Relationship="Self.FK_DoctorSpecialities_Specialty" FromRole="Specialty" ToRole="DoctorSpecialities" />
+          <NavigationProperty Name="SpecialityDetails" Relationship="Self.FK_SpecialityDetails_Specialty" FromRole="Specialty" ToRole="SpecialityDetails" />
+          <NavigationProperty Name="Specialty1" Relationship="Self.FK_Specialty_Specialty" FromRole="Specialty" ToRole="Specialty1" />
+          <NavigationProperty Name="Specialty2" Relationship="Self.FK_Specialty_Specialty" FromRole="Specialty1" ToRole="Specialty" />
+          <NavigationProperty Name="SpecialtyDetails" Relationship="Self.FK_SpecialtyDetails_Specialty" FromRole="Specialty" ToRole="SpecialtyDetails" />
         </EntityType>
         <EntityType Name="SpecialtyDetail">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SpecialtyId" Type="Int32" Nullable="false" />
           <Property Name="ReevalDays" Type="Int32" />
           <Property Name="ReevalVisitCount" Type="Int32" />
@@ -1556,27 +1537,37 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Specialty" Relationship="Self.FK_SpecialtyDetails_Specialty" FromRole="SpecialtyDetails" ToRole="Specialty" />
+        </EntityType>
+        <EntityType Name="State">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" />
+          <Property Name="StateCode" Type="String" MaxLength="2" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StateText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
         </EntityType>
         <EntityType Name="SubscriptionPlan">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Companies" Relationship="MIDASGBXModel.FK_Company_SubscriptionPlan" FromRole="SubscriptionPlan" ToRole="Company" />
+          <NavigationProperty Name="Companies" Relationship="Self.FK_Company_SubscriptionPlan" FromRole="SubscriptionPlan" ToRole="Company" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
             <PropertyRef Name="diagram_id" />
           </Key>
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="version" Type="Int32" />
           <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
@@ -1584,19 +1575,19 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="MiddleName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Gender" Type="Byte" />
           <Property Name="UserType" Type="Byte" Nullable="false" />
           <Property Name="UserStatus" Type="Byte" />
-          <Property Name="ImageLink" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="ImageLink" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="AddressId" Type="Int32" Nullable="false" />
           <Property Name="ContactInfoId" Type="Int32" Nullable="false" />
           <Property Name="DateOfBirth" Type="DateTime" Precision="7" />
-          <Property Name="Password" Type="String" MaxLength="2000" Unicode="false" FixedLength="false" />
+          <Property Name="Password" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
@@ -1604,20 +1595,21 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="C2FactAuthEmailEnabled" Type="Boolean" />
           <Property Name="C2FactAuthSMSEnabled" Type="Boolean" />
-          <NavigationProperty Name="AddressInfo" Relationship="MIDASGBXModel.FK_User_AddressInfo" FromRole="User" ToRole="AddressInfo" />
-          <NavigationProperty Name="ContactInfo" Relationship="MIDASGBXModel.FK_User_ContactInfo" FromRole="User" ToRole="ContactInfo" />
-          <NavigationProperty Name="Doctors" Relationship="MIDASGBXModel.FK_Doctor_User" FromRole="User" ToRole="Doctor" />
-          <NavigationProperty Name="DoctorSpecialities" Relationship="MIDASGBXModel.FK_DoctorSpecialities_Doctor" FromRole="User" ToRole="DoctorSpecialities" />
-          <NavigationProperty Name="Invitations" Relationship="MIDASGBXModel.FK_Invitation_User_Invitation" FromRole="User" ToRole="Invitation" />
-          <NavigationProperty Name="Patients" Relationship="MIDASGBXModel.FK_Patient_User" FromRole="User" ToRole="Patient" />
-          <NavigationProperty Name="UserCompanies" Relationship="MIDASGBXModel.FK_UserCompany_User" FromRole="User" ToRole="UserCompany" />
-          <NavigationProperty Name="UserCompanyRoles" Relationship="MIDASGBXModel.FK_UserCompanyRole_User" FromRole="User" ToRole="UserCompanyRole" />
+          <NavigationProperty Name="AddressInfo" Relationship="Self.FK_User_AddressInfo" FromRole="User" ToRole="AddressInfo" />
+          <NavigationProperty Name="ContactInfo" Relationship="Self.FK_User_ContactInfo" FromRole="User" ToRole="ContactInfo" />
+          <NavigationProperty Name="Doctors" Relationship="Self.FK_Doctor_User" FromRole="User" ToRole="Doctor" />
+          <NavigationProperty Name="DoctorSpecialities" Relationship="Self.FK_DoctorSpecialities_Doctor" FromRole="User" ToRole="DoctorSpecialities" />
+          <NavigationProperty Name="Invitations" Relationship="Self.FK_Invitation_User_Invitation" FromRole="User" ToRole="Invitation" />
+          <NavigationProperty Name="Patients" Relationship="Self.FK_Patient_User" FromRole="User" ToRole="Patient" />
+          <NavigationProperty Name="UserType1" Relationship="Self.FK_User_UserType" FromRole="User" ToRole="UserType" />
+          <NavigationProperty Name="UserCompanies" Relationship="Self.FK_UserCompany_User" FromRole="User" ToRole="UserCompany" />
+          <NavigationProperty Name="UserCompanyRoles" Relationship="Self.FK_UserCompanyRole_User" FromRole="User" ToRole="UserCompanyRole" />
         </EntityType>
         <EntityType Name="UserCompany">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="CompanyID" Type="Int32" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
@@ -1625,14 +1617,14 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Company" Relationship="MIDASGBXModel.FK_UserCompany_Company" FromRole="UserCompany" ToRole="Company" />
-          <NavigationProperty Name="User" Relationship="MIDASGBXModel.FK_UserCompany_User" FromRole="UserCompany" ToRole="User" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_UserCompany_Company" FromRole="UserCompany" ToRole="Company" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserCompany_User" FromRole="UserCompany" ToRole="User" />
         </EntityType>
         <EntityType Name="UserCompanyRole">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="RoleID" Type="Int32" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
@@ -1640,23 +1632,24 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="User" Relationship="MIDASGBXModel.FK_UserCompanyRole_User" FromRole="UserCompanyRole" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserCompanyRole_User" FromRole="UserCompanyRole" ToRole="User" />
         </EntityType>
         <EntityType Name="UserType">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="id" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_User_UserType" FromRole="UserType" ToRole="User" />
         </EntityType>
         <Association Name="FK_Company_AddressInfo">
-          <End Role="AddressInfo" Type="MIDASGBXModel.AddressInfo" Multiplicity="1" />
-          <End Role="Company" Type="MIDASGBXModel.Company" Multiplicity="*" />
+          <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AddressInfo">
               <PropertyRef Name="id" />
@@ -1667,8 +1660,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Location_AddressInfo">
-          <End Role="AddressInfo" Type="MIDASGBXModel.AddressInfo" Multiplicity="1" />
-          <End Role="Location" Type="MIDASGBXModel.Location" Multiplicity="*" />
+          <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="1" />
+          <End Role="Location" Type="Self.Location" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AddressInfo">
               <PropertyRef Name="id" />
@@ -1679,8 +1672,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_User_AddressInfo">
-          <End Role="AddressInfo" Type="MIDASGBXModel.AddressInfo" Multiplicity="1" />
-          <End Role="User" Type="MIDASGBXModel.User" Multiplicity="*" />
+          <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AddressInfo">
               <PropertyRef Name="id" />
@@ -1691,8 +1684,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Company_CompanyType">
-          <End Role="CompanyType" Type="MIDASGBXModel.CompanyType" Multiplicity="1" />
-          <End Role="Company" Type="MIDASGBXModel.Company" Multiplicity="*" />
+          <End Role="CompanyType" Type="Self.CompanyType" Multiplicity="1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="CompanyType">
               <PropertyRef Name="id" />
@@ -1703,8 +1696,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Company_ContactInfo">
-          <End Role="ContactInfo" Type="MIDASGBXModel.ContactInfo" Multiplicity="1" />
-          <End Role="Company" Type="MIDASGBXModel.Company" Multiplicity="*" />
+          <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ContactInfo">
               <PropertyRef Name="id" />
@@ -1715,8 +1708,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Company_SubscriptionPlan">
-          <End Role="SubscriptionPlan" Type="MIDASGBXModel.SubscriptionPlan" Multiplicity="1" />
-          <End Role="Company" Type="MIDASGBXModel.Company" Multiplicity="*" />
+          <End Role="SubscriptionPlan" Type="Self.SubscriptionPlan" Multiplicity="1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SubscriptionPlan">
               <PropertyRef Name="id" />
@@ -1727,8 +1720,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CompanySpecialtyDetails_Company">
-          <End Role="Company" Type="MIDASGBXModel.Company" Multiplicity="0..1" />
-          <End Role="CompanySpecialtyDetails" Type="MIDASGBXModel.CompanySpecialtyDetail" Multiplicity="*" />
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="CompanySpecialtyDetails" Type="Self.CompanySpecialtyDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="id" />
@@ -1739,8 +1732,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Invitation_Company">
-          <End Role="Company" Type="MIDASGBXModel.Company" Multiplicity="1" />
-          <End Role="Invitation" Type="MIDASGBXModel.Invitation" Multiplicity="*" />
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="Invitation" Type="Self.Invitation" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="id" />
@@ -1751,8 +1744,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Location_Company">
-          <End Role="Company" Type="MIDASGBXModel.Company" Multiplicity="1" />
-          <End Role="Location" Type="MIDASGBXModel.Location" Multiplicity="*" />
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="Location" Type="Self.Location" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="id" />
@@ -1763,8 +1756,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Patient_Company">
-          <End Role="Company" Type="MIDASGBXModel.Company" Multiplicity="1" />
-          <End Role="Patient" Type="MIDASGBXModel.Patient" Multiplicity="*" />
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="id" />
@@ -1775,8 +1768,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserCompany_Company">
-          <End Role="Company" Type="MIDASGBXModel.Company" Multiplicity="1" />
-          <End Role="UserCompany" Type="MIDASGBXModel.UserCompany" Multiplicity="*" />
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="UserCompany" Type="Self.UserCompany" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
               <PropertyRef Name="id" />
@@ -1787,8 +1780,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CompanySpecialtyDetails_Specialty">
-          <End Role="Specialty" Type="MIDASGBXModel.Specialty" Multiplicity="0..1" />
-          <End Role="CompanySpecialtyDetails" Type="MIDASGBXModel.CompanySpecialtyDetail" Multiplicity="*" />
+          <End Role="Specialty" Type="Self.Specialty" Multiplicity="0..1" />
+          <End Role="CompanySpecialtyDetails" Type="Self.CompanySpecialtyDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Specialty">
               <PropertyRef Name="id" />
@@ -1799,8 +1792,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Location_ContactInfo">
-          <End Role="ContactInfo" Type="MIDASGBXModel.ContactInfo" Multiplicity="1" />
-          <End Role="Location" Type="MIDASGBXModel.Location" Multiplicity="*" />
+          <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="1" />
+          <End Role="Location" Type="Self.Location" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ContactInfo">
               <PropertyRef Name="id" />
@@ -1811,8 +1804,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_User_ContactInfo">
-          <End Role="ContactInfo" Type="MIDASGBXModel.ContactInfo" Multiplicity="1" />
-          <End Role="User" Type="MIDASGBXModel.User" Multiplicity="*" />
+          <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ContactInfo">
               <PropertyRef Name="id" />
@@ -1823,8 +1816,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Doctor_User">
-          <End Role="User" Type="MIDASGBXModel.User" Multiplicity="0..1" />
-          <End Role="Doctor" Type="MIDASGBXModel.Doctor" Multiplicity="*" />
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="id" />
@@ -1835,8 +1828,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DoctorLocationSchedule_Doctor">
-          <End Role="Doctor" Type="MIDASGBXModel.Doctor" Multiplicity="1" />
-          <End Role="DoctorLocationSchedule" Type="MIDASGBXModel.DoctorLocationSchedule" Multiplicity="*" />
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="DoctorLocationSchedule" Type="Self.DoctorLocationSchedule" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Doctor">
               <PropertyRef Name="id" />
@@ -1847,8 +1840,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DoctorLocationSchedule_Location">
-          <End Role="Location" Type="MIDASGBXModel.Location" Multiplicity="1" />
-          <End Role="DoctorLocationSchedule" Type="MIDASGBXModel.DoctorLocationSchedule" Multiplicity="*" />
+          <End Role="Location" Type="Self.Location" Multiplicity="1" />
+          <End Role="DoctorLocationSchedule" Type="Self.DoctorLocationSchedule" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Location">
               <PropertyRef Name="id" />
@@ -1859,8 +1852,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DoctorLocationSchedule_Schedule">
-          <End Role="Schedule" Type="MIDASGBXModel.Schedule" Multiplicity="1" />
-          <End Role="DoctorLocationSchedule" Type="MIDASGBXModel.DoctorLocationSchedule" Multiplicity="*" />
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="1" />
+          <End Role="DoctorLocationSchedule" Type="Self.DoctorLocationSchedule" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Schedule">
               <PropertyRef Name="id" />
@@ -1871,8 +1864,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DoctorSpecialities_Doctor">
-          <End Role="User" Type="MIDASGBXModel.User" Multiplicity="1" />
-          <End Role="DoctorSpecialities" Type="MIDASGBXModel.DoctorSpeciality" Multiplicity="*" />
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="DoctorSpecialities" Type="Self.DoctorSpeciality" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="id" />
@@ -1883,8 +1876,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_DoctorSpecialities_Specialty">
-          <End Role="Specialty" Type="MIDASGBXModel.Specialty" Multiplicity="1" />
-          <End Role="DoctorSpecialities" Type="MIDASGBXModel.DoctorSpeciality" Multiplicity="*" />
+          <End Role="Specialty" Type="Self.Specialty" Multiplicity="1" />
+          <End Role="DoctorSpecialities" Type="Self.DoctorSpeciality" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Specialty">
               <PropertyRef Name="id" />
@@ -1895,8 +1888,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Invitation_User_Invitation">
-          <End Role="User" Type="MIDASGBXModel.User" Multiplicity="1" />
-          <End Role="Invitation" Type="MIDASGBXModel.Invitation" Multiplicity="*" />
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Invitation" Type="Self.Invitation" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="id" />
@@ -1907,8 +1900,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Location_Schedule">
-          <End Role="Schedule" Type="MIDASGBXModel.Schedule" Multiplicity="0..1" />
-          <End Role="Location" Type="MIDASGBXModel.Location" Multiplicity="*" />
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="0..1" />
+          <End Role="Location" Type="Self.Location" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Schedule">
               <PropertyRef Name="id" />
@@ -1919,8 +1912,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Patient_Location">
-          <End Role="Location" Type="MIDASGBXModel.Location" Multiplicity="1" />
-          <End Role="Patient" Type="MIDASGBXModel.Patient" Multiplicity="*" />
+          <End Role="Location" Type="Self.Location" Multiplicity="1" />
+          <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Location">
               <PropertyRef Name="id" />
@@ -1931,8 +1924,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Room_Location">
-          <End Role="Location" Type="MIDASGBXModel.Location" Multiplicity="1" />
-          <End Role="Room" Type="MIDASGBXModel.Room" Multiplicity="*" />
+          <End Role="Location" Type="Self.Location" Multiplicity="1" />
+          <End Role="Room" Type="Self.Room" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Location">
               <PropertyRef Name="id" />
@@ -1942,9 +1935,21 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Patient_MaritalStatus">
+          <End Role="MaritalStatus" Type="Self.MaritalStatu" Multiplicity="0..1" />
+          <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MaritalStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Patient">
+              <PropertyRef Name="MaritalStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Patient_User">
-          <End Role="User" Type="MIDASGBXModel.User" Multiplicity="1" />
-          <End Role="Patient" Type="MIDASGBXModel.Patient" Multiplicity="*" />
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="id" />
@@ -1955,8 +1960,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Room_RoomTest">
-          <End Role="RoomTest" Type="MIDASGBXModel.RoomTest" Multiplicity="1" />
-          <End Role="Room" Type="MIDASGBXModel.Room" Multiplicity="*" />
+          <End Role="RoomTest" Type="Self.RoomTest" Multiplicity="1" />
+          <End Role="Room" Type="Self.Room" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="RoomTest">
               <PropertyRef Name="id" />
@@ -1967,8 +1972,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Room_Schedule">
-          <End Role="Schedule" Type="MIDASGBXModel.Schedule" Multiplicity="0..1" />
-          <End Role="Room" Type="MIDASGBXModel.Room" Multiplicity="*" />
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="0..1" />
+          <End Role="Room" Type="Self.Room" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Schedule">
               <PropertyRef Name="id" />
@@ -1979,8 +1984,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ScheduleDetail_Schedule">
-          <End Role="Schedule" Type="MIDASGBXModel.Schedule" Multiplicity="1" />
-          <End Role="ScheduleDetail" Type="MIDASGBXModel.ScheduleDetail" Multiplicity="*" />
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="1" />
+          <End Role="ScheduleDetail" Type="Self.ScheduleDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Schedule">
               <PropertyRef Name="id" />
@@ -1990,9 +1995,57 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SpecialityDetails_Specialty">
+          <End Role="Specialty" Type="Self.Specialty" Multiplicity="0..1" />
+          <End Role="SpecialityDetails" Type="Self.SpecialityDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Specialty">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="SpecialityDetails">
+              <PropertyRef Name="SpecialtyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Specialty_Specialty">
+          <End Role="Specialty" Type="Self.Specialty" Multiplicity="1" />
+          <End Role="Specialty1" Type="Self.Specialty" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Specialty">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Specialty1">
+              <PropertyRef Name="id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SpecialtyDetails_Specialty">
+          <End Role="Specialty" Type="Self.Specialty" Multiplicity="1" />
+          <End Role="SpecialtyDetails" Type="Self.SpecialtyDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Specialty">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="SpecialtyDetails">
+              <PropertyRef Name="SpecialtyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_UserType">
+          <End Role="UserType" Type="Self.UserType" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserType">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="UserType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserCompany_User">
-          <End Role="User" Type="MIDASGBXModel.User" Multiplicity="1" />
-          <End Role="UserCompany" Type="MIDASGBXModel.UserCompany" Multiplicity="*" />
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserCompany" Type="Self.UserCompany" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="id" />
@@ -2003,8 +2056,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserCompanyRole_User">
-          <End Role="User" Type="MIDASGBXModel.User" Multiplicity="1" />
-          <End Role="UserCompanyRole" Type="MIDASGBXModel.UserCompanyRole" Multiplicity="*" />
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserCompanyRole" Type="Self.UserCompanyRole" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="id" />
@@ -2014,32 +2067,180 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="City">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Byte" Nullable="false" />
-          <Property Name="StateCode" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="true" />
-          <Property Name="CityText" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IsDeleted" Type="Boolean" />
-        </EntityType>
-        <EntityType Name="State">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Byte" Nullable="false" />
-          <Property Name="StateCode" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="true" />
-          <Property Name="StateText" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IsDeleted" Type="Boolean" />
-        </EntityType>
-        <EntityType Name="Gender">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Byte" Nullable="false" />
-          <Property Name="GenderText" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IsDeleted" Type="Boolean" />
-        </EntityType>
+        <EntityContainer Name="MIDASGBXEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AddressInfoes" EntityType="Self.AddressInfo" />
+          <EntitySet Name="Cities" EntityType="Self.City" />
+          <EntitySet Name="Companies" EntityType="Self.Company" />
+          <EntitySet Name="CompanySpecialtyDetails" EntityType="Self.CompanySpecialtyDetail" />
+          <EntitySet Name="CompanyTypes" EntityType="Self.CompanyType" />
+          <EntitySet Name="ContactInfoes" EntityType="Self.ContactInfo" />
+          <EntitySet Name="Doctors" EntityType="Self.Doctor" />
+          <EntitySet Name="DoctorLocationSchedules" EntityType="Self.DoctorLocationSchedule" />
+          <EntitySet Name="DoctorSpecialities" EntityType="Self.DoctorSpeciality" />
+          <EntitySet Name="Genders" EntityType="Self.Gender" />
+          <EntitySet Name="Invitations" EntityType="Self.Invitation" />
+          <EntitySet Name="InvitationTypes" EntityType="Self.InvitationType" />
+          <EntitySet Name="Locations" EntityType="Self.Location" />
+          <EntitySet Name="Logs" EntityType="Self.Log" />
+          <EntitySet Name="MaritalStatus" EntityType="Self.MaritalStatu" />
+          <EntitySet Name="OTPs" EntityType="Self.OTP" />
+          <EntitySet Name="PasswordTokens" EntityType="Self.PasswordToken" />
+          <EntitySet Name="Patients" EntityType="Self.Patient" />
+          <EntitySet Name="Rooms" EntityType="Self.Room" />
+          <EntitySet Name="RoomTests" EntityType="Self.RoomTest" />
+          <EntitySet Name="Schedules" EntityType="Self.Schedule" />
+          <EntitySet Name="ScheduleDetails" EntityType="Self.ScheduleDetail" />
+          <EntitySet Name="SpecialityDetails" EntityType="Self.SpecialityDetail" />
+          <EntitySet Name="Specialties" EntityType="Self.Specialty" />
+          <EntitySet Name="SpecialtyDetails" EntityType="Self.SpecialtyDetail" />
+          <EntitySet Name="States" EntityType="Self.State" />
+          <EntitySet Name="SubscriptionPlans" EntityType="Self.SubscriptionPlan" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="UserCompanies" EntityType="Self.UserCompany" />
+          <EntitySet Name="UserCompanyRoles" EntityType="Self.UserCompanyRole" />
+          <EntitySet Name="UserTypes" EntityType="Self.UserType" />
+          <AssociationSet Name="FK_Company_AddressInfo" Association="Self.FK_Company_AddressInfo">
+            <End Role="AddressInfo" EntitySet="AddressInfoes" />
+            <End Role="Company" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Location_AddressInfo" Association="Self.FK_Location_AddressInfo">
+            <End Role="AddressInfo" EntitySet="AddressInfoes" />
+            <End Role="Location" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_AddressInfo" Association="Self.FK_User_AddressInfo">
+            <End Role="AddressInfo" EntitySet="AddressInfoes" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Company_CompanyType" Association="Self.FK_Company_CompanyType">
+            <End Role="CompanyType" EntitySet="CompanyTypes" />
+            <End Role="Company" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Company_ContactInfo" Association="Self.FK_Company_ContactInfo">
+            <End Role="ContactInfo" EntitySet="ContactInfoes" />
+            <End Role="Company" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Company_SubscriptionPlan" Association="Self.FK_Company_SubscriptionPlan">
+            <End Role="SubscriptionPlan" EntitySet="SubscriptionPlans" />
+            <End Role="Company" EntitySet="Companies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanySpecialtyDetails_Company" Association="Self.FK_CompanySpecialtyDetails_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="CompanySpecialtyDetails" EntitySet="CompanySpecialtyDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invitation_Company" Association="Self.FK_Invitation_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Invitation" EntitySet="Invitations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Location_Company" Association="Self.FK_Location_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Location" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_Company" Association="Self.FK_Patient_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Patient" EntitySet="Patients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserCompany_Company" Association="Self.FK_UserCompany_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="UserCompany" EntitySet="UserCompanies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanySpecialtyDetails_Specialty" Association="Self.FK_CompanySpecialtyDetails_Specialty">
+            <End Role="Specialty" EntitySet="Specialties" />
+            <End Role="CompanySpecialtyDetails" EntitySet="CompanySpecialtyDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Location_ContactInfo" Association="Self.FK_Location_ContactInfo">
+            <End Role="ContactInfo" EntitySet="ContactInfoes" />
+            <End Role="Location" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_ContactInfo" Association="Self.FK_User_ContactInfo">
+            <End Role="ContactInfo" EntitySet="ContactInfoes" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Doctor_User" Association="Self.FK_Doctor_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Doctor" EntitySet="Doctors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DoctorLocationSchedule_Doctor" Association="Self.FK_DoctorLocationSchedule_Doctor">
+            <End Role="Doctor" EntitySet="Doctors" />
+            <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DoctorLocationSchedule_Location" Association="Self.FK_DoctorLocationSchedule_Location">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DoctorLocationSchedule_Schedule" Association="Self.FK_DoctorLocationSchedule_Schedule">
+            <End Role="Schedule" EntitySet="Schedules" />
+            <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DoctorSpecialities_Doctor" Association="Self.FK_DoctorSpecialities_Doctor">
+            <End Role="User" EntitySet="Users" />
+            <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DoctorSpecialities_Specialty" Association="Self.FK_DoctorSpecialities_Specialty">
+            <End Role="Specialty" EntitySet="Specialties" />
+            <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invitation_User_Invitation" Association="Self.FK_Invitation_User_Invitation">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Invitation" EntitySet="Invitations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Location_Schedule" Association="Self.FK_Location_Schedule">
+            <End Role="Schedule" EntitySet="Schedules" />
+            <End Role="Location" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_Location" Association="Self.FK_Patient_Location">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="Patient" EntitySet="Patients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_Location" Association="Self.FK_Room_Location">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="Room" EntitySet="Rooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_MaritalStatus" Association="Self.FK_Patient_MaritalStatus">
+            <End Role="MaritalStatus" EntitySet="MaritalStatus" />
+            <End Role="Patient" EntitySet="Patients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Patient_User" Association="Self.FK_Patient_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Patient" EntitySet="Patients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_RoomTest" Association="Self.FK_Room_RoomTest">
+            <End Role="RoomTest" EntitySet="RoomTests" />
+            <End Role="Room" EntitySet="Rooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_Schedule" Association="Self.FK_Room_Schedule">
+            <End Role="Schedule" EntitySet="Schedules" />
+            <End Role="Room" EntitySet="Rooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScheduleDetail_Schedule" Association="Self.FK_ScheduleDetail_Schedule">
+            <End Role="Schedule" EntitySet="Schedules" />
+            <End Role="ScheduleDetail" EntitySet="ScheduleDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SpecialityDetails_Specialty" Association="Self.FK_SpecialityDetails_Specialty">
+            <End Role="Specialty" EntitySet="Specialties" />
+            <End Role="SpecialityDetails" EntitySet="SpecialityDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Specialty_Specialty" Association="Self.FK_Specialty_Specialty">
+            <End Role="Specialty" EntitySet="Specialties" />
+            <End Role="Specialty1" EntitySet="Specialties" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SpecialtyDetails_Specialty" Association="Self.FK_SpecialtyDetails_Specialty">
+            <End Role="Specialty" EntitySet="Specialties" />
+            <End Role="SpecialtyDetails" EntitySet="SpecialtyDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_UserType" Association="Self.FK_User_UserType">
+            <End Role="UserType" EntitySet="UserTypes" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserCompany_User" Association="Self.FK_UserCompany_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserCompany" EntitySet="UserCompanies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserCompanyRole_User" Association="Self.FK_UserCompanyRole_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserCompanyRole" EntitySet="UserCompanyRoles" />
+          </AssociationSet>
+        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2062,6 +2263,16 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="MIDASGBXModel.City">
+              <MappingFragment StoreEntitySet="City">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
+                <ScalarProperty Name="CityText" ColumnName="CityText" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2186,6 +2397,15 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Genders">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Gender">
+              <MappingFragment StoreEntitySet="Gender">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="GenderText" ColumnName="GenderText" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Invitations">
             <EntityTypeMapping TypeName="MIDASGBXModel.Invitation">
               <MappingFragment StoreEntitySet="Invitation">
@@ -2254,6 +2474,15 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="MaritalStatus">
+            <EntityTypeMapping TypeName="MIDASGBXModel.MaritalStatu">
+              <MappingFragment StoreEntitySet="MaritalStatus">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StatusText" ColumnName="StatusText" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="OTPs">
             <EntityTypeMapping TypeName="MIDASGBXModel.OTP">
               <MappingFragment StoreEntitySet="OTP">
@@ -2302,6 +2531,12 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
+                <ScalarProperty Name="DrivingLicence" ColumnName="DrivingLicence" />
+                <ScalarProperty Name="EmergenceyContact" ColumnName="EmergenceyContact" />
+                <ScalarProperty Name="EmergenceyContactNumber" ColumnName="EmergenceyContactNumber" />
+                <ScalarProperty Name="EmergenceyContactRelation" ColumnName="EmergenceyContactRelation" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2428,6 +2663,16 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="States">
+            <EntityTypeMapping TypeName="MIDASGBXModel.State">
+              <MappingFragment StoreEntitySet="State">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
+                <ScalarProperty Name="StateText" ColumnName="StateText" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="SubscriptionPlans">
             <EntityTypeMapping TypeName="MIDASGBXModel.SubscriptionPlan">
               <MappingFragment StoreEntitySet="SubscriptionPlan">
@@ -2519,35 +2764,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Cities">
-            <EntityTypeMapping TypeName="MIDASGBXModel.City">
-              <MappingFragment StoreEntitySet="City">
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CityText" ColumnName="CityText" />
-                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="States">
-            <EntityTypeMapping TypeName="MIDASGBXModel.State">
-              <MappingFragment StoreEntitySet="State">
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="StateText" ColumnName="StateText" />
-                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Genders">
-            <EntityTypeMapping TypeName="MIDASGBXModel.Gender">
-              <MappingFragment StoreEntitySet="Gender">
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="GenderText" ColumnName="GenderText" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -2562,10 +2778,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="True" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
-        <DesignerProperty Name="UseLegacyProvider" Value="True" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

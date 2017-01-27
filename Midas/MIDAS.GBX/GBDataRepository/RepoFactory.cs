@@ -118,6 +118,15 @@ namespace MIDAS.GBX
             {
                 repo = new CityRepository(context);
             }
+            if (typeof(T) == typeof(BO.Common.MaritalStatus))
+            {
+                repo = new MaritalStatusRepository(context);
+            }
+
+
+
+
+
 
             return repo;
         }

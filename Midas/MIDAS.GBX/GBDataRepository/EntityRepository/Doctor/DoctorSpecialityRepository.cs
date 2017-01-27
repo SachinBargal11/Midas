@@ -206,22 +206,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get By Filter
-        public override object Get<T>(T entity)
-        {
-            var acc_ = _context.DoctorSpecialities.Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<DoctorSpeciality>();
-            if (acc_ == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
-            List<BO.DoctorSpeciality> lstDoctors = new List<BO.DoctorSpeciality>();
-            foreach (DoctorSpeciality item in acc_)
-            {
-                lstDoctors.Add(Convert<BO.DoctorSpeciality, DoctorSpeciality>(item));
-            }
-            return lstDoctors;
-        }
-        #endregion
+        //#region Get By Filter
+        //public override object Get<T>(T entity)
+        //{
+        //    var acc_ = _context.DoctorSpecialities.Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<DoctorSpeciality>();
+        //    if (acc_ == null)
+        //    {
+        //        return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+        //    }
+        //    List<BO.DoctorSpeciality> lstDoctors = new List<BO.DoctorSpeciality>();
+        //    foreach (DoctorSpeciality item in acc_)
+        //    {
+        //        lstDoctors.Add(Convert<BO.DoctorSpeciality, DoctorSpeciality>(item));
+        //    }
+        //    return lstDoctors;
+        //}
+        //#endregion
 
 
         public void Dispose()
