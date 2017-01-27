@@ -54,7 +54,7 @@
                                             <span class="color-red">*</span>
                                         </label>
                                 <div class="form-group" [class.error]="basicformControls.city.touched && !basicformControls.city.valid">
-                                    <select formControlName="city" type="text" [ngModel]="locationDetails.address.city" class="form-control" placeholder="" [class.error]="basicformControls.city.touched && !basicformControls.city.valid">
+                                    <select formControlName="city" type="text" [ngModel]="selectedCity" class="form-control" placeholder="" [class.error]="basicformControls.city.touched && !basicformControls.city.valid">
                                         <option value="">-Select City-</option>
                                         <option *ngFor="let city of cities" value="{{city.citytext}}">{{city.citytext}}</option>
                                     </select>
