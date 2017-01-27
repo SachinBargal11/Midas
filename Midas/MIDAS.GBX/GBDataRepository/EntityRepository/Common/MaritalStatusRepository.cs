@@ -80,7 +80,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             var acc = _context.MaritalStatus.Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<MaritalStatu>();
             if (acc == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No cities found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {
