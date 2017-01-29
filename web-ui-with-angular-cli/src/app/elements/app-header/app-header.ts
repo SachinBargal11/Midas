@@ -1,4 +1,4 @@
-import { Component, OnInit, style } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../account/services/authentication-service';
 import { SessionStore } from '../../commons/stores/session-store';
@@ -79,9 +79,5 @@ export class AppHeaderComponent implements OnInit {
 
     showNotifications() {
         this._notificationsStore.toggleVisibility();
-    }
-
-    selectCurrentCompany() {
-        // debugger;
     }
 }
