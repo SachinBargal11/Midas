@@ -72,6 +72,26 @@
         <AssociationConnector Association="MIDASGBXModel.FK_User_UserType" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompany_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompanyRole_User" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Case" Width="1.5" PointX="19.5" PointY="28.5" />
+        <EntityTypeShape EntityType="MIDASGBXModel.InsuranceInfo" Width="1.5" PointX="16.25" PointY="29.125" />
+        <EntityTypeShape EntityType="MIDASGBXModel.PatientEmpInfo" Width="1.5" PointX="17.25" PointY="16.75" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Patient2" Width="1.5" PointX="19.5" PointY="22.75" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Case_AddressInfo_AccidentAddressId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Case_AddressInfo_PatientAddressId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_InsuranceInfo_AddressInfo_InsuranceAddressId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientEmpInfo_AddressInfo_EmpAddressId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Case_ContactInfo_PatientContactInfoId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Case_InsuranceInfo_InsuranceInfoId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Case_Location_LocationID" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Case_PatientEmpInfo_EmpInfo" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Case_User_PatientID" />
+        <AssociationConnector Association="MIDASGBXModel.FK_InsuranceInfo_ContactInfo_InsuranceContactInfoId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientEmpInfo_ContactInfo_EmpContactInfoId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_InsuranceInfo_User_PatientID" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Patient2_Location" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Patient2_MaritalStatus" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientEmpInfo_User_PatientID" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Patient2_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -12,22 +12,27 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class MaritalStatu
+    public partial class InsuranceInfo
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public MaritalStatu()
+        public InsuranceInfo()
         {
-            this.Patients = new HashSet<Patient>();
-            this.Patient2 = new HashSet<Patient2>();
+            this.Cases = new HashSet<Case>();
         }
     
-        public byte Id { get; set; }
-        public string StatusText { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
+        public int Id { get; set; }
+        public int PatientId { get; set; }
+        public int InsuranceId { get; set; }
+        public string PolicyNo { get; set; }
+        public string PolicyHoldersName { get; set; }
+        public int InsuranceAddressId { get; set; }
+        public Nullable<int> InsuranceContactInfoId { get; set; }
+        public bool IsPrimaryInsurance { get; set; }
     
+        public virtual AddressInfo AddressInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Patient> Patients { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Patient2> Patient2 { get; set; }
+        public virtual ICollection<Case> Cases { get; set; }
+        public virtual ContactInfo ContactInfo { get; set; }
+        public virtual User User { get; set; }
     }
 }
