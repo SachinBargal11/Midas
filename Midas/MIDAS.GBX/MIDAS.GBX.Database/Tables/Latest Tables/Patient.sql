@@ -1,20 +1,21 @@
-﻿CREATE TABLE [dbo].[Patient](
+﻿/*
+Table Name: [dbo].[Patient]
+[PatientID] not required since the id from user table can be used
+[DateOfBirth] not required since the user table has date of birth
+Address not included as User table has address info
+*/
+CREATE TABLE [dbo].[Patient](
 	[id] [int] NOT NULL,
-	[PatientID] [int] NOT NULL,
-	[SSN] [nvarchar](50) NOT NULL,
-	[WCBNo] [nvarchar](50) NULL,
-	[JobTitle] [nvarchar](50) NULL,
-	[WorkActivities] [nvarchar](50) NULL,
-	[CarrierCaseNo] [nvarchar](50) NULL,
-	[ChartNo] [nvarchar](50) NOT NULL,
-	[CompanyID] [int] NOT NULL,
-	[LocationID] [int] NOT NULL,
-	[Weight] [DECIMAL](3, 2) NOT NULL,
-	[MaritalStatus] [TINYINT] NULL,
-	[DrivingLicence] [NVARCHAR](15) NULL,
-	[EmergenceyContact] [NVARCHAR](50) NULL,
-	[EmergenceyContactNumber] [NVARCHAR](50) NULL,
-	[EmergenceyContactRelation] [NVARCHAR](50) NULL,
+	[SSN] [nvarchar](20) NOT NULL, /*Social Security Number*/
+	[WCBNo] [nvarchar](20) NULL, /*Since this info remains constant for the user in a lifetime*/
+	[LocationID] [int] NOT NULL, /*Location id where current case is registered*/
+	[Weight] [DECIMAL](5, 2) NOT NULL, /*Weight in KG OR Pounds*/
+	[MaritalStatus] [TINYINT] NULL, /*Current Status*/
+	[DrivingLicence] [NVARCHAR](15) NULL, /*Current Driving Licence Number*/
+	[EmergencyContactName] [NVARCHAR](50) NULL, /*Emergency Contact Person Name*/
+	[EmergencyContactRelation] [NVARCHAR](50) NULL, /*Emergency Contact Person's Relation*/
+	[EmergencyContactNumber] [NVARCHAR](50) NULL, /*Emergency Contact Person's Contact Number*/
+
 	[IsDeleted] [bit] NULL,
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NOT NULL,
@@ -24,13 +25,6 @@
 
 GO
 
-ALTER TABLE [dbo].[Patient]  WITH CHECK ADD  CONSTRAINT [FK_Patient_Company] FOREIGN KEY([CompanyID])
-REFERENCES [dbo].[Company] ([id])
-GO
-
-ALTER TABLE [dbo].[Patient] CHECK CONSTRAINT [FK_Patient_Company]
-GO
-
 ALTER TABLE [dbo].[Patient]  WITH CHECK ADD  CONSTRAINT [FK_Patient_Location] FOREIGN KEY([LocationID])
 REFERENCES [dbo].[Location] ([id])
 GO
@@ -38,7 +32,7 @@ GO
 ALTER TABLE [dbo].[Patient] CHECK CONSTRAINT [FK_Patient_Location]
 GO
 
-ALTER TABLE [dbo].[Patient]  WITH CHECK ADD  CONSTRAINT [FK_Patient_User] FOREIGN KEY([PatientID])
+ALTER TABLE [dbo].[Patient]  WITH CHECK ADD  CONSTRAINT [FK_Patient_User] FOREIGN KEY([id])
 REFERENCES [dbo].[User] ([id])
 GO
 
