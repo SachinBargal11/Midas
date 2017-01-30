@@ -49,7 +49,7 @@ export class AddRoomComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
-        this._route.parent.params.subscribe((params: any) => {
+        this._route.parent.parent.params.subscribe((params: any) => {
             let locationId = parseInt(params.locationId);
             this._progressBarService.show();
             let result = this._locationsStore.fetchLocationById(locationId);
