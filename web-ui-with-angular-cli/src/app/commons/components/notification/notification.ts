@@ -3,7 +3,8 @@ import { NotificationsStore } from '../../stores/notifications-store';
 
 @Component({
     selector: 'notification',
-    templateUrl: './notification.html'
+    templateUrl: './notification.html',
+    styleUrls: ['./notifications.scss']
 })
 
 export class NotificationComponent implements OnInit {
