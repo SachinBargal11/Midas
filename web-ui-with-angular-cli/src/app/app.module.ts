@@ -37,6 +37,8 @@ import { UsersStore } from './medical-provider/users/stores/users-store';
 
 import { SimpleNotificationsModule } from 'angular2-notifications';
 
+import * as moment from 'moment';
+
 @NgModule({
   declarations: [
     AppComponent,

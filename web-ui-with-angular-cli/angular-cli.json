@@ -23,10 +23,15 @@
         "../node_modules/primeng/resources/themes/bootstrap/theme.css",
         "../node_modules/primeng/resources/primeng.min.css",
         "../node_modules/datatables/media/css/jquery.dataTables.min.css",
+        "../node_modules/fullcalendar/dist/fullcalendar.css",
         "./assets/theme/css/main.source.css",
         "styles/styles.scss"
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/jquery/dist/jquery.js",
+        "../node_modules/fullcalendar/dist/fullcalendar.js",
+        "../node_modules/moment/src/moment.js"
+      ],
       "environments": {
         "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
