@@ -355,13 +355,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.AddressInfo addressBO = patientBO.User.AddressInfo;
             BO.ContactInfo contactinfoBO = patientBO.User.ContactInfo;
 
-            int Patient_id = 0;
             Guid invitationDB_UniqueID = Guid.NewGuid();
+
+            Patient patientDB = new Patient();
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
-
-                Patient patientDB = new Patient();
                 Company companyDB = new Company();
                 Location locationDB = new Location();
                 User userDB = new User();
@@ -437,6 +436,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientDB.ChartNo = patientBO.ChartNo;
                 patientDB.IsDeleted = patientBO.IsDeleted.HasValue ? patientBO.IsDeleted : false;
 
+                patientDB.LocationID = patientBO.LocationID;
                 patientDB.CompanyID = patientBO.CompanyID;
                 #endregion
 
@@ -460,7 +460,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 dbContextTransaction.Commit();
 
-                Patient_id = patientDB.id;
+                patientDB = _context.Patients.Include("Company").Include("Location").Where(p => p.id == patientDB.id).FirstOrDefault<Patient>();
             }
 
             try
@@ -475,11 +475,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             catch (Exception ex)
             {
 
-            }
+            }            
 
-            var NewpatientDB = _context.Patients.Include("Company").Include("Location").Where(p => p.id == Patient_id).FirstOrDefault<Patient>();
-
-            var res = Convert<BO.Patient, Patient>(NewpatientDB);
+            var res = Convert<BO.Patient, Patient>(patientDB);
             return (object)res;
         }
         #endregion
