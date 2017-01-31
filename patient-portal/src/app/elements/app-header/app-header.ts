@@ -14,6 +14,7 @@ export class AppHeaderComponent implements OnInit {
     disabled: boolean = false;
     status: { isopen: boolean } = { isopen: false };
     menu_right_opened: boolean = false;
+    menu_left_opened: boolean = false;
 
     toggleDropdown($event: MouseEvent): void {
         $event.preventDefault();
@@ -31,6 +32,20 @@ export class AppHeaderComponent implements OnInit {
     }
 
     ngOnInit() {
+    }
+    onLeftBurgerClick() {
+        if (this.menu_left_opened) {
+            this.menu_left_opened = false;
+            document.getElementsByClassName('hamburger')[0].classList.remove('is-active');
+            document.getElementsByTagName('body')[0].classList.remove('menu-left-opened');
+            document.getElementsByTagName('html')[0].style.overflow = 'auto';
+        } else {
+            this.menu_left_opened = true;
+            document.getElementsByClassName('hamburger')[0].classList.add('is-active');
+            document.getElementsByTagName('body')[0].classList.remove('menu-left-opened');
+            document.getElementsByTagName('body')[0].classList.add('menu-left-opened');
+            document.getElementsByTagName('html')[0].style.overflow = 'hidden';
+        }
     }
 
     onBurgerClick() {

@@ -17,6 +17,7 @@ import { NotificationComponent } from './components/notification/notification';
 import { ShellComponent } from './shell-component';
 
 import {
+  AccordionModule,
   InputTextModule,
   ChartModule,
   DataTableModule,
@@ -25,7 +26,10 @@ import {
   CalendarModule,
   InputMaskModule,
   RadioButtonModule,
-  MultiSelectModule
+  MultiSelectModule,
+  ScheduleModule,
+  CheckboxModule,
+  SharedModule
 } from 'primeng/primeng';
 import { DropdownModule } from 'ng2-bootstrap';
 
@@ -36,6 +40,7 @@ import { DropdownModule } from 'ng2-bootstrap';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    AccordionModule,
     InputTextModule,
     ChartModule,
     DataTableModule,
@@ -45,6 +50,9 @@ import { DropdownModule } from 'ng2-bootstrap';
     InputMaskModule,
     RadioButtonModule,
     MultiSelectModule,
+    ScheduleModule,
+    CheckboxModule,
+    SharedModule ,
     DropdownModule.forRoot()
   ],
   declarations: [
@@ -77,6 +85,7 @@ import { DropdownModule } from 'ng2-bootstrap';
     LoaderComponent,
     NotificationComponent,
     ReactiveFormsModule,
+    AccordionModule,
     InputTextModule,
     ChartModule,
     DataTableModule,
@@ -86,6 +95,9 @@ import { DropdownModule } from 'ng2-bootstrap';
     InputMaskModule,
     RadioButtonModule,
     MultiSelectModule,
+    ScheduleModule,
+    CheckboxModule,
+    SharedModule,
     DropdownModule,
     ShellComponent
   ]

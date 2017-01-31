@@ -1,46 +1,24 @@
-// import {Moment} from 'moment';
-// export interface Patient {
+import { Record } from 'immutable';
+import { User } from '../../../commons/models/user';
 
-//     id?: number;
-//     firstname: string;
-//     lastname: string;
-//     email: string;
-//     mobileNo: string;
-//     address: string;
-//     dob: Date;
-// }
-
-
-import {Record} from 'immutable';
+export interface IPatient {
+    user: User;
+}
 
 const PatientRecord = Record({
-    id: 0,
-    name: '',
-    firstname: '',
-    lastname: '',
-    email: '',
-    mobileNo: '',
-    address: '',
-    status: '',
-    caseId: '',
-    createdUser: 0
+    user: null
 });
 
 export class Patient extends PatientRecord {
 
-    id: number;
-    name: string;
-    firstname: string;
-    lastname: string;
-    email: string;
-    mobileNo: string;
-    address: string;
-    status: string;
-    caseId: string;
-    createdUser: number;
+    user: User;
 
-    constructor(props) {
+    constructor(props: IPatient) {
         super(props);
+    }
+
+    get id(): number {
+        return this.user.id;
     }
 
 }

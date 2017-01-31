@@ -1,21 +1,14 @@
 import { Patient } from '../../models/patient';
+import { UserAdapter } from '../../../../medical-provider/users/services/adapters/user-adapter';
 
 
 export class PatientAdapter {
     static parseResponse(patientData: any): Patient {
 
-        let patient = null;
+        let patient: Patient = null;
         if (patientData) {
             patient = new Patient({
-                id: patientData.id,
-                name: patientData.firstname + ' ' + patientData.lastname,
-                firstname: patientData.firstname,
-                lastname: patientData.lastname,
-                email: patientData.email,
-                mobileNo: patientData.mobileNo,
-                address: patientData.address,
-                status: patientData.status,
-                caseId: patientData.caseId
+                user: UserAdapter.parseResponse(patientData)
             });
         }
         return patient;

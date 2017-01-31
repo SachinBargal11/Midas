@@ -18,6 +18,7 @@ import * as moment from 'moment';
 import { StatesStore } from '../../../commons/stores/states-store';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
+import { UserType } from '../../../commons/models/enums/user-type';
 
 @Component({
     selector: 'add-user',
@@ -55,8 +56,7 @@ export class AddUserComponent implements OnInit {
         this.userform = this.fb.group({
             userInfo: this.fb.group({
                 firstname: ['', Validators.required],
-                lastname: ['', Validators.required],
-                userType: ['', Validators.required]
+                lastname: ['', Validators.required]
             }),
             contact: this.fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
@@ -83,7 +83,7 @@ export class AddUserComponent implements OnInit {
 
     ngOnInit() {
         this._statesStore.getStates()
-                .subscribe(states => this.states = states);
+            .subscribe(states => this.states = states);
     }
 
     selectState(event) {
@@ -93,8 +93,8 @@ export class AddUserComponent implements OnInit {
     }
     loadCities(stateName) {
         this.isCitiesLoading = true;
-        if ( stateName !== '') {
-        this._statesStore.getCitiesByStates(stateName)
+        if (stateName !== '') {
+            this._statesStore.getCitiesByStates(stateName)
                 .subscribe((cities) => { this.cities = cities; },
                 null,
                 () => { this.isCitiesLoading = false; });
@@ -110,7 +110,7 @@ export class AddUserComponent implements OnInit {
         let userDetail = new User({
             firstName: userFormValues.userInfo.firstname,
             lastName: userFormValues.userInfo.lastname,
-            userType: parseInt(userFormValues.userInfo.userType),
+            userType: UserType.STAFF,
             userName: userFormValues.contact.email,
             contact: new Contact({
                 cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,

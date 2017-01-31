@@ -30,11 +30,11 @@
 					</div>
 					<button type="button" class="burger-right" (click)="onBurgerClick()"><i class="font-icon-menu-addl"></i></button>
 				</div>
-				<div style="float: right;">
+				<!--<div style="float: right;">
 					<select class="form-control" [ngModel]="sessionStore.session.currentCompany.id" (change)="sessionStore.selectCurrentCompany($event)">
 							<option *ngFor="let company of sessionStore.session.companies" [value]="company.id">{{company.name}}</option>
 					</select>
-				</div>
+				</div>-->
 				<div class="mobile-menu-right-overlay" (click)="hideMobileMenu()"></div>
 				<div class="site-header-collapsed">
 					<div class="site-header-collapsed-in">
@@ -62,6 +62,15 @@
 							<a [routerLink]="['/account-setup']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
                                 Account Setup
 							</a>
+						</div>
+						<div class="dropdown" dropdown>
+							<button dropdownToggle class="btn dropdown-toggle" id="dd-header-add" type="button" data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false">
+							{{sessionStore.session.companies[0].name}}
+						</button>
+							<div class="dropdown-menu" aria-labelledby="dd-header-add">
+								<a *ngFor="let company of sessionStore.session.companies" class="dropdown-item" href="#">{{company.name}}</a>
+							</div>
 						</div>
 					</div>
 					<!--.site-header-collapsed-in-->
