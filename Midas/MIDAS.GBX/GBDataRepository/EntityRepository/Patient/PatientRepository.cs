@@ -370,6 +370,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 #region Address
                 if (addressBO != null)
                 {
+                    bool Add_addressDB = false;
+                    addressDB = _context.AddressInfoes.Where(p => p.id == addressBO.ID).FirstOrDefault();
+                    
+                    if (addressDB == null)
+                    {
+                        addressDB = new AddressInfo();
+                        Add_addressDB = true;
+                    }
                     addressDB.id = addressBO.ID;
                     addressDB.Name = addressBO.Name;
                     addressDB.Address1 = addressBO.Address1;
@@ -378,14 +386,31 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     addressDB.State = addressBO.State;
                     addressDB.ZipCode = addressBO.ZipCode;
                     addressDB.Country = addressBO.Country;
-                }
-                #endregion
 
-                addressDB = _context.AddressInfoes.Add(addressDB);
+                    if (Add_addressDB == true)
+                    {
+                        addressDB = _context.AddressInfoes.Add(addressDB);
+                        _context.SaveChanges();
+                    }
+                }
+                else
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Address details.", ErrorLevel = ErrorLevel.Error };
+                }
+                #endregion                
 
                 #region Contact Info
                 if (contactinfoBO != null)
                 {
+                    bool Add_contactinfoDB = false;
+                    contactinfoDB = _context.ContactInfoes.Where(p => p.id == contactinfoBO.ID).FirstOrDefault();
+
+                    if (contactinfoDB == null)
+                    {
+                        contactinfoDB = new ContactInfo();
+                        Add_contactinfoDB = true;
+                    }
                     contactinfoDB.id = contactinfoBO.ID;
                     contactinfoDB.Name = contactinfoBO.Name;
                     contactinfoDB.CellPhone = contactinfoBO.CellPhone;
@@ -394,39 +419,67 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     contactinfoDB.WorkPhone = contactinfoBO.WorkPhone;
                     contactinfoDB.FaxNo = contactinfoBO.FaxNo;
                     contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
+
+                    if (Add_contactinfoDB == true)
+                    {
+                        contactinfoDB = _context.ContactInfoes.Add(contactinfoDB);
+                        _context.SaveChanges();
+                    }
+                }
+                else
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Contact details.", ErrorLevel = ErrorLevel.Error };
                 }
                 #endregion
 
-                contactinfoDB = _context.ContactInfoes.Add(contactinfoDB);
-
                 #region User
-                if (userDB.UpdateByUserID.HasValue)
-                    userDB.UpdateByUserID = userBO.UpdateByUserID.Value;
-                userDB.UpdateDate = DateTime.UtcNow;
-                userDB.IsDeleted = userBO.IsDeleted;
-                userDB.UserName = userBO.UserName == null ? userDB.UserName : userBO.UserName;
-                userDB.FirstName = userBO.FirstName == null ? userDB.FirstName : userBO.FirstName;
-                userDB.MiddleName = userBO.MiddleName == null ? userDB.MiddleName : userBO.MiddleName;
-                userDB.LastName = userBO.LastName == null ? userDB.LastName : userBO.LastName;
-                userDB.Gender = System.Convert.ToByte(userBO.Gender);
-                userDB.UserType = System.Convert.ToByte(userBO.UserType);
-                userDB.UserStatus = System.Convert.ToByte(userBO.Status);
-                userDB.ImageLink = userBO.ImageLink;
-                userDB.DateOfBirth = userBO.DateOfBirth;
-                if (userBO.Password != null)
-                    userDB.Password = PasswordHash.HashPassword(userBO.Password);
-                userDB.IsDeleted = userBO.IsDeleted;
+                if (userBO != null)
+                {
+                    userDB = _context.Users.Where(p => p.UserName == userBO.UserName).FirstOrDefault();
 
-                userDB.AddressId = addressDB.id;
-                userDB.ContactInfoId = contactinfoDB.id;
-                #endregion
+                    if (userDB == null)
+                    {
+                        userDB = new User();
+                        userDB.UserName = userBO.UserName;
+                        userDB.FirstName = userBO.FirstName;
+                        userDB.MiddleName = userBO.MiddleName;
+                        userDB.LastName = userBO.LastName;
+                        userDB.Gender = System.Convert.ToByte(userBO.Gender);
+                        userDB.UserType = System.Convert.ToByte(userBO.UserType);
+                        userDB.UserStatus = System.Convert.ToByte(userBO.Status);
+                        userDB.ImageLink = userBO.ImageLink;
+                        userDB.DateOfBirth = userBO.DateOfBirth;
+                        if (userBO.Password != null)
+                            userDB.Password = PasswordHash.HashPassword(userBO.Password);
+                        userDB.IsDeleted = userBO.IsDeleted;
 
-                userDB = _context.Users.Add(userDB);
+                        userDB.AddressId = addressDB.id;
+                        userDB.ContactInfoId = contactinfoDB.id;
 
-                _context.SaveChanges();
+                        if (userDB.UpdateByUserID.HasValue)
+                            userDB.UpdateByUserID = userBO.UpdateByUserID.Value;
+                        userDB.UpdateDate = DateTime.UtcNow;
+                        userDB.IsDeleted = userBO.IsDeleted;
+
+                        userDB = _context.Users.Add(userDB);
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "User Name already exists.", ErrorLevel = ErrorLevel.Error };
+                    }
+                    
+                }
+                else
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid User details.", ErrorLevel = ErrorLevel.Error };
+                }
+                #endregion                
 
                 #region Patient
-                //patientDB.id = patientBO.ID;
                 patientDB.PatientID = userDB.id;
                 patientDB.SSN = patientBO.SSN;
                 patientDB.WCBNo = patientBO.WCBNo;
@@ -436,13 +489,31 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientDB.ChartNo = patientBO.ChartNo;
                 patientDB.IsDeleted = patientBO.IsDeleted.HasValue ? patientBO.IsDeleted : false;
 
-                patientDB.LocationID = patientBO.LocationID;
-                patientDB.CompanyID = patientBO.CompanyID;
-                #endregion
+                companyDB = _context.Companies.Where(p => p.id == patientBO.CompanyID).FirstOrDefault();
+                if (companyDB != null)
+                {
+                    patientDB.CompanyID = patientBO.CompanyID;
+                }
+                else
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid User Company Id.", ErrorLevel = ErrorLevel.Error };
+                }
+
+                locationDB = _context.Locations.Where(p => p.id == patientBO.LocationID && p.CompanyID == patientBO.CompanyID).FirstOrDefault();
+                if (locationDB != null)
+                {
+                    patientDB.LocationID = patientBO.LocationID;
+                }
+                else
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid User Location Id.", ErrorLevel = ErrorLevel.Error };
+                }
 
                 patientDB = _context.Patients.Add(patientDB);
-
                 _context.SaveChanges();
+                #endregion
 
                 #region Insert Invitation
                 Invitation invitationDB = new Invitation();
