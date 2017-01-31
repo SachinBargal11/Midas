@@ -356,7 +356,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.ContactInfo contactinfoBO = patientBO.User.ContactInfo;
 
             int Patient_id = 0;
-            Guid invitationDB_UniqueID = Guid.NewGuid();
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
@@ -444,37 +443,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 _context.SaveChanges();
 
-                #region Insert Invitation
-                Invitation invitationDB = new Invitation();
-                invitationDB.User = userDB;
-
-                invitationDB_UniqueID = Guid.NewGuid();
-
-                invitationDB.UniqueID = invitationDB_UniqueID;
-                invitationDB.CompanyID = patientBO.CompanyID;
-                invitationDB.CreateDate = DateTime.UtcNow;
-                invitationDB.CreateByUserID = patientBO.CompanyID;
-                _context.Invitations.Add(invitationDB);
-                _context.SaveChanges();
-                #endregion
-
                 dbContextTransaction.Commit();
 
-                Patient_id = patientDB.id;
-            }
-
-            try
-            {
-                #region Send Email
-                string VerificationLink = "<a href='" + Utility.GetConfigValue("PatientVerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("PatientVerificationLink") + "/" + invitationDB_UniqueID + "</a>";
-                string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
-                BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "User registered", Body = Message };
-                objEmail.SendMail();
-                #endregion
-            }
-            catch (Exception ex)
-            {
-
+                Patient_id = patientDB.id;                
             }
 
             var NewpatientDB = _context.Patients.Include("Company").Include("Location").Where(p => p.id == Patient_id).FirstOrDefault<Patient>();

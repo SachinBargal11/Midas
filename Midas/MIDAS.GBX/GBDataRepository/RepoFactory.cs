@@ -108,8 +108,6 @@ namespace MIDAS.GBX
             {
                 repo = new UserCompanyRepository(context);
             }
-
-
             if (typeof(T) == typeof(BO.Common.State))
             {
                 repo = new StateRepository(context);
@@ -126,8 +124,10 @@ namespace MIDAS.GBX
             {
                 repo = new GenderRepository(context);
             }
-
-
+            if (typeof(T) == typeof(BO.Patient2))
+            {
+                repo = new PatientRepository2(context);
+            }
 
 
 
