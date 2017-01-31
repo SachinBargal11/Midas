@@ -76,6 +76,7 @@
     <Compile Include="Location\SaveLocation.cs" />
     <Compile Include="Log\Log.cs" />
     <Compile Include="Patient\Patient.cs" />
+    <Compile Include="Patient\Patient2.cs" />
     <Compile Include="Room\Room.cs" />
     <Compile Include="Room\RoomTest.cs" />
     <Compile Include="Schedule\Schedule.cs" />
