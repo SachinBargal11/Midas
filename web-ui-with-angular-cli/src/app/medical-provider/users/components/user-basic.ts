@@ -27,6 +27,7 @@ export class UserBasicComponent implements OnInit {
     userType: any;
     states: any[];
     cities: any[];
+    selectedCity;
     user = new User({});
     address = new Address({});
     contact = new Contact({});
@@ -40,7 +41,7 @@ export class UserBasicComponent implements OnInit {
     userform: FormGroup;
     userformControls;
     isSaveUserProgress = false;
-    isCitiesLoading = true;
+    isCitiesLoading = false;
 
     constructor(
         private _stateService: StateService,
@@ -63,10 +64,11 @@ export class UserBasicComponent implements OnInit {
             result.subscribe(
                 (userDetail: any) => {
                     this.user = userDetail;
-                    this.contact = userDetail.contact,
-                        this.address = userDetail.address,
-                        this.userType = UserType[userDetail.userType];
-                        this.loadCities(userDetail.address.state);
+                    this.contact = userDetail.contact;
+                    this.address = userDetail.address;
+                    this.selectedCity = userDetail.address.city;
+                    this.userType = UserType[userDetail.userType];
+                    this.loadCities(userDetail.address.state);
                 },
                 (error) => {
                     this._router.navigate(['/medical-provider/users']);
@@ -110,18 +112,26 @@ export class UserBasicComponent implements OnInit {
     }
 
     selectState(event) {
-        // this.selectedCity = 0;
         let currentState = event.target.value;
+        if (currentState === this.user.address.state) {
+            this.loadCities(currentState);
+            this.selectedCity = this.user.address.city;
+        } else {
         this.loadCities(currentState);
+        this.selectedCity = '';
+        }
     }
     loadCities(stateName) {
+        this.isCitiesLoading = true;
         if ( stateName !== '') {
         this._statesStore.getCitiesByStates(stateName)
-                .subscribe(cities => this.cities = cities);
+                .subscribe((cities) => { this.cities = cities; },
+                null,
+                () => { this.isCitiesLoading = false; });
         } else {
             this.cities = [];
+            this.isCitiesLoading = false;
         }
-        this.isCitiesLoading = false;
     }
 
 

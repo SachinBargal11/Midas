@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  SERVICE_BASE_URL: 'http://midas.codearray.tk/midasapi'
+  SERVICE_BASE_URL: 'http://midas.codearray.tk:5003/midaspatientapi'
 };

@@ -1,3 +1,4 @@
+<div class="input-group">
 <h1 class="with-border">Locations
     <a class="pull-right btn btn-danger" (click)="deleteLocations()">
         <i class="fa fa-trash-o fa-1x"></i> Delete selected Locations
@@ -5,9 +6,14 @@
     </a>
     <a class="pull-right btn-inline btn btn-primary" [routerLink]="['add']"><i class="fa fa-plus" aria-hidden="true"></i> Add Location</a>    
 </h1>
+</div>
 <div class="ui-widget-header ui-helper-clearfix" style="padding:4px 10px;border-bottom: 0 none">
-<i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
-<input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Locations">
+    <div class="col-lg-4 input-group">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        <!--<i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>-->
+        <!--<input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Locations">-->
+        <input #gb type="text" class="form-control" style="float:left" placeholder="Search Locations">
+    </div>
 </div>
 
 <p-dataTable [value]="locations" [(selection)]="selectedLocations" [rows]="10" [paginator]="true"

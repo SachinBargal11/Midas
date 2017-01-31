@@ -25,9 +25,10 @@
 							<a (click)="logout()" class="dropdown-item"><span class="font-icon glyphicon glyphicon-log-out"></span>Logout</a>
 						</div>
 					</div>
+					<button type="button" class="burger-right" (click)="onBurgerClick()"><i class="font-icon-menu-addl"></i></button>
 				</div>
 				
-				<div class="mobile-menu-right-overlay"></div>
+				<div class="mobile-menu-right-overlay" (click)="hideMobileMenu()"></div>
 				<div class="site-header-collapsed">
 					<div class="site-header-collapsed-in">
 						

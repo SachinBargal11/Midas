@@ -127,6 +127,26 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             }
         }
 
+        public HttpResponseMessage GeneratePasswordLink(HttpRequestMessage request, T gbObject)
+        {
+            PasswordToken otpBO = (PasswordToken)(object)gbObject;
+            if (otpBO == null)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, new ErrorObject { ErrorMessage = "OTP object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+            var objResult = dataAccessManager.GeneratePasswordLink(gbObject);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                return request.CreateResponse(HttpStatusCode.Created, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage ValidatePassword(HttpRequestMessage request, T gbObject)
         {
             PasswordToken otpBO = (PasswordToken)(object)gbObject;
@@ -187,5 +207,44 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+
+        public HttpResponseMessage GetObjects(HttpRequestMessage request)
+        {
+            var objResult = dataAccessManager.Get();
+            try
+            {
+                //var res = (GbObject)(object)objResult;
+                var res = (object)objResult;
+
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        public HttpResponseMessage GetObjects(HttpRequestMessage request, string param1)
+        {
+            var objResult = dataAccessManager.Get(param1);
+            try
+            {
+                //var res = (GbObject)(object)objResult;
+                var res = (object)objResult;
+
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+
     }
 }

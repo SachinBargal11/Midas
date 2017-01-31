@@ -30,5 +30,6 @@ namespace MIDAS.GBX.WebAPI
 
         HttpResponseMessage GetObjects(HttpRequestMessage request);
         HttpResponseMessage GetObjects(HttpRequestMessage request, string param1);
+        HttpResponseMessage CreateGbObjectPatient(HttpRequestMessage request, T gbObject);
     }
 }

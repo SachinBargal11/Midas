@@ -78,6 +78,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.ValidateUniqueName(Request, patient);
         }
 
+        [HttpPost]
+        [Route("AddPatient")]
+        [AllowAnonymous]
+        public HttpResponseMessage AddPatient([FromBody]Patient data)
+        {
+            return requestHandler.CreateGbObjectPatient(Request, data);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

@@ -345,6 +345,145 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Add
+        public override object Add<T>(T entity)
+        {
+            BO.Patient patientBO = (BO.Patient)(object)entity;
+            BO.Company companyBO = patientBO.Company;
+            BO.Location locationBO = patientBO.Location;
+            BO.User userBO = patientBO.User;
+            BO.AddressInfo addressBO = patientBO.User.AddressInfo;
+            BO.ContactInfo contactinfoBO = patientBO.User.ContactInfo;
+
+            int Patient_id = 0;
+            Guid invitationDB_UniqueID = Guid.NewGuid();
+
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+
+                Patient patientDB = new Patient();
+                Company companyDB = new Company();
+                Location locationDB = new Location();
+                User userDB = new User();
+                AddressInfo addressDB = new AddressInfo();
+                ContactInfo contactinfoDB = new ContactInfo();
+
+                #region Address
+                if (addressBO != null)
+                {
+                    addressDB.id = addressBO.ID;
+                    addressDB.Name = addressBO.Name;
+                    addressDB.Address1 = addressBO.Address1;
+                    addressDB.Address2 = addressBO.Address2;
+                    addressDB.City = addressBO.City;
+                    addressDB.State = addressBO.State;
+                    addressDB.ZipCode = addressBO.ZipCode;
+                    addressDB.Country = addressBO.Country;
+                }
+                #endregion
+
+                addressDB = _context.AddressInfoes.Add(addressDB);
+
+                #region Contact Info
+                if (contactinfoBO != null)
+                {
+                    contactinfoDB.id = contactinfoBO.ID;
+                    contactinfoDB.Name = contactinfoBO.Name;
+                    contactinfoDB.CellPhone = contactinfoBO.CellPhone;
+                    contactinfoDB.EmailAddress = contactinfoBO.EmailAddress;
+                    contactinfoDB.HomePhone = contactinfoBO.HomePhone;
+                    contactinfoDB.WorkPhone = contactinfoBO.WorkPhone;
+                    contactinfoDB.FaxNo = contactinfoBO.FaxNo;
+                    contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
+                }
+                #endregion
+
+                contactinfoDB = _context.ContactInfoes.Add(contactinfoDB);
+
+                #region User
+                if (userDB.UpdateByUserID.HasValue)
+                    userDB.UpdateByUserID = userBO.UpdateByUserID.Value;
+                userDB.UpdateDate = DateTime.UtcNow;
+                userDB.IsDeleted = userBO.IsDeleted;
+                userDB.UserName = userBO.UserName == null ? userDB.UserName : userBO.UserName;
+                userDB.FirstName = userBO.FirstName == null ? userDB.FirstName : userBO.FirstName;
+                userDB.MiddleName = userBO.MiddleName == null ? userDB.MiddleName : userBO.MiddleName;
+                userDB.LastName = userBO.LastName == null ? userDB.LastName : userBO.LastName;
+                userDB.Gender = System.Convert.ToByte(userBO.Gender);
+                userDB.UserType = System.Convert.ToByte(userBO.UserType);
+                userDB.UserStatus = System.Convert.ToByte(userBO.Status);
+                userDB.ImageLink = userBO.ImageLink;
+                userDB.DateOfBirth = userBO.DateOfBirth;
+                if (userBO.Password != null)
+                    userDB.Password = PasswordHash.HashPassword(userBO.Password);
+                userDB.IsDeleted = userBO.IsDeleted;
+
+                userDB.AddressId = addressDB.id;
+                userDB.ContactInfoId = contactinfoDB.id;
+                #endregion
+
+                userDB = _context.Users.Add(userDB);
+
+                _context.SaveChanges();
+
+                #region Patient
+                //patientDB.id = patientBO.ID;
+                patientDB.PatientID = userDB.id;
+                patientDB.SSN = patientBO.SSN;
+                patientDB.WCBNo = patientBO.WCBNo;
+                patientDB.JobTitle = patientBO.JobTitle;
+                patientDB.WorkActivities = patientBO.WorkActivities;
+                patientDB.CarrierCaseNo = patientBO.CarrierCaseNo;
+                patientDB.ChartNo = patientBO.ChartNo;
+                patientDB.IsDeleted = patientBO.IsDeleted.HasValue ? patientBO.IsDeleted : false;
+
+                patientDB.CompanyID = patientBO.CompanyID;
+                #endregion
+
+                patientDB = _context.Patients.Add(patientDB);
+
+                _context.SaveChanges();
+
+                #region Insert Invitation
+                Invitation invitationDB = new Invitation();
+                invitationDB.User = userDB;
+
+                invitationDB_UniqueID = Guid.NewGuid();
+
+                invitationDB.UniqueID = invitationDB_UniqueID;
+                invitationDB.CompanyID = patientBO.CompanyID;
+                invitationDB.CreateDate = DateTime.UtcNow;
+                invitationDB.CreateByUserID = patientBO.CompanyID;
+                _context.Invitations.Add(invitationDB);
+                _context.SaveChanges();
+                #endregion
+
+                dbContextTransaction.Commit();
+
+                Patient_id = patientDB.id;
+            }
+
+            try
+            {
+                #region Send Email
+                string VerificationLink = "<a href='" + Utility.GetConfigValue("PatientVerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("PatientVerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "User registered", Body = Message };
+                objEmail.SendMail();
+                #endregion
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            var NewpatientDB = _context.Patients.Include("Company").Include("Location").Where(p => p.id == Patient_id).FirstOrDefault<Patient>();
+
+            var res = Convert<BO.Patient, Patient>(NewpatientDB);
+            return (object)res;
+        }
+        #endregion
+
         public void Dispose()
         {
             // Use SupressFinalize in case a subclass 

@@ -65,6 +65,8 @@
     <Compile Include="DataAccessManager\IGbDataAccessManager.cs" />
     <Compile Include="EntityRepository\BaseEntityRepo.cs" />
     <Compile Include="EntityRepository\Common\CityRepository.cs" />
+    <Compile Include="EntityRepository\Common\GenderRepository.cs" />
+    <Compile Include="EntityRepository\Common\MaritalStatusRepository.cs" />
     <Compile Include="EntityRepository\Common\StateRepository.cs" />
     <Compile Include="EntityRepository\Company\CompanyRepository.cs" />
     <Compile Include="EntityRepository\Doctor\DoctorLocationScheduleRepository.cs" />
@@ -89,6 +91,9 @@
     <Compile Include="EntitySearch\EntitySearchParameters.cs" />
     <Compile Include="EntitySearch\FilterDefination.cs" />
     <Compile Include="Model\AddressInfo.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Case.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\City.cs">
@@ -118,6 +123,9 @@
     <Compile Include="Model\Gender.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\InsuranceInfo.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Invitation.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
@@ -128,6 +136,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Log.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\MaritalStatu.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\MIDASGBXEntities.Context.cs">
@@ -152,6 +163,12 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Patient.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Patient2.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PatientEmpInfo.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Room.cs">
@@ -205,18 +222,8 @@
       <LastGenOutput>MIDASGBXEntities.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="App.Config" />
-    <None Include="Model\MIDASGBXEntities.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
-      <LastGenOutput>MIDASGBXEntities.Context.cs</LastGenOutput>
-    </None>
     <None Include="Model\MIDASGBXEntities.edmx.diagram">
       <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
-    </None>
-    <None Include="Model\MIDASGBXEntities.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
-      <LastGenOutput>MIDASGBXEntities.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -236,6 +243,18 @@
   <ItemGroup>
     <Folder Include="EntityRepository\AddressInfo\" />
     <Folder Include="EntityRepository\ContactInfo\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Model\MIDASGBXEntities.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
+      <LastGenOutput>MIDASGBXEntities.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Model\MIDASGBXEntities.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
+      <LastGenOutput>MIDASGBXEntities.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -179,7 +179,7 @@
                                 <label class="form-label"> City
                                         </label>
                                 <div class="form-group" [class.error]="userformControls.address.controls.city.touched && !userformControls.address.controls.city.valid">
-                                    <select formControlName="city" [ngModel]="address.city" type="text" class="form-control" placeholder="" [class.error]="userformControls.address.controls.city.touched && !userformControls.address.controls.city.valid">
+                                    <select formControlName="city" [ngModel]="selectedCity" type="text" class="form-control" placeholder="" [class.error]="userformControls.address.controls.city.touched && !userformControls.address.controls.city.valid">
                                         <option value="">-Select City-</option>
                                         <option *ngFor="let city of cities" value="{{city.citytext}}">{{city.citytext}}</option>
                                     </select>
