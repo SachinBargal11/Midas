@@ -6,17 +6,68 @@ import * as _ from 'underscore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
+import { MyEvent } from '../models/my-event';
 
 @Injectable()
 export class EventService {
     private _url: string = 'http://localhost:3004/data';
+    private _headers: Headers = new Headers();
 
-    constructor(private http: Http) { }
+    constructor(private _http: Http) {
+        this._headers.append('Content-Type', 'application/json');
+    }
 
-    getEvents() {
-        return this.http.get(this._url)
-            .toPromise()
-            .then(res => <any[]>res.json().data)
-            .then(data => { return data; });
+    getEvents(): Observable<MyEvent[]> {
+        let promise: Promise<MyEvent[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url)
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<MyEvent[]>>Observable.fromPromise(promise);
+    }
+    addEvent(event: MyEvent): Observable<MyEvent> {
+        let promise: Promise<MyEvent> = new Promise((resolve, reject) => {
+            return this._http.post(this._url, JSON.stringify(event), {
+                headers: this._headers
+            })
+            .map(res => res.json())
+            .subscribe((data: any) => {
+                resolve(data);
+            }, (error) => {
+                reject(error);
+            });
+        });
+        return <Observable<MyEvent>>Observable.fromPromise(promise);
+    }
+    updateEvent(event: MyEvent): Observable<MyEvent> {
+        let promise = new Promise((resolve, reject) => {
+            return this._http.put(`${this._url}/${event.id}`, JSON.stringify(event), {
+                headers: this._headers
+            })
+            .map(res => res.json())
+            .subscribe((data: any) => {
+                resolve(data);
+            }, (error) => {
+                reject(error);
+            });
+        });
+        return <Observable<MyEvent>>Observable.fromPromise(promise);
+    }
+    deleteEvent(event: MyEvent): Observable<MyEvent> {
+        let promise = new Promise((resolve, reject) => {
+            return this._http.delete(`${this._url}/${event.id}`)
+                .map(res => res.json())
+                .subscribe((patient) => {
+                    resolve(patient);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<MyEvent>>Observable.from(promise);
     }
 }

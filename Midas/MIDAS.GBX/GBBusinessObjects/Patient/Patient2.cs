@@ -18,6 +18,7 @@ namespace MIDAS.GBX.BusinessObjects
         public int LocationID { get; set; }
         //public int CompanyID { get; set; }
         //public Company Company { get; set; }
+        public byte MaritalStatusId { get; set; }
         public decimal Weight { get; set; }
         public string DrivingLicence { get; set; }
         public string EmergenceyContactName { get; set; }

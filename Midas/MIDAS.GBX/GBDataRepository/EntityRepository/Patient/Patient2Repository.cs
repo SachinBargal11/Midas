@@ -41,7 +41,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             patientBO2.WCBNo = patient2.WCBNo;
             patientBO2.LocationID = patient2.LocationID;
             patientBO2.Weight = patient2.Weight;
-            //patientBO2.MaritalStatus = patient2.MaritalStatus;
+            patientBO2.MaritalStatusId = (byte)patient2.MaritalStatusId;
             patientBO2.DrivingLicence = patient2.DrivingLicence;
             patientBO2.EmergenceyContactNumber = patient2.EmergencyContactNumber;
             patientBO2.EmergenceyContactRelation = patient2.EmergencyContactRelation;
@@ -111,6 +111,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.User userBO = patient2BO.User;
             BO.AddressInfo addressBO = patient2BO.User.AddressInfo;
             BO.ContactInfo contactinfoBO = patient2BO.User.ContactInfo;
+
+            Guid invitationDB_UniqueID = Guid.NewGuid();
+            bool sendEmail = false;
 
             Patient2 patient2DB = new Patient2();
 
@@ -208,6 +211,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         userDB = new User();
                         Add_userDB = true;
+                        sendEmail = true;
                     }
                     else if (userDB == null && userBO.ID > 0)
                     {
@@ -282,6 +286,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     patient2DB.SSN = patient2BO.SSN;
                     patient2DB.WCBNo = patient2BO.WCBNo;
                     patient2DB.Weight = patient2BO.Weight;
+                    patient2DB.MaritalStatusId = patient2BO.MaritalStatusId;
                     patient2DB.DrivingLicence = patient2BO.DrivingLicence;
                     patient2DB.EmergencyContactName = patient2BO.EmergenceyContactName;
                     patient2DB.EmergencyContactNumber = patient2BO.EmergenceyContactNumber;
@@ -316,9 +321,43 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _context.SaveChanges();
                 #endregion
 
+                if (sendEmail == true)
+                {
+                    #region Insert Invitation
+                    Invitation invitationDB = new Invitation();
+                    invitationDB.User = userDB;
+
+                    invitationDB_UniqueID = Guid.NewGuid();
+
+                    invitationDB.UniqueID = invitationDB_UniqueID;
+                    invitationDB.CompanyID = 0;
+                    invitationDB.CreateDate = DateTime.UtcNow;
+                    invitationDB.CreateByUserID = userDB.id;
+                    _context.Invitations.Add(invitationDB);
+                    _context.SaveChanges();
+                    #endregion
+                }
+
                 dbContextTransaction.Commit();
 
                 patient2DB = _context.Patient2.Include("Location").Where(p => p.id == patient2DB.id).FirstOrDefault<Patient2>();
+            }
+
+            if (sendEmail == true)
+            {
+                try
+                {
+                    #region Send Email
+                    string VerificationLink = "<a href='" + Utility.GetConfigValue("PatientVerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("PatientVerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                    string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                    BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "User registered", Body = Message };
+                    objEmail.SendMail();
+                    #endregion
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
 
             var res = Convert<BO.Patient2, Patient2>(patient2DB);

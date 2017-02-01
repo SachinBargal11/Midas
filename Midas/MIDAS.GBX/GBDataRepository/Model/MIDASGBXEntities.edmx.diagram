@@ -14,7 +14,6 @@
         <EntityTypeShape EntityType="MIDASGBXModel.Doctor" Width="1.5" PointX="8.25" PointY="19" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.DoctorLocationSchedule" Width="1.5" PointX="13.5" PointY="25.375" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.DoctorSpeciality" Width="1.5" PointX="14.25" PointY="21.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.Gender" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.Invitation" Width="1.5" PointX="11.25" PointY="16" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.InvitationType" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.Location" Width="1.5" PointX="11.25" PointY="26.25" IsExpanded="true" />
@@ -92,6 +91,7 @@
         <AssociationConnector Association="MIDASGBXModel.FK_Patient2_Location" />
         <AssociationConnector Association="MIDASGBXModel.FK_Patient2_MaritalStatus_MaritalStatusId" />
         <AssociationConnector Association="MIDASGBXModel.FK_Patient2_User" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Gender" Width="1.5" PointX="7.375" PointY="6.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

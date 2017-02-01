@@ -34,7 +34,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<Doctor> Doctors { get; set; }
         public virtual DbSet<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }
         public virtual DbSet<DoctorSpeciality> DoctorSpecialities { get; set; }
-        public virtual DbSet<Gender> Genders { get; set; }
         public virtual DbSet<Invitation> Invitations { get; set; }
         public virtual DbSet<InvitationType> InvitationTypes { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
@@ -61,5 +60,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<InsuranceInfo> InsuranceInfoes { get; set; }
         public virtual DbSet<PatientEmpInfo> PatientEmpInfoes { get; set; }
         public virtual DbSet<Patient2> Patient2 { get; set; }
+        public virtual DbSet<Gender> Genders { get; set; }
     }
 }
