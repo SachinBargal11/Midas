@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { EventService } from '../services/event-service';
 import * as $ from 'jquery';
 import * as moment from 'moment';
+import { MyEvent } from '../models/my-event';
 
 @Component({
     selector: 'schedule-demo',
@@ -28,7 +29,7 @@ export class ScheduleDemo implements OnInit {
     constructor(private eventService: EventService, private cd: ChangeDetectorRef) { }
 
     ngOnInit() {
-        this.eventService.getEvents().then(events => { this.events = events; });
+        this.eventService.getEvents().subscribe(events => { this.events = events; });
 
         this.header = {
             left: 'prev,next today',
@@ -73,12 +74,14 @@ export class ScheduleDemo implements OnInit {
             let index: number = this.findEventIndexById(this.event.id);
             if (index >= 0) {
                 this.events[index] = this.event;
+                this.eventService.updateEvent(this.event);
             }
         }
         //new
         else {
             this.event.id = this.idGen;
             this.events.push(this.event);
+            this.eventService.addEvent(this.event);
             this.event = null;
         }
 
@@ -89,6 +92,7 @@ export class ScheduleDemo implements OnInit {
         let index: number = this.findEventIndexById(this.event.id);
         if (index >= 0) {
             this.events.splice(index, 1);
+                this.eventService.deleteEvent(this.event);
         }
         this.dialogVisible = false;
     }
@@ -96,7 +100,7 @@ export class ScheduleDemo implements OnInit {
     findEventIndexById(id: number) {
         let index = -1;
         for (let i = 0; i < this.events.length; i++) {
-            if (id == this.events[i].id) {
+            if (id === this.events[i].id) {
                 index = i;
                 break;
             }
@@ -106,10 +110,3 @@ export class ScheduleDemo implements OnInit {
     }
 }
 
-export class MyEvent {
-    id: number;
-    title: string;
-    start: string;
-    end: string;
-    allDay: boolean = true;
-}
