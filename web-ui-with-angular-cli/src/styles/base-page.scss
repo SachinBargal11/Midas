@@ -27,3 +27,7 @@
     box-shadow: none;
 }
 
+.control-panel.open .notification-panel-container {
+    width: 280px;
+    display: block;
+}
