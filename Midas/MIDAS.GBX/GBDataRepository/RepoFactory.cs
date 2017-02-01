@@ -126,7 +126,7 @@ namespace MIDAS.GBX
             }
             if (typeof(T) == typeof(BO.Patient2))
             {
-                repo = new PatientRepository2(context);
+                repo = new Patient2Repository(context);
             }
 
 

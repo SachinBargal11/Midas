@@ -5,6 +5,7 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import { PatientsStore } from '../stores/patients-store';
 import { Patient } from '../models/patient';
+import { User } from '../../../commons/models/user';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
@@ -20,22 +21,6 @@ import { NotificationsService } from 'angular2-notifications';
 export class AddPatientComponent implements OnInit {
     minDate: Date;
     maxDate: Date;
-    patient = new Patient({
-        'firstname': '',
-        'lastname': '',
-        'email': '',
-        'mobileNo': '',
-        'address': '',
-        'dob': ''
-    });
-    options = {
-        timeOut: 3000,
-        showProgressBar: true,
-        pauseOnHover: false,
-        clickToClose: false,
-        maxLength: 10
-    };
-    date1: string;
     patientform: FormGroup;
     patientformControls;
 
@@ -74,13 +59,14 @@ export class AddPatientComponent implements OnInit {
         this.isSavePatientProgress = true;
         let result;
         let patient = new Patient({
-            'firstname': this.patientform.value.firstname,
-            'lastname': this.patientform.value.lastname,
-            'email': this.patientform.value.email,
-            'mobileNo': this.patientform.value.mobileNo,
-            'address': this.patientform.value.address,
-            'dob': this.patientform.value.dob,
-            'createdUser': this._sessionStore.session.user.id
+            user: new User({
+                firstname: this.patientform.value.firstname,
+                lastname: this.patientform.value.lastname,
+                email: this.patientform.value.email,
+                // mobileNo: this.patientform.value.mobileNo,
+                // address: this.patientform.value.address,
+                // dob: this.patientform.value.dob,
+            })
         });
         this._progressBarService.show();
         result = this._patientsStore.addPatient(patient);

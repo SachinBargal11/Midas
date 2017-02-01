@@ -2,7 +2,7 @@
 	<div class="container-fluid">
 
 
-		<button class="hamburger hamburger--htla"> <!-- Toggle mobile menu -->
+		<button class="hamburger hamburger--htla" (click)="onLeftBurgerClick()"> <!-- Toggle mobile menu -->
             <span>toggle menu</span>
         </button>
 		<div class="site-header-content">
@@ -14,7 +14,7 @@
 							<i class="font-icon-alarm"></i>
 						</a>
 					</div>
-
+					
 					<div class="dropdown user-menu" dropdown>
 						<button dropdownToggle class="dropdown-toggle" id="dd-user-menu" type="button" data-toggle="dropdown" aria-haspopup="true"
 							aria-expanded="false">

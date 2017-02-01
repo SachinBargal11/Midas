@@ -22,11 +22,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
     [AllowAnonymous]
     public class PatientController : ApiController
     {
-
         private IRequestHandler<Patient> requestHandler;
+        private IRequestHandler<Patient2> requestHandlerPatient2;
+
         public PatientController()
         {
             requestHandler = new GbApiRequestHandler<Patient>();
+            requestHandlerPatient2 = new GbApiRequestHandler<Patient2>();
         }
 
         [HttpPost]
@@ -84,6 +86,22 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public HttpResponseMessage AddPatient([FromBody]Patient data)
         {
             return requestHandler.CreateGbObjectPatient(Request, data);
+        }
+        
+        [HttpGet]
+        [Route("GetPatient/{id}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetPatient2(int id)
+        {
+            return requestHandlerPatient2.GetObject(Request, id);
+        }
+
+        [HttpPost]
+        [Route("SavePatient")]
+        [AllowAnonymous]
+        public HttpResponseMessage Post([FromBody]Patient2 patient2)
+        {
+            return requestHandlerPatient2.CreateGbObject(Request, patient2);
         }
 
         protected override void Dispose(bool disposing)

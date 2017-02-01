@@ -10,6 +10,7 @@ import { AccessComponent } from './components/access';
 import { AddLocationComponent } from './components/add-location';
 import { RoomsRoutes } from '../rooms/rooms-routes';
 import { ShellComponent } from '../../commons/shell-component';
+import { ScheduleDemo } from './components/schedule-demo';
 
 export const LocationManagementRoutes: Routes = [
     {
@@ -67,6 +68,14 @@ export const LocationManagementRoutes: Routes = [
                 canActivate: [ValidateActiveSession],
                 data: {
                     breadcrumb: 'Schedule'
+                }
+            },
+            {
+                path: 'schedule-demo',
+                component: ScheduleDemo,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Schedule-demo'
                 }
             },
             {

@@ -39,11 +39,19 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("GetPatient2/{id}")]
+        [Route("GetPatient/{id}")]
         [AllowAnonymous]
         public HttpResponseMessage GetPatient2(int id)
         {
             return requestHandlerPatient2.GetObject(Request, id);
+        }
+
+        [HttpPost]
+        [Route("SavePatient")]
+        [AllowAnonymous]
+        public HttpResponseMessage Post([FromBody]Patient2 patient2)
+        {
+            return requestHandlerPatient2.CreateGbObject(Request, patient2);
         }
 
         protected override void Dispose(bool disposing)

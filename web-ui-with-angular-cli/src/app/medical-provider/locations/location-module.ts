@@ -13,6 +13,8 @@ import { LocationsService } from './services/locations-service';
 import { ScheduleService } from './services/schedule-service';
 import { LocationsStore } from './stores/locations-store';
 import { ScheduleStore } from './stores/schedule-store';
+import { ScheduleDemo } from './components/schedule-demo';
+import { EventService } from './services/event-service';
 
 @NgModule({
     imports: [
@@ -27,13 +29,15 @@ import { ScheduleStore } from './stores/schedule-store';
         BasicComponent,
         LocationShellComponent,
         ScheduleComponent,
-        SettingsComponent
+        SettingsComponent,
+        ScheduleDemo
     ],
     providers: [
         LocationsService,
         LocationsStore,
         ScheduleService,
-        ScheduleStore
+        ScheduleStore,
+        EventService
     ]
 })
 export class LocationModule { }

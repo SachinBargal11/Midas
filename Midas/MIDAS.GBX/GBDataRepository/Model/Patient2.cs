@@ -19,7 +19,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public string WCBNo { get; set; }
         public int LocationID { get; set; }
         public decimal Weight { get; set; }
-        public Nullable<byte> MaritalStatus { get; set; }
+        public Nullable<byte> MaritalStatusId { get; set; }
         public string DrivingLicence { get; set; }
         public string EmergencyContactName { get; set; }
         public string EmergencyContactRelation { get; set; }

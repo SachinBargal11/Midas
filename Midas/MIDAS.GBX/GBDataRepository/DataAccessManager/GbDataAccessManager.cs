@@ -542,7 +542,7 @@ namespace MIDAS.GBX.DataAccessManager
                 }
                 else
                 {
-                    var gbdata = baseRepo.Add(data);
+                    var gbdata = baseRepo.Save2(data);
                     return gbdata;
                 }
             }

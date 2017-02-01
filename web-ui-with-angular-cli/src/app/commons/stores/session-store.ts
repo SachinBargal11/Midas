@@ -123,8 +123,9 @@ export class SessionStore {
         this.userLogoutEvent.emit(null);
     }
 
-    selectCurrentCompany(event) {
-        let company: Company = _.find(this.session.companies, {id: parseInt(event.target.value)});
+    selectCurrentCompany(event, companyId) {
+        event.preventDefault();
+        let company: Company = _.find(this.session.companies, {id: parseInt(companyId, 10)});
         this._session.currentCompany = company;
         this.userCompanyChangeEvent.emit(null);
     }

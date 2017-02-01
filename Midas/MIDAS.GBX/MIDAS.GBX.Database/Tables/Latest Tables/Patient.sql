@@ -20,7 +20,8 @@ CREATE TABLE [dbo].[Patient](
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NOT NULL,
 	[UpdateByUserID] [int] NULL,
-	[UpdateDate] [datetime2](7) NULL
+	[UpdateDate] [datetime2](7) NULL, 
+    CONSTRAINT [PK_Patient] PRIMARY KEY ([id])
 ) ON [PRIMARY]
 
 GO
