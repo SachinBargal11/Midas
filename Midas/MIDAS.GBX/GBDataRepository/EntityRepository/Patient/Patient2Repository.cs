@@ -112,6 +112,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.AddressInfo addressBO = patient2BO.User.AddressInfo;
             BO.ContactInfo contactinfoBO = patient2BO.User.ContactInfo;
 
+            Guid invitationDB_UniqueID = Guid.NewGuid();
+            bool sendEmail = false;
+
             Patient2 patient2DB = new Patient2();
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
@@ -208,6 +211,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         userDB = new User();
                         Add_userDB = true;
+                        sendEmail = true;
                     }
                     else if (userDB == null && userBO.ID > 0)
                     {
@@ -316,9 +320,43 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _context.SaveChanges();
                 #endregion
 
+                if (sendEmail == true)
+                {
+                    #region Insert Invitation
+                    Invitation invitationDB = new Invitation();
+                    invitationDB.User = userDB;
+
+                    invitationDB_UniqueID = Guid.NewGuid();
+
+                    invitationDB.UniqueID = invitationDB_UniqueID;
+                    invitationDB.CompanyID = 0;
+                    invitationDB.CreateDate = DateTime.UtcNow;
+                    invitationDB.CreateByUserID = userDB.id;
+                    _context.Invitations.Add(invitationDB);
+                    _context.SaveChanges();
+                    #endregion
+                }
+
                 dbContextTransaction.Commit();
 
                 patient2DB = _context.Patient2.Include("Location").Where(p => p.id == patient2DB.id).FirstOrDefault<Patient2>();
+            }
+
+            if (sendEmail == true)
+            {
+                try
+                {
+                    #region Send Email
+                    string VerificationLink = "<a href='" + Utility.GetConfigValue("PatientVerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("PatientVerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                    string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                    BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "User registered", Body = Message };
+                    objEmail.SendMail();
+                    #endregion
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
 
             var res = Convert<BO.Patient2, Patient2>(patient2DB);
