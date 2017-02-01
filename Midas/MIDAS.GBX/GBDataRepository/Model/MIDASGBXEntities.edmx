@@ -316,16 +316,9 @@
           <Property Name="EmergenceyContactNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="EmergenceyContactRelation" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'MIDASGBX.dbo.Patient2' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Patient2">
           <Key>
             <PropertyRef Name="id" />
-            <PropertyRef Name="SSN" />
-            <PropertyRef Name="LocationID" />
-            <PropertyRef Name="Weight" />
-            <PropertyRef Name="CreateByUserID" />
-            <PropertyRef Name="CreateDate" />
           </Key>
           <Property Name="id" Type="int" Nullable="false" />
           <Property Name="SSN" Type="nvarchar" MaxLength="20" Nullable="false" />
@@ -983,7 +976,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
         </Association>
         <Association Name="FK_Patient2_User">
           <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Patient2" Type="Self.Patient2" Multiplicity="*" />
+          <End Role="Patient2" Type="Self.Patient2" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="id" />
@@ -1206,6 +1199,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="OTP" EntityType="Self.OTP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PasswordToken" EntityType="Self.PasswordToken" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient" EntityType="Self.Patient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Patient2" EntityType="Self.Patient2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientEmpInfo" EntityType="Self.PatientEmpInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Room" EntityType="Self.Room" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoomTest" EntityType="Self.RoomTest" Schema="dbo" store:Type="Tables" />
@@ -1221,25 +1215,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="UserCompany" EntityType="Self.UserCompany" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserCompanyRole" EntityType="Self.UserCompanyRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Patient2" EntityType="Self.Patient2" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Patient2].[id] AS [id], 
-    [Patient2].[SSN] AS [SSN], 
-    [Patient2].[WCBNo] AS [WCBNo], 
-    [Patient2].[LocationID] AS [LocationID], 
-    [Patient2].[Weight] AS [Weight], 
-    [Patient2].[MaritalStatus] AS [MaritalStatus], 
-    [Patient2].[DrivingLicence] AS [DrivingLicence], 
-    [Patient2].[EmergencyContactName] AS [EmergencyContactName], 
-    [Patient2].[EmergencyContactRelation] AS [EmergencyContactRelation], 
-    [Patient2].[EmergencyContactNumber] AS [EmergencyContactNumber], 
-    [Patient2].[IsDeleted] AS [IsDeleted], 
-    [Patient2].[CreateByUserID] AS [CreateByUserID], 
-    [Patient2].[CreateDate] AS [CreateDate], 
-    [Patient2].[UpdateByUserID] AS [UpdateByUserID], 
-    [Patient2].[UpdateDate] AS [UpdateDate]
-    FROM [dbo].[Patient2] AS [Patient2]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_Case_AddressInfo_AccidentAddressId" Association="Self.FK_Case_AddressInfo_AccidentAddressId">
             <End Role="AddressInfo" EntitySet="AddressInfo" />
             <End Role="Case" EntitySet="Case" />
