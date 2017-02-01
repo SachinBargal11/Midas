@@ -11,7 +11,7 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class Patient : GbObject
     {
-        public int id { get; set; }
+        //public int id { get; set; }
         public int PatientID { get; set; }
         public string SSN { get; set; }
         public string WCBNo { get; set; }
@@ -38,10 +38,10 @@ namespace MIDAS.GBX.BusinessObjects
             List<BusinessValidation> validations = new List<BusinessValidation>();
             BusinessValidation validation = new BusinessValidation();
 
-            if (id < 0)
-            {
-                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "ID cannot be less than zero." });
-            }
+            //if (id < 0)
+            //{
+            //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "ID cannot be less than zero." });
+            //}
 
             if (PatientID < 0)
             {
