@@ -13,12 +13,12 @@ using BO = MIDAS.GBX.BusinessObjects;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
 {
-    internal class PatientRepository2 : BaseEntityRepo, IDisposable
+    internal class Patient2Repository : BaseEntityRepo, IDisposable
     {
         private DbSet<Patient2> _dbSet;
 
         #region Constructor
-        public PatientRepository2(MIDASGBXEntities context)
+        public Patient2Repository(MIDASGBXEntities context)
             : base(context)
         {
             _dbSet = context.Set<Patient2>();
