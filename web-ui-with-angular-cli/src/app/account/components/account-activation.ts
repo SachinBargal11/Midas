@@ -73,8 +73,8 @@ export class AccountActivationComponent implements OnInit {
         let requestData = { user: null };
         requestData.user = {
             id: this.user.id,
-            password: this.changePassForm.value.password,
-            userType: UserType.STAFF
+            userName: this.user.userName,
+            password: this.changePassForm.value.password
         };
         this.isPassChangeInProgress = true;
 
