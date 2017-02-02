@@ -4,7 +4,8 @@ import * as $ from 'jquery';
 
 @Component({
     selector: 'main-nav',
-    templateUrl: './main-nav.html'
+    templateUrl: './main-nav.html',
+    styleUrls: ['./main-nav.scss']
 })
 
 export class MainNavComponent {

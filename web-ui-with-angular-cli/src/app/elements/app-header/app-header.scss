@@ -7,7 +7,6 @@
 {
     .site-header-collapsed
     {
-        margin-right: -250px;   
         @media (max-width: 991px) {
             .dropdown {
                 &.open {
@@ -17,6 +16,9 @@
                 }
             }
         }
+         .site-header-collapsed-in {
+                margin-right: 99px;
+         }
     }
 
     .site-header-content .site-header-content-in

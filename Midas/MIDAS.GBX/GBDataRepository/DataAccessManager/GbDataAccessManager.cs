@@ -565,5 +565,52 @@ namespace MIDAS.GBX.DataAccessManager
                 return ex;
             }
         }
+
+        #region ResetPassword
+        public Object ResetPassword(T data)
+        {
+            try
+            {
+                //var gbObject = (GbObject)(object)entity;
+                if (data == null)
+                    throw new GbException(string.Format("Null Object cannot be saved. ObjectType : {0}", typeof(T).Name));
+
+                //Update CreatedBy and other tracking fields to child entities
+
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+
+                List<MIDAS.GBX.BusinessObjects.BusinessValidation> validationResults = baseRepo.Validate(data);
+                if (validationResults.Count > 0)
+                {
+                    return new ErrorObject { ErrorMessage = "Please check error object for more details", errorObject = validationResults, ErrorLevel = ErrorLevel.Validation };
+                }
+                else
+                {
+                    var gbdata = baseRepo.ResetPassword(data);
+                    return gbdata;
+                }
+            }
+
+            catch (DbEntityValidationException ex)
+            {
+                return ex;
+            }
+            catch (DbUpdateException ex)
+            {
+                var sqlex = ex.InnerException.InnerException as SqlException;
+
+                return new ErrorObject { ErrorMessage = "Unique key exception.Please refer error object for more details.", errorObject = sqlex, ErrorLevel = ErrorLevel.Exception };
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+        #endregion
+
     }
 }

@@ -91,7 +91,6 @@ export class BreadcrumbComponent implements OnInit {
             url += `/${routeURL}`;
 
             //add breadcrumb
-
             let shell = child.snapshot.data[ROUTE_DATA_URL];
                 if (Object.keys(child.snapshot.params).length !== 0 && shell === true) {
                     if (null != url && url.length > 0 ) {
@@ -118,14 +117,13 @@ export class BreadcrumbComponent implements OnInit {
                        breadcrumbs.push(breadcrumb);
                        }
                 }
-
+//
 
             // let breadcrumb: IBreadcrumb = {
             //     label: child.snapshot.data[ROUTE_DATA_BREADCRUMB],
             //     params: child.snapshot.params,
             //     url: url
             // };
-            // breadcrumbs.push(breadcrumb);
 
             //recursive
             return this.getBreadcrumbs(child, url, breadcrumbs);

@@ -589,5 +589,65 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             GC.SuppressFinalize(this);
         }
         #endregion
+
+        #region ResetPassword
+        public override Object ResetPassword<T>(T entity)
+        {
+            BO.AddUser addUserBO = (BO.AddUser)(object)entity;
+            BO.User userBO = addUserBO.user;
+
+            if (addUserBO.user == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "User object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            if (userBO.ID == 0)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Invalid user id", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            User userDB = new User();
+            Invitation invitationDB = new Invitation();
+
+            userDB = userBO.ID > 0 ? _context.Users.Where(p => p.id == userBO.ID).FirstOrDefault<User>() : null;
+
+            if (userDB != null)
+            {
+                userDB.Password = PasswordHash.HashPassword(userBO.Password);
+            }
+            
+            _context.SaveChanges();
+
+            userDB = _context.Users.Where(p => p.id == userBO.ID).FirstOrDefault<User>();
+
+
+            //#region Insert Invitation
+            //invitationDB.User = userCompanyDB.User;
+
+            //invitationDB.UniqueID = Guid.NewGuid();
+            //invitationDB.CreateDate = DateTime.UtcNow;
+            //invitationDB.CreateByUserID = companyBO.CreateByUserID;
+            //_dbInvitation.Add(invitationDB);
+            //_context.SaveChanges();
+            //#endregion
+
+            BO.User acc_ = Convert<BO.User, User>(userDB);
+            //try
+            //{
+            //    #region Send Email
+            //    string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+            //    string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+            //    BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "User registered", Body = Message };
+            //    objEmail.SendMail();
+            //    #endregion
+            //}
+            //catch (Exception ex)
+            //{
+
+            //}
+            var res = (BO.GbObject)(object)acc_;
+            return (object)res;
+        }
+
+        #endregion
     }
 }
