@@ -11,8 +11,8 @@ import {PatientAdapter} from './adapters/patient-adapter';
 @Injectable()
 export class PatientsService {
 
-    private _url: string = `${environment.SERVICE_BASE_URL}/patients`;
-    // private _url: string = 'http://localhost:3004/patients';
+    // private _url: string = `${environment.SERVICE_BASE_URL}/patients`;
+    private _url: string = 'http://localhost:3004/patients';
     private _headers: Headers = new Headers();
 
     constructor(
@@ -25,14 +25,15 @@ export class PatientsService {
     getPatient(patientId: Number): Observable<Patient> {
         let promise: Promise<Patient> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '?id=' + patientId).map(res => res.json())
-                .subscribe((data: Array<any>) => {
-                    let patient = null;
-                    if (data.length) {
-                        patient = PatientAdapter.parseResponse(data[0]);
-                        resolve(patient);
-                    } else {
-                        reject(new Error('NOT_FOUND'));
-                    }
+                .subscribe((data: any) => {
+                    // let patient = null;
+                    // if (data.length) {
+                    //     patient = PatientAdapter.parseResponse(data[0]);
+                    //     resolve(patient);
+                    // } else {
+                    //     reject(new Error('NOT_FOUND'));
+                    // }
+                        resolve(data);
                 }, (error) => {
                     reject(error);
                 });
@@ -46,10 +47,11 @@ export class PatientsService {
             return this._http.get(this._url)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
-                    let patients = (<Object[]>data).map((patientData: any) => {
-                        return PatientAdapter.parseResponse(patientData);
-                    });
-                    resolve(patients);
+                    // let patients = (<Object[]>data).map((patientData: any) => {
+                    //     return PatientAdapter.parseResponse(patientData);
+                    // });
+                    // resolve(patients);
+                    resolve(data);
                 }, (error) => {
                     reject(error);
                 });

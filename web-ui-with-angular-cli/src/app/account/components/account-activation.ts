@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ErrorMessageFormatter } from '../../commons/utils/ErrorMessageFormatter';
 import { AppValidators } from '../../commons/utils/AppValidators';
 import { NotificationsService } from 'angular2-notifications';
+import { UserType } from '../../commons/models/enums/user-type';
 
 import { AuthenticationService } from '../services/authentication-service';
 
@@ -72,7 +73,8 @@ export class AccountActivationComponent implements OnInit {
         let requestData = { user: null };
         requestData.user = {
             id: this.user.id,
-            password: this.changePassForm.value.password
+            password: this.changePassForm.value.password,
+            userType: UserType.STAFF
         };
         this.isPassChangeInProgress = true;
 
