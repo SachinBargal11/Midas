@@ -54,6 +54,7 @@
     <Compile Include="BoolConverter.cs" />
     <Compile Include="BusinessValidation.cs" />
     <Compile Include="BusinessValidationResult.cs" />
+    <Compile Include="Case\Case.cs" />
     <Compile Include="Common\City.cs" />
     <Compile Include="Common\Gender.cs" />
     <Compile Include="Common\MaritalStatus.cs" />
@@ -69,12 +70,14 @@
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="GBEnums.cs" />
     <Compile Include="GbObject.cs" />
+    <Compile Include="InsuranceInfo\InsuranceInfo.cs" />
     <Compile Include="Invitation\Invitation.cs" />
     <Compile Include="Location\Location.cs" />
     <Compile Include="Location\LocationSchedule.cs" />
     <Compile Include="Location\LocationSpeciality.cs" />
     <Compile Include="Location\SaveLocation.cs" />
     <Compile Include="Log\Log.cs" />
+    <Compile Include="PatientEmpInfo\PatientEmpInfo.cs" />
     <Compile Include="Patient\Patient.cs" />
     <Compile Include="Patient\Patient2.cs" />
     <Compile Include="Room\Room.cs" />
