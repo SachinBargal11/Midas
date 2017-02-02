@@ -350,5 +350,23 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+
+        public HttpResponseMessage ResetPassword(HttpRequestMessage request, T gbObject)
+        {
+            var objResult = dataAccessManager.ResetPassword(gbObject);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
     }
 }

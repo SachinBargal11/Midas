@@ -34,5 +34,6 @@ namespace MIDAS.GBX.DataAccessManager
         Object Get(string param1, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object Update(T gbObject);
         Object Add(T gbObject);
+        Object ResetPassword(T gbObject);
     }
 }

@@ -21,5 +21,6 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage GeneratePasswordLink(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetObjects(HttpRequestMessage request);
         HttpResponseMessage GetObjects(HttpRequestMessage request, string param1);
+        HttpResponseMessage ResetPassword(HttpRequestMessage request, T gbObject);
     }
 }

@@ -98,6 +98,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.ValidateUniqueName(Request, User);
         }
 
+        [HttpPost]
+        [Route("ResetPassword")]
+        [AllowAnonymous]
+        public HttpResponseMessage ResetPassword([FromBody]AddUser data)
+        {
+            return adduserrequestHandler.ResetPassword(Request, data);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
