@@ -1,17 +1,22 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import { PatientsStore } from '../stores/patients-store';
 import { Patient } from '../models/patient';
 import { User } from '../../../commons/models/user';
-import { SessionStore } from '../../../commons/stores/session-store';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
+import { UserType } from '../../../commons/models/enums/user-type';
+import { Contact } from '../../../commons/models/contact';
+import { Address } from '../../../commons/models/address';
+import { SessionStore } from '../../../commons/stores/session-store';
+import { StatesStore } from '../../../commons/stores/states-store';
+
 
 @Component({
     selector: 'add-patient',
@@ -19,13 +24,18 @@ import { NotificationsService } from 'angular2-notifications';
 })
 
 export class AddPatientComponent implements OnInit {
+    states: any[];
+    cities: any[];
+    selectedCity = 0;
     minDate: Date;
     maxDate: Date;
     patientform: FormGroup;
     patientformControls;
-
+    isCitiesLoading = false;
     isSavePatientProgress = false;
+
     constructor(
+        private _statesStore: StatesStore,
         private fb: FormBuilder,
         private _router: Router,
         private _notificationsStore: NotificationsStore,
@@ -36,12 +46,34 @@ export class AddPatientComponent implements OnInit {
         private _elRef: ElementRef
     ) {
         this.patientform = this.fb.group({
-            firstname: ['', Validators.required],
-            lastname: ['', Validators.required],
-            email: ['', [Validators.required, AppValidators.emailValidator]],
-            mobileNo: ['', [Validators.required, AppValidators.mobileNoValidator]],
-            address: [''],
-            dob: ['', Validators.required]
+            userInfo: this.fb.group({
+                ssn: ['', Validators.required],
+                wcbNo: [''],
+                weight: [''],
+                maritalStatusId: ['', Validators.required],
+                drivingLicence: [''],
+                emergencyContactName: [''],
+                emergencyContactRelation: [''],
+                emergencyContactNumber: [''],
+                dob: [''],
+                firstname: ['', Validators.required],
+                lastname: ['', Validators.required]
+            }),
+            contact: this.fb.group({
+                email: ['', [Validators.required, AppValidators.emailValidator]],
+                cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+                homePhone: [''],
+                workPhone: [''],
+                faxNo: ['']
+            }),
+            address: this.fb.group({
+                address1: [''],
+                address2: [''],
+                city: [''],
+                zipCode: [''],
+                state: [''],
+                country: ['']
+            })
         });
         this.patientformControls = this.patientform.controls;
 
@@ -52,20 +84,68 @@ export class AddPatientComponent implements OnInit {
         let currentDate = today.getDate();
         this.maxDate = new Date();
         this.maxDate.setDate(currentDate);
+        this._statesStore.getStates()
+            .subscribe(states => this.states = states);
     }
 
+    selectState(event) {
+        this.selectedCity = 0;
+        let currentState = event.target.value;
+        this.loadCities(currentState);
+    }
+
+    loadCities(stateName) {
+        this.isCitiesLoading = true;
+        if (stateName !== '') {
+            this._statesStore.getCitiesByStates(stateName)
+                .subscribe((cities) => { this.cities = cities; },
+                null,
+                () => { this.isCitiesLoading = false; });
+        } else {
+            this.cities = [];
+            this.isCitiesLoading = false;
+        }
+    }
 
     savePatient() {
         this.isSavePatientProgress = true;
+        let patientFormValues = this.patientform.value;
         let result;
         let patient = new Patient({
+            ssn: patientFormValues.userInfo.ssn,
+            wcbNo: patientFormValues.userInfo.wcbNo,
+            weight: patientFormValues.userInfo.weight,
+            maritalStatusId: patientFormValues.userInfo.maritalStatusId,
+            drivingLicence: patientFormValues.userInfo.drivingLicence,
+            emergencyContactName: patientFormValues.userInfo.emergencyContactName,
+            emergencyContactRelation: patientFormValues.userInfo.emergencyContactRelation,
+            emergencyContactNumber: patientFormValues.userInfo.emergencyContactNumber,
+            createByUserId: this._sessionStore.session.account.user.id,
             user: new User({
-                firstname: this.patientform.value.firstname,
-                lastname: this.patientform.value.lastname,
-                email: this.patientform.value.email,
-                // mobileNo: this.patientform.value.mobileNo,
-                // address: this.patientform.value.address,
-                // dob: this.patientform.value.dob,
+                dateOfBirth: patientFormValues.userInfo.dob,
+                firstName: patientFormValues.userInfo.firstname,
+                lastName: patientFormValues.userInfo.lastname,
+                userType: UserType.PATIENT,
+                password: 123456,
+                userName: patientFormValues.contact.email,
+                createByUserId: this._sessionStore.session.account.user.id,
+                contact: new Contact({
+                    cellPhone: patientFormValues.contact.cellPhone ? patientFormValues.contact.cellPhone.replace(/\-/g, '') : null,
+                    emailAddress: patientFormValues.contact.email,
+                    faxNo: patientFormValues.contact.faxNo ? patientFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
+                    homePhone: patientFormValues.contact.homePhone,
+                    workPhone: patientFormValues.contact.workPhone,
+                    createByUserId: this._sessionStore.session.account.user.id
+                }),
+                address: new Address({
+                    address1: patientFormValues.address.address1,
+                    address2: patientFormValues.address.address2,
+                    city: patientFormValues.address.city,
+                    country: patientFormValues.address.country,
+                    state: patientFormValues.address.state,
+                    zipCode: patientFormValues.address.zipCode,
+                    createByUserId: this._sessionStore.session.account.user.id
+                })
             })
         });
         this._progressBarService.show();

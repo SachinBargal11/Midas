@@ -7,7 +7,7 @@ import { Gender } from './enums/Gender';
 
 const UserRecord = Record({
     id: 0,
-    name: '',
+    // name: '',
     userType: UserType.STAFF,
     accountId: '',
     userName: '',
@@ -29,7 +29,7 @@ const UserRecord = Record({
 export class User extends UserRecord {
 
     id: number;
-    name: string;
+    // name: string;
     userType: UserType;
     accountId: number;
     userName: string;
