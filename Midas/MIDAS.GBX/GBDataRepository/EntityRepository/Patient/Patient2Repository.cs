@@ -365,6 +365,25 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get All Patient
+        public override object Get<T>(T entity)
+        {
+            BO.Patient2 patientBO = (BO.Patient2)(object)entity;
+            var acc_ = _context.Patient2.Include("User").Include("Location").Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<Patient2>();
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            List<BO.Patient2> lstpatients = new List<BO.Patient2>();
+            foreach (Patient2 item in acc_)
+            {
+                lstpatients.Add(Convert<BO.Patient2, Patient2>(item));
+            }
+            return lstpatients;
+        }
+        #endregion
+
+
         public void Dispose()
         {
             // Use SupressFinalize in case a subclass 
