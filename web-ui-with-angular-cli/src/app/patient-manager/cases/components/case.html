@@ -1,0 +1,215 @@
+<div class="page-center">
+    <div class="page-center-in">
+        <div class="container-fluid">
+            <h5 class="with-border">Add Cases</h5>
+            <form [formGroup]="caseform" (ngSubmit)="savePatient()">
+            <section class="card">
+                    <header class="card-header card-header-lg">
+                      Case
+                    </header>
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-lg-4">
+
+                            <div class="col-lg-4">
+                                <div class="form-group" [class.error]="caseformControls.doi.touched && !caseformControls.doi.valid">
+                                    <div class='input-group date'>
+                                          <p-calendar formControlName="doi" 
+                                                      dateFormat="M d, yy"
+                                                      [maxDate]="maxDate" 
+                                                      [monthNavigator]="true" 
+                                                      [yearNavigator]="true" 
+                                                      yearRange="1920:2050"
+                                                      [class.error]="caseformControls.doi.touched && !caseformControls.doi.valid" 
+                                                      placeholder="Date of Injury"
+                                                      showAnim="slideDown"
+                                                      [showIcon]="true"
+                                                      icon="font-icon font-icon-calend">
+                                          </p-calendar>
+                                    </div>
+                                    <div class='error-list' *ngIf="caseformControls.doi.touched && !caseformControls.doi.valid">
+                                        <ul>
+                                            <li *ngIf="caseformControls.doi.hasError('required')">Date Of Injury is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <div class="col-lg-4">
+                        <div class="form-group" [class.error]="caseformControls.dot.touched && !caseformControls.dot.valid">
+                                    <div class='input-group date'>
+                                          <p-calendar formControlName="dot" 
+                                                      dateFormat="M d, yy"
+                                                      [maxDate]="maxDate" 
+                                                      [monthNavigator]="true" 
+                                                      [yearNavigator]="true" 
+                                                      yearRange="1920:2050"
+                                                      [class.error]="caseformControls.dot.touched && !caseformControls.dot.valid" 
+                                                      placeholder="Date of first Treatment"
+                                                      showAnim="slideDown"
+                                                      [showIcon]="true"
+                                                      icon="font-icon font-icon-calend">
+                                          </p-calendar>
+                                    </div>
+                                    <div class='error-list' *ngIf="caseformControls.doi.touched && !caseformControls.doi.valid">
+                                        <ul>
+                                            <li *ngIf="caseformControls.doi.hasError('required')">Date Of Injury is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <label class="form-label"> Location
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="caseformControls.location.touched && !caseformControls.location.valid">
+                                    <select formControlName="location" type="text" (change)="selectlocation($event)" class="form-control" placeholder="" [class.error]="caseformControls.location.touched && !caseformControls.location.valid">
+                                        <option value="">-Select Location-</option>
+                                        <!--<option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>-->
+                                    </select> 
+                                    <div class='error-list' *ngIf="caseformControls.location.touched && !caseformControls.location.valid">
+                                        <ul>
+                                            <li *ngIf="caseformControls.location.state.hasError('required')">Location is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>   
+                        </div>
+                    </div>
+                    </div>
+                </section>
+             
+                <section class="card">
+                    <header class="card-header card-header-lg">
+                       Address Information
+                    </header>
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="form-label"> Office Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="caseformControls.officeName.touched && !caseformControls.officeName.valid">
+                                    <input [ngModel]="locationDetails.location.name" formControlName="officeName" type="text" class="form-control" placeholder="" [class.error]="!caseformControls.officeName.valid">
+                                    <div class='error-list' *ngIf="caseformControls.officeName.touched && !caseformControls.officeName.valid">
+                                        <ul>
+                                            <li *ngIf="caseformControls.officeName.hasError('required')">Office Name is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="col-lg-6">
+                                <label class="form-label"> Address
+                                        </label>
+                                <div class="form-group" [class.error]="caseformControls.address.touched && !caseformControls.address.valid">
+                                    <input [ngModel]="locationDetails.address.address1" formControlName="address" type="text" class="form-control" placeholder="" [class.error]="!caseformControls.address.valid">
+                                    <div class='error-list' *ngIf="caseformControls.address.touched && !caseformControls.address.valid">
+                                        <ul>
+                                            <li *ngIf="caseformControls.address.hasError('required')">Address is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="form-label"> State
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="caseformControls.state.touched && !caseformControls.state.valid">
+                                    <select formControlName="state" type="text" [ngModel]="locationDetails.address.state" (change)="selectState($event)" class="form-control" placeholder="" [class.error]="caseformControls.state.touched && !caseformControls.state.valid">
+                                        <option value="">-Select State-</option>
+                                        <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
+                                    </select> 
+                                    <div class='error-list' *ngIf="caseformControls.state.touched && !caseformControls.state.valid">
+                                        <ul>
+                                            <li *ngIf="caseformControls.state.hasError('required')">State is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <label class="form-label"> City
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="caseformControls.city.touched && !caseformControls.city.valid">
+                                    <select formControlName="city" type="text" [ngModel]="selectedCity" class="form-control" placeholder="" [class.error]="caseformControls.city.touched && !caseformControls.city.valid">
+                                        <option value="">-Select City-</option>
+                                        <option *ngFor="let city of cities" value="{{city.citytext}}">{{city.citytext}}</option>
+                                    </select>
+                                    <div class='error-list' *ngIf="caseformControls.city.touched && !caseformControls.city.valid">
+                                        <ul>
+                                            <li *ngIf="caseformControls.city.hasError('required')">City is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-1 m-t-lg"><loader [visible]="isCitiesLoading"></loader></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="form-label"> Zip code
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="caseformControls.zipcode.touched && !caseformControls.zipcode.valid">
+                                    <input [ngModel]="locationDetails.address.zipCode" formControlName="zipcode" type="text" class="form-control" placeholder="" [class.error]="!caseformControls.zipcode.valid">
+                                    <div class='error-list' *ngIf="caseformControls.zipcode.touched && !caseformControls.zipcode.valid">
+                                        <ul>
+                                            <li *ngIf="caseformControls.zipcode.hasError('required')">zipcode is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label class="form-label"> Office phone
+                                            <span class="color-red">*</span>
+                                        </label>
+                                <div class="form-group" [class.error]="caseformControls.officePhone.touched && !caseformControls.officePhone.valid">
+                                    <!--<input formControlName="officePhone" type="text" class="form-control" placeholder="" [class.error]="!caseformControls.officePhone.valid">-->
+                                    <!--<input type="text" [ngModel]="locationDetails.contact.workPhone" mask="999-999-9999" formControlName="officePhone" [class.error]="caseformControls.officePhone.touched && !caseformControls.officePhone.valid" class="form-control"/>-->
+                                    <p-inputMask [ngModel]="locationDetails.contact.workPhone" mask="999-999-9999" formControlName="officePhone" [class.error]="caseformControls.officePhone.touched && !caseformControls.officePhone.valid" styleClass="form-control" placeholder="999-999-9999"></p-inputMask>
+                                    <div class='error-list' *ngIf="caseformControls.officePhone.touched && !caseformControls.officePhone.valid">
+                                        <ul>
+                                            <li *ngIf="caseformControls.officePhone.hasError('required')">Office Phone is required.</li>
+                                            <li *ngIf="caseformControls.officePhone.hasError('mobileNoValidator')">Office Phone is invalid.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label class="form-label"> Fax
+                                        </label>
+                                <div class="form-group" [class.error]="caseformControls.fax.touched && !caseformControls.fax.valid">
+                                    <!--<input [ngModel]="locationDetails.contact.faxNo" formControlName="fax" type="text" class="form-control" placeholder="" [class.error]="!caseformControls.fax.valid">-->
+                                    <p-inputMask [ngModel]="locationDetails.contact.faxNo" mask="9-999-999 9999" formControlName="fax" [class.error]="caseformControls.fax.touched && !caseformControls.fax.valid" styleClass="form-control" placeholder="9-999-999 9999"></p-inputMask>
+                                    <div class='error-list' *ngIf="caseformControls.fax.touched && !caseformControls.fax.valid">
+                                        <ul>
+                                            <li *ngIf="caseformControls.fax.hasError('required')">Fax is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="card">
+                    <header class="card-header card-header-lg">
+                        Contact Information
+                    </header>
+                </section>
+                <!--<button [disabled]="!patientform.valid || isSavePatientProgress" type="submit" class="btn btn-success sign-up">Save
+                    <loader [visible]="isSavePatientProgress"></loader>
+                </button>-->
+                <!--<button type="button" class="btn btn-secondary" [RouterLinkWithHref]="['/dashboard']">Cancel
+                </button>-->
+                <!--<a [routerLink]="['/patient-manager/patients']" class="btn btn-secondary">Cancel</a>-->
+            </form>
+        </div>
+    </div>
+</div>
