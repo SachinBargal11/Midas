@@ -16,16 +16,16 @@ namespace MIDAS.GBX.BusinessObjects
         public DateTime DateOfInjury { get; set; }
         public int LocationId { get; set; }
         public int PatientAddressId { get; set; }
-        public int PatientContactInfoId { get; set; }
-        public int EmpInfo { get; set; }
-        public int InsuranceInfoId { get; set; }
+        public int? PatientContactInfoId { get; set; }
+        public int? EmpInfo { get; set; }
+        public int? InsuranceInfoId { get; set; }
         public string VehiclePlateNo { get; set; }
-        public int AccidentAddressId { get; set; }
+        public int? AccidentAddressId { get; set; }
         public string CarrierCaseNo { get; set; }
-        public bool Transportation { get; set; }
+        public bool? Transportation { get; set; }
         public DateTime DateOfFirstTreatment { get; set; }
-        public int CaseStatusId { get; set; }
-        public int AttorneyId { get; set; }
+        public int? CaseStatusId { get; set; }
+        public int? AttorneyId { get; set; }
 
         public AddressInfo AddressInfo { get; set; }
         public AddressInfo AddressInfo1 { get; set; }

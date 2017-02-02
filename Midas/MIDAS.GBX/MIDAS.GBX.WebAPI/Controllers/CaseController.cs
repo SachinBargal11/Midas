@@ -24,21 +24,22 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // GET: api/Organizations/5
         [HttpGet]
         [Route("Get/{id}")]
-
+        [AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
         }
 
+
         [HttpGet]
         [Route("GetAll")]
-
-        public HttpResponseMessage Get([FromBody]Case data)
+        [AllowAnonymous]
+        public HttpResponseMessage GetAllPatient([FromBody]Case data)
         {
             return requestHandler.GetGbObjects(Request, data);
         }
 
-       
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
