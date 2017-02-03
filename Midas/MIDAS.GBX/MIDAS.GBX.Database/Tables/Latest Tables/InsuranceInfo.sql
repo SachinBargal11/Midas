@@ -8,6 +8,12 @@
 	[InsuranceAddressId] [INT] NOT NULL, /*Current Address of the Insurance Company, Nearest One*/
 	[InsuranceContactInfoId] [INT] NULL,/*Current Contact Info of the Insurance Company, Nearest One*/
 	[IsPrimaryInsurance] [BIT] NOT NULL DEFAULT 0, /*Is this Primary the Insurance Company*/
+
+	[IsDeleted] [bit] NULL,
+	[CreateByUserID] [int] NOT NULL,
+	[CreateDate] [datetime2](7) NOT NULL,
+	[UpdateByUserID] [int] NULL,
+	[UpdateDate] [datetime2](7) NULL,
 	CONSTRAINT [PK_InsuranceInfo] PRIMARY KEY ([Id])
 )
 GO

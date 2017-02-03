@@ -18,7 +18,13 @@
     [Transportation] BIT NOT NULL DEFAULT 0, /*Transport is required by the patient*/
     [DateOfFirstTreatment] DATETIME2 NOT NULL, /*Date of the first treatment taken by patient for this case*/
     [CaseStatusId] INT NULL, /*Status of this case, Open/Closed*/
-    [AttorneyId] INT NULL /*Attorney is assigned to this case*/
+    [AttorneyId] INT NULL, /*Attorney is assigned to this case*/
+
+	[IsDeleted] [bit] NULL,
+	[CreateByUserID] [int] NOT NULL,
+	[CreateDate] [datetime2](7) NOT NULL,
+	[UpdateByUserID] [int] NULL,
+	[UpdateDate] [datetime2](7) NULL,
 )
 GO
 

@@ -238,7 +238,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     userDB.ImageLink = userBO.ImageLink;
                     userDB.DateOfBirth = userBO.DateOfBirth;
 
-                    if (Add_userDB == true)
+                    if (Add_userDB == true && string.IsNullOrEmpty(userBO.Password) == false)
                     {
                         userDB.Password = PasswordHash.HashPassword(userBO.Password);
                     }
