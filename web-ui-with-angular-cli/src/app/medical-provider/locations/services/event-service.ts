@@ -16,6 +16,22 @@ export class EventService {
     constructor(private _http: Http) {
         this._headers.append('Content-Type', 'application/json');
     }
+    getEvent(eventId: Number): Observable<MyEvent> {
+        let promise: Promise<MyEvent> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '?id=' + eventId).map(res => res.json())
+                .subscribe((data: Array<any>) => {
+                    if (data.length) {
+                        resolve(data);
+                    } else {
+                        reject(new Error('NOT_FOUND'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<MyEvent>>Observable.fromPromise(promise);
+    }
 
     getEvents(): Observable<MyEvent[]> {
         let promise: Promise<MyEvent[]> = new Promise((resolve, reject) => {

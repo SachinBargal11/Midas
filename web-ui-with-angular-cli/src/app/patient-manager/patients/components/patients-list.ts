@@ -2,7 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PatientsStore } from '../stores/patients-store';
 import { Patient } from '../models/patient';
+import { NotificationsStore } from '../../../commons/stores/notifications-store';
+import { Notification } from '../../../commons/models/notification';
+import * as moment from 'moment';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
+import { NotificationsService } from 'angular2-notifications';
+import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 
 @Component({
     selector: 'patients-list',
@@ -16,7 +21,9 @@ export class PatientsListComponent implements OnInit {
     constructor(
         private _router: Router,
         private _patientsStore: PatientsStore,
-        private _progressBarService: ProgressBarService
+        private _notificationsStore: NotificationsStore,
+        private _progressBarService: ProgressBarService,
+        private _notificationsService: NotificationsService,
     ) {
     }
 
@@ -34,10 +41,53 @@ export class PatientsListComponent implements OnInit {
                 this._progressBarService.hide();
             },
             () => {
-        this._progressBarService.hide();
+                this._progressBarService.hide();
             });
     }
-    onRowSelect(patient) {
-        this._router.navigate(['/patient-manager/patients/' + patient.firstname + '/basic']);
+
+    deletePatients() {
+        if (this.selectedPatients.length > 0) {
+            this.selectedPatients.forEach(currentPatient => {
+                this._progressBarService.show();
+                let result;
+                result = this._patientsStore.deletePatient(currentPatient);
+                result.subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            // tslint:disable-next-line:max-line-length
+                            'title': 'Patient ' + currentPatient.user.firstName + ' ' + currentPatient.user.lastName + ' deleted successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        this.loadPatients();
+                        this._notificationsStore.addNotification(notification);
+                        this.selectedPatients = [];
+                    },
+                    (error) => {
+                        let errString = 'Unable to delete Patient ' + currentPatient.user.firstName + ' ' + currentPatient.user.lastName;
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this.selectedPatients = [];
+                        this._progressBarService.hide();
+                        this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                    },
+                    () => {
+                        this._progressBarService.hide();
+                    });
+            });
+        } else {
+            let notification = new Notification({
+                'title': 'select patients to delete',
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'select patients to delete');
+        }
     }
+
 }

@@ -238,13 +238,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     userDB.ImageLink = userBO.ImageLink;
                     userDB.DateOfBirth = userBO.DateOfBirth;
 
-                    if (Add_userDB == true)
+                    if (Add_userDB == true && string.IsNullOrEmpty(userBO.Password) == false)
                     {
                         userDB.Password = PasswordHash.HashPassword(userBO.Password);
                     }
 
                     userDB.AddressId = addressDB.id;
                     userDB.ContactInfoId = contactinfoDB.id;
+
+                    userDB.C2FactAuthEmailEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactEmail"));
+                    userDB.C2FactAuthSMSEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactSMS"));
 
                     userDB.CreateByUserID = Add_userDB == true ? userBO.CreateByUserID : userDB.CreateByUserID;
                     userDB.CreateDate = Add_userDB == true ? DateTime.UtcNow : userDB.CreateDate;

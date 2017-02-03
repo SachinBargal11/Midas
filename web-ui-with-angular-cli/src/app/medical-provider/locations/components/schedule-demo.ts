@@ -4,10 +4,14 @@ import { ScheduleStore } from '../stores/schedule-store';
 import { Component, OnInit, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { EventService } from '../services/event-service';
+import { EventStore } from '../stores/event-store';
 import * as $ from 'jquery';
 import * as moment from 'moment';
+import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { MyEvent } from '../models/my-event';
+import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
+import { Notification } from '../../../commons/models/notification';
+import { NotificationsStore } from '../../../commons/stores/notifications-store';
 
 @Component({
     selector: 'schedule-demo',
@@ -26,16 +30,41 @@ export class ScheduleDemo implements OnInit {
 
     idGen: number = 100;
 
-    constructor(private eventService: EventService, private cd: ChangeDetectorRef) { }
+    constructor(
+        private _eventStore: EventStore,
+        private cd: ChangeDetectorRef, 
+        private _notificationsStore: NotificationsStore,
+        private _progressBarService: ProgressBarService) { }
 
     ngOnInit() {
-        this.eventService.getEvents().subscribe(events => { this.events = events; });
+        this.loadEvents();
 
         this.header = {
             left: 'prev,next today',
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
         };
+    }
+    loadEvents() {
+        this._progressBarService.show();
+        this._eventStore.getEvents()
+            .subscribe(
+                (events) => {
+                    this.events = events;
+                },
+                (error) => {
+                    this.events = [];
+                    let notification = new Notification({
+                        'title': error.message,
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                    this._progressBarService.hide();
+                },
+                () => {
+                this._progressBarService.hide();
+                });
     }
 
     handleDayClick(event) {
@@ -69,31 +98,90 @@ export class ScheduleDemo implements OnInit {
     }
 
     saveEvent() {
-        //update
+        // update
         if (this.event.id) {
-            let index: number = this.findEventIndexById(this.event.id);
-            if (index >= 0) {
-                this.events[index] = this.event;
-                this.eventService.updateEvent(this.event);
-            }
+                let result = this._eventStore.updateEvent(this.event);
+                result.subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            'title': 'Event updated successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        this.loadEvents();
+                        this._notificationsStore.addNotification(notification);
+                    },
+                    (error) => {
+                        let errString = 'Unable to update event!';
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._progressBarService.hide();
+                        this._notificationsStore.addNotification(notification);
+                    },
+                    () => {
+                          this._progressBarService.hide();
+                    });
         }
-        //new
+        // new
         else {
-            this.event.id = this.idGen;
-            this.events.push(this.event);
-            this.eventService.addEvent(this.event);
-            this.event = null;
+                let result = this._eventStore.addEvent(this.event);
+                result.subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            'title': 'Event added successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        this.loadEvents();
+                        this._notificationsStore.addNotification(notification);
+                        this.event = null;
+                    },
+                    (error) => {
+                        let errString = 'Unable to add event!';
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._progressBarService.hide();
+                        this._notificationsStore.addNotification(notification);
+                    },
+                    () => {
+                          this._progressBarService.hide();
+                    });
         }
 
         this.dialogVisible = false;
     }
 
     deleteEvent() {
-        let index: number = this.findEventIndexById(this.event.id);
-        if (index >= 0) {
-            this.events.splice(index, 1);
-                this.eventService.deleteEvent(this.event);
-        }
+                let result = this._eventStore.deleteEvent(this.event);
+                result.subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            'title': 'Event deleted successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        this.loadEvents();
+                        this._notificationsStore.addNotification(notification);
+                    },
+                    (error) => {
+                        let errString = 'Unable to delete event!';
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._progressBarService.hide();
+                        this._notificationsStore.addNotification(notification);
+                    },
+                    () => {
+                          this._progressBarService.hide();
+                    });
         this.dialogVisible = false;
     }
 

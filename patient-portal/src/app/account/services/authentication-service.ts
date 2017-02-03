@@ -83,15 +83,15 @@ export class AuthenticationService {
         return <Observable<any>>Observable.fromPromise(promise);
     }
     updatePassword(userDetail: any): Observable<any> {
-        userDetail.role = {
-            name: 'Doctor',
-            roleType: 'Admin',
-            status: 'active'
-        };
+        // userDetail.role = {
+        //     name: 'Doctor',
+        //     roleType: 'Admin',
+        //     status: 'active'
+        // };
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let headers = new Headers();
             headers.append('Content-Type', 'application/json');
-            return this._http.post(this._url + '/User/Add', JSON.stringify(userDetail), {
+            return this._http.post(this._url + '/User/ResetPassword', JSON.stringify(userDetail), {
                 headers: headers
             })
                 .map(res => res.json())

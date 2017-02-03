@@ -15,12 +15,18 @@ import { PatientsListComponent } from './patients/components/patients-list';
 import { PatientsManagerShellComponent } from './patients-manager-shell';
 import { PatientsShellComponent } from './patients/components/patients-shell';
 import { PatientProfileComponent } from './patients/components/profile-patient';
-import { CasesComponent } from './cases/components/cases';
 import { ConsentFormsComponent } from './consent-forms/components/consent-forms';
 import { ReferalsComponent } from './referals/components/referals';
 import { PatientsService } from './patients/services/patients-service';
 import { PatientsStore } from './patients/stores/patients-store';
 import { PatientRoutingModule } from './patient-manager-routes';
+import { AddCaseShellComponent } from './cases/components/add-case-shell';
+import { CaseComponent } from './cases/components/case';
+import { CasesListComponent } from './cases/components/cases-list';
+import { EmployeeComponent} from './cases/components/employee';
+import { InsuranceComponent } from './cases/components/insurances';
+import { CasesStore } from './cases/stores/case-store';
+//  import { CasesStore } from './cases/services/cases-services;
 
 @NgModule({
     imports: [
@@ -43,13 +49,18 @@ import { PatientRoutingModule } from './patient-manager-routes';
         PatientsManagerShellComponent,
         PatientsShellComponent,
         PatientProfileComponent,
-        CasesComponent,
         ConsentFormsComponent,
-        ReferalsComponent
+        ReferalsComponent,
+        CaseComponent,CasesListComponent,
+        EmployeeComponent,
+        InsuranceComponent,
+        AddCaseShellComponent
+        
     ],
     providers: [
         PatientsService,
-        PatientsStore
+        PatientsStore,
+        CasesStore
     ]
 })
 export class PatientManagerModule { }

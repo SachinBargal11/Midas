@@ -15,11 +15,6 @@ namespace MIDAS.GBX.BusinessObjects
         public int EmpAddressId { get; set; }
         public int EmpContactInfoId { get; set; }
         public bool IsCurrentEmp { get; set; }
-        public bool IsDeleted { get; set; }
-        public int CreateByUserID { get; set; }
-        public DateTime CreateDate { get; set; }
-        public int UpdateByUserID { get; set; }
-        public DateTime UpdateDate { get; set; }
         public AddressInfo AddressInfo { get; set; }
         public Case Cases { get; set; }
         public ContactInfo ContactInfo { get; set; }

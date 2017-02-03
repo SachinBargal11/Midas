@@ -3,12 +3,12 @@ import {Router} from '@angular/router';
 import {SessionStore} from '../../../commons/stores/session-store';
 
 @Component({
-    selector: 'cases',
-    templateUrl: './cases.html'
+    selector: 'caseslist',
+    templateUrl: './cases-list.html'
 })
 
 
-export class CasesComponent implements OnInit {
+export class CasesListComponent implements OnInit {
     constructor(
         private _router: Router,
         private _sessionStore: SessionStore

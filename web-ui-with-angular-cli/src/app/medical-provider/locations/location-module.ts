@@ -15,6 +15,7 @@ import { LocationsStore } from './stores/locations-store';
 import { ScheduleStore } from './stores/schedule-store';
 import { ScheduleDemo } from './components/schedule-demo';
 import { EventService } from './services/event-service';
+import { EventStore } from './stores/event-store';
 
 @NgModule({
     imports: [
@@ -37,6 +38,7 @@ import { EventService } from './services/event-service';
         LocationsStore,
         ScheduleService,
         ScheduleStore,
+        EventStore,
         EventService
     ]
 })
