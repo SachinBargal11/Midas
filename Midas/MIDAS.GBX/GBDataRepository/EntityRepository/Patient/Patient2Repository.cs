@@ -246,6 +246,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     userDB.AddressId = addressDB.id;
                     userDB.ContactInfoId = contactinfoDB.id;
 
+                    userDB.C2FactAuthEmailEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactEmail"));
+                    userDB.C2FactAuthSMSEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactSMS"));
+
                     userDB.CreateByUserID = Add_userDB == true ? userBO.CreateByUserID : userDB.CreateByUserID;
                     userDB.CreateDate = Add_userDB == true ? DateTime.UtcNow : userDB.CreateDate;
 
