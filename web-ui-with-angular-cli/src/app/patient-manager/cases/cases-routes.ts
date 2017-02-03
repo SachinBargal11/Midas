@@ -49,7 +49,7 @@ export const CasesShellRoutes: Routes = [
                 }
             },
             {
-                path: 'insurance',
+                path: 'insurances',
                 component: InsuranceComponent,
                 data: {
                     breadcrumb: 'Insurance'
