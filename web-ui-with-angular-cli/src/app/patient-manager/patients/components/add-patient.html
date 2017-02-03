@@ -37,11 +37,13 @@
                                 </div>
                             </div>
                             <div class="col-lg-4">
+                                <label class="form-label"> Date of Birth
+                                        </label>
                                 <div class="form-group" [class.error]="patientformControls.userInfo.controls.dob.touched && !patientformControls.userInfo.controls.dob.valid">
                                     <div class='input-group date'>
                                         <p-calendar formControlName="dob" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true" [yearNavigator]="true"
                                             yearRange="1920:2050" [class.error]="patientformControls.userInfo.controls.dob.touched && !patientformControls.userInfo.controls.dob.valid"
-                                            placeholder="Date of Birth" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
+                                             showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
                                         </p-calendar>
                                     </div>
                                     <div class='error-list' *ngIf="patientformControls.userInfo.controls.dob.touched && !patientformControls.userInfo.controls.dob.valid">

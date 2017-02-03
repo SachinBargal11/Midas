@@ -74,19 +74,24 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-4">
-                                <label class="form-label"> Insurance
-                                            <span class="color-red">*</span>
-                                        </label>
-                            <!--<input type="checkbox" formControlName="isPrimaryInsurance" name="isPrimaryInsurance" value="isPrimaryInsurance"> Is Primary Insurance Available <br>-->
+                            <!--<div class="col-lg-4 m-t-lg">
                              <div class="form-group" [class.error]="insuranceformControls.isPrimaryInsurance.touched && !insuranceformControls.isPrimaryInsurance.valid">
-                            <input type="checkbox" formControlName="isPrimaryInsurance" name="isPrimaryInsurance"  [class.error]="!insuranceformControls.isPrimaryInsurance.valid" value="isPrimaryInsurance"> Is Current Employee <span class="color-red">*</span>
+                            <input type="checkbox" formControlName="isPrimaryInsurance" name="isPrimaryInsurance"  [class.error]="!insuranceformControls.isPrimaryInsurance.valid" value="isPrimaryInsurance"> Is Primary Insurance Available <span class="color-red">*</span>
                                <div class='error-list' *ngIf="insuranceformControls.isPrimaryInsurance.touched && !insuranceformControls.isPrimaryInsurance.valid">
                                         <ul>
-                                            <li *ngIf="insuranceformControls.isPrimaryInsurance.hasError('required')">Insurance required.</li>
+                                            <li *ngIf="insuranceformControls.isPrimaryInsurance.hasError('required')">Primary Insurance required.</li>
                                         </ul>
                                     </div>
                             </div>
+                            </div>-->
+                            <div class="col-lg-4">
+                                <label class="form-label"> Is Primary Insurance
+                                    <span class="color-red">*</span>
+                                </label>
+                                <div class="form-group">
+                                    <p-radioButton formControlName="isPrimaryInsurance" name="isPrimaryInsurance" value="1" label="Yes"></p-radioButton>
+                                    <p-radioButton formControlName="isPrimaryInsurance" name="isPrimaryInsurance" value="0" label="No"></p-radioButton>
+                                </div>
                             </div>
                             </div>
                     </div>

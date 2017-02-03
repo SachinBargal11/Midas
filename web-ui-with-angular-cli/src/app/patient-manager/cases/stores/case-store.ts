@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-// import {Patient} from '../models/patient';
-// import {CasesService} from '../services/cases-services';
+import { Case } from '../models/case';
+import {CaseService} from '../services/cases-services';
 import {List} from 'immutable';
 import {BehaviorSubject} from 'rxjs/Rx';
 import {SessionStore} from '../../../commons/stores/session-store';
@@ -11,122 +11,100 @@ import {SessionStore} from '../../../commons/stores/session-store';
 @Injectable()
 export class CasesStore {
 
-    // private cases: BehaviorSubject<List<Case>> = new BehaviorSubject(List([]));
-    // private _selectedCase: BehaviorSubject<List<Case>> = new BehaviorSubject(List([]));
+    private _cases: BehaviorSubject<List<Case>> = new BehaviorSubject(List([]));
 
-    // constructor(
-    //     private _caseService:  CasesService,
-    //     private _sessionStore: SessionStore
-    // ) {
-    //     this.getCases();
-    //     this._sessionStore.userLogoutEvent.subscribe(() => {
-    //         this.resetStore();
-    //     });
-    // }
+    constructor(
+        private _casesService:  CaseService,
+        private _sessionStore: SessionStore
+    ) {
+        this.getCases();
+        this._sessionStore.userLogoutEvent.subscribe(() => {
+            this.resetStore();
+        });
+    }
 
-    // resetStore() {
-    //     this.cases.next(this._cases.getValue().clear());
-    //     this._selectedPatients.next(this._selectedPatients.getValue().clear());
-    // }
+    resetStore() {
+        this._cases.next(this._cases.getValue().clear());
+    }
 
-    // get patients() {
-    //     return this._patients.asObservable();
-    // }
+    get case() {
+        return this._cases.asObservable();
+    }
 
-    // get selectedPatients() {
-    //     return this._selectedPatients.asObservable();
-    // }
+    getCases(): Observable<Case[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._casesService.getCases().subscribe((cases: Case[]) => {
+                this._cases.next(List(cases));
+                resolve(cases);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Case[]>>Observable.fromPromise(promise);
+    }
 
-    // getPatients(): Observable<Patient[]> {
-    //     let promise = new Promise((resolve, reject) => {
-    //         this._patientsService.getPatients().subscribe((patients: Patient[]) => {
-    //             this._patients.next(List(patients));
-    //             resolve(patients);
-    //         }, error => {
-    //             reject(error);
-    //         });
-    //     });
-    //     return <Observable<Patient[]>>Observable.fromPromise(promise);
-    // }
+    findCaseById(id: number) {
+        let cases = this._cases.getValue();
+        let index = cases.findIndex((currentCase: Case) => currentCase.id === id);
+        return cases.get(index);
+    }
 
-    // findPatientById(id: number) {
-    //     let patients = this._patients.getValue();
-    //     let index = patients.findIndex((currentPatient: Patient) => currentPatient.id === id);
-    //     return patients.get(index);
-    // }
+    fetchCaseById(id: number): Observable<Case> {
+        let promise = new Promise((resolve, reject) => {
+            let matchedCase: Case = this.findCaseById(id);
+            if (matchedCase) {
+                resolve(matchedCase);
+            } else {
+                this._casesService.getCase(id).subscribe((caseDetail: Case) => {
+                    resolve(caseDetail);
+                }, error => {
+                    reject(error);
+                });
+            }
+        });
+        return <Observable<Case>>Observable.fromPromise(promise);
+    }
 
-    // fetchPatientById(id: number): Observable<Patient> {
-    //     let promise = new Promise((resolve, reject) => {
-    //         let matchedPatient: Patient = this.findPatientById(id);
-    //         if (matchedPatient) {
-    //             resolve(matchedPatient);
-    //         } else {
-    //             this._patientsService.getPatient(id).subscribe((patient: Patient) => {
-    //                 resolve(patient);
-    //             }, error => {
-    //                 reject(error);
-    //             });
-    //         }
-    //     });
-    //     return <Observable<Patient>>Observable.fromPromise(promise);
-    // }
+    addCase(caseDetail: Case): Observable<Case> {
+        let promise = new Promise((resolve, reject) => {
+            this._casesService.addCase(caseDetail).subscribe((caseDetail: Case) => {
+                this._cases.next(this._cases.getValue().push(caseDetail));
+                resolve(caseDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Case>>Observable.from(promise);
+    }
 
-    // addPatient(patient: Patient): Observable<Patient> {
-    //     let promise = new Promise((resolve, reject) => {
-    //         this._patientsService.addPatient(patient).subscribe((patient: Patient) => {
-    //             this._patients.next(this._patients.getValue().push(patient));
-    //             resolve(patient);
-    //         }, error => {
-    //             reject(error);
-    //         });
-    //     });
-    //     return <Observable<Patient>>Observable.from(promise);
-    // }
+    updateCase(caseDetail: Case): Observable<Case> {
+        let promise = new Promise((resolve, reject) => {
+            this._casesService.updateCase(caseDetail).subscribe((updatedCase: Case) => {
+                let caseDetail: List<Case> = this._cases.getValue();
+                let index = caseDetail.findIndex((currentCase: Case) => currentCase.id === updatedCase.id);
+                caseDetail = caseDetail.update(index, function () {
+                    return updatedCase;
+                });
+                this._cases.next(caseDetail);
+                resolve(caseDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Case>>Observable.from(promise);
+    }
 
-    // updatePatient(patient: Patient): Observable<Patient> {
-    //     let promise = new Promise((resolve, reject) => {
-    //         this._patientsService.updatePatient(patient).subscribe((updatedPatient: Patient) => {
-    //             let patientDetails: List<Patient> = this._patients.getValue();
-    //             let index = patientDetails.findIndex((currentPatient: Patient) => currentPatient.id === updatedPatient.id);
-    //             patientDetails = patientDetails.update(index, function () {
-    //                 return updatedPatient;
-    //             });
-    //             this._patients.next(patientDetails);
-    //             resolve(patient);
-    //         }, error => {
-    //             reject(error);
-    //         });
-    //     });
-    //     return <Observable<Patient>>Observable.from(promise);
-    // }
-
-    // deletePatient(patient: Patient): Observable<Patient> {
-    //     let patients = this._patients.getValue();
-    //     let index = patients.findIndex((currentPatient: Patient) => currentPatient.id === patient.id);
-    //     let promise = new Promise((resolve, reject) => {
-    //         this._patientsService.deletePatient(patient).subscribe((patient: Patient) => {
-    //             this._patients.next(patients.delete(index));
-    //             resolve(patient);
-    //         }, error => {
-    //             reject(error);
-    //         });
-    //     });
-    //     return <Observable<Patient>>Observable.from(promise);
-    // }
-
-    // selectPatient(patient: Patient) {
-    //     let selectedPatients = this._selectedPatients.getValue();
-    //     let index = selectedPatients.findIndex((currentPatient: Patient) => currentPatient.id === patient.id);
-    //     if (index < 0) {
-    //         this._selectedPatients.next(this._selectedPatients.getValue().push(patient));
-    //     }
-    // }
-
-    // deselectPatient(patient: Patient) {
-    //     let selectedPatients = this._selectedPatients.getValue();
-    //     let index = selectedPatients.findIndex((currentPatient: Patient) => currentPatient.id === patient.id);
-    //     this._selectedPatients.next(selectedPatients.delete(index));
-    // }
-
-
+    deleteCase(caseDetail: Case): Observable<Case> {
+        let cases = this._cases.getValue();
+        let index = cases.findIndex((currentCase: Case) => currentCase.id === caseDetail.id);
+        let promise = new Promise((resolve, reject) => {
+            this._casesService.deleteCase(caseDetail).subscribe((caseDetail: Case) => {
+                this._cases.next(cases.delete(index));
+                resolve(caseDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Case>>Observable.from(promise);
+    }
 }

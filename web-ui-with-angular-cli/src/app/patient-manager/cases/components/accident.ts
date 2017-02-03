@@ -7,11 +7,11 @@ import { AppValidators } from '../../../commons/utils/AppValidators';
 import { StatesStore } from '../../../commons/stores/states-store';
 
 @Component({
-    selector: 'employee',
-    templateUrl: './employee.html'
+    selector: 'accident',
+    templateUrl: './accident.html'
 })
 
-export class EmployeeComponent implements OnInit {
+export class AccidentComponent implements OnInit {
     states: any[];
     cities: any[];
     selectedCity = 0;
@@ -22,8 +22,8 @@ export class EmployeeComponent implements OnInit {
         pauseOnHover: false,
         clickToClose: false
     };
-    employeeform: FormGroup;
-    employeeformControls;
+    accidentform: FormGroup;
+    accidentformControls;
     isSaveProgress = false;
 
     constructor(
@@ -35,25 +35,15 @@ export class EmployeeComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _elRef: ElementRef
     ) {
-        this.employeeform = this.fb.group({
-                jobTitle: ['', Validators.required],
-                patientId: ['', Validators.required],
-                employeeName: [''],
-                isCurrentEmployee: ['', Validators.required],
-                address: ['',Validators.required],
+        this.accidentform = this.fb.group({
+                address: ['', Validators.required],
                 address2: [''],
                 state: [''],
-                city:[''],
-                zipcode:[''],
-                country: [''],
-                email: ['', [Validators.required, AppValidators.emailValidator]],
-                cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                homePhone: [''],
-                workPhone: [''],
-                faxNo: ['']
+                city: [''],
+                zipcode: [''],
+                country: ['']
             });
-
-        this.employeeformControls = this.employeeform.controls;
+        this.accidentformControls = this.accidentform.controls;
     }
 
     ngOnInit() {
@@ -80,8 +70,8 @@ export class EmployeeComponent implements OnInit {
         }
     }
 
-
     save() {
     }
 
 }
+

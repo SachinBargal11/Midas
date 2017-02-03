@@ -7,6 +7,7 @@
  import { CasesListComponent } from './components/cases-list';
  import { EmployeeComponent} from './components/employee';
  import { InsuranceComponent } from './components/insurances';
+ import { AccidentComponent } from './components/accident';
 
 
 export const CasesShellRoutes: Routes = [
@@ -53,6 +54,13 @@ export const CasesShellRoutes: Routes = [
                 component: InsuranceComponent,
                 data: {
                     breadcrumb: 'Insurance'
+                }
+            },
+            {
+                path: 'accident-address',
+                component: AccidentComponent,
+                data: {
+                    breadcrumb: 'Accident-address'
                 }
             }
         ]

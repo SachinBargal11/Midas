@@ -25,6 +25,7 @@ import { CaseComponent } from './cases/components/case';
 import { CasesListComponent } from './cases/components/cases-list';
 import { EmployeeComponent} from './cases/components/employee';
 import { InsuranceComponent } from './cases/components/insurances';
+import { AccidentComponent } from './cases/components/accident';
 import { CasesStore } from './cases/stores/case-store';
 //  import { CasesStore } from './cases/services/cases-services;
 
@@ -54,8 +55,8 @@ import { CasesStore } from './cases/stores/case-store';
         CaseComponent,CasesListComponent,
         EmployeeComponent,
         InsuranceComponent,
+        AccidentComponent,
         AddCaseShellComponent
-        
     ],
     providers: [
         PatientsService,

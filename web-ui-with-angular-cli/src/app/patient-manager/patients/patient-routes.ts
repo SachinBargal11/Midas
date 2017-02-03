@@ -1,4 +1,5 @@
-import { Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 import { PatientsListComponent } from './components/patients-list';
 import { AddPatientComponent } from './components/add-patient';
 import { PatientsShellComponent } from './components/patients-shell';
@@ -41,7 +42,7 @@ export const PatientsShellRoutes: Routes = [
         ]
     },
     {
-        path: 'patients/:patientName',
+        path: 'patients/:patientId',
         component: PatientsShellComponent,
         data: {
             breadcrumb: 'Patients',
@@ -104,3 +105,9 @@ export const PatientsShellRoutes: Routes = [
         ]
     }
 ];
+
+@NgModule({
+    imports: [RouterModule.forChild(PatientsShellRoutes)],
+    exports: [RouterModule]
+})
+export class PatientsRoutingModule { }
