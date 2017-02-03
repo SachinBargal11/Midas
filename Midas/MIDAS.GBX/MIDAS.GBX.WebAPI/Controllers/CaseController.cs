@@ -39,6 +39,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetGbObjects(Request, data);
         }
 
+        [HttpPost]
+        [Route("Save")]
+        [AllowAnonymous]
+        public HttpResponseMessage Post([FromBody]Case data)
+        {
+            return requestHandler.CreateGbObject(Request, data);
+        }
+
 
         protected override void Dispose(bool disposing)
         {
