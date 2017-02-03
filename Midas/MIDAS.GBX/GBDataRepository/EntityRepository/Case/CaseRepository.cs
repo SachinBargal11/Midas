@@ -147,15 +147,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             }
 
         }
-        #endregion 
+        #endregion
 
+        #region save
+        public override object Save<T>(T entity)
+        {
+            Case cases = new Case();
+            var res = Convert<BO.Case, Case>(cases);
+            return (object)res;
 
-
-
-
-
-
-
+        }
+        #endregion
 
         public void Dispose()
         {
