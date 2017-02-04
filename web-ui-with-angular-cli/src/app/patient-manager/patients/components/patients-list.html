@@ -18,13 +18,13 @@
 <p-dataTable [value]="patients" [(selection)]="selectedPatients" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
     [stacked]="stacked">
     <header>Patients</header>
-    <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
+    <p-column selectionMode="multiple"></p-column>
     <p-column field="user.firstName" header="First Name" [sortable]="true"></p-column>
     <p-column field="user.lastName" header="Last Name" [sortable]="true"></p-column>
     <p-column field="user.address.address1" header="Address" [sortable]="true"></p-column>
     <p-column field="user.contact.cellPhone" header="Phone" [sortable]="true"></p-column>
     <p-column field="user.address.emailAddress" header="Email" [sortable]="true"></p-column>
-    <p-column styleClass="col-button" header="Actions">
+    <p-column styleClass="actions-cell" header="Actions">
         <template let-patient="rowData" pTemplate="body">
             <a routerLink="{{patient.user.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
         </template>

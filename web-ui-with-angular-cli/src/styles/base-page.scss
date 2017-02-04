@@ -28,12 +28,26 @@ body {
     }
     .ui-datatable {
         border: 1px solid #c7c7c7;
+        .ui-datatable-data,
+        .ui-datatable-thead {
+            tr {
+                td,
+                th {
+                    padding: 0.3em 0.5em;
+                    &.actions-cell {
+                        width: 100px;
+                    }
+                    &.ui-selection-column {
+                        width: 38px;
+                    }
+                }
+            }
+        }
         .ui-datatable-data {
             border: none;
             tr {
                 border: none;
                 td {
-                    padding: 0.3em 0.5em;
                     border: none;
                 }
             }
@@ -41,7 +55,6 @@ body {
         .ui-datatable-thead {
             tr {
                 th {
-                    padding: 0.3em 0.5em;
                     text-align: left;
                     border-left: none;
                     border-right: none;
