@@ -92,7 +92,7 @@ export class BreadcrumbComponent implements OnInit {
 
             //add breadcrumb
             let shell = child.snapshot.data[ROUTE_DATA_URL];
-                if (Object.keys(child.snapshot.params).length !== 0 && shell === true) {
+                if ((Object.keys(child.snapshot.params).length !== 0 && shell === true) || shell === true) {
                     if (null != url && url.length > 0 ) {
                         let endIndex = url.lastIndexOf('/');
                         if (endIndex !== -1) {

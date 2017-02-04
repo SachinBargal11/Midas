@@ -27,7 +27,8 @@ export const CasesShellRoutes: Routes = [
         path: 'cases/add',
         component: AddCaseShellComponent,
         data: {
-            breadcrumb: 'Add-Cases'
+            breadcrumb: 'Cases',
+            shell: true
         },
         children: [
             {
@@ -39,28 +40,28 @@ export const CasesShellRoutes: Routes = [
                 path: 'case',
                 component: CaseComponent,
                 data: {
-                    breadcrumb: 'Case'
+                    breadcrumb: 'Add Case'
                 }
             },
             {
                 path: 'employee',
                 component: EmployeeComponent,
                 data: {
-                    breadcrumb: 'Employee'
+                    breadcrumb: 'Add Employee'
                 }
             },
             {
                 path: 'insurances',
                 component: InsuranceComponent,
                 data: {
-                    breadcrumb: 'Insurance'
+                    breadcrumb: 'Add Insurance'
                 }
             },
             {
                 path: 'accident-address',
                 component: AccidentComponent,
                 data: {
-                    breadcrumb: 'Accident-address'
+                    breadcrumb: 'Add Accident location'
                 }
             }
         ]
