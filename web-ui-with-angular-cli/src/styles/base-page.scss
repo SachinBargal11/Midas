@@ -1,27 +1,82 @@
-.page-content 
-{
-    padding-top: 95px;
+.page-content {
+    padding-top: 55px;
+    .control-panel & {
+        padding-right: 0;
+    }
+    .with-side-menu-compact & {
+        padding-left: 100px;
+    }
 }
 
-.nav 
-{
-    .nav-item .btn-close 
-    {
+.nav {
+    .nav-item .btn-close {
         color: darkred;
     }
 }
 
-.table tbody tr:hover td, 
-.table tbody tr:hover th 
-{
-    background-color: #eeeeea;
-    cursor: pointer;
+.side-menu {
+    &.side-menu-compact {
+        padding-top: 50px;
+    }
 }
 
-.ui-inputtext.ui-state-focus, 
-.ui-widget-content .ui-inputtext.ui-state-focus, 
-.ui-widget-header .ui-inputtext.ui-state-focus 
-{
+body {
+    .ui-widget-header {
+        padding: 0;
+        border: none;
+        margin-bottom: 10px;
+    }
+    .ui-datatable {
+        border: 1px solid #c7c7c7;
+        .ui-datatable-data {
+            border: none;
+            tr {
+                border: none;
+                td {
+                    padding: 0.3em 0.5em;
+                    border: none;
+                }
+            }
+        }
+        .ui-datatable-thead {
+            tr {
+                th {
+                    padding: 0.3em 0.5em;
+                    text-align: left;
+                    border-left: none;
+                    border-right: none;
+                    border-top: none;
+                }
+            }
+        }
+        .ui-paginator {
+            border: none;
+            border-top: 1px solid #c7c7c7;
+            margin-bottom: 0;
+        }
+    }
+}
+
+.breadcrumb {
+    background: transparent;
+    margin-bottom: 0;
+}
+
+.table {
+    tbody {
+        tr:hover {
+            td,
+            th {
+                background-color: #eeeeea;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.ui-inputtext.ui-state-focus,
+.ui-widget-content .ui-inputtext.ui-state-focus,
+.ui-widget-header .ui-inputtext.ui-state-focus {
     background: inherit;
     // border: inherit;
     box-shadow: none;

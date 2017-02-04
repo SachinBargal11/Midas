@@ -15,7 +15,7 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 })
 
 export class PatientsListComponent implements OnInit {
-    selectedPatients: Patient[];
+    selectedPatients: Patient[] = [];
     patients: Patient[];
 
     constructor(
@@ -54,7 +54,6 @@ export class PatientsListComponent implements OnInit {
                 result.subscribe(
                     (response) => {
                         let notification = new Notification({
-                            // tslint:disable-next-line:max-line-length
                             'title': 'Patient ' + currentPatient.user.firstName + ' ' + currentPatient.user.lastName + ' deleted successfully!',
                             'type': 'SUCCESS',
                             'createdAt': moment()

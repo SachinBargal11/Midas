@@ -12,7 +12,7 @@ interface IBreadcrumb {
     selector: 'breadcrumb',
     template: `
     <ol class="breadcrumb">
-      <li><a routerLink="" class="breadcrumb">Home</a></li>
+      <li><a routerLink="" class="">Home</a></li>
       <li *ngFor="let breadcrumb of breadcrumbs">
         <a [routerLink]="[breadcrumb.url]">{{breadcrumb.label}}</a>
       </li>

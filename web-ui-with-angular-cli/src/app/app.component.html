@@ -1,5 +1,5 @@
 <div class="control-panel" [class.open]="_notificationsStore.isOpen">
-    
+
     <app-header *ngIf="_sessionStore.session.user"></app-header>
     <!--<main-nav *ngIf="_sessionStore.session.user"></main-nav>-->
     <progress-bar *ngIf="_progressBarService.counter > 0"></progress-bar>
@@ -7,7 +7,9 @@
     <div class="page-content">
         <div class="container-fluid">
             <breadcrumb *ngIf="_sessionStore.session.user"></breadcrumb>
-            <router-outlet></router-outlet>
+            <div class="box-typical box-typical-padding">
+                <router-outlet></router-outlet>
+            </div>
         </div>
     </div>
 </div>

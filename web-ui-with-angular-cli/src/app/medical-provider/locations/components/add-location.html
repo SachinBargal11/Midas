@@ -1,7 +1,7 @@
 <div class="page-center">
     <div class="page-center-in">
         <div class="container-fluid">
-            <h5 class="with-border">Add Location</h5>
+            <h2 class="with-border">Add Location</h2>
             <form [formGroup]="addlocationform" (ngSubmit)="save()">
                 <section class="card">
                     <div class="card-block">
@@ -138,12 +138,10 @@
                         </div>
                     </div>
                 </section>
-                <div class="text-center">
                 <button [disabled]="!addlocationform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveProgress"></loader>
                 </button>
                 <a [routerLink]="['/medical-provider/locations']" class="btn btn-secondary">Cancel</a>
-                </div>
             </form>
         </div>
     </div>

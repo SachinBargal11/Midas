@@ -138,12 +138,10 @@
                         </div>
                     </div>
                 </section>
-                <div class="text-center">
                 <button [disabled]="!basicform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveProgress"></loader>
                 </button>
                 <a [routerLink]="['/medical-provider/locations']" class="btn btn-secondary">Cancel</a>
-                </div>
             </form>
         </div>
     </div>
