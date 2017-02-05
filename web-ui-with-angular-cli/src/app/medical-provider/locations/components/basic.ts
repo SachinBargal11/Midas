@@ -59,7 +59,7 @@ export class BasicComponent implements OnInit {
         private _elRef: ElementRef
     ) {
         this._route.parent.params.subscribe((params: any) => {
-            let locationId = parseInt(params.locationId);
+            let locationId = parseInt(params.locationId, 10);
             this._progressBarService.show();
             let result = this._locationsStore.getLocationById(locationId);
             result.subscribe(
@@ -95,9 +95,7 @@ export class BasicComponent implements OnInit {
 
     ngOnInit() {
         this._statesStore.getStates()
-                .subscribe(states => this.states = states);
-        // this._statesStore.getCities()
-        //         .subscribe(cities => this.cities = cities);
+            .subscribe(states => this.states = states);
     }
 
     selectState(event) {
@@ -106,14 +104,14 @@ export class BasicComponent implements OnInit {
             this.loadCities(currentState);
             this.selectedCity = this.locationDetails.address.city;
         } else {
-        this.loadCities(currentState);
-        this.selectedCity = '';
+            this.loadCities(currentState);
+            this.selectedCity = '';
         }
     }
     loadCities(stateName) {
         this.isCitiesLoading = true;
-        if ( stateName !== '') {
-        this._statesStore.getCitiesByStates(stateName)
+        if (stateName !== '') {
+            this._statesStore.getCitiesByStates(stateName)
                 .subscribe((cities) => { this.cities = cities; },
                 null,
                 () => { this.isCitiesLoading = false; });
