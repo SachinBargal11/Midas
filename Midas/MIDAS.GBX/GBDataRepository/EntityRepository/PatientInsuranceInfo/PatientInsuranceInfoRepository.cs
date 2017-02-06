@@ -75,7 +75,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By ID
         public override object Get(int id)
         {
-            var acc = _context.PatientInsuranceInfoes.Where(p => p.Id == id).FirstOrDefault<PatientInsuranceInfo>();
+            var acc = _context.PatientInsuranceInfoes.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).FirstOrDefault<PatientInsuranceInfo>();
             BO.PatientInsuranceInfo acc_ = Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(acc);
 
             if (acc_ == null)
@@ -198,8 +198,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Contact details.", ErrorLevel = ErrorLevel.Error };
                 }
                 #endregion
-
-
+                
                 #region insurance
                 if (insuranceBO != null)
                 {
@@ -256,11 +255,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             return (object)res;
         }
         #endregion
-
-
-
-
-
+        
         public void Dispose()
         {
             GC.SuppressFinalize(this);

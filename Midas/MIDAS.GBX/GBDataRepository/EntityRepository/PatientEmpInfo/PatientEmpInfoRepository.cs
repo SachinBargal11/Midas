@@ -54,7 +54,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By ID
         public override object Get(int id)
         {
-            var acc = _context.PatientEmpInfoes.Where(p => p.Id == id).FirstOrDefault<PatientEmpInfo>();
+            var acc = _context.PatientEmpInfoes.Where(p => p.Id == id && p.IsCurrentEmp == true && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).FirstOrDefault<PatientEmpInfo>();
             BO.PatientEmpInfo acc_ = Convert<BO.PatientEmpInfo, PatientEmpInfo>(acc);
 
             if (acc_ == null)
@@ -88,18 +88,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region save
         public override object Save<T>(T entity)
         {
-            BO.PatientEmpInfo insuranceBO = (BO.PatientEmpInfo)(object)entity;
-            BO.AddressInfo addressBO = insuranceBO.AddressInfo;
-            BO.ContactInfo contactinfoBO = insuranceBO.ContactInfo;
+            BO.PatientEmpInfo patientEmpInfoBO = (BO.PatientEmpInfo)(object)entity;
+            BO.AddressInfo addressBO = patientEmpInfoBO.AddressInfo;
+            BO.ContactInfo contactinfoBO = patientEmpInfoBO.ContactInfo;
 
-
-            PatientEmpInfo insuranceDB = new PatientEmpInfo();
+            PatientEmpInfo patientEmpInfoDB = new PatientEmpInfo();
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
                 AddressInfo addressDB = new AddressInfo();
                 ContactInfo contactinfoDB = new ContactInfo();
-                User userDB = new User();
+                //User userDB = new User();
 
                 #region Address
                 if (addressBO != null)
@@ -178,34 +177,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 }
                 #endregion
 
-
-                #region insurance
-                if (insuranceBO != null)
+                #region patient Emp Info
+                if (patientEmpInfoBO != null)
                 {
-                    bool Add_insuranceDB = false;
-                    insuranceDB = _context.PatientEmpInfoes.Where(p => p.Id == insuranceBO.ID).FirstOrDefault();
-
-                    if (insuranceDB == null && insuranceBO.ID <= 0)
+                    if (patientEmpInfoBO.IsCurrentEmp == true)
                     {
-                        insuranceDB = new PatientEmpInfo();
-                        Add_insuranceDB = true;
+                        var existingPatientEmpInfoDB = _context.PatientEmpInfoes.Where(p => p.PatientId == patientEmpInfoBO.PatientId).ToList();
+                        existingPatientEmpInfoDB.ForEach(p => p.IsCurrentEmp = false);
                     }
-                    else if (insuranceDB == null && insuranceBO.ID > 0)
+
+                    bool Add_patientEmpInfoDB = false;
+                    patientEmpInfoDB = _context.PatientEmpInfoes.Where(p => p.Id == patientEmpInfoBO.ID).FirstOrDefault();
+
+                    if (patientEmpInfoDB == null && patientEmpInfoBO.ID <= 0)
+                    {
+                        patientEmpInfoDB = new PatientEmpInfo();
+                        Add_patientEmpInfoDB = true;
+                    }
+                    else if (patientEmpInfoDB == null && patientEmpInfoBO.ID > 0)
                     {
                         dbContextTransaction.Rollback();
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
-                    insuranceDB.PatientId = insuranceBO.PatientId;
-                    insuranceDB.JobTitle = insuranceBO.JobTitle;
-                    insuranceDB.EmpName = insuranceBO.EmpName;
-                    insuranceDB.AddressInfoId = addressDB.id;
-                    insuranceDB.ContactInfoId= contactinfoDB.id;
-                    insuranceDB.IsCurrentEmp = insuranceBO.IsCurrentEmp;
+                    patientEmpInfoDB.PatientId = patientEmpInfoBO.PatientId;
+                    patientEmpInfoDB.JobTitle = patientEmpInfoBO.JobTitle;
+                    patientEmpInfoDB.EmpName = patientEmpInfoBO.EmpName;
+                    patientEmpInfoDB.AddressInfoId = addressDB.id;
+                    patientEmpInfoDB.ContactInfoId= contactinfoDB.id;
+                    patientEmpInfoDB.IsCurrentEmp = patientEmpInfoBO.IsCurrentEmp;                    
 
-                    if (Add_insuranceDB == true)
+                    if (Add_patientEmpInfoDB == true)
                     {
-                        insuranceDB = _context.PatientEmpInfoes.Add(insuranceDB);
+                        patientEmpInfoDB = _context.PatientEmpInfoes.Add(patientEmpInfoDB);
                     }
                     _context.SaveChanges();
                 }
@@ -220,10 +224,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                 dbContextTransaction.Commit();
 
-                insuranceDB = _context.PatientEmpInfoes.Where(p => p.Id == insuranceDB.Id).FirstOrDefault<PatientEmpInfo>();
+                patientEmpInfoDB = _context.PatientEmpInfoes.Where(p => p.Id == patientEmpInfoDB.Id).FirstOrDefault<PatientEmpInfo>();
             }
 
-            var res = Convert<BO.PatientEmpInfo, PatientEmpInfo>(insuranceDB);
+            var res = Convert<BO.PatientEmpInfo, PatientEmpInfo>(patientEmpInfoDB);
             return (object)res;
         }
         #endregion
