@@ -12,6 +12,7 @@ import { StatesStore } from '../../../commons/stores/states-store';
 })
 
 export class CaseComponent implements OnInit {
+    maxDate: Date;
     states: any[];
     cities: any[];
     selectedCity = 0;
@@ -65,6 +66,10 @@ export class CaseComponent implements OnInit {
     }
 
     ngOnInit() {
+            let today = new Date();
+        let currentDate = today.getDate();
+        this.maxDate = new Date();
+        this.maxDate.setDate(currentDate);
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
     }

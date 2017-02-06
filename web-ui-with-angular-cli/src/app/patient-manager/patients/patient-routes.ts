@@ -11,6 +11,7 @@ import { DocumentsComponent } from './components/documents';
 import { AppointmentsComponent } from './components/appointments';
 import { ValidateActiveSession } from '../../commons/guards/validate-active-session';
 import { ShellComponent } from '../../commons/shell-component';
+import { AddFamilyMemberComponent } from './components/add-family-member';
 
 export const PatientsShellRoutes: Routes = [
     {
@@ -76,6 +77,14 @@ export const PatientsShellRoutes: Routes = [
                 canActivate: [ValidateActiveSession],
                 data: {
                     breadcrumb: 'Insurances'
+                }
+            },
+            {
+                path: 'family-member',
+                component: AddFamilyMemberComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Family Member'
                 }
             },
             {

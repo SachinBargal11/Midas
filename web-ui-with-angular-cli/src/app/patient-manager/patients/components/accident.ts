@@ -1,6 +1,5 @@
-
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
+import {Validators,FormGroup, FormBuilder} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
 import {SessionStore} from '../../../commons/stores/session-store';
 import {NotificationsStore} from '../../../commons/stores/notifications-store';
@@ -8,12 +7,13 @@ import { AppValidators } from '../../../commons/utils/AppValidators';
 import { StatesStore } from '../../../commons/stores/states-store';
 
 @Component({
-    selector: 'insurance',
-    templateUrl: './insurances.html'
+    selector: 'accident',
+    templateUrl: './accident.html'
 })
 
-export class InsuranceComponent implements OnInit {
+export class AccidentInfoComponent implements OnInit {
     states: any[];
+    maxDate: Date;
     cities: any[];
     selectedCity = 0;
     isCitiesLoading = false;
@@ -23,8 +23,8 @@ export class InsuranceComponent implements OnInit {
         pauseOnHover: false,
         clickToClose: false
     };
-    insuranceform: FormGroup;
-    insuranceformControls;
+    accidentform: FormGroup;
+    accidentformControls;
     isSaveProgress = false;
 
     constructor(
@@ -36,31 +36,30 @@ export class InsuranceComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _elRef: ElementRef
     ) {
-        this.insuranceform = this.fb.group({
-                policyNumber: [''],
-                patientId: ['', Validators.required],
-                insuranceId: ['', Validators.required],
-                policyHolderName: ['', Validators.required],
-                isPrimaryInsurance: ['', Validators.required],
-                adjuster: [''],
-                associateCases: [''],
+        this.accidentform = this.fb.group({
+                doa: ['', Validators.required],
+                dot: ['', Validators.required],
+                plateNumber:['', Validators.required],
                 address: ['', Validators.required],
-                address2: [''],
+                hospitalAddress: ['', Validators.required],
+                reportNumber:['', Validators.required],
+                specialty: ['', Validators.required],
+                hospitalName: ['', Validators.required],
+                describeInjury: ['', Validators.required],
+                patientType:['', Validators.required],
                 state: [''],
-                city:[''],
-                zipcode:[''],
-                country: [''],
-                email: ['', [Validators.required, AppValidators.emailValidator]],
-                cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                homePhone: [''],
-                workPhone: [''],
-                faxNo: ['']
+                city: [''],
+                zipcode: [''],
+                country: ['']
             });
-
-        this.insuranceformControls = this.insuranceform.controls;
+        this.accidentformControls = this.accidentform.controls;
     }
 
     ngOnInit() {
+        let today = new Date();
+        let currentDate = today.getDate();
+        this.maxDate = new Date();
+        this.maxDate.setDate(currentDate);
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
     }
@@ -83,7 +82,6 @@ export class InsuranceComponent implements OnInit {
             this.isCitiesLoading = false;
         }
     }
-
 
     save() {
     }

@@ -12,6 +12,7 @@ import { StatesStore } from '../../../commons/stores/states-store';
 })
 
 export class AccidentComponent implements OnInit {
+    maxDate: Date;
     states: any[];
     cities: any[];
     selectedCity = 0;
@@ -36,8 +37,16 @@ export class AccidentComponent implements OnInit {
         private _elRef: ElementRef
     ) {
         this.accidentform = this.fb.group({
+                doa: ['', Validators.required],
+                dot: ['', Validators.required],
+                plateNumber:['', Validators.required],
                 address: ['', Validators.required],
-                address2: [''],
+                hospitalAddress: ['', Validators.required],
+                reportNumber:['', Validators.required],
+                specialty: ['', Validators.required],
+                hospitalName: ['', Validators.required],
+                describeInjury: ['', Validators.required],
+                patientType:['', Validators.required],
                 state: [''],
                 city: [''],
                 zipcode: [''],
@@ -47,6 +56,10 @@ export class AccidentComponent implements OnInit {
     }
 
     ngOnInit() {
+        let today = new Date();
+        let currentDate = today.getDate();
+        this.maxDate = new Date();
+        this.maxDate.setDate(currentDate);
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
     }
