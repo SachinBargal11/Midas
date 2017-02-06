@@ -11,7 +11,7 @@ using MIDAS.GBX.PatientWebAPI.RequestHandler;
 
 namespace MIDAS.GBX.PatientWebAPI.Controllers
 {
-    [RoutePrefix("midaspatientapi/Insurance")]
+    [RoutePrefix("midaspatientapi/PatientInsuranceInfo")]
 
     public class InsuranceController : ApiController
     {

@@ -16,10 +16,9 @@ namespace MIDAS.GBX.BusinessObjects
         public int ContactInfoId { get; set; }
         public bool IsCurrentEmp { get; set; }
         public AddressInfo AddressInfo { get; set; }
-        public Case Cases { get; set; }
         public ContactInfo ContactInfo { get; set; }
-        public User User { get; set; }
-
+        public Patient2 Patient2 { get; set; }
+        public Patient2 Patient21 { get; set; }
 
     }
 }

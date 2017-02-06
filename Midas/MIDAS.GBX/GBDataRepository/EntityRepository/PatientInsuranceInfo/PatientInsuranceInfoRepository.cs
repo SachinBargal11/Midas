@@ -75,7 +75,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By ID
         public override object Get(int id)
         {
-            var acc = _context.PatientInsuranceInfoes.Include("User").Where(p => p.Id == id).FirstOrDefault<PatientInsuranceInfo>();
+            var acc = _context.PatientInsuranceInfoes.Where(p => p.Id == id).FirstOrDefault<PatientInsuranceInfo>();
             BO.PatientInsuranceInfo acc_ = Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(acc);
 
             if (acc_ == null)
