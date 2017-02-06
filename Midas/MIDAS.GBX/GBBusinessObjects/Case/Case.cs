@@ -22,7 +22,7 @@ namespace MIDAS.GBX.BusinessObjects
         public string VehiclePlateNo { get; set; }
         public int? AccidentAddressId { get; set; }
         public string CarrierCaseNo { get; set; }
-        public bool? Transportation { get; set; }
+        public bool Transportation { get; set; }
         public DateTime DateOfFirstTreatment { get; set; }
         public int? CaseStatusId { get; set; }
         public int? AttorneyId { get; set; }
@@ -30,9 +30,7 @@ namespace MIDAS.GBX.BusinessObjects
         public AddressInfo AddressInfo { get; set; }
         public AddressInfo AddressInfo1 { get; set; }
         public ContactInfo ContactInfo { get; set; }
-        public InsuranceInfo InsuranceInfo { get; set; }
         public Location Location { get; set; }
-        public PatientEmpInfo PatientEmpInfo { get; set; }
         public  User User { get; set; }
 
 

@@ -14,7 +14,7 @@ namespace MIDAS.GBX.BusinessObjects
         public string PolicyNo { get; set; }
         public string PolicyHoldersName { get; set; }
         public int InsuranceAddressId { get; set; }
-        public int InsuranceContactInfoId { get; set; }
+        public int? InsuranceContactInfoId { get; set; }
         public bool IsPrimaryInsurance { get; set; }
 
         public Case Cases{ get; set; }
