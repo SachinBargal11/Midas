@@ -38,9 +38,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             patientBO2.ID = patient2.Id;
             patientBO2.SSN = patient2.SSN;
-            //patientBO2.WCBNo = patient2.WCBNo;
-            //patientBO2.LocationID = patient2.LocationID;
-            patientBO2.CompanyId = patient2.CompanyId.HasValue == true ? patient2.CompanyId.Value : 0;
+            patientBO2.CompanyId = patient2.CompanyId;
             patientBO2.Weight = patient2.Weight;
             patientBO2.Weight = patient2.Height;
             patientBO2.MaritalStatusId = patient2.MaritalStatusId;
@@ -48,11 +46,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             patientBO2.AttorneyName = patient2.AttorneyName;
             patientBO2.AttorneyAddressInfoId = patient2.AttorneyAddressInfoId;
             patientBO2.AttorneyContactInfoId = patient2.AttorneyContactInfoId;
-            //patientBO2.PatientEmpInfoId = patient2.PatientEmpInfoId;
-            //patientBO2.PatientInsuranceInfoId = patient2.InsuranceInfoId;
-            //patientBO2.AccidentInfoId = patient2.AccidentInfoId;
-            //patientBO2.AttorneyInfoId = patient2.AttorneyInfoId;
-            //patientBO2.ReferingOfficeId = patient2.ReferingOfficeId;
             
             if (patient2.IsDeleted.HasValue)
                 patientBO2.IsDeleted = patient2.IsDeleted.Value;
@@ -97,10 +90,55 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get All Patient
+        public override object Get<T>(T entity)
+        {
+            BO.Patient2 patientBO = (BO.Patient2)(object)entity;
+            //var acc_ = _context.Patient2.Include("User").Include("Location").Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<Patient2>();
+            var acc_ = _context.Patient2.Include("User").Where(p => p.IsDeleted.HasValue == false || p.IsDeleted == false).ToList<Patient2>();
+
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            List<BO.Patient2> lstpatients = new List<BO.Patient2>();
+            foreach (Patient2 item in acc_)
+            {
+                lstpatients.Add(Convert<BO.Patient2, Patient2>(item));
+            }
+            return lstpatients;
+        }
+        #endregion
+
+        #region Get By ID For Patient 
+        public override object GetByCompanyId(int CompanyId)
+        {
+            //var acc = _context.Patient2.Include("User").Include("Location").Where(p => p.Id == id && p.IsDeleted == false).FirstOrDefault<Patient2>();
+            var acc = _context.Patient2.Include("User").Where(p => p.CompanyId == CompanyId && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).ToList<Patient2>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.Patient2> lstpatients = new List<BO.Patient2>();
+                //acc.ForEach(p => lstpatients.Add(Convert<BO.Patient2, Patient2>(p)));
+                foreach (Patient2 item in acc)
+                {
+                    lstpatients.Add(Convert<BO.Patient2, Patient2>(item));
+                }
+
+                return lstpatients;
+            }
+        }
+        #endregion
+
         #region Get By ID For Patient 
         public override object Get(int id)
         {
-            var acc = _context.Patient2.Include("User").Include("Location").Where(p => p.Id == id && p.IsDeleted == false).FirstOrDefault<Patient2>();
+            //var acc = _context.Patient2.Include("User").Include("Location").Where(p => p.Id == id && p.IsDeleted == false).FirstOrDefault<Patient2>();
+            var acc = _context.Patient2.Include("User").Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).FirstOrDefault<Patient2>();
 
             if (acc == null)
             {
@@ -143,7 +181,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 ContactInfo contactinfoPatientDB = new ContactInfo();
 
 
-                #region Address User
+                #region Address Info User
                 if (addressUserBO != null)
                 {
                     bool Add_addressDB = false;
@@ -288,7 +326,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 #endregion
 
-                #region AttorneyAddressInfoId
+                #region Patient AttorneyAddressInfoId
                 if (addressPatientBO != null)
                 {
                     bool Add_addressDB = false;
@@ -327,7 +365,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 #endregion
 
-                #region AttorneyContactInfoId
+                #region Patient AttorneyContactInfoId
                 if (contactinfoPatientBO != null)
                 {
                     bool Add_contactinfoDB = false;
@@ -487,23 +525,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get All Patient
-        public override object Get<T>(T entity)
-        {
-            BO.Patient2 patientBO = (BO.Patient2)(object)entity;
-            var acc_ = _context.Patient2.Include("User").Include("Location").Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<Patient2>();
-            if (acc_ == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
-            List<BO.Patient2> lstpatients = new List<BO.Patient2>();
-            foreach (Patient2 item in acc_)
-            {
-                lstpatients.Add(Convert<BO.Patient2, Patient2>(item));
-            }
-            return lstpatients;
-        }
-        #endregion
+        
 
 
         public void Dispose()

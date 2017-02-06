@@ -282,9 +282,7 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-
-
-         public Object Get(int id, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object Get(int id, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
@@ -611,6 +609,28 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
         #endregion
+
+        public Object GetByCompanyId(int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetByCompanyId(CompanyId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
 
     }
 }

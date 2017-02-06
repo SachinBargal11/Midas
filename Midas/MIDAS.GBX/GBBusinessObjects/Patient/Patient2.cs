@@ -16,7 +16,7 @@ namespace MIDAS.GBX.BusinessObjects
         public string SSN { get; set; }
 
         [JsonProperty("companyid")]
-        public int CompanyId { get; set; }
+        public int? CompanyId { get; set; }
 
         [JsonProperty("weight")]
         public decimal? Weight { get; set; }
