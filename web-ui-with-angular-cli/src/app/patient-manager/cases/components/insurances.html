@@ -1,4 +1,3 @@
-
 <div class="page-center">
     <div class="page-center-in">
         <div class="container-fluid">
@@ -9,9 +8,8 @@
                       Insurance Information
                     </header>
                     <div class="card-block">
-
                         <div class="row">
-                               <div class="col-lg-4">
+                            <div class="col-lg-4">
                                 <label class="form-label">Policy Number
                                             <!--<span class="color-red">*</span>-->
                                         </label>
@@ -25,7 +23,7 @@
                                     </div>
                                 </div>
                             </div>
-                         <div class="col-lg-4">
+                            <div class="col-lg-4">
                                 <label class="form-label"> Patient
                                             <span class="color-red">*</span>
                                         </label>
@@ -41,7 +39,7 @@
                                 </div>
                             </div>
 
-                         <div class="col-lg-4">
+                            <div class="col-lg-4">
                                 <label class="form-label"> Insurance
                                             <span class="color-red">*</span>
                                         </label>
@@ -56,10 +54,10 @@
                                     </div>
                                 </div>
                             </div>
-                            </div>
+                        </div>
 
-                            <div class="row">
-                                <div class="col-lg-4">
+                        <div class="row">
+                            <div class="col-lg-4">
                                 <label class="form-label">Policy Holder Name
                                             <span class="color-red">*</span>
                                         </label>
@@ -93,10 +91,37 @@
                                     <p-radioButton formControlName="isPrimaryInsurance" name="isPrimaryInsurance" value="0" label="No"></p-radioButton>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label class="form-label"> Adjuster
+                                        </label>
+                                <div class="form-group" [class.error]="insuranceformControls.adjuster.touched && !insuranceformControls.adjuster.valid">
+                                    <select formControlName="adjuster" type="text" class="form-control" placeholder="" [class.error]="insuranceformControls.adjuster.touched && !insuranceformControls.adjuster.valid">
+                                        <option value="">-Select -</option>
+                                    </select>
+                                    <div class='error-list' *ngIf="insuranceformControls.adjuster.touched && !insuranceformControls.adjuster.valid">
+                                        <ul>
+                                            <li *ngIf="insuranceformControls.adjuster.hasError('required')">Adjuster is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
+                            <div class="col-lg-4">
+                                <label class="form-label"> Associate cases
+                                        </label>
+                                <div class="form-group" [class.error]="insuranceformControls.associateCases.touched && !insuranceformControls.associateCases.valid">
+                                    <input type="text" formControlName="associateCases" [class.error]="!insuranceformControls.associateCases.valid" class="form-control" placeholder="" />
+                                    <div class='error-list' *ngIf="insuranceformControls.associateCases.touched && !insuranceformControls.associateCases.valid">
+                                        <ul>
+                                            <li *ngIf="insuranceformControls.associateCases.hasError('required')">Associate cases is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </section>
-             
+                </section>             
                
                 <section class="card">
                     <header class="card-header card-header-lg">

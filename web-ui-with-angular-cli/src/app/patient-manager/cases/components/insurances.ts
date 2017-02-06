@@ -1,6 +1,6 @@
 
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators,FormGroup, FormBuilder} from '@angular/forms';
+import {Validators, FormGroup, FormBuilder} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
 import {SessionStore} from '../../../commons/stores/session-store';
 import {NotificationsStore} from '../../../commons/stores/notifications-store';
@@ -42,7 +42,9 @@ export class InsuranceComponent implements OnInit {
                 insuranceId: ['', Validators.required],
                 policyHolderName: ['', Validators.required],
                 isPrimaryInsurance: ['', Validators.required],
-                address: ['',Validators.required],
+                adjuster: [''],
+                associateCases: [''],
+                address: ['', Validators.required],
                 address2: [''],
                 state: [''],
                 city:[''],
