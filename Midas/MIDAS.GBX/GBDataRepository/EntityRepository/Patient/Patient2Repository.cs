@@ -36,28 +36,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             BO.Patient2 patientBO2 = new BO.Patient2();
 
-            patientBO2.ID = patient2.id;
+            patientBO2.ID = patient2.Id;
             patientBO2.SSN = patient2.SSN;
-            patientBO2.WCBNo = patient2.WCBNo;
-            patientBO2.LocationID = patient2.LocationID;
+            //patientBO2.WCBNo = patient2.WCBNo;
+            //patientBO2.LocationID = patient2.LocationID;
+            patientBO2.CompanyId = patient2.CompanyId;
             patientBO2.Weight = patient2.Weight;
-            patientBO2.MaritalStatusId = (byte)patient2.MaritalStatusId;
-            patientBO2.DrivingLicence = patient2.DrivingLicence;
-            patientBO2.EmergenceyContactNumber = patient2.EmergencyContactNumber;
-            patientBO2.EmergenceyContactRelation = patient2.EmergencyContactRelation;
-            patientBO2.EmergenceyContactName = patient2.EmergencyContactName;
+            patientBO2.Weight = patient2.Height;
+            patientBO2.MaritalStatusId = patient2.MaritalStatusId;
+            patientBO2.DateOfFirstTreatment = patient2.DateOfFirstTreatment;
+            patientBO2.AttorneyName = patient2.AttorneyName;
+            patientBO2.AttorneyAddressInfoId = patient2.AttorneyAddressInfoId;
+            patientBO2.AttorneyContactInfoId = patient2.AttorneyContactInfoId;
+            patientBO2.PatientEmpInfoId = patient2.PatientEmpInfoId;
+            patientBO2.PatientInsuranceInfoId = patient2.InsuranceInfoId;
+            patientBO2.AccidentInfoId = patient2.AccidentInfoId;
+            patientBO2.AttorneyInfoId = patient2.AttorneyInfoId;
+            patientBO2.ReferingOfficeId = patient2.ReferingOfficeId;
+            
             if (patient2.IsDeleted.HasValue)
                 patientBO2.IsDeleted = patient2.IsDeleted.Value;
             if (patient2.UpdateByUserID.HasValue)
                 patientBO2.UpdateByUserID = patient2.UpdateByUserID.Value;
 
             //useful to get whole structure in responce.
-            //BO.Company boCompany = new BO.Company();
-            //using (CompanyRepository cmp = new CompanyRepository(_context))
-            //{
-            //    boCompany = cmp.Convert<BO.Company, Company>(patient2.Company);
-            //    patientBO2.Company = boCompany;
-            //}
+            if (patientBO2.CompanyId.HasValue == true)
+            { 
+                BO.Company boCompany = new BO.Company();
+                using (CompanyRepository cmp = new CompanyRepository(_context))
+                {
+                    boCompany = cmp.Convert<BO.Company, Company>(patient2.Company);
+                    patientBO2.Company = boCompany;
+                }
+            }
 
             BO.User boUser = new BO.User();
             using (UserRepository cmp = new UserRepository(_context))
@@ -66,12 +77,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientBO2.User = boUser;
             }
 
-            BO.Location boLocation = new BO.Location();
-            using (LocationRepository cmp = new LocationRepository(_context))
-            {
-                boLocation = cmp.Convert<BO.Location, Location>(patient2.Location);
-                patientBO2.Location = boLocation;
-            }
+            //BO.Location boLocation = new BO.Location();
+            //using (LocationRepository cmp = new LocationRepository(_context))
+            //{
+            //    boLocation = cmp.Convert<BO.Location, Location>(patient2.Location);
+            //    patientBO2.Location = boLocation;
+            //}
 
             return (T)(object)patientBO2;
         }
@@ -89,7 +100,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID For Patient 
         public override object Get(int id)
         {
-            var acc = _context.Patient2.Include("User").Include("Location").Where(p => p.id == id && p.IsDeleted == false).FirstOrDefault<Patient2>();
+            var acc = _context.Patient2.Include("User").Include("Location").Where(p => p.Id == id && p.IsDeleted == false).FirstOrDefault<Patient2>();
 
             if (acc == null)
             {
@@ -107,7 +118,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Save<T>(T entity)
         {
             BO.Patient2 patient2BO = (BO.Patient2)(object)entity;
-            BO.Location locationBO = patient2BO.Location;
+            BO.Company CompanyBO = patient2BO.Company;
+            //BO.Location locationBO = patient2BO.Location;
             BO.User userBO = patient2BO.User;
             BO.AddressInfo addressBO = patient2BO.User.AddressInfo;
             BO.ContactInfo contactinfoBO = patient2BO.User.ContactInfo;
@@ -119,7 +131,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
-                Location locationDB = new Location();
+                Company CompanyDB = new Company();
+                //Location locationDB = new Location();
                 User userDB = new User();
                 AddressInfo addressDB = new AddressInfo();
                 ContactInfo contactinfoDB = new ContactInfo();
@@ -272,7 +285,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (patient2BO != null)
                 {
                     bool Add_patientDB = false;
-                    patient2DB = _context.Patient2.Where(p => p.id == patient2BO.ID).FirstOrDefault();
+                    patient2DB = _context.Patient2.Where(p => p.Id == patient2BO.ID).FirstOrDefault();
 
                     if (patient2DB == null && patient2BO.ID <= 0)
                     {
@@ -285,29 +298,45 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
-                    patient2DB.id = userDB.id;
+                    patient2DB.Id = userDB.id;
                     patient2DB.SSN = patient2BO.SSN;
-                    patient2DB.WCBNo = patient2BO.WCBNo;
+                    patient2DB.CompanyId = patient2BO.CompanyId;
                     patient2DB.Weight = patient2BO.Weight;
+                    patient2DB.Weight = patient2BO.Height;
                     patient2DB.MaritalStatusId = patient2BO.MaritalStatusId;
-                    patient2DB.DrivingLicence = patient2BO.DrivingLicence;
-                    patient2DB.EmergencyContactName = patient2BO.EmergenceyContactName;
-                    patient2DB.EmergencyContactNumber = patient2BO.EmergenceyContactNumber;
-                    patient2DB.EmergencyContactRelation = patient2BO.EmergenceyContactRelation;
-
+                    patient2DB.DateOfFirstTreatment = patient2BO.DateOfFirstTreatment;
+                    patient2DB.AttorneyName = patient2BO.AttorneyName;
+                    patient2DB.AttorneyAddressInfoId = patient2BO.AttorneyAddressInfoId;
+                    patient2DB.AttorneyContactInfoId = patient2BO.AttorneyContactInfoId;
+                    patient2DB.PatientEmpInfoId = patient2BO.PatientEmpInfoId;
+                    patient2DB.InsuranceInfoId = patient2BO.PatientInsuranceInfoId;
+                    patient2DB.AccidentInfoId = patient2BO.AccidentInfoId;
+                    patient2DB.AttorneyInfoId = patient2BO.AttorneyInfoId;
+                    patient2DB.ReferingOfficeId = patient2BO.ReferingOfficeId;
 
                     patient2DB.IsDeleted = patient2BO.IsDeleted.HasValue ? patient2BO.IsDeleted : false;
 
-                    locationDB = _context.Locations.Where(p => p.id == patient2BO.LocationID).FirstOrDefault();
-                    if (locationDB != null)
+                    CompanyDB = _context.Companies.Where(p => p.id == patient2BO.CompanyId).FirstOrDefault();
+                    if (CompanyDB != null)
                     {
-                        patient2DB.LocationID = patient2BO.LocationID;
+                        patient2DB.CompanyId = patient2BO.CompanyId;
                     }
                     else
                     {
                         dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid User Location Id.", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid User Company Id.", ErrorLevel = ErrorLevel.Error };
                     }
+
+                    //locationDB = _context.Locations.Where(p => p.id == patient2BO.LocationID).FirstOrDefault();
+                    //if (locationDB != null)
+                    //{
+                    //    patient2DB.LocationID = patient2BO.LocationID;
+                    //}
+                    //else
+                    //{
+                    //    dbContextTransaction.Rollback();
+                    //    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid User Location Id.", ErrorLevel = ErrorLevel.Error };
+                    //}
 
                     if (Add_patientDB == true)
                     {
@@ -343,7 +372,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 dbContextTransaction.Commit();
 
-                patient2DB = _context.Patient2.Include("Location").Where(p => p.id == patient2DB.id).FirstOrDefault<Patient2>();
+                patient2DB = _context.Patient2.Include("Location").Where(p => p.Id == patient2DB.Id).FirstOrDefault<Patient2>();
             }
 
             if (sendEmail == true)

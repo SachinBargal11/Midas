@@ -27,7 +27,7 @@ CREATE TABLE [dbo].[Patient2](
 	[CreateDate] [datetime2](7) NOT NULL,
 	[UpdateByUserID] [int] NULL,
 	[UpdateDate] [datetime2](7) NULL, 
-    CONSTRAINT [PK_Patient2] PRIMARY KEY ([id]), 
+    CONSTRAINT [PK_Patient2] PRIMARY KEY ([Id]), 
 	CONSTRAINT [UK_Patient2_SSN] UNIQUE ([SSN])
 ) ON [PRIMARY]
 

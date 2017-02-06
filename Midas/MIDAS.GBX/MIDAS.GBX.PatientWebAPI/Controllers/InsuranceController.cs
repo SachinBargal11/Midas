@@ -15,11 +15,11 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
     public class InsuranceController : ApiController
     {
-        private IRequestHandler<InsuranceInfo> requestHandler;
+        private IRequestHandler<PatientInsuranceInfo> requestHandler;
 
         public InsuranceController()
         {
-            requestHandler = new GbApiRequestHandler<InsuranceInfo>();
+            requestHandler = new GbApiRequestHandler<PatientInsuranceInfo>();
         }
 
         // GET: api/Organizations/5
@@ -35,7 +35,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         [HttpGet]
         [Route("GetAll")]
         [AllowAnonymous]
-        public HttpResponseMessage GetAllPatient([FromBody]InsuranceInfo data)
+        public HttpResponseMessage GetAllPatient([FromBody]PatientInsuranceInfo data)
         {
             return requestHandler.GetGbObjects(Request, data);
         }
@@ -43,7 +43,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         [HttpPost]
         [Route("Save")]
         [AllowAnonymous]
-        public HttpResponseMessage Post([FromBody]InsuranceInfo data)
+        public HttpResponseMessage Post([FromBody]PatientInsuranceInfo data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }
