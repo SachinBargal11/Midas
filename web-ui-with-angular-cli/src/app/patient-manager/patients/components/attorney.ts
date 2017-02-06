@@ -32,7 +32,7 @@ export class AttorneyComponent implements OnInit {
         private _elRef: ElementRef
     ) {
         this.attorneyform = this.fb.group({
-                attorney: ['']
+                attorney: ['',Validators.required]
                
             });
         this.attorneyformControls = this.attorneyform.controls;
