@@ -34,17 +34,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             PatientEmpInfoBO.PatientId = PatientEmpInfo.PatientId;
             PatientEmpInfoBO.JobTitle = PatientEmpInfo.JobTitle;
             PatientEmpInfoBO.EmpName = PatientEmpInfo.EmpName;
-            PatientEmpInfoBO.EmpAddressId = PatientEmpInfo.EmpAddressId;
-            PatientEmpInfoBO.EmpContactInfoId = PatientEmpInfo.EmpContactInfoId;
+            //PatientEmpInfoBO.EmpAddressId = PatientEmpInfo.EmpAddressId;
+            //PatientEmpInfoBO.EmpContactInfoId = PatientEmpInfo.EmpContactInfoId;
             PatientEmpInfoBO.IsCurrentEmp = PatientEmpInfo.IsCurrentEmp;
 
 
-            BO.User boUser = new BO.User();
-            using (UserRepository cmp = new UserRepository(_context))
-            {
-                boUser = cmp.Convert<BO.User, User>(PatientEmpInfo.User);
-                PatientEmpInfoBO.User = boUser;
-            }
+           
             //BO.Case cases = new BO.Case();
             //using (CaseRepository cmp = new CaseRepository(_context))
             //{
@@ -99,154 +94,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        #region save
-        public override object Save<T>(T entity)
-        {
-            BO.InsuranceInfo insuranceBO = (BO.InsuranceInfo)(object)entity;
-            BO.Case caseBO = insuranceBO.Cases;
-            BO.AddressInfo addressBO = insuranceBO.AddressInfo;
-            BO.ContactInfo contactinfoBO = insuranceBO.ContactInfo;
-
-            InsuranceInfo insuranceDB = new InsuranceInfo();
-
-            using (var dbContextTransaction = _context.Database.BeginTransaction())
-            {
-                Case CaseDB = new Case();
-                AddressInfo addressDB = new AddressInfo();
-                ContactInfo contactinfoDB = new ContactInfo();
-
-
-                #region Address
-                if (addressBO != null)
-                {
-                    bool Add_addressDB = false;
-                    addressDB = _context.AddressInfoes.Where(p => p.id == addressBO.ID).FirstOrDefault();
-
-                    if (addressDB == null && addressBO.ID <= 0)
-                    {
-                        addressDB = new AddressInfo();
-                        Add_addressDB = true;
-                    }
-                    else if (addressDB == null && addressBO.ID > 0)
-                    {
-                        dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Address details dosent exists.", ErrorLevel = ErrorLevel.Error };
-                    }
-
-                    addressDB.id = addressBO.ID;
-                    addressDB.Name = addressBO.Name;
-                    addressDB.Address1 = addressBO.Address1;
-                    addressDB.Address2 = addressBO.Address2;
-                    addressDB.City = addressBO.City;
-                    addressDB.State = addressBO.State;
-                    addressDB.ZipCode = addressBO.ZipCode;
-                    addressDB.Country = addressBO.Country;
-
-                    if (Add_addressDB == true)
-                    {
-                        addressDB = _context.AddressInfoes.Add(addressDB);
-                    }
-                    _context.SaveChanges();
-                }
-                else
-                {
-                    dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Address details.", ErrorLevel = ErrorLevel.Error };
-                }
-                #endregion                
-
-                #region Contact Info
-                if (contactinfoBO != null)
-                {
-                    bool Add_contactinfoDB = false;
-                    contactinfoDB = _context.ContactInfoes.Where(p => p.id == contactinfoBO.ID).FirstOrDefault();
-
-                    if (contactinfoDB == null && contactinfoBO.ID <= 0)
-                    {
-                        contactinfoDB = new ContactInfo();
-                        Add_contactinfoDB = true;
-                    }
-                    else if (contactinfoDB == null && contactinfoBO.ID > 0)
-                    {
-                        dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Contact details dosent exists.", ErrorLevel = ErrorLevel.Error };
-                    }
-                    contactinfoDB.id = contactinfoBO.ID;
-                    contactinfoDB.Name = contactinfoBO.Name;
-                    contactinfoDB.CellPhone = contactinfoBO.CellPhone;
-                    contactinfoDB.EmailAddress = contactinfoBO.EmailAddress;
-                    contactinfoDB.HomePhone = contactinfoBO.HomePhone;
-                    contactinfoDB.WorkPhone = contactinfoBO.WorkPhone;
-                    contactinfoDB.FaxNo = contactinfoBO.FaxNo;
-                    contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
-
-                    if (Add_contactinfoDB == true)
-                    {
-                        contactinfoDB = _context.ContactInfoes.Add(contactinfoDB);
-                    }
-                    _context.SaveChanges();
-                }
-                else
-                {
-                    dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Contact details.", ErrorLevel = ErrorLevel.Error };
-                }
-                #endregion
-
-
-
-                #region insurance
-                if (insuranceBO != null)
-                {
-                    bool Add_insuranceDB = false;
-                    insuranceDB = _context.InsuranceInfoes.Where(p => p.Id == insuranceBO.ID).FirstOrDefault();
-
-                    if (insuranceDB == null && insuranceBO.ID <= 0)
-                    {
-                        insuranceDB = new InsuranceInfo();
-                        Add_insuranceDB = true;
-                    }
-                    else if (insuranceDB == null && insuranceBO.ID > 0)
-                    {
-                        dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient dosent exists.", ErrorLevel = ErrorLevel.Error };
-                    }
-
-                    insuranceDB.Id = insuranceBO.PatientId;
-                    insuranceDB.PolicyNo = insuranceBO.PolicyNo;
-                    insuranceDB.PolicyHoldersName = insuranceBO.PolicyHoldersName;
-                    insuranceDB.InsuranceAddressId = addressBO.ID;
-                    insuranceDB.InsuranceContactInfoId = contactinfoBO.ID;
-                    insuranceDB.IsPrimaryInsurance = insuranceBO.IsPrimaryInsurance;
-
-                    if (Add_insuranceDB == true)
-                    {
-                        insuranceDB = _context.InsuranceInfoes.Add(insuranceDB);
-                    }
-                    _context.SaveChanges();
-                }
-                else
-                {
-                    dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient details.", ErrorLevel = ErrorLevel.Error };
-                }
-
-                _context.SaveChanges();
-                #endregion
-
-
-
-                dbContextTransaction.Commit();
-
-                insuranceDB = _context.InsuranceInfoes.Where(p => p.Id == insuranceDB.Id).FirstOrDefault<InsuranceInfo>();
-            }
-
-
-
-            var res = Convert<BO.InsuranceInfo, InsuranceInfo>(insuranceDB);
-            return (object)res;
-        }
-        #endregion
+     
 
 
 

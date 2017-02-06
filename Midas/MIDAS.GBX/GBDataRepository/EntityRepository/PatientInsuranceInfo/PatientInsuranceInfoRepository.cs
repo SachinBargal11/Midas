@@ -10,13 +10,13 @@ using BO = MIDAS.GBX.BusinessObjects;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 {
-    internal class InsuranceRepository : BaseEntityRepo, IDisposable
+    internal class PatientInsuranceInfoRepository : BaseEntityRepo, IDisposable
     {
-        private DbSet<InsuranceInfo> _dbInsurance;
+        private DbSet<PatientInsuranceInfo> _dbInsurance;
 
-        public InsuranceRepository(MIDASGBXEntities context) : base(context)
+        public PatientInsuranceInfoRepository(MIDASGBXEntities context) : base(context)
         {
-            _dbInsurance = context.Set<InsuranceInfo>();
+            _dbInsurance = context.Set<PatientInsuranceInfo>();
             context.Configuration.ProxyCreationEnabled = false;
         }
 
@@ -24,20 +24,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Entity Conversion
         public override T Convert<T, U>(U entity)
         {
-            InsuranceInfo InsuranceInfos = entity as InsuranceInfo;
+            PatientInsuranceInfo InsuranceInfos = entity as PatientInsuranceInfo;
 
             if (InsuranceInfos == null)
                 return default(T);
 
-            BO.InsuranceInfo insuranceBO = new BO.InsuranceInfo();
+            BO.PatientInsuranceInfo insuranceBO = new BO.PatientInsuranceInfo();
             insuranceBO.ID = InsuranceInfos.Id;
             insuranceBO.PatientId = InsuranceInfos.PatientId;
+            insuranceBO.PolicyHoldersName = InsuranceInfos.PolicyHolderName;
+            insuranceBO.PolicyHolderAddressInfoId = InsuranceInfos.PolicyHolderAddressInfoId;
+            insuranceBO.PolicyHolderContactInfoId = InsuranceInfos.PolicyHolderContactInfoId;
+            insuranceBO.PolicyOwnerId = InsuranceInfos.PolicyOwnerId;
+            insuranceBO.InsuranceCompanyCode = InsuranceInfos.InsuranceCompanyCode;
+            insuranceBO.InsuranceCompanyAddressInfoId = InsuranceInfos.InsuranceCompanyAddressInfoId;
+            insuranceBO.InsuranceCompanyContactInfoId = InsuranceInfos.InsuranceCompanyContactInfoId;
             insuranceBO.PolicyNo = InsuranceInfos.PolicyNo;
-            insuranceBO.InsuranceId = InsuranceInfos.InsuranceId;
-            insuranceBO.PolicyHoldersName = InsuranceInfos.PolicyHoldersName;
-            insuranceBO.InsuranceAddressId = InsuranceInfos.InsuranceAddressId;
-            insuranceBO.InsuranceContactInfoId = InsuranceInfos.InsuranceContactInfoId;
-            insuranceBO.IsPrimaryInsurance = InsuranceInfos.IsPrimaryInsurance;
+            insuranceBO.ContactPerson = InsuranceInfos.ContactPerson;
+            insuranceBO.ClaimFileNo = InsuranceInfos.ClaimFileNo;
+            insuranceBO.WCBNo = InsuranceInfos.WCBNo;
+            insuranceBO.InsuranceType = InsuranceInfos.InsuranceType;
+            insuranceBO.IsInActive = InsuranceInfos.IsInActive;
 
             //BO.User boUser = new BO.User();
             //using (UserRepository cmp = new UserRepository(_context))
@@ -59,7 +66,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
-            BO.InsuranceInfo insurance = (BO.InsuranceInfo)(object)entity;
+            BO.PatientInsuranceInfo insurance = (BO.PatientInsuranceInfo)(object)entity;
             var result = insurance.Validate(insurance);
             return result;
         }
@@ -68,8 +75,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By ID
         public override object Get(int id)
         {
-            var acc = _context.InsuranceInfoes.Include("User").Where(p => p.Id == id).FirstOrDefault<InsuranceInfo>();
-            BO.InsuranceInfo acc_ = Convert<BO.InsuranceInfo, InsuranceInfo>(acc);
+            var acc = _context.PatientInsuranceInfoes.Include("User").Where(p => p.Id == id).FirstOrDefault<PatientInsuranceInfo>();
+            BO.PatientInsuranceInfo acc_ = Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(acc);
 
             if (acc_ == null)
             {
@@ -80,41 +87,41 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        #region Get All 
-        public override Object Get<T>(T entity)
-        {
-            BO.InsuranceInfo insuranceBO = (BO.InsuranceInfo)(object)entity;
-            var acc = _context.InsuranceInfoes.Include("User").ToList<InsuranceInfo>();
-            if (acc == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
-            List<BO.InsuranceInfo> listinsurance = new List<BO.InsuranceInfo>();
-            foreach (InsuranceInfo item in acc)
-            {
-                listinsurance.Add(Convert<BO.InsuranceInfo,InsuranceInfo >(item));
-            }
-            return listinsurance;
+        //#region Get All 
+        //public override Object Get<T>(T entity)
+        //{
+        //    BO.InsuranceInfo insuranceBO = (BO.InsuranceInfo)(object)entity;
+        //    var acc = _context.InsuranceInfoes.Include("User").ToList<InsuranceInfo>();
+        //    if (acc == null)
+        //    {
+        //        return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+        //    }
+        //    List<BO.InsuranceInfo> listinsurance = new List<BO.InsuranceInfo>();
+        //    foreach (InsuranceInfo item in acc)
+        //    {
+        //        listinsurance.Add(Convert<BO.InsuranceInfo, InsuranceInfo>(item));
+        //    }
+        //    return listinsurance;
 
-        }
-        #endregion
+        //}
+        //#endregion
 
         #region save
         public override object Save<T>(T entity)
         {
-            BO.InsuranceInfo insuranceBO = (BO.InsuranceInfo)(object)entity;
+            BO.PatientInsuranceInfo insuranceBO = (BO.PatientInsuranceInfo)(object)entity;
             BO.AddressInfo addressBO = insuranceBO.AddressInfo;
             BO.ContactInfo contactinfoBO = insuranceBO.ContactInfo;
-            BO.User userBO = insuranceBO.User;
 
-            InsuranceInfo insuranceDB = new InsuranceInfo();
+
+            PatientInsuranceInfo insuranceDB = new PatientInsuranceInfo();
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
                 AddressInfo addressDB = new AddressInfo();
                 ContactInfo contactinfoDB = new ContactInfo();
                 User userDB = new User();
-              
+
                 #region Address
                 if (addressBO != null)
                 {
@@ -197,11 +204,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 if (insuranceBO != null)
                 {
                     bool Add_insuranceDB = false;
-                    insuranceDB = _context.InsuranceInfoes.Where(p => p.Id == insuranceBO.ID).FirstOrDefault();
+                    insuranceDB = _context.PatientInsuranceInfoes.Where(p => p.Id == insuranceBO.ID).FirstOrDefault();
 
                     if (insuranceDB == null && insuranceBO.ID <= 0)
                     {
-                        insuranceDB = new InsuranceInfo();
+                        insuranceDB = new PatientInsuranceInfo();
                         Add_insuranceDB = true;
                     }
                     else if (insuranceDB == null && insuranceBO.ID > 0)
@@ -210,17 +217,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
-                    insuranceDB.PatientId =insuranceBO.PatientId;
+                    insuranceDB.PatientId = insuranceBO.PatientId;
+                    insuranceDB.PolicyHolderName = insuranceBO.PolicyHoldersName;
+                    insuranceDB.PolicyHolderAddressInfoId = insuranceBO.PolicyHolderAddressInfoId;
+                    insuranceDB.PolicyHolderContactInfoId = insuranceBO.PolicyHolderContactInfoId;
+                    insuranceDB.PolicyOwnerId = insuranceBO.PolicyOwnerId;
+                    insuranceDB.InsuranceCompanyCode = insuranceBO.InsuranceCompanyCode;
+                    insuranceDB.InsuranceCompanyAddressInfoId = insuranceBO.InsuranceCompanyAddressInfoId;
+                    insuranceDB.InsuranceCompanyContactInfoId = insuranceBO.InsuranceCompanyContactInfoId;
                     insuranceDB.PolicyNo = insuranceBO.PolicyNo;
-                    insuranceDB.InsuranceId = insuranceBO.InsuranceId;
-                    insuranceDB.PolicyHoldersName = insuranceBO.PolicyHoldersName;
-                    insuranceDB.InsuranceAddressId = addressDB.id;
-                    insuranceDB.InsuranceContactInfoId = contactinfoDB.id;
-                    insuranceDB.IsPrimaryInsurance = insuranceBO.IsPrimaryInsurance;
+                    insuranceDB.ContactPerson = insuranceBO.ContactPerson;
+                    insuranceDB.ClaimFileNo = insuranceBO.ClaimFileNo;
+                    insuranceDB.WCBNo = insuranceBO.WCBNo;
+                    insuranceDB.InsuranceType = insuranceBO.InsuranceType;
+                    insuranceDB.IsInActive = insuranceBO.IsInActive;
 
                     if (Add_insuranceDB == true)
                     {
-                        insuranceDB = _context.InsuranceInfoes.Add(insuranceDB);
+                        insuranceDB = _context.PatientInsuranceInfoes.Add(insuranceDB);
                     }
                     _context.SaveChanges();
                 }
@@ -235,15 +249,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                 dbContextTransaction.Commit();
 
-                insuranceDB = _context.InsuranceInfoes.Where(p => p.Id == insuranceDB.Id).FirstOrDefault<InsuranceInfo>();
+                insuranceDB = _context.PatientInsuranceInfoes.Where(p => p.Id == insuranceDB.Id).FirstOrDefault<PatientInsuranceInfo>();
             }
 
-            var res = Convert<BO.InsuranceInfo, InsuranceInfo>(insuranceDB);
+            var res = Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(insuranceDB);
             return (object)res;
         }
         #endregion
 
-       
+
 
 
 
