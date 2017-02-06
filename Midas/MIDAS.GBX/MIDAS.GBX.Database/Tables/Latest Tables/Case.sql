@@ -29,13 +29,13 @@
 GO
 
 
-ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_User_PatientID] FOREIGN KEY([PatientID])
-REFERENCES [dbo].[User] ([id])
+ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_Patient2_PatientId] FOREIGN KEY([PatientId])
+	REFERENCES [dbo].[Patient2] ([id])
 GO
 
-ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_User_PatientID]
+ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_Patient2_PatientId]
 GO
-
+/*
 ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_Location_LocationID] FOREIGN KEY([LocationID])
 	REFERENCES [dbo].[Location] ([id])
 GO
@@ -78,3 +78,4 @@ GO
 
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_AddressInfo_AccidentAddressId]
 GO
+*/

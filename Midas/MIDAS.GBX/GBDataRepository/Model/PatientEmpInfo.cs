@@ -17,15 +17,15 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PatientEmpInfo()
         {
-            this.Cases = new HashSet<Case>();
+            this.Patient2 = new HashSet<Patient2>();
         }
     
         public int Id { get; set; }
         public int PatientId { get; set; }
         public string JobTitle { get; set; }
         public string EmpName { get; set; }
-        public int EmpAddressId { get; set; }
-        public int EmpContactInfoId { get; set; }
+        public int AddressInfoId { get; set; }
+        public int ContactInfoId { get; set; }
         public bool IsCurrentEmp { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
@@ -34,9 +34,9 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
         public virtual AddressInfo AddressInfo { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Case> Cases { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
-        public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Patient2> Patient2 { get; set; }
+        public virtual Patient2 Patient21 { get; set; }
     }
 }

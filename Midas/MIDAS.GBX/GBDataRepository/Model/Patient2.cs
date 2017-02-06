@@ -14,24 +14,47 @@ namespace MIDAS.GBX.DataRepository.Model
     
     public partial class Patient2
     {
-        public int id { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Patient2()
+        {
+            this.Cases = new HashSet<Case>();
+            this.PatientEmpInfoes = new HashSet<PatientEmpInfo>();
+            this.PatientInsuranceInfoes = new HashSet<PatientInsuranceInfo>();
+        }
+    
+        public int Id { get; set; }
         public string SSN { get; set; }
-        public string WCBNo { get; set; }
-        public int LocationID { get; set; }
-        public decimal Weight { get; set; }
+        public Nullable<int> CompanyId { get; set; }
+        public Nullable<decimal> Weight { get; set; }
+        public Nullable<decimal> Height { get; set; }
         public Nullable<byte> MaritalStatusId { get; set; }
-        public string DrivingLicence { get; set; }
-        public string EmergencyContactName { get; set; }
-        public string EmergencyContactRelation { get; set; }
-        public string EmergencyContactNumber { get; set; }
+        public Nullable<System.DateTime> DateOfFirstTreatment { get; set; }
+        public string AttorneyName { get; set; }
+        public Nullable<int> AttorneyAddressInfoId { get; set; }
+        public Nullable<int> AttorneyContactInfoId { get; set; }
+        public Nullable<int> PatientEmpInfoId { get; set; }
+        public Nullable<int> InsuranceInfoId { get; set; }
+        public Nullable<int> AccidentInfoId { get; set; }
+        public Nullable<int> AttorneyInfoId { get; set; }
+        public Nullable<int> ReferingOfficeId { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
-        public virtual Location Location { get; set; }
+        public virtual AddressInfo AddressInfo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Case> Cases { get; set; }
+        public virtual Company Company { get; set; }
+        public virtual ContactInfo ContactInfo { get; set; }
         public virtual MaritalStatu MaritalStatu { get; set; }
+        public virtual PatientEmpInfo PatientEmpInfo { get; set; }
+        public virtual PatientInsuranceInfo PatientInsuranceInfo { get; set; }
         public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientEmpInfo> PatientEmpInfoes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
     }
 }
