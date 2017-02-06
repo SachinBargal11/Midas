@@ -11,9 +11,9 @@ import { StatesStore } from '../../../commons/stores/states-store';
     templateUrl: './accident.html'
 })
 
-export class AccidentComponent implements OnInit {
-    maxDate: Date;
+export class AccidentInfoComponent implements OnInit {
     states: any[];
+    maxDate: Date;
     cities: any[];
     selectedCity = 0;
     isCitiesLoading = false;

@@ -27,6 +27,8 @@ import { EmployeeComponent} from './cases/components/employee';
 import { InsuranceComponent } from './cases/components/insurances';
 import { AccidentComponent } from './cases/components/accident';
 import { CasesStore } from './cases/stores/case-store';
+import {AccidentInfoComponent} from './patients/components/accident';
+import {AttorneyComponent} from './patients/components/attorney';
 //  import { CasesStore } from './cases/services/cases-services;
 
 @NgModule({
@@ -52,11 +54,14 @@ import { CasesStore } from './cases/stores/case-store';
         PatientProfileComponent,
         ConsentFormsComponent,
         ReferalsComponent,
-        CaseComponent,CasesListComponent,
+        CaseComponent,
+        CasesListComponent,
         EmployeeComponent,
         InsuranceComponent,
         AccidentComponent,
-        AddCaseShellComponent
+        AddCaseShellComponent,
+        AccidentInfoComponent,
+        AttorneyComponent
     ],
     providers: [
         PatientsService,
