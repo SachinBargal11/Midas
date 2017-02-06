@@ -16,6 +16,8 @@ import { PatientsManagerShellComponent } from './patients-manager-shell';
 import { PatientsShellComponent } from './patients/components/patients-shell';
 import { PatientProfileComponent } from './patients/components/profile-patient';
 import { AddFamilyMemberComponent } from './patients/components/add-family-member';
+import { AccidentInfoComponent } from './patients/components/accident';
+import { AttorneyComponent } from './patients/components/attorney';
 import { ConsentFormsComponent } from './consent-forms/components/consent-forms';
 import { ReferalsComponent } from './referals/components/referals';
 import { PatientsService } from './patients/services/patients-service';
@@ -52,6 +54,8 @@ import { CasesStore } from './cases/stores/case-store';
         PatientsShellComponent,
         PatientProfileComponent,
         AddFamilyMemberComponent,
+        AccidentInfoComponent,
+        AttorneyComponent,
         ConsentFormsComponent,
         ReferalsComponent,
         CaseComponent,CasesListComponent,
