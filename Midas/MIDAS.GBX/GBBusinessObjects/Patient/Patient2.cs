@@ -12,32 +12,38 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class Patient2 : GbObject
     {
-        //public int id { get; set; }
+        [JsonProperty("ssn")]
         public string SSN { get; set; }
-        //public string WCBNo { get; set; }
-        //public int LocationID { get; set; }
-        public int? CompanyId { get; set; }
-        public decimal? Weight { get; set; }
-        public decimal? Height { get; set; }
-        public byte? MaritalStatusId { get; set; }
-        public DateTime? DateOfFirstTreatment { get; set; }
-        public string AttorneyName { get; set; }
-        public int? AttorneyAddressInfoId { get; set; }
-        public int? AttorneyContactInfoId { get; set; }
-        public int? PatientEmpInfoId { get; set; }
-        public int? PatientInsuranceInfoId { get; set; }
-        public int? AccidentInfoId { get; set; }
-        public int? AttorneyInfoId { get; set; }
-        public int? ReferingOfficeId { get; set; }
-        
 
+        [JsonProperty("companyid")]
+        public int CompanyId { get; set; }
+
+        [JsonProperty("weight")]
+        public decimal? Weight { get; set; }
+
+        [JsonProperty("height")]
+        public decimal? Height { get; set; }
+
+        [JsonProperty("maritalstatusid")]
+        public byte? MaritalStatusId { get; set; }
+
+        [JsonProperty("dateoffirsttreatment")]
+        public DateTime? DateOfFirstTreatment { get; set; }
+
+        [JsonProperty("attorneyname")]
+        public string AttorneyName { get; set; }
+
+        [JsonProperty("attorneyaddressinfoid")]
+        public int? AttorneyAddressInfoId { get; set; }
+
+        [JsonProperty("attorneycontactinfoid")]
+        public int? AttorneyContactInfoId { get; set; }
+
+        public AddressInfo AddressInfo { get; set; }
+        public ContactInfo ContactInfo { get; set; }
+
+        [JsonProperty("user")]
         public User User { get; set; }
-        public Company Company { get; set; }
-        //public BO.Common.MaritalStatus MaritalStatus { get; set; }
-        //public AddressInfo AddressInfo { get; set; }
-        //public ContactInfo ContactInfo { get; set; }
-        //public PatientEmpInfo PatientEmpInfo { get; set; }
-        //public PatientInsuranceInfo PatientInsuranceInfo { get; set; }
 
         public override List<BusinessValidation> Validate<T>(T entity)
         {
@@ -94,10 +100,10 @@ namespace MIDAS.GBX.BusinessObjects
                 validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "CompanyID cannot be less than zero." });
             }
 
-            if (Company != null && Company.ID != CompanyId)
-            {
-                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "CompanyID dosent match." });
-            }
+            //if (Company != null && Company.ID != CompanyId)
+            //{
+            //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "CompanyID dosent match." });
+            //}
 
             //if (LocationID < 0)
             //{

@@ -40,7 +40,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             patientBO2.SSN = patient2.SSN;
             //patientBO2.WCBNo = patient2.WCBNo;
             //patientBO2.LocationID = patient2.LocationID;
-            patientBO2.CompanyId = patient2.CompanyId;
+            patientBO2.CompanyId = patient2.CompanyId.HasValue == true ? patient2.CompanyId.Value : 0;
             patientBO2.Weight = patient2.Weight;
             patientBO2.Weight = patient2.Height;
             patientBO2.MaritalStatusId = patient2.MaritalStatusId;
@@ -48,11 +48,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             patientBO2.AttorneyName = patient2.AttorneyName;
             patientBO2.AttorneyAddressInfoId = patient2.AttorneyAddressInfoId;
             patientBO2.AttorneyContactInfoId = patient2.AttorneyContactInfoId;
-            patientBO2.PatientEmpInfoId = patient2.PatientEmpInfoId;
-            patientBO2.PatientInsuranceInfoId = patient2.InsuranceInfoId;
-            patientBO2.AccidentInfoId = patient2.AccidentInfoId;
-            patientBO2.AttorneyInfoId = patient2.AttorneyInfoId;
-            patientBO2.ReferingOfficeId = patient2.ReferingOfficeId;
+            //patientBO2.PatientEmpInfoId = patient2.PatientEmpInfoId;
+            //patientBO2.PatientInsuranceInfoId = patient2.InsuranceInfoId;
+            //patientBO2.AccidentInfoId = patient2.AccidentInfoId;
+            //patientBO2.AttorneyInfoId = patient2.AttorneyInfoId;
+            //patientBO2.ReferingOfficeId = patient2.ReferingOfficeId;
             
             if (patient2.IsDeleted.HasValue)
                 patientBO2.IsDeleted = patient2.IsDeleted.Value;
@@ -60,15 +60,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientBO2.UpdateByUserID = patient2.UpdateByUserID.Value;
 
             //useful to get whole structure in responce.
-            if (patientBO2.CompanyId.HasValue == true)
-            { 
-                BO.Company boCompany = new BO.Company();
-                using (CompanyRepository cmp = new CompanyRepository(_context))
-                {
-                    boCompany = cmp.Convert<BO.Company, Company>(patient2.Company);
-                    patientBO2.Company = boCompany;
-                }
-            }
+            //if (patientBO2.CompanyId.HasValue == true)
+            //{ 
+            //    BO.Company boCompany = new BO.Company();
+            //    using (CompanyRepository cmp = new CompanyRepository(_context))
+            //    {
+            //        boCompany = cmp.Convert<BO.Company, Company>(patient2.Company);
+            //        patientBO2.Company = boCompany;
+            //    }
+            //}
 
             BO.User boUser = new BO.User();
             using (UserRepository cmp = new UserRepository(_context))
@@ -118,11 +118,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Save<T>(T entity)
         {
             BO.Patient2 patient2BO = (BO.Patient2)(object)entity;
-            BO.Company CompanyBO = patient2BO.Company;
+            //BO.Company CompanyBO = patient2BO.Company;
             //BO.Location locationBO = patient2BO.Location;
             BO.User userBO = patient2BO.User;
-            BO.AddressInfo addressBO = patient2BO.User.AddressInfo;
-            BO.ContactInfo contactinfoBO = patient2BO.User.ContactInfo;
+            BO.AddressInfo addressUserBO = patient2BO.User.AddressInfo;
+            BO.ContactInfo contactinfoUserBO = patient2BO.User.ContactInfo;
+            BO.AddressInfo addressPatientBO = patient2BO.AddressInfo;
+            BO.ContactInfo contactinfoPatientBO = patient2BO.ContactInfo;
 
             Guid invitationDB_UniqueID = Guid.NewGuid();
             bool sendEmail = false;
@@ -133,39 +135,43 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 Company CompanyDB = new Company();
                 //Location locationDB = new Location();
-                User userDB = new User();
-                AddressInfo addressDB = new AddressInfo();
+                AddressInfo addressUserDB = new AddressInfo();
                 ContactInfo contactinfoDB = new ContactInfo();
+                User userDB = new User();
 
-                #region Address
-                if (addressBO != null)
+                AddressInfo addressPatientDB = new AddressInfo();
+                ContactInfo contactinfoPatientDB = new ContactInfo();
+
+
+                #region Address User
+                if (addressUserBO != null)
                 {
                     bool Add_addressDB = false;
-                    addressDB = _context.AddressInfoes.Where(p => p.id == addressBO.ID).FirstOrDefault();
+                    addressUserDB = _context.AddressInfoes.Where(p => p.id == addressUserBO.ID).FirstOrDefault();
 
-                    if (addressDB == null && addressBO.ID <= 0)
+                    if (addressUserDB == null && addressUserBO.ID <= 0)
                     {
-                        addressDB = new AddressInfo();
+                        addressUserDB = new AddressInfo();
                         Add_addressDB = true;
                     }
-                    else if (addressDB == null && addressBO.ID > 0)
+                    else if (addressUserDB == null && addressUserBO.ID > 0)
                     {
                         dbContextTransaction.Rollback();
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Address details dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
-                    addressDB.id = addressBO.ID;
-                    addressDB.Name = addressBO.Name;
-                    addressDB.Address1 = addressBO.Address1;
-                    addressDB.Address2 = addressBO.Address2;
-                    addressDB.City = addressBO.City;
-                    addressDB.State = addressBO.State;
-                    addressDB.ZipCode = addressBO.ZipCode;
-                    addressDB.Country = addressBO.Country;
+                    //addressUserDB.id = addressUserBO.ID;
+                    addressUserDB.Name = addressUserBO.Name;
+                    addressUserDB.Address1 = addressUserBO.Address1;
+                    addressUserDB.Address2 = addressUserBO.Address2;
+                    addressUserDB.City = addressUserBO.City;
+                    addressUserDB.State = addressUserBO.State;
+                    addressUserDB.ZipCode = addressUserBO.ZipCode;
+                    addressUserDB.Country = addressUserBO.Country;
 
                     if (Add_addressDB == true)
                     {
-                        addressDB = _context.AddressInfoes.Add(addressDB);
+                        addressUserDB = _context.AddressInfoes.Add(addressUserDB);
                     }
                     _context.SaveChanges();
                 }
@@ -174,32 +180,33 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     dbContextTransaction.Rollback();
                     return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Address details.", ErrorLevel = ErrorLevel.Error };
                 }
-                #endregion                
+                #endregion
 
-                #region Contact Info
-                if (contactinfoBO != null)
+                #region Contact Info User
+                if (contactinfoUserBO != null)
                 {
                     bool Add_contactinfoDB = false;
-                    contactinfoDB = _context.ContactInfoes.Where(p => p.id == contactinfoBO.ID).FirstOrDefault();
+                    contactinfoDB = _context.ContactInfoes.Where(p => p.id == contactinfoUserBO.ID).FirstOrDefault();
 
-                    if (contactinfoDB == null && contactinfoBO.ID <= 0)
+                    if (contactinfoDB == null && contactinfoUserBO.ID <= 0)
                     {
                         contactinfoDB = new ContactInfo();
                         Add_contactinfoDB = true;
                     }
-                    else if (contactinfoDB == null && contactinfoBO.ID > 0)
+                    else if (contactinfoDB == null && contactinfoUserBO.ID > 0)
                     {
                         dbContextTransaction.Rollback();
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Contact details dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
-                    contactinfoDB.id = contactinfoBO.ID;
-                    contactinfoDB.Name = contactinfoBO.Name;
-                    contactinfoDB.CellPhone = contactinfoBO.CellPhone;
-                    contactinfoDB.EmailAddress = contactinfoBO.EmailAddress;
-                    contactinfoDB.HomePhone = contactinfoBO.HomePhone;
-                    contactinfoDB.WorkPhone = contactinfoBO.WorkPhone;
-                    contactinfoDB.FaxNo = contactinfoBO.FaxNo;
-                    contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
+
+                    //contactinfoDB.id = contactinfoUserBO.ID;
+                    contactinfoDB.Name = contactinfoUserBO.Name;
+                    contactinfoDB.CellPhone = contactinfoUserBO.CellPhone;
+                    contactinfoDB.EmailAddress = contactinfoUserBO.EmailAddress;
+                    contactinfoDB.HomePhone = contactinfoUserBO.HomePhone;
+                    contactinfoDB.WorkPhone = contactinfoUserBO.WorkPhone;
+                    contactinfoDB.FaxNo = contactinfoUserBO.FaxNo;
+                    contactinfoDB.IsDeleted = contactinfoUserBO.IsDeleted;
 
                     if (Add_contactinfoDB == true)
                     {
@@ -256,7 +263,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         userDB.Password = PasswordHash.HashPassword(userBO.Password);
                     }
 
-                    userDB.AddressId = addressDB.id;
+                    userDB.AddressId = addressUserDB.id;
                     userDB.ContactInfoId = contactinfoDB.id;
 
                     userDB.C2FactAuthEmailEnabled = System.Convert.ToBoolean(Utility.GetConfigValue("Default2FactEmail"));
@@ -279,7 +286,85 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     dbContextTransaction.Rollback();
                     return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid User details.", ErrorLevel = ErrorLevel.Error };
                 }
-                #endregion                
+                #endregion
+
+                #region AttorneyAddressInfoId
+                if (addressPatientBO != null)
+                {
+                    bool Add_addressDB = false;
+                    addressPatientDB = _context.AddressInfoes.Where(p => p.id == addressPatientBO.ID).FirstOrDefault();
+
+                    if (addressPatientDB == null && addressPatientBO.ID <= 0)
+                    {
+                        addressPatientDB = new AddressInfo();
+                        Add_addressDB = true;
+                    }
+                    else if (addressPatientDB == null && addressPatientBO.ID > 0)
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Attorney Address details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                    }
+
+                    //addressPatientDB.id = addressPatientBO.ID;
+                    addressPatientDB.Name = addressPatientBO.Name;
+                    addressPatientDB.Address1 = addressPatientBO.Address1;
+                    addressPatientDB.Address2 = addressPatientBO.Address2;
+                    addressPatientDB.City = addressPatientBO.City;
+                    addressPatientDB.State = addressPatientBO.State;
+                    addressPatientDB.ZipCode = addressPatientBO.ZipCode;
+                    addressPatientDB.Country = addressPatientBO.Country;
+
+                    if (Add_addressDB == true)
+                    {
+                        addressPatientDB = _context.AddressInfoes.Add(addressPatientDB);
+                    }
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Attorney Address details.", ErrorLevel = ErrorLevel.Error };
+                }
+                #endregion
+
+                #region AttorneyContactInfoId
+                if (contactinfoPatientBO != null)
+                {
+                    bool Add_contactinfoDB = false;
+                    contactinfoPatientDB = _context.ContactInfoes.Where(p => p.id == contactinfoPatientBO.ID).FirstOrDefault();
+
+                    if (contactinfoPatientDB == null && contactinfoPatientBO.ID <= 0)
+                    {
+                        contactinfoPatientDB = new ContactInfo();
+                        Add_contactinfoDB = true;
+                    }
+                    else if (contactinfoPatientDB == null && contactinfoPatientBO.ID > 0)
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Attorney Contact details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                    }
+                    
+                    //contactinfoPatientDB.id = contactinfoPatientBO.ID;
+                    contactinfoPatientDB.Name = contactinfoPatientBO.Name;
+                    contactinfoPatientDB.CellPhone = contactinfoPatientBO.CellPhone;
+                    contactinfoPatientDB.EmailAddress = contactinfoPatientBO.EmailAddress;
+                    contactinfoPatientDB.HomePhone = contactinfoPatientBO.HomePhone;
+                    contactinfoPatientDB.WorkPhone = contactinfoPatientBO.WorkPhone;
+                    contactinfoPatientDB.FaxNo = contactinfoPatientBO.FaxNo;
+                    contactinfoPatientDB.IsDeleted = contactinfoPatientBO.IsDeleted;
+
+                    if (Add_contactinfoDB == true)
+                    {
+                        contactinfoPatientDB = _context.ContactInfoes.Add(contactinfoPatientDB);
+                    }
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Attorney Contact details.", ErrorLevel = ErrorLevel.Error };
+                }
+                #endregion
 
                 #region Patient
                 if (patient2BO != null)
@@ -299,6 +384,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
 
                     patient2DB.Id = userDB.id;
+
+                    if (Add_patientDB == true)
+                    {
+                        if (_context.Patient2.Any(p => p.SSN == patient2BO.SSN))
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "SSN already exists.", ErrorLevel = ErrorLevel.Error };
+                        }
+                    }
+
                     patient2DB.SSN = patient2BO.SSN;
                     patient2DB.CompanyId = patient2BO.CompanyId;
                     patient2DB.Weight = patient2BO.Weight;
@@ -306,13 +401,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     patient2DB.MaritalStatusId = patient2BO.MaritalStatusId;
                     patient2DB.DateOfFirstTreatment = patient2BO.DateOfFirstTreatment;
                     patient2DB.AttorneyName = patient2BO.AttorneyName;
-                    patient2DB.AttorneyAddressInfoId = patient2BO.AttorneyAddressInfoId;
-                    patient2DB.AttorneyContactInfoId = patient2BO.AttorneyContactInfoId;
-                    patient2DB.PatientEmpInfoId = patient2BO.PatientEmpInfoId;
-                    patient2DB.InsuranceInfoId = patient2BO.PatientInsuranceInfoId;
-                    patient2DB.AccidentInfoId = patient2BO.AccidentInfoId;
-                    patient2DB.AttorneyInfoId = patient2BO.AttorneyInfoId;
-                    patient2DB.ReferingOfficeId = patient2BO.ReferingOfficeId;
+                    patient2DB.AttorneyAddressInfoId = addressPatientDB.id;
+                    patient2DB.AttorneyContactInfoId = contactinfoPatientDB.id;
 
                     patient2DB.IsDeleted = patient2BO.IsDeleted.HasValue ? patient2BO.IsDeleted : false;
 
@@ -362,7 +452,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     invitationDB_UniqueID = Guid.NewGuid();
 
                     invitationDB.UniqueID = invitationDB_UniqueID;
-                    invitationDB.CompanyID = 0;
+                    invitationDB.CompanyID = patient2DB.CompanyId.HasValue == true ? patient2DB.CompanyId.Value : 0;
                     invitationDB.CreateDate = DateTime.UtcNow;
                     invitationDB.CreateByUserID = userDB.id;
                     _context.Invitations.Add(invitationDB);
@@ -372,7 +462,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 dbContextTransaction.Commit();
 
-                patient2DB = _context.Patient2.Include("Location").Where(p => p.Id == patient2DB.Id).FirstOrDefault<Patient2>();
+                patient2DB = _context.Patient2.Include("Company").Where(p => p.Id == patient2DB.Id).FirstOrDefault<Patient2>();
             }
 
             if (sendEmail == true)
