@@ -1,12 +1,22 @@
 ﻿CREATE TABLE [dbo].[PatientInsuranceInfo]
 (
 	[Id] [int] NOT NULL,
-	[PatientID] [int] NOT NULL,
-	[InsuranceCode] [nvarchar](10) NULL,
-	[InsuranceType] [int] NOT NULL,
-	[Authorization] [nvarchar](50) NULL,
-	[InsuranceId] [nvarchar](50) NULL, 
-	[IsDeleted] [bit] NULL,
+	[PatientId] [int] NOT NULL,
+	[PolicyHolderName] [NVARCHAR](50) NULL,
+	[PolicyHolderAddressInfoId] [INT] NULL,
+	[PolicyHolderContactInfoId] [INT] NULL,
+	[PolicyOwnerId] [INT] NULL,-----------
+	[InsuranceCompanyCode] [NVARCHAR](10) NULL,
+	[InsuranceCompanyAddressInfoId] [INT] NULL,
+	[InsuranceCompanyContactInfoId] [INT] NULL,
+	[PolicyNo] [NVARCHAR](50) NULL,
+	[ContactPerson] [NVARCHAR](50) NULL,
+	[ClaimFileNo] [NVARCHAR](50) NULL,
+	[WCBNo] [NVARCHAR](50) NULL,
+	[InsuranceType] [TINYINT] NULL,-----------
+	[IsInActive] [BIT] NUll DEFAULT (0),
+	
+	[IsDeleted] [bit] NULL DEFAULT (0),
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NOT NULL,
 	[UpdateByUserID] [int] NULL,
@@ -15,27 +25,37 @@
 )
 GO
 
-ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_User] FOREIGN KEY([PatientID])
-REFERENCES [dbo].[User] ([id])
+ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_Patient2_PatientId] FOREIGN KEY([PatientId])
+	REFERENCES [dbo].[Patient2] ([id])
 GO
 
-ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_User]	
+ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_Patient2_PatientId]	
 GO
 
-EXEC sp_addextendedproperty @name = N'MS_Description',
-    @value = N'?',
-    @level0type = N'SCHEMA',
-    @level0name = N'dbo',
-    @level1type = N'TABLE',
-    @level1name = N'PatientInsuranceInfo',
-    @level2type = N'COLUMN',
-    @level2name = N'InsuranceId'
+ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_AddressInfo_PolicyHolderAddressInfoId] FOREIGN KEY([PolicyHolderAddressInfoId])
+	REFERENCES [dbo].[AddressInfo] ([id])
 GO
-EXEC sp_addextendedproperty @name = N'MS_Description',
-    @value = N'?',
-    @level0type = N'SCHEMA',
-    @level0name = N'dbo',
-    @level1type = N'TABLE',
-    @level1name = N'PatientInsuranceInfo',
-    @level2type = N'COLUMN',
-    @level2name = N'InsuranceCode'
+
+ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_AddressInfo_PolicyHolderAddressInfoId]
+GO
+
+ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_ContactInfo_PolicyHolderContactInfoId] FOREIGN KEY([PolicyHolderContactInfoId])
+	REFERENCES [dbo].[ContactInfo] ([id])
+GO
+
+ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_ContactInfo_PolicyHolderContactInfoId]
+GO
+
+ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_AddressInfo_InsuranceCompanyAddressInfoId] FOREIGN KEY([InsuranceCompanyAddressInfoId])
+	REFERENCES [dbo].[AddressInfo] ([id])
+GO
+
+ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_AddressInfo_InsuranceCompanyAddressInfoId]
+GO
+
+ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_ContactInfo_InsuranceCompanyContactInfoId] FOREIGN KEY([InsuranceCompanyContactInfoId])
+	REFERENCES [dbo].[ContactInfo] ([id])
+GO
+
+ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_ContactInfo_InsuranceCompanyContactInfoId]
+GO

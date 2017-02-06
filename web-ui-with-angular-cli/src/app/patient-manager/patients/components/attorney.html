@@ -1,0 +1,34 @@
+<div class="page-center">
+    <div class="page-center-in">
+        <div class="container-fluid">
+            <h2 class="with-border">Add Attorney</h2>
+            <form [formGroup]="attorneyform">
+            <section class="card">
+                    <header class="card-header card-header-lg">
+                      Attorney
+                    </header>
+                    <div class="card-block">
+
+                        <div class="row">
+                             <div class="col-lg-4">
+                                <label class="form-label">Attorney
+                                            <!--<span class="color-red">*</span>-->
+                                        </label>
+                                <div class="form-group" [class.error]="attorneyformControls.attorney.touched && !attorneyformControls.attorney.valid">
+                                    <select formControlName="attorney" type="text" class="form-control" placeholder="" [class.error]="attorneyformControls.attorney.touched && !attorneyformControls.attorney.valid">
+                                        <option value="">-Select -</option>
+                                    </select>
+                                    <div class='error-list' *ngIf="attorneyformControls.attorney.touched && !attorneyformControls.attorney.valid">
+                                        <ul>
+                                            <li *ngIf="attorneyformControls.attorney.hasError('required')">Attorney is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                    </div>
+                </section>
+            </form>
+        </div>
+    </div>
+</div>

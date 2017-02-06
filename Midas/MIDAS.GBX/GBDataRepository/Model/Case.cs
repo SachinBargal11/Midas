@@ -32,13 +32,12 @@ namespace MIDAS.GBX.DataRepository.Model
         public System.DateTime DateOfFirstTreatment { get; set; }
         public Nullable<int> CaseStatusId { get; set; }
         public Nullable<int> AttorneyId { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
+        public int CreateByUserID { get; set; }
+        public System.DateTime CreateDate { get; set; }
+        public Nullable<int> UpdateByUserID { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
     
-        public virtual AddressInfo AddressInfo { get; set; }
-        public virtual AddressInfo AddressInfo1 { get; set; }
-        public virtual ContactInfo ContactInfo { get; set; }
-        public virtual InsuranceInfo InsuranceInfo { get; set; }
-        public virtual Location Location { get; set; }
-        public virtual PatientEmpInfo PatientEmpInfo { get; set; }
-        public virtual User User { get; set; }
+        public virtual Patient2 Patient2 { get; set; }
     }
 }
