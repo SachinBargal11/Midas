@@ -94,7 +94,6 @@
     <Build Include="Tables\Latest Tables\MaritalStatus.sql" />
     <Build Include="Tables\Latest Tables\Gender.sql" />
     <Build Include="Tables\Latest Tables\Case.sql" />
-    <Build Include="Tables\Latest Tables\InsuranceInfo.sql" />
     <Build Include="Tables\Latest Tables\Patient.sql" />
     <Build Include="Tables\Latest Tables\PatientFamilyMembers.sql" />
     <Build Include="Tables\Latest Tables\Relations.sql" />

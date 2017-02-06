@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[PatientInsuranceInfo]
 (
-	[Id] [int] NOT NULL,
+	[Id] [int] NOT NULL IDENTITY,
 	[PatientId] [int] NOT NULL,
 	[PolicyHolderName] [NVARCHAR](50) NULL,
 	[PolicyHolderAddressInfoId] [INT] NULL,
