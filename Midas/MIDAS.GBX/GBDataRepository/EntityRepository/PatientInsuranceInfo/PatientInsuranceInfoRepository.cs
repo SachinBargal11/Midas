@@ -43,7 +43,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             insuranceBO.ContactPerson = InsuranceInfos.ContactPerson;
             insuranceBO.ClaimFileNo = InsuranceInfos.ClaimFileNo;
             insuranceBO.WCBNo = InsuranceInfos.WCBNo;
-            insuranceBO.InsuranceType = InsuranceInfos.InsuranceType;
+            insuranceBO.InsuranceTypeId = InsuranceInfos.InsuranceTypeId;
             insuranceBO.IsInActive = InsuranceInfos.IsInActive;
 
             if (InsuranceInfos.AddressInfo != null)
@@ -385,7 +385,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     insuranceDB.ContactPerson = insuranceBO.ContactPerson;
                     insuranceDB.ClaimFileNo = insuranceBO.ClaimFileNo;
                     insuranceDB.WCBNo = insuranceBO.WCBNo;
-                    insuranceDB.InsuranceType = insuranceBO.InsuranceType;
+                    insuranceDB.InsuranceTypeId = insuranceBO.InsuranceTypeId;
                     insuranceDB.IsInActive = insuranceBO.IsInActive;
 
                     if (Add_insuranceDB == true)

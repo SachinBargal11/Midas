@@ -13,7 +13,7 @@ namespace MIDAS.GBX.BusinessObjects
         public string PolicyHoldersName { get; set; }
         public int? PolicyHolderAddressInfoId { get; set; }
         public int? PolicyHolderContactInfoId { get; set; }
-        public int? PolicyOwnerId { get; set; }
+        public byte? PolicyOwnerId { get; set; }
         public string InsuranceCompanyCode { get; set; }
         public int? InsuranceCompanyAddressInfoId { get; set; }
         public int? InsuranceCompanyContactInfoId { get; set; }
@@ -21,7 +21,7 @@ namespace MIDAS.GBX.BusinessObjects
         public string ContactPerson { get; set; }
         public string ClaimFileNo { get; set; }
         public string WCBNo { get; set; }
-        public byte? InsuranceType { get; set; }
+        public byte? InsuranceTypeId { get; set; }
         public bool? IsInActive { get; set; }
 
         public AddressInfo AddressInfo { get; set; }

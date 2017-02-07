@@ -99,6 +99,8 @@
     <Build Include="Tables\Latest Tables\Relations.sql" />
     <Build Include="Tables\Latest Tables\RefferingOffice.sql" />
     <Build Include="Tables\Latest Tables\PatientAccidentInfo.sql" />
+    <Build Include="Tables\Latest Tables\PolicyOwner.sql" />
+    <Build Include="Tables\Latest Tables\InsuranceType.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />

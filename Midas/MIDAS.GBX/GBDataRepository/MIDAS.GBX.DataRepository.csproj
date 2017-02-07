@@ -68,7 +68,9 @@
     <Compile Include="EntityRepository\Case\CaseRepository.cs" />
     <Compile Include="EntityRepository\Common\CityRepository.cs" />
     <Compile Include="EntityRepository\Common\GenderRepository.cs" />
+    <Compile Include="EntityRepository\Common\InsuranceTypeRepository.cs" />
     <Compile Include="EntityRepository\Common\MaritalStatusRepository.cs" />
+    <Compile Include="EntityRepository\Common\PolicyOwnerRepository.cs" />
     <Compile Include="EntityRepository\Common\StateRepository.cs" />
     <Compile Include="EntityRepository\Company\CompanyRepository.cs" />
     <Compile Include="EntityRepository\Doctor\DoctorLocationScheduleRepository.cs" />
@@ -128,6 +130,9 @@
     <Compile Include="Model\Gender.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\InsuranceType.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Invitation.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
@@ -177,6 +182,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PatientInsuranceInfo.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PolicyOwner.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\RefferingOffice.cs">

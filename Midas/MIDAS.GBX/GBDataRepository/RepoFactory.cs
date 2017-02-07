@@ -144,8 +144,14 @@ namespace MIDAS.GBX
             {
                 repo = new AttorneyInfoRepository(context);
             }
-            
-
+            if (typeof(T) == typeof(BO.Common.PolicyOwner))
+            {
+                repo = new PolicyOwnerRepository(context);
+            }
+            if (typeof(T) == typeof(BO.Common.InsuranceType))
+            {
+                repo = new InsuranceTypeRepository(context);
+            }
 
             return repo;
         }
