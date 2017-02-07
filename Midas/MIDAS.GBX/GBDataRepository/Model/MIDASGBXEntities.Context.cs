@@ -61,5 +61,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<Patient2> Patient2 { get; set; }
         public virtual DbSet<PatientEmpInfo> PatientEmpInfoes { get; set; }
         public virtual DbSet<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
+        public virtual DbSet<RefferingOffice> RefferingOffices { get; set; }
     }
 }

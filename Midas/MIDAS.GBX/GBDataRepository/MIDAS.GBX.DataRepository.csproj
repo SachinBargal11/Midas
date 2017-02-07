@@ -175,6 +175,9 @@
     <Compile Include="Model\PatientInsuranceInfo.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\RefferingOffice.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Room.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>

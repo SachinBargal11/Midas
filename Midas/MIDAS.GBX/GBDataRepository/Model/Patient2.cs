@@ -20,6 +20,7 @@ namespace MIDAS.GBX.DataRepository.Model
             this.Cases = new HashSet<Case>();
             this.PatientEmpInfoes = new HashSet<PatientEmpInfo>();
             this.PatientInsuranceInfoes = new HashSet<PatientInsuranceInfo>();
+            this.RefferingOffices = new HashSet<RefferingOffice>();
         }
     
         public int Id { get; set; }
@@ -49,12 +50,14 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual Company Company { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual MaritalStatu MaritalStatu { get; set; }
+        public virtual User User { get; set; }
         public virtual PatientEmpInfo PatientEmpInfo { get; set; }
         public virtual PatientInsuranceInfo PatientInsuranceInfo { get; set; }
-        public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientEmpInfo> PatientEmpInfoes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RefferingOffice> RefferingOffices { get; set; }
     }
 }
