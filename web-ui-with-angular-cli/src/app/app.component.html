@@ -7,9 +7,7 @@
     <div class="page-content">
         <div class="container-fluid">
             <breadcrumb *ngIf="_sessionStore.session.user"></breadcrumb>
-            <div class="box-typical box-typical-padding">
-                <router-outlet></router-outlet>
-            </div>
+            <router-outlet></router-outlet>
         </div>
     </div>
 </div>
