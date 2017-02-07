@@ -95,6 +95,10 @@
         <AssociationConnector Association="MIDASGBXModel.FK_PatientEmpInfo_Patient2_PatientId" />
         <AssociationConnector Association="MIDASGBXModel.FK_PatientInsuranceInfo_Patient2_PatientId" />
         <AssociationConnector Association="MIDASGBXModel.FK_RefferingOffice_Patient2_PatientId" />
+        <EntityTypeShape EntityType="MIDASGBXModel.PatientAccidentInfo" Width="1.5" PointX="21.75" PointY="15.875" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientAccidentInfo_AddressInfo_AccidentAddressInfoId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientAccidentInfo_AddressInfo_HospitalAddressInfoId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientAccidentInfo_Patient2_PatientId" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
