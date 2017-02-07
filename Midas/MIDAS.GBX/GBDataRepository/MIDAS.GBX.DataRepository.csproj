@@ -63,6 +63,7 @@
     <Compile Include="DataAccessManager\GbDataAccessManager.cs" />
     <Compile Include="DataAccessManager\IDBContextProvider.cs" />
     <Compile Include="DataAccessManager\IGbDataAccessManager.cs" />
+    <Compile Include="EntityRepository\AttorneyInfo\AttorneyInfoRepository.cs" />
     <Compile Include="EntityRepository\BaseEntityRepo.cs" />
     <Compile Include="EntityRepository\Case\CaseRepository.cs" />
     <Compile Include="EntityRepository\Common\CityRepository.cs" />
