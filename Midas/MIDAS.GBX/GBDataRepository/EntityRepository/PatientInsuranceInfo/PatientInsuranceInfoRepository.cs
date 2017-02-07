@@ -46,18 +46,63 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             insuranceBO.InsuranceType = InsuranceInfos.InsuranceType;
             insuranceBO.IsInActive = InsuranceInfos.IsInActive;
 
-            //BO.User boUser = new BO.User();
-            //using (UserRepository cmp = new UserRepository(_context))
-            //{
-            //    boUser = cmp.Convert<BO.User, User>(InsuranceInfos.User);
-            //    insuranceBO.User = boUser;
-            //}
-            //BO.Case cases = new BO.Case();
-            //using (CaseRepository cmp = new CaseRepository(_context))
-            //{
-            //    cases = cmp.Convert<BO.Case, Case>(InsuranceInfos.Cases);
-            //    insuranceBO.Cases = cases;
-            //}
+            if (InsuranceInfos.AddressInfo != null)
+            {
+                BO.AddressInfo boAddress = new BO.AddressInfo();
+                boAddress.Name = InsuranceInfos.AddressInfo.Name;
+                boAddress.Address1 = InsuranceInfos.AddressInfo.Address1;
+                boAddress.Address2 = InsuranceInfos.AddressInfo.Address2;
+                boAddress.City = InsuranceInfos.AddressInfo.City;
+                boAddress.State = InsuranceInfos.AddressInfo.State;
+                boAddress.ZipCode = InsuranceInfos.AddressInfo.ZipCode;
+                boAddress.Country = InsuranceInfos.AddressInfo.Country;
+                boAddress.CreateByUserID = InsuranceInfos.AddressInfo.CreateByUserID;
+                boAddress.ID = InsuranceInfos.AddressInfo.id;
+                insuranceBO.AddressInfo = boAddress;
+            }
+
+            if (InsuranceInfos.ContactInfo != null)
+            {
+                BO.ContactInfo boContactInfo = new BO.ContactInfo();
+                boContactInfo.Name = InsuranceInfos.ContactInfo.Name;
+                boContactInfo.CellPhone = InsuranceInfos.ContactInfo.CellPhone;
+                boContactInfo.EmailAddress = InsuranceInfos.ContactInfo.EmailAddress;
+                boContactInfo.HomePhone = InsuranceInfos.ContactInfo.HomePhone;
+                boContactInfo.WorkPhone = InsuranceInfos.ContactInfo.WorkPhone;
+                boContactInfo.FaxNo = InsuranceInfos.ContactInfo.FaxNo;
+                boContactInfo.CreateByUserID = InsuranceInfos.ContactInfo.CreateByUserID;
+                boContactInfo.ID = InsuranceInfos.ContactInfo.id;
+                insuranceBO.ContactInfo = boContactInfo;
+            }
+
+            if (InsuranceInfos.AddressInfo1 != null)
+            {
+                BO.AddressInfo boAddress1 = new BO.AddressInfo();
+                boAddress1.Name = InsuranceInfos.AddressInfo1.Name;
+                boAddress1.Address1 = InsuranceInfos.AddressInfo1.Address1;
+                boAddress1.Address2 = InsuranceInfos.AddressInfo1.Address2;
+                boAddress1.City = InsuranceInfos.AddressInfo1.City;
+                boAddress1.State = InsuranceInfos.AddressInfo1.State;
+                boAddress1.ZipCode = InsuranceInfos.AddressInfo1.ZipCode;
+                boAddress1.Country = InsuranceInfos.AddressInfo1.Country;
+                boAddress1.CreateByUserID = InsuranceInfos.AddressInfo1.CreateByUserID;
+                boAddress1.ID = InsuranceInfos.AddressInfo1.id;
+                insuranceBO.AddressInfo1 = boAddress1;
+            }
+
+            if (InsuranceInfos.ContactInfo1 != null)
+            {
+                BO.ContactInfo boContactInfo1 = new BO.ContactInfo();
+                boContactInfo1.Name = InsuranceInfos.ContactInfo1.Name;
+                boContactInfo1.CellPhone = InsuranceInfos.ContactInfo1.CellPhone;
+                boContactInfo1.EmailAddress = InsuranceInfos.ContactInfo1.EmailAddress;
+                boContactInfo1.HomePhone = InsuranceInfos.ContactInfo1.HomePhone;
+                boContactInfo1.WorkPhone = InsuranceInfos.ContactInfo1.WorkPhone;
+                boContactInfo1.FaxNo = InsuranceInfos.ContactInfo1.FaxNo;
+                boContactInfo1.CreateByUserID = InsuranceInfos.ContactInfo1.CreateByUserID;
+                boContactInfo1.ID = InsuranceInfos.ContactInfo1.id;
+                insuranceBO.ContactInfo1 = boContactInfo1;
+            }
 
             return (T)(object)insuranceBO;
         }
@@ -75,7 +120,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By ID
         public override object Get(int id)
         {
-            var acc = _context.PatientInsuranceInfoes.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).FirstOrDefault<PatientInsuranceInfo>();
+            var acc = _context.PatientInsuranceInfoes.Include("AddressInfo").Include("ContactInfo")
+                                                     .Include("AddressInfo1").Include("ContactInfo1")
+                                                     .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
+                                                     .FirstOrDefault<PatientInsuranceInfo>();
             BO.PatientInsuranceInfo acc_ = Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(acc);
 
             if (acc_ == null)
@@ -86,6 +134,32 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             return (object)acc_;
         }
         #endregion
+
+        #region Get By ID
+        public override object GetByPatientId(int PatientId)
+        {
+            var acc = _context.PatientInsuranceInfoes.Include("AddressInfo").Include("ContactInfo")
+                                                     .Include("AddressInfo1").Include("ContactInfo1")
+                                                     .Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
+                                                     .ToList<PatientInsuranceInfo>();
+            
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            List<BO.PatientInsuranceInfo> lstpatientsInsuranceInfo = new List<BO.PatientInsuranceInfo>();
+            //acc.ForEach(p => lstpatientsEmpInfo.Add(Convert<BO.PatientEmpInfo, PatientEmpInfo>(p)));
+            foreach (PatientInsuranceInfo item in acc)
+            {
+                lstpatientsInsuranceInfo.Add(Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(item));
+            }
+
+            return lstpatientsInsuranceInfo;
+        }
+        #endregion
+
+
 
         //#region Get All 
         //public override Object Get<T>(T entity)

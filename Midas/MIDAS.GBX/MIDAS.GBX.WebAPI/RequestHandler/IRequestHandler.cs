@@ -33,5 +33,6 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int id);
         //HttpResponseMessage CreateGbObjectPatient(HttpRequestMessage request, T gbObject);
         HttpResponseMessage ResetPassword(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage GetByPatientId(HttpRequestMessage request, int PatientId);
     }
 }

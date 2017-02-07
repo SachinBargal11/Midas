@@ -23,24 +23,31 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         // GET: api/Organizations/5
         [HttpGet]
-        [Route("Get/{id}")]
+        [Route("get/{id}")]
         [AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
         }
 
-
         [HttpGet]
-        [Route("GetAll")]
+        [Route("getByPatientId/{PatientId}")]
         [AllowAnonymous]
-        public HttpResponseMessage GetAllPatient([FromBody]PatientEmpInfo data)
+        public HttpResponseMessage GetByPatientId(int PatientId)
         {
-            return requestHandler.GetGbObjects(Request, data);
+            return requestHandler.GetByPatientId(Request, PatientId);
         }
 
+        //[HttpGet]
+        //[Route("getAll")]
+        //[AllowAnonymous]
+        //public HttpResponseMessage GetAllPatient([FromBody]PatientEmpInfo data)
+        //{
+        //    return requestHandler.GetGbObjects(Request, data);
+        //}
+
         [HttpPost]
-        [Route("Save")]
+        [Route("save")]
         [AllowAnonymous]
         public HttpResponseMessage Post([FromBody]PatientEmpInfo data)
         {

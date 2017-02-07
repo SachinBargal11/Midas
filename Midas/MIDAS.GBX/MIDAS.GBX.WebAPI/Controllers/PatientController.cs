@@ -97,7 +97,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getPatientsByCompanyId")]
+        [Route("getPatientsByCompanyId/{CompanyId}")]
         [AllowAnonymous]
         public HttpResponseMessage GetPatientsByCompanyId(int CompanyId)
         {

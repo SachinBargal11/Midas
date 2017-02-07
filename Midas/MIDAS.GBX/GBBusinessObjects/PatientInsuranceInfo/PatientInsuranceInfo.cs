@@ -28,8 +28,8 @@ namespace MIDAS.GBX.BusinessObjects
         public AddressInfo AddressInfo1 { get; set; }
         public ContactInfo ContactInfo { get; set; }
         public ContactInfo ContactInfo1 { get; set; }
-        public Patient2 Patient2 { get; set; }
-        public Patient2 Patient21 { get; set; }
+        //public Patient2 Patient2 { get; set; }
+        //public Patient2 Patient21 { get; set; }
 
     }
 }
