@@ -2,11 +2,11 @@
 <div class="page-center">
     <div class="page-center-in">
         <div class="container-fluid">
-            <h2 class="with-border">Add Employee</h2>
-            <form [formGroup]="employeeform">
+            <h2 class="with-border">Add Employer</h2>
+            <form [formGroup]="employerform">
             <section class="card">
                     <header class="card-header card-header-lg">
-                      Patient Employee Information
+                      Patient Employer Information
                     </header>
                     <div class="card-block">
 
@@ -15,12 +15,12 @@
                                 <label class="form-label">Job Title
                                             <span class="color-red">*</span>
                                         </label>
-                                <div class="form-group" [class.error]="employeeformControls.jobTitle.touched && !employeeformControls.jobTitle.valid">
-                                    <input type="text" formControlName="jobTitle" [class.error]="!employeeformControls.jobTitle.valid" class="form-control"
+                                <div class="form-group" [class.error]="employerformControls.jobTitle.touched && !employerformControls.jobTitle.valid">
+                                    <input type="text" formControlName="jobTitle" [class.error]="!employerformControls.jobTitle.valid" class="form-control"
                                         type="text" placeholder="" />
-                                    <div class='error-list' *ngIf="employeeformControls.jobTitle.touched && !employeeformControls.jobTitle.valid">
+                                    <div class='error-list' *ngIf="employerformControls.jobTitle.touched && !employerformControls.jobTitle.valid">
                                         <ul>
-                                            <li *ngIf="employeeformControls.jobTitle.hasError('required')">Job Title is required.</li>
+                                            <li *ngIf="employerformControls.jobTitle.hasError('required')">Job Title is required.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -29,28 +29,28 @@
                                 <label class="form-label"> Patient
                                             <span class="color-red">*</span>
                                         </label>
-                                <div class="form-group" [class.error]="employeeformControls.patientId.touched && !employeeformControls.patientId.valid">
-                                    <select formControlName="patientId" type="text" class="form-control" placeholder="" [class.error]="employeeformControls.patientId.touched && !employeeformControls.patientId.valid">
+                                <div class="form-group" [class.error]="employerformControls.patientId.touched && !employerformControls.patientId.valid">
+                                    <select formControlName="patientId" type="text" class="form-control" placeholder="" [class.error]="employerformControls.patientId.touched && !employerformControls.patientId.valid">
                                         <option value="">-Select -</option>
                                     </select>
-                                    <div class='error-list' *ngIf="employeeformControls.patientId.touched && !employeeformControls.patientId.valid">
+                                    <div class='error-list' *ngIf="employerformControls.patientId.touched && !employerformControls.patientId.valid">
                                         <ul>
-                                            <li *ngIf="employeeformControls.patientId.hasError('required')">Patient is required.</li>
+                                            <li *ngIf="employerformControls.patientId.hasError('required')">Patient is required.</li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
 
                          <div class="col-lg-4">
-                                <label class="form-label"> Employee Name
+                                <label class="form-label"> Employer Name
                                             <!--<span class="color-red">*</span>-->
                                         </label>
-                                 <div class="form-group" [class.error]="employeeformControls.employeeName.touched && !employeeformControls.employeeName.valid">
-                                    <input type="text" formControlName="employeeName" [class.error]="!employeeformControls.employeeName.valid" class="form-control"
+                                 <div class="form-group" [class.error]="employerformControls.employerName.touched && !employerformControls.employerName.valid">
+                                    <input type="text" formControlName="employerName" [class.error]="!employerformControls.employerName.valid" class="form-control"
                                         type="text" placeholder="" />
-                                    <div class='error-list' *ngIf="employeeformControls.employeeName.touched && !employeeformControls.employeeName.valid">
+                                    <div class='error-list' *ngIf="employerformControls.employerName.touched && !employerformControls.employerName.valid">
                                         <ul>
-                                            <li *ngIf="employeeformControls.employeeName.hasError('required')">Employee Name is required.</li>
+                                            <li *ngIf="employerformControls.employerName.hasError('required')">Employer Name is required.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -59,22 +59,22 @@
 
                             <div class="row">
                             <!--<div class="col-lg-4">
-                            <div class="form-group" [class.error]="employeeformControls.isCurrentEmployee.touched && !employeeformControls.isCurrentEmployee.valid">
-                            <input type="checkbox" formControlName="isCurrentEmployee" name="isCurrentEmployee"  [class.error]="!employeeformControls.isCurrentEmployee.valid" value="isCurrentEmployee"> Is Current Employee <span class="color-red">*</span>
-                               <div class='error-list' *ngIf="employeeformControls.isCurrentEmployee.touched && !employeeformControls.isCurrentEmployee.valid">
+                            <div class="form-group" [class.error]="employerformControls.isCurrentEmployer.touched && !employerformControls.isCurrentEmployer.valid">
+                            <input type="checkbox" formControlName="isCurrentEmployer" name="isCurrentEmployer"  [class.error]="!employerformControls.isCurrentEmployer.valid" value="isCurrentEmployer"> Is Current Employer <span class="color-red">*</span>
+                               <div class='error-list' *ngIf="employerformControls.isCurrentEmployer.touched && !employerformControls.isCurrentEmployer.valid">
                                         <ul>
-                                            <li *ngIf="employeeformControls.isCurrentEmployee.hasError('required')">Current Employee data required.</li>
+                                            <li *ngIf="employerformControls.isCurrentEmployer.hasError('required')">Current Employer data required.</li>
                                         </ul>
                                     </div>
                             </div>
                             </div>-->
                                 <div class="col-lg-4">
-                                    <label class="form-label"> Is Current Employee
+                                    <label class="form-label"> Is Current Employer
                                         <span class="color-red">*</span>
                                     </label>
                                     <div class="form-group">
-                                        <p-radioButton formControlName="isCurrentEmployee" name="isCurrentEmployee" value="1" label="Yes"></p-radioButton>
-                                        <p-radioButton formControlName="isCurrentEmployee" name="isCurrentEmployee" value="0" label="No"></p-radioButton>
+                                        <p-radioButton formControlName="isCurrentEmployer" name="isCurrentEmployer" value="1" label="Yes"></p-radioButton>
+                                        <p-radioButton formControlName="isCurrentEmployer" name="isCurrentEmployer" value="0" label="No"></p-radioButton>
                                     </div>
                                 </div>
                             </div>
@@ -92,13 +92,13 @@
                                 <label class="form-label"> E-Mail
                                             <span class="color-red">*</span>
                                         </label>
-                                <div class="form-group" [class.error]="employeeformControls.email.touched && !employeeformControls.email.valid">
-                                    <input type="email" formControlName="email" [class.error]="!employeeformControls.email.valid" class="form-control"
+                                <div class="form-group" [class.error]="employerformControls.email.touched && !employerformControls.email.valid">
+                                    <input type="email" formControlName="email" [class.error]="!employerformControls.email.valid" class="form-control"
                                         type="text" placeholder="" />
-                                    <div class='error-list' *ngIf="employeeformControls.email.touched && !employeeformControls.email.valid">
+                                    <div class='error-list' *ngIf="employerformControls.email.touched && !employerformControls.email.valid">
                                         <ul>
-                                            <li *ngIf="employeeformControls.email.hasError('required')">Email is required.</li>
-                                            <li *ngIf="employeeformControls.email.hasError('emailValidator')">Email is invalid.</li>
+                                            <li *ngIf="employerformControls.email.hasError('required')">Email is required.</li>
+                                            <li *ngIf="employerformControls.email.hasError('emailValidator')">Email is invalid.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -107,13 +107,13 @@
                                 <label class="form-label"> Cellphone
                                             <span class="color-red">*</span>
                                         </label>
-                                <div class="form-group" [class.error]="employeeformControls.cellPhone.touched && !employeeformControls.cellPhone.valid">
-                                    <p-inputMask mask="999-999-9999" formControlName="cellPhone" [class.error]="employeeformControls.cellPhone.touched && !employeeformControls.cellPhone.valid"
+                                <div class="form-group" [class.error]="employerformControls.cellPhone.touched && !employerformControls.cellPhone.valid">
+                                    <p-inputMask mask="999-999-9999" formControlName="cellPhone" [class.error]="employerformControls.cellPhone.touched && !employerformControls.cellPhone.valid"
                                         placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
-                                    <div class='error-list' *ngIf="employeeformControls.cellPhone.touched && !employeeformControls.cellPhone.valid">
+                                    <div class='error-list' *ngIf="employerformControls.cellPhone.touched && !employerformControls.cellPhone.valid">
                                         <ul>
-                                            <li *ngIf="employeeformControls.cellPhone.hasError('required')">Cellphone number is required.</li>
-                                            <li *ngIf="employeeformControls.cellPhone.hasError('mobileNoValidator')">Cellphone number is invalid.</li>
+                                            <li *ngIf="employerformControls.cellPhone.hasError('required')">Cellphone number is required.</li>
+                                            <li *ngIf="employerformControls.cellPhone.hasError('mobileNoValidator')">Cellphone number is invalid.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -153,11 +153,11 @@
                                 <label class="form-label"> Address1
                                      <span class="color-red">*</span>
                                         </label>
-                                <div class="form-group" [class.error]="employeeformControls.address.touched && !employeeformControls.address.valid">
-                                    <input formControlName="address" type="text" class="form-control" placeholder="" [class.error]="!employeeformControls.address.valid">
-                                    <div class='error-list' *ngIf="employeeformControls.address.touched && !employeeformControls.address.valid">
+                                <div class="form-group" [class.error]="employerformControls.address.touched && !employerformControls.address.valid">
+                                    <input formControlName="address" type="text" class="form-control" placeholder="" [class.error]="!employerformControls.address.valid">
+                                    <div class='error-list' *ngIf="employerformControls.address.touched && !employerformControls.address.valid">
                                         <ul>
-                                            <li *ngIf="employeeformControls.address.hasError('required')">Address is required.</li>
+                                            <li *ngIf="employerformControls.address.hasError('required')">Address is required.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -166,11 +166,11 @@
                            <div class="col-lg-4">
                                 <label class="form-label"> Address2
                                         </label>
-                                <div class="form-group" [class.error]="employeeformControls.address2.touched && !employeeformControls.address2.valid">
-                                    <input formControlName="address2" type="text" class="form-control" placeholder="" [class.error]="!employeeformControls.address2.valid">
-                                    <div class='error-list' *ngIf="employeeformControls.address2.touched && !employeeformControls.address2.valid">
+                                <div class="form-group" [class.error]="employerformControls.address2.touched && !employerformControls.address2.valid">
+                                    <input formControlName="address2" type="text" class="form-control" placeholder="" [class.error]="!employerformControls.address2.valid">
+                                    <div class='error-list' *ngIf="employerformControls.address2.touched && !employerformControls.address2.valid">
                                         <ul>
-                                            <li *ngIf="employeeformControls.address2.hasError('required')">Address is required.</li>
+                                            <li *ngIf="employerformControls.address2.hasError('required')">Address is required.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -179,14 +179,14 @@
                                 <label class="form-label"> State
                                             <!--<span class="color-red">*</span>-->
                                         </label>
-                                <div class="form-group" [class.error]="employeeformControls.state.touched && !employeeformControls.state.valid">
-                                    <select formControlName="state" type="text"  (change)="selectState($event)" class="form-control" placeholder="" [class.error]="employeeformControls.state.touched && !employeeformControls.state.valid">
+                                <div class="form-group" [class.error]="employerformControls.state.touched && !employerformControls.state.valid">
+                                    <select formControlName="state" type="text"  (change)="selectState($event)" class="form-control" placeholder="" [class.error]="employerformControls.state.touched && !employerformControls.state.valid">
                                         <option value="">-Select State-</option>
                                         <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
                                     </select> 
-                                    <div class='error-list' *ngIf="employeeformControls.state.touched && !employeeformControls.state.valid">
+                                    <div class='error-list' *ngIf="employerformControls.state.touched && !employerformControls.state.valid">
                                         <ul>
-                                            <li *ngIf="employeeformControls.state.hasError('required')">State is required.</li>
+                                            <li *ngIf="employerformControls.state.hasError('required')">State is required.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -199,14 +199,14 @@
                                 <label class="form-label"> City
                                             <!--<span class="color-red">*</span>-->
                                         </label>
-                                <div class="form-group" [class.error]="employeeformControls.city.touched && !employeeformControls.city.valid">
-                                    <select formControlName="city" type="text" class="form-control" placeholder="" [class.error]="employeeformControls.city.touched && !employeeformControls.city.valid">
+                                <div class="form-group" [class.error]="employerformControls.city.touched && !employerformControls.city.valid">
+                                    <select formControlName="city" type="text" class="form-control" placeholder="" [class.error]="employerformControls.city.touched && !employerformControls.city.valid">
                                         <option value="">-Select City-</option>
                                         <option *ngFor="let city of cities" value="{{city.citytext}}">{{city.citytext}}</option>
                                     </select>
-                                    <div class='error-list' *ngIf="employeeformControls.city.touched && !employeeformControls.city.valid">
+                                    <div class='error-list' *ngIf="employerformControls.city.touched && !employerformControls.city.valid">
                                         <ul>
-                                            <li *ngIf="employeeformControls.city.hasError('required')">City is required.</li>
+                                            <li *ngIf="employerformControls.city.hasError('required')">City is required.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -217,11 +217,11 @@
                                 <label class="form-label"> Zip code
                                             <!--<span class="color-red">*</span>-->
                                         </label>
-                                <div class="form-group" [class.error]="employeeformControls.zipcode.touched && !employeeformControls.zipcode.valid">
-                                    <input formControlName="zipcode" type="text" class="form-control" placeholder="" [class.error]="!employeeformControls.zipcode.valid">
-                                    <div class='error-list' *ngIf="employeeformControls.zipcode.touched && !employeeformControls.zipcode.valid">
+                                <div class="form-group" [class.error]="employerformControls.zipcode.touched && !employerformControls.zipcode.valid">
+                                    <input formControlName="zipcode" type="text" class="form-control" placeholder="" [class.error]="!employerformControls.zipcode.valid">
+                                    <div class='error-list' *ngIf="employerformControls.zipcode.touched && !employerformControls.zipcode.valid">
                                         <ul>
-                                            <li *ngIf="employeeformControls.zipcode.hasError('required')">Zipcode is required.</li>
+                                            <li *ngIf="employerformControls.zipcode.hasError('required')">Zipcode is required.</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -231,11 +231,11 @@
                                 <label class="form-label"> Country
                                             <!--<span class="color-red">*</span>-->
                                         </label>
-                                <div class="form-group" [class.error]="employeeformControls.country.touched && !employeeformControls.country.valid">
-                                    <input formControlName="country" type="text" class="form-control" placeholder="" [class.error]="!employeeformControls.country.valid">
-                                    <div class='error-list' *ngIf="employeeformControls.country.touched && !employeeformControls.country.valid">
+                                <div class="form-group" [class.error]="employerformControls.country.touched && !employerformControls.country.valid">
+                                    <input formControlName="country" type="text" class="form-control" placeholder="" [class.error]="!employerformControls.country.valid">
+                                    <div class='error-list' *ngIf="employerformControls.country.touched && !employerformControls.country.valid">
                                         <ul>
-                                            <li *ngIf="employeeformControls.country.hasError('required')">Country is required.</li>
+                                            <li *ngIf="employerformControls.country.hasError('required')">Country is required.</li>
                                         </ul>
                                     </div>
                                 </div>

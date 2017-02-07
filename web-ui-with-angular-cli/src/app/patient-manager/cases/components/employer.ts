@@ -7,11 +7,11 @@ import { AppValidators } from '../../../commons/utils/AppValidators';
 import { StatesStore } from '../../../commons/stores/states-store';
 
 @Component({
-    selector: 'employee',
-    templateUrl: './employee.html'
+    selector: 'employer',
+    templateUrl: './employer.html'
 })
 
-export class EmployeeComponent implements OnInit {
+export class EmployerComponent implements OnInit {
     states: any[];
     cities: any[];
     selectedCity = 0;
@@ -22,8 +22,8 @@ export class EmployeeComponent implements OnInit {
         pauseOnHover: false,
         clickToClose: false
     };
-    employeeform: FormGroup;
-    employeeformControls;
+    employerform: FormGroup;
+    employerformControls;
     isSaveProgress = false;
 
     constructor(
@@ -35,11 +35,11 @@ export class EmployeeComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _elRef: ElementRef
     ) {
-        this.employeeform = this.fb.group({
+        this.employerform = this.fb.group({
                 jobTitle: ['', Validators.required],
                 patientId: ['', Validators.required],
-                employeeName: [''],
-                isCurrentEmployee: ['', Validators.required],
+                employerName: [''],
+                isCurrentEmployer: ['', Validators.required],
                 address: ['',Validators.required],
                 address2: [''],
                 state: [''],
@@ -53,7 +53,7 @@ export class EmployeeComponent implements OnInit {
                 faxNo: ['']
             });
 
-        this.employeeformControls = this.employeeform.controls;
+        this.employerformControls = this.employerform.controls;
     }
 
     ngOnInit() {

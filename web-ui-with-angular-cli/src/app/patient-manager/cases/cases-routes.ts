@@ -5,7 +5,7 @@
  import { AddCaseShellComponent } from './components/add-case-shell';
  import { CaseComponent } from './components/case';
  import { CasesListComponent } from './components/cases-list';
- import { EmployeeComponent} from './components/employee';
+ import { EmployerComponent} from './components/employer';
  import { InsuranceComponent } from './components/insurances';
  import { AccidentComponent } from './components/accident';
 
@@ -44,10 +44,10 @@ export const CasesShellRoutes: Routes = [
                 }
             },
             {
-                path: 'employee',
-                component: EmployeeComponent,
+                path: 'employer',
+                component: EmployerComponent,
                 data: {
-                    breadcrumb: 'Add Employee'
+                    breadcrumb: 'Add Employer'
                 }
             },
             {

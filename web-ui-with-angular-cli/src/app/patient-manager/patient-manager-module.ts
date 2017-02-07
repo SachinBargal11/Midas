@@ -26,7 +26,7 @@ import { PatientRoutingModule } from './patient-manager-routes';
 import { AddCaseShellComponent } from './cases/components/add-case-shell';
 import { CaseComponent } from './cases/components/case';
 import { CasesListComponent } from './cases/components/cases-list';
-import { EmployeeComponent} from './cases/components/employee';
+import { EmployerComponent} from './cases/components/employer';
 import { InsuranceComponent } from './cases/components/insurances';
 import { AccidentComponent } from './cases/components/accident';
 import { CasesStore } from './cases/stores/case-store';
@@ -59,7 +59,7 @@ import { CasesStore } from './cases/stores/case-store';
         ConsentFormsComponent,
         ReferalsComponent,
         CaseComponent,CasesListComponent,
-        EmployeeComponent,
+        EmployerComponent,
         InsuranceComponent,
         AccidentComponent,
         AddCaseShellComponent

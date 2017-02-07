@@ -1,7 +1,11 @@
 import * as moment from 'moment';
 import { Record } from 'immutable';
+import { Employer } from './employer';
+import { Insurance } from './insurance';
+import { Accident } from './accident';
 import { User } from '../../../commons/models/user';
 import { MaritalStatus } from './enums/marital-status';
+
 
 // export interface IPatient {
 //     id: number;
@@ -25,6 +29,9 @@ import { MaritalStatus } from './enums/marital-status';
 const PatientRecord = Record({
     id: 0,
     user: null,
+    employer: null,
+    insurance: null,
+    accident: null,
     ssn: '',
     wcbNo: '',
     weight: 0,
@@ -44,6 +51,9 @@ export class Patient extends PatientRecord {
 
     id: number;
     user: User;
+    employer: Employer;
+    insurance: Insurance;
+    accident: Accident;
     ssn: string;
     wcbNo: string;
     weight: number;

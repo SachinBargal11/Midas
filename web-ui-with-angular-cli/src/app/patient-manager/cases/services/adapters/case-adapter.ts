@@ -1,7 +1,5 @@
 import * as moment from 'moment';
 import { Case } from '../../models/case';
-import { EmployeeAdapter } from '../../services/adapters/employee-adapter';
-import { InsuranceAdapter } from '../../services/adapters/insurance-adapter';
 import { AddressAdapter } from '../../../../commons/services/adapters/address-adapter';
 import { ContactAdapter } from '../../../../commons/services/adapters/contact-adapter';
 
@@ -25,10 +23,7 @@ export class CaseAdapter {
                 caseStatusId: data.caseStatusId,
                 attorneyId: data.attorneyId,
                 contact: ContactAdapter.parseResponse(data.contactInfo),
-                address: AddressAdapter.parseResponse(data.addressInfo),
-                employee: EmployeeAdapter.parseResponse(data.employee),
-                insurance: InsuranceAdapter.parseResponse(data.insurance),
-                accidentAddress: AddressAdapter.parseResponse(data.accidentAddress)
+                address: AddressAdapter.parseResponse(data.addressInfo)
             });
         }
         return cases;
