@@ -22,12 +22,16 @@ import { PatientEmployerComponent } from './patients/components/employer';
 import { ConsentFormsComponent } from './consent-forms/components/consent-forms';
 import { ReferalsComponent } from './referals/components/referals';
 import { PatientsService } from './patients/services/patients-service';
+import { AccidentService } from './patients/services/accident-services';
+import { AttorneyService } from './patients/services/attorney-services';
 import { EmployerService } from './patients/services/employer-service';
 import { FamilyMemberService } from './patients/services/family-member-service';
 import { InsuranceService } from './patients/services/insurance-service';
 import { PatientsStore } from './patients/stores/patients-store';
 import { EmployerStore } from './patients/stores/employer-store';
 import { FamilyMemberStore } from './patients/stores/family-member-store';
+import { AccidentStore } from './patients/stores/accident-store';
+import { AttorneyStore } from './patients/stores/attorney-store';
 import { InsuranceStore } from './patients/stores/insurance-store';
 import { PatientRoutingModule } from './patient-manager-routes';
 import { AddCaseShellComponent } from './cases/components/add-case-shell';
@@ -78,11 +82,15 @@ import { CasesStore } from './cases/stores/case-store';
         EmployerService,
         FamilyMemberService,
         InsuranceService,
+        AccidentService,
+        AttorneyService,
         PatientsStore,
         EmployerStore,
         FamilyMemberStore,
         InsuranceStore,
-        CasesStore
+        CasesStore,
+        AttorneyStore,
+        AccidentStore
     ]
 })
 export class PatientManagerModule { }
