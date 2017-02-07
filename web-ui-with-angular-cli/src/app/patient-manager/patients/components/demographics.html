@@ -47,7 +47,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                            </div>                                  
+                            </div>
                             <div class="col-lg-6">
                                 <label class="form-label"> Marital Status
                                         </label>
@@ -65,7 +65,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>                      
+                        </div>
                         <div class="row">
                             <div class="col-lg-6">
                                 <label class="form-label"> Race
@@ -129,7 +129,7 @@
                             </div>
                         </div>
 
-                        <div class="row">                            
+                        <div class="row">
                             <div class="col-lg-6">
                                 <label class="form-label"> Zip Code
                                         </label>
@@ -146,14 +146,15 @@
                                 <label class="form-label"> State
                                         </label>
                                 <div class="form-group" [class.error]="demographicsformControls.state.touched && !demographicsformControls.state.valid">
-                                   <input formControlName="state" type="text" list="states" name="mystate" class="form-control" [class.error]="demographicsformControls.state.touched && !demographicsformControls.state.valid"/>
-                                        <datalist id="states">
-                                        	<!--<option *ngFor="let state of states">{{ state }}</option>-->
-                                            <option>New York</option>
-                                            <option>California</option>
-                                            <option>Nevada</option>
-                                            <option>Mexico</option>
-                                        </datalist>
+                                    <input formControlName="state" type="text" list="states" name="mystate" class="form-control" [class.error]="demographicsformControls.state.touched && !demographicsformControls.state.valid"
+                                    />
+                                    <datalist id="states">
+                                        <!--<option *ngFor="let state of states">{{ state }}</option>-->
+                                        <option>New York</option>
+                                        <option>California</option>
+                                        <option>Nevada</option>
+                                        <option>Mexico</option>
+                                    </datalist>
                                     <div class='error-list' *ngIf="demographicsformControls.state.touched && !demographicsformControls.state.valid">
                                         <ul>
                                             <li *ngIf="demographicsformControls.state.hasError('required')">State is required.</li>
@@ -181,8 +182,8 @@
                                         </label>
                                 <div class="form-group" [class.error]="demographicsformControls.emergencyContactPhone.touched && !demographicsformControls.emergencyContactPhone.valid">
                                     <!--<input type="text" formControlName="emergencyContactPhone" class="form-control" [class.error]="demographicsformControls.emergencyContactPhone.touched && !demographicsformControls.emergencyContactPhone.valid" />-->
-                                    <p-inputMask mask="999-999-9999" formControlName="emergencyContactPhone" [class.error]="demographicsformControls.emergencyContactPhone.touched && !demographicsformControls.emergencyContactPhone.valid" 
-                                     placeholder="999-999-9999" styleClass="form-control" ></p-inputMask>
+                                    <p-inputMask mask="999-999-9999" formControlName="emergencyContactPhone" [class.error]="demographicsformControls.emergencyContactPhone.touched && !demographicsformControls.emergencyContactPhone.valid"
+                                        placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
                                     <div class='error-list' *ngIf="demographicsformControls.emergencyContactPhone.touched && !demographicsformControls.emergencyContactPhone.valid">
                                         <ul>
                                             <li *ngIf="demographicsformControls.emergencyContactPhone.hasError('required')">Emergency contact phone is required.</li>
@@ -192,13 +193,11 @@
                             </div>
                         </div>
                     </div>
-                </section> 
-                <div class="text-center">
-                    <button [disabled]="!demographicsform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+                </section>
+                <button [disabled]="!demographicsform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                         <loader [visible]="isSaveProgress"></loader>
                     </button>
-                    <!--<a [routerLink]="['/patient-manager/patients']" class="btn btn-secondary">Cancel</a>-->
-                </div>
+                <!--<a [routerLink]="['/patient-manager/patients']" class="btn btn-secondary">Cancel</a>-->
             </form>
         </div>
     </div>

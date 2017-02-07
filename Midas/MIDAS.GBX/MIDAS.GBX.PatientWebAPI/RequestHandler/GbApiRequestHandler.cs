@@ -245,6 +245,19 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             }
         }
 
+        public HttpResponseMessage GetGbObjects(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.GetByCompanyId(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage ResetPassword(HttpRequestMessage request, T gbObject)
         {
             var objResult = dataAccessManager.ResetPassword(gbObject);
@@ -256,6 +269,19 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
                     return request.CreateResponse(HttpStatusCode.Created, res);
                 else
                     return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByPatientId(HttpRequestMessage request, int PatientId)
+        {
+            var objResult = dataAccessManager.GetByPatientId(PatientId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
             }
             catch (Exception ex)
             {

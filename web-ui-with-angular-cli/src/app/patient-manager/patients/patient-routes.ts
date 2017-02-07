@@ -1,4 +1,5 @@
-import { Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 import { PatientsListComponent } from './components/patients-list';
 import { AddPatientComponent } from './components/add-patient';
 import { PatientsShellComponent } from './components/patients-shell';
@@ -10,6 +11,10 @@ import { DocumentsComponent } from './components/documents';
 import { AppointmentsComponent } from './components/appointments';
 import { ValidateActiveSession } from '../../commons/guards/validate-active-session';
 import { ShellComponent } from '../../commons/shell-component';
+import { AddFamilyMemberComponent } from './components/add-family-member';
+import { AccidentInfoComponent } from './components/accident';
+import { AttorneyComponent } from './components/attorney';
+import { PatientEmployerComponent } from './components/employer';
 
 export const PatientsShellRoutes: Routes = [
     {
@@ -41,7 +46,7 @@ export const PatientsShellRoutes: Routes = [
         ]
     },
     {
-        path: 'patients/:patientName',
+        path: 'patients/:patientId',
         component: PatientsShellComponent,
         data: {
             breadcrumb: 'Patients',
@@ -78,6 +83,38 @@ export const PatientsShellRoutes: Routes = [
                 }
             },
             {
+                path: 'family-member',
+                component: AddFamilyMemberComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Family Member'
+                }
+            },
+            {
+                path: 'accident',
+                component: AccidentInfoComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Accident'
+                }
+            },
+            {
+                path: 'employer',
+                component: PatientEmployerComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Employer'
+                }
+            },
+            {
+                path: 'attorney',
+                component: AttorneyComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Attorney'
+                }
+            },
+            {
                 path: 'balances',
                 component: BalancesComponent,
                 canActivate: [ValidateActiveSession],
@@ -104,3 +141,9 @@ export const PatientsShellRoutes: Routes = [
         ]
     }
 ];
+
+@NgModule({
+    imports: [RouterModule.forChild(PatientsShellRoutes)],
+    exports: [RouterModule]
+})
+export class PatientsRoutingModule { }

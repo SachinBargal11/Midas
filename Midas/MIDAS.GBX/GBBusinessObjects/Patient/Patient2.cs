@@ -12,21 +12,38 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class Patient2 : GbObject
     {
-        //public int id { get; set; }
+        [JsonProperty("ssn")]
         public string SSN { get; set; }
-        public string WCBNo { get; set; }
-        public int LocationID { get; set; }
-        //public int CompanyID { get; set; }
-        //public Company Company { get; set; }
-        public byte MaritalStatusId { get; set; }
-        public decimal Weight { get; set; }
-        public string DrivingLicence { get; set; }
-        public string EmergenceyContactName { get; set; }
-        public string EmergenceyContactNumber { get; set; }
-        public string EmergenceyContactRelation { get; set; }
-        public Location Location { get; set; }
+
+        [JsonProperty("companyid")]
+        public int? CompanyId { get; set; }
+
+        [JsonProperty("weight")]
+        public decimal? Weight { get; set; }
+
+        [JsonProperty("height")]
+        public decimal? Height { get; set; }
+
+        [JsonProperty("maritalstatusid")]
+        public byte? MaritalStatusId { get; set; }
+
+        [JsonProperty("dateoffirsttreatment")]
+        public DateTime? DateOfFirstTreatment { get; set; }
+
+        [JsonProperty("attorneyname")]
+        public string AttorneyName { get; set; }
+
+        [JsonProperty("attorneyaddressinfoid")]
+        public int? AttorneyAddressInfoId { get; set; }
+
+        [JsonProperty("attorneycontactinfoid")]
+        public int? AttorneyContactInfoId { get; set; }
+
+        public AddressInfo AddressInfo { get; set; }
+        public ContactInfo ContactInfo { get; set; }
+
+        [JsonProperty("user")]
         public User User { get; set; }
-        public BO.Common.MaritalStatus MaritalStatus { get; set; }
 
         public override List<BusinessValidation> Validate<T>(T entity)
         {
@@ -78,55 +95,42 @@ namespace MIDAS.GBX.BusinessObjects
             //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "ChartNo cannot be empty." });
             //}
 
-            //if (CompanyID < 0)
-            //{
-            //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "CompanyID cannot be less than zero." });
-            //}
+            if (CompanyId < 0)
+            {
+                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "CompanyID cannot be less than zero." });
+            }
 
-            //if (Company != null && Company.ID != CompanyID)
+            //if (Company != null && Company.ID != CompanyId)
             //{
             //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "CompanyID dosent match." });
             //}
 
-            if (LocationID < 0)
-            {
-                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "LocationID cannot be less than zero." });
-            }
+            //if (LocationID < 0)
+            //{
+            //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "LocationID cannot be less than zero." });
+            //}
 
-            if (Location != null && Location.ID != LocationID)
-            {
-                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "LocationID dosent match." });
-            }
+            //if (Location != null && Location.ID != LocationID)
+            //{
+            //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "LocationID dosent match." });
+            //}
 
-            if (Weight < 0)
+            if (Weight.HasValue == true && Weight < 0)
             {
                 validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Weight cannot be less than zero." });
             }
 
-            //if (MaritalStatus < 0)
-            //{
-            //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Please select MaritalStatus." });
-            //}
+            if (Height.HasValue == true && Height < 0)
+            {
+                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Height cannot be less than zero." });
+            }
 
-            //if (string.IsNullOrWhiteSpace(DrivingLicence) == true)
-            //{
-            //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "DrivingLicence cannot be empty." });
-            //}
+            if (MaritalStatusId.HasValue == true && MaritalStatusId < 0)
+            {
+                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Please select MaritalStatus." });
+            }
 
-            //if (string.IsNullOrWhiteSpace(EmergenceyContact) == true)
-            //{
-            //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "EmergenceyContact cannot be empty." });
-            //}
-
-            //if (string.IsNullOrWhiteSpace(EmergenceyContactNumber) == true)
-            //{
-            //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "EmergenceyContactNumber cannot be empty." });
-            //}
-
-            //if (string.IsNullOrWhiteSpace(EmergenceyContactRelation) == true)
-            //{
-            //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "EmergenceyContactRelation cannot be empty." });
-            //}
+           
 
             return validations;
         }

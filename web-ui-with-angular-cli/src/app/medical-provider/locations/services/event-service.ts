@@ -78,8 +78,8 @@ export class EventService {
         let promise = new Promise((resolve, reject) => {
             return this._http.delete(`${this._url}/${event.id}`)
                 .map(res => res.json())
-                .subscribe((patient) => {
-                    resolve(patient);
+                .subscribe((data) => {
+                    resolve(data);
                 }, (error) => {
                     reject(error);
                 });

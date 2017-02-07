@@ -1,14 +1,14 @@
 import * as moment from 'moment';
-import { Employee } from '../../models/employee';
+import { Employer } from '../../models/employer';
 import { AddressAdapter } from '../../../../commons/services/adapters/address-adapter';
 import { ContactAdapter } from '../../../../commons/services/adapters/contact-adapter';
 
-export class EmployeeAdapter {
-    static parseResponse(data: any): Employee {
+export class EmployerAdapter {
+    static parseResponse(data: any): Employer {
 
-        let employee = null;
+        let employer = null;
         if (data) {
-            employee = new Employee({
+            employer = new Employer({
                 id: data.id,
                 patientId: data.patientId,
                 jobTitle: data.jobTitle,
@@ -20,6 +20,6 @@ export class EmployeeAdapter {
                 address: AddressAdapter.parseResponse(data.addressInfo)
             });
         }
-        return employee;
+        return employer;
     }
 }

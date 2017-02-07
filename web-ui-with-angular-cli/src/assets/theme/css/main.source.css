@@ -19578,10 +19578,10 @@ body {
     -o-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
     float: none;
-    margin: 0 !important;
+    margin: 0;
   }
   .site-header .site-header-collapsed .site-header-collapsed-in {
-    margin: 0 !important;
+    margin: 0;
   }
   .site-header .site-header-collapsed .site-header-search.closed {
     width: 100%;

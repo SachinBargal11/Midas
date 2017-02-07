@@ -43,6 +43,7 @@ namespace MIDAS.GBX.WebAPI
             //use the usertoken to determine the  user
             return "";
         }
+
         public HttpResponseMessage GetObject(HttpRequestMessage request, int id)
         {
             var objResult = dataAccessManager.Get(id);
@@ -333,9 +334,40 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage CreateGbObjectPatient(HttpRequestMessage request, T gbObject)
+        public HttpResponseMessage GetGbObjects(HttpRequestMessage request, int id)
         {
-            var objResult = dataAccessManager.Add(gbObject);
+            var objResult = dataAccessManager.GetByCompanyId(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        //public HttpResponseMessage CreateGbObjectPatient(HttpRequestMessage request, T gbObject)
+        //{
+        //    var objResult = dataAccessManager.Add(gbObject);
+
+        //    try
+        //    {
+        //        var res = (GbObject)(object)objResult;
+        //        if (res != null)
+        //            return request.CreateResponse(HttpStatusCode.Created, res);
+        //        else
+        //            return request.CreateResponse(HttpStatusCode.NotFound, res);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+        //    }
+        //}
+
+        public HttpResponseMessage ResetPassword(HttpRequestMessage request, T gbObject)
+        {
+            var objResult = dataAccessManager.ResetPassword(gbObject);
 
             try
             {
@@ -351,17 +383,12 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage ResetPassword(HttpRequestMessage request, T gbObject)
+        public HttpResponseMessage GetByPatientId(HttpRequestMessage request, int PatientId)
         {
-            var objResult = dataAccessManager.ResetPassword(gbObject);
-
+            var objResult = dataAccessManager.GetByPatientId(PatientId);
             try
             {
-                var res = (GbObject)(object)objResult;
-                if (res != null)
-                    return request.CreateResponse(HttpStatusCode.Created, res);
-                else
-                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
             }
             catch (Exception ex)
             {

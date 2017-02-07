@@ -10,10 +10,12 @@
 </head>
 <body class="with-side-menu-compact application viewport">
   <app-root>
-    <div style="position: fixed; z-index: 999; height: 2em; width: 2em; overflow: show; margin: auto; top: 0; left: 0; bottom: 0; right: 0;">
-            <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-            <span class="sr-only">Loading...</span>
-        </div>
+    <div class="loading-overlay">
+      <div class="spinner">
+        <div class="element1"></div>
+        <div class="element2"></div>
+      </div>
+    </div>
   </app-root>
 </body>
 </html>

@@ -52,12 +52,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 boCase.CaseStatusId = mcase.CaseStatusId;
                 boCase.AttorneyId = mcase.AttorneyId;
 
-                BO.User boUser = new BO.User();
-                using (UserRepository cmp = new UserRepository(_context))
-                {
-                    boUser = cmp.Convert<BO.User, User>(mcase.User);
-                    boCase.User = boUser;
-                }
+                //BO.User boUser = new BO.User();
+                //using (UserRepository cmp = new UserRepository(_context))
+                //{
+                //    boUser = cmp.Convert<BO.User, User>(mcase.User);
+                //    boCase.User = boUser;
+                //}
 
                 BOcaselist.Add(boCase);
             }
@@ -95,18 +95,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             caseBO.CaseStatusId = cases.CaseStatusId;
             caseBO.AttorneyId = cases.AttorneyId;
 
-            BO.User boUser = new BO.User();
-            using (UserRepository cmp = new UserRepository(_context))
-            {
-                boUser = cmp.Convert<BO.User, User>(cases.User);
-                caseBO.User = boUser;
-            }
-            BO.Location Location = new BO.Location();
-            using (LocationRepository cmp = new LocationRepository(_context))
-            {
-                Location = cmp.Convert<BO.Location, Location>(cases.Location);
-                caseBO.Location = Location;
-            }
+            
 
 
 
@@ -147,14 +136,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             }
 
         }
-        #endregion 
+        #endregion
 
+      
 
-
-
-
-
-
+  
 
 
         public void Dispose()

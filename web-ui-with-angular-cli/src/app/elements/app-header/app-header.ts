@@ -36,15 +36,12 @@ export class AppHeaderComponent implements OnInit {
 
     }
     onLeftBurgerClick() {
-        if (this.menu_left_opened) {
-            this.menu_left_opened = false;
+        if (document.getElementsByTagName('body')[0].classList.contains('menu-left-opened')) {
             document.getElementsByClassName('hamburger')[0].classList.remove('is-active');
             document.getElementsByTagName('body')[0].classList.remove('menu-left-opened');
             document.getElementsByTagName('html')[0].style.overflow = 'auto';
         } else {
-            this.menu_left_opened = true;
             document.getElementsByClassName('hamburger')[0].classList.add('is-active');
-            document.getElementsByTagName('body')[0].classList.remove('menu-left-opened');
             document.getElementsByTagName('body')[0].classList.add('menu-left-opened');
             document.getElementsByTagName('html')[0].style.overflow = 'hidden';
         }
@@ -56,11 +53,12 @@ export class AppHeaderComponent implements OnInit {
             document.getElementsByTagName('body')[0].classList.remove('menu-right-opened');
             document.getElementsByTagName('html')[0].style.overflow = 'auto';
         } else {
-            this.menu_right_opened = true;
+            // this.menu_right_opened = true;
             document.getElementsByClassName('hamburger')[0].classList.remove('is-active');
             document.getElementsByTagName('body')[0].classList.remove('menu-left-opened');
             document.getElementsByTagName('body')[0].classList.add('menu-right-opened');
             document.getElementsByTagName('html')[0].style.overflow = 'hidden';
+            this.menu_right_opened = false;
         }
     }
 

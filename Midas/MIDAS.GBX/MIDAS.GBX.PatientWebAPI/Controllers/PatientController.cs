@@ -13,56 +13,62 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
     [AllowAnonymous]
     public class PatientController : ApiController
     {
-        private IRequestHandler<Patient> requestHandler;
+        //private IRequestHandler<Patient> requestHandler;
         private IRequestHandler<Patient2> requestHandlerPatient2;
 
         public PatientController()
         {
-            requestHandler = new GbApiRequestHandler<Patient>();
+            //requestHandler = new GbApiRequestHandler<Patient>();
             requestHandlerPatient2 = new GbApiRequestHandler<Patient2>();
         }
 
-        [HttpGet]
-        [Route("Get/{id}")]
-        [AllowAnonymous]
-        public HttpResponseMessage Get(int id)
-        {
-            return requestHandler.GetObject(Request, id);
-        }
+        //[HttpGet]
+        //[Route("Get/{id}")]
+        //[AllowAnonymous]
+        //public HttpResponseMessage Get(int id)
+        //{
+        //    return requestHandler.GetObject(Request, id);
+        //}
 
-        [Route("Update")]
-        [HttpPut]
-        [AllowAnonymous]
-        public HttpResponseMessage Put([FromBody]Patient patient)
-        {
-            return requestHandler.UpdateGbObject(Request, patient);
-        }
+        //[Route("Update")]
+        //[HttpPut]
+        //[AllowAnonymous]
+        //public HttpResponseMessage Put([FromBody]Patient patient)
+        //{
+        //    return requestHandler.UpdateGbObject(Request, patient);
+        //}
+
+        //[HttpGet]
+        //[Route("GetAllPatient")]
+        //[AllowAnonymous]
+        //public HttpResponseMessage GetAllPatient([FromBody]Patient2 data)
+        //{
+        //    return requestHandlerPatient2.GetGbObjects(Request, data);
+        //}
+
+        //[HttpGet]
+        //[Route("getPatientsByCompanyId")]
+        //[AllowAnonymous]
+        //public HttpResponseMessage GetPatientsByCompanyId(int CompanyId)
+        //{
+        //    return requestHandlerPatient2.GetGbObjects(Request, CompanyId);
+        //}
 
         [HttpGet]
-        [Route("GetPatient/{id}")]
+        [Route("getPatientById/{id}")]
         [AllowAnonymous]
-        public HttpResponseMessage GetPatient2(int id)
+        public HttpResponseMessage GetPatientById2(int id)
         {
             return requestHandlerPatient2.GetObject(Request, id);
         }
 
         [HttpPost]
-        [Route("SavePatient")]
+        [Route("savePatient")]
         [AllowAnonymous]
-        public HttpResponseMessage Post([FromBody]Patient2 patient2)
+        public HttpResponseMessage SavePatient2([FromBody]Patient2 patient2)
         {
             return requestHandlerPatient2.CreateGbObject(Request, patient2);
         }
-
-        [HttpGet]
-        [Route("GetAllPatient")]
-        [AllowAnonymous]
-        public HttpResponseMessage GetAllPatient([FromBody]Patient2 data)
-        {
-            return requestHandlerPatient2.GetGbObjects(Request, data);
-        }
-
-
 
         protected override void Dispose(bool disposing)
         {

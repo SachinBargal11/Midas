@@ -5,8 +5,11 @@
 
 .site-header
 {
+    height: 50px;
+    padding-top: 5px;
     .site-header-collapsed
     {
+        margin-right: -110px;
         @media (max-width: 991px) {
             .dropdown {
                 &.open {
@@ -17,7 +20,7 @@
             }
         }
          .site-header-collapsed-in {
-                margin-right: 99px;
+                margin-right: 110px;
          }
     }
 

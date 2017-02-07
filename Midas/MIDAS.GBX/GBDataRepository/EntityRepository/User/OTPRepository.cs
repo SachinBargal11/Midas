@@ -85,7 +85,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.OTP otpBO = validateOTP.otp;
             BO.User userBO = validateOTP.user;
 
-            dynamic data_ = _context.OTPs.Where(x => x.OTP1 == otpBO.OTP1 && x.Pin==otpBO.Pin && (x.IsDeleted != true) && x.UserID== userBO.ID).FirstOrDefault();
+            OTP data_ = _context.OTPs.Where(x => x.OTP1 == otpBO.OTP1 && x.Pin==otpBO.Pin && (x.IsDeleted != true) && x.UserID== userBO.ID).FirstOrDefault();
 
             if (data_ == null)
             {
@@ -94,10 +94,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             else
             {
                 BO.OTP acc_ = Convert<BO.OTP, OTP>(data_);
-                using (UserCompanyRepository sr = new UserCompanyRepository(_context))
+                User _user = _context.Users.Where(p => p.id == data_.UserID).FirstOrDefault();
+                if ((BO.GBEnums.UserType)_user.UserType == BO.GBEnums.UserType.Staff)
                 {
-                    acc_.company = ((BO.UserCompany)sr.Get(userBO.ID)).Company;
-                    acc_.User = ((BO.UserCompany)sr.Get(userBO.ID)).User;
+                    using (UserCompanyRepository sr = new UserCompanyRepository(_context))
+                    {
+                        acc_.company = ((BO.UserCompany)sr.Get(userBO.ID)).Company;
+                        acc_.User = ((BO.UserCompany)sr.Get(userBO.ID)).User;
+                    }
+                }
+                else
+                {
+                    using (UserRepository uRepository = new UserRepository(_context))
+                    {
+                        acc_.User = ((BO.User)uRepository.Get(userBO.ID));
+                    }
                 }
                 return acc_;
             }

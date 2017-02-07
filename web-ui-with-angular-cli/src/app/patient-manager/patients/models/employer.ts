@@ -3,7 +3,7 @@ import * as moment from 'moment';
 import { Address } from '../../../commons/models/address';
 import { Contact } from '../../../commons/models/contact';
 
-const EmployeeRecord = Record({
+const EmployerRecord = Record({
     id: 0,
     patientId: 0,
     jobTitle: '',
@@ -15,7 +15,7 @@ const EmployeeRecord = Record({
     contact: null
 });
 
-export class Employee extends EmployeeRecord {
+export class Employer extends EmployerRecord {
 
     id: number;
     patientId: number;

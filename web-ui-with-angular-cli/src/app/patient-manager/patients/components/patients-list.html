@@ -1,56 +1,32 @@
 <div class="input-group">
 <h1 class="with-border">Patients
-    <a class="pull-right btn btn-danger" (click)="deletePatients()">
+    <a class="pull-right btn btn-danger btn-sm" (click)="deletePatients()">
         <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete selected Patients</span>
         <loader [visible]="isDeleteProgress"></loader>
     </a>
-    <a class="pull-right btn-inline btn btn-primary" [routerLink]="['add']"><i class="fa fa-plus" aria-hidden="true"></i>
+    <a class="pull-right btn-inline btn btn-primary btn-sm" [routerLink]="['add']"><i class="fa fa-plus" aria-hidden="true"></i>
       <span class="hidden-md-down">Add Patient</span>
     </a>    
 </h1>
 </div>
-<div class="ui-widget-header ui-helper-clearfix" style="padding:4px 10px;border-bottom: 0 none">
+<div class="ui-widget-header row">
     <div class="col-lg-4 input-group">
          <span class="input-group-addon"><i class="fa fa-search"></i></span>
-         <!--<i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
-         <input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Patients">-->
          <input #gb type="text" class="form-control" style="float:left" placeholder="Search Patients">
     </div>
 </div>
-<!--<p *ngFor="let patient of patients">
-    {{patient | json}}
-</p>-->
-<p-dataTable [value]="patients" [(selection)]="selectedPatients" selectionMode="single" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
+<p-dataTable [value]="patients" [(selection)]="selectedPatients" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
     [stacked]="stacked">
     <header>Patients</header>
-    <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
+    <p-column selectionMode="multiple"></p-column>
     <p-column field="user.firstName" header="First Name" [sortable]="true"></p-column>
     <p-column field="user.lastName" header="Last Name" [sortable]="true"></p-column>
     <p-column field="user.address.address1" header="Address" [sortable]="true"></p-column>
     <p-column field="user.contact.cellPhone" header="Phone" [sortable]="true"></p-column>
     <p-column field="user.address.emailAddress" header="Email" [sortable]="true"></p-column>
+    <p-column styleClass="actions-cell" header="Actions">
+        <template let-patient="rowData" pTemplate="body">
+            <a routerLink="{{patient.user.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
+        </template>
+    </p-column>
 </p-dataTable>
-<router-outlet></router-outlet>
-
-<!--<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Mobile No</th>
-            <th>Address</th>
-            <th>DOB</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let patient of _patientsStore.patients | async" (click)="selectPatients(patient)">
-            <td>{{ patient.firstname }}</td>
-            <td>{{ patient.lastname }}</td>
-            <td>{{ patient.email }}</td>
-            <td>{{ patient.mobileNo }}</td>
-            <td>{{ patient.address }}</td>
-            <td>{{ patient.dob.format("Do MMM YYYY") }}</td>
-        </tr>
-    </tbody>
-</table>-->

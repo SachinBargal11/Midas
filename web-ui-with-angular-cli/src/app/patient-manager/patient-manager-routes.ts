@@ -19,7 +19,7 @@ let PatientManagerRoutes: Routes = [
             ...ConsentFormsShellRoutes
         ],
         data: {
-            breadcrumb: 'Patient-Manager'
+            breadcrumb: 'Patient Manager'
         }
     },
 ];

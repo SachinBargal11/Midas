@@ -5,8 +5,9 @@
  import { AddCaseShellComponent } from './components/add-case-shell';
  import { CaseComponent } from './components/case';
  import { CasesListComponent } from './components/cases-list';
- import { EmployeeComponent} from './components/employee';
+ import { EmployerComponent} from './components/employer';
  import { InsuranceComponent } from './components/insurances';
+ import { AccidentComponent } from './components/accident';
 
 
 export const CasesShellRoutes: Routes = [
@@ -26,7 +27,8 @@ export const CasesShellRoutes: Routes = [
         path: 'cases/add',
         component: AddCaseShellComponent,
         data: {
-            breadcrumb: 'Add-Cases'
+            breadcrumb: 'Cases',
+            shell: true
         },
         children: [
             {
@@ -38,21 +40,28 @@ export const CasesShellRoutes: Routes = [
                 path: 'case',
                 component: CaseComponent,
                 data: {
-                    breadcrumb: 'Case'
+                    breadcrumb: 'Add Case'
                 }
             },
             {
-                path: 'employee',
-                component: EmployeeComponent,
+                path: 'employer',
+                component: EmployerComponent,
                 data: {
-                    breadcrumb: 'Employee'
+                    breadcrumb: 'Add Employer'
                 }
             },
             {
-                path: 'insurance',
+                path: 'insurances',
                 component: InsuranceComponent,
                 data: {
-                    breadcrumb: 'Insurance'
+                    breadcrumb: 'Add Insurance'
+                }
+            },
+            {
+                path: 'accident-address',
+                component: AccidentComponent,
+                data: {
+                    breadcrumb: 'Add Accident location'
                 }
             }
         ]

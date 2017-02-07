@@ -12,7 +12,7 @@ interface IBreadcrumb {
     selector: 'breadcrumb',
     template: `
     <ol class="breadcrumb">
-      <li><a routerLink="" class="breadcrumb">Home</a></li>
+      <li><a routerLink="" class="">Home</a></li>
       <li *ngFor="let breadcrumb of breadcrumbs">
         <a [routerLink]="[breadcrumb.url]">{{breadcrumb.label}}</a>
       </li>
@@ -92,7 +92,7 @@ export class BreadcrumbComponent implements OnInit {
 
             //add breadcrumb
             let shell = child.snapshot.data[ROUTE_DATA_URL];
-                if (Object.keys(child.snapshot.params).length !== 0 && shell === true) {
+                if ((Object.keys(child.snapshot.params).length !== 0 && shell === true) || shell === true) {
                     if (null != url && url.length > 0 ) {
                         let endIndex = url.lastIndexOf('/');
                         if (endIndex !== -1) {

@@ -2,8 +2,7 @@ import { Record } from 'immutable';
 import * as moment from 'moment';
 import { Address } from '../../../commons/models/address';
 import { Contact } from '../../../commons/models/contact';
-import { Employee } from './employee';
-import { Insurance } from './insurance';
+
 
 const CaseRecord = Record({
     id: 0,
@@ -20,10 +19,7 @@ const CaseRecord = Record({
     caseStatusId: 0,
     attorneyId: 0,
     address: null,
-    contact: null,
-    employee: null,
-    insurance: null,
-    accidentAddress: null
+    contact: null
 });
 
 export class Case extends CaseRecord {
@@ -43,9 +39,6 @@ export class Case extends CaseRecord {
     attorneyId: number;
     address: Address;
     contact: Contact;
-    employee: Employee;
-    insurance: Insurance;
-    accidentAddress: Address;
 
     constructor(props) {
         super(props);

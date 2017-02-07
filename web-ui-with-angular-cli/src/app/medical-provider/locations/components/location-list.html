@@ -1,17 +1,17 @@
 <div class="input-group">
-    <h1 class="with-border">Locations
-        <a class="pull-right btn btn-danger" (click)="deleteLocations()">
+    <h2 class="with-border">Locations
+        <a class="pull-right btn btn-danger btn-sm" (click)="deleteLocations()">
             <i class="fa fa-trash-o fa-1x"></i>
-            <span class="hidden-md-down">Delete selected Locations </span>
+            <span class="hidden-md-down">Delete Selected Locations </span>
             <loader [visible]="isDeleteProgress"></loader>
         </a>
-        <a class="pull-right btn-inline btn btn-primary" [routerLink]="['add']">
+        <a class="pull-right btn-inline btn btn-primary btn-sm" [routerLink]="['add']">
             <i class="fa fa-plus" aria-hidden="true"></i>
             <span class="hidden-md-down"> Add Location</span>
         </a>
-    </h1>
+    </h2>
 </div>
-<div class="ui-widget-header ui-helper-clearfix" style="padding:4px 10px;border-bottom: 0 none">
+<div class="ui-widget-header row">
 <div class="col-lg-4 input-group">
     <span class="input-group-addon"><i class="fa fa-search"></i></span>
     <!--<i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>-->
@@ -23,7 +23,7 @@
 <p-dataTable [value]="locations" [(selection)]="selectedLocations" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
     [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Locations</header>
-    <p-column [style]="{'width':'38px'}" selectionMode="multiple"></p-column>
+    <p-column selectionMode="multiple"></p-column>
     <p-column field="location.name" header="Name" [sortable]="true"></p-column>
     <p-column field="address.address1" header="Address" [sortable]="true"></p-column>
     <p-column header="Phone" [sortable]="true">
@@ -37,7 +37,7 @@
             <!-->
             <-->
     </p-column>
-    <p-column styleClass="col-button" header="Actions">
+    <p-column styleClass="actions-cell" header="Actions">
         <template let-location="rowData" pTemplate="body">
             <a routerLink="{{location.location.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
         </template>

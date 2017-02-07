@@ -6,7 +6,6 @@
     <edmx:Diagrams>
       <Diagram DiagramId="5b50329e24874300a51d9a38ced2dda8" Name="Diagram1">
         <EntityTypeShape EntityType="MIDASGBXModel.AddressInfo" Width="1.5" PointX="0.75" PointY="20.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.City" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.Company" Width="1.5" PointX="3" PointY="20.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.CompanySpecialtyDetail" Width="1.5" PointX="11.25" PointY="20.375" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.CompanyType" Width="1.5" PointX="0.75" PointY="16.5" IsExpanded="true" />
@@ -71,28 +70,32 @@
         <AssociationConnector Association="MIDASGBXModel.FK_User_UserType" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompany_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompanyRole_User" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="MIDASGBXModel.Case" Width="1.5" PointX="19.5" PointY="28.5" />
-        <EntityTypeShape EntityType="MIDASGBXModel.InsuranceInfo" Width="1.5" PointX="16.25" PointY="29.125" />
-        <EntityTypeShape EntityType="MIDASGBXModel.PatientEmpInfo" Width="1.5" PointX="17.25" PointY="16.75" />
-        <AssociationConnector Association="MIDASGBXModel.FK_Case_AddressInfo_AccidentAddressId" />
-        <AssociationConnector Association="MIDASGBXModel.FK_Case_AddressInfo_PatientAddressId" />
-        <AssociationConnector Association="MIDASGBXModel.FK_InsuranceInfo_AddressInfo_InsuranceAddressId" />
-        <AssociationConnector Association="MIDASGBXModel.FK_PatientEmpInfo_AddressInfo_EmpAddressId" />
-        <AssociationConnector Association="MIDASGBXModel.FK_Case_ContactInfo_PatientContactInfoId" />
-        <AssociationConnector Association="MIDASGBXModel.FK_Case_InsuranceInfo_InsuranceInfoId" />
-        <AssociationConnector Association="MIDASGBXModel.FK_Case_Location_LocationID" />
-        <AssociationConnector Association="MIDASGBXModel.FK_Case_PatientEmpInfo_EmpInfo" />
-        <AssociationConnector Association="MIDASGBXModel.FK_Case_User_PatientID" />
-        <AssociationConnector Association="MIDASGBXModel.FK_InsuranceInfo_ContactInfo_InsuranceContactInfoId" />
-        <AssociationConnector Association="MIDASGBXModel.FK_PatientEmpInfo_ContactInfo_EmpContactInfoId" />
-        <AssociationConnector Association="MIDASGBXModel.FK_InsuranceInfo_User_PatientID" />
-        <AssociationConnector Association="MIDASGBXModel.FK_PatientEmpInfo_User_PatientID" />
-        <EntityTypeShape EntityType="MIDASGBXModel.Patient2" Width="1.5" PointX="19.5" PointY="22.75" />
-        <AssociationConnector Association="MIDASGBXModel.FK_Patient2_Location" />
-        <AssociationConnector Association="MIDASGBXModel.FK_Patient2_MaritalStatus_MaritalStatusId" />
-        <AssociationConnector Association="MIDASGBXModel.FK_Patient2_User" />
         <EntityTypeShape EntityType="MIDASGBXModel.Gender" Width="1.5" PointX="7.375" PointY="6.75" />
-      </Diagram>
+        <EntityTypeShape EntityType="MIDASGBXModel.City" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Case" Width="1.5" PointX="21.75" PointY="33.25" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Patient2" Width="1.5" PointX="19.5" PointY="21" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Patient2_AddressInfo_AttorneyAddressInfoId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Case_Patient2_PatientId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Patient2_Company_CompanyId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Patient2_AddressInfo_AttorneyContactInfoId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Patient2_MaritalStatusId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Patient2_User_id" />
+        <EntityTypeShape EntityType="MIDASGBXModel.PatientEmpInfo" Width="1.5" PointX="21.75" PointY="27.5" />
+        <EntityTypeShape EntityType="MIDASGBXModel.PatientInsuranceInfo" Width="1.5" PointX="24.75" PointY="22.5" />
+        <EntityTypeShape EntityType="MIDASGBXModel.RefferingOffice" Width="1.5" PointX="21.75" PointY="22.5" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientEmpInfo_AddressInfo_EmpAddressId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientInsuranceInfo_AddressInfo_InsuranceCompanyAddressInfoId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientInsuranceInfo_AddressInfo_PolicyHolderAddressInfoId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_RefferingOffice_AddressInfo_AddressId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientEmpInfo_ContactInfo_EmpContactInfoId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientInsuranceInfo_ContactInfo_InsuranceCompanyContactInfoId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientInsuranceInfo_ContactInfo_PolicyHolderContactInfoId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Patient2_PatientEmpInfo_PatientEmpInfoId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Patient2_PatientInsuranceInfo_InsuranceInfoId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientEmpInfo_Patient2_PatientId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientInsuranceInfo_Patient2_PatientId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_RefferingOffice_Patient2_PatientId" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
