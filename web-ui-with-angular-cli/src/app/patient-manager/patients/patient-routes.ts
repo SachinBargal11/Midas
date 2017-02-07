@@ -14,6 +14,7 @@ import { ShellComponent } from '../../commons/shell-component';
 import { AddFamilyMemberComponent } from './components/add-family-member';
 import { AccidentInfoComponent } from './components/accident';
 import { AttorneyComponent } from './components/attorney';
+import { PatientEmployerComponent } from './components/employer';
 
 export const PatientsShellRoutes: Routes = [
     {
@@ -95,6 +96,14 @@ export const PatientsShellRoutes: Routes = [
                 canActivate: [ValidateActiveSession],
                 data: {
                     breadcrumb: 'Accident'
+                }
+            },
+            {
+                path: 'employer',
+                component: PatientEmployerComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Employer'
                 }
             },
             {

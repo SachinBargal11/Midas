@@ -18,10 +18,17 @@ import { PatientProfileComponent } from './patients/components/profile-patient';
 import { AddFamilyMemberComponent } from './patients/components/add-family-member';
 import { AccidentInfoComponent } from './patients/components/accident';
 import { AttorneyComponent } from './patients/components/attorney';
+import { PatientEmployerComponent } from './patients/components/employer';
 import { ConsentFormsComponent } from './consent-forms/components/consent-forms';
 import { ReferalsComponent } from './referals/components/referals';
 import { PatientsService } from './patients/services/patients-service';
+import { EmployerService } from './patients/services/employer-service';
+import { FamilyMemberService } from './patients/services/family-member-service';
+import { InsuranceService } from './patients/services/insurance-service';
 import { PatientsStore } from './patients/stores/patients-store';
+import { EmployerStore } from './patients/stores/employer-store';
+import { FamilyMemberStore } from './patients/stores/family-member-store';
+import { InsuranceStore } from './patients/stores/insurance-store';
 import { PatientRoutingModule } from './patient-manager-routes';
 import { AddCaseShellComponent } from './cases/components/add-case-shell';
 import { CaseComponent } from './cases/components/case';
@@ -56,9 +63,11 @@ import { CasesStore } from './cases/stores/case-store';
         AddFamilyMemberComponent,
         AccidentInfoComponent,
         AttorneyComponent,
+        PatientEmployerComponent,
         ConsentFormsComponent,
         ReferalsComponent,
-        CaseComponent,CasesListComponent,
+        CaseComponent,
+        CasesListComponent,
         EmployerComponent,
         InsuranceComponent,
         AccidentComponent,
@@ -66,7 +75,13 @@ import { CasesStore } from './cases/stores/case-store';
     ],
     providers: [
         PatientsService,
+        EmployerService,
+        FamilyMemberService,
+        InsuranceService,
         PatientsStore,
+        EmployerStore,
+        FamilyMemberStore,
+        InsuranceStore,
         CasesStore
     ]
 })
