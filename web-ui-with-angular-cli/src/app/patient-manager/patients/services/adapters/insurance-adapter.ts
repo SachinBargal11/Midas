@@ -12,10 +12,19 @@ export class InsuranceAdapter {
                 id: data.id,
                 patientId: data.patientId,
                 policyNo: data.policyNo,
+                policyOwnerId: data.policyOwnerId,
                 policyHoldersName: data.policyHoldersName,
+                contactPerson: data.contactPerson,
+                claimfileNo: data.claimFileNo,
+                wcbNo: data.wcbNo,
+                insuranceType: data.insuranceType,
+                insuranceCompanyCode: data.insuranceCompanyCode,
                 isPrimaryInsurance: data.isPrimaryInsurance,
-                contact: ContactAdapter.parseResponse(data.contactInfo),
-                address: AddressAdapter.parseResponse(data.addressInfo)
+                isinactive: data.isInActive,
+                policyContact: ContactAdapter.parseResponse(data.contactInfo),
+                policyAddress: AddressAdapter.parseResponse(data.addressInfo),
+                insuranceContact: ContactAdapter.parseResponse(data.contactInfo1),
+                insuranceAddress: AddressAdapter.parseResponse(data.addressInfo1)
             });
         }
         return insurance;
