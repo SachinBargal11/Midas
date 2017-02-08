@@ -16,32 +16,41 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("userType")]
         public GBEnums.UserType UserType { get; set; }
 
+        [JsonProperty("addressInfo")]
         public AddressInfo AddressInfo { get; set; }
+
+        [JsonProperty("contactInfo")]
         public ContactInfo ContactInfo { get; set; }
+
         [Required]
         [JsonProperty("userName")]
         public string UserName { get; set; }
+
         [Required]
         [JsonProperty("firstName")]
         public string FirstName { get; set; }
-        [JsonProperty("middleName")]
 
+        [JsonProperty("middleName")]
         public string MiddleName { get; set; }
+
         [Required]
         [JsonProperty("lastName")]
         public string LastName { get; set; }
         
         [JsonProperty("gender")]
         public GBEnums.Gender Gender { get; set; }
+
         [JsonProperty("imageLink")]
         public string ImageLink { get; set; }
+
         [JsonProperty("dateOfBirth")]
         public DateTime? DateOfBirth { get; set; }
+
         [JsonProperty("password")]
         public string Password /*Need to be updated to SecureString*/ { get; set; }
+
         [Required]
-        [JsonProperty("status")]
-        
+        [JsonProperty("status")]        
         public GBEnums.UserStatus Status { get; set; }
 
         [JsonProperty("2factEmail")]
@@ -49,11 +58,14 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("2factSms")]
         public bool C2FactAuthSMSEnabled { get; set; }
+
         [JsonProperty("forceLogin")]
         public bool forceLogin { get; set; }
 
         public List<UserCompany> UserCompanies { get; set; }
+
         public List<DoctorSpeciality> DoctorSpecialities { get; set; }
+
         public override List<BusinessValidation> Validate<T>(T entity)
         {
             List<BusinessValidation> validations = new List<BusinessValidation>();

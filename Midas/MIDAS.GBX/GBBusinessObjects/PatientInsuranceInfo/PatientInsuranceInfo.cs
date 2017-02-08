@@ -9,25 +9,59 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class PatientInsuranceInfo : GbObject
     {
-        public int PatientId { get; set; }
-        public string PolicyHoldersName { get; set; }
-        public int? PolicyHolderAddressInfoId { get; set; }
-        public int? PolicyHolderContactInfoId { get; set; }
-        public int? PolicyOwnerId { get; set; }
-        public string InsuranceCompanyCode { get; set; }
-        public int? InsuranceCompanyAddressInfoId { get; set; }
-        public int? InsuranceCompanyContactInfoId { get; set; }
-        public string PolicyNo { get; set; }
-        public string ContactPerson { get; set; }
-        public string ClaimFileNo { get; set; }
-        public string WCBNo { get; set; }
-        public byte? InsuranceType { get; set; }
-        public bool? IsInActive { get; set; }
+        [JsonProperty("patientId")]
+        public int patientId { get; set; }
 
-        public AddressInfo AddressInfo { get; set; }
-        public AddressInfo AddressInfo1 { get; set; }
-        public ContactInfo ContactInfo { get; set; }
-        public ContactInfo ContactInfo1 { get; set; }
+        [JsonProperty("policyHoldersName")]
+        public string policyHoldersName { get; set; }
+
+        [JsonProperty("policyHolderAddressInfoId")]
+        public int? policyHolderAddressInfoId { get; set; }
+
+        [JsonProperty("policyHolderContactInfoId")]
+        public int? policyHolderContactInfoId { get; set; }
+
+        [JsonProperty("policyOwnerId")]
+        public byte? policyOwnerId { get; set; }
+
+        [JsonProperty("insuranceCompanyCode")]
+        public string insuranceCompanyCode { get; set; }
+
+        [JsonProperty("insuranceCompanyAddressInfoId")]
+        public int? insuranceCompanyAddressInfoId { get; set; }
+
+        [JsonProperty("insuranceCompanyContactInfoId")]
+        public int? insuranceCompanyContactInfoId { get; set; }
+
+        [JsonProperty("policyNo")]
+        public string policyNo { get; set; }
+
+        [JsonProperty("contactPerson")]
+        public string contactPerson { get; set; }
+
+        [JsonProperty("claimFileNo")]
+        public string claimFileNo { get; set; }
+
+        [JsonProperty("wcbNo")]
+        public string wcbNo { get; set; }
+
+        [JsonProperty("insuranceTypeId")]
+        public byte? insuranceTypeId { get; set; }
+
+        [JsonProperty("isInActive")]
+        public bool? isInActive { get; set; }
+
+        [JsonProperty("insuranceCompanyAddressInfo")]
+        public AddressInfo addressInfo { get; set; }
+
+        [JsonProperty("policyHolderAddressInfo")]
+        public AddressInfo addressInfo1 { get; set; }
+
+        [JsonProperty("insuranceCompanyContactInfo")]
+        public ContactInfo contactInfo { get; set; }
+
+        [JsonProperty("policyHolderContactInfo")]
+        public ContactInfo contactInfo1 { get; set; }
         //public Patient2 Patient2 { get; set; }
         //public Patient2 Patient21 { get; set; }
 

@@ -19,6 +19,7 @@ import { AddFamilyMemberComponent } from './patients/components/add-family-membe
 import { AccidentInfoComponent } from './patients/components/accident';
 import { AttorneyComponent } from './patients/components/attorney';
 import { PatientEmployerComponent } from './patients/components/employer';
+import { InsuranceListComponent } from './patients/components/insurance-list';
 import { ConsentFormsComponent } from './consent-forms/components/consent-forms';
 import { ReferalsComponent } from './referals/components/referals';
 import { PatientsService } from './patients/services/patients-service';
@@ -34,12 +35,8 @@ import { AccidentStore } from './patients/stores/accident-store';
 import { AttorneyStore } from './patients/stores/attorney-store';
 import { InsuranceStore } from './patients/stores/insurance-store';
 import { PatientRoutingModule } from './patient-manager-routes';
-import { AddCaseShellComponent } from './cases/components/add-case-shell';
 import { CaseComponent } from './cases/components/case';
 import { CasesListComponent } from './cases/components/cases-list';
-import { EmployerComponent} from './cases/components/employer';
-import { InsuranceComponent } from './cases/components/insurances';
-import { AccidentComponent } from './cases/components/accident';
 import { CasesStore } from './cases/stores/case-store';
 //  import { CasesStore } from './cases/services/cases-services;
 
@@ -68,14 +65,11 @@ import { CasesStore } from './cases/stores/case-store';
         AccidentInfoComponent,
         AttorneyComponent,
         PatientEmployerComponent,
+        InsuranceListComponent,
         ConsentFormsComponent,
         ReferalsComponent,
         CaseComponent,
-        CasesListComponent,
-        EmployerComponent,
-        InsuranceComponent,
-        AccidentComponent,
-        AddCaseShellComponent
+        CasesListComponent
     ],
     providers: [
         PatientsService,

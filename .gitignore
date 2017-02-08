@@ -212,3 +212,5 @@ _Pvt_Extensions/
 ModelManifest.xml
 /web-ui/dist
 *.jfm
+/Midas/MIDAS.GBX/GBBusinessObjects/AttorneyInfo/AttorneyInfo.cs
+/Midas/MIDAS.GBX/GBDataRepository/EntityRepository/AttorneyInfo/AttorneyInfoRepository.cs

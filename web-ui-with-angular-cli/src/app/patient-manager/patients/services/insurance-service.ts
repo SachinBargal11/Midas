@@ -5,12 +5,14 @@ import * as _ from 'underscore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
+import { environment } from '../../../../environments/environment';
 import { Insurance } from '../models/insurance';
 import { InsuranceAdapter } from './adapters/insurance-adapter';
 
 @Injectable()
 export class InsuranceService {
-    private _url: string = 'http://localhost:3004/insurance';
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
+    // private _url: string = 'http://localhost:3004/insurance';
     private _headers: Headers = new Headers();
 
     constructor(private _http: Http) {
@@ -18,7 +20,7 @@ export class InsuranceService {
     }
     getInsurance(insuranceId: Number): Observable<Insurance> {
         let promise: Promise<Insurance> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '?id=' + insuranceId).map(res => res.json())
+            return this._http.get(this._url + '/PatientInsuranceInfo/get/' + insuranceId).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     let insurance = null;
                     if (data.length) {
@@ -35,9 +37,9 @@ export class InsuranceService {
         return <Observable<Insurance>>Observable.fromPromise(promise);
     }
 
-    getInsurances(): Observable<Insurance[]> {
+    getInsurances(patientId: Number): Observable<Insurance[]> {
         let promise: Promise<Insurance[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url)
+            return this._http.get(this._url + '/PatientInsuranceInfo/getByPatientid/' + patientId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let insurances = (<Object[]>data).map((data: any) => {
@@ -53,7 +55,13 @@ export class InsuranceService {
     }
     addInsurance(insurance: Insurance): Observable<Insurance> {
         let promise: Promise<Insurance> = new Promise((resolve, reject) => {
-            return this._http.post(this._url, JSON.stringify(insurance), {
+            let requestData: any = insurance.toJS();
+            requestData.contactinfo = requestData.policyContact;
+            requestData.addressinfo = requestData.policyAddress;
+            requestData.contactinfo1 = requestData.insuranceContact;
+            requestData.addressinfo1 = requestData.insuranceAddress;
+            requestData = _.omit(requestData, 'policyContact', 'policyAddress', 'insuranceContact', 'insuranceAddress');
+            return this._http.post(this._url + '/PatientInsuranceInfo/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
             .map(res => res.json())
@@ -69,7 +77,13 @@ export class InsuranceService {
     }
     updateInsurance(insurance: Insurance): Observable<Insurance> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.put(`${this._url}/${insurance.id}`, JSON.stringify(insurance), {
+            let requestData: any = insurance.toJS();
+            requestData.contactinfo = requestData.policyContact;
+            requestData.addressinfo = requestData.policyAddress;
+            requestData.contactinfo1 = requestData.insuranceContact;
+            requestData.addressinfo1 = requestData.insuranceAddress;
+            requestData = _.omit(requestData, 'policyContact', 'policyAddress', 'insuranceContact', 'insuranceAddress');
+            return this._http.post(this._url + '/PatientInsuranceInfo/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
             .map(res => res.json())
@@ -85,7 +99,16 @@ export class InsuranceService {
     }
     deleteInsurance(insurance: Insurance): Observable<Insurance> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.delete(`${this._url}/${insurance.id}`)
+            let requestData: any = insurance.toJS();
+            requestData.isDeleted = 1;
+            requestData.contactinfo = requestData.policyContact;
+            requestData.addressinfo = requestData.policyAddress;
+            requestData.contactinfo1 = requestData.insuranceContact;
+            requestData.addressinfo1 = requestData.insuranceAddress;
+            requestData = _.omit(requestData, 'policyContact', 'policyAddress', 'insuranceContact', 'insuranceAddress');
+            return this._http.post(this._url + '/PatientInsuranceInfo/save', JSON.stringify(requestData), {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data) => {
                     let parsedInsurance: Insurance = null;

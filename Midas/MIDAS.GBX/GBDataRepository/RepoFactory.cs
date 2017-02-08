@@ -140,6 +140,22 @@ namespace MIDAS.GBX
             {
                 repo = new PatientEmpInfoRepository(context);
             }
+            //if (typeof(T) == typeof(BO.PatientEmpInfo))
+            //{
+            //    repo = new AttorneyInfoRepository(context);
+            //}
+            if (typeof(T) == typeof(BO.Common.PolicyOwner))
+            {
+                repo = new PolicyOwnerRepository(context);
+            }
+            if (typeof(T) == typeof(BO.Common.InsuranceType))
+            {
+                repo = new InsuranceTypeRepository(context);
+            }
+            if (typeof(T) == typeof(BO.PatientAccidentInfo))
+            {
+                repo = new PatientAccidentInfoRepository(context);
+            }
 
 
 

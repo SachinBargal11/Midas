@@ -10,3 +10,8 @@
 	CONSTRAINT [PK_MaritalStatus] PRIMARY KEY ([Id])
 )
 GO
+
+/*
+INSERT INTO [dbo].[MaritalStatus] ([Id], [StatusText], [IsDeleted])
+	VALUES (1, 'Single', 0), (2, 'Married', 0)
+*/

@@ -57,7 +57,9 @@
     <Compile Include="Case\Case.cs" />
     <Compile Include="Common\City.cs" />
     <Compile Include="Common\Gender.cs" />
+    <Compile Include="Common\InsuranceType.cs" />
     <Compile Include="Common\MaritalStatus.cs" />
+    <Compile Include="Common\PolicyOwner.cs" />
     <Compile Include="Common\State.cs" />
     <Compile Include="Company\Company.cs" />
     <Compile Include="Company\Signup.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="GBEnums.cs" />
     <Compile Include="GbObject.cs" />
+    <Compile Include="PatientAccidentInfo\PatientAccidentInfo.cs" />
     <Compile Include="PatientInsuranceInfo\PatientInsuranceInfo.cs" />
     <Compile Include="Invitation\Invitation.cs" />
     <Compile Include="Location\Location.cs" />

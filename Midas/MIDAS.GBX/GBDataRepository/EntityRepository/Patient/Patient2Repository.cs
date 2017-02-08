@@ -63,6 +63,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             //    }
             //}
 
+            if (patient2.AddressInfo != null)
+            {
+                BO.AddressInfo boAddress = new BO.AddressInfo();
+
+                boAddress.Name = patient2.AddressInfo.Name;
+                boAddress.Address1 = patient2.AddressInfo.Address1;
+                boAddress.Address2 = patient2.AddressInfo.Address2;
+                boAddress.City = patient2.AddressInfo.City;
+                boAddress.State = patient2.AddressInfo.State;
+                boAddress.ZipCode = patient2.AddressInfo.ZipCode;
+                boAddress.Country = patient2.AddressInfo.Country;
+                boAddress.CreateByUserID = patient2.AddressInfo.CreateByUserID;
+                boAddress.ID = patient2.AddressInfo.id;
+
+                patientBO2.AddressInfo = boAddress;
+            }
+
+            if (patient2.ContactInfo != null)
+            {
+                BO.ContactInfo boContactInfo = new BO.ContactInfo();
+
+                boContactInfo.Name = patient2.ContactInfo.Name;
+                boContactInfo.CellPhone = patient2.ContactInfo.CellPhone;
+                boContactInfo.EmailAddress = patient2.ContactInfo.EmailAddress;
+                boContactInfo.HomePhone = patient2.ContactInfo.HomePhone;
+                boContactInfo.WorkPhone = patient2.ContactInfo.WorkPhone;
+                boContactInfo.FaxNo = patient2.ContactInfo.FaxNo;
+                boContactInfo.CreateByUserID = patient2.ContactInfo.CreateByUserID;
+                boContactInfo.ID = patient2.ContactInfo.id;
+
+                patientBO2.ContactInfo = boContactInfo;
+            }
+
             BO.User boUser = new BO.User();
             using (UserRepository cmp = new UserRepository(_context))
             {
@@ -94,9 +127,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Get<T>(T entity)
         {
             BO.Patient2 patientBO = (BO.Patient2)(object)entity;
-            //var acc_ = _context.Patient2.Include("User").Include("Location").Where(p => p.IsDeleted == false || p.IsDeleted == null).ToList<Patient2>();
-            var acc_ = _context.Patient2.Include("User").Where(p => p.IsDeleted.HasValue == false || p.IsDeleted == false).ToList<Patient2>();
 
+            var acc_ = _context.Patient2.Include("AddressInfo")
+                                        .Include("ContactInfo")
+                                        .Include("User")
+                                        .Include("User.AddressInfo")
+                                        .Include("User.ContactInfo")
+                                        .Where(p => p.IsDeleted.HasValue == false || p.IsDeleted == false)
+                                        .ToList<Patient2>();
+           
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -113,8 +152,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID For Patient 
         public override object GetByCompanyId(int CompanyId)
         {
-            //var acc = _context.Patient2.Include("User").Include("Location").Where(p => p.Id == id && p.IsDeleted == false).FirstOrDefault<Patient2>();
-            var acc = _context.Patient2.Include("User").Where(p => p.CompanyId == CompanyId && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).ToList<Patient2>();
+            var acc = _context.Patient2.Include("AddressInfo")
+                                       .Include("ContactInfo")
+                                       .Include("User")
+                                       .Include("User.AddressInfo")
+                                       .Include("User.ContactInfo")
+                                       .Where(p => p.CompanyId == CompanyId && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
+                                       .ToList<Patient2>();
 
             if (acc == null)
             {
@@ -137,8 +181,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID For Patient 
         public override object Get(int id)
         {
-            //var acc = _context.Patient2.Include("User").Include("Location").Where(p => p.Id == id && p.IsDeleted == false).FirstOrDefault<Patient2>();
-            var acc = _context.Patient2.Include("User").Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).FirstOrDefault<Patient2>();
+            var acc = _context.Patient2.Include("AddressInfo")
+                                       .Include("ContactInfo")
+                                       .Include("User")
+                                       .Include("User.AddressInfo")
+                                       .Include("User.ContactInfo")
+                                       .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
+                                       .FirstOrDefault<Patient2>();
 
             if (acc == null)
             {
@@ -500,7 +549,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 dbContextTransaction.Commit();
 
-                patient2DB = _context.Patient2.Include("Company").Where(p => p.Id == patient2DB.Id).FirstOrDefault<Patient2>();
+                patient2DB = _context.Patient2.Include("Company")
+                                              .Include("AddressInfo")
+                                              .Include("ContactInfo")
+                                              .Include("User")
+                                              .Include("User.AddressInfo")
+                                              .Include("User.ContactInfo")
+                                              .Where(p => p.Id == patient2DB.Id)
+                                              .FirstOrDefault<Patient2>();
             }
 
             if (sendEmail == true)
@@ -524,9 +580,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (object)res;
         }
         #endregion
-
-        
-
 
         public void Dispose()
         {
