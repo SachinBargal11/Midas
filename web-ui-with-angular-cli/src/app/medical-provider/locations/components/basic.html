@@ -1,148 +1,135 @@
-<div class="page-center">
-    <div class="page-center-in">
-        <div class="container-fluid">
-            <form [formGroup]="basicform" (ngSubmit)="save()">
-                <section class="card">
-                    <div class="card-block">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <label class="form-label"> Office Name
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="basicformControls.officeName.touched && !basicformControls.officeName.valid">
-                                    <input [ngModel]="locationDetails.location.name" formControlName="officeName" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.officeName.valid">
-                                    <div class='error-list' *ngIf="basicformControls.officeName.touched && !basicformControls.officeName.valid">
-                                        <ul>
-                                            <li *ngIf="basicformControls.officeName.hasError('required')">Office Name is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div> 
-                            <div class="col-lg-6">
-                                <label class="form-label"> Address
-                                        </label>
-                                <div class="form-group" [class.error]="basicformControls.address.touched && !basicformControls.address.valid">
-                                    <input [ngModel]="locationDetails.address.address1" formControlName="address" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.address.valid">
-                                    <div class='error-list' *ngIf="basicformControls.address.touched && !basicformControls.address.valid">
-                                        <ul>
-                                            <li *ngIf="basicformControls.address.hasError('required')">Address is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                          </div>
-
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <label class="form-label"> State
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="basicformControls.state.touched && !basicformControls.state.valid">
-                                    <select formControlName="state" type="text" [ngModel]="locationDetails.address.state" (change)="selectState($event)" class="form-control" placeholder="" [class.error]="basicformControls.state.touched && !basicformControls.state.valid">
-                                        <option value="">-Select State-</option>
-                                        <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
-                                    </select> 
-                                    <div class='error-list' *ngIf="basicformControls.state.touched && !basicformControls.state.valid">
-                                        <ul>
-                                            <li *ngIf="basicformControls.state.hasError('required')">State is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-5">
-                                <label class="form-label"> City
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="basicformControls.city.touched && !basicformControls.city.valid">
-                                    <select formControlName="city" type="text" [ngModel]="selectedCity" class="form-control" placeholder="" [class.error]="basicformControls.city.touched && !basicformControls.city.valid">
-                                        <option value="">-Select City-</option>
-                                        <option *ngFor="let city of cities" value="{{city.citytext}}">{{city.citytext}}</option>
-                                    </select>
-                                    <div class='error-list' *ngIf="basicformControls.city.touched && !basicformControls.city.valid">
-                                        <ul>
-                                            <li *ngIf="basicformControls.city.hasError('required')">City is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-1 m-t-lg"><loader [visible]="isCitiesLoading"></loader></div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <label class="form-label"> Zip code
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="basicformControls.zipcode.touched && !basicformControls.zipcode.valid">
-                                    <input [ngModel]="locationDetails.address.zipCode" formControlName="zipcode" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.zipcode.valid">
-                                    <div class='error-list' *ngIf="basicformControls.zipcode.touched && !basicformControls.zipcode.valid">
-                                        <ul>
-                                            <li *ngIf="basicformControls.zipcode.hasError('required')">zipcode is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <label class="form-label"> Office phone
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="basicformControls.officePhone.touched && !basicformControls.officePhone.valid">
-                                    <!--<input formControlName="officePhone" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.officePhone.valid">-->
-                                    <!--<input type="text" [ngModel]="locationDetails.contact.workPhone" mask="999-999-9999" formControlName="officePhone" [class.error]="basicformControls.officePhone.touched && !basicformControls.officePhone.valid" class="form-control"/>-->
-                                    <p-inputMask [ngModel]="locationDetails.contact.workPhone" mask="999-999-9999" formControlName="officePhone" [class.error]="basicformControls.officePhone.touched && !basicformControls.officePhone.valid" styleClass="form-control" placeholder="999-999-9999"></p-inputMask>
-                                    <div class='error-list' *ngIf="basicformControls.officePhone.touched && !basicformControls.officePhone.valid">
-                                        <ul>
-                                            <li *ngIf="basicformControls.officePhone.hasError('required')">Office Phone is required.</li>
-                                            <li *ngIf="basicformControls.officePhone.hasError('mobileNoValidator')">Office Phone is invalid.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <label class="form-label"> Fax
-                                        </label>
-                                <div class="form-group" [class.error]="basicformControls.fax.touched && !basicformControls.fax.valid">
-                                    <!--<input [ngModel]="locationDetails.contact.faxNo" formControlName="fax" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.fax.valid">-->
-                                    <p-inputMask [ngModel]="locationDetails.contact.faxNo" mask="9-999-999 9999" formControlName="fax" [class.error]="basicformControls.fax.touched && !basicformControls.fax.valid" styleClass="form-control" placeholder="9-999-999 9999"></p-inputMask>
-                                    <div class='error-list' *ngIf="basicformControls.fax.touched && !basicformControls.fax.valid">
-                                        <ul>
-                                            <li *ngIf="basicformControls.fax.hasError('required')">Fax is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <label class="form-label"> Office type
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="basicformControls.officeType.touched && !basicformControls.officeType.valid">
-                                    <!--<input formControlName="officeType" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.officeType.valid">-->
-                                    <select [ngModel]="locationDetails.location.locationType" formControlName="officeType" type="text" class="form-control" placeholder="" [class.error]="basicformControls.officeType.touched && !basicformControls.officeType.valid">
-                                        <option value="0">-Select Speciality-</option>
-                                        <option disabled>────────────────────</option>
-                                        <option value="1">Medical Office</option>
-                                        <option value="2">Medical Testing Facility</option>
-                                        <!--<option value="3">Billing</option>-->
-                                        <!--<option value="4">Testing</option>-->
-                                    </select>
-                                    <div class='error-list' *ngIf="basicformControls.officeType.touched && !basicformControls.officeType.valid">
-                                        <ul>
-                                            <li *ngIf="basicformControls.officeType.hasError('required')">Office type is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+<form [formGroup]="basicform" (ngSubmit)="save()">
+            <div class="row">
+                <div class="col-lg-6">
+                    <label class="form-label"> Office Name
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="basicformControls.officeName.touched && !basicformControls.officeName.valid">
+                        <input [ngModel]="locationDetails.location.name" formControlName="officeName" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.officeName.valid">
+                        <div class='error-list' *ngIf="basicformControls.officeName.touched && !basicformControls.officeName.valid">
+                            <ul>
+                                <li *ngIf="basicformControls.officeName.hasError('required')">Office Name is required.</li>
+                            </ul>
                         </div>
                     </div>
-                </section>
-                <button [disabled]="!basicform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
-                    <loader [visible]="isSaveProgress"></loader>
-                </button>
-                <a [routerLink]="['/medical-provider/locations']" class="btn btn-secondary">Cancel</a>
-            </form>
-        </div>
-    </div>
-</div>
+                </div> 
+                <div class="col-lg-6">
+                    <label class="form-label"> Address
+                            </label>
+                    <div class="form-group" [class.error]="basicformControls.address.touched && !basicformControls.address.valid">
+                        <input [ngModel]="locationDetails.address.address1" formControlName="address" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.address.valid">
+                        <div class='error-list' *ngIf="basicformControls.address.touched && !basicformControls.address.valid">
+                            <ul>
+                                <li *ngIf="basicformControls.address.hasError('required')">Address is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <label class="form-label"> State
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="basicformControls.state.touched && !basicformControls.state.valid">
+                        <select formControlName="state" type="text" [ngModel]="locationDetails.address.state" (change)="selectState($event)" class="form-control" placeholder="" [class.error]="basicformControls.state.touched && !basicformControls.state.valid">
+                            <option value="">-Select State-</option>
+                            <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
+                        </select> 
+                        <div class='error-list' *ngIf="basicformControls.state.touched && !basicformControls.state.valid">
+                            <ul>
+                                <li *ngIf="basicformControls.state.hasError('required')">State is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <label class="form-label"> City
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="basicformControls.city.touched && !basicformControls.city.valid">
+                        <select formControlName="city" type="text" [ngModel]="selectedCity" class="form-control" placeholder="" [class.error]="basicformControls.city.touched && !basicformControls.city.valid">
+                            <option value="">-Select City-</option>
+                            <option *ngFor="let city of cities" value="{{city.citytext}}">{{city.citytext}}</option>
+                        </select>
+                        <div class='error-list' *ngIf="basicformControls.city.touched && !basicformControls.city.valid">
+                            <ul>
+                                <li *ngIf="basicformControls.city.hasError('required')">City is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1 m-t-lg"><loader [visible]="isCitiesLoading"></loader></div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <label class="form-label"> Zip code
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="basicformControls.zipcode.touched && !basicformControls.zipcode.valid">
+                        <input [ngModel]="locationDetails.address.zipCode" formControlName="zipcode" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.zipcode.valid">
+                        <div class='error-list' *ngIf="basicformControls.zipcode.touched && !basicformControls.zipcode.valid">
+                            <ul>
+                                <li *ngIf="basicformControls.zipcode.hasError('required')">zipcode is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <label class="form-label"> Office phone
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="basicformControls.officePhone.touched && !basicformControls.officePhone.valid">
+                        <!--<input formControlName="officePhone" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.officePhone.valid">-->
+                        <!--<input type="text" [ngModel]="locationDetails.contact.workPhone" mask="999-999-9999" formControlName="officePhone" [class.error]="basicformControls.officePhone.touched && !basicformControls.officePhone.valid" class="form-control"/>-->
+                        <p-inputMask [ngModel]="locationDetails.contact.workPhone" mask="999-999-9999" formControlName="officePhone" [class.error]="basicformControls.officePhone.touched && !basicformControls.officePhone.valid" styleClass="form-control" placeholder="999-999-9999"></p-inputMask>
+                        <div class='error-list' *ngIf="basicformControls.officePhone.touched && !basicformControls.officePhone.valid">
+                            <ul>
+                                <li *ngIf="basicformControls.officePhone.hasError('required')">Office Phone is required.</li>
+                                <li *ngIf="basicformControls.officePhone.hasError('mobileNoValidator')">Office Phone is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <label class="form-label"> Fax
+                            </label>
+                    <div class="form-group" [class.error]="basicformControls.fax.touched && !basicformControls.fax.valid">
+                        <!--<input [ngModel]="locationDetails.contact.faxNo" formControlName="fax" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.fax.valid">-->
+                        <p-inputMask [ngModel]="locationDetails.contact.faxNo" mask="9-999-999 9999" formControlName="fax" [class.error]="basicformControls.fax.touched && !basicformControls.fax.valid" styleClass="form-control" placeholder="9-999-999 9999"></p-inputMask>
+                        <div class='error-list' *ngIf="basicformControls.fax.touched && !basicformControls.fax.valid">
+                            <ul>
+                                <li *ngIf="basicformControls.fax.hasError('required')">Fax is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <label class="form-label"> Office type
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="basicformControls.officeType.touched && !basicformControls.officeType.valid">
+                        <!--<input formControlName="officeType" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.officeType.valid">-->
+                        <select [ngModel]="locationDetails.location.locationType" formControlName="officeType" type="text" class="form-control" placeholder="" [class.error]="basicformControls.officeType.touched && !basicformControls.officeType.valid">
+                            <option value="0">-Select Speciality-</option>
+                            <option disabled>────────────────────</option>
+                            <option value="1">Medical Office</option>
+                            <option value="2">Medical Testing Facility</option>
+                            <!--<option value="3">Billing</option>-->
+                            <!--<option value="4">Testing</option>-->
+                        </select>
+                        <div class='error-list' *ngIf="basicformControls.officeType.touched && !basicformControls.officeType.valid">
+                            <ul>
+                                <li *ngIf="basicformControls.officeType.hasError('required')">Office type is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <button [disabled]="!basicform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+        <loader [visible]="isSaveProgress"></loader>
+    </button>
+    <a [routerLink]="['/medical-provider/locations']" class="btn btn-secondary">Cancel</a>
+</form>

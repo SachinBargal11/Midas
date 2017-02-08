@@ -74,6 +74,7 @@
     <Compile Include="GBEnums.cs" />
     <Compile Include="GbObject.cs" />
     <Compile Include="PatientAccidentInfo\PatientAccidentInfo.cs" />
+    <Compile Include="PatientFamilyMember\PatientFamilyMember.cs" />
     <Compile Include="PatientInsuranceInfo\PatientInsuranceInfo.cs" />
     <Compile Include="Invitation\Invitation.cs" />
     <Compile Include="Location\Location.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="PatientEmpInfo\PatientEmpInfo.cs" />
     <Compile Include="Patient\Patient.cs" />
     <Compile Include="Patient\Patient2.cs" />
+    <Compile Include="Relation\Relation.cs" />
     <Compile Include="Room\Room.cs" />
     <Compile Include="Room\RoomTest.cs" />
     <Compile Include="Schedule\Schedule.cs" />
