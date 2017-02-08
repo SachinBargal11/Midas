@@ -69,6 +69,7 @@
     <Compile Include="EntityRepository\Common\GenderRepository.cs" />
     <Compile Include="EntityRepository\Common\InsuranceTypeRepository.cs" />
     <Compile Include="EntityRepository\Common\MaritalStatusRepository.cs" />
+    <Compile Include="EntityRepository\Common\PatientTypeRepository.cs" />
     <Compile Include="EntityRepository\Common\PolicyOwnerRepository.cs" />
     <Compile Include="EntityRepository\Common\StateRepository.cs" />
     <Compile Include="EntityRepository\Company\CompanyRepository.cs" />

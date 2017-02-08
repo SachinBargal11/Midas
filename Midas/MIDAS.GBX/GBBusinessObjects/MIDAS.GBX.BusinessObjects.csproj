@@ -59,6 +59,7 @@
     <Compile Include="Common\Gender.cs" />
     <Compile Include="Common\InsuranceType.cs" />
     <Compile Include="Common\MaritalStatus.cs" />
+    <Compile Include="Common\PatientType.cs" />
     <Compile Include="Common\PolicyOwner.cs" />
     <Compile Include="Common\State.cs" />
     <Compile Include="Company\Company.cs" />
