@@ -30,9 +30,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 return default(T);
 
             BO.PatientFamilyMember patientfamilymemberBO = new BO.PatientFamilyMember();
+
             patientfamilymemberBO.ID = patientfamilymember.Id;
-
-
             patientfamilymemberBO.PatientId = patientfamilymember.PatientId;
             patientfamilymemberBO.RelationId = patientfamilymember.RelationId;
             patientfamilymemberBO.FullName = patientfamilymember.FullName;
@@ -42,7 +41,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             patientfamilymemberBO.Age = patientfamilymember.Age;
             patientfamilymemberBO.RaceId = (byte)patientfamilymember.RaceId;
             patientfamilymemberBO.EthnicitesId = (byte)patientfamilymember.EthnicitesId;
-            patientfamilymemberBO.GenderId = (byte)patientfamilymemberBO.GenderId;
+            patientfamilymemberBO.GenderId = (byte)patientfamilymember.GenderId;
             patientfamilymemberBO.CellPhone = patientfamilymember.CellPhone;
             patientfamilymemberBO.WorkPhone = patientfamilymember.WorkPhone;
             patientfamilymemberBO.PrimaryContact = patientfamilymember.PrimaryContact;
@@ -135,7 +134,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     patientfamilymemberDB.Age = patientfamilymemberBO.Age;
                     patientfamilymemberDB.RaceId = patientfamilymemberBO.RaceId;
                     patientfamilymemberDB.EthnicitesId = patientfamilymemberBO.EthnicitesId;
-                    patientfamilymemberDB.GenderId = (byte)genderBO.ID;
+                    patientfamilymemberDB.GenderId = (byte)patientfamilymemberBO.GenderId;
                     patientfamilymemberDB.CellPhone = patientfamilymemberBO.CellPhone;
                     patientfamilymemberDB.WorkPhone = patientfamilymemberBO.WorkPhone;
                     patientfamilymemberDB.PrimaryContact = patientfamilymemberBO.PrimaryContact;
