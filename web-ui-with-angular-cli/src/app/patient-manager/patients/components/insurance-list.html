@@ -21,7 +21,7 @@
     <p-column selectionMode="multiple"></p-column>
     <p-column field="policyHoldersName" header="Policy Holder" [sortable]="true"></p-column>
     <p-column field="policyNo" header="Policy Number" [sortable]="true"></p-column>
-    <p-column field="insurancecompanycode" header="Insurance Code" [sortable]="true"></p-column>
+    <p-column field="insuranceCompanyCode" header="Insurance Code" [sortable]="true"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
         <template let-insurance="rowData" pTemplate="body">
             <a routerLink="edit/{{insurance.id}}"><i class="glyphicon glyphicon-edit"></i></a>

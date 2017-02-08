@@ -1,117 +1,107 @@
-<div class="page-center">
-    <div class="page-center-in">
-        <div class="container-fluid">
-            <form [formGroup]="doctorform" (ngSubmit)="updateDoctor()">
-                <section class="card">
-                    <div class="card-block">
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <label class="form-label"> License Number
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="doctorformControls.licenseNumber.touched && !doctorformControls.licenseNumber.valid">
-                                    <input formControlName="licenseNumber" [ngModel]="doctor.licenseNumber" type="text" class="form-control" placeholder="" [class.error]="!doctorformControls.licenseNumber.valid">
-                                    <div class='error-list' *ngIf="doctorformControls.licenseNumber.touched && !doctorformControls.licenseNumber.valid">
-                                        <ul>
-                                            <li *ngIf="doctorformControls.licenseNumber.hasError('required')">License Number is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <label class="form-label"> WCB Authorization
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="doctorformControls.wcbAuthorization.touched && !doctorformControls.wcbAuthorization.valid">
-                                    <input formControlName="wcbAuthorization" [ngModel]="doctor.wcbAuthorization" type="text" class="form-control" placeholder=""
-                                        [class.error]="!doctorformControls.wcbAuthorization.valid">
-                                    <div class='error-list' *ngIf="doctorformControls.wcbAuthorization.touched && !doctorformControls.wcbAuthorization.valid">
-                                        <ul>
-                                            <li *ngIf="doctorformControls.wcbAuthorization.hasError('required')">WCB Authorization is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <label class="form-label"> WCB RatingCode
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="doctorformControls.wcbRatingCode.touched && !doctorformControls.wcbRatingCode.valid">
-                                    <input formControlName="wcbRatingCode" [ngModel]="doctor.wcbRatingCode" type="text" class="form-control" placeholder="" [class.error]="!doctorformControls.wcbRatingCode.valid">
-                                    <div class='error-list' *ngIf="doctorformControls.wcbRatingCode.touched && !doctorformControls.wcbRatingCode.valid">
-                                        <ul>
-                                            <li *ngIf="doctorformControls.wcbRatingCode.hasError('required')">WCB RatingCode is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <label class="form-label"> NPI
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="doctorformControls.npi.touched && !doctorformControls.npi.valid">
-                                    <input formControlName="npi" [ngModel]="doctor.npi" type="text" class="form-control" placeholder="" [class.error]="!doctorformControls.npi.valid">
-                                    <div class='error-list' *ngIf="doctorformControls.npi.touched && !doctorformControls.npi.valid">
-                                        <ul>
-                                            <li *ngIf="doctorformControls.npi.hasError('required')">NPI is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <label class="form-label"> Tax type
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="doctorformControls.taxType.touched && !doctorformControls.taxType.valid">
-                                    <select formControlName="taxType" [ngModel]="doctor.taxType" class="selectpicker form-control" title="Select Tax Type." [class.error]="doctorformControls.taxType.touched && !doctorformControls.taxType.valid">
-                                             <option value="0">-Select Tax Type-</option>
-                                             <option disabled>────────────────────</option>
-                                             <option value="1">Tax1</option>
-                                             <option value="2">Tax2</option>
-                                         </select>
-                                    <div class='error-list' *ngIf="doctorformControls.taxType.touched && !doctorformControls.taxType.valid">
-                                        <ul>
-                                            <li *ngIf="doctorformControls.taxType.hasError('required')">Tax Type is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <label class="form-label"> Title
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="doctorformControls.title.touched && !doctorformControls.title.valid">
-                                    <input formControlName="title" [ngModel]="doctor.title" type="text" maxlength="10" class="form-control" placeholder="" [class.error]="!doctorformControls.title.valid">
-                                    <div class='error-list' *ngIf="doctorformControls.title.touched && !doctorformControls.title.valid">
-                                        <ul>
-                                            <li *ngIf="doctorformControls.title.hasError('required')">Title is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <label class="form-label"> Speciality <span class="color-red">*</span></label>
-                                <div class="form-group" [class.error]="doctorformControls.speciality.touched && !doctorformControls.speciality.valid">
-                                    <p-multiSelect [ngModel]="selectedSpecialities" [options]="specialitiesArr" defaultLabel="Select Speciality" formControlName="speciality"></p-multiSelect>
-                                    <div class='error-list' *ngIf="doctorformControls.speciality.touched && !doctorformControls.speciality.valid">
-                                        <ul>
-                                            <li *ngIf="doctorformControls.speciality.hasError('selectedValueValidator')">Speciality is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+<form [formGroup]="doctorform" (ngSubmit)="updateDoctor()">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> License Number
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="doctorformControls.licenseNumber.touched && !doctorformControls.licenseNumber.valid">
+                        <input formControlName="licenseNumber" [ngModel]="doctor.licenseNumber" type="text" class="form-control" placeholder="" [class.error]="!doctorformControls.licenseNumber.valid">
+                        <div class='error-list' *ngIf="doctorformControls.licenseNumber.touched && !doctorformControls.licenseNumber.valid">
+                            <ul>
+                                <li *ngIf="doctorformControls.licenseNumber.hasError('required')">License Number is required.</li>
+                            </ul>
                         </div>
                     </div>
-                </section>
-                <button [disabled]="!doctorform.valid || isSaveDoctorProgress" type="submit" class="btn btn-success sign-up">Update
-                    <loader [visible]="isSaveDoctorProgress"></loader>
-                </button>
-                <a [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
-            </form>
-        </div>
-    </div>
-</div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> WCB Authorization
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="doctorformControls.wcbAuthorization.touched && !doctorformControls.wcbAuthorization.valid">
+                        <input formControlName="wcbAuthorization" [ngModel]="doctor.wcbAuthorization" type="text" class="form-control" placeholder=""
+                            [class.error]="!doctorformControls.wcbAuthorization.valid">
+                        <div class='error-list' *ngIf="doctorformControls.wcbAuthorization.touched && !doctorformControls.wcbAuthorization.valid">
+                            <ul>
+                                <li *ngIf="doctorformControls.wcbAuthorization.hasError('required')">WCB Authorization is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> WCB RatingCode
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="doctorformControls.wcbRatingCode.touched && !doctorformControls.wcbRatingCode.valid">
+                        <input formControlName="wcbRatingCode" [ngModel]="doctor.wcbRatingCode" type="text" class="form-control" placeholder="" [class.error]="!doctorformControls.wcbRatingCode.valid">
+                        <div class='error-list' *ngIf="doctorformControls.wcbRatingCode.touched && !doctorformControls.wcbRatingCode.valid">
+                            <ul>
+                                <li *ngIf="doctorformControls.wcbRatingCode.hasError('required')">WCB RatingCode is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> NPI
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="doctorformControls.npi.touched && !doctorformControls.npi.valid">
+                        <input formControlName="npi" [ngModel]="doctor.npi" type="text" class="form-control" placeholder="" [class.error]="!doctorformControls.npi.valid">
+                        <div class='error-list' *ngIf="doctorformControls.npi.touched && !doctorformControls.npi.valid">
+                            <ul>
+                                <li *ngIf="doctorformControls.npi.hasError('required')">NPI is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Tax type
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="doctorformControls.taxType.touched && !doctorformControls.taxType.valid">
+                        <select formControlName="taxType" [ngModel]="doctor.taxType" class="selectpicker form-control" title="Select Tax Type." [class.error]="doctorformControls.taxType.touched && !doctorformControls.taxType.valid">
+                                 <option value="0">-Select Tax Type-</option>
+                                 <option disabled>────────────────────</option>
+                                 <option value="1">Tax1</option>
+                                 <option value="2">Tax2</option>
+                             </select>
+                        <div class='error-list' *ngIf="doctorformControls.taxType.touched && !doctorformControls.taxType.valid">
+                            <ul>
+                                <li *ngIf="doctorformControls.taxType.hasError('required')">Tax Type is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Title
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="doctorformControls.title.touched && !doctorformControls.title.valid">
+                        <input formControlName="title" [ngModel]="doctor.title" type="text" maxlength="10" class="form-control" placeholder="" [class.error]="!doctorformControls.title.valid">
+                        <div class='error-list' *ngIf="doctorformControls.title.touched && !doctorformControls.title.valid">
+                            <ul>
+                                <li *ngIf="doctorformControls.title.hasError('required')">Title is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Speciality <span class="color-red">*</span></label>
+                    <div class="form-group" [class.error]="doctorformControls.speciality.touched && !doctorformControls.speciality.valid">
+                        <p-multiSelect [ngModel]="selectedSpecialities" [options]="specialitiesArr" defaultLabel="Select Speciality" formControlName="speciality"></p-multiSelect>
+                        <div class='error-list' *ngIf="doctorformControls.speciality.touched && !doctorformControls.speciality.valid">
+                            <ul>
+                                <li *ngIf="doctorformControls.speciality.hasError('selectedValueValidator')">Speciality is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <button [disabled]="!doctorform.valid || isSaveDoctorProgress" type="submit" class="btn btn-success sign-up">Update
+        <loader [visible]="isSaveDoctorProgress"></loader>
+    </button>
+    <a [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
+</form>
