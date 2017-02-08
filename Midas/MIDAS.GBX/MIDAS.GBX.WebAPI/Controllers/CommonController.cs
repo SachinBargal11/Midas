@@ -19,6 +19,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         private IRequestHandler<PolicyOwner> requestPolicyOwnerHandler;
         private IRequestHandler<InsuranceType> requestInsuranceTypeHandler;
         private IRequestHandler<PatientType> requestPatientTypeHandler;
+        private IRequestHandler<Relation> requestRelationHandler;
 
         public CommonController()
         {
@@ -29,6 +30,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
             requestPolicyOwnerHandler = new GbApiRequestHandler<PolicyOwner>();
             requestInsuranceTypeHandler = new GbApiRequestHandler<InsuranceType>();
             requestPatientTypeHandler = new GbApiRequestHandler<PatientType>();
+            requestRelationHandler = new GbApiRequestHandler<Relation>();
         }
 
         [HttpGet]
@@ -127,6 +129,20 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public HttpResponseMessage GetPatientTypeById(int id)
         {
             return requestPatientTypeHandler.GetObject(Request, id);
+        }
+
+        [HttpGet]
+        [Route("getRelations")]
+        public HttpResponseMessage GetRelations()
+        {
+            return requestRelationHandler.GetObjects(Request);
+        }
+
+        [HttpGet]
+        [Route("getRelationById/{id}")]
+        public HttpResponseMessage GetRelationById(int id)
+        {
+            return requestRelationHandler.GetObject(Request, id);
         }
     }
 }

@@ -33,57 +33,57 @@ CREATE TABLE [dbo].[Patient2](
 
 GO
 
-ALTER TABLE [dbo].[Patient2]  WITH CHECK ADD  CONSTRAINT [FK_Patient2_User_id] FOREIGN KEY([id])
-	REFERENCES [dbo].[User] ([id])
+ALTER TABLE [dbo].[Patient2]  WITH CHECK ADD  CONSTRAINT [FK_Patient2_User_id] FOREIGN KEY([Id])
+	REFERENCES [dbo].[User] ([Id])
 GO
 
 ALTER TABLE [dbo].[Patient2] CHECK CONSTRAINT [FK_Patient2_User_id]
 GO
 
 ALTER TABLE [dbo].[Patient2]  WITH CHECK ADD  CONSTRAINT [FK_Patient2_Company_CompanyId] FOREIGN KEY([CompanyId])
-	REFERENCES [dbo].[Company] ([id])
+	REFERENCES [dbo].[Company] ([Id])
 GO
 
 ALTER TABLE [dbo].[Patient2] CHECK CONSTRAINT [FK_Patient2_Company_CompanyId]
 GO
 
 --ALTER TABLE [dbo].[Patient2]  WITH CHECK ADD  CONSTRAINT [FK_Patient2_Location_LocationID] FOREIGN KEY([LocationID])
---REFERENCES [dbo].[Location] ([id])
+--REFERENCES [dbo].[Location] ([Id])
 --GO
 
 --ALTER TABLE [dbo].[Patient2] CHECK CONSTRAINT [FK_Patient2_Location]
 --GO
 
 ALTER TABLE [dbo].[Patient2]  WITH CHECK ADD  CONSTRAINT [FK_Patient2_MaritalStatusId] FOREIGN KEY([MaritalStatusId])
-	REFERENCES [dbo].[MaritalStatus] ([id])
+	REFERENCES [dbo].[MaritalStatus] ([Id])
 GO
 
 ALTER TABLE [dbo].[Patient2] CHECK CONSTRAINT [FK_Patient2_MaritalStatusId]
 GO
 
 ALTER TABLE [dbo].[Patient2]  WITH CHECK ADD  CONSTRAINT [FK_Patient2_AddressInfo_AttorneyAddressInfoId] FOREIGN KEY([AttorneyAddressInfoId])
-	REFERENCES [dbo].[AddressInfo] ([id])
+	REFERENCES [dbo].[AddressInfo] ([Id])
 GO
 
 ALTER TABLE [dbo].[Patient2] CHECK CONSTRAINT [FK_Patient2_AddressInfo_AttorneyAddressInfoId]
 GO
 
 ALTER TABLE [dbo].[Patient2]  WITH CHECK ADD  CONSTRAINT [FK_Patient2_AddressInfo_AttorneyContactInfoId] FOREIGN KEY([AttorneyContactInfoId])
-	REFERENCES [dbo].[ContactInfo] ([id])
+	REFERENCES [dbo].[ContactInfo] ([Id])
 GO
 
 ALTER TABLE [dbo].[Patient2] CHECK CONSTRAINT [FK_Patient2_AddressInfo_AttorneyContactInfoId]
 GO
 
 ALTER TABLE [dbo].[Patient2]  WITH CHECK ADD  CONSTRAINT [FK_Patient2_PatientEmpInfo_PatientEmpInfoId] FOREIGN KEY([PatientEmpInfoId])
-	REFERENCES [dbo].[PatientEmpInfo] ([id])
+	REFERENCES [dbo].[PatientEmpInfo] ([Id])
 GO
 
 ALTER TABLE [dbo].[Patient2] CHECK CONSTRAINT [FK_Patient2_PatientEmpInfo_PatientEmpInfoId]
 GO
 
 ALTER TABLE [dbo].[Patient2]  WITH CHECK ADD  CONSTRAINT [FK_Patient2_PatientInsuranceInfo_InsuranceInfoId] FOREIGN KEY([InsuranceInfoId])
-	REFERENCES [dbo].[PatientInsuranceInfo] ([id])
+	REFERENCES [dbo].[PatientInsuranceInfo] ([Id])
 GO
 
 ALTER TABLE [dbo].[Patient2] CHECK CONSTRAINT [FK_Patient2_PatientInsuranceInfo_InsuranceInfoId]

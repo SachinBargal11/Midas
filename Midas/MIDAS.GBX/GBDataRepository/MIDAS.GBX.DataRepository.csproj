@@ -71,6 +71,7 @@
     <Compile Include="EntityRepository\Common\MaritalStatusRepository.cs" />
     <Compile Include="EntityRepository\Common\PatientTypeRepository.cs" />
     <Compile Include="EntityRepository\Common\PolicyOwnerRepository.cs" />
+    <Compile Include="EntityRepository\Common\RelationRepository.cs" />
     <Compile Include="EntityRepository\Common\StateRepository.cs" />
     <Compile Include="EntityRepository\Company\CompanyRepository.cs" />
     <Compile Include="EntityRepository\Doctor\DoctorLocationScheduleRepository.cs" />

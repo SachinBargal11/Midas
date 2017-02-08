@@ -61,6 +61,7 @@
     <Compile Include="Common\MaritalStatus.cs" />
     <Compile Include="Common\PatientType.cs" />
     <Compile Include="Common\PolicyOwner.cs" />
+    <Compile Include="Common\Relation.cs" />
     <Compile Include="Common\State.cs" />
     <Compile Include="Company\Company.cs" />
     <Compile Include="Company\Signup.cs" />

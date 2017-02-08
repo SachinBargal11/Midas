@@ -30,14 +30,14 @@ GO
 
 
 ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_Patient2_PatientId] FOREIGN KEY([PatientId])
-	REFERENCES [dbo].[Patient2] ([id])
+	REFERENCES [dbo].[Patient2] ([Id])
 GO
 
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_Patient2_PatientId]
 GO
 /*
 ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_Location_LocationID] FOREIGN KEY([LocationID])
-	REFERENCES [dbo].[Location] ([id])
+	REFERENCES [dbo].[Location] ([Id])
 GO
 
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_Location_LocationID]
@@ -45,35 +45,35 @@ GO
 
 
 ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_AddressInfo_PatientAddressId] FOREIGN KEY([PatientAddressId])
-	REFERENCES [dbo].[AddressInfo] ([id])
+	REFERENCES [dbo].[AddressInfo] ([Id])
 GO
 
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_AddressInfo_PatientAddressId]
 GO
 
 ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_ContactInfo_PatientContactInfoId] FOREIGN KEY([PatientContactInfoId])
-	REFERENCES [dbo].[ContactInfo] ([id])
+	REFERENCES [dbo].[ContactInfo] ([Id])
 GO
 
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_ContactInfo_PatientContactInfoId]
 GO
 
 ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_PatientEmpInfo_EmpInfo] FOREIGN KEY([EmpInfo])
-	REFERENCES [dbo].[PatientEmpInfo] ([id])
+	REFERENCES [dbo].[PatientEmpInfo] ([Id])
 GO
 
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_PatientEmpInfo_EmpInfo]
 GO
 
 ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_InsuranceInfo_InsuranceInfoId] FOREIGN KEY([InsuranceInfoId])
-	REFERENCES [dbo].[InsuranceInfo] ([id])
+	REFERENCES [dbo].[InsuranceInfo] ([Id])
 GO
 
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_InsuranceInfo_InsuranceInfoId]
 GO
 
 ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_AddressInfo_AccidentAddressId] FOREIGN KEY([AccidentAddressId])
-	REFERENCES [dbo].[AddressInfo] ([id])
+	REFERENCES [dbo].[AddressInfo] ([Id])
 GO
 
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_AddressInfo_AccidentAddressId]

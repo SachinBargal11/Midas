@@ -18,21 +18,21 @@
 GO
 
 ALTER TABLE [dbo].[PatientEmpInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientEmpInfo_Patient2_PatientId] FOREIGN KEY([PatientId])
-	REFERENCES [dbo].[Patient2] ([id])
+	REFERENCES [dbo].[Patient2] ([Id])
 GO
 
 ALTER TABLE [dbo].[PatientEmpInfo] CHECK CONSTRAINT [FK_PatientEmpInfo_Patient2_PatientId]
 GO
 
 ALTER TABLE [dbo].[PatientEmpInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientEmpInfo_AddressInfo_EmpAddressId] FOREIGN KEY([AddressInfoId])
-	REFERENCES [dbo].[AddressInfo] ([id])
+	REFERENCES [dbo].[AddressInfo] ([Id])
 GO
 
 ALTER TABLE [dbo].[PatientEmpInfo] CHECK CONSTRAINT [FK_PatientEmpInfo_AddressInfo_EmpAddressId]
 GO
 
 ALTER TABLE [dbo].[PatientEmpInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientEmpInfo_ContactInfo_EmpContactInfoId] FOREIGN KEY([ContactInfoId])
-	REFERENCES [dbo].[ContactInfo] ([id])
+	REFERENCES [dbo].[ContactInfo] ([Id])
 GO
 
 ALTER TABLE [dbo].[PatientEmpInfo] CHECK CONSTRAINT [FK_PatientEmpInfo_ContactInfo_EmpContactInfoId]

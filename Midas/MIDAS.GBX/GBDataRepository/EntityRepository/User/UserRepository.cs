@@ -59,6 +59,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             boUser.UserName = user.UserName;
             boUser.ID = user.id;
             boUser.FirstName = user.FirstName;
+            boUser.MiddleName = user.MiddleName;
             boUser.LastName = user.LastName;
             boUser.ImageLink = user.ImageLink;
             boUser.UserType = (BO.GBEnums.UserType)user.UserType;

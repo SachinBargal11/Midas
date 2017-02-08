@@ -24,21 +24,21 @@
 GO
 
 ALTER TABLE [dbo].[PatientAccidentInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientAccidentInfo_Patient2_PatientId] FOREIGN KEY([PatientId])
-	REFERENCES [dbo].[Patient2] ([id])
+	REFERENCES [dbo].[Patient2] ([Id])
 GO
 
 ALTER TABLE [dbo].[PatientAccidentInfo] CHECK CONSTRAINT [FK_PatientAccidentInfo_Patient2_PatientId]
 GO
 
 ALTER TABLE [dbo].[PatientAccidentInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientAccidentInfo_AddressInfo_AccidentAddressInfoId] FOREIGN KEY([AccidentAddressInfoId])
-	REFERENCES [dbo].[AddressInfo] ([id])
+	REFERENCES [dbo].[AddressInfo] ([Id])
 GO
 
 ALTER TABLE [dbo].[PatientAccidentInfo] CHECK CONSTRAINT [FK_PatientAccidentInfo_AddressInfo_AccidentAddressInfoId]
 GO
 
 ALTER TABLE [dbo].[PatientAccidentInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientAccidentInfo_AddressInfo_HospitalAddressInfoId] FOREIGN KEY([HospitalAddressInfoId])
-	REFERENCES [dbo].[AddressInfo] ([id])
+	REFERENCES [dbo].[AddressInfo] ([Id])
 GO
 
 ALTER TABLE [dbo].[PatientAccidentInfo] CHECK CONSTRAINT [FK_PatientAccidentInfo_AddressInfo_HospitalAddressInfoId]
@@ -46,7 +46,7 @@ GO
 
 --ALTER TABLE [dbo].[PatientAccidentInfo] ALTER COLUMN [PatientTypeId] [TINYINT] NULL 
 ALTER TABLE [dbo].[PatientAccidentInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientAccidentInfo_PatientType_PatientTypeId] FOREIGN KEY([PatientTypeId])
-	REFERENCES [dbo].[PatientType] ([id])
+	REFERENCES [dbo].[PatientType] ([Id])
 GO
 
 ALTER TABLE [dbo].[PatientAccidentInfo] CHECK CONSTRAINT [FK_PatientAccidentInfo_PatientType_PatientTypeId]
