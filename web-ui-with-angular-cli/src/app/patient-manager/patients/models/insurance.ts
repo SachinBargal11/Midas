@@ -6,7 +6,7 @@ import { Contact } from '../../../commons/models/contact';
 const InsuranceRecord = Record({
     id: 0,
     patientId: 0,
-    policyNo: 0,
+    policyNo: '',
     policyOwnerId: 0,
     policyHoldersName: '',
     contactPerson: '',
@@ -14,7 +14,6 @@ const InsuranceRecord = Record({
     wcbNo: '',
     insuranceType: '',
     insuranceCompanyCode: '',
-    isPrimaryInsurance: 0,
     isinactive: 0,
     policyAddress: null,
     policyContact: null,
@@ -26,7 +25,7 @@ export class Insurance extends InsuranceRecord {
 
     id: number;
     patientId: number;
-    policyNo: number;
+    policyNo: string;
     policyOwnerId: number;
     policyHoldersName: string;
     contactPerson: string;
@@ -34,7 +33,6 @@ export class Insurance extends InsuranceRecord {
     wcbNo: string;
     insuranceType: string;
     insuranceCompanyCode: string;
-    isPrimaryInsurance: boolean;
     isinactive: boolean;
     policyAddress: Address;
     policyContact: Contact;

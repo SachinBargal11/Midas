@@ -90,7 +90,7 @@ export class InsuranceListComponent implements OnInit {
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select patients to delete');
+            this._notificationsService.error('Oh No!', 'select Insurance to delete');
         }
     }
 

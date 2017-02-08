@@ -20,6 +20,7 @@ import { AccidentInfoComponent } from './patients/components/accident';
 import { AttorneyComponent } from './patients/components/attorney';
 import { PatientEmployerComponent } from './patients/components/employer';
 import { InsuranceListComponent } from './patients/components/insurance-list';
+import { EditInsurancesComponent } from './patients/components/edit-insurance';
 import { ConsentFormsComponent } from './consent-forms/components/consent-forms';
 import { ReferalsComponent } from './referals/components/referals';
 import { PatientsService } from './patients/services/patients-service';
@@ -66,6 +67,7 @@ import { CasesStore } from './cases/stores/case-store';
         AttorneyComponent,
         PatientEmployerComponent,
         InsuranceListComponent,
+        EditInsurancesComponent,
         ConsentFormsComponent,
         ReferalsComponent,
         CaseComponent,

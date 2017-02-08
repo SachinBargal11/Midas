@@ -17,17 +17,23 @@ import { InsuranceStore } from '../stores/insurance-store';
 import { PatientsStore } from '../stores/patients-store';
 
 @Component({
-    selector: 'insurances',
-    templateUrl: './insurances.html'
+    selector: 'edit-insurance',
+    templateUrl: './edit-insurance.html'
 })
 
 
-export class InsurancesComponent implements OnInit {
+export class EditInsurancesComponent implements OnInit {
     states: any[];
     policyCities: any[];
     insuranceCities: any[];
-    patientId: number;
-    selectedCity = 0;
+    selectedPolicyCity;
+    selectedInsuranceCity;
+    insurance = new Insurance({});
+    policyAddress = new Address({});
+    policyContact = new Contact({});
+    insuranceAddress = new Address({});
+    insuranceContact = new Contact({});
+    patientId;
     isCitiesLoading = false;
 
     insuranceform: FormGroup;
@@ -49,8 +55,32 @@ export class InsurancesComponent implements OnInit {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId);
         });
+        this._route.params.subscribe((routeParams: any) => {
+            let insuranceId: number = parseInt(routeParams.id);
+            this._progressBarService.show();
+            let result = this._insuranceStore.fetchInsuranceById(insuranceId);
+            result.subscribe(
+                (insurance: any) => {
+                    this.insurance = insurance.toJS();
+                    this.policyContact = insurance.policyContact;
+                    this.policyAddress = insurance.policyAddress;
+                    this.insuranceContact = insurance.insuranceContact;
+                    this.insuranceAddress = insurance.insuranceAddress;
+                    this.selectedInsuranceCity = insurance.insuranceAddress.city;
+                    this.selectedPolicyCity = insurance.policyAddress.city;
+                    this.loadInsuranceCities(insurance.insuranceAddress.state);
+                    this.loadPolicyCities(insurance.policyAddress.state);
+                },
+                (error) => {
+                    this._router.navigate(['../../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        });
         this.insuranceform = this.fb.group({
-                policyNumber: ['', Validators.required],
+                policyNo: ['', Validators.required],
                 policyOwner: ['', Validators.required],
                 policyHolderName: ['', Validators.required],
                 insuranceCompanyCode: ['', Validators.required],
@@ -90,15 +120,19 @@ export class InsurancesComponent implements OnInit {
     }
 
     selectPolicyState(event) {
-        this.selectedCity = 0;
         let currentState = event.target.value;
+        if (currentState === this.insurance.policyAddress.state) {
+            this.loadPolicyCities(currentState);
+            this.selectedPolicyCity = this.insurance.policyAddress.city;
+        } else {
         this.loadPolicyCities(currentState);
+        this.selectedPolicyCity = '';
+        }
     }
-
     loadPolicyCities(stateName) {
         this.isCitiesLoading = true;
-        if (stateName !== '') {
-            this._statesStore.getCitiesByStates(stateName)
+        if ( stateName !== '') {
+        this._statesStore.getCitiesByStates(stateName)
                 .subscribe((cities) => { this.policyCities = cities; },
                 null,
                 () => { this.isCitiesLoading = false; });
@@ -108,15 +142,19 @@ export class InsurancesComponent implements OnInit {
         }
     }
     selectInsuranceState(event) {
-        this.selectedCity = 0;
         let currentState = event.target.value;
+        if (currentState === this.insurance.insuranceAddress.state) {
+            this.loadInsuranceCities(currentState);
+            this.selectedInsuranceCity = this.insurance.insuranceAddress.city;
+        } else {
         this.loadInsuranceCities(currentState);
+        this.selectedInsuranceCity = '';
+        }
     }
-
     loadInsuranceCities(stateName) {
         this.isCitiesLoading = true;
-        if (stateName !== '') {
-            this._statesStore.getCitiesByStates(stateName)
+        if ( stateName !== '') {
+        this._statesStore.getCitiesByStates(stateName)
                 .subscribe((cities) => { this.insuranceCities = cities; },
                 null,
                 () => { this.isCitiesLoading = false; });
@@ -131,10 +169,11 @@ export class InsurancesComponent implements OnInit {
         let insuranceformValues = this.insuranceform.value;
         let result;
         let insurance = new Insurance({
+            id: this.insurance.id,
             patientId: this.patientId,
             policyHoldersName: insuranceformValues.policyHolderName,
             policyOwnerId: insuranceformValues.policyOwner,
-            policyNo: insuranceformValues.policyNumber,
+            policyNo: insuranceformValues.policyNo,
             insuranceCompanyCode: insuranceformValues.insuranceCompanyCode,
             contactPerson: insuranceformValues.contactPerson,
             claimfileNo: insuranceformValues.claimfileNo,
@@ -153,7 +192,7 @@ export class InsurancesComponent implements OnInit {
                 city: insuranceformValues.policyCity,
                 country: insuranceformValues.policyCountry,
                 state: insuranceformValues.policyState,
-                zipCode: insuranceformValues.policyZipCode
+                zipCode: insuranceformValues.policyZipcode
             }),
             insuranceContact: new Contact({
                 cellPhone: insuranceformValues.policyCellPhone ? insuranceformValues.policyCellPhone.replace(/\-/g, '') : null,
@@ -168,23 +207,24 @@ export class InsurancesComponent implements OnInit {
                 city: insuranceformValues.city,
                 country: insuranceformValues.country,
                 state: insuranceformValues.state,
-                zipCode: insuranceformValues.zipCode
+                zipCode: insuranceformValues.zipcode
             })
         });
         this._progressBarService.show();
-        result = this._insuranceStore.addInsurance(insurance);
+        result = this._insuranceStore.updateInsurance(insurance);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'Insurance added successfully!',
+                    'title': 'Insurance updated successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../'], { relativeTo: this._route });
+                    // this._router.navigate(['/patient-manager/patients/' + this.patientId + '/insurances']);
+                    this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
-                let errString = 'Unable to add Insurance.';
+                let errString = 'Unable to update Insurance.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
@@ -198,6 +238,5 @@ export class InsurancesComponent implements OnInit {
             () => {
                 this.isSaveProgress = false;
                 this._progressBarService.hide();
-            });
-        }
+            });}
 }

@@ -56,11 +56,12 @@ export class InsuranceService {
     addInsurance(insurance: Insurance): Observable<Insurance> {
         let promise: Promise<Insurance> = new Promise((resolve, reject) => {
             let requestData: any = insurance.toJS();
-            requestData.contactinfo = requestData.policyContact;
-            requestData.addressinfo = requestData.policyAddress;
-            requestData.contactinfo1 = requestData.insuranceContact;
-            requestData.addressinfo1 = requestData.insuranceAddress;
-            requestData = _.omit(requestData, 'policyContact', 'policyAddress', 'insuranceContact', 'insuranceAddress');
+            requestData.insuranceTypeId = requestData.insuranceType;
+            requestData.policyHolderContactInfo = requestData.policyContact;
+            requestData.policyHolderAddressInfo = requestData.policyAddress;
+            requestData.insuranceCompanyContactInfo = requestData.insuranceContact;
+            requestData.insuranceCompanyAddressInfo = requestData.insuranceAddress;
+            requestData = _.omit(requestData, 'insuranceType', 'policyContact', 'policyAddress', 'insuranceContact', 'insuranceAddress');
             return this._http.post(this._url + '/PatientInsuranceInfo/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
@@ -78,11 +79,12 @@ export class InsuranceService {
     updateInsurance(insurance: Insurance): Observable<Insurance> {
         let promise = new Promise((resolve, reject) => {
             let requestData: any = insurance.toJS();
-            requestData.contactinfo = requestData.policyContact;
-            requestData.addressinfo = requestData.policyAddress;
-            requestData.contactinfo1 = requestData.insuranceContact;
-            requestData.addressinfo1 = requestData.insuranceAddress;
-            requestData = _.omit(requestData, 'policyContact', 'policyAddress', 'insuranceContact', 'insuranceAddress');
+            requestData.insuranceTypeId = requestData.insuranceType;
+            requestData.policyHolderContactInfo = requestData.policyContact;
+            requestData.policyHolderAddressInfo = requestData.policyAddress;
+            requestData.insuranceCompanyContactInfo = requestData.insuranceContact;
+            requestData.insuranceCompanyAddressInfo = requestData.insuranceAddress;
+            requestData = _.omit(requestData, 'insuranceType', 'policyContact', 'policyAddress', 'insuranceContact', 'insuranceAddress');
             return this._http.post(this._url + '/PatientInsuranceInfo/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
@@ -101,11 +103,12 @@ export class InsuranceService {
         let promise = new Promise((resolve, reject) => {
             let requestData: any = insurance.toJS();
             requestData.isDeleted = 1;
-            requestData.contactinfo = requestData.policyContact;
-            requestData.addressinfo = requestData.policyAddress;
-            requestData.contactinfo1 = requestData.insuranceContact;
-            requestData.addressinfo1 = requestData.insuranceAddress;
-            requestData = _.omit(requestData, 'policyContact', 'policyAddress', 'insuranceContact', 'insuranceAddress');
+            requestData.insuranceTypeId = requestData.insuranceType;
+            requestData.policyHolderContactInfo = requestData.policyContact;
+            requestData.policyHolderAddressInfo = requestData.policyAddress;
+            requestData.insuranceCompanyContactInfo = requestData.insuranceContact;
+            requestData.insuranceCompanyAddressInfo = requestData.insuranceAddress;
+            requestData = _.omit(requestData, 'insuranceType', 'policyContact', 'policyAddress', 'insuranceContact', 'insuranceAddress');
             return this._http.post(this._url + '/PatientInsuranceInfo/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
