@@ -253,6 +253,7 @@
     <Compile Include="Controllers\InsuranceController.cs" />
     <Compile Include="Controllers\OTPController.cs" />
     <Compile Include="Controllers\PasswordTokenController.cs" />
+    <Compile Include="Controllers\PatientAccidentInfoController.cs" />
     <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="Controllers\PatientEmpInfoController.cs" />
     <Compile Include="Controllers\UserController.cs" />

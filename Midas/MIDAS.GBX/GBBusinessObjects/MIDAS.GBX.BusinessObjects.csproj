@@ -73,6 +73,7 @@
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="GBEnums.cs" />
     <Compile Include="GbObject.cs" />
+    <Compile Include="PatientAccidentInfo\PatientAccidentInfo.cs" />
     <Compile Include="PatientInsuranceInfo\PatientInsuranceInfo.cs" />
     <Compile Include="Invitation\Invitation.cs" />
     <Compile Include="Location\Location.cs" />
