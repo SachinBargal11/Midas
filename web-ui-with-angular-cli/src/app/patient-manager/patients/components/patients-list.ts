@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { PatientsStore } from '../stores/patients-store';
 import { Patient } from '../models/patient';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
+import { SessionStore } from '../../../commons/stores/session-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
@@ -22,9 +23,13 @@ export class PatientsListComponent implements OnInit {
         private _router: Router,
         private _patientsStore: PatientsStore,
         private _notificationsStore: NotificationsStore,
+        public _sessionStore: SessionStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
     ) {
+        this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+            this.loadPatients();
+        });
     }
 
     ngOnInit() {

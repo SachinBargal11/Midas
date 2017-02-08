@@ -48,16 +48,14 @@ export class AddPatientComponent implements OnInit {
         this.patientform = this.fb.group({
             userInfo: this.fb.group({
                 ssn: ['', Validators.required],
-                wcbNo: [''],
                 weight: [''],
+                height: [''],
                 maritalStatusId: ['', Validators.required],
-                drivingLicence: [''],
-                emergencyContactName: [''],
-                emergencyContactRelation: [''],
-                emergencyContactNumber: [''],
+                dateOfFirstTreatment: [''],
                 dob: [''],
                 firstname: ['', Validators.required],
-                lastname: ['', Validators.required]
+                lastname: ['', Validators.required],
+                gender: ['', Validators.required]
             }),
             contact: this.fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
@@ -110,25 +108,25 @@ export class AddPatientComponent implements OnInit {
     savePatient() {
         this.isSavePatientProgress = true;
         let patientFormValues = this.patientform.value;
+        console.log(this._sessionStore.session.account.toJS());
+        console.log(this._sessionStore.session.currentCompany.toJS());
+        
         let result;
         let patient = new Patient({
             ssn: patientFormValues.userInfo.ssn,
-            wcbNo: patientFormValues.userInfo.wcbNo,
             weight: patientFormValues.userInfo.weight,
+            height: patientFormValues.userInfo.height,
             maritalStatusId: patientFormValues.userInfo.maritalStatusId,
-            drivingLicence: patientFormValues.userInfo.drivingLicence,
-            emergencyContactName: patientFormValues.userInfo.emergencyContactName,
-            emergencyContactRelation: patientFormValues.userInfo.emergencyContactRelation,
-            emergencyContactNumber: patientFormValues.userInfo.emergencyContactNumber,
             createByUserId: this._sessionStore.session.account.user.id,
+            companyId: this._sessionStore.session.currentCompany.id,
             user: new User({
                 dateOfBirth: patientFormValues.userInfo.dob,
                 firstName: patientFormValues.userInfo.firstname,
                 lastName: patientFormValues.userInfo.lastname,
                 userType: UserType.PATIENT,
-                password: 123456,
                 userName: patientFormValues.contact.email,
                 createByUserId: this._sessionStore.session.account.user.id,
+                gender: patientFormValues.userInfo.gender,
                 contact: new Contact({
                     cellPhone: patientFormValues.contact.cellPhone ? patientFormValues.contact.cellPhone.replace(/\-/g, '') : null,
                     emailAddress: patientFormValues.contact.email,

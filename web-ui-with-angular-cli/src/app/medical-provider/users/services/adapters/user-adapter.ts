@@ -32,7 +32,7 @@ export class UserAdapter {
                 lastName: userData.lastName,
                 gender: userData.gender,
                 imageLink: userData.imageLink,
-                dateOfBirth: userData.dateOfBirth,
+                dateOfBirth: userData.dateOfBirth ? moment(userData.dateOfBirth) : null,
                 isDeleted: userData.isDeleted,
                 contact: ContactAdapter.parseResponse(userData.contactInfo),
                 address: AddressAdapter.parseResponse(userData.addressInfo)

@@ -71,6 +71,18 @@ export class PatientsStore {
         return <Observable<Patient>>Observable.fromPromise(promise);
     }
 
+    getPatientById(id: number): Observable<Patient> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientsService.getPatient(id).subscribe((patient: Patient) => {
+                resolve(patient);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Patient>>Observable.fromPromise(promise);
+    }
+
+
     addPatient(patient: Patient): Observable<Patient> {
         let promise = new Promise((resolve, reject) => {
             this._patientsService.addPatient(patient).subscribe((patient: Patient) => {

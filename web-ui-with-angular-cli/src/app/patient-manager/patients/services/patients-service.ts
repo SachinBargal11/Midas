@@ -25,10 +25,10 @@ export class PatientsService {
 
     getPatient(patientId: Number): Observable<Patient> {
         let promise: Promise<Patient> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/patient/GetPatient/' + patientId).map(res => res.json())
+            return this._http.get(this._url + '/Patient/getPatientById/' + patientId).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     let patient = null;
-                    if (data.length) {
+                    if (data) {
                         patient = PatientAdapter.parseResponse(data);
                         resolve(patient);
                     } else {
@@ -43,8 +43,9 @@ export class PatientsService {
     }
 
     getPatients(): Observable<Patient[]> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise: Promise<Patient[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/patient/GetAllPatient')
+            return this._http.get(this._url + '/Patient/getPatientsByCompanyId/' + companyId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patients = (<Object[]>data).map((patientData: any) => {
@@ -63,11 +64,20 @@ export class PatientsService {
     addPatient(patient: Patient): Observable<Patient> {
         let promise: Promise<Patient> = new Promise((resolve, reject) => {
             let requestData: any = patient.toJS();
-            requestData.locationId = 1;
             requestData.user.password = 123456;
             requestData.user.contactInfo = requestData.user.contact;
             requestData.user.addressInfo = requestData.user.address;
             requestData.user = _.omit(requestData.user, 'contact', 'address');
+            requestData = _.extend(requestData, {
+                attorneyname: 'simon',
+                attorneyAddressInfo: {
+                    name: 'mumbai----'
+                },
+                attorneyContactInfo: {
+                    name: 'sergi----'
+                }
+            });
+            debugger;
             return this._http.post(this._url + '/patient/savePatient', JSON.stringify(requestData), {
                 headers: this._headers
             })
@@ -87,11 +97,19 @@ export class PatientsService {
     updatePatient(patient: Patient): Observable<Patient> {
         let promise: Promise<Patient> = new Promise((resolve, reject) => {
             let requestData: any = patient.toJS();
-            requestData.locationId = 1;
             requestData.user.password = 123456;
             requestData.user.contactInfo = requestData.user.contact;
             requestData.user.addressInfo = requestData.user.address;
             requestData.user = _.omit(requestData.user, 'contact', 'address');
+            requestData = _.extend(requestData, {
+                attorneyname: 'simon',
+                attorneyAddressInfo: {
+                    name: 'mumbai----'
+                },
+                attorneyContactInfo: {
+                    name: 'sergi----'
+                }
+            });
             return this._http.post(this._url + '/patient/savePatient', JSON.stringify(requestData), {
                 headers: this._headers
             })
