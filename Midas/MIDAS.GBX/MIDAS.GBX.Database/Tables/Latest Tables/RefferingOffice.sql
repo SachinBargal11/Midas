@@ -28,5 +28,5 @@ ALTER TABLE [dbo].[RefferingOffice]  WITH CHECK ADD  CONSTRAINT [FK_RefferingOff
 	REFERENCES [dbo].[AddressInfo] ([id])
 GO
 
-ALTER TABLE [dbo].[RefferingOffice] CHECK CONSTRAINT [FK_RefferingOffice_AddressInfo_AddressId]
+ALTER TABLE [dbo].[RefferingOffice] CHECK CONSTRAINT [FK_RefferingOffice_AddressInfo_AddressInfoId]
 GO
