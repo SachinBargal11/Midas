@@ -51,7 +51,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Address\AddressInfo.cs" />
-    <Compile Include="AttorneyInfo\AttorneyInfo.cs" />
     <Compile Include="BoolConverter.cs" />
     <Compile Include="BusinessValidation.cs" />
     <Compile Include="BusinessValidationResult.cs" />
