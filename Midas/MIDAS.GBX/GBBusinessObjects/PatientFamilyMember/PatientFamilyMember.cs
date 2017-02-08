@@ -52,14 +52,14 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("isInActive")]
         public bool? IsInActive { get; set; }
 
-        [JsonProperty("Gender")]
-        public Gender Gender { get; set; }
+        //[JsonProperty("Gender")]
+        //public Gender Gender { get; set; }
 
-        [JsonProperty("Patient2")]
-        public Patient2 Patient2 { get; set; }
+        //[JsonProperty("Patient2")]
+        //public Patient2 Patient2 { get; set; }
 
-        [JsonProperty("Relation")]
-        public Relation Relation { get; set; }
+        //[JsonProperty("Relation")]
+        //public Relation Relation { get; set; }
 
 
     }
