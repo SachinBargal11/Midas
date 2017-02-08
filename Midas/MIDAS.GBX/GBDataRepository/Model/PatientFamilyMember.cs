@@ -12,30 +12,31 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class PatientAccidentInfo
+    public partial class PatientFamilyMember
     {
         public int Id { get; set; }
         public int PatientId { get; set; }
-        public Nullable<System.DateTime> AccidentDate { get; set; }
-        public string PlateNumber { get; set; }
-        public string ReportNumber { get; set; }
-        public int AccidentAddressInfoId { get; set; }
-        public string HospitalName { get; set; }
-        public int HospitalAddressInfoId { get; set; }
-        public Nullable<System.DateTime> DateOfAdmission { get; set; }
-        public string AdditionalPatients { get; set; }
-        public string DescribeInjury { get; set; }
-        public Nullable<byte> PatientTypeId { get; set; }
-        public bool IsCurrentAccident { get; set; }
+        public byte RelationId { get; set; }
+        public string FullName { get; set; }
+        public string FamilyName { get; set; }
+        public string Prefix { get; set; }
+        public string Sufix { get; set; }
+        public byte Age { get; set; }
+        public Nullable<byte> RaceId { get; set; }
+        public Nullable<byte> EthnicitesId { get; set; }
+        public byte GenderId { get; set; }
+        public string CellPhone { get; set; }
+        public string WorkPhone { get; set; }
+        public Nullable<bool> PrimaryContact { get; set; }
+        public Nullable<bool> IsInActive { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
-        public virtual AddressInfo AddressInfo { get; set; }
-        public virtual AddressInfo AddressInfo1 { get; set; }
+        public virtual Gender Gender { get; set; }
         public virtual Patient2 Patient2 { get; set; }
-        public virtual PatientType PatientType { get; set; }
+        public virtual Relation Relation { get; set; }
     }
 }

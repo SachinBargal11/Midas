@@ -12,19 +12,19 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Gender
+    public partial class PatientType
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Gender()
+        public PatientType()
         {
-            this.PatientFamilyMembers = new HashSet<PatientFamilyMember>();
+            this.PatientAccidentInfoes = new HashSet<PatientAccidentInfo>();
         }
     
         public byte Id { get; set; }
-        public string GenderText { get; set; }
+        public string PatientTypeText { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PatientFamilyMember> PatientFamilyMembers { get; set; }
+        public virtual ICollection<PatientAccidentInfo> PatientAccidentInfoes { get; set; }
     }
 }

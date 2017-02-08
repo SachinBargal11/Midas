@@ -356,7 +356,7 @@
           <Property Name="DateOfAdmission" Type="datetime2" Precision="7" />
           <Property Name="AdditionalPatients" Type="nvarchar" MaxLength="128" />
           <Property Name="DescribeInjury" Type="nvarchar" MaxLength="128" />
-          <Property Name="PatientTypeId" Type="int" Nullable="false" />
+          <Property Name="PatientTypeId" Type="tinyint" />
           <Property Name="IsCurrentAccident" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
@@ -375,6 +375,31 @@
           <Property Name="AddressInfoId" Type="int" Nullable="false" />
           <Property Name="ContactInfoId" Type="int" Nullable="false" />
           <Property Name="IsCurrentEmp" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="PatientFamilyMembers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PatientId" Type="int" Nullable="false" />
+          <Property Name="RelationId" Type="tinyint" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FamilyName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Prefix" Type="nvarchar" MaxLength="10" />
+          <Property Name="Sufix" Type="nvarchar" MaxLength="10" />
+          <Property Name="Age" Type="tinyint" Nullable="false" />
+          <Property Name="RaceId" Type="tinyint" />
+          <Property Name="EthnicitesId" Type="tinyint" />
+          <Property Name="GenderId" Type="tinyint" Nullable="false" />
+          <Property Name="CellPhone" Type="nvarchar" MaxLength="50" />
+          <Property Name="WorkPhone" Type="nvarchar" MaxLength="50" />
+          <Property Name="PrimaryContact" Type="bit" />
+          <Property Name="IsInActive" Type="bit" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -406,6 +431,14 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
+        <EntityType Name="PatientType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" Nullable="false" />
+          <Property Name="PatientTypeText" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
         <EntityType Name="PolicyOwner">
           <Key>
             <PropertyRef Name="Id" />
@@ -421,7 +454,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PatientId" Type="int" Nullable="false" />
           <Property Name="RefferingOfficeId" Type="tinyint" />
-          <Property Name="AddressId" Type="int" />
+          <Property Name="AddressInfoId" Type="int" />
           <Property Name="ReffferingDoctorId" Type="tinyint" />
           <Property Name="NPI" Type="nvarchar" MaxLength="50" />
           <Property Name="IsCurrentReffOffice" Type="bit" Nullable="false" />
@@ -430,6 +463,14 @@
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="Relations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" Nullable="false" />
+          <Property Name="RelationText" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
         </EntityType>
         <EntityType Name="Room">
           <Key>
@@ -1028,6 +1069,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PatientAccidentInfo_PatientType_PatientTypeId">
+          <End Role="PatientType" Type="Self.PatientType" Multiplicity="0..1" />
+          <End Role="PatientAccidentInfo" Type="Self.PatientAccidentInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PatientType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientAccidentInfo">
+              <PropertyRef Name="PatientTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PatientEmpInfo_AddressInfo_EmpAddressId">
           <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="1" />
           <End Role="PatientEmpInfo" Type="Self.PatientEmpInfo" Multiplicity="*" />
@@ -1061,6 +1114,42 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="PatientEmpInfo">
               <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientFamilyMembers_Gender_GenderId">
+          <End Role="Gender" Type="Self.Gender" Multiplicity="1" />
+          <End Role="PatientFamilyMembers" Type="Self.PatientFamilyMembers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gender">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientFamilyMembers">
+              <PropertyRef Name="GenderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientFamilyMembers_Patient2_PatientId">
+          <End Role="Patient2" Type="Self.Patient2" Multiplicity="1" />
+          <End Role="PatientFamilyMembers" Type="Self.PatientFamilyMembers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientFamilyMembers">
+              <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientFamilyMembers_Relations_RelationId">
+          <End Role="Relations" Type="Self.Relations" Multiplicity="1" />
+          <End Role="PatientFamilyMembers" Type="Self.PatientFamilyMembers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Relations">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientFamilyMembers">
+              <PropertyRef Name="RelationId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1148,7 +1237,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_RefferingOffice_AddressInfo_AddressId">
+        <Association Name="FK_RefferingOffice_AddressInfo_AddressInfoId">
           <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="0..1" />
           <End Role="RefferingOffice" Type="Self.RefferingOffice" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1156,7 +1245,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="RefferingOffice">
-              <PropertyRef Name="AddressId" />
+              <PropertyRef Name="AddressInfoId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1352,9 +1441,12 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="Patient2" EntityType="Self.Patient2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientAccidentInfo" EntityType="Self.PatientAccidentInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientEmpInfo" EntityType="Self.PatientEmpInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PatientFamilyMembers" EntityType="Self.PatientFamilyMembers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientInsuranceInfo" EntityType="Self.PatientInsuranceInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PatientType" EntityType="Self.PatientType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PolicyOwner" EntityType="Self.PolicyOwner" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RefferingOffice" EntityType="Self.RefferingOffice" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Relations" EntityType="Self.Relations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Room" EntityType="Self.Room" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoomTest" EntityType="Self.RoomTest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Schedule" EntityType="Self.Schedule" Schema="dbo" store:Type="Tables" />
@@ -1497,6 +1589,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Patient2" EntitySet="Patient2" />
             <End Role="PatientAccidentInfo" EntitySet="PatientAccidentInfo" />
           </AssociationSet>
+          <AssociationSet Name="FK_PatientAccidentInfo_PatientType_PatientTypeId" Association="Self.FK_PatientAccidentInfo_PatientType_PatientTypeId">
+            <End Role="PatientType" EntitySet="PatientType" />
+            <End Role="PatientAccidentInfo" EntitySet="PatientAccidentInfo" />
+          </AssociationSet>
           <AssociationSet Name="FK_PatientEmpInfo_AddressInfo_EmpAddressId" Association="Self.FK_PatientEmpInfo_AddressInfo_EmpAddressId">
             <End Role="AddressInfo" EntitySet="AddressInfo" />
             <End Role="PatientEmpInfo" EntitySet="PatientEmpInfo" />
@@ -1508,6 +1604,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_PatientEmpInfo_Patient2_PatientId" Association="Self.FK_PatientEmpInfo_Patient2_PatientId">
             <End Role="Patient2" EntitySet="Patient2" />
             <End Role="PatientEmpInfo" EntitySet="PatientEmpInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientFamilyMembers_Gender_GenderId" Association="Self.FK_PatientFamilyMembers_Gender_GenderId">
+            <End Role="Gender" EntitySet="Gender" />
+            <End Role="PatientFamilyMembers" EntitySet="PatientFamilyMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientFamilyMembers_Patient2_PatientId" Association="Self.FK_PatientFamilyMembers_Patient2_PatientId">
+            <End Role="Patient2" EntitySet="Patient2" />
+            <End Role="PatientFamilyMembers" EntitySet="PatientFamilyMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientFamilyMembers_Relations_RelationId" Association="Self.FK_PatientFamilyMembers_Relations_RelationId">
+            <End Role="Relations" EntitySet="Relations" />
+            <End Role="PatientFamilyMembers" EntitySet="PatientFamilyMembers" />
           </AssociationSet>
           <AssociationSet Name="FK_PatientInsuranceInfo_AddressInfo_InsuranceCompanyAddressInfoId" Association="Self.FK_PatientInsuranceInfo_AddressInfo_InsuranceCompanyAddressInfoId">
             <End Role="AddressInfo" EntitySet="AddressInfo" />
@@ -1537,7 +1645,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="PolicyOwner" EntitySet="PolicyOwner" />
             <End Role="PatientInsuranceInfo" EntitySet="PatientInsuranceInfo" />
           </AssociationSet>
-          <AssociationSet Name="FK_RefferingOffice_AddressInfo_AddressId" Association="Self.FK_RefferingOffice_AddressInfo_AddressId">
+          <AssociationSet Name="FK_RefferingOffice_AddressInfo_AddressInfoId" Association="Self.FK_RefferingOffice_AddressInfo_AddressInfoId">
             <End Role="AddressInfo" EntitySet="AddressInfo" />
             <End Role="RefferingOffice" EntitySet="RefferingOffice" />
           </AssociationSet>
@@ -1625,10 +1733,11 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Patient2" Relationship="MIDASGBXModel.FK_Patient2_AddressInfo_AttorneyAddressInfoId" FromRole="AddressInfo" ToRole="Patient2" />
           <NavigationProperty Name="PatientEmpInfoes" Relationship="MIDASGBXModel.FK_PatientEmpInfo_AddressInfo_EmpAddressId" FromRole="AddressInfo" ToRole="PatientEmpInfo" />
           <NavigationProperty Name="RefferingOffices" Relationship="MIDASGBXModel.FK_RefferingOffice_AddressInfo_AddressId" FromRole="AddressInfo" ToRole="RefferingOffice" />
-          <NavigationProperty Name="PatientAccidentInfoes" Relationship="MIDASGBXModel.FK_PatientAccidentInfo_AddressInfo_AccidentAddressInfoId" FromRole="AddressInfo" ToRole="PatientAccidentInfo" />
-          <NavigationProperty Name="PatientAccidentInfoes1" Relationship="MIDASGBXModel.FK_PatientAccidentInfo_AddressInfo_HospitalAddressInfoId" FromRole="AddressInfo" ToRole="PatientAccidentInfo" />
           <NavigationProperty Name="PatientInsuranceInfoes" Relationship="MIDASGBXModel.FK_PatientInsuranceInfo_AddressInfo_InsuranceCompanyAddressInfoId" FromRole="AddressInfo" ToRole="PatientInsuranceInfo" />
           <NavigationProperty Name="PatientInsuranceInfoes1" Relationship="MIDASGBXModel.FK_PatientInsuranceInfo_AddressInfo_PolicyHolderAddressInfoId" FromRole="AddressInfo" ToRole="PatientInsuranceInfo" />
+          <NavigationProperty Name="PatientAccidentInfoes" Relationship="MIDASGBXModel.FK_PatientAccidentInfo_AddressInfo_AccidentAddressInfoId" FromRole="AddressInfo" ToRole="PatientAccidentInfo" />
+          <NavigationProperty Name="PatientAccidentInfoes1" Relationship="MIDASGBXModel.FK_PatientAccidentInfo_AddressInfo_HospitalAddressInfoId" FromRole="AddressInfo" ToRole="PatientAccidentInfo" />
+          <NavigationProperty Name="RefferingOffices1" Relationship="MIDASGBXModel.FK_RefferingOffice_AddressInfo_AddressInfoId" FromRole="AddressInfo" ToRole="RefferingOffice" />
           </EntityType>
         <EntityType Name="Company">
           <Key>
@@ -2799,19 +2908,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Patient2" EntitySet="Patient2" />
             <End Role="RefferingOffice" EntitySet="RefferingOffices" />
           </AssociationSet>
-          <EntitySet Name="PatientAccidentInfoes" EntityType="MIDASGBXModel.PatientAccidentInfo" />
-          <AssociationSet Name="FK_PatientAccidentInfo_AddressInfo_AccidentAddressInfoId" Association="MIDASGBXModel.FK_PatientAccidentInfo_AddressInfo_AccidentAddressInfoId">
-            <End Role="AddressInfo" EntitySet="AddressInfoes" />
-            <End Role="PatientAccidentInfo" EntitySet="PatientAccidentInfoes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PatientAccidentInfo_AddressInfo_HospitalAddressInfoId" Association="MIDASGBXModel.FK_PatientAccidentInfo_AddressInfo_HospitalAddressInfoId">
-            <End Role="AddressInfo" EntitySet="AddressInfoes" />
-            <End Role="PatientAccidentInfo" EntitySet="PatientAccidentInfoes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PatientAccidentInfo_Patient2_PatientId" Association="MIDASGBXModel.FK_PatientAccidentInfo_Patient2_PatientId">
-            <End Role="Patient2" EntitySet="Patient2" />
-            <End Role="PatientAccidentInfo" EntitySet="PatientAccidentInfoes" />
-          </AssociationSet>
           <EntitySet Name="InsuranceTypes" EntityType="MIDASGBXModel.InsuranceType" />
           <EntitySet Name="PatientInsuranceInfoes" EntityType="MIDASGBXModel.PatientInsuranceInfo" />
           <EntitySet Name="PolicyOwners" EntityType="MIDASGBXModel.PolicyOwner" />
@@ -2847,6 +2943,42 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="PolicyOwner" EntitySet="PolicyOwners" />
             <End Role="PatientInsuranceInfo" EntitySet="PatientInsuranceInfoes" />
           </AssociationSet>
+          <EntitySet Name="PatientAccidentInfoes" EntityType="MIDASGBXModel.PatientAccidentInfo" />
+          <EntitySet Name="PatientFamilyMembers" EntityType="MIDASGBXModel.PatientFamilyMember" />
+          <EntitySet Name="PatientTypes" EntityType="MIDASGBXModel.PatientType" />
+          <EntitySet Name="Relations" EntityType="MIDASGBXModel.Relation" />
+          <AssociationSet Name="FK_PatientAccidentInfo_AddressInfo_AccidentAddressInfoId" Association="MIDASGBXModel.FK_PatientAccidentInfo_AddressInfo_AccidentAddressInfoId">
+            <End Role="AddressInfo" EntitySet="AddressInfoes" />
+            <End Role="PatientAccidentInfo" EntitySet="PatientAccidentInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientAccidentInfo_AddressInfo_HospitalAddressInfoId" Association="MIDASGBXModel.FK_PatientAccidentInfo_AddressInfo_HospitalAddressInfoId">
+            <End Role="AddressInfo" EntitySet="AddressInfoes" />
+            <End Role="PatientAccidentInfo" EntitySet="PatientAccidentInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RefferingOffice_AddressInfo_AddressInfoId" Association="MIDASGBXModel.FK_RefferingOffice_AddressInfo_AddressInfoId">
+            <End Role="AddressInfo" EntitySet="AddressInfoes" />
+            <End Role="RefferingOffice" EntitySet="RefferingOffices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientFamilyMembers_Gender_GenderId" Association="MIDASGBXModel.FK_PatientFamilyMembers_Gender_GenderId">
+            <End Role="Gender" EntitySet="Genders" />
+            <End Role="PatientFamilyMember" EntitySet="PatientFamilyMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientAccidentInfo_Patient2_PatientId" Association="MIDASGBXModel.FK_PatientAccidentInfo_Patient2_PatientId">
+            <End Role="Patient2" EntitySet="Patient2" />
+            <End Role="PatientAccidentInfo" EntitySet="PatientAccidentInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientFamilyMembers_Patient2_PatientId" Association="MIDASGBXModel.FK_PatientFamilyMembers_Patient2_PatientId">
+            <End Role="Patient2" EntitySet="Patient2" />
+            <End Role="PatientFamilyMember" EntitySet="PatientFamilyMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientAccidentInfo_PatientType_PatientTypeId" Association="MIDASGBXModel.FK_PatientAccidentInfo_PatientType_PatientTypeId">
+            <End Role="PatientType" EntitySet="PatientTypes" />
+            <End Role="PatientAccidentInfo" EntitySet="PatientAccidentInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientFamilyMembers_Relations_RelationId" Association="MIDASGBXModel.FK_PatientFamilyMembers_Relations_RelationId">
+            <End Role="Relation" EntitySet="Relations" />
+            <End Role="PatientFamilyMember" EntitySet="PatientFamilyMembers" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="Gender">
           <Key>
@@ -2855,6 +2987,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="Id" Type="Byte" Nullable="false" />
           <Property Name="GenderText" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="PatientFamilyMembers" Relationship="MIDASGBXModel.FK_PatientFamilyMembers_Gender_GenderId" FromRole="Gender" ToRole="PatientFamilyMember" />
         </EntityType>
         <EntityType Name="City">
           <Key>
@@ -2927,9 +3060,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="PatientEmpInfo" Relationship="MIDASGBXModel.FK_Patient2_PatientEmpInfo_PatientEmpInfoId" FromRole="Patient2" ToRole="PatientEmpInfo" />
           <NavigationProperty Name="PatientEmpInfoes" Relationship="MIDASGBXModel.FK_PatientEmpInfo_Patient2_PatientId" FromRole="Patient2" ToRole="PatientEmpInfo" />
           <NavigationProperty Name="RefferingOffices" Relationship="MIDASGBXModel.FK_RefferingOffice_Patient2_PatientId" FromRole="Patient2" ToRole="RefferingOffice" />
-          <NavigationProperty Name="PatientAccidentInfoes" Relationship="MIDASGBXModel.FK_PatientAccidentInfo_Patient2_PatientId" FromRole="Patient2" ToRole="PatientAccidentInfo" />
           <NavigationProperty Name="PatientInsuranceInfo" Relationship="MIDASGBXModel.FK_Patient2_PatientInsuranceInfo_InsuranceInfoId" FromRole="Patient2" ToRole="PatientInsuranceInfo" />
           <NavigationProperty Name="PatientInsuranceInfoes" Relationship="MIDASGBXModel.FK_PatientInsuranceInfo_Patient2_PatientId" FromRole="Patient2" ToRole="PatientInsuranceInfo" />
+          <NavigationProperty Name="PatientAccidentInfoes" Relationship="MIDASGBXModel.FK_PatientAccidentInfo_Patient2_PatientId" FromRole="Patient2" ToRole="PatientAccidentInfo" />
+          <NavigationProperty Name="PatientFamilyMembers" Relationship="MIDASGBXModel.FK_PatientFamilyMembers_Patient2_PatientId" FromRole="Patient2" ToRole="PatientFamilyMember" />
           </EntityType>
         <Association Name="FK_Patient2_AddressInfo_AttorneyAddressInfoId">
           <End Type="MIDASGBXModel.AddressInfo" Role="AddressInfo" Multiplicity="0..1" />
@@ -3042,6 +3176,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="AddressInfo" Relationship="MIDASGBXModel.FK_RefferingOffice_AddressInfo_AddressId" FromRole="RefferingOffice" ToRole="AddressInfo" />
           <NavigationProperty Name="Patient2" Relationship="MIDASGBXModel.FK_RefferingOffice_Patient2_PatientId" FromRole="RefferingOffice" ToRole="Patient2" />
+          <Property Name="AddressInfoId" Type="Int32" />
+          <NavigationProperty Name="AddressInfo1" Relationship="MIDASGBXModel.FK_RefferingOffice_AddressInfo_AddressInfoId" FromRole="RefferingOffice" ToRole="AddressInfo" />
         </EntityType>
         <Association Name="FK_PatientEmpInfo_AddressInfo_EmpAddressId">
           <End Type="MIDASGBXModel.AddressInfo" Role="AddressInfo" Multiplicity="1" />
@@ -3111,68 +3247,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="RefferingOffice">
-              <PropertyRef Name="PatientId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="PatientAccidentInfo">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PatientId" Type="Int32" Nullable="false" />
-          <Property Name="AccidentDate" Type="DateTime" Precision="7" />
-          <Property Name="PlateNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ReportNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="AccidentAddressInfoId" Type="Int32" Nullable="false" />
-          <Property Name="HospitalName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="HospitalAddressInfoId" Type="Int32" Nullable="false" />
-          <Property Name="DateOfAdmission" Type="DateTime" Precision="7" />
-          <Property Name="AdditionalPatients" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="DescribeInjury" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="PatientTypeId" Type="Int32" Nullable="false" />
-          <Property Name="IsCurrentAccident" Type="Boolean" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdateByUserID" Type="Int32" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="AddressInfo" Relationship="MIDASGBXModel.FK_PatientAccidentInfo_AddressInfo_AccidentAddressInfoId" FromRole="PatientAccidentInfo" ToRole="AddressInfo" />
-          <NavigationProperty Name="AddressInfo1" Relationship="MIDASGBXModel.FK_PatientAccidentInfo_AddressInfo_HospitalAddressInfoId" FromRole="PatientAccidentInfo" ToRole="AddressInfo" />
-          <NavigationProperty Name="Patient2" Relationship="MIDASGBXModel.FK_PatientAccidentInfo_Patient2_PatientId" FromRole="PatientAccidentInfo" ToRole="Patient2" />
-        </EntityType>
-        <Association Name="FK_PatientAccidentInfo_AddressInfo_AccidentAddressInfoId">
-          <End Type="MIDASGBXModel.AddressInfo" Role="AddressInfo" Multiplicity="1" />
-          <End Type="MIDASGBXModel.PatientAccidentInfo" Role="PatientAccidentInfo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AddressInfo">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="PatientAccidentInfo">
-              <PropertyRef Name="AccidentAddressInfoId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PatientAccidentInfo_AddressInfo_HospitalAddressInfoId">
-          <End Type="MIDASGBXModel.AddressInfo" Role="AddressInfo" Multiplicity="1" />
-          <End Type="MIDASGBXModel.PatientAccidentInfo" Role="PatientAccidentInfo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AddressInfo">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="PatientAccidentInfo">
-              <PropertyRef Name="HospitalAddressInfoId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PatientAccidentInfo_Patient2_PatientId">
-          <End Type="MIDASGBXModel.Patient2" Role="Patient2" Multiplicity="1" />
-          <End Type="MIDASGBXModel.PatientAccidentInfo" Role="PatientAccidentInfo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Patient2">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="PatientAccidentInfo">
               <PropertyRef Name="PatientId" />
             </Dependent>
           </ReferentialConstraint>
@@ -3321,6 +3395,175 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="PatientInsuranceInfo">
               <PropertyRef Name="PolicyOwnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="PatientAccidentInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientId" Type="Int32" Nullable="false" />
+          <Property Name="AccidentDate" Type="DateTime" Precision="7" />
+          <Property Name="PlateNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ReportNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccidentAddressInfoId" Type="Int32" Nullable="false" />
+          <Property Name="HospitalName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="HospitalAddressInfoId" Type="Int32" Nullable="false" />
+          <Property Name="DateOfAdmission" Type="DateTime" Precision="7" />
+          <Property Name="AdditionalPatients" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DescribeInjury" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PatientTypeId" Type="Byte" />
+          <Property Name="IsCurrentAccident" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="AddressInfo" Relationship="MIDASGBXModel.FK_PatientAccidentInfo_AddressInfo_AccidentAddressInfoId" FromRole="PatientAccidentInfo" ToRole="AddressInfo" />
+          <NavigationProperty Name="AddressInfo1" Relationship="MIDASGBXModel.FK_PatientAccidentInfo_AddressInfo_HospitalAddressInfoId" FromRole="PatientAccidentInfo" ToRole="AddressInfo" />
+          <NavigationProperty Name="Patient2" Relationship="MIDASGBXModel.FK_PatientAccidentInfo_Patient2_PatientId" FromRole="PatientAccidentInfo" ToRole="Patient2" />
+          <NavigationProperty Name="PatientType" Relationship="MIDASGBXModel.FK_PatientAccidentInfo_PatientType_PatientTypeId" FromRole="PatientAccidentInfo" ToRole="PatientType" />
+        </EntityType>
+        <EntityType Name="PatientFamilyMember">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientId" Type="Int32" Nullable="false" />
+          <Property Name="RelationId" Type="Byte" Nullable="false" />
+          <Property Name="FullName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FamilyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Prefix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Sufix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Age" Type="Byte" Nullable="false" />
+          <Property Name="RaceId" Type="Byte" />
+          <Property Name="EthnicitesId" Type="Byte" />
+          <Property Name="GenderId" Type="Byte" Nullable="false" />
+          <Property Name="CellPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WorkPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PrimaryContact" Type="Boolean" />
+          <Property Name="IsInActive" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Gender" Relationship="MIDASGBXModel.FK_PatientFamilyMembers_Gender_GenderId" FromRole="PatientFamilyMember" ToRole="Gender" />
+          <NavigationProperty Name="Patient2" Relationship="MIDASGBXModel.FK_PatientFamilyMembers_Patient2_PatientId" FromRole="PatientFamilyMember" ToRole="Patient2" />
+          <NavigationProperty Name="Relation" Relationship="MIDASGBXModel.FK_PatientFamilyMembers_Relations_RelationId" FromRole="PatientFamilyMember" ToRole="Relation" />
+        </EntityType>
+        <EntityType Name="PatientType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" />
+          <Property Name="PatientTypeText" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="PatientAccidentInfoes" Relationship="MIDASGBXModel.FK_PatientAccidentInfo_PatientType_PatientTypeId" FromRole="PatientType" ToRole="PatientAccidentInfo" />
+        </EntityType>
+        <EntityType Name="Relation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" />
+          <Property Name="RelationText" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="PatientFamilyMembers" Relationship="MIDASGBXModel.FK_PatientFamilyMembers_Relations_RelationId" FromRole="Relation" ToRole="PatientFamilyMember" />
+        </EntityType>
+        <Association Name="FK_PatientAccidentInfo_AddressInfo_AccidentAddressInfoId">
+          <End Type="MIDASGBXModel.AddressInfo" Role="AddressInfo" Multiplicity="1" />
+          <End Type="MIDASGBXModel.PatientAccidentInfo" Role="PatientAccidentInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AddressInfo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PatientAccidentInfo">
+              <PropertyRef Name="AccidentAddressInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientAccidentInfo_AddressInfo_HospitalAddressInfoId">
+          <End Type="MIDASGBXModel.AddressInfo" Role="AddressInfo" Multiplicity="1" />
+          <End Type="MIDASGBXModel.PatientAccidentInfo" Role="PatientAccidentInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AddressInfo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PatientAccidentInfo">
+              <PropertyRef Name="HospitalAddressInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RefferingOffice_AddressInfo_AddressInfoId">
+          <End Type="MIDASGBXModel.AddressInfo" Role="AddressInfo" Multiplicity="0..1" />
+          <End Type="MIDASGBXModel.RefferingOffice" Role="RefferingOffice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AddressInfo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="RefferingOffice">
+              <PropertyRef Name="AddressInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientFamilyMembers_Gender_GenderId">
+          <End Type="MIDASGBXModel.Gender" Role="Gender" Multiplicity="1" />
+          <End Type="MIDASGBXModel.PatientFamilyMember" Role="PatientFamilyMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Gender">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientFamilyMember">
+              <PropertyRef Name="GenderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientAccidentInfo_Patient2_PatientId">
+          <End Type="MIDASGBXModel.Patient2" Role="Patient2" Multiplicity="1" />
+          <End Type="MIDASGBXModel.PatientAccidentInfo" Role="PatientAccidentInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientAccidentInfo">
+              <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientFamilyMembers_Patient2_PatientId">
+          <End Type="MIDASGBXModel.Patient2" Role="Patient2" Multiplicity="1" />
+          <End Type="MIDASGBXModel.PatientFamilyMember" Role="PatientFamilyMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Patient2">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientFamilyMember">
+              <PropertyRef Name="PatientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientAccidentInfo_PatientType_PatientTypeId">
+          <End Type="MIDASGBXModel.PatientType" Role="PatientType" Multiplicity="0..1" />
+          <End Type="MIDASGBXModel.PatientAccidentInfo" Role="PatientAccidentInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PatientType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientAccidentInfo">
+              <PropertyRef Name="PatientTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PatientFamilyMembers_Relations_RelationId">
+          <End Type="MIDASGBXModel.Relation" Role="Relation" Multiplicity="1" />
+          <End Type="MIDASGBXModel.PatientFamilyMember" Role="PatientFamilyMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Relation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientFamilyMember">
+              <PropertyRef Name="RelationId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3923,6 +4166,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySetMapping Name="RefferingOffices">
             <EntityTypeMapping TypeName="MIDASGBXModel.RefferingOffice">
               <MappingFragment StoreEntitySet="RefferingOffice">
+                <ScalarProperty Name="AddressInfoId" ColumnName="AddressInfoId" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -3931,32 +4175,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="IsCurrentReffOffice" ColumnName="IsCurrentReffOffice" />
                 <ScalarProperty Name="NPI" ColumnName="NPI" />
                 <ScalarProperty Name="ReffferingDoctorId" ColumnName="ReffferingDoctorId" />
-                <ScalarProperty Name="AddressId" ColumnName="AddressId" />
                 <ScalarProperty Name="RefferingOfficeId" ColumnName="RefferingOfficeId" />
-                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PatientAccidentInfoes">
-            <EntityTypeMapping TypeName="MIDASGBXModel.PatientAccidentInfo">
-              <MappingFragment StoreEntitySet="PatientAccidentInfo">
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="IsCurrentAccident" ColumnName="IsCurrentAccident" />
-                <ScalarProperty Name="PatientTypeId" ColumnName="PatientTypeId" />
-                <ScalarProperty Name="DescribeInjury" ColumnName="DescribeInjury" />
-                <ScalarProperty Name="AdditionalPatients" ColumnName="AdditionalPatients" />
-                <ScalarProperty Name="DateOfAdmission" ColumnName="DateOfAdmission" />
-                <ScalarProperty Name="HospitalAddressInfoId" ColumnName="HospitalAddressInfoId" />
-                <ScalarProperty Name="HospitalName" ColumnName="HospitalName" />
-                <ScalarProperty Name="AccidentAddressInfoId" ColumnName="AccidentAddressInfoId" />
-                <ScalarProperty Name="ReportNumber" ColumnName="ReportNumber" />
-                <ScalarProperty Name="PlateNumber" ColumnName="PlateNumber" />
-                <ScalarProperty Name="AccidentDate" ColumnName="AccidentDate" />
                 <ScalarProperty Name="PatientId" ColumnName="PatientId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -4002,6 +4221,74 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               <MappingFragment StoreEntitySet="PolicyOwner">
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="DisplayText" ColumnName="DisplayText" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PatientAccidentInfoes">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PatientAccidentInfo">
+              <MappingFragment StoreEntitySet="PatientAccidentInfo">
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsCurrentAccident" ColumnName="IsCurrentAccident" />
+                <ScalarProperty Name="PatientTypeId" ColumnName="PatientTypeId" />
+                <ScalarProperty Name="DescribeInjury" ColumnName="DescribeInjury" />
+                <ScalarProperty Name="AdditionalPatients" ColumnName="AdditionalPatients" />
+                <ScalarProperty Name="DateOfAdmission" ColumnName="DateOfAdmission" />
+                <ScalarProperty Name="HospitalAddressInfoId" ColumnName="HospitalAddressInfoId" />
+                <ScalarProperty Name="HospitalName" ColumnName="HospitalName" />
+                <ScalarProperty Name="AccidentAddressInfoId" ColumnName="AccidentAddressInfoId" />
+                <ScalarProperty Name="ReportNumber" ColumnName="ReportNumber" />
+                <ScalarProperty Name="PlateNumber" ColumnName="PlateNumber" />
+                <ScalarProperty Name="AccidentDate" ColumnName="AccidentDate" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PatientFamilyMembers">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PatientFamilyMember">
+              <MappingFragment StoreEntitySet="PatientFamilyMembers">
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsInActive" ColumnName="IsInActive" />
+                <ScalarProperty Name="PrimaryContact" ColumnName="PrimaryContact" />
+                <ScalarProperty Name="WorkPhone" ColumnName="WorkPhone" />
+                <ScalarProperty Name="CellPhone" ColumnName="CellPhone" />
+                <ScalarProperty Name="GenderId" ColumnName="GenderId" />
+                <ScalarProperty Name="EthnicitesId" ColumnName="EthnicitesId" />
+                <ScalarProperty Name="RaceId" ColumnName="RaceId" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="Sufix" ColumnName="Sufix" />
+                <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+                <ScalarProperty Name="FamilyName" ColumnName="FamilyName" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="RelationId" ColumnName="RelationId" />
+                <ScalarProperty Name="PatientId" ColumnName="PatientId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PatientTypes">
+            <EntityTypeMapping TypeName="MIDASGBXModel.PatientType">
+              <MappingFragment StoreEntitySet="PatientType">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="PatientTypeText" ColumnName="PatientTypeText" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Relations">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Relation">
+              <MappingFragment StoreEntitySet="Relations">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="RelationText" ColumnName="RelationText" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

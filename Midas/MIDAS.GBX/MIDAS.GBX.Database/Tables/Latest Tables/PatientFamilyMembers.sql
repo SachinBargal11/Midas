@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[PatientFamilyMembers]
 (
-	[Id] INT NOT NULL IDENTITY, /*Unique Id*/
+	[Id] INT NOT NULL IDENTITY(1,1),
 	[PatientId] INT NOT NULL,
 	[RelationId] TINYINT NOT NULL, 
 	[FullName] [NVARCHAR](50) NOT NULL, 
@@ -14,6 +14,7 @@
 	[CellPhone] NVARCHAR(50) NULL , 
 	[WorkPhone] NVARCHAR(50) NULL,
 	[PrimaryContact] BIT NULL DEFAULT 0, 
+	[IsInActive] [BIT] NUll DEFAULT (0),
 
 	[IsDeleted] [bit] NULL,
 	[CreateByUserID] [int] NOT NULL,
@@ -24,11 +25,11 @@
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[PatientFamilyMembers]  WITH CHECK ADD  CONSTRAINT [FK_PatientFamilyMembers_User_PatientId] FOREIGN KEY([PatientId])
-	REFERENCES [dbo].[User] ([id])
+ALTER TABLE [dbo].[PatientFamilyMembers]  WITH CHECK ADD  CONSTRAINT [FK_PatientFamilyMembers_Patient2_PatientId] FOREIGN KEY([PatientId])
+	REFERENCES [dbo].[Patient2] ([id])
 GO
 
-ALTER TABLE [dbo].[PatientFamilyMembers] CHECK CONSTRAINT [FK_PatientFamilyMembers_User_PatientId]
+ALTER TABLE [dbo].[PatientFamilyMembers] CHECK CONSTRAINT [FK_PatientFamilyMembers_Patient2_PatientId]
 GO
 
 ALTER TABLE [dbo].[PatientFamilyMembers]  WITH CHECK ADD  CONSTRAINT [FK_PatientFamilyMembers_Relations_RelationId] FOREIGN KEY([RelationId])

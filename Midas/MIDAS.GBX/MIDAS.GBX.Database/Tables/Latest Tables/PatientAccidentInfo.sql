@@ -11,7 +11,7 @@
 	[DateOfAdmission] [DATETIME2](7) NULL, 
 	[AdditionalPatients] [NVARCHAR](128) NULL, 
 	[DescribeInjury] [NVARCHAR](128) NULL, 
-	[PatientTypeId] [INT] NOT NULL, 
+	[PatientTypeId] [TINYINT] NOT NULL, 
 	[IsCurrentAccident] [BIT] NOT NULL DEFAULT 0, 
 
 	[IsDeleted] [BIT] NULL DEFAULT (0),
@@ -42,4 +42,12 @@ ALTER TABLE [dbo].[PatientAccidentInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientA
 GO
 
 ALTER TABLE [dbo].[PatientAccidentInfo] CHECK CONSTRAINT [FK_PatientAccidentInfo_AddressInfo_HospitalAddressInfoId]
+GO
+
+--ALTER TABLE [dbo].[PatientAccidentInfo] ALTER COLUMN [PatientTypeId] [TINYINT] NULL 
+ALTER TABLE [dbo].[PatientAccidentInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientAccidentInfo_PatientType_PatientTypeId] FOREIGN KEY([PatientTypeId])
+	REFERENCES [dbo].[PatientType] ([id])
+GO
+
+ALTER TABLE [dbo].[PatientAccidentInfo] CHECK CONSTRAINT [FK_PatientAccidentInfo_PatientType_PatientTypeId]
 GO
