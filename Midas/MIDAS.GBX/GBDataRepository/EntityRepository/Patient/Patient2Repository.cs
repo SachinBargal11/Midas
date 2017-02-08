@@ -129,12 +129,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.Patient2 patientBO = (BO.Patient2)(object)entity;
 
             var acc_ = _context.Patient2.Include("AddressInfo")
-                                       .Include("ContactInfo")
-                                       .Include("User")
-                                       .Include("User.AddressInfo")
-                                       .Include("User.ContactInfo")
-                                       .Where(p => p.IsDeleted.HasValue == false || p.IsDeleted == false)
-                                       .ToList<Patient2>();
+                                        .Include("ContactInfo")
+                                        .Include("User")
+                                        .Include("User.AddressInfo")
+                                        .Include("User.ContactInfo")
+                                        .Where(p => p.IsDeleted.HasValue == false || p.IsDeleted == false)
+                                        .ToList<Patient2>();
            
             if (acc_ == null)
             {
@@ -554,7 +554,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                               .Include("ContactInfo")
                                               .Include("User")
                                               .Include("User.AddressInfo")
-                                              .Include("User.ContactInfo").Where(p => p.Id == patient2DB.Id)
+                                              .Include("User.ContactInfo")
+                                              .Where(p => p.Id == patient2DB.Id)
                                               .FirstOrDefault<Patient2>();
             }
 
@@ -579,9 +580,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (object)res;
         }
         #endregion
-
-        
-
 
         public void Dispose()
         {

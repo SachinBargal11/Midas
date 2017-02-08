@@ -11,14 +11,19 @@ namespace MIDAS.GBX.BusinessObjects
     {
         [JsonProperty("name")]
         public string Name { get; set; }
+
         [JsonProperty("cellPhone")]
         public string CellPhone { get; set; }
+
         [JsonProperty("emailAddress")]
         public string EmailAddress { get; set; }
+
         [JsonProperty("homePhone")]
         public string HomePhone { get; set; }
+
         [JsonProperty("workPhone")]
         public string WorkPhone { get; set; }
+
         [JsonProperty("faxNo")]
         public string FaxNo { get; set; }
     }

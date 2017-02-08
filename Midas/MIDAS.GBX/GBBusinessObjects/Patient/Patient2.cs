@@ -15,7 +15,7 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("ssn")]
         public string SSN { get; set; }
 
-        [JsonProperty("companyid")]
+        [JsonProperty("companyId")]
         public int? CompanyId { get; set; }
 
         [JsonProperty("weight")]
@@ -24,22 +24,25 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("height")]
         public decimal? Height { get; set; }
 
-        [JsonProperty("maritalstatusid")]
+        [JsonProperty("maritalStatusId")]
         public byte? MaritalStatusId { get; set; }
 
-        [JsonProperty("dateoffirsttreatment")]
+        [JsonProperty("dateOfFirstTreatment")]
         public DateTime? DateOfFirstTreatment { get; set; }
 
-        [JsonProperty("attorneyname")]
+        [JsonProperty("attorneyName")]
         public string AttorneyName { get; set; }
 
-        [JsonProperty("attorneyaddressinfoid")]
+        [JsonProperty("attorneyAddressInfoId")]
         public int? AttorneyAddressInfoId { get; set; }
 
-        [JsonProperty("attorneycontactinfoid")]
+        [JsonProperty("attorneyContactInfoId")]
         public int? AttorneyContactInfoId { get; set; }
 
+        [JsonProperty("attorneyAddressInfo")]
         public AddressInfo AddressInfo { get; set; }
+
+        [JsonProperty("attorneyContactInfo")]
         public ContactInfo ContactInfo { get; set; }
 
         [JsonProperty("user")]
