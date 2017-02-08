@@ -18,11 +18,11 @@ namespace MIDAS.GBX.DataRepository.Model
         public Patient2()
         {
             this.Cases = new HashSet<Case>();
-            this.PatientEmpInfoes = new HashSet<PatientEmpInfo>();
-            this.RefferingOffices = new HashSet<RefferingOffice>();
-            this.PatientInsuranceInfoes = new HashSet<PatientInsuranceInfo>();
             this.PatientAccidentInfoes = new HashSet<PatientAccidentInfo>();
+            this.PatientEmpInfoes = new HashSet<PatientEmpInfo>();
             this.PatientFamilyMembers = new HashSet<PatientFamilyMember>();
+            this.PatientInsuranceInfoes = new HashSet<PatientInsuranceInfo>();
+            this.RefferingOffices = new HashSet<RefferingOffice>();
         }
     
         public int Id { get; set; }
@@ -52,18 +52,18 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual Company Company { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual MaritalStatu MaritalStatu { get; set; }
-        public virtual User User { get; set; }
         public virtual PatientEmpInfo PatientEmpInfo { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PatientEmpInfo> PatientEmpInfoes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RefferingOffice> RefferingOffices { get; set; }
         public virtual PatientInsuranceInfo PatientInsuranceInfo { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
+        public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientAccidentInfo> PatientAccidentInfoes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientEmpInfo> PatientEmpInfoes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientFamilyMember> PatientFamilyMembers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RefferingOffice> RefferingOffices { get; set; }
     }
 }
