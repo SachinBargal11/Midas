@@ -17,7 +17,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public int Id { get; set; }
         public int PatientId { get; set; }
         public Nullable<byte> RefferingOfficeId { get; set; }
-        public Nullable<int> AddressId { get; set; }
+        public Nullable<int> AddressInfoId { get; set; }
         public Nullable<byte> ReffferingDoctorId { get; set; }
         public string NPI { get; set; }
         public bool IsCurrentReffOffice { get; set; }
@@ -26,10 +26,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-        public Nullable<int> AddressInfoId { get; set; }
     
         public virtual AddressInfo AddressInfo { get; set; }
         public virtual Patient2 Patient2 { get; set; }
-        public virtual AddressInfo AddressInfo1 { get; set; }
     }
 }

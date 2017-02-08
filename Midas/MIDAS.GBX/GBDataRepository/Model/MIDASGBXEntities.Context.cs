@@ -26,6 +26,7 @@ namespace MIDAS.GBX.DataRepository.Model
         }
     
         public virtual DbSet<AddressInfo> AddressInfoes { get; set; }
+        public virtual DbSet<Case> Cases { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<CompanySpecialtyDetail> CompanySpecialtyDetails { get; set; }
         public virtual DbSet<CompanyType> CompanyTypes { get; set; }
@@ -33,6 +34,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<Doctor> Doctors { get; set; }
         public virtual DbSet<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }
         public virtual DbSet<DoctorSpeciality> DoctorSpecialities { get; set; }
+        public virtual DbSet<Gender> Genders { get; set; }
+        public virtual DbSet<InsuranceType> InsuranceTypes { get; set; }
         public virtual DbSet<Invitation> Invitations { get; set; }
         public virtual DbSet<InvitationType> InvitationTypes { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
@@ -41,6 +44,15 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<OTP> OTPs { get; set; }
         public virtual DbSet<PasswordToken> PasswordTokens { get; set; }
         public virtual DbSet<Patient> Patients { get; set; }
+        public virtual DbSet<Patient2> Patient2 { get; set; }
+        public virtual DbSet<PatientAccidentInfo> PatientAccidentInfoes { get; set; }
+        public virtual DbSet<PatientEmpInfo> PatientEmpInfoes { get; set; }
+        public virtual DbSet<PatientFamilyMember> PatientFamilyMembers { get; set; }
+        public virtual DbSet<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
+        public virtual DbSet<PatientType> PatientTypes { get; set; }
+        public virtual DbSet<PolicyOwner> PolicyOwners { get; set; }
+        public virtual DbSet<RefferingOffice> RefferingOffices { get; set; }
+        public virtual DbSet<Relation> Relations { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
         public virtual DbSet<RoomTest> RoomTests { get; set; }
         public virtual DbSet<Schedule> Schedules { get; set; }
@@ -55,18 +67,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<UserCompany> UserCompanies { get; set; }
         public virtual DbSet<UserCompanyRole> UserCompanyRoles { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
-        public virtual DbSet<Gender> Genders { get; set; }
         public virtual DbSet<City> Cities { get; set; }
-        public virtual DbSet<Case> Cases { get; set; }
-        public virtual DbSet<Patient2> Patient2 { get; set; }
-        public virtual DbSet<PatientEmpInfo> PatientEmpInfoes { get; set; }
-        public virtual DbSet<RefferingOffice> RefferingOffices { get; set; }
-        public virtual DbSet<InsuranceType> InsuranceTypes { get; set; }
-        public virtual DbSet<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
-        public virtual DbSet<PolicyOwner> PolicyOwners { get; set; }
-        public virtual DbSet<PatientAccidentInfo> PatientAccidentInfoes { get; set; }
-        public virtual DbSet<PatientFamilyMember> PatientFamilyMembers { get; set; }
-        public virtual DbSet<PatientType> PatientTypes { get; set; }
-        public virtual DbSet<Relation> Relations { get; set; }
     }
 }
