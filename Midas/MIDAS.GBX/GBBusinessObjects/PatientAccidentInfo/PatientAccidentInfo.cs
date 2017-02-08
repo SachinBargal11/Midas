@@ -9,24 +9,47 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class PatientAccidentInfo : GbObject
     {
-        public int PatientId { get; set; }
-        public DateTime? AccidentDate { get; set; }
-        public string PlateNumber { get; set; }
-        public string ReportNumber { get; set; }
-        public int AccidentAddressInfoId { get; set; }
-        public string HospitalName { get; set; }
-        public int HospitalAddressInfoId { get; set; }
-        public DateTime? DateOfAdmission { get; set; }
-        public string AdditionalPatients { get; set; }
-        public string DescribeInjury { get; set; }
-        public int PatientTypeId { get; set; }
-        public bool IsCurrentAccident { get; set; }
+        [JsonProperty("patientId")]
+        public int patientId { get; set; }
 
-        public AddressInfo AccidentAddressInfo { get; set; }
-        public AddressInfo HospitalAddressInfo { get; set; }
-        public Patient2 Patient2 { get; set; }
+        [JsonProperty("accidentDate")]
+        public DateTime? accidentDate { get; set; }
 
+        [JsonProperty("plateNumber")]
+        public string plateNumber { get; set; }
 
+        [JsonProperty("reportNumber")]
+        public string reportNumber { get; set; }
+
+        [JsonProperty("accidentAddressInfoId")]
+        public int accidentAddressInfoId { get; set; }
+
+        [JsonProperty("hospitalName")]
+        public string hospitalName { get; set; }
+
+        [JsonProperty("hospitalAddressInfoId")]
+        public int hospitalAddressInfoId { get; set; }
+
+        [JsonProperty("dateOfAdmission")]
+        public DateTime? dateOfAdmission { get; set; }
+
+        [JsonProperty("additionalPatients")]
+        public string additionalPatients { get; set; }
+
+        [JsonProperty("describeInjury")]
+        public string describeInjury { get; set; }
+
+        [JsonProperty("patientTypeId")]
+        public int patientTypeId { get; set; }
+
+        [JsonProperty("isCurrentAccident")]
+        public bool isCurrentAccident { get; set; }
+
+        [JsonProperty("accidentAddressInfo")]
+        public AddressInfo accidentAddressInfo { get; set; }
+
+        [JsonProperty("hospitalAddressInfo")]
+        public AddressInfo hospitalAddressInfo { get; set; }
 
     }
 }

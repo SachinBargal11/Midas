@@ -9,14 +9,29 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class PatientEmpInfo : GbObject
     {
-        public int PatientId { get; set; }
-        public string JobTitle { get; set; }
-        public string EmpName { get; set; }
-        public int AddressInfoId { get; set; }
-        public int ContactInfoId { get; set; }
-        public bool IsCurrentEmp { get; set; }
-        public AddressInfo AddressInfo { get; set; }
-        public ContactInfo ContactInfo { get; set; }
+        [JsonProperty("patientId")]
+        public int patientId { get; set; }
+
+        [JsonProperty("jobTitle")]
+        public string jobTitle { get; set; }
+
+        [JsonProperty("empName")]
+        public string empName { get; set; }
+
+        [JsonProperty("addressInfoId")]
+        public int addressInfoId { get; set; }
+
+        [JsonProperty("contactInfoId")]
+        public int contactInfoId { get; set; }
+
+        [JsonProperty("isCurrentEmp")]
+        public bool isCurrentEmp { get; set; }
+
+        [JsonProperty("addressInfo")]
+        public AddressInfo addressInfo { get; set; }
+
+        [JsonProperty("contactInfo")]
+        public ContactInfo contactInfo { get; set; }
         //public Patient2 Patient2 { get; set; }
         //public Patient2 Patient21 { get; set; }
 

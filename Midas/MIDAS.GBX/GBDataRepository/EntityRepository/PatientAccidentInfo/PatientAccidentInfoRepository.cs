@@ -31,18 +31,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             BO.PatientAccidentInfo PatientAccidentInfoBO = new BO.PatientAccidentInfo();
             PatientAccidentInfoBO.ID = PatientEmpInfo.Id;
-            PatientAccidentInfoBO.PatientId = PatientEmpInfo.PatientId;
-            PatientAccidentInfoBO.AccidentDate = PatientEmpInfo.AccidentDate;
-            PatientAccidentInfoBO.PlateNumber = PatientEmpInfo.PlateNumber;
-            PatientAccidentInfoBO.ReportNumber = PatientEmpInfo.ReportNumber;
-            PatientAccidentInfoBO.AccidentAddressInfoId = PatientEmpInfo.AccidentAddressInfoId;
-            PatientAccidentInfoBO.HospitalName = PatientEmpInfo.HospitalName;
-            PatientAccidentInfoBO.HospitalAddressInfoId = PatientEmpInfo.HospitalAddressInfoId;
-            PatientAccidentInfoBO.DateOfAdmission = PatientEmpInfo.DateOfAdmission;
-            PatientAccidentInfoBO.AdditionalPatients = PatientEmpInfo.AdditionalPatients;
-            PatientAccidentInfoBO.DescribeInjury = PatientEmpInfo.DescribeInjury;
-            PatientAccidentInfoBO.PatientTypeId = PatientEmpInfo.PatientTypeId;
-            PatientAccidentInfoBO.IsCurrentAccident = PatientEmpInfo.IsCurrentAccident;
+            PatientAccidentInfoBO.patientId = PatientEmpInfo.PatientId;
+            PatientAccidentInfoBO.accidentDate = PatientEmpInfo.AccidentDate;
+            PatientAccidentInfoBO.plateNumber = PatientEmpInfo.PlateNumber;
+            PatientAccidentInfoBO.reportNumber = PatientEmpInfo.ReportNumber;
+            PatientAccidentInfoBO.accidentAddressInfoId = PatientEmpInfo.AccidentAddressInfoId;
+            PatientAccidentInfoBO.hospitalName = PatientEmpInfo.HospitalName;
+            PatientAccidentInfoBO.hospitalAddressInfoId = PatientEmpInfo.HospitalAddressInfoId;
+            PatientAccidentInfoBO.dateOfAdmission = PatientEmpInfo.DateOfAdmission;
+            PatientAccidentInfoBO.additionalPatients = PatientEmpInfo.AdditionalPatients;
+            PatientAccidentInfoBO.describeInjury = PatientEmpInfo.DescribeInjury;
+            PatientAccidentInfoBO.patientTypeId = PatientEmpInfo.PatientTypeId;
+            PatientAccidentInfoBO.isCurrentAccident = PatientEmpInfo.IsCurrentAccident;
 
 
 
@@ -58,7 +58,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 boAddress.Country = PatientEmpInfo.AddressInfo.Country;
                 boAddress.CreateByUserID = PatientEmpInfo.AddressInfo.CreateByUserID;
                 boAddress.ID = PatientEmpInfo.AddressInfo.id;
-                PatientAccidentInfoBO.AccidentAddressInfo = boAddress;
+                PatientAccidentInfoBO.accidentAddressInfo = boAddress;
             }
             if (PatientEmpInfo.AddressInfo1 != null)
             {
@@ -72,7 +72,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 boAddress1.Country = PatientEmpInfo.AddressInfo1.Country;
                 boAddress1.CreateByUserID = PatientEmpInfo.AddressInfo1.CreateByUserID;
                 boAddress1.ID = PatientEmpInfo.AddressInfo1.id;
-                PatientAccidentInfoBO.HospitalAddressInfo = boAddress1;
+                PatientAccidentInfoBO.hospitalAddressInfo = boAddress1;
             }
 
             return (T)(object)PatientAccidentInfoBO;
@@ -117,8 +117,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object Save<T>(T entity)
         {
             BO.PatientAccidentInfo PatientAccidentInfoBO = (BO.PatientAccidentInfo)(object)entity;
-            BO.AddressInfo AccidentAddressInfoBO = PatientAccidentInfoBO.AccidentAddressInfo;
-            BO.AddressInfo HospitalAddressInfoBO = PatientAccidentInfoBO.HospitalAddressInfo;
+            BO.AddressInfo AccidentAddressInfoBO = PatientAccidentInfoBO.accidentAddressInfo;
+            BO.AddressInfo HospitalAddressInfoBO = PatientAccidentInfoBO.hospitalAddressInfo;
 
             PatientAccidentInfo PatientAccidentInfoDB = new PatientAccidentInfo();
 
@@ -209,9 +209,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 #region patient Accident Info
                 if (PatientAccidentInfoBO != null)
                 {
-                    if (PatientAccidentInfoBO.IsCurrentAccident == true)
+                    if (PatientAccidentInfoBO.isCurrentAccident == true)
                     {
-                        var existingPatientAccidentInfoDB = _context.PatientAccidentInfoes.Where(p => p.PatientId == PatientAccidentInfoBO.PatientId).ToList();
+                        var existingPatientAccidentInfoDB = _context.PatientAccidentInfoes.Where(p => p.PatientId == PatientAccidentInfoBO.patientId).ToList();
                         existingPatientAccidentInfoDB.ForEach(p => p.IsCurrentAccident = false);
                     }
                     bool Add_PatientAccidentInfoDB = false;
@@ -228,18 +228,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
-                    PatientAccidentInfoDB.PatientId = PatientAccidentInfoBO.PatientId;
-                    PatientAccidentInfoDB.AccidentDate = PatientAccidentInfoBO.AccidentDate;
-                    PatientAccidentInfoDB.PlateNumber = PatientAccidentInfoBO.PlateNumber;
-                    PatientAccidentInfoDB.ReportNumber = PatientAccidentInfoBO.ReportNumber;
-                    PatientAccidentInfoDB.HospitalName = PatientAccidentInfoBO.HospitalName;
-                    PatientAccidentInfoDB.DateOfAdmission = PatientAccidentInfoBO.DateOfAdmission;
-                    PatientAccidentInfoDB.AdditionalPatients = PatientAccidentInfoBO.AdditionalPatients;
-                    PatientAccidentInfoDB.DescribeInjury = PatientAccidentInfoBO.DescribeInjury;
-                    PatientAccidentInfoDB.PatientTypeId = PatientAccidentInfoBO.PatientTypeId;
+                    PatientAccidentInfoDB.PatientId = PatientAccidentInfoBO.patientId;
+                    PatientAccidentInfoDB.AccidentDate = PatientAccidentInfoBO.accidentDate;
+                    PatientAccidentInfoDB.PlateNumber = PatientAccidentInfoBO.plateNumber;
+                    PatientAccidentInfoDB.ReportNumber = PatientAccidentInfoBO.reportNumber;
+                    PatientAccidentInfoDB.HospitalName = PatientAccidentInfoBO.hospitalName;
+                    PatientAccidentInfoDB.DateOfAdmission = PatientAccidentInfoBO.dateOfAdmission;
+                    PatientAccidentInfoDB.AdditionalPatients = PatientAccidentInfoBO.additionalPatients;
+                    PatientAccidentInfoDB.DescribeInjury = PatientAccidentInfoBO.describeInjury;
+                    PatientAccidentInfoDB.PatientTypeId = PatientAccidentInfoBO.patientTypeId;
                     PatientAccidentInfoDB.AccidentAddressInfoId = AccidentAddressInfoDB.id;
                     PatientAccidentInfoDB.HospitalAddressInfoId = HospitalAddressInfoDB.id;
-                    PatientAccidentInfoDB.IsCurrentAccident = PatientAccidentInfoBO.IsCurrentAccident;
+                    PatientAccidentInfoDB.IsCurrentAccident = PatientAccidentInfoBO.isCurrentAccident;
 
                     if (Add_PatientAccidentInfoDB == true)
                     {
