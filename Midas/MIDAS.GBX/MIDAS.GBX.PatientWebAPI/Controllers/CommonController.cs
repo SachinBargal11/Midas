@@ -18,6 +18,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         private IRequestHandler<MaritalStatus> requestMaritalStatusHandler;
         private IRequestHandler<Gender> requestGenderHandler;
         private IRequestHandler<PolicyOwner> requestPolicyOwnerHandler;
+        private IRequestHandler<InsuranceType> requestInsuranceTypeHandler;
 
         public CommonController()
         {
@@ -26,6 +27,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             requestMaritalStatusHandler = new GbApiRequestHandler<MaritalStatus>();
             requestGenderHandler = new GbApiRequestHandler<Gender>();
             requestPolicyOwnerHandler = new GbApiRequestHandler<PolicyOwner>();
+            requestInsuranceTypeHandler = new GbApiRequestHandler<InsuranceType>();
         }
 
         [HttpGet]
@@ -98,5 +100,18 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             return requestPolicyOwnerHandler.GetObject(Request, id);
         }
 
+        [HttpGet]
+        [Route("getInsuranceTypes")]
+        public HttpResponseMessage GetInsuranceTypes()
+        {
+            return requestInsuranceTypeHandler.GetObjects(Request);
+        }
+
+        [HttpGet]
+        [Route("getInsuranceTypeById/{id}")]
+        public HttpResponseMessage GetInsuranceTypeById(int id)
+        {
+            return requestInsuranceTypeHandler.GetObject(Request, id);
+        }
     }
 }
