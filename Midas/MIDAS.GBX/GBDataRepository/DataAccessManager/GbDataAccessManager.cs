@@ -59,6 +59,9 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+
+  
+
         #region Token Realated Functions
         public object DeleteByUserId(int userId)
         {
@@ -653,6 +656,31 @@ namespace MIDAS.GBX.DataAccessManager
                 return ex;
             }
         }
+
+
+        public object DeleteById(int id)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.DeleteById(id);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+
+        }
+
 
     }
 }

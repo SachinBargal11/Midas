@@ -159,27 +159,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-
-
-        //#region Get All 
-        //public override Object Get<T>(T entity)
-        //{
-        //    BO.InsuranceInfo insuranceBO = (BO.InsuranceInfo)(object)entity;
-        //    var acc = _context.InsuranceInfoes.Include("User").ToList<InsuranceInfo>();
-        //    if (acc == null)
-        //    {
-        //        return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-        //    }
-        //    List<BO.InsuranceInfo> listinsurance = new List<BO.InsuranceInfo>();
-        //    foreach (InsuranceInfo item in acc)
-        //    {
-        //        listinsurance.Add(Convert<BO.InsuranceInfo, InsuranceInfo>(item));
-        //    }
-        //    return listinsurance;
-
-        //}
-        //#endregion
-
         #region save
         public override object Save<T>(T entity)
         {
@@ -412,7 +391,64 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             return (object)res;
         }
         #endregion
-        
+
+        #region Delete By ID
+        public override object DeleteById(int id)
+        {
+            var acc = _context.PatientInsuranceInfoes.Include("addressInfo").Include("contactInfo")
+                              .Include("addressInfo1").Include("contactInfo1")
+                              .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).FirstOrDefault<PatientInsuranceInfo>();
+
+            if (acc != null)
+            {
+                if (acc.AddressInfo != null)
+                {
+                    acc.AddressInfo.IsDeleted = true;
+                }
+                else
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+                if (acc.ContactInfo != null)
+                {
+                    acc.ContactInfo.IsDeleted = true;
+                }
+                else
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+                if (acc.AddressInfo1 != null)
+                {
+                    acc.AddressInfo1.IsDeleted = true;
+                }
+                else
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+                if (acc.ContactInfo1 != null)
+                {
+                    acc.ContactInfo1.IsDeleted = true;
+                }
+                else
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                acc.IsDeleted = true;
+                _context.SaveChanges();
+            }
+            else if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+
+            return (object)acc;
+        }
+        #endregion
+
+
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

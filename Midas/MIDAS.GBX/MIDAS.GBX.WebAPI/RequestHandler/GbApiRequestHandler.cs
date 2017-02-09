@@ -77,6 +77,7 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+  
         public HttpResponseMessage ValidateUniqueName(HttpRequestMessage request, T gbObject)
         {
             throw new NotImplementedException();
@@ -386,6 +387,19 @@ namespace MIDAS.GBX.WebAPI
         public HttpResponseMessage GetByPatientId(HttpRequestMessage request, int PatientId)
         {
             var objResult = dataAccessManager.GetByPatientId(PatientId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage DeleteById(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.DeleteById(id);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);

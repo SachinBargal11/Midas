@@ -21,12 +21,10 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage ValidateToken(HttpRequestMessage request,string tokenId);
         HttpResponseMessage Kill(HttpRequestMessage requeststring,int tokenId);
         HttpResponseMessage DeleteByUserId(HttpRequestMessage request,int userId);
-
         HttpResponseMessage ValidateOTP(HttpRequestMessage request, T gbObject);
         HttpResponseMessage RegenerateOTP(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GeneratePasswordLink(HttpRequestMessage request, T gbObject);
         HttpResponseMessage ValidatePassword(HttpRequestMessage request, T gbObject);
-
 
         HttpResponseMessage GetObjects(HttpRequestMessage request);
         HttpResponseMessage GetObjects(HttpRequestMessage request, string param1);
@@ -34,5 +32,8 @@ namespace MIDAS.GBX.WebAPI
         //HttpResponseMessage CreateGbObjectPatient(HttpRequestMessage request, T gbObject);
         HttpResponseMessage ResetPassword(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetByPatientId(HttpRequestMessage request, int PatientId);
+        HttpResponseMessage DeleteById(HttpRequestMessage request, int id);
+        
+
     }
 }

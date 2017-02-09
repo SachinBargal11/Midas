@@ -37,5 +37,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetByCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByPatientId(int PatientId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object ResetPassword(T gbObject);
+        Object DeleteById(int id);
+
     }
 }

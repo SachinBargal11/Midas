@@ -171,6 +171,11 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+        public virtual Object DeleteById(int id)
+        {
+            throw new NotImplementedException();
+        }
+        
         #endregion
     }
 }
