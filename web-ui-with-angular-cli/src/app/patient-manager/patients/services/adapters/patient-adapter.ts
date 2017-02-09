@@ -15,7 +15,7 @@ export class PatientAdapter {
                 ssn: patientData.ssn,
                 weight: patientData.weight,
                 maritalStatusId: patientData.maritalStatusId,
-                dateOfFirstTreatment: patientData.dateOfFirstTreatment,
+                dateOfFirstTreatment: patientData.dateOfFirstTreatment ? moment(patientData.dateOfFirstTreatment) : null,
                 user: UserAdapter.parseResponse(patientData.user),
                 employer: EmployerAdapter.parseResponse(patientData.employer),
                 insurance: InsuranceAdapter.parseResponse(patientData.insurance),

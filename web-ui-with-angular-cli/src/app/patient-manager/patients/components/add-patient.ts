@@ -54,6 +54,7 @@ export class AddPatientComponent implements OnInit {
                 dateOfFirstTreatment: [''],
                 dob: [''],
                 firstname: ['', Validators.required],
+                middlename: [''],
                 lastname: ['', Validators.required],
                 gender: ['', Validators.required]
             }),
@@ -108,20 +109,19 @@ export class AddPatientComponent implements OnInit {
     savePatient() {
         this.isSavePatientProgress = true;
         let patientFormValues = this.patientform.value;
-        console.log(this._sessionStore.session.account.toJS());
-        console.log(this._sessionStore.session.currentCompany.toJS());
-        
         let result;
         let patient = new Patient({
             ssn: patientFormValues.userInfo.ssn,
             weight: patientFormValues.userInfo.weight,
             height: patientFormValues.userInfo.height,
+            dateOfFirstTreatment: patientFormValues.userInfo.dateOfFirstTreatment ? moment(patientFormValues.userInfo.dateOfFirstTreatment) : null,
             maritalStatusId: patientFormValues.userInfo.maritalStatusId,
             createByUserId: this._sessionStore.session.account.user.id,
             companyId: this._sessionStore.session.currentCompany.id,
             user: new User({
-                dateOfBirth: patientFormValues.userInfo.dob,
+                dateOfBirth: patientFormValues.userInfo.dob ? moment(patientFormValues.userInfo.dob) : null,
                 firstName: patientFormValues.userInfo.firstname,
+                middleName: patientFormValues.userInfo.middlename,
                 lastName: patientFormValues.userInfo.lastname,
                 userType: UserType.PATIENT,
                 userName: patientFormValues.contact.email,

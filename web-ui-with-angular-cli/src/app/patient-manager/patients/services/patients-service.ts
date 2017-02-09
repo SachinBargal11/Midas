@@ -64,7 +64,8 @@ export class PatientsService {
     addPatient(patient: Patient): Observable<Patient> {
         let promise: Promise<Patient> = new Promise((resolve, reject) => {
             let requestData: any = patient.toJS();
-            requestData.user.password = 123456;
+            requestData.user.dateOfBirth = requestData.user.dateOfBirth ? requestData.user.dateOfBirth.format('YYYY-MM-DD') : null;
+            requestData.dateOfFirstTreatment = requestData.dateOfFirstTreatment ? requestData.dateOfFirstTreatment.format('YYYY-MM-DD') : null;
             requestData.user.contactInfo = requestData.user.contact;
             requestData.user.addressInfo = requestData.user.address;
             requestData.user = _.omit(requestData.user, 'contact', 'address');
@@ -77,7 +78,7 @@ export class PatientsService {
                     name: 'sergi----'
                 }
             });
-            debugger;
+
             return this._http.post(this._url + '/patient/savePatient', JSON.stringify(requestData), {
                 headers: this._headers
             })
@@ -97,7 +98,8 @@ export class PatientsService {
     updatePatient(patient: Patient): Observable<Patient> {
         let promise: Promise<Patient> = new Promise((resolve, reject) => {
             let requestData: any = patient.toJS();
-            requestData.user.password = 123456;
+            requestData.dateOfFirstTreatment = requestData.dateOfFirstTreatment ? requestData.dateOfFirstTreatment.format('YYYY-MM-DD') : null;
+            requestData.user.dateOfBirth = requestData.user.dateOfBirth ? requestData.user.dateOfBirth.format('YYYY-MM-DD') : null;
             requestData.user.contactInfo = requestData.user.contact;
             requestData.user.addressInfo = requestData.user.address;
             requestData.user = _.omit(requestData.user, 'contact', 'address');
@@ -129,9 +131,7 @@ export class PatientsService {
     deletePatient(patient: Patient): Observable<Patient> {
         let promise: Promise<Patient> = new Promise((resolve, reject) => {
             let requestData: any = patient.toJS();
-            requestData.locationId = 1;
             requestData.isDeleted = 1;
-            requestData.user.password = 123456;
             requestData.user.contactInfo = requestData.user.contact;
             requestData.user.addressInfo = requestData.user.address;
             requestData.user = _.omit(requestData.user, 'contact', 'address');

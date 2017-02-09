@@ -16,6 +16,12 @@
                 </div>
             </div>
             <div class="col-lg-4">
+                <label class="form-label"> Middle Name</label>
+                <div class="form-group">
+                    <input [ngModel]="patientInfoJS.user.middleName" formControlName="middlename" type="text" class="form-control" placeholder="">
+                </div>
+            </div>
+            <div class="col-lg-4">
                 <label class="form-label"> Last Name
                                             <span class="color-red">*</span>
                                         </label>
@@ -29,6 +35,9 @@
                         </div>
                 </div>
             </div>
+
+        </div>
+        <div class="row">
             <div class="col-lg-4">
                 <label class="form-label"> Gender
                                     <span class="color-red">*</span>
@@ -44,25 +53,6 @@
                     <div class='error-list' *ngIf="basicformControls.gender.touched && !basicformControls.gender.valid">
                         <ul>
                             <li *ngIf="basicformControls.gender.hasError('required')">Gender is required.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-4">
-                <label class="form-label"> Date of Birth
-                                        </label>
-                <div class="form-group" [class.error]="basicformControls.dob.touched && !basicformControls.dob.valid">
-                    <div class='input-group date'>
-                        <p-calendar [ngModel]="patientInfoJS.user.dateOfBirth" formControlName="dob" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true"
-                            [yearNavigator]="true" yearRange="1920:2050" [class.error]="basicformControls.dob.touched && !basicformControls.dob.valid"
-                            showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
-                            </p-calendar>
-                    </div>
-                    <div class='error-list' *ngIf="basicformControls.dob.touched && !basicformControls.dob.valid">
-                        <ul>
-                            <li *ngIf="basicformControls.dob.hasError('required')">Date Of Birth is required.</li>
                         </ul>
                     </div>
                 </div>
@@ -86,6 +76,24 @@
                         </div>
                 </div>
             </div>
+            <div class="col-lg-4">
+                <label class="form-label"> Date of Birth
+                                        </label>
+                <div class="form-group" [class.error]="basicformControls.dob.touched && !basicformControls.dob.valid">
+                    <div class='input-group date'>
+                        <p-calendar [ngModel]="patientInfoJS.user.dateOfBirth" formControlName="dob" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true"
+                            [yearNavigator]="true" yearRange="1920:2050" [class.error]="basicformControls.dob.touched && !basicformControls.dob.valid"
+                            showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
+                            </p-calendar>
+                    </div>
+                    <div class='error-list' *ngIf="basicformControls.dob.touched && !basicformControls.dob.valid">
+                        <ul>
+                            <li *ngIf="basicformControls.dob.hasError('required')">Date Of Birth is required.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
         </div>
         <button [disabled]="!basicform.valid || isSavePatientProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSavePatientProgress"></loader>

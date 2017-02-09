@@ -20,7 +20,12 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="col-lg-4">
+                    <label class="form-label"> Middle Name</label>
+                    <div class="form-group">
+                        <input formControlName="middlename" type="text" class="form-control" placeholder="">
+                    </div>
+                </div>
                 <div class="col-lg-4">
                     <label class="form-label"> Last Name
                                             <span class="color-red">*</span>
@@ -34,6 +39,8 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-lg-4">
                     <label class="form-label"> Gender
                                     <span class="color-red">*</span>
@@ -51,20 +58,6 @@
                                 <li *ngIf="patientformControls.userInfo.controls.gender.hasError('required')">Gender is required.</li>
                             </ul>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
-                    <label class="form-label"> Date of Birth
-                                        </label>
-                    <div class="form-group">
-                        <div class='input-group date'>
-                            <p-calendar formControlName="dob" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true" [yearNavigator]="true"
-                                yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
-                                </p-calendar>
-                        </div>
-
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -87,11 +80,11 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <label class="form-label"> Date of First Treatment
+                    <label class="form-label"> Date of Birth
                                         </label>
                     <div class="form-group">
                         <div class='input-group date'>
-                            <p-calendar formControlName="dateOfFirstTreatment" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true" [yearNavigator]="true"
+                            <p-calendar formControlName="dob" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true" [yearNavigator]="true"
                                 yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
                                 </p-calendar>
                         </div>
@@ -99,6 +92,8 @@
                 </div>
             </div>
             <div class="row">
+
+
                 <div class="col-lg-4">
                     <label class="form-label"> SSN
                                             <span class="color-red">*</span>
@@ -124,6 +119,20 @@
                         <input formControlName="height" type="text" class="form-control" placeholder="">
                     </div>
                 </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Date of First Treatment
+                                        </label>
+                    <div class="form-group">
+                        <div class='input-group date'>
+                            <p-calendar formControlName="dateOfFirstTreatment" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true" [yearNavigator]="true"
+                                yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
+                                </p-calendar>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
