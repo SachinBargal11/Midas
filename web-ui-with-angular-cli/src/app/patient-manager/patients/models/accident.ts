@@ -4,6 +4,7 @@ import { Address } from '../../../commons/models/address';
 
 const AccidentRecord = Record({
     id: 0,
+    patientId: 0,
     address: null,
     accidentDate: 0,
     plateNumber: '',
@@ -25,7 +26,7 @@ export class Accident extends AccidentRecord {
     address: Address;
     accidentDate: number;
     plateNumber: string;
-    reportNumber: number;
+    reportNumber: string;
     hospitalName: string;
     hospitalAddress: string;
     injuryDescription: string;

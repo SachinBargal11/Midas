@@ -1,12 +1,12 @@
-<h3 class="with-border">Add Accident Information</h3>
-<form [formGroup]="accidentform">                           
+<h3 class="with-border">Patient Accident Information</h3>
+<form [formGroup]="accidentform" (ngSubmit)="save()">                           
               <div class="row">
                  <div class="col-lg-4">
                     <label class="form-label">Plate Number
                                 <span class="color-red">*</span>
                             </label>
                     <div class="form-group" [class.error]="accidentformControls.plateNumber.touched && !accidentformControls.plateNumber.valid">
-                        <input type="number" formControlName="plateNumber" [class.error]="!accidentformControls.plateNumber.valid" class="form-control"/>
+                        <input type="text" formControlName="plateNumber" [class.error]="!accidentformControls.plateNumber.valid" class="form-control"/>
                            
                         <div class='error-list' *ngIf="accidentformControls.plateNumber.touched && !accidentformControls.plateNumber.valid">
                             <ul>
@@ -74,7 +74,7 @@
                                 <span class="color-red">*</span>
                             </label>
                     <div class="form-group" [class.error]="accidentformControls.reportNumber.touched && !accidentformControls.reportNumber.valid">
-                        <input type="number" formControlName="reportNumber" [class.error]="!accidentformControls.reportNumber.valid" class="form-control"/>
+                        <input type="text" formControlName="reportNumber" [class.error]="!accidentformControls.reportNumber.valid" class="form-control"/>
                            
                         <div class='error-list' *ngIf="accidentformControls.reportNumber.touched && !accidentformControls.reportNumber.valid">
                             <ul>

@@ -5,9 +5,9 @@ import { AddressAdapter } from '../../../../commons/services/adapters/address-ad
 export class AccidentAdapter {
     static parseResponse(data: any): Accident {
 
-        let employer = null;
+        let accident = null;
         if (data) {
-            employer = new Accident({
+            accident = new Accident({
                 id: data.id,
                 accidentDate: data.accidentDate,
                 plateNumber: data.plateNumber,
@@ -22,6 +22,6 @@ export class AccidentAdapter {
                 address: AddressAdapter.parseResponse(data.addressInfo)
             });
         }
-        return employer;
+        return accident;
     }
 }
