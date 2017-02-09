@@ -581,6 +581,34 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Delete By ID
+        public override object Delete(int id)
+        {
+            Patient2 patient2 = new Patient2();
+            //BO.SpecialtyDetails specialtyDetailBO = entity as BO.SpecialtyDetails;
+
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                patient2 = _context.Patient2.Include("User").Where(p => p.Id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault();
+
+                if (patient2 != null)
+                {
+                    patient2.IsDeleted = true;
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                }
+
+                dbContextTransaction.Commit();
+            }
+            var res = Convert<BO.Patient2, Patient2>(patient2);
+            return (object)res;
+        }
+        #endregion
+
         public void Dispose()
         {
             // Use SupressFinalize in case a subclass 
