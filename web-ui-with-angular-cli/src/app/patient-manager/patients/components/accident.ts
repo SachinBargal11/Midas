@@ -15,6 +15,8 @@ export class AccidentInfoComponent implements OnInit {
     states: any[];
     maxDate: Date;
     cities: any[];
+    accidentCities:any[];
+    patientId: number;
     selectedCity = 0;
     isCitiesLoading = false;
     options = {
@@ -40,17 +42,22 @@ export class AccidentInfoComponent implements OnInit {
                 doa: ['', Validators.required],
                 dot: ['', Validators.required],
                 plateNumber:['', Validators.required],
-                address: ['', Validators.required],
-                hospitalAddress: ['', Validators.required],
+                address: [''],
+                accidentAddress: [''],
+                accidentAddress2: [''],
+                address2: [''],
                 reportNumber:['', Validators.required],
-                specialty: ['', Validators.required],
                 hospitalName: ['', Validators.required],
                 describeInjury: ['', Validators.required],
                 patientType:['', Validators.required],
                 state: [''],
                 city: [''],
                 zipcode: [''],
-                country: ['']
+                country: [''],
+                accidentState: [''],
+                accidentCity: [''],
+                accidentZipcode: [''],
+                accidentCountry: ['']
             });
         this.accidentformControls = this.accidentform.controls;
     }
@@ -79,6 +86,25 @@ export class AccidentInfoComponent implements OnInit {
                 () => { this.isCitiesLoading = false; });
         } else {
             this.cities = [];
+            this.isCitiesLoading = false;
+        }
+    }
+
+      selectAccidentState(event) {
+        this.selectedCity = 0;
+        let currentState = event.target.value;
+        this.loadAccidentCities(currentState);
+    }
+
+    loadAccidentCities(stateName) {
+        this.isCitiesLoading = true;
+        if (stateName !== '') {
+            this._statesStore.getCitiesByStates(stateName)
+                .subscribe((cities) => { this.accidentCities = cities; },
+                null,
+                () => { this.isCitiesLoading = false; });
+        } else {
+            this.accidentCities = [];
             this.isCitiesLoading = false;
         }
     }

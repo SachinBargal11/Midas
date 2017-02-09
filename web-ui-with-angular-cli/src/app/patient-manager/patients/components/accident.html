@@ -1,5 +1,10 @@
-<h3 class="with-border">Patient Accident Information</h3>
-<form [formGroup]="accidentform" (ngSubmit)="save()">                           
+<!--<h3 class="with-border">Patient Accident Information</h3>-->
+<form [formGroup]="accidentform" (ngSubmit)="save()">
+<section class="card">
+     <header class="card-header card-header-lg">
+                      Patient Accident Information
+                    </header>
+             <div class="card-block">                           
               <div class="row">
                  <div class="col-lg-4">
                     <label class="form-label">Plate Number
@@ -96,24 +101,141 @@
                         </div>
                     </div>
                 </div>
-               <div class="col-lg-4">
-                    <label class="form-label">Specialty
-                         <span class="color-red">*</span>
-                            </label>
-                    <div class="form-group" [class.error]="accidentformControls.specialty.touched && !accidentformControls.specialty.valid">
-                        <input formControlName="specialty" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.specialty.valid">
-                        <div class='error-list' *ngIf="accidentformControls.specialty.touched && !accidentformControls.specialty.valid">
+                <div class="col-lg-4">
+                    <label class="form-label"> Describe Injury
+                                    <span class="color-red">*</span>
+                               </label>
+                    <div class="form-group" [class.error]="accidentformControls.describeInjury.touched && !accidentformControls.describeInjury.valid">
+                        <input formControlName="describeInjury" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.describeInjury.valid">
+                        <div class='error-list' *ngIf="accidentformControls.describeInjury.touched && !accidentformControls.describeInjury.valid">
                             <ul>
-                                <li *ngIf="accidentformControls.specialty.hasError('required')">Specialty is required.</li>
+                                <li *ngIf="accidentformControls.describeInjury.hasError('required')">Describe Injury is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div> 
+                </div>                          
+           
+            <div class="row">    
+                  <div class="col-lg-6">
+                    <label class="form-label"> Patient Type 
+                        <span class="color-red">*</span>
+                    </label>
+                    <div class="form-group">
+                        <p-radioButton formControlName="patientType" name="patientType" value="Bicyclist" label="Bicyclist"></p-radioButton>
+                        <p-radioButton formControlName="patientType" name="patientType" value="Driver" label="Driver"></p-radioButton>
+                        <p-radioButton formControlName="patientType" name="patientType" value="Passenger" label="Passenger"></p-radioButton>
+                        <p-radioButton formControlName="patientType" name="patientType" value="Pedestrain" label="Pedestrain"></p-radioButton>
+                        <p-radioButton formControlName="patientType" name="patientType" value="OD" label="OD"></p-radioButton>
+                    </div>
+                </div>
+                </div>
+                </div>
+   </section> 
+   <section class="card">
+        <header class="card-header card-header-lg">
+           Accident Address
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Accident Address1
+                         <!--<span class="color-red">*</span>-->
+                            </label>
+                    <div class="form-group" [class.error]="accidentformControls.accidentAddress.touched && !accidentformControls.accidentAddress.valid">
+                        <input formControlName="accidentAddress" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.accidentAddress.valid">
+                        <div class='error-list' *ngIf="accidentformControls.accidentAddress.touched && !accidentformControls.accidentAddress.valid">
+                            <ul>
+                                <li *ngIf="accidentformControls.accidentAddress.hasError('required')">Accident Address is required.</li>
                             </ul>
                         </div>
                     </div>
                 </div>
+               <div class="col-lg-4">
+                    <label class="form-label"> Accident Address2
+                            </label>
+                    <div class="form-group" [class.error]="accidentformControls.accidentAddress2.touched && !accidentformControls.accidentAddress2.valid">
+                        <input formControlName="accidentAddress2" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.accidentAddress2.valid">
+                        <div class='error-list' *ngIf="accidentformControls.accidentAddress2.touched && !accidentformControls.accidentAddress2.valid">
+                            <ul>
+                                <li *ngIf="accidentformControls.accidentAddress2.hasError('required')">Policy Address2 is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-lg-4">
+                    <label class="form-label">Accident State
+                                <!--<span class="color-red">*</span>-->
+                            </label>
+                    <div class="form-group" [class.error]="accidentformControls.accidentState.touched && !accidentformControls.accidentState.valid">
+                        <select formControlName="accidentState" type="text"  (change)="selectAccidentState($event)" class="form-control" placeholder="" [class.error]="accidentformControls.accidentState.touched && !accidentformControls.accidentState.valid">
+                            <option value="">-Select State-</option>
+                            <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
+                        </select> 
+                        <div class='error-list' *ngIf="accidentformControls.accidentState.touched && !accidentformControls.accidentState.valid">
+                            <ul>
+                                <li *ngIf="accidentformControls.accidentState.hasError('required')">Accident State is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            <div class="row">                           
+                <div class="col-lg-3">
+                    <label class="form-label"> Accident City
+                                <!--<span class="color-red">*</span>-->
+                            </label>
+                    <div class="form-group" [class.error]="accidentformControls.accidentCity.touched && !accidentformControls.accidentCity.valid">
+                        <select formControlName="accidentCity" type="text" class="form-control" placeholder="" [class.error]="accidentformControls.accidentCity.touched && !accidentformControls.accidentCity.valid">
+                            <option value="">-Select City-</option>
+                            <option *ngFor="let city of accidentCities" value="{{city.citytext}}">{{city.citytext}}</option>
+                        </select>
+                        <div class='error-list' *ngIf="accidentformControls.accidentCity.touched && !accidentformControls.accidentCity.valid">
+                            <ul>
+                                <li *ngIf="accidentformControls.accidentCity.hasError('required')">Accident City is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1 m-t-lg"><loader [visible]="isCitiesLoading"></loader></div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Accident Zip code
+                                <!--<span class="color-red">*</span>-->
+                            </label>
+                    <div class="form-group" [class.error]="accidentformControls.accidentZipcode.touched && !accidentformControls.accidentZipcode.valid">
+                        <input formControlName="accidentZipcode" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.accidentZipcode.valid">
+                        <div class='error-list' *ngIf="accidentformControls.accidentZipcode.touched && !accidentformControls.accidentZipcode.valid">
+                            <ul>
+                                <li *ngIf="accidentformControls.accidentZipcode.hasError('required')">Accident Zipcode is required.</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>                          
+              <div class="col-lg-4">
+                    <label class="form-label"> Accident Country
+                                <!--<span class="color-red">*</span>-->
+                            </label>
+                    <div class="form-group" [class.error]="accidentformControls.accidentCountry.touched && !accidentformControls.accidentCountry.valid">
+                        <input formControlName="accidentCountry" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.accidentCountry.valid">
+                        <div class='error-list' *ngIf="accidentformControls.accidentCountry.touched && !accidentformControls.accidentCountry.valid">
+                            <ul>
+                                <li *ngIf="accidentformControls.accidentCountry.hasError('required')">Accident Country is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>                        
+            </div>
+        </div>
+    </section> 
+     <section class="card">
+        <header class="card-header card-header-lg">
+           Hospital Address
+        </header>
+         <div class="card-block">
             <div class="row">
                 <div class="col-lg-4">
-                    <label class="form-label"> Address
-                         <span class="color-red">*</span>
+                    <label class="form-label">Address1
+                         <!--<span class="color-red">*</span>-->
                             </label>
                     <div class="form-group" [class.error]="accidentformControls.address.touched && !accidentformControls.address.valid">
                         <input formControlName="address" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.address.valid">
@@ -125,14 +247,13 @@
                     </div>
                 </div>
                <div class="col-lg-4">
-                    <label class="form-label">Hospital Address
-                         <span class="color-red">*</span>
+                    <label class="form-label">Address2
                             </label>
-                    <div class="form-group" [class.error]="accidentformControls.hospitalAddress.touched && !accidentformControls.hospitalAddress.valid">
-                        <input formControlName="hospitalAddress" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.hospitalAddress.valid">
-                        <div class='error-list' *ngIf="accidentformControls.hospitalAddress.touched && !accidentformControls.hospitalAddress.valid">
+                    <div class="form-group" [class.error]="accidentformControls.address2.touched && !accidentformControls.address2.valid">
+                        <input formControlName="address2" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.address2.valid">
+                        <div class='error-list' *ngIf="accidentformControls.address2.touched && !accidentformControls.address2.valid">
                             <ul>
-                                <li *ngIf="accidentformControls.hospitalAddress.hasError('required')">Hospital Address is required.</li>
+                                <li *ngIf="accidentformControls.address2.hasError('required')">Address is required.</li>
                             </ul>
                         </div>
                     </div>
@@ -185,10 +306,10 @@
                         </div>
                     </div>
                 </div>                          
-                <div class="col-lg-4">
+              <div class="col-lg-4">
                     <label class="form-label"> Country
-                                    <!--<span class="color-red">*</span>-->
-                               </label>
+                                <!--<span class="color-red">*</span>-->
+                            </label>
                     <div class="form-group" [class.error]="accidentformControls.country.touched && !accidentformControls.country.valid">
                         <input formControlName="country" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.country.valid">
                         <div class='error-list' *ngIf="accidentformControls.country.touched && !accidentformControls.country.valid">
@@ -197,34 +318,13 @@
                             </ul>
                         </div>
                     </div>
-                </div>
-            </div>                            
-                <div class="row">    
-                <div class="col-lg-4">
-                    <label class="form-label"> Describe Injury
-                                    <span class="color-red">*</span>
-                               </label>
-                    <div class="form-group" [class.error]="accidentformControls.describeInjury.touched && !accidentformControls.describeInjury.valid">
-                        <input formControlName="describeInjury" type="text" class="form-control" placeholder="" [class.error]="!accidentformControls.describeInjury.valid">
-                        <div class='error-list' *ngIf="accidentformControls.describeInjury.touched && !accidentformControls.describeInjury.valid">
-                            <ul>
-                                <li *ngIf="accidentformControls.describeInjury.hasError('required')">Describe Injury is required.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div> 
-                  <div class="col-lg-6">
-                    <label class="form-label"> Patient Type 
-                        <span class="color-red">*</span>
-                    </label>
-                    <div class="form-group">
-                        <p-radioButton formControlName="patientType" name="patientType" value="Bicyclist" label="Bicyclist"></p-radioButton>
-                        <p-radioButton formControlName="patientType" name="patientType" value="Driver" label="Driver"></p-radioButton>
-                        <p-radioButton formControlName="patientType" name="patientType" value="Passenger" label="Passenger"></p-radioButton>
-                        <p-radioButton formControlName="patientType" name="patientType" value="Pedestrain" label="Pedestrain"></p-radioButton>
-                        <p-radioButton formControlName="patientType" name="patientType" value="OD" label="OD"></p-radioButton>
-                    </div>
-                </div>
-                </div>      
+                </div>                        
+            </div>
+        </div>  
+    </section> 
+    <button [disabled]="!accidentform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+        <loader [visible]="isSaveProgress"></loader>
+    </button>
+    <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>  
 </form>
 
