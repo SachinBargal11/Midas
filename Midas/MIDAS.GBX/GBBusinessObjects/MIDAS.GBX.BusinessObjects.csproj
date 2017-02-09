@@ -86,6 +86,7 @@
     <Compile Include="PatientEmpInfo\PatientEmpInfo.cs" />
     <Compile Include="Patient\Patient.cs" />
     <Compile Include="Patient\Patient2.cs" />
+    <Compile Include="RefferingOffice\RefferingOffice.cs" />
     <Compile Include="Relation\Relation.cs" />
     <Compile Include="Room\Room.cs" />
     <Compile Include="Room\RoomTest.cs" />

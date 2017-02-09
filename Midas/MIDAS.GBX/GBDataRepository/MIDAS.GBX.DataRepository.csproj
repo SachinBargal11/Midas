@@ -86,6 +86,7 @@
     <Compile Include="EntityRepository\PatientInsuranceInfo\PatientInsuranceInfoRepository.cs" />
     <Compile Include="EntityRepository\Patient\Patient2Repository.cs" />
     <Compile Include="EntityRepository\Patient\PatientRepository.cs" />
+    <Compile Include="EntityRepository\RefferingOffice\RefferingOfficeRepository.cs" />
     <Compile Include="EntityRepository\Room\RoomRepository.cs" />
     <Compile Include="EntityRepository\Room\RoomTestRepository.cs" />
     <Compile Include="EntityRepository\Schedule\ScheduleDetailRepository.cs" />

@@ -168,6 +168,11 @@ namespace MIDAS.GBX
             {
                 repo = new RelationRepository(context);
             }
+            if (typeof(T) == typeof(BO.RefferingOffice))
+            {
+                repo = new RefferingOfficeRepository(context);
+            }
+
 
             return repo;
         }
