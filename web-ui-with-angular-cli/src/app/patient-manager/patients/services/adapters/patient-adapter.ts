@@ -25,7 +25,7 @@ export class PatientAdapter {
                 createByUserID: patientData.createbyuserID,
                 createDate: patientData.createDate ? moment.utc(patientData.createDate) : null,
                 updateByUserID: patientData.updateByUserID,
-                updateDate: patientData.updateDate ? moment.utc(patientData.updateDate) : null,
+                updateDate: patientData.updateDate ? moment.utc(patientData.updateDate) : null
             });
         }
         return patient;

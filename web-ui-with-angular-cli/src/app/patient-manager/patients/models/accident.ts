@@ -1,19 +1,22 @@
 import { Record } from 'immutable';
 import * as moment from 'moment';
 import { Address } from '../../../commons/models/address';
+import { PatientType } from './enums/patient-type';
 
 const AccidentRecord = Record({
     id: 0,
     patientId: 0,
-    address: null,
-    accidentDate: 0,
+    accidentAddress: null,
+    hospitalAddress: null,
+    accidentDate: moment(),
     plateNumber: '',
-    reportNumber: 0,
+    reportNumber: '',
     hospitalName: '',
-    hospitalAddress: '',
-    injuryDescription: '',
+    describeInjury: '',
     dateOfAdmission: moment(),
-    patientType: 0,
+    patientTypeId: PatientType.BICYCLIST,
+    additionalPatients: '',
+    isCurrentAccident: 1,
     createByUserID: 0,
     createDate: null,
     updateByUserID: 0,
@@ -23,15 +26,17 @@ const AccidentRecord = Record({
 export class Accident extends AccidentRecord {
 
     id: number;
-    address: Address;
-    accidentDate: number;
+    accidentAddress: Address;
+    hospitalAddress: Address;
+    accidentDate: moment.Moment;
     plateNumber: string;
     reportNumber: string;
     hospitalName: string;
-    hospitalAddress: string;
-    injuryDescription: string;
+    describeInjury: string;
     dateOfAdmission: moment.Moment;
-    patientType: number;
+    patientTypeId: PatientType;
+    additionalPatients: string;
+    isCurrentAccident: boolean;
     createByUserID: number;
     createDate: moment.Moment;
     updateByUserID: number;
