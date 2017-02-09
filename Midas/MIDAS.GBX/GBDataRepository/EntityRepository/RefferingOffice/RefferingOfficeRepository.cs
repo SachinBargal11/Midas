@@ -178,6 +178,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 #region refference office
                 if (refferingOfficeBO != null)
                 {
+                    if (refferingOfficeBO.IsCurrentReffOffice == true)
+                    {
+                        var existingrefferingOfficeDB = _context.RefferingOffices.Where(p => p.PatientId == refferingOfficeBO.PatientId).ToList();
+                        existingrefferingOfficeDB.ForEach(p => p.IsCurrentReffOffice = false);
+                    }
+
                     bool Add_refferingOfficeDB = false;
                     refferingOfficeDB = _context.RefferingOffices.Include("AddressInfo").Where(p => p.Id == refferingOfficeBO.ID && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault();
 
