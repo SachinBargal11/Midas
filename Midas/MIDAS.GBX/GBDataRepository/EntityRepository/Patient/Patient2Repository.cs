@@ -40,7 +40,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             patientBO2.SSN = patient2.SSN;
             patientBO2.CompanyId = patient2.CompanyId;
             patientBO2.Weight = patient2.Weight;
-            patientBO2.Weight = patient2.Height;
+            patientBO2.Height = patient2.Height;
             patientBO2.MaritalStatusId = patient2.MaritalStatusId;
             patientBO2.DateOfFirstTreatment = patient2.DateOfFirstTreatment;
             patientBO2.AttorneyName = patient2.AttorneyName;
@@ -484,7 +484,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     patient2DB.SSN = patient2BO.SSN;
                     patient2DB.CompanyId = patient2BO.CompanyId;
                     patient2DB.Weight = patient2BO.Weight;
-                    patient2DB.Weight = patient2BO.Height;
+                    patient2DB.Height = patient2BO.Height;
                     patient2DB.MaritalStatusId = patient2BO.MaritalStatusId;
                     patient2DB.DateOfFirstTreatment = patient2BO.DateOfFirstTreatment;
                     patient2DB.AttorneyName = patient2BO.AttorneyName;
