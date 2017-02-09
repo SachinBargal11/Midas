@@ -2,6 +2,7 @@ import { Record } from 'immutable';
 import * as moment from 'moment';
 import { Address } from '../../../commons/models/address';
 import { Contact } from '../../../commons/models/contact';
+import {InsuranceType} from './enums/insurance-type';
 
 const InsuranceRecord = Record({
     id: 0,
@@ -12,7 +13,7 @@ const InsuranceRecord = Record({
     contactPerson: '',
     claimfileNo: '',
     wcbNo: '',
-    insuranceType: '',
+    insuranceType: InsuranceType.PRIMARY,
     insuranceCompanyCode: '',
     isinactive: 0,
     policyAddress: null,
@@ -31,7 +32,7 @@ export class Insurance extends InsuranceRecord {
     contactPerson: string;
     claimfileNo: string;
     wcbNo: string;
-    insuranceType: string;
+    insuranceType: InsuranceType;
     insuranceCompanyCode: string;
     isinactive: boolean;
     policyAddress: Address;
@@ -41,6 +42,19 @@ export class Insurance extends InsuranceRecord {
 
     constructor(props) {
         super(props);
+    }
+
+    get insuranceTypeLabel(): string {
+        return Insurance.getInsuranceTypeLabel(this.insuranceType);
+    }
+
+    static getInsuranceTypeLabel(insuranceType: InsuranceType): string {
+        switch (insuranceType) {
+            case InsuranceType.PRIMARY:
+                return 'Primary';
+            case InsuranceType.SECONDARY:
+                return 'Secondary';
+        }
     }
 
 }

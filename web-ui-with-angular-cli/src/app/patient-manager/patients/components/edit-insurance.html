@@ -121,32 +121,32 @@
         <div class="card-block">
             <div class="row">
                 <div class="col-lg-4">
-                    <label class="form-label"> Policy Address1
+                    <label class="form-label"> Address1
                          <span class="color-red">*</span>
                             </label>
                     <div class="form-group" [class.error]="insuranceformControls.policyAddress.touched && !insuranceformControls.policyAddress.valid">
                         <input formControlName="policyAddress" [ngModel]="policyAddress.address1" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.policyAddress.valid">
                         <div class='error-list' *ngIf="insuranceformControls.policyAddress.touched && !insuranceformControls.policyAddress.valid">
                             <ul>
-                                <li *ngIf="insuranceformControls.policyAddress.hasError('required')">Policy Address is required.</li>
+                                <li *ngIf="insuranceformControls.policyAddress.hasError('required')">Address is required.</li>
                             </ul>
                         </div>
                     </div>
                 </div>
                <div class="col-lg-4">
-                    <label class="form-label"> Policy Address2
+                    <label class="form-label"> Address2
                             </label>
                     <div class="form-group" [class.error]="insuranceformControls.policyAddress2.touched && !insuranceformControls.policyAddress2.valid">
                         <input formControlName="policyAddress2" [ngModel]="policyAddress.address2" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.policyAddress2.valid">
                         <div class='error-list' *ngIf="insuranceformControls.policyAddress2.touched && !insuranceformControls.policyAddress2.valid">
                             <ul>
-                                <li *ngIf="insuranceformControls.policyAddress2.hasError('required')">Policy Address2 is required.</li>
+                                <li *ngIf="insuranceformControls.policyAddress2.hasError('required')">Address2 is required.</li>
                             </ul>
                         </div>
                     </div>
                 </div>
                  <div class="col-lg-4">
-                    <label class="form-label"> Policy State
+                    <label class="form-label"> State
                                 <!--<span class="color-red">*</span>-->
                             </label>
                     <div class="form-group" [class.error]="insuranceformControls.policyState.touched && !insuranceformControls.policyState.valid">
@@ -156,7 +156,7 @@
                         </select> 
                         <div class='error-list' *ngIf="insuranceformControls.policyState.touched && !insuranceformControls.policyState.valid">
                             <ul>
-                                <li *ngIf="insuranceformControls.policyState.hasError('required')">Policy State is required.</li>
+                                <li *ngIf="insuranceformControls.policyState.hasError('required')">State is required.</li>
                             </ul>
                         </div>
                     </div>
@@ -164,7 +164,7 @@
               </div>
             <div class="row">                           
                 <div class="col-lg-3">
-                    <label class="form-label"> Policy City
+                    <label class="form-label"> City
                                 <!--<span class="color-red">*</span>-->
                             </label>
                     <div class="form-group" [class.error]="insuranceformControls.policyCity.touched && !insuranceformControls.policyCity.valid">
@@ -174,34 +174,34 @@
                         </select>
                         <div class='error-list' *ngIf="insuranceformControls.policyCity.touched && !insuranceformControls.policyCity.valid">
                             <ul>
-                                <li *ngIf="insuranceformControls.policyCity.hasError('required')">Policy City is required.</li>
+                                <li *ngIf="insuranceformControls.policyCity.hasError('required')">City is required.</li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-1 m-t-lg"><loader [visible]="isCitiesLoading"></loader></div>
                 <div class="col-lg-4">
-                    <label class="form-label"> Policy Zip code
+                    <label class="form-label"> Zip code
                                 <!--<span class="color-red">*</span>-->
                             </label>
                     <div class="form-group" [class.error]="insuranceformControls.policyZipcode.touched && !insuranceformControls.policyZipcode.valid">
                         <input formControlName="policyZipcode" [ngModel]="policyAddress.zipCode" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.policyZipcode.valid">
                         <div class='error-list' *ngIf="insuranceformControls.policyZipcode.touched && !insuranceformControls.policyZipcode.valid">
                             <ul>
-                                <li *ngIf="insuranceformControls.policyZipcode.hasError('required')">Policy Zipcode is required.</li>
+                                <li *ngIf="insuranceformControls.policyZipcode.hasError('required')">Zipcode is required.</li>
                             </ul>
                         </div>
                     </div>
                 </div>                          
               <div class="col-lg-4">
-                    <label class="form-label"> Policy Country
+                    <label class="form-label"> Country
                                 <!--<span class="color-red">*</span>-->
                             </label>
                     <div class="form-group" [class.error]="insuranceformControls.policyCountry.touched && !insuranceformControls.policyCountry.valid">
                         <input formControlName="policyCountry" [ngModel]="policyAddress.country" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.policyCountry.valid">
                         <div class='error-list' *ngIf="insuranceformControls.policyCountry.touched && !insuranceformControls.policyCountry.valid">
                             <ul>
-                                <li *ngIf="insuranceformControls.policyCountry.hasError('required')">Policy Country is required.</li>
+                                <li *ngIf="insuranceformControls.policyCountry.hasError('required')">Country is required.</li>
                             </ul>
                         </div>
                     </div>
