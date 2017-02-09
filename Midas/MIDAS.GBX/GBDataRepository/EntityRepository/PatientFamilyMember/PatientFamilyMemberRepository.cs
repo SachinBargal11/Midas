@@ -165,6 +165,30 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        #region Delete By ID
+        public override object DeleteById(int id)
+        {
+            var acc = _context.PatientFamilyMembers.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).FirstOrDefault<PatientFamilyMember>();
+
+            if (acc != null)
+            {
+                acc.IsDeleted = true;
+                _context.SaveChanges();
+            }
+            else if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+
+            return (object)acc;
+        }
+        #endregion
+
+
+
+
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
