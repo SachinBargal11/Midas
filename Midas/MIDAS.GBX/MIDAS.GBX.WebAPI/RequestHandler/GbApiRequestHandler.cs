@@ -77,7 +77,19 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-  
+        public HttpResponseMessage Delete(HttpRequestMessage request, int id)
+        {
+            var res = dataAccessManager.Delete(id);
+            if (id > 0)
+            {
+                return request.CreateResponse(HttpStatusCode.Accepted, res);
+            }
+            else
+            {
+                return request.CreateResponse(HttpStatusCode.NoContent, new ErrorObject { ErrorMessage = "Id can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+        }
+
         public HttpResponseMessage ValidateUniqueName(HttpRequestMessage request, T gbObject)
         {
             throw new NotImplementedException();

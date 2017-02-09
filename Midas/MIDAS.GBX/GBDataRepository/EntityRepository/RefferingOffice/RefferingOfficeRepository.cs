@@ -238,6 +238,46 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Delete By ID
+        public override object Delete(int id)
+        {
+            RefferingOffice refferingOfficeDB = new RefferingOffice();
+            //BO.SpecialtyDetails specialtyDetailBO = entity as BO.SpecialtyDetails;
+
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                refferingOfficeDB = _context.RefferingOffices.Include("AddressInfo").Where(p => p.Id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault();
+
+                if (refferingOfficeDB != null)
+                {
+                    refferingOfficeDB.IsDeleted = true;
+                    _context.SaveChanges();
+
+                    if (refferingOfficeDB.AddressInfo != null)
+                    {
+                        refferingOfficeDB.AddressInfo.IsDeleted = true;
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        dbContextTransaction.Rollback();
+                    }
+
+                }
+                else
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Reffering Office details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                }
+
+
+                dbContextTransaction.Commit();
+
+            }
+            var res = Convert<BO.RefferingOffice, RefferingOffice>(refferingOfficeDB);
+            return (object)res;
+        }
+        #endregion
         public void Dispose()
         {
             // Use SupressFinalize in case a subclass 
