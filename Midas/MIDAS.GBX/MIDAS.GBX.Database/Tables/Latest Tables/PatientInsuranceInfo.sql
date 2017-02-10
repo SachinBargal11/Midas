@@ -6,13 +6,13 @@
 	[PolicyHolderAddressInfoId] [INT] NULL,
 	[PolicyHolderContactInfoId] [INT] NULL,
 	[PolicyOwnerId] [TINYINT] NULL,
-	[InsuranceCompanyCode] [NVARCHAR](10) NULL,
+	[InsuranceCompanyCode] [NVARCHAR](10) NULL, -- look up and also add, companay link
 	[InsuranceCompanyAddressInfoId] [INT] NULL,
 	[InsuranceCompanyContactInfoId] [INT] NULL,
 	[PolicyNo] [NVARCHAR](50) NULL,
 	[ContactPerson] [NVARCHAR](50) NULL,
-	[ClaimFileNo] [NVARCHAR](50) NULL,
-	[WCBNo] [NVARCHAR](50) NULL,
+	[ClaimFileNo] [NVARCHAR](50) NULL, -- check
+	[WCBNo] [NVARCHAR](50) NULL,--????
 	[InsuranceTypeId] [TINYINT] NULL,
 	[IsInActive] [BIT] NUll DEFAULT (0),
 	
