@@ -18,7 +18,7 @@ const UserRecord = Record({
     imageLink: '',
     address: null, //Address
     contact: null, //Contact
-    dateOfBirth: moment(), //Moment
+    dateOfBirth: null,
     isDeleted: 0,
     createByUserId: 0,
     updateByUserId: 0,

@@ -31,9 +31,9 @@ export class AccidentStore {
         return this._accident.asObservable();
     }
 
-    getAccidents(): Observable<Accident[]> {
+    getAccidents(patientId: Number): Observable<Accident[]> {
         let promise = new Promise((resolve, reject) => {
-            this._accidentService.getAccidents().subscribe((accidents: Accident[]) => {
+            this._accidentService.getAccidents(patientId).subscribe((accidents: Accident[]) => {
                 this._accident.next(List(accidents));
                 resolve(accidents);
             }, error => {

@@ -16,6 +16,7 @@ import { AccidentInfoComponent } from './components/accident';
 import { AttorneyComponent } from './components/attorney';
 import { PatientEmployerComponent } from './components/employer';
 import { InsuranceListComponent } from './components/insurance-list';
+import { EditInsurancesComponent } from './components/edit-insurance';
 
 export const PatientsShellRoutes: Routes = [
     {
@@ -92,16 +93,19 @@ export const PatientsShellRoutes: Routes = [
                 },
                 children: [
                     {
-                        path: '',
-                        redirectTo: 'basic',
-                        pathMatch: 'full'
-                    },
-                    {
                         path: 'add',
                         component: InsurancesComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Add Insurance'
+                        }
+                    },
+                    {
+                        path: 'edit/:id',
+                        component: EditInsurancesComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Edit Insurance'
                         }
                     }
                 ]

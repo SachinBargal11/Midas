@@ -5,23 +5,28 @@ import { AddressAdapter } from '../../../../commons/services/adapters/address-ad
 export class AccidentAdapter {
     static parseResponse(data: any): Accident {
 
-        let employer = null;
+        let accident = null;
         if (data) {
-            employer = new Accident({
+            accident = new Accident({
                 id: data.id,
+                accidentAddress: AddressAdapter.parseResponse(data.accidentAddressInfo),
+                hospitalAddress: AddressAdapter.parseResponse(data.hospitalAddressInfo),
                 accidentDate: data.accidentDate,
                 plateNumber: data.plateNumber,
                 reportNumber: data.reportNumber,
                 hospitalName: data.hospitalName,
-                hospitalAddress: data.hospitalAddress,
-                injuryDescription: data.injuryDescription,
+                describeInjury: data.describeInjury,
                 dateOfAdmission: moment(),
+                isCurrentAccident: data.isCurrentAccident ? 1 : 0,
+                additionalPatients: data.additionalPatients,
                 patientType: data.patientType,
-                createByUserID: data.createByUserID,
-                createDate: moment(data.createDate),
-                address: AddressAdapter.parseResponse(data.addressInfo)
+                isDeleted: data.isDeleted ? true : false,
+                createByUserID: data.createbyuserID,
+                createDate: data.createDate ? moment.utc(data.createDate) : null,
+                updateByUserID: data.updateByUserID,
+                updateDate: data.updateDate ? moment.utc(data.updateDate) : null
             });
         }
-        return employer;
+        return accident;
     }
 }

@@ -61,7 +61,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        #region Get All States
+        #region Get All Insurance Type
         public override Object Get()
         {
             var acc = _context.InsuranceTypes.Where(p => p.IsDeleted.HasValue == false || p.IsDeleted == false).ToList<InsuranceType>();

@@ -26,9 +26,9 @@ export class EmployerStore {
         return this._employers.asObservable();
     }
 
-    getEmployers(): Observable<Employer[]> {
+    getEmployers(patientId: Number): Observable<Employer[]> {
         let promise = new Promise((resolve, reject) => {
-            this._employerService.getEmployers().subscribe((employers: Employer[]) => {
+            this._employerService.getEmployers(patientId).subscribe((employers: Employer[]) => {
                 this._employers.next(List(employers));
                 resolve(employers);
             }, error => {

@@ -40,7 +40,7 @@ namespace MIDAS.GBX.BusinessObjects
         public string describeInjury { get; set; }
 
         [JsonProperty("patientTypeId")]
-        public int patientTypeId { get; set; }
+        public byte? patientTypeId { get; set; }
 
         [JsonProperty("isCurrentAccident")]
         public bool isCurrentAccident { get; set; }

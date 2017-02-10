@@ -59,7 +59,9 @@
     <Compile Include="Common\Gender.cs" />
     <Compile Include="Common\InsuranceType.cs" />
     <Compile Include="Common\MaritalStatus.cs" />
+    <Compile Include="Common\PatientType.cs" />
     <Compile Include="Common\PolicyOwner.cs" />
+    <Compile Include="Common\Relation.cs" />
     <Compile Include="Common\State.cs" />
     <Compile Include="Company\Company.cs" />
     <Compile Include="Company\Signup.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="GBEnums.cs" />
     <Compile Include="GbObject.cs" />
     <Compile Include="PatientAccidentInfo\PatientAccidentInfo.cs" />
+    <Compile Include="PatientFamilyMember\PatientFamilyMember.cs" />
     <Compile Include="PatientInsuranceInfo\PatientInsuranceInfo.cs" />
     <Compile Include="Invitation\Invitation.cs" />
     <Compile Include="Location\Location.cs" />
@@ -83,6 +86,8 @@
     <Compile Include="PatientEmpInfo\PatientEmpInfo.cs" />
     <Compile Include="Patient\Patient.cs" />
     <Compile Include="Patient\Patient2.cs" />
+    <Compile Include="RefferingOffice\RefferingOffice.cs" />
+    <Compile Include="Relation\Relation.cs" />
     <Compile Include="Room\Room.cs" />
     <Compile Include="Room\RoomTest.cs" />
     <Compile Include="Schedule\Schedule.cs" />

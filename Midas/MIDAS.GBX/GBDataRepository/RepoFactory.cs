@@ -156,8 +156,22 @@ namespace MIDAS.GBX
             {
                 repo = new PatientAccidentInfoRepository(context);
             }
-
-
+            if (typeof(T) == typeof(BO.PatientFamilyMember))
+            {
+                repo = new PatientFamilyMemberRepository(context);
+            }            
+            if (typeof(T) == typeof(BO.Common.PatientType))
+            {
+                repo = new PatientTypeRepository(context);
+            }
+            if (typeof(T) == typeof(BO.Common.Relation))
+            {
+                repo = new RelationRepository(context);
+            }
+            if (typeof(T) == typeof(BO.RefferingOffice))
+            {
+                repo = new RefferingOfficeRepository(context);
+            }
 
 
             return repo;

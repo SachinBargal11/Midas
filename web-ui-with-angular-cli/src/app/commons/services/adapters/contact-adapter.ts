@@ -3,7 +3,6 @@ import * as moment from 'moment';
 
 export class ContactAdapter {
     static parseResponse(contactData: any): Contact {
-
         let contact = null;
         if (contactData) {
             contact = new Contact({

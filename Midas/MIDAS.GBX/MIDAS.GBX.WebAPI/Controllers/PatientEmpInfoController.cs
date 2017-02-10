@@ -38,13 +38,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetByPatientId(Request, PatientId);
         }
 
-        //[HttpGet]
-        //[Route("getAll")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage GetAllPatient([FromBody]PatientEmpInfo data)
-        //{
-        //    return requestHandler.GetGbObjects(Request, data);
-        //}
+        [HttpGet]
+        [Route("getCurrentEmpByPatientId/{PatientId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetCurrentEmpByPatientId(int PatientId)
+        {
+            return requestHandler.GetCurrentEmpByPatientId(Request, PatientId);
+        }
+
 
         [HttpPost]
         [Route("save")]
@@ -52,6 +53,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public HttpResponseMessage Post([FromBody]PatientEmpInfo data)
         {
             return requestHandler.CreateGbObject(Request, data);
+        }
+
+        [HttpGet]
+        [Route("Delete/{id}")]
+        [AllowAnonymous]
+        public HttpResponseMessage DeleteById(int id)
+        {
+            return requestHandler.DeleteById(Request, id);
         }
 
 

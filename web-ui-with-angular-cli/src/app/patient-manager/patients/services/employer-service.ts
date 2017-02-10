@@ -2,6 +2,7 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import * as _ from 'underscore';
+import { environment } from '../../../../environments/environment';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
@@ -10,15 +11,19 @@ import { EmployerAdapter } from './adapters/employer-adapter';
 
 @Injectable()
 export class EmployerService {
-    private _url: string = 'http://localhost:3004/employer';
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
+    // private _url: string = 'http://localhost:3004/employer';
     private _headers: Headers = new Headers();
 
-    constructor(private _http: Http) {
+    constructor(
+        private _http: Http,
+        private _sessionStore: SessionStore
+        ) {
         this._headers.append('Content-Type', 'application/json');
     }
     getEmployer(employerId: Number): Observable<Employer> {
         let promise: Promise<Employer> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '?id=' + employerId).map(res => res.json())
+            return this._http.get(this._url + '/PatientEmpInfo/get/' + employerId).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     let employer = null;
                     if (data.length) {
@@ -35,9 +40,9 @@ export class EmployerService {
         return <Observable<Employer>>Observable.fromPromise(promise);
     }
 
-    getEmployers(): Observable<Employer[]> {
+    getEmployers(patientId: Number): Observable<Employer[]> {
         let promise: Promise<Employer[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url)
+            return this._http.get(this._url + '/PatientEmpInfo/getByPatientId/' + patientId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let employers = (<Object[]>data).map((data: any) => {
@@ -53,7 +58,11 @@ export class EmployerService {
     }
     addEmployer(employer: Employer): Observable<Employer> {
         let promise: Promise<Employer> = new Promise((resolve, reject) => {
-            return this._http.post(this._url, JSON.stringify(employer), {
+            let requestData: any = employer.toJS();
+            requestData.contactInfo = requestData.contact;
+            requestData.addressInfo = requestData.address;
+            requestData = _.omit(requestData, 'contact', 'address');
+            return this._http.post(this._url + '/PatientEmpInfo/save' ,JSON.stringify(requestData), {
                 headers: this._headers
             })
             .map(res => res.json())
@@ -69,7 +78,11 @@ export class EmployerService {
     }
     updateEmployer(employer: Employer): Observable<Employer> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.put(`${this._url}/${employer.id}`, JSON.stringify(employer), {
+            let requestData: any = employer.toJS();
+            requestData.contactInfo = requestData.contact;
+            requestData.addressInfo = requestData.address;
+            requestData = _.omit(requestData, 'contact', 'address');
+            return this._http.post(this._url + '/PatientEmpInfo/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
             .map(res => res.json())
@@ -85,7 +98,13 @@ export class EmployerService {
     }
     deleteEmployer(employer: Employer): Observable<Employer> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.delete(`${this._url}/${employer.id}`)
+             let requestData: any = employer.toJS();
+            requestData.contactInfo = requestData.contact;
+            requestData.addressInfo = requestData.address;
+            requestData = _.omit(requestData, 'contact', 'address');
+            return this._http.post(this._url + '/PatientEmpInfo/save', JSON.stringify(requestData), {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((data) => {
                     let parsedEmployer: Employer = null;

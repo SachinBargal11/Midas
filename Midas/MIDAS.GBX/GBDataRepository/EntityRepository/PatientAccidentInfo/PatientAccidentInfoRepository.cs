@@ -112,7 +112,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-
+   
         #region save
         public override object Save<T>(T entity)
         {
@@ -266,6 +266,45 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        #region Delete By ID
+        public override object DeleteById(int id)
+        {
+            var acc = _context.PatientAccidentInfoes.Include("addressInfo")
+                              .Include("addressInfo1")
+                              .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).FirstOrDefault<PatientAccidentInfo>();
+
+            if (acc != null)
+            {
+                if (acc.AddressInfo != null)
+                {
+                    acc.AddressInfo.IsDeleted = true;
+                }
+                else
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+                if (acc.AddressInfo1 != null)
+                {
+                    acc.AddressInfo1.IsDeleted = true;
+                }
+                else
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+               
+
+                acc.IsDeleted = true;
+                _context.SaveChanges();
+            }
+            else if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+
+            return (object)acc;
+        }
+        #endregion
 
         public void Dispose()
         {

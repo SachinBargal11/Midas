@@ -17,14 +17,13 @@ export class InsuranceAdapter {
                 contactPerson: data.contactPerson,
                 claimfileNo: data.claimFileNo,
                 wcbNo: data.wcbNo,
-                insuranceType: data.insuranceType,
+                insuranceType: data.insuranceTypeId,
                 insuranceCompanyCode: data.insuranceCompanyCode,
-                isPrimaryInsurance: data.isPrimaryInsurance,
                 isinactive: data.isInActive,
-                policyContact: ContactAdapter.parseResponse(data.contactInfo),
-                policyAddress: AddressAdapter.parseResponse(data.addressInfo),
-                insuranceContact: ContactAdapter.parseResponse(data.contactInfo1),
-                insuranceAddress: AddressAdapter.parseResponse(data.addressInfo1)
+                policyContact: ContactAdapter.parseResponse(data.policyHolderContactInfo),
+                policyAddress: AddressAdapter.parseResponse(data.policyHolderAddressInfo),
+                insuranceContact: ContactAdapter.parseResponse(data.insuranceCompanyContactInfo),
+                insuranceAddress: AddressAdapter.parseResponse(data.insuranceCompanyAddressInfo)
             });
         }
         return insurance;

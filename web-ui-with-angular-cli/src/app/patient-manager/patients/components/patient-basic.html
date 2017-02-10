@@ -1,136 +1,103 @@
-<div class="page-center">
-    <div class="page-center-in">
-        <div class="container-fluid">
-            <form [formGroup]="basicform" (ngSubmit)="save()">
-                <section class="col-md-6">
-                <!--<div class="col-lg-8 col-lg-push-2 col-md-12">-->
-                    <div class="card-block">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <label class="form-label"> Primary Provider
+<div *ngIf="patientInfoJS">
+    <form [formGroup]="basicform" (ngSubmit)="savePatient()">
+        <div class="row">
+            <div class="col-lg-4">
+                <label class="form-label"> First Name
+                                            <span class="color-red">*</span>
                                         </label>
-                                <div class="form-group" [class.error]="basicformControls.primaryProvider.touched && !basicformControls.primaryProvider.valid">
-                                    <input formControlName="primaryProvider" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.primaryProvider.valid">
-                                    <div class='error-list' *ngIf="basicformControls.primaryProvider.touched && !basicformControls.primaryProvider.valid">
-                                        <ul>
-                                            <li *ngIf="basicformControls.primaryProvider.hasError('required')">Primary Provider is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="form-group" [class.error]="basicformControls.firstname.touched && !basicformControls.firstname.valid">
+                    <input [ngModel]="patientInfoJS.user.firstName" formControlName="firstname" type="text" class="form-control" placeholder=""
+                        [class.error]="!basicformControls.firstname.valid">
+                        <div class='error-list' *ngIf="basicformControls.firstname.touched && !basicformControls.firstname.valid">
+                            <ul>
+                                <li *ngIf="basicformControls.firstname.hasError('required')">First Name is required.</li>
+                            </ul>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <label class="form-label"> First Name
-                                        </label>
-                                <div class="form-group" [class.error]="basicformControls.firstName.touched && !basicformControls.firstName.valid">
-                                    <input formControlName="firstName" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.firstName.valid">
-                                    <div class='error-list' *ngIf="basicformControls.firstName.touched && !basicformControls.firstName.valid">
-                                        <ul>
-                                            <li *ngIf="basicformControls.firstName.hasError('required')">First Name is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <label class="form-label"> Last Name
-                                        </label>
-                                <div class="form-group" [class.error]="basicformControls.lastName.touched && !basicformControls.lastName.valid">
-                                    <input formControlName="lastName" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.lastName.valid">
-                                    <div class='error-list' *ngIf="basicformControls.lastName.touched && !basicformControls.lastName.valid">
-                                        <ul>
-                                            <li *ngIf="basicformControls.lastName.hasError('required')">Last Name is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">                            
-                            <div class="col-lg-12">
-                                <label class="form-label"> Title
-                                        </label>
-                                <div class="form-group" [class.error]="basicformControls.title.touched && !basicformControls.title.valid">
-                                    <input formControlName="title" type="text" class="form-control" placeholder="" [class.error]="!basicformControls.title.valid">
-                                    <div class='error-list' *ngIf="basicformControls.title.touched && !basicformControls.title.valid">
-                                        <ul>
-                                            <li *ngIf="basicformControls.title.hasError('required')">Title is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <label class="form-label"> Home Phone
-                                        </label>
-                                <div class="form-group" [class.error]="basicformControls.homePhone.touched && !basicformControls.homePhone.valid">
-                                    <!--<input class="form-control" type="text" formControlName="homePhone" [class.error]="basicformControls.homePhone.touched && !basicformControls.homePhone.valid" />-->
-                                    <p-inputMask mask="999-999-9999" formControlName="homePhone" [class.error]="basicformControls.homePhone.touched && !basicformControls.homePhone.valid" 
-                                     placeholder="999-999-9999" styleClass="form-control" ></p-inputMask>
-                                    <div class='error-list' *ngIf="basicformControls.homePhone.touched && !basicformControls.homePhone.valid">
-                                        <ul>
-                                            <li *ngIf="basicformControls.homePhone.hasError('required')">Home Phone is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <label class="form-label">Cell Phone
-                                        </label>
-                                <div class="form-group" [class.error]="basicformControls.cellphone.touched && !basicformControls.cellphone.valid">
-                                    <input class="form-control" type="text" formControlName="cellphone" [class.error]="basicformControls.cellphone.touched && !basicformControls.cellphone.valid" />
-                                    <!--<p-inputMask mask="999-999-9999" formControlName="cellphone" [class.error]="basicformControls.cellphone.touched && !basicformControls.cellphone.valid" 
-                                     placeholder="999-999-9999" styleClass="form-control" ></p-inputMask>-->
-                                    <div class='error-list' *ngIf="basicformControls.cellphone.touched && !basicformControls.cellphone.valid">
-                                        <ul>
-                                            <li *ngIf="basicformControls.cellphone.hasError('required')">Cellphone is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">                            
-                            <div class="col-lg-12">
-                                <label class="form-label"> Email
-                                        </label>
-                                <div class="form-group" [class.error]="basicformControls.email.touched && !basicformControls.email.valid">
-                                    <input formControlName="email" type="text" class="form-control" placeholder="" [class.error]="basicformControls.email.touched && !basicformControls.email.valid">
-                                    <div class='error-list' *ngIf="basicformControls.email.touched && !basicformControls.email.valid">
-                                        <ul>
-                                            <li *ngIf="basicformControls.email.hasError('required')">Email is required.</li>
-                                            <li *ngIf="basicformControls.email.hasError('emailValidator')">Email is invalid.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section> 
-				<section class="profile-side-user col-md-6" style="height:610px">
-				<button type="button" class="avatar-preview avatar-preview-128 text-center">
-					<img src="assets/theme/img/avatar-sign.png" alt=""/>
-					<span class="update">
-						<i class="font-icon font-icon-picture-double"></i>
-						Update photo
-					</span>
-					<input type="file" formControlName="photo"/>
-				</button>
-				</section>
-                <div class="text-center col-md-12">
-                    <button [disabled]="!basicform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
-                        <loader [visible]="isSaveProgress"></loader>
-                    </button>
-                    <a [routerLink]="['/patient-manager/patients']" class="btn btn-secondary">Cancel</a>
                 </div>
-            </form>
+            </div>
+            <div class="col-lg-4">
+                <label class="form-label"> Middle Name</label>
+                <div class="form-group">
+                    <input [ngModel]="patientInfoJS.user.middleName" formControlName="middlename" type="text" class="form-control" placeholder="">
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <label class="form-label"> Last Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                <div class="form-group" [class.error]="basicformControls.lastname.touched && !basicformControls.lastname.valid">
+                    <input [ngModel]="patientInfoJS.user.lastName" formControlName="lastname" type="text" class="form-control" placeholder=""
+                        [class.error]="!basicformControls.lastname.valid">
+                        <div class='error-list' *ngIf="basicformControls.lastname.touched && !basicformControls.lastname.valid">
+                            <ul>
+                                <li *ngIf="basicformControls.lastname.hasError('required')">Last Name is required.</li>
+                            </ul>
+                        </div>
+                </div>
+            </div>
+
         </div>
-    </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <label class="form-label"> Gender
+                                    <span class="color-red">*</span>
+                                        </label>
+                <div class="form-group" [class.error]="basicformControls.gender.touched && !basicformControls.gender.valid">
+                    <select [ngModel]="patientInfoJS.user.gender" formControlName="gender" class="select2-arrow form-control" [class.error]="basicformControls.gender.touched && !basicformControls.gender.valid">
+                                             <option value="">-Select Gender-</option>
+                                             <option disabled>────────────────────</option>
+                                             <option value="1">Male</option>
+                                             <option value="2">Female</option>
+                                             <option value="3">Others</option>
+                                         </select>
+                    <div class='error-list' *ngIf="basicformControls.gender.touched && !basicformControls.gender.valid">
+                        <ul>
+                            <li *ngIf="basicformControls.gender.hasError('required')">Gender is required.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <label class="form-label"> Marital Status
+                                            <span class="color-red">*</span>
+                                        </label>
+                <div class="form-group" [class.error]="basicformControls.maritalStatusId.touched && !basicformControls.maritalStatusId.valid">
+                    <select [ngModel]="patientInfoJS.maritalStatusId" formControlName="maritalStatusId" type="text" class="form-control" placeholder=""
+                        [class.error]="basicformControls.maritalStatusId.touched && !basicformControls.maritalStatusId.valid">
+                        <option value="">-Select -</option>
+                        <option disabled>────────────────────</option>
+                        <option value="1">Single</option>
+                        <option value="2">Married</option>
+                        </select>
+                        <div class='error-list' *ngIf="basicformControls.maritalStatusId.touched && !basicformControls.maritalStatusId.valid">
+                            <ul>
+                                <li *ngIf="basicformControls.maritalStatusId.hasError('required')">Marital Status is required.</li>
+                            </ul>
+                        </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <label class="form-label"> Date of Birth
+                                        </label>
+                <div class="form-group" [class.error]="basicformControls.dob.touched && !basicformControls.dob.valid">
+                    <div class='input-group date'>
+                        <p-calendar [ngModel]="patientInfoJS.user.dateOfBirth" formControlName="dob" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true"
+                            [yearNavigator]="true" yearRange="1920:2050" [class.error]="basicformControls.dob.touched && !basicformControls.dob.valid"
+                            showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
+                            </p-calendar>
+                    </div>
+                    <div class='error-list' *ngIf="basicformControls.dob.touched && !basicformControls.dob.valid">
+                        <ul>
+                            <li *ngIf="basicformControls.dob.hasError('required')">Date Of Birth is required.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <button [disabled]="!basicform.valid || isSavePatientProgress" type="submit" class="btn btn-success sign-up">Save
+                    <loader [visible]="isSavePatientProgress"></loader>
+                </button>
+        <a [routerLink]="['/patient-manager/patients']" class="btn btn-secondary">Cancel</a>
+    </form>
 </div>

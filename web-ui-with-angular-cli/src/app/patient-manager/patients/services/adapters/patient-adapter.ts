@@ -13,22 +13,19 @@ export class PatientAdapter {
             patient = new Patient({
                 id: patientData.id,
                 ssn: patientData.ssn,
-                wcbNo: patientData.wcbNo,
                 weight: patientData.weight,
                 maritalStatusId: patientData.maritalStatusId,
-                drivingLicence: patientData.drivingLicence,
-                emergencyContactName: patientData.emergenceyContactName,
-                emergencyContactRelation: patientData.emergenceyContactRelation,
-                emergencyContactNumber: patientData.emergenceyContactNumber,
+                dateOfFirstTreatment: patientData.dateOfFirstTreatment ? moment(patientData.dateOfFirstTreatment) : null,
                 user: UserAdapter.parseResponse(patientData.user),
                 employer: EmployerAdapter.parseResponse(patientData.employer),
                 insurance: InsuranceAdapter.parseResponse(patientData.insurance),
-                accidentAddress: AccidentAdapter.parseResponse(patientData.accidentAddress),
+                accident: AccidentAdapter.parseResponse(patientData.accidentAddress),
+                companyId: patientData.companyId,
                 isDeleted: patientData.isDeleted ? true : false,
                 createByUserID: patientData.createbyuserID,
                 createDate: patientData.createDate ? moment.utc(patientData.createDate) : null,
                 updateByUserID: patientData.updateByUserID,
-                updateDate: patientData.updateDate ? moment.utc(patientData.updateDate) : null,
+                updateDate: patientData.updateDate ? moment.utc(patientData.updateDate) : null
             });
         }
         return patient;

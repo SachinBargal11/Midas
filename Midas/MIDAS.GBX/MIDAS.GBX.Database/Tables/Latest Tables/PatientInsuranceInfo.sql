@@ -6,13 +6,13 @@
 	[PolicyHolderAddressInfoId] [INT] NULL,
 	[PolicyHolderContactInfoId] [INT] NULL,
 	[PolicyOwnerId] [TINYINT] NULL,
-	[InsuranceCompanyCode] [NVARCHAR](10) NULL,
+	[InsuranceCompanyCode] [NVARCHAR](10) NULL, -- look up and also add, companay link
 	[InsuranceCompanyAddressInfoId] [INT] NULL,
 	[InsuranceCompanyContactInfoId] [INT] NULL,
 	[PolicyNo] [NVARCHAR](50) NULL,
 	[ContactPerson] [NVARCHAR](50) NULL,
-	[ClaimFileNo] [NVARCHAR](50) NULL,
-	[WCBNo] [NVARCHAR](50) NULL,
+	[ClaimFileNo] [NVARCHAR](50) NULL, -- check
+	[WCBNo] [NVARCHAR](50) NULL,--????
 	[InsuranceTypeId] [TINYINT] NULL,
 	[IsInActive] [BIT] NUll DEFAULT (0),
 	
@@ -26,51 +26,51 @@
 GO
 
 ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_Patient2_PatientId] FOREIGN KEY([PatientId])
-	REFERENCES [dbo].[Patient2] ([id])
+	REFERENCES [dbo].[Patient2] ([Id])
 GO
 
 ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_Patient2_PatientId]	
 GO
 
 ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_AddressInfo_PolicyHolderAddressInfoId] FOREIGN KEY([PolicyHolderAddressInfoId])
-	REFERENCES [dbo].[AddressInfo] ([id])
+	REFERENCES [dbo].[AddressInfo] ([Id])
 GO
 
 ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_AddressInfo_PolicyHolderAddressInfoId]
 GO
 
 ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_ContactInfo_PolicyHolderContactInfoId] FOREIGN KEY([PolicyHolderContactInfoId])
-	REFERENCES [dbo].[ContactInfo] ([id])
-GO
-
---ALTER TABLE [dbo].[PatientInsuranceInfo] ALTER COLUMN [PolicyOwnerId] [TINYINT] NULL 
-GO
-ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_PolicyOwner_PolicyOwnerId] FOREIGN KEY([PolicyOwnerId])
-	REFERENCES [dbo].[PolicyOwner] ([id])
-GO
-
-ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_PolicyOwner_PolicyOwnerId]
+	REFERENCES [dbo].[ContactInfo] ([Id])
 GO
 
 ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_ContactInfo_PolicyHolderContactInfoId]
 GO
 
+--ALTER TABLE [dbo].[PatientInsuranceInfo] ALTER COLUMN [PolicyOwnerId] [TINYINT] NULL 
+GO
+ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_PolicyOwner_PolicyOwnerId] FOREIGN KEY([PolicyOwnerId])
+	REFERENCES [dbo].[PolicyOwner] ([Id])
+GO
+
+ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_PolicyOwner_PolicyOwnerId]
+GO
+
 ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_AddressInfo_InsuranceCompanyAddressInfoId] FOREIGN KEY([InsuranceCompanyAddressInfoId])
-	REFERENCES [dbo].[AddressInfo] ([id])
+	REFERENCES [dbo].[AddressInfo] ([Id])
 GO
 
 ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_AddressInfo_InsuranceCompanyAddressInfoId]
 GO
 
 ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_ContactInfo_InsuranceCompanyContactInfoId] FOREIGN KEY([InsuranceCompanyContactInfoId])
-	REFERENCES [dbo].[ContactInfo] ([id])
+	REFERENCES [dbo].[ContactInfo] ([Id])
 GO
 
 ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_ContactInfo_InsuranceCompanyContactInfoId]
 GO
 
 ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_InsuranceType_InsuranceTypeId] FOREIGN KEY([InsuranceTypeId])
-	REFERENCES [dbo].[InsuranceType] ([id])
+	REFERENCES [dbo].[InsuranceType] ([Id])
 GO
 
 ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_InsuranceType_InsuranceTypeId]

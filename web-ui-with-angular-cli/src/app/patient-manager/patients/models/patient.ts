@@ -32,14 +32,12 @@ const PatientRecord = Record({
     employer: null,
     insurance: null,
     accident: null,
+    companyId: 0,
     ssn: '',
-    wcbNo: '',
     weight: 0,
+    height: 0,
     maritalStatusId: MaritalStatus.SINGLE,
-    drivingLicence: '',
-    emergencyContactName: '',
-    emergencyContactRelation: '',
-    emergencyContactNumber: '',
+    dateOfFirstTreatment: null,
     isDeleted: false,
     createByUserID: 0,
     createDate: null,
@@ -54,14 +52,12 @@ export class Patient extends PatientRecord {
     employer: Employer;
     insurance: Insurance;
     accident: Accident;
+    companyId: number;
     ssn: string;
-    wcbNo: string;
     weight: number;
+    height: number;
     maritalStatusId: MaritalStatus;
-    drivingLicence: string;
-    emergencyContactName: string;
-    emergencyContactRelation: string;
-    emergencyContactNumber: string;
+    dateOfFirstTreatment: moment.Moment;
     isDeleted: boolean;
     createByUserID: number;
     createDate: moment.Moment;

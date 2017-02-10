@@ -29,7 +29,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             return requestHandler.GetByPatientId(Request, PatientId);
         }
 
-
+        
 
         [HttpPost]
         [Route("save")]

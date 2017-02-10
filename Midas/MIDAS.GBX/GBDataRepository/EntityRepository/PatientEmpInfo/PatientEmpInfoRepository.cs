@@ -117,26 +117,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-
-        //#region Get All 
-        //public override Object Get<T>(T entity)
-        //{
-        //    BO.PatientEmpInfo patientEmpInfo = (BO.PatientEmpInfo)(object)entity;
-        //    var acc = _context.PatientEmpInfoes.Include("User").ToList<PatientEmpInfo>();
-        //    if (acc == null)
-        //    {
-        //        return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-        //    }
-        //    List<BO.PatientEmpInfo> listpatientEmpInfo = new List<BO.PatientEmpInfo>();
-        //    foreach (PatientEmpInfo item in acc)
-        //    {
-        //        listpatientEmpInfo.Add(Convert<BO.PatientEmpInfo, PatientEmpInfo>(item));
-        //    }
-        //    return listpatientEmpInfo;
-
-        //}
-        //#endregion
-
         #region save
         public override object Save<T>(T entity)
         {
@@ -284,9 +264,57 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        #region Delete By ID
+        public override object DeleteById(int id)
+        {
+            var acc = _context.PatientEmpInfoes.Include("addressInfo").Include("contactInfo").Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).FirstOrDefault<PatientEmpInfo>();
+            if (acc != null)
+            {
+                if (acc.AddressInfo != null)
+                {
+                    acc.AddressInfo.IsDeleted = true;
+                }
+                else
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+                if (acc.ContactInfo != null)
+                {
+                    acc.ContactInfo.IsDeleted = true;
+                }
+                else
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+                acc.IsDeleted = true;
+                _context.SaveChanges();
+            }
+            else if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
 
 
+            return (object)acc;
+        }
+        #endregion
 
+        #region Get EmpInfo patient ID
+        public override object GetCurrentEmpByPatientId(int PatientId)
+        {
+            var acc = _context.PatientEmpInfoes.Include("addressInfo")
+                                                     .Include("contactInfo")
+                                                     .Where(p => p.PatientId == PatientId && p.IsCurrentEmp == true && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
+                                                     .FirstOrDefault<PatientEmpInfo>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            return acc;
+        }
+        #endregion
 
         public void Dispose()
         {

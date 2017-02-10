@@ -40,7 +40,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             patientBO2.SSN = patient2.SSN;
             patientBO2.CompanyId = patient2.CompanyId;
             patientBO2.Weight = patient2.Weight;
-            patientBO2.Weight = patient2.Height;
+            patientBO2.Height = patient2.Height;
             patientBO2.MaritalStatusId = patient2.MaritalStatusId;
             patientBO2.DateOfFirstTreatment = patient2.DateOfFirstTreatment;
             patientBO2.AttorneyName = patient2.AttorneyName;
@@ -484,7 +484,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     patient2DB.SSN = patient2BO.SSN;
                     patient2DB.CompanyId = patient2BO.CompanyId;
                     patient2DB.Weight = patient2BO.Weight;
-                    patient2DB.Weight = patient2BO.Height;
+                    patient2DB.Height = patient2BO.Height;
                     patient2DB.MaritalStatusId = patient2BO.MaritalStatusId;
                     patient2DB.DateOfFirstTreatment = patient2BO.DateOfFirstTreatment;
                     patient2DB.AttorneyName = patient2BO.AttorneyName;
@@ -577,6 +577,34 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
             var res = Convert<BO.Patient2, Patient2>(patient2DB);
+            return (object)res;
+        }
+        #endregion
+
+        #region Delete By ID
+        public override object Delete(int id)
+        {
+            Patient2 patient2 = new Patient2();
+            //BO.SpecialtyDetails specialtyDetailBO = entity as BO.SpecialtyDetails;
+
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                patient2 = _context.Patient2.Include("User").Where(p => p.Id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault();
+
+                if (patient2 != null)
+                {
+                    patient2.IsDeleted = true;
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                }
+
+                dbContextTransaction.Commit();
+            }
+            var res = Convert<BO.Patient2, Patient2>(patient2);
             return (object)res;
         }
         #endregion

@@ -1,193 +1,180 @@
-<div class="page-center">
-    <div class="page-center-in">
-        <div class="container-fluid">
-            <!--<h2 class="with-border">Add Family Member</h2>-->
-            <form [formGroup]="familyMemberForm">
-                <section class="card">
-                    <header class="card-header card-header-lg">
-                        Family Member Information
-                    </header>
-                    <div class="card-block">
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <label class="form-label"> Relation to patient
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="familyMemberFormControls.relationToPatient.touched && !familyMemberFormControls.relationToPatient.valid">
-                                    <select formControlName="relationToPatient" type="text" class="form-control" placeholder="" [class.error]="familyMemberFormControls.relationToPatient.touched && !familyMemberFormControls.relationToPatient.valid">
-                                        <option value="">-Select -</option>
-                                    </select>
-                                    <div class='error-list' *ngIf="familyMemberFormControls.relationToPatient.touched && !familyMemberFormControls.relationToPatient.valid">
-                                        <ul>
-                                            <li *ngIf="familyMemberFormControls.relationToPatient.hasError('required')">Relation to patient is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <label class="form-label">Name
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="familyMemberFormControls.name.touched && !familyMemberFormControls.name.valid">
-                                    <input type="text" formControlName="name" [class.error]="!familyMemberFormControls.name.valid" class="form-control" placeholder="" />
-                                    <div class='error-list' *ngIf="familyMemberFormControls.name.touched && !familyMemberFormControls.name.valid">
-                                        <ul>
-                                            <li *ngIf="familyMemberFormControls.name.hasError('required')">Name is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <label class="form-label">Family Name
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="familyMemberFormControls.familyName.touched && !familyMemberFormControls.familyName.valid">
-                                    <input type="text" formControlName="familyName" [class.error]="!familyMemberFormControls.familyName.valid" class="form-control" placeholder="" />
-                                    <div class='error-list' *ngIf="familyMemberFormControls.familyName.touched && !familyMemberFormControls.familyName.valid">
-                                        <ul>
-                                            <li *ngIf="familyMemberFormControls.familyName.hasError('required')">Family Name is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <label class="form-label"> Prefix
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="familyMemberFormControls.prefix.touched && !familyMemberFormControls.prefix.valid">
-                                    <input type="text" formControlName="prefix" [class.error]="!familyMemberFormControls.prefix.valid" class="form-control"
-                                        placeholder="" />
-                                    <div class='error-list' *ngIf="familyMemberFormControls.prefix.touched && !familyMemberFormControls.prefix.valid">
-                                        <ul>
-                                            <li *ngIf="familyMemberFormControls.prefix.hasError('required')">Prefix is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <label class="form-label"> Suffix
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="familyMemberFormControls.suffix.touched && !familyMemberFormControls.suffix.valid">
-                                    <input type="text" formControlName="suffix" [class.error]="!familyMemberFormControls.suffix.valid" class="form-control"
-                                        placeholder="" />
-                                    <div class='error-list' *ngIf="familyMemberFormControls.suffix.touched && !familyMemberFormControls.suffix.valid">
-                                        <ul>
-                                            <li *ngIf="familyMemberFormControls.suffix.hasError('required')">Suffix is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <label class="form-label"> Age
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="familyMemberFormControls.age.touched && !familyMemberFormControls.age.valid">
-                                    <input type="number" formControlName="age" [class.error]="!familyMemberFormControls.age.valid" class="form-control"
-                                        placeholder="" />
-                                    <div class='error-list' *ngIf="familyMemberFormControls.age.touched && !familyMemberFormControls.age.valid">
-                                        <ul>
-                                            <li *ngIf="familyMemberFormControls.age.hasError('required')">Age is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <label class="form-label"> Deceased Age
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="familyMemberFormControls.deceasedAge.touched && !familyMemberFormControls.deceasedAge.valid">
-                                    <input type="number" formControlName="deceasedAge" [class.error]="!familyMemberFormControls.deceasedAge.valid" class="form-control"
-                                        placeholder="" />
-                                    <div class='error-list' *ngIf="familyMemberFormControls.deceasedAge.touched && !familyMemberFormControls.deceasedAge.valid">
-                                        <ul>
-                                            <li *ngIf="familyMemberFormControls.deceasedAge.hasError('required')">Deceased Age is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                 <label class="form-label">Date of Birth
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="familyMemberFormControls.dob.touched && !familyMemberFormControls.dob.valid">
-                                    <div class='input-group date'>
-                                          <p-calendar formControlName="dob" 
-                                                      dateFormat="M d, yy"
-                                                      [maxDate]="maxDate" 
-                                                      [monthNavigator]="true" 
-                                                      [yearNavigator]="true" 
-                                                      yearRange="1920:2050"
-                                                      [class.error]="familyMemberFormControls.dob.touched && !familyMemberFormControls.dob.valid" 
-                                                      placeholder="Date of Birth"
-                                                      showAnim="slideDown"
-                                                      [showIcon]="true"
-                                                      icon="font-icon font-icon-calend">
-                                          </p-calendar>
-                                    </div>
-                                    <div class='error-list' *ngIf="familyMemberFormControls.dob.touched && !familyMemberFormControls.dob.valid">
-                                        <ul>
-                                            <li *ngIf="familyMemberFormControls.dob.hasError('required')">Date Of Birth is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <label class="form-label"> Gender
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="familyMemberFormControls.gender.touched && !familyMemberFormControls.gender.valid">
-                                    <select formControlName="gender" type="text" class="form-control" placeholder="" [class.error]="familyMemberFormControls.gender.touched && !familyMemberFormControls.gender.valid">
-                                        <option value="">-Select -</option>
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                    <div class='error-list' *ngIf="familyMemberFormControls.gender.touched && !familyMemberFormControls.gender.valid">
-                                        <ul>
-                                            <li *ngIf="familyMemberFormControls.gender.hasError('required')">Gender is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <label class="form-label"> Races
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="familyMemberFormControls.races.touched && !familyMemberFormControls.races.valid">
-                                    <input type="text" formControlName="races" [class.error]="!familyMemberFormControls.races.valid" class="form-control"
-                                        placeholder="" />
-                                    <div class='error-list' *ngIf="familyMemberFormControls.races.touched && !familyMemberFormControls.races.valid">
-                                        <ul>
-                                            <li *ngIf="familyMemberFormControls.races.hasError('required')">Races is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <label class="form-label"> Ethnicities
-                                            <span class="color-red">*</span>
-                                        </label>
-                                <div class="form-group" [class.error]="familyMemberFormControls.ethnicities.touched && !familyMemberFormControls.ethnicities.valid">
-                                    <input type="text" formControlName="ethnicities" [class.error]="!familyMemberFormControls.ethnicities.valid" class="form-control"
-                                        placeholder="" />
-                                    <div class='error-list' *ngIf="familyMemberFormControls.ethnicities.touched && !familyMemberFormControls.ethnicities.valid">
-                                        <ul>
-                                            <li *ngIf="familyMemberFormControls.ethnicities.hasError('required')">Ethnicities is required.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+<h3 class="with-border">Add Family Member</h3>
+<form [formGroup]="familyMemberForm">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Relation to patient
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.relationToPatient.touched && !familyMemberFormControls.relationToPatient.valid">
+                        <select formControlName="relationToPatient" type="text" class="form-control" placeholder="" [class.error]="familyMemberFormControls.relationToPatient.touched && !familyMemberFormControls.relationToPatient.valid">
+                            <option value="">-Select -</option>
+                        </select>
+                        <div class='error-list' *ngIf="familyMemberFormControls.relationToPatient.touched && !familyMemberFormControls.relationToPatient.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.relationToPatient.hasError('required')">Relation to patient is required.</li>
+                            </ul>
                         </div>
                     </div>
-                </section>
-            </form>
-        </div>
-    </div>
-</div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Name
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.name.touched && !familyMemberFormControls.name.valid">
+                        <input type="text" formControlName="name" [class.error]="!familyMemberFormControls.name.valid" class="form-control" placeholder="" />
+                        <div class='error-list' *ngIf="familyMemberFormControls.name.touched && !familyMemberFormControls.name.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.name.hasError('required')">Name is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Family Name
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.familyName.touched && !familyMemberFormControls.familyName.valid">
+                        <input type="text" formControlName="familyName" [class.error]="!familyMemberFormControls.familyName.valid" class="form-control" placeholder="" />
+                        <div class='error-list' *ngIf="familyMemberFormControls.familyName.touched && !familyMemberFormControls.familyName.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.familyName.hasError('required')">Family Name is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Prefix
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.prefix.touched && !familyMemberFormControls.prefix.valid">
+                        <input type="text" formControlName="prefix" [class.error]="!familyMemberFormControls.prefix.valid" class="form-control"
+                            placeholder="" />
+                        <div class='error-list' *ngIf="familyMemberFormControls.prefix.touched && !familyMemberFormControls.prefix.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.prefix.hasError('required')">Prefix is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Suffix
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.suffix.touched && !familyMemberFormControls.suffix.valid">
+                        <input type="text" formControlName="suffix" [class.error]="!familyMemberFormControls.suffix.valid" class="form-control"
+                            placeholder="" />
+                        <div class='error-list' *ngIf="familyMemberFormControls.suffix.touched && !familyMemberFormControls.suffix.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.suffix.hasError('required')">Suffix is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Age
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.age.touched && !familyMemberFormControls.age.valid">
+                        <input type="number" formControlName="age" [class.error]="!familyMemberFormControls.age.valid" class="form-control"
+                            placeholder="" />
+                        <div class='error-list' *ngIf="familyMemberFormControls.age.touched && !familyMemberFormControls.age.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.age.hasError('required')">Age is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Deceased Age
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.deceasedAge.touched && !familyMemberFormControls.deceasedAge.valid">
+                        <input type="number" formControlName="deceasedAge" [class.error]="!familyMemberFormControls.deceasedAge.valid" class="form-control"
+                            placeholder="" />
+                        <div class='error-list' *ngIf="familyMemberFormControls.deceasedAge.touched && !familyMemberFormControls.deceasedAge.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.deceasedAge.hasError('required')">Deceased Age is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                     <label class="form-label">Date of Birth
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.dob.touched && !familyMemberFormControls.dob.valid">
+                        <div class='input-group date'>
+                              <p-calendar formControlName="dob" 
+                                          dateFormat="M d, yy"
+                                          [maxDate]="maxDate" 
+                                          [monthNavigator]="true" 
+                                          [yearNavigator]="true" 
+                                          yearRange="1920:2050"
+                                          [class.error]="familyMemberFormControls.dob.touched && !familyMemberFormControls.dob.valid" 
+                                          placeholder="Date of Birth"
+                                          showAnim="slideDown"
+                                          [showIcon]="true"
+                                          icon="font-icon font-icon-calend">
+                              </p-calendar>
+                        </div>
+                        <div class='error-list' *ngIf="familyMemberFormControls.dob.touched && !familyMemberFormControls.dob.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.dob.hasError('required')">Date Of Birth is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Gender
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.gender.touched && !familyMemberFormControls.gender.valid">
+                        <select formControlName="gender" type="text" class="form-control" placeholder="" [class.error]="familyMemberFormControls.gender.touched && !familyMemberFormControls.gender.valid">
+                            <option value="">-Select -</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div class='error-list' *ngIf="familyMemberFormControls.gender.touched && !familyMemberFormControls.gender.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.gender.hasError('required')">Gender is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Races
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.races.touched && !familyMemberFormControls.races.valid">
+                        <input type="text" formControlName="races" [class.error]="!familyMemberFormControls.races.valid" class="form-control"
+                            placeholder="" />
+                        <div class='error-list' *ngIf="familyMemberFormControls.races.touched && !familyMemberFormControls.races.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.races.hasError('required')">Races is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Ethnicities
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.ethnicities.touched && !familyMemberFormControls.ethnicities.valid">
+                        <input type="text" formControlName="ethnicities" [class.error]="!familyMemberFormControls.ethnicities.valid" class="form-control"
+                            placeholder="" />
+                        <div class='error-list' *ngIf="familyMemberFormControls.ethnicities.touched && !familyMemberFormControls.ethnicities.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.ethnicities.hasError('required')">Ethnicities is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</form>

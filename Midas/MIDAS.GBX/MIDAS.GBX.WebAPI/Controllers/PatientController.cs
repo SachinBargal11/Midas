@@ -120,6 +120,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandlerPatient2.CreateGbObject(Request, patient2);
         }
 
+        [HttpGet]
+        [Route("Delete/{id}")]
+        public HttpResponseMessage Delete(int id)
+        {
+            return requestHandlerPatient2.Delete(Request, id);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
