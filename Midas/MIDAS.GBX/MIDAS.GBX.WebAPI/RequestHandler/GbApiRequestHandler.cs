@@ -409,6 +409,47 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetPatientAccidentInfoByPatientId(HttpRequestMessage request, int PatientId)
+        {
+            var objResult = dataAccessManager.GetPatientAccidentInfoByPatientId(PatientId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetCurrentEmpByPatientId(HttpRequestMessage request, int PatientId)
+        {
+            var objResult = dataAccessManager.GetCurrentEmpByPatientId(PatientId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetCurrentROByPatientId(HttpRequestMessage request, int PatientId)
+        {
+            var objResult = dataAccessManager.GetCurrentROByPatientId(PatientId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        
+
         public HttpResponseMessage DeleteById(HttpRequestMessage request, int id)
         {
             var objResult = dataAccessManager.DeleteById(id);
