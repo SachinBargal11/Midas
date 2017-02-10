@@ -185,6 +185,19 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+        
+        public virtual object GetPatientAccidentInfoByPatientId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual object GetCurrentEmpByPatientId(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        
 
         #endregion
     }

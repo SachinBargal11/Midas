@@ -56,7 +56,9 @@ export class AccidentService {
     addAccident(accident: Accident): Observable<Accident> {
         let promise: Promise<Accident> = new Promise((resolve, reject) => {
             let requestData: any = accident.toJS();
-            requestData = _.omit(requestData);
+            requestData.accidentAddressInfo = requestData.accidentAddress;
+            requestData.hospitalAddressInfo = requestData.hospitalAddress;
+            requestData = _.omit(requestData,'accidentAdress','hospitalAddress');
             return this._http.post(this._url + '/PatientAccidentInfo/Save', JSON.stringify(requestData), {
                 headers: this._headers
             })
@@ -74,8 +76,10 @@ export class AccidentService {
     updateAccident(accident: Accident): Observable<Accident> {
         let promise = new Promise((resolve, reject) => {
             let requestData: any = accident.toJS();
-            requestData = _.omit(requestData);
-            return this._http.put(this._url + '/PatientAccidentInfo/Save', JSON.stringify(requestData), {
+            requestData.accidentAddressInfo = requestData.accidentAddress;
+            requestData.hospitalAddressInfo = requestData.hospitalAddress;
+            requestData = _.omit(requestData,'accidentAdress','hospitalAddress');
+            return this._http.post(this._url + '/PatientAccidentInfo/Save', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -92,7 +96,9 @@ export class AccidentService {
     deleteAccident(accident: Accident): Observable<Accident> {
         let promise = new Promise((resolve, reject) => {
             let requestData: any = accident.toJS();
-            requestData = _.omit(requestData);
+           requestData.accidentAddressInfo = requestData.accidentAddress;
+            requestData.hospitalAddressInfo = requestData.hospitalAddress;
+            requestData = _.omit(requestData,'accidentAdress','hospitalAddress');
             return this._http.put(this._url + '/PatientAccidentInfo/Save', JSON.stringify(requestData), {
                 headers: this._headers
             })
