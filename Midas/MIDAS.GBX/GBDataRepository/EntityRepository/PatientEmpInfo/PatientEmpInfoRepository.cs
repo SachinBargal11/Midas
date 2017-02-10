@@ -117,23 +117,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        #region Get EmpInfo patient ID
-        public override object GetCurrentEmpByPatientId(int PatientId)
-        {
-            var acc = _context.PatientEmpInfoes.Include("addressInfo")
-                                                     .Include("contactInfo")
-                                                     .Where(p => p.PatientId == PatientId && p.IsCurrentEmp == true && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
-                                                     .FirstOrDefault<PatientEmpInfo>();
-
-            if (acc == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
-
-            return acc;
-        }
-        #endregion
-
         #region save
         public override object Save<T>(T entity)
         {
