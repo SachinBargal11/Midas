@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { InsuranceStore } from '../stores/insurance-store';
-import { Insurance } from '../models/insurance';
+import { ReferringOfficeStore } from '../stores/referring-office-store';
+import { ReferringOffice } from '../models/referring-office';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
@@ -10,19 +10,19 @@ import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 
 @Component({
-    selector: 'insurance-list',
-    templateUrl: './insurance-list.html'
+    selector: 'referring-office-list',
+    templateUrl: './referring-office-list.html'
 })
 
-export class InsuranceListComponent implements OnInit {
-    selectedInsurances: Insurance[] = [];
-    insurances: Insurance[];
+export class ReferringOfficeListComponent implements OnInit {
+    selectedReferringOffices: ReferringOffice[] = [];
+    referringOffices: ReferringOffice[];
     patientId: number;
 
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
-        private _insuranceStore: InsuranceStore,
+        private _referringOfficeStore: ReferringOfficeStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService
@@ -33,14 +33,14 @@ export class InsuranceListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.loadInsurances();
+        this.loadReferringOffices();
     }
 
-    loadInsurances() {
+    loadReferringOffices() {
         this._progressBarService.show();
-        this._insuranceStore.getInsurances(this.patientId)
-            .subscribe(insurances => {
-                this.insurances = insurances;
+        this._referringOfficeStore.getReferringOffices(this.patientId)
+            .subscribe(referringOffices => {
+                this.referringOffices = referringOffices;
             },
             (error) => {
                 this._progressBarService.hide();
@@ -50,31 +50,31 @@ export class InsuranceListComponent implements OnInit {
             });
     }
 
-    deleteInsurance() {
-        if (this.selectedInsurances.length > 0) {
-            this.selectedInsurances.forEach(currentInsurance => {
+    deleteReferringOffice() {
+        if (this.selectedReferringOffices.length > 0) {
+            this.selectedReferringOffices.forEach(currentReferringOffice => {
                 this._progressBarService.show();
                 let result;
-                result = this._insuranceStore.deleteInsurance(currentInsurance);
+                result = this._referringOfficeStore.deleteReferringOffice(currentReferringOffice);
                 result.subscribe(
                     (response) => {
                         let notification = new Notification({
-                            'title': 'Insurance deleted successfully!',
+                            'title': 'Referring Office deleted successfully!',
                             'type': 'SUCCESS',
                             'createdAt': moment()
                         });
-                        this.loadInsurances();
+                        this.loadReferringOffices();
                         this._notificationsStore.addNotification(notification);
-                        this.selectedInsurances = [];
+                        this.selectedReferringOffices = [];
                     },
                     (error) => {
-                        let errString = 'Unable to delete Insurance';
+                        let errString = 'Unable to delete Referring Office';
                         let notification = new Notification({
                             'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
-                        this.selectedInsurances = [];
+                        this.selectedReferringOffices = [];
                         this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
@@ -85,12 +85,12 @@ export class InsuranceListComponent implements OnInit {
             });
         } else {
             let notification = new Notification({
-                'title': 'select Insurance to delete',
+                'title': 'select Referring Office to delete',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select Insurance to delete');
+            this._notificationsService.error('Oh No!', 'select Referring Office to delete');
         }
     }
 

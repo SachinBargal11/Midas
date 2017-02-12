@@ -7,7 +7,6 @@ import { AppointmentsComponent } from './patients/components/appointments';
 import { BalancesComponent } from './patients/components/balances';
 import { DemographicsComponent } from './patients/components/demographics';
 import { DocumentsComponent } from './patients/components/documents';
-import { InsurancesComponent } from './patients/components/insurances';
 import { PatientBasicComponent } from './patients/components/patient-basic';
 import { PatientDetailsComponent } from './patients/components/patient-details';
 import { PatientNavComponent } from './patients/components/patient-nav-bar';
@@ -19,8 +18,11 @@ import { AddFamilyMemberComponent } from './patients/components/add-family-membe
 import { AccidentInfoComponent } from './patients/components/accident';
 import { AttorneyComponent } from './patients/components/attorney';
 import { PatientEmployerComponent } from './patients/components/employer';
+import { ReferringOfficeListComponent } from './patients/components/referring-office-list';
+import { AddReferringOfficeComponent } from './patients/components/add-referring-office';
 import { InsuranceListComponent } from './patients/components/insurance-list';
-import { EditInsurancesComponent } from './patients/components/edit-insurance';
+import { AddInsuranceComponent } from './patients/components/add-insurance';
+import { EditInsuranceComponent } from './patients/components/edit-insurance';
 import { ConsentFormsComponent } from './consent-forms/components/consent-forms';
 import { ReferalsComponent } from './referals/components/referals';
 import { PatientsService } from './patients/services/patients-service';
@@ -29,12 +31,14 @@ import { AttorneyService } from './patients/services/attorney-services';
 import { EmployerService } from './patients/services/employer-service';
 import { FamilyMemberService } from './patients/services/family-member-service';
 import { InsuranceService } from './patients/services/insurance-service';
+import { ReferringOfficeService } from './patients/services/referring-office-service';
 import { PatientsStore } from './patients/stores/patients-store';
 import { EmployerStore } from './patients/stores/employer-store';
 import { FamilyMemberStore } from './patients/stores/family-member-store';
 import { AccidentStore } from './patients/stores/accident-store';
 import { AttorneyStore } from './patients/stores/attorney-store';
 import { InsuranceStore } from './patients/stores/insurance-store';
+import { ReferringOfficeStore } from './patients/stores/referring-office-store';
 import { PatientRoutingModule } from './patient-manager-routes';
 import { CaseComponent } from './cases/components/case';
 import { CasesListComponent } from './cases/components/cases-list';
@@ -54,7 +58,6 @@ import { CasesStore } from './cases/stores/case-store';
         BalancesComponent,
         DemographicsComponent,
         DocumentsComponent,
-        InsurancesComponent,
         PatientBasicComponent,
         PatientDetailsComponent,
         PatientNavComponent,
@@ -66,8 +69,11 @@ import { CasesStore } from './cases/stores/case-store';
         AccidentInfoComponent,
         AttorneyComponent,
         PatientEmployerComponent,
+        AddInsuranceComponent,
+        ReferringOfficeListComponent,
+        AddReferringOfficeComponent,
         InsuranceListComponent,
-        EditInsurancesComponent,
+        EditInsuranceComponent,
         ConsentFormsComponent,
         ReferalsComponent,
         CaseComponent,
@@ -78,12 +84,14 @@ import { CasesStore } from './cases/stores/case-store';
         EmployerService,
         FamilyMemberService,
         InsuranceService,
+        ReferringOfficeService,
         AccidentService,
         AttorneyService,
         PatientsStore,
         EmployerStore,
         FamilyMemberStore,
         InsuranceStore,
+        ReferringOfficeStore,
         CasesStore,
         AttorneyStore,
         AccidentStore

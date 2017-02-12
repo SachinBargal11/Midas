@@ -67,9 +67,5 @@ export class Patient extends PatientRecord {
     constructor(props) {
         super(props);
     }
-
-    // get id(): number {
-    //     return this.user.id;
-    // }
-
+    
 }

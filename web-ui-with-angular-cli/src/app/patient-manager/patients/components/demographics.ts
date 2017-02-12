@@ -25,7 +25,6 @@ import { StatesStore } from '../../../commons/stores/states-store';
 
 export class DemographicsComponent implements OnInit {
     patientId: number;
-    patientInfoJS: any = null;
     patientInfo: Patient;
     options = {
         timeOut: 3000,
@@ -40,6 +39,7 @@ export class DemographicsComponent implements OnInit {
     isCitiesLoading = false;
     states: any[];
     cities: any[];
+    dateOfFirstTreatment: Date;
 
     constructor(
         private fb: FormBuilder,
@@ -60,15 +60,12 @@ export class DemographicsComponent implements OnInit {
             result.subscribe(
                 (patient: Patient) => {
                     this.patientInfo = patient;
-                    this.patientInfoJS = _.extend(patient.toJS(), {
-                        dateOfFirstTreatment: this.patientInfo.dateOfFirstTreatment
-                            ? this.patientInfo.dateOfFirstTreatment.toDate()
-                            : null
-                    });
+                    this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment
+                        ? this.patientInfo.dateOfFirstTreatment.toDate()
+                        : null;
                     if (this.patientInfo.user.address.state) {
                         this.loadCities(this.patientInfo.user.address.state);
                     }
-                    console.log(this.patientInfoJS);
                 },
                 (error) => {
                     this._router.navigate(['/patient-manager/patients']);
@@ -133,12 +130,12 @@ export class DemographicsComponent implements OnInit {
         this.isSavePatientProgress = true;
         let demographicsFormValues = this.demographicsform.value;
         let result;
-        let updatedPatient = _.clone(this.patientInfoJS);
+        let updatedPatient = this.patientInfo.toJS();
         updatedPatient = _.extend(updatedPatient, {
             ssn: demographicsFormValues.userInfo.ssn,
             weight: parseInt(demographicsFormValues.userInfo.weight, 10),
             height: parseInt(demographicsFormValues.userInfo.height, 10),
-            dateOfFirstTreatment: demographicsFormValues.dateOfFirstTreatment ? moment(demographicsFormValues.dateOfFirstTreatment) : null,
+            dateOfFirstTreatment: demographicsFormValues.userInfo.dateOfFirstTreatment ? moment(demographicsFormValues.userInfo.dateOfFirstTreatment) : null,
             updateByUserId: this._sessionStore.session.account.user.id,
             companyId: this._sessionStore.session.currentCompany.id,
             user: _.extend(updatedPatient.user, {

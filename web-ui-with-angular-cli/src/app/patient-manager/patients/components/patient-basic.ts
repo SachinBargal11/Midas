@@ -20,8 +20,8 @@ import { User } from '../../../commons/models/user';
 
 export class PatientBasicComponent implements OnInit {
     patientId: number;
-    patientInfoJS: any = null;
     patientInfo: Patient;
+    dateOfBirth: Date;
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -49,9 +49,8 @@ export class PatientBasicComponent implements OnInit {
             result.subscribe(
                 (patient: Patient) => {
                     this.patientInfo = patient;
-                    this.patientInfoJS = patient.toJS();
-                    this.patientInfoJS.user.dateOfBirth = this.patientInfoJS.user.dateOfBirth
-                        ? this.patientInfoJS.user.dateOfBirth.toDate()
+                    this.dateOfBirth = this.patientInfo.user.dateOfBirth
+                        ? this.patientInfo.user.dateOfBirth.toDate()
                         : null;
                 },
                 (error) => {
@@ -85,9 +84,9 @@ export class PatientBasicComponent implements OnInit {
         let result;
         let patient = new Patient({
             id: this.patientId,
-            ssn: this.patientInfoJS.ssn,
-            weight: this.patientInfoJS.weight,
-            height: this.patientInfoJS.height,
+            ssn: this.patientInfo.ssn,
+            weight: this.patientInfo.weight,
+            height: this.patientInfo.height,
             maritalStatusId: basicFormValues.maritalStatusId,
             updateByUserId: this._sessionStore.session.account.user.id,
             companyId: this._sessionStore.session.currentCompany.id,
