@@ -107,10 +107,10 @@ export class AddReferringOfficeComponent implements OnInit {
         let result;
         let referringOffice = new ReferringOffice({
             patientId: this.patientId,
-            refferingOfficeId: referringOfficeformValues.refferingOfficeId,
-            refferingDoctorId: referringOfficeformValues.refferingDoctorId,
+            refferingOfficeId: parseInt(referringOfficeformValues.refferingOfficeId, 10),
+            refferingDoctorId: parseInt(referringOfficeformValues.refferingDoctorId, 10),
             npi: referringOfficeformValues.npi,
-            isCurrentReffOffice: referringOfficeformValues.isCurrentReffOffice,
+            isCurrentReffOffice: parseInt(referringOfficeformValues.isCurrentReffOffice, 10),
             addressInfo: new Address({
                 address1: referringOfficeformValues.address1,
                 address2: referringOfficeformValues.address2,

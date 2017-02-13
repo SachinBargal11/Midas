@@ -11,7 +11,7 @@ export class ReferringOfficeAdapter {
                 id: data.id,
                 patientId: data.patientId,
                 refferingOfficeId: data.refferingOfficeId,
-                refferingDoctorId: data.referringDoctorId,
+                refferingDoctorId: data.refferingDoctorId,
                 npi: data.npi,
                 isCurrentReffOffice: data.isCurrentReffOffice,
                 addressInfo: AddressAdapter.parseResponse(data.addressInfo),

@@ -19,10 +19,10 @@ export class ReferringOfficeService {
     }
     getReferringOffice(referringOfficeId: Number): Observable<ReferringOffice> {
         let promise: Promise<ReferringOffice> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/RefferingOffice/getByPatientId/get/' + referringOfficeId).map(res => res.json())
+            return this._http.get(this._url + '/RefferingOffice/get/' + referringOfficeId).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     let referringOffice = null;
-                    if (data.length) {
+                    if (data) {
                         referringOffice = ReferringOfficeAdapter.parseResponse(data);
                         resolve(referringOffice);
                     } else {

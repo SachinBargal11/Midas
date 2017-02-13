@@ -54,7 +54,6 @@ export class EditReferringOfficeComponent implements OnInit {
         private _elRef: ElementRef
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
-            debugger;
             this.patientId = parseInt(routeParams.patientId);
         });
         this._route.params.subscribe((routeParams: any) => {
@@ -98,7 +97,6 @@ export class EditReferringOfficeComponent implements OnInit {
         this._usersStore.getUsers()
             .subscribe((users) => {
                 this.users = users;
-                console.log(this.users[0].toJS());
             });
     }
 
@@ -128,10 +126,10 @@ export class EditReferringOfficeComponent implements OnInit {
         let referringOffice = new ReferringOffice({
             id: this.referringOffice.id,
             patientId: this.patientId,
-            refferingOfficeId: referringOfficeformValues.refferingOfficeId,
-            refferingDoctorId: referringOfficeformValues.refferingDoctorId,
+            refferingOfficeId: parseInt(referringOfficeformValues.refferingOfficeId, 10),
+            refferingDoctorId: parseInt(referringOfficeformValues.refferingDoctorId, 10),
             npi: referringOfficeformValues.npi,
-            isCurrentReffOffice: referringOfficeformValues.isCurrentReffOffice,
+            isCurrentReffOffice: parseInt(referringOfficeformValues.isCurrentReffOffice, 10),
             addressInfo: new Address({
                 id: this.referringOffice.addressInfo.id,
                 address1: referringOfficeformValues.address1,
