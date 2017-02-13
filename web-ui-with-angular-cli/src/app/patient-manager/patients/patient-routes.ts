@@ -11,6 +11,7 @@ import { AppointmentsComponent } from './components/appointments';
 import { ValidateActiveSession } from '../../commons/guards/validate-active-session';
 import { ShellComponent } from '../../commons/shell-component';
 import { AddFamilyMemberComponent } from './components/add-family-member';
+import { FamilyMemberListComponent } from './components/family-member-list';
 import { AccidentInfoComponent } from './components/accident';
 import { AttorneyComponent } from './components/attorney';
 import { PatientEmployerComponent } from './components/employer';
@@ -145,12 +146,38 @@ export const PatientsShellRoutes: Routes = [
                         ]
                     },
                     {
-                        path: 'family-member',
-                        component: AddFamilyMemberComponent,
+                        path: 'family-members',
+                        component: ShellComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
-                            breadcrumb: 'Family Member'
-                        }
+                            breadcrumb: 'Family Members'
+                        },
+                        children: [
+                            {
+                                path: '',
+                                component: FamilyMemberListComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'root'
+                                }
+                            },
+                            {
+                                path: 'add',
+                                component: AddFamilyMemberComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'Add Family Member'
+                                }
+                            },
+                            // {
+                            //     path: 'edit/:id',
+                            //     component: ,
+                            //     canActivate: [ValidateActiveSession],
+                            //     data: {
+                            //         breadcrumb: 'Edit Family Member'
+                            //     }
+                            // }
+                        ]
                     },
                     {
                         path: 'accident',
