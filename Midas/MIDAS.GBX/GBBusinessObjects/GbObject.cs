@@ -45,10 +45,10 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonConverter(typeof(BoolConverter))]
         public bool? IsDeleted { get; set; }
         //public Dictionary<string, object> ExtensionProperties { get; set; }
-        [JsonProperty("createbyuserID")]
+        [JsonProperty("createByUserID")]
         public int CreateByUserID { get; set; }
 
-        [JsonProperty("updatebyuserID")]
+        [JsonProperty("updateByUserID")]
         public int? UpdateByUserID { get; set; }
         [JsonProperty("createDate")]
         public DateTime CreateDate { get { return DateTime.Now; } }

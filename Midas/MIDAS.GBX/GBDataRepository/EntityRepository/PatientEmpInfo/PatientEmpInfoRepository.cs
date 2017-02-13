@@ -117,6 +117,154 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        //#region save
+        //public override object Save<T>(T entity)
+        //{
+        //    BO.PatientEmpInfo patientEmpInfoBO = (BO.PatientEmpInfo)(object)entity;
+        //    BO.AddressInfo addressBO = patientEmpInfoBO.addressInfo;
+        //    BO.ContactInfo contactinfoBO = patientEmpInfoBO.contactInfo;
+
+        //    PatientEmpInfo patientEmpInfoDB = new PatientEmpInfo();
+
+        //    using (var dbContextTransaction = _context.Database.BeginTransaction())
+        //    {
+        //        AddressInfo addressDB = new AddressInfo();
+        //        ContactInfo contactinfoDB = new ContactInfo();
+        //        //User userDB = new User();
+
+        //        #region Address
+        //        if (addressBO != null)
+        //        {
+        //            bool Add_addressDB = false;
+        //            addressDB = _context.AddressInfoes.Where(p => p.id == addressBO.ID).FirstOrDefault();
+
+        //            if (addressDB == null && addressBO.ID <= 0)
+        //            {
+        //                addressDB = new AddressInfo();
+        //                Add_addressDB = true;
+        //            }
+        //            else if (addressDB == null && addressBO.ID > 0)
+        //            {
+        //                dbContextTransaction.Rollback();
+        //                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Address details dosent exists.", ErrorLevel = ErrorLevel.Error };
+        //            }
+
+        //            addressDB.id = addressBO.ID;
+        //            addressDB.Name = addressBO.Name;
+        //            addressDB.Address1 = addressBO.Address1;
+        //            addressDB.Address2 = addressBO.Address2;
+        //            addressDB.City = addressBO.City;
+        //            addressDB.State = addressBO.State;
+        //            addressDB.ZipCode = addressBO.ZipCode;
+        //            addressDB.Country = addressBO.Country;
+
+        //            if (Add_addressDB == true)
+        //            {
+        //                addressDB = _context.AddressInfoes.Add(addressDB);
+        //            }
+        //            _context.SaveChanges();
+        //        }
+        //        else
+        //        {
+        //            dbContextTransaction.Rollback();
+        //            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Address details.", ErrorLevel = ErrorLevel.Error };
+        //        }
+        //        #endregion                
+
+        //        #region Contact Info
+        //        if (contactinfoBO != null)
+        //        {
+        //            bool Add_contactinfoDB = false;
+        //            contactinfoDB = _context.ContactInfoes.Where(p => p.id == contactinfoBO.ID).FirstOrDefault();
+
+        //            if (contactinfoDB == null && contactinfoBO.ID <= 0)
+        //            {
+        //                contactinfoDB = new ContactInfo();
+        //                Add_contactinfoDB = true;
+        //            }
+        //            else if (contactinfoDB == null && contactinfoBO.ID > 0)
+        //            {
+        //                dbContextTransaction.Rollback();
+        //                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Contact details dosent exists.", ErrorLevel = ErrorLevel.Error };
+        //            }
+        //            contactinfoDB.id = contactinfoBO.ID;
+        //            contactinfoDB.Name = contactinfoBO.Name;
+        //            contactinfoDB.CellPhone = contactinfoBO.CellPhone;
+        //            contactinfoDB.EmailAddress = contactinfoBO.EmailAddress;
+        //            contactinfoDB.HomePhone = contactinfoBO.HomePhone;
+        //            contactinfoDB.WorkPhone = contactinfoBO.WorkPhone;
+        //            contactinfoDB.FaxNo = contactinfoBO.FaxNo;
+        //            contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
+
+        //            if (Add_contactinfoDB == true)
+        //            {
+        //                contactinfoDB = _context.ContactInfoes.Add(contactinfoDB);
+        //            }
+        //            _context.SaveChanges();
+        //        }
+        //        else
+        //        {
+        //            dbContextTransaction.Rollback();
+        //            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Contact details.", ErrorLevel = ErrorLevel.Error };
+        //        }
+        //        #endregion
+
+        //        #region patient Emp Info
+        //        if (patientEmpInfoBO != null)
+        //        {
+        //            if (patientEmpInfoBO.isCurrentEmp == true)
+        //            {
+        //                var existingPatientEmpInfoDB = _context.PatientEmpInfoes.Where(p => p.PatientId == patientEmpInfoBO.patientId).ToList();
+        //                existingPatientEmpInfoDB.ForEach(p => p.IsCurrentEmp = false);
+        //            }
+
+        //            bool Add_patientEmpInfoDB = false;
+        //            patientEmpInfoDB = _context.PatientEmpInfoes.Where(p => p.Id == patientEmpInfoBO.ID).FirstOrDefault();
+
+        //            if (patientEmpInfoDB == null && patientEmpInfoBO.ID <= 0)
+        //            {
+        //                patientEmpInfoDB = new PatientEmpInfo();
+        //                Add_patientEmpInfoDB = true;
+        //            }
+        //            else if (patientEmpInfoDB == null && patientEmpInfoBO.ID > 0)
+        //            {
+        //                dbContextTransaction.Rollback();
+        //                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient dosent exists.", ErrorLevel = ErrorLevel.Error };
+        //            }
+
+        //            patientEmpInfoDB.PatientId = patientEmpInfoBO.patientId;
+        //            patientEmpInfoDB.JobTitle = patientEmpInfoBO.jobTitle;
+        //            patientEmpInfoDB.EmpName = patientEmpInfoBO.empName;
+        //            patientEmpInfoDB.AddressInfoId = addressDB.id;
+        //            patientEmpInfoDB.ContactInfoId= contactinfoDB.id;
+        //            patientEmpInfoDB.IsCurrentEmp = patientEmpInfoBO.isCurrentEmp;                    
+
+        //            if (Add_patientEmpInfoDB == true)
+        //            {
+        //                patientEmpInfoDB = _context.PatientEmpInfoes.Add(patientEmpInfoDB);
+        //            }
+        //            _context.SaveChanges();
+        //        }
+        //        else
+        //        {
+        //            dbContextTransaction.Rollback();
+        //            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient details.", ErrorLevel = ErrorLevel.Error };
+        //        }
+
+        //        _context.SaveChanges();
+        //        #endregion
+
+        //        dbContextTransaction.Commit();
+
+        //        patientEmpInfoDB = _context.PatientEmpInfoes.Where(p => p.Id == patientEmpInfoDB.Id).FirstOrDefault<PatientEmpInfo>();
+        //    }
+
+        //    var res = Convert<BO.PatientEmpInfo, PatientEmpInfo>(patientEmpInfoDB);
+        //    return (object)res;
+        //}
+        //#endregion
+
+
         #region save
         public override object Save<T>(T entity)
         {
@@ -128,6 +276,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
+
+                bool IsEditMode = false;
+                IsEditMode = (patientEmpInfoBO != null && patientEmpInfoBO.ID > 0) ? true : false;
+
                 AddressInfo addressDB = new AddressInfo();
                 ContactInfo contactinfoDB = new ContactInfo();
                 //User userDB = new User();
@@ -150,13 +302,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     }
 
                     addressDB.id = addressBO.ID;
-                    addressDB.Name = addressBO.Name;
-                    addressDB.Address1 = addressBO.Address1;
-                    addressDB.Address2 = addressBO.Address2;
-                    addressDB.City = addressBO.City;
-                    addressDB.State = addressBO.State;
-                    addressDB.ZipCode = addressBO.ZipCode;
-                    addressDB.Country = addressBO.Country;
+                    addressDB.Name= IsEditMode == true && addressBO.Name == null ? addressDB.Name : addressBO.Name;
+                    addressDB.Address1 = IsEditMode == true && addressBO.Address1 == null ? addressDB.Address1 : addressBO.Address1;
+                    addressDB.Address2 = IsEditMode == true && addressBO.Address2 == null ? addressDB.Address2 : addressBO.Address2;
+                    addressDB.City = IsEditMode == true && addressBO.City == null ? addressDB.City : addressBO.City;
+                    addressDB.State = IsEditMode == true && addressBO.State == null ? addressDB.State : addressBO.State;
+                    addressDB.ZipCode = IsEditMode == true && addressBO.ZipCode == null ? addressDB.ZipCode : addressBO.ZipCode;
+                    addressDB.Country = IsEditMode == true && addressBO.Country == null ? addressDB.Country : addressBO.Country;
 
                     if (Add_addressDB == true)
                     {
@@ -166,8 +318,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 }
                 else
                 {
-                    dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Address details.", ErrorLevel = ErrorLevel.Error };
+                    if (IsEditMode == false)
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Address details.", ErrorLevel = ErrorLevel.Error };
+                    }
+                    addressDB = null;
                 }
                 #endregion                
 
@@ -188,12 +344,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Contact details dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
                     contactinfoDB.id = contactinfoBO.ID;
-                    contactinfoDB.Name = contactinfoBO.Name;
-                    contactinfoDB.CellPhone = contactinfoBO.CellPhone;
-                    contactinfoDB.EmailAddress = contactinfoBO.EmailAddress;
-                    contactinfoDB.HomePhone = contactinfoBO.HomePhone;
-                    contactinfoDB.WorkPhone = contactinfoBO.WorkPhone;
-                    contactinfoDB.FaxNo = contactinfoBO.FaxNo;
+                    contactinfoDB.Name =IsEditMode == true && contactinfoBO.Name == null ? contactinfoDB.Name : contactinfoBO.Name;
+                    contactinfoDB.CellPhone = IsEditMode == true && contactinfoBO.CellPhone == null ? contactinfoDB.CellPhone : contactinfoBO.CellPhone;
+                    contactinfoDB.EmailAddress = IsEditMode == true && contactinfoBO.EmailAddress == null ? contactinfoDB.EmailAddress : contactinfoBO.EmailAddress;
+                    contactinfoDB.HomePhone = IsEditMode == true && contactinfoBO.HomePhone == null ? contactinfoDB.HomePhone : contactinfoBO.HomePhone;
+                    contactinfoDB.WorkPhone = IsEditMode == true && contactinfoBO.WorkPhone == null ? contactinfoDB.WorkPhone : contactinfoBO.WorkPhone;
+                    contactinfoDB.FaxNo = IsEditMode == true && contactinfoBO.FaxNo == null ? contactinfoDB.FaxNo : contactinfoBO.FaxNo;
                     contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
 
                     if (Add_contactinfoDB == true)
@@ -204,8 +360,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 }
                 else
                 {
-                    dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Contact details.", ErrorLevel = ErrorLevel.Error };
+                    if (IsEditMode == false)
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Contact details.", ErrorLevel = ErrorLevel.Error };
+                    }
+                    contactinfoDB = null;
                 }
                 #endregion
 
@@ -233,11 +393,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     }
 
                     patientEmpInfoDB.PatientId = patientEmpInfoBO.patientId;
-                    patientEmpInfoDB.JobTitle = patientEmpInfoBO.jobTitle;
-                    patientEmpInfoDB.EmpName = patientEmpInfoBO.empName;
-                    patientEmpInfoDB.AddressInfoId = addressDB.id;
-                    patientEmpInfoDB.ContactInfoId= contactinfoDB.id;
-                    patientEmpInfoDB.IsCurrentEmp = patientEmpInfoBO.isCurrentEmp;                    
+                    patientEmpInfoDB.JobTitle = IsEditMode == true && patientEmpInfoBO.jobTitle == null ? patientEmpInfoDB.JobTitle : patientEmpInfoBO.jobTitle;
+                    patientEmpInfoDB.EmpName = IsEditMode == true && patientEmpInfoBO.empName == null ? patientEmpInfoDB.EmpName : patientEmpInfoBO.empName;
+                    patientEmpInfoDB.AddressInfoId = (addressDB != null && addressDB.id > 0) ? addressDB.id : patientEmpInfoDB.AddressInfoId;
+                    patientEmpInfoDB.ContactInfoId = (contactinfoDB != null && contactinfoDB.id > 0) ? contactinfoDB.id : patientEmpInfoDB.ContactInfoId;
+                    patientEmpInfoDB.IsCurrentEmp = (bool)patientEmpInfoBO.isCurrentEmp;
 
                     if (Add_patientEmpInfoDB == true)
                     {
@@ -247,8 +407,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 }
                 else
                 {
-                    dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient details.", ErrorLevel = ErrorLevel.Error };
+                    if (IsEditMode == false)
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient details.", ErrorLevel = ErrorLevel.Error };
+                    }
+                    patientEmpInfoDB = null;
                 }
 
                 _context.SaveChanges();
@@ -263,6 +427,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             return (object)res;
         }
         #endregion
+
+
+
+
 
         #region Delete By ID
         public override object DeleteById(int id)
