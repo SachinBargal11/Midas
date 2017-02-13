@@ -20,6 +20,7 @@ import { AttorneyComponent } from './patients/components/attorney';
 import { PatientEmployerComponent } from './patients/components/employer';
 import { ReferringOfficeListComponent } from './patients/components/referring-office-list';
 import { AddReferringOfficeComponent } from './patients/components/add-referring-office';
+import { EditReferringOfficeComponent } from './patients/components/edit-referring-office';
 import { InsuranceListComponent } from './patients/components/insurance-list';
 import { AddInsuranceComponent } from './patients/components/add-insurance';
 import { EditInsuranceComponent } from './patients/components/edit-insurance';
@@ -72,6 +73,7 @@ import { CasesStore } from './cases/stores/case-store';
         AddInsuranceComponent,
         ReferringOfficeListComponent,
         AddReferringOfficeComponent,
+        EditReferringOfficeComponent,
         InsuranceListComponent,
         EditInsuranceComponent,
         ConsentFormsComponent,

@@ -58,14 +58,14 @@ export class ReferringOfficeService {
             return this._http.post(this._url + '/RefferingOffice/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
-            .map(res => res.json())
-            .subscribe((data: any) => {
+                .map(res => res.json())
+                .subscribe((data: any) => {
                     let parsedReferringOffice: ReferringOffice = null;
                     parsedReferringOffice = ReferringOfficeAdapter.parseResponse(data);
-                resolve(parsedReferringOffice);
-            }, (error) => {
-                reject(error);
-            });
+                    resolve(parsedReferringOffice);
+                }, (error) => {
+                    reject(error);
+                });
         });
         return <Observable<ReferringOffice>>Observable.fromPromise(promise);
     }
@@ -75,14 +75,14 @@ export class ReferringOfficeService {
             return this._http.post(this._url + '/RefferingOffice/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
-            .map(res => res.json())
-            .subscribe((data: any) => {
+                .map(res => res.json())
+                .subscribe((data: any) => {
                     let parsedReferringOffice: ReferringOffice = null;
                     parsedReferringOffice = ReferringOfficeAdapter.parseResponse(data);
-                resolve(parsedReferringOffice);
-            }, (error) => {
-                reject(error);
-            });
+                    resolve(parsedReferringOffice);
+                }, (error) => {
+                    reject(error);
+                });
         });
         return <Observable<ReferringOffice>>Observable.fromPromise(promise);
     }
@@ -95,9 +95,11 @@ export class ReferringOfficeService {
             })
                 .map(res => res.json())
                 .subscribe((data) => {
-                    let parsedReferringOffice: ReferringOffice = null;
-                    parsedReferringOffice = ReferringOfficeAdapter.parseResponse(data);
-                resolve(parsedReferringOffice);
+                    if (data) {
+                        let parsedReferringOffice: ReferringOffice = null;
+                        parsedReferringOffice = ReferringOfficeAdapter.parseResponse(data);
+                        resolve(parsedReferringOffice);
+                    }
                 }, (error) => {
                     reject(error);
                 });

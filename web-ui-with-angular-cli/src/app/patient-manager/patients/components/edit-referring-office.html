@@ -1,0 +1,166 @@
+<div *ngIf="referringOffice">
+    <h3 class="with-border">Edit Referring Office</h3>
+    <form [formGroup]="referringOfficeform" (ngSubmit)="save()">
+        <section class="card">
+            <header class="card-header card-header-lg">
+                Information
+            </header>
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label">NPI
+                                <span class="color-red">*</span>
+                            </label>
+                        <div class="form-group" [class.error]="referringOfficeformControls.npi.touched && !referringOfficeformControls.npi.valid">
+                            <input type="text" [ngModel]="referringOffice.npi" formControlName="npi" [class.error]="!referringOfficeformControls.npi.valid" class="form-control" type="text"
+                                placeholder="" />
+                            <div class='error-list' *ngIf="referringOfficeformControls.npi.touched && !referringOfficeformControls.npi.valid">
+                                <ul>
+                                    <li *ngIf="referringOfficeformControls.npi.hasError('required')">NPI is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Is Current Referring Office
+                                        <span class="color-red">*</span>
+                                    </label>
+                        <div class="form-group">
+                            <p-radioButton [ngModel]="referringOffice.isCurrentReffOffice" formControlName="isCurrentReffOffice" name="isCurrentReffOffice" value="1" label="Yes"></p-radioButton>
+                            <p-radioButton [ngModel]="referringOffice.isCurrentReffOffice" formControlName="isCurrentReffOffice" name="isCurrentReffOffice" value="0" label="No"></p-radioButton>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Select Location
+                            </label>
+                        <div class="form-group" [class.error]="referringOfficeformControls.refferingOfficeId.touched && !referringOfficeformControls.refferingOfficeId.valid">
+                            <select [ngModel]="referringOffice.refferingOfficeId" formControlName="refferingOfficeId" type="text" class="form-control" placeholder="" [class.error]="referringOfficeformControls.refferingOfficeId.touched && !referringOfficeformControls.refferingOfficeId.valid">
+                            <option value="">-Select Location-</option>
+                            <option *ngFor="let currentLocation of locations" value="{{currentLocation.location.id}}">{{currentLocation.location.name}}</option>
+                            </select>
+                            <div class='error-list' *ngIf="referringOfficeformControls.refferingOfficeId.touched && !referringOfficeformControls.refferingOfficeId.valid">
+                                <ul>
+                                    <li *ngIf="referringOfficeformControls.refferingOfficeId.hasError('required')">Please Select Location.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label"> Select Doctor
+                            </label>
+                        <div class="form-group" [class.error]="referringOfficeformControls.refferingDoctorId.touched && !referringOfficeformControls.refferingDoctorId.valid">
+                            <select [ngModel]="referringOffice.refferingDoctorId" formControlName="refferingDoctorId" type="text" class="form-control" placeholder="" [class.error]="referringOfficeformControls.refferingDoctorId.touched && !referringOfficeformControls.refferingDoctorId.valid">
+                            <option value="">-Select Doctor-</option>
+                            <option *ngFor="let currentUser of users" value="{{currentUser.id}}">{{currentUser.displayName}}</option>
+                            </select>
+                            <div class='error-list' *ngIf="referringOfficeformControls.refferingDoctorId.touched && !referringOfficeformControls.refferingDoctorId.valid">
+                                <ul>
+                                    <li *ngIf="referringOfficeformControls.refferingDoctorId.hasError('required')">Please Select Doctor.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="card">
+            <header class="card-header card-header-lg">
+                Address
+            </header>
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label"> Address1
+                         <span class="color-red">*</span>
+                            </label>
+                        <div class="form-group" [class.error]="referringOfficeformControls.address1.touched && !referringOfficeformControls.address1.valid">
+                            <input [ngModel]="referringOffice.addressInfo.address1" formControlName="address1" type="text" class="form-control" placeholder="" [class.error]="!referringOfficeformControls.address1.valid">
+                            <div class='error-list' *ngIf="referringOfficeformControls.address1.touched && !referringOfficeformControls.address1.valid">
+                                <ul>
+                                    <li *ngIf="referringOfficeformControls.address1.hasError('required')">Address is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Address2
+                            </label>
+                        <div class="form-group" [class.error]="referringOfficeformControls.address2.touched && !referringOfficeformControls.address2.valid">
+                            <input [ngModel]="referringOffice.addressInfo.address2" formControlName="address2" type="text" class="form-control" placeholder="" [class.error]="!referringOfficeformControls.address2.valid">
+                            <div class='error-list' *ngIf="referringOfficeformControls.address2.touched && !referringOfficeformControls.address2.valid">
+                                <ul>
+                                    <li *ngIf="referringOfficeformControls.address2.hasError('required')">Address2 is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> State
+                            </label>
+                        <div class="form-group" [class.error]="referringOfficeformControls.state.touched && !referringOfficeformControls.state.valid">
+                            <select [ngModel]="referringOffice.addressInfo.state" formControlName="state" type="text" (change)="selectState($event)" class="form-control" placeholder="" [class.error]="referringOfficeformControls.state.touched && !referringOfficeformControls.state.valid">
+                            <option value="">-Select State-</option>
+                            <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
+                            </select>
+                            <div class='error-list' *ngIf="referringOfficeformControls.state.touched && !referringOfficeformControls.state.valid">
+                                <ul>
+                                    <li *ngIf="referringOfficeformControls.state.hasError('required')">State is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label class="form-label"> City
+                            </label>
+                        <div class="form-group" [class.error]="referringOfficeformControls.city.touched && !referringOfficeformControls.city.valid">
+                            <select [ngModel]="referringOffice.addressInfo.city" formControlName="city" type="text" class="form-control" placeholder="" [class.error]="referringOfficeformControls.city.touched && !referringOfficeformControls.city.valid">
+                            <option value="">-Select City-</option>
+                            <option *ngFor="let city of cities" value="{{city.citytext}}">{{city.citytext}}</option>
+                        </select>
+                            <div class='error-list' *ngIf="referringOfficeformControls.city.touched && !referringOfficeformControls.city.valid">
+                                <ul>
+                                    <li *ngIf="referringOfficeformControls.city.hasError('required')">City is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1 m-t-lg">
+                        <loader [visible]="isCitiesLoading"></loader>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Zip code
+                            </label>
+                        <div class="form-group" [class.error]="referringOfficeformControls.zipcode.touched && !referringOfficeformControls.zipcode.valid">
+                            <input [ngModel]="referringOffice.addressInfo.zipcode" formControlName="zipcode" type="text" class="form-control" placeholder="" [class.error]="!referringOfficeformControls.zipcode.valid">
+                            <div class='error-list' *ngIf="referringOfficeformControls.zipcode.touched && !referringOfficeformControls.zipcode.valid">
+                                <ul>
+                                    <li *ngIf="referringOfficeformControls.zipcode.hasError('required')">Zipcode is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Country
+                            </label>
+                        <div class="form-group" [class.error]="referringOfficeformControls.country.touched && !referringOfficeformControls.country.valid">
+                            <input [ngModel]="referringOffice.addressInfo.country" formControlName="country" type="text" class="form-control" placeholder="" [class.error]="!referringOfficeformControls.country.valid">
+                            <div class='error-list' *ngIf="referringOfficeformControls.country.touched && !referringOfficeformControls.country.valid">
+                                <ul>
+                                    <li *ngIf="referringOfficeformControls.country.hasError('required')">Country is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <button [disabled]="!referringOfficeform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Add
+        <loader [visible]="isSaveProgress"></loader>
+    </button>
+        <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
