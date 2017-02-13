@@ -20,7 +20,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             context.Configuration.ProxyCreationEnabled = false;
         }
 
-
+        /*
         #region Entity Conversion
         public override T Convert<T, U>(U entity)
         {
@@ -66,7 +66,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             return (T)(object)BOcaselist;
         }
         #endregion
-
+        */
+        /*
         #region Entity Conversion
         public override T ObjectConvert<T, U>(U entity)
         {
@@ -104,7 +105,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             return (T)(object)caseBO;
         }
         #endregion
-
+        */
 
         #region Get By ID
         public override object Get(int id)
