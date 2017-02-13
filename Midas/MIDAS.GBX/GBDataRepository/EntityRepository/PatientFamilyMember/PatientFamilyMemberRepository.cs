@@ -180,8 +180,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-
-            return (object)acc;
+            var res = Convert<BO.PatientFamilyMember, PatientFamilyMember>(acc);
+            return (object)res;
         }
         #endregion
 
