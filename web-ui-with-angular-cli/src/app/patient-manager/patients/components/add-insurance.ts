@@ -17,12 +17,12 @@ import { InsuranceStore } from '../stores/insurance-store';
 import { PatientsStore } from '../stores/patients-store';
 
 @Component({
-    selector: 'insurances',
-    templateUrl: './insurances.html'
+    selector: 'add-insurance',
+    templateUrl: './add-insurance.html'
 })
 
 
-export class InsurancesComponent implements OnInit {
+export class AddInsuranceComponent implements OnInit {
     states: any[];
     policyCities: any[];
     insuranceCities: any[];

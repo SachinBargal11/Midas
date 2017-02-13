@@ -22,7 +22,7 @@ import { PatientsStore } from '../stores/patients-store';
 })
 
 
-export class EditInsurancesComponent implements OnInit {
+export class EditInsuranceComponent implements OnInit {
     states: any[];
     policyCities: any[];
     insuranceCities: any[];

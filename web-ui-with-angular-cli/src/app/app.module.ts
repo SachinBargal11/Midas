@@ -35,6 +35,9 @@ import { SpecialityService } from './account-setup/services/speciality-service';
 import { UsersService } from './medical-provider/users/services/users-service';
 import { UsersStore } from './medical-provider/users/stores/users-store';
 
+import { LocationsStore } from './medical-provider/locations/stores/locations-store';
+import { LocationsService } from './medical-provider/locations/services/locations-service';
+
 import { SimpleNotificationsModule } from 'angular2-notifications';
 
 // import * as moment from 'moment';
@@ -72,7 +75,9 @@ import { SimpleNotificationsModule } from 'angular2-notifications';
     SpecialityStore,
     SpecialityService,
     UsersService,
-    UsersStore
+    UsersStore,
+    LocationsStore,
+    LocationsService
   ],
   bootstrap: [AppComponent]
 })

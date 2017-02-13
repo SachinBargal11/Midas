@@ -135,6 +135,15 @@ export class PatientsService {
             requestData.user.contactInfo = requestData.user.contact;
             requestData.user.addressInfo = requestData.user.address;
             requestData.user = _.omit(requestData.user, 'contact', 'address');
+            requestData = _.extend(requestData, {
+                attorneyname: 'simon',
+                attorneyAddressInfo: {
+                    name: 'mumbai----'
+                },
+                attorneyContactInfo: {
+                    name: 'sergi----'
+                }
+            });
             return this._http.post(this._url + '/patient/savePatient', JSON.stringify(requestData), {
                 headers: this._headers
             })

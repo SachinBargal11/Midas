@@ -25,7 +25,7 @@ namespace MIDAS.GBX.BusinessObjects
         public string NPI { get; set; }
 
         [JsonProperty("isCurrentReffOffice")]
-        public bool IsCurrentReffOffice { get; set; }
+        public bool? IsCurrentReffOffice { get; set; }
 
         [JsonProperty("addressInfo")]
         public AddressInfo AddressInfo { get; set; }
