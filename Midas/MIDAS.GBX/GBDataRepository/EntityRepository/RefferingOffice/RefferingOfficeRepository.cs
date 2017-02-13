@@ -95,10 +95,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
         }
         #endregion
-
-
-
-
+        
         #region Get By Patient ID 
         public override object GetByPatientId(int id)
         {
@@ -120,10 +117,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
         }
         #endregion
-
-       
         
-
         #region save
         //public override object Save<T>(T entity)
         //{
@@ -247,12 +241,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.RefferingOffice refferingOfficeBO = (BO.RefferingOffice)(object)entity;
             BO.AddressInfo addressBO = refferingOfficeBO.AddressInfo;
 
-
             RefferingOffice refferingOfficeDB = new RefferingOffice();
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
-
                 AddressInfo addressDB = new AddressInfo();
                 bool IsEditMode = false;
                 IsEditMode = (refferingOfficeBO != null && refferingOfficeBO.ID > 0) ? true : false;
@@ -277,7 +269,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Address details dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
-                    //addressDB.id = addressBO.ID;
                     addressDB.Name = (IsEdit == true && addressBO.Name ==null) ? addressDB.Name : addressBO.Name;
                     addressDB.Address1 = (IsEdit == true && addressBO.Address1 == null) ? addressDB.Address1 : addressBO.Address1;
                     addressDB.Address2 = (IsEdit == true && addressBO.Address2 == null) ? addressDB.Address2 :  addressBO.Address2;
@@ -300,11 +291,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 #endregion   
 
                 #region refference office
-                if (refferingOfficeBO!=null)
+                if (refferingOfficeBO != null)
                 {
                     if (refferingOfficeBO.IsCurrentReffOffice.HasValue == true && refferingOfficeBO.IsCurrentReffOffice == true)
                     {
-                         var existingrefferingOfficeDB = _context.RefferingOffices.Where(p => p.PatientId == refferingOfficeBO.PatientId).ToList();
+                        var existingrefferingOfficeDB = _context.RefferingOffices.Where(p => p.PatientId == refferingOfficeBO.PatientId).ToList();
                         existingrefferingOfficeDB.ForEach(p => p.IsCurrentReffOffice = false);
                     }
 
@@ -319,7 +310,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     else if (refferingOfficeDB == null && refferingOfficeBO.ID > 0)
                     {
                         dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Address details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Reffering Office details dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
                     refferingOfficeDB.PatientId = refferingOfficeBO.PatientId;
@@ -333,7 +324,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     refferingOfficeDB.CreateDate = (IsEditMode == true && refferingOfficeBO.CreateDate == null) ? refferingOfficeDB.CreateDate : refferingOfficeBO.CreateDate;
                     refferingOfficeDB.UpdateByUserID = (IsEditMode == true && refferingOfficeBO.UpdateByUserID == null) ?refferingOfficeDB.UpdateByUserID : refferingOfficeBO.UpdateByUserID;
                     refferingOfficeDB.UpdateDate = (IsEditMode == true && refferingOfficeBO.UpdateDate == null) ? refferingOfficeDB.UpdateDate : refferingOfficeBO.UpdateDate;
-                    //impementation ..
 
                     if (Add_refferingOfficeDB == true)
                     {
@@ -347,10 +337,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Reffering Office details.", ErrorLevel = ErrorLevel.Error };
                 }
                 #endregion
-
-
-
-
 
                 dbContextTransaction.Commit();
 
