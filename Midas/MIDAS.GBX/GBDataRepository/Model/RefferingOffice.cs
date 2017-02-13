@@ -20,7 +20,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> AddressInfoId { get; set; }
         public Nullable<byte> ReffferingDoctorId { get; set; }
         public string NPI { get; set; }
-        public bool IsCurrentReffOffice { get; set; }
+        public Nullable<bool> IsCurrentReffOffice { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
