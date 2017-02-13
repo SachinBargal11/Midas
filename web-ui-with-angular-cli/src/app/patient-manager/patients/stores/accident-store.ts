@@ -77,9 +77,9 @@ export class AccidentStore {
         return <Observable<Accident>>Observable.from(promise);
     }
 
-    updateAccident(accidentDetail: Accident): Observable<Accident> {
+    updateAccident(accidentDetail: Accident,accidentId: number): Observable<Accident> {
         let promise = new Promise((resolve, reject) => {
-            this._accidentService.updateAccident(accidentDetail).subscribe((updateAccident: Accident) => {
+            this._accidentService.updateAccident(accidentDetail,accidentId).subscribe((updateAccident: Accident) => {
                 let accidentDetail: List<Accident> = this._accident.getValue();
                 let index = accidentDetail.findIndex((currentAccident: Accident) => currentAccident.id === updateAccident.id);
                 accidentDetail = accidentDetail.update(index, function () {

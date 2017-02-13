@@ -173,7 +173,7 @@ export class PatientEmployerComponent implements OnInit {
         this._progressBarService.show();
         
         if(this.currentEmployer.id){
-        result = this._employerStore.updateEmployer(employer);
+        result = this._employerStore.updateEmployer(employer,this.currentEmployer.id);
         result.subscribe(
             (response) => {
                 let notification = new Notification({

@@ -22,9 +22,15 @@ import { PatientsStore } from '../stores/patients-store';
 
 export class AccidentInfoComponent implements OnInit {
     states: any[];
+    dateOfAdmission: Date;
+    accidentDate:Date;
     maxDate: Date;
     cities: any[];
     accident: Accident[];
+    // currentAccidentJS:any = null;
+    currentAccident:Accident;
+    // accidentAddress:Address = new Address({});
+    // hospitalAddress:Address = new Address({});
     accidentCities:any[];
     patientId: number;
     selectedCity = 0;
@@ -59,6 +65,34 @@ export class AccidentInfoComponent implements OnInit {
             result.subscribe(
                 (accident:Accident[]) => {
                     this.accident = accident;
+                   
+                    
+                      for (var i = 0; i < this.accident.length; i++) {
+
+                         var summaryData = this.accident[i];
+                        
+                         if (summaryData.isCurrentAccident) {
+                            this.currentAccident = summaryData;
+                            this.dateOfAdmission = this.currentAccident.dateOfAdmission
+                                 ? this.currentAccident.dateOfAdmission.toDate()
+                                 : null;
+                            this.accidentDate = this.currentAccident.accidentDate
+                                ? this.currentAccident.accidentDate.toDate()
+                                : null;
+                           
+                            if (this.currentAccident.accidentAddress.state || this.currentAccident.hospitalAddress.state ){
+                            this.loadCities(this.currentAccident.hospitalAddress.state);
+                            this.loadAccidentCities(this.currentAccident.accidentAddress.state);
+                        
+                         }
+                         break;
+                        }else{
+
+                        }
+                        
+                         
+                     }
+                    
                 },
                  (error) => {
                     this._router.navigate(['../../']);
@@ -146,21 +180,23 @@ export class AccidentInfoComponent implements OnInit {
         this.isSaveAccidentProgress = true;
         let accidentformValues = this.accidentform.value;
         let addResult;
+        let result;
         let accident = new Accident({
               patientId: this.patientId,
+              isCurrentAccident:1,
               plateNumber: accidentformValues.plateNumber,
               reportNumber: accidentformValues.reportNumber,
               hospitalName:accidentformValues.hospitalName,
               describeInjury:accidentformValues.describeInjury,
-              dateOfAdmission:accidentformValues.dot,
+              dateOfAdmission:accidentformValues.dot ? moment(accidentformValues.dot):null,
               patientTypeId:parseInt(accidentformValues.patientType),
               additionalPatients:accidentformValues.additionalPatient,
-              accidentDate:accidentformValues.doa,
+              accidentDate:accidentformValues.doa ? moment(accidentformValues.doa):null,
               accidentAddress: new Address({
                     address1:accidentformValues.accidentAddress,
                     address2:accidentformValues.accidentAddress2,
                     city:accidentformValues.accidentCity,
-                    country:accidentformValues.accidentCountrys,
+                    country:accidentformValues.accidentCountry,
                     state: accidentformValues.accidentState,
                     zipCode:accidentformValues.accidentZipcode  
                 }),
@@ -174,6 +210,39 @@ export class AccidentInfoComponent implements OnInit {
             })
         });
         this._progressBarService.show();
+        //
+        if(this.currentAccident.id){
+              result = this._accidentStore.updateAccident(accident,this.currentAccident.id);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Accident Information updated successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._router.navigate(['/patient-manager/patients']);
+            },
+            (error) => {
+                let errString = 'Unable to update accident information.';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this.isSaveAccidentProgress = false;
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                this._progressBarService.hide();
+            },
+            () => {
+                this.isSaveAccidentProgress = false;
+                this._progressBarService.hide();
+            });
+
+        }
+        //
+         else{
         addResult = this._accidentStore.addAccident(accident);
         
         addResult.subscribe(
@@ -202,6 +271,7 @@ export class AccidentInfoComponent implements OnInit {
                 this.isSaveAccidentProgress = false;
                 this._progressBarService.hide();
             });
+         }
     }
 
 }
