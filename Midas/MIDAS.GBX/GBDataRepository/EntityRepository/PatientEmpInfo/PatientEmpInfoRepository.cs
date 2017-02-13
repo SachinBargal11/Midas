@@ -372,7 +372,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 #region patient Emp Info
                 if (patientEmpInfoBO != null)
                 {
-                    if (patientEmpInfoBO.isCurrentEmp == true)
+                    if (patientEmpInfoBO.isCurrentEmp.HasValue == true && patientEmpInfoBO.isCurrentEmp == true)
                     {
                         var existingPatientEmpInfoDB = _context.PatientEmpInfoes.Where(p => p.PatientId == patientEmpInfoBO.patientId).ToList();
                         existingPatientEmpInfoDB.ForEach(p => p.IsCurrentEmp = false);
@@ -397,7 +397,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     patientEmpInfoDB.EmpName = IsEditMode == true && patientEmpInfoBO.empName == null ? patientEmpInfoDB.EmpName : patientEmpInfoBO.empName;
                     patientEmpInfoDB.AddressInfoId = (addressDB != null && addressDB.id > 0) ? addressDB.id : patientEmpInfoDB.AddressInfoId;
                     patientEmpInfoDB.ContactInfoId = (contactinfoDB != null && contactinfoDB.id > 0) ? contactinfoDB.id : patientEmpInfoDB.ContactInfoId;
-                    patientEmpInfoDB.IsCurrentEmp = (bool)patientEmpInfoBO.isCurrentEmp;
+                    patientEmpInfoDB.IsCurrentEmp = (patientEmpInfoBO.isCurrentEmp.HasValue == false) ? patientEmpInfoDB.IsCurrentEmp : patientEmpInfoBO.isCurrentEmp.Value;
 
                     if (Add_patientEmpInfoDB == true)
                     {
