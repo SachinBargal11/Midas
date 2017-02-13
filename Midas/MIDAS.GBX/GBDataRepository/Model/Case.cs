@@ -18,18 +18,14 @@ namespace MIDAS.GBX.DataRepository.Model
         public int PatientId { get; set; }
         public string CaseName { get; set; }
         public Nullable<int> CaseTypeId { get; set; }
-        public Nullable<decimal> Age { get; set; }
         public System.DateTime DateOfInjury { get; set; }
         public int LocationId { get; set; }
-        public int PatientAddressId { get; set; }
-        public Nullable<int> PatientContactInfoId { get; set; }
-        public Nullable<int> EmpInfo { get; set; }
-        public Nullable<int> InsuranceInfoId { get; set; }
-        public string VehiclePlateNo { get; set; }
-        public Nullable<int> AccidentAddressId { get; set; }
+        public Nullable<int> PatientEmpInfoId { get; set; }
+        public Nullable<int> PatientInsuranceInfoId { get; set; }
+        public Nullable<int> PatientAccidentInfoId { get; set; }
+        public Nullable<int> RefferingOfficeId { get; set; }
         public string CarrierCaseNo { get; set; }
         public bool Transportation { get; set; }
-        public System.DateTime DateOfFirstTreatment { get; set; }
         public Nullable<int> CaseStatusId { get; set; }
         public Nullable<int> AttorneyId { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
@@ -38,6 +34,11 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
+        public virtual Location Location { get; set; }
         public virtual Patient2 Patient2 { get; set; }
+        public virtual PatientAccidentInfo PatientAccidentInfo { get; set; }
+        public virtual PatientEmpInfo PatientEmpInfo { get; set; }
+        public virtual PatientInsuranceInfo PatientInsuranceInfo { get; set; }
+        public virtual RefferingOffice RefferingOffice { get; set; }
     }
 }

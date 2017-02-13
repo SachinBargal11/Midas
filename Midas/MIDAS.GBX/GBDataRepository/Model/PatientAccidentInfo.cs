@@ -14,6 +14,12 @@ namespace MIDAS.GBX.DataRepository.Model
     
     public partial class PatientAccidentInfo
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public PatientAccidentInfo()
+        {
+            this.Cases = new HashSet<Case>();
+        }
+    
         public int Id { get; set; }
         public int PatientId { get; set; }
         public Nullable<System.DateTime> AccidentDate { get; set; }
@@ -37,5 +43,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual AddressInfo AddressInfo1 { get; set; }
         public virtual Patient2 Patient2 { get; set; }
         public virtual PatientType PatientType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Case> Cases { get; set; }
     }
 }

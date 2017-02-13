@@ -318,7 +318,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     refferingOfficeDB.AddressInfoId= (addressDB != null && addressDB.id > 0) ? addressDB.id : refferingOfficeDB.AddressInfoId;
                     refferingOfficeDB.ReffferingDoctorId = (IsEditMode == true && refferingOfficeBO.ReffferingDoctorId == null) ? refferingOfficeDB.ReffferingDoctorId : refferingOfficeBO.ReffferingDoctorId;
                     refferingOfficeDB.NPI = (IsEditMode == true && refferingOfficeBO.NPI == null)? refferingOfficeDB.NPI : refferingOfficeBO.NPI;
-                    refferingOfficeDB.IsCurrentReffOffice = (IsEditMode == true && refferingOfficeBO.IsCurrentReffOffice == null) ? refferingOfficeDB.IsCurrentReffOffice : refferingOfficeBO.IsCurrentReffOffice;
+                    refferingOfficeDB.IsCurrentReffOffice = (IsEditMode == true && refferingOfficeBO.IsCurrentReffOffice == null) ? refferingOfficeDB.IsCurrentReffOffice : refferingOfficeBO.IsCurrentReffOffice.Value;
                     refferingOfficeDB.IsDeleted = (IsEditMode == true && refferingOfficeBO.IsDeleted == null) ? refferingOfficeDB.IsDeleted : refferingOfficeBO.IsDeleted;
                     refferingOfficeDB.CreateByUserID = (IsEditMode == true && refferingOfficeBO.CreateByUserID <= 0) ? refferingOfficeDB.CreateByUserID : refferingOfficeBO.CreateByUserID;
                     refferingOfficeDB.CreateDate = (IsEditMode == true && refferingOfficeBO.CreateDate == null) ? refferingOfficeDB.CreateDate : refferingOfficeBO.CreateDate;
