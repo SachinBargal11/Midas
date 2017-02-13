@@ -121,26 +121,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get Current RefferingOffice By Patient ID 
-        public override object GetCurrentROByPatientId(int id)
-        {
-            //var acc = _context.Patient2.Include("User").Include("Location").Where(p => p.Id == id && p.IsDeleted == false).FirstOrDefault<Patient2>();
-            var acc = _context.RefferingOffices.Include("AddressInfo").Where(p => p.PatientId == id && p.IsCurrentReffOffice==true && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<RefferingOffice>();
-
-            if (acc == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
-            else
-            {
-                List<BO.RefferingOffice> lstrefoffice = new List<BO.RefferingOffice>();
-                
-                    lstrefoffice.Add(Convert<BO.RefferingOffice, RefferingOffice>(acc));
-                
-                return lstrefoffice;
-            }
-        }
-        #endregion
+       
         
 
         #region save

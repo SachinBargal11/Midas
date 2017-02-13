@@ -112,6 +112,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get User Company By ID
+        public override Object GetByUserId(int UserId)
+        {
+            BO.UserCompany acc_ = Convert<BO.UserCompany, UserCompany>(_context.UserCompanies.Include("User").Include("Company").Where(p => p.UserID == UserId).FirstOrDefault<UserCompany>());
+            if (acc_ == null)
+            {
+                return acc_;
+            }
+            else
+            {
+                return acc_;
+            }
+        }
+        #endregion
+
         #region Get By Filter
         public override object Get<T>(T entity)
         {

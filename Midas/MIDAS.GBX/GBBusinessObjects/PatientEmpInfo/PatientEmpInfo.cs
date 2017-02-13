@@ -19,13 +19,13 @@ namespace MIDAS.GBX.BusinessObjects
         public string empName { get; set; }
 
         [JsonProperty("addressInfoId")]
-        public int addressInfoId { get; set; }
+        public int? addressInfoId { get; set; }
 
         [JsonProperty("contactInfoId")]
-        public int contactInfoId { get; set; }
+        public int? contactInfoId { get; set; }
 
         [JsonProperty("isCurrentEmp")]
-        public bool isCurrentEmp { get; set; }
+        public bool? isCurrentEmp { get; set; }
 
         [JsonProperty("addressInfo")]
         public AddressInfo addressInfo { get; set; }

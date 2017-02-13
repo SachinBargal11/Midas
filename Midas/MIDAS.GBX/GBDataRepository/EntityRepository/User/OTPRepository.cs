@@ -99,15 +99,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     using (UserCompanyRepository sr = new UserCompanyRepository(_context))
                     {
-                        acc_.company = ((BO.UserCompany)sr.Get(userBO.ID)).Company;
-                        acc_.User = ((BO.UserCompany)sr.Get(userBO.ID)).User;
+                        //acc_.company = ((BO.UserCompany)sr.Get(userBO.ID)).Company;
+                        //acc_.User = ((BO.UserCompany)sr.Get(userBO.ID)).User;
+                        var userCompany = ((BO.UserCompany)sr.GetByUserId(userBO.ID));
+                        if (userCompany != null)
+                        {
+                            acc_.company = userCompany.Company;
+                            acc_.User = userCompany.User;
+                        }
                     }
                 }
                 else
                 {
-                    using (UserRepository uRepository = new UserRepository(_context))
+                    using (UserRepository userRep = new UserRepository(_context))
                     {
-                        acc_.User = ((BO.User)uRepository.Get(userBO.ID));
+                        acc_.User = ((BO.User)userRep.Get(userBO.ID));
                     }
                 }
                 return acc_;
