@@ -193,7 +193,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     else if (addressinfoPolicyHolderDB == null && addressinfoPolicyHolderBO.ID > 0)
                     {
                         dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Address details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Policy Holder Address details dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
                     //addressinfoPolicyHolderDB.id = addressinfoPolicyHolderBO.ID;
@@ -214,7 +214,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 else
                 {
                     dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Address details.", ErrorLevel = ErrorLevel.Error };
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Policy Holder Address details.", ErrorLevel = ErrorLevel.Error };
                 }
                 #endregion
 
@@ -232,7 +232,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     else if (contactinfoPolicyHolderDB == null && contactinfoPolicyHolderBO.ID > 0)
                     {
                         dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Contact details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Policy Holder Contact details dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
                     //contactinfoPolicyHolderDB.id = contactinfoPolicyHolderBO.ID;
@@ -253,7 +253,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 else
                 {
                     dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Contact details.", ErrorLevel = ErrorLevel.Error };
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Policy Holder Contact details.", ErrorLevel = ErrorLevel.Error };
                 }
                 #endregion
 
@@ -271,7 +271,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     else if (addressinfoInsuranceCompanyDB == null && addressinfoInsuranceCompanyBO.ID > 0)
                     {
                         dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Insurance  Address details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Insurance Address details dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
                     //addressinfoInsuranceCompanyDB.id = addressinfoInsuranceCompanyBO.ID;
@@ -292,7 +292,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 else
                 {
                     dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Address details.", ErrorLevel = ErrorLevel.Error };
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Insurance Address details.", ErrorLevel = ErrorLevel.Error };
                 }
                 #endregion
 
@@ -310,7 +310,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     else if (contactinfoInsuranceCompanyDB == null && contactinfoInsuranceCompanyBO.ID > 0)
                     {
                         dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Contact details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Insurance Contact details dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
                     //contactinfoInsuranceCompanyDB.id = contactinfoInsuranceCompanyBO.ID;
@@ -331,7 +331,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 else
                 {
                     dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Contact details.", ErrorLevel = ErrorLevel.Error };
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Insurance Contact details.", ErrorLevel = ErrorLevel.Error };
                 }
                 #endregion
 
@@ -349,7 +349,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     else if (insuranceDB == null && insuranceBO.ID > 0)
                     {
                         dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient dosent exists.", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient Insurance details dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
                     insuranceDB.PatientId = insuranceBO.patientId;
@@ -376,7 +376,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 else
                 {
                     dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient details.", ErrorLevel = ErrorLevel.Error };
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient Insurance details.", ErrorLevel = ErrorLevel.Error };
                 }
 
                 _context.SaveChanges();
