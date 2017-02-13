@@ -10,3 +10,8 @@
     CONSTRAINT [PK_Gender] PRIMARY KEY ([Id])
 )
 GO
+
+/*
+INSERT INTO [dbo].[Gender] ([Id], [GenderText], [IsDeleted])
+	VALUES (1, 'Male', 0), (2, 'Female', 0)
+*/

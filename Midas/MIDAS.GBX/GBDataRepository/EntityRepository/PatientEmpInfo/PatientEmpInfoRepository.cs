@@ -301,7 +301,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Address details dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
-                    addressDB.id = addressBO.ID;
                     addressDB.Name= IsEditMode == true && addressBO.Name == null ? addressDB.Name : addressBO.Name;
                     addressDB.Address1 = IsEditMode == true && addressBO.Address1 == null ? addressDB.Address1 : addressBO.Address1;
                     addressDB.Address2 = IsEditMode == true && addressBO.Address2 == null ? addressDB.Address2 : addressBO.Address2;
@@ -321,7 +320,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     if (IsEditMode == false)
                     {
                         dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Address details.", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid address details.", ErrorLevel = ErrorLevel.Error };
                     }
                     addressDB = null;
                 }
@@ -343,7 +342,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         dbContextTransaction.Rollback();
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Contact details dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
-                    contactinfoDB.id = contactinfoBO.ID;
+                    
                     contactinfoDB.Name =IsEditMode == true && contactinfoBO.Name == null ? contactinfoDB.Name : contactinfoBO.Name;
                     contactinfoDB.CellPhone = IsEditMode == true && contactinfoBO.CellPhone == null ? contactinfoDB.CellPhone : contactinfoBO.CellPhone;
                     contactinfoDB.EmailAddress = IsEditMode == true && contactinfoBO.EmailAddress == null ? contactinfoDB.EmailAddress : contactinfoBO.EmailAddress;
@@ -363,7 +362,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     if (IsEditMode == false)
                     {
                         dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Contact details.", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid contact details.", ErrorLevel = ErrorLevel.Error };
                     }
                     contactinfoDB = null;
                 }
@@ -389,7 +388,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     else if (patientEmpInfoDB == null && patientEmpInfoBO.ID > 0)
                     {
                         dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient dosent exists.", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient employee information dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
                     patientEmpInfoDB.PatientId = patientEmpInfoBO.patientId;
@@ -410,7 +409,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     if (IsEditMode == false)
                     {
                         dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient details.", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid patient employee information details.", ErrorLevel = ErrorLevel.Error };
                     }
                     patientEmpInfoDB = null;
                 }
@@ -462,8 +461,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-
-            return (object)acc;
+            var res = Convert<BO.PatientEmpInfo, PatientEmpInfo>(acc);
+            return (object)res;
         }
         #endregion
 

@@ -159,6 +159,239 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        //#region save
+        //public override object Save<T>(T entity)
+        //{
+        //    BO.PatientInsuranceInfo insuranceBO = (BO.PatientInsuranceInfo)(object)entity;
+        //    BO.AddressInfo addressinfoPolicyHolderBO = insuranceBO.addressInfo;
+        //    BO.ContactInfo contactinfoPolicyHolderBO = insuranceBO.contactInfo;
+        //    BO.AddressInfo addressinfoInsuranceCompanyBO = insuranceBO.addressInfo1;
+        //    BO.ContactInfo contactinfoInsuranceCompanyBO = insuranceBO.contactInfo1;
+
+        //    PatientInsuranceInfo insuranceDB = new PatientInsuranceInfo();
+
+        //    using (var dbContextTransaction = _context.Database.BeginTransaction())
+        //    {
+        //        AddressInfo addressinfoPolicyHolderDB = new AddressInfo();
+        //        ContactInfo contactinfoPolicyHolderDB = new ContactInfo();
+        //        AddressInfo addressinfoInsuranceCompanyDB = new AddressInfo();
+        //        ContactInfo contactinfoInsuranceCompanyDB = new ContactInfo();
+
+        //        User userDB = new User();
+
+        //        #region Address Poliy Holder
+        //        if (addressinfoPolicyHolderBO != null)
+        //        {
+        //            bool Add_addressDB = false;
+        //            addressinfoPolicyHolderDB = _context.AddressInfoes.Where(p => p.id == addressinfoPolicyHolderBO.ID).FirstOrDefault();
+
+        //            if (addressinfoPolicyHolderDB == null && addressinfoPolicyHolderBO.ID <= 0)
+        //            {
+        //                addressinfoPolicyHolderDB = new AddressInfo();
+        //                Add_addressDB = true;
+        //            }
+        //            else if (addressinfoPolicyHolderDB == null && addressinfoPolicyHolderBO.ID > 0)
+        //            {
+        //                dbContextTransaction.Rollback();
+        //                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Address details dosent exists.", ErrorLevel = ErrorLevel.Error };
+        //            }
+
+        //            //addressinfoPolicyHolderDB.id = addressinfoPolicyHolderBO.ID;
+        //            addressinfoPolicyHolderDB.Name = addressinfoPolicyHolderBO.Name;
+        //            addressinfoPolicyHolderDB.Address1 = addressinfoPolicyHolderBO.Address1;
+        //            addressinfoPolicyHolderDB.Address2 = addressinfoPolicyHolderBO.Address2;
+        //            addressinfoPolicyHolderDB.City = addressinfoPolicyHolderBO.City;
+        //            addressinfoPolicyHolderDB.State = addressinfoPolicyHolderBO.State;
+        //            addressinfoPolicyHolderDB.ZipCode = addressinfoPolicyHolderBO.ZipCode;
+        //            addressinfoPolicyHolderDB.Country = addressinfoPolicyHolderBO.Country;
+
+        //            if (Add_addressDB == true)
+        //            {
+        //                addressinfoPolicyHolderDB = _context.AddressInfoes.Add(addressinfoPolicyHolderDB);
+        //            }
+        //            _context.SaveChanges();
+        //        }
+        //        else
+        //        {
+        //            dbContextTransaction.Rollback();
+        //            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Address details.", ErrorLevel = ErrorLevel.Error };
+        //        }
+        //        #endregion
+
+        //        #region Contact Info Policy Holder
+        //        if (contactinfoPolicyHolderBO != null)
+        //        {
+        //            bool Add_contactinfoDB = false;
+        //            contactinfoPolicyHolderDB = _context.ContactInfoes.Where(p => p.id == contactinfoPolicyHolderBO.ID).FirstOrDefault();
+
+        //            if (contactinfoPolicyHolderDB == null && contactinfoPolicyHolderBO.ID <= 0)
+        //            {
+        //                contactinfoPolicyHolderDB = new ContactInfo();
+        //                Add_contactinfoDB = true;
+        //            }
+        //            else if (contactinfoPolicyHolderDB == null && contactinfoPolicyHolderBO.ID > 0)
+        //            {
+        //                dbContextTransaction.Rollback();
+        //                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Contact details dosent exists.", ErrorLevel = ErrorLevel.Error };
+        //            }
+
+        //            //contactinfoPolicyHolderDB.id = contactinfoPolicyHolderBO.ID;
+        //            contactinfoPolicyHolderDB.Name = contactinfoPolicyHolderBO.Name;
+        //            contactinfoPolicyHolderDB.CellPhone = contactinfoPolicyHolderBO.CellPhone;
+        //            contactinfoPolicyHolderDB.EmailAddress = contactinfoPolicyHolderBO.EmailAddress;
+        //            contactinfoPolicyHolderDB.HomePhone = contactinfoPolicyHolderBO.HomePhone;
+        //            contactinfoPolicyHolderDB.WorkPhone = contactinfoPolicyHolderBO.WorkPhone;
+        //            contactinfoPolicyHolderDB.FaxNo = contactinfoPolicyHolderBO.FaxNo;
+        //            contactinfoPolicyHolderDB.IsDeleted = contactinfoPolicyHolderBO.IsDeleted;
+
+        //            if (Add_contactinfoDB == true)
+        //            {
+        //                contactinfoPolicyHolderDB = _context.ContactInfoes.Add(contactinfoPolicyHolderDB);
+        //            }
+        //            _context.SaveChanges();
+        //        }
+        //        else
+        //        {
+        //            dbContextTransaction.Rollback();
+        //            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Contact details.", ErrorLevel = ErrorLevel.Error };
+        //        }
+        //        #endregion
+
+        //        #region Address Insurance Company
+        //        if (addressinfoInsuranceCompanyBO != null)
+        //        {
+        //            bool Add_addressDB = false;
+        //            addressinfoInsuranceCompanyDB = _context.AddressInfoes.Where(p => p.id == addressinfoInsuranceCompanyBO.ID).FirstOrDefault();
+
+        //            if (addressinfoInsuranceCompanyDB == null && addressinfoInsuranceCompanyBO.ID <= 0)
+        //            {
+        //                addressinfoInsuranceCompanyDB = new AddressInfo();
+        //                Add_addressDB = true;
+        //            }
+        //            else if (addressinfoInsuranceCompanyDB == null && addressinfoInsuranceCompanyBO.ID > 0)
+        //            {
+        //                dbContextTransaction.Rollback();
+        //                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Insurance  Address details dosent exists.", ErrorLevel = ErrorLevel.Error };
+        //            }
+
+        //            //addressinfoInsuranceCompanyDB.id = addressinfoInsuranceCompanyBO.ID;
+        //            addressinfoInsuranceCompanyDB.Name = addressinfoInsuranceCompanyBO.Name;
+        //            addressinfoInsuranceCompanyDB.Address1 = addressinfoInsuranceCompanyBO.Address1;
+        //            addressinfoInsuranceCompanyDB.Address2 = addressinfoInsuranceCompanyBO.Address2;
+        //            addressinfoInsuranceCompanyDB.City = addressinfoInsuranceCompanyBO.City;
+        //            addressinfoInsuranceCompanyDB.State = addressinfoInsuranceCompanyBO.State;
+        //            addressinfoInsuranceCompanyDB.ZipCode = addressinfoInsuranceCompanyBO.ZipCode;
+        //            addressinfoInsuranceCompanyDB.Country = addressinfoInsuranceCompanyBO.Country;
+
+        //            if (Add_addressDB == true)
+        //            {
+        //                addressinfoInsuranceCompanyDB = _context.AddressInfoes.Add(addressinfoInsuranceCompanyDB);
+        //            }
+        //            _context.SaveChanges();
+        //        }
+        //        else
+        //        {
+        //            dbContextTransaction.Rollback();
+        //            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Address details.", ErrorLevel = ErrorLevel.Error };
+        //        }
+        //        #endregion
+
+        //        #region Contact Info Insurance Company
+        //        if (contactinfoInsuranceCompanyBO != null)
+        //        {
+        //            bool Add_contactinfoDB = false;
+        //            contactinfoInsuranceCompanyDB = _context.ContactInfoes.Where(p => p.id == contactinfoInsuranceCompanyBO.ID).FirstOrDefault();
+
+        //            if (contactinfoInsuranceCompanyDB == null && contactinfoInsuranceCompanyBO.ID <= 0)
+        //            {
+        //                contactinfoInsuranceCompanyDB = new ContactInfo();
+        //                Add_contactinfoDB = true;
+        //            }
+        //            else if (contactinfoInsuranceCompanyDB == null && contactinfoInsuranceCompanyBO.ID > 0)
+        //            {
+        //                dbContextTransaction.Rollback();
+        //                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Contact details dosent exists.", ErrorLevel = ErrorLevel.Error };
+        //            }
+
+        //            //contactinfoInsuranceCompanyDB.id = contactinfoInsuranceCompanyBO.ID;
+        //            contactinfoInsuranceCompanyDB.Name = contactinfoInsuranceCompanyBO.Name;
+        //            contactinfoInsuranceCompanyDB.CellPhone = contactinfoInsuranceCompanyBO.CellPhone;
+        //            contactinfoInsuranceCompanyDB.EmailAddress = contactinfoInsuranceCompanyBO.EmailAddress;
+        //            contactinfoInsuranceCompanyDB.HomePhone = contactinfoInsuranceCompanyBO.HomePhone;
+        //            contactinfoInsuranceCompanyDB.WorkPhone = contactinfoInsuranceCompanyBO.WorkPhone;
+        //            contactinfoInsuranceCompanyDB.FaxNo = contactinfoInsuranceCompanyBO.FaxNo;
+        //            contactinfoInsuranceCompanyDB.IsDeleted = contactinfoInsuranceCompanyBO.IsDeleted;
+
+        //            if (Add_contactinfoDB == true)
+        //            {
+        //                contactinfoInsuranceCompanyDB = _context.ContactInfoes.Add(contactinfoInsuranceCompanyDB);
+        //            }
+        //            _context.SaveChanges();
+        //        }
+        //        else
+        //        {
+        //            dbContextTransaction.Rollback();
+        //            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Contact details.", ErrorLevel = ErrorLevel.Error };
+        //        }
+        //        #endregion
+
+        //        #region insurance
+        //        if (insuranceBO != null)
+        //        {
+        //            bool Add_insuranceDB = false;
+        //            insuranceDB = _context.PatientInsuranceInfoes.Where(p => p.Id == insuranceBO.ID).FirstOrDefault();
+
+        //            if (insuranceDB == null && insuranceBO.ID <= 0)
+        //            {
+        //                insuranceDB = new PatientInsuranceInfo();
+        //                Add_insuranceDB = true;
+        //            }
+        //            else if (insuranceDB == null && insuranceBO.ID > 0)
+        //            {
+        //                dbContextTransaction.Rollback();
+        //                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient dosent exists.", ErrorLevel = ErrorLevel.Error };
+        //            }
+
+        //            insuranceDB.PatientId = insuranceBO.patientId;
+        //            insuranceDB.PolicyHolderName = insuranceBO.policyHoldersName;
+        //            insuranceDB.PolicyHolderAddressInfoId = addressinfoPolicyHolderDB.id;
+        //            insuranceDB.PolicyHolderContactInfoId = contactinfoPolicyHolderDB.id;
+        //            insuranceDB.PolicyOwnerId = insuranceBO.policyOwnerId;
+        //            insuranceDB.InsuranceCompanyCode = insuranceBO.insuranceCompanyCode;
+        //            insuranceDB.InsuranceCompanyAddressInfoId = addressinfoInsuranceCompanyDB.id;
+        //            insuranceDB.InsuranceCompanyContactInfoId = contactinfoInsuranceCompanyDB.id;
+        //            insuranceDB.PolicyNo = insuranceBO.policyNo;
+        //            insuranceDB.ContactPerson = insuranceBO.contactPerson;
+        //            insuranceDB.ClaimFileNo = insuranceBO.claimFileNo;
+        //            insuranceDB.WCBNo = insuranceBO.wcbNo;
+        //            insuranceDB.InsuranceTypeId = insuranceBO.insuranceTypeId;
+        //            insuranceDB.IsInActive = insuranceBO.isInActive;
+
+        //            if (Add_insuranceDB == true)
+        //            {
+        //                insuranceDB = _context.PatientInsuranceInfoes.Add(insuranceDB);
+        //            }
+        //            _context.SaveChanges();
+        //        }
+        //        else
+        //        {
+        //            dbContextTransaction.Rollback();
+        //            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient details.", ErrorLevel = ErrorLevel.Error };
+        //        }
+
+        //        _context.SaveChanges();
+        //        #endregion
+
+        //        dbContextTransaction.Commit();
+
+        //        insuranceDB = _context.PatientInsuranceInfoes.Where(p => p.Id == insuranceDB.Id).FirstOrDefault<PatientInsuranceInfo>();
+        //    }
+
+        //    var res = Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(insuranceDB);
+        //    return (object)res;
+        //}
+        //#endregion
+
         #region save
         public override object Save<T>(T entity)
         {
@@ -172,6 +405,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
+
+                bool IsEditMode = false;
+                IsEditMode = (insuranceBO != null && insuranceBO.ID > 0) ? true : false;
+
                 AddressInfo addressinfoPolicyHolderDB = new AddressInfo();
                 ContactInfo contactinfoPolicyHolderDB = new ContactInfo();
                 AddressInfo addressinfoInsuranceCompanyDB = new AddressInfo();
@@ -193,17 +430,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     else if (addressinfoPolicyHolderDB == null && addressinfoPolicyHolderBO.ID > 0)
                     {
                         dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Address details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Policy address details dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
-                    //addressinfoPolicyHolderDB.id = addressinfoPolicyHolderBO.ID;
-                    addressinfoPolicyHolderDB.Name = addressinfoPolicyHolderBO.Name;
-                    addressinfoPolicyHolderDB.Address1 = addressinfoPolicyHolderBO.Address1;
-                    addressinfoPolicyHolderDB.Address2 = addressinfoPolicyHolderBO.Address2;
-                    addressinfoPolicyHolderDB.City = addressinfoPolicyHolderBO.City;
-                    addressinfoPolicyHolderDB.State = addressinfoPolicyHolderBO.State;
-                    addressinfoPolicyHolderDB.ZipCode = addressinfoPolicyHolderBO.ZipCode;
-                    addressinfoPolicyHolderDB.Country = addressinfoPolicyHolderBO.Country;
+                    addressinfoPolicyHolderDB.Name = IsEditMode == true && addressinfoPolicyHolderBO.Name == null ? addressinfoPolicyHolderDB.Name : addressinfoPolicyHolderBO.Name;
+                    addressinfoPolicyHolderDB.Address1 = IsEditMode == true && addressinfoPolicyHolderBO.Address1 == null ? addressinfoPolicyHolderDB.Address1 : addressinfoPolicyHolderBO.Address1;
+                    addressinfoPolicyHolderDB.Address2 = IsEditMode == true && addressinfoPolicyHolderBO.Address2 == null ? addressinfoPolicyHolderDB.Address2 : addressinfoPolicyHolderBO.Address2;
+                    addressinfoPolicyHolderDB.City = IsEditMode == true && addressinfoPolicyHolderBO.City == null ? addressinfoPolicyHolderDB.City : addressinfoPolicyHolderBO.City;
+                    addressinfoPolicyHolderDB.State = IsEditMode == true && addressinfoPolicyHolderBO.State == null ? addressinfoPolicyHolderDB.State : addressinfoPolicyHolderBO.State;
+                    addressinfoPolicyHolderDB.ZipCode = IsEditMode == true && addressinfoPolicyHolderBO.ZipCode == null ? addressinfoPolicyHolderDB.ZipCode : addressinfoPolicyHolderBO.ZipCode;
+                    addressinfoPolicyHolderDB.Country = IsEditMode == true && addressinfoPolicyHolderBO.Country == null ? addressinfoPolicyHolderDB.Country : addressinfoPolicyHolderBO.Country;
 
                     if (Add_addressDB == true)
                     {
@@ -213,8 +449,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 }
                 else
                 {
-                    dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Address details.", ErrorLevel = ErrorLevel.Error };
+                    if (IsEditMode == false)
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid policy address details.", ErrorLevel = ErrorLevel.Error };
+                    }
+                    addressinfoPolicyHolderDB = null;
                 }
                 #endregion
 
@@ -232,16 +472,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     else if (contactinfoPolicyHolderDB == null && contactinfoPolicyHolderBO.ID > 0)
                     {
                         dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Contact details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Policy contact details dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
-                    //contactinfoPolicyHolderDB.id = contactinfoPolicyHolderBO.ID;
-                    contactinfoPolicyHolderDB.Name = contactinfoPolicyHolderBO.Name;
-                    contactinfoPolicyHolderDB.CellPhone = contactinfoPolicyHolderBO.CellPhone;
-                    contactinfoPolicyHolderDB.EmailAddress = contactinfoPolicyHolderBO.EmailAddress;
-                    contactinfoPolicyHolderDB.HomePhone = contactinfoPolicyHolderBO.HomePhone;
-                    contactinfoPolicyHolderDB.WorkPhone = contactinfoPolicyHolderBO.WorkPhone;
-                    contactinfoPolicyHolderDB.FaxNo = contactinfoPolicyHolderBO.FaxNo;
+                    contactinfoPolicyHolderDB.Name = IsEditMode == true && contactinfoPolicyHolderBO.Name == null ? contactinfoPolicyHolderDB.Name : contactinfoPolicyHolderBO.Name;
+                    contactinfoPolicyHolderDB.CellPhone = IsEditMode == true && contactinfoPolicyHolderBO.CellPhone == null ? contactinfoPolicyHolderDB.CellPhone : contactinfoPolicyHolderBO.CellPhone;
+                    contactinfoPolicyHolderDB.EmailAddress = IsEditMode == true && contactinfoPolicyHolderBO.EmailAddress == null ? contactinfoPolicyHolderDB.EmailAddress : contactinfoPolicyHolderBO.EmailAddress;
+                    contactinfoPolicyHolderDB.HomePhone = IsEditMode == true && contactinfoPolicyHolderBO.HomePhone == null ? contactinfoPolicyHolderDB.HomePhone : contactinfoPolicyHolderBO.HomePhone;
+                    contactinfoPolicyHolderDB.WorkPhone = IsEditMode == true && contactinfoPolicyHolderBO.WorkPhone == null ? contactinfoPolicyHolderDB.WorkPhone : contactinfoPolicyHolderBO.WorkPhone;
+                    contactinfoPolicyHolderDB.FaxNo = IsEditMode == true && contactinfoPolicyHolderBO.FaxNo == null ? contactinfoPolicyHolderDB.FaxNo : contactinfoPolicyHolderBO.FaxNo;
                     contactinfoPolicyHolderDB.IsDeleted = contactinfoPolicyHolderBO.IsDeleted;
 
                     if (Add_contactinfoDB == true)
@@ -252,8 +491,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 }
                 else
                 {
-                    dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Contact details.", ErrorLevel = ErrorLevel.Error };
+                    if (IsEditMode == false)
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid policy contact details.", ErrorLevel = ErrorLevel.Error };
+                    }
+                    contactinfoPolicyHolderDB = null;
                 }
                 #endregion
 
@@ -271,17 +514,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     else if (addressinfoInsuranceCompanyDB == null && addressinfoInsuranceCompanyBO.ID > 0)
                     {
                         dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Insurance  Address details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Insurance address details dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
-                    //addressinfoInsuranceCompanyDB.id = addressinfoInsuranceCompanyBO.ID;
-                    addressinfoInsuranceCompanyDB.Name = addressinfoInsuranceCompanyBO.Name;
-                    addressinfoInsuranceCompanyDB.Address1 = addressinfoInsuranceCompanyBO.Address1;
-                    addressinfoInsuranceCompanyDB.Address2 = addressinfoInsuranceCompanyBO.Address2;
-                    addressinfoInsuranceCompanyDB.City = addressinfoInsuranceCompanyBO.City;
-                    addressinfoInsuranceCompanyDB.State = addressinfoInsuranceCompanyBO.State;
-                    addressinfoInsuranceCompanyDB.ZipCode = addressinfoInsuranceCompanyBO.ZipCode;
-                    addressinfoInsuranceCompanyDB.Country = addressinfoInsuranceCompanyBO.Country;
+                    addressinfoInsuranceCompanyDB.id = addressinfoInsuranceCompanyBO.ID;
+                    addressinfoInsuranceCompanyDB.Name = IsEditMode == true && addressinfoInsuranceCompanyBO.Name == null ? addressinfoInsuranceCompanyDB.Name : addressinfoInsuranceCompanyBO.Name;
+                    addressinfoInsuranceCompanyDB.Address1 = IsEditMode == true && addressinfoInsuranceCompanyBO.Address1 == null ? addressinfoInsuranceCompanyDB.Address1 : addressinfoInsuranceCompanyBO.Address1;
+                    addressinfoInsuranceCompanyDB.Address2 = IsEditMode == true && addressinfoInsuranceCompanyBO.Address2 == null ? addressinfoInsuranceCompanyDB.Address2 : addressinfoInsuranceCompanyBO.Address2;
+                    addressinfoInsuranceCompanyDB.City = IsEditMode == true && addressinfoInsuranceCompanyBO.City == null ? addressinfoInsuranceCompanyDB.City : addressinfoInsuranceCompanyBO.City;
+                    addressinfoInsuranceCompanyDB.State = IsEditMode == true && addressinfoInsuranceCompanyBO.State == null ? addressinfoInsuranceCompanyDB.State : addressinfoInsuranceCompanyBO.State;
+                    addressinfoInsuranceCompanyDB.ZipCode = IsEditMode == true && addressinfoInsuranceCompanyBO.ZipCode == null ? addressinfoInsuranceCompanyDB.ZipCode : addressinfoInsuranceCompanyBO.ZipCode;
+                    addressinfoInsuranceCompanyDB.Country = IsEditMode == true && addressinfoInsuranceCompanyBO.Country == null ? addressinfoInsuranceCompanyDB.Country : addressinfoInsuranceCompanyBO.Country;
 
                     if (Add_addressDB == true)
                     {
@@ -291,8 +534,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 }
                 else
                 {
-                    dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Address details.", ErrorLevel = ErrorLevel.Error };
+                    if (IsEditMode == false)
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid insurance address details.", ErrorLevel = ErrorLevel.Error };
+                    }
+                    addressinfoInsuranceCompanyDB = null;
                 }
                 #endregion
 
@@ -310,16 +557,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     else if (contactinfoInsuranceCompanyDB == null && contactinfoInsuranceCompanyBO.ID > 0)
                     {
                         dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Contact details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Insurance contact details dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
-                    //contactinfoInsuranceCompanyDB.id = contactinfoInsuranceCompanyBO.ID;
-                    contactinfoInsuranceCompanyDB.Name = contactinfoInsuranceCompanyBO.Name;
-                    contactinfoInsuranceCompanyDB.CellPhone = contactinfoInsuranceCompanyBO.CellPhone;
-                    contactinfoInsuranceCompanyDB.EmailAddress = contactinfoInsuranceCompanyBO.EmailAddress;
-                    contactinfoInsuranceCompanyDB.HomePhone = contactinfoInsuranceCompanyBO.HomePhone;
-                    contactinfoInsuranceCompanyDB.WorkPhone = contactinfoInsuranceCompanyBO.WorkPhone;
-                    contactinfoInsuranceCompanyDB.FaxNo = contactinfoInsuranceCompanyBO.FaxNo;
+                    contactinfoInsuranceCompanyDB.Name = IsEditMode == true && contactinfoInsuranceCompanyBO.Name == null ? contactinfoInsuranceCompanyDB.Name : contactinfoInsuranceCompanyBO.Name;
+                    contactinfoInsuranceCompanyDB.CellPhone = IsEditMode == true && contactinfoInsuranceCompanyBO.CellPhone == null ? contactinfoInsuranceCompanyDB.CellPhone : contactinfoInsuranceCompanyBO.CellPhone;
+                    contactinfoInsuranceCompanyDB.EmailAddress = IsEditMode == true && contactinfoInsuranceCompanyBO.EmailAddress == null ? contactinfoInsuranceCompanyDB.EmailAddress : contactinfoInsuranceCompanyBO.EmailAddress;
+                    contactinfoInsuranceCompanyDB.HomePhone = IsEditMode == true && contactinfoInsuranceCompanyBO.HomePhone == null ? contactinfoInsuranceCompanyDB.HomePhone : contactinfoInsuranceCompanyBO.HomePhone;
+                    contactinfoInsuranceCompanyDB.WorkPhone = IsEditMode == true && contactinfoInsuranceCompanyBO.WorkPhone == null ? contactinfoInsuranceCompanyDB.WorkPhone : contactinfoInsuranceCompanyBO.WorkPhone;
+                    contactinfoInsuranceCompanyDB.FaxNo = IsEditMode == true && contactinfoInsuranceCompanyBO.FaxNo == null ? contactinfoInsuranceCompanyDB.FaxNo : contactinfoInsuranceCompanyBO.FaxNo;
                     contactinfoInsuranceCompanyDB.IsDeleted = contactinfoInsuranceCompanyBO.IsDeleted;
 
                     if (Add_contactinfoDB == true)
@@ -330,8 +576,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 }
                 else
                 {
-                    dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Contact details.", ErrorLevel = ErrorLevel.Error };
+                    if (IsEditMode == false)
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid insurance contact details.", ErrorLevel = ErrorLevel.Error };
+                    }
+                    contactinfoInsuranceCompanyDB = null;
                 }
                 #endregion
 
@@ -339,7 +589,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 if (insuranceBO != null)
                 {
                     bool Add_insuranceDB = false;
-                    insuranceDB = _context.PatientInsuranceInfoes.Where(p => p.Id == insuranceBO.ID).FirstOrDefault();
+                    insuranceDB = _context.PatientInsuranceInfoes.Where(p => p.Id == insuranceBO.ID).FirstOrDefault<PatientInsuranceInfo>();
 
                     if (insuranceDB == null && insuranceBO.ID <= 0)
                     {
@@ -349,22 +599,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     else if (insuranceDB == null && insuranceBO.ID > 0)
                     {
                         dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient dosent exists.", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient Insurance dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
-
                     insuranceDB.PatientId = insuranceBO.patientId;
-                    insuranceDB.PolicyHolderName = insuranceBO.policyHoldersName;
-                    insuranceDB.PolicyHolderAddressInfoId = addressinfoPolicyHolderDB.id;
-                    insuranceDB.PolicyHolderContactInfoId = contactinfoPolicyHolderDB.id;
-                    insuranceDB.PolicyOwnerId = insuranceBO.policyOwnerId;
-                    insuranceDB.InsuranceCompanyCode = insuranceBO.insuranceCompanyCode;
-                    insuranceDB.InsuranceCompanyAddressInfoId = addressinfoInsuranceCompanyDB.id;
-                    insuranceDB.InsuranceCompanyContactInfoId = contactinfoInsuranceCompanyDB.id;
-                    insuranceDB.PolicyNo = insuranceBO.policyNo;
-                    insuranceDB.ContactPerson = insuranceBO.contactPerson;
-                    insuranceDB.ClaimFileNo = insuranceBO.claimFileNo;
-                    insuranceDB.WCBNo = insuranceBO.wcbNo;
-                    insuranceDB.InsuranceTypeId = insuranceBO.insuranceTypeId;
+                    insuranceDB.PolicyHolderName = IsEditMode == true && insuranceBO.policyHoldersName == null ? insuranceDB.PolicyHolderName : insuranceBO.policyHoldersName;
+                    insuranceDB.PolicyHolderAddressInfoId = (addressinfoPolicyHolderDB != null && addressinfoPolicyHolderDB.id > 0) ? addressinfoPolicyHolderDB.id : insuranceDB.PolicyHolderAddressInfoId;
+                    insuranceDB.PolicyHolderContactInfoId = (contactinfoPolicyHolderDB != null && contactinfoPolicyHolderDB.id > 0) ? contactinfoPolicyHolderDB.id : insuranceDB.PolicyHolderContactInfoId;
+                    insuranceDB.PolicyOwnerId = IsEditMode == true && insuranceBO.policyOwnerId == null ? insuranceDB.PolicyOwnerId : insuranceBO.policyOwnerId;
+                    insuranceDB.InsuranceCompanyCode = IsEditMode == true && insuranceBO.insuranceCompanyCode == null ? insuranceDB.InsuranceCompanyCode : insuranceBO.insuranceCompanyCode;
+                    insuranceDB.InsuranceCompanyAddressInfoId = (addressinfoInsuranceCompanyDB != null && addressinfoInsuranceCompanyDB.id > 0) ? addressinfoInsuranceCompanyDB.id : insuranceDB.InsuranceCompanyAddressInfoId;
+                    insuranceDB.InsuranceCompanyContactInfoId = (contactinfoInsuranceCompanyDB != null && contactinfoInsuranceCompanyDB.id > 0) ? contactinfoInsuranceCompanyDB.id : insuranceDB.InsuranceCompanyContactInfoId;
+                    insuranceDB.PolicyNo = IsEditMode == true && insuranceBO.policyNo == null ? insuranceDB.PolicyNo : insuranceBO.policyNo;
+                    insuranceDB.ContactPerson = IsEditMode == true && insuranceBO.contactPerson == null ? insuranceDB.ContactPerson : insuranceBO.contactPerson;
+                    insuranceDB.ClaimFileNo = IsEditMode == true && insuranceBO.claimFileNo == null ? insuranceDB.ClaimFileNo : insuranceBO.claimFileNo;
+                    insuranceDB.WCBNo = IsEditMode == true && insuranceBO.wcbNo == null ? insuranceDB.WCBNo : insuranceBO.wcbNo;
+                    insuranceDB.InsuranceTypeId = IsEditMode == true && insuranceBO.insuranceTypeId == null ? insuranceDB.InsuranceTypeId : insuranceBO.insuranceTypeId;
                     insuranceDB.IsInActive = insuranceBO.isInActive;
 
                     if (Add_insuranceDB == true)
@@ -375,8 +624,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 }
                 else
                 {
-                    dbContextTransaction.Rollback();
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient details.", ErrorLevel = ErrorLevel.Error };
+                    if (IsEditMode == false)
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient Insurance details.", ErrorLevel = ErrorLevel.Error };
+                    }
+                    insuranceDB = null;
                 }
 
                 _context.SaveChanges();
@@ -389,8 +642,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             var res = Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(insuranceDB);
             return (object)res;
-        }
+         }
         #endregion
+
+
+
 
         #region Delete By ID
         public override object DeleteById(int id)
@@ -442,8 +698,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-
-            return (object)acc;
+            var res = Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(acc);
+            return (object)res;
         }
         #endregion
 
