@@ -22,13 +22,13 @@ namespace MIDAS.GBX.BusinessObjects
         public string reportNumber { get; set; }
 
         [JsonProperty("accidentAddressInfoId")]
-        public int accidentAddressInfoId { get; set; }
+        public int? accidentAddressInfoId { get; set; }
 
         [JsonProperty("hospitalName")]
         public string hospitalName { get; set; }
 
         [JsonProperty("hospitalAddressInfoId")]
-        public int hospitalAddressInfoId { get; set; }
+        public int? hospitalAddressInfoId { get; set; }
 
         [JsonProperty("dateOfAdmission")]
         public DateTime? dateOfAdmission { get; set; }

@@ -88,8 +88,8 @@
     <Compile Include="Patient\Patient2.cs" />
     <Compile Include="RefferingOffice\RefferingOffice.cs" />
     <Compile Include="Relation\Relation.cs" />
-    <Compile Include="Room\Room.cs" />
-    <Compile Include="Room\RoomTest.cs" />
+    <Compile Include="Schedule\Room\Room.cs" />
+    <Compile Include="Schedule\Room\RoomTest.cs" />
     <Compile Include="Schedule\Schedule.cs" />
     <Compile Include="Schedule\ScheduleDetail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
