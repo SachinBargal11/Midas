@@ -33,11 +33,11 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
 
         [HttpGet]
-        [Route("GetAll")]
+        [Route("getByPatientId/{PatientId}")]
         [AllowAnonymous]
-        public HttpResponseMessage GetAllPatient([FromBody]Case data)
+        public HttpResponseMessage GetByPatientId(int PatientId)
         {
-            return requestHandler.GetGbObjects(Request, data);
+            return requestHandler.GetByPatientId(Request, PatientId);
         }
 
         [HttpPost]
