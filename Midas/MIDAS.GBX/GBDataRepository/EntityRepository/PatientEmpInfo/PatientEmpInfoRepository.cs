@@ -476,10 +476,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             if (acc == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            return acc;
+            else
+            {
+                BO.PatientEmpInfo acc_ = Convert<BO.PatientEmpInfo, PatientEmpInfo>(acc);
+                return (object)acc_;
+            }
+
         }
         #endregion
 
