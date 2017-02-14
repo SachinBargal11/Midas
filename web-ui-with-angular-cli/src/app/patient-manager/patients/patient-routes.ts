@@ -12,6 +12,7 @@ import { ValidateActiveSession } from '../../commons/guards/validate-active-sess
 import { ShellComponent } from '../../commons/shell-component';
 import { AddFamilyMemberComponent } from './components/add-family-member';
 import { FamilyMemberListComponent } from './components/family-member-list';
+import { EditFamilyMemberComponent } from './components/edit-family-member';
 import { AccidentInfoComponent } from './components/accident';
 import { AttorneyComponent } from './components/attorney';
 import { PatientEmployerComponent } from './components/employer';
@@ -169,14 +170,14 @@ export const PatientsShellRoutes: Routes = [
                                     breadcrumb: 'Add Family Member'
                                 }
                             },
-                            // {
-                            //     path: 'edit/:id',
-                            //     component: ,
-                            //     canActivate: [ValidateActiveSession],
-                            //     data: {
-                            //         breadcrumb: 'Edit Family Member'
-                            //     }
-                            // }
+                            {
+                                path: 'edit/:id',
+                                component: EditFamilyMemberComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'Edit Family Member'
+                                }
+                            }
                         ]
                     },
                     {

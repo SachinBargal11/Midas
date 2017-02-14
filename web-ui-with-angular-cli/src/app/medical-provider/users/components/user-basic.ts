@@ -17,6 +17,8 @@ import { StateService } from '../../../commons/services/state-service';
 import { UserType } from '../../../commons/models/enums/user-type';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
+import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
+import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 
 @Component({
     selector: 'basic',
@@ -24,11 +26,13 @@ import { NotificationsService } from 'angular2-notifications';
 })
 
 export class UserBasicComponent implements OnInit {
+    cellPhone: string;
+    faxNo: string;
     userType: any;
     states: any[];
     cities: any[];
     selectedCity;
-    user = new User({});
+    user: User;
     address = new Address({});
     contact = new Contact({});
     options = {
@@ -55,6 +59,8 @@ export class UserBasicComponent implements OnInit {
         private _usersStore: UsersStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
+        private _phoneFormatPipe: PhoneFormatPipe,
+        private _faxNoFormatPipe: FaxNoFormatPipe,
         private _elRef: ElementRef
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
@@ -62,10 +68,10 @@ export class UserBasicComponent implements OnInit {
             this._progressBarService.show();
             let result = this._usersStore.fetchUserById(userId);
             result.subscribe(
-                (userDetail: any) => {
+                (userDetail: User) => {
                     this.user = userDetail;
-                    this.contact = userDetail.contact;
-                    this.address = userDetail.address;
+                    this.cellPhone = this._phoneFormatPipe.transform(this.user.contact.cellPhone);
+                    this.faxNo = this._faxNoFormatPipe.transform(this.user.contact.faxNo);
                     this.selectedCity = userDetail.address.city;
                     this.userType = UserType[userDetail.userType];
                     this.loadCities(userDetail.address.state);

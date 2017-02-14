@@ -16,6 +16,7 @@ import { PatientsShellComponent } from './patients/components/patients-shell';
 import { PatientProfileComponent } from './patients/components/profile-patient';
 import { AddFamilyMemberComponent } from './patients/components/add-family-member';
 import { FamilyMemberListComponent } from './patients/components/family-member-list';
+import { EditFamilyMemberComponent } from './patients/components/edit-family-member';
 import { AccidentInfoComponent } from './patients/components/accident';
 import { AttorneyComponent } from './patients/components/attorney';
 import { PatientEmployerComponent } from './patients/components/employer';
@@ -69,6 +70,7 @@ import { CasesStore } from './cases/stores/case-store';
         PatientProfileComponent,
         AddFamilyMemberComponent,
         FamilyMemberListComponent,
+        EditFamilyMemberComponent,
         AccidentInfoComponent,
         AttorneyComponent,
         PatientEmployerComponent,
