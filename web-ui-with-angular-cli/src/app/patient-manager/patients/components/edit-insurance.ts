@@ -15,6 +15,8 @@ import { Address } from '../../../commons/models/address';
 import { Insurance } from '../models/insurance';
 import { InsuranceStore } from '../stores/insurance-store';
 import { PatientsStore } from '../stores/patients-store';
+import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
+import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 
 @Component({
     selector: 'edit-insurance',
@@ -23,18 +25,23 @@ import { PatientsStore } from '../stores/patients-store';
 
 
 export class EditInsuranceComponent implements OnInit {
+    policyCellPhone: string;
+    policyFaxNo: string;
+    insuranceCellPhone: string;
+    insuranceFaxNo: string;
     states: any[];
     policyCities: any[];
     insuranceCities: any[];
     selectedPolicyCity;
     selectedInsuranceCity;
-    insurance = new Insurance({});
+    insurance: Insurance;
     policyAddress = new Address({});
     policyContact = new Contact({});
     insuranceAddress = new Address({});
     insuranceContact = new Contact({});
     patientId;
-    isCitiesLoading = false;
+    isPolicyCitiesLoading = false;
+    isInsuranceCitiesLoading = false;
 
     insuranceform: FormGroup;
     insuranceformControls;
@@ -50,6 +57,8 @@ export class EditInsuranceComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _insuranceStore: InsuranceStore,
         private _patientsStore: PatientsStore,
+        private _phoneFormatPipe: PhoneFormatPipe,
+        private _faxNoFormatPipe: FaxNoFormatPipe,
         private _elRef: ElementRef
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
@@ -62,10 +71,10 @@ export class EditInsuranceComponent implements OnInit {
             result.subscribe(
                 (insurance: any) => {
                     this.insurance = insurance.toJS();
-                    this.policyContact = insurance.policyContact;
-                    this.policyAddress = insurance.policyAddress;
-                    this.insuranceContact = insurance.insuranceContact;
-                    this.insuranceAddress = insurance.insuranceAddress;
+                    this.policyCellPhone = this._phoneFormatPipe.transform(this.insurance.policyContact.cellPhone);
+                    this.policyFaxNo = this._faxNoFormatPipe.transform(this.insurance.policyContact.faxNo);
+                    this.insuranceCellPhone = this._phoneFormatPipe.transform(this.insurance.insuranceContact.cellPhone);
+                    this.insuranceFaxNo = this._faxNoFormatPipe.transform(this.insurance.insuranceContact.faxNo);
                     this.selectedInsuranceCity = insurance.insuranceAddress.city;
                     this.selectedPolicyCity = insurance.policyAddress.city;
                     this.loadInsuranceCities(insurance.insuranceAddress.state);
@@ -130,15 +139,15 @@ export class EditInsuranceComponent implements OnInit {
         }
     }
     loadPolicyCities(stateName) {
-        this.isCitiesLoading = true;
+        this.isPolicyCitiesLoading = true;
         if ( stateName !== '') {
         this._statesStore.getCitiesByStates(stateName)
                 .subscribe((cities) => { this.policyCities = cities; },
                 null,
-                () => { this.isCitiesLoading = false; });
+                () => { this.isPolicyCitiesLoading = false; });
         } else {
             this.policyCities = [];
-            this.isCitiesLoading = false;
+            this.isPolicyCitiesLoading = false;
         }
     }
     selectInsuranceState(event) {
@@ -152,15 +161,15 @@ export class EditInsuranceComponent implements OnInit {
         }
     }
     loadInsuranceCities(stateName) {
-        this.isCitiesLoading = true;
+        this.isInsuranceCitiesLoading = true;
         if ( stateName !== '') {
         this._statesStore.getCitiesByStates(stateName)
                 .subscribe((cities) => { this.insuranceCities = cities; },
                 null,
-                () => { this.isCitiesLoading = false; });
+                () => { this.isInsuranceCitiesLoading = false; });
         } else {
             this.insuranceCities = [];
-            this.isCitiesLoading = false;
+            this.isInsuranceCitiesLoading = false;
         }
     }
 

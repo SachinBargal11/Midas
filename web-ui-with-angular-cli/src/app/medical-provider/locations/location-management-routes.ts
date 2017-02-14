@@ -20,81 +20,80 @@ export const LocationManagementRoutes: Routes = [
     },
     {
         path: 'locations',
-        component: LocationComponent,
-        data: {
-            breadcrumb: 'Locations'
-        }
-    },
-    {
-        path: 'locations',
         component: ShellComponent,
         data: {
             breadcrumb: 'Locations'
         },
         children: [
             {
+                path: '',
+                component: LocationComponent,
+                data: {
+                    breadcrumb: 'root'
+                }
+            },
+            {
                 path: 'add',
                 component: AddLocationComponent,
                 data: {
                     breadcrumb: 'Add Location'
                 }
+            },
+            {
+                path: ':locationId',
+                component: LocationShellComponent,
+                data: {
+                    breadcrumb: 'root'
+                },
+                children: [
+                    {
+                        path: '',
+                        redirectTo: 'basic',
+                        pathMatch: 'full'
+                    },
+                    {
+                        path: 'basic',
+                        component: BasicComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Basic'
+                        }
+                    },
+                    {
+                        path: 'schedule',
+                        component: ScheduleComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Schedule'
+                        }
+                    },
+                    {
+                        path: 'schedule-demo',
+                        component: ScheduleDemo,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Schedule-demo'
+                        }
+                    },
+                    {
+                        path: 'settings',
+                        component: SettingsComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Settings'
+                        }
+                    },
+                    {
+                        path: 'access',
+                        component: AccessComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Access'
+                        }
+                    },
+                    ...RoomsRoutes
+                ]
             }
-        ]
-    },
-    {
-        path: 'locations/:locationId',
-        component: LocationShellComponent,
-        data: {
-            breadcrumb: 'Locations',
-            shell: true
-        },
-        children: [
-            {
-                path: '',
-                redirectTo: 'basic',
-                pathMatch: 'full'
-            },
-            {
-                path: 'basic',
-                component: BasicComponent,
-                canActivate: [ValidateActiveSession],
-                data: {
-                    breadcrumb: 'Basic'
-                }
-            },
-            {
-                path: 'schedule',
-                component: ScheduleComponent,
-                canActivate: [ValidateActiveSession],
-                data: {
-                    breadcrumb: 'Schedule'
-                }
-            },
-            {
-                path: 'schedule-demo',
-                component: ScheduleDemo,
-                canActivate: [ValidateActiveSession],
-                data: {
-                    breadcrumb: 'Schedule-demo'
-                }
-            },
-            {
-                path: 'settings',
-                component: SettingsComponent,
-                canActivate: [ValidateActiveSession],
-                data: {
-                    breadcrumb: 'Settings'
-                }
-            },
-            {
-                path: 'access',
-                component: AccessComponent,
-                canActivate: [ValidateActiveSession],
-                data: {
-                    breadcrumb: 'Access'
-                }
-            },
-            ...RoomsRoutes
         ]
     }
 ];

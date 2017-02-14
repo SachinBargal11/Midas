@@ -1,10 +1,11 @@
-import { Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 import { ValidateActiveSession } from '../../../commons/guards/validate-active-session';
 // import { AddSpecialityComponent } from './add-speciality';
 import { SpecialityShellComponent } from './speciality-shell';
 // import { UpdateSpecialityComponent } from './update-speciality';
 import { SpecialityListComponent } from './speciality-list';
-
+import { ShellComponent } from '../../../commons/shell-component';
 import { AddSpecialityDetailsComponent } from '../speciality-details/add-speciality-detail';
 import { EditSpecialityDetailsComponent } from '../speciality-details/edit-speciality-detail';
 // import { SpecialityDetailComponent } from '../speciality-details/speciality-details';
@@ -17,74 +18,51 @@ export const SpecialityRoutes: Routes = [
     },
     {
         path: 'specialities',
-        component: SpecialityListComponent,
+        component: ShellComponent,
         canActivate: [ValidateActiveSession],
         data: {
             breadcrumb: 'Specialities'
-        }
-    },
-    // {
-    //     path: 'specialities/add',
-    //     component: AddSpecialityComponent,
-    //     canActivate: [ValidateActiveSession],
-    //     data: {
-    //         breadcrumb: 'Add Speciality'
-    //     }
-    // },
-    {
-        path: 'specialities/:id',
-        component: SpecialityShellComponent,
-        canActivate: [ValidateActiveSession],
-        data: {
-            breadcrumb: 'Specialities',
-            shell: true
         },
         children: [
             {
                 path: '',
-                redirectTo: 'speciality-details',
-                pathMatch: 'full'
-            },
-            // {
-            //     path: 'basic',
-            //     component: UpdateSpecialityComponent,
-            //     canActivate: [ValidateActiveSession],
-            //     data: {
-            //         breadcrumb: 'Basic'
-            //     }
-            // },
-            // {
-            //     path: 'speciality-details',
-            //     component: SpecialityDetailComponent,
-            //     canActivate: [ValidateActiveSession],
-            //     data: {
-            //         breadcrumb: 'Speciality Details'
-            //     }
-            // },
-            {
-                path: 'add',
-                component: AddSpecialityDetailsComponent,
-                canActivate: [ValidateActiveSession],
+                component: SpecialityListComponent,
                 data: {
-                    breadcrumb: 'Add Speciality Detail'
+                    breadcrumb: 'root'
                 }
             },
             {
-                path: 'edit/:id',
-                component: EditSpecialityDetailsComponent,
+                path: ':id',
+                component: SpecialityShellComponent,
                 canActivate: [ValidateActiveSession],
                 data: {
-                    breadcrumb: 'Edit Speciality Detail'
-                }
+                    breadcrumb: 'root'
+                },
+                children: [
+                    {
+                        path: 'add',
+                        component: AddSpecialityDetailsComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Add Speciality Detail'
+                        }
+                    },
+                    {
+                        path: 'edit/:id',
+                        component: EditSpecialityDetailsComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Edit Speciality Detail'
+                        }
+                    }
+                ]
             }
         ]
     }
-    // {
-    //     path: 'specialities/update/:id',
-    //     component: UpdateSpecialityComponent,
-    //     canActivate: [ValidateActiveSession],
-    //     data: {
-    //         breadcrumb: 'Edit Speciality'
-    //     }
-    // }
 ];
+
+@NgModule({
+    imports: [RouterModule.forChild(SpecialityRoutes)],
+    exports: [RouterModule]
+})
+export class SpecialityRoutingModule { }

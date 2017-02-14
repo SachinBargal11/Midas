@@ -1,8 +1,8 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators,FormGroup, FormBuilder} from '@angular/forms';
-import {Router, ActivatedRoute} from '@angular/router';
-import {SessionStore} from '../../../commons/stores/session-store';
-import {NotificationsStore} from '../../../commons/stores/notifications-store';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { SessionStore } from '../../../commons/stores/session-store';
+import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import { StatesStore } from '../../../commons/stores/states-store';
 
@@ -32,14 +32,14 @@ export class AttorneyComponent implements OnInit {
         private _elRef: ElementRef
     ) {
         this.attorneyform = this.fb.group({
-                attorney: ['',Validators.required]
-               
-            });
+            attorney: ['', Validators.required]
+
+        });
         this.attorneyformControls = this.attorneyform.controls;
     }
 
     ngOnInit() {
-       
+
     }
 
     save() {

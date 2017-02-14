@@ -21,6 +21,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             requestHandler = new GbApiRequestHandler<PatientAccidentInfo>();
         }
 
+        [HttpGet]
+        [Route("Get/{id}")]
+        [AllowAnonymous]
+        public HttpResponseMessage Get(int id)
+        {
+            return requestHandler.GetObject(Request, id);
+        }
 
         [HttpGet]
         [Route("getByPatientId/{PatientId}")]

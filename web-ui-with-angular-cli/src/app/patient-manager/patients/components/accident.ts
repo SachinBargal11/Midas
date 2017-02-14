@@ -31,8 +31,10 @@ export class AccidentInfoComponent implements OnInit {
     currentAccident: Accident;
     accidentCities: any[];
     patientId: number;
-    selectedCity = 0;
+    selectedCity = '';
+    selectedAccidentCity = '';
     isCitiesLoading = false;
+    isAccidentCitiesLoading = false;
     accidentform: FormGroup;
     accidentformControls;
     isSaveProgress = false;
@@ -69,6 +71,8 @@ export class AccidentInfoComponent implements OnInit {
                             : null;
 
                         if (this.currentAccident.accidentAddress.state || this.currentAccident.hospitalAddress.state) {
+                            this.selectedCity = this.currentAccident.hospitalAddress.city;
+                            this.selectedAccidentCity = this.currentAccident.accidentAddress.city;
                             this.loadCities(this.currentAccident.hospitalAddress.state);
                             this.loadAccidentCities(this.currentAccident.accidentAddress.state);
                         }
@@ -124,9 +128,14 @@ export class AccidentInfoComponent implements OnInit {
     }
 
     selectState(event) {
-        this.selectedCity = 0;
         let currentState = event.target.value;
+        if (currentState === this.currentAccident.hospitalAddress.state) {
+            this.loadCities(currentState);
+            this.selectedCity = this.currentAccident.hospitalAddress.city;
+        } else {
         this.loadCities(currentState);
+        this.selectedCity = '';
+        }
     }
 
     loadCities(stateName) {
@@ -143,21 +152,26 @@ export class AccidentInfoComponent implements OnInit {
     }
 
     selectAccidentState(event) {
-        this.selectedCity = 0;
         let currentState = event.target.value;
+        if (currentState === this.currentAccident.accidentAddress.state) {
+            this.loadAccidentCities(currentState);
+            this.selectedAccidentCity = this.currentAccident.accidentAddress.city;
+        } else {
         this.loadAccidentCities(currentState);
+        this.selectedAccidentCity = '';
+        }
     }
 
     loadAccidentCities(stateName) {
-        this.isCitiesLoading = true;
+        this.isAccidentCitiesLoading = true;
         if (stateName !== '') {
             this._statesStore.getCitiesByStates(stateName)
                 .subscribe((cities) => { this.accidentCities = cities; },
                 null,
-                () => { this.isCitiesLoading = false; });
+                () => { this.isAccidentCitiesLoading = false; });
         } else {
             this.accidentCities = [];
-            this.isCitiesLoading = false;
+            this.isAccidentCitiesLoading = false;
         }
     }
 

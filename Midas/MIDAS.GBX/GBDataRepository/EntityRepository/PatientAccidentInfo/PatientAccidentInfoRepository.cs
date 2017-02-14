@@ -88,12 +88,33 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        #region Get By Id 
+        public override object Get(int id)
+        {
+
+            var acc = _context.PatientAccidentInfoes.Include("AddressInfo")
+                                                     .Include("AddressInfo1")
+                                                     .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                     .FirstOrDefault<PatientAccidentInfo>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this RefferingOffice.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                BO.PatientAccidentInfo acc_ = Convert<BO.PatientAccidentInfo, PatientAccidentInfo>(acc);
+                return (object)acc_;
+            }
+        }
+        #endregion
+
         #region Get By Patient Id
         public override object GetByPatientId(int PatientId)
         {
             var acc = _context.PatientAccidentInfoes.Include("AddressInfo")
                                                      .Include("AddressInfo1")
-                                                     .Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
+                                                     .Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                      .ToList<PatientAccidentInfo>();
 
             if (acc == null)
