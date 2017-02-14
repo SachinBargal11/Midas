@@ -17,6 +17,8 @@ import { User } from '../../../commons/models/user';
 import { NotificationsService } from 'angular2-notifications';
 import { Notification } from '../../../commons/models/notification';
 import { StatesStore } from '../../../commons/stores/states-store';
+import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
+import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 
 @Component({
     selector: 'demographics',
@@ -24,6 +26,8 @@ import { StatesStore } from '../../../commons/stores/states-store';
 })
 
 export class DemographicsComponent implements OnInit {
+    cellPhone: string;
+    faxNo: string;
     patientId: number;
     patientInfo: Patient;
     options = {
@@ -51,7 +55,9 @@ export class DemographicsComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _patientsStore: PatientsStore,
         private _notificationsService: NotificationsService,
-        private _elRef: ElementRef
+        private _elRef: ElementRef,
+        private _phoneFormatPipe: PhoneFormatPipe,
+        private _faxNoFormatPipe: FaxNoFormatPipe
     ) {
         this._route.parent.params.subscribe((params: any) => {
             this.patientId = parseInt(params.patientId, 10);
@@ -60,6 +66,9 @@ export class DemographicsComponent implements OnInit {
             result.subscribe(
                 (patient: Patient) => {
                     this.patientInfo = patient;
+                    this.cellPhone = this._phoneFormatPipe.transform(this.patientInfo.user.contact.cellPhone);
+                    this.faxNo = this._faxNoFormatPipe.transform(this.patientInfo.user.contact.faxNo);
+                    debugger;
                     this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment
                         ? this.patientInfo.dateOfFirstTreatment.toDate()
                         : null;

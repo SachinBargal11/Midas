@@ -40,7 +40,9 @@ import { LocationsService } from './medical-provider/locations/services/location
 
 import { SimpleNotificationsModule } from 'angular2-notifications';
 
-// import * as moment from 'moment';
+import { PhoneFormatPipe } from './commons/pipes/phone-format-pipe';
+import { FaxNoFormatPipe } from './commons/pipes/faxno-format-pipe';
+
 
 @NgModule({
   declarations: [
@@ -77,7 +79,9 @@ import { SimpleNotificationsModule } from 'angular2-notifications';
     UsersService,
     UsersStore,
     LocationsStore,
-    LocationsService
+    LocationsService,
+    PhoneFormatPipe,
+    FaxNoFormatPipe
   ],
   bootstrap: [AppComponent]
 })
