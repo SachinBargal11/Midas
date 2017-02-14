@@ -20,18 +20,18 @@ export const UsersRoutes: Routes = [
     },
     {
         path: 'users',
-        component: UsersListComponent,
-        data: {
-            breadcrumb: 'Users'
-        }
-    },
-    {
-        path: 'users',
         component: ShellComponent,
         data: {
             breadcrumb: 'Users'
         },
         children: [
+            {
+                path: '',
+                component: UsersListComponent,
+                data: {
+                    breadcrumb: 'root'
+                }
+            },
             {
                 path: 'add',
                 component: AddUserComponent,
@@ -39,69 +39,68 @@ export const UsersRoutes: Routes = [
                 data: {
                     breadcrumb: 'Add User'
                 }
-            }
-        ]
-    },
-    {
-        path: 'users/edit/:id',
-        component: UpdateUserComponent,
-        canActivate: [ValidateActiveSession],
-        data: {
-            breadcrumb: 'Edit User'
-        }
-    },
-    {
-        path: 'users/:userId',
-        component: UserShellComponent,
-        data: {
-            breadcrumb: 'Users',
-            shell: true
-        },
-        children: [
-            {
-                path: '',
-                redirectTo: 'basic',
-                pathMatch: 'full'
             },
             {
-                path: 'basic',
-                component: UserBasicComponent,
+                path: 'edit/:id',
+                component: UpdateUserComponent,
                 canActivate: [ValidateActiveSession],
                 data: {
-                    breadcrumb: 'Basic'
+                    breadcrumb: 'Edit User'
                 }
             },
             {
-                path: 'access',
-                component: UserAccessComponent,
-                canActivate: [ValidateActiveSession],
+                path: ':userId',
+                component: UserShellComponent,
                 data: {
-                    breadcrumb: 'Access'
-                }
-            },
-            {
-                path: 'doctorSpecificInformation',
-                component: DoctorSpecificInformationComponent,
-                canActivate: [ValidateActiveSession],
-                data: {
-                    breadcrumb: "Doctor's Information"
-                }
-            },
-            {
-                path: 'locations',
-                component: LocationsComponent,
-                canActivate: [ValidateActiveSession],
-                data: {
-                    breadcrumb: 'Locations'
-                }
-            },
-            {
-                path: 'billing',
-                component: BillingComponent,
-                canActivate: [ValidateActiveSession],
-                data: {
-                    breadcrumb: 'Billing'
-                }
+                    breadcrumb: 'root'
+                },
+                children: [
+                    {
+                        path: '',
+                        redirectTo: 'basic',
+                        pathMatch: 'full'
+                    },
+                    {
+                        path: 'basic',
+                        component: UserBasicComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Basic'
+                        }
+                    },
+                    {
+                        path: 'access',
+                        component: UserAccessComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Access'
+                        }
+                    },
+                    {
+                        path: 'doctorSpecificInformation',
+                        component: DoctorSpecificInformationComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: "Doctor's Information"
+                        }
+                    },
+                    {
+                        path: 'locations',
+                        component: LocationsComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Locations'
+                        }
+                    },
+                    {
+                        path: 'billing',
+                        component: BillingComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Billing'
+                        }
+                    }
+                ]
             }
         ]
     }
