@@ -588,8 +588,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             //BO.Company CompanyBO = patient2BO.Company;
             //BO.Location locationBO = patient2BO.Location;
             BO.User userBO = patient2BO.User;
-            BO.AddressInfo addressUserBO = patient2BO.User.AddressInfo;
-            BO.ContactInfo contactinfoUserBO = patient2BO.User.ContactInfo;
+            BO.AddressInfo addressUserBO = (patient2BO.User != null) ? patient2BO.User.AddressInfo : null;
+            BO.ContactInfo contactinfoUserBO = (patient2BO.User != null) ? patient2BO.User.ContactInfo : null;
             BO.AddressInfo addressPatientBO = patient2BO.AddressInfo;
             BO.ContactInfo contactinfoPatientBO = patient2BO.ContactInfo;
 
@@ -731,7 +731,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     userDB.FirstName = IsEditMode == true && userBO.FirstName == null ? userDB.FirstName : userBO.FirstName;
                     userDB.MiddleName = IsEditMode == true && userBO.MiddleName == null ? userDB.MiddleName : userBO.MiddleName;
                     userDB.LastName = IsEditMode == true && userBO.LastName == null ? userDB.LastName : userBO.LastName;
-                    userDB.Gender = System.Convert.ToByte(userBO.Gender);
+                    userDB.Gender = (IsEditMode == true && userBO.Gender > 0) ? System.Convert.ToByte(userBO.Gender) : userDB.Gender;
                     userDB.UserType = Add_userDB == true ? System.Convert.ToByte(userBO.UserType) : userDB.UserType;
                     userDB.UserStatus = System.Convert.ToByte(userBO.Status);
                     userDB.ImageLink = IsEditMode == true && userBO.ImageLink == null ? userDB.ImageLink : userBO.ImageLink;
@@ -876,7 +876,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
-                    patient2DB.Id = userDB.id;
+                    if (IsEditMode == false)
+                    {
+                        patient2DB.Id = userDB.id;
+                    }
 
                     if (Add_patientDB == true)
                     {
@@ -888,28 +891,33 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
 
                     patient2DB.SSN = IsEditMode == true && patient2BO.SSN == null ? patient2DB.SSN : patient2BO.SSN;
-                    patient2DB.CompanyId = patient2BO.CompanyId;
+                    patient2DB.CompanyId = IsEditMode == true && patient2BO.CompanyId == null ? patient2DB.CompanyId : patient2BO.CompanyId;
                     patient2DB.Weight = IsEditMode == true && patient2BO.Weight == null ? patient2DB.Weight : patient2BO.Weight;
                     patient2DB.Height = IsEditMode == true && patient2BO.Height == null ? patient2DB.Height : patient2BO.Height;
-                    patient2DB.MaritalStatusId = patient2BO.MaritalStatusId;
-                    patient2DB.DateOfFirstTreatment = patient2BO.DateOfFirstTreatment;
+                    patient2DB.MaritalStatusId = IsEditMode == true && patient2BO.MaritalStatusId == null ? patient2DB.MaritalStatusId : patient2BO.MaritalStatusId;
+                    //patient2DB.DateOfFirstTreatment = patient2BO.DateOfFirstTreatment;
                     patient2DB.DateOfFirstTreatment = IsEditMode == true && patient2BO.DateOfFirstTreatment == null ? patient2DB.DateOfFirstTreatment : patient2BO.DateOfFirstTreatment;
-                    patient2DB.AttorneyName = patient2BO.AttorneyName;
+                    //patient2DB.AttorneyName = patient2BO.AttorneyName;
                     patient2DB.AttorneyName = IsEditMode == true && patient2BO.AttorneyName == null ? patient2DB.AttorneyName : patient2BO.AttorneyName;
-                    patient2DB.AttorneyAddressInfoId = addressPatientDB.id;
-                    patient2DB.AttorneyContactInfoId = contactinfoPatientDB.id;
+                    //(addressUserDB != null && addressUserDB.id > 0) ? addressUserDB.id : userDB.AddressId;
+                    patient2DB.AttorneyAddressInfoId = (addressPatientDB != null && addressPatientDB.id > 0) ? addressPatientDB.id : patient2DB.AttorneyAddressInfoId;
+                    patient2DB.AttorneyContactInfoId = (contactinfoPatientDB != null && contactinfoPatientDB.id > 0) ? contactinfoPatientDB.id : patient2DB.AttorneyContactInfoId;
 
                     patient2DB.IsDeleted = patient2BO.IsDeleted.HasValue ? patient2BO.IsDeleted : false;
 
-                    CompanyDB = _context.Companies.Where(p => p.id == patient2BO.CompanyId).FirstOrDefault();
+                    
+                    CompanyDB = _context.Companies.Where(p => patient2BO.CompanyId.HasValue == true && p.id == patient2BO.CompanyId).FirstOrDefault();
                     if (CompanyDB != null)
                     {
                         patient2DB.CompanyId = patient2BO.CompanyId;
                     }
                     else
                     {
-                        dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid User Company Id.", ErrorLevel = ErrorLevel.Error };
+                        if (IsEditMode == false)
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid User Company Id.", ErrorLevel = ErrorLevel.Error };
+                        }
                     }
 
                     //locationDB = _context.Locations.Where(p => p.id == patient2BO.LocationID).FirstOrDefault();

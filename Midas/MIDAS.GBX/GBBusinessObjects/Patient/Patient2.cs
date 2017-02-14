@@ -68,10 +68,10 @@ namespace MIDAS.GBX.BusinessObjects
             //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "PatientID dosent match." });
             //}
 
-            if (string.IsNullOrWhiteSpace(SSN) == true)
-            {
-                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "SSN cannot be empty." });
-            }
+            //if (string.IsNullOrWhiteSpace(SSN) == true)
+            //{
+            //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "SSN cannot be empty." });
+            //}
 
             //if (string.IsNullOrWhiteSpace(WCBNo) == true)
             //{
@@ -98,10 +98,10 @@ namespace MIDAS.GBX.BusinessObjects
             //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "ChartNo cannot be empty." });
             //}
 
-            if (CompanyId < 0)
-            {
-                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "CompanyID cannot be less than zero." });
-            }
+            //if (CompanyId < 0)
+            //{
+            //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "CompanyID cannot be less than zero." });
+            //}
 
             //if (Company != null && Company.ID != CompanyId)
             //{
@@ -118,20 +118,20 @@ namespace MIDAS.GBX.BusinessObjects
             //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "LocationID dosent match." });
             //}
 
-            if (Weight.HasValue == true && Weight < 0)
-            {
-                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Weight cannot be less than zero." });
-            }
+            //if (Weight.HasValue == true && Weight < 0)
+            //{
+            //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Weight cannot be less than zero." });
+            //}
 
-            if (Height.HasValue == true && Height < 0)
-            {
-                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Height cannot be less than zero." });
-            }
+            //if (Height.HasValue == true && Height < 0)
+            //{
+            //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Height cannot be less than zero." });
+            //}
 
-            if (MaritalStatusId.HasValue == true && MaritalStatusId < 0)
-            {
-                validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Please select MaritalStatus." });
-            }
+            //if (MaritalStatusId.HasValue == true && MaritalStatusId < 0)
+            //{
+            //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Please select MaritalStatus." });
+            //}
 
            
 

@@ -38,7 +38,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("Save")]
-
         public HttpResponseMessage Post([FromBody]RefferingOffice data)
         {
             return requestHandler.CreateGbObject(Request, data);
@@ -52,9 +51,9 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getROByPatientId/{PatientId}")]
+        [Route("getCurrentROByPatientId/{PatientId}")]
         [AllowAnonymous]
-        public HttpResponseMessage GetCurrentROByPatientId (int PatientId)
+        public HttpResponseMessage GetCurrentROByPatientId(int PatientId)
         {
             return requestHandler.GetCurrentROByPatientId(Request, PatientId);
         }
