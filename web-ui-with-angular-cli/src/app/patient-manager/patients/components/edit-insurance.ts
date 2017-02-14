@@ -34,7 +34,8 @@ export class EditInsuranceComponent implements OnInit {
     insuranceAddress = new Address({});
     insuranceContact = new Contact({});
     patientId;
-    isCitiesLoading = false;
+    isPolicyCitiesLoading = false;
+    isInsuranceCitiesLoading = false;
 
     insuranceform: FormGroup;
     insuranceformControls;
@@ -130,15 +131,15 @@ export class EditInsuranceComponent implements OnInit {
         }
     }
     loadPolicyCities(stateName) {
-        this.isCitiesLoading = true;
+        this.isPolicyCitiesLoading = true;
         if ( stateName !== '') {
         this._statesStore.getCitiesByStates(stateName)
                 .subscribe((cities) => { this.policyCities = cities; },
                 null,
-                () => { this.isCitiesLoading = false; });
+                () => { this.isPolicyCitiesLoading = false; });
         } else {
             this.policyCities = [];
-            this.isCitiesLoading = false;
+            this.isPolicyCitiesLoading = false;
         }
     }
     selectInsuranceState(event) {
@@ -152,15 +153,15 @@ export class EditInsuranceComponent implements OnInit {
         }
     }
     loadInsuranceCities(stateName) {
-        this.isCitiesLoading = true;
+        this.isInsuranceCitiesLoading = true;
         if ( stateName !== '') {
         this._statesStore.getCitiesByStates(stateName)
                 .subscribe((cities) => { this.insuranceCities = cities; },
                 null,
-                () => { this.isCitiesLoading = false; });
+                () => { this.isInsuranceCitiesLoading = false; });
         } else {
             this.insuranceCities = [];
-            this.isCitiesLoading = false;
+            this.isInsuranceCitiesLoading = false;
         }
     }
 
