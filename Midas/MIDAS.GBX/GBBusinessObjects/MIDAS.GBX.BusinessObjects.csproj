@@ -88,8 +88,8 @@
     <Compile Include="Patient\Patient2.cs" />
     <Compile Include="RefferingOffice\RefferingOffice.cs" />
     <Compile Include="Relation\Relation.cs" />
-    <Compile Include="Schedule\Room\Room.cs" />
-    <Compile Include="Schedule\Room\RoomTest.cs" />
+    <Compile Include="Room\Room.cs" />
+    <Compile Include="Room\RoomTest.cs" />
     <Compile Include="Schedule\Schedule.cs" />
     <Compile Include="Schedule\ScheduleDetail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -110,7 +110,10 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="NewFolder1\" />
+    <Folder Include="Schedule\Room\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
