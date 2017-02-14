@@ -7,6 +7,28 @@
         padding-left: 100px;
     }
 }
+.card-block {
+    padding-bottom: 0;
+}
+.card-header {
+    padding: .50rem 1.25rem;
+}
+.box-typical {
+    &.box-typical-padding {
+        padding: 10px 15px;
+    }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    &.with-border {
+        padding-bottom: 0.4rem;
+    }
+}
 
 .nav {
     .nav-item .btn-close {

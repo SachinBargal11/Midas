@@ -6,11 +6,14 @@
 	[DateOfInjury] [datetime2](7) NOT NULL,
 	[LocationId] [int] NOT NULL,
 	[PatientEmpInfoId] [int] NULL,
-	[PatientInsuranceInfoId] [int] NULL,
+	
+	--[PatientInsuranceInfoId] [int] NULL,
+	[CaseInsuranceMappingId] [INT] NULL,
+
 	[PatientAccidentInfoId] [int] NULL,
 	[RefferingOfficeId] [int] NULL,
 	[CarrierCaseNo] [nvarchar](50) NULL,
-	[Transportation] [bit] NOT NULL,
+	[Transportation] [bit] NOT NULL DEFAULT 0,
 	[CaseStatusId] [int] NULL,
 	[AttorneyId] [int] NULL,
 	[IsDeleted] [bit] NULL,
@@ -26,47 +29,56 @@ PRIMARY KEY CLUSTERED
 
 GO
 
-ALTER TABLE [dbo].[Case] ADD  DEFAULT ((0)) FOR [Transportation]
+--ALTER TABLE [dbo].[Case] ADD  DEFAULT ((0)) FOR [Transportation]
 GO
 
 ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_Location_LocationID] FOREIGN KEY([LocationId])
-REFERENCES [dbo].[Location] ([id])
+	REFERENCES [dbo].[Location] ([id])
 GO
 
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_Location_LocationID]
 GO
 
 ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_Patient2_PatientId] FOREIGN KEY([PatientId])
-REFERENCES [dbo].[Patient2] ([Id])
+	REFERENCES [dbo].[Patient2] ([Id])
 GO
 
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_Patient2_PatientId]
 GO
 
 ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_PatientAccidentInfo_PatientAccidentInfoId] FOREIGN KEY([PatientAccidentInfoId])
-REFERENCES [dbo].[PatientAccidentInfo] ([Id])
+	REFERENCES [dbo].[PatientAccidentInfo] ([Id])
 GO
 
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_PatientAccidentInfo_PatientAccidentInfoId]
 GO
 
 ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_PatientEmpInfo_PatientEmpInfoId] FOREIGN KEY([PatientEmpInfoId])
-REFERENCES [dbo].[PatientEmpInfo] ([Id])
+	REFERENCES [dbo].[PatientEmpInfo] ([Id])
 GO
 
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_PatientEmpInfo_PatientEmpInfoId]
 GO
 
-ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_PatientInsuranceInfo_PatientInsuranceInfoId] FOREIGN KEY([PatientInsuranceInfoId])
-REFERENCES [dbo].[PatientInsuranceInfo] ([Id])
-GO
+--ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_PatientInsuranceInfo_PatientInsuranceInfoId] FOREIGN KEY([PatientInsuranceInfoId])
+--	REFERENCES [dbo].[PatientInsuranceInfo] ([Id])
+--GO
 
-ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_PatientInsuranceInfo_PatientInsuranceInfoId]
-GO
+--ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_PatientInsuranceInfo_PatientInsuranceInfoId]
+--GO
 
 ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_RefferingOffice_RefferingOfficeId] FOREIGN KEY([RefferingOfficeId])
-REFERENCES [dbo].[RefferingOffice] ([Id])
+	REFERENCES [dbo].[RefferingOffice] ([Id])
 GO
 
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_RefferingOffice_RefferingOfficeId]
+GO
+
+------------------------------------------
+
+ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_CaseInsuranceMapping_CaseInsuranceMappingId] FOREIGN KEY([CaseInsuranceMappingId])
+	REFERENCES [dbo].[CaseInsuranceMapping] ([Id])
+GO
+
+ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_CaseInsuranceMapping_CaseInsuranceMappingId]
 GO
