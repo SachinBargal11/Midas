@@ -10,17 +10,20 @@ export class FamilyMemberAdapter {
         if (data) {
             familyMember = new FamilyMember({
                 id: data.id,
-                relationToPatient: data.relationToPatient,
-                name: data.name,
+                patientId: data.patientId,
+                relationId: data.relationId,
+                isInActive: data.isInActive,
+                fullName: data.fullName,
                 familyName: data.familyName,
                 prefix: data.prefix,
-                suffix: data.suffix,
+                sufix: data.sufix,
                 age: data.age,
-                deceasedAge: data.deceasedAge,
-                dob: data.dob,
-                gender: data.gender,
-                races: data.races,
-                ethnicities: data.ethnicities
+                genderId: data.genderId,
+                raceId: data.raceId,
+                ethnicitiesId: data.ethnicitesId,
+                cellPhone: data.cellPhone,
+                workPhone: data.workPhone,
+                primaryContact: data.primaryContact ? true : false
             });
         }
         return familyMember;

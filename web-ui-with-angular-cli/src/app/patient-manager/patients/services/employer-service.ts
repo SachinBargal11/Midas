@@ -76,9 +76,10 @@ export class EmployerService {
         });
         return <Observable<Employer>>Observable.fromPromise(promise);
     }
-    updateEmployer(employer: Employer): Observable<Employer> {
+    updateEmployer(employer: Employer, empId: number): Observable<Employer> {
         let promise = new Promise((resolve, reject) => {
             let requestData: any = employer.toJS();
+            requestData.id = empId;
             requestData.contactInfo = requestData.contact;
             requestData.addressInfo = requestData.address;
             requestData = _.omit(requestData, 'contact', 'address');

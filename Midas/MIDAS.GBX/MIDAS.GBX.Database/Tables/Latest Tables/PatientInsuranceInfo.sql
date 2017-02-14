@@ -11,9 +11,12 @@
 	[InsuranceCompanyContactInfoId] [INT] NULL,
 	[PolicyNo] [NVARCHAR](50) NULL,
 	[ContactPerson] [NVARCHAR](50) NULL,
-	[ClaimFileNo] [NVARCHAR](50) NULL, -- check
-	[WCBNo] [NVARCHAR](50) NULL,--????
+	[ClaimFileNo] [NVARCHAR](50) NULL, -- Remove
+	[WCBNo] [NVARCHAR](50) NULL,--???? -- remove, link with treatment provider/doctor
 	[InsuranceTypeId] [TINYINT] NULL,
+	[StartDate] [datetime2](7) NULL,
+	[EndDate] [datetime2](7) NULL,
+	[InsuredAmount] [decimal] NULL, 
 	[IsInActive] [BIT] NUll DEFAULT (0),
 	
 	[IsDeleted] [bit] NULL DEFAULT (0),

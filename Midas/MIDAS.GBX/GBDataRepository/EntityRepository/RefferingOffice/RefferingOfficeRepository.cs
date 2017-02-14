@@ -82,7 +82,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Get(int id)
         {
 
-            var acc = _context.RefferingOffices.Include("AddressInfo").Where(p => p.Id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<RefferingOffice>();
+            var acc = _context.RefferingOffices.Include("AddressInfo").Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<RefferingOffice>();
 
             if (acc == null)
             {
@@ -100,7 +100,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object GetByPatientId(int id)
         {
             //var acc = _context.Patient2.Include("User").Include("Location").Where(p => p.Id == id && p.IsDeleted == false).FirstOrDefault<Patient2>();
-            var acc = _context.RefferingOffices.Include("AddressInfo").Where(p => p.PatientId == id && (p.IsDeleted == false || p.IsDeleted == null)).ToList<RefferingOffice>();
+            var acc = _context.RefferingOffices.Include("AddressInfo").Where(p => p.PatientId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<RefferingOffice>();
 
             if (acc == null)
             {
@@ -117,7 +117,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
         }
         #endregion
-        
+
+        #region Get Current Reffering Office By Patient Id
+        public override object GetCurrentROByPatientId(int id)
+        {
+            //var acc = _context.Patient2.Include("User").Include("Location").Where(p => p.Id == id && p.IsDeleted == false).FirstOrDefault<Patient2>();
+            var acc = _context.RefferingOffices.Include("AddressInfo").Where(p => p.PatientId == id && p.IsCurrentReffOffice == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<RefferingOffice>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                BO.RefferingOffice acc_ = Convert<BO.RefferingOffice, RefferingOffice>(acc);
+                return (object)acc_;
+
+            }
+        }
+        #endregion
+
+
         #region save
         //public override object Save<T>(T entity)
         //{
@@ -219,7 +239,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         //            dbContextTransaction.Rollback();
         //            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Reffering Office details.", ErrorLevel = ErrorLevel.Error };
         //        }
-          //      #endregion
+        //      #endregion
 
 
 
@@ -318,7 +338,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     refferingOfficeDB.AddressInfoId= (addressDB != null && addressDB.id > 0) ? addressDB.id : refferingOfficeDB.AddressInfoId;
                     refferingOfficeDB.ReffferingDoctorId = (IsEditMode == true && refferingOfficeBO.ReffferingDoctorId == null) ? refferingOfficeDB.ReffferingDoctorId : refferingOfficeBO.ReffferingDoctorId;
                     refferingOfficeDB.NPI = (IsEditMode == true && refferingOfficeBO.NPI == null)? refferingOfficeDB.NPI : refferingOfficeBO.NPI;
-                    refferingOfficeDB.IsCurrentReffOffice = (IsEditMode == true && refferingOfficeBO.IsCurrentReffOffice == null) ? refferingOfficeDB.IsCurrentReffOffice : refferingOfficeBO.IsCurrentReffOffice;
+                    refferingOfficeDB.IsCurrentReffOffice = (IsEditMode == true && refferingOfficeBO.IsCurrentReffOffice == null) ? refferingOfficeDB.IsCurrentReffOffice : refferingOfficeBO.IsCurrentReffOffice.Value;
                     refferingOfficeDB.IsDeleted = (IsEditMode == true && refferingOfficeBO.IsDeleted == null) ? refferingOfficeDB.IsDeleted : refferingOfficeBO.IsDeleted;
                     refferingOfficeDB.CreateByUserID = (IsEditMode == true && refferingOfficeBO.CreateByUserID <= 0) ? refferingOfficeDB.CreateByUserID : refferingOfficeBO.CreateByUserID;
                     refferingOfficeDB.CreateDate = (IsEditMode == true && refferingOfficeBO.CreateDate == null) ? refferingOfficeDB.CreateDate : refferingOfficeBO.CreateDate;

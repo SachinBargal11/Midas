@@ -56,6 +56,8 @@ export class AccidentService {
     addAccident(accident: Accident): Observable<Accident> {
         let promise: Promise<Accident> = new Promise((resolve, reject) => {
             let requestData: any = accident.toJS();
+            requestData.accidentDate = requestData.accidentDate ? requestData.accidentDate.format('YYYY-MM-DD') : null;
+            requestData.dateOfAdmission = requestData.dateOfAdmission ? requestData.dateOfAdmission.format('YYYY-MM-DD') : null;
             requestData.accidentAddressInfo = requestData.accidentAddress;
             requestData.hospitalAddressInfo = requestData.hospitalAddress;
             requestData = _.omit(requestData,'accidentAdress','hospitalAddress');
@@ -73,9 +75,12 @@ export class AccidentService {
         });
         return <Observable<Accident>>Observable.fromPromise(promise);
     }
-    updateAccident(accident: Accident): Observable<Accident> {
+    updateAccident(accident: Accident,accidentId:number): Observable<Accident> {
         let promise = new Promise((resolve, reject) => {
             let requestData: any = accident.toJS();
+            requestData.accidentDate = requestData.accidentDate ? requestData.accidentDate.format('YYYY-MM-DD') : null;
+            requestData.dateOfAdmission = requestData.dateOfAdmission ? requestData.dateOfAdmission.format('YYYY-MM-DD') : null;
+            requestData.id = accidentId;
             requestData.accidentAddressInfo = requestData.accidentAddress;
             requestData.hospitalAddressInfo = requestData.hospitalAddress;
             requestData = _.omit(requestData,'accidentAdress','hospitalAddress');
@@ -96,6 +101,8 @@ export class AccidentService {
     deleteAccident(accident: Accident): Observable<Accident> {
         let promise = new Promise((resolve, reject) => {
             let requestData: any = accident.toJS();
+             requestData.accidentDate = requestData.accidentDate ? requestData.accidentDate.format('YYYY-MM-DD') : null;
+            requestData.dateOfAdmission = requestData.dateOfAdmission ? requestData.dateOfAdmission.format('YYYY-MM-DD') : null;
            requestData.accidentAddressInfo = requestData.accidentAddress;
             requestData.hospitalAddressInfo = requestData.hospitalAddress;
             requestData = _.omit(requestData,'accidentAdress','hospitalAddress');

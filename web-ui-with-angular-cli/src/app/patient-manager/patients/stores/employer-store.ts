@@ -71,9 +71,9 @@ export class EmployerStore {
         });
         return <Observable<Employer>>Observable.from(promise);
     }
-    updateEmployer(employer: Employer): Observable<Employer> {
+    updateEmployer(employer: Employer, empId: number): Observable<Employer> {
         let promise = new Promise((resolve, reject) => {
-            this._employerService.updateEmployer(employer).subscribe((updatedEmployer: Employer) => {
+            this._employerService.updateEmployer(employer, empId).subscribe((updatedEmployer: Employer) => {
                 let employer: List<Employer> = this._employers.getValue();
                 let index = employer.findIndex((currentEmployer: Employer) => currentEmployer.id === updatedEmployer.id);
                 employer = employer.update(index, function () {

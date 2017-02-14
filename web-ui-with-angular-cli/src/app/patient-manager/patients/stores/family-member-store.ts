@@ -26,9 +26,9 @@ export class FamilyMemberStore {
         return this._familyMembers.asObservable();
     }
 
-    getFamilyMembers(): Observable<FamilyMember[]> {
+    getFamilyMembers(patientId: number): Observable<FamilyMember[]> {
         let promise = new Promise((resolve, reject) => {
-            this._familyMemberService.getFamilyMembers().subscribe((familyMembers: FamilyMember[]) => {
+            this._familyMemberService.getFamilyMembers(patientId).subscribe((familyMembers: FamilyMember[]) => {
                 this._familyMembers.next(List(familyMembers));
                 resolve(familyMembers);
             }, error => {
@@ -71,9 +71,9 @@ export class FamilyMemberStore {
         });
         return <Observable<FamilyMember>>Observable.from(promise);
     }
-    updateFamilyMember(familyMember: FamilyMember): Observable<FamilyMember> {
+    updateFamilyMember(familyMember: FamilyMember, familyMemberId: number): Observable<FamilyMember> {
         let promise = new Promise((resolve, reject) => {
-            this._familyMemberService.updateFamilyMember(familyMember).subscribe((updatedFamilyMember: FamilyMember) => {
+            this._familyMemberService.updateFamilyMember(familyMember, familyMemberId).subscribe((updatedFamilyMember: FamilyMember) => {
                 let familyMember: List<FamilyMember> = this._familyMembers.getValue();
                 let index = familyMember.findIndex((currentFamilyMember: FamilyMember) =>
                                         currentFamilyMember.id === updatedFamilyMember.id);

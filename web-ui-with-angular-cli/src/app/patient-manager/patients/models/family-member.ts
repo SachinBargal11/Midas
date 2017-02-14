@@ -3,33 +3,39 @@ import * as moment from 'moment';
 
 const FamilyMemberRecord = Record({
     id: 0,
-    relationToPatient: '',
-    name: '',
+    patientId: 0,
+    relationId: 0,
+    isInActive: false,
+    fullName: '',
     familyName: '',
     prefix: '',
-    suffix: '',
+    sufix: '',
     age: 0,
-    deceasedAge: 0,
-    dob: moment(),
-    gender: '',
-    races: '',
-    ethnicities: ''
+    genderId: 0,
+    raceId: 0,
+    ethnicitiesId: 0,
+    cellPhone: '',
+    workPhone: '',
+    primaryContact: ''
 });
 
 export class FamilyMember extends FamilyMemberRecord {
 
     id: number;
-    relationToPatient: string;
-    name: string;
+    patientId: number;
+    relationId: number;
+    isInActive: boolean;
+    fullName: string;
     familyName: string;
     prefix: string;
-    suffix: string;
+    sufix: string;
     age: number;
-    deceasedAge: number;
-    dob: moment.Moment;
-    gender: string;
-    races: string;
-    ethnicities: string;
+    genderId: number;
+    raceId: number;
+    ethnicitiesId: number;
+    cellPhone: string;
+    workPhone: string;
+    primaryContact: boolean;
 
     constructor(props) {
         super(props);

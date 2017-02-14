@@ -20,22 +20,23 @@ import { User } from '../../../commons/models/user';
 import { UsersStore } from '../../../medical-provider/users/stores/users-store';
 
 @Component({
-    selector: 'add-referring-office',
-    templateUrl: './add-referring-office.html'
+    selector: 'edit-referring-office',
+    templateUrl: './edit-referring-office.html'
 })
 
 
-export class AddReferringOfficeComponent implements OnInit {
+export class EditReferringOfficeComponent implements OnInit {
     states: any[];
     cities: any[];
     patientId: number;
-    selectedCity = 0;
+    selectedCity;
     isCitiesLoading = false;
     locations: LocationDetails[];
     users: User[];
     referringOfficeform: FormGroup;
     referringOfficeformControls;
     isSaveProgress = false;
+    referringOffice: ReferringOffice;
 
     constructor(
         private fb: FormBuilder,
@@ -55,11 +56,29 @@ export class AddReferringOfficeComponent implements OnInit {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId);
         });
+        this._route.params.subscribe((routeParams: any) => {
+            let referringOfficeId: number = parseInt(routeParams.id);
+            this._progressBarService.show();
+            let result = this._referringOfficeStore.fetchReferringOfficeById(referringOfficeId);
+            result.subscribe(
+                (referringOffice: ReferringOffice) => {
+                    this.referringOffice = referringOffice;
+                    this.selectedCity = referringOffice.addressInfo.city;
+                    this.loadCities(referringOffice.addressInfo.state);
+                },
+                (error) => {
+                    this._router.navigate(['../../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        });
         this.referringOfficeform = this.fb.group({
             refferingOfficeId: ['', Validators.required],
             refferingDoctorId: ['', Validators.required],
             npi: ['', Validators.required],
-            isCurrentReffOffice: [1, Validators.required],
+            isCurrentReffOffice: ['', Validators.required],
             address1: ['', Validators.required],
             address2: [''],
             state: [''],
@@ -78,7 +97,6 @@ export class AddReferringOfficeComponent implements OnInit {
         this._usersStore.getUsers()
             .subscribe((users) => {
                 this.users = users;
-                console.log(this.users[0].toJS());
             });
     }
 
@@ -106,12 +124,14 @@ export class AddReferringOfficeComponent implements OnInit {
         let referringOfficeformValues = this.referringOfficeform.value;
         let result;
         let referringOffice = new ReferringOffice({
+            id: this.referringOffice.id,
             patientId: this.patientId,
             refferingOfficeId: parseInt(referringOfficeformValues.refferingOfficeId, 10),
             refferingDoctorId: parseInt(referringOfficeformValues.refferingDoctorId, 10),
             npi: referringOfficeformValues.npi,
             isCurrentReffOffice: parseInt(referringOfficeformValues.isCurrentReffOffice, 10),
             addressInfo: new Address({
+                id: this.referringOffice.addressInfo.id,
                 address1: referringOfficeformValues.address1,
                 address2: referringOfficeformValues.address2,
                 city: referringOfficeformValues.city,
@@ -121,19 +141,19 @@ export class AddReferringOfficeComponent implements OnInit {
             })
         });
         this._progressBarService.show();
-        result = this._referringOfficeStore.addReferringOffice(referringOffice);
+        result = this._referringOfficeStore.updateReferringOffice(referringOffice);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'Referring Office added successfully!',
+                    'title': 'Referring Office updated successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../'], { relativeTo: this._route });
+                this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
-                let errString = 'Unable to add Referring Office.';
+                let errString = 'Unable to update Referring Office.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

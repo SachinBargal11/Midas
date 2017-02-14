@@ -13,7 +13,6 @@ let AccountSetupRoutes: Routes = [
         canActivate: [ValidateActiveSession],
         children: [
             ...SpecialityRoutes
-            
         ],
         data: {
             breadcrumb: 'Account Setup'
