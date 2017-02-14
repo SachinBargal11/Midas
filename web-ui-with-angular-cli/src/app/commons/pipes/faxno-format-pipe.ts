@@ -5,7 +5,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FaxNoFormatPipe implements PipeTransform {
     transform(value) {
-        debugger;
         if (!value) { return ''; }
         value = String(value);
         let inputString = value.replace(/\-/g, '');

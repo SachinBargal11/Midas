@@ -68,7 +68,6 @@ export class DemographicsComponent implements OnInit {
                     this.patientInfo = patient;
                     this.cellPhone = this._phoneFormatPipe.transform(this.patientInfo.user.contact.cellPhone);
                     this.faxNo = this._faxNoFormatPipe.transform(this.patientInfo.user.contact.faxNo);
-                    debugger;
                     this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment
                         ? this.patientInfo.dateOfFirstTreatment.toDate()
                         : null;
