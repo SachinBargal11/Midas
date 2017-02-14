@@ -66,7 +66,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By ID
         public override object Get(int id)
         {
-            var acc = _context.PatientFamilyMembers.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).FirstOrDefault<PatientFamilyMember>();
+            var acc = _context.PatientFamilyMembers.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<PatientFamilyMember>();
             BO.PatientFamilyMember acc_ = Convert<BO.PatientFamilyMember, PatientFamilyMember>(acc);
 
             if (acc_ == null)
@@ -83,7 +83,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By Patient Id
         public override object GetByPatientId(int PatientId)
         {
-            var acc = _context.PatientFamilyMembers.Include("Patient2").Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).ToList<PatientFamilyMember>();
+            var acc = _context.PatientFamilyMembers.Include("Patient2").Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<PatientFamilyMember>();
 
             if (acc == null)
             {

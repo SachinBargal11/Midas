@@ -122,7 +122,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             var acc = _context.PatientInsuranceInfoes.Include("addressInfo").Include("contactInfo")
                                                      .Include("addressInfo1").Include("contactInfo1")
-                                                     .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
+                                                     .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                      .FirstOrDefault<PatientInsuranceInfo>();
             BO.PatientInsuranceInfo acc_ = Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(acc);
 
@@ -140,7 +140,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             var acc = _context.PatientInsuranceInfoes.Include("addressInfo").Include("contactInfo")
                                                      .Include("addressInfo1").Include("contactInfo1")
-                                                     .Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
+                                                     .Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                      .ToList<PatientInsuranceInfo>();
             
             if (acc == null)

@@ -94,7 +94,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             var acc = _context.PatientAccidentInfoes.Include("AddressInfo")
                                                      .Include("AddressInfo1")
-                                                     .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
+                                                     .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                      .FirstOrDefault<PatientAccidentInfo>();
 
             if (acc == null)
@@ -114,7 +114,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             var acc = _context.PatientAccidentInfoes.Include("AddressInfo")
                                                      .Include("AddressInfo1")
-                                                     .Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
+                                                     .Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                      .ToList<PatientAccidentInfo>();
 
             if (acc == null)

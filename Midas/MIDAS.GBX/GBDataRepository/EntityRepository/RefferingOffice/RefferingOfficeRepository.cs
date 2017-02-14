@@ -82,7 +82,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Get(int id)
         {
 
-            var acc = _context.RefferingOffices.Include("AddressInfo").Where(p => p.Id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<RefferingOffice>();
+            var acc = _context.RefferingOffices.Include("AddressInfo").Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<RefferingOffice>();
 
             if (acc == null)
             {
@@ -100,7 +100,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object GetByPatientId(int id)
         {
             //var acc = _context.Patient2.Include("User").Include("Location").Where(p => p.Id == id && p.IsDeleted == false).FirstOrDefault<Patient2>();
-            var acc = _context.RefferingOffices.Include("AddressInfo").Where(p => p.PatientId == id && (p.IsDeleted == false || p.IsDeleted == null)).ToList<RefferingOffice>();
+            var acc = _context.RefferingOffices.Include("AddressInfo").Where(p => p.PatientId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<RefferingOffice>();
 
             if (acc == null)
             {
@@ -122,7 +122,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object GetCurrentROByPatientId(int id)
         {
             //var acc = _context.Patient2.Include("User").Include("Location").Where(p => p.Id == id && p.IsDeleted == false).FirstOrDefault<Patient2>();
-            var acc = _context.RefferingOffices.Include("AddressInfo").Where(p => p.PatientId == id && p.IsCurrentReffOffice == true && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<RefferingOffice>();
+            var acc = _context.RefferingOffices.Include("AddressInfo").Where(p => p.PatientId == id && p.IsCurrentReffOffice == true && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<RefferingOffice>();
 
             if (acc == null)
             {
