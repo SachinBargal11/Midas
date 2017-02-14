@@ -60,12 +60,12 @@ GO
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_PatientEmpInfo_PatientEmpInfoId]
 GO
 
-ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_PatientInsuranceInfo_PatientInsuranceInfoId] FOREIGN KEY([PatientInsuranceInfoId])
-	REFERENCES [dbo].[PatientInsuranceInfo] ([Id])
-GO
+--ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_PatientInsuranceInfo_PatientInsuranceInfoId] FOREIGN KEY([PatientInsuranceInfoId])
+--	REFERENCES [dbo].[PatientInsuranceInfo] ([Id])
+--GO
 
-ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_PatientInsuranceInfo_PatientInsuranceInfoId]
-GO
+--ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_PatientInsuranceInfo_PatientInsuranceInfoId]
+--GO
 
 ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_RefferingOffice_RefferingOfficeId] FOREIGN KEY([RefferingOfficeId])
 	REFERENCES [dbo].[RefferingOffice] ([Id])
