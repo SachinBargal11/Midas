@@ -9,29 +9,63 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class Case : GbObject
     {
+        [JsonProperty("patientId")]
         public int PatientId { get; set; }
+
+        [JsonProperty("caseName")]
         public string CaseName { get; set; }
-        public int CaseTypeId { get; set; }
-        public decimal Age { get; set; }
+
+        [JsonProperty("caseTypeId")]
+        public int? CaseTypeId { get; set; }
+
+        [JsonProperty("dateOfInjury")]
         public DateTime DateOfInjury { get; set; }
-        public int LocationId { get; set; }
-        public int PatientAddressId { get; set; }
-        public int? PatientContactInfoId { get; set; }
-        public int? EmpInfo { get; set; }
-        public int? InsuranceInfoId { get; set; }
-        public string VehiclePlateNo { get; set; }
-        public int? AccidentAddressId { get; set; }
+
+        [JsonProperty("locationId")]
+        public int? LocationId { get; set; }
+
+        [JsonProperty("patientEmpInfoId")]
+        public int? PatientEmpInfoId { get; set; }
+
+        [JsonProperty("patientInsuranceInfoId")]
+        public int? PatientInsuranceInfoId { get; set; }
+
+        [JsonProperty("patientAccidentInfoId")]
+        public int? PatientAccidentInfoId { get; set; }
+
+        [JsonProperty("refferingOfficeId")]
+        public int? RefferingOfficeId { get; set; }
+
+        [JsonProperty("carrierCaseNo")]
         public string CarrierCaseNo { get; set; }
-        public bool Transportation { get; set; }
-        public DateTime DateOfFirstTreatment { get; set; }
+
+        [JsonProperty("transportation")]
+        public bool? Transportation { get; set; }
+
+        [JsonProperty("caseStatusId")]
         public int? CaseStatusId { get; set; }
+
+        [JsonProperty("attorneyId")]
         public int? AttorneyId { get; set; }
 
-        public AddressInfo AddressInfo { get; set; }
-        public AddressInfo AddressInfo1 { get; set; }
-        public ContactInfo ContactInfo { get; set; }
+        [JsonProperty("location")]
         public Location Location { get; set; }
-        public  User User { get; set; }
+
+        [JsonProperty("patient2")]
+        public Patient2 Patient2 { get; set; }
+
+        [JsonProperty("patientAccidentInfo")]
+        public PatientAccidentInfo PatientAccidentInfo { get; set; }
+
+        [JsonProperty("patientEmpInfo")]
+        public PatientEmpInfo PatientEmpInfo { get; set; }
+
+        [JsonProperty("patientInsuranceInfo")]
+        public PatientInsuranceInfo PatientInsuranceInfo { get; set; }
+
+        [JsonProperty("refferingOffice")]
+        public RefferingOffice RefferingOffice { get; set; }
+
 
 
     }
