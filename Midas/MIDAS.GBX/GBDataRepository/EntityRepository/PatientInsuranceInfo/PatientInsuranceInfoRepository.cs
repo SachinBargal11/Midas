@@ -41,8 +41,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             insuranceBO.insuranceCompanyContactInfoId = InsuranceInfos.InsuranceCompanyContactInfoId;
             insuranceBO.policyNo = InsuranceInfos.PolicyNo;
             insuranceBO.contactPerson = InsuranceInfos.ContactPerson;
-            insuranceBO.claimFileNo = InsuranceInfos.ClaimFileNo;
-            insuranceBO.wcbNo = InsuranceInfos.WCBNo;
             insuranceBO.insuranceTypeId = InsuranceInfos.InsuranceTypeId;
             insuranceBO.isInActive = InsuranceInfos.IsInActive;
 
@@ -611,8 +609,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     insuranceDB.InsuranceCompanyContactInfoId = (contactinfoInsuranceCompanyDB != null && contactinfoInsuranceCompanyDB.id > 0) ? contactinfoInsuranceCompanyDB.id : insuranceDB.InsuranceCompanyContactInfoId;
                     insuranceDB.PolicyNo = IsEditMode == true && insuranceBO.policyNo == null ? insuranceDB.PolicyNo : insuranceBO.policyNo;
                     insuranceDB.ContactPerson = IsEditMode == true && insuranceBO.contactPerson == null ? insuranceDB.ContactPerson : insuranceBO.contactPerson;
-                    insuranceDB.ClaimFileNo = IsEditMode == true && insuranceBO.claimFileNo == null ? insuranceDB.ClaimFileNo : insuranceBO.claimFileNo;
-                    insuranceDB.WCBNo = IsEditMode == true && insuranceBO.wcbNo == null ? insuranceDB.WCBNo : insuranceBO.wcbNo;
                     insuranceDB.InsuranceTypeId = IsEditMode == true && insuranceBO.insuranceTypeId == null ? insuranceDB.InsuranceTypeId : insuranceBO.insuranceTypeId;
                     insuranceDB.IsInActive = insuranceBO.isInActive;
 
