@@ -13,8 +13,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
     internal class RefferingOfficeRepository : BaseEntityRepo, IDisposable
     {
         private DbSet<RefferingOffice> _dbSet;
-
-
+        
         #region Constructor
         public RefferingOfficeRepository(MIDASGBXEntities context)
             : base(context)
@@ -136,8 +135,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         //    }
         //}
         #endregion
-
-
+            
         #region save
         //public override object Save<T>(T entity)
         //{
@@ -458,6 +456,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (object)res;
         }
         #endregion
+
         public void Dispose()
         {
             // Use SupressFinalize in case a subclass 
