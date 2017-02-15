@@ -469,7 +469,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
 
         #region Delete By ID
         public override object DeleteById(int id)
@@ -511,9 +514,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-        }
+        
     }
 }
