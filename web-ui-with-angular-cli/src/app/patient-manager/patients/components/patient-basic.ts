@@ -12,6 +12,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { Notification } from '../../../commons/models/notification';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { User } from '../../../commons/models/user';
+import * as _ from 'underscore';
 
 @Component({
     selector: 'basic',
@@ -82,26 +83,20 @@ export class PatientBasicComponent implements OnInit {
         this.isSavePatientProgress = true;
         let basicFormValues = this.basicform.value;
         let result;
-        let patient = new Patient({
-            id: this.patientId,
-            ssn: this.patientInfo.ssn,
-            weight: this.patientInfo.weight,
-            height: this.patientInfo.height,
+        let existingPatientJS = this.patientInfo.toJS();
+        let patient = new Patient(_.extend(existingPatientJS, {
             maritalStatusId: basicFormValues.maritalStatusId,
             updateByUserId: this._sessionStore.session.account.user.id,
-            companyId: this._sessionStore.session.currentCompany.id,
-            user: new User({
-                id: this.patientInfo.user.id,
+            user: new User(_.extend(existingPatientJS.user, {
                 dateOfBirth: basicFormValues.dob ? moment(basicFormValues.dob) : null,
                 firstName: basicFormValues.firstname,
                 middleName: basicFormValues.middlename,
                 lastName: basicFormValues.lastname,
                 updateByUserId: this._sessionStore.session.account.user.id,
-                gender: basicFormValues.gender,
-                contact: this.patientInfo.user.contact,
-                address: this.patientInfo.user.address
-            })
-        });
+                gender: basicFormValues.gender
+            }))
+        }));
+
         this._progressBarService.show();
         result = this._patientsStore.updatePatient(patient);
         result.subscribe(
