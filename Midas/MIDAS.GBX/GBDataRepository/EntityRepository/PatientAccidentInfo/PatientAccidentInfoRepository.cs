@@ -31,7 +31,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             BO.PatientAccidentInfo PatientAccidentInfoBO = new BO.PatientAccidentInfo();
             PatientAccidentInfoBO.ID = PatientEmpInfo.Id;
-            PatientAccidentInfoBO.patientId = PatientEmpInfo.PatientId;
             PatientAccidentInfoBO.accidentDate = PatientEmpInfo.AccidentDate;
             PatientAccidentInfoBO.plateNumber = PatientEmpInfo.PlateNumber;
             PatientAccidentInfoBO.reportNumber = PatientEmpInfo.ReportNumber;
@@ -42,9 +41,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             PatientAccidentInfoBO.additionalPatients = PatientEmpInfo.AdditionalPatients;
             PatientAccidentInfoBO.describeInjury = PatientEmpInfo.DescribeInjury;
             PatientAccidentInfoBO.patientTypeId = PatientEmpInfo.PatientTypeId;
-            PatientAccidentInfoBO.isCurrentAccident = PatientEmpInfo.IsCurrentAccident;
-
-
+            PatientAccidentInfoBO.caseId = PatientEmpInfo.CaseId;
 
             if (PatientEmpInfo.AddressInfo != null)
             {
@@ -109,29 +106,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        #region Get By Patient Id
-        public override object GetByPatientId(int PatientId)
-        {
-            var acc = _context.PatientAccidentInfoes.Include("AddressInfo")
-                                                     .Include("AddressInfo1")
-                                                     .Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                     .ToList<PatientAccidentInfo>();
-
-            if (acc == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
-
-            List<BO.PatientAccidentInfo> lstpatientsEmpInfo = new List<BO.PatientAccidentInfo>();
-            //acc.ForEach(p => lstpatientsEmpInfo.Add(Convert<BO.PatientEmpInfo, PatientEmpInfo>(p)));
-            foreach (PatientAccidentInfo item in acc)
-            {
-                lstpatientsEmpInfo.Add(Convert<BO.PatientAccidentInfo, PatientAccidentInfo>(item));
-            }
-
-            return lstpatientsEmpInfo;
-        }
-        #endregion
+        
 
 
         //#region save
@@ -392,11 +367,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 #region patient Accident Info
                 if (PatientAccidentInfoBO != null)
                 {
-                    if (PatientAccidentInfoBO.isCurrentAccident == true)
-                    {
-                        var existingPatientAccidentInfoDB = _context.PatientAccidentInfoes.Where(p => p.PatientId == PatientAccidentInfoBO.patientId).ToList();
-                        existingPatientAccidentInfoDB.ForEach(p => p.IsCurrentAccident = false);
-                    }
+                    //if (PatientAccidentInfoBO.isCurrentAccident == true)
+                    //{
+                    //    var existingPatientAccidentInfoDB = _context.PatientAccidentInfoes.Where(p => p.PatientId == PatientAccidentInfoBO.patientId).ToList();
+                    //    existingPatientAccidentInfoDB.ForEach(p => p.IsCurrentAccident = false);
+                    //}
                     bool Add_PatientAccidentInfoDB = false;
                     PatientAccidentInfoDB = _context.PatientAccidentInfoes.Where(p => p.Id == PatientAccidentInfoBO.ID).FirstOrDefault();
 
@@ -410,8 +385,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         dbContextTransaction.Rollback();
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
-
-                    PatientAccidentInfoDB.PatientId = PatientAccidentInfoBO.patientId;
+                    if (IsEditMode == false)
+                    {
+                        PatientAccidentInfoDB.CaseId = PatientAccidentInfoBO.caseId;
+                    }
                     PatientAccidentInfoDB.AccidentDate = (IsEditMode == true && PatientAccidentInfoBO.accidentDate == null) ? PatientAccidentInfoDB.AccidentDate : PatientAccidentInfoBO.accidentDate;
                     PatientAccidentInfoDB.PlateNumber = (IsEditMode == true && PatientAccidentInfoBO.plateNumber == null) ? PatientAccidentInfoDB.PlateNumber : PatientAccidentInfoBO.plateNumber;
                     PatientAccidentInfoDB.ReportNumber = (IsEditMode == true && PatientAccidentInfoBO.reportNumber == null) ? PatientAccidentInfoDB.ReportNumber : PatientAccidentInfoBO.reportNumber;
@@ -419,10 +396,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     PatientAccidentInfoDB.DateOfAdmission = (IsEditMode == true && PatientAccidentInfoBO.dateOfAdmission == null) ? PatientAccidentInfoDB.DateOfAdmission : PatientAccidentInfoBO.dateOfAdmission;
                     PatientAccidentInfoDB.AdditionalPatients = (IsEditMode == true && PatientAccidentInfoBO.additionalPatients == null) ? PatientAccidentInfoDB.AdditionalPatients : PatientAccidentInfoBO.additionalPatients;
                     PatientAccidentInfoDB.DescribeInjury = (IsEditMode == true && PatientAccidentInfoBO.describeInjury == null) ? PatientAccidentInfoDB.DescribeInjury :  PatientAccidentInfoBO.describeInjury;
-                    PatientAccidentInfoDB.PatientTypeId = (IsEditMode == true && PatientAccidentInfoBO.patientTypeId == null) ? PatientAccidentInfoDB.PatientTypeId :  PatientAccidentInfoBO.patientTypeId;
+                    PatientAccidentInfoDB.PatientTypeId = (IsEditMode == true && PatientAccidentInfoBO.patientTypeId == null) ? PatientAccidentInfoDB.PatientTypeId :  PatientAccidentInfoBO.patientTypeId.Value;
                     PatientAccidentInfoDB.AccidentAddressInfoId = (IsEditMode == true && PatientAccidentInfoBO.accidentAddressInfoId == null) ? PatientAccidentInfoDB.AccidentAddressInfoId : AccidentAddressInfoDB.id;
                     PatientAccidentInfoDB.HospitalAddressInfoId = (IsEditMode == true && PatientAccidentInfoBO.hospitalAddressInfoId == null) ? PatientAccidentInfoDB.HospitalAddressInfoId :  HospitalAddressInfoDB.id;
-                    PatientAccidentInfoDB.IsCurrentAccident = (IsEditMode == true && PatientAccidentInfoBO.isCurrentAccident) ? PatientAccidentInfoDB.IsCurrentAccident :  PatientAccidentInfoBO.isCurrentAccident;
 
                     if (Add_PatientAccidentInfoDB == true)
                     {
@@ -470,8 +446,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             }
         }
         #endregion
-
-
 
         #region Delete By ID
         public override object DeleteById(int id)
