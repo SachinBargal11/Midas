@@ -33,12 +33,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             caseBO.ID = cases.Id;
             caseBO.CaseName = cases.CaseName;
             caseBO.CaseTypeId = cases.CaseTypeId;
-            caseBO.DateOfInjury = cases.DateOfInjury;
             caseBO.LocationId = cases.LocationId;
             caseBO.PatientEmpInfoId = cases.PatientEmpInfoId;
-            caseBO.PatientInsuranceInfoId = cases.PatientInsuranceInfoId;
-            caseBO.PatientAccidentInfoId = cases.PatientAccidentInfoId;
-            caseBO.RefferingOfficeId = cases.RefferingOfficeId;
             caseBO.CarrierCaseNo = cases.CarrierCaseNo;
             caseBO.Transportation = cases.Transportation;
             caseBO.CaseStatusId = cases.CaseStatusId;
@@ -48,6 +44,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 caseBO.IsDeleted = cases.IsDeleted.Value;
             if (cases.UpdateByUserID.HasValue)
                 caseBO.UpdateByUserID = cases.UpdateByUserID.Value;
+
+            BO.PatientEmpInfo boPatientEmpInfo = new BO.PatientEmpInfo();
+            using (PatientEmpInfoRepository cmp = new PatientEmpInfoRepository(_context))
+            {
+               
+                boPatientEmpInfo = cmp.Convert<BO.PatientEmpInfo, PatientEmpInfo>(cases.PatientEmpInfo);
+                caseBO.PatientEmpInfo = boPatientEmpInfo;
+            }
 
 
             return (T)(object)caseBO;
@@ -66,7 +70,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By ID
         public override object Get(int id)
         {
-            var acc = _context.Cases.Include("Patient2").Include("PatientAccidentInfo").Include("PatientEmpInfo").Include("PatientInsuranceInfo").Include("RefferingOffice").Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<Case>();
+            var acc = _context.Cases.Include("PatientEmpInfo")
+                                    .Where(p => p.Id == id 
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                    .FirstOrDefault<Case>();
+
             BO.Case acc_ = Convert<BO.Case, Case>(acc);
 
             if (acc_ == null)
@@ -81,7 +89,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By Patient Id
         public override object GetByPatientId(int PatientId)
         {
-            var acc = _context.Cases.Include("Patient2").Include("PatientAccidentInfo").Include("PatientEmpInfo").Include("PatientInsuranceInfo").Include("RefferingOffice").Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Case>();
+            //var acc = _context.Cases.Include("Patient2").Include("PatientAccidentInfo").Include("PatientEmpInfo").Include("PatientInsuranceInfo").Include("RefferingOffice").Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Case>();
+            //var acc = _context.Cases.Include("PatientEmpInfo").Include("RefferingOffices")
+            //                        .Include("PatientAccidentInfoes").Include("CaseInsuranceMappings")
+            //                        .Include("CaseInsuranceMappings.PatientInsuranceInfo")
+            //                        .Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Case>();
+            var acc = _context.Cases.Include("PatientEmpInfo")
+                                    .Where(p => p.PatientId == PatientId 
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                    .ToList<Case>();
 
             if (acc == null)
             {
@@ -105,10 +121,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             BO.Case caseBO = (BO.Case)(object)entity;
             BO.Patient2 patient2BO = new BO.Patient2();
             BO.Location locationBO = new BO.Location();
-            BO.PatientAccidentInfo patientAccidentInfoBO = new BO.PatientAccidentInfo();
-            BO.PatientEmpInfo patientEmpInfoBO = new BO.PatientEmpInfo();
-            BO.PatientInsuranceInfo patientInsuranceInfo = new BO.PatientInsuranceInfo();
-            BO.RefferingOffice refferingOffice = new BO.RefferingOffice();
+
 
             Case caseDB = new Case();
 
@@ -119,7 +132,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                 bool IsEditMode = false;
                 IsEditMode = (caseBO != null && caseBO.ID > 0) ? true : false;
-
 
                 #region case
                 if (caseBO != null)
@@ -141,16 +153,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     caseDB.PatientId = caseBO.PatientId;
                     caseDB.CaseName = IsEditMode == true && caseBO.CaseName == null ? caseDB.CaseName : caseBO.CaseName;
                     caseDB.CaseTypeId = IsEditMode == true && caseBO.CaseTypeId == null ? caseDB.CaseTypeId : caseBO.CaseTypeId;
-                    caseDB.DateOfInjury = IsEditMode == true && caseBO.DateOfInjury == null ? caseDB.DateOfInjury : caseBO.DateOfInjury;
                     caseDB.LocationId = IsEditMode == true && caseBO.LocationId.HasValue==false ? caseDB.LocationId : caseBO.LocationId.Value;
                     caseDB.PatientEmpInfoId = IsEditMode == true && caseBO.PatientEmpInfoId.HasValue == false ? caseDB.PatientEmpInfoId : caseBO.PatientEmpInfoId.Value;
-                    caseDB.PatientInsuranceInfoId = IsEditMode == true && caseBO.PatientInsuranceInfoId.HasValue == false ? caseDB.PatientInsuranceInfoId : caseBO.PatientInsuranceInfoId.Value;
-                    caseDB.PatientAccidentInfoId = IsEditMode == true && caseBO.PatientAccidentInfoId.HasValue == false ? caseDB.PatientAccidentInfoId : caseBO.PatientAccidentInfoId.Value;
-                    caseDB.RefferingOfficeId = IsEditMode == true && caseBO.RefferingOfficeId.HasValue == false ? caseDB.RefferingOfficeId : caseBO.RefferingOfficeId.Value;
                     caseDB.CarrierCaseNo = IsEditMode == true && caseBO.CarrierCaseNo == null ? caseDB.CarrierCaseNo : caseBO.CarrierCaseNo;
                     caseDB.Transportation = IsEditMode == true && caseBO.Transportation.HasValue == false ? caseDB.Transportation : caseBO.Transportation.Value;
                     caseDB.CaseStatusId = IsEditMode == true && caseBO.CaseStatusId.HasValue == false ? caseDB.CaseStatusId : caseBO.CaseStatusId.Value;
                     caseDB.AttorneyId = IsEditMode == true && caseBO.AttorneyId.HasValue == false ? caseDB.AttorneyId : caseBO.AttorneyId.Value;
+
                     if (Add_caseDB == true)
                     {
                         caseDB = _context.Cases.Add(caseDB);
