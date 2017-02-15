@@ -138,27 +138,23 @@ export class DemographicsComponent implements OnInit {
         this.isSavePatientProgress = true;
         let demographicsFormValues = this.demographicsform.value;
         let result;
-        let updatedPatient = this.patientInfo.toJS();
-        updatedPatient = _.extend(updatedPatient, {
+        let existingPatientJS = this.patientInfo.toJS();
+        let patient = new Patient(_.extend(existingPatientJS, {
             ssn: demographicsFormValues.userInfo.ssn,
             weight: parseInt(demographicsFormValues.userInfo.weight, 10),
             height: parseInt(demographicsFormValues.userInfo.height, 10),
             dateOfFirstTreatment: demographicsFormValues.userInfo.dateOfFirstTreatment ? moment(demographicsFormValues.userInfo.dateOfFirstTreatment) : null,
             updateByUserId: this._sessionStore.session.account.user.id,
-            companyId: this._sessionStore.session.currentCompany.id,
-            user: _.extend(updatedPatient.user, {
-                id: this.patientInfo.user.id,
+            user: new User(_.extend(existingPatientJS.user, {
                 updateByUserId: this._sessionStore.session.account.user.id,
-                contact: _.extend(updatedPatient.user.contact, {
-                    id: updatedPatient.user.contact.id,
+                contact: new Contact(_.extend(existingPatientJS.user.contact, {
                     cellPhone: demographicsFormValues.contact.cellPhone ? demographicsFormValues.contact.cellPhone.replace(/\-/g, '') : null,
                     faxNo: demographicsFormValues.contact.faxNo ? demographicsFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
                     homePhone: demographicsFormValues.contact.homePhone,
                     workPhone: demographicsFormValues.contact.workPhone,
                     updateByUserId: this._sessionStore.session.account.user.id
-                }),
-                address: _.extend(updatedPatient.user.address, {
-                    id: updatedPatient.user.address.id,
+                })),
+                address: new Address(_.extend(existingPatientJS.user.address, {
                     address1: demographicsFormValues.address.address1,
                     address2: demographicsFormValues.address.address2,
                     city: demographicsFormValues.address.city,
@@ -166,13 +162,9 @@ export class DemographicsComponent implements OnInit {
                     state: demographicsFormValues.address.state,
                     zipCode: demographicsFormValues.address.zipCode,
                     updateByUserId: this._sessionStore.session.account.user.id
-                })
-            })
-        });
-        updatedPatient.user.contactInfo = updatedPatient.user.contact;
-        updatedPatient.user.addressInfo = updatedPatient.user.address;
-        updatedPatient.user = _.omit(updatedPatient.user, 'contact', 'address');
-        let patient: Patient = PatientAdapter.parseResponse(updatedPatient);
+                }))
+            }))
+        }));
         this._progressBarService.show();
         result = this._patientsStore.updatePatient(patient);
         result.subscribe(

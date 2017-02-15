@@ -29,6 +29,7 @@ export class UserAdapter {
                 userType: userData.userType,
                 userName: userData.userName,
                 firstName: userData.firstName,
+                middleName: userData.middleName,
                 lastName: userData.lastName,
                 gender: userData.gender,
                 imageLink: userData.imageLink,
