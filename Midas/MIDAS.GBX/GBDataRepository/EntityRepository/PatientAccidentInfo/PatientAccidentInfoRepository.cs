@@ -449,7 +449,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        #region Get By Case ID 
+        public override object GetByCaseId(int id)
+        {
+            //var acc = _context.Patient2.Include("User").Include("Location").Where(p => p.Id == id && p.IsDeleted == false).FirstOrDefault<Patient2>();
+            var acc = _context.PatientAccidentInfoes.Include("AddressInfo").Include("AddressInfo1").Where(p => p.CaseId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<PatientAccidentInfo>();
 
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Case Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PatientAccidentInfo> lstrefoffice = new List<BO.PatientAccidentInfo>();
+                foreach (PatientAccidentInfo item in acc)
+                {
+                    lstrefoffice.Add(Convert<BO.PatientAccidentInfo, PatientAccidentInfo>(item));
+                }
+                return lstrefoffice;
+            }
+        }
+        #endregion
 
 
 

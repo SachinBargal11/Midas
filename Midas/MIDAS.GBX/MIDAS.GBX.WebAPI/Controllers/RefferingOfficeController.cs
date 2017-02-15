@@ -50,13 +50,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.Delete(Request, id);
         }
 
-        [HttpGet]
-        [Route("getCurrentROByPatientId/{PatientId}")]
-        [AllowAnonymous]
-        public HttpResponseMessage GetCurrentROByPatientId(int PatientId)
-        {
-            return requestHandler.GetCurrentROByPatientId(Request, PatientId);
-        }
+        //[HttpGet]
+        //[Route("getCurrentROByPatientId/{PatientId}")]
+        //[AllowAnonymous]
+        //public HttpResponseMessage GetCurrentROByPatientId(int PatientId)
+        //{
+        //    return requestHandler.GetCurrentROByPatientId(Request, PatientId);
+        //}
 
         protected override void Dispose(bool disposing)
         {
