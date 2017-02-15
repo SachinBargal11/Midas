@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 namespace MIDAS.GBX.BusinessObjects
 {
     public class CaseInsuranceMapping : GbObject
-    {
-        
+    {        
         [JsonProperty("caseId")]
         public int CaseId { get; set; }
 
@@ -24,7 +23,5 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("patientInsuranceInfo")]
         public PatientInsuranceInfo PatientInsuranceInfo{ get; set; }
-
-
     }
 }
