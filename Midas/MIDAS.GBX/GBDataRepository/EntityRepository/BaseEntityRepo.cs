@@ -165,12 +165,7 @@ namespace MIDAS.GBX.EntityRepository
         public virtual Object ResetPassword<T>(T entity)
         {
             throw new NotImplementedException();
-        }
-
-        public virtual Object GetByCaseId(int CaseId)
-        {
-            throw new NotImplementedException();
-        }
+        }        
 
         public virtual Object GetByPatientId(int PatientId)
         {
@@ -206,6 +201,10 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetByCaseId(int CaseId)
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
     }
