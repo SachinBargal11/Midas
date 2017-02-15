@@ -74,6 +74,7 @@ export class DoctorSpecificInformationComponent implements OnInit {
                             value: currentSpeciality.id.toString()
                         };
                     });
+                    console.log(this.specialitiesArr);
 
                 },
                 (error) => {

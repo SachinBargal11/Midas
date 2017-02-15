@@ -41,6 +41,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             PatientAccidentInfoBO.additionalPatients = PatientEmpInfo.AdditionalPatients;
             PatientAccidentInfoBO.describeInjury = PatientEmpInfo.DescribeInjury;
             PatientAccidentInfoBO.patientTypeId = PatientEmpInfo.PatientTypeId;
+            PatientAccidentInfoBO.caseId = PatientEmpInfo.CaseId;
 
             if (PatientEmpInfo.AddressInfo != null)
             {
@@ -406,7 +407,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         dbContextTransaction.Rollback();
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
-
+                    if (IsEditMode == false)
+                    {
+                        PatientAccidentInfoDB.CaseId = PatientAccidentInfoBO.caseId;
+                    }
                     PatientAccidentInfoDB.AccidentDate = (IsEditMode == true && PatientAccidentInfoBO.accidentDate == null) ? PatientAccidentInfoDB.AccidentDate : PatientAccidentInfoBO.accidentDate;
                     PatientAccidentInfoDB.PlateNumber = (IsEditMode == true && PatientAccidentInfoBO.plateNumber == null) ? PatientAccidentInfoDB.PlateNumber : PatientAccidentInfoBO.plateNumber;
                     PatientAccidentInfoDB.ReportNumber = (IsEditMode == true && PatientAccidentInfoBO.reportNumber == null) ? PatientAccidentInfoDB.ReportNumber : PatientAccidentInfoBO.reportNumber;
@@ -414,7 +418,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     PatientAccidentInfoDB.DateOfAdmission = (IsEditMode == true && PatientAccidentInfoBO.dateOfAdmission == null) ? PatientAccidentInfoDB.DateOfAdmission : PatientAccidentInfoBO.dateOfAdmission;
                     PatientAccidentInfoDB.AdditionalPatients = (IsEditMode == true && PatientAccidentInfoBO.additionalPatients == null) ? PatientAccidentInfoDB.AdditionalPatients : PatientAccidentInfoBO.additionalPatients;
                     PatientAccidentInfoDB.DescribeInjury = (IsEditMode == true && PatientAccidentInfoBO.describeInjury == null) ? PatientAccidentInfoDB.DescribeInjury :  PatientAccidentInfoBO.describeInjury;
-                    //PatientAccidentInfoDB.PatientTypeId = (IsEditMode == true && PatientAccidentInfoBO.patientTypeId == null) ? PatientAccidentInfoDB.PatientTypeId :  PatientAccidentInfoBO.patientTypeId;
+                    PatientAccidentInfoDB.PatientTypeId = (IsEditMode == true && PatientAccidentInfoBO.patientTypeId == null) ? PatientAccidentInfoDB.PatientTypeId :  PatientAccidentInfoBO.patientTypeId.Value;
                     PatientAccidentInfoDB.AccidentAddressInfoId = (IsEditMode == true && PatientAccidentInfoBO.accidentAddressInfoId == null) ? PatientAccidentInfoDB.AccidentAddressInfoId : AccidentAddressInfoDB.id;
                     PatientAccidentInfoDB.HospitalAddressInfoId = (IsEditMode == true && PatientAccidentInfoBO.hospitalAddressInfoId == null) ? PatientAccidentInfoDB.HospitalAddressInfoId :  HospitalAddressInfoDB.id;
 
@@ -443,7 +447,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        #region Get By Case ID 
+        public override object GetByCaseId(int id)
+        {
+            //var acc = _context.Patient2.Include("User").Include("Location").Where(p => p.Id == id && p.IsDeleted == false).FirstOrDefault<Patient2>();
+            var acc = _context.PatientAccidentInfoes.Include("AddressInfo").Include("AddressInfo1").Where(p => p.CaseId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<PatientAccidentInfo>();
 
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Case Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PatientAccidentInfo> lstrefoffice = new List<BO.PatientAccidentInfo>();
+                foreach (PatientAccidentInfo item in acc)
+                {
+                    lstrefoffice.Add(Convert<BO.PatientAccidentInfo, PatientAccidentInfo>(item));
+                }
+                return lstrefoffice;
+            }
+        }
+        #endregion
 
 
 
