@@ -1,7 +1,8 @@
 ﻿CREATE TABLE [dbo].[PatientAccidentInfo]
 (
 	[Id] [INT] NOT NULL IDENTITY(1,1), 
-	[PatientId] [INT] NOT NULL, 
+	--[PatientId] [INT] NOT NULL, 
+	[CaseId] [INT] NOT NULL,
 	[AccidentDate] [DATETIME2](7) NULL, 
 	[PlateNumber] [NVARCHAR](50) NULL,
 	[ReportNumber] [NVARCHAR](50) NULL, 
@@ -12,7 +13,7 @@
 	[AdditionalPatients] [NVARCHAR](128) NULL, 
 	[DescribeInjury] [NVARCHAR](128) NULL, 
 	[PatientTypeId] [TINYINT] NOT NULL, 
-	[IsCurrentAccident] [BIT] NOT NULL DEFAULT 0, 
+	--[IsCurrentAccident] [BIT] NOT NULL DEFAULT 0, 
 
 	[IsDeleted] [BIT] NULL DEFAULT (0),
 	[CreateByUserID] [INT] NOT NULL,
@@ -23,11 +24,11 @@
 )
 GO
 
-ALTER TABLE [dbo].[PatientAccidentInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientAccidentInfo_Patient2_PatientId] FOREIGN KEY([PatientId])
-	REFERENCES [dbo].[Patient2] ([Id])
+ALTER TABLE [dbo].[PatientAccidentInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientAccidentInfo_Case_CaseId] FOREIGN KEY([CaseId])
+	REFERENCES [dbo].[Case] ([Id])
 GO
 
-ALTER TABLE [dbo].[PatientAccidentInfo] CHECK CONSTRAINT [FK_PatientAccidentInfo_Patient2_PatientId]
+ALTER TABLE [dbo].[PatientAccidentInfo] CHECK CONSTRAINT [FK_PatientAccidentInfo_Case_CaseId]
 GO
 
 ALTER TABLE [dbo].[PatientAccidentInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientAccidentInfo_AddressInfo_AccidentAddressInfoId] FOREIGN KEY([AccidentAddressInfoId])

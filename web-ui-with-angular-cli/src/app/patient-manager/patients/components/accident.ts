@@ -23,6 +23,7 @@ import * as _ from 'underscore';
 
 export class AccidentInfoComponent implements OnInit {
     states: any[];
+    title:string;
     dateOfAdmission: Date;
     accidentDate: Date;
     maxDate: Date;
@@ -62,6 +63,7 @@ export class AccidentInfoComponent implements OnInit {
                     this.currentAccident = _.find(this.accidents, (accident) => {
                         return accident.isCurrentAccident;
                     });
+                    this.title = this.currentAccident ? 'Edit Accident' : 'Add Accident';
                     if (this.currentAccident) {
                         this.dateOfAdmission = this.currentAccident.dateOfAdmission
                             ? this.currentAccident.dateOfAdmission.toDate()

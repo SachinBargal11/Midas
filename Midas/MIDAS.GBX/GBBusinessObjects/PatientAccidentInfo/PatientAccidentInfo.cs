@@ -9,8 +9,8 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class PatientAccidentInfo : GbObject
     {
-        [JsonProperty("patientId")]
-        public int patientId { get; set; }
+        [JsonProperty("caseId")]
+        public int caseId { get; set; }
 
         [JsonProperty("accidentDate")]
         public DateTime? accidentDate { get; set; }
@@ -42,14 +42,17 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("patientTypeId")]
         public byte? patientTypeId { get; set; }
 
-        [JsonProperty("isCurrentAccident")]
-        public bool isCurrentAccident { get; set; }
-
         [JsonProperty("accidentAddressInfo")]
         public AddressInfo accidentAddressInfo { get; set; }
 
         [JsonProperty("hospitalAddressInfo")]
         public AddressInfo hospitalAddressInfo { get; set; }
+
+        [JsonProperty("case")]
+        public Case cases { get; set; }
+
+        [JsonProperty("patientType")]
+        public PatientType PatientType { get; set; }
 
     }
 }

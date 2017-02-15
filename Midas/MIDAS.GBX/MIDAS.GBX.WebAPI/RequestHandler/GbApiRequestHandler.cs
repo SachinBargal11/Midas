@@ -396,6 +396,18 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetByCaseId(HttpRequestMessage request, int CaseId)
+        {
+            var objResult = dataAccessManager.GetByCaseId(CaseId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
         public HttpResponseMessage GetByPatientId(HttpRequestMessage request, int PatientId)
         {
             var objResult = dataAccessManager.GetByPatientId(PatientId);

@@ -33,12 +33,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             caseBO.ID = cases.Id;
             caseBO.CaseName = cases.CaseName;
             caseBO.CaseTypeId = cases.CaseTypeId;
-            caseBO.DateOfInjury = cases.DateOfInjury;
             caseBO.LocationId = cases.LocationId;
             caseBO.PatientEmpInfoId = cases.PatientEmpInfoId;
-            caseBO.PatientInsuranceInfoId = cases.PatientInsuranceInfoId;
-            caseBO.PatientAccidentInfoId = cases.PatientAccidentInfoId;
-            caseBO.RefferingOfficeId = cases.RefferingOfficeId;
             caseBO.CarrierCaseNo = cases.CarrierCaseNo;
             caseBO.Transportation = cases.Transportation;
             caseBO.CaseStatusId = cases.CaseStatusId;
@@ -141,12 +137,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     caseDB.PatientId = caseBO.PatientId;
                     caseDB.CaseName = IsEditMode == true && caseBO.CaseName == null ? caseDB.CaseName : caseBO.CaseName;
                     caseDB.CaseTypeId = IsEditMode == true && caseBO.CaseTypeId == null ? caseDB.CaseTypeId : caseBO.CaseTypeId;
-                    caseDB.DateOfInjury = IsEditMode == true && caseBO.DateOfInjury == null ? caseDB.DateOfInjury : caseBO.DateOfInjury;
                     caseDB.LocationId = IsEditMode == true && caseBO.LocationId.HasValue==false ? caseDB.LocationId : caseBO.LocationId.Value;
                     caseDB.PatientEmpInfoId = IsEditMode == true && caseBO.PatientEmpInfoId.HasValue == false ? caseDB.PatientEmpInfoId : caseBO.PatientEmpInfoId.Value;
-                    caseDB.PatientInsuranceInfoId = IsEditMode == true && caseBO.PatientInsuranceInfoId.HasValue == false ? caseDB.PatientInsuranceInfoId : caseBO.PatientInsuranceInfoId.Value;
-                    caseDB.PatientAccidentInfoId = IsEditMode == true && caseBO.PatientAccidentInfoId.HasValue == false ? caseDB.PatientAccidentInfoId : caseBO.PatientAccidentInfoId.Value;
-                    caseDB.RefferingOfficeId = IsEditMode == true && caseBO.RefferingOfficeId.HasValue == false ? caseDB.RefferingOfficeId : caseBO.RefferingOfficeId.Value;
                     caseDB.CarrierCaseNo = IsEditMode == true && caseBO.CarrierCaseNo == null ? caseDB.CarrierCaseNo : caseBO.CarrierCaseNo;
                     caseDB.Transportation = IsEditMode == true && caseBO.Transportation.HasValue == false ? caseDB.Transportation : caseBO.Transportation.Value;
                     caseDB.CaseStatusId = IsEditMode == true && caseBO.CaseStatusId.HasValue == false ? caseDB.CaseStatusId : caseBO.CaseStatusId.Value;
