@@ -731,7 +731,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     userDB.FirstName = IsEditMode == true && userBO.FirstName == null ? userDB.FirstName : userBO.FirstName;
                     userDB.MiddleName = IsEditMode == true && userBO.MiddleName == null ? userDB.MiddleName : userBO.MiddleName;
                     userDB.LastName = IsEditMode == true && userBO.LastName == null ? userDB.LastName : userBO.LastName;
-                    userDB.Gender = (IsEditMode == true && userBO.Gender > 0) ? System.Convert.ToByte(userBO.Gender) : userDB.Gender;
+                    userDB.Gender = (IsEditMode == true && userBO.Gender <= 0) ? userDB.Gender : System.Convert.ToByte(userBO.Gender);
                     userDB.UserType = Add_userDB == true ? System.Convert.ToByte(userBO.UserType) : userDB.UserType;
                     userDB.UserStatus = System.Convert.ToByte(userBO.Status);
                     userDB.ImageLink = IsEditMode == true && userBO.ImageLink == null ? userDB.ImageLink : userBO.ImageLink;
