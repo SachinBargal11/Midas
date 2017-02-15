@@ -260,12 +260,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             BO.RefferingOffice refferingOfficeBO = (BO.RefferingOffice)(object)entity;
             BO.AddressInfo addressBO = refferingOfficeBO.AddressInfo;
+            //BO.Case caseBO = refferingOfficeBO.Case;
 
             RefferingOffice refferingOfficeDB = new RefferingOffice();
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
                 AddressInfo addressDB = new AddressInfo();
+                //Case caseDB = new Case();
+
                 bool IsEditMode = false;
                 IsEditMode = (refferingOfficeBO != null && refferingOfficeBO.ID > 0) ? true : false;
 
@@ -275,8 +278,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     bool Add_addressDB = false;
                     addressDB = _context.AddressInfoes.Where(p => p.id == addressBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
-                    bool IsEdit = false;
-                    IsEdit = (addressDB != null && addressDB.id > 0) ? true : false;
+                    //bool IsEdit = false;
+                    //IsEdit = (addressDB != null && addressDB.id > 0) ? true : false;
 
                     if (addressDB == null && addressBO.ID <= 0)
                     {
@@ -289,13 +292,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Address details dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
-                    addressDB.Name = (IsEdit == true && addressBO.Name ==null) ? addressDB.Name : addressBO.Name;
-                    addressDB.Address1 = (IsEdit == true && addressBO.Address1 == null) ? addressDB.Address1 : addressBO.Address1;
-                    addressDB.Address2 = (IsEdit == true && addressBO.Address2 == null) ? addressDB.Address2 :  addressBO.Address2;
-                    addressDB.City = (IsEdit == true && addressBO.City == null) ? addressDB.City : addressBO.City;
-                    addressDB.State = (IsEdit == true && addressBO.State == null) ? addressDB.State : addressBO.State;
-                    addressDB.ZipCode = (IsEdit == true && addressBO.ZipCode == null) ? addressDB.ZipCode : addressBO.ZipCode;
-                    addressDB.Country = (IsEdit == true && addressBO.Country == null) ? addressDB.Country :  addressBO.Country;
+                    addressDB.Name = (IsEditMode == true && addressBO.Name ==null) ? addressDB.Name : addressBO.Name;
+                    addressDB.Address1 = (IsEditMode == true && addressBO.Address1 == null) ? addressDB.Address1 : addressBO.Address1;
+                    addressDB.Address2 = (IsEditMode == true && addressBO.Address2 == null) ? addressDB.Address2 :  addressBO.Address2;
+                    addressDB.City = (IsEditMode == true && addressBO.City == null) ? addressDB.City : addressBO.City;
+                    addressDB.State = (IsEditMode == true && addressBO.State == null) ? addressDB.State : addressBO.State;
+                    addressDB.ZipCode = (IsEditMode == true && addressBO.ZipCode == null) ? addressDB.ZipCode : addressBO.ZipCode;
+                    addressDB.Country = (IsEditMode == true && addressBO.Country == null) ? addressDB.Country :  addressBO.Country;
 
                     if (Add_addressDB == true)
                     {
@@ -308,7 +311,51 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     dbContextTransaction.Rollback();
                     return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Address details.", ErrorLevel = ErrorLevel.Error };
                 }
-                #endregion   
+                #endregion
+
+                #region Case
+                /*if (caseBO != null)
+                {
+                    bool Add_caseDB = false;
+                    caseDB = _context.Cases.Where(p => p.Id == caseBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+                    bool IsEdit = false;
+                    IsEdit = (caseDB != null && caseDB.Id > 0) ? true : false;
+
+                    if (caseDB == null && caseDB.Id <= 0)
+                    {
+                        caseDB = new Case();
+                        Add_caseDB = true;
+                    }
+                    else if (caseDB == null && caseDB.Id > 0)
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Case details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                    }
+
+                    caseDB.PatientId = (IsEdit == true && caseBO.PatientId <= 0) ? caseDB.PatientId : caseBO.PatientId;
+                    caseDB.CaseName = (IsEdit == true && caseBO.CaseName == null) ? caseDB.CaseName : caseBO.CaseName;
+                    caseDB.CaseTypeId = (IsEdit == true && caseBO.CaseTypeId == null) ? caseDB.CaseTypeId : caseBO.CaseTypeId;
+                    caseDB.LocationId = (IsEdit == true && caseBO.LocationId == null) ? caseDB.LocationId : caseBO.LocationId;
+                    caseDB.PatientEmpInfoId = (IsEdit == true && caseBO.PatientEmpInfoId == null) ? caseDB.PatientEmpInfoId : caseBO.PatientEmpInfoId;
+                    caseDB.CarrierCaseNo = (IsEdit == true && caseBO.CarrierCaseNo == null) ? caseDB.CarrierCaseNo : caseBO.CarrierCaseNo;
+                    caseDB.Transportation = (IsEdit == true && caseBO.Transportation == null) ? caseDB.Transportation : caseBO.Transportation;
+                    caseDB.CaseStatusId = (IsEdit == true && caseBO.CaseStatusId == null) ? caseDB.CaseStatusId : caseBO.CaseStatusId;
+                    caseDB.AttorneyId = (IsEdit == true && caseBO.AttorneyId == null) ? caseDB.AttorneyId : caseBO.AttorneyId;
+                   
+
+                    if (Add_caseDB == true)
+                    {
+                        caseDB = _context.Cases.Add(caseDB);
+                    }
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Case details.", ErrorLevel = ErrorLevel.Error };
+                }*/
+                #endregion
 
                 #region refference office
                 if (refferingOfficeBO != null)
@@ -320,7 +367,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     //}
 
                     bool Add_refferingOfficeDB = false;
-                    refferingOfficeDB = _context.RefferingOffices.Include("AddressInfo").Include("Case").Where(p => p.Id == refferingOfficeBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                    refferingOfficeDB = _context.RefferingOffices.Include("AddressInfo").Where(p => p.Id == refferingOfficeBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
                     if (refferingOfficeDB == null && refferingOfficeBO.ID <= 0)
                     {
@@ -333,7 +380,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Reffering Office details dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
-                    refferingOfficeDB.CaseId = refferingOfficeBO.CaseId;
+                    if (IsEditMode == false)
+                    {
+                        refferingOfficeDB.CaseId = refferingOfficeBO.CaseId;
+                    } 
+                                       
                     refferingOfficeDB.RefferingOfficeId = (IsEditMode == true && refferingOfficeBO.RefferingOfficeId == null) ? refferingOfficeDB.RefferingOfficeId : refferingOfficeBO.RefferingOfficeId;
                     refferingOfficeDB.AddressInfoId= (addressDB != null && addressDB.id > 0) ? addressDB.id : refferingOfficeDB.AddressInfoId;
                     refferingOfficeDB.ReffferingDoctorId = (IsEditMode == true && refferingOfficeBO.ReffferingDoctorId == null) ? refferingOfficeDB.ReffferingDoctorId : refferingOfficeBO.ReffferingDoctorId;
