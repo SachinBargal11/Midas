@@ -27,6 +27,7 @@ import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 
 export class PatientEmployerComponent implements OnInit {
     cellPhone: string;
+    title:string;
     faxNo: string;
     states: any[];
     cities: any[];
@@ -73,6 +74,7 @@ export class PatientEmployerComponent implements OnInit {
                     this.currentEmployer = _.find(this.employer, (employer) => {
                         return employer.isCurrentEmp;
                     });
+                    this.title = this.currentEmployer? 'Edit Employer' : 'Add Employer';
                     if (this.currentEmployer) {
                     this.cellPhone = this._phoneFormatPipe.transform(this.currentEmployer.contact.cellPhone);
                     this.faxNo = this._faxNoFormatPipe.transform(this.currentEmployer.contact.faxNo);
