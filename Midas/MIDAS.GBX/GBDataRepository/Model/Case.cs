@@ -14,16 +14,20 @@ namespace MIDAS.GBX.DataRepository.Model
     
     public partial class Case
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Case()
+        {
+            this.CaseInsuranceMappings = new HashSet<CaseInsuranceMapping>();
+            this.PatientAccidentInfoes = new HashSet<PatientAccidentInfo>();
+            this.RefferingOffices = new HashSet<RefferingOffice>();
+        }
+    
         public int Id { get; set; }
         public int PatientId { get; set; }
         public string CaseName { get; set; }
         public Nullable<int> CaseTypeId { get; set; }
-        public System.DateTime DateOfInjury { get; set; }
         public int LocationId { get; set; }
         public Nullable<int> PatientEmpInfoId { get; set; }
-        public Nullable<int> PatientInsuranceInfoId { get; set; }
-        public Nullable<int> PatientAccidentInfoId { get; set; }
-        public Nullable<int> RefferingOfficeId { get; set; }
         public string CarrierCaseNo { get; set; }
         public bool Transportation { get; set; }
         public Nullable<int> CaseStatusId { get; set; }
@@ -33,12 +37,15 @@ namespace MIDAS.GBX.DataRepository.Model
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-    
-        public virtual Location Location { get; set; }
         public virtual Patient2 Patient2 { get; set; }
-        public virtual PatientAccidentInfo PatientAccidentInfo { get; set; }
+        public virtual Location Location { get; set; }
+        
         public virtual PatientEmpInfo PatientEmpInfo { get; set; }
-        public virtual PatientInsuranceInfo PatientInsuranceInfo { get; set; }
-        public virtual RefferingOffice RefferingOffice { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CaseInsuranceMapping> CaseInsuranceMappings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientAccidentInfo> PatientAccidentInfoes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RefferingOffice> RefferingOffices { get; set; }
     }
 }
