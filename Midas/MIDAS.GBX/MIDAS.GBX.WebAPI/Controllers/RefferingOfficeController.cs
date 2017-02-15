@@ -19,7 +19,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
             requestHandler = new GbApiRequestHandler<RefferingOffice>();
         }
 
-
         [HttpGet]
         [Route("Get/{id}")]
         [AllowAnonymous]
