@@ -8,7 +8,6 @@
         <EntityTypeShape EntityType="MIDASGBXModel.AddressInfo" Width="1.5" PointX="0.75" PointY="37.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.Case" Width="1.5" PointX="21.75" PointY="39.875" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.CaseInsuranceMapping" Width="1.5" PointX="24" PointY="36.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.City" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.Company" Width="1.5" PointX="3" PointY="37.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.CompanySpecialtyDetail" Width="1.5" PointX="11.25" PointY="37.5" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.CompanyType" Width="1.5" PointX="0.75" PointY="33.25" IsExpanded="true" />
@@ -115,6 +114,7 @@
         <AssociationConnector Association="MIDASGBXModel.FK_User_UserType" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompany_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompanyRole_User" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MIDASGBXModel.City" Width="1.5" PointX="7.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AddressInfo">
           <Key>
             <PropertyRef Name="id" />
@@ -1784,8 +1784,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="UserCompanyRole" EntitySet="UserCompanyRole" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MIDASGBXModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1853,15 +1852,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="IsPrimaryInsurance" Type="Boolean" />
           <NavigationProperty Name="Case" Relationship="Self.FK_CaseInsuranceMapping_Case_CaseId" FromRole="CaseInsuranceMapping" ToRole="Case" />
           <NavigationProperty Name="PatientInsuranceInfo" Relationship="Self.FK_CaseInsuranceMapping_PatientInsuranceInfo_PatientInsuranceInfoId" FromRole="CaseInsuranceMapping" ToRole="PatientInsuranceInfo" />
-        </EntityType>
-        <EntityType Name="City">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Byte" Nullable="false" />
-          <Property Name="StateCode" Type="String" MaxLength="2" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CityText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
@@ -3391,7 +3381,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="AddressInfoes" EntityType="Self.AddressInfo" />
           <EntitySet Name="Cases" EntityType="Self.Case" />
           <EntitySet Name="CaseInsuranceMappings" EntityType="Self.CaseInsuranceMapping" />
-          <EntitySet Name="Cities" EntityType="Self.City" />
           <EntitySet Name="Companies" EntityType="Self.Company" />
           <EntitySet Name="CompanySpecialtyDetails" EntityType="Self.CompanySpecialtyDetail" />
           <EntitySet Name="CompanyTypes" EntityType="Self.CompanyType" />
@@ -3696,7 +3685,17 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="User" EntitySet="Users" />
             <End Role="UserCompanyRole" EntitySet="UserCompanyRoles" />
           </AssociationSet>
+          <EntitySet Name="Cities" EntityType="MIDASGBXModel.City" />
         </EntityContainer>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" />
+          <Property Name="StateCode" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="CityText" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3750,16 +3749,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
                 <ScalarProperty Name="PatientInsuranceInfoId" ColumnName="PatientInsuranceInfoId" />
                 <ScalarProperty Name="IsPrimaryInsurance" ColumnName="IsPrimaryInsurance" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Cities">
-            <EntityTypeMapping TypeName="MIDASGBXModel.City">
-              <MappingFragment StoreEntitySet="City">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
-                <ScalarProperty Name="CityText" ColumnName="CityText" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -4418,6 +4407,16 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="MIDASGBXModel.City">
+              <MappingFragment StoreEntitySet="City">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CityText" ColumnName="CityText" />
+                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
