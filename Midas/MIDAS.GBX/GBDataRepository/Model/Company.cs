@@ -18,11 +18,11 @@ namespace MIDAS.GBX.DataRepository.Model
         public Company()
         {
             this.CompanySpecialtyDetails = new HashSet<CompanySpecialtyDetail>();
+            this.Invitations = new HashSet<Invitation>();
             this.Locations = new HashSet<Location>();
             this.Patients = new HashSet<Patient>();
             this.Patient2 = new HashSet<Patient2>();
             this.UserCompanies = new HashSet<UserCompany>();
-            this.Invitations = new HashSet<Invitation>();
         }
     
         public int id { get; set; }
@@ -46,6 +46,8 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompanySpecialtyDetail> CompanySpecialtyDetails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Invitation> Invitations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Location> Locations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Patient> Patients { get; set; }
@@ -53,7 +55,5 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<Patient2> Patient2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserCompany> UserCompanies { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Invitation> Invitations { get; set; }
     }
 }

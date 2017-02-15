@@ -33,7 +33,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             caseBO.ID = cases.Id;
             caseBO.CaseName = cases.CaseName;
             caseBO.CaseTypeId = cases.CaseTypeId;
-            caseBO.DateOfInjury = cases.DateOfInjury;
+            //caseBO.DateOfInjury = cases.DateOfInjury;
             caseBO.LocationId = cases.LocationId;
             caseBO.PatientEmpInfoId = cases.PatientEmpInfoId;
             caseBO.PatientInsuranceInfoId = cases.PatientInsuranceInfoId;
