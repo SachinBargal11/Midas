@@ -45,6 +45,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             if (cases.UpdateByUserID.HasValue)
                 caseBO.UpdateByUserID = cases.UpdateByUserID.Value;
 
+            BO.PatientEmpInfo boPatientEmpInfo = new BO.PatientEmpInfo();
+            using (PatientEmpInfoRepository cmp = new PatientEmpInfoRepository(_context))
+            {
+               
+                boPatientEmpInfo = cmp.Convert<BO.PatientEmpInfo, PatientEmpInfo>(cases.PatientEmpInfo);
+                caseBO.PatientEmpInfo = boPatientEmpInfo;
+            }
+
 
             return (T)(object)caseBO;
         }
