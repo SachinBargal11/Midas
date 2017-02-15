@@ -18,23 +18,11 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("caseTypeId")]
         public int? CaseTypeId { get; set; }
 
-        [JsonProperty("dateOfInjury")]
-        public DateTime DateOfInjury { get; set; }
-
         [JsonProperty("locationId")]
         public int? LocationId { get; set; }
 
         [JsonProperty("patientEmpInfoId")]
         public int? PatientEmpInfoId { get; set; }
-
-        [JsonProperty("patientInsuranceInfoId")]
-        public int? PatientInsuranceInfoId { get; set; }
-
-        [JsonProperty("patientAccidentInfoId")]
-        public int? PatientAccidentInfoId { get; set; }
-
-        [JsonProperty("refferingOfficeId")]
-        public int? RefferingOfficeId { get; set; }
 
         [JsonProperty("carrierCaseNo")]
         public string CarrierCaseNo { get; set; }
@@ -60,8 +48,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("patientEmpInfo")]
         public PatientEmpInfo PatientEmpInfo { get; set; }
 
-        [JsonProperty("patientInsuranceInfo")]
-        public PatientInsuranceInfo PatientInsuranceInfo { get; set; }
+        [JsonProperty("caseInsuranceMapping")]
+        public CaseInsuranceMapping CaseInsuranceMapping { get; set; }
 
         [JsonProperty("refferingOffice")]
         public RefferingOffice RefferingOffice { get; set; }
