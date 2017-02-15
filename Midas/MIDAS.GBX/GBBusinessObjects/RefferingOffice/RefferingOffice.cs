@@ -9,8 +9,8 @@ namespace MIDAS.GBX.BusinessObjects
     public class RefferingOffice : GbObject
     {
 
-        [JsonProperty("patientId")]
-        public int PatientId { get; set; }
+        [JsonProperty("caseId")]
+        public int CaseId { get; set; }
 
         [JsonProperty("refferingOfficeId")]
         public byte? RefferingOfficeId { get; set; }
@@ -24,11 +24,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("npi")]
         public string NPI { get; set; }
 
-        [JsonProperty("isCurrentReffOffice")]
-        public bool? IsCurrentReffOffice { get; set; }
-
         [JsonProperty("addressInfo")]
         public AddressInfo AddressInfo { get; set; }
+        public Case Case { get; set; }
 
 
 
