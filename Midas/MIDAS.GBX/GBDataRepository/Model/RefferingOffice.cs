@@ -14,12 +14,6 @@ namespace MIDAS.GBX.DataRepository.Model
     
     public partial class RefferingOffice
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public RefferingOffice()
-        {
-            this.Cases = new HashSet<Case>();
-        }
-    
         public int Id { get; set; }
         public int CaseId { get; set; }
         public Nullable<byte> RefferingOfficeId { get; set; }
@@ -31,7 +25,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-    
+        
         public virtual AddressInfo AddressInfo { get; set; }
         public virtual Case Case { get; set; }
     }
