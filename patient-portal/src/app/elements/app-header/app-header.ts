@@ -6,7 +6,8 @@ import { NotificationsStore } from '../../commons/stores/notifications-store';
 
 @Component({
     selector: 'app-header',
-    templateUrl: './app-header.html'
+    templateUrl: './app-header.html',
+	styleUrls: ['./app-header.scss']
 })
 
 export class AppHeaderComponent implements OnInit {
