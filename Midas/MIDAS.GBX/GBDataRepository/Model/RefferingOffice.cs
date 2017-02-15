@@ -21,12 +21,11 @@ namespace MIDAS.GBX.DataRepository.Model
         }
     
         public int Id { get; set; }
-        public int PatientId { get; set; }
+        public int CaseId { get; set; }
         public Nullable<byte> RefferingOfficeId { get; set; }
         public Nullable<int> AddressInfoId { get; set; }
         public Nullable<byte> ReffferingDoctorId { get; set; }
         public string NPI { get; set; }
-        public bool IsCurrentReffOffice { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
@@ -34,8 +33,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
         public virtual AddressInfo AddressInfo { get; set; }
-        public virtual Patient2 Patient2 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Case> Cases { get; set; }
+        public virtual Case Case { get; set; }
     }
 }
