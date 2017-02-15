@@ -121,10 +121,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             BO.Case caseBO = (BO.Case)(object)entity;
             //BO.Patient2 patient2BO = new BO.Patient2();
             BO.Location locationBO = new BO.Location();
-            //BO.PatientAccidentInfo patientAccidentInfoBO = new BO.PatientAccidentInfo();
-            //BO.PatientEmpInfo patientEmpInfoBO = new BO.PatientEmpInfo();
-            //BO.PatientInsuranceInfo patientInsuranceInfo = new BO.PatientInsuranceInfo();
-            //BO.RefferingOffice refferingOffice = new BO.RefferingOffice();
+
 
             Case caseDB = new Case();
 
