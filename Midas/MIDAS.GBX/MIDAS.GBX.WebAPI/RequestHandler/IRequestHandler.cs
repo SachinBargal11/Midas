@@ -31,7 +31,8 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetObjects(HttpRequestMessage request, string param1);
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int id);
         HttpResponseMessage ResetPassword(HttpRequestMessage request, T gbObject);
-        HttpResponseMessage GetByPatientId(HttpRequestMessage request, int PatientId);
+        HttpResponseMessage GetByCaseId(HttpRequestMessage request, int CaseId);
+        HttpResponseMessage GetByPatientId(HttpRequestMessage request, int CaseId);
         HttpResponseMessage GetPatientAccidentInfoByPatientId(HttpRequestMessage request, int PatientId);
         HttpResponseMessage GetCurrentROByPatientId(HttpRequestMessage request, int PatientId);
         HttpResponseMessage DeleteById(HttpRequestMessage request, int id);
