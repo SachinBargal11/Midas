@@ -25,8 +25,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-    
-        public virtual AddressInfo AddressInfo { get; set; }
         public virtual Case Case { get; set; }
+        public virtual AddressInfo AddressInfo { get; set; }
+        
     }
 }
