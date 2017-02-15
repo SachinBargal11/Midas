@@ -106,29 +106,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        //#region Get By Patient Id
-        //public override object GetByPatientId(int PatientId)
-        //{
-        //    var acc = _context.PatientAccidentInfoes.Include("AddressInfo")
-        //                                             .Include("AddressInfo1")
-        //                                             .Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-        //                                             .ToList<PatientAccidentInfo>();
-
-        //    if (acc == null)
-        //    {
-        //        return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-        //    }
-
-        //    List<BO.PatientAccidentInfo> lstpatientsEmpInfo = new List<BO.PatientAccidentInfo>();
-        //    //acc.ForEach(p => lstpatientsEmpInfo.Add(Convert<BO.PatientEmpInfo, PatientEmpInfo>(p)));
-        //    foreach (PatientAccidentInfo item in acc)
-        //    {
-        //        lstpatientsEmpInfo.Add(Convert<BO.PatientAccidentInfo, PatientAccidentInfo>(item));
-        //    }
-
-        //    return lstpatientsEmpInfo;
-        //}
-        //#endregion
+        
 
 
         //#region save
