@@ -38,7 +38,7 @@ namespace MIDAS.GBX.BusinessObjects
         public string LastName { get; set; }
         
         [JsonProperty("gender")]
-        public GBEnums.Gender Gender { get; set; }
+        public GBEnums.Gender? Gender { get; set; }
 
         [JsonProperty("imageLink")]
         public string ImageLink { get; set; }

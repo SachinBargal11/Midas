@@ -11,8 +11,8 @@
 	[InsuranceCompanyContactInfoId] [INT] NULL,
 	[PolicyNo] [NVARCHAR](50) NULL,
 	[ContactPerson] [NVARCHAR](50) NULL,
-	[ClaimFileNo] [NVARCHAR](50) NULL, -- Remove
-	[WCBNo] [NVARCHAR](50) NULL,--???? -- remove, link with treatment provider/doctor
+	--[ClaimFileNo] [NVARCHAR](50) NULL, -- Remove
+	--[WCBNo] [NVARCHAR](50) NULL,--???? -- remove, link with treatment provider/doctor
 	[InsuranceTypeId] [TINYINT] NULL,
 	[StartDate] [datetime2](7) NULL,
 	[EndDate] [datetime2](7) NULL,
@@ -78,3 +78,8 @@ GO
 
 ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_InsuranceType_InsuranceTypeId]
 GO
+
+--ALTER TABLE [dbo].[PatientInsuranceInfo] DROP COLUMN [ClaimFileNo]
+--GO
+--ALTER TABLE [dbo].[PatientInsuranceInfo] DROP COLUMN [WCBNo] 
+--GO
