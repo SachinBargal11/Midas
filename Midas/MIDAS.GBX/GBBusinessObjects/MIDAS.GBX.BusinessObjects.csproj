@@ -55,6 +55,7 @@
     <Compile Include="BusinessValidation.cs" />
     <Compile Include="BusinessValidationResult.cs" />
     <Compile Include="Case\Case.cs" />
+    <Compile Include="Case\CaseInsuranceMapping.cs" />
     <Compile Include="Common\City.cs" />
     <Compile Include="Common\Gender.cs" />
     <Compile Include="Common\InsuranceType.cs" />
