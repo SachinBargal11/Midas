@@ -34,7 +34,7 @@ namespace MIDAS.GBX.DataRepository.Model
     
         public virtual AddressInfo AddressInfo { get; set; }
         public virtual AddressInfo AddressInfo1 { get; set; }
-        public virtual Case Case { get; set; }
         public virtual PatientType PatientType { get; set; }
+        public virtual Case Case { get; set; }
     }
 }

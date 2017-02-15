@@ -19,7 +19,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public int PatientInsuranceInfoId { get; set; }
         public Nullable<bool> IsPrimaryInsurance { get; set; }
     
-        public virtual Case Case { get; set; }
         public virtual PatientInsuranceInfo PatientInsuranceInfo { get; set; }
+        public virtual Case Case { get; set; }
     }
 }

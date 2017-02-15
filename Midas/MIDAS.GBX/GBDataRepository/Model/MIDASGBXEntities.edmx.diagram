@@ -6,7 +6,6 @@
     <edmx:Diagrams>
       <Diagram DiagramId="3170d6b4ce9942b4a615860c244bb548" Name="Diagram1">
         <EntityTypeShape EntityType="MIDASGBXModel.AddressInfo" Width="1.5" PointX="0.75" PointY="37.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.Case" Width="1.5" PointX="21.75" PointY="39.875" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.CaseInsuranceMapping" Width="1.5" PointX="24" PointY="36.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.Company" Width="1.5" PointX="3" PointY="37.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.CompanySpecialtyDetail" Width="1.5" PointX="11.25" PointY="37.5" IsExpanded="true" />
@@ -58,12 +57,6 @@
         <AssociationConnector Association="MIDASGBXModel.FK_PatientInsuranceInfo_AddressInfo_PolicyHolderAddressInfoId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_RefferingOffice_AddressInfo_AddressInfoId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_User_AddressInfo" ManuallyRouted="false" />
-        <AssociationConnector Association="MIDASGBXModel.FK_Case_Location_LocationID" ManuallyRouted="false" />
-        <AssociationConnector Association="MIDASGBXModel.FK_Case_Patient2_PatientId" ManuallyRouted="false" />
-        <AssociationConnector Association="MIDASGBXModel.FK_Case_PatientEmpInfo_PatientEmpInfoId" ManuallyRouted="false" />
-        <AssociationConnector Association="MIDASGBXModel.FK_CaseInsuranceMapping_Case_CaseId" ManuallyRouted="false" />
-        <AssociationConnector Association="MIDASGBXModel.FK_PatientAccidentInfo_Case_CaseId" ManuallyRouted="false" />
-        <AssociationConnector Association="MIDASGBXModel.FK_RefferingOffice_Case_CaseId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_CaseInsuranceMapping_PatientInsuranceInfo_PatientInsuranceInfoId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Company_CompanyType" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Company_ContactInfo" ManuallyRouted="false" />
@@ -115,6 +108,13 @@
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompany_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompanyRole_User" ManuallyRouted="false" />
         <EntityTypeShape EntityType="MIDASGBXModel.City" Width="1.5" PointX="7.375" PointY="3.75" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Case" Width="1.5" PointX="21.75" PointY="39.875" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Case_Location_LocationID" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Case_Patient2_PatientId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Case_PatientEmpInfo_PatientEmpInfoId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_CaseInsuranceMapping_Case_CaseId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientAccidentInfo_Case_CaseId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_RefferingOffice_Case_CaseId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
