@@ -19,7 +19,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
             requestHandler = new GbApiRequestHandler<RefferingOffice>();
         }
 
-
         [HttpGet]
         [Route("Get/{id}")]
         [AllowAnonymous]
@@ -36,6 +35,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetByPatientId(Request, PatientId);
         }
 
+        [HttpGet]
+        [Route("getByCaseId/{CaseId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetByCaseId(int CaseId)
+        {
+            return requestHandler.GetByCaseId(Request, CaseId);
+        }
+
         [HttpPost]
         [Route("Save")]
         public HttpResponseMessage Post([FromBody]RefferingOffice data)
@@ -48,15 +55,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public HttpResponseMessage Delete(int id)
         {
             return requestHandler.Delete(Request, id);
-        }
-
-        //[HttpGet]
-        //[Route("getCurrentROByPatientId/{PatientId}")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage GetCurrentROByPatientId(int PatientId)
-        //{
-        //    return requestHandler.GetCurrentROByPatientId(Request, PatientId);
-        //}
+        }        
 
         protected override void Dispose(bool disposing)
         {
