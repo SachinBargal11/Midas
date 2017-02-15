@@ -26,7 +26,7 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("addressInfo")]
         public AddressInfo AddressInfo { get; set; }
-        public Case Case { get; set; }
+        //public Case Case { get; set; }
 
 
 
