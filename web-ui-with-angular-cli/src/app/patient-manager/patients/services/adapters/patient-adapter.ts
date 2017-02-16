@@ -1,8 +1,5 @@
 import { Patient } from '../../models/patient';
 import { UserAdapter } from '../../../../medical-provider/users/services/adapters/user-adapter';
-import { EmployerAdapter } from '../../services/adapters/employer-adapter';
-import { InsuranceAdapter } from '../../services/adapters/insurance-adapter';
-import { AccidentAdapter } from '../../services/adapters/accident-adapter';
 import * as moment from 'moment';
 
 export class PatientAdapter {

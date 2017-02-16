@@ -1,8 +1,5 @@
 import * as moment from 'moment';
 import { Record } from 'immutable';
-import { Employer } from './employer';
-import { Insurance } from './insurance';
-import { Accident } from './accident';
 import { User } from '../../../commons/models/user';
 import { MaritalStatus } from './enums/marital-status';
 
@@ -62,7 +59,7 @@ export class Patient extends PatientRecord {
     createByUserID: number;
     createDate: moment.Moment;
     updateByUserID: number;
-    updateDate: moment.Moment;
+    updateDate: moment.Moment;  
 
     constructor(props) {
         super(props);
