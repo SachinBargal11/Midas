@@ -18,7 +18,7 @@ export class EmployerService {
     constructor(
         private _http: Http,
         private _sessionStore: SessionStore
-        ) {
+    ) {
         this._headers.append('Content-Type', 'application/json');
     }
     getEmployer(employerId: Number): Observable<Employer> {
@@ -62,17 +62,17 @@ export class EmployerService {
             requestData.contactInfo = requestData.contact;
             requestData.addressInfo = requestData.address;
             requestData = _.omit(requestData, 'contact', 'address');
-            return this._http.post(this._url + '/PatientEmpInfo/save' ,JSON.stringify(requestData), {
+            return this._http.post(this._url + '/PatientEmpInfo/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
-            .map(res => res.json())
-            .subscribe((data: any) => {
+                .map(res => res.json())
+                .subscribe((data: any) => {
                     let parsedEmployer: Employer = null;
                     parsedEmployer = EmployerAdapter.parseResponse(data);
-                resolve(parsedEmployer);
-            }, (error) => {
-                reject(error);
-            });
+                    resolve(parsedEmployer);
+                }, (error) => {
+                    reject(error);
+                });
         });
         return <Observable<Employer>>Observable.fromPromise(promise);
     }
@@ -86,31 +86,26 @@ export class EmployerService {
             return this._http.post(this._url + '/PatientEmpInfo/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
-            .map(res => res.json())
-            .subscribe((data: any) => {
+                .map(res => res.json())
+                .subscribe((data: any) => {
                     let parsedEmployer: Employer = null;
                     parsedEmployer = EmployerAdapter.parseResponse(data);
-                resolve(parsedEmployer);
-            }, (error) => {
-                reject(error);
-            });
+                    resolve(parsedEmployer);
+                }, (error) => {
+                    reject(error);
+                });
         });
         return <Observable<Employer>>Observable.fromPromise(promise);
     }
     deleteEmployer(employer: Employer): Observable<Employer> {
         let promise = new Promise((resolve, reject) => {
-             let requestData: any = employer.toJS();
-            requestData.contactInfo = requestData.contact;
-            requestData.addressInfo = requestData.address;
-            requestData = _.omit(requestData, 'contact', 'address');
-            return this._http.post(this._url + '/PatientEmpInfo/save', JSON.stringify(requestData), {
+            return this._http.get(this._url + '/PatientEmpInfo/Delete/' + employer.id, {
                 headers: this._headers
-            })
-                .map(res => res.json())
+            }).map(res => res.json())
                 .subscribe((data) => {
                     let parsedEmployer: Employer = null;
                     parsedEmployer = EmployerAdapter.parseResponse(data);
-                resolve(parsedEmployer);
+                    resolve(parsedEmployer);
                 }, (error) => {
                     reject(error);
                 });

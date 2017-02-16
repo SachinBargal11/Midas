@@ -60,7 +60,7 @@ export class AccidentService {
             requestData.dateOfAdmission = requestData.dateOfAdmission ? requestData.dateOfAdmission.format('YYYY-MM-DD') : null;
             requestData.accidentAddressInfo = requestData.accidentAddress;
             requestData.hospitalAddressInfo = requestData.hospitalAddress;
-            requestData = _.omit(requestData,'accidentAdress','hospitalAddress');
+            requestData = _.omit(requestData, 'accidentAdress', 'hospitalAddress');
             return this._http.post(this._url + '/PatientAccidentInfo/Save', JSON.stringify(requestData), {
                 headers: this._headers
             })
@@ -75,7 +75,7 @@ export class AccidentService {
         });
         return <Observable<Accident>>Observable.fromPromise(promise);
     }
-    updateAccident(accident: Accident,accidentId:number): Observable<Accident> {
+    updateAccident(accident: Accident, accidentId: number): Observable<Accident> {
         let promise = new Promise((resolve, reject) => {
             let requestData: any = accident.toJS();
             requestData.accidentDate = requestData.accidentDate ? requestData.accidentDate.format('YYYY-MM-DD') : null;
@@ -83,7 +83,7 @@ export class AccidentService {
             requestData.id = accidentId;
             requestData.accidentAddressInfo = requestData.accidentAddress;
             requestData.hospitalAddressInfo = requestData.hospitalAddress;
-            requestData = _.omit(requestData,'accidentAdress','hospitalAddress');
+            requestData = _.omit(requestData, 'accidentAdress', 'hospitalAddress');
             return this._http.post(this._url + '/PatientAccidentInfo/Save', JSON.stringify(requestData), {
                 headers: this._headers
             })
@@ -100,16 +100,9 @@ export class AccidentService {
     }
     deleteAccident(accident: Accident): Observable<Accident> {
         let promise = new Promise((resolve, reject) => {
-            let requestData: any = accident.toJS();
-             requestData.accidentDate = requestData.accidentDate ? requestData.accidentDate.format('YYYY-MM-DD') : null;
-            requestData.dateOfAdmission = requestData.dateOfAdmission ? requestData.dateOfAdmission.format('YYYY-MM-DD') : null;
-           requestData.accidentAddressInfo = requestData.accidentAddress;
-            requestData.hospitalAddressInfo = requestData.hospitalAddress;
-            requestData = _.omit(requestData,'accidentAdress','hospitalAddress');
-            return this._http.put(this._url + '/PatientAccidentInfo/Save', JSON.stringify(requestData), {
+            return this._http.get(this._url + '/PatientAccidentInfo/Delete/' + accident.id, {
                 headers: this._headers
-            })
-                .map(res => res.json())
+            }).map(res => res.json())
                 .subscribe((data) => {
                     let parsedAccident: Accident = null;
                     parsedAccident = AccidentAdapter.parseResponse(data);

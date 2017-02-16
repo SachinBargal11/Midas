@@ -88,12 +88,9 @@ export class ReferringOfficeService {
     }
     deleteReferringOffice(referringOffice: ReferringOffice): Observable<ReferringOffice> {
         let promise = new Promise((resolve, reject) => {
-            let requestData: any = referringOffice.toJS();
-            requestData.isDeleted = 1;
-            return this._http.post(this._url + '/RefferingOffice/save', JSON.stringify(requestData), {
+            return this._http.get(this._url + '/RefferingOffice/Delete/' + referringOffice.id, {
                 headers: this._headers
-            })
-                .map(res => res.json())
+            }).map(res => res.json())
                 .subscribe((data) => {
                     if (data) {
                         let parsedReferringOffice: ReferringOffice = null;

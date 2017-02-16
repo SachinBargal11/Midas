@@ -1,10 +1,11 @@
 import { Record } from 'immutable';
 import * as moment from 'moment';
+import { Relation } from './enums/relation';
 
 const FamilyMemberRecord = Record({
     id: 0,
     patientId: 0,
-    relationId: 0,
+    relationId: Relation.FATHER,
     isInActive: false,
     fullName: '',
     familyName: '',
@@ -23,7 +24,7 @@ export class FamilyMember extends FamilyMemberRecord {
 
     id: number;
     patientId: number;
-    relationId: number;
+    relationId: Relation;
     isInActive: boolean;
     fullName: string;
     familyName: string;
@@ -39,6 +40,23 @@ export class FamilyMember extends FamilyMemberRecord {
 
     constructor(props) {
         super(props);
+    }
+
+    get relationLabel(): string {
+        return FamilyMember.getRelationLabel(this.relationId);
+    }
+    // tslint:disable-next-line:member-ordering
+    static getRelationLabel(relation: Relation): string {
+        switch (relation) {
+            case Relation.FATHER:
+                return 'Father';
+            case Relation.MOTHER:
+                return 'Mother';
+            case Relation.SISTER:
+                return 'Sister';
+            case Relation.BROTHER:
+                return 'Brother';
+        }
     }
 
 }

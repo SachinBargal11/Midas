@@ -36,25 +36,22 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("attorneyId")]
         public int? AttorneyId { get; set; }
 
-        [JsonProperty("location")]
-        public Location Location { get; set; }
+        //[JsonProperty("location")]
+        //public Location Location { get; set; }
 
-        [JsonProperty("patient2")]
-        public Patient2 Patient2 { get; set; }
+        //[JsonProperty("patient2")]
+        //public Patient2 Patient2 { get; set; }
 
-        [JsonProperty("patientAccidentInfo")]
-        public PatientAccidentInfo PatientAccidentInfo { get; set; }
+        //[JsonProperty("patientAccidentInfo")]
+        //public PatientAccidentInfo PatientAccidentInfo { get; set; }
 
         [JsonProperty("patientEmpInfo")]
         public PatientEmpInfo PatientEmpInfo { get; set; }
 
-        [JsonProperty("caseInsuranceMapping")]
-        public CaseInsuranceMapping CaseInsuranceMapping { get; set; }
+        //[JsonProperty("caseInsuranceMapping")]
+        //public CaseInsuranceMapping CaseInsuranceMapping { get; set; }
 
-        [JsonProperty("refferingOffice")]
-        public RefferingOffice RefferingOffice { get; set; }
-
-
-
+        //[JsonProperty("refferingOffice")]
+        //public RefferingOffice RefferingOffice { get; set; }
     }
 }

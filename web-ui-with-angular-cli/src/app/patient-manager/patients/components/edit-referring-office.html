@@ -135,7 +135,7 @@
                         <label class="form-label"> Zip code
                             </label>
                         <div class="form-group" [class.error]="referringOfficeformControls.zipcode.touched && !referringOfficeformControls.zipcode.valid">
-                            <input [ngModel]="referringOffice.addressInfo.zipcode" formControlName="zipcode" type="text" class="form-control" placeholder="" [class.error]="!referringOfficeformControls.zipcode.valid">
+                            <input [ngModel]="referringOffice.addressInfo.zipCode" formControlName="zipcode" type="text" class="form-control" placeholder="" [class.error]="!referringOfficeformControls.zipcode.valid">
                             <div class='error-list' *ngIf="referringOfficeformControls.zipcode.touched && !referringOfficeformControls.zipcode.valid">
                                 <ul>
                                     <li *ngIf="referringOfficeformControls.zipcode.hasError('required')">Zipcode is required.</li>

@@ -65,14 +65,14 @@ export class InsuranceService {
             return this._http.post(this._url + '/PatientInsuranceInfo/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
-            .map(res => res.json())
-            .subscribe((data: any) => {
+                .map(res => res.json())
+                .subscribe((data: any) => {
                     let parsedInsurance: Insurance = null;
                     parsedInsurance = InsuranceAdapter.parseResponse(data);
-                resolve(parsedInsurance);
-            }, (error) => {
-                reject(error);
-            });
+                    resolve(parsedInsurance);
+                }, (error) => {
+                    reject(error);
+                });
         });
         return <Observable<Insurance>>Observable.fromPromise(promise);
     }
@@ -88,35 +88,26 @@ export class InsuranceService {
             return this._http.post(this._url + '/PatientInsuranceInfo/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
-            .map(res => res.json())
-            .subscribe((data: any) => {
+                .map(res => res.json())
+                .subscribe((data: any) => {
                     let parsedInsurance: Insurance = null;
                     parsedInsurance = InsuranceAdapter.parseResponse(data);
-                resolve(parsedInsurance);
-            }, (error) => {
-                reject(error);
-            });
+                    resolve(parsedInsurance);
+                }, (error) => {
+                    reject(error);
+                });
         });
         return <Observable<Insurance>>Observable.fromPromise(promise);
     }
     deleteInsurance(insurance: Insurance): Observable<Insurance> {
         let promise = new Promise((resolve, reject) => {
-            let requestData: any = insurance.toJS();
-            requestData.isDeleted = 1;
-            requestData.insuranceTypeId = requestData.insuranceType;
-            requestData.policyHolderContactInfo = requestData.policyContact;
-            requestData.policyHolderAddressInfo = requestData.policyAddress;
-            requestData.insuranceCompanyContactInfo = requestData.insuranceContact;
-            requestData.insuranceCompanyAddressInfo = requestData.insuranceAddress;
-            requestData = _.omit(requestData, 'insuranceType', 'policyContact', 'policyAddress', 'insuranceContact', 'insuranceAddress');
-            return this._http.post(this._url + '/PatientInsuranceInfo/save', JSON.stringify(requestData), {
+            return this._http.get(this._url + '/PatientInsuranceInfo/delete/' + insurance.id, {
                 headers: this._headers
-            })
-                .map(res => res.json())
+            }).map(res => res.json())
                 .subscribe((data) => {
                     let parsedInsurance: Insurance = null;
                     parsedInsurance = InsuranceAdapter.parseResponse(data);
-                resolve(parsedInsurance);
+                    resolve(parsedInsurance);
                 }, (error) => {
                     reject(error);
                 });

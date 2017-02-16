@@ -13,6 +13,7 @@ import { ForgotPasswordComponent } from './components/forgot-password';
 import { ResetPasswordComponent } from './components/reset-password';
 import { AccountActivationComponent } from './components/account-activation';
 import { SecurityCheckComponent } from './components/security-check';
+import { PatientsShellRoutes } from './patient-routes';
 
 let accountRoutes: Routes = [
     {
@@ -69,7 +70,8 @@ let accountRoutes: Routes = [
                 data: {
                     breadcrumb: 'Change Password'
                 }
-            }
+            },
+            ...PatientsShellRoutes
         ]
     }
 

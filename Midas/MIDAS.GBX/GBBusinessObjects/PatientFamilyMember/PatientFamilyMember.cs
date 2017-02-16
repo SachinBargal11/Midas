@@ -32,10 +32,10 @@ namespace MIDAS.GBX.BusinessObjects
         public byte Age { get; set; }
 
         [JsonProperty("raceId")]
-        public byte RaceId { get; set; }
+        public byte? RaceId { get; set; }
 
         [JsonProperty("ethnicitesId")]
-        public byte EthnicitesId { get; set; }
+        public byte? EthnicitesId { get; set; }
 
         [JsonProperty("genderId")]
         public byte GenderId { get; set; }

@@ -31,6 +31,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             BO.Case caseBO = new BO.Case();
 
             caseBO.ID = cases.Id;
+            caseBO.PatientId = cases.PatientId;
             caseBO.CaseName = cases.CaseName;
             caseBO.CaseTypeId = cases.CaseTypeId;
             caseBO.LocationId = cases.LocationId;
@@ -71,6 +72,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object Get(int id)
         {
             var acc = _context.Cases.Include("PatientEmpInfo")
+                                    .Include("PatientEmpInfo.AddressInfo")
+                                    .Include("PatientEmpInfo.ContactInfo")
                                     .Where(p => p.Id == id 
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .FirstOrDefault<Case>();
@@ -95,6 +98,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             //                        .Include("CaseInsuranceMappings.PatientInsuranceInfo")
             //                        .Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Case>();
             var acc = _context.Cases.Include("PatientEmpInfo")
+                                    .Include("PatientEmpInfo.AddressInfo")
+                                    .Include("PatientEmpInfo.ContactInfo")
                                     .Where(p => p.PatientId == PatientId 
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .ToList<Case>();
@@ -178,9 +183,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                 _context.SaveChanges();
                 #endregion
+
                 dbContextTransaction.Commit();
 
-                caseDB = _context.Cases.Where(p => p.Id == caseDB.Id).FirstOrDefault<Case>();
+                caseDB = _context.Cases.Include("PatientEmpInfo")
+                                       .Include("PatientEmpInfo.AddressInfo")
+                                       .Include("PatientEmpInfo.ContactInfo")
+                                       .Where(p => p.Id == caseDB.Id).FirstOrDefault<Case>();
             }
 
             var res = Convert<BO.Case, Case>(caseDB);

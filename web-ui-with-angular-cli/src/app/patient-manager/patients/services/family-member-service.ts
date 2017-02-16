@@ -20,10 +20,10 @@ export class FamilyMemberService {
     }
     getFamilyMember(familyMemberId: Number): Observable<FamilyMember> {
         let promise: Promise<FamilyMember> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '?id=' + familyMemberId).map(res => res.json())
+            return this._http.get(this._url + '/PatientFamilyMember/get/' + familyMemberId).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     let familyMember = null;
-                    if (data.length) {
+                    if (data) {
                         familyMember = FamilyMemberAdapter.parseResponse(data);
                         resolve(familyMember);
                     } else {
@@ -62,14 +62,14 @@ export class FamilyMemberService {
             return this._http.post(this._url + '/PatientFamilyMember/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
-            .map(res => res.json())
-            .subscribe((data: any) => {
+                .map(res => res.json())
+                .subscribe((data: any) => {
                     let parsedFamilyMember: FamilyMember = null;
                     parsedFamilyMember = FamilyMemberAdapter.parseResponse(data);
-                resolve(parsedFamilyMember);
-            }, (error) => {
-                reject(error);
-            });
+                    resolve(parsedFamilyMember);
+                }, (error) => {
+                    reject(error);
+                });
         });
         return <Observable<FamilyMember>>Observable.fromPromise(promise);
     }
@@ -83,32 +83,26 @@ export class FamilyMemberService {
             return this._http.post(this._url + '/PatientFamilyMember/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
-            .map(res => res.json())
-            .subscribe((data: any) => {
+                .map(res => res.json())
+                .subscribe((data: any) => {
                     let parsedFamilyMember: FamilyMember = null;
                     parsedFamilyMember = FamilyMemberAdapter.parseResponse(data);
-                resolve(parsedFamilyMember);
-            }, (error) => {
-                reject(error);
-            });
+                    resolve(parsedFamilyMember);
+                }, (error) => {
+                    reject(error);
+                });
         });
         return <Observable<FamilyMember>>Observable.fromPromise(promise);
     }
     deleteFamilyMember(familyMember: FamilyMember): Observable<FamilyMember> {
         let promise = new Promise((resolve, reject) => {
-            let requestData: any = familyMember.toJS();
-            requestData.isDeleted = 1;
-            requestData.isInactive = true;
-            requestData.ethnicitesId = requestData.ethnicitiesId;
-            requestData = _.omit(requestData, 'ethnicitiesId');
-            return this._http.post(this._url + '/PatientFamilyMember/save', JSON.stringify(requestData), {
+            return this._http.get(this._url + '/PatientFamilyMember/Delete/' + familyMember.id, {
                 headers: this._headers
-            })
-                .map(res => res.json())
+            }).map(res => res.json())
                 .subscribe((data) => {
                     let parsedFamilyMember: FamilyMember = null;
                     parsedFamilyMember = FamilyMemberAdapter.parseResponse(data);
-                resolve(parsedFamilyMember);
+                    resolve(parsedFamilyMember);
                 }, (error) => {
                     reject(error);
                 });

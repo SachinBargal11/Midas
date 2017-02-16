@@ -57,8 +57,6 @@ export class AddInsuranceComponent implements OnInit {
                 insuranceCompanyCode: ['', Validators.required],
                 insuranceType: ['', Validators.required],
                 contactPerson: ['', Validators.required],
-                claimfileNo: ['', Validators.required],
-                wcbNo: ['', Validators.required],
                 policyAddress: ['', Validators.required],
                 policyAddress2: [''],
                 policyState: [''],
@@ -138,8 +136,6 @@ export class AddInsuranceComponent implements OnInit {
             policyNo: insuranceformValues.policyNumber,
             insuranceCompanyCode: insuranceformValues.insuranceCompanyCode,
             contactPerson: insuranceformValues.contactPerson,
-            claimfileNo: insuranceformValues.claimfileNo,
-            wcbNo: insuranceformValues.wcbNo,
             insuranceType: insuranceformValues.insuranceType,
             policyContact: new Contact({
                 cellPhone: insuranceformValues.policyCellPhone ? insuranceformValues.policyCellPhone.replace(/\-/g, '') : null,
