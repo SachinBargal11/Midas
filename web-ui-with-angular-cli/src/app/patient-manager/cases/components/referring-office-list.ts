@@ -17,7 +17,7 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 export class ReferringOfficeListComponent implements OnInit {
     selectedReferringOffices: ReferringOffice[] = [];
     referringOffices: ReferringOffice[];
-    patientId: number;
+    caseId: number;
 
     constructor(
         private _router: Router,
@@ -28,7 +28,7 @@ export class ReferringOfficeListComponent implements OnInit {
         private _notificationsService: NotificationsService
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId);
+            this.caseId = parseInt(routeParams.caseId, 10);
         });
     }
 
@@ -38,7 +38,7 @@ export class ReferringOfficeListComponent implements OnInit {
 
     loadReferringOffices() {
         this._progressBarService.show();
-        this._referringOfficeStore.getReferringOffices(this.patientId)
+        this._referringOfficeStore.getReferringOffices(this.caseId)
             .subscribe(referringOffices => {
                 this.referringOffices = referringOffices;
             },

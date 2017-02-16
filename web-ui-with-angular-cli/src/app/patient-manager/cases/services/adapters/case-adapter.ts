@@ -1,7 +1,5 @@
 import * as moment from 'moment';
 import { Case } from '../../models/case';
-import { AddressAdapter } from '../../../../commons/services/adapters/address-adapter';
-import { ContactAdapter } from '../../../../commons/services/adapters/contact-adapter';
 
 export class CaseAdapter {
     static parseResponse(data: any): Case {
@@ -13,17 +11,17 @@ export class CaseAdapter {
                 patientId: data.patientId,
                 caseName: data.caseName,
                 caseTypeId: data.caseTypeId,
-                age: data.age,
-                dateOfInjury: moment(data.dateOfInjury),
                 locationId: data.locationId,
-                vehiclePlateNo: data.vehiclePlateNo,
                 carrierCaseNo: data.carrierCaseNo,
-                transportation: data.transportation,
-                dateOfFirstTreatment: moment(data.dateOfFirstTreatment),
+                transportation: data.transportation ? true : false,
                 caseStatusId: data.caseStatusId,
                 attorneyId: data.attorneyId,
-                contact: ContactAdapter.parseResponse(data.contactInfo),
-                address: AddressAdapter.parseResponse(data.addressInfo)
+                patientEmpInfoId: data.patientEmpInfoId,
+                isDeleted: data.isDeleted ? true : false,
+                createByUserID: data.createbyuserID,
+                createDate: data.createDate ? moment.utc(data.createDate) : null,
+                updateByUserID: data.updateByUserID,
+                updateDate: data.updateDate ? moment.utc(data.updateDate) : null
             });
         }
         return cases;

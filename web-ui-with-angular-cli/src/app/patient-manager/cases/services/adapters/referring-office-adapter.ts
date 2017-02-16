@@ -9,7 +9,7 @@ export class ReferringOfficeAdapter {
         if (data) {
             referringOffice = new ReferringOffice({
                 id: data.id,
-                patientId: data.patientId,
+                caseId: data.caseId,
                 refferingOfficeId: data.refferingOfficeId,
                 refferingDoctorId: data.refferingDoctorId,
                 npi: data.npi,

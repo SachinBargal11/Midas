@@ -5,7 +5,7 @@ import { PatientType } from './enums/patient-type';
 
 const AccidentRecord = Record({
     id: 0,
-    patientId: 0,
+    caseId: 0,
     accidentAddress: null,
     hospitalAddress: null,
     accidentDate: moment(),
@@ -26,6 +26,7 @@ const AccidentRecord = Record({
 export class Accident extends AccidentRecord {
 
     id: number;
+    caseId: number;
     accidentAddress: Address;
     hospitalAddress: Address;
     accidentDate: moment.Moment;

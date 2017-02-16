@@ -22,7 +22,7 @@ export class AccidentService {
     }
     getAccident(accidentId: Number): Observable<Accident> {
         let promise: Promise<Accident> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '?id=' + accidentId).map(res => res.json())
+            return this._http.get(this._url + '/PatientAccidentInfo/get/' + accidentId).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     if (data.length) {
                         resolve(data);
@@ -37,9 +37,9 @@ export class AccidentService {
         return <Observable<Accident>>Observable.fromPromise(promise);
     }
 
-    getAccidents(patientId: Number): Observable<Accident[]> {
+    getAccidents(caseId: Number): Observable<Accident[]> {
         let promise: Promise<Accident[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientAccidentInfo/getByPatientId/' + patientId)
+            return this._http.get(this._url + '/PatientAccidentInfo/getByCaseId/' + caseId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let accidents = (<Object[]>data).map((data: any) => {

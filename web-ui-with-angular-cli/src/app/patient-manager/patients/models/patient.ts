@@ -29,9 +29,9 @@ import { MaritalStatus } from './enums/marital-status';
 const PatientRecord = Record({
     id: 0,
     user: null,
-    employer: null,
-    insurance: null,
-    accident: null,
+    // employer: null,
+    // insurance: null,
+    // accident: null,
     companyId: 0,
     ssn: '',
     weight: 0,
@@ -49,9 +49,9 @@ export class Patient extends PatientRecord {
 
     id: number;
     user: User;
-    employer: Employer;
-    insurance: Insurance;
-    accident: Accident;
+    // employer: Employer;
+    // insurance: Insurance;
+    // accident: Accident;
     companyId: number;
     ssn: string;
     weight: number;

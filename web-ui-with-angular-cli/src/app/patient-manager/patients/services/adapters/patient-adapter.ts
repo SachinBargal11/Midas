@@ -6,27 +6,24 @@ import { AccidentAdapter } from '../../services/adapters/accident-adapter';
 import * as moment from 'moment';
 
 export class PatientAdapter {
-    static parseResponse(patientData: any): Patient {
+    static parseResponse(data: any): Patient {
 
         let patient: Patient = null;
-        if (patientData) {
+        if (data) {
             patient = new Patient({
-                id: patientData.id,
-                ssn: patientData.ssn,
-                weight: patientData.weight,
-                height: patientData.height,
-                maritalStatusId: patientData.maritalStatusId,
-                dateOfFirstTreatment: patientData.dateOfFirstTreatment ? moment(patientData.dateOfFirstTreatment) : null,
-                user: UserAdapter.parseResponse(patientData.user),
-                employer: EmployerAdapter.parseResponse(patientData.employer),
-                insurance: InsuranceAdapter.parseResponse(patientData.insurance),
-                accident: AccidentAdapter.parseResponse(patientData.accidentAddress),
-                companyId: patientData.companyId,
-                isDeleted: patientData.isDeleted ? true : false,
-                createByUserID: patientData.createbyuserID,
-                createDate: patientData.createDate ? moment.utc(patientData.createDate) : null,
-                updateByUserID: patientData.updateByUserID,
-                updateDate: patientData.updateDate ? moment.utc(patientData.updateDate) : null
+                id: data.id,
+                ssn: data.ssn,
+                weight: data.weight,
+                height: data.height,
+                maritalStatusId: data.maritalStatusId,
+                dateOfFirstTreatment: data.dateOfFirstTreatment ? moment(data.dateOfFirstTreatment) : null,
+                user: UserAdapter.parseResponse(data.user),
+                companyId: data.companyId,
+                isDeleted: data.isDeleted ? true : false,
+                createByUserID: data.createbyuserID,
+                createDate: data.createDate ? moment.utc(data.createDate) : null,
+                updateByUserID: data.updateByUserID,
+                updateDate: data.updateDate ? moment.utc(data.updateDate) : null
             });
         }
         return patient;
