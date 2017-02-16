@@ -17,8 +17,8 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PatientInsuranceInfo()
         {
+            this.CaseInsuranceMappings = new HashSet<CaseInsuranceMapping>();
             this.Patient2 = new HashSet<Patient2>();
-            this.Cases = new HashSet<Case>();
         }
     
         public int Id { get; set; }
@@ -32,8 +32,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> InsuranceCompanyContactInfoId { get; set; }
         public string PolicyNo { get; set; }
         public string ContactPerson { get; set; }
-        public string ClaimFileNo { get; set; }
-        public string WCBNo { get; set; }
         public Nullable<byte> InsuranceTypeId { get; set; }
         public Nullable<bool> IsInActive { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
@@ -44,6 +42,8 @@ namespace MIDAS.GBX.DataRepository.Model
     
         public virtual AddressInfo AddressInfo { get; set; }
         public virtual AddressInfo AddressInfo1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CaseInsuranceMapping> CaseInsuranceMappings { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual ContactInfo ContactInfo1 { get; set; }
         public virtual InsuranceType InsuranceType { get; set; }
@@ -51,7 +51,5 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<Patient2> Patient2 { get; set; }
         public virtual Patient2 Patient21 { get; set; }
         public virtual PolicyOwner PolicyOwner { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Case> Cases { get; set; }
     }
 }

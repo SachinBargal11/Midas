@@ -39,12 +39,6 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("contactPerson")]
         public string contactPerson { get; set; }
 
-        [JsonProperty("claimFileNo")]
-        public string claimFileNo { get; set; }
-
-        [JsonProperty("wcbNo")]
-        public string wcbNo { get; set; }
-
         [JsonProperty("insuranceTypeId")]
         public byte? insuranceTypeId { get; set; }
 
@@ -62,8 +56,10 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("policyHolderContactInfo")]
         public ContactInfo contactInfo1 { get; set; }
-        //public Patient2 Patient2 { get; set; }
-        //public Patient2 Patient21 { get; set; }
 
+        [JsonProperty("caseInsuranceMapping")]
+        public CaseInsuranceMapping CaseInsuranceMapping { get; set; } 
+
+        
     }
 }

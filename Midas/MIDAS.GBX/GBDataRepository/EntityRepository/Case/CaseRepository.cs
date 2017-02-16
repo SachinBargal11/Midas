@@ -119,7 +119,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object Save<T>(T entity)
         {
             BO.Case caseBO = (BO.Case)(object)entity;
-            BO.Patient2 patient2BO = new BO.Patient2();
+            //BO.Patient2 patient2BO = new BO.Patient2();
             BO.Location locationBO = new BO.Location();
 
 
