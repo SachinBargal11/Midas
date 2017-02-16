@@ -62,14 +62,14 @@ export class FamilyMemberService {
             return this._http.post(this._url + '/PatientFamilyMember/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
-            .map(res => res.json())
-            .subscribe((data: any) => {
+                .map(res => res.json())
+                .subscribe((data: any) => {
                     let parsedFamilyMember: FamilyMember = null;
                     parsedFamilyMember = FamilyMemberAdapter.parseResponse(data);
-                resolve(parsedFamilyMember);
-            }, (error) => {
-                reject(error);
-            });
+                    resolve(parsedFamilyMember);
+                }, (error) => {
+                    reject(error);
+                });
         });
         return <Observable<FamilyMember>>Observable.fromPromise(promise);
     }
@@ -83,29 +83,26 @@ export class FamilyMemberService {
             return this._http.post(this._url + '/PatientFamilyMember/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
-            .map(res => res.json())
-            .subscribe((data: any) => {
+                .map(res => res.json())
+                .subscribe((data: any) => {
                     let parsedFamilyMember: FamilyMember = null;
                     parsedFamilyMember = FamilyMemberAdapter.parseResponse(data);
-                resolve(parsedFamilyMember);
-            }, (error) => {
-                reject(error);
-            });
+                    resolve(parsedFamilyMember);
+                }, (error) => {
+                    reject(error);
+                });
         });
         return <Observable<FamilyMember>>Observable.fromPromise(promise);
     }
     deleteFamilyMember(familyMember: FamilyMember): Observable<FamilyMember> {
         let promise = new Promise((resolve, reject) => {
-            let requestData: any = familyMember.toJS();
-            requestData.isDeleted = 1;
-            return this._http.post(this._url + '/PatientFamilyMember/save', JSON.stringify(requestData), {
+            return this._http.get(this._url + '/PatientFamilyMember/Delete/' + familyMember.id, {
                 headers: this._headers
-            })
-                .map(res => res.json())
+            }).map(res => res.json())
                 .subscribe((data) => {
                     let parsedFamilyMember: FamilyMember = null;
                     parsedFamilyMember = FamilyMemberAdapter.parseResponse(data);
-                resolve(parsedFamilyMember);
+                    resolve(parsedFamilyMember);
                 }, (error) => {
                     reject(error);
                 });
