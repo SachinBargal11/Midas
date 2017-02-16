@@ -1,0 +1,193 @@
+<div *ngIf="familyMember">
+<h3 class="with-border">Edit Family Member</h3>
+<form [formGroup]="familyMemberForm" (ngSubmit)="save()">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Relation to patient
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.relationId.touched && !familyMemberFormControls.relationId.valid">
+                        <select formControlName="relationId" [ngModel]="familyMember.relationId" type="text" class="form-control" placeholder="" [class.error]="familyMemberFormControls.relationId.touched && !familyMemberFormControls.relationId.valid">
+                            <option value="">-Select -</option>
+                            <option value="1">Father</option>
+                            <option value="2">Mother</option>
+                            <option value="3">Sister</option>
+                            <option value="4">Brother</option>
+                        </select>
+                        <div class='error-list' *ngIf="familyMemberFormControls.relationId.touched && !familyMemberFormControls.relationId.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.relationId.hasError('required')">Relation to patient is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Full Name
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.fullName.touched && !familyMemberFormControls.fullName.valid">
+                        <input type="text" formControlName="fullName" [ngModel]="familyMember.fullName" [class.error]="!familyMemberFormControls.fullName.valid" class="form-control" placeholder="" />
+                        <div class='error-list' *ngIf="familyMemberFormControls.fullName.touched && !familyMemberFormControls.fullName.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.fullName.hasError('required')">Full Name is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label">Family Name
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.familyName.touched && !familyMemberFormControls.familyName.valid">
+                        <input type="text" formControlName="familyName" [ngModel]="familyMember.familyName" [class.error]="!familyMemberFormControls.familyName.valid" class="form-control" placeholder="" />
+                        <div class='error-list' *ngIf="familyMemberFormControls.familyName.touched && !familyMemberFormControls.familyName.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.familyName.hasError('required')">Family Name is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Prefix
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.prefix.touched && !familyMemberFormControls.prefix.valid">
+                        <input type="text" formControlName="prefix" [ngModel]="familyMember.prefix" [class.error]="!familyMemberFormControls.prefix.valid" class="form-control"
+                            placeholder="" />
+                        <div class='error-list' *ngIf="familyMemberFormControls.prefix.touched && !familyMemberFormControls.prefix.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.prefix.hasError('required')">Prefix is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Suffix
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.suffix.touched && !familyMemberFormControls.suffix.valid">
+                        <input type="text" formControlName="suffix" [ngModel]="familyMember.sufix" [class.error]="!familyMemberFormControls.suffix.valid" class="form-control"
+                            placeholder="" />
+                        <div class='error-list' *ngIf="familyMemberFormControls.suffix.touched && !familyMemberFormControls.suffix.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.suffix.hasError('required')">Suffix is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Age
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.age.touched && !familyMemberFormControls.age.valid">
+                        <input type="number" formControlName="age" [ngModel]="familyMember.age" [class.error]="!familyMemberFormControls.age.valid" class="form-control"
+                            placeholder="" />
+                        <div class='error-list' *ngIf="familyMemberFormControls.age.touched && !familyMemberFormControls.age.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.age.hasError('required')">Age is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Gender
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.gender.touched && !familyMemberFormControls.gender.valid">
+                        <select formControlName="gender" [ngModel]="familyMember.genderId" type="text" class="form-control" placeholder="" [class.error]="familyMemberFormControls.gender.touched && !familyMemberFormControls.gender.valid">
+                            <option value="">-Select -</option>
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                            <option value="3">Other</option>
+                        </select>
+                        <div class='error-list' *ngIf="familyMemberFormControls.gender.touched && !familyMemberFormControls.gender.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.gender.hasError('required')">Gender is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Races
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.races.touched && !familyMemberFormControls.races.valid">
+                        <select formControlName="races" [ngModel]="familyMember.raceId" type="text" class="form-control" placeholder=""
+                            [class.error]="familyMemberFormControls.races.touched && !familyMemberFormControls.races.valid">
+                            <option value="">-Select -</option>
+                            <option disabled>────────────────────</option>
+                            <option value="1">American Indian or Alaska Native</option>
+                            <option value="2">Asian</option>
+                            <option value="3">Black or African American</option>
+                            <option value="4">Native Hawaiian or Other Pacific Islander</option>
+                            <option value="5">White</option>
+                            <option value="6">Declined to specify</option>
+                        </select>
+                        <div class='error-list' *ngIf="familyMemberFormControls.races.touched && !familyMemberFormControls.races.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.races.hasError('required')">Races is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Ethnicities
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.ethnicities.touched && !familyMemberFormControls.ethnicities.valid">
+                        <select formControlName="ethnicities" [ngModel]="familyMember.ethnicitiesId" type="text" class="form-control" placeholder=""
+                            [class.error]="familyMemberFormControls.ethnicities.touched && !familyMemberFormControls.ethnicities.valid">
+                            <option value="">-Select -</option>
+                            <option disabled>────────────────────</option>
+                            <option value="1">Hispanic or Latino</option>
+                            <option value="2">Not Hispanic or Latino</option>
+                            <option value="3">Declined to specify</option>
+                        </select>
+                        <div class='error-list' *ngIf="familyMemberFormControls.ethnicities.touched && !familyMemberFormControls.ethnicities.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.ethnicities.hasError('required')">Ethnicities is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">               
+                <div class="col-lg-4">
+                    <label class="form-label"> Cellphone
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="familyMemberFormControls.cellPhone.touched && !familyMemberFormControls.cellPhone.valid">
+                        <p-inputMask mask="999-999-9999" formControlName="cellPhone" [ngModel]="cellPhone" [class.error]="familyMemberFormControls.cellPhone.touched && !familyMemberFormControls.cellPhone.valid"
+                            placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
+                            <div class='error-list' *ngIf="familyMemberFormControls.cellPhone.touched && !familyMemberFormControls.cellPhone.valid">
+                                <ul>
+                                    <li *ngIf="familyMemberFormControls.cellPhone.hasError('required')">Cellphone number is required.</li>
+                                    <li *ngIf="familyMemberFormControls.cellPhone.hasError('mobileNoValidator')">Cellphone number is invalid.</li>
+                                </ul>
+                            </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Work Phone No</label>
+                        <input formControlName="workPhone" [ngModel]="familyMember.workPhone" type="text" class="form-control" placeholder="" />
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Primary Contact</label>
+                        <p-radioButton formControlName="primaryContact" [ngModel]="familyMember.primaryContact" name="primaryContact" value="1" label="Yes"></p-radioButton>
+                        <p-radioButton formControlName="primaryContact" [ngModel]="familyMember.primaryContact" name="primaryContact" value="0" label="No"></p-radioButton>
+                    </div>
+                </div>
+            </div>
+    <button [disabled]="!familyMemberForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Update
+        <loader [visible]="isSaveProgress"></loader>
+    </button>
+    <a [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>  
+</form>
+</div>
