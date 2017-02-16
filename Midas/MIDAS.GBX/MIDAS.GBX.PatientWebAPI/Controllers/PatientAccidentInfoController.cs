@@ -28,15 +28,25 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             return requestHandler.GetObject(Request, id);
         }
 
+
+
         [HttpGet]
-        [Route("getByPatientId/{PatientId}")]
+        [Route("getByCaseId/{CaseId}")]
         [AllowAnonymous]
-        public HttpResponseMessage GetByPatientId(int PatientId)
+        public HttpResponseMessage GetByCaseId(int CaseId)
         {
-            return requestHandler.GetByPatientId(Request, PatientId);
+            return requestHandler.GetByCaseId(Request, CaseId);
         }
 
-        
+        [HttpGet]
+        [Route("getCurrentAccidentByPatientId/{PatientId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetPatientAccidentInfoByPatientId(int PatientId)
+        {
+            return requestHandler.GetPatientAccidentInfoByPatientId(Request, PatientId);
+        }
+
+
 
         [HttpPost]
         [Route("save")]
@@ -46,6 +56,13 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             return requestHandler.CreateGbObject(Request, data);
         }
 
+        [HttpGet]
+        [Route("Delete/{id}")]
+        [AllowAnonymous]
+        public HttpResponseMessage DeleteById(int id)
+        {
+            return requestHandler.DeleteById(Request, id);
+        }
 
         protected override void Dispose(bool disposing)
         {

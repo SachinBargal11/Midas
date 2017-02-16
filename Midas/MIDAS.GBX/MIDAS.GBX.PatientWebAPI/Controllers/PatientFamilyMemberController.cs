@@ -47,6 +47,14 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             return requestHandler.CreateGbObject(Request, data);
         }
 
+        [HttpGet]
+        [Route("Delete/{id}")]
+        [AllowAnonymous]
+        public HttpResponseMessage DeleteById(int id)
+        {
+            return requestHandler.DeleteById(Request, id);
+        }
+
 
         protected override void Dispose(bool disposing)
         {
