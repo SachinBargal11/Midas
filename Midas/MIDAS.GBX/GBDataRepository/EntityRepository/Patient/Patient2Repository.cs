@@ -103,12 +103,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientBO2.User = boUser;
             }
 
-            //BO.Location boLocation = new BO.Location();
-            //using (LocationRepository cmp = new LocationRepository(_context))
-            //{
-            //    boLocation = cmp.Convert<BO.Location, Location>(patient2.Location);
-            //    patientBO2.Location = boLocation;
-            //}
+            //Common 
+            patientBO2.IsDeleted = patient2.IsDeleted;
+            patientBO2.CreateByUserID = patient2.CreateByUserID;
+            patientBO2.UpdateByUserID = patient2.UpdateByUserID;
 
             return (T)(object)patientBO2;
         }

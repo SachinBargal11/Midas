@@ -67,6 +67,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 PatientEmpInfoBO.contactInfo = boContactInfo;
             }
 
+            //Common 
+            PatientEmpInfoBO.IsDeleted = PatientEmpInfo.IsDeleted;
+            PatientEmpInfoBO.CreateByUserID = PatientEmpInfo.CreateByUserID;
+            PatientEmpInfoBO.UpdateByUserID = PatientEmpInfo.UpdateByUserID;
+
             return (T)(object)PatientEmpInfoBO;
         }
         #endregion
