@@ -21,6 +21,7 @@ import { EditInsuranceComponent } from './components/edit-insurance';
 import { ReferringOfficeListComponent } from './components/referring-office-list';
 import { AddReferringOfficeComponent } from './components/add-referring-office';
 import { EditReferringOfficeComponent } from './components/edit-referring-office';
+import { ViewAllComponent } from './components/view-all';
 
 export const PatientsShellRoutes: Routes = [
     {
@@ -58,8 +59,16 @@ export const PatientsShellRoutes: Routes = [
                 children: [
                     {
                         path: '',
-                        redirectTo: 'basic',
+                        redirectTo: 'viewall',
                         pathMatch: 'full'
+                    },
+                    {
+                        path: 'viewall',
+                        component: ViewAllComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'View All'
+                        }
                     },
                     {
                         path: 'basic',

@@ -289,8 +289,70 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             }
         }
 
-       
+        public HttpResponseMessage GetByCaseId(HttpRequestMessage request, int CaseId)
+        {
+            var objResult = dataAccessManager.GetByCaseId(CaseId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
 
+        public HttpResponseMessage GetCurrentEmpByPatientId(HttpRequestMessage request, int PatientId)
+        {
+            var objResult = dataAccessManager.GetCurrentEmpByPatientId(PatientId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetCurrentROByPatientId(HttpRequestMessage request, int PatientId)
+        {
+            var objResult = dataAccessManager.GetCurrentROByPatientId(PatientId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage DeleteById(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.DeleteById(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage Delete(HttpRequestMessage request, int id)
+        {
+            var res = dataAccessManager.Delete(id);
+            if (id > 0)
+            {
+                return request.CreateResponse(HttpStatusCode.Accepted, res);
+            }
+            else
+            {
+                return request.CreateResponse(HttpStatusCode.NoContent, new ErrorObject { ErrorMessage = "Id can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+        }
 
     }
 }

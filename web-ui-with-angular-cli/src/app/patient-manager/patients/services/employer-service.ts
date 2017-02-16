@@ -56,6 +56,21 @@ export class EmployerService {
         });
         return <Observable<Employer[]>>Observable.fromPromise(promise);
     }
+    getCurrentEmployer(patientId: Number): Observable<Employer> {
+        let promise: Promise<Employer> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/PatientEmpInfo/getCurrentEmpByPatientId/' + patientId)
+                .map(res => res.json())
+                .subscribe((data) => {
+                    let employer = null;
+                    employer = EmployerAdapter.parseResponse(data);
+                    resolve(employer);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<Employer>>Observable.fromPromise(promise);
+    }
     addEmployer(employer: Employer): Observable<Employer> {
         let promise: Promise<Employer> = new Promise((resolve, reject) => {
             let requestData: any = employer.toJS();

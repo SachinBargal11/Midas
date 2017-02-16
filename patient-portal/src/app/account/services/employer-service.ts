@@ -44,8 +44,8 @@ export class EmployerService {
             return this._http.get(this._url + '/PatientEmpInfo/getCurrentEmpByPatientId/' + patientId).map(res => res.json())
                 .subscribe((data: any) => {
                     let employer = null;
-                        employer = EmployerAdapter.parseResponse(data);
-                        resolve(employer);
+                    employer = EmployerAdapter.parseResponse(data);
+                    resolve(employer);
                 }, (error) => {
                     reject(error);
                 });
@@ -113,14 +113,9 @@ export class EmployerService {
     }
     deleteEmployer(employer: Employer): Observable<Employer> {
         let promise = new Promise((resolve, reject) => {
-            let requestData: any = employer.toJS();
-            requestData.contactInfo = requestData.contact;
-            requestData.addressInfo = requestData.address;
-            requestData = _.omit(requestData, 'contact', 'address');
-            return this._http.post(this._url + '/PatientEmpInfo/save', JSON.stringify(requestData), {
+            return this._http.get(this._url + '/PatientEmpInfo/Delete/' + employer.id, {
                 headers: this._headers
-            })
-                .map(res => res.json())
+            }).map(res => res.json())
                 .subscribe((data) => {
                     let parsedEmployer: Employer = null;
                     parsedEmployer = EmployerAdapter.parseResponse(data);
