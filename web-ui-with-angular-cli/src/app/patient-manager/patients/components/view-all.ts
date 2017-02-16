@@ -16,6 +16,8 @@ import { NotificationsService } from 'angular2-notifications';
 import { Notification } from '../../../commons/models/notification';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { User } from '../../../commons/models/user';
+import { InsuranceStore } from '../stores/insurance-store';
+import { Insurance } from '../models/insurance';
 import * as _ from 'underscore';
 
 @Component({
@@ -27,6 +29,7 @@ export class ViewAllComponent implements OnInit {
     patientId: number;
     patientInfo: Patient;
     familyMember:FamilyMember[];
+    insurances: Insurance[];
     employer: Employer;
     dateOfFirstTreatment: string;
     dateOfBirth: string;
@@ -43,7 +46,8 @@ export class ViewAllComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _patientsStore: PatientsStore,
         private _familyMemberStore: FamilyMemberStore,
-        private _employerStore: EmployerStore
+        private _employerStore: EmployerStore,
+        private _insuranceStore: InsuranceStore
     ) {
         this._route.parent.params.subscribe((params: any) => {
             this.patientId = parseInt(params.patientId, 10);
@@ -85,6 +89,18 @@ export class ViewAllComponent implements OnInit {
                      },
                 (error) => {
                     this._router.navigate(['/patient-manager/patients']);
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+
+                this._progressBarService.show();
+            this._insuranceStore.getInsurances(this.patientId)
+                .subscribe(insurances => {
+                    this.insurances = insurances;
+                },
+                (error) => {
                     this._progressBarService.hide();
                 },
                 () => {

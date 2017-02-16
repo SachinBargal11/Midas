@@ -7,115 +7,72 @@
             <div class="box-typical-body panel-body">
 
                 <div *ngIf="patientInfo">
-
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <label class="form-label"> First Name</label>
-                            <input disabled [ngModel]="patientInfo.user.firstName" type="text" class="form-control">
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label"> Middle Name</label>
-                            <input disabled [ngModel]="patientInfo.user.middleName" type="text" class="form-control">
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label"> Last Name</label>
-                            <input disabled [ngModel]="patientInfo.user.lastName" type="text" class="form-control">
-                        </div>
-
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <label class="form-label"> Gender</label>
-                            <select disabled [ngModel]="patientInfo.user.gender" class="select2-arrow form-control">
-                    <option value="">-</option>
-                    <option value="1">Male</option>
-                    <option value="2">Female</option>
-                    <option value="3">Others</option>
-                </select>
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label">Marital Status</label>
-                            <select disabled [ngModel]="patientInfo.maritalStatusId" type="text" class="form-control">
-                        <option value="">-</option>
-                        <option value="1">Single</option>
-                        <option value="2">Married</option>
-                        </select>
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label">Date of Birth</label>
-                            <input disabled [ngModel]="dateOfBirth" type="text" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <label class="form-label">SSN</label>
-                            <input disabled [ngModel]="patientInfo.ssn" class="form-control">
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label"> Weight (lbs)</label>
-                            <input disabled [ngModel]="patientInfo.weight" class="form-control">
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label"> Height (cms)</label>
-                            <input disabled [ngModel]="patientInfo.height" type="text" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <label class="form-label">Date of First Treatment</label>
-                            <input disabled [ngModel]="dateOfFirstTreatment" class="form-control">
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label">Cellphone</label>
-                            <input disabled [ngModel]="patientInfo.user.contact.cellPhone" class="form-control">
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label">Home Phone No</label>
-                            <input disabled [ngModel]="patientInfo.user.contact.homePhone" type="text" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <label class="form-label"> Work Phone No</label>
-                            <input disabled [ngModel]="patientInfo.user.contact.workPhone" class="form-control">
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label"> Fax No</label>
-                            <input disabled [ngModel]="patientInfo.user.contact.faxNo" class="form-control">
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label">Address1</label>
-                            <input disabled [ngModel]="patientInfo.user.address.address1" type="text" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <label class="form-label"> State</label>
-                            <input disabled [ngModel]="patientInfo.user.address.state" class="form-control">
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label">City</label>
-                            <input disabled [ngModel]="patientInfo.user.address.city" class="form-control">
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label">Zipcode</label>
-                            <input disabled [ngModel]="patientInfo.user.address.zipCode" type="text" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <label class="form-label"> Country</label>
-                            <input disabled [ngModel]="patientInfo.user.address.country" class="form-control">
-                        </div>
-                    </div>
+                    <table id="table-edit" class="table">
+				    <tbody>
+				    	<tr>
+				    		<td><b> First Name</b></td>
+				    		<td>{{patientInfo.user.firstName}}</td>
+				    		<td><b>Middle Name</b></td>
+				    		<td>{{patientInfo.user.middleName}}</td>
+				    	</tr>
+				    	<tr>
+				    		<td><b> Last Name</b></td>
+				    		<td>{{patientInfo.user.lastName}}</td>
+				    		<td><b> Gender </b></td>
+				    		<td>{{patientInfo.user.genderLabel}}</td>
+				    	</tr>
+                        <tr>
+				    		<td><b> Marital Status</b></td>
+				    		<td>{{patientInfo.martialStatusLabel}}</td>
+				    		<td><b> SSN </b></td>
+				    		<td>{{patientInfo.ssn}}</td>
+				    	</tr>
+                         <tr>
+				    		<td><b> Date of Birth</b></td>
+				    		<td>{{dateOfBirth}}</td>
+				    		<td><b> Date of First Treatment </b></td>
+				    		<td>{{dateOfFirstTreatment}}</td>
+				    	</tr>
+                          <tr>
+				    		<td><b> Weight</b></td>
+				    		<td>{{patientInfo.weight}}</td>
+				    		<td><b> Height (cms) </b></td>
+				    		<td>{{patientInfo.height}}</td>
+				    	</tr>
+                           <tr>
+				    		<td><b>Cellphone </b></td>
+				    		<td>{{patientInfo.user.contact.cellPhone}}</td>
+				    		<td><b>Home Phone No  </b></td>
+				    		<td>{{patientInfo.user.contact.homePhone}}</td>
+				    	</tr>
+                          <tr>
+				    		<td><b>Work Phone No</b></td>
+				    		<td>{{patientInfo.user.contact.workPhone}}</td>
+				    		<td><b>Fax No</b></td>
+				    		<td>{{patientInfo.user.contact.faxNo}}</td>
+				    	</tr>
+                          <tr>
+				    		<td><b>Address1 </b></td>
+				    		<td>{{patientInfo.user.address.address1}}</td>
+				    		<td><b> Address2 </b></td>
+				    		<td>{{patientInfo.user.address.address2}}</td>
+				    	</tr>
+                          <tr>
+				    		<td><b>State </b></td>
+				    		<td>{{patientInfo.user.address.state}}</td>
+				    		<td><b> City </b></td>
+				    		<td>{{patientInfo.user.address.city}}</td>
+				    	</tr>
+                         <tr>
+				    		<td><b> Zipcode</b></td>
+				    		<td>{{patientInfo.user.address.zipCode}}</td>
+				    		<td><b> Country </b></td>
+				    		<td>{{patientInfo.user.address.country}}</td>
+				    	</tr>
+                        
+				    </tbody>
+                    </table>
                 </div>
-
-
             </div>
             <!--.box-typical-body-->
         </section>
@@ -156,73 +113,53 @@
             </header>
             <div class="box-typical-body panel-body">
                 <div *ngIf="employer">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <label class="form-label">Job Title</label>
-                            <input disabled [ngModel]="employer.jobTitle" type="text" class="form-control">
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label">Employer Name </label>
-                            <input disabled [ngModel]="employer.empName" type="text" class="form-control">
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label">E-Mail</label>
-                            <input disabled [ngModel]="employer.contact.emailAddress" type="text" class="form-control">
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <label class="form-label">Work Phone No</label>
-                            <input disabled [ngModel]="employer.contact.workPhone" class="form-control">
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label">Cellphone</label>
-                            <input disabled [ngModel]="employer.contact.cellPhone" class="form-control">
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label">Home Phone No</label>
-                            <input disabled [ngModel]="employer.contact.homePhone" type="text" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <label class="form-label">Fax No</label>
-                            <input disabled [ngModel]="employer.contact.faxNo" class="form-control">
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label">Address1</label>
-                            <input disabled [ngModel]="employer.address.address1" class="form-control">
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label">Address2</label>
-                            <input disabled [ngModel]="employer.address.address2" type="text" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <label class="form-label"> State</label>
-                            <input disabled [ngModel]="employer.address.state" class="form-control">
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label">City</label>
-                            <input disabled [ngModel]="employer.address.city" class="form-control">
-                        </div>
-                        <div class="col-lg-4">
-                            <label class="form-label">Zipcode</label>
-                            <input disabled [ngModel]="employer.address.zipCode" type="text" class="form-control">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <label class="form-label"> Country</label>
-                            <input disabled [ngModel]="employer.address.country" class="form-control">
-                        </div>
-                    </div>
+                    <table id="table-edit" class="table">
+				    <tbody>
+				    	<tr>
+				    		<td><b>Job Title</b></td>
+				    		<td>{{employer.jobTitle}}</td>
+				    		<td><b>Employer Name</b></td>
+				    		<td>{{employer.empName}}</td>
+				    	</tr>
+				    	<tr>
+				    		<td><b>E-Mail</b></td>
+				    		<td>{{employer.contact.emailAddress}}</td>
+				    		<td><b> Work Phone No </b></td>
+				    		<td>{{employer.contact.workPhone}}</td>
+				    	</tr>
+                           <tr>
+				    		<td><b>Cellphone </b></td>
+				    		<td>{{employer.contact.cellPhone}}</td>
+				    		<td><b>Home Phone No  </b></td>
+				    		<td>{{employer.contact.homePhone}}</td>
+				    	</tr>
+                          <tr>
+				    		<td><b>Fax No</b></td>
+				    		<td>{{employer.contact.faxNo}}</td>
+				    		<td><b>Fax No</b></td>
+				    		<td>{{employer.contact.faxNo}}</td>
+				    	</tr>
+                          <tr>
+				    		<td><b>Address1 </b></td>
+				    		<td>{{employer.address.address1}}</td>
+				    		<td><b> Address2 </b></td>
+				    		<td>{{employer.address.address2}}</td>
+				    	</tr>
+                          <tr>
+				    		<td><b>State </b></td>
+				    		<td>{{employer.address.state}}</td>
+				    		<td><b> City </b></td>
+				    		<td>{{employer.address.city}}</td>
+				    	</tr>
+                         <tr>
+				    		<td><b> Zipcode</b></td>
+				    		<td>{{employer.address.zipCode}}</td>
+				    		<td><b> Country </b></td>
+				    		<td>{{employer.address.country}}</td>
+				    	</tr>
+                        
+				    </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -236,6 +173,24 @@
                 <h4 class="panel-title">Insurance Information</h4>
             </header>
             <div class="box-typical-body panel-body">
+                 <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>PolicyHolderName</th>
+                            <th>PolicyOwnerId</th>
+                            <th>InsuranceCompanyCode</th>
+                            <th>PolicyNo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let insurance of insurances">
+                            <td>{{ insurance.policyHoldersName }}</td>
+                            <td>{{ insurance.policyOwnerId }}</td>
+                            <td>{{ insurance.insuranceCompanyCode }}</td>
+                            <td>{{ insurance.policyNo }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <!--.box-typical-body-->
         </section>

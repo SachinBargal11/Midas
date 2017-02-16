@@ -67,5 +67,20 @@ export class User extends UserRecord {
                 return 'Staff';
         }
     }
+         get genderLabel(): string {
+        return User.getGender(this.gender);
+    }
+    // tslint:disable-next-line:member-ordering
+    static getGender(genderStatus: Gender): string {
+        switch (genderStatus) {
+            case Gender.MALE:
+                return 'Male';
+            case Gender.FEMALE:
+                return 'Female';
+            case Gender.OTHERS:
+                return 'Others';
+           
+        }
+    }
 
 }
