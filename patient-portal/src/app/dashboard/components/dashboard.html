@@ -1,50 +1,75 @@
 <h1 class="with-border">Dashboard</h1>
-<div class="container-fluid">
-	<div class="row">
-        <!--<user-statistics></user-statistics>			-->
-	</div>
-<!--<select class="form-control">
-        <option *ngFor="let item of items" [selected]="item.name == 'two'">{{item.name}}</option>
-      </select>-->
-    <div class="row">
-           <div class="col-xl-6">
-               <div class="row">
-                   <div class="col-sm-6">
-                       <article class="statistic-box red">
-                           <div>
-                               <div class="number">{{ users }}</div>
-                               <div class="caption"><div>Total Users</div></div>
-                           </div>
-                       </article>
-                   </div><!--.col-->
-                   <div class="col-sm-6">
-                       <article class="statistic-box green">
-                           <div>
-                               <div class="number">{{ doctors }}</div>
-                               <div class="caption"><div>Total Doctors</div></div>
-                           </div>
-                       </article>
-                   </div><!--.col-->
-               </div>
-               <div class="row">
-                   <div class="col-sm-6">
-                       <article class="statistic-box purple">
-                           <div>
-                               <div class="number">{{ providers }}</div>
-                               <div class="caption"><div>Total Providers</div></div>
-                           </div>
-                       </article>
-                   </div><!--.col-->
-                   <div class="col-sm-6">
-                       <article class="statistic-box yellow">
-                           <div>
-                               <div class="number">{{ medicalfacilities }}</div>
-                               <div class="caption"><div>Total Medical Facilities</div></div>
-                           </div>
-                       </article>
-                   </div><!--.col-->
-               </div>
-           </div>       
-       </div>
-	   
+<div class="col-xl-6 dahsboard-column">
+    <section class="box-typical box-typical-dashboard panel panel-default">
+        <header class="box-typical-header panel-heading">
+            <h4 class="panel-title">Personal Information</h4>
+        </header>
+        <div class="box-typical-body panel-body">
+
+            <div *ngIf="patientInfo">
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-lg-3"><b> First Name</b></div>
+                        <div class="col-lg-3">{{patientInfo.user.firstName}}</div>
+                        <div class="col-lg-3"><b>Middle Name</b></div>
+                        <div class="col-lg-3">{{patientInfo.user.middleName}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3"><b> Last Name</b></div>
+                        <div class="col-lg-3">{{patientInfo.user.lastName}}</div>
+                        <div class="col-lg-3"><b> Gender </b></div>
+                        <div class="col-lg-3">{{patientInfo.user.genderLabel}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3"><b> Marital Status</b></div>
+                        <div class="col-lg-3">{{patientInfo.maritalStatusId}}</div>
+                        <div class="col-lg-3"><b> SSN </b></div>
+                        <div class="col-lg-3">{{patientInfo.ssn}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3"><b> Date of Birth</b></div>
+                        <div class="col-lg-3">{{dateOfBirth}}</div>
+                        <div class="col-lg-3"><b> Date of First Treatment </b></div>
+                        <div class="col-lg-3">{{dateOfFirstTreatment}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3"><b>Weight</b></div>
+                        <div class="col-lg-3">{{patientInfo.weight}}</div>
+                        <div class="col-lg-3"><b> Height (cms) </b></div>
+                        <div class="col-lg-3">{{patientInfo.height}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3"><b>Cellphone</b></div>
+                        <div class="col-lg-3">{{patientInfo.user.contact.cellPhone}}</div>
+                        <div class="col-lg-3"><b> Home Phone No </b></div>
+                        <div class="col-lg-3">{{patientInfo.user.contact.homePhone}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3"><b>Work Phone No</b></div>
+                        <div class="col-lg-3">{{patientInfo.user.contact.workPhone}}</div>
+                        <div class="col-lg-3"><b> Fax No </b></div>
+                        <div class="col-lg-3">{{patientInfo.user.contact.faxNo}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3"><b>Address1</b></div>
+                        <div class="col-lg-3">{{patientInfo.user.address.address1}}</div>
+                        <div class="col-lg-3"><b> Address2  </b></div>
+                        <div class="col-lg-3">{{patientInfo.user.address.address2}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3"><b>State</b></div>
+                        <div class="col-lg-3">{{patientInfo.user.address.state}}</div>
+                        <div class="col-lg-3"><b> City  </b></div>
+                        <div class="col-lg-3">{{patientInfo.user.address.city}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3"><b>Zipcode</b></div>
+                        <div class="col-lg-3">{{patientInfo.user.address.zipCode}}</div>
+                        <div class="col-lg-3"><b> Country  </b></div>
+                        <div class="col-lg-3">{{patientInfo.user.address.country}}</div>
+                    </div>
+                </div>          
+            </div>
+        </div>
+    </section>
 </div>

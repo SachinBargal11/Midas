@@ -29,6 +29,12 @@ h6 {
         padding-bottom: 0.4rem;
     }
 }
+h4  {
+    &.panel-title {
+        margin-top: 1.2rem;
+        margin-left: 1.2rem;
+    }
+}
 
 .nav {
     .nav-item .btn-close {
@@ -121,4 +127,5 @@ body {
 .control-panel.open .notification-panel-container {
     width: 280px;
     display: block;
+    padding-top: 50px;
 }
