@@ -11,8 +11,6 @@ const InsuranceRecord = Record({
     policyOwnerId: 0,
     policyHoldersName: '',
     contactPerson: '',
-    claimfileNo: '',
-    wcbNo: '',
     insuranceType: InsuranceType.PRIMARY,
     insuranceCompanyCode: '',
     isinactive: 0,
@@ -30,8 +28,6 @@ export class Insurance extends InsuranceRecord {
     policyOwnerId: number;
     policyHoldersName: string;
     contactPerson: string;
-    claimfileNo: string;
-    wcbNo: string;
     insuranceType: InsuranceType;
     insuranceCompanyCode: string;
     isinactive: boolean;

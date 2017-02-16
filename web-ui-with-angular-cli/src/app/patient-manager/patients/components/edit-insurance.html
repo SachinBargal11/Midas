@@ -252,32 +252,6 @@
             </div>
             <div class="row">
                 <div class="col-lg-4">
-                    <label class="form-label"> Claim File Number
-                                <span class="color-red">*</span>
-                            </label>
-                    <div class="form-group" [class.error]="insuranceformControls.claimfileNo.touched && !insuranceformControls.claimfileNo.valid">
-                        <input type="text" formControlName="claimfileNo" [ngModel]="insurance.claimfileNo" [class.error]="!insuranceformControls.claimfileNo.valid" class="form-control" placeholder="" />
-                        <div class='error-list' *ngIf="insuranceformControls.claimfileNo.touched && !insuranceformControls.claimfileNo.valid">
-                            <ul>
-                                <li *ngIf="insuranceformControls.claimfileNo.hasError('required')">Claim File Number is required.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <label class="form-label"> WCB Number
-                                <span class="color-red">*</span>
-                            </label>
-                    <div class="form-group" [class.error]="insuranceformControls.wcbNo.touched && !insuranceformControls.wcbNo.valid">
-                        <input type="text" formControlName="wcbNo" [ngModel]="insurance.wcbNo" [class.error]="!insuranceformControls.wcbNo.valid" class="form-control" placeholder="" />
-                        <div class='error-list' *ngIf="insuranceformControls.wcbNo.touched && !insuranceformControls.wcbNo.valid">
-                            <ul>
-                                <li *ngIf="insuranceformControls.wcbNo.hasError('required')">WCB Number is required</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
                     <label class="form-label">Contact Person
                                 <span class="color-red">*</span>
                             </label>
