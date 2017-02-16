@@ -1,0 +1,244 @@
+<div class="row">
+    <div class="col-xl-6 dahsboard-column">
+        <section class="box-typical box-typical-dashboard panel panel-default">
+            <header class="box-typical-header panel-heading">
+                <h4 class="panel-title">Personal Information</h4>
+            </header>
+            <div class="box-typical-body panel-body">
+
+                <div *ngIf="patientInfo">
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label"> First Name</label>
+                            <input disabled [ngModel]="patientInfo.user.firstName" type="text" class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label"> Middle Name</label>
+                            <input disabled [ngModel]="patientInfo.user.middleName" type="text" class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label"> Last Name</label>
+                            <input disabled [ngModel]="patientInfo.user.lastName" type="text" class="form-control">
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label"> Gender</label>
+                            <select disabled [ngModel]="patientInfo.user.gender" class="select2-arrow form-control">
+                    <option value="">-</option>
+                    <option value="1">Male</option>
+                    <option value="2">Female</option>
+                    <option value="3">Others</option>
+                </select>
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">Marital Status</label>
+                            <select disabled [ngModel]="patientInfo.maritalStatusId" type="text" class="form-control">
+                        <option value="">-</option>
+                        <option value="1">Single</option>
+                        <option value="2">Married</option>
+                        </select>
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">Date of Birth</label>
+                            <input disabled [ngModel]="dateOfBirth" type="text" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label">SSN</label>
+                            <input disabled [ngModel]="patientInfo.ssn" class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label"> Weight (lbs)</label>
+                            <input disabled [ngModel]="patientInfo.weight" class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label"> Height (cms)</label>
+                            <input disabled [ngModel]="patientInfo.height" type="text" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label">Date of First Treatment</label>
+                            <input disabled [ngModel]="dateOfFirstTreatment" class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">Cellphone</label>
+                            <input disabled [ngModel]="patientInfo.user.contact.cellPhone" class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">Home Phone No</label>
+                            <input disabled [ngModel]="patientInfo.user.contact.homePhone" type="text" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label"> Work Phone No</label>
+                            <input disabled [ngModel]="patientInfo.user.contact.workPhone" class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label"> Fax No</label>
+                            <input disabled [ngModel]="patientInfo.user.contact.faxNo" class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">Address1</label>
+                            <input disabled [ngModel]="patientInfo.user.address.address1" type="text" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label"> State</label>
+                            <input disabled [ngModel]="patientInfo.user.address.state" class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">City</label>
+                            <input disabled [ngModel]="patientInfo.user.address.city" class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">Zipcode</label>
+                            <input disabled [ngModel]="patientInfo.user.address.zipCode" type="text" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label"> Country</label>
+                            <input disabled [ngModel]="patientInfo.user.address.country" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <!--.box-typical-body-->
+        </section>
+        <!--.box-typical-dashboard-->
+        <section class="box-typical box-typical-dashboard panel panel-default">
+            <header class="box-typical-header panel-heading">
+                <h4 class="panel-title">Family Member</h4>
+            </header>
+            <div class="box-typical-body panel-body">
+                <!--code-->
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Relation to patient</th>
+                            <th>Full Name</th>
+                            <th>Cellphone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let family of familyMember">
+                            <td>{{ family.relationLabel }}</td>
+                            <td>{{ family.fullName }}</td>
+                            <td>{{ family.cellPhone }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!--code-->
+            </div>
+            <!--.box-typical-body -->
+        </section>
+    </div>
+    <!--.col-->
+    <div class="col-xl-6 dahsboard-column">
+        <section class="box-typical box-typical-dashboard panel panel-default">
+            <header class="box-typical-header panel-heading">
+                <h4 class="panel-title">Employer Information</h4>
+            </header>
+            <div class="box-typical-body panel-body">
+                <div *ngIf="employer">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label">Job Title</label>
+                            <input disabled [ngModel]="employer.jobTitle" type="text" class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">Employer Name </label>
+                            <input disabled [ngModel]="employer.empName" type="text" class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">E-Mail</label>
+                            <input disabled [ngModel]="employer.contact.emailAddress" type="text" class="form-control">
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label">Work Phone No</label>
+                            <input disabled [ngModel]="employer.contact.workPhone" class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">Cellphone</label>
+                            <input disabled [ngModel]="employer.contact.cellPhone" class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">Home Phone No</label>
+                            <input disabled [ngModel]="employer.contact.homePhone" type="text" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label">Fax No</label>
+                            <input disabled [ngModel]="employer.contact.faxNo" class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">Address1</label>
+                            <input disabled [ngModel]="employer.address.address1" class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">Address2</label>
+                            <input disabled [ngModel]="employer.address.address2" type="text" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label"> State</label>
+                            <input disabled [ngModel]="employer.address.state" class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">City</label>
+                            <input disabled [ngModel]="employer.address.city" class="form-control">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="form-label">Zipcode</label>
+                            <input disabled [ngModel]="employer.address.zipCode" type="text" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="form-label"> Country</label>
+                            <input disabled [ngModel]="employer.address.country" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!--.box-typical-body-->
+        </section>
+        <!--.box-typical-dashboard-->
+        <section class="box-typical box-typical-dashboard panel panel-default">
+            <header class="box-typical-header panel-heading">
+                <h4 class="panel-title">Insurance Information</h4>
+            </header>
+            <div class="box-typical-body panel-body">
+            </div>
+            <!--.box-typical-body-->
+        </section>
+    </div>
+    <!--.col-->
+</div>

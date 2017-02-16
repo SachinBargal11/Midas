@@ -39,7 +39,7 @@
     <p-column field="user.contact.emailAddress" header="Email" [sortable]="true"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
         <template let-patient="rowData" pTemplate="body">
-            <a routerLink="{{patient.user.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
+            <a routerLink="{{patient.user.id}}/viewall"><i class="glyphicon glyphicon-edit"></i></a>
         </template>
     </p-column>
     </p-dataTable>

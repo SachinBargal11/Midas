@@ -38,6 +38,19 @@ export class EmployerStore {
         return <Observable<Employer[]>>Observable.fromPromise(promise);
     }
 
+   
+      getCurrentEmployer(patientId: Number): Observable<Employer> {
+        let promise = new Promise((resolve, reject) => {
+            this._employerService.getCurrentEmployer(patientId).subscribe((employer: Employer) => {
+                resolve(employer);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Employer>>Observable.fromPromise(promise);
+    }
+
+
     findEmployerById(id: number) {
         let employers = this._employers.getValue();
         let index = employers.findIndex((currentEmployer: Employer) => currentEmployer.id === id);

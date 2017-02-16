@@ -46,6 +46,8 @@ import { PatientRoutingModule } from './patient-manager-routes';
 import { CaseComponent } from './cases/components/case';
 import { CasesListComponent } from './cases/components/cases-list';
 import { CasesStore } from './cases/stores/case-store';
+import { ViewAllComponent } from './patients/components/view-all';
+
 //  import { CasesStore } from './cases/services/cases-services;
 
 @NgModule({
@@ -83,7 +85,8 @@ import { CasesStore } from './cases/stores/case-store';
         ConsentFormsComponent,
         ReferalsComponent,
         CaseComponent,
-        CasesListComponent
+        CasesListComponent,
+        ViewAllComponent
     ],
     providers: [
         PatientsService,
