@@ -7,6 +7,7 @@ import { MapToJSPipe } from './pipes/map-to-js';
 import { TimeAgoPipe } from './pipes/time-ago-pipe';
 import { ReversePipe } from './pipes/reverse-array-pipe';
 import { PhoneFormatPipe } from './pipes/phone-format-pipe';
+import { FaxNoFormatPipe } from './pipes/faxno-format-pipe';
 
 import { AppHeaderComponent } from '../elements/app-header/app-header';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb';
@@ -14,6 +15,7 @@ import { MainNavComponent } from './components/main-nav/main-nav';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar';
 import { LoaderComponent } from './components/loader/loader';
 import { NotificationComponent } from './components/notification/notification';
+import { ShellComponent } from './shell-component';
 
 import {
   InputTextModule,
@@ -52,12 +54,18 @@ import { DropdownModule } from 'ng2-bootstrap';
     TimeAgoPipe,
     ReversePipe,
     PhoneFormatPipe,
+    FaxNoFormatPipe,
     AppHeaderComponent,
     BreadcrumbComponent,
     MainNavComponent,
     ProgressBarComponent,
     LoaderComponent,
-    NotificationComponent
+    NotificationComponent,
+    ShellComponent
+  ],
+  providers: [
+    PhoneFormatPipe,
+    FaxNoFormatPipe
   ],
   exports: [
     CommonModule,
@@ -68,6 +76,7 @@ import { DropdownModule } from 'ng2-bootstrap';
     TimeAgoPipe,
     ReversePipe,
     PhoneFormatPipe,
+    FaxNoFormatPipe,
     AppHeaderComponent,
     BreadcrumbComponent,
     MainNavComponent,
@@ -84,7 +93,8 @@ import { DropdownModule } from 'ng2-bootstrap';
     InputMaskModule,
     RadioButtonModule,
     MultiSelectModule,
-    DropdownModule
+    DropdownModule,
+    ShellComponent
   ]
 })
 export class CommonsModule { }

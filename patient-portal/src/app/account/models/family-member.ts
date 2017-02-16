@@ -5,7 +5,7 @@ import { Relation } from './enums/relation';
 const FamilyMemberRecord = Record({
     id: 0,
     patientId: 0,
-    relationId: Relation.FATHER,
+    relationId: 0,
     isInActive: false,
     fullName: '',
     familyName: '',
@@ -24,7 +24,7 @@ export class FamilyMember extends FamilyMemberRecord {
 
     id: number;
     patientId: number;
-    relationId: Relation;
+    relationId: number;
     isInActive: boolean;
     fullName: string;
     familyName: string;
