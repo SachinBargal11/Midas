@@ -67,5 +67,18 @@ export class Patient extends PatientRecord {
     constructor(props) {
         super(props);
     }
+       get martialStatusLabel(): string {
+        return Patient.getLabel(this.maritalStatusId);
+    }
+    // tslint:disable-next-line:member-ordering
+    static getLabel(maritalStatus: MaritalStatus): string {
+        switch (maritalStatus) {
+            case MaritalStatus.SINGLE:
+                return 'Single';
+            case MaritalStatus.MARRIED:
+                return 'Married';
+           
+        }
+    }
     
 }
