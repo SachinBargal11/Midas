@@ -63,6 +63,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 refferenceOfficeBO2.AddressInfo = boAddress;
             }
 
+            refferenceOfficeBO2.IsDeleted = refferingOffice.IsDeleted;
+            refferenceOfficeBO2.CreateByUserID = refferingOffice.CreateByUserID;
+            refferenceOfficeBO2.UpdateByUserID = refferingOffice.UpdateByUserID;
 
             return (T)(object)refferenceOfficeBO2;
         }
@@ -81,7 +84,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Get(int id)
         {
 
-            var acc = _context.RefferingOffices.Include("AddressInfo").Include("Case").Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<RefferingOffice>();
+            var acc = _context.RefferingOffices.Include("AddressInfo").Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<RefferingOffice>();
 
             if (acc == null)
             {
@@ -99,7 +102,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object GetByCaseId(int id)
         {
             //var acc = _context.Patient2.Include("User").Include("Location").Where(p => p.Id == id && p.IsDeleted == false).FirstOrDefault<Patient2>();
-            var acc = _context.RefferingOffices.Include("AddressInfo").Include("Case").Where(p => p.CaseId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<RefferingOffice>();
+            var acc = _context.RefferingOffices.Include("AddressInfo").Where(p => p.CaseId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<RefferingOffice>();
 
             if (acc == null)
             {
@@ -408,7 +411,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 dbContextTransaction.Commit();
 
-                refferingOfficeDB = _context.RefferingOffices.Include("AddressInfo").Include("Case").Where(p => p.Id == refferingOfficeDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<RefferingOffice>();
+                refferingOfficeDB = _context.RefferingOffices.Include("AddressInfo").Where(p => p.Id == refferingOfficeDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<RefferingOffice>();
             }
 
             var res = Convert<BO.RefferingOffice, RefferingOffice>(refferingOfficeDB);
@@ -424,7 +427,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
-                refferingOfficeDB = _context.RefferingOffices.Include("AddressInfo").Include("Case").Where(p => p.Id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault();
+                refferingOfficeDB = _context.RefferingOffices.Include("AddressInfo").Where(p => p.Id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault();
 
                 if (refferingOfficeDB != null)
                 {
