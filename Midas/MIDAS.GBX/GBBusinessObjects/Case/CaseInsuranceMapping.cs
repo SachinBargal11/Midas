@@ -18,8 +18,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("isPrimaryInsurance")]
         public bool? IsPrimaryInsurance { get; set; }
 
-        [JsonProperty("case")]
-        public Case cases { get; set; }
+        //[JsonProperty("case")]
+        //public Case cases { get; set; }
 
         [JsonProperty("patientInsuranceInfo")]
         public PatientInsuranceInfo PatientInsuranceInfo{ get; set; }
