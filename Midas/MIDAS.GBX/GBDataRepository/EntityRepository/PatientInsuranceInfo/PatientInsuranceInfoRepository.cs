@@ -102,6 +102,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 insuranceBO.contactInfo1 = boContactInfo1;
             }
 
+            insuranceBO.IsDeleted = InsuranceInfos.IsDeleted;
+            insuranceBO.CreateByUserID = InsuranceInfos.CreateByUserID;
+            insuranceBO.UpdateByUserID = InsuranceInfos.UpdateByUserID;
+
             return (T)(object)insuranceBO;
         }
         #endregion

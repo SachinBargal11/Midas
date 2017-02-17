@@ -46,6 +46,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             patientfamilymemberBO.PrimaryContact = patientfamilymember.PrimaryContact;
             patientfamilymemberBO.IsInActive = patientfamilymember.IsInActive;
             patientfamilymemberBO.IsDeleted = patientfamilymember.IsDeleted;
+            patientfamilymemberBO.CreateByUserID = patientfamilymember.CreateByUserID;
+            patientfamilymemberBO.UpdateByUserID = patientfamilymember.UpdateByUserID;
+
+
 
             return (T)(object)patientfamilymemberBO;
         }
