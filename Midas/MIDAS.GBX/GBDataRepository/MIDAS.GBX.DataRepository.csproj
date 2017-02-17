@@ -64,6 +64,7 @@
     <Compile Include="DataAccessManager\IDBContextProvider.cs" />
     <Compile Include="DataAccessManager\IGbDataAccessManager.cs" />
     <Compile Include="EntityRepository\BaseEntityRepo.cs" />
+    <Compile Include="EntityRepository\CaseInsuranceMapping\CaseInsuranceMappingRepository.cs" />
     <Compile Include="EntityRepository\Case\CaseRepository.cs" />
     <Compile Include="EntityRepository\Common\CaseStatusRepository.cs" />
     <Compile Include="EntityRepository\Common\CaseTypeRepository.cs" />

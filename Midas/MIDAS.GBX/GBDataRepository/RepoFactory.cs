@@ -172,6 +172,10 @@ namespace MIDAS.GBX
             {
                 repo = new RefferingOfficeRepository(context);
             }
+            if (typeof(T) == typeof(BO.CaseInsuranceMapping))
+            {
+                repo = new CaseInsuranceMappingRepository(context);
+            }
             if (typeof(T) == typeof(BO.Common.CaseType))
             {
                 repo = new CaseTypeRepository(context);

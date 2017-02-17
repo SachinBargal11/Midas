@@ -10,18 +10,17 @@ using System.Web.Http;
 
 namespace MIDAS.GBX.WebAPI.Controllers
 {
-    [RoutePrefix("midasapi/Case")]
+    [RoutePrefix("midasapi/CaseInsuranceMapping")]
 
-    public class CaseController : ApiController
+    public class CaseInsuranceMappingController : ApiController
     {
-        private IRequestHandler<Case> requestHandler;
+        private IRequestHandler<CaseInsuranceMapping> requestHandler;
 
-        public CaseController()
+        public CaseInsuranceMappingController()
         {
-            requestHandler = new GbApiRequestHandler<Case>();
+            requestHandler = new GbApiRequestHandler<CaseInsuranceMapping>();
         }
 
-        // GET: api/Organizations/5
         [HttpGet]
         [Route("Get/{id}")]
         [AllowAnonymous]
@@ -32,25 +31,17 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
 
         [HttpGet]
-        [Route("getByPatientId/{PatientId}")]
+        [Route("getByCaseId/{CaseId}")]
         [AllowAnonymous]
-        public HttpResponseMessage GetByPatientId(int PatientId)
+        public HttpResponseMessage GetByCaseId(int CaseId)
         {
-            return requestHandler.GetByPatientId(Request, PatientId);
-        }
-
-        [HttpGet]
-        [Route("getByCompanyId/{CompanyId}")]
-        [AllowAnonymous]
-        public HttpResponseMessage GetByCompanyId(int CompanyId)
-        {
-            return requestHandler.GetGbObjects(Request, CompanyId);
+            return requestHandler.GetByCaseId(Request, CaseId);
         }
 
         [HttpPost]
         [Route("Save")]
         [AllowAnonymous]
-        public HttpResponseMessage Post([FromBody]Case data)
+        public HttpResponseMessage Post([FromBody]CaseInsuranceMapping data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }

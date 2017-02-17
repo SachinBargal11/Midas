@@ -11,7 +11,6 @@
         <EntityTypeShape EntityType="MIDASGBXModel.CaseInsuranceMapping" Width="1.5" PointX="24.75" PointY="45.375" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.CaseStatu" Width="1.5" PointX="14.25" PointY="35" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.CaseType" Width="1.5" PointX="14.25" PointY="54.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.City" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.Company" Width="1.5" PointX="3" PointY="41.25" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.CompanySpecialtyDetail" Width="1.5" PointX="5.25" PointY="36.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.CompanyType" Width="1.5" PointX="0.75" PointY="37.25" IsExpanded="true" />
@@ -130,6 +129,7 @@
         <AssociationConnector Association="MIDASGBXModel.FK_AdjusterMaster_AddressInfo_ContactInfoId" />
         <AssociationConnector Association="MIDASGBXModel.FK_AdjusterMaster_Company_CompanyId" />
         <AssociationConnector Association="MIDASGBXModel.FK_AdjusterMaster_InsuranceMaster_InsuranceMasterId" />
+        <EntityTypeShape EntityType="MIDASGBXModel.City" Width="1.5" PointX="7.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
