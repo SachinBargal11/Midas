@@ -4,6 +4,13 @@
     [CaseId] INT NOT NULL, 
     [PatientInsuranceInfoId] INT NOT NULL,
 	[IsPrimaryInsurance] [BIT] NULL DEFAULT 0,
+
+	[IsDeleted] [BIT] NULL,
+	[CreateByUserID] [INT] NOT NULL,
+	[CreateDate] [DATETIME2](7) NOT NULL,
+	[UpdateByUserID] [INT] NULL,
+	[UpdateDate] [DATETIME2](7) NULL,
+
 	CONSTRAINT [PK_CaseInsuranceMapping] PRIMARY KEY ([Id]),
 	CONSTRAINT [UK_CaseId_PatientInsuranceInfoId] UNIQUE ([CaseId], [PatientInsuranceInfoId])
 )

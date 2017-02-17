@@ -8,7 +8,7 @@ using MIDAS.GBX.DataRepository.Model;
 using System.Data.Entity;
 using BO = MIDAS.GBX.BusinessObjects;
 
-namespace MIDAS.GBX.DataRepository.EntityRepository.common
+namespace MIDAS.GBX.DataRepository.EntityRepository
 {
     internal class CaseInsuranceMappingRepository : BaseEntityRepo, IDisposable
     {
@@ -111,76 +111,62 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.common
         #region save
         public override object Save<T>(T entity)
         {
-            BO.Case caseBO = (BO.Case)(object)entity;
-            BO.Location locationBO = new BO.Location();
+            BO.CaseInsuranceMapping caseInsuranceMappingBO = (BO.CaseInsuranceMapping)(object)entity;
+            int CaseId = 0;
 
-
-            Case caseDB = new Case();
+            List<CaseInsuranceMapping> listCaseInsuranceMappingDB = new List<CaseInsuranceMapping>();
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
-                Patient2 patient2DB = new Patient2();
-                Location locationDB = new Location();
-
-                bool IsEditMode = false;
-                IsEditMode = (caseBO != null && caseBO.ID > 0) ? true : false;
-
-                #region case
-                if (caseBO != null)
+                if (caseInsuranceMappingBO != null)
                 {
-                    bool Add_caseDB = false;
-                    caseDB = _context.Cases.Where(p => p.Id == caseBO.ID).FirstOrDefault();
+                    CaseId = caseInsuranceMappingBO.CaseId;
+                    List<int> PatientInsuranceInfoIds_New = caseInsuranceMappingBO.PatientInsuranceInfos.Select(p => p.ID).ToList<int>();
 
-                    if (caseDB == null && caseBO.ID <= 0)
-                    {
-                        caseDB = new Case();
-                        Add_caseDB = true;
-                    }
-                    else if (caseDB == null && caseBO.ID > 0)
-                    {
-                        dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Case dosent exists.", ErrorLevel = ErrorLevel.Error };
-                    }
+                    //Call for removing data
+                    List<CaseInsuranceMapping> listCaseInsuranceMappingDB_Remove = new List<CaseInsuranceMapping>();
+                    
+                    listCaseInsuranceMappingDB_Remove = _context.CaseInsuranceMappings.Where(p => p.CaseId == CaseId 
+                                                                        && !PatientInsuranceInfoIds_New.Contains(p.PatientInsuranceInfoId)
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                .ToList<CaseInsuranceMapping>();
 
-                    caseDB.PatientId = caseBO.PatientId;
-                    caseDB.CaseName = IsEditMode == true && caseBO.CaseName == null ? caseDB.CaseName : caseBO.CaseName;
-                    caseDB.CaseTypeId = IsEditMode == true && caseBO.CaseTypeId == null ? caseDB.CaseTypeId : caseBO.CaseTypeId;
-                    caseDB.LocationId = IsEditMode == true && caseBO.LocationId.HasValue == false ? caseDB.LocationId : caseBO.LocationId.Value;
-                    caseDB.PatientEmpInfoId = IsEditMode == true && caseBO.PatientEmpInfoId.HasValue == false ? caseDB.PatientEmpInfoId : caseBO.PatientEmpInfoId.Value;
-                    caseDB.CarrierCaseNo = IsEditMode == true && caseBO.CarrierCaseNo == null ? caseDB.CarrierCaseNo : caseBO.CarrierCaseNo;
-                    caseDB.Transportation = IsEditMode == true && caseBO.Transportation.HasValue == false ? caseDB.Transportation : caseBO.Transportation.Value;
-                    caseDB.CaseStatusId = IsEditMode == true && caseBO.CaseStatusId.HasValue == false ? caseDB.CaseStatusId : caseBO.CaseStatusId.Value;
-                    caseDB.AttorneyId = IsEditMode == true && caseBO.AttorneyId.HasValue == false ? caseDB.AttorneyId : caseBO.AttorneyId.Value;
-
-                    if (Add_caseDB == true)
-                    {
-                        caseDB = _context.Cases.Add(caseDB);
-                    }
+                    listCaseInsuranceMappingDB_Remove.ForEach(p => p.IsDeleted = true);
                     _context.SaveChanges();
-                }
-                else
-                {
-                    if (IsEditMode == false)
-                    {
-                        dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid case details.", ErrorLevel = ErrorLevel.Error };
-                    }
-                    caseDB = null;
-                }
 
-                _context.SaveChanges();
-                #endregion
+                    //List<int> PatientInsuranceInfoIds_Old = listCaseInsuranceMappingDB_Remove.Select(p => p.PatientInsuranceInfoId).ToList<int>();
+                    List<int> PatientInsuranceInfoIds_Existing = _context.CaseInsuranceMappings.Where(p => p.CaseId == CaseId
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                        .Select(p => p.PatientInsuranceInfoId).ToList<int>();
+
+                    //Call for insert data
+                    List<CaseInsuranceMapping> listCaseInsuranceMappingDB_Insert = new List<CaseInsuranceMapping>();
+
+                    listCaseInsuranceMappingDB_Insert = PatientInsuranceInfoIds_New.Where(p => !PatientInsuranceInfoIds_Existing.Contains(p))
+                                                                        .Select(p => new CaseInsuranceMapping()
+                                                                        {
+                                                                            CaseId = CaseId,
+                                                                            PatientInsuranceInfoId = p
+                                                                        })
+                                                                        .ToList<CaseInsuranceMapping>();
+
+                    if (listCaseInsuranceMappingDB_Insert != null && listCaseInsuranceMappingDB_Insert.Count > 0)
+                    {
+                        listCaseInsuranceMappingDB_Insert.ForEach(p => _context.CaseInsuranceMappings.Add(p));                        
+                    }
+
+                    _context.SaveChanges();
+                }                
 
                 dbContextTransaction.Commit();
 
-                caseDB = _context.Cases.Include("PatientEmpInfo")
-                                       .Include("PatientEmpInfo.AddressInfo")
-                                       .Include("PatientEmpInfo.ContactInfo")
-                                       .Where(p => p.Id == caseDB.Id).FirstOrDefault<Case>();
+                listCaseInsuranceMappingDB = _context.CaseInsuranceMappings.Include("PatientInsuranceInfo")
+                                                                           .Where(p => p.CaseId == CaseId)
+                                                                           .ToList<CaseInsuranceMapping>();
             }
 
-            var res = Convert<BO.Case, Case>(caseDB);
-            return (object)res;
+            //var res = Convert<BO.CaseInsuranceMapping, CaseInsuranceMapping>(listCaseInsuranceMappingDB);
+            return (object)listCaseInsuranceMappingDB;
         }
         #endregion
 

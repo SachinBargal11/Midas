@@ -81,6 +81,11 @@
           <Property Name="CaseId" Type="int" Nullable="false" />
           <Property Name="PatientInsuranceInfoId" Type="int" Nullable="false" />
           <Property Name="IsPrimaryInsurance" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="CaseStatus">
           <Key>
@@ -2096,6 +2101,11 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="IsPrimaryInsurance" Type="Boolean" />
           <NavigationProperty Name="Case" Relationship="Self.FK_CaseInsuranceMapping_Case_CaseId" FromRole="CaseInsuranceMapping" ToRole="Case" />
           <NavigationProperty Name="PatientInsuranceInfo" Relationship="Self.FK_CaseInsuranceMapping_PatientInsuranceInfo_PatientInsuranceInfoId" FromRole="CaseInsuranceMapping" ToRole="PatientInsuranceInfo" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
         </EntityType>
         <EntityType Name="CaseStatu">
           <Key>
@@ -2114,15 +2124,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CaseTypeText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="Cases" Relationship="Self.FK_Case_CaseType_CaseTypeId" FromRole="CaseType" ToRole="Case" />
-        </EntityType>
-        <EntityType Name="City">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Byte" Nullable="false" />
-          <Property Name="StateCode" Type="String" MaxLength="2" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CityText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
@@ -3750,7 +3751,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="CaseInsuranceMappings" EntityType="Self.CaseInsuranceMapping" />
           <EntitySet Name="CaseStatus" EntityType="Self.CaseStatu" />
           <EntitySet Name="CaseTypes" EntityType="Self.CaseType" />
-          <EntitySet Name="Cities" EntityType="Self.City" />
           <EntitySet Name="Companies" EntityType="Self.Company" />
           <EntitySet Name="CompanySpecialtyDetails" EntityType="Self.CompanySpecialtyDetail" />
           <EntitySet Name="CompanyTypes" EntityType="Self.CompanyType" />
@@ -4097,6 +4097,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="InsuranceMaster" EntitySet="InsuranceMasters" />
             <End Role="AdjusterMaster" EntitySet="AdjusterMasters" />
           </AssociationSet>
+          <EntitySet Name="Cities" EntityType="MIDASGBXModel.City" />
         </EntityContainer>
         <EntityType Name="AdjusterMaster">
           <Key>
@@ -4168,6 +4169,15 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" />
+          <Property Name="StateCode" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="CityText" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4230,6 +4240,11 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySetMapping Name="CaseInsuranceMappings">
             <EntityTypeMapping TypeName="MIDASGBXModel.CaseInsuranceMapping">
               <MappingFragment StoreEntitySet="CaseInsuranceMapping">
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
                 <ScalarProperty Name="PatientInsuranceInfoId" ColumnName="PatientInsuranceInfoId" />
@@ -4251,16 +4266,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               <MappingFragment StoreEntitySet="CaseType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CaseTypeText" ColumnName="CaseTypeText" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Cities">
-            <EntityTypeMapping TypeName="MIDASGBXModel.City">
-              <MappingFragment StoreEntitySet="City">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
-                <ScalarProperty Name="CityText" ColumnName="CityText" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -4954,6 +4959,16 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="InsuranceMasterId" ColumnName="InsuranceMasterId" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="MIDASGBXModel.City">
+              <MappingFragment StoreEntitySet="City">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CityText" ColumnName="CityText" />
+                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
