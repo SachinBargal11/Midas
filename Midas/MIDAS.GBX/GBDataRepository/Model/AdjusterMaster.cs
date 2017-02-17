@@ -12,17 +12,14 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class InsuranceMaster
+    public partial class AdjusterMaster
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public InsuranceMaster()
-        {
-            this.AdjusterMasters = new HashSet<AdjusterMaster>();
-        }
-    
         public int Id { get; set; }
-        public string CompanyCode { get; set; }
-        public string CompanyName { get; set; }
+        public Nullable<int> CompanyId { get; set; }
+        public Nullable<int> InsuranceMasterId { get; set; }
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
         public Nullable<int> AddressInfoId { get; set; }
         public Nullable<int> ContactInfoId { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
@@ -33,7 +30,7 @@ namespace MIDAS.GBX.DataRepository.Model
     
         public virtual AddressInfo AddressInfo { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AdjusterMaster> AdjusterMasters { get; set; }
+        public virtual Company Company { get; set; }
+        public virtual InsuranceMaster InsuranceMaster { get; set; }
     }
 }

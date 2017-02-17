@@ -125,6 +125,11 @@
         <AssociationConnector Association="MIDASGBXModel.FK_User_UserType" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompany_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompanyRole_User" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MIDASGBXModel.AdjusterMaster" Width="1.5" PointX="10.25" PointY="52.875" />
+        <AssociationConnector Association="MIDASGBXModel.FK_AdjusterMaster_AddressInfo_AddressInfoId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_AdjusterMaster_AddressInfo_ContactInfoId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_AdjusterMaster_Company_CompanyId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_AdjusterMaster_InsuranceMaster_InsuranceMasterId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

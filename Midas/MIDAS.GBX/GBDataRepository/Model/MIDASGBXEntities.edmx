@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AddressInfo">
           <Key>
             <PropertyRef Name="id" />
@@ -17,6 +17,24 @@
           <Property Name="State" Type="nvarchar" MaxLength="50" />
           <Property Name="ZipCode" Type="nvarchar" MaxLength="10" />
           <Property Name="Country" Type="nvarchar" MaxLength="10" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="AdjusterMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="InsuranceMasterId" Type="int" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="AddressInfoId" Type="int" />
+          <Property Name="ContactInfoId" Type="int" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -215,7 +233,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CompanyCode" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="CompanyName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="AddressInfoId" Type="int" />
@@ -722,6 +740,54 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
+        <Association Name="FK_AdjusterMaster_AddressInfo_AddressInfoId">
+          <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="0..1" />
+          <End Role="AdjusterMaster" Type="Self.AdjusterMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AddressInfo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AdjusterMaster">
+              <PropertyRef Name="AddressInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdjusterMaster_AddressInfo_ContactInfoId">
+          <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="0..1" />
+          <End Role="AdjusterMaster" Type="Self.AdjusterMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactInfo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AdjusterMaster">
+              <PropertyRef Name="ContactInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdjusterMaster_Company_CompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="AdjusterMaster" Type="Self.AdjusterMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AdjusterMaster">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdjusterMaster_InsuranceMaster_InsuranceMasterId">
+          <End Role="InsuranceMaster" Type="Self.InsuranceMaster" Multiplicity="0..1" />
+          <End Role="AdjusterMaster" Type="Self.AdjusterMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InsuranceMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdjusterMaster">
+              <PropertyRef Name="InsuranceMasterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Attorney_Company_CompanyId">
           <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
           <End Role="Attorney" Type="Self.Attorney" Multiplicity="*" />
@@ -989,6 +1055,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_InsuranceMaster_AddressInfo_ContactInfoId">
+          <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="0..1" />
+          <End Role="InsuranceMaster" Type="Self.InsuranceMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactInfo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="InsuranceMaster">
+              <PropertyRef Name="ContactInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Invitation_Company">
           <End Role="Company" Type="Self.Company" Multiplicity="1" />
           <End Role="Invitation" Type="Self.Invitation" Multiplicity="*" />
@@ -1130,18 +1208,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="Patient2">
               <PropertyRef Name="AttorneyContactInfoId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Patient2_AddressInfo_ContactInfoId">
-          <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="0..1" />
-          <End Role="InsuranceMaster" Type="Self.InsuranceMaster" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ContactInfo">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="InsuranceMaster">
-              <PropertyRef Name="ContactInfoId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1591,6 +1657,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
         </Association>
         <EntityContainer Name="MIDASGBXModelStoreContainer">
           <EntitySet Name="AddressInfo" EntityType="Self.AddressInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AdjusterMaster" EntityType="Self.AdjusterMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Attorney" EntityType="Self.Attorney" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Case" EntityType="Self.Case" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CaseInsuranceMapping" EntityType="Self.CaseInsuranceMapping" Schema="dbo" store:Type="Tables" />
@@ -1638,6 +1705,22 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="UserCompany" EntityType="Self.UserCompany" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserCompanyRole" EntityType="Self.UserCompanyRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_AdjusterMaster_AddressInfo_AddressInfoId" Association="Self.FK_AdjusterMaster_AddressInfo_AddressInfoId">
+            <End Role="AddressInfo" EntitySet="AddressInfo" />
+            <End Role="AdjusterMaster" EntitySet="AdjusterMaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdjusterMaster_AddressInfo_ContactInfoId" Association="Self.FK_AdjusterMaster_AddressInfo_ContactInfoId">
+            <End Role="ContactInfo" EntitySet="ContactInfo" />
+            <End Role="AdjusterMaster" EntitySet="AdjusterMaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdjusterMaster_Company_CompanyId" Association="Self.FK_AdjusterMaster_Company_CompanyId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="AdjusterMaster" EntitySet="AdjusterMaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdjusterMaster_InsuranceMaster_InsuranceMasterId" Association="Self.FK_AdjusterMaster_InsuranceMaster_InsuranceMasterId">
+            <End Role="InsuranceMaster" EntitySet="InsuranceMaster" />
+            <End Role="AdjusterMaster" EntitySet="AdjusterMaster" />
+          </AssociationSet>
           <AssociationSet Name="FK_Attorney_Company_CompanyId" Association="Self.FK_Attorney_Company_CompanyId">
             <End Role="Company" EntitySet="Company" />
             <End Role="Attorney" EntitySet="Attorney" />
@@ -1726,6 +1809,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="AddressInfo" EntitySet="AddressInfo" />
             <End Role="InsuranceMaster" EntitySet="InsuranceMaster" />
           </AssociationSet>
+          <AssociationSet Name="FK_InsuranceMaster_AddressInfo_ContactInfoId" Association="Self.FK_InsuranceMaster_AddressInfo_ContactInfoId">
+            <End Role="ContactInfo" EntitySet="ContactInfo" />
+            <End Role="InsuranceMaster" EntitySet="InsuranceMaster" />
+          </AssociationSet>
           <AssociationSet Name="FK_Invitation_Company" Association="Self.FK_Invitation_Company">
             <End Role="Company" EntitySet="Company" />
             <End Role="Invitation" EntitySet="Invitation" />
@@ -1773,10 +1860,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_Patient2_AddressInfo_AttorneyContactInfoId" Association="Self.FK_Patient2_AddressInfo_AttorneyContactInfoId">
             <End Role="ContactInfo" EntitySet="ContactInfo" />
             <End Role="Patient2" EntitySet="Patient2" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Patient2_AddressInfo_ContactInfoId" Association="Self.FK_Patient2_AddressInfo_ContactInfoId">
-            <End Role="ContactInfo" EntitySet="ContactInfo" />
-            <End Role="InsuranceMaster" EntitySet="InsuranceMaster" />
           </AssociationSet>
           <AssociationSet Name="FK_Patient2_Company_CompanyId" Association="Self.FK_Patient2_Company_CompanyId">
             <End Role="Company" EntitySet="Company" />
@@ -1927,8 +2010,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="UserCompanyRole" EntitySet="UserCompanyRole" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MIDASGBXModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1960,6 +2042,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="PatientInsuranceInfoes1" Relationship="Self.FK_PatientInsuranceInfo_AddressInfo_PolicyHolderAddressInfoId" FromRole="AddressInfo" ToRole="PatientInsuranceInfo" />
           <NavigationProperty Name="RefferingOffices" Relationship="Self.FK_RefferingOffice_AddressInfo_AddressInfoId" FromRole="AddressInfo" ToRole="RefferingOffice" />
           <NavigationProperty Name="Users" Relationship="Self.FK_User_AddressInfo" FromRole="AddressInfo" ToRole="User" />
+          <NavigationProperty Name="AdjusterMasters" Relationship="MIDASGBXModel.FK_AdjusterMaster_AddressInfo_AddressInfoId" FromRole="AddressInfo" ToRole="AdjusterMaster" />
         </EntityType>
         <EntityType Name="Attorney">
           <Key>
@@ -2069,6 +2152,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Patients" Relationship="Self.FK_Patient_Company" FromRole="Company" ToRole="Patient" />
           <NavigationProperty Name="Patient2" Relationship="Self.FK_Patient2_Company_CompanyId" FromRole="Company" ToRole="Patient2" />
           <NavigationProperty Name="UserCompanies" Relationship="Self.FK_UserCompany_Company" FromRole="Company" ToRole="UserCompany" />
+          <NavigationProperty Name="AdjusterMasters" Relationship="MIDASGBXModel.FK_AdjusterMaster_Company_CompanyId" FromRole="Company" ToRole="AdjusterMaster" />
         </EntityType>
         <EntityType Name="CompanySpecialtyDetail">
           <Key>
@@ -2131,6 +2215,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="PatientInsuranceInfoes" Relationship="Self.FK_PatientInsuranceInfo_ContactInfo_InsuranceCompanyContactInfoId" FromRole="ContactInfo" ToRole="PatientInsuranceInfo" />
           <NavigationProperty Name="PatientInsuranceInfoes1" Relationship="Self.FK_PatientInsuranceInfo_ContactInfo_PolicyHolderContactInfoId" FromRole="ContactInfo" ToRole="PatientInsuranceInfo" />
           <NavigationProperty Name="Users" Relationship="Self.FK_User_ContactInfo" FromRole="ContactInfo" ToRole="User" />
+          <NavigationProperty Name="AdjusterMasters" Relationship="MIDASGBXModel.FK_AdjusterMaster_AddressInfo_ContactInfoId" FromRole="ContactInfo" ToRole="AdjusterMaster" />
         </EntityType>
         <EntityType Name="Doctor">
           <Key>
@@ -2209,6 +2294,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="AddressInfo" Relationship="Self.FK_InsuranceMaster_AddressInfo_AddressInfoId" FromRole="InsuranceMaster" ToRole="AddressInfo" />
           <NavigationProperty Name="ContactInfo" Relationship="Self.FK_Patient2_AddressInfo_ContactInfoId" FromRole="InsuranceMaster" ToRole="ContactInfo" />
+          <NavigationProperty Name="AdjusterMasters" Relationship="MIDASGBXModel.FK_AdjusterMaster_InsuranceMaster_InsuranceMasterId" FromRole="InsuranceMaster" ToRole="AdjusterMaster" />
         </EntityType>
         <EntityType Name="InsuranceType">
           <Key>
@@ -3994,7 +4080,94 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="User" EntitySet="Users" />
             <End Role="UserCompanyRole" EntitySet="UserCompanyRoles" />
           </AssociationSet>
+          <EntitySet Name="AdjusterMasters" EntityType="MIDASGBXModel.AdjusterMaster" />
+          <AssociationSet Name="FK_AdjusterMaster_AddressInfo_AddressInfoId" Association="MIDASGBXModel.FK_AdjusterMaster_AddressInfo_AddressInfoId">
+            <End Role="AddressInfo" EntitySet="AddressInfoes" />
+            <End Role="AdjusterMaster" EntitySet="AdjusterMasters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdjusterMaster_AddressInfo_ContactInfoId" Association="MIDASGBXModel.FK_AdjusterMaster_AddressInfo_ContactInfoId">
+            <End Role="ContactInfo" EntitySet="ContactInfoes" />
+            <End Role="AdjusterMaster" EntitySet="AdjusterMasters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdjusterMaster_Company_CompanyId" Association="MIDASGBXModel.FK_AdjusterMaster_Company_CompanyId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="AdjusterMaster" EntitySet="AdjusterMasters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdjusterMaster_InsuranceMaster_InsuranceMasterId" Association="MIDASGBXModel.FK_AdjusterMaster_InsuranceMaster_InsuranceMasterId">
+            <End Role="InsuranceMaster" EntitySet="InsuranceMasters" />
+            <End Role="AdjusterMaster" EntitySet="AdjusterMasters" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="AdjusterMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="InsuranceMasterId" Type="Int32" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AddressInfoId" Type="Int32" />
+          <Property Name="ContactInfoId" Type="Int32" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="AddressInfo" Relationship="MIDASGBXModel.FK_AdjusterMaster_AddressInfo_AddressInfoId" FromRole="AdjusterMaster" ToRole="AddressInfo" />
+          <NavigationProperty Name="ContactInfo" Relationship="MIDASGBXModel.FK_AdjusterMaster_AddressInfo_ContactInfoId" FromRole="AdjusterMaster" ToRole="ContactInfo" />
+          <NavigationProperty Name="Company" Relationship="MIDASGBXModel.FK_AdjusterMaster_Company_CompanyId" FromRole="AdjusterMaster" ToRole="Company" />
+          <NavigationProperty Name="InsuranceMaster" Relationship="MIDASGBXModel.FK_AdjusterMaster_InsuranceMaster_InsuranceMasterId" FromRole="AdjusterMaster" ToRole="InsuranceMaster" />
+        </EntityType>
+        <Association Name="FK_AdjusterMaster_AddressInfo_AddressInfoId">
+          <End Type="MIDASGBXModel.AddressInfo" Role="AddressInfo" Multiplicity="0..1" />
+          <End Type="MIDASGBXModel.AdjusterMaster" Role="AdjusterMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AddressInfo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AdjusterMaster">
+              <PropertyRef Name="AddressInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdjusterMaster_AddressInfo_ContactInfoId">
+          <End Type="MIDASGBXModel.ContactInfo" Role="ContactInfo" Multiplicity="0..1" />
+          <End Type="MIDASGBXModel.AdjusterMaster" Role="AdjusterMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContactInfo">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AdjusterMaster">
+              <PropertyRef Name="ContactInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdjusterMaster_Company_CompanyId">
+          <End Type="MIDASGBXModel.Company" Role="Company" Multiplicity="0..1" />
+          <End Type="MIDASGBXModel.AdjusterMaster" Role="AdjusterMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AdjusterMaster">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdjusterMaster_InsuranceMaster_InsuranceMasterId">
+          <End Type="MIDASGBXModel.InsuranceMaster" Role="InsuranceMaster" Multiplicity="0..1" />
+          <End Type="MIDASGBXModel.AdjusterMaster" Role="AdjusterMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InsuranceMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdjusterMaster">
+              <PropertyRef Name="InsuranceMasterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -4763,6 +4936,25 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AdjusterMasters">
+            <EntityTypeMapping TypeName="MIDASGBXModel.AdjusterMaster">
+              <MappingFragment StoreEntitySet="AdjusterMaster">
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ContactInfoId" ColumnName="ContactInfoId" />
+                <ScalarProperty Name="AddressInfoId" ColumnName="AddressInfoId" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="InsuranceMasterId" ColumnName="InsuranceMasterId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

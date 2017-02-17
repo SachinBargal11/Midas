@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[InsuranceMaster]
 (
-	[Id] [INT] NOT NULL,
+	[Id] [INT] NOT NULL IDENTITY,
 	[CompanyCode] NVARCHAR(10) NOT NULL,
 	[CompanyName] NVARCHAR(100) NOT NULL,
 	[AddressInfoId] [INT] NULL,
@@ -22,9 +22,9 @@ GO
 ALTER TABLE [dbo].[InsuranceMaster] CHECK CONSTRAINT [FK_InsuranceMaster_AddressInfo_AddressInfoId]
 GO
 
-ALTER TABLE [dbo].[InsuranceMaster]  WITH CHECK ADD  CONSTRAINT [FK_Patient2_AddressInfo_ContactInfoId] FOREIGN KEY([ContactInfoId])
+ALTER TABLE [dbo].[InsuranceMaster]  WITH CHECK ADD  CONSTRAINT [FK_InsuranceMaster_AddressInfo_ContactInfoId] FOREIGN KEY([ContactInfoId])
 	REFERENCES [dbo].[ContactInfo] ([Id])
 GO
 
-ALTER TABLE [dbo].[InsuranceMaster] CHECK CONSTRAINT [FK_Patient2_AddressInfo_ContactInfoId]
+ALTER TABLE [dbo].[InsuranceMaster] CHECK CONSTRAINT [FK_InsuranceMaster_AddressInfo_ContactInfoId]
 GO

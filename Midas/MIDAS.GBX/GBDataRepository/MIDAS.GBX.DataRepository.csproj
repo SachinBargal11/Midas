@@ -104,6 +104,9 @@
     <Compile Include="Model\AddressInfo.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\AdjusterMaster.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Attorney.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
