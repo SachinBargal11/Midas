@@ -39,6 +39,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetByPatientId(Request, PatientId);
         }
 
+        [HttpGet]
+        [Route("getByCompanyId/{CompanyId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetByCompanyId(int CompanyId)
+        {
+            return requestHandler.GetGbObjects(Request, CompanyId);
+        }
+
         [HttpPost]
         [Route("Save")]
         [AllowAnonymous]

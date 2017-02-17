@@ -29,3 +29,6 @@ GO
 
 ALTER TABLE [dbo].[CaseInsuranceMapping] CHECK CONSTRAINT [FK_CaseInsuranceMapping_PatientInsuranceInfo_PatientInsuranceInfoId]	
 GO
+
+--ALTER TABLE [dbo].[CaseInsuranceMapping] DROP CONSTRAINT [UK_CaseId_PatientInsuranceInfoId]
+--GO

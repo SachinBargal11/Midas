@@ -177,7 +177,6 @@ namespace MIDAS.GBX
                 repo = new CaseInsuranceMappingRepository(context);
             }
 
-
             return repo;
         }
     }
