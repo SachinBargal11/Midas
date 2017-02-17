@@ -2,7 +2,7 @@
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[PatientId] [int] NOT NULL,
 	[CaseName] [nvarchar](50) NULL,
-	[CaseTypeId] [int] NULL,
+	[CaseTypeId] [TINYINT] NULL,
 	--[DateOfInjury] [datetime2](7) NOT NULL,
 	[LocationId] [int] NOT NULL,
 	[PatientEmpInfoId] [int] NULL,
@@ -14,7 +14,7 @@
 	--[RefferingOfficeId] [int] NULL,
 	[CarrierCaseNo] [nvarchar](50) NULL,
 	[Transportation] [bit] NOT NULL DEFAULT 0,
-	[CaseStatusId] [int] NULL,
+	[CaseStatusId] [TINYINT] NULL,
 	[AttorneyId] [int] NULL,
 	[IsDeleted] [bit] NULL,
 	[CreateByUserID] [int] NOT NULL,
@@ -60,25 +60,23 @@ GO
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_PatientEmpInfo_PatientEmpInfoId]
 GO
 
---ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_PatientInsuranceInfo_PatientInsuranceInfoId] FOREIGN KEY([PatientInsuranceInfoId])
---	REFERENCES [dbo].[PatientInsuranceInfo] ([Id])
---GO
+--ALTER TABLE [dbo].[Case] ALTER COLUMN [CaseTypeId] [TINYINT] NULL 
+GO
 
---ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_PatientInsuranceInfo_PatientInsuranceInfoId]
---GO
+ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_CaseType_CaseTypeId] FOREIGN KEY([CaseTypeId])
+	REFERENCES [dbo].[CaseType] ([Id])
+GO
 
---ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_RefferingOffice_RefferingOfficeId] FOREIGN KEY([RefferingOfficeId])
---	REFERENCES [dbo].[RefferingOffice] ([Id])
---GO
+ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_CaseType_CaseTypeId]
+GO
 
---ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_RefferingOffice_RefferingOfficeId]
---GO
+--ALTER TABLE [dbo].[Case] ALTER COLUMN [CaseStatusId] [TINYINT] NULL 
+GO
 
-------------------------------------------
+ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_CaseStatus_CaseStatusId] FOREIGN KEY([CaseStatusId])
+	REFERENCES [dbo].[CaseStatus] ([Id])
+GO
 
---ALTER TABLE [dbo].[Case]  WITH CHECK ADD  CONSTRAINT [FK_Case_CaseInsuranceMapping_CaseInsuranceMappingId] FOREIGN KEY([CaseInsuranceMappingId])
---	REFERENCES [dbo].[CaseInsuranceMapping] ([Id])
---GO
+ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_CaseStatus_CaseStatusId]
+GO
 
---ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_CaseInsuranceMapping_CaseInsuranceMappingId]
---GO

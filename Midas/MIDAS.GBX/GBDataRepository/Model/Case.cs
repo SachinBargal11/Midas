@@ -25,21 +25,23 @@ namespace MIDAS.GBX.DataRepository.Model
         public int Id { get; set; }
         public int PatientId { get; set; }
         public string CaseName { get; set; }
-        public Nullable<int> CaseTypeId { get; set; }
+        public Nullable<byte> CaseTypeId { get; set; }
         public int LocationId { get; set; }
         public Nullable<int> PatientEmpInfoId { get; set; }
         public string CarrierCaseNo { get; set; }
         public bool Transportation { get; set; }
-        public Nullable<int> CaseStatusId { get; set; }
+        public Nullable<byte> CaseStatusId { get; set; }
         public Nullable<int> AttorneyId { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-        public virtual Patient2 Patient2 { get; set; }
+    
+        public virtual CaseStatu CaseStatu { get; set; }
+        public virtual CaseType CaseType { get; set; }
         public virtual Location Location { get; set; }
-        
+        public virtual Patient2 Patient2 { get; set; }
         public virtual PatientEmpInfo PatientEmpInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CaseInsuranceMapping> CaseInsuranceMappings { get; set; }

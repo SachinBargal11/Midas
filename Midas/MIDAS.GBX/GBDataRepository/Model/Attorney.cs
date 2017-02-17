@@ -12,14 +12,17 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class CaseInsuranceMapping
+    public partial class Attorney
     {
         public int Id { get; set; }
-        public int CaseId { get; set; }
-        public int PatientInsuranceInfoId { get; set; }
-        public Nullable<bool> IsPrimaryInsurance { get; set; }
+        public Nullable<int> CompanyId { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
+        public int CreateByUserID { get; set; }
+        public System.DateTime CreateDate { get; set; }
+        public Nullable<int> UpdateByUserID { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
     
-        public virtual Case Case { get; set; }
-        public virtual PatientInsuranceInfo PatientInsuranceInfo { get; set; }
+        public virtual Company Company { get; set; }
+        public virtual User User { get; set; }
     }
 }

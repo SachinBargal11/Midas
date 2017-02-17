@@ -17,6 +17,7 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Company()
         {
+            this.Attorneys = new HashSet<Attorney>();
             this.CompanySpecialtyDetails = new HashSet<CompanySpecialtyDetail>();
             this.Invitations = new HashSet<Invitation>();
             this.Locations = new HashSet<Location>();
@@ -40,6 +41,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
         public virtual AddressInfo AddressInfo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Attorney> Attorneys { get; set; }
         public virtual CompanyType CompanyType1 { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual SubscriptionPlan SubscriptionPlan { get; set; }

@@ -16,7 +16,7 @@ namespace MIDAS.GBX.BusinessObjects
         public string CaseName { get; set; }
 
         [JsonProperty("caseTypeId")]
-        public int? CaseTypeId { get; set; }
+        public byte? CaseTypeId { get; set; }
 
         [JsonProperty("locationId")]
         public int? LocationId { get; set; }
@@ -31,7 +31,7 @@ namespace MIDAS.GBX.BusinessObjects
         public bool? Transportation { get; set; }
 
         [JsonProperty("caseStatusId")]
-        public int? CaseStatusId { get; set; }
+        public byte? CaseStatusId { get; set; }
 
         [JsonProperty("attorneyId")]
         public int? AttorneyId { get; set; }
