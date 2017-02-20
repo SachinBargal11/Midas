@@ -24,7 +24,8 @@ import * as _ from 'underscore';
 
 @Component({
     selector: 'view-all',
-    templateUrl: './view-all.html'
+    templateUrl: './view-all.html',
+    styleUrls: ['../css/view-all.scss']
 })
 
 export class ViewAllComponent implements OnInit {

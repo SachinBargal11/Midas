@@ -25,6 +25,7 @@ import * as _ from 'underscore';
 @Component({
     selector: 'dashboard',
     templateUrl: './dashboard.html',
+    styleUrls: ['./dashboard.scss']
 })
 
 export class DashboardComponent {
@@ -81,7 +82,7 @@ export class DashboardComponent {
                     }
             },
             (error) => {
-                this._router.navigate(['/patient-manager/patients']);
+                // this._router.navigate(['/patient-manager/patients']);
                 this._progressBarService.hide();
             },
             () => {
@@ -99,7 +100,7 @@ export class DashboardComponent {
                     }
             },
             (error) => {
-                this._router.navigate(['/patient-manager/patients']);
+                // this._router.navigate(['/patient-manager/patients']);
                 this._progressBarService.hide();
             },
             () => {
