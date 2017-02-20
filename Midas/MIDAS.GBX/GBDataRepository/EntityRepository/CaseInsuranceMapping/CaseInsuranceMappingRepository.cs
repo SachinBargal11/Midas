@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MIDAS.GBX.DataRepository.Model;
 using System.Data.Entity;
 using BO = MIDAS.GBX.BusinessObjects;
+using MIDAS.GBX.DataRepository.EntityRepository.Common;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
 {
@@ -23,13 +24,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Entity Conversion
         public override T Convert<T, U>(U entity)
         {
-            CaseInsuranceMapping CaseInsuranceMappings = entity as CaseInsuranceMapping;
+            List<CaseInsuranceMapping> CaseInsuranceMappings = entity as List<CaseInsuranceMapping>;
 
             if (CaseInsuranceMappings == null)
                 return default(T);
 
             BO.CaseInsuranceMapping CaseInsuranceMappingBO = new BO.CaseInsuranceMapping();
-            CaseInsuranceMappingBO.CaseId = CaseInsuranceMappings.CaseId;
+            if (CaseInsuranceMappings.Count > 0)
+            {
+                CaseInsuranceMappingBO.CaseId = CaseInsuranceMappings[0].CaseId;
+            }
+
+            List<BO.PatientInsuranceInfo> lstPatientInsuranceInfo = new List<BO.PatientInsuranceInfo>();
+            foreach (var item in CaseInsuranceMappings)
+            {
+                using (PatientInsuranceInfoRepository sr = new PatientInsuranceInfoRepository(_context))
+                {
+                    lstPatientInsuranceInfo.Add(sr.Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(item.PatientInsuranceInfo));
+                }
+            }
+
+            CaseInsuranceMappingBO.PatientInsuranceInfos = lstPatientInsuranceInfo;
 
             return (T)(object)CaseInsuranceMappingBO;
         }
@@ -137,13 +152,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 dbContextTransaction.Commit();
 
-                listCaseInsuranceMappingDB = _context.CaseInsuranceMappings.Include("PatientInsuranceInfo")
+            listCaseInsuranceMappingDB = _context.CaseInsuranceMappings.Include("PatientInsuranceInfo")
                                                                            .Where(p => p.CaseId == CaseId)
                                                                            .ToList<CaseInsuranceMapping>();
             }
 
-            //var res = Convert<BO.CaseInsuranceMapping, CaseInsuranceMapping>(listCaseInsuranceMappingDB);
-            return (object)listCaseInsuranceMappingDB;
+            // var res = Convert<BO.CaseInsuranceMapping, CaseInsuranceMapping>(listCaseInsuranceMappingDB);
+            // return (object)res;
+            return listCaseInsuranceMappingDB;
         }
         #endregion
 
