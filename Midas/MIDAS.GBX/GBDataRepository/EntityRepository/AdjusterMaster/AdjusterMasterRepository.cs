@@ -82,7 +82,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By ID
         public override object Get(int id)
         {
-            var acc = _context.AdjusterMasters.Include("Company").Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<AdjusterMaster>();
+            var acc = _context.AdjusterMasters.Include("InsuranceMaster")
+                .Include("AddressInfo")
+                .Include("ContactInfo")
+                .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<AdjusterMaster>();
             BO.AdjusterMaster acc_ = Convert<BO.AdjusterMaster, AdjusterMaster>(acc);
 
             if (acc_ == null)
