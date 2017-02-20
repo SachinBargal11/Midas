@@ -20,43 +20,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             context.Configuration.ProxyCreationEnabled = false;
         }
 
-        //#region Entity Conversion
-        //public override T Convert<T, U>(U entity)
-        //{
-        //    //Case cases = entity as Case;
+        #region Entity Conversion
+        public override T Convert<T, U>(U entity)
+        {
+            CaseInsuranceMapping CaseInsuranceMappings = entity as CaseInsuranceMapping;
 
-        //    //if (cases == null)
-        //    //    return default(T);
+            if (CaseInsuranceMappings == null)
+                return default(T);
 
-        //    //BO.Case caseBO = new BO.Case();
+            BO.CaseInsuranceMapping CaseInsuranceMappingBO = new BO.CaseInsuranceMapping();
+            CaseInsuranceMappingBO.CaseId = CaseInsuranceMappings.CaseId;
 
-        //    //caseBO.ID = cases.Id;
-        //    //caseBO.PatientId = cases.PatientId;
-        //    //caseBO.CaseName = cases.CaseName;
-        //    //caseBO.CaseTypeId = cases.CaseTypeId;
-        //    //caseBO.LocationId = cases.LocationId;
-        //    //caseBO.PatientEmpInfoId = cases.PatientEmpInfoId;
-        //    //caseBO.CarrierCaseNo = cases.CarrierCaseNo;
-        //    //caseBO.Transportation = cases.Transportation;
-        //    //caseBO.CaseStatusId = cases.CaseStatusId;
-        //    //caseBO.AttorneyId = cases.AttorneyId;
-
-        //    //caseBO.IsDeleted = cases.IsDeleted;
-        //    //caseBO.CreateByUserID = cases.CreateByUserID;
-        //    //caseBO.UpdateByUserID = cases.UpdateByUserID;
-
-        //    //BO.PatientEmpInfo boPatientEmpInfo = new BO.PatientEmpInfo();
-        //    //using (PatientEmpInfoRepository cmp = new PatientEmpInfoRepository(_context))
-        //    //{
-
-        //    //    boPatientEmpInfo = cmp.Convert<BO.PatientEmpInfo, PatientEmpInfo>(cases.PatientEmpInfo);
-        //    //    caseBO.PatientEmpInfo = boPatientEmpInfo;
-        //    //}
-
-
-        //    //return (T)(object)caseBO;
-        //}
-        //#endregion
+            return (T)(object)CaseInsuranceMappingBO;
+        }
+        #endregion
 
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
