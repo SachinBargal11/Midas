@@ -1,8 +1,5 @@
 import * as moment from 'moment';
 import { Record } from 'immutable';
-import { Employer } from './employer';
-import { Insurance } from './insurance';
-import { Accident } from './accident';
 import { User } from '../../../commons/models/user';
 import { MaritalStatus } from './enums/marital-status';
 
@@ -29,15 +26,15 @@ import { MaritalStatus } from './enums/marital-status';
 const PatientRecord = Record({
     id: 0,
     user: null,
-    employer: null,
-    insurance: null,
-    accident: null,
+    // employer: null,
+    // insurance: null,
+    // accident: null,
     companyId: 0,
     ssn: '',
     weight: 0,
     height: 0,
     maritalStatusId: MaritalStatus.SINGLE,
-    dateOfFirstTreatment: null,
+    dateOfFirstTreatment: moment(),
     isDeleted: false,
     createByUserID: 0,
     createDate: null,
@@ -49,9 +46,9 @@ export class Patient extends PatientRecord {
 
     id: number;
     user: User;
-    employer: Employer;
-    insurance: Insurance;
-    accident: Accident;
+    // employer: Employer;
+    // insurance: Insurance;
+    // accident: Accident;
     companyId: number;
     ssn: string;
     weight: number;
@@ -62,10 +59,23 @@ export class Patient extends PatientRecord {
     createByUserID: number;
     createDate: moment.Moment;
     updateByUserID: number;
-    updateDate: moment.Moment;
+    updateDate: moment.Moment;  
 
     constructor(props) {
         super(props);
+    }
+       get martialStatusLabel(): string {
+        return Patient.getLabel(this.maritalStatusId);
+    }
+    // tslint:disable-next-line:member-ordering
+    static getLabel(maritalStatus: MaritalStatus): string {
+        switch (maritalStatus) {
+            case MaritalStatus.SINGLE:
+                return 'Single';
+            case MaritalStatus.MARRIED:
+                return 'Married';
+           
+        }
     }
     
 }

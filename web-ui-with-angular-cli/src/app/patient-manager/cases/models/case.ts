@@ -1,25 +1,23 @@
 import { Record } from 'immutable';
 import * as moment from 'moment';
-import { Address } from '../../../commons/models/address';
-import { Contact } from '../../../commons/models/contact';
-
+import {CaseType} from './enums/case-types';
 
 const CaseRecord = Record({
     id: 0,
     patientId: 0,
     caseName: '',
-    caseTypeId: 0,
-    age: 0,
-    dateOfInjury: moment(),
+    caseTypeId: CaseType.NOFAULT,
     locationId: 0,
-    vehiclePlateNo: '',
-    carrierCaseNo: 0,
-    transportation: 0,
-    dateOfFirstTreatment: moment(),
-    caseStatusId: 0,
+    patientEmpInfoId: 0,
+    carrierCaseNo: '',
+    transportation: 1,
+    caseStatusId: 1,
     attorneyId: 0,
-    address: null,
-    contact: null
+    isDeleted: false,
+    createByUserID: 0,
+    createDate: null,
+    updateByUserID: 0,
+    updateDate: null
 });
 
 export class Case extends CaseRecord {
@@ -27,18 +25,18 @@ export class Case extends CaseRecord {
     id: number;
     patientId: number;
     caseName: string;
-    caseTypeId: number;
-    age: number;
-    dateOfInjury: moment.Moment;
+    caseTypeId: CaseType;
     locationId: number;
-    vehiclePlateNo: string;
-    carrierCaseNo: number;
+    patientEmpInfoId: number;
+    carrierCaseNo: string;
     transportation: boolean;
-    dateOfFirstTreatment: moment.Moment;
     caseStatusId: number;
     attorneyId: number;
-    address: Address;
-    contact: Contact;
+    isDeleted: boolean;
+    createByUserID: number;
+    createDate: moment.Moment;
+    updateByUserID: number;
+    updateDate: moment.Moment;
 
     constructor(props) {
         super(props);

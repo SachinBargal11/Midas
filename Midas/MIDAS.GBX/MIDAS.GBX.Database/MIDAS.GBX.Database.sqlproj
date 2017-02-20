@@ -103,6 +103,11 @@
     <Build Include="Tables\Latest Tables\InsuranceType.sql" />
     <Build Include="Tables\Latest Tables\PatientType.sql" />
     <Build Include="Tables\Latest Tables\CaseInsuranceMapping.sql" />
+    <Build Include="Tables\Latest Tables\Attorney.sql" />
+    <Build Include="Tables\Latest Tables\CaseType.sql" />
+    <Build Include="Tables\Latest Tables\CaseStatus.sql" />
+    <Build Include="Tables\Latest Tables\InsuranceMaster.sql" />
+    <Build Include="Tables\Latest Tables\AdjusterMaster.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />

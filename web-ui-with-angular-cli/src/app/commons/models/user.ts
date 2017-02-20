@@ -18,7 +18,7 @@ const UserRecord = Record({
     imageLink: '',
     address: null, //Address
     contact: null, //Contact
-    dateOfBirth: null,
+    dateOfBirth: moment(),
     isDeleted: 0,
     createByUserId: 0,
     updateByUserId: 0,
@@ -65,6 +65,21 @@ export class User extends UserRecord {
                 return 'Patient';
             case UserType.STAFF:
                 return 'Staff';
+        }
+    }
+         get genderLabel(): string {
+        return User.getGender(this.gender);
+    }
+    // tslint:disable-next-line:member-ordering
+    static getGender(genderStatus: Gender): string {
+        switch (genderStatus) {
+            case Gender.MALE:
+                return 'Male';
+            case Gender.FEMALE:
+                return 'Female';
+            case Gender.OTHERS:
+                return 'Others';
+           
         }
     }
 

@@ -48,11 +48,11 @@ export const SpecialityRoutes: Routes = [
                         }
                     },
                     {
-                        path: 'edit/:id',
+                        path: 'edit',
                         component: EditSpecialityDetailsComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
-                            breadcrumb: 'Edit Speciality Detail'
+                            breadcrumb: 'Speciality Detail'
                         }
                     }
                 ]

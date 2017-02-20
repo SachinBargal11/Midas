@@ -4,7 +4,7 @@ import { Address } from '../../../commons/models/address';
 
 const ReferringOfficeRecord = Record({
     id: 0,
-    patientId: 0,
+    caseId: 0,
     refferingOfficeId: 0,
     refferingDoctorId: 0,
     npi: '',
@@ -20,7 +20,7 @@ const ReferringOfficeRecord = Record({
 export class ReferringOffice extends ReferringOfficeRecord {
 
     id: number;
-    patientId: number;
+    caseId: number;
     refferingOfficeId: number;
     refferingDoctorId: number;
     npi: string;

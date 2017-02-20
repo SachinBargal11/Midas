@@ -41,10 +41,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             caseBO.CaseStatusId = cases.CaseStatusId;
             caseBO.AttorneyId = cases.AttorneyId;
 
-            if (cases.IsDeleted.HasValue)
-                caseBO.IsDeleted = cases.IsDeleted.Value;
-            if (cases.UpdateByUserID.HasValue)
-                caseBO.UpdateByUserID = cases.UpdateByUserID.Value;
+            caseBO.IsDeleted = cases.IsDeleted;
+            caseBO.CreateByUserID = cases.CreateByUserID;
+            caseBO.UpdateByUserID = cases.UpdateByUserID;
 
             BO.PatientEmpInfo boPatientEmpInfo = new BO.PatientEmpInfo();
             using (PatientEmpInfoRepository cmp = new PatientEmpInfoRepository(_context))
@@ -56,6 +55,44 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
 
             return (T)(object)caseBO;
+        }
+        #endregion
+
+        #region Entity Conversion
+        public T ConvertWithPatient<T, U>(U entity)
+        {
+            Patient2 patient2 = entity as Patient2;
+
+            if (patient2 == null)
+                return default(T);
+
+            BO.Patient2 patientBO2 = new BO.Patient2();
+
+            patientBO2.ID = patient2.Id;
+            
+            BO.User boUser = new BO.User();
+            using (UserRepository cmp = new UserRepository(_context))
+            {
+                boUser = cmp.Convert<BO.User, User>(patient2.User);
+                patientBO2.User = boUser;
+            }
+
+            if (patient2.Cases != null)
+            {
+                patientBO2.Cases = new List<BO.Case>();
+
+                foreach (var eachCase in patient2.Cases)
+                {
+                    patientBO2.Cases.Add(Convert<BO.Case, Case>(eachCase));
+                }
+            }
+
+            //Common 
+            patientBO2.IsDeleted = patient2.IsDeleted;
+            patientBO2.CreateByUserID = patient2.CreateByUserID;
+            patientBO2.UpdateByUserID = patient2.UpdateByUserID;
+
+            return (T)(object)patientBO2;
         }
         #endregion
 
@@ -92,11 +129,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By Patient Id
         public override object GetByPatientId(int PatientId)
         {
-            //var acc = _context.Cases.Include("Patient2").Include("PatientAccidentInfo").Include("PatientEmpInfo").Include("PatientInsuranceInfo").Include("RefferingOffice").Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Case>();
-            //var acc = _context.Cases.Include("PatientEmpInfo").Include("RefferingOffices")
-            //                        .Include("PatientAccidentInfoes").Include("CaseInsuranceMappings")
-            //                        .Include("CaseInsuranceMappings.PatientInsuranceInfo")
-            //                        .Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Case>();
             var acc = _context.Cases.Include("PatientEmpInfo")
                                     .Include("PatientEmpInfo.AddressInfo")
                                     .Include("PatientEmpInfo.ContactInfo")
@@ -197,6 +229,79 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        #region Delete By ID
+        public override object DeleteById(int id)
+        {
+            var acc = _context.Cases.Include("PatientEmpInfo")
+                                    .Include("PatientEmpInfo.AddressInfo")
+                                    .Include("PatientEmpInfo.ContactInfo")
+                                    .Where(p => p.Id == id
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                    .FirstOrDefault<Case>();
+            if (acc != null)
+            {
+                if (acc.PatientEmpInfo != null)
+                {
+                    acc.PatientEmpInfo.IsDeleted = true;
+                }
+                else
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+                if (acc.PatientEmpInfo.AddressInfo != null)
+                {
+                    acc.PatientEmpInfo.AddressInfo.IsDeleted = true;
+                }
+                else
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+                if (acc.PatientEmpInfo.ContactInfo != null)
+                {
+                    acc.PatientEmpInfo.ContactInfo.IsDeleted = true;
+                }
+                else
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+                acc.IsDeleted = true;
+                _context.SaveChanges();
+            }
+            else if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var res = Convert<BO.Case, Case>(acc);
+            return (object)res;
+        }
+        #endregion
+
+        #region Get By ID For Patient 
+        public override object GetByCompanyId(int CompanyId)
+        {
+            var acc = _context.Patient2.Include("User")
+                                       .Include("Cases")
+                                       .Where(p => p.CompanyId == CompanyId
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                       .ToList<Patient2>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.Patient2> lstpatients = new List<BO.Patient2>();
+                foreach (Patient2 eachPatient in acc)
+                {
+                    lstpatients.Add(ConvertWithPatient<BO.Patient2, Patient2>(eachPatient));
+                }
+
+                return lstpatients;
+            }
+        }
+        #endregion
 
         public void Dispose()
         {

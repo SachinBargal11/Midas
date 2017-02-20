@@ -17,7 +17,6 @@ export class CasesStore {
         private _casesService:  CaseService,
         private _sessionStore: SessionStore
     ) {
-        this.getCases();
         this._sessionStore.userLogoutEvent.subscribe(() => {
             this.resetStore();
         });
@@ -31,9 +30,9 @@ export class CasesStore {
         return this._cases.asObservable();
     }
 
-    getCases(): Observable<Case[]> {
+    getCases(patientId: number): Observable<Case[]> {
         let promise = new Promise((resolve, reject) => {
-            this._casesService.getCases().subscribe((cases: Case[]) => {
+            this._casesService.getCases(patientId).subscribe((cases: Case[]) => {
                 this._cases.next(List(cases));
                 resolve(cases);
             }, error => {

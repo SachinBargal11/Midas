@@ -17,10 +17,10 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Location()
         {
+            this.Cases = new HashSet<Case>();
             this.DoctorLocationSchedules = new HashSet<DoctorLocationSchedule>();
             this.Patients = new HashSet<Patient>();
             this.Rooms = new HashSet<Room>();
-            this.Cases = new HashSet<Case>();
         }
     
         public int id { get; set; }
@@ -38,6 +38,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
         public virtual AddressInfo AddressInfo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Case> Cases { get; set; }
         public virtual Company Company { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -47,7 +49,5 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<Patient> Patients { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Room> Rooms { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Case> Cases { get; set; }
     }
 }

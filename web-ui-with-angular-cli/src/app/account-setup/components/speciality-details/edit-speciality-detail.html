@@ -1,5 +1,5 @@
-<div class="container-fluid" *ngIf="specialityDetailJS">
-    <h3 class="with-border">Edit Speciality Detail</h3>
+<div class="container-fluid" *ngIf="specialityDetail">
+    <h3 class="with-border">{{title}}</h3>
     <form [formGroup]="specialityDetailForm" (ngSubmit)="saveSpecialityDetail()">
                 <div class="row">
                     <div class="col-lg-4">
@@ -11,7 +11,7 @@
                                 <option value="0">-Select Speciality-</option>
                                 <option *ngFor="let speciality of specialities" value="{{speciality.id}}">{{speciality.specialityCode}} - {{speciality.name}}</option>
                             </select>-->
-                            <input type="text" class="form-control" [ngModel]="speciality" formControlName="speciality" > 
+                            <input type="text" class="form-control" [ngModel]="associatedSpeciality" formControlName="speciality" > 
                             <!--<div class='error-list' *ngIf="specialityDetailFormControls.associatedSpeciality.touched && !specialityDetailFormControls.associatedSpeciality.valid">
                                 <ul>
                                     <li *ngIf="specialityDetailFormControls.associatedSpeciality.hasError('selectedValueValidator')">Speciality is required.</li>
@@ -29,8 +29,8 @@
                         <label class="form-label"> Is Initial Evaluation?
                             <span class="color-red">*</span> </label>
                         <div class="form-group">
-                            <p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="1" label="Yes" [(ngModel)]="specialityDetailJS.isInitialEvaluation"></p-radioButton>
-                            <p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="0" label="No" [(ngModel)]="specialityDetailJS.isInitialEvaluation"></p-radioButton>
+                            <p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="1" label="Yes" [ngModel]="specialityDetail.isInitialEvaluation"></p-radioButton>
+                            <p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="0" label="No" [ngModel]="specialityDetail.isInitialEvaluation"></p-radioButton>
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -38,8 +38,8 @@
                             <span class="color-red">*</span>
                         </label>
                         <div class="form-group">
-                            <p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="1" label="Yes" [(ngModel)]="specialityDetailJS.allowmultipleVisit"></p-radioButton>
-                            <p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="0" label="No" [(ngModel)]="specialityDetailJS.allowmultipleVisit"></p-radioButton>
+                            <p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="1" label="Yes" [ngModel]="specialityDetail.allowmultipleVisit"></p-radioButton>
+                            <p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="0" label="No" [ngModel]="specialityDetail.allowmultipleVisit"></p-radioButton>
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -47,8 +47,8 @@
                             <span class="color-red">*</span>
                         </label>
                         <div class="form-group">
-                            <p-radioButton formControlName="include1500" name="include1500" value="1" label="Yes" [(ngModel)]="specialityDetailJS.include1500"></p-radioButton>
-                            <p-radioButton formControlName="include1500" name="include1500" value="0" label="No" [(ngModel)]="specialityDetailJS.include1500"></p-radioButton>
+                            <p-radioButton formControlName="include1500" name="include1500" value="1" label="Yes" [ngModel]="specialityDetail.include1500"></p-radioButton>
+                            <p-radioButton formControlName="include1500" name="include1500" value="0" label="No" [ngModel]="specialityDetail.include1500"></p-radioButton>
                         </div>
                     </div>
                 </div>
@@ -126,7 +126,7 @@
                         </div>
                     </div>
                 </div>
-                <button [disabled]="!specialityDetailForm.valid || isSpecialityDetailSaveInProgress" type="submit" class="btn btn-success sign-up">Update
+                <button [disabled]="!specialityDetailForm.valid || isSpecialityDetailSaveInProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSpecialityDetailSaveInProgress"></loader>
                 </button>
                 <a [routerLink]="['/account-setup/specialities']" class="btn btn-secondary">Cancel</a>

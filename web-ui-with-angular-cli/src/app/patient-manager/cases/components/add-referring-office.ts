@@ -13,7 +13,7 @@ import { StatesStore } from '../../../commons/stores/states-store';
 import { Address } from '../../../commons/models/address';
 import { ReferringOffice } from '../models/referring-office';
 import { ReferringOfficeStore } from '../stores/referring-office-store';
-import { PatientsStore } from '../stores/patients-store';
+import { PatientsStore } from '../../patients/stores/patients-store';
 import { LocationDetails } from '../../../medical-provider/locations/models/location-details';
 import { LocationsStore } from '../../../medical-provider/locations/stores/locations-store';
 import { User } from '../../../commons/models/user';
@@ -28,7 +28,7 @@ import { UsersStore } from '../../../medical-provider/users/stores/users-store';
 export class AddReferringOfficeComponent implements OnInit {
     states: any[];
     cities: any[];
-    patientId: number;
+    caseId: number;
     selectedCity = 0;
     isCitiesLoading = false;
     locations: LocationDetails[];
@@ -53,7 +53,7 @@ export class AddReferringOfficeComponent implements OnInit {
         private _elRef: ElementRef
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId);
+            this.caseId = parseInt(routeParams.caseId, 10);
         });
         this.referringOfficeform = this.fb.group({
             refferingOfficeId: ['', Validators.required],
@@ -106,7 +106,7 @@ export class AddReferringOfficeComponent implements OnInit {
         let referringOfficeformValues = this.referringOfficeform.value;
         let result;
         let referringOffice = new ReferringOffice({
-            patientId: this.patientId,
+            caseId: this.caseId,
             refferingOfficeId: parseInt(referringOfficeformValues.refferingOfficeId, 10),
             refferingDoctorId: parseInt(referringOfficeformValues.refferingDoctorId, 10),
             npi: referringOfficeformValues.npi,

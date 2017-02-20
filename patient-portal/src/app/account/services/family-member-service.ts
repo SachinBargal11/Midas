@@ -57,7 +57,7 @@ export class FamilyMemberService {
         let promise: Promise<FamilyMember> = new Promise((resolve, reject) => {
             let requestData: any = familyMember.toJS();
             requestData.ethnicitesId = requestData.ethnicitiesId;
-            requestData.isInActive = true;
+            requestData.isInActive = false;
             requestData = _.omit(requestData, 'ethnicitiesId');
             return this._http.post(this._url + '/PatientFamilyMember/save', JSON.stringify(requestData), {
                 headers: this._headers
@@ -77,7 +77,7 @@ export class FamilyMemberService {
         let promise = new Promise((resolve, reject) => {
             let requestData: any = familyMember.toJS();
             requestData.id = familyMemberId;
-            requestData.isInActive = true;
+            requestData.isInActive = false;
             requestData.ethnicitesId = requestData.ethnicitiesId;
             requestData = _.omit(requestData, 'ethnicitiesId');
             return this._http.post(this._url + '/PatientFamilyMember/save', JSON.stringify(requestData), {

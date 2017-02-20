@@ -28,7 +28,7 @@ export class InsuranceListComponent implements OnInit {
         private _notificationsService: NotificationsService
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId);
+            this.patientId = parseInt(routeParams.patientId, 10);
         });
     }
 

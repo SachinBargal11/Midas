@@ -12,15 +12,12 @@ import { ValidateActiveSession } from '../../commons/guards/validate-active-sess
 import { ShellComponent } from '../../commons/shell-component';
 import { AddFamilyMemberComponent } from './components/add-family-member';
 import { FamilyMemberListComponent } from './components/family-member-list';
-import { AccidentInfoComponent } from './components/accident';
+import { EditFamilyMemberComponent } from './components/edit-family-member';
 import { AttorneyComponent } from './components/attorney';
 import { PatientEmployerComponent } from './components/employer';
 import { InsuranceListComponent } from './components/insurance-list';
 import { AddInsuranceComponent } from './components/add-insurance';
 import { EditInsuranceComponent } from './components/edit-insurance';
-import { ReferringOfficeListComponent } from './components/referring-office-list';
-import { AddReferringOfficeComponent } from './components/add-referring-office';
-import { EditReferringOfficeComponent } from './components/edit-referring-office';
 import { ViewAllComponent } from './components/view-all';
 
 export const PatientsShellRoutes: Routes = [
@@ -121,40 +118,6 @@ export const PatientsShellRoutes: Routes = [
                         ]
                     },
                     {
-                        path: 'referring-offices',
-                        component: ShellComponent,
-                        canActivate: [ValidateActiveSession],
-                        data: {
-                            breadcrumb: 'Referring Officies'
-                        },
-                        children: [
-                            {
-                                path: '',
-                                component: ReferringOfficeListComponent,
-                                canActivate: [ValidateActiveSession],
-                                data: {
-                                    breadcrumb: 'root'
-                                }
-                            },
-                            {
-                                path: 'add',
-                                component: AddReferringOfficeComponent,
-                                canActivate: [ValidateActiveSession],
-                                data: {
-                                    breadcrumb: 'Add Referring Office'
-                                }
-                            },
-                            {
-                                path: 'edit/:id',
-                                component: EditReferringOfficeComponent,
-                                canActivate: [ValidateActiveSession],
-                                data: {
-                                    breadcrumb: 'Edit Referring Office'
-                                }
-                            }
-                        ]
-                    },
-                    {
                         path: 'family-members',
                         component: ShellComponent,
                         canActivate: [ValidateActiveSession],
@@ -178,23 +141,15 @@ export const PatientsShellRoutes: Routes = [
                                     breadcrumb: 'Add Family Member'
                                 }
                             },
-                            // {
-                            //     path: 'edit/:id',
-                            //     component: ,
-                            //     canActivate: [ValidateActiveSession],
-                            //     data: {
-                            //         breadcrumb: 'Edit Family Member'
-                            //     }
-                            // }
+                            {
+                                path: 'edit/:id',
+                                component: EditFamilyMemberComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'Edit Family Member'
+                                }
+                            }
                         ]
-                    },
-                    {
-                        path: 'accident',
-                        component: AccidentInfoComponent,
-                        canActivate: [ValidateActiveSession],
-                        data: {
-                            breadcrumb: 'Accident'
-                        }
                     },
                     {
                         path: 'employer',

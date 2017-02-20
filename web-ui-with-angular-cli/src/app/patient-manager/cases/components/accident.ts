@@ -13,7 +13,7 @@ import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
 import { Address } from '../../../commons/models/address';
 import { AccidentStore } from '../stores/accident-store';
-import { PatientsStore } from '../stores/patients-store';
+import { PatientsStore } from '../../patients/stores/patients-store';
 import * as _ from 'underscore';
 
 @Component({
@@ -31,6 +31,7 @@ export class AccidentInfoComponent implements OnInit {
     currentAccident: Accident;
     accidentCities: any[];
     patientId: number;
+    caseId: number;
     selectedCity = '';
     selectedAccidentCity = '';
     isCitiesLoading = false;
@@ -53,15 +54,18 @@ export class AccidentInfoComponent implements OnInit {
         private _notificationsService: NotificationsService,
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId, 10);
+            this.caseId = parseInt(routeParams.caseId, 10);
             this._progressBarService.show();
-            let result = this._accidentStore.getAccidents(this.patientId);
+            let result = this._accidentStore.getAccidents(this.caseId);
             result.subscribe(
                 (accidents: Accident[]) => {
                     this.accidents = accidents;
-                    this.currentAccident = _.find(this.accidents, (accident) => {
-                        return accident.isCurrentAccident;
-                    });
+                    if (this.accidents.length > 0) {
+                        this.currentAccident = this.accidents[0];
+                    }
+                    // this.currentAccident = _.find(this.accidents, (accident) => {
+                    //     return accident.isCurrentAccident;
+                    // });
                     if (this.currentAccident) {
                         this.dateOfAdmission = this.currentAccident.dateOfAdmission
                             ? this.currentAccident.dateOfAdmission.toDate()
@@ -133,8 +137,8 @@ export class AccidentInfoComponent implements OnInit {
             this.loadCities(currentState);
             this.selectedCity = this.currentAccident.hospitalAddress.city;
         } else {
-        this.loadCities(currentState);
-        this.selectedCity = '';
+            this.loadCities(currentState);
+            this.selectedCity = '';
         }
     }
 
@@ -157,8 +161,8 @@ export class AccidentInfoComponent implements OnInit {
             this.loadAccidentCities(currentState);
             this.selectedAccidentCity = this.currentAccident.accidentAddress.city;
         } else {
-        this.loadAccidentCities(currentState);
-        this.selectedAccidentCity = '';
+            this.loadAccidentCities(currentState);
+            this.selectedAccidentCity = '';
         }
     }
 
@@ -181,7 +185,7 @@ export class AccidentInfoComponent implements OnInit {
         let addResult;
         let result;
         let accident = new Accident({
-            patientId: this.patientId,
+            caseId: this.caseId,
             isCurrentAccident: 1,
             plateNumber: accidentformValues.plateNumber,
             reportNumber: accidentformValues.reportNumber,
@@ -220,7 +224,7 @@ export class AccidentInfoComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
-                    this._router.navigate(['/patient-manager/patients']);
+                    this._router.navigate(['../../'], { relativeTo: this._route });
                 },
                 (error) => {
                     let errString = 'Unable to update accident information.';

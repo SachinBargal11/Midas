@@ -72,6 +72,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 PatientAccidentInfoBO.hospitalAddressInfo = boAddress1;
             }
 
+            PatientAccidentInfoBO.IsDeleted = PatientEmpInfo.IsDeleted;
+            PatientAccidentInfoBO.CreateByUserID = PatientEmpInfo.CreateByUserID;
+            PatientAccidentInfoBO.UpdateByUserID = PatientEmpInfo.UpdateByUserID;
+
             return (T)(object)PatientAccidentInfoBO;
         }
         #endregion
@@ -96,7 +100,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             if (acc == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No record found for this RefferingOffice.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No record found for this PatientAccident Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {

@@ -140,10 +140,6 @@ namespace MIDAS.GBX
             {
                 repo = new PatientEmpInfoRepository(context);
             }
-            //if (typeof(T) == typeof(BO.PatientEmpInfo))
-            //{
-            //    repo = new AttorneyInfoRepository(context);
-            //}
             if (typeof(T) == typeof(BO.Common.PolicyOwner))
             {
                 repo = new PolicyOwnerRepository(context);
@@ -172,8 +168,22 @@ namespace MIDAS.GBX
             {
                 repo = new RefferingOfficeRepository(context);
             }
-
-
+            if (typeof(T) == typeof(BO.CaseInsuranceMapping))
+            {
+                repo = new CaseInsuranceMappingRepository(context);
+            }
+            if (typeof(T) == typeof(BO.Common.CaseType))
+            {
+                repo = new CaseTypeRepository(context);
+            }
+            if (typeof(T) == typeof(BO.Common.CaseStatus))
+            {
+                repo = new CaseStatusRepository(context);
+            }
+            if (typeof(T) == typeof(BO.AdjusterMaster))
+            {
+                repo = new AdjusterMasterRepository(context);
+            }
             return repo;
         }
     }

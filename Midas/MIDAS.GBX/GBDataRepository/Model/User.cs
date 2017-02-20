@@ -47,6 +47,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<bool> C2FactAuthSMSEnabled { get; set; }
     
         public virtual AddressInfo AddressInfo { get; set; }
+        public virtual Attorney Attorney { get; set; }
         public virtual ContactInfo ContactInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Doctor> Doctors { get; set; }

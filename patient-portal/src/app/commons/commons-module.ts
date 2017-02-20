@@ -17,6 +17,15 @@ import { LoaderComponent } from './components/loader/loader';
 import { NotificationComponent } from './components/notification/notification';
 import { ShellComponent } from './shell-component';
 
+import { EmployerService } from '../account/services/employer-service';
+import { FamilyMemberService } from '../account/services/family-member-service';
+import { PatientsService } from '../account/services/patients-service';
+import { InsuranceService } from '../account/services/insurance-service';
+import { EmployerStore } from '../account/stores/employer-store';
+import { FamilyMemberStore } from '../account/stores/family-member-store';
+import { PatientsStore } from '../account/stores/patients-store';
+import { InsuranceStore } from '../account/stores/insurance-store';
+
 import {
   InputTextModule,
   ChartModule,
@@ -65,7 +74,15 @@ import { DropdownModule } from 'ng2-bootstrap';
   ],
   providers: [
     PhoneFormatPipe,
-    FaxNoFormatPipe
+    FaxNoFormatPipe,
+    EmployerService,
+    FamilyMemberService,
+    PatientsService,
+    InsuranceService,
+    EmployerStore,
+    FamilyMemberStore,
+    PatientsStore,
+    InsuranceStore
   ],
   exports: [
     CommonModule,

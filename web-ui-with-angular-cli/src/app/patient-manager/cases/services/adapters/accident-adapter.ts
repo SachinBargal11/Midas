@@ -9,6 +9,7 @@ export class AccidentAdapter {
         if (data) {
             accident = new Accident({
                 id: data.id,
+                caseId: data.caseId,
                 accidentAddress: AddressAdapter.parseResponse(data.accidentAddressInfo),
                 hospitalAddress: AddressAdapter.parseResponse(data.hospitalAddressInfo),
                 accidentDate: data.accidentDate ? moment(data.accidentDate): null,
