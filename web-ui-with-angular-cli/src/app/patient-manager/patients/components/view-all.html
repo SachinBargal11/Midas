@@ -8,69 +8,69 @@
 
                 <div *ngIf="patientInfo">
                     <table id="table-edit" class="table">
-				    <tbody>
-				    	<tr>
-				    		<td><b> First Name</b></td>
-				    		<td>{{patientInfo.user.firstName}}</td>
-				    		<td><b>Middle Name</b></td>
-				    		<td>{{patientInfo.user.middleName}}</td>
-				    	</tr>
-				    	<tr>
-				    		<td><b> Last Name</b></td>
-				    		<td>{{patientInfo.user.lastName}}</td>
-				    		<td><b> Gender </b></td>
-				    		<td>{{patientInfo.user.genderLabel}}</td>
-				    	</tr>
-                        <tr>
-				    		<td><b> Marital Status</b></td>
-				    		<td>{{patientInfo.martialStatusLabel}}</td>
-				    		<td><b> SSN </b></td>
-				    		<td>{{patientInfo.ssn}}</td>
-				    	</tr>
-                         <tr>
-				    		<td><b> Date of Birth</b></td>
-				    		<td>{{dateOfBirth}}</td>
-				    		<td><b> Date of First Treatment </b></td>
-				    		<td>{{dateOfFirstTreatment}}</td>
-				    	</tr>
-                          <tr>
-				    		<td><b> Weight</b></td>
-				    		<td>{{patientInfo.weight}}</td>
-				    		<td><b> Height (cms) </b></td>
-				    		<td>{{patientInfo.height}}</td>
-				    	</tr>
-                           <tr>
-				    		<td><b>Cellphone </b></td>
-				    		<td>{{patientInfo.user.contact.cellPhone}}</td>
-				    		<td><b>Home Phone No  </b></td>
-				    		<td>{{patientInfo.user.contact.homePhone}}</td>
-				    	</tr>
-                          <tr>
-				    		<td><b>Work Phone No</b></td>
-				    		<td>{{patientInfo.user.contact.workPhone}}</td>
-				    		<td><b>Fax No</b></td>
-				    		<td>{{patientInfo.user.contact.faxNo}}</td>
-				    	</tr>
-                          <tr>
-				    		<td><b>Address1 </b></td>
-				    		<td>{{patientInfo.user.address.address1}}</td>
-				    		<td><b> Address2 </b></td>
-				    		<td>{{patientInfo.user.address.address2}}</td>
-				    	</tr>
-                          <tr>
-				    		<td><b>State </b></td>
-				    		<td>{{patientInfo.user.address.state}}</td>
-				    		<td><b> City </b></td>
-				    		<td>{{patientInfo.user.address.city}}</td>
-				    	</tr>
-                         <tr>
-				    		<td><b> Zipcode</b></td>
-				    		<td>{{patientInfo.user.address.zipCode}}</td>
-				    		<td><b> Country </b></td>
-				    		<td>{{patientInfo.user.address.country}}</td>
-				    	</tr>
-                        
-				    </tbody>
+                        <tbody>
+                            <tr>
+                                <td><b> First Name</b></td>
+                                <td>{{patientInfo.user.firstName}}</td>
+                                <td><b>Middle Name</b></td>
+                                <td>{{patientInfo.user.middleName}}</td>
+                            </tr>
+                            <tr>
+                                <td><b> Last Name</b></td>
+                                <td>{{patientInfo.user.lastName}}</td>
+                                <td><b> Gender </b></td>
+                                <td>{{patientInfo.user.genderLabel}}</td>
+                            </tr>
+                            <tr>
+                                <td><b> Marital Status</b></td>
+                                <td>{{patientInfo.martialStatusLabel}}</td>
+                                <td><b> SSN </b></td>
+                                <td>{{patientInfo.ssn}}</td>
+                            </tr>
+                            <tr>
+                                <td><b> Date of Birth</b></td>
+                                <td>{{dateOfBirth}}</td>
+                                <td><b> Date of First Treatment </b></td>
+                                <td>{{dateOfFirstTreatment}}</td>
+                            </tr>
+                            <tr>
+                                <td><b> Weight</b></td>
+                                <td>{{patientInfo.weight}}</td>
+                                <td><b> Height (cms) </b></td>
+                                <td>{{patientInfo.height}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Cellphone </b></td>
+                                <td>{{patientInfo.user.contact.cellPhone}}</td>
+                                <td><b>Home Phone No  </b></td>
+                                <td>{{patientInfo.user.contact.homePhone}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Work Phone No</b></td>
+                                <td>{{patientInfo.user.contact.workPhone}}</td>
+                                <td><b>Fax No</b></td>
+                                <td>{{patientInfo.user.contact.faxNo}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Address1 </b></td>
+                                <td>{{patientInfo.user.address.address1}}</td>
+                                <td><b> Address2 </b></td>
+                                <td>{{patientInfo.user.address.address2}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>State </b></td>
+                                <td>{{patientInfo.user.address.state}}</td>
+                                <td><b> City </b></td>
+                                <td>{{patientInfo.user.address.city}}</td>
+                            </tr>
+                            <tr>
+                                <td><b> Zipcode</b></td>
+                                <td>{{patientInfo.user.address.zipCode}}</td>
+                                <td><b> Country </b></td>
+                                <td>{{patientInfo.user.address.country}}</td>
+                            </tr>
+
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -81,7 +81,16 @@
             <header class="box-typical-header panel-heading">
                 <h4 class="panel-title">Family Member</h4>
             </header>
-            <div class="box-typical-body panel-body">
+            <div class="box-typical-body panel-body" *ngIf="noFamilyMember">
+                <div class="contact-row-list">
+                    <article class="contact-row">
+                        <div class="user-card-row">
+                            <p class="user-card-row-name">{{noFamilyMember}}</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <div class="box-typical-body panel-body" *ngIf="familyMember">">
                 <!--code-->
                 <table class="table table-bordered">
                     <thead>
@@ -111,56 +120,63 @@
             <header class="box-typical-header panel-heading">
                 <h4 class="panel-title">Employer Information</h4>
             </header>
-            <div class="box-typical-body panel-body">
-                <div *ngIf="employer">
-                    <table id="table-edit" class="table">
-				    <tbody>
-				    	<tr>
-				    		<td><b>Job Title</b></td>
-				    		<td>{{employer.jobTitle}}</td>
-				    		<td><b>Employer Name</b></td>
-				    		<td>{{employer.empName}}</td>
-				    	</tr>
-				    	<tr>
-				    		<td><b>E-Mail</b></td>
-				    		<td>{{employer.contact.emailAddress}}</td>
-				    		<td><b> Work Phone No </b></td>
-				    		<td>{{employer.contact.workPhone}}</td>
-				    	</tr>
-                           <tr>
-				    		<td><b>Cellphone </b></td>
-				    		<td>{{employer.contact.cellPhone}}</td>
-				    		<td><b>Home Phone No  </b></td>
-				    		<td>{{employer.contact.homePhone}}</td>
-				    	</tr>
-                          <tr>
-				    		<td><b>Fax No</b></td>
-				    		<td>{{employer.contact.faxNo}}</td>
-				    		<td><b>Fax No</b></td>
-				    		<td>{{employer.contact.faxNo}}</td>
-				    	</tr>
-                          <tr>
-				    		<td><b>Address1 </b></td>
-				    		<td>{{employer.address.address1}}</td>
-				    		<td><b> Address2 </b></td>
-				    		<td>{{employer.address.address2}}</td>
-				    	</tr>
-                          <tr>
-				    		<td><b>State </b></td>
-				    		<td>{{employer.address.state}}</td>
-				    		<td><b> City </b></td>
-				    		<td>{{employer.address.city}}</td>
-				    	</tr>
-                         <tr>
-				    		<td><b> Zipcode</b></td>
-				    		<td>{{employer.address.zipCode}}</td>
-				    		<td><b> Country </b></td>
-				    		<td>{{employer.address.country}}</td>
-				    	</tr>
-                        
-				    </tbody>
-                    </table>
+            <div class="box-typical-body panel-body" *ngIf="noEmployer">
+                <div class="contact-row-list">
+                    <article class="contact-row">
+                        <div class="user-card-row">
+                            <p class="user-card-row-name">{{noEmployer}}</p>
+                        </div>
+                    </article>
                 </div>
+            </div>
+
+            <div class="box-typical-body panel-body" *ngIf="employer">
+                    <table id="table-edit" class="table">
+                        <tbody>
+                            <tr>
+                                <td><b>Job Title</b></td>
+                                <td>{{employer.jobTitle}}</td>
+                                <td><b>Employer Name</b></td>
+                                <td>{{employer.empName}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>E-Mail</b></td>
+                                <td>{{employer.contact.emailAddress}}</td>
+                                <td><b> Work Phone No </b></td>
+                                <td>{{employer.contact.workPhone}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Cellphone </b></td>
+                                <td>{{employer.contact.cellPhone}}</td>
+                                <td><b>Home Phone No  </b></td>
+                                <td>{{employer.contact.homePhone}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Fax No</b></td>
+                                <td>{{employer.contact.faxNo}}</td>
+                                <td><b>Address1</b></td>
+                                <td>{{employer.address.address1}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Address2 </b></td>
+                                <td>{{employer.address.address2}}</td>
+                                <td><b> State </b></td>
+                                <td>{{employer.address.state}}</td>
+                            </tr>
+                            <tr>
+                                <td><b>City </b></td>
+                                <td>{{employer.address.city}}</td>
+                                <td><b> Zipcode </b></td>
+                                <td>{{employer.address.zipCode}}</td>
+                            </tr>
+                            <tr>
+                                <td><b> Country</b></td>
+                                <td>{{employer.address.country}}</td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
             </div>
 
 
@@ -172,8 +188,17 @@
             <header class="box-typical-header panel-heading">
                 <h4 class="panel-title">Insurance Information</h4>
             </header>
-            <div class="box-typical-body panel-body">
-                 <table class="table table-bordered">
+            <div class="box-typical-body panel-body" *ngIf="noInsurances">
+                <div class="contact-row-list">
+                    <article class="contact-row">
+                        <div class="user-card-row">
+                            <p class="user-card-row-name">{{noInsurances}}</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <div class="box-typical-body panel-body" *ngIf="insurances">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>PolicyHolderName</th>
