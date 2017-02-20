@@ -20,9 +20,11 @@ import { ShellComponent } from './shell-component';
 import { EmployerService } from '../account/services/employer-service';
 import { FamilyMemberService } from '../account/services/family-member-service';
 import { PatientsService } from '../account/services/patients-service';
+import { InsuranceService } from '../account/services/insurance-service';
 import { EmployerStore } from '../account/stores/employer-store';
 import { FamilyMemberStore } from '../account/stores/family-member-store';
 import { PatientsStore } from '../account/stores/patients-store';
+import { InsuranceStore } from '../account/stores/insurance-store';
 
 import {
   InputTextModule,
@@ -76,9 +78,11 @@ import { DropdownModule } from 'ng2-bootstrap';
     EmployerService,
     FamilyMemberService,
     PatientsService,
+    InsuranceService,
     EmployerStore,
     FamilyMemberStore,
-    PatientsStore
+    PatientsStore,
+    InsuranceStore
   ],
   exports: [
     CommonModule,

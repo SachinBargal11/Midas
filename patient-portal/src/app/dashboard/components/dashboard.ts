@@ -1,3 +1,4 @@
+import { Insurance } from '../../account/models/insurance';
 import { Patient } from '../../account/models/patient';
 import { Employer } from '../../account/models/employer';
 import { FamilyMember } from '../../account/models/family-member';
@@ -8,6 +9,7 @@ import { SessionStore } from '../../commons/stores/session-store';
 import { NotificationsStore } from '../../commons/stores/notifications-store';
 import { PatientsStore } from '../../account/stores/patients-store';
 import { EmployerStore } from '../../account/stores/employer-store';
+import { InsuranceStore } from '../../account/stores/insurance-store';
 import { FamilyMemberStore } from '../../account/stores/family-member-store';
 import { AppValidators } from '../../commons/utils/AppValidators';
 import * as moment from 'moment';
@@ -28,6 +30,7 @@ export class DashboardComponent {
     patientInfo: Patient;
     familyMember: FamilyMember[];
     employer: Employer;
+    insurances: Insurance[];
     dateOfFirstTreatment: string;
     dateOfBirth: string;
     constructor(
@@ -40,23 +43,61 @@ export class DashboardComponent {
         private _notificationsService: NotificationsService,
         private _patientsStore: PatientsStore,
         private _familyMemberStore: FamilyMemberStore,
+        private _insuranceStore: InsuranceStore,
         private _employerStore: EmployerStore
     ) {
-            this.patientId = this._sessionStore.session.user.id;
-            this._progressBarService.show();
-            let result = this._patientsStore.getPatientById(this.patientId);
-            result.subscribe(
-                (patient: Patient) => {
-                    this.patientInfo = patient;
-                    this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment.format('YYYY-MM-DD');
-                    this.dateOfBirth = this.patientInfo.user.dateOfBirth.format('YYYY-MM-DD');
-                     },
-                (error) => {
-                    this._router.navigate(['/patient-manager/patients']);
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
+        this.patientId = this._sessionStore.session.user.id;
+        this._progressBarService.show();
+        let result = this._patientsStore.getPatientById(this.patientId);
+        result.subscribe(
+            (patient: Patient) => {
+                this.patientInfo = patient;
+                this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment.format('YYYY-MM-DD');
+                this.dateOfBirth = this.patientInfo.user.dateOfBirth.format('YYYY-MM-DD');
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+
+        let empResult = this._employerStore.getCurrentEmployer(this.patientId);
+        empResult.subscribe(
+            (employer: Employer) => {
+                this.employer = employer;
+            },
+            (error) => {
+                this._router.navigate(['/patient-manager/patients']);
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+
+        let familyResult = this._familyMemberStore.getFamilyMembers(this.patientId);
+        familyResult.subscribe(
+            (familyMember: FamilyMember[]) => {
+                this.familyMember = familyMember;
+            },
+            (error) => {
+                this._router.navigate(['/patient-manager/patients']);
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+
+        this._progressBarService.show();
+        this._insuranceStore.getInsurances(this.patientId)
+            .subscribe(insurances => {
+                this.insurances = insurances;
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
 }
