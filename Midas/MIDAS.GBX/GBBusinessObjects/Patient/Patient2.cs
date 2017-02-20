@@ -48,6 +48,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("user")]
         public User User { get; set; }
 
+        [JsonProperty("cases")]
+        public List<Case> Cases { get; set; }
+
         public override List<BusinessValidation> Validate<T>(T entity)
         {
             List<BusinessValidation> validations = new List<BusinessValidation>();
