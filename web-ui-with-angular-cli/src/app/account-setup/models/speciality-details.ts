@@ -29,7 +29,7 @@ export class SpecialityDetail extends SpecialityDetailRecord {
     initialDays: number;
     initialvisitCount: number;
     maxReval: number;
-    isnitialEvaluation: boolean;
+    isInitialEvaluation: boolean;
     include1500: boolean;
     allowmultipleVisit: boolean;
     specialty: Speciality;

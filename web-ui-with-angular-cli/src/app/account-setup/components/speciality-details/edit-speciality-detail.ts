@@ -94,7 +94,7 @@ export class EditSpecialityDetailsComponent {
             reevalvisitCount: parseInt(specialityDetailFormValues.reevalvisitCount),
             initialDays: parseInt(specialityDetailFormValues.initialDays),
             initialvisitCount: parseInt(specialityDetailFormValues.initialvisitCount),
-            isnitialEvaluation: parseInt(specialityDetailFormValues.isInitialEvaluation) ? true : false,
+            isInitialEvaluation: parseInt(specialityDetailFormValues.isInitialEvaluation) ? true : false,
             include1500: parseInt(specialityDetailFormValues.include1500) ? true : false,
             allowmultipleVisit: parseInt(specialityDetailFormValues.allowMultipleVisit) ? true : false,
             maxReval: parseInt(specialityDetailFormValues.maxReval),

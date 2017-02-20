@@ -32,6 +32,9 @@ export class DashboardComponent {
     patientInfo: Patient;
     familyMember: FamilyMember[];
     employer: Employer;
+    noEmployer: string;
+    noInsurances: string;
+    noFamilyMember: string;
     insurances: Insurance[];
     dateOfFirstTreatment: string;
     dateOfBirth: string;
@@ -66,13 +69,15 @@ export class DashboardComponent {
 
         let empResult = this._employerStore.getCurrentEmployer(this.patientId);
         empResult.subscribe(
-            (employer: Employer) => {if (employer.id) {
+            (employer: Employer) => {
+                    if (employer.id) {
                     this.employer = employer;
-                    } else {
-                        this.employer = new Employer({
-                            address: new Address({}),
-                            contact: new Contact({})
-                        });
+                } else {
+                    this.noEmployer = 'No Employer available';
+                        // this.employer = new Employer({
+                        //     address: new Address({}),
+                        //     contact: new Contact({})
+                        // });
                     }
             },
             (error) => {
@@ -86,7 +91,12 @@ export class DashboardComponent {
         let familyResult = this._familyMemberStore.getFamilyMembers(this.patientId);
         familyResult.subscribe(
             (familyMember: FamilyMember[]) => {
-                this.familyMember = familyMember;
+                // this.familyMember = familyMember;
+                    if (familyMember.length) {
+                    this.familyMember = familyMember;
+                } else {
+                    this.noFamilyMember = 'No Family Member Available';
+                    }
             },
             (error) => {
                 this._router.navigate(['/patient-manager/patients']);
@@ -99,7 +109,12 @@ export class DashboardComponent {
         this._progressBarService.show();
         this._insuranceStore.getInsurances(this.patientId)
             .subscribe(insurances => {
-                this.insurances = insurances;
+                // this.insurances = insurances;
+                    if (insurances.length) {
+                    this.insurances = insurances;
+                } else {
+                    this.noInsurances = 'No Insurance Information Available';
+                    }
             },
             (error) => {
                 this._progressBarService.hide();

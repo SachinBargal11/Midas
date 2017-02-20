@@ -78,6 +78,15 @@
         <header class="box-typical-header panel-heading">
             <h4 class="panel-title">Employer Information</h4>
         </header>
+        <div class="box-typical-body panel-body" *ngIf="noEmployer">
+            <div class="contact-row-list">
+                <article class="contact-row">
+                    <div class="user-card-row">
+                        <p class="user-card-row-name">{{noEmployer}}</p>
+                    </div>
+                </article>
+            </div>
+        </div>
         <div class="box-typical-body panel-body" *ngIf="employer">
             <div class="contact-row-list">
                 <article class="contact-row">
@@ -210,7 +219,16 @@
         <header class="box-typical-header panel-heading">
             <h4 class="panel-title">Family Member</h4>
         </header>
-        <div class="box-typical-body panel-body">
+        <div class="box-typical-body panel-body" *ngIf="noFamilyMember">
+            <div class="contact-row-list">
+                <article class="contact-row">
+                    <div class="user-card-row">
+                        <p class="user-card-row-name">{{noFamilyMember}}</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <div class="box-typical-body panel-body" *ngIf="familyMember">
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -236,7 +254,16 @@
         <header class="box-typical-header panel-heading">
             <h4 class="panel-title">Insurance Information</h4>
         </header>
-        <div class="box-typical-body panel-body">
+        <div class="box-typical-body panel-body" *ngIf="noInsurances">
+            <div class="contact-row-list">
+                <article class="contact-row">
+                    <div class="user-card-row">
+                        <p class="user-card-row-name">{{noInsurances}}</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <div class="box-typical-body panel-body" *ngIf="insurances">
             <table class="table table-bordered">
                 <thead>
                     <tr>
