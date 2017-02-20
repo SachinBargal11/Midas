@@ -163,53 +163,34 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Delete By ID
-        public override object DeleteById(int id)
-        {
-            var acc = _context.Cases.Include("PatientEmpInfo")
-                                    .Include("PatientEmpInfo.AddressInfo")
-                                    .Include("PatientEmpInfo.ContactInfo")
-                                    .Where(p => p.Id == id
-                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                    .FirstOrDefault<Case>();
-            if (acc != null)
-            {
-                if (acc.PatientEmpInfo != null)
-                {
-                    acc.PatientEmpInfo.IsDeleted = true;
-                }
-                else
-                {
-                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                }
-                if (acc.PatientEmpInfo.AddressInfo != null)
-                {
-                    acc.PatientEmpInfo.AddressInfo.IsDeleted = true;
-                }
-                else
-                {
-                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                }
-                if (acc.PatientEmpInfo.ContactInfo != null)
-                {
-                    acc.PatientEmpInfo.ContactInfo.IsDeleted = true;
-                }
-                else
-                {
-                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                }
-                acc.IsDeleted = true;
-                _context.SaveChanges();
-            }
-            else if (acc == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
+        //#region Delete By ID
+        //public override object DeleteById(int id)
+        //{
+        //    var acc = _context.CaseInsuranceMappings.Include("PatientInsuranceInfo")
+        //                                            .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+        //                                            .FirstOrDefault<CaseInsuranceMapping>();
+        //    if (acc != null)
+        //    {
+        //        if (acc.PatientInsuranceInfo != null)
+        //        {
+        //            acc.PatientInsuranceInfo.IsDeleted = true;
+        //        }
+        //        else
+        //        {
+        //            return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+        //        }
+        //         acc.IsDeleted = true;
+        //        _context.SaveChanges();
+        //    }
+        //    else if (acc == null)
+        //    {
+        //        return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+        //    }
 
-            var res = Convert<BO.Case, Case>(acc);
-            return (object)res;
-        }
-        #endregion
+        //    var res = Convert<BO.CaseInsuranceMapping,CaseInsuranceMapping>(acc);
+        //    return (object)res;
+        //}
+        //#endregion
 
         public void Dispose()
         {
