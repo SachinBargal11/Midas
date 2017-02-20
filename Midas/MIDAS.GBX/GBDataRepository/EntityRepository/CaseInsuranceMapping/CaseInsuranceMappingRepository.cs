@@ -50,6 +50,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Entity objectConvert
+        public override T ObjectConvert<T, U>(U entity)
+        {
+            CaseInsuranceMapping CaseInsuranceMappings = entity as CaseInsuranceMapping;
+
+            if (CaseInsuranceMappings == null)
+                return default(T);
+
+            BO.CaseInsuranceMapping CaseInsuranceMappingBO = new BO.CaseInsuranceMapping();
+            CaseInsuranceMappingBO.CaseId = CaseInsuranceMappings.CaseId;
+            CaseInsuranceMappingBO.PatientInsuranceInfos = new List<BO.PatientInsuranceInfo>();
+
+            using (PatientInsuranceInfoRepository sr = new PatientInsuranceInfoRepository(_context))
+            {                
+                CaseInsuranceMappingBO.PatientInsuranceInfos.Add(sr.Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(CaseInsuranceMappings.PatientInsuranceInfo));
+            }
+
+            return (T)(object)CaseInsuranceMappingBO;
+        }
+        #endregion
+
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
@@ -66,7 +87,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Where(p => p.Id == id)
                                     .FirstOrDefault<CaseInsuranceMapping>();
 
-            BO.CaseInsuranceMapping acc_ = Convert<BO.CaseInsuranceMapping, CaseInsuranceMapping>(acc);
+            BO.CaseInsuranceMapping acc_ = ObjectConvert<BO.CaseInsuranceMapping, CaseInsuranceMapping>(acc);
 
             if (acc_ == null)
             {
@@ -92,7 +113,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<BO.CaseInsuranceMapping> lstcaseinsurancemappings = new List<BO.CaseInsuranceMapping>();
             foreach (CaseInsuranceMapping item in acc)
             {
-                lstcaseinsurancemappings.Add(Convert<BO.CaseInsuranceMapping, CaseInsuranceMapping>(item));
+                lstcaseinsurancemappings.Add(ObjectConvert<BO.CaseInsuranceMapping, CaseInsuranceMapping>(item));
             }
 
             return lstcaseinsurancemappings;

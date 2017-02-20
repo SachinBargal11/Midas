@@ -249,6 +249,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdjusterMasterController.cs" />
     <Compile Include="Controllers\AttorneyInfoController.cs" />
     <Compile Include="Controllers\CaseController.cs" />
     <Compile Include="Controllers\CaseInsuranceMappingController.cs" />

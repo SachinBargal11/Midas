@@ -189,6 +189,7 @@
                     </div>
                 </article>
             </div>
+<<<<<<< HEAD
         </div>
     </section>
 </div>
@@ -208,6 +209,28 @@
                         </div>
                     </div>
                 </article>
+=======
+            <div class="box-typical-body panel-body" *ngIf="familyMember">
+                <!--code-->
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Relation to patient</th>
+                            <th>Full Name</th>
+                            <th>Cellphone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let family of familyMember">
+                            <td>{{ family.relationLabel }}</td>
+                            <td>{{ family.fullName }}</td>
+                            <td>{{ family.cellPhone }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!--code-->
+>>>>>>> 178347e1f47605c0c07082824621c8b42b382f81
             </div>
         </div>
         <div class="box-typical-body panel-body" *ngIf="employer">
