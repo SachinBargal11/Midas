@@ -153,13 +153,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 dbContextTransaction.Commit();
 
             listCaseInsuranceMappingDB = _context.CaseInsuranceMappings.Include("PatientInsuranceInfo")
-                                                                           .Where(p => p.CaseId == CaseId)
+                                                                           .Where(p => p.CaseId == CaseId
+                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                            .ToList<CaseInsuranceMapping>();
             }
 
-            // var res = Convert<BO.CaseInsuranceMapping, CaseInsuranceMapping>(listCaseInsuranceMappingDB);
-            // return (object)res;
-            return listCaseInsuranceMappingDB;
+            var res = Convert<BO.CaseInsuranceMapping, List<CaseInsuranceMapping>>(listCaseInsuranceMappingDB);
+            return (object)res;
         }
         #endregion
 
