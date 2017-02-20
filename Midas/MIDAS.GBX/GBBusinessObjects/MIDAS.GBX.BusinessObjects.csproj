@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Address\AddressInfo.cs" />
+    <Compile Include="AdjusterMaster\AdjusterMaster.cs" />
     <Compile Include="BoolConverter.cs" />
     <Compile Include="BusinessValidation.cs" />
     <Compile Include="BusinessValidationResult.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="GBEnums.cs" />
     <Compile Include="GbObject.cs" />
+    <Compile Include="InsuranceMaster\InsuranceMaster.cs" />
     <Compile Include="PatientAccidentInfo\PatientAccidentInfo.cs" />
     <Compile Include="PatientFamilyMember\PatientFamilyMember.cs" />
     <Compile Include="PatientInsuranceInfo\PatientInsuranceInfo.cs" />
