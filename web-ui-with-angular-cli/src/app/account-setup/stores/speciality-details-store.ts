@@ -80,9 +80,9 @@ export class SpecialityDetailsStore {
         return <Observable<SpecialityDetail>>Observable.from(promise);
     }
 
-    updateSpecialityDetail(specialityDetail: SpecialityDetail): Observable<SpecialityDetail> {
+    updateSpecialityDetail(specialityDetail: SpecialityDetail, specialityDetailId: number): Observable<SpecialityDetail> {
         let promise = new Promise((resolve, reject) => {
-            this._specialityDetailsService.updateSpecialityDetail(specialityDetail)
+            this._specialityDetailsService.updateSpecialityDetail(specialityDetail, specialityDetailId)
                 .subscribe((updatedSpeciality: SpecialityDetail) => {
                     let specialityDetails: List<SpecialityDetail> = this._specialityDetails.getValue();
                     let index = specialityDetails.findIndex((currentSpeciality: SpecialityDetail) => currentSpeciality.id === updatedSpeciality.id);

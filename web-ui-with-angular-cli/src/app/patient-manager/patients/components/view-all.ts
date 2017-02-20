@@ -18,6 +18,8 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 import { User } from '../../../commons/models/user';
 import { InsuranceStore } from '../stores/insurance-store';
 import { Insurance } from '../models/insurance';
+import { Contact } from '../../../commons/models/contact';
+import { Address } from '../../../commons/models/address';
 import * as _ from 'underscore';
 
 @Component({
@@ -28,13 +30,16 @@ import * as _ from 'underscore';
 export class ViewAllComponent implements OnInit {
     patientId: number;
     patientInfo: Patient;
-    familyMember:FamilyMember[];
+    familyMember: FamilyMember[];
     insurances: Insurance[];
     employer: Employer;
     dateOfFirstTreatment: string;
     dateOfBirth: string;
-   
-    
+    noEmployer: string;
+    noInsurances: string;
+    noFamilyMember: string;
+
+
 
     constructor(
         private fb: FormBuilder,
@@ -58,7 +63,7 @@ export class ViewAllComponent implements OnInit {
                     this.patientInfo = patient;
                     this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment.format('YYYY-MM-DD');
                     this.dateOfBirth = this.patientInfo.user.dateOfBirth.format('YYYY-MM-DD');
-                     },
+                },
                 (error) => {
                     this._router.navigate(['/patient-manager/patients']);
                     this._progressBarService.hide();
@@ -66,27 +71,18 @@ export class ViewAllComponent implements OnInit {
                 () => {
                     this._progressBarService.hide();
                 });
-                //
+            //
             let empResult = this._employerStore.getCurrentEmployer(this.patientId);
             empResult.subscribe(
                 (employer: Employer) => {
-                    this.employer = employer;
-                },
-                 (error) => {
-                    this._router.navigate(['/patient-manager/patients']);
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
-                    
-                //
+                    if (employer.id) {
+                        this.employer = employer;
+                    } else {
+                        this.noEmployer = 'No Employer available'
 
-                let familyResult = this._familyMemberStore.getFamilyMembers(this.patientId);
-            familyResult.subscribe(
-                (familyMember: FamilyMember[]) => {
-                    this.familyMember = familyMember;
-                     },
+                    }
+
+                },
                 (error) => {
                     this._router.navigate(['/patient-manager/patients']);
                     this._progressBarService.hide();
@@ -95,10 +91,33 @@ export class ViewAllComponent implements OnInit {
                     this._progressBarService.hide();
                 });
 
-                this._progressBarService.show();
+            //
+
+            let familyResult = this._familyMemberStore.getFamilyMembers(this.patientId);
+            familyResult.subscribe(
+                (familyMember: FamilyMember[]) => {
+                    if (familyMember.length) {
+                        this.familyMember = familyMember;
+                    } else {
+                        this.noFamilyMember = 'No Family Member Available';
+                    }
+                },
+                (error) => {
+                    this._router.navigate(['/patient-manager/patients']);
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+
+            this._progressBarService.show();
             this._insuranceStore.getInsurances(this.patientId)
                 .subscribe(insurances => {
-                    this.insurances = insurances;
+                    if (insurances.length) {
+                        this.insurances = insurances;
+                    } else {
+                        this.noInsurances = 'No Insurance Information Available';
+                    }
                 },
                 (error) => {
                     this._progressBarService.hide();
@@ -109,7 +128,7 @@ export class ViewAllComponent implements OnInit {
 
         });
 
-     
+
     }
 
     ngOnInit() {
