@@ -34,7 +34,7 @@ const PatientRecord = Record({
     weight: 0,
     height: 0,
     maritalStatusId: MaritalStatus.SINGLE,
-    dateOfFirstTreatment: null,
+    dateOfFirstTreatment: moment(),
     isDeleted: false,
     createByUserID: 0,
     createDate: null,
