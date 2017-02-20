@@ -2,6 +2,8 @@ import { Insurance } from '../../account/models/insurance';
 import { Patient } from '../../account/models/patient';
 import { Employer } from '../../account/models/employer';
 import { FamilyMember } from '../../account/models/family-member';
+import { Address } from '../../commons/models/address';
+import { Contact } from '../../commons/models/contact';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -64,8 +66,14 @@ export class DashboardComponent {
 
         let empResult = this._employerStore.getCurrentEmployer(this.patientId);
         empResult.subscribe(
-            (employer: Employer) => {
-                this.employer = employer;
+            (employer: Employer) => {if (employer.id) {
+                    this.employer = employer;
+                    } else {
+                        this.employer = new Employer({
+                            address: new Address({}),
+                            contact: new Contact({})
+                        });
+                    }
             },
             (error) => {
                 this._router.navigate(['/patient-manager/patients']);
