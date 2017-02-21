@@ -149,7 +149,7 @@ export class DemographicsComponent implements OnInit {
                 updateByUserId: this._sessionStore.session.account.user.id,
                 contact: new Contact(_.extend(existingPatientJS.user.contact, {
                     cellPhone: demographicsFormValues.contact.cellPhone ? demographicsFormValues.contact.cellPhone.replace(/\-/g, '') : null,
-                    faxNo: demographicsFormValues.contact.faxNo ? demographicsFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
+                    faxNo: demographicsFormValues.contact.faxNo ? demographicsFormValues.contact.faxNo.replace(/\-|\s/g, '') : '',
                     homePhone: demographicsFormValues.contact.homePhone,
                     workPhone: demographicsFormValues.contact.workPhone,
                     updateByUserId: this._sessionStore.session.account.user.id

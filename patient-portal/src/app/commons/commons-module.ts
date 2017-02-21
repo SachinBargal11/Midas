@@ -8,6 +8,7 @@ import { TimeAgoPipe } from './pipes/time-ago-pipe';
 import { ReversePipe } from './pipes/reverse-array-pipe';
 import { PhoneFormatPipe } from './pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from './pipes/faxno-format-pipe';
+import { DateFormatPipe } from './pipes/date-format-pipe';
 
 import { AppHeaderComponent } from '../elements/app-header/app-header';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb';
@@ -64,6 +65,7 @@ import { DropdownModule } from 'ng2-bootstrap';
     ReversePipe,
     PhoneFormatPipe,
     FaxNoFormatPipe,
+    DateFormatPipe,
     AppHeaderComponent,
     BreadcrumbComponent,
     MainNavComponent,
@@ -75,6 +77,7 @@ import { DropdownModule } from 'ng2-bootstrap';
   providers: [
     PhoneFormatPipe,
     FaxNoFormatPipe,
+    DateFormatPipe,
     EmployerService,
     FamilyMemberService,
     PatientsService,
@@ -94,6 +97,7 @@ import { DropdownModule } from 'ng2-bootstrap';
     ReversePipe,
     PhoneFormatPipe,
     FaxNoFormatPipe,
+    DateFormatPipe,
     AppHeaderComponent,
     BreadcrumbComponent,
     MainNavComponent,
