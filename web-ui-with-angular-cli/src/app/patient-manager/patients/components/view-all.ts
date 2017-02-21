@@ -21,6 +21,7 @@ import { Insurance } from '../models/insurance';
 import { Contact } from '../../../commons/models/contact';
 import { Address } from '../../../commons/models/address';
 import * as _ from 'underscore';
+import { DateFormatPipe } from '../../../commons/pipes/date-format-pipe';
 
 @Component({
     selector: 'view-all',
@@ -45,6 +46,7 @@ export class ViewAllComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private _router: Router,
+        private _dateFormatPipe: DateFormatPipe,
         public _route: ActivatedRoute,
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
@@ -63,9 +65,9 @@ export class ViewAllComponent implements OnInit {
                 (patient: Patient) => {
                     this.patientInfo = patient;
                     
-                    this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment ? this.patientInfo.dateOfFirstTreatment.format('YYYY-MM-DD')
+                    this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment ? this._dateFormatPipe.transform(this.patientInfo.dateOfFirstTreatment)
                             : null;
-                    this.dateOfBirth = this.patientInfo.user.dateOfBirth? this.patientInfo.user.dateOfBirth.format('YYYY-MM-DD')
+                    this.dateOfBirth = this.patientInfo.user.dateOfBirth?  this._dateFormatPipe.transform(this.patientInfo.user.dateOfBirth)
                             : null;
                 },
                 (error) => {
