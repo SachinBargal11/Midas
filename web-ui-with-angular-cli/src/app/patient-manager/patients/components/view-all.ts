@@ -35,8 +35,8 @@ export class ViewAllComponent implements OnInit {
     familyMember: FamilyMember[];
     insurances: Insurance[];
     employer: Employer;
-    dateOfFirstTreatment:  string;
-    dateOfBirth:  string;
+    dateOfFirstTreatment: string;
+    dateOfBirth: string;
     noEmployer: string;
     noInsurances: string;
     noFamilyMember: string;
@@ -64,11 +64,13 @@ export class ViewAllComponent implements OnInit {
             result.subscribe(
                 (patient: Patient) => {
                     this.patientInfo = patient;
-                    
-                    this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment ? this._dateFormatPipe.transform(this.patientInfo.dateOfFirstTreatment)
-                            : null;
-                    this.dateOfBirth = this.patientInfo.user.dateOfBirth?  this._dateFormatPipe.transform(this.patientInfo.user.dateOfBirth)
-                            : null;
+
+                    this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment ?
+                        this._dateFormatPipe.transform(this.patientInfo.dateOfFirstTreatment)
+                        : null;
+                    this.dateOfBirth = this.patientInfo.user.dateOfBirth ?
+                        this._dateFormatPipe.transform(this.patientInfo.user.dateOfBirth)
+                        : null;
                 },
                 (error) => {
                     this._router.navigate(['/patient-manager/patients']);
@@ -77,7 +79,7 @@ export class ViewAllComponent implements OnInit {
                 () => {
                     this._progressBarService.hide();
                 });
-                
+
             //
             let empResult = this._employerStore.getCurrentEmployer(this.patientId);
             empResult.subscribe(
@@ -85,7 +87,7 @@ export class ViewAllComponent implements OnInit {
                     if (employer.id) {
                         this.employer = employer;
                     } else {
-                        this.noEmployer = 'No Employer available'
+                        this.noEmployer = 'No Employer available';
 
                     }
 

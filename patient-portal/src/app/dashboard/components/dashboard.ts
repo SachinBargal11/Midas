@@ -20,6 +20,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { Notification } from '../../commons/models/notification';
 import { ErrorMessageFormatter } from '../../commons/utils/ErrorMessageFormatter';
 import { User } from '../../commons/models/user';
+import { DateFormatPipe } from '../../commons/pipes/date-format-pipe';
 import * as _ from 'underscore';
 
 @Component({
@@ -50,6 +51,7 @@ export class DashboardComponent {
         private _patientsStore: PatientsStore,
         private _familyMemberStore: FamilyMemberStore,
         private _insuranceStore: InsuranceStore,
+        private _dateFormatPipe: DateFormatPipe,
         private _employerStore: EmployerStore
     ) {
         this.patientId = this._sessionStore.session.user.id;
@@ -58,8 +60,12 @@ export class DashboardComponent {
         result.subscribe(
             (patient: Patient) => {
                 this.patientInfo = patient;
-                this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment.format('YYYY-MM-DD');
-                this.dateOfBirth = this.patientInfo.user.dateOfBirth.format('YYYY-MM-DD');
+                this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment ?
+                    this._dateFormatPipe.transform(this.patientInfo.dateOfFirstTreatment)
+                    : null;
+                this.dateOfBirth = this.patientInfo.dateOfFirstTreatment ?
+                    this._dateFormatPipe.transform(this.patientInfo.user.dateOfBirth)
+                    : null;
             },
             (error) => {
                 this._progressBarService.hide();
@@ -71,18 +77,13 @@ export class DashboardComponent {
         let empResult = this._employerStore.getCurrentEmployer(this.patientId);
         empResult.subscribe(
             (employer: Employer) => {
-                    if (employer.id) {
+                if (employer.id) {
                     this.employer = employer;
                 } else {
                     this.noEmployer = 'No Employer available';
-                        // this.employer = new Employer({
-                        //     address: new Address({}),
-                        //     contact: new Contact({})
-                        // });
-                    }
+                }
             },
             (error) => {
-                // this._router.navigate(['/patient-manager/patients']);
                 this._progressBarService.hide();
             },
             () => {
@@ -92,15 +93,13 @@ export class DashboardComponent {
         let familyResult = this._familyMemberStore.getFamilyMembers(this.patientId);
         familyResult.subscribe(
             (familyMember: FamilyMember[]) => {
-                // this.familyMember = familyMember;
-                    if (familyMember.length) {
+                if (familyMember.length) {
                     this.familyMember = familyMember;
                 } else {
                     this.noFamilyMember = 'No Family Member Available';
-                    }
+                }
             },
             (error) => {
-                // this._router.navigate(['/patient-manager/patients']);
                 this._progressBarService.hide();
             },
             () => {
@@ -110,12 +109,11 @@ export class DashboardComponent {
         this._progressBarService.show();
         this._insuranceStore.getInsurances(this.patientId)
             .subscribe(insurances => {
-                // this.insurances = insurances;
-                    if (insurances.length) {
+                if (insurances.length) {
                     this.insurances = insurances;
                 } else {
                     this.noInsurances = 'No Insurance Information Available';
-                    }
+                }
             },
             (error) => {
                 this._progressBarService.hide();
