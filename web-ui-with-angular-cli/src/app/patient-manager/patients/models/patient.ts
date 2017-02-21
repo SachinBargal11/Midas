@@ -59,12 +59,12 @@ export class Patient extends PatientRecord {
     createByUserID: number;
     createDate: moment.Moment;
     updateByUserID: number;
-    updateDate: moment.Moment;  
+    updateDate: moment.Moment;
 
     constructor(props) {
         super(props);
     }
-       get martialStatusLabel(): string {
+    get maritalStatusLabel(): string {
         return Patient.getLabel(this.maritalStatusId);
     }
     // tslint:disable-next-line:member-ordering
@@ -74,8 +74,6 @@ export class Patient extends PatientRecord {
                 return 'Single';
             case MaritalStatus.MARRIED:
                 return 'Married';
-           
         }
     }
-    
 }

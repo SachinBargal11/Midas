@@ -30,7 +30,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 return default(T);
 
             BO.AdjusterMaster adjusterMasterBO = new BO.AdjusterMaster();
-    
+
+            adjusterMasterBO.ID = adjusterMasterDB.Id;
+            adjusterMasterBO.CompanyId = adjusterMasterDB.CompanyId;
+            adjusterMasterBO.FirstName = adjusterMasterDB.FirstName;
+            adjusterMasterBO.MiddleName = adjusterMasterDB.MiddleName;
+            adjusterMasterBO.LastName = adjusterMasterDB.LastName;
+            adjusterMasterBO.InsuranceMasterId = adjusterMasterDB.InsuranceMasterId;
+            adjusterMasterBO.AddressInfoId = adjusterMasterDB.AddressInfoId;
+            adjusterMasterBO.ContactInfoId = adjusterMasterDB.ContactInfoId;
 
             if (adjusterMasterDB.AddressInfo != null)
             {
@@ -46,7 +54,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 boAddress.ID = adjusterMasterDB.AddressInfo.id;
                 adjusterMasterBO.AddressInfo = boAddress;
             }
-
             if (adjusterMasterDB.ContactInfo != null)
             {
                 BO.ContactInfo boContactInfo = new BO.ContactInfo();
@@ -60,6 +67,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 boContactInfo.ID = adjusterMasterDB.ContactInfo.id;
                 adjusterMasterBO.ContactInfo = boContactInfo;
             }
+                     
+
 
             //Common 
             adjusterMasterBO.IsDeleted = adjusterMasterDB.IsDeleted;
@@ -100,7 +109,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By Company Id
         public override object GetByCompanyId(int CompanyId)
         {
-            var acc = _context.AdjusterMasters.Include("addressInfo").Include("contactInfo").Where(p => p.CompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<AdjusterMaster>();
+            var acc = _context.AdjusterMasters.Include("addressInfo").Include("contactInfo").Include("InsuranceMaster").Where(p => p.CompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<AdjusterMaster>();
 
             if (acc == null)
             {
@@ -117,33 +126,33 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        //#region Get By InsuranceMaster Id
-        //public override object GetByInsuranceMasterId(int InsuranceMasterId)
-        //{
-        //    var acc = _context.AdjusterMasters.Include("addressInfo").Include("contactInfo").Where(p => p.InsuranceMasterId == InsuranceMasterId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<AdjusterMaster>();
+        #region Get By InsuranceMaster Id
+        public override object GetByInsuranceMasterId(int InsuranceMasterId)
+        {
+            var acc = _context.AdjusterMasters.Include("addressInfo").Include("contactInfo").Include("InsuranceMaster").Where(p => p.InsuranceMasterId == InsuranceMasterId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<AdjusterMaster>();
 
-        //    if (acc == null)
-        //    {
-        //        return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-        //    }
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
 
-        //    List<BO.PatientEmpInfo> lstpatientsEmpInfo = new List<BO.PatientEmpInfo>();
-        //    //acc.ForEach(p => lstpatientsEmpInfo.Add(Convert<BO.PatientEmpInfo, PatientEmpInfo>(p)));
-        //    foreach (PatientEmpInfo item in acc)
-        //    {
-        //        lstpatientsEmpInfo.Add(Convert<BO.PatientEmpInfo, PatientEmpInfo>(item));
-        //    }
+            List<BO.AdjusterMaster> lstadjusterMaster = new List<BO.AdjusterMaster>();
+            foreach (AdjusterMaster item in acc)
+            {
+                lstadjusterMaster.Add(Convert<BO.AdjusterMaster, AdjusterMaster>(item));
+            }
 
-        //    return lstpatientsEmpInfo;
-        //}
-        //#endregion
+            return lstadjusterMaster;
+        }
+        #endregion
 
         #region Get All 
         public override object Get<T>(T entity)
         {
             BO.AdjusterMaster adjusterMasterBO = (BO.AdjusterMaster)(object)entity;
 
-            var acc_ = _context.AdjusterMasters.Include("Company")
+            var acc_ = _context.AdjusterMasters.Include("AddressInfo")
+                                        .Include("ContactInfo")
                                         .Include("InsuranceMaster")
                                         .Where(p => p.IsDeleted.HasValue == false || p.IsDeleted == false)
                                         .ToList<AdjusterMaster>();
@@ -222,45 +231,45 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 #endregion
 
                 #region Contact Info
-                //if (contactinfoBO != null)
-                //{
-                //    bool Add_contactinfoDB = false;
-                //    contactinfoDB = _context.ContactInfoes.Where(p => p.id == contactinfoBO.ID).FirstOrDefault();
+                if (contactinfoBO != null)
+                {
+                    bool Add_contactinfoDB = false;
+                    contactinfoDB = _context.ContactInfoes.Where(p => p.id == contactinfoBO.ID).FirstOrDefault();
 
-                //    if (contactinfoDB == null && contactinfoBO.ID <= 0)
-                //    {
-                //        contactinfoDB = new ContactInfo();
-                //        Add_contactinfoDB = true;
-                //    }
-                //    else if (contactinfoDB == null && contactinfoBO.ID > 0)
-                //    {
-                //        dbContextTransaction.Rollback();
-                //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Contact details dosent exists.", ErrorLevel = ErrorLevel.Error };
-                //    }
+                    if (contactinfoDB == null && contactinfoBO.ID <= 0)
+                    {
+                        contactinfoDB = new ContactInfo();
+                        Add_contactinfoDB = true;
+                    }
+                    else if (contactinfoDB == null && contactinfoBO.ID > 0)
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Contact details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                    }
 
-                //    contactinfoDB.Name = IsEditMode == true && contactinfoBO.Name == null ? contactinfoDB.Name : contactinfoBO.Name;
-                //    contactinfoDB.CellPhone = IsEditMode == true && contactinfoBO.CellPhone == null ? contactinfoDB.CellPhone : contactinfoBO.CellPhone;
-                //    contactinfoDB.EmailAddress = IsEditMode == true && contactinfoBO.EmailAddress == null ? contactinfoDB.EmailAddress : contactinfoBO.EmailAddress;
-                //    contactinfoDB.HomePhone = IsEditMode == true && contactinfoBO.HomePhone == null ? contactinfoDB.HomePhone : contactinfoBO.HomePhone;
-                //    contactinfoDB.WorkPhone = IsEditMode == true && contactinfoBO.WorkPhone == null ? contactinfoDB.WorkPhone : contactinfoBO.WorkPhone;
-                //    contactinfoDB.FaxNo = IsEditMode == true && contactinfoBO.FaxNo == null ? contactinfoDB.FaxNo : contactinfoBO.FaxNo;
-                //    contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
+                    contactinfoDB.Name = IsEditMode == true && contactinfoBO.Name == null ? contactinfoDB.Name : contactinfoBO.Name;
+                    contactinfoDB.CellPhone = IsEditMode == true && contactinfoBO.CellPhone == null ? contactinfoDB.CellPhone : contactinfoBO.CellPhone;
+                    contactinfoDB.EmailAddress = IsEditMode == true && contactinfoBO.EmailAddress == null ? contactinfoDB.EmailAddress : contactinfoBO.EmailAddress;
+                    contactinfoDB.HomePhone = IsEditMode == true && contactinfoBO.HomePhone == null ? contactinfoDB.HomePhone : contactinfoBO.HomePhone;
+                    contactinfoDB.WorkPhone = IsEditMode == true && contactinfoBO.WorkPhone == null ? contactinfoDB.WorkPhone : contactinfoBO.WorkPhone;
+                    contactinfoDB.FaxNo = IsEditMode == true && contactinfoBO.FaxNo == null ? contactinfoDB.FaxNo : contactinfoBO.FaxNo;
+                    contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
 
-                //    if (Add_contactinfoDB == true)
-                //    {
-                //        contactinfoDB = _context.ContactInfoes.Add(contactinfoDB);
-                //    }
-                //    _context.SaveChanges();
-                //}
-                //else
-                //{
-                //    if (IsEditMode == false)
-                //    {
-                //        dbContextTransaction.Rollback();
-                //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid contact details.", ErrorLevel = ErrorLevel.Error };
-                //    }
-                //    contactinfoDB = null;
-                //}
+                    if (Add_contactinfoDB == true)
+                    {
+                        contactinfoDB = _context.ContactInfoes.Add(contactinfoDB);
+                    }
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    if (IsEditMode == false)
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid contact details.", ErrorLevel = ErrorLevel.Error };
+                    }
+                    contactinfoDB = null;
+                }
                 #endregion
 
                 #region AdjusterMaster
@@ -283,11 +292,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                     adjusterMasterDB.CompanyId = adjusterMasterBO.CompanyId;
                     adjusterMasterDB.InsuranceMasterId = adjusterMasterBO.InsuranceMasterId;
-                    adjusterMasterDB.FirstName =adjusterMasterBO.FirstName;
-                    adjusterMasterDB.MiddleName = adjusterMasterBO.MiddleName;
-                    adjusterMasterDB.LastName = adjusterMasterBO.LastName;
-                    adjusterMasterDB.AddressInfoId = adjusterMasterBO.AddressInfoId;
-                    adjusterMasterDB.ContactInfoId = adjusterMasterBO.ContactInfoId;
+                    adjusterMasterDB.FirstName = IsEditMode == true && adjusterMasterBO.FirstName == null ? adjusterMasterDB.FirstName : adjusterMasterBO.FirstName;
+                    adjusterMasterDB.MiddleName = IsEditMode == true && adjusterMasterBO.MiddleName == null ? adjusterMasterDB.MiddleName : adjusterMasterBO.MiddleName;
+                    adjusterMasterDB.LastName = IsEditMode == true && adjusterMasterBO.LastName == null ? adjusterMasterDB.LastName : adjusterMasterBO.LastName;
+                    adjusterMasterDB.AddressInfoId =(addressDB != null && addressDB.id > 0) ? addressDB.id : adjusterMasterDB.AddressInfoId;
+                    adjusterMasterDB.ContactInfoId = (contactinfoDB != null && contactinfoDB.id > 0) ? contactinfoDB.id : adjusterMasterDB.ContactInfoId;
 
                     if (Add_adjusterMasterDB == true)
                     {
@@ -310,7 +319,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                 dbContextTransaction.Commit();
 
-                adjusterMasterDB = _context.AdjusterMasters.Where(p => p.Id == adjusterMasterDB.Id).FirstOrDefault<AdjusterMaster>();
+                adjusterMasterDB = _context.AdjusterMasters.Include("AddressInfo")
+                .Include("ContactInfo").Include("InsuranceMaster").Where(p => p.Id == adjusterMasterDB.Id).FirstOrDefault<AdjusterMaster>();
             }
 
             var res = Convert<BO.AdjusterMaster, AdjusterMaster>(adjusterMasterDB);
@@ -321,17 +331,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Delete By ID
         public override object DeleteById(int id)
         {
-            var acc = _context.AdjusterMasters.Include("Company").Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
+            var acc = _context.AdjusterMasters.Include("AddressInfo")
+                .Include("ContactInfo")
+                .Include("InsuranceMaster")
+                .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
                                               .FirstOrDefault<AdjusterMaster>();
             if (acc != null)
             {
-                if (acc.Company != null)
+                if (acc.AddressInfo != null)
                 {
-                    acc.Company.IsDeleted = true;
+                    acc.AddressInfo.IsDeleted = true;
                 }
-                else
+                if (acc.ContactInfo != null)
                 {
-                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    acc.ContactInfo.IsDeleted = true;
+                }
+                if (acc.InsuranceMaster != null)
+                {
+                    acc.InsuranceMaster.IsDeleted = true;
                 }
                 acc.IsDeleted = true;
                 _context.SaveChanges();

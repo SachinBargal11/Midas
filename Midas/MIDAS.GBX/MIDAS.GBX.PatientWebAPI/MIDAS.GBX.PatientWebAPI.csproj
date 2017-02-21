@@ -245,6 +245,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdjusterMasterController.cs" />
     <Compile Include="Controllers\AttorneyInfoController.cs" />
     <Compile Include="Controllers\CaseController.cs" />
     <Compile Include="Controllers\CaseInsuranceMappingController.cs" />
@@ -252,6 +253,7 @@
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InsuranceController.cs" />
+    <Compile Include="Controllers\InsuranceMasterController.cs" />
     <Compile Include="Controllers\OTPController.cs" />
     <Compile Include="Controllers\PasswordTokenController.cs" />
     <Compile Include="Controllers\PatientAccidentInfoController.cs" />

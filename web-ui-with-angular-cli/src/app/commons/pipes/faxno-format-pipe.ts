@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'phoneFormat'
+    name: 'faxNoFormat'
 })
 export class FaxNoFormatPipe implements PipeTransform {
     transform(value) {

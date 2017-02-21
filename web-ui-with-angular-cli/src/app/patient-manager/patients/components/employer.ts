@@ -161,7 +161,7 @@ export class PatientEmployerComponent implements OnInit {
             contact: new Contact({
                 cellPhone: employerformValues.cellPhone ? employerformValues.cellPhone.replace(/\-/g, '') : null,
                 emailAddress: employerformValues.email,
-                faxNo: employerformValues.faxNo ? employerformValues.faxNo.replace(/\-|\s/g, '') : null,
+                faxNo: employerformValues.faxNo ? employerformValues.faxNo.replace(/\-|\s/g, '') : '',
                 homePhone: employerformValues.homePhone,
                 workPhone: employerformValues.workPhone
 

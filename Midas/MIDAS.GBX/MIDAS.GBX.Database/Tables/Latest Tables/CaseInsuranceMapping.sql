@@ -11,8 +11,8 @@
 	[UpdateByUserID] [INT] NULL,
 	[UpdateDate] [DATETIME2](7) NULL,
 
-	CONSTRAINT [PK_CaseInsuranceMapping] PRIMARY KEY ([Id]),
-	CONSTRAINT [UK_CaseId_PatientInsuranceInfoId] UNIQUE ([CaseId], [PatientInsuranceInfoId])
+	CONSTRAINT [PK_CaseInsuranceMapping] PRIMARY KEY ([Id])--,
+	--CONSTRAINT [UK_CaseId_PatientInsuranceInfoId] UNIQUE ([CaseId], [PatientInsuranceInfoId])
 )
 GO
 

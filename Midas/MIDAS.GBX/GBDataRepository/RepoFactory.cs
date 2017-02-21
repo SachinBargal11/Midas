@@ -184,6 +184,10 @@ namespace MIDAS.GBX
             {
                 repo = new AdjusterMasterRepository(context);
             }
+            if (typeof(T) == typeof(BO.InsuranceMaster))
+            {
+                repo = new InsuranceMasterRepository(context);
+            }
             return repo;
         }
     }

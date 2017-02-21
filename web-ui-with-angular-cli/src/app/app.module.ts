@@ -42,6 +42,7 @@ import { SimpleNotificationsModule } from 'angular2-notifications';
 
 import { PhoneFormatPipe } from './commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from './commons/pipes/faxno-format-pipe';
+import { DateFormatPipe } from './commons/pipes/date-format-pipe';
 
 
 @NgModule({
@@ -81,7 +82,8 @@ import { FaxNoFormatPipe } from './commons/pipes/faxno-format-pipe';
     LocationsStore,
     LocationsService,
     PhoneFormatPipe,
-    FaxNoFormatPipe
+    FaxNoFormatPipe,
+    DateFormatPipe
   ],
   bootstrap: [AppComponent]
 })

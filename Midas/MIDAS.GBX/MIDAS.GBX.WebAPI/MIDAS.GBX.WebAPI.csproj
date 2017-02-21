@@ -261,6 +261,7 @@
     <Compile Include="Controllers\DoctorLocationScheduleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InsuranceController.cs" />
+    <Compile Include="Controllers\InsuranceMasterController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\LocationSpeclityController.cs" />
     <Compile Include="Controllers\LogController.cs" />
