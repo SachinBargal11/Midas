@@ -3,6 +3,7 @@ import * as moment from 'moment';
 import { Address } from '../../commons/models/address';
 import { Contact } from '../../commons/models/contact';
 import { InsuranceType } from './enums/insurance-type';
+import { PolicyOwner } from './enums/policy-owner';
 
 const InsuranceRecord = Record({
     id: 0,
@@ -48,6 +49,7 @@ export class Insurance extends InsuranceRecord {
         return Insurance.getInsuranceTypeLabel(this.insuranceType);
     }
 
+    // tslint:disable-next-line:member-ordering
     static getInsuranceTypeLabel(insuranceType: InsuranceType): string {
         switch (insuranceType) {
             case InsuranceType.PRIMARY:
@@ -57,4 +59,20 @@ export class Insurance extends InsuranceRecord {
         }
     }
 
+    get policyOwnerLabel(): string {
+        return Insurance.getPolicyOwnerLabel(this.policyOwnerId);
+    }
+
+    static getPolicyOwnerLabel(policyOwner: PolicyOwner): string {
+        switch (policyOwner) {
+            case PolicyOwner.SELF:
+                return 'Self';
+            case PolicyOwner.SPOUS:
+                return 'Spous';
+            case PolicyOwner.CHILD:
+                return 'Child';
+            case PolicyOwner.OTHER:
+                return 'Other';
+        }
+    }
 }

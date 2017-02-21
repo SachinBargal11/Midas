@@ -51,7 +51,7 @@
                                 <p class="user-card-row-name">Marital Status</p>
                             </div>
                             <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{patientInfo.martialStatusLabel}}</p>
+                                <p class="user-card-row-mail">{{patientInfo.maritalStatusLabel}}</p>
                             </div>
                             <div class="tbl-cell col-lg-3">
                                 <p class="user-card-row-name">SSN</p>
@@ -105,7 +105,7 @@
                                 <p class="user-card-row-name">Cellphone</p>
                             </div>
                             <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{patientInfo.user.contact.cellPhone}}</p>
+                                <p class="user-card-row-mail">{{patientInfo.user.contact.cellPhone | phoneFormat}}</p>
                             </div>
                             <div class="tbl-cell col-lg-3">
                                 <p class="user-card-row-name">Home Phone</p>
@@ -129,7 +129,7 @@
                                 <p class="user-card-row-name">Fax No</p>
                             </div>
                             <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{patientInfo.user.contact.faxNo}}</p>
+                                <p class="user-card-row-mail">{{patientInfo.user.contact.faxNo | faxNoFormat}}</p>
                             </div>
                         </div>
                     </div>
@@ -255,7 +255,7 @@
                                 <p class="user-card-row-name">Cellphone</p>
                             </div>
                             <div class="tbl-cell col-lg-4">
-                                <p class="user-card-row-mail">{{employer.contact.cellPhone}}</p>
+                                <p class="user-card-row-mail">{{employer.contact.cellPhone | phoneFormat}}</p>
                             </div>
                             <div class="tbl-cell col-lg-3">
                                 <p class="user-card-row-name"> Home Phone No</p>
@@ -273,7 +273,7 @@
                                 <p class="user-card-row-name">Fax No</p>
                             </div>
                             <div class="tbl-cell col-lg-4">
-                                <p class="user-card-row-mail">{{employer.contact.faxNo}}</p>
+                                <p class="user-card-row-mail">{{employer.contact.faxNo | faxNoFormat}}</p>
                             </div>
                             <div class="tbl-cell col-lg-3">
                                 <p class="user-card-row-name">Address1</p>
@@ -382,7 +382,7 @@
                                 <p class="user-card-row-mail">{{ family.fullName }}</p>
                             </div>
                             <div class="tbl-cell col-lg-4">
-                                <p class="user-card-row-mail">{{ family.cellPhone }}</p>
+                                <p class="user-card-row-mail">{{ family.cellPhone | phoneFormat }}</p>
                             </div>
                         </div>
                     </div>
@@ -437,7 +437,7 @@
                                 <p class="user-card-row-mail">{{ insurance.policyHoldersName  }}</p>
                             </div>
                             <div class="tbl-cell col-lg-3">
-                                <p class="user-card-row-mail">{{ insurance.policyOwnerId }}</p>
+                                <p class="user-card-row-mail">{{ insurance.policyOwnerLabel }}</p>
                             </div>
                             <div class="tbl-cell col-lg-4">
                                 <p class="user-card-row-mail">{{ insurance.insuranceCompanyCode }}</p>
