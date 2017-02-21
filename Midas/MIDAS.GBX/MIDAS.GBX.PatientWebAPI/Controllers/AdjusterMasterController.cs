@@ -1,4 +1,5 @@
 ﻿using MIDAS.GBX.BusinessObjects;
+using MIDAS.GBX.PatientWebAPI.RequestHandler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,11 +7,11 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
-namespace MIDAS.GBX.WebAPI.Controllers
+namespace MIDAS.GBX.PatientWebAPI.Controllers
 {
-    [RoutePrefix("midasapi/AdjusterMaster")]
+    [RoutePrefix("midaspatientapi/AdjusterMaster")]
 
-      public class AdjusterMasterController : ApiController
+    public class AdjusterMasterController : ApiController
     {
         private IRequestHandler<AdjusterMaster> requestHandler;
 
