@@ -19,7 +19,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
        
         [HttpGet]
-        [Route("getInsuranceMaster")]
+        [Route("getAll")]
         [AllowAnonymous]
         public HttpResponseMessage Get()
         {
@@ -28,7 +28,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         // GET: api/Organizations/5
         [HttpGet]
-        [Route("getInsuranceMasterById/{id}")]
+        [Route("get/{id}")]
         [AllowAnonymous]
         public HttpResponseMessage Get(int id)
         {
