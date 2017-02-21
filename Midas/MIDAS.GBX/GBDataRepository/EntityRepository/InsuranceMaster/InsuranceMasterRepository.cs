@@ -37,14 +37,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 BO.InsuranceMaster boInsuranceMaster = new BO.InsuranceMaster();
 
+                boInsuranceMaster.ID = eachInsuranceMaster.Id;
                 boInsuranceMaster.CompanyCode = eachInsuranceMaster.CompanyCode;
                 boInsuranceMaster.CompanyName = eachInsuranceMaster.CompanyName;
                 boInsuranceMaster.AddressInfoId = eachInsuranceMaster.AddressInfoId;
                 boInsuranceMaster.ContactInfoId = eachInsuranceMaster.ContactInfoId;
 
 
-                if (eachInsuranceMaster.IsDeleted.HasValue)
-                    boInsuranceMaster.IsDeleted = eachInsuranceMaster.IsDeleted.Value;
+                //if (eachInsuranceMaster.IsDeleted.HasValue)
+                //    boInsuranceMaster.IsDeleted = eachInsuranceMaster.IsDeleted.Value;
 
                 if (eachInsuranceMaster.AddressInfo != null)
                 {
@@ -82,10 +83,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boInsuranceMasters.Add(boInsuranceMaster);
             }
 
-
-
-
-
             return (T)(object)boInsuranceMasters;
         }
         #endregion
@@ -98,17 +95,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (insuranceMaster == null)
                 return default(T);
 
-
             BO.InsuranceMaster boInsuranceMaster = new BO.InsuranceMaster();
 
-
+            boInsuranceMaster.ID = insuranceMaster.Id;
             boInsuranceMaster.CompanyCode = insuranceMaster.CompanyCode;
             boInsuranceMaster.CompanyName = insuranceMaster.CompanyName;
             boInsuranceMaster.AddressInfoId = insuranceMaster.AddressInfoId;
             boInsuranceMaster.ContactInfoId = insuranceMaster.ContactInfoId;
 
-            if (insuranceMaster.IsDeleted.HasValue)
-                boInsuranceMaster.IsDeleted = insuranceMaster.IsDeleted.Value;
+            //if (insuranceMaster.IsDeleted.HasValue)
+            //    boInsuranceMaster.IsDeleted = insuranceMaster.IsDeleted.Value;
 
             if (insuranceMaster.AddressInfo != null)
             {
