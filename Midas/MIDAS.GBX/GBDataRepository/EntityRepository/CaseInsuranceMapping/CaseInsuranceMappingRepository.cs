@@ -59,6 +59,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return default(T);
 
             BO.CaseInsuranceMapping CaseInsuranceMappingBO = new BO.CaseInsuranceMapping();
+            CaseInsuranceMappingBO.ID = CaseInsuranceMappings.Id;
             CaseInsuranceMappingBO.CaseId = CaseInsuranceMappings.CaseId;
             CaseInsuranceMappingBO.PatientInsuranceInfos = new List<BO.PatientInsuranceInfo>();
 
