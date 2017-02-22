@@ -133,4 +133,25 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="CompanyName" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="074826be-3265-43d1-9dfc-388436dc158c" ChangeDateTime="02/22/2017 10:54:25">
+    <Property Name="ElementName" Value="[dbo].[CalendarAppointment].[EventDay]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CalendarAppointment]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="EventDayMonday" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a5a4792c-5bfa-4d55-b21c-1bf9319d9550" ChangeDateTime="02/22/2017 10:55:05">
+    <Property Name="ElementName" Value="[dbo].[CalendarAppointment].[EventDaythursday]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CalendarAppointment]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="EventDayThursday" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="333d2ccd-21d6-4372-a5fa-0966e27c8278" ChangeDateTime="02/22/2017 10:56:20">
+    <Property Name="ElementName" Value="[dbo].[CalendarAppointment].[W]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[CalendarAppointment]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="RepeatWeekly" />
+  </Operation>
 </Operations>
