@@ -172,6 +172,10 @@ namespace MIDAS.GBX
             {
                 repo = new RefferingOfficeRepository(context);
             }
+            if (typeof(T) == typeof(BO.AttorneyMaster))
+            {
+                repo = new AttorneyMasterRepository(context);
+            }
 
 
             return repo;
