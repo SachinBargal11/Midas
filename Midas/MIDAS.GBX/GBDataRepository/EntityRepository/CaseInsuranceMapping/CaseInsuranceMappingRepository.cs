@@ -113,13 +113,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            List<BO.CaseInsuranceMapping> lstcaseinsurancemappings = new List<BO.CaseInsuranceMapping>();
-            foreach (CaseInsuranceMapping item in acc)
-            {
-                lstcaseinsurancemappings.Add(ObjectConvert<BO.CaseInsuranceMapping, CaseInsuranceMapping>(item));
-            }
+            //List<BO.CaseInsuranceMapping> lstcaseinsurancemappings = new List<BO.CaseInsuranceMapping>();
+            //foreach (CaseInsuranceMapping item in acc)
+            //{
+            //    lstcaseinsurancemappings.Add(ObjectConvert<BO.CaseInsuranceMapping, CaseInsuranceMapping>(item));
+            //}
 
-            return lstcaseinsurancemappings;
+            BO.CaseInsuranceMapping caseinsurancemappings = new BO.CaseInsuranceMapping();
+            caseinsurancemappings = Convert<BO.CaseInsuranceMapping, List<CaseInsuranceMapping>>(acc);
+
+            return caseinsurancemappings;
         }
         #endregion 
 
