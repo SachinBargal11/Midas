@@ -3,7 +3,8 @@
 	[Id] INT NOT NULL IDENTITY, 
     [CaseId] INT NOT NULL, 
     [PatientInsuranceInfoId] INT NOT NULL,
-	[IsPrimaryInsurance] [BIT] NULL DEFAULT 0,
+	--[IsPrimaryInsurance] [BIT] NULL DEFAULT 0,
+	[AdjusterMasterId] [INT] NULL,
 
 	[IsDeleted] [BIT] NULL,
 	[CreateByUserID] [INT] NOT NULL,
@@ -32,3 +33,11 @@ GO
 
 --ALTER TABLE [dbo].[CaseInsuranceMapping] DROP CONSTRAINT [UK_CaseId_PatientInsuranceInfoId]
 --GO
+
+ALTER TABLE [dbo].[CaseInsuranceMapping]  WITH CHECK ADD  CONSTRAINT [FK_CaseInsuranceMapping_AdjusterMaster_AdjusterMasterId] FOREIGN KEY([AdjusterMasterId])
+	REFERENCES [dbo].[AdjusterMaster] ([Id])
+GO
+
+ALTER TABLE [dbo].[CaseInsuranceMapping] CHECK CONSTRAINT [FK_CaseInsuranceMapping_AdjusterMaster_AdjusterMasterId]	
+GO
+

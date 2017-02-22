@@ -85,7 +85,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Get(int id)
         {
             var acc = _context.CaseInsuranceMappings.Include("PatientInsuranceInfo")
-                                    .Where(p => p.Id == id)
+                                    .Where(p => p.Id == id
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .FirstOrDefault<CaseInsuranceMapping>();
 
             BO.CaseInsuranceMapping acc_ = ObjectConvert<BO.CaseInsuranceMapping, CaseInsuranceMapping>(acc);
@@ -103,7 +104,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object GetByCaseId(int CaseId)
         {
             var acc = _context.CaseInsuranceMappings.Include("PatientInsuranceInfo")
-                                    .Where(p => p.CaseId == CaseId)
+                                    .Where(p => p.CaseId == CaseId
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .ToList<CaseInsuranceMapping>();
 
             if (acc == null)

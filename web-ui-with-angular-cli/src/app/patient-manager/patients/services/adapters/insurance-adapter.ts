@@ -17,6 +17,7 @@ export class InsuranceAdapter {
                 contactPerson: data.contactPerson,
                 insuranceType: data.insuranceTypeId,
                 insuranceCompanyCode: data.insuranceCompanyCode,
+                caseInsuranceMapping: data.caseInsuranceMapping,
                 isinactive: data.isInActive,
                 policyContact: ContactAdapter.parseResponse(data.policyHolderContactInfo),
                 policyAddress: AddressAdapter.parseResponse(data.policyHolderAddressInfo),

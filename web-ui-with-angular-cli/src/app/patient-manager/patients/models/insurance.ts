@@ -2,6 +2,7 @@ import { Record } from 'immutable';
 import * as moment from 'moment';
 import { Address } from '../../../commons/models/address';
 import { Contact } from '../../../commons/models/contact';
+import { InsuranceMapping } from '../../cases/models/insurance-mapping';
 import {InsuranceType} from './enums/insurance-type';
 import {PolicyOwner} from './enums/policy-owner';
 
@@ -14,6 +15,7 @@ const InsuranceRecord = Record({
     contactPerson: '',
     insuranceType: InsuranceType.PRIMARY,
     insuranceCompanyCode: '',
+    caseInsuranceMapping: null,
     isinactive: 0,
     policyAddress: null,
     policyContact: null,
@@ -31,6 +33,7 @@ export class Insurance extends InsuranceRecord {
     contactPerson: string;
     insuranceType: InsuranceType;
     insuranceCompanyCode: string;
+    caseInsuranceMapping: InsuranceMapping;
     isinactive: boolean;
     policyAddress: Address;
     policyContact: Contact;
