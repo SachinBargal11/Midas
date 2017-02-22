@@ -1,6 +1,7 @@
 import { Record } from 'immutable';
 import * as moment from 'moment';
 import {CaseType} from './enums/case-types';
+import {CaseStatus} from './enums/case-status';
 
 const CaseRecord = Record({
     id: 0,
@@ -11,7 +12,7 @@ const CaseRecord = Record({
     patientEmpInfoId: 0,
     carrierCaseNo: '',
     transportation: 1,
-    caseStatusId: 1,
+    caseStatusId: CaseStatus.OPEN,
     attorneyId: 0,
     isDeleted: false,
     createByUserID: 0,
@@ -30,7 +31,7 @@ export class Case extends CaseRecord {
     patientEmpInfoId: number;
     carrierCaseNo: string;
     transportation: boolean;
-    caseStatusId: number;
+    caseStatusId: CaseStatus;
     attorneyId: number;
     isDeleted: boolean;
     createByUserID: number;

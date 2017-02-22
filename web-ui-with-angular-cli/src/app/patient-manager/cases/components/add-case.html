@@ -55,7 +55,8 @@
                             </label>
             <div class="form-group" [class.error]="caseformControls.caseStatusId.touched && !caseformControls.caseStatusId.valid">
                 <select formControlName="caseStatusId" type="text" class="form-control" placeholder="" [class.error]="caseformControls.caseStatusId.touched && !caseformControls.caseStatusId.valid">
-                            <option value="1">Active</option>
+                            <option value="">-Select -</option>
+                            <option value="1">Open</option>
                             <option value="0">Close</option>
                         </select>
                 <div class='error-list' *ngIf="caseformControls.caseStatusId.touched && !caseformControls.caseStatusId.valid">
