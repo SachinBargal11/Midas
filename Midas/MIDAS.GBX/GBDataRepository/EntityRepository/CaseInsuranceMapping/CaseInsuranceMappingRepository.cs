@@ -35,16 +35,36 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 CaseInsuranceMappingBO.CaseId = CaseInsuranceMappings[0].CaseId;
             }
 
-            List<BO.PatientInsuranceInfo> lstPatientInsuranceInfo = new List<BO.PatientInsuranceInfo>();
+            //List<BO.PatientInsuranceInfo> lstPatientInsuranceInfo = new List<BO.PatientInsuranceInfo>();
+            //foreach (var item in CaseInsuranceMappings)
+            //{
+            //    using (PatientInsuranceInfoRepository sr = new PatientInsuranceInfoRepository(_context))
+            //    {
+            //        lstPatientInsuranceInfo.Add(sr.Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(item.PatientInsuranceInfo));
+            //    }
+            //}
+
+            //CaseInsuranceMappingBO.PatientInsuranceInfos = lstPatientInsuranceInfo;
+
+            List<BO.Mapping> Mappings = new List<BO.Mapping>();
             foreach (var item in CaseInsuranceMappings)
             {
+                BO.PatientInsuranceInfo patientInsuranceInfo = new BO.PatientInsuranceInfo();
                 using (PatientInsuranceInfoRepository sr = new PatientInsuranceInfoRepository(_context))
                 {
-                    lstPatientInsuranceInfo.Add(sr.Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(item.PatientInsuranceInfo));
+                    patientInsuranceInfo = sr.Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(item.PatientInsuranceInfo);
                 }
+
+                BO.AdjusterMaster adjusterMaster = new BO.AdjusterMaster();
+                using (AdjusterMasterRepository sr = new AdjusterMasterRepository(_context))
+                {
+                    adjusterMaster = sr.Convert<BO.AdjusterMaster, AdjusterMaster>(item.AdjusterMaster);
+                }
+
+                Mappings.Add(new BO.Mapping() { PatientInsuranceInfo = patientInsuranceInfo, AdjusterMaster = adjusterMaster });
             }
 
-            CaseInsuranceMappingBO.PatientInsuranceInfos = lstPatientInsuranceInfo;
+            CaseInsuranceMappingBO.Mappings = Mappings;
 
             return (T)(object)CaseInsuranceMappingBO;
         }
@@ -61,12 +81,28 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.CaseInsuranceMapping CaseInsuranceMappingBO = new BO.CaseInsuranceMapping();
             CaseInsuranceMappingBO.ID = CaseInsuranceMappings.Id;
             CaseInsuranceMappingBO.CaseId = CaseInsuranceMappings.CaseId;
-            CaseInsuranceMappingBO.PatientInsuranceInfos = new List<BO.PatientInsuranceInfo>();
+            //CaseInsuranceMappingBO.PatientInsuranceInfos = new List<BO.PatientInsuranceInfo>();
 
+            //using (PatientInsuranceInfoRepository sr = new PatientInsuranceInfoRepository(_context))
+            //{                
+            //    CaseInsuranceMappingBO.PatientInsuranceInfos.Add(sr.Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(CaseInsuranceMappings.PatientInsuranceInfo));
+            //}
+
+            BO.PatientInsuranceInfo patientInsuranceInfo = new BO.PatientInsuranceInfo();
             using (PatientInsuranceInfoRepository sr = new PatientInsuranceInfoRepository(_context))
-            {                
-                CaseInsuranceMappingBO.PatientInsuranceInfos.Add(sr.Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(CaseInsuranceMappings.PatientInsuranceInfo));
+            {
+                patientInsuranceInfo = sr.Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(CaseInsuranceMappings.PatientInsuranceInfo);
             }
+
+            BO.AdjusterMaster adjusterMaster = new BO.AdjusterMaster();
+            using (AdjusterMasterRepository sr = new AdjusterMasterRepository(_context))
+            {
+                adjusterMaster = sr.Convert<BO.AdjusterMaster, AdjusterMaster>(CaseInsuranceMappings.AdjusterMaster);
+            }
+
+            List<BO.Mapping> Mappings = new List<BO.Mapping>();
+            Mappings.Add(new BO.Mapping() { PatientInsuranceInfo = patientInsuranceInfo, AdjusterMaster = adjusterMaster });
+            CaseInsuranceMappingBO.Mappings = Mappings;
 
             return (T)(object)CaseInsuranceMappingBO;
         }
@@ -140,7 +176,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (caseInsuranceMappingBO != null)
                 {
                     CaseId = caseInsuranceMappingBO.CaseId;
-                    List<int> PatientInsuranceInfoIds_New = caseInsuranceMappingBO.PatientInsuranceInfos.Select(p => p.ID).ToList<int>();
+                    List<int> PatientInsuranceInfoIds_New = caseInsuranceMappingBO.Mappings.Select(p => p.PatientInsuranceInfo.ID).ToList<int>();
 
                     //Call for removing data
                     List<CaseInsuranceMapping> listCaseInsuranceMappingDB_Remove = new List<CaseInsuranceMapping>();
@@ -175,6 +211,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
 
                     _context.SaveChanges();
+
+                    List<CaseInsuranceMapping> CaseInsuranceMapping_Existing = _context.CaseInsuranceMappings.Where(p => p.CaseId == CaseId
+                                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                                       .ToList<CaseInsuranceMapping>();
+
+                    CaseInsuranceMapping_Existing.ForEach(p => p.AdjusterMasterId = caseInsuranceMappingBO.Mappings
+                                                                                                          .Where(p2 => p2.PatientInsuranceInfo.ID == p.PatientInsuranceInfoId)
+                                                                                                                    .Select(p2 => p2.AdjusterMaster.ID)
+                                                                                                                    .FirstOrDefault<int>()
+                                                                                                                );
+                    _context.SaveChanges();
                 }                
 
                 dbContextTransaction.Commit();
@@ -188,6 +235,69 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var res = Convert<BO.CaseInsuranceMapping, List<CaseInsuranceMapping>>(listCaseInsuranceMappingDB);
             return (object)res;
         }
+        #endregion
+
+        #region save
+        //public override object Save<T>(T entity)
+        //{
+        //    BO.CaseInsuranceMapping caseInsuranceMappingBO = (BO.CaseInsuranceMapping)(object)entity;
+        //    int CaseId = 0;
+
+        //    List<CaseInsuranceMapping> listCaseInsuranceMappingDB = new List<CaseInsuranceMapping>();
+
+        //    using (var dbContextTransaction = _context.Database.BeginTransaction())
+        //    {
+        //        if (caseInsuranceMappingBO != null)
+        //        {
+        //            CaseId = caseInsuranceMappingBO.CaseId;
+        //            List<int> PatientInsuranceInfoIds_New = caseInsuranceMappingBO.PatientInsuranceInfos.Select(p => p.ID).ToList<int>();
+
+        //            //Call for removing data
+        //            List<CaseInsuranceMapping> listCaseInsuranceMappingDB_Remove = new List<CaseInsuranceMapping>();
+
+        //            listCaseInsuranceMappingDB_Remove = _context.CaseInsuranceMappings.Where(p => p.CaseId == CaseId
+        //                                                                && !PatientInsuranceInfoIds_New.Contains(p.PatientInsuranceInfoId)
+        //                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+        //                                                        .ToList<CaseInsuranceMapping>();
+
+        //            listCaseInsuranceMappingDB_Remove.ForEach(p => p.IsDeleted = true);
+        //            _context.SaveChanges();
+
+        //            //List<int> PatientInsuranceInfoIds_Old = listCaseInsuranceMappingDB_Remove.Select(p => p.PatientInsuranceInfoId).ToList<int>();
+        //            List<int> PatientInsuranceInfoIds_Existing = _context.CaseInsuranceMappings.Where(p => p.CaseId == CaseId
+        //                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+        //                                                                .Select(p => p.PatientInsuranceInfoId).ToList<int>();
+
+        //            //Call for insert data
+        //            List<CaseInsuranceMapping> listCaseInsuranceMappingDB_Insert = new List<CaseInsuranceMapping>();
+
+        //            listCaseInsuranceMappingDB_Insert = PatientInsuranceInfoIds_New.Where(p => !PatientInsuranceInfoIds_Existing.Contains(p))
+        //                                                                .Select(p => new CaseInsuranceMapping()
+        //                                                                {
+        //                                                                    CaseId = CaseId,
+        //                                                                    PatientInsuranceInfoId = p
+        //                                                                })
+        //                                                                .ToList<CaseInsuranceMapping>();
+
+        //            if (listCaseInsuranceMappingDB_Insert != null && listCaseInsuranceMappingDB_Insert.Count > 0)
+        //            {
+        //                listCaseInsuranceMappingDB_Insert.ForEach(p => _context.CaseInsuranceMappings.Add(p));
+        //            }
+
+        //            _context.SaveChanges();
+        //        }
+
+        //        dbContextTransaction.Commit();
+
+        //        listCaseInsuranceMappingDB = _context.CaseInsuranceMappings.Include("PatientInsuranceInfo")
+        //                                                                       .Where(p => p.CaseId == CaseId
+        //                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+        //                                                                       .ToList<CaseInsuranceMapping>();
+        //    }
+
+        //    var res = Convert<BO.CaseInsuranceMapping, List<CaseInsuranceMapping>>(listCaseInsuranceMappingDB);
+        //    return (object)res;
+        //}
         #endregion
 
         //#region Delete By ID
