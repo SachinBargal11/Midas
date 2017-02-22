@@ -121,6 +121,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Get(int id)
         {
             var acc = _context.CaseInsuranceMappings.Include("PatientInsuranceInfo")
+                                     .Include("AdjusterMaster")
                                     .Where(p => p.Id == id
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .FirstOrDefault<CaseInsuranceMapping>();
@@ -140,6 +141,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object GetByCaseId(int CaseId)
         {
             var acc = _context.CaseInsuranceMappings.Include("PatientInsuranceInfo")
+                                    .Include("AdjusterMaster")
                                     .Where(p => p.CaseId == CaseId
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .ToList<CaseInsuranceMapping>();
@@ -227,9 +229,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 dbContextTransaction.Commit();
 
             listCaseInsuranceMappingDB = _context.CaseInsuranceMappings.Include("PatientInsuranceInfo")
-                                                                           .Where(p => p.CaseId == CaseId
-                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                           .ToList<CaseInsuranceMapping>();
+                                                                        .Include("AdjusterMaster")
+                                                                        .Where(p => p.CaseId == CaseId
+                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                        .ToList<CaseInsuranceMapping>();
             }
 
             var res = Convert<BO.CaseInsuranceMapping, List<CaseInsuranceMapping>>(listCaseInsuranceMappingDB);
