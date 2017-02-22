@@ -127,6 +127,19 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             }
         }
 
+        public HttpResponseMessage GetgbObjects(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.GetByInsuranceMasterId(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GeneratePasswordLink(HttpRequestMessage request, T gbObject)
         {
             PasswordToken otpBO = (PasswordToken)(object)gbObject;

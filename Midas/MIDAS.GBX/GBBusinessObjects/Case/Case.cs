@@ -54,4 +54,27 @@ namespace MIDAS.GBX.BusinessObjects
         //[JsonProperty("refferingOffice")]
         //public RefferingOffice RefferingOffice { get; set; }
     }
+
+    //----------------------------------------------------------------------------
+
+    public class CaseWithUserAndPatient : GbObject
+    {
+        [JsonProperty("userId")]
+        public int UserId { get; set; }
+
+        [JsonProperty("userName")]
+        public string UserName { get; set; }
+
+        [JsonProperty("firstName")]
+        public string FirstName { get; set; }
+
+        [JsonProperty("middleName")]
+        public string MiddleName { get; set; }
+
+        [JsonProperty("lastName")]
+        public string LastName { get; set; }
+
+        [JsonProperty("cases")]
+        public List<Case> Cases { get; set; }
+    }
 }

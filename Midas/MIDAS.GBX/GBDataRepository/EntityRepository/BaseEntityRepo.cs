@@ -162,6 +162,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetByInsuranceMasterId(int InsuranceMasterId)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object ResetPassword<T>(T entity)
         {
             throw new NotImplementedException();

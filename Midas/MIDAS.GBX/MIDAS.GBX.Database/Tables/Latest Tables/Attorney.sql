@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Attorney]
 (
-	[Id] [INT] NOT NULL IDENTITY,
+	[Id] [INT] NOT NULL,
 	[CompanyId] [INT] NULL,
 
 	[IsDeleted] [BIT] NULL,
@@ -12,6 +12,7 @@
 	CONSTRAINT [PK_AttorneyMaster] PRIMARY KEY ([Id])
 )
 GO
+
 ALTER TABLE [dbo].[Attorney]  WITH CHECK ADD  CONSTRAINT [FK_Attorney_User_id] FOREIGN KEY([Id])
 	REFERENCES [dbo].[User] ([Id])
 GO

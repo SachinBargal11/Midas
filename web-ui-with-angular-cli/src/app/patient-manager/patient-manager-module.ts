@@ -47,7 +47,10 @@ import { PatientRoutingModule } from './patient-manager-routes';
 import { AddCaseComponent } from './cases/components/add-case';
 import { CaseBasicComponent } from './cases/components/case-basic';
 import { CasesListComponent } from './cases/components/cases-list';
+import { InsuranceMapComponent } from './cases/components/insurance-mapping';
 import { CasesStore } from './cases/stores/case-store';
+import { InsuranceMappingStore } from './cases/stores/insurance-mapping-store';
+import { InsuranceMappingService } from './cases/services/insurance-mapping-service';
 import { ViewAllComponent } from './patients/components/view-all';
 
 import { CaseService } from './cases/services/cases-services';
@@ -90,6 +93,7 @@ import { CaseService } from './cases/services/cases-services';
         AddCaseComponent,
         CasesListComponent,
         CaseBasicComponent,
+        InsuranceMapComponent,
         ViewAllComponent
     ],
     providers: [
@@ -101,6 +105,7 @@ import { CaseService } from './cases/services/cases-services';
         AccidentService,
         AttorneyService,
         CaseService,
+        InsuranceMappingService,
         PatientsStore,
         EmployerStore,
         FamilyMemberStore,
@@ -108,7 +113,8 @@ import { CaseService } from './cases/services/cases-services';
         ReferringOfficeStore,
         CasesStore,
         AttorneyStore,
-        AccidentStore
+        AccidentStore,
+        InsuranceMappingStore
     ]
 })
 export class PatientManagerModule { }

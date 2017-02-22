@@ -81,10 +81,11 @@ export class SpecialityDetailsService {
         });
         return <Observable<any>>Observable.fromPromise(promise);
     }
-    updateSpecialityDetail(location: SpecialityDetail): Observable<any> {
+    updateSpecialityDetail(location: SpecialityDetail, specialityDetailId: number): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
 
             let requestData: any = location.toJS();
+            requestData.id = specialityDetailId;
             // requestData.contactInfo = requestData.contact;
             // requestData.addressInfo = requestData.address;
             requestData.company = {

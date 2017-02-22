@@ -20,6 +20,8 @@ namespace MIDAS.GBX.WebAPI.Controllers
         private IRequestHandler<InsuranceType> requestInsuranceTypeHandler;
         private IRequestHandler<PatientType> requestPatientTypeHandler;
         private IRequestHandler<Relation> requestRelationHandler;
+        private IRequestHandler<CaseType> requestCaseTypeHandler;
+        private IRequestHandler<CaseStatus> requestCaseStatusHandler;
 
         public CommonController()
         {
@@ -31,6 +33,8 @@ namespace MIDAS.GBX.WebAPI.Controllers
             requestInsuranceTypeHandler = new GbApiRequestHandler<InsuranceType>();
             requestPatientTypeHandler = new GbApiRequestHandler<PatientType>();
             requestRelationHandler = new GbApiRequestHandler<Relation>();
+            requestCaseTypeHandler = new GbApiRequestHandler<CaseType>();
+            requestCaseStatusHandler = new GbApiRequestHandler<CaseStatus>();
         }
 
         [HttpGet]
@@ -143,6 +147,34 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public HttpResponseMessage GetRelationById(int id)
         {
             return requestRelationHandler.GetObject(Request, id);
+        }
+
+        [HttpGet]
+        [Route("getCaseType")]
+        public HttpResponseMessage GetCaseType()
+        {
+            return requestCaseTypeHandler.GetObjects(Request);
+        }
+
+        [HttpGet]
+        [Route("getCaseTypeById/{id}")]
+        public HttpResponseMessage GetCaseTypeById(int id)
+        {
+            return requestCaseTypeHandler.GetObject(Request,id);
+        }
+
+        [HttpGet]
+        [Route("getCaseStatus")]
+        public HttpResponseMessage GetCaseStatus()
+        {
+            return requestCaseStatusHandler.GetObjects(Request);
+        }
+
+        [HttpGet]
+        [Route("getCaseStatusById/{id}")]
+        public HttpResponseMessage GetCaseStatusById(int id)
+        {
+            return requestCaseStatusHandler.GetObject(Request, id);
         }
     }
 }

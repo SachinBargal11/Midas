@@ -58,6 +58,84 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        #region Entity Conversion
+        public T ConvertWithPatient<T, U>(U entity)
+        {
+            Patient2 patient2 = entity as Patient2;
+
+            if (patient2 == null)
+                return default(T);
+
+            BO.Patient2 patientBO2 = new BO.Patient2();
+
+            patientBO2.ID = patient2.Id;
+            
+            BO.User boUser = new BO.User();
+            using (UserRepository cmp = new UserRepository(_context))
+            {
+                boUser = cmp.Convert<BO.User, User>(patient2.User);
+                patientBO2.User = boUser;
+            }
+
+            if (patient2.Cases != null)
+            {
+                patientBO2.Cases = new List<BO.Case>();
+
+                foreach (var eachCase in patient2.Cases)
+                {
+                    patientBO2.Cases.Add(Convert<BO.Case, Case>(eachCase));
+                }
+            }
+
+            //Common 
+            patientBO2.IsDeleted = patient2.IsDeleted;
+            patientBO2.CreateByUserID = patient2.CreateByUserID;
+            patientBO2.UpdateByUserID = patient2.UpdateByUserID;
+
+            return (T)(object)patientBO2;
+        }
+        #endregion
+
+        #region Entity Conversion
+        public T ConvertToCaseWithUserAndPatient<T, U>(U entity)
+        {
+            Patient2 patient2 = entity as Patient2;
+
+            if (patient2 == null)
+                return default(T);
+
+            BO.CaseWithUserAndPatient caseWithUserAndPatient = new BO.CaseWithUserAndPatient();
+
+            caseWithUserAndPatient.ID = patient2.Id;
+
+            if (patient2.User != null)
+            {
+                caseWithUserAndPatient.UserId = patient2.User.id;
+                caseWithUserAndPatient.UserName = patient2.User.UserName;                
+                caseWithUserAndPatient.FirstName = patient2.User.FirstName;
+                caseWithUserAndPatient.MiddleName = patient2.User.MiddleName;
+                caseWithUserAndPatient.LastName = patient2.User.LastName;
+            }            
+
+            if (patient2.Cases != null)
+            {
+                caseWithUserAndPatient.Cases = new List<BO.Case>();
+
+                foreach (var eachCase in patient2.Cases)
+                {
+                    caseWithUserAndPatient.Cases.Add(Convert<BO.Case, Case>(eachCase));
+                }
+            }
+
+            //Common 
+            caseWithUserAndPatient.IsDeleted = patient2.IsDeleted;
+            caseWithUserAndPatient.CreateByUserID = patient2.CreateByUserID;
+            caseWithUserAndPatient.UpdateByUserID = patient2.UpdateByUserID;
+
+            return (T)(object)caseWithUserAndPatient;
+        }
+        #endregion
+
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
@@ -91,11 +169,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By Patient Id
         public override object GetByPatientId(int PatientId)
         {
-            //var acc = _context.Cases.Include("Patient2").Include("PatientAccidentInfo").Include("PatientEmpInfo").Include("PatientInsuranceInfo").Include("RefferingOffice").Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Case>();
-            //var acc = _context.Cases.Include("PatientEmpInfo").Include("RefferingOffices")
-            //                        .Include("PatientAccidentInfoes").Include("CaseInsuranceMappings")
-            //                        .Include("CaseInsuranceMappings.PatientInsuranceInfo")
-            //                        .Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Case>();
             var acc = _context.Cases.Include("PatientEmpInfo")
                                     .Include("PatientEmpInfo.AddressInfo")
                                     .Include("PatientEmpInfo.ContactInfo")
@@ -241,6 +314,40 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             var res = Convert<BO.Case, Case>(acc);
             return (object)res;
+        }
+        #endregion
+
+        #region Get By Company Id
+        public override object GetByCompanyId(int CompanyId)
+        {
+            var acc = _context.Patient2.Include("User")
+                                       .Include("Cases")
+                                       .Where(p => p.CompanyId == CompanyId
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                       .ToList<Patient2>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                //List<BO.Patient2> lstpatients = new List<BO.Patient2>();
+                //foreach (Patient2 eachPatient in acc)
+                //{
+                //    lstpatients.Add(ConvertWithPatient<BO.Patient2, Patient2>(eachPatient));
+                //}
+
+                //return lstpatients;
+
+                List<BO.CaseWithUserAndPatient> lstCaseWithUserAndPatient = new List<BO.CaseWithUserAndPatient>();
+                foreach (Patient2 eachPatient in acc)
+                {
+                    lstCaseWithUserAndPatient.Add(ConvertToCaseWithUserAndPatient<BO.CaseWithUserAndPatient, Patient2>(eachPatient));
+                }
+
+                return lstCaseWithUserAndPatient;
+            }
         }
         #endregion
 

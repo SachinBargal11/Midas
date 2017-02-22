@@ -14,6 +14,7 @@ import { AppValidators } from '../../../commons/utils/AppValidators';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
+import { SessionStore } from '../../../commons/stores/session-store';
 
 @Component({
     selector: 'edit-speciality-details',
@@ -22,11 +23,14 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 
 
 export class EditSpecialityDetailsComponent {
-    speciality: Speciality = null;
-    specialityDetail: SpecialityDetail = null;
+    specialityId: number;
+    speciality: Speciality;
+    associatedSpeciality: string;
+    specialityDetail: SpecialityDetail;
     isSpecialityDetailSaveInProgress = false;
     // specialities: Observable<List<Speciality>>;
     specialities: Speciality[];
+    title: string;
     specialityDetailForm: FormGroup;
     specialityDetailFormControls: any;
     options = {
@@ -45,19 +49,46 @@ export class EditSpecialityDetailsComponent {
         private _notificationsService: NotificationsService,
         private _specialityDetailsStore: SpecialityDetailsStore,
         private _progressBarService: ProgressBarService,
+        public _sessionStore: SessionStore,
         private _specialityStore: SpecialityStore
     ) {
         // this.specialities = this._specialityStore.specialities;
 
-        this._route.params.subscribe((routeParams: any) => {
-            let specialityDetailId: number = parseInt(routeParams.id);
+        this._route.parent.params.subscribe((routeParams: any) => {
+            this.specialityId = parseInt(routeParams.id, 10);
             this._progressBarService.show();
-            let result = this._specialityDetailsStore.fetchSpecialityDetailById(specialityDetailId);
+            this._specialityStore.fetchSpecialityById(this.specialityId)
+                .subscribe(
+                (speciality: Speciality) => {
+                    this.speciality = speciality;
+                    this.associatedSpeciality = speciality.name;
+                },
+                (error) => {
+                    this._router.navigate(['/account-setup/specialities']);
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+            let requestData = {
+            company: {
+                id: this._sessionStore.session.currentCompany.id
+            },
+            specialty: {
+                id: this.specialityId
+            }
+        };
+            let result = this._specialityDetailsStore.getSpecialityDetails(requestData);
             result.subscribe(
-                (specialityDetail: any) => {
+                (specialityDetail: SpecialityDetail) => {
                     this.specialityDetail = specialityDetail;
-                    this.speciality = specialityDetail.specialty.name;
+                    if(this.specialityDetail.id) {
                     this.specialityDetailJS = this.specialityDetail.toJS();
+                    this.title = 'Edit Speciality Detail';
+                    } else {
+                    this.title = 'Add Speciality Detail';
+                    this.specialityDetailJS = new SpecialityDetail({});
+                    }
                 },
                 (error) => {
                     this._router.navigate(['/account-setup/specialities']);
@@ -89,26 +120,27 @@ export class EditSpecialityDetailsComponent {
     saveSpecialityDetail() {
         let specialityDetailFormValues = this.specialityDetailForm.value;
         let specialityDetail = new SpecialityDetail({
-            id: this.specialityDetail.id,
+            // id: this.specialityDetail.id,
             ReevalDays: parseInt(specialityDetailFormValues.ReevalDays),
             reevalvisitCount: parseInt(specialityDetailFormValues.reevalvisitCount),
             initialDays: parseInt(specialityDetailFormValues.initialDays),
             initialvisitCount: parseInt(specialityDetailFormValues.initialvisitCount),
-            isnitialEvaluation: parseInt(specialityDetailFormValues.isInitialEvaluation) ? true : false,
+            isInitialEvaluation: parseInt(specialityDetailFormValues.isInitialEvaluation) ? true : false,
             include1500: parseInt(specialityDetailFormValues.include1500) ? true : false,
             allowmultipleVisit: parseInt(specialityDetailFormValues.allowMultipleVisit) ? true : false,
             maxReval: parseInt(specialityDetailFormValues.maxReval),
             specialty: new Speciality({
                 // id: parseInt(specialityDetailFormValues.associatedSpeciality)
-                id: this.specialityDetail.specialty.id
+                id: this.specialityId
             })
+           
         });
 
         this._progressBarService.show();
         this.isSpecialityDetailSaveInProgress = true;
         let result: Observable<SpecialityDetail>;
-
-        result = this._specialityDetailsStore.updateSpecialityDetail(specialityDetail);
+        if (this.specialityDetail.id) { 
+        result = this._specialityDetailsStore.updateSpecialityDetail(specialityDetail, this.specialityDetail.id);
         result.subscribe(
             (response: SpecialityDetail) => {
                 let notification = new Notification({
@@ -136,5 +168,36 @@ export class EditSpecialityDetailsComponent {
                 this.isSpecialityDetailSaveInProgress = false;
                 this._progressBarService.hide();
             });
+    } else {
+        result = this._specialityDetailsStore.addSpecialityDetail(specialityDetail);
+        result.subscribe(
+            (response: SpecialityDetail) => {
+                let notification = new Notification({
+                    'title': 'Speciality Details added successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                // this._router.navigate(['../../'], { relativeTo: this._route });
+                   this._router.navigate(['/account-setup/specialities']);
+            },
+            (error) => {
+                let errString = 'Unable to add Speciality Details.';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this.isSpecialityDetailSaveInProgress = false;
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                this._progressBarService.hide();
+            },
+            () => {
+                this.isSpecialityDetailSaveInProgress = false;
+                this._progressBarService.hide();
+            });
+
     }
+    } 
 }

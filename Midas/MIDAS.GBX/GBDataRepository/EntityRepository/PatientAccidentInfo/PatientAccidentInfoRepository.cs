@@ -24,57 +24,57 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Entity Conversion
         public override T Convert<T, U>(U entity)
         {
-            PatientAccidentInfo PatientEmpInfo = entity as PatientAccidentInfo;
+            PatientAccidentInfo patientAccidentInfo = entity as PatientAccidentInfo;
 
-            if (PatientEmpInfo == null)
+            if (patientAccidentInfo == null)
                 return default(T);
 
             BO.PatientAccidentInfo PatientAccidentInfoBO = new BO.PatientAccidentInfo();
-            PatientAccidentInfoBO.ID = PatientEmpInfo.Id;
-            PatientAccidentInfoBO.accidentDate = PatientEmpInfo.AccidentDate;
-            PatientAccidentInfoBO.plateNumber = PatientEmpInfo.PlateNumber;
-            PatientAccidentInfoBO.reportNumber = PatientEmpInfo.ReportNumber;
-            PatientAccidentInfoBO.accidentAddressInfoId = PatientEmpInfo.AccidentAddressInfoId;
-            PatientAccidentInfoBO.hospitalName = PatientEmpInfo.HospitalName;
-            PatientAccidentInfoBO.hospitalAddressInfoId = PatientEmpInfo.HospitalAddressInfoId;
-            PatientAccidentInfoBO.dateOfAdmission = PatientEmpInfo.DateOfAdmission;
-            PatientAccidentInfoBO.additionalPatients = PatientEmpInfo.AdditionalPatients;
-            PatientAccidentInfoBO.describeInjury = PatientEmpInfo.DescribeInjury;
-            PatientAccidentInfoBO.patientTypeId = PatientEmpInfo.PatientTypeId;
-            PatientAccidentInfoBO.caseId = PatientEmpInfo.CaseId;
+            PatientAccidentInfoBO.ID = patientAccidentInfo.Id;
+            PatientAccidentInfoBO.accidentDate = patientAccidentInfo.AccidentDate;
+            PatientAccidentInfoBO.plateNumber = patientAccidentInfo.PlateNumber;
+            PatientAccidentInfoBO.reportNumber = patientAccidentInfo.ReportNumber;
+            PatientAccidentInfoBO.accidentAddressInfoId = patientAccidentInfo.AccidentAddressInfoId;
+            PatientAccidentInfoBO.hospitalName = patientAccidentInfo.HospitalName;
+            PatientAccidentInfoBO.hospitalAddressInfoId = patientAccidentInfo.HospitalAddressInfoId;
+            PatientAccidentInfoBO.dateOfAdmission = patientAccidentInfo.DateOfAdmission;
+            PatientAccidentInfoBO.additionalPatients = patientAccidentInfo.AdditionalPatients;
+            PatientAccidentInfoBO.describeInjury = patientAccidentInfo.DescribeInjury;
+            PatientAccidentInfoBO.patientTypeId = patientAccidentInfo.PatientTypeId;
+            PatientAccidentInfoBO.caseId = patientAccidentInfo.CaseId;
 
-            if (PatientEmpInfo.AddressInfo != null)
+            if (patientAccidentInfo.AddressInfo != null)
             {
                 BO.AddressInfo boAddress = new BO.AddressInfo();
-                boAddress.Name = PatientEmpInfo.AddressInfo.Name;
-                boAddress.Address1 = PatientEmpInfo.AddressInfo.Address1;
-                boAddress.Address2 = PatientEmpInfo.AddressInfo.Address2;
-                boAddress.City = PatientEmpInfo.AddressInfo.City;
-                boAddress.State = PatientEmpInfo.AddressInfo.State;
-                boAddress.ZipCode = PatientEmpInfo.AddressInfo.ZipCode;
-                boAddress.Country = PatientEmpInfo.AddressInfo.Country;
-                boAddress.CreateByUserID = PatientEmpInfo.AddressInfo.CreateByUserID;
-                boAddress.ID = PatientEmpInfo.AddressInfo.id;
+                boAddress.Name = patientAccidentInfo.AddressInfo.Name;
+                boAddress.Address1 = patientAccidentInfo.AddressInfo.Address1;
+                boAddress.Address2 = patientAccidentInfo.AddressInfo.Address2;
+                boAddress.City = patientAccidentInfo.AddressInfo.City;
+                boAddress.State = patientAccidentInfo.AddressInfo.State;
+                boAddress.ZipCode = patientAccidentInfo.AddressInfo.ZipCode;
+                boAddress.Country = patientAccidentInfo.AddressInfo.Country;
+                boAddress.CreateByUserID = patientAccidentInfo.AddressInfo.CreateByUserID;
+                boAddress.ID = patientAccidentInfo.AddressInfo.id;
                 PatientAccidentInfoBO.accidentAddressInfo = boAddress;
             }
-            if (PatientEmpInfo.AddressInfo1 != null)
+            if (patientAccidentInfo.AddressInfo1 != null)
             {
                 BO.AddressInfo boAddress1 = new BO.AddressInfo();
-                boAddress1.Name = PatientEmpInfo.AddressInfo1.Name;
-                boAddress1.Address1 = PatientEmpInfo.AddressInfo1.Address1;
-                boAddress1.Address2 = PatientEmpInfo.AddressInfo1.Address2;
-                boAddress1.City = PatientEmpInfo.AddressInfo1.City;
-                boAddress1.State = PatientEmpInfo.AddressInfo1.State;
-                boAddress1.ZipCode = PatientEmpInfo.AddressInfo1.ZipCode;
-                boAddress1.Country = PatientEmpInfo.AddressInfo1.Country;
-                boAddress1.CreateByUserID = PatientEmpInfo.AddressInfo1.CreateByUserID;
-                boAddress1.ID = PatientEmpInfo.AddressInfo1.id;
+                boAddress1.Name = patientAccidentInfo.AddressInfo1.Name;
+                boAddress1.Address1 = patientAccidentInfo.AddressInfo1.Address1;
+                boAddress1.Address2 = patientAccidentInfo.AddressInfo1.Address2;
+                boAddress1.City = patientAccidentInfo.AddressInfo1.City;
+                boAddress1.State = patientAccidentInfo.AddressInfo1.State;
+                boAddress1.ZipCode = patientAccidentInfo.AddressInfo1.ZipCode;
+                boAddress1.Country = patientAccidentInfo.AddressInfo1.Country;
+                boAddress1.CreateByUserID = patientAccidentInfo.AddressInfo1.CreateByUserID;
+                boAddress1.ID = patientAccidentInfo.AddressInfo1.id;
                 PatientAccidentInfoBO.hospitalAddressInfo = boAddress1;
             }
 
-            PatientAccidentInfoBO.IsDeleted = PatientEmpInfo.IsDeleted;
-            PatientAccidentInfoBO.CreateByUserID = PatientEmpInfo.CreateByUserID;
-            PatientAccidentInfoBO.UpdateByUserID = PatientEmpInfo.UpdateByUserID;
+            PatientAccidentInfoBO.IsDeleted = patientAccidentInfo.IsDeleted;
+            PatientAccidentInfoBO.CreateByUserID = patientAccidentInfo.CreateByUserID;
+            PatientAccidentInfoBO.UpdateByUserID = patientAccidentInfo.UpdateByUserID;
 
             return (T)(object)PatientAccidentInfoBO;
         }

@@ -63,9 +63,13 @@
     <Compile Include="DataAccessManager\GbDataAccessManager.cs" />
     <Compile Include="DataAccessManager\IDBContextProvider.cs" />
     <Compile Include="DataAccessManager\IGbDataAccessManager.cs" />
+    <Compile Include="EntityRepository\AdjusterMaster\AdjusterMasterRepository.cs" />
     <Compile Include="EntityRepository\AttorneyMaster\AttorneyMasterRepository.cs" />
     <Compile Include="EntityRepository\BaseEntityRepo.cs" />
+    <Compile Include="EntityRepository\CaseInsuranceMapping\CaseInsuranceMappingRepository.cs" />
     <Compile Include="EntityRepository\Case\CaseRepository.cs" />
+    <Compile Include="EntityRepository\Common\CaseStatusRepository.cs" />
+    <Compile Include="EntityRepository\Common\CaseTypeRepository.cs" />
     <Compile Include="EntityRepository\Common\CityRepository.cs" />
     <Compile Include="EntityRepository\Common\GenderRepository.cs" />
     <Compile Include="EntityRepository\Common\InsuranceTypeRepository.cs" />
@@ -79,6 +83,7 @@
     <Compile Include="EntityRepository\Doctor\DoctorRepository.cs" />
     <Compile Include="EntityRepository\Doctor\DoctorSpecialityRepository.cs" />
     <Compile Include="EntityRepository\Company\InvitationRepository.cs" />
+    <Compile Include="EntityRepository\InsuranceMaster\InsuranceMasterRepository.cs" />
     <Compile Include="EntityRepository\Location\LocationRepository.cs" />
     <Compile Include="EntityRepository\Log\LogRepository.cs" />
     <Compile Include="EntityRepository\PatientAccidentInfo\PatientAccidentInfoRepository.cs" />

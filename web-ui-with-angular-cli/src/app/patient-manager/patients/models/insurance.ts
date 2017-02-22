@@ -2,7 +2,9 @@ import { Record } from 'immutable';
 import * as moment from 'moment';
 import { Address } from '../../../commons/models/address';
 import { Contact } from '../../../commons/models/contact';
+import { InsuranceMapping } from '../../cases/models/insurance-mapping';
 import {InsuranceType} from './enums/insurance-type';
+import {PolicyOwner} from './enums/policy-owner';
 
 const InsuranceRecord = Record({
     id: 0,
@@ -13,6 +15,7 @@ const InsuranceRecord = Record({
     contactPerson: '',
     insuranceType: InsuranceType.PRIMARY,
     insuranceCompanyCode: '',
+    caseInsuranceMapping: null,
     isinactive: 0,
     policyAddress: null,
     policyContact: null,
@@ -30,6 +33,7 @@ export class Insurance extends InsuranceRecord {
     contactPerson: string;
     insuranceType: InsuranceType;
     insuranceCompanyCode: string;
+    caseInsuranceMapping: InsuranceMapping;
     isinactive: boolean;
     policyAddress: Address;
     policyContact: Contact;
@@ -44,6 +48,7 @@ export class Insurance extends InsuranceRecord {
         return Insurance.getInsuranceTypeLabel(this.insuranceType);
     }
 
+    // tslint:disable-next-line:member-ordering
     static getInsuranceTypeLabel(insuranceType: InsuranceType): string {
         switch (insuranceType) {
             case InsuranceType.PRIMARY:
@@ -53,4 +58,20 @@ export class Insurance extends InsuranceRecord {
         }
     }
 
+    get policyOwnerLabel(): string {
+        return Insurance.getPolicyOwnerLabel(this.policyOwnerId);
+    }
+
+    static getPolicyOwnerLabel(policyOwner: PolicyOwner): string {
+        switch (policyOwner) {
+            case PolicyOwner.SELF:
+                return 'Self';
+            case PolicyOwner.SPOUS:
+                return 'Spous';
+            case PolicyOwner.CHILD:
+                return 'Child';
+            case PolicyOwner.OTHER:
+                return 'Other';
+        }
+    }
 }

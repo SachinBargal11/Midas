@@ -7,21 +7,39 @@ using System.Threading.Tasks;
 
 namespace MIDAS.GBX.BusinessObjects
 {
+    //public class CaseInsuranceMapping : GbObject
+    //{        
+    //    [JsonProperty("caseId")]
+    //    public int CaseId { get; set; }
+
+    //    [JsonProperty("patientInsuranceInfoId")]
+    //    public int PatientInsuranceInfoId { get; set; }
+
+    //    [JsonProperty("isPrimaryInsurance")]
+    //    public bool? IsPrimaryInsurance { get; set; }
+
+    //    //[JsonProperty("case")]
+    //    //public Case cases { get; set; }
+
+    //    [JsonProperty("patientInsuranceInfo")]
+    //    public PatientInsuranceInfo PatientInsuranceInfo{ get; set; }
+    //}
+
     public class CaseInsuranceMapping : GbObject
-    {        
+    {
         [JsonProperty("caseId")]
         public int CaseId { get; set; }
 
-        [JsonProperty("patientInsuranceInfoId")]
-        public int PatientInsuranceInfoId { get; set; }
+        [JsonProperty("mappings")]
+        public List<Mapping> Mappings { get; set; }
+    }
 
-        [JsonProperty("isPrimaryInsurance")]
-        public bool? IsPrimaryInsurance { get; set; }
-
-        [JsonProperty("case")]
-        public Case cases { get; set; }
-
+    public class Mapping
+    {
         [JsonProperty("patientInsuranceInfo")]
-        public PatientInsuranceInfo PatientInsuranceInfo{ get; set; }
+        public PatientInsuranceInfo PatientInsuranceInfo { get; set; }
+
+        [JsonProperty("adjusterMaster")]
+        public AdjusterMaster AdjusterMaster { get; set; }
     }
 }

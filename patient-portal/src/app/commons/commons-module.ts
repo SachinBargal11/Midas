@@ -8,6 +8,7 @@ import { TimeAgoPipe } from './pipes/time-ago-pipe';
 import { ReversePipe } from './pipes/reverse-array-pipe';
 import { PhoneFormatPipe } from './pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from './pipes/faxno-format-pipe';
+import { DateFormatPipe } from './pipes/date-format-pipe';
 
 import { AppHeaderComponent } from '../elements/app-header/app-header';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb';
@@ -20,9 +21,11 @@ import { ShellComponent } from './shell-component';
 import { EmployerService } from '../account/services/employer-service';
 import { FamilyMemberService } from '../account/services/family-member-service';
 import { PatientsService } from '../account/services/patients-service';
+import { InsuranceService } from '../account/services/insurance-service';
 import { EmployerStore } from '../account/stores/employer-store';
 import { FamilyMemberStore } from '../account/stores/family-member-store';
 import { PatientsStore } from '../account/stores/patients-store';
+import { InsuranceStore } from '../account/stores/insurance-store';
 
 import {
   InputTextModule,
@@ -62,6 +65,7 @@ import { DropdownModule } from 'ng2-bootstrap';
     ReversePipe,
     PhoneFormatPipe,
     FaxNoFormatPipe,
+    DateFormatPipe,
     AppHeaderComponent,
     BreadcrumbComponent,
     MainNavComponent,
@@ -73,12 +77,15 @@ import { DropdownModule } from 'ng2-bootstrap';
   providers: [
     PhoneFormatPipe,
     FaxNoFormatPipe,
+    DateFormatPipe,
     EmployerService,
     FamilyMemberService,
     PatientsService,
+    InsuranceService,
     EmployerStore,
     FamilyMemberStore,
-    PatientsStore
+    PatientsStore,
+    InsuranceStore
   ],
   exports: [
     CommonModule,
@@ -90,6 +97,7 @@ import { DropdownModule } from 'ng2-bootstrap';
     ReversePipe,
     PhoneFormatPipe,
     FaxNoFormatPipe,
+    DateFormatPipe,
     AppHeaderComponent,
     BreadcrumbComponent,
     MainNavComponent,

@@ -21,9 +21,11 @@ import { PatientNavComponent } from './patient-nav-bar';
 import { EmployerService } from './services/employer-service';
 import { FamilyMemberService } from './services/family-member-service';
 import { PatientsService } from './services/patients-service';
+import { InsuranceService } from './services/insurance-service';
 import { EmployerStore } from './stores/employer-store';
 import { FamilyMemberStore } from './stores/family-member-store';
 import { PatientsStore } from './stores/patients-store';
+import { InsuranceStore } from './stores/insurance-store';
 
 import { AccountRoutingModule } from './account-routes';
 
@@ -54,9 +56,11 @@ import { AccountRoutingModule } from './account-routes';
             EmployerService,
             FamilyMemberService,
             PatientsService,
+            InsuranceService,
             EmployerStore,
             FamilyMemberStore,
-            PatientsStore
+            PatientsStore,
+            InsuranceStore
       ]
 })
 export class AccountModule { }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LimitPipe } from './pipes/limit-array-pipe';
+import { DateFormatPipe } from './pipes/date-format-pipe';
 import { MapToJSPipe } from './pipes/map-to-js';
 import { TimeAgoPipe } from './pipes/time-ago-pipe';
 import { ReversePipe } from './pipes/reverse-array-pipe';
@@ -59,6 +60,7 @@ import { DropdownModule } from 'ng2-bootstrap';
   declarations: [
     LimitPipe,
     MapToJSPipe,
+    DateFormatPipe,
     TimeAgoPipe,
     ReversePipe,
     PhoneFormatPipe,
@@ -76,6 +78,7 @@ import { DropdownModule } from 'ng2-bootstrap';
     FormsModule,
     RouterModule,
     LimitPipe,
+    DateFormatPipe,
     MapToJSPipe,
     TimeAgoPipe,
     ReversePipe,

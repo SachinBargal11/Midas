@@ -88,7 +88,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By ID
         public override object Get(int id)
         {
-            //var acc = _context.PatientEmpInfoes.Where(p => p.Id == id && p.IsCurrentEmp == true && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).FirstOrDefault<PatientEmpInfo>();
             var acc = _context.PatientEmpInfoes.Include("addressInfo").Include("contactInfo").Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<PatientEmpInfo>();
             BO.PatientEmpInfo acc_ = Convert<BO.PatientEmpInfo, PatientEmpInfo>(acc);
 
@@ -112,7 +111,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             }
 
             List<BO.PatientEmpInfo> lstpatientsEmpInfo = new List<BO.PatientEmpInfo>();
-            //acc.ForEach(p => lstpatientsEmpInfo.Add(Convert<BO.PatientEmpInfo, PatientEmpInfo>(p)));
             foreach (PatientEmpInfo item in acc)
             {
                 lstpatientsEmpInfo.Add(Convert<BO.PatientEmpInfo, PatientEmpInfo>(item));
@@ -424,7 +422,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                 dbContextTransaction.Commit();
 
-                patientEmpInfoDB = _context.PatientEmpInfoes.Where(p => p.Id == patientEmpInfoDB.Id).FirstOrDefault<PatientEmpInfo>();
+                patientEmpInfoDB = _context.PatientEmpInfoes.Include("addressInfo").Include("contactInfo").Where(p => p.Id == patientEmpInfoDB.Id).FirstOrDefault<PatientEmpInfo>();
             }
 
             var res = Convert<BO.PatientEmpInfo, PatientEmpInfo>(patientEmpInfoDB);

@@ -14,7 +14,8 @@
     <p-column field="specialityCode" header="Speciality Code" [sortable]="true"></p-column>
    <p-column styleClass="actions-cell" header="Actions">
         <template let-speciality="rowData" pTemplate="body">
-        <a (click)="loadAddEditSpeciality(speciality)"><i class="glyphicon glyphicon-edit"></i></a>
+        <!--<a (click)="loadAddEditSpeciality(speciality)"><i class="glyphicon glyphicon-edit"></i></a>-->
+        <a routerLink="{{speciality.id}}/edit"><i class="glyphicon glyphicon-edit"></i></a>
         </template>
     </p-column> 
 
