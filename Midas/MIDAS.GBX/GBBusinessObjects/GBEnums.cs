@@ -22,7 +22,8 @@ namespace MIDAS.GBX.BusinessObjects
             public enum UserType
             {
                 Patient = 1,
-                Staff = 2
+                Staff = 2,
+                Attorney = 3
             }
         #endregion
 

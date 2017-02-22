@@ -74,7 +74,38 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("lastName")]
         public string LastName { get; set; }
 
-        [JsonProperty("cases")]
-        public List<Case> Cases { get; set; }
+
+        [JsonProperty("caseId")]
+        public int CaseId { get; set; }
+
+        [JsonProperty("patientId")]
+        public int PatientId { get; set; }
+
+        [JsonProperty("caseName")]
+        public string CaseName { get; set; }
+
+        [JsonProperty("caseTypeId")]
+        public byte? CaseTypeId { get; set; }
+
+        [JsonProperty("locationId")]
+        public int? LocationId { get; set; }
+
+        [JsonProperty("patientEmpInfoId")]
+        public int? PatientEmpInfoId { get; set; }
+
+        [JsonProperty("carrierCaseNo")]
+        public string CarrierCaseNo { get; set; }
+
+        [JsonProperty("transportation")]
+        public bool? Transportation { get; set; }
+
+        [JsonProperty("caseStatusId")]
+        public byte? CaseStatusId { get; set; }
+
+        [JsonProperty("attorneyId")]
+        public int? AttorneyId { get; set; }        
+
+        [JsonProperty("patientEmpInfo")]
+        public PatientEmpInfo PatientEmpInfo { get; set; }
     }
 }

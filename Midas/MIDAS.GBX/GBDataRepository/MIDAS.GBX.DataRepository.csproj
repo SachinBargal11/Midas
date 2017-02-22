@@ -64,6 +64,7 @@
     <Compile Include="DataAccessManager\IDBContextProvider.cs" />
     <Compile Include="DataAccessManager\IGbDataAccessManager.cs" />
     <Compile Include="EntityRepository\AdjusterMaster\AdjusterMasterRepository.cs" />
+    <Compile Include="EntityRepository\AttorneyMaster\AttorneyMasterRepository.cs" />
     <Compile Include="EntityRepository\BaseEntityRepo.cs" />
     <Compile Include="EntityRepository\CaseInsuranceMapping\CaseInsuranceMappingRepository.cs" />
     <Compile Include="EntityRepository\Case\CaseRepository.cs" />
@@ -181,8 +182,8 @@
       <DependentUpon>MIDASGBXEntities.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\MIDASGBXEntities.cs">
-      <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\MIDASGBXEntities.Designer.cs">

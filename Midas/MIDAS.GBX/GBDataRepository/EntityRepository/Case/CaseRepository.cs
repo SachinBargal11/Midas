@@ -104,35 +104,55 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             if (patient2 == null)
                 return default(T);
 
-            BO.CaseWithUserAndPatient caseWithUserAndPatient = new BO.CaseWithUserAndPatient();
+            List<BO.CaseWithUserAndPatient> lstCaseWithUserAndPatient = new List<BO.CaseWithUserAndPatient>();
 
-            caseWithUserAndPatient.ID = patient2.Id;
-
-            if (patient2.User != null)
+            if (patient2.User != null && patient2.Cases != null)
             {
-                caseWithUserAndPatient.UserId = patient2.User.id;
-                caseWithUserAndPatient.UserName = patient2.User.UserName;                
-                caseWithUserAndPatient.FirstName = patient2.User.FirstName;
-                caseWithUserAndPatient.MiddleName = patient2.User.MiddleName;
-                caseWithUserAndPatient.LastName = patient2.User.LastName;
-            }            
-
-            if (patient2.Cases != null)
-            {
-                caseWithUserAndPatient.Cases = new List<BO.Case>();
-
                 foreach (var eachCase in patient2.Cases)
                 {
-                    caseWithUserAndPatient.Cases.Add(Convert<BO.Case, Case>(eachCase));
-                }
-            }
+                    BO.CaseWithUserAndPatient caseWithUserAndPatient = new BO.CaseWithUserAndPatient();
 
-            //Common 
-            caseWithUserAndPatient.IsDeleted = patient2.IsDeleted;
-            caseWithUserAndPatient.CreateByUserID = patient2.CreateByUserID;
-            caseWithUserAndPatient.UpdateByUserID = patient2.UpdateByUserID;
+                    caseWithUserAndPatient.ID = patient2.Id;
 
-            return (T)(object)caseWithUserAndPatient;
+                    caseWithUserAndPatient.UserId = patient2.User.id;
+                    caseWithUserAndPatient.UserName = patient2.User.UserName;
+                    caseWithUserAndPatient.FirstName = patient2.User.FirstName;
+                    caseWithUserAndPatient.MiddleName = patient2.User.MiddleName;
+                    caseWithUserAndPatient.LastName = patient2.User.LastName;
+
+                    caseWithUserAndPatient.CaseId = eachCase.Id;
+                    caseWithUserAndPatient.PatientId = eachCase.PatientId;
+                    caseWithUserAndPatient.CaseName = eachCase.CaseName;
+                    caseWithUserAndPatient.CaseTypeId = eachCase.CaseTypeId;
+                    caseWithUserAndPatient.LocationId = eachCase.LocationId;
+                    caseWithUserAndPatient.PatientEmpInfoId = eachCase.PatientEmpInfoId;
+                    caseWithUserAndPatient.CarrierCaseNo = eachCase.CarrierCaseNo;
+                    caseWithUserAndPatient.Transportation = eachCase.Transportation;
+                    caseWithUserAndPatient.CaseStatusId = eachCase.CaseStatusId;
+                    caseWithUserAndPatient.AttorneyId = eachCase.AttorneyId;
+
+                    caseWithUserAndPatient.IsDeleted = eachCase.IsDeleted;
+                    caseWithUserAndPatient.CreateByUserID = eachCase.CreateByUserID;
+                    caseWithUserAndPatient.UpdateByUserID = eachCase.UpdateByUserID;
+
+                    BO.PatientEmpInfo boPatientEmpInfo = new BO.PatientEmpInfo();
+                    using (PatientEmpInfoRepository cmp = new PatientEmpInfoRepository(_context))
+                    {
+
+                        boPatientEmpInfo = cmp.Convert<BO.PatientEmpInfo, PatientEmpInfo>(eachCase.PatientEmpInfo);
+                        caseWithUserAndPatient.PatientEmpInfo = boPatientEmpInfo;
+                    }
+
+                    //Common 
+                    caseWithUserAndPatient.IsDeleted = eachCase.IsDeleted;
+                    caseWithUserAndPatient.CreateByUserID = eachCase.CreateByUserID;
+                    caseWithUserAndPatient.UpdateByUserID = eachCase.UpdateByUserID;
+
+                    lstCaseWithUserAndPatient.Add(caseWithUserAndPatient);
+                }                
+            }            
+
+            return (T)(object)lstCaseWithUserAndPatient;
         }
         #endregion
 
@@ -343,7 +363,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 List<BO.CaseWithUserAndPatient> lstCaseWithUserAndPatient = new List<BO.CaseWithUserAndPatient>();
                 foreach (Patient2 eachPatient in acc)
                 {
-                    lstCaseWithUserAndPatient.Add(ConvertToCaseWithUserAndPatient<BO.CaseWithUserAndPatient, Patient2>(eachPatient));
+                    lstCaseWithUserAndPatient.AddRange(ConvertToCaseWithUserAndPatient<List<BO.CaseWithUserAndPatient>, Patient2>(eachPatient));
                 }
 
                 return lstCaseWithUserAndPatient;

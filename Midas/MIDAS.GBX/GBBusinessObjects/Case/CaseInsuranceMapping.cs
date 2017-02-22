@@ -30,7 +30,16 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("caseId")]
         public int CaseId { get; set; }
 
-        [JsonProperty("patientInsuranceInfos")]
-        public List<PatientInsuranceInfo> PatientInsuranceInfos { get; set; }
+        [JsonProperty("mappings")]
+        public List<Mapping> Mappings { get; set; }
+    }
+
+    public class Mapping
+    {
+        [JsonProperty("patientInsuranceInfo")]
+        public PatientInsuranceInfo PatientInsuranceInfo { get; set; }
+
+        [JsonProperty("adjusterMaster")]
+        public AdjusterMaster AdjusterMaster { get; set; }
     }
 }
