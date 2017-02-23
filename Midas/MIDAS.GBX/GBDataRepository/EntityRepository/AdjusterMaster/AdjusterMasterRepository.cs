@@ -146,6 +146,30 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        #region Get By Company And InsuranceMaster Id
+        public override object Get(int CompanyId, int InsuranceMasterId)
+        {
+            var acc = _context.AdjusterMasters.Include("addressInfo")
+                                              .Include("contactInfo")
+                                              .Include("InsuranceMaster")
+                                              .Where(p => p.CompanyId == CompanyId && p.InsuranceMasterId == InsuranceMasterId
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<AdjusterMaster>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            List<BO.AdjusterMaster> lstAdjusterMaster = new List<BO.AdjusterMaster>();
+            foreach (AdjusterMaster item in acc)
+            {
+                lstAdjusterMaster.Add(Convert<BO.AdjusterMaster, AdjusterMaster>(item));
+            }
+
+            return lstAdjusterMaster;
+        }
+        #endregion
+
         #region Get All 
         public override object Get<T>(T entity)
         {

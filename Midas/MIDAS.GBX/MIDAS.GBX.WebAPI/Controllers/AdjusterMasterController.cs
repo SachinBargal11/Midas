@@ -45,6 +45,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("GetByCompanyAndInsuranceMasterId/{CompanyId}/{InsuranceMasterId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetByCompanyAndInsuranceMasterId(int CompanyId, int InsuranceMasterId)
+        {
+            return requestHandler.GetGbObjects(Request, CompanyId, InsuranceMasterId);
+        }
+
+        [HttpGet]
         [Route("getAll")]
         [AllowAnonymous]
         public HttpResponseMessage Get([FromBody]AdjusterMaster data)

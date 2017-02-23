@@ -45,5 +45,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object ResetPassword(T gbObject);
         Object DeleteById(int id);
 
+        Object Get(int param1, int param2, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+
     }
 }
