@@ -11,6 +11,7 @@ import { AddReferringOfficeComponent } from './components/add-referring-office';
 import { EditReferringOfficeComponent } from './components/edit-referring-office';
 import { AccidentInfoComponent } from './components/accident';
 import { InsuranceMapComponent } from './components/insurance-mapping';
+import { CaseMappingComponent } from './components/case-mapping';
 
 export const CasesShellRoutes: Routes = [
     {
@@ -99,6 +100,14 @@ export const CasesShellRoutes: Routes = [
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Accident'
+                        }
+                    },
+                    {
+                        path: 'cases-mapping',
+                        component: CaseMappingComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Case Mapping'
                         }
                     },
                     {

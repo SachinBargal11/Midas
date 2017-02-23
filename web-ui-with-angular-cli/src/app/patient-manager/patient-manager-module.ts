@@ -48,12 +48,15 @@ import { AddCaseComponent } from './cases/components/add-case';
 import { CaseBasicComponent } from './cases/components/case-basic';
 import { CasesListComponent } from './cases/components/cases-list';
 import { InsuranceMapComponent } from './cases/components/insurance-mapping';
+import { CaseMappingComponent } from './cases/components/case-mapping';
 import { CasesStore } from './cases/stores/case-store';
 import { InsuranceMappingStore } from './cases/stores/insurance-mapping-store';
 import { InsuranceMappingService } from './cases/services/insurance-mapping-service';
 import { ViewAllComponent } from './patients/components/view-all';
 
 import { CaseService } from './cases/services/cases-services';
+import { AdjusterMasterStore } from '../account-setup/stores/adjuster-store';
+import { AdjusterMasterService } from '../account-setup/services/adjuster-service';
 
 @NgModule({
     imports: [
@@ -94,6 +97,7 @@ import { CaseService } from './cases/services/cases-services';
         CasesListComponent,
         CaseBasicComponent,
         InsuranceMapComponent,
+        CaseMappingComponent,
         ViewAllComponent
     ],
     providers: [
@@ -114,7 +118,9 @@ import { CaseService } from './cases/services/cases-services';
         CasesStore,
         AttorneyStore,
         AccidentStore,
-        InsuranceMappingStore
+        InsuranceMappingStore,
+        AdjusterMasterStore,
+        AdjusterMasterService
     ]
 })
 export class PatientManagerModule { }

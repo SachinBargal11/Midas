@@ -1,0 +1,50 @@
+<form [formGroup]="caseMapForm" (ngSubmit)="save()">
+    <section class="card">
+        <header class="card-header card-header-lg clearfix">
+            Details
+        </header>
+        <div class="card-block">
+            <div class="table-responsive" *ngIf="insurances">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Policy Holder</th>
+                            <th>Insurance Type</th>
+                            <th>Insurance Company Code</th>
+                            <th>Select Adjuster</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let currentInsurance of insurances">
+                            <!--<td><input type="checkbox" value="{{currentInsurance.id}}"/></td>-->
+                            <td>
+                                <p-checkbox name="currentInsurance" value="{{currentInsurance.id}}" [(ngModel)]="selectedInsurance"
+                                    [ngModelOptions]="{standalone: true}"></p-checkbox>
+                            </td>
+                            <td>{{currentInsurance.policyHoldersName}}</td>
+                            <td>{{currentInsurance.insuranceTypeLabel}}</td>
+                            <td>{{currentInsurance.insuranceCompanyCode}}</td>
+                            <!--<td>
+                                <p-multiSelect [options]="adjustersArr" defaultLabel="Select Adjuster"></p-multiSelect>
+                            </td>-->
+                            <td>
+                                <select class="form-control">
+                                    <option value="">-Select Adjuster-</option>
+                                    <option *ngFor="let adjuster of adjusters" value="{{adjuster.id}}">{{adjuster.firstName}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                Selected : <span *ngFor="let cat of selectedInsurance">{{cat}}</span>
+            </div>
+        </div>
+    </section>
+    <div class="text-center">
+        <button type="submit" class="btn btn-success">Save
+                    <loader [visible]="isSaveProgress"></loader>
+                </button>
+        <button type="button" class="btn btn-secondary">Cancel</button>
+    </div>
+</form>
