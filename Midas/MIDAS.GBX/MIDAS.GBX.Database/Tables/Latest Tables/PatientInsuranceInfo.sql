@@ -6,7 +6,8 @@
 	[PolicyHolderAddressInfoId] [INT] NULL,
 	[PolicyHolderContactInfoId] [INT] NULL,
 	[PolicyOwnerId] [TINYINT] NULL,
-	[InsuranceCompanyCode] [NVARCHAR](10) NULL, -- look up and also add, companay link
+	[InsuranceMasterId] [INT] NULL, -- look up and also add, companay link
+	[InsuranceCompanyCode] [NVARCHAR](10) NULL,
 	[InsuranceCompanyAddressInfoId] [INT] NULL,
 	[InsuranceCompanyContactInfoId] [INT] NULL,
 	[PolicyNo] [NVARCHAR](50) NULL,
@@ -79,7 +80,10 @@ GO
 ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_InsuranceType_InsuranceTypeId]
 GO
 
---ALTER TABLE [dbo].[PatientInsuranceInfo] DROP COLUMN [ClaimFileNo]
---GO
---ALTER TABLE [dbo].[PatientInsuranceInfo] DROP COLUMN [WCBNo] 
---GO
+--ALTER TABLE [dbo].[PatientInsuranceInfo] ADD [InsuranceMasterId] [INT] NULL
+ALTER TABLE [dbo].[PatientInsuranceInfo]  WITH CHECK ADD  CONSTRAINT [FK_PatientInsuranceInfo_InsuranceMaster_InsuranceMasterId] FOREIGN KEY([InsuranceMasterId])
+	REFERENCES [dbo].[InsuranceMaster] ([Id])
+GO
+
+ALTER TABLE [dbo].[PatientInsuranceInfo] CHECK CONSTRAINT [FK_PatientInsuranceInfo_InsuranceMaster_InsuranceMasterId]
+GO

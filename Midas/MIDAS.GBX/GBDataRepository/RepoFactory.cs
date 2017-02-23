@@ -9,6 +9,7 @@ using MIDAS.GBX.DataRepository.Model;
 using MIDAS.GBX.DataRepository.EntityRepository;
 using MIDAS.GBX.DataRepository.EntityRepository.Common;
 
+
 namespace MIDAS.GBX
 {
     internal class RepoFactory
@@ -172,8 +173,6 @@ namespace MIDAS.GBX
             {
                 repo = new AttorneyMasterRepository(context);
             }
-
-
             if (typeof(T) == typeof(BO.CaseInsuranceMapping))
             {
                 repo = new CaseInsuranceMappingRepository(context);
@@ -193,6 +192,10 @@ namespace MIDAS.GBX
             if (typeof(T) == typeof(BO.InsuranceMaster))
             {
                 repo = new InsuranceMasterRepository(context);
+            }
+            if (typeof(T) == typeof(BO.PatientVisit))
+            {
+                repo = new PatientVisitRepository(context);
             }
             return repo;
         }

@@ -19,6 +19,8 @@ namespace MIDAS.GBX.DataRepository.Model
         {
             this.CompanySpecialtyDetails = new HashSet<CompanySpecialtyDetail>();
             this.DoctorSpecialities = new HashSet<DoctorSpeciality>();
+            this.PatientVisits = new HashSet<PatientVisit>();
+            this.PatientVisitEvents = new HashSet<PatientVisitEvent>();
             this.SpecialityDetails = new HashSet<SpecialityDetail>();
             this.SpecialtyDetails = new HashSet<SpecialtyDetail>();
         }
@@ -37,6 +39,10 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<CompanySpecialtyDetail> CompanySpecialtyDetails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DoctorSpeciality> DoctorSpecialities { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientVisit> PatientVisits { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientVisitEvent> PatientVisitEvents { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SpecialityDetail> SpecialityDetails { get; set; }
         public virtual Specialty Specialty1 { get; set; }

@@ -36,8 +36,8 @@ export class InsuranceMappingService {
         return <Observable<InsuranceMapping>>Observable.fromPromise(promise);
     }
 
-    getInsuranceMappings(caseId: Number): Observable<InsuranceMapping[]> {
-        let promise: Promise<InsuranceMapping[]> = new Promise((resolve, reject) => {
+    getInsuranceMappings(caseId: Number): Observable<InsuranceMapping> {
+        let promise: Promise<InsuranceMapping> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/CaseInsuranceMapping/getByCaseId/' + caseId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
@@ -50,7 +50,7 @@ export class InsuranceMappingService {
                 });
 
         });
-        return <Observable<InsuranceMapping[]>>Observable.fromPromise(promise);
+        return <Observable<InsuranceMapping>>Observable.fromPromise(promise);
     }
     addInsuranceMapping(insuranceMapping: InsuranceMapping): Observable<InsuranceMapping> {
         let promise: Promise<InsuranceMapping> = new Promise((resolve, reject) => {

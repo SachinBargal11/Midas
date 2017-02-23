@@ -17,9 +17,10 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Case()
         {
-            this.PatientAccidentInfoes = new HashSet<PatientAccidentInfo>();
-            this.RefferingOffices = new HashSet<RefferingOffice>();
             this.CaseInsuranceMappings = new HashSet<CaseInsuranceMapping>();
+            this.PatientAccidentInfoes = new HashSet<PatientAccidentInfo>();
+            this.PatientVisits = new HashSet<PatientVisit>();
+            this.RefferingOffices = new HashSet<RefferingOffice>();
         }
     
         public int Id { get; set; }
@@ -44,10 +45,12 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual Patient2 Patient2 { get; set; }
         public virtual PatientEmpInfo PatientEmpInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CaseInsuranceMapping> CaseInsuranceMappings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientAccidentInfo> PatientAccidentInfoes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RefferingOffice> RefferingOffices { get; set; }
+        public virtual ICollection<PatientVisit> PatientVisits { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CaseInsuranceMapping> CaseInsuranceMappings { get; set; }
+        public virtual ICollection<RefferingOffice> RefferingOffices { get; set; }
     }
 }

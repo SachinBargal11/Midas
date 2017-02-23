@@ -36,6 +36,9 @@ namespace MIDAS.GBX.BusinessObjects
 
     public class Mapping
     {
+        [JsonProperty("id")]
+        public int Id { get; set; }
+
         [JsonProperty("patientInsuranceInfo")]
         public PatientInsuranceInfo PatientInsuranceInfo { get; set; }
 

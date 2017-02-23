@@ -10,10 +10,8 @@ import { NotificationsStore } from '../../../commons/stores/notifications-store'
 import { CasesStore } from '../stores/case-store';
 import { InsuranceMappingStore } from '../stores/insurance-mapping-store';
 import { InsuranceStore } from '../../patients/stores/insurance-store';
-import { Case } from '../models/case';
 import { InsuranceMapping } from '../models/insurance-mapping';
 import { Insurance } from '../../patients/models/insurance';
-import { User } from '../../../commons/models/user';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
 import * as _ from 'underscore';
@@ -35,7 +33,6 @@ export class InsuranceMapComponent implements OnInit {
     insuranceMapform: FormGroup;
     insuranceMapformControls: any;
     isSaveProgress = false;
-    user = new User({});
     patientId: number;
     caseId: number;
     insurances: Insurance[] = [];
@@ -67,22 +64,25 @@ export class InsuranceMapComponent implements OnInit {
             Observable.forkJoin([fetchInsurances, fetchInsuranceMappings])
                 .subscribe((results) => {
                     let insurances: Insurance[] = results[0];
-                    let mappedInsurances: InsuranceMapping[] = results[1];
+                    let mappedInsurances: InsuranceMapping = results[1];
 
                     this.insurancesArr = _.map(insurances, (currentInsurance: Insurance) => {
                         return {
-                            label: `${currentInsurance.insuranceCompanyCode} - ${currentInsurance.insuranceTypeLabel}`,
+                            label: `${currentInsurance.insuranceCompanyCode} - ${currentInsurance.policyHoldersName}`,
                             value: currentInsurance.id.toString()
                         };
                     });
-                    for (let mappedInsurance of mappedInsurances) {
-                        this.selectedInsurances = _.map(mappedInsurance.patientInsuranceInfos, (currentInsurance: Insurance) => {
+                        this.selectedInsurances = _.map(mappedInsurances.patientInsuranceInfos, (currentInsurance: Insurance) => {
                             return currentInsurance.id.toString();
-                        });
-                    }
+                    });
+                    // mappedInsurances.forEach(element => {
+                    //      _.map(element.patientInsuranceInfos, (currentInsurance: Insurance) => {
+                    //         return this.selectedInsurances.push(currentInsurance.id.toString());
+                    //     });
+                    // });
                 },
                 (error) => {
-                    this._router.navigate(['../../']);
+                    this._router.navigate(['../../'], { relativeTo: this._route });
                     this._progressBarService.hide();
                 },
                 () => {
@@ -124,7 +124,7 @@ export class InsuranceMapComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/medical-provider/users']);
+                    this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
                 let errString = 'Unable to map insurance.';

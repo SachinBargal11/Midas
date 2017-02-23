@@ -17,6 +17,7 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public AddressInfo()
         {
+            this.AdjusterMasters = new HashSet<AdjusterMaster>();
             this.Companies = new HashSet<Company>();
             this.InsuranceMasters = new HashSet<InsuranceMaster>();
             this.Locations = new HashSet<Location>();
@@ -28,7 +29,6 @@ namespace MIDAS.GBX.DataRepository.Model
             this.PatientInsuranceInfoes1 = new HashSet<PatientInsuranceInfo>();
             this.RefferingOffices = new HashSet<RefferingOffice>();
             this.Users = new HashSet<User>();
-            this.AdjusterMasters = new HashSet<AdjusterMaster>();
         }
     
         public int id { get; set; }
@@ -45,6 +45,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AdjusterMaster> AdjusterMasters { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Company> Companies { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -67,7 +69,5 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<RefferingOffice> RefferingOffices { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> Users { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AdjusterMaster> AdjusterMasters { get; set; }
     }
 }

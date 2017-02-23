@@ -24,6 +24,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("policyOwnerId")]
         public byte? policyOwnerId { get; set; }
 
+        [JsonProperty("insuranceMasterId")]
+        public int? InsuranceMasterId { get; set; }
+
         [JsonProperty("insuranceCompanyCode")]
         public string insuranceCompanyCode { get; set; }
 

@@ -4,6 +4,7 @@ import { ValidateActiveSession } from '../commons/guards/validate-active-session
 import { AccountSetupShellComponent } from './account-setup-shell';
 import { SpecialityRoutes } from './components/speciality/speciality-routes';
 import { AdjusterRoutes } from './components/AdjusterMaster/adjuster-routes';
+import { AttorneyRoutes } from './components/AttorneyMaster/attorney-routes';
 // import { SpecialityDetailsRoutes } from './components/speciality-details/speciality-details-routes';
 
 
@@ -14,7 +15,9 @@ let AccountSetupRoutes: Routes = [
         canActivate: [ValidateActiveSession],
         children: [
             ...SpecialityRoutes,
-            ...AdjusterRoutes
+            ...AdjusterRoutes,
+            ...AttorneyRoutes
+
         ],
         data: {
             breadcrumb: 'Account Setup'

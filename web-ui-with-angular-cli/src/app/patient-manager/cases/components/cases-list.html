@@ -17,7 +17,8 @@
          <input #gb type="text" class="form-control" style="float:left" placeholder="Search Cases">
     </div>
 </div>
-<p-dataTable [value]="cases" [(selection)]="selectedCase" selectionMode="single" (onRowSelect)="onRowSelect(selectedCase)" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+<!--<p-dataTable [value]="cases" [(selection)]="selectedCase" selectionMode="single" (onRowSelect)="onRowSelect(selectedCase)" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">-->
+<p-dataTable [value]="cases" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Cases</header>
     <p-column field="caseName" header="Name" [sortable]="true"></p-column>
     <p-column styleClass="actions-cell" header="Actions">

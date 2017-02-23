@@ -38,7 +38,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetCurrentROByPatientId(HttpRequestMessage request, int PatientId);
         HttpResponseMessage DeleteById(HttpRequestMessage request, int id);
         HttpResponseMessage GetCurrentEmpByPatientId(HttpRequestMessage request, int PatientId);
-        
 
+        HttpResponseMessage GetGbObjects(HttpRequestMessage request, int param1, int param2);
     }
 }
