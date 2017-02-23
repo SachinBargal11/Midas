@@ -34,93 +34,120 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        //#region Entity Conversion
+        //public override T Convert<T, U>(U entity)
+        //{
+        //    if (entity.GetType().Name == "AddressInfo")
+        //    {
+        //        AddressInfo addr = entity as AddressInfo;
+        //        if (addr == null) return default(T);
+        //        BO.AddressInfo boAddress = new BO.AddressInfo();
+        //        boAddress.Name = addr.Name;
+        //        boAddress.Address1 = addr.Address1;
+        //        boAddress.Address2 = addr.Address2;
+        //        boAddress.City = addr.City;
+        //        boAddress.State = addr.State;
+        //        boAddress.ZipCode = addr.ZipCode;
+        //        boAddress.Country = addr.Country;
+        //        boAddress.CreateByUserID = addr.CreateByUserID;
+        //        boAddress.ID = addr.id;
+        //        boAddress.IsDeleted = addr.IsDeleted.HasValue ? boAddress.IsDeleted : false;
+        //        boAddress.UpdateByUserID = addr.UpdateByUserID.HasValue ? boAddress.UpdateByUserID : null;
+
+        //        return (T)(object)boAddress;
+        //    }
+        //    else if (entity.GetType().Name == "ContactInfo")
+        //    {
+        //        ContactInfo cnct = entity as ContactInfo;
+        //        if (cnct == null) return default(T);
+        //        BO.ContactInfo boContactInfo = new BO.ContactInfo();
+        //        boContactInfo.Name = cnct.Name;
+        //        boContactInfo.CellPhone = cnct.CellPhone;
+        //        boContactInfo.EmailAddress = cnct.EmailAddress;
+        //        boContactInfo.HomePhone = cnct.HomePhone;
+        //        boContactInfo.WorkPhone = cnct.WorkPhone;
+        //        boContactInfo.FaxNo = cnct.FaxNo;
+        //        boContactInfo.CreateByUserID = cnct.CreateByUserID;
+        //        boContactInfo.ID = cnct.id;
+        //        boContactInfo.IsDeleted = cnct.IsDeleted.HasValue ? boContactInfo.IsDeleted : false;
+        //        boContactInfo.UpdateByUserID = cnct.UpdateByUserID.HasValue ? boContactInfo.UpdateByUserID : null;
+
+        //        return (T)(object)boContactInfo;
+        //    }
+        //    else
+        //    {
+        //        Attorney attorney = entity as Attorney;
+        //        if (entity == null) return default(T);
+        //        BO.AttorneyMaster attorneyBO = new BO.AttorneyMaster();
+        //        attorneyBO.companyId = attorney.CompanyId;
+        //        attorneyBO.ID = attorney.Id;
+        //        attorneyBO.IsDeleted = attorney.IsDeleted;
+        //        attorneyBO.companyId = attorney.CompanyId;
+        //        attorneyBO.companyId = attorney.CompanyId;
+
+        //        BO.User boUser = new BO.User();
+        //        using (UserRepository cmp = new UserRepository(_context))
+        //        {
+        //            boUser = cmp.Convert<BO.User, User>(attorney.User);
+
+        //            var attorneyDetails = _context.Users.Include("AddressInfo")
+        //                                                .Include("ContactInfo")
+        //                                                .Where(a => a.id == boUser.ID).FirstOrDefault();
+        //            BO.AddressInfo addrInfo_ = Convert<BO.AddressInfo, AddressInfo>(attorneyDetails.AddressInfo);
+        //            BO.ContactInfo contactInfo_ = Convert<BO.ContactInfo, ContactInfo>(attorneyDetails.ContactInfo);
+
+        //            attorneyBO.User = boUser;
+        //            attorneyBO.User.AddressInfo = addrInfo_;
+        //            attorneyBO.User.ContactInfo = contactInfo_;
+        //        }
+        //        return (T)(object)attorneyBO;
+        //    }                      
+        //}
+        //#endregion
+
         #region Entity Conversion
         public override T Convert<T, U>(U entity)
         {
-            if (entity.GetType().Name == "AddressInfo")
-            {
-                AddressInfo addr = entity as AddressInfo;
-                if (addr == null) return default(T);
-                BO.AddressInfo boAddress = new BO.AddressInfo();
-                boAddress.Name = addr.Name;
-                boAddress.Address1 = addr.Address1;
-                boAddress.Address2 = addr.Address2;
-                boAddress.City = addr.City;
-                boAddress.State = addr.State;
-                boAddress.ZipCode = addr.ZipCode;
-                boAddress.Country = addr.Country;
-                boAddress.CreateByUserID = addr.CreateByUserID;
-                boAddress.ID = addr.id;
-                boAddress.IsDeleted = addr.IsDeleted.HasValue ? boAddress.IsDeleted : false;
-                boAddress.UpdateByUserID = addr.UpdateByUserID.HasValue ? boAddress.UpdateByUserID : null;
+            Attorney attorney = entity as Attorney;
 
-                return (T)(object)boAddress;
+            if (entity == null) return default(T);
+
+            BO.AttorneyMaster attorneyBO = new BO.AttorneyMaster();
+            attorneyBO.companyId = attorney.CompanyId;
+            attorneyBO.ID = attorney.Id;
+
+            BO.User boUser = new BO.User();
+            using (UserRepository cmp = new UserRepository(_context))
+            {
+                boUser = cmp.Convert<BO.User, User>(attorney.User);
+                attorneyBO.User = boUser;
             }
-            else if (entity.GetType().Name == "ContactInfo")
-            {
-                ContactInfo cnct = entity as ContactInfo;
-                if (cnct == null) return default(T);
-                BO.ContactInfo boContactInfo = new BO.ContactInfo();
-                boContactInfo.Name = cnct.Name;
-                boContactInfo.CellPhone = cnct.CellPhone;
-                boContactInfo.EmailAddress = cnct.EmailAddress;
-                boContactInfo.HomePhone = cnct.HomePhone;
-                boContactInfo.WorkPhone = cnct.WorkPhone;
-                boContactInfo.FaxNo = cnct.FaxNo;
-                boContactInfo.CreateByUserID = cnct.CreateByUserID;
-                boContactInfo.ID = cnct.id;
-                boContactInfo.IsDeleted = cnct.IsDeleted.HasValue ? boContactInfo.IsDeleted : false;
-                boContactInfo.UpdateByUserID = cnct.UpdateByUserID.HasValue ? boContactInfo.UpdateByUserID : null;
 
-                return (T)(object)boContactInfo;
-            }
-            else
-            {
-                Attorney attorney = entity as Attorney;
-                if (entity == null) return default(T);
-                BO.AttorneyMaster attorneyBO = new BO.AttorneyMaster();
-                attorneyBO.companyId = attorney.CompanyId;
-                attorneyBO.ID = attorney.Id;
-                attorneyBO.IsDeleted = attorney.IsDeleted;
-                attorneyBO.companyId = attorney.CompanyId;
-                attorneyBO.companyId = attorney.CompanyId;
+            attorneyBO.IsDeleted = attorney.IsDeleted;
+            attorneyBO.CreateByUserID = attorney.CreateByUserID;
+            attorneyBO.UpdateByUserID = attorney.UpdateByUserID;
 
-                BO.User boUser = new BO.User();
-                using (UserRepository cmp = new UserRepository(_context))
-                {
-                    boUser = cmp.Convert<BO.User, User>(attorney.User);
-
-                    var attorneyDetails = _context.Users.Include("AddressInfo")
-                                                        .Include("ContactInfo")
-                                                        .Where(a => a.id == boUser.ID).FirstOrDefault();
-                    BO.AddressInfo addrInfo_ = Convert<BO.AddressInfo, AddressInfo>(attorneyDetails.AddressInfo);
-                    BO.ContactInfo contactInfo_ = Convert<BO.ContactInfo, ContactInfo>(attorneyDetails.ContactInfo);
-
-                    attorneyBO.User = boUser;
-                    attorneyBO.User.AddressInfo = addrInfo_;
-                    attorneyBO.User.ContactInfo = contactInfo_;
-                }
-                return (T)(object)attorneyBO;
-            }                      
+            return (T)(object)attorneyBO;
         }
         #endregion
 
         #region Get All attornies
         public override object Get<T>(T entity)
         {
-            BO.AttorneyMaster attorneyBO = (BO.AttorneyMaster)(object)entity;
+            BO.AttorneyMaster attorneyMasterBO = (BO.AttorneyMaster)(object)entity;
 
             var acc_ = _context.Attorneys.Include("User")
-                                        .Include("User.AddressInfo")
-                                        .Include("User.ContactInfo")
-                                        .Where(p => p.IsDeleted.HasValue == false || p.IsDeleted == false)
-                                        .ToList<Attorney>();
+                                         .Include("User.AddressInfo")
+                                         .Include("User.ContactInfo")
+                                         .Where(p => p.IsDeleted.HasValue == false || p.IsDeleted == false)
+                                         .ToList<Attorney>();
 
             if (acc_ == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No records for Attorney found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             List<BO.AttorneyMaster> lstattornies = new List<BO.AttorneyMaster>();
+
             acc_.ForEach(item => lstattornies.Add(Convert<BO.AttorneyMaster, Attorney>(item)));
 
             return lstattornies;
@@ -131,10 +158,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object Get(int id)
         {
             var acc = _context.Attorneys.Include("User")
+                                        .Include("User.AddressInfo")
+                                        .Include("User.ContactInfo")
                                         .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                         .FirstOrDefault<Attorney>();
 
-            if (acc == null) return new BO.ErrorObject { ErrorMessage = "No record found for this RefferingOffice.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            if (acc == null) return new BO.ErrorObject { ErrorMessage = "No record found for this Attorney.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             else
             {
                 BO.AttorneyMaster acc_ = Convert<BO.AttorneyMaster, Attorney>(acc);
@@ -147,15 +176,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object GetByCompanyId(int id)
         {
             var acc = _context.Attorneys.Include("User")
+                                        .Include("User.AddressInfo")
+                                        .Include("User.ContactInfo")
                                         .Where(p => p.CompanyId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                        .FirstOrDefault<Attorney>();
+                                        .ToList<Attorney>();
 
-            if (acc == null) return new BO.ErrorObject { ErrorMessage = "No record found for this RefferingOffice.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            List<BO.AttorneyMaster> lstattornies = new List<BO.AttorneyMaster>();
+            if (acc == null) return new BO.ErrorObject { ErrorMessage = "No record found for this Company Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             else
             {
-                BO.AttorneyMaster acc_ = Convert<BO.AttorneyMaster, Attorney>(acc);
-                return (object)acc_;
+                acc.ForEach(item => lstattornies.Add(Convert<BO.AttorneyMaster, Attorney>(item)));
             }
+
+            return lstattornies;
         }
         #endregion
 
@@ -167,7 +200,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             BO.AddressInfo addressUserBO = (addAttorneyBO.User != null) ? addAttorneyBO.User.AddressInfo : null;
             BO.ContactInfo contactinfoUserBO = (addAttorneyBO.User != null) ? addAttorneyBO.User.ContactInfo : null;
             Guid invitationDB_UniqueID = Guid.NewGuid();
+
             Attorney _attny = new Attorney();
+
             bool sendEmail = false;
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
@@ -393,6 +428,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 }
 
                 dbContextTransaction.Commit();
+
+                _attny = _context.Attorneys.Include("User")
+                                        .Include("User.AddressInfo")
+                                        .Include("User.ContactInfo")
+                                        .Where(p => p.Id == _attny.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                        .FirstOrDefault<Attorney>();
+
                 if (sendEmail == true)
                 {
                     try
@@ -410,7 +452,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     }
                 }
 
-                return (Object)entity;
+                BO.AttorneyMaster res = Convert<BO.AttorneyMaster, Attorney>(_attny);
+                return (object)res;
             }
         }
         #endregion
