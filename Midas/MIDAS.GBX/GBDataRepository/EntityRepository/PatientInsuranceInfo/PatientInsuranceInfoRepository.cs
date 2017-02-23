@@ -36,6 +36,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             insuranceBO.policyHolderAddressInfoId = InsuranceInfos.PolicyHolderAddressInfoId;
             insuranceBO.policyHolderContactInfoId = InsuranceInfos.PolicyHolderContactInfoId;
             insuranceBO.policyOwnerId = InsuranceInfos.PolicyOwnerId;
+
+            insuranceBO.InsuranceMasterId = InsuranceInfos.InsuranceMasterId;
+
             insuranceBO.insuranceCompanyCode = InsuranceInfos.InsuranceCompanyCode;
             insuranceBO.insuranceCompanyAddressInfoId = InsuranceInfos.InsuranceCompanyAddressInfoId;
             insuranceBO.insuranceCompanyContactInfoId = InsuranceInfos.InsuranceCompanyContactInfoId;
@@ -382,6 +385,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     insuranceDB.ContactPerson = IsEditMode == true && insuranceBO.contactPerson == null ? insuranceDB.ContactPerson : insuranceBO.contactPerson;
                     insuranceDB.InsuranceTypeId = IsEditMode == true && insuranceBO.insuranceTypeId == null ? insuranceDB.InsuranceTypeId : insuranceBO.insuranceTypeId;
                     insuranceDB.IsInActive = insuranceBO.isInActive;
+
+                    //insuranceDB.InsuranceMasterId = IsEditMode == true && insuranceBO.InsuranceMasterId == null ? insuranceDB.InsuranceMasterId : insuranceBO.InsuranceMasterId;
+                    InsuranceMaster InsuranceMasterDB = _context.InsuranceMasters.Where(p => insuranceBO.InsuranceMasterId.HasValue == true && p.Id == insuranceBO.InsuranceMasterId).FirstOrDefault();
+                    if (InsuranceMasterDB != null)
+                    {
+                        insuranceDB.InsuranceMasterId = insuranceBO.InsuranceMasterId;
+                    }
+                    else
+                    {
+                        if (IsEditMode == false)
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Insurance Master Id.", ErrorLevel = ErrorLevel.Error };
+                        }
+                    }
 
                     if (Add_insuranceDB == true)
                     {
