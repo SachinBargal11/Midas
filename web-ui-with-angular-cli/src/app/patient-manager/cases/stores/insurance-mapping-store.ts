@@ -30,16 +30,16 @@ export class InsuranceMappingStore {
         return this._insuranceMappings.asObservable();
     }
 
-    getInsuranceMappings(caseId: number): Observable<InsuranceMapping[]> {
+    getInsuranceMappings(caseId: number): Observable<InsuranceMapping> {
         let promise = new Promise((resolve, reject) => {
-            this._insuranceMappingService.getInsuranceMappings(caseId).subscribe((insuranceMappings: InsuranceMapping[]) => {
-                this._insuranceMappings.next(List(insuranceMappings));
+            this._insuranceMappingService.getInsuranceMappings(caseId).subscribe((insuranceMappings: InsuranceMapping) => {
+                // this._insuranceMappings.next(List(insuranceMappings));
                 resolve(insuranceMappings);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<InsuranceMapping[]>>Observable.fromPromise(promise);
+        return <Observable<InsuranceMapping>>Observable.fromPromise(promise);
     }
 
     findInsuranceMappingById(id: number) {

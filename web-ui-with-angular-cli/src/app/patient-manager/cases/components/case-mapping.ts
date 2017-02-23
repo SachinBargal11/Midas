@@ -12,6 +12,8 @@ import { InsuranceMappingStore } from '../stores/insurance-mapping-store';
 import { InsuranceStore } from '../../patients/stores/insurance-store';
 import { InsuranceMapping } from '../models/insurance-mapping';
 import { Insurance } from '../../patients/models/insurance';
+import { Adjuster } from '../../../account-setup/models/adjuster';
+import { AdjusterMasterStore } from '../../../account-setup/stores/adjuster-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
 import * as _ from 'underscore';
@@ -19,25 +21,22 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { NotificationsService } from 'angular2-notifications';
 
 @Component({
-    selector: 'insurance-map',
-    templateUrl: './insurance-mapping.html'
+    selector: 'case-mapping',
+    templateUrl: './case-mapping.html'
 })
 
-export class InsuranceMapComponent implements OnInit {
-    options = {
-        timeOut: 3000,
-        showProgressBar: true,
-        pauseOnHover: false,
-        clickToClose: false
-    };
-    insuranceMapform: FormGroup;
-    insuranceMapformControls: any;
+export class CaseMappingComponent implements OnInit {
+    caseMapForm: FormGroup;
+    caseMapFormControls: any;
     isSaveProgress = false;
     patientId: number;
     caseId: number;
     insurances: Insurance[] = [];
     insurancesArr: SelectItem[] = [];
+    adjustersArr: SelectItem[];
     selectedInsurances: string[] = [];
+    selectedInsurance: string[] = [];
+    adjusters: Adjuster[] = [];
 
     constructor(
         private fb: FormBuilder,
@@ -47,6 +46,7 @@ export class InsuranceMapComponent implements OnInit {
         private _insuranceMappingStore: InsuranceMappingStore,
         private _casesStore: CasesStore,
         private _insuranceStore: InsuranceStore,
+        private _adjusterMasterStore: AdjusterMasterStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _route: ActivatedRoute
@@ -60,13 +60,21 @@ export class InsuranceMapComponent implements OnInit {
 
             let fetchInsuranceMappings = this._insuranceMappingStore.getInsuranceMappings(this.caseId);
             let fetchInsurances = this._insuranceStore.getInsurances(this.patientId);
+            let fetchAdjusters = this._adjusterMasterStore.getAdjusterMasters();
 
-            Observable.forkJoin([fetchInsurances, fetchInsuranceMappings])
+            Observable.forkJoin([fetchInsurances, fetchInsuranceMappings, fetchAdjusters])
                 .subscribe((results) => {
-                    let insurances: Insurance[] = results[0];
+                    this.insurances = results[0];
                     let mappedInsurances: InsuranceMapping = results[1];
+                    this.adjusters = results[2];
 
-                    this.insurancesArr = _.map(insurances, (currentInsurance: Insurance) => {
+                    this.adjustersArr = _.map(this.adjusters, (currentAdjuster: Adjuster) => {
+                        return {
+                            label: `${currentAdjuster.firstName} - ${currentAdjuster.lastName}`,
+                            value: currentAdjuster.id.toString()
+                        };
+                    });
+                    this.insurancesArr = _.map(this.insurances, (currentInsurance: Insurance) => {
                         return {
                             label: `${currentInsurance.insuranceCompanyCode} - ${currentInsurance.policyHoldersName}`,
                             value: currentInsurance.id.toString()
@@ -90,20 +98,20 @@ export class InsuranceMapComponent implements OnInit {
                 });
         });
 
-        this.insuranceMapform = this.fb.group({
+        this.caseMapForm = this.fb.group({
             insurance: ['']
         });
 
-        this.insuranceMapformControls = this.insuranceMapform.controls;
+        this.caseMapFormControls = this.caseMapForm.controls;
     }
 
     ngOnInit() {
     }
 
-    saveInsuranceMapping() {
-        let insuranceMapformValues = this.insuranceMapform.value;
+    save() {
+        let caseMapFormValues = this.caseMapForm.value;
         let patientInsuranceInfos = [];
-        let input = insuranceMapformValues.insurance;
+        let input = caseMapFormValues.insurance;
         for (let i = 0; i < input.length; ++i) {
             patientInsuranceInfos.push({ 'id': parseInt(input[i]) });
         }

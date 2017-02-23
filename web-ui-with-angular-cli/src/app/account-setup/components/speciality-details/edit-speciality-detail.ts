@@ -98,17 +98,30 @@ export class EditSpecialityDetailsComponent {
                     this._progressBarService.hide();
                 });
         });
-        this.specialityDetailForm = this.fb.group({
-            ReevalDays: ['', Validators.required],
-            reevalvisitCount: ['', Validators.required],
-            initialDays: ['', Validators.required],
-            initialvisitCount: ['', Validators.required],
-            maxReval: ['', Validators.required],
-            isInitialEvaluation: [''],
-            include1500: [''],
-            speciality: [{ value: '', disabled: true }],
-            allowMultipleVisit: ['']
-        });
+            this.specialityDetailForm = this.fb.group({
+                initialCodes: [''],
+                reevalCodes: [''],
+                initialDays: [''],
+                ReevalDays: [''],
+                ReevalVisits: [''],
+                initialVisits: [''],
+                isInitialEvaluation: [''],
+                include1500: [''],
+                speciality: [{ value: '', disabled: true }],
+                allowMultipleVisit: ['']
+            });
+            // this.specialityDetailForm = this.fb.group({
+            //     initialCodes: [''],
+            //     ReevalDays: ['', Validators.required],
+            //     reevalvisitCount: ['', Validators.required],
+            //     initialDays: ['', Validators.required],
+            //     initialvisitCount: ['', Validators.required],
+            //     maxReval: ['', Validators.required],
+            //     isInitialEvaluation: [''],
+            //     include1500: [''],
+            //     speciality: [{ value: '', disabled: true }],
+            //     allowMultipleVisit: ['']
+            // });
 
         this.specialityDetailFormControls = this.specialityDetailForm.controls;
     }
