@@ -133,7 +133,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     else if (patientVisitDB == null && patientVisitBO.ID > 0)
                     {
                         dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient employee information dosent exists.", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient visit information dosent exists.", ErrorLevel = ErrorLevel.Error };
                     }
 
                     patientVisitDB.CaseId = patientVisitBO.CaseId;
@@ -169,7 +169,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     if (IsEditMode == false)
                     {
                         dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid patient employee information details.", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid patient visit information details.", ErrorLevel = ErrorLevel.Error };
                     }
                     patientVisitDB = null;
                 }
@@ -191,9 +191,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object DeleteById(int id)
         {
             var acc = _context.PatientVisits.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).FirstOrDefault<PatientVisit>();
-            if (acc == null)
+            if (acc != null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                acc.IsDeleted = true;
+                _context.SaveChanges();
+            }
+            else
+            {
+                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient visit details dosent exists.", ErrorLevel = ErrorLevel.Error };
             }
 
             var res = Convert<BO.PatientVisit, PatientVisit>(acc);
