@@ -8,6 +8,8 @@ import 'rxjs/add/operator/map';
 import { environment } from '../../../../environments/environment';
 import { Insurance } from '../models/insurance';
 import { InsuranceAdapter } from './adapters/insurance-adapter';
+import { InsuranceMaster } from '../models/insurance-master';
+import { InsuranceMasterAdapter } from './adapters/insurance-master-adapter';
 
 @Injectable()
 export class InsuranceService {
@@ -113,5 +115,41 @@ export class InsuranceService {
                 });
         });
         return <Observable<Insurance>>Observable.from(promise);
+    }
+
+     getInsuranceMasterById(insuranceMasterId: Number): Observable<InsuranceMaster> {
+        let promise: Promise<InsuranceMaster> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/InsuranceMaster/get/' + insuranceMasterId).map(res => res.json())
+                .subscribe((data: Array<any>) => {
+                    let insuranceMaster = null;
+                    if (data.length) {
+                        insuranceMaster = InsuranceMasterAdapter.parseResponse(data);
+                        resolve(insuranceMaster);
+                    } else {
+                        reject(new Error('NOT_FOUND'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<InsuranceMaster>>Observable.fromPromise(promise);
+    }
+
+    getInsurancesMaster(): Observable<InsuranceMaster[]> {
+        let promise: Promise<InsuranceMaster[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/InsuranceMaster/getAll')
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let insurancesMaster = (<Object[]>data).map((data: any) => {
+                        return InsuranceMasterAdapter.parseResponse(data);
+                    });
+                    resolve(insurancesMaster);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<InsuranceMaster[]>>Observable.fromPromise(promise);
     }
 }

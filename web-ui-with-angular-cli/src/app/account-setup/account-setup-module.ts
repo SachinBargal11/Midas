@@ -4,6 +4,9 @@ import { RouterModule } from '@angular/router';
 import { CommonsModule } from '../commons/commons-module';
 // import { AddSpecialityComponent } from './components/speciality/add-speciality';
 import { SpecialityListComponent } from './components/speciality/speciality-list';
+import { AdjusterMasterListComponent } from './components/AdjusterMaster/adjuster-master-list';
+import { AddAdjusterComponent } from './components/AdjusterMaster/add-adjuster';
+import { EditAdjusterComponent } from './components/AdjusterMaster/edit-adjuster';
 import { SpecialityShellComponent } from './components/speciality/speciality-shell';
 // import { UpdateSpecialityComponent } from './components/speciality/update-speciality';
 import { AddSpecialityDetailsComponent } from './components/speciality-details/add-speciality-detail';
@@ -16,6 +19,10 @@ import { SpecialityService } from './services/speciality-service';
 import { SpecialityDetailsService } from './services/speciality-details-service';
 import { SpecialityStore } from './stores/speciality-store';
 import { SpecialityDetailsStore } from './stores/speciality-details-store';
+import { AdjusterMasterStore } from './stores/adjuster-store';
+import { AdjusterMasterService } from './services/adjuster-service';
+import { InsuranceStore } from '../patient-manager/patients/stores/insurance-store';
+import { InsuranceService } from '../patient-manager/patients/services/insurance-service';
 
 @NgModule({
     imports: [
@@ -30,14 +37,23 @@ import { SpecialityDetailsStore } from './stores/speciality-details-store';
         SpecialityListComponent,
         SpecialityShellComponent,
         AddSpecialityDetailsComponent,
-        EditSpecialityDetailsComponent
-       
+        EditSpecialityDetailsComponent,
+        AdjusterMasterListComponent,
+        AddAdjusterComponent,
+        EditAdjusterComponent
+
     ],
     providers: [
         SpecialityService,
         SpecialityStore,
         SpecialityDetailsService,
-        SpecialityDetailsStore
+        SpecialityDetailsStore,
+        AdjusterMasterStore,
+        AdjusterMasterService,
+        InsuranceStore,
+        InsuranceService
+
+
 
     ]
 })

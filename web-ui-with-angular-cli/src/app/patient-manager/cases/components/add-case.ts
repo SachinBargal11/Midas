@@ -83,7 +83,7 @@ export class AddCaseComponent implements OnInit {
             patientEmpInfoId: caseFormValues.patientEmpInfoId,
             caseStatusId: caseFormValues.caseStatusId,
             attorneyId: caseFormValues.attorneyId,
-            caseStatus: caseFormValues.caseStatus,
+            // caseStatus: caseFormValues.caseStatus,
             transportation: caseFormValues.transportation,
             createByUserID: this._sessionStore.session.account.user.id,
             createDate: moment()

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { Insurance } from '../models/insurance';
+import { InsuranceMaster } from '../models/insurance-master';
 import { InsuranceService } from '../services/insurance-service';
 import { List } from 'immutable';
 import { BehaviorSubject } from 'rxjs/Rx';
@@ -37,6 +38,30 @@ export class InsuranceStore {
         });
         return <Observable<Insurance[]>>Observable.fromPromise(promise);
     }
+//
+  getInsuranceMasterById(insuranceMasterId: number): Observable<InsuranceMaster> {
+        let promise = new Promise((resolve, reject) => {
+            this._insuranceService.getInsuranceMasterById(insuranceMasterId).subscribe((insurancesMaster: InsuranceMaster) => {
+                resolve(insurancesMaster);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<InsuranceMaster>>Observable.fromPromise(promise);
+    }
+//
+
+
+  getInsurancesMaster(): Observable<InsuranceMaster[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._insuranceService.getInsurancesMaster().subscribe((insurancesMaster: InsuranceMaster[]) => {
+                resolve(insurancesMaster);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<InsuranceMaster[]>>Observable.fromPromise(promise);
+    }
 
     findInsuranceById(id: number) {
         let insurances = this._insurances.getValue();
@@ -59,6 +84,7 @@ export class InsuranceStore {
         });
         return <Observable<Insurance>>Observable.fromPromise(promise);
     }
+   
 
     addInsurance(insurance: Insurance): Observable<Insurance> {
         let promise = new Promise((resolve, reject) => {
