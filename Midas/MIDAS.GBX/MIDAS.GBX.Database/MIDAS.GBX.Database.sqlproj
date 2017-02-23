@@ -109,6 +109,8 @@
     <Build Include="Tables\Latest Tables\InsuranceMaster.sql" />
     <Build Include="Tables\Latest Tables\AdjusterMaster.sql" />
     <Build Include="Tables\Latest Tables\CalendarAppointment.sql" />
+    <Build Include="Tables\Latest Tables\PatientVisit.sql" />
+    <Build Include="Tables\Latest Tables\PatientVisitEvent.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />
