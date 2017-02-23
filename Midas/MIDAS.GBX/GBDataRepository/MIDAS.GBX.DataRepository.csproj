@@ -90,6 +90,7 @@
     <Compile Include="EntityRepository\PatientEmpInfo\PatientEmpInfoRepository.cs" />
     <Compile Include="EntityRepository\PatientFamilyMember\PatientFamilyMemberRepository.cs" />
     <Compile Include="EntityRepository\PatientInsuranceInfo\PatientInsuranceInfoRepository.cs" />
+    <Compile Include="EntityRepository\PatientVisit\PatientVisitRepository.cs" />
     <Compile Include="EntityRepository\Patient\Patient2Repository.cs" />
     <Compile Include="EntityRepository\Patient\PatientRepository.cs" />
     <Compile Include="EntityRepository\RefferingOffice\RefferingOfficeRepository.cs" />
@@ -182,8 +183,8 @@
       <DependentUpon>MIDASGBXEntities.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\MIDASGBXEntities.cs">
-      <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\MIDASGBXEntities.Designer.cs">
@@ -216,6 +217,12 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PatientType.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PatientVisit.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PatientVisitEvent.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PolicyOwner.cs">
@@ -273,13 +280,11 @@
     <Compile Include="RepoFactory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config">
-      <SubType>Designer</SubType>
-    </None>
     <EntityDeploy Include="Model\MIDASGBXEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MIDASGBXEntities.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="App.Config" />
     <None Include="Model\MIDASGBXEntities.edmx.diagram">
       <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
     </None>
