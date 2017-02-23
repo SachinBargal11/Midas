@@ -34,7 +34,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 CaseInsuranceMappingBO.CaseId = CaseInsuranceMappings[0].CaseId;
             }
-
+           
             //List<BO.PatientInsuranceInfo> lstPatientInsuranceInfo = new List<BO.PatientInsuranceInfo>();
             //foreach (var item in CaseInsuranceMappings)
             //{
@@ -61,7 +61,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     adjusterMaster = sr.Convert<BO.AdjusterMaster, AdjusterMaster>(item.AdjusterMaster);
                 }
 
-                Mappings.Add(new BO.Mapping() { PatientInsuranceInfo = patientInsuranceInfo, AdjusterMaster = adjusterMaster });
+                Mappings.Add(new BO.Mapping() { Id= item.Id, PatientInsuranceInfo = patientInsuranceInfo, AdjusterMaster = adjusterMaster });
             }
 
             CaseInsuranceMappingBO.Mappings = Mappings;
@@ -101,7 +101,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
             List<BO.Mapping> Mappings = new List<BO.Mapping>();
-            Mappings.Add(new BO.Mapping() { PatientInsuranceInfo = patientInsuranceInfo, AdjusterMaster = adjusterMaster });
+            Mappings.Add(new BO.Mapping() { Id= CaseInsuranceMappings.Id, PatientInsuranceInfo = patientInsuranceInfo, AdjusterMaster = adjusterMaster });
             CaseInsuranceMappingBO.Mappings = Mappings;
 
             return (T)(object)CaseInsuranceMappingBO;
