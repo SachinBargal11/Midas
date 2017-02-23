@@ -154,4 +154,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="RepeatWeekly" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="ce14fe1c-458b-4db9-b931-e5bba4f8a8d9" ChangeDateTime="02/23/2017 07:52:33">
+    <Property Name="ElementName" Value="[dbo].[PatientVisits].[Bill]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PatientVisits]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="BillProcedureAdded" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="b9fbd98b-1714-4f60-875e-eb675dded859" ChangeDateTime="02/23/2017 09:54:33">
+    <Property Name="ElementName" Value="[dbo].[PatientVisitEvent].[BillStatus]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PatientVisitEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="EventStatus" />
+  </Operation>
 </Operations>
