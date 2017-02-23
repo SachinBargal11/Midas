@@ -7,6 +7,9 @@ import { SpecialityListComponent } from './components/speciality/speciality-list
 import { AdjusterMasterListComponent } from './components/AdjusterMaster/adjuster-master-list';
 import { AddAdjusterComponent } from './components/AdjusterMaster/add-adjuster';
 import { EditAdjusterComponent } from './components/AdjusterMaster/edit-adjuster';
+import { AttorneyMasterListComponent } from './components/AttorneyMaster/attorney-master-list';
+import { AddAttorneyComponent } from './components/AttorneyMaster/add-attorney';
+import { EditAttorneyComponent } from './components/AttorneyMaster/edit-attorney';
 import { SpecialityShellComponent } from './components/speciality/speciality-shell';
 // import { UpdateSpecialityComponent } from './components/speciality/update-speciality';
 import { AddSpecialityDetailsComponent } from './components/speciality-details/add-speciality-detail';
@@ -21,6 +24,8 @@ import { SpecialityStore } from './stores/speciality-store';
 import { SpecialityDetailsStore } from './stores/speciality-details-store';
 import { AdjusterMasterStore } from './stores/adjuster-store';
 import { AdjusterMasterService } from './services/adjuster-service';
+import { AttorneyMasterStore } from './stores/attorney-store';
+import { AttorneyMasterService } from './services/attorney-service';
 import { InsuranceStore } from '../patient-manager/patients/stores/insurance-store';
 import { InsuranceService } from '../patient-manager/patients/services/insurance-service';
 
@@ -40,7 +45,10 @@ import { InsuranceService } from '../patient-manager/patients/services/insurance
         EditSpecialityDetailsComponent,
         AdjusterMasterListComponent,
         AddAdjusterComponent,
-        EditAdjusterComponent
+        EditAdjusterComponent,
+        AddAttorneyComponent,
+        EditAttorneyComponent,
+        AttorneyMasterListComponent
 
     ],
     providers: [
@@ -51,7 +59,10 @@ import { InsuranceService } from '../patient-manager/patients/services/insurance
         AdjusterMasterStore,
         AdjusterMasterService,
         InsuranceStore,
-        InsuranceService
+        InsuranceService,
+        AttorneyMasterService,
+        AttorneyMasterStore
+        
 
 
 

@@ -29,9 +29,9 @@ export class AdjusterMasterStore {
     getAdjusterMasters(): Observable<Adjuster[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            this._adjusterMasterService.getAllAdjusterMasterByCompany(companyId).subscribe((insurances: Adjuster[]) => {
-                this._adjusterMaster.next(List(insurances));
-                resolve(insurances);
+            this._adjusterMasterService.getAllAdjusterMasterByCompany(companyId).subscribe((adjusters: Adjuster[]) => {
+                this._adjusterMaster.next(List(adjusters));
+                resolve(adjusters);
             }, error => {
                 reject(error);
             });
