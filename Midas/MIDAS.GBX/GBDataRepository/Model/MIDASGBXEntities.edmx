@@ -494,6 +494,7 @@
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="InsuranceMasterId" Type="int" />
         </EntityType>
         <EntityType Name="PatientType">
           <Key>
@@ -1514,6 +1515,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PatientInsuranceInfo_InsuranceMaster_InsuranceMasterId">
+          <End Role="InsuranceMaster" Type="Self.InsuranceMaster" Multiplicity="0..1" />
+          <End Role="PatientInsuranceInfo" Type="Self.PatientInsuranceInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InsuranceMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientInsuranceInfo">
+              <PropertyRef Name="InsuranceMasterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PatientInsuranceInfo_InsuranceType_InsuranceTypeId">
           <End Role="InsuranceType" Type="Self.InsuranceType" Multiplicity="0..1" />
           <End Role="PatientInsuranceInfo" Type="Self.PatientInsuranceInfo" Multiplicity="*" />
@@ -2102,6 +2115,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="ContactInfo" EntitySet="ContactInfo" />
             <End Role="PatientInsuranceInfo" EntitySet="PatientInsuranceInfo" />
           </AssociationSet>
+          <AssociationSet Name="FK_PatientInsuranceInfo_InsuranceMaster_InsuranceMasterId" Association="Self.FK_PatientInsuranceInfo_InsuranceMaster_InsuranceMasterId">
+            <End Role="InsuranceMaster" EntitySet="InsuranceMaster" />
+            <End Role="PatientInsuranceInfo" EntitySet="PatientInsuranceInfo" />
+          </AssociationSet>
           <AssociationSet Name="FK_PatientInsuranceInfo_InsuranceType_InsuranceTypeId" Association="Self.FK_PatientInsuranceInfo_InsuranceType_InsuranceTypeId">
             <End Role="InsuranceType" EntitySet="InsuranceType" />
             <End Role="PatientInsuranceInfo" EntitySet="PatientInsuranceInfo" />
@@ -2521,6 +2538,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="AddressInfo" Relationship="Self.FK_InsuranceMaster_AddressInfo_AddressInfoId" FromRole="InsuranceMaster" ToRole="AddressInfo" />
           <NavigationProperty Name="AdjusterMasters" Relationship="Self.FK_AdjusterMaster_InsuranceMaster_InsuranceMasterId" FromRole="InsuranceMaster" ToRole="AdjusterMaster" />
           <NavigationProperty Name="ContactInfo" Relationship="Self.FK_InsuranceMaster_AddressInfo_ContactInfoId" FromRole="InsuranceMaster" ToRole="ContactInfo" />
+          <NavigationProperty Name="PatientInsuranceInfoes" Relationship="Self.FK_PatientInsuranceInfo_InsuranceMaster_InsuranceMasterId" FromRole="InsuranceMaster" ToRole="PatientInsuranceInfo" />
         </EntityType>
         <EntityType Name="InsuranceType">
           <Key>
@@ -2808,11 +2826,13 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="InsuranceMasterId" Type="Int32" />
           <NavigationProperty Name="AddressInfo" Relationship="Self.FK_PatientInsuranceInfo_AddressInfo_InsuranceCompanyAddressInfoId" FromRole="PatientInsuranceInfo" ToRole="AddressInfo" />
           <NavigationProperty Name="AddressInfo1" Relationship="Self.FK_PatientInsuranceInfo_AddressInfo_PolicyHolderAddressInfoId" FromRole="PatientInsuranceInfo" ToRole="AddressInfo" />
           <NavigationProperty Name="CaseInsuranceMappings" Relationship="Self.FK_CaseInsuranceMapping_PatientInsuranceInfo_PatientInsuranceInfoId" FromRole="PatientInsuranceInfo" ToRole="CaseInsuranceMapping" />
           <NavigationProperty Name="ContactInfo" Relationship="Self.FK_PatientInsuranceInfo_ContactInfo_InsuranceCompanyContactInfoId" FromRole="PatientInsuranceInfo" ToRole="ContactInfo" />
           <NavigationProperty Name="ContactInfo1" Relationship="Self.FK_PatientInsuranceInfo_ContactInfo_PolicyHolderContactInfoId" FromRole="PatientInsuranceInfo" ToRole="ContactInfo" />
+          <NavigationProperty Name="InsuranceMaster" Relationship="Self.FK_PatientInsuranceInfo_InsuranceMaster_InsuranceMasterId" FromRole="PatientInsuranceInfo" ToRole="InsuranceMaster" />
           <NavigationProperty Name="InsuranceType" Relationship="Self.FK_PatientInsuranceInfo_InsuranceType_InsuranceTypeId" FromRole="PatientInsuranceInfo" ToRole="InsuranceType" />
           <NavigationProperty Name="Patient2" Relationship="Self.FK_Patient2_PatientInsuranceInfo_InsuranceInfoId" FromRole="PatientInsuranceInfo" ToRole="Patient2" />
           <NavigationProperty Name="Patient21" Relationship="Self.FK_PatientInsuranceInfo_Patient2_PatientId" FromRole="PatientInsuranceInfo" ToRole="Patient2" />
@@ -3822,6 +3842,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PatientInsuranceInfo_InsuranceMaster_InsuranceMasterId">
+          <End Role="InsuranceMaster" Type="Self.InsuranceMaster" Multiplicity="0..1" />
+          <End Role="PatientInsuranceInfo" Type="Self.PatientInsuranceInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InsuranceMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PatientInsuranceInfo">
+              <PropertyRef Name="InsuranceMasterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PatientInsuranceInfo_InsuranceType_InsuranceTypeId">
           <End Role="InsuranceType" Type="Self.InsuranceType" Multiplicity="0..1" />
           <End Role="PatientInsuranceInfo" Type="Self.PatientInsuranceInfo" Multiplicity="*" />
@@ -4449,6 +4481,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_PatientFamilyMembers_Gender_GenderId" Association="Self.FK_PatientFamilyMembers_Gender_GenderId">
             <End Role="Gender" EntitySet="Genders" />
             <End Role="PatientFamilyMembers" EntitySet="PatientFamilyMembers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PatientInsuranceInfo_InsuranceMaster_InsuranceMasterId" Association="Self.FK_PatientInsuranceInfo_InsuranceMaster_InsuranceMasterId">
+            <End Role="InsuranceMaster" EntitySet="InsuranceMasters" />
+            <End Role="PatientInsuranceInfo" EntitySet="PatientInsuranceInfoes" />
           </AssociationSet>
           <AssociationSet Name="FK_PatientInsuranceInfo_InsuranceType_InsuranceTypeId" Association="Self.FK_PatientInsuranceInfo_InsuranceType_InsuranceTypeId">
             <End Role="InsuranceType" EntitySet="InsuranceTypes" />
@@ -5095,6 +5131,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="InsuranceMasterId" ColumnName="InsuranceMasterId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
