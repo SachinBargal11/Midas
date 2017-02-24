@@ -26,7 +26,7 @@ export class AddCaseComponent implements OnInit {
     caseform: FormGroup;
     caseformControls;
     locations: LocationDetails[];
-    employers: Employer[];
+    employer: Employer;
     isSaveProgress = false;
     patientId: number;
 
@@ -53,7 +53,7 @@ export class AddCaseComponent implements OnInit {
             caseTypeId: [''],
             carrierCaseNo: [''],
             locationId: ['', Validators.required],
-            patientEmpInfoId: ['', Validators.required],
+            // patientEmpInfoId: ['', Validators.required],
             caseStatusId: ['', Validators.required],
             attorneyId: [''],
             caseStatus: [''],
@@ -66,8 +66,8 @@ export class AddCaseComponent implements OnInit {
     ngOnInit() {
         this._locationsStore.getLocations()
             .subscribe(locations => this.locations = locations);
-        this._employerStore.getEmployers(this.patientId)
-            .subscribe(employers => this.employers = employers);
+        this._employerStore.getCurrentEmployer(this.patientId)
+            .subscribe(employer => this.employer = employer);
     }
 
     saveCase() {
@@ -80,7 +80,7 @@ export class AddCaseComponent implements OnInit {
             caseTypeId: caseFormValues.caseTypeId,
             carrierCaseNo: caseFormValues.carrierCaseNo,
             locationId: caseFormValues.locationId,
-            patientEmpInfoId: caseFormValues.patientEmpInfoId,
+            patientEmpInfoId: this.employer.id,
             caseStatusId: caseFormValues.caseStatusId,
             attorneyId: caseFormValues.attorneyId,
             // caseStatus: caseFormValues.caseStatus,
