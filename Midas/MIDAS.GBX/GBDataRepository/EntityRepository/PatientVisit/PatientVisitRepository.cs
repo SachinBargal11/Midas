@@ -65,14 +65,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             patientVisitBO.CreateByUserID = patientVisit.CreateByUserID;
             patientVisitBO.UpdateByUserID = patientVisit.UpdateByUserID;
 
+            patientVisitBO.PatientVisitEvents = new List<BusinessObjects.PatientVisitEvent>();
+
             BO.PatientVisitEvent boPatientVisitEvent = new BO.PatientVisitEvent();
             using (PatientVisitEventRepository cmp = new PatientVisitEventRepository(_context))
             {
-                boPatientVisitEvent = cmp.Convert<BO.PatientVisitEvent, PatientVisitEvent>(patientVisit.PatientVisitEvents);
-                patientVisitBO.PatientVisitEvents = boPatientVisitEvent;
+                foreach (var item in patientVisit.PatientVisitEvents)
+                {
+                    boPatientVisitEvent = cmp.Convert<BO.PatientVisitEvent, PatientVisitEvent>(item);
+                    patientVisitBO.PatientVisitEvents.Add(boPatientVisitEvent);
+                }                
             }
-
-
 
             return (T)(object)patientVisitBO;
         }
