@@ -16,7 +16,7 @@ import { SessionStore } from '../../../commons/stores/session-store';
 })
 
 export class AttorneyMasterListComponent implements OnInit {
-    selectedAttorneys: Attorney[];
+    selectedAttorneys: Attorney[] = [];
     attorneys: Attorney[];
     companyId: number;
     patientId: number;

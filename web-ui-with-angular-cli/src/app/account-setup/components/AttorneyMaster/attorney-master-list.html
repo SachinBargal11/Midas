@@ -20,7 +20,12 @@
     <header>Attorney List</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column field="user.firstName" header="Attorney Name" [sortable]="true"></p-column>
-    <p-column field="user.contact.cellPhone" header="Phone Number" [sortable]="true"></p-column>
+    <p-column header="Phone Number" [sortable]="true">
+            <template let-rowdata="rowData" pTemplate="body">
+                <span>{{rowdata.user.contact.cellPhone | phoneFormat}}
+            </span>
+            </template>
+    </p-column>
     <p-column styleClass="actions-cell" header="Actions">
         <template let-attorney="rowData" pTemplate="body">
             <a routerLink="edit/{{attorney.id}}"><i class="glyphicon glyphicon-edit"></i></a>
