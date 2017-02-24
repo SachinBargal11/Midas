@@ -77,8 +77,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("billManualyUnFinalized")]
         public bool? BillManualyUnFinalized { get; set; }
 
-        //[JsonProperty("patientVisitEvent")]
-        //public PatientVisitEvent PatientVisitEvents { get; set; }
+        [JsonProperty("patientVisitEvent")]
+        public PatientVisitEvent PatientVisitEvents { get; set; }
 
     }
 }
