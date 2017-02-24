@@ -11,6 +11,7 @@ import { CasesStore } from '../stores/case-store';
 import { InsuranceMappingStore } from '../stores/insurance-mapping-store';
 import { InsuranceStore } from '../../patients/stores/insurance-store';
 import { InsuranceMapping } from '../models/insurance-mapping';
+import { Mapping } from '../models/mapping';
 import { Insurance } from '../../patients/models/insurance';
 import { Adjuster } from '../../../account-setup/models/adjuster';
 import { AdjusterMasterStore } from '../../../account-setup/stores/adjuster-store';
@@ -65,7 +66,7 @@ export class CaseMappingComponent implements OnInit {
             Observable.forkJoin([fetchInsurances, fetchInsuranceMappings, fetchAdjusters])
                 .subscribe((results) => {
                     this.insurances = results[0];
-                    let mappedInsurances: InsuranceMapping = results[1];
+                    let mappedInsurances: Mapping[] = results[1].mappings;
                     this.adjusters = results[2];
 
                     this.adjustersArr = _.map(this.adjusters, (currentAdjuster: Adjuster) => {
@@ -80,14 +81,9 @@ export class CaseMappingComponent implements OnInit {
                             value: currentInsurance.id.toString()
                         };
                     });
-                        this.selectedInsurances = _.map(mappedInsurances.patientInsuranceInfos, (currentInsurance: Insurance) => {
-                            return currentInsurance.id.toString();
+                    this.selectedInsurances = _.map(mappedInsurances, (currentInsurance: any) => {
+                            return currentInsurance.patientInsuranceInfo.id.toString();
                     });
-                    // mappedInsurances.forEach(element => {
-                    //      _.map(element.patientInsuranceInfos, (currentInsurance: Insurance) => {
-                    //         return this.selectedInsurances.push(currentInsurance.id.toString());
-                    //     });
-                    // });
                 },
                 (error) => {
                     this._router.navigate(['../../'], { relativeTo: this._route });
@@ -99,7 +95,8 @@ export class CaseMappingComponent implements OnInit {
         });
 
         this.caseMapForm = this.fb.group({
-            insurance: ['']
+            insurance: [''],
+            adjuster: ['']
         });
 
         this.caseMapFormControls = this.caseMapForm.controls;
@@ -110,14 +107,14 @@ export class CaseMappingComponent implements OnInit {
 
     save() {
         let caseMapFormValues = this.caseMapForm.value;
-        let patientInsuranceInfos = [];
+        let mappings = [];
         let input = caseMapFormValues.insurance;
         for (let i = 0; i < input.length; ++i) {
-            patientInsuranceInfos.push({ 'id': parseInt(input[i]) });
+            mappings.push({ 'id': parseInt(input[i]) });
         }
         let insuranceMapping = new InsuranceMapping({
             caseId: this.caseId,
-            patientInsuranceInfos: patientInsuranceInfos
+            patientInsuranceInfos: mappings
         });
         this._progressBarService.show();
         this.isSaveProgress = true;

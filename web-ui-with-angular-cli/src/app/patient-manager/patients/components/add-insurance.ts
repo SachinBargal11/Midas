@@ -13,6 +13,7 @@ import { StatesStore } from '../../../commons/stores/states-store';
 import { Contact } from '../../../commons/models/contact';
 import { Address } from '../../../commons/models/address';
 import { Insurance } from '../models/insurance';
+import { InsuranceMaster } from '../models/insurance-master';
 import { InsuranceStore } from '../stores/insurance-store';
 import { PatientsStore } from '../stores/patients-store';
 
@@ -24,6 +25,7 @@ import { PatientsStore } from '../stores/patients-store';
 
 export class AddInsuranceComponent implements OnInit {
     states: any[];
+    insuranceMasters: InsuranceMaster[];
     policyCities: any[];
     insuranceCities: any[];
     patientId: number;
@@ -55,6 +57,7 @@ export class AddInsuranceComponent implements OnInit {
                 policyOwner: ['', Validators.required],
                 policyHolderName: ['', Validators.required],
                 insuranceCompanyCode: ['', Validators.required],
+                insuranceMasterId: ['', Validators.required],
                 insuranceType: ['', Validators.required],
                 contactPerson: ['', Validators.required],
                 policyAddress: ['', Validators.required],
@@ -86,6 +89,8 @@ export class AddInsuranceComponent implements OnInit {
     ngOnInit() {
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
+        this._insuranceStore.getInsurancesMaster()
+            .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
     }
 
     selectPolicyState(event) {
@@ -137,6 +142,7 @@ export class AddInsuranceComponent implements OnInit {
             insuranceCompanyCode: insuranceformValues.insuranceCompanyCode,
             contactPerson: insuranceformValues.contactPerson,
             insuranceType: insuranceformValues.insuranceType,
+            insuranceMasterId: insuranceformValues.insuranceMasterId,
             policyContact: new Contact({
                 cellPhone: insuranceformValues.policyCellPhone ? insuranceformValues.policyCellPhone.replace(/\-/g, '') : null,
                 emailAddress: insuranceformValues.policyEmail,

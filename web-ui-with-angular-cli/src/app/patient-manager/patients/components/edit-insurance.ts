@@ -13,6 +13,7 @@ import { StatesStore } from '../../../commons/stores/states-store';
 import { Contact } from '../../../commons/models/contact';
 import { Address } from '../../../commons/models/address';
 import { Insurance } from '../models/insurance';
+import { InsuranceMaster } from '../models/insurance-master';
 import { InsuranceStore } from '../stores/insurance-store';
 import { PatientsStore } from '../stores/patients-store';
 import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
@@ -25,6 +26,7 @@ import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 
 
 export class EditInsuranceComponent implements OnInit {
+    insuranceMasters: InsuranceMaster[];
     policyCellPhone: string;
     policyFaxNo: string;
     insuranceCellPhone: string;
@@ -94,6 +96,7 @@ export class EditInsuranceComponent implements OnInit {
                 policyHolderName: ['', Validators.required],
                 insuranceCompanyCode: ['', Validators.required],
                 insuranceType: ['', Validators.required],
+                insuranceMasterId: ['', Validators.required],
                 contactPerson: ['', Validators.required],
                 policyAddress: ['', Validators.required],
                 policyAddress2: [''],
@@ -124,6 +127,8 @@ export class EditInsuranceComponent implements OnInit {
     ngOnInit() {
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
+        this._insuranceStore.getInsurancesMaster()
+            .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
     }
 
     selectPolicyState(event) {
@@ -184,6 +189,7 @@ export class EditInsuranceComponent implements OnInit {
             insuranceCompanyCode: insuranceformValues.insuranceCompanyCode,
             contactPerson: insuranceformValues.contactPerson,
             insuranceType: insuranceformValues.insuranceType,
+            insuranceMasterId: parseInt(insuranceformValues.insuranceMasterId),
             policyContact: new Contact({
                 cellPhone: insuranceformValues.policyCellPhone ? insuranceformValues.policyCellPhone.replace(/\-/g, '') : null,
                 emailAddress: insuranceformValues.policyEmail,

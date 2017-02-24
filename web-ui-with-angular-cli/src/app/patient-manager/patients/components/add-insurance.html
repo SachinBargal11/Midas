@@ -249,6 +249,24 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Insurance Master
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
+                        <select formControlName="insuranceMasterId" type="text" class="form-control"
+                            placeholder="" [class.error]="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
+                            <option value="0">-Select Insurance Master-</option>
+                            <option *ngFor="let insurance of insuranceMasters" value="{{insurance.id}}">{{insurance.companyCode}} - {{insurance.companyName}}</option>
+                            <!--<option value="1">Insurance Master 1</option>-->
+                            </select>
+                            <div class='error-list' *ngIf="insuranceformControls.insuranceMasterId.touched && !insuranceformControls.insuranceMasterId.valid">
+                                <ul>
+                                    <li *ngIf="insuranceformControls.insuranceMasterId.hasError('required')">Insurance Master is required.</li>
+                                </ul>
+                            </div>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-lg-4">

@@ -3,8 +3,9 @@ import * as moment from 'moment';
 import { Address } from '../../../commons/models/address';
 import { Contact } from '../../../commons/models/contact';
 import { InsuranceMapping } from '../../cases/models/insurance-mapping';
-import {InsuranceType} from './enums/insurance-type';
-import {PolicyOwner} from './enums/policy-owner';
+import { InsuranceType } from './enums/insurance-type';
+import { PolicyOwner } from './enums/policy-owner';
+import { InsuranceMaster } from './insurance-master';
 
 const InsuranceRecord = Record({
     id: 0,
@@ -13,6 +14,7 @@ const InsuranceRecord = Record({
     policyOwnerId: 0,
     policyHoldersName: '',
     contactPerson: '',
+    insuranceMasterId: 0,
     insuranceType: InsuranceType.PRIMARY,
     insuranceCompanyCode: '',
     caseInsuranceMapping: null,
@@ -31,6 +33,7 @@ export class Insurance extends InsuranceRecord {
     policyOwnerId: number;
     policyHoldersName: string;
     contactPerson: string;
+    insuranceMasterId: number;
     insuranceType: InsuranceType;
     insuranceCompanyCode: string;
     caseInsuranceMapping: InsuranceMapping;

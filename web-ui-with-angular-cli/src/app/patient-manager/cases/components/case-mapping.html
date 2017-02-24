@@ -16,28 +16,33 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <!--<tr formArrayName="scheduleDetails" *ngFor="let currentInsurance of insurances">-->
                         <tr *ngFor="let currentInsurance of insurances">
-                            <!--<td><input type="checkbox" value="{{currentInsurance.id}}"/></td>-->
                             <td>
-                                <p-checkbox name="currentInsurance" value="{{currentInsurance.id}}" [(ngModel)]="selectedInsurance"
-                                    [ngModelOptions]="{standalone: true}"></p-checkbox>
+                                <p-checkbox name="insurance" formControlName="insurance" value="{{currentInsurance.id}}" [(ngModel)]="selectedInsurances"></p-checkbox>
                             </td>
                             <td>{{currentInsurance.policyHoldersName}}</td>
                             <td>{{currentInsurance.insuranceTypeLabel}}</td>
                             <td>{{currentInsurance.insuranceCompanyCode}}</td>
-                            <!--<td>
-                                <p-multiSelect [options]="adjustersArr" defaultLabel="Select Adjuster"></p-multiSelect>
-                            </td>-->
                             <td>
-                                <select class="form-control">
+                                <select class="form-control" formControlName="adjuster" >
                                     <option value="">-Select Adjuster-</option>
                                     <option *ngFor="let adjuster of adjusters" value="{{adjuster.id}}">{{adjuster.firstName}}</option>
                                 </select>
                             </td>
+                            <!--<td>
+                                <select class="form-control" formControlName="adjuster" >
+                                    <option value="">-Select Adjuster-</option>
+                                    <option *ngFor="let adjuster of adjusters" value="{{adjuster.id}}">{{adjuster.firstName}}</option>
+                                </select>
+                            </td>-->
+                            <!--<td>
+                                <p-multiSelect [options]="adjustersArr" defaultLabel="Select Adjuster"></p-multiSelect>
+                            </td>-->
                         </tr>
                     </tbody>
                 </table>
-                Selected : <span *ngFor="let cat of selectedInsurance">{{cat}}</span>
+                Selected : <span *ngFor="let cat of selectedInsurances">{{cat}}</span>
             </div>
         </div>
     </section>

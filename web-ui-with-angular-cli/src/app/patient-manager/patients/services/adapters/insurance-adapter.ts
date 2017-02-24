@@ -16,6 +16,7 @@ export class InsuranceAdapter {
                 policyHoldersName: data.policyHoldersName,
                 contactPerson: data.contactPerson,
                 insuranceType: data.insuranceTypeId,
+                insuranceMasterId: data.insuranceMasterId,
                 insuranceCompanyCode: data.insuranceCompanyCode,
                 caseInsuranceMapping: data.caseInsuranceMapping,
                 isinactive: data.isInActive,
