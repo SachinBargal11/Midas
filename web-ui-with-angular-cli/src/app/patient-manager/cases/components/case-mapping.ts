@@ -108,13 +108,21 @@ export class CaseMappingComponent implements OnInit {
     save() {
         let caseMapFormValues = this.caseMapForm.value;
         let mappings = [];
-        let input = caseMapFormValues.insurance;
-        for (let i = 0; i < input.length; ++i) {
-            mappings.push({ 'id': parseInt(input[i]) });
+        let insurance = caseMapFormValues.insurance;
+        let adjuster = caseMapFormValues.adjuster;
+        for (let i = 0; i < insurance.length; ++i) {
+            mappings.push({
+                patientInsuranceInfo: {
+                'id': parseInt(insurance)
+                },
+                adjusterMaster: {
+                'id': parseInt(adjuster)
+                }
+            });
         }
         let insuranceMapping = new InsuranceMapping({
             caseId: this.caseId,
-            patientInsuranceInfos: mappings
+            mappings: mappings
         });
         this._progressBarService.show();
         this.isSaveProgress = true;
