@@ -197,6 +197,10 @@ namespace MIDAS.GBX
             {
                 repo = new PatientVisitRepository(context);
             }
+            if (typeof(T) == typeof(BO.PatientVisitEvent))
+            {
+                repo = new PatientVisitEventRepository(context);
+            }
             return repo;
         }
     }
