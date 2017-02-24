@@ -12,6 +12,12 @@ namespace MIDAS.GBX.BusinessObjects
     public class CompanySpecialtyDetails : GbObject
     {
 
+        [JsonProperty("specialtyId")]
+        public int? SpecialtyId { get; set; }
+
+        [JsonProperty("companyID")]
+        public int? CompanyID { get; set; }
+
         [Required]
         [JsonProperty("ReevalDays")]
         public int? ReevalDays { get; set; }
@@ -40,9 +46,18 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("include1500")]
         public bool? Include1500 { get; set; }
 
+        [JsonProperty("associatedSpecialty")]
+        public int? AssociatedSpecialty { get; set; }
+
         [Required]
         [JsonProperty("allowmultipleVisit")]
         public bool? AllowMultipleVisit { get; set; }
+
+        [JsonProperty("initialCode")]
+        public string InitialCode { get; set; }
+
+        [JsonProperty("reEvalCode")]
+        public string ReEvalCode { get; set; }
 
         public Company Company { get; set; }
         public Specialty Specialty { get; set; }
