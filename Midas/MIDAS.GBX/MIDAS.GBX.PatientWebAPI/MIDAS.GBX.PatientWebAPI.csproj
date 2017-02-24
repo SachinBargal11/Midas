@@ -262,6 +262,7 @@
     <Compile Include="Controllers\PatientEmpInfoController.cs" />
     <Compile Include="Controllers\PatientFamilyMemberController.cs" />
     <Compile Include="Controllers\PatientVisitController.cs" />
+    <Compile Include="Controllers\PatientVisitEventController.cs" />
     <Compile Include="Controllers\RefferingOfficeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />

@@ -190,7 +190,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Delete By ID
         public override object DeleteById(int id)
         {
-            var acc = _context.PatientVisits.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).FirstOrDefault<PatientVisit>();
+            var acc = _context.PatientVisits.Include("PatientVisitEvents").Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).FirstOrDefault<PatientVisit>();
             if (acc != null)
             {
                 acc.IsDeleted = true;
