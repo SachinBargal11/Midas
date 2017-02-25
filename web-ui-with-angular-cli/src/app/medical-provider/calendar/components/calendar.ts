@@ -1,6 +1,6 @@
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 import { ScheduledEventInstance } from '../../../commons/models/scheduled-event-instance';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { ScheduledEventStore } from '../stores/scheduled-event-store';
@@ -8,6 +8,7 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 import { Notification } from '../../../commons/models/notification';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
+import { ScheduledEventEditorComponent } from './scheduled-event-editor';
 import * as moment from 'moment';
 import * as _ from 'underscore';
 
@@ -19,10 +20,12 @@ import * as _ from 'underscore';
 
 export class CalendarComponent implements OnInit {
 
+    @ViewChild(ScheduledEventEditorComponent)
+    private _scheduledEventEditorComponent: ScheduledEventEditorComponent;
     events: ScheduledEventInstance[];
     header: any;
     dialogVisible: boolean = false;
-    selectedEvent: any;
+    selectedEvent: ScheduledEvent;
     startDate: Date;
 
     constructor(
@@ -80,11 +83,12 @@ export class CalendarComponent implements OnInit {
     handleEventClick(event) {
         console.log(event.calEvent);
         let owningEvent: ScheduledEvent = event.calEvent.owningEvent;
-        this.selectedEvent = _.extend(owningEvent.toJS(), {
-            eventStart: owningEvent.eventStartAsDate,
-            eventEnd: owningEvent.eventEndAsDate
-        });
-        
+        this.selectedEvent = owningEvent;
         this.dialogVisible = true;
+    }
+
+    saveEvent() {
+        let updatedEvent: ScheduledEvent = this._scheduledEventEditorComponent.getEditedEvent();
+        console.log(updatedEvent);
     }
 }

@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="col-md-4"><label class="form-label">Title</label></div>
+    <div class="col-md-8">
+        <div class="form-group">
+            <input pInputText id="title" [ngModel]="selectedEvent.name" />
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4"><label class="form-label">Start</label></div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <p-calendar [(ngModel)]="eventStartAsDate" dateFormat="M d, yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050"
+                showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
+                </p-calendar>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <p-calendar [(ngModel)]="eventStartAsDate" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o"></p-calendar>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4"><label class="form-label">End</label></div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <p-calendar [(ngModel)]="eventEndAsDate" dateFormat="M d, yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050"
+                showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend"></p-calendar>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <p-calendar [(ngModel)]="eventEndAsDate" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o"></p-calendar>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4"><label class="form-label">All Day</label></div>
+    <div class="col-md-8">
+        <div class="form-group">
+            <p-checkbox [ngModel]="selectedEvent.isAllDay" binary="checkbox"></p-checkbox>
+        </div>
+    </div>
+</div>
