@@ -1,1 +1,58 @@
 <h3 class="with-border">Calendar</h3>
+<p-schedule [events]="events" [header]="header" [eventLimit]="4" [editable]="true" (onDayClick)="handleDayClick($event)"
+    (onEventClick)="handleEventClick($event)"></p-schedule>
+
+    <p-dialog header="Event Details" [(visible)]="dialogVisible" [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}"
+        [contentStyle]="{'overflow':'visible'}" [resizable]="true">
+        <div class="card-block" *ngIf="selectedEvent">
+            <div class="row">
+                <div class="col-md-4"><label class="form-label">Title</label></div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <input pInputText id="title" [(ngModel)]="selectedEvent.name" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4"><label class="form-label">Start</label></div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <p-calendar [ngModel]="selectedEvent.eventStart" dateFormat="M d, yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050"
+                            showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
+                            </p-calendar>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <p-calendar [(ngModel)]="selectedEvent.eventStart" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o"></p-calendar>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4"><label class="form-label">End</label></div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <p-calendar [(ngModel)]="selectedEvent.eventEnd" dateFormat="M d, yy" [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050"
+                            showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend"></p-calendar>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <p-calendar [(ngModel)]="selectedEvent.eventEnd" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o"></p-calendar>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4"><label class="form-label">All Day</label></div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <p-checkbox [(ngModel)]="selectedEvent.isAllDay" binary="checkbox"></p-checkbox>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p-footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                <button type="button" pButton icon="fa-close" (click)="deleteEvent()" label="Delete" [disabled]="!selectedEvent?.id"></button>
+                <button type="button" pButton icon="fa-check" (click)="saveEvent()" label="Save" [disabled]="!selectedEvent?.start"></button>
+            </div>
+        </p-footer>
+        </p-dialog>
