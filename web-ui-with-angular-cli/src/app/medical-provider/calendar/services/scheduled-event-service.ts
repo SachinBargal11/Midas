@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
+import * as RRule from 'rrule';
 
 @Injectable()
 export class ScheduledEventService {
@@ -38,6 +39,7 @@ export class ScheduledEventService {
     }
     addEvent(event: ScheduledEvent): Observable<ScheduledEvent> {
         let promise: Promise<ScheduledEvent> = new Promise((resolve, reject) => {
+            debugger;
             return this._http.post(this._url, JSON.stringify(event), {
                 headers: this._headers
             })
@@ -55,7 +57,11 @@ export class ScheduledEventService {
     }
     updateEvent(event: ScheduledEvent): Observable<ScheduledEvent> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.put(`${this._url}/${event.id}`, JSON.stringify(event), {
+            let requestData = _.extend(event.toJS(), {
+                recurrenceRule: event.recurrenceRule ? event.recurrenceRule.toString() : ''
+            });
+
+            return this._http.put(`${this._url}/${event.id}`, JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())

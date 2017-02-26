@@ -4,6 +4,15 @@ import * as RRule from 'rrule';
 
 export class ScheduledEventAdapter {
     static parseResponse(data: any): ScheduledEvent {
+
+        let recurrenceRule: RRule.RRule = null;
+
+        if (data.recurrenceRule) {
+            let options = RRule.parseString(data.recurrenceRule);
+            options.dtstart = moment.utc(data.eventStart).toDate();
+            recurrenceRule = new RRule(options);
+        }
+
         let scheduledEvent: ScheduledEvent = new ScheduledEvent({
             id: data.id,
             name: data.name,
@@ -11,7 +20,7 @@ export class ScheduledEventAdapter {
             eventEnd: data.eventEnd ? moment.utc(data.eventEnd) : null,
             timezone: data.timezone,
             description: data.description,
-            recurrenceRule: data.recurrenceRule ? RRule.fromString(data.recurrenceRule) : null,
+            recurrenceRule: recurrenceRule,
             recurrenceException: data.recurrenceException,
             isAllDay: data.isAllDay ? true : false,
             isDeleted: data.isDeleted ? true : false,

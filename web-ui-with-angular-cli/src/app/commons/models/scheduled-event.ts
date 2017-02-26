@@ -53,7 +53,12 @@ export class ScheduledEvent extends ScheduledEventRecord {
     getEventInstances(): ScheduledEventInstance[] {
         let instaces: ScheduledEventInstance[];
         if (this.recurrenceRule) {
-            let occurrences: Date[] = this.recurrenceRule.all();
+            let occurrences: Date[] = this.recurrenceRule.all((date: Date, index: number) => {
+                if (index > 500) {
+                    return false;
+                }
+                return true;
+            });
             let duration: number = (this.eventEnd ? this.eventEnd : this.eventStart.clone().endOf('day')).diff(this.eventStart);
             instaces = _.map(occurrences, (occurrence: Date) => {
                 return new ScheduledEventInstance({

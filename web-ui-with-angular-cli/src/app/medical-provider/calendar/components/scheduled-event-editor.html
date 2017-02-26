@@ -95,7 +95,7 @@
         <div class="col-md-4"><label class="form-label">Repeat every</label></div>
         <div class="col-md-6">
             <div class="form-group">
-                <input type="number" formControlName="repeatEvery" [(ngModel)]="repeatEvery" class="form-control">
+                <input type="number" min="1" formControlName="repeatEvery" [(ngModel)]="repeatEvery" class="form-control">
             </div>
         </div>
         <div class="col-md-2">
@@ -117,7 +117,7 @@
             </div>
         </div>
         <div class="col-md-2">
-            <input *ngIf="end == 1" type="number" formControlName="recur_count" [(ngModel)]="recur_count" class="form-control">
+            <input *ngIf="end == 1" min="1" type="number" formControlName="recur_count" [(ngModel)]="recur_count" class="form-control">
             <span *ngIf="end == 1"> occurrence(s)</span>
             <p-calendar *ngIf="end == 2" formControlName="recur_until" [(ngModel)]="recur_until" dateFormat="M d, yy" [monthNavigator]="true"
                 [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
@@ -128,13 +128,13 @@
         <div class="col-md-4"><label class="form-label">Repeat On</label></div>
         <div class="col-md-8">
             <div class="form-group">
-                <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="repeatOnWeekDay" value="Su" label="Su"></p-checkbox>
-                <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="repeatOnWeekDay" value="Mo" label="Mo"></p-checkbox>
-                <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="repeatOnWeekDay" value="Tu" label="Tu"></p-checkbox>
-                <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="repeatOnWeekDay" value="We" label="We"></p-checkbox>
-                <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="repeatOnWeekDay" value="Th" label="Th"></p-checkbox>
-                <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="repeatOnWeekDay" value="Fr" label="Fr"></p-checkbox>
-                <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="repeatOnWeekDay" value="Sa" label="Sa"></p-checkbox>
+                <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="repeatOnWeekDay" value="0" label="Su"></p-checkbox>
+                <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="repeatOnWeekDay" value="1" label="Mo"></p-checkbox>
+                <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="repeatOnWeekDay" value="2" label="Tu"></p-checkbox>
+                <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="repeatOnWeekDay" value="3" label="We"></p-checkbox>
+                <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="repeatOnWeekDay" value="4" label="Th"></p-checkbox>
+                <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="repeatOnWeekDay" value="5" label="Fr"></p-checkbox>
+                <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="repeatOnWeekDay" value="6" label="Sa"></p-checkbox>
             </div>
         </div>
     </div>
@@ -150,7 +150,7 @@
         </div>
         <div class="col-md-4">
             <input *ngIf="recur_monthday_radio == 0" type="number" formControlName="recur_monthday" [(ngModel)]="recur_monthday" class="form-control"
-                maxlength="31" />
+                max="31" min="1" />
             <select [disabled]="recur_monthday_radio != 1" formControlName="recur_weekday_offset" [(ngModel)]="recur_weekday_offset"
                 class="select2-arrow form-control">
                 <option value="1">first</option>
@@ -160,16 +160,16 @@
                 <option value="-1">last</option>
                 </select>
                 <select [disabled]="recur_monthday_radio != 1" formControlName="recur_weekday" [(ngModel)]="recur_weekday" class="select2-arrow form-control">
-                    <option value="SU,MO,TU,WE,TH,FR,SA">day</option>
-                    <option value="MO,TU,WE,TH,FR">weekday</option>
-                    <option value="SU,SA">weekend day</option>
-                    <option value="SU">sunday</option>
-                    <option value="MO">monday</option>
-                    <option value="TU">tuesday</option>
-                    <option value="WE">wednesday</option>
-                    <option value="TH">thurshday</option>
-                    <option value="FR">friday</option>
-                    <option value="SA">saturday</option>
+                    <!--<option value="0,1,2,3,4,5,6">day</option>
+                    <option value="1,2,3,4,5">weekday</option>
+                    <option value="0,6">weekend day</option>-->
+                    <option value="0">sunday</option>
+                    <option value="1">monday</option>
+                    <option value="2">tuesday</option>
+                    <option value="3">wednesday</option>
+                    <option value="4">thurshday</option>
+                    <option value="5">friday</option>
+                    <option value="6">saturday</option>
                 </select>
         </div>
     </div>
@@ -183,8 +183,8 @@
         </div>
         <div class="col-md-4">
             <input [disabled]="recur_year_radio == 0" type="number" formControlName="recur_monthday" [(ngModel)]="recur_monthday" class="form-control"
-                maxlength="31" />
-            <select [disabled]="recur_year_radio == 0" formControlName="recur_month" [(ngModel)]="recur_month" class="select2-arrow form-control">
+                max="31" min="1" />
+            <select [disabled]="recur_year_radio == 0" formControlName="recur_month" [(ngModel)]="recur_month_1" class="select2-arrow form-control">
                     <option value="1">January</option>
                     <option value="2">February</option>
                     <option value="3">March</option>
@@ -207,18 +207,18 @@
                 <option value="-1">last</option>
                 </select>
             <select [disabled]="recur_year_radio == 1" formControlName="recur_weekday" [(ngModel)]="recur_weekday" class="select2-arrow form-control">
-                    <option value="SU,MO,TU,WE,TH,FR,SA">day</option>
+                    <!--<option value="SU,MO,TU,WE,TH,FR,SA">day</option>
                     <option value="MO,TU,WE,TH,FR">weekday</option>
-                    <option value="SU,SA">weekend day</option>
-                    <option value="SU">Sunday</option>
-                    <option value="MO">Monday</option>
-                    <option value="TU">Tuesday</option>
-                    <option value="WE">Wednesday</option>
-                    <option value="TH">Thurshday</option>
-                    <option value="FR">Friday</option>
-                    <option value="SA">Saturday</option>
+                    <option value="SU,SA">weekend day</option>-->
+                    <option value="0">sunday</option>
+                    <option value="1">monday</option>
+                    <option value="2">tuesday</option>
+                    <option value="3">wednesday</option>
+                    <option value="4">thurshday</option>
+                    <option value="5">friday</option>
+                    <option value="6">saturday</option>
                 </select>
-            <select [disabled]="recur_year_radio == 1" formControlName="recur_month" [(ngModel)]="recur_month" class="select2-arrow form-control">
+            <select [disabled]="recur_year_radio == 1" formControlName="recur_month" [(ngModel)]="recur_month_2" class="select2-arrow form-control">
                     <option value="1">January</option>
                     <option value="2">February</option>
                     <option value="3">March</option>
