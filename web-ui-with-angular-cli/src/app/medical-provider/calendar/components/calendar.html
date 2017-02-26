@@ -2,15 +2,25 @@
 <p-schedule [events]="events" [header]="header" [eventLimit]="4" [editable]="true" (onDayClick)="handleDayClick($event)"
     (onEventClick)="handleEventClick($event)"></p-schedule>
 
-    <p-dialog header="Event Details" [(visible)]="dialogVisible" [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}"
-        [contentStyle]="{'overflow':'visible'}" [resizable]="true">
-        <div class="card-block" *ngIf="selectedEvent">
-            <scheduled-event-editor [selectedEvent]="selectedEvent"></scheduled-event-editor>
-        </div>
-        <p-footer>
-            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-                <button type="button" pButton icon="fa-close" (click)="deleteEvent()" label="Delete" [disabled]="!selectedEvent?.id"></button>
-                <button type="button" pButton icon="fa-check" (click)="saveEvent()" label="Save" [disabled]="!selectedEvent?.start"></button>
+    <p-dialog (onAfterHide)="handleDialogHide()" header="Event Details" [(visible)]="dialogVisible" [responsive]="true" showEffect="fade"
+        [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'visible'}" [resizable]="true">
+        <form [formGroup]="calendarForm" (ngSubmit)="saveEvent()">
+            <div class="card-block" *ngIf="selectedEvent">
+
+                <scheduled-event-editor [selectedEvent]="selectedEvent" (isValid)="scheduledEventEditorValid = $event"></scheduled-event-editor>
+
             </div>
-        </p-footer>
+            <p-footer>
+
+                <!--<button type="button" pButton icon="fa-close" (click)="deleteEvent()" label="Delete" [disabled]="!selectedEvent?.id"></button>
+            <button type="button" pButton icon="fa-check" (click)="saveEvent()" label="Save" [disabled]="!selectedEvent?.start"></button>-->
+                <div class="row">
+                    <div class="col-md-4">
+                        <button [disabled]="!isFormValid() || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+                    <loader [visible]="isSaveProgress"></loader>
+                </button>
+                    </div>
+                </div>
+            </p-footer>
+        </form>
         </p-dialog>
