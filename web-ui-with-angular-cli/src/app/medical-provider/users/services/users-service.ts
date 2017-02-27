@@ -93,7 +93,7 @@ export class UsersService {
                 },
                 role: {
                     name: 'Doctor',
-                    roleType: 'Admin',
+                    roleType: 'Doctor',
                     status: 'active'
                 }
             };

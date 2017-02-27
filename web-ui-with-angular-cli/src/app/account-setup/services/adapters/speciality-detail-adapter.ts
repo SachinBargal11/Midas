@@ -11,10 +11,13 @@ export class SpecialityDetailAdapter {
                 reevalvisitCount: specialityDetailData.reevalvisitCount,
                 initialDays: specialityDetailData.initialDays,
                 initialvisitCount: specialityDetailData.initialvisitCount,
+                associatedSpecialty: specialityDetailData.associatedSpecialty,
                 maxReval: specialityDetailData.maxReval,
                 isInitialEvaluation: specialityDetailData.isnitialEvaluation ? 1 : 0,
                 include1500: specialityDetailData.include1500 ? 1 : 0,
                 allowmultipleVisit: specialityDetailData.allowmultipleVisit ? 1 : 0,
+                InitialCode: specialityDetailData.InitialCode,
+                ReEvalCode: specialityDetailData.ReEvalCode,
                 specialty: SpecialityAdapter.parseResponse(specialityDetailData.specialty),
                 company: specialityDetailData.company
             });
