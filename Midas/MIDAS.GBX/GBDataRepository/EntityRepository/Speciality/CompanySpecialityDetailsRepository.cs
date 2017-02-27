@@ -37,6 +37,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.CompanySpecialtyDetails companyspecialtyDetailBO = new BO.CompanySpecialtyDetails();
 
             companyspecialtyDetailBO.ID = companyspecialtydetail.id;
+            companyspecialtyDetailBO.SpecialtyId = companyspecialtydetail.SpecialtyId;
+            companyspecialtyDetailBO.CompanyID = companyspecialtydetail.CompanyID;
             if (companyspecialtydetail.ReevalDays.HasValue)
                 companyspecialtyDetailBO.ReevalDays = companyspecialtydetail.ReevalDays.Value;
             if (companyspecialtydetail.ReevalVisitCount.HasValue)
@@ -51,8 +53,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 companyspecialtyDetailBO.IsInitialEvaluation = companyspecialtydetail.IsInitialEvaluation.Value;
             if (companyspecialtydetail.Include1500.HasValue)
                 companyspecialtyDetailBO.Include1500 = companyspecialtydetail.Include1500.Value;
+            if (companyspecialtydetail.AssociatedSpecialty.HasValue)
+                companyspecialtyDetailBO.AssociatedSpecialty = companyspecialtydetail.AssociatedSpecialty.Value;
             if (companyspecialtydetail.AllowMultipleVisit.HasValue)
                 companyspecialtyDetailBO.AllowMultipleVisit = companyspecialtydetail.AllowMultipleVisit.Value;
+               companyspecialtyDetailBO.InitialCode = companyspecialtydetail.InitialCode;
+               companyspecialtyDetailBO.ReEvalCode = companyspecialtydetail.ReEvalCode;
             if (companyspecialtydetail.IsDeleted.HasValue)
                 companyspecialtyDetailBO.IsDeleted = companyspecialtydetail.IsDeleted.Value;
             if (companyspecialtydetail.UpdateByUserID.HasValue)
@@ -105,6 +111,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             #region Specialty
             companyspeclityDetailDB.id = companyspecialtyDetailBO.ID;
+            companyspeclityDetailDB.SpecialtyId = companyspecialtyDetailBO.SpecialtyId;
+            companyspeclityDetailDB.CompanyID = companyspecialtyDetailBO.CompanyID;
             companyspeclityDetailDB.ReevalDays = companyspecialtyDetailBO.ReevalDays;
             companyspeclityDetailDB.ReevalVisitCount = companyspecialtyDetailBO.ReevalVisitCount;
             companyspeclityDetailDB.InitialDays = companyspecialtyDetailBO.InitialDays;
@@ -112,7 +120,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             companyspeclityDetailDB.MaxReval = companyspecialtyDetailBO.MaxReval;
             companyspeclityDetailDB.IsInitialEvaluation = companyspecialtyDetailBO.IsInitialEvaluation;
             companyspeclityDetailDB.Include1500 = companyspecialtyDetailBO.Include1500;
+            companyspeclityDetailDB.AssociatedSpecialty = companyspecialtyDetailBO.AssociatedSpecialty;
             companyspeclityDetailDB.AllowMultipleVisit = companyspecialtyDetailBO.AllowMultipleVisit;
+            companyspeclityDetailDB.InitialCode = companyspecialtyDetailBO.InitialCode;
+            companyspeclityDetailDB.ReEvalCode = companyspecialtyDetailBO.ReEvalCode;
             companyspeclityDetailDB.IsDeleted = companyspecialtyDetailBO.IsDeleted;
             #endregion
 
@@ -153,6 +164,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     #region Specialty
                     companyspecialtydetail.SpecialtyId = companyspecialtyDetailBO.Specialty.ID != null ? companyspecialtyDetailBO.Specialty.ID : companyspecialtydetail.Specialty.id;
+                    companyspecialtydetail.CompanyID = companyspecialtyDetailBO.CompanyID != null ? companyspecialtyDetailBO.CompanyID : companyspecialtydetail.CompanyID;
                     companyspecialtydetail.ReevalDays = companyspecialtyDetailBO.ReevalDays != null ? companyspecialtyDetailBO.ReevalDays : companyspecialtydetail.ReevalDays;
                     companyspecialtydetail.ReevalVisitCount = companyspecialtyDetailBO.ReevalVisitCount != null ? companyspecialtyDetailBO.ReevalVisitCount : companyspecialtydetail.ReevalVisitCount;
                     companyspecialtydetail.InitialDays = companyspecialtyDetailBO.InitialDays != null ? companyspecialtyDetailBO.InitialDays : companyspecialtydetail.InitialDays;
@@ -160,7 +172,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     companyspecialtydetail.MaxReval = companyspecialtyDetailBO.MaxReval != null ? companyspecialtyDetailBO.MaxReval : companyspecialtydetail.MaxReval;
                     companyspecialtydetail.IsInitialEvaluation = companyspecialtyDetailBO.IsInitialEvaluation != null ? companyspecialtyDetailBO.IsInitialEvaluation : companyspecialtydetail.IsInitialEvaluation;
                     companyspecialtydetail.Include1500 = companyspecialtyDetailBO.Include1500 != null ? companyspecialtyDetailBO.Include1500 : companyspecialtydetail.Include1500;
+                    companyspecialtydetail.AssociatedSpecialty = companyspecialtyDetailBO.AssociatedSpecialty != null ? companyspecialtyDetailBO.AssociatedSpecialty : companyspecialtydetail.AssociatedSpecialty;
                     companyspecialtydetail.AllowMultipleVisit = companyspecialtyDetailBO.AllowMultipleVisit != null ? companyspecialtyDetailBO.AllowMultipleVisit : companyspecialtydetail.AllowMultipleVisit;
+                    companyspecialtydetail.InitialCode = companyspecialtyDetailBO.InitialCode != null ? companyspecialtyDetailBO.InitialCode : companyspecialtydetail.InitialCode;
+                    companyspecialtydetail.ReEvalCode = companyspecialtyDetailBO.ReEvalCode != null ? companyspecialtyDetailBO.ReEvalCode : companyspecialtydetail.ReEvalCode;
                     companyspecialtydetail.IsDeleted = companyspecialtyDetailBO.IsDeleted != null ? companyspecialtyDetailBO.IsDeleted : companyspecialtydetail.IsDeleted;
                     companyspecialtydetail.UpdateDate = DateTime.UtcNow;
                     companyspecialtydetail.UpdateByUserID = companyspecialtyDetailBO.UpdateByUserID;

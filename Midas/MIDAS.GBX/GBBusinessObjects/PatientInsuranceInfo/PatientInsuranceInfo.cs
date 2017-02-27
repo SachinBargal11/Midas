@@ -61,8 +61,10 @@ namespace MIDAS.GBX.BusinessObjects
         public ContactInfo contactInfo1 { get; set; }
 
         [JsonProperty("caseInsuranceMapping")]
-        public CaseInsuranceMapping CaseInsuranceMapping { get; set; } 
+        public CaseInsuranceMapping CaseInsuranceMapping { get; set; }
 
-        
+        [JsonProperty("insuranceMaster")]
+        public InsuranceMaster InsuranceMaster { get; set; }
+
     }
 }

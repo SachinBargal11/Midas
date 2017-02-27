@@ -105,6 +105,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 insuranceBO.contactInfo1 = boContactInfo1;
             }
 
+            BO.InsuranceMaster boInsuranceMaster = new BO.InsuranceMaster();
+            using (InsuranceMasterRepository cmp = new InsuranceMasterRepository(_context))
+            {
+                boInsuranceMaster = cmp.ObjectConvert<BO.InsuranceMaster, InsuranceMaster>(InsuranceInfos.InsuranceMaster);
+                insuranceBO.InsuranceMaster = boInsuranceMaster;
+            }
+
+
             insuranceBO.IsDeleted = InsuranceInfos.IsDeleted;
             insuranceBO.CreateByUserID = InsuranceInfos.CreateByUserID;
             insuranceBO.UpdateByUserID = InsuranceInfos.UpdateByUserID;
@@ -127,6 +135,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             var acc = _context.PatientInsuranceInfoes.Include("addressInfo").Include("contactInfo")
                                                      .Include("addressInfo1").Include("contactInfo1")
+                                                     .Include("InsuranceMaster")
                                                      .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                      .FirstOrDefault<PatientInsuranceInfo>();
             BO.PatientInsuranceInfo acc_ = Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(acc);
@@ -145,6 +154,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             var acc = _context.PatientInsuranceInfoes.Include("addressInfo").Include("contactInfo")
                                                      .Include("addressInfo1").Include("contactInfo1")
+                                                     .Include("InsuranceMaster")
                                                      .Where(p => p.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                      .ToList<PatientInsuranceInfo>();
             
@@ -422,7 +432,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                 dbContextTransaction.Commit();
 
-                insuranceDB = _context.PatientInsuranceInfoes.Where(p => p.Id == insuranceDB.Id).FirstOrDefault<PatientInsuranceInfo>();
+                insuranceDB = _context.PatientInsuranceInfoes.Include("InsuranceMaster").Where(p => p.Id == insuranceDB.Id).FirstOrDefault<PatientInsuranceInfo>();
             }
 
             var res = Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(insuranceDB);
@@ -435,6 +445,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             var acc = _context.PatientInsuranceInfoes.Include("addressInfo").Include("contactInfo")
                               .Include("addressInfo1").Include("contactInfo1")
+                              .Include("InsuranceMaster")
                               .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).FirstOrDefault<PatientInsuranceInfo>();
 
             if (acc != null)
@@ -443,35 +454,23 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 {
                     acc.AddressInfo.IsDeleted = true;
                 }
-                else
-                {
-                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                }
                 if (acc.ContactInfo != null)
                 {
                     acc.ContactInfo.IsDeleted = true;
                 }
-                else
-                {
-                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                }
+              
                 if (acc.AddressInfo1 != null)
                 {
                     acc.AddressInfo1.IsDeleted = true;
-                }
-                else
-                {
-                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
                 if (acc.ContactInfo1 != null)
                 {
                     acc.ContactInfo1.IsDeleted = true;
                 }
-                else
+                if (acc.InsuranceMaster != null)
                 {
-                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    acc.InsuranceMaster.IsDeleted = true;
                 }
-
                 acc.IsDeleted = true;
                 _context.SaveChanges();
             }

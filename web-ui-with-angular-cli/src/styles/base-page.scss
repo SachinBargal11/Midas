@@ -7,12 +7,15 @@
         padding-left: 100px;
     }
 }
+
 .card-block {
     padding-bottom: 0;
 }
+
 .card-header {
     padding: .50rem 1.25rem;
 }
+
 .box-typical {
     &.box-typical-padding {
         padding: 10px 15px;
@@ -120,4 +123,17 @@ body {
 .control-panel.open .notification-panel-container {
     width: 280px;
     display: block;
+}
+
+.fc-content {
+    .fc-title, .fc-time {
+        color: white;
+    }
+}
+
+.ui-grid-row div {
+    padding: 4px 10px;
+    label {
+        font-weight: bold;
+    }
 }
