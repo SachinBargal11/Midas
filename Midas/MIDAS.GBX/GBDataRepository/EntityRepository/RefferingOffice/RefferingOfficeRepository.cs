@@ -273,6 +273,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 bool IsEditMode = false;
                 IsEditMode = (refferingOfficeBO != null && refferingOfficeBO.ID > 0) ? true : false;
 
+                if (IsEditMode == false)
+                    if (refferingOfficeBO.CaseId == 0)
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Case Id.", ErrorLevel = ErrorLevel.Error };
+                    else if (_context.RefferingOffices.ToList().Any(x => x.RefferingOfficeId == refferingOfficeBO.RefferingOfficeId && x.CaseId == refferingOfficeBO.CaseId && (x.IsDeleted.HasValue == false || (x.IsDeleted.HasValue == true && x.IsDeleted.Value == false))))
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Reffereing office for case already exists.", ErrorLevel = ErrorLevel.Error };
+
                 #region Address
                 if (addressBO != null)
                 {

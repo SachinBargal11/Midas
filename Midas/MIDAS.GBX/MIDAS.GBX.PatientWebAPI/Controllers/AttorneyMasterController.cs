@@ -24,8 +24,8 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         [HttpGet]
         [Route("getAll/")]
         [AllowAnonymous]
-        public HttpResponseMessage GetAllAttornies([FromBody]AttorneyMaster data)
-        { return requestHandler.GetGbObjects(Request, data); }
+        public HttpResponseMessage GetAllAttornies()
+        { return requestHandler.GetObjects(Request); }
 
         // GET: api/getAttornyById/
         [HttpGet]
