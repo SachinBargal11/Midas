@@ -1,3 +1,9 @@
+input.disabled, select.disabled {
+    cursor: not-allowed;
+    background-color: #dbe4ea;
+    opacity: .65;
+}
+
 .page-content {
     padding-top: 55px;
     .control-panel & {
