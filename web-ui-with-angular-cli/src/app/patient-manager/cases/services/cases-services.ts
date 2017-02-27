@@ -7,6 +7,8 @@ import { environment } from '../../../../environments/environment';
 import { Case } from '../models/case';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { CaseAdapter } from './adapters/case-adapter';
+import { CaseManagerAdapter } from './adapters/case-manager-adapter';
+import { CaseManager } from '../../case-manager/models/case-manager';
 
 @Injectable()
 export class CaseService {
@@ -56,6 +58,22 @@ export class CaseService {
 
         });
         return <Observable<Case[]>>Observable.fromPromise(promise);
+    }
+    getCasesByCompany(companyId: number): Observable<CaseManager[]> {
+        let promise: Promise<CaseManager[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Case/getByCompanyId/' + companyId)
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let cases = (<Object[]>data).map((data: any) => {
+                        return CaseManagerAdapter.parseResponse(data);
+                    });
+                    resolve(cases);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<CaseManager[]>>Observable.fromPromise(promise);
     }
 
     addCase(caseDetail: Case): Observable<Case> {

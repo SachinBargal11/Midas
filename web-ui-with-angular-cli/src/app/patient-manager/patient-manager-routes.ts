@@ -6,6 +6,7 @@ import { PatientsShellRoutes } from './patients/patient-routes';
 import { CasesShellRoutes } from './cases/cases-routes';
 import { ReferalsShellRoutes } from './referals/referals-routes';
 import { ConsentFormsShellRoutes } from './consent-forms/consent-forms-routes';
+import { CaseManagerRoutes } from './case-manager/cases-manager-routes';
 
 let PatientManagerRoutes: Routes = [
     {
@@ -16,7 +17,8 @@ let PatientManagerRoutes: Routes = [
             ...PatientsShellRoutes,
             ...CasesShellRoutes,
             ...ReferalsShellRoutes,
-            ...ConsentFormsShellRoutes
+            ...ConsentFormsShellRoutes,
+            ...CaseManagerRoutes
         ],
         data: {
             breadcrumb: 'Patient Manager'

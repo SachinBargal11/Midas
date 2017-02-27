@@ -7,6 +7,7 @@ import {CaseService} from '../services/cases-services';
 import {List} from 'immutable';
 import {BehaviorSubject} from 'rxjs/Rx';
 import {SessionStore} from '../../../commons/stores/session-store';
+import { CaseManager } from '../../case-manager/models/case-manager';
 
 @Injectable()
 export class CasesStore {
@@ -40,6 +41,17 @@ export class CasesStore {
             });
         });
         return <Observable<Case[]>>Observable.fromPromise(promise);
+    }
+    getCasesByCompany(): Observable<CaseManager[]> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._casesService.getCasesByCompany(companyId).subscribe((cases: CaseManager[]) => {
+                resolve(cases);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<CaseManager[]>>Observable.fromPromise(promise);
     }
 
     findCaseById(id: number) {
