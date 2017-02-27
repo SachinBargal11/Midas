@@ -435,7 +435,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
 
         #region Delete By ID
-        public override object DeleteById(int id)
+        public override object Delete(int id)
         {
             var acc = _context.PatientEmpInfoes.Include("addressInfo").Include("contactInfo").Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).FirstOrDefault<PatientEmpInfo>();
             if (acc != null)
