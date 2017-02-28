@@ -7,6 +7,8 @@ import { StatesStore } from '../../../commons/stores/states-store';
 import { LocationDetails } from '../../../medical-provider/locations/models/location-details';
 import { LocationsStore } from '../../../medical-provider/locations/stores/locations-store';
 import { Employer } from '../../patients/models/employer';
+import { Patient } from '../../patients/models/patient';
+import { PatientsStore } from '../../patients/stores/patients-store';
 import { EmployerStore } from '../../patients/stores/employer-store';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Case } from '../models/case';
@@ -28,10 +30,12 @@ export class CaseBasicComponent implements OnInit {
     caseform: FormGroup;
     caseformControls;
     locations: LocationDetails[];
-    employers: Employer[];
+    employer: Employer;
+    patient:Patient;
     isSaveProgress = false;
     caseId: number;
     patientId: number;
+    patientName: string;
 
     constructor(
         private fb: FormBuilder,
@@ -43,12 +47,13 @@ export class CaseBasicComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _locationsStore: LocationsStore,
         private _employerStore: EmployerStore,
+        private _patientStore: PatientsStore,
         private _casesStore: CasesStore,
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId, 10);
+            this.patientId = parseInt(routeParams.patientId, 10);   
         });
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
@@ -73,7 +78,7 @@ export class CaseBasicComponent implements OnInit {
             caseTypeId: [''],
             carrierCaseNo: [''],
             locationId: ['', Validators.required],
-            patientEmpInfoId: ['', Validators.required],
+            // patientEmpInfoId: ['', Validators.required],
             caseStatusId: ['', Validators.required],
             attorneyId: [''],
             caseStatus: [''],
@@ -86,8 +91,8 @@ export class CaseBasicComponent implements OnInit {
     ngOnInit() {
         this._locationsStore.getLocations()
             .subscribe(locations => this.locations = locations);
-        this._employerStore.getEmployers(this.patientId)
-            .subscribe(employers => this.employers = employers);
+        this._employerStore.getCurrentEmployer(this.patientId)
+            .subscribe(employer => this.employer = employer);
     }
 
     saveCase() {
@@ -100,7 +105,7 @@ export class CaseBasicComponent implements OnInit {
             caseTypeId: caseFormValues.caseTypeId,
             carrierCaseNo: caseFormValues.carrierCaseNo,
             locationId: parseInt(caseFormValues.locationId, 10),
-            patientEmpInfoId: caseFormValues.patientEmpInfoId,
+            patientEmpInfoId: this.employer.id,
             caseStatusId: caseFormValues.caseStatusId,
             attorneyId: caseFormValues.attorneyId,
             caseStatus: caseFormValues.caseStatus,

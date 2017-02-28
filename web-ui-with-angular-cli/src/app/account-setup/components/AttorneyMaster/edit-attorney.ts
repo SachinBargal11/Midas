@@ -86,7 +86,7 @@ export class EditAttorneyComponent implements OnInit {
         });
         this.attorneyform = this.fb.group({
             firstname: ['', Validators.required],
-            middlename: ['', Validators.required],
+            middlename: [''],
             lastname: ['', Validators.required],
             attorneyAddress: ['', Validators.required],
             dob: [''],

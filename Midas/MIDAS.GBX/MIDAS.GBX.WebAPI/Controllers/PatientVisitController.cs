@@ -45,11 +45,12 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
+        //[HttpDelete]
         [Route("delete/{id}")]
         [AllowAnonymous]
-        public HttpResponseMessage DeleteById(int id)
+        public HttpResponseMessage Delete(int id)
         {
-            return requestHandler.DeleteById(Request, id);
+            return requestHandler.Delete(Request, id);
         }
 
         protected override void Dispose(bool disposing)

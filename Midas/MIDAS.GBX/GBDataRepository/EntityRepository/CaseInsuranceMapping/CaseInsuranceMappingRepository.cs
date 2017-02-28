@@ -304,7 +304,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         //#region Delete By ID
-        //public override object DeleteById(int id)
+        //public override object Delete(int id)
         //{
         //    var acc = _context.CaseInsuranceMappings.Include("PatientInsuranceInfo")
         //                                            .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))

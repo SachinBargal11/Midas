@@ -13,6 +13,7 @@ export class RoomsAdapter {
                     phone: roomsData.phone,
                     roomTest: roomsData.roomTest,
                     location: roomsData.location,
+                    schedule: roomsData.schedule,
                     isDeleted: roomsData.isDeleted
             });
         }

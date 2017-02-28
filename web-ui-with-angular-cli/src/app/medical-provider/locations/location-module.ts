@@ -16,6 +16,7 @@ import { ScheduleDemo } from './components/schedule-demo';
 import { EventService } from './services/event-service';
 import { EventStore } from './stores/event-store';
 
+
 @NgModule({
     imports: [
         CommonModule,

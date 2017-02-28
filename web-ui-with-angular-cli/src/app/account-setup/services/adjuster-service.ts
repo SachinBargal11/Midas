@@ -5,7 +5,7 @@ import * as _ from 'underscore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { Adjuster } from '../models/adjuster';
 import { AdjusterAdapter } from './adapters/adjuster-adapter';
 
@@ -23,8 +23,8 @@ export class AdjusterMasterService {
             return this._http.get(this._url + '/AdjusterMaster/get/' + adjusterId).map(res => res.json())
                 .subscribe((data: any) => {
                     let adjuster = null;
-                        adjuster = AdjusterAdapter.parseResponse(data);
-                        resolve(adjuster);
+                    adjuster = AdjusterAdapter.parseResponse(data);
+                    resolve(adjuster);
                 }, (error) => {
                     reject(error);
                 });
@@ -37,8 +37,8 @@ export class AdjusterMasterService {
             return this._http.get(this._url + '/AdjusterMaster/getByInsuranceMasterId/' + insuranceId).map(res => res.json())
                 .subscribe((data: any) => {
                     let adjuster = null;
-                        adjuster = AdjusterAdapter.parseResponse(data);
-                        resolve(adjuster);
+                    adjuster = AdjusterAdapter.parseResponse(data);
+                    resolve(adjuster);
                 }, (error) => {
                     reject(error);
                 });
@@ -63,8 +63,24 @@ export class AdjusterMasterService {
         });
         return <Observable<Adjuster[]>>Observable.fromPromise(promise);
     }
-    
+
     //
+    getAdjusterMastersByCompanyAndInsuranceMasterId(companyId: Number, insuranceMasterId: Number): Observable<Adjuster[]> {
+        let promise: Promise<Adjuster[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/AdjusterMaster/GetByCompanyAndInsuranceMasterId/' + companyId + '/' + insuranceMasterId)
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let adjuster = (<Object[]>data).map((data: any) => {
+                        return AdjusterAdapter.parseResponse(data);
+                    });
+                    resolve(adjuster);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<Adjuster[]>>Observable.fromPromise(promise);
+    }
     getAllAdjusterMasterByCompany(companyId: Number): Observable<Adjuster[]> {
         let promise: Promise<Adjuster[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/AdjusterMaster/getByCompanyId/' + companyId)
@@ -103,7 +119,7 @@ export class AdjusterMasterService {
         return <Observable<Adjuster>>Observable.fromPromise(promise);
     }
     updateAdjuster(adjuster: Adjuster): Observable<Adjuster> {
-      let promise: Promise<Adjuster> = new Promise((resolve, reject) => {
+        let promise: Promise<Adjuster> = new Promise((resolve, reject) => {
             let requestData: any = adjuster.toJS();
             requestData.contactInfo = requestData.adjusterContact;
             requestData.addressInfo = requestData.adjusterAddress;

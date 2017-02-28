@@ -64,7 +64,7 @@ export class InsuranceMapComponent implements OnInit {
             Observable.forkJoin([fetchInsurances, fetchInsuranceMappings])
                 .subscribe((results) => {
                     let insurances: Insurance[] = results[0];
-                    let mappedInsurances: InsuranceMapping = results[1];
+                    let mappedInsurances: InsuranceMapping = results[1].mappings;
 
                     this.insurancesArr = _.map(insurances, (currentInsurance: Insurance) => {
                         return {
@@ -72,8 +72,8 @@ export class InsuranceMapComponent implements OnInit {
                             value: currentInsurance.id.toString()
                         };
                     });
-                        this.selectedInsurances = _.map(mappedInsurances.patientInsuranceInfos, (currentInsurance: Insurance) => {
-                            return currentInsurance.id.toString();
+                        this.selectedInsurances = _.map(mappedInsurances, (currentInsurance: any) => {
+                            return currentInsurance.patientInsuranceInfo.id.toString();
                     });
                     // mappedInsurances.forEach(element => {
                     //      _.map(element.patientInsuranceInfos, (currentInsurance: Insurance) => {

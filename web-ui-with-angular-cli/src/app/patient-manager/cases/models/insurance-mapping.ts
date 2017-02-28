@@ -1,11 +1,11 @@
 import { Record } from 'immutable';
 import * as moment from 'moment';
-import { Insurance } from '../../patients/models/insurance';
+import { Mapping } from './mapping';
 
 const InsuranceMappingRecord = Record({
     id: 0,
     caseId: 0,
-    patientInsuranceInfos: null,
+    mappings: null,
     isDeleted: false,
     createByUserID: 0,
     createDate: null,
@@ -17,7 +17,7 @@ export class InsuranceMapping extends InsuranceMappingRecord {
 
     id: number;
     caseId: number;
-    patientInsuranceInfos: Insurance[];
+    mappings: Mapping[];
     isDeleted: boolean;
     createByUserID: number;
     createDate: moment.Moment;

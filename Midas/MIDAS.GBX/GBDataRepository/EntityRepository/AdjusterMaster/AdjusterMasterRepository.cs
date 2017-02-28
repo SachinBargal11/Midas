@@ -353,7 +353,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #endregion
 
         #region Delete By ID
-        public override object DeleteById(int id)
+        public override object Delete(int id)
         {
             var acc = _context.AdjusterMasters.Include("AddressInfo")
                 .Include("ContactInfo")

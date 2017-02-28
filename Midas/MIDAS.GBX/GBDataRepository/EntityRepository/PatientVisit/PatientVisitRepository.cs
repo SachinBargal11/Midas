@@ -65,6 +65,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             patientVisitBO.CreateByUserID = patientVisit.CreateByUserID;
             patientVisitBO.UpdateByUserID = patientVisit.UpdateByUserID;
 
+            patientVisitBO.PatientVisitEvents = new List<BusinessObjects.PatientVisitEvent>();
+
+            BO.PatientVisitEvent boPatientVisitEvent = new BO.PatientVisitEvent();
+            using (PatientVisitEventRepository cmp = new PatientVisitEventRepository(_context))
+            {
+                foreach (var item in patientVisit.PatientVisitEvents)
+                {
+                    boPatientVisitEvent = cmp.Convert<BO.PatientVisitEvent, PatientVisitEvent>(item);
+                    patientVisitBO.PatientVisitEvents.Add(boPatientVisitEvent);
+                }                
+            }
+
             return (T)(object)patientVisitBO;
         }
         #endregion
@@ -73,7 +85,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By ID
         public override object Get(int id)
         {
-            var acc = _context.PatientVisits.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<PatientVisit>();
+            var acc = _context.PatientVisits.Include("PatientVisitEvents").Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<PatientVisit>();
             BO.PatientVisit acc_ = Convert<BO.PatientVisit, PatientVisit>(acc);
 
             if (acc_ == null)
@@ -188,9 +200,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #endregion
 
         #region Delete By ID
-        public override object DeleteById(int id)
+        public override object Delete(int id)
         {
-            var acc = _context.PatientVisits.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).FirstOrDefault<PatientVisit>();
+            var acc = _context.PatientVisits.Include("PatientVisitEvents").Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).FirstOrDefault<PatientVisit>();
             if (acc != null)
             {
                 acc.IsDeleted = true;

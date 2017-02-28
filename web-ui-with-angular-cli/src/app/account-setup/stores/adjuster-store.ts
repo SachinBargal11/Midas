@@ -25,6 +25,18 @@ export class AdjusterMasterStore {
     get adjusterMasters() {
         return this._adjusterMaster.asObservable();
     }
+    getAdjusterByCompanyAndInsuranceMasterId(insuranceMasterId: number): Observable<Adjuster[]> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._adjusterMasterService.getAdjusterMastersByCompanyAndInsuranceMasterId(companyId, insuranceMasterId).subscribe((insurances: Adjuster[]) => {
+                this._adjusterMaster.next(List(insurances));
+                resolve(insurances);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Adjuster[]>>Observable.fromPromise(promise);
+    }
 
     getAdjusterMasters(): Observable<Adjuster[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;

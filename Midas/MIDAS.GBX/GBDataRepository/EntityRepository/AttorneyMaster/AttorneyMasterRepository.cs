@@ -34,77 +34,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        //#region Entity Conversion
-        //public override T Convert<T, U>(U entity)
-        //{
-        //    if (entity.GetType().Name == "AddressInfo")
-        //    {
-        //        AddressInfo addr = entity as AddressInfo;
-        //        if (addr == null) return default(T);
-        //        BO.AddressInfo boAddress = new BO.AddressInfo();
-        //        boAddress.Name = addr.Name;
-        //        boAddress.Address1 = addr.Address1;
-        //        boAddress.Address2 = addr.Address2;
-        //        boAddress.City = addr.City;
-        //        boAddress.State = addr.State;
-        //        boAddress.ZipCode = addr.ZipCode;
-        //        boAddress.Country = addr.Country;
-        //        boAddress.CreateByUserID = addr.CreateByUserID;
-        //        boAddress.ID = addr.id;
-        //        boAddress.IsDeleted = addr.IsDeleted.HasValue ? boAddress.IsDeleted : false;
-        //        boAddress.UpdateByUserID = addr.UpdateByUserID.HasValue ? boAddress.UpdateByUserID : null;
-
-        //        return (T)(object)boAddress;
-        //    }
-        //    else if (entity.GetType().Name == "ContactInfo")
-        //    {
-        //        ContactInfo cnct = entity as ContactInfo;
-        //        if (cnct == null) return default(T);
-        //        BO.ContactInfo boContactInfo = new BO.ContactInfo();
-        //        boContactInfo.Name = cnct.Name;
-        //        boContactInfo.CellPhone = cnct.CellPhone;
-        //        boContactInfo.EmailAddress = cnct.EmailAddress;
-        //        boContactInfo.HomePhone = cnct.HomePhone;
-        //        boContactInfo.WorkPhone = cnct.WorkPhone;
-        //        boContactInfo.FaxNo = cnct.FaxNo;
-        //        boContactInfo.CreateByUserID = cnct.CreateByUserID;
-        //        boContactInfo.ID = cnct.id;
-        //        boContactInfo.IsDeleted = cnct.IsDeleted.HasValue ? boContactInfo.IsDeleted : false;
-        //        boContactInfo.UpdateByUserID = cnct.UpdateByUserID.HasValue ? boContactInfo.UpdateByUserID : null;
-
-        //        return (T)(object)boContactInfo;
-        //    }
-        //    else
-        //    {
-        //        Attorney attorney = entity as Attorney;
-        //        if (entity == null) return default(T);
-        //        BO.AttorneyMaster attorneyBO = new BO.AttorneyMaster();
-        //        attorneyBO.companyId = attorney.CompanyId;
-        //        attorneyBO.ID = attorney.Id;
-        //        attorneyBO.IsDeleted = attorney.IsDeleted;
-        //        attorneyBO.companyId = attorney.CompanyId;
-        //        attorneyBO.companyId = attorney.CompanyId;
-
-        //        BO.User boUser = new BO.User();
-        //        using (UserRepository cmp = new UserRepository(_context))
-        //        {
-        //            boUser = cmp.Convert<BO.User, User>(attorney.User);
-
-        //            var attorneyDetails = _context.Users.Include("AddressInfo")
-        //                                                .Include("ContactInfo")
-        //                                                .Where(a => a.id == boUser.ID).FirstOrDefault();
-        //            BO.AddressInfo addrInfo_ = Convert<BO.AddressInfo, AddressInfo>(attorneyDetails.AddressInfo);
-        //            BO.ContactInfo contactInfo_ = Convert<BO.ContactInfo, ContactInfo>(attorneyDetails.ContactInfo);
-
-        //            attorneyBO.User = boUser;
-        //            attorneyBO.User.AddressInfo = addrInfo_;
-        //            attorneyBO.User.ContactInfo = contactInfo_;
-        //        }
-        //        return (T)(object)attorneyBO;
-        //    }                      
-        //}
-        //#endregion
-
         #region Entity Conversion
         public override T Convert<T, U>(U entity)
         {
@@ -132,22 +61,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #endregion
 
         #region Get All attornies
-        public override object Get<T>(T entity)
+        public override object Get()
         {
-            BO.AttorneyMaster attorneyMasterBO = (BO.AttorneyMaster)(object)entity;
+            var acc_ = _context.Attorneys.Include("User").Include("User.AddressInfo").Include("User.ContactInfo").Where(p => p.IsDeleted.HasValue == false || p.IsDeleted == false).ToList<Attorney>();
+            if (acc_ == null || acc_.Count == 0) return new BO.ErrorObject { ErrorMessage = "No records found for Attorney.", errorObject = "", ErrorLevel = ErrorLevel.Error };
 
-            var acc_ = _context.Attorneys.Include("User")
-                                         .Include("User.AddressInfo")
-                                         .Include("User.ContactInfo")
-                                         .Where(p => p.IsDeleted.HasValue == false || p.IsDeleted == false)
-                                         .ToList<Attorney>();
-
-            if (acc_ == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "No records for Attorney found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
             List<BO.AttorneyMaster> lstattornies = new List<BO.AttorneyMaster>();
-
             acc_.ForEach(item => lstattornies.Add(Convert<BO.AttorneyMaster, Attorney>(item)));
 
             return lstattornies;
@@ -182,7 +101,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                         .ToList<Attorney>();
 
             List<BO.AttorneyMaster> lstattornies = new List<BO.AttorneyMaster>();
-            if (acc == null) return new BO.ErrorObject { ErrorMessage = "No record found for this Company Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            if (acc == null || acc.Count == 0) return new BO.ErrorObject { ErrorMessage = "No record found for this Company Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             else
             {
                 acc.ForEach(item => lstattornies.Add(Convert<BO.AttorneyMaster, Attorney>(item)));
@@ -200,10 +119,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             BO.AddressInfo addressUserBO = (addAttorneyBO.User != null) ? addAttorneyBO.User.AddressInfo : null;
             BO.ContactInfo contactinfoUserBO = (addAttorneyBO.User != null) ? addAttorneyBO.User.ContactInfo : null;
             Guid invitationDB_UniqueID = Guid.NewGuid();
-
             Attorney _attny = new Attorney();
-
             bool sendEmail = false;
+
+            if (addAttorneyBO.ID != addAttorneyBO.User.ID) return new BO.ErrorObject { errorObject = "", ErrorMessage = "Attorney doesn't match the User.", ErrorLevel = ErrorLevel.Error };
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
@@ -320,7 +239,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                             return new BO.ErrorObject { errorObject = "", ErrorMessage = "User Name already exists.", ErrorLevel = ErrorLevel.Error };
                         }
                     }
-                    
+
                     userDB.UserName = Add_userDB == true ? userBO.UserName : userDB.UserName;
                     userDB.FirstName = IsEditMode == true && userBO.FirstName == null ? userDB.FirstName : userBO.FirstName;
                     userDB.MiddleName = IsEditMode == true && userBO.MiddleName == null ? userDB.MiddleName : userBO.MiddleName;
@@ -367,7 +286,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     bool Add_attorneyDB = false;
                     _attny = _context.Attorneys.Where(p => p.Id == addAttorneyBO.ID).FirstOrDefault();
 
-                    if (_attny == null && addAttorneyBO.ID <= 0)
+                    if (_attny == null && addAttorneyBO.ID <= 0 && IsEditMode == false)
                     {
                         _attny = new Attorney();
                         Add_attorneyDB = true;
@@ -410,47 +329,43 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 _context.SaveChanges();
                 #endregion
 
+                #region Insert Invitation
                 if (sendEmail == true)
                 {
-                    #region Insert Invitation
                     Invitation invitationDB = new Invitation();
                     invitationDB.User = userDB;
 
                     invitationDB_UniqueID = Guid.NewGuid();
-
                     invitationDB.UniqueID = invitationDB_UniqueID;
                     invitationDB.CompanyID = _attny.CompanyId.HasValue == true ? _attny.CompanyId.Value : 0;
                     invitationDB.CreateDate = DateTime.UtcNow;
                     invitationDB.CreateByUserID = userDB.id;
                     _context.Invitations.Add(invitationDB);
                     _context.SaveChanges();
-                    #endregion
                 }
+                #endregion
 
                 dbContextTransaction.Commit();
 
                 _attny = _context.Attorneys.Include("User")
-                                        .Include("User.AddressInfo")
-                                        .Include("User.ContactInfo")
-                                        .Where(p => p.Id == _attny.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                        .FirstOrDefault<Attorney>();
-
+                                           .Include("User.AddressInfo")
+                                           .Include("User.ContactInfo")
+                                           .Where(p => p.Id == _attny.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                           .FirstOrDefault<Attorney>();
+                #region Send Email
                 if (sendEmail == true)
                 {
                     try
                     {
-                        #region Send Email
                         string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
                         string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
                         BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "User registered", Body = Message };
                         objEmail.SendMail();
-                        #endregion
-                    }
-                    catch (Exception ex)
-                    {
 
                     }
+                    catch (Exception ex) { }
                 }
+                #endregion
 
                 BO.AttorneyMaster res = Convert<BO.AttorneyMaster, Attorney>(_attny);
                 return (object)res;
@@ -465,11 +380,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
-                attorney = _context.Attorneys.Include("User").Where(p => p.Id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault();
+                attorney = _context.Attorneys.Include("User").Include("User.AddressInfo").Include("User.ContactInfo").Where(p => p.Id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault();
 
                 if (attorney != null)
                 {
                     attorney.IsDeleted = true;
+                    attorney.User.IsDeleted = true;
+                    attorney.User.AddressInfo.IsDeleted = true;
+                    attorney.User.ContactInfo.IsDeleted = true;
                     _context.SaveChanges();
                 }
                 else

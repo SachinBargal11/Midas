@@ -32,7 +32,7 @@ export class RoomsComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _progressBarService: ProgressBarService
     ) {
-        this._route.parent.params.subscribe((params: any) => {
+        this._route.parent.parent.params.subscribe((params: any) => {
             this.locationId = parseInt(params.locationId);
         });
 

@@ -33,6 +33,25 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <label class="form-label"> Role
+                        <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="userformControls.userInfo.controls.role.touched && !userformControls.userInfo.controls.role.valid">
+                        <p-checkbox name="role" label="Regular Staff" formControlName="role" [(ngModel)]="selectedRole" value="1"></p-checkbox>
+                        <p-checkbox name="role" label="Doctor" formControlName="role" [(ngModel)]="selectedRole" value="2"></p-checkbox>
+                        <p-checkbox name="role" label="Office Manager" formControlName="role" [(ngModel)]="selectedRole" value="3"></p-checkbox>
+                        <p-checkbox name="role" label="Billing Staff" formControlName="role" [(ngModel)]="selectedRole" value="4"></p-checkbox>
+                        <p-checkbox name="role" label="Nurse" formControlName="role" [(ngModel)]="selectedRole" value="5"></p-checkbox>
+                        <div class='error-list' *ngIf="userformControls.userInfo.controls.role.touched && !userformControls.userInfo.controls.role.valid">
+                            <ul>
+                                <li *ngIf="userformControls.userInfo.controls.role.hasError('required')">Minimum 1 role must be selected.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
     <section class="card">
@@ -64,12 +83,12 @@
                         <!--<input type="text" formControlName="cellPhone" [class.error]="userformControls.contact.controls.cellPhone.touched && !userformControls.contact.controls.cellPhone.valid" class="form-control"/>-->
                         <p-inputMask mask="999-999-9999" formControlName="cellPhone" [class.error]="userformControls.contact.controls.cellPhone.touched && !userformControls.contact.controls.cellPhone.valid"
                             placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
-                        <div class='error-list' *ngIf="userformControls.contact.controls.cellPhone.touched && !userformControls.contact.controls.cellPhone.valid">
-                            <ul>
-                                <li *ngIf="userformControls.contact.controls.cellPhone.hasError('required')">Cellphone number is required.</li>
-                                <li *ngIf="userformControls.contact.controls.cellPhone.hasError('mobileNoValidator')">Cellphone number is invalid.</li>
-                            </ul>
-                        </div>
+                            <div class='error-list' *ngIf="userformControls.contact.controls.cellPhone.touched && !userformControls.contact.controls.cellPhone.valid">
+                                <ul>
+                                    <li *ngIf="userformControls.contact.controls.cellPhone.hasError('required')">Cellphone number is required.</li>
+                                    <li *ngIf="userformControls.contact.controls.cellPhone.hasError('mobileNoValidator')">Cellphone number is invalid.</li>
+                                </ul>
+                            </div>
                     </div>
                 </div>
             </div>

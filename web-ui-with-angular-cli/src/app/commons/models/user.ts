@@ -4,11 +4,13 @@ import { Address } from './address';
 import { Contact } from './contact';
 import { UserType } from './enums/user-type';
 import { Gender } from './enums/Gender';
+import { RoleType } from './enums/roles';
 
 const UserRecord = Record({
     id: 0,
     // name: '',
     userType: UserType.STAFF,
+    role1: [],
     accountId: '',
     userName: '',
     firstName: '',
@@ -31,6 +33,7 @@ export class User extends UserRecord {
     id: number;
     // name: string;
     userType: UserType;
+    role1: RoleType[];
     accountId: number;
     userName: string;
     firstName: string;
@@ -67,7 +70,8 @@ export class User extends UserRecord {
                 return 'Staff';
         }
     }
-         get genderLabel(): string {
+ 
+      get genderLabel(): string {
         return User.getGender(this.gender);
     }
     // tslint:disable-next-line:member-ordering
@@ -79,7 +83,7 @@ export class User extends UserRecord {
                 return 'Female';
             case Gender.OTHERS:
                 return 'Others';
-           
+
         }
     }
 

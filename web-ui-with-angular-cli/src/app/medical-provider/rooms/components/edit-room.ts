@@ -52,8 +52,8 @@ export class EditRoomComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
-        this._route.params.subscribe((routeParams: any) => {
-            let roomId: number = parseInt(routeParams.id);
+        this._route.parent.params.subscribe((routeParams: any) => {
+            let roomId: number = parseInt(routeParams.roomId);
             this._progressBarService.show();
             let result = this._roomsStore.fetchRoomById(roomId);
             result.subscribe(
