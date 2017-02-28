@@ -7,6 +7,8 @@ import { ScheduledEventService } from '../services/scheduled-event-service';
 import { List } from 'immutable';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { SessionStore } from '../../../commons/stores/session-store';
+import * as moment from 'moment';
+import * as _ from'underscore';
 
 @Injectable()
 export class ScheduledEventStore {
@@ -55,6 +57,34 @@ export class ScheduledEventStore {
         });
         return <Observable<ScheduledEvent>>Observable.from(promise);
     }
+
+    createExceptionInRecurringEvent(exceptionEvent: ScheduledEvent): Observable<{ exceptionEvent: ScheduledEvent, recurringEvent: ScheduledEvent }> {
+        let recurringEvent: ScheduledEvent = this.findEventById(exceptionEvent.recurrenceId);
+        let promise = this.addEvent(exceptionEvent).toPromise().then((updatedExceptionEvent: ScheduledEvent) => {
+            let recurrenceException = _.clone(recurringEvent.recurrenceException);
+            recurrenceException.push(exceptionEvent.eventStart);
+            let updatedEvent: ScheduledEvent = new ScheduledEvent({
+                id: recurringEvent.id,
+                name: recurringEvent.name,
+                eventStart: recurringEvent.eventStart,
+                eventEnd: recurringEvent.eventEnd,
+                timezone: recurringEvent.timezone,
+                description: recurringEvent.description,
+                recurrenceId: recurringEvent.recurrenceId,
+                recurrenceRule: recurringEvent.recurrenceRule,
+                recurrenceException: recurrenceException,
+                isAllDay: recurringEvent.isAllDay,
+            });
+            return this.updateEvent(updatedEvent).toPromise().then((updatedReccurringEvent: ScheduledEvent) => {
+                return {
+                    exceptionEvent: updatedExceptionEvent,
+                    recurringEvent: updatedReccurringEvent
+                };
+            });
+        });
+        return <Observable<{ exceptionEvent: ScheduledEvent, recurringEvent: ScheduledEvent }>>Observable.from(promise);
+    }
+
     updateEvent(event: ScheduledEvent): Observable<ScheduledEvent> {
         let promise = new Promise((resolve, reject) => {
             this._scheduledEventsService.updateEvent(event).subscribe((updatedEvent: ScheduledEvent) => {
@@ -89,4 +119,6 @@ export class ScheduledEventStore {
     resetStore() {
         this._events.next(this._events.getValue().clear());
     }
+
+
 }

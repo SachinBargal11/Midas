@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 import { ScheduledEventInstance } from '../../../commons/models/scheduled-event-instance';
@@ -10,6 +11,7 @@ import { Notification } from '../../../commons/models/notification';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { ScheduledEventEditorComponent } from './scheduled-event-editor';
+import { ConfirmationService } from 'primeng/primeng';
 import * as moment from 'moment';
 import * as _ from 'underscore';
 
@@ -31,6 +33,14 @@ export class CalendarComponent implements OnInit {
     calendarForm: FormGroup;
     calendarFormControls;
     private scheduledEventEditorValid: boolean = false;
+    eventRenderer: Function = (event, element) => {
+        // debugger;
+        if (event.owningEvent.recurrenceId) {
+            element.find('.fc-content').prepend('<i class="fa fa-exclamation-circle"></i>&nbsp;');
+        } else if (event.owningEvent.recurrenceRule) {
+            element.find('.fc-content').prepend('<i class="fa fa-refresh"></i>&nbsp;');
+        }
+    }
 
     constructor(
         private _router: Router,
@@ -39,7 +49,8 @@ export class CalendarComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _scheduledEventStore: ScheduledEventStore,
         private _notificationsStore: NotificationsStore,
-        private _progressBarService: ProgressBarService
+        private _progressBarService: ProgressBarService,
+        private _confirmationService: ConfirmationService
     ) {
         this.calendarForm = this._fb.group({
 
@@ -111,7 +122,11 @@ export class CalendarComponent implements OnInit {
         console.log(event.calEvent);
         let owningEvent: ScheduledEvent = event.calEvent.owningEvent;
         this.selectedEvent = owningEvent;
-        this.dialogVisible = true;
+        if (this.selectedEvent.recurrenceRule || this.selectedEvent.recurrenceId) {
+            this.confirm(event);
+        } else {
+            this.dialogVisible = true;
+        }
     }
 
     saveEvent() {
@@ -145,33 +160,89 @@ export class CalendarComponent implements OnInit {
         }
         // new
         else {
-            let result = this._scheduledEventStore.addEvent(updatedEvent);
-            result.subscribe(
-                (response) => {
-                    let notification = new Notification({
-                        'title': 'Event added successfully!',
-                        'type': 'SUCCESS',
-                        'createdAt': moment()
+            if (updatedEvent.recurrenceId) {
+                let exceptionResult: Observable<{ exceptionEvent: ScheduledEvent, recurringEvent: ScheduledEvent }> = this._scheduledEventStore.createExceptionInRecurringEvent(updatedEvent);
+                exceptionResult.subscribe(
+                    (response: { exceptionEvent: ScheduledEvent, recurringEvent: ScheduledEvent }) => {
+                        debugger;
+                        let notification = new Notification({
+                            'title': `Occurrence for recurring event ${response.recurringEvent.name} created for ${response.exceptionEvent.eventStart.format('M d, yy')}`,
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        this.loadEvents();
+                        this._notificationsStore.addNotification(notification);
+                        // this.event = null;
+                    },
+                    (error) => {
+                        let errString = 'Unable to add event!';
+                        let notification = new Notification({
+                            'messages': `Unable to create occurrence for recurring event ${updatedEvent.name} created for ${updatedEvent.eventStart.format('M d, yy')}`,
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._progressBarService.hide();
+                        this._notificationsStore.addNotification(notification);
+                    },
+                    () => {
+                        this._progressBarService.hide();
                     });
-                    this.loadEvents();
-                    this._notificationsStore.addNotification(notification);
-                    // this.event = null;
-                },
-                (error) => {
-                    let errString = 'Unable to add event!';
-                    let notification = new Notification({
-                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                        'type': 'ERROR',
-                        'createdAt': moment()
+            } else {
+                let result = this._scheduledEventStore.addEvent(updatedEvent);
+                result.subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            'title': 'Event added successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        this.loadEvents();
+                        this._notificationsStore.addNotification(notification);
+                        // this.event = null;
+                    },
+                    (error) => {
+                        let errString = 'Unable to add event!';
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._progressBarService.hide();
+                        this._notificationsStore.addNotification(notification);
+                    },
+                    () => {
+                        this._progressBarService.hide();
                     });
-                    this._progressBarService.hide();
-                    this._notificationsStore.addNotification(notification);
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
+            }
+
         }
 
         this.dialogVisible = false;
+    }
+    confirm(event) {
+        this._confirmationService.confirm({
+            message: 'Do you want to edit only this event occurrence or the whole series?',
+            accept: () => {
+                if (this.selectedEvent.recurrenceRule) {
+                    let seriesSelectedEvent: ScheduledEvent = this.selectedEvent;
+                    this.selectedEvent = new ScheduledEvent(_.extend(seriesSelectedEvent.toJS(), {
+                        id: (!seriesSelectedEvent.recurrenceRule && seriesSelectedEvent.recurrenceId) ? seriesSelectedEvent.id : 0,
+                        eventStart: event.calEvent.start,
+                        eventEnd: event.calEvent.end,
+                        recurrenceId: seriesSelectedEvent.id,
+                        recurrenceRule: null,
+                        recurrenceException: []
+                    }));
+                }
+                this.dialogVisible = true;
+            },
+            reject: () => {
+                if (!this.selectedEvent.recurrenceRule && this.selectedEvent.recurrenceId) {
+                    let eventId = this.selectedEvent.recurrenceId;
+                    this.selectedEvent = this._scheduledEventStore.findEventById(eventId);
+                }
+                this.dialogVisible = true;
+            }
+        });
     }
 }
