@@ -146,7 +146,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
             #endregion
 
-            bool exists = _context.DoctorLocationSchedules.Any(d => d.DoctorID == doctorlocationscheduleBO.doctor.ID && d.LocationID == doctorlocationscheduleBO.location.ID);
+            bool exists = _context.DoctorLocationSchedules.Any(d => d.DoctorID == doctorlocationscheduleBO.doctor.ID && d.LocationID == doctorlocationscheduleBO.location.ID && d.ScheduleID== doctorlocationscheduleBO.schedule.ID && (d.IsDeleted==false || d.IsDeleted==null));
             if (doctorlocationscheduleBO.ID > 0 && exists)
             {
                 //For Update Record
@@ -177,7 +177,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 else
                 {
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Location for doctor already exists.", ErrorLevel = ErrorLevel.Error };
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Schedule already exists for doctor's location.", ErrorLevel = ErrorLevel.Error };
                 }
             }
             _context.SaveChanges();
