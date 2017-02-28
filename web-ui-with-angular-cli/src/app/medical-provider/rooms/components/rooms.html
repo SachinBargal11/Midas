@@ -21,7 +21,7 @@
     <p-column field="roomTest.name" header="Tests Provided" [sortable]="true"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
         <template let-room="rowData" pTemplate="body">
-            <a routerLink="edit/{{room.id}}"><i class="glyphicon glyphicon-edit"></i></a>
+            <a routerLink="{{room.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
         </template>
     </p-column>
 </p-dataTable>

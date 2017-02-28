@@ -1,20 +1,27 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ValidateActiveSession } from '../../commons/guards/validate-active-session';
+import { RoomsShellComponent } from './components/rooms-shell';
 import { RoomsComponent } from './components/rooms';
 import { AddRoomComponent } from './components/add-room';
 import { EditRoomComponent } from './components/edit-room';
+import { RoomsScheduleComponent } from './components/rooms-schedule';
 import { ShellComponent } from '../../commons/shell-component';
 
 export const RoomsRoutes: Routes = [
     {
-        path: 'rooms',
-        component: RoomsComponent,
-        canActivate: [ValidateActiveSession],
-        data: {
-            breadcrumb: 'Rooms'
-        }
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'rooms'
     },
+    // {
+    //     path: 'rooms',
+    //     component: RoomsComponent,
+    //     canActivate: [ValidateActiveSession],
+    //     data: {
+    //         breadcrumb: 'Rooms'
+    //     }
+    // },
     {
         path: 'rooms',
         component: ShellComponent,
@@ -24,6 +31,13 @@ export const RoomsRoutes: Routes = [
         },
         children: [
             {
+                path: '',
+                component: RoomsComponent,
+                data: {
+                    breadcrumb: 'root'
+                }
+            },
+            {
                 path: 'add',
                 component: AddRoomComponent,
                 canActivate: [ValidateActiveSession],
@@ -32,12 +46,34 @@ export const RoomsRoutes: Routes = [
                 }
             },
             {
-                path: 'edit/:id',
-                component: EditRoomComponent,
-                canActivate: [ValidateActiveSession],
+                path: ':roomId',
+                component: RoomsShellComponent,
                 data: {
-                    breadcrumb: 'Edit Room'
-                }
+                    breadcrumb: 'root'
+                },
+                children: [
+                    {
+                        path: '',
+                        redirectTo: 'basic',
+                        pathMatch: 'full'
+                    },
+                    {
+                        path: 'basic',
+                        component: EditRoomComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Basic'
+                        }
+                    },
+                    {
+                        path: 'schedule',
+                        component: RoomsScheduleComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Rooms Schedule'
+                        }
+                    }
+                ]
             }
         ]
     }
