@@ -1,10 +1,10 @@
 <form [formGroup]="scheduledEventEditorForm">
     <div class="row">
-        <div class="col-md-4"><label class="form-label">Title
+        <div class="col-md-2"><label class="form-label">Title
             <span class="color-red">*</span>
             </label>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-6">
             <div class="form-group" [class.error]="scheduledEventEditorFormControls.name.touched && !scheduledEventEditorFormControls.name.valid">
                 <input formControlName="name" [ngModel]="selectedEvent.name" class="form-control" [class.error]="!scheduledEventEditorFormControls.name.valid"
                 />
@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4"><label class="form-label">Start<span class="color-red">*</span></label></div>
+        <div class="col-md-2"><label class="form-label">Start<span class="color-red">*</span></label></div>
         <div class="col-md-4">
             <div class="form-group" [class.error]="scheduledEventEditorFormControls.eventStartDate.touched && !scheduledEventEditorFormControls.eventStartDate.valid">
                 <p-calendar [class.error]="!scheduledEventEditorFormControls.eventStartDate.valid" formControlName="eventStartDate" [(ngModel)]="eventStartAsDate"
@@ -44,7 +44,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4"><label class="form-label">End<span class="color-red">*</span></label></div>
+        <div class="col-md-2"><label class="form-label">End<span class="color-red">*</span></label></div>
         <div class="col-md-4">
             <div class="form-group" [class.error]="scheduledEventEditorFormControls.eventEndDate.touched && !scheduledEventEditorFormControls.eventEndDate.valid">
                 <p-calendar [class.error]="!scheduledEventEditorFormControls.eventEndDate.valid" formControlName="eventEndDate" [(ngModel)]="eventEndAsDate"
@@ -70,96 +70,147 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4"><label class="form-label">All Day</label></div>
-        <div class="col-md-8">
+        <div class="col-md-2"><label class="form-label">All Day</label></div>
+        <div class="col-md-10">
             <div class="form-group">
                 <p-checkbox binary="checkbox" formControlName="isAllDay" [(ngModel)]="isAllDay"></p-checkbox>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4"><label class="form-label">Repeat</label></div>
-        <div class="col-md-8">
+        <div class="col-md-2"><label class="form-label">Repeat</label></div>
+        <div class="col-md-4">
             <div class="form-group">
                 <select formControlName="repeatType" [(ngModel)]="repeatType" class="select2-arrow form-control">
-                    <option value="0">Never</option>
-                    <option value="1">Daily</option>
+                    <option value="7">Never</option>
+                    <option value="3">Daily</option>
                     <option value="2">Weekly</option>
-                    <option value="3">Monthly</option>
-                    <option value="4">Yearly</option>
+                    <option value="1">Monthly</option>
+                    <option value="0">Yearly</option>
                 </select>
             </div>
         </div>
     </div>
-    <div class="row" *ngIf="repeatType != 0">
-        <div class="col-md-4"><label class="form-label">Repeat every</label></div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <input type="number" min="1" formControlName="repeatEvery" [(ngModel)]="repeatEvery" class="form-control">
+    <div class="" formGroupName="dailyInfo" *ngIf="repeatType == 3">
+        <div class="row">
+            <div class="col-md-2"><label class="form-label">Repeat every</label></div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input type="number" min="1" formControlName="repeatEvery" [(ngModel)]="daily_repeatEvery" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label>day(s)</label>
             </div>
         </div>
-        <div class="col-md-2">
-            <span *ngIf="repeatType == 1"> day(s)</span>
-            <span *ngIf="repeatType == 2"> week(s)</span>
-            <span *ngIf="repeatType == 3"> month(s)</span>
-            <span *ngIf="repeatType == 4"> year(s)</span>
-        </div>
-    </div>
-    <div class="row" *ngIf="repeatType != 0">
-        <div class="col-md-4"><label class="form-label">End</label></div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <p-radioButton [(ngModel)]="end" formControlName="end" name="end" value="0" label="Never"></p-radioButton>
-                <p-radioButton [(ngModel)]="end" formControlName="end" name="end" value="1" label="After"></p-radioButton>
-
-                <p-radioButton [(ngModel)]="end" formControlName="end" name="end" value="2" label="On"></p-radioButton>
-
+        <div class="row">
+            <div class="col-md-2"><label class="form-label">End</label></div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <p-radioButton [(ngModel)]="daily_end" formControlName="end" name="end" value="0" label="Never"></p-radioButton>
+                    <p-radioButton [(ngModel)]="daily_end" formControlName="end" name="end" value="1" label="After"></p-radioButton>
+                    <p-radioButton [(ngModel)]="daily_end" formControlName="end" name="end" value="2" label="On"></p-radioButton>
+                </div>
             </div>
-        </div>
-        <div class="col-md-2">
-            <input *ngIf="end == 1" min="1" type="number" formControlName="recur_count" [(ngModel)]="recur_count" class="form-control">
-            <span *ngIf="end == 1"> occurrence(s)</span>
-            <p-calendar *ngIf="end == 2" formControlName="recur_until" [(ngModel)]="recur_until" dateFormat="M d, yy" [monthNavigator]="true"
-                [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
-                </p-calendar>
-        </div>
-    </div>
-    <div class="row" *ngIf="repeatType == 2">
-        <div class="col-md-4"><label class="form-label">Repeat On</label></div>
-        <div class="col-md-8">
-            <div class="form-group">
-                <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="repeatOnWeekDay" value="0" label="Su"></p-checkbox>
-                <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="repeatOnWeekDay" value="1" label="Mo"></p-checkbox>
-                <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="repeatOnWeekDay" value="2" label="Tu"></p-checkbox>
-                <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="repeatOnWeekDay" value="3" label="We"></p-checkbox>
-                <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="repeatOnWeekDay" value="4" label="Th"></p-checkbox>
-                <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="repeatOnWeekDay" value="5" label="Fr"></p-checkbox>
-                <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="repeatOnWeekDay" value="6" label="Sa"></p-checkbox>
+            <div class="col-md-4">
+                <input *ngIf="daily_end == 1" min="1" type="number" formControlName="recur_count" [(ngModel)]="daily_recur_count" class="form-control">
+                <span *ngIf="daily_end == 1"> occurrence(s)</span>
+                <p-calendar *ngIf="daily_end == 2" formControlName="recur_until" [(ngModel)]="daily_recur_until" dateFormat="M d, yy" [monthNavigator]="true"
+                    [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
+                    </p-calendar>
             </div>
         </div>
     </div>
-    <div class="row" *ngIf="repeatType == 3">
-        <div class="col-md-4"><label class="form-label">Repeat On</label></div>
-        <div class="col-md-4">
-            <div class="form-group">
-                <p-radioButton [(ngModel)]="recur_monthday_radio" formControlName="recur_monthday_radio" name="recur_monthday_radio" value="0"
-                    label="Day"></p-radioButton>
-                    <p-radioButton [(ngModel)]="recur_monthday_radio" formControlName="recur_monthday_radio" name="recur_monthday_radio" value="1"
-                        label=""></p-radioButton>
+    <div class="" formGroupName="weeklyInfo" *ngIf="repeatType == 2">
+        <div class="row">
+            <div class="col-md-2"><label class="form-label">Repeat every</label></div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input type="number" min="1" formControlName="repeatEvery" [(ngModel)]="weekly_repeatEvery" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label>week(s)</label>
             </div>
         </div>
-        <div class="col-md-4">
-            <input *ngIf="recur_monthday_radio == 0" type="number" formControlName="recur_monthday" [(ngModel)]="recur_monthday" class="form-control"
-                max="31" min="1" />
-            <select [disabled]="recur_monthday_radio != 1" formControlName="recur_weekday_offset" [(ngModel)]="recur_weekday_offset"
-                class="select2-arrow form-control">
-                <option value="1">first</option>
-                <option value="2">second</option>
-                <option value="3">third</option>
-                <option value="4">fourth</option>
-                <option value="-1">last</option>
-                </select>
-                <select [disabled]="recur_monthday_radio != 1" formControlName="recur_weekday" [(ngModel)]="recur_weekday" class="select2-arrow form-control">
+        <div class="row">
+            <div class="col-md-2"><label class="form-label">Repeat On</label></div>
+            <div class="col-md-10">
+                <div class="form-group">
+                    <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="weekly_repeatOnWeekDay" value="0" label="Su"></p-checkbox>
+                    <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="weekly_repeatOnWeekDay" value="1" label="Mo"></p-checkbox>
+                    <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="weekly_repeatOnWeekDay" value="2" label="Tu"></p-checkbox>
+                    <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="weekly_repeatOnWeekDay" value="3" label="We"></p-checkbox>
+                    <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="weekly_repeatOnWeekDay" value="4" label="Th"></p-checkbox>
+                    <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="weekly_repeatOnWeekDay" value="5" label="Fr"></p-checkbox>
+                    <p-checkbox name="repeatOnWeekDay" formControlName="repeatOnWeekDay" [(ngModel)]="weekly_repeatOnWeekDay" value="6" label="Sa"></p-checkbox>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><label class="form-label">End</label></div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <p-radioButton [(ngModel)]="weekly_end" formControlName="end" name="end" value="0" label="Never"></p-radioButton>
+                    <p-radioButton [(ngModel)]="weekly_end" formControlName="end" name="end" value="1" label="After"></p-radioButton>
+                    <p-radioButton [(ngModel)]="weekly_end" formControlName="end" name="end" value="2" label="On"></p-radioButton>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <input *ngIf="weekly_end == 1" min="1" type="number" formControlName="recur_count" [(ngModel)]="weekly_recur_count" class="form-control">
+                <span *ngIf="weekly_end == 1"> occurrence(s)</span>
+                <p-calendar *ngIf="weekly_end == 2" formControlName="recur_until" [(ngModel)]="weekly_recur_until" dateFormat="M d, yy" [monthNavigator]="true"
+                    [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
+                    </p-calendar>
+            </div>
+        </div>
+    </div>
+    <div class="" formGroupName="monthlyInfo" *ngIf="repeatType == 1">
+        <div class="row">
+            <div class="col-md-2"><label class="form-label">Repeat every</label></div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input type="number" min="1" formControlName="repeatEvery" [(ngModel)]="monthly_repeatEvery" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label>month(s)</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><label class="form-label">Repeat On</label></div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <p-radioButton [(ngModel)]="monthly_recur_monthday_radio" formControlName="recur_monthday_radio" name="recur_monthday_radio"
+                        value="0" label="Day"></p-radioButton>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <input [ngClass]="{disabled : monthly_recur_monthday_radio != 0}" type="number" formControlName="recur_monthday" [(ngModel)]="monthly_recur_monthday"
+                    class="form-control" max="31" min="1" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <p-radioButton [(ngModel)]="monthly_recur_monthday_radio" formControlName="recur_monthday_radio" name="recur_monthday_radio"
+                        value="1" label=""></p-radioButton>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <select [ngClass]="{disabled : monthly_recur_monthday_radio != 1}" formControlName="recur_weekday_offset" [(ngModel)]="monthly_recur_weekday_offset"
+                    class="select2-arrow form-control">
+                    <option value="1">first</option>
+                    <option value="2">second</option>
+                    <option value="3">third</option>
+                    <option value="4">fourth</option>
+                    <option value="-1">last</option>
+                    </select>
+            </div>
+            <div class="col-md-4">
+                <select [ngClass]="{disabled : monthly_recur_monthday_radio != 1}" formControlName="recur_weekday" [(ngModel)]="monthly_recur_weekday"
+                    class="select2-arrow form-control">
                     <!--<option value="0,1,2,3,4,5,6">day</option>
                     <option value="1,2,3,4,5">weekday</option>
                     <option value="0,6">weekend day</option>-->
@@ -170,21 +221,56 @@
                     <option value="4">thurshday</option>
                     <option value="5">friday</option>
                     <option value="6">saturday</option>
-                </select>
-        </div>
-    </div>
-    <div class="row" *ngIf="repeatType == 4">
-        <div class="col-md-4"><label class="form-label">Repeat On</label></div>
-        <div class="col-md-4">
-            <div class="form-group">
-                <p-radioButton [(ngModel)]="recur_year_radio" formControlName="recur_year_radio" name="recur_year_radio" value="0" label=""></p-radioButton>
-                <p-radioButton [(ngModel)]="recur_year_radio" formControlName="recur_year_radio" name="recur_year_radio" value="1" label=""></p-radioButton>
+                    </select>
             </div>
         </div>
-        <div class="col-md-4">
-            <input [disabled]="recur_year_radio == 0" type="number" formControlName="recur_monthday" [(ngModel)]="recur_monthday" class="form-control"
-                max="31" min="1" />
-            <select [disabled]="recur_year_radio == 0" formControlName="recur_month" [(ngModel)]="recur_month_1" class="select2-arrow form-control">
+        <div class="row">
+            <div class="col-md-2"><label class="form-label">End</label></div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <p-radioButton [(ngModel)]="monthly_end" formControlName="end" name="end" value="0" label="Never"></p-radioButton>
+                    <p-radioButton [(ngModel)]="monthly_end" formControlName="end" name="end" value="1" label="After"></p-radioButton>
+                    <p-radioButton [(ngModel)]="monthly_end" formControlName="end" name="end" value="2" label="On"></p-radioButton>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <input *ngIf="monthly_end == 1" min="1" type="number" formControlName="recur_count" [(ngModel)]="monthly_recur_count" class="form-control">
+                <span *ngIf="monthly_end == 1"> occurrence(s)</span>
+                <p-calendar *ngIf="monthly_end == 2" formControlName="recur_until" [(ngModel)]="monthly_recur_until" dateFormat="M d, yy"
+                    [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown" [showIcon]="true"
+                    icon="font-icon font-icon-calend">
+                    </p-calendar>
+            </div>
+        </div>
+    </div>
+    <div class="" formGroupName="yearlyInfo" *ngIf="repeatType == 0">
+        <div class="row">
+            <div class="col-md-2"><label class="form-label">Repeat every</label></div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <input type="number" min="1" formControlName="repeatEvery" [(ngModel)]="yearly_repeatEvery" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label>year(s)</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><label class="form-label">Repeat On</label></div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <p-radioButton [(ngModel)]="yearly_recur_year_radio" formControlName="recur_year_radio" name="recur_year_radio" value="0"
+                        label=""></p-radioButton>
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <input [ngClass]="{disabled : yearly_recur_year_radio == 0}" type="number" formControlName="recur_monthday" [(ngModel)]="yearly_recur_monthday"
+                    class="form-control" max="31" min="1" />
+            </div>
+            <div class="col-md-4">
+                <select [ngClass]="{disabled : yearly_recur_year_radio == 0}" formControlName="recur_month" [(ngModel)]="yearly_recur_month_1"
+                    class="select2-arrow form-control">
                     <option value="1">January</option>
                     <option value="2">February</option>
                     <option value="3">March</option>
@@ -197,16 +283,30 @@
                     <option value="10">October</option>
                     <option value="11">November</option>
                     <option value="12">December</option>
-                </select>
-
-            <select [disabled]="recur_year_radio == 1" formControlName="recur_weekday_offset" [(ngModel)]="recur_weekday_offset" class="select2-arrow form-control">
-                <option value="1">first</option>
-                <option value="2">second</option>
-                <option value="3">third</option>
-                <option value="4">fourth</option>
-                <option value="-1">last</option>
-                </select>
-            <select [disabled]="recur_year_radio == 1" formControlName="recur_weekday" [(ngModel)]="recur_weekday" class="select2-arrow form-control">
+                    </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <p-radioButton [(ngModel)]="yearly_recur_year_radio" formControlName="recur_year_radio" name="recur_year_radio" value="1"
+                        label=""></p-radioButton>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <select [ngClass]="{disabled : yearly_recur_year_radio == 1}" formControlName="recur_weekday_offset" [(ngModel)]="yearly_recur_weekday_offset"
+                    class="select2-arrow form-control">
+                    <option value="1">first</option>
+                    <option value="2">second</option>
+                    <option value="3">third</option>
+                    <option value="4">fourth</option>
+                    <option value="-1">last</option>
+                    </select>
+            </div>
+            <div class="col-md-2">
+                <select [ngClass]="{disabled : yearly_recur_year_radio == 1}" formControlName="recur_weekday" [(ngModel)]="yearly_recur_weekday"
+                    class="select2-arrow form-control">
                     <!--<option value="SU,MO,TU,WE,TH,FR,SA">day</option>
                     <option value="MO,TU,WE,TH,FR">weekday</option>
                     <option value="SU,SA">weekend day</option>-->
@@ -217,8 +317,14 @@
                     <option value="4">thurshday</option>
                     <option value="5">friday</option>
                     <option value="6">saturday</option>
-                </select>
-            <select [disabled]="recur_year_radio == 1" formControlName="recur_month" [(ngModel)]="recur_month_2" class="select2-arrow form-control">
+                    </select>
+            </div>
+            <div class="col-md-1">
+                <span>of</span>
+            </div>
+            <div class="col-md-3">
+                <select [ngClass]="{disabled : yearly_recur_year_radio == 1}" formControlName="recur_month" [(ngModel)]="yearly_recur_month_2"
+                    class="select2-arrow form-control">
                     <option value="1">January</option>
                     <option value="2">February</option>
                     <option value="3">March</option>
@@ -231,7 +337,27 @@
                     <option value="10">October</option>
                     <option value="11">November</option>
                     <option value="12">December</option>
-                </select>
+                    </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"><label class="form-label">End</label></div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <p-radioButton [(ngModel)]="yearly_end" formControlName="end" name="end" value="0" label="Never"></p-radioButton>
+                    <p-radioButton [(ngModel)]="yearly_end" formControlName="end" name="end" value="1" label="After"></p-radioButton>
+                    <p-radioButton [(ngModel)]="yearly_end" formControlName="end" name="end" value="2" label="On"></p-radioButton>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <input *ngIf="yearly_end == 1" min="1" type="number" formControlName="recur_count" [(ngModel)]="yearly_recur_count" class="form-control">
+                <span *ngIf="yearly_end == 1"> occurrence(s)</span>
+                <p-calendar *ngIf="yearly_end == 2" formControlName="recur_until" [(ngModel)]="yearly_recur_until" dateFormat="M d, yy" [monthNavigator]="true"
+                    [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown" [showIcon]="true" icon="font-icon font-icon-calend">
+                    </p-calendar>
+            </div>
         </div>
     </div>
+
+
 </form>

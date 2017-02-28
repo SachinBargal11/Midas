@@ -17,19 +17,44 @@ export class ScheduledEventEditorComponent implements OnChanges {
     eventStartAsDate: Date;
     eventEndAsDate: Date;
     isAllDay: boolean;
-    repeatType: string = '0';
-    repeatEvery: number = 1;
-    end: string = '0';
-    repeatOnWeekDay: string[] = [];
-    recur_count: number = 0;
-    recur_until: Date;
-    recur_month_1: number = 1;
-    recur_month_2: number = 1;
-    recur_weekday: number = 1;
-    recur_monthday_radio: string = '0';
-    recur_monthday: number = 0;
-    recur_weekday_offset: number = 1;
-    recur_year_radio: string = '0';
+    repeatType: RRule.Frequency = 7;
+
+    // Daily 
+    daily_end: string = '0';
+    daily_recur_until: Date;
+    daily_recur_count: number = 0;
+    daily_repeatEvery: number = 1;
+
+    // weekly
+    weekly_end: string = '0';
+    weekly_recur_until: Date;
+    weekly_recur_count: number = 0;
+    weekly_repeatEvery: number = 1;
+    weekly_repeatOnWeekDay: any = [];
+
+    // monthly
+    monthly_end: string = '0';
+    monthly_recur_until: Date;
+    monthly_recur_count: number = 0;
+    monthly_repeatEvery: number = 1;
+    monthly_recur_monthday_radio: string = '0';
+    monthly_recur_weekday_offset: number = 1;
+    monthly_recur_monthday: number = 0;
+    monthly_recur_weekday: number = 1;
+
+    // yearly
+    yearly_end: string = '0';
+    yearly_recur_until: Date;
+    yearly_recur_count: number = 0;
+    yearly_repeatEvery: number = 1;
+    yearly_recur_year_radio: string = '0';
+    yearly_recur_month_1: number = 1;
+    yearly_recur_month_2: number = 1;
+    yearly_recur_monthday: number = 0;
+    yearly_recur_weekday_offset: number = 1;
+    yearly_recur_weekday: number = 1;
+
+
     scheduledEventEditorForm: FormGroup;
     scheduledEventEditorFormControls;
     @Output() isValid = new EventEmitter();
@@ -40,7 +65,84 @@ export class ScheduledEventEditorComponent implements OnChanges {
             this.eventStartAsDate = this._selectedEvent.eventStartAsDate;
             this.eventEndAsDate = this._selectedEvent.eventEndAsDate;
             this.isAllDay = this._selectedEvent.isAllDay;
-            this.recur_until = this._selectedEvent.eventStartAsDate;
+
+            if (this._selectedEvent.recurrenceRule) {
+                let options = this._selectedEvent.recurrenceRule.options;
+                debugger;
+                switch (options.freq) {
+                    case RRule.DAILY:
+                        this.repeatType = RRule.DAILY;
+                        this.daily_repeatEvery = options.interval;
+                        if (options.count > 1) {
+                            this.daily_end = '1';
+                            this.daily_recur_count = options.count;
+                        } else if (options.until) {
+                            this.daily_end = '2';
+                            this.daily_recur_until = options.until;
+                        }
+                        break;
+                    case RRule.WEEKLY:
+                        this.repeatType = RRule.WEEKLY;
+                        this.monthly_repeatEvery = options.interval;
+                        if (options.count > 1) {
+                            this.weekly_end = '1';
+                            this.weekly_recur_count = options.count;
+                        } else if (options.until) {
+                            this.weekly_end = '2';
+                            this.weekly_recur_until = options.until;
+                        }
+                        if (options.byweekday) {
+                            this.weekly_repeatOnWeekDay = options.byweekday;
+                        }
+                        break;
+                    case RRule.MONTHLY:
+                        this.repeatType = RRule.MONTHLY;
+                        this.monthly_repeatEvery = options.interval;
+
+                        if (options.bymonthday) {
+                            this.monthly_recur_monthday_radio = '0';
+                            // this.monthly_recur_monthday = options.bymonthday;
+                        }
+                        if (options.byweekday || options.bysetpos) {
+                            this.monthly_recur_monthday_radio = '1';
+                            // this.monthly_recur_weekday = options.byweekday;
+                            // this.monthly_recur_weekday_offset = options.bysetpos;
+                        }
+                        if (options.count > 1) {
+                            this.monthly_end = '1';
+                            this.monthly_recur_count = options.count;
+                        } else if (options.until) {
+                            this.monthly_end = '2';
+                            this.monthly_recur_until = options.until;
+                        }
+                        break;
+                    case RRule.YEARLY:
+                        this.repeatType = RRule.YEARLY;
+                        this.yearly_repeatEvery = options.interval;
+                        if (options.bymonth || options.bymonthday) {
+                            this.yearly_recur_year_radio = '0';
+                            // this.yearly_recur_month_1 = options.bymonth;
+                            // this.yearly_recur_monthday = options.bymonthday;
+                        }
+                        if (options.byweekday || options.bysetpos || options.bymonthday) {
+                            this.yearly_recur_year_radio = '1';
+                            // this.yearly_recur_month_2 = options.bymonthday;
+                            // this.yearly_recur_weekday_offset = options.byweekday;
+                            // this.yearly_recur_weekday = options.bysetpos;
+                        }
+                        if (options.count > 1) {
+                            this.yearly_end = '1';
+                            this.yearly_recur_count = options.count;
+                        } else if (options.until) {
+                            this.yearly_end = '2';
+                            this.yearly_recur_until = options.until;
+                        }
+                        break;
+                }
+            }
+
+
+            // this.recur_until = this._selectedEvent.eventStartAsDate;
         } else {
             this._selectedEvent = null;
             this.eventStartAsDate = null;
@@ -59,22 +161,45 @@ export class ScheduledEventEditorComponent implements OnChanges {
         this.scheduledEventEditorForm = this._fb.group({
             name: ['', Validators.required],
             eventStartDate: ['', Validators.required],
-            eventStartTime: ['', Validators.required],
+            eventStartTime: [''],
             eventEndDate: ['', Validators.required],
-            eventEndTime: ['', Validators.required],
+            eventEndTime: [''],
             isAllDay: [],
             repeatType: [],
-            repeatEvery: [],
-            end: [],
-            recur_count: [],
-            recur_until: [],
-            repeatOnWeekDay: [],
-            recur_monthday_radio: [],
-            recur_monthday: [],
-            recur_weekday_offset: [],
-            recur_weekday: [],
-            recur_year_radio: [],
-            recur_month: []
+            dailyInfo: this._fb.group({
+                end: [],
+                repeatEvery: [],
+                recur_count: [],
+                recur_until: []
+            }),
+            weeklyInfo: this._fb.group({
+                end: [],
+                repeatEvery: [],
+                recur_count: [],
+                recur_until: [],
+                repeatOnWeekDay: []
+            }),
+            monthlyInfo: this._fb.group({
+                end: [],
+                repeatEvery: [],
+                recur_count: [],
+                recur_until: [],
+                recur_monthday_radio: [],
+                recur_monthday: [],
+                recur_weekday: [],
+                recur_weekday_offset: []
+            }),
+            yearlyInfo: this._fb.group({
+                end: [],
+                repeatEvery: [],
+                recur_count: [],
+                recur_until: [],
+                recur_year_radio: [],
+                recur_month: [],
+                recur_weekday_offset: [],
+                recur_monthday: [],
+                recur_weekday: []
+            })
         });
         this.scheduledEventEditorFormControls = this.scheduledEventEditorForm.controls;
         this.scheduledEventEditorForm.valueChanges.subscribe(() => {
@@ -96,102 +221,102 @@ export class ScheduledEventEditorComponent implements OnChanges {
         let scheduledEventEditorFormValues = this.scheduledEventEditorForm.value;
         let recurrenceRule: RRule;
         let recurrenceString: string = null;
-        switch (this.repeatType) {
-            case '1':
+        switch (parseInt(scheduledEventEditorFormValues.repeatType, 10)) {
+            case RRule.DAILY:
                 let dailyRecurrenceCofig: any = {
                     freq: RRule.DAILY
                 };
-                if (scheduledEventEditorFormValues.repeatEvery > 1) {
-                    dailyRecurrenceCofig.interval = scheduledEventEditorFormValues.repeatEvery;
+                if (scheduledEventEditorFormValues.dailyInfo.repeatEvery > 1) {
+                    dailyRecurrenceCofig.interval = scheduledEventEditorFormValues.dailyInfo.repeatEvery;
                 }
-                switch (scheduledEventEditorFormValues.end) {
+                switch (scheduledEventEditorFormValues.dailyInfo.end) {
                     case '0':
                         break;
                     case '1':
-                        dailyRecurrenceCofig.count = scheduledEventEditorFormValues.recur_count;
+                        dailyRecurrenceCofig.count = scheduledEventEditorFormValues.dailyInfo.recur_count;
                         break;
                     case '2':
-                        dailyRecurrenceCofig.until = scheduledEventEditorFormValues.recur_until;
+                        dailyRecurrenceCofig.until = scheduledEventEditorFormValues.dailyInfo.recur_until;
                         break;
                 }
                 recurrenceRule = new RRule(dailyRecurrenceCofig);
                 break;
-            case '2':
+            case RRule.WEEKLY:
                 let weeklyRecurrenceCofig: any = {
                     freq: RRule.WEEKLY
                 };
-                if (scheduledEventEditorFormValues.repeatEvery > 1) {
-                    weeklyRecurrenceCofig.interval = scheduledEventEditorFormValues.repeatEvery;
+                if (scheduledEventEditorFormValues.weeklyInfo.repeatEvery > 1) {
+                    weeklyRecurrenceCofig.interval = scheduledEventEditorFormValues.weeklyInfo.repeatEvery;
                 }
-                switch (scheduledEventEditorFormValues.end) {
+                switch (scheduledEventEditorFormValues.weeklyInfo.end) {
                     case '0':
                         break;
                     case '1':
-                        weeklyRecurrenceCofig.count = scheduledEventEditorFormValues.recur_count;
+                        weeklyRecurrenceCofig.count = scheduledEventEditorFormValues.weeklyInfo.recur_count;
                         break;
                     case '2':
-                        weeklyRecurrenceCofig.until = scheduledEventEditorFormValues.recur_until;
+                        weeklyRecurrenceCofig.until = scheduledEventEditorFormValues.weeklyInfo.recur_until;
                         break;
                 }
-                if (scheduledEventEditorFormValues.repeatOnWeekDay.length > 0) {
-                    weeklyRecurrenceCofig.byweekday = scheduledEventEditorFormValues.repeatOnWeekDay;
+                if (scheduledEventEditorFormValues.weeklyInfo.repeatOnWeekDay.length > 0) {
+                    weeklyRecurrenceCofig.byweekday = scheduledEventEditorFormValues.weeklyInfo.repeatOnWeekDay;
                 }
                 recurrenceRule = new RRule(weeklyRecurrenceCofig);
                 break;
-            case '3':
+            case RRule.MONTHLY:
                 let monthlyRecurrenceCofig: any = {
                     freq: RRule.MONTHLY
                 };
-                if (scheduledEventEditorFormValues.repeatEvery > 1) {
-                    monthlyRecurrenceCofig.interval = scheduledEventEditorFormValues.repeatEvery;
+                if (scheduledEventEditorFormValues.monthlyInfo.repeatEvery > 1) {
+                    monthlyRecurrenceCofig.interval = scheduledEventEditorFormValues.monthlyInfo.repeatEvery;
                 }
-                switch (scheduledEventEditorFormValues.end) {
+                switch (scheduledEventEditorFormValues.monthlyInfo.end) {
                     case '0':
                         break;
                     case '1':
-                        monthlyRecurrenceCofig.count = scheduledEventEditorFormValues.recur_count;
+                        monthlyRecurrenceCofig.count = scheduledEventEditorFormValues.monthlyInfo.recur_count;
                         break;
                     case '2':
-                        monthlyRecurrenceCofig.until = scheduledEventEditorFormValues.recur_until;
+                        monthlyRecurrenceCofig.until = scheduledEventEditorFormValues.monthlyInfo.recur_until;
                         break;
                 }
-                switch (scheduledEventEditorFormValues.recur_monthday_radio) {
+                switch (scheduledEventEditorFormValues.monthlyInfo.recur_monthday_radio) {
                     case '0':
-                        monthlyRecurrenceCofig.bymonthday = scheduledEventEditorFormValues.recur_monthday;
+                        monthlyRecurrenceCofig.bymonthday = scheduledEventEditorFormValues.monthlyInfo.recur_monthday;
                         break;
                     case '1':
-                        monthlyRecurrenceCofig.byweekday = scheduledEventEditorFormValues.recur_weekday;
-                        monthlyRecurrenceCofig.bysetpos = scheduledEventEditorFormValues.recur_weekday_offset;
+                        monthlyRecurrenceCofig.byweekday = scheduledEventEditorFormValues.monthlyInfo.recur_weekday;
+                        monthlyRecurrenceCofig.bysetpos = scheduledEventEditorFormValues.monthlyInfo.recur_weekday_offset;
                         break;
                 }
                 recurrenceRule = new RRule(monthlyRecurrenceCofig);
                 break;
-            case '4':
+            case RRule.YEARLY:
                 let yearlyRecurrenceCofig: any = {
                     freq: RRule.YEARLY
                 };
-                if (scheduledEventEditorFormValues.repeatEvery > 1) {
-                    yearlyRecurrenceCofig.interval = scheduledEventEditorFormValues.repeatEvery;
+                if (scheduledEventEditorFormValues.yearlyInfo.repeatEvery > 1) {
+                    yearlyRecurrenceCofig.interval = scheduledEventEditorFormValues.yearlyInfo.repeatEvery;
                 }
-                switch (scheduledEventEditorFormValues.end) {
+                switch (scheduledEventEditorFormValues.yearlyInfo.end) {
                     case '0':
                         break;
                     case '1':
-                        yearlyRecurrenceCofig.count = scheduledEventEditorFormValues.recur_count;
+                        yearlyRecurrenceCofig.count = scheduledEventEditorFormValues.yearlyInfo.recur_count;
                         break;
                     case '2':
-                        yearlyRecurrenceCofig.until = scheduledEventEditorFormValues.recur_until;
+                        yearlyRecurrenceCofig.until = scheduledEventEditorFormValues.yearlyInfo.recur_until;
                         break;
                 }
-                switch (scheduledEventEditorFormValues.recur_year_radio) {
+                switch (scheduledEventEditorFormValues.yearlyInfo.recur_year_radio) {
                     case '0':
-                        yearlyRecurrenceCofig.bymonth = scheduledEventEditorFormValues.recur_month;
-                        yearlyRecurrenceCofig.bymonthday = scheduledEventEditorFormValues.recur_monthday;
+                        yearlyRecurrenceCofig.bymonth = scheduledEventEditorFormValues.yearlyInfo.recur_month;
+                        yearlyRecurrenceCofig.bymonthday = scheduledEventEditorFormValues.yearlyInfo.recur_monthday;
                         break;
                     case '1':
-                        yearlyRecurrenceCofig.byweekday = scheduledEventEditorFormValues.recur_weekday_offset;
-                        yearlyRecurrenceCofig.bysetpos = scheduledEventEditorFormValues.recur_weekday;
-                        yearlyRecurrenceCofig.bymonthday = scheduledEventEditorFormValues.recur_monthday;
+                        yearlyRecurrenceCofig.byweekday = scheduledEventEditorFormValues.yearlyInfo.recur_weekday_offset;
+                        yearlyRecurrenceCofig.bysetpos = scheduledEventEditorFormValues.yearlyInfo.recur_weekday;
+                        yearlyRecurrenceCofig.bymonthday = scheduledEventEditorFormValues.yearlyInfo.recur_monthday;
                         break;
                 }
                 recurrenceRule = new RRule(yearlyRecurrenceCofig);

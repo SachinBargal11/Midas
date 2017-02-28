@@ -11,8 +11,11 @@ const SpecialityDetailRecord = Record({
     initialvisitCount: 0,
     maxReval: 0,
     isInitialEvaluation: 0,
+    associatedSpecialty: 0,
     include1500: 0,
     allowmultipleVisit: 0,
+    InitialCode: '',
+    ReEvalCode: '',
     specialty: new Speciality({}),
     company: null,
     isDeleted: false,
@@ -30,8 +33,11 @@ export class SpecialityDetail extends SpecialityDetailRecord {
     initialvisitCount: number;
     maxReval: number;
     isInitialEvaluation: boolean;
+    associatedSpecialty: number;
     include1500: boolean;
     allowmultipleVisit: boolean;
+    InitialCode: string;
+    ReEvalCode: string;
     specialty: Speciality;
     company: Company;
     isDeleted: boolean;

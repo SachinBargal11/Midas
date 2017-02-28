@@ -28,6 +28,7 @@ import { UserType } from '../../../commons/models/enums/user-type';
 export class AddUserComponent implements OnInit {
     states: any[];
     cities: any[];
+    selectedRole: string[] = [];
     selectedCity = 0;
     options = {
         timeOut: 3000,
@@ -56,7 +57,10 @@ export class AddUserComponent implements OnInit {
         this.userform = this.fb.group({
             userInfo: this.fb.group({
                 firstname: ['', Validators.required],
-                lastname: ['', Validators.required]
+                lastname: ['', Validators.required],
+                role: ['', Validators.required]
+
+
             }),
             contact: this.fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
@@ -107,10 +111,17 @@ export class AddUserComponent implements OnInit {
 
     saveUser() {
         let userFormValues = this.userform.value;
+        let roles = [];
+        let input = this.selectedRole;
+        for (let i = 0; i < input.length; ++i) {
+            roles.push({ 'roleType': parseInt(input[i]) });
+        }
         let userDetail = new User({
             firstName: userFormValues.userInfo.firstname,
             lastName: userFormValues.userInfo.lastname,
             userType: UserType.STAFF,
+            // role: roles,
+            role1: roles,
             userName: userFormValues.contact.email,
             contact: new Contact({
                 cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,

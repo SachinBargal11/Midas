@@ -5,9 +5,9 @@ import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import * as moment from 'moment';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-import {SpecialityStore} from '../../stores/speciality-store';
+import { SpecialityStore } from '../../stores/speciality-store';
 import { SpecialityDetail } from '../../models/speciality-details';
-import {Speciality} from '../../models/speciality';
+import { Speciality } from '../../models/speciality';
 import { SpecialityDetailsStore } from '../../stores/speciality-details-store';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 
@@ -71,23 +71,23 @@ export class EditSpecialityDetailsComponent {
                     this._progressBarService.hide();
                 });
             let requestData = {
-            company: {
-                id: this._sessionStore.session.currentCompany.id
-            },
-            specialty: {
-                id: this.specialityId
-            }
-        };
+                company: {
+                    id: this._sessionStore.session.currentCompany.id
+                },
+                specialty: {
+                    id: this.specialityId
+                }
+            };
             let result = this._specialityDetailsStore.getSpecialityDetails(requestData);
             result.subscribe(
                 (specialityDetail: SpecialityDetail) => {
                     this.specialityDetail = specialityDetail;
-                    if(this.specialityDetail.id) {
-                    this.specialityDetailJS = this.specialityDetail.toJS();
-                    this.title = 'Edit Speciality Detail';
+                    if (this.specialityDetail.id) {
+                        this.specialityDetailJS = this.specialityDetail.toJS();
+                        this.title = 'Edit Speciality Detail';
                     } else {
-                    this.title = 'Add Speciality Detail';
-                    this.specialityDetailJS = new SpecialityDetail({});
+                        this.title = 'Add Speciality Detail';
+                        this.specialityDetailJS = new SpecialityDetail({});
                     }
                 },
                 (error) => {
@@ -98,30 +98,31 @@ export class EditSpecialityDetailsComponent {
                     this._progressBarService.hide();
                 });
         });
-            this.specialityDetailForm = this.fb.group({
-                initialCodes: [''],
-                reevalCodes: [''],
-                initialDays: [''],
-                ReevalDays: [''],
-                ReevalVisits: [''],
-                initialVisits: [''],
-                isInitialEvaluation: [''],
-                include1500: [''],
-                speciality: [{ value: '', disabled: true }],
-                allowMultipleVisit: ['']
-            });
-            // this.specialityDetailForm = this.fb.group({
-            //     initialCodes: [''],
-            //     ReevalDays: ['', Validators.required],
-            //     reevalvisitCount: ['', Validators.required],
-            //     initialDays: ['', Validators.required],
-            //     initialvisitCount: ['', Validators.required],
-            //     maxReval: ['', Validators.required],
-            //     isInitialEvaluation: [''],
-            //     include1500: [''],
-            //     speciality: [{ value: '', disabled: true }],
-            //     allowMultipleVisit: ['']
-            // });
+        this.specialityDetailForm = this.fb.group({
+            initialCodes: [''],
+            reevalCodes: [''],
+            initialDays: [''],
+            ReevalDays: [''],
+            ReevalVisits: [''],
+            initialVisits: [''],
+            isInitialEvaluation: [''],
+            include1500: [''],
+            maxReval: [''],
+            speciality: [{ value: '', disabled: true }],
+            allowMultipleVisit: ['']
+        });
+        // this.specialityDetailForm = this.fb.group({
+        //     initialCodes: [''],
+        //     ReevalDays: ['', Validators.required],
+        //     reevalvisitCount: ['', Validators.required],
+        //     initialDays: ['', Validators.required],
+        //     initialvisitCount: ['', Validators.required],
+        //     maxReval: ['', Validators.required],
+        //     isInitialEvaluation: [''],
+        //     include1500: [''],
+        //     speciality: [{ value: '', disabled: true }],
+        //     allowMultipleVisit: ['']
+        // });
 
         this.specialityDetailFormControls = this.specialityDetailForm.controls;
     }
@@ -134,83 +135,85 @@ export class EditSpecialityDetailsComponent {
         let specialityDetailFormValues = this.specialityDetailForm.value;
         let specialityDetail = new SpecialityDetail({
             // id: this.specialityDetail.id,
-            ReevalDays: parseInt(specialityDetailFormValues.ReevalDays),
-            reevalvisitCount: parseInt(specialityDetailFormValues.reevalvisitCount),
-            initialDays: parseInt(specialityDetailFormValues.initialDays),
-            initialvisitCount: parseInt(specialityDetailFormValues.initialvisitCount),
+            ReevalDays: specialityDetailFormValues.ReevalDays,
+            reevalvisitCount: specialityDetailFormValues.ReevalVisits,
+            initialDays: specialityDetailFormValues.initialDays,
+            initialvisitCount: specialityDetailFormValues.initialVisits,
+            maxReval: specialityDetailFormValues.maxReval,
             isInitialEvaluation: parseInt(specialityDetailFormValues.isInitialEvaluation) ? true : false,
+            associatedSpecialty: this.specialityId,
             include1500: parseInt(specialityDetailFormValues.include1500) ? true : false,
             allowmultipleVisit: parseInt(specialityDetailFormValues.allowMultipleVisit) ? true : false,
-            maxReval: parseInt(specialityDetailFormValues.maxReval),
+            InitialCode: specialityDetailFormValues.initialCodes,
+            ReEvalCode: specialityDetailFormValues.reevalCodes,
             specialty: new Speciality({
-                // id: parseInt(specialityDetailFormValues.associatedSpeciality)
                 id: this.specialityId
             })
-           
+
         });
 
         this._progressBarService.show();
         this.isSpecialityDetailSaveInProgress = true;
         let result: Observable<SpecialityDetail>;
-        if (this.specialityDetail.id) { 
-        result = this._specialityDetailsStore.updateSpecialityDetail(specialityDetail, this.specialityDetail.id);
-        result.subscribe(
-            (response: SpecialityDetail) => {
-                let notification = new Notification({
-                    'title': 'Speciality Details updated successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
+        if (this.specialityDetail.id) {
+            result = this._specialityDetailsStore.updateSpecialityDetail(specialityDetail, this.specialityDetail.id);
+            result.subscribe(
+                (response: SpecialityDetail) => {
+                    let notification = new Notification({
+                        'title': 'Speciality Details updated successfully!',
+                        'type': 'SUCCESS',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                    // this._router.navigate(['../../'], { relativeTo: this._route });
+                    this._router.navigate(['/account-setup/specialities']);
+                },
+                (error) => {
+                    let errString = 'Unable to update Speciality Details.';
+                    let notification = new Notification({
+                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    this.isSpecialityDetailSaveInProgress = false;
+                    this._notificationsStore.addNotification(notification);
+                    this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this.isSpecialityDetailSaveInProgress = false;
+                    this._progressBarService.hide();
                 });
-                this._notificationsStore.addNotification(notification);
-                // this._router.navigate(['../../'], { relativeTo: this._route });
-                   this._router.navigate(['/account-setup/specialities']);
-            },
-            (error) => {
-                let errString = 'Unable to update Speciality Details.';
-                let notification = new Notification({
-                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                    'type': 'ERROR',
-                    'createdAt': moment()
+        } else {
+            result = this._specialityDetailsStore.addSpecialityDetail(specialityDetail);
+            result.subscribe(
+                (response: SpecialityDetail) => {
+                    let notification = new Notification({
+                        'title': 'Speciality Details added successfully!',
+                        'type': 'SUCCESS',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                    // this._router.navigate(['../../'], { relativeTo: this._route });
+                    this._router.navigate(['/account-setup/specialities']);
+                },
+                (error) => {
+                    let errString = 'Unable to add Speciality Details.';
+                    let notification = new Notification({
+                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    this.isSpecialityDetailSaveInProgress = false;
+                    this._notificationsStore.addNotification(notification);
+                    this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this.isSpecialityDetailSaveInProgress = false;
+                    this._progressBarService.hide();
                 });
-                this.isSpecialityDetailSaveInProgress = false;
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
-            },
-            () => {
-                this.isSpecialityDetailSaveInProgress = false;
-                this._progressBarService.hide();
-            });
-    } else {
-        result = this._specialityDetailsStore.addSpecialityDetail(specialityDetail);
-        result.subscribe(
-            (response: SpecialityDetail) => {
-                let notification = new Notification({
-                    'title': 'Speciality Details added successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                // this._router.navigate(['../../'], { relativeTo: this._route });
-                   this._router.navigate(['/account-setup/specialities']);
-            },
-            (error) => {
-                let errString = 'Unable to add Speciality Details.';
-                let notification = new Notification({
-                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this.isSpecialityDetailSaveInProgress = false;
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
-            },
-            () => {
-                this.isSpecialityDetailSaveInProgress = false;
-                this._progressBarService.hide();
-            });
 
+        }
     }
-    } 
 }
