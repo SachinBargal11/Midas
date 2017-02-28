@@ -146,10 +146,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
             #endregion
 
-            if (doctorlocationscheduleBO.ID > 0)
+            bool exists = _context.DoctorLocationSchedules.Any(d => d.DoctorID == doctorlocationscheduleBO.doctor.ID && d.LocationID == doctorlocationscheduleBO.location.ID);
+            if (doctorlocationscheduleBO.ID > 0 && exists)
             {
                 //For Update Record
-
                 //Find Doctor Location Schedule By ID
                 DoctorLocationSchedule doctorlocationschedule = _context.DoctorLocationSchedules.Where(p => p.id == doctorlocationscheduleBO.ID && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<DoctorLocationSchedule>();
 
@@ -166,13 +166,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 else
                     return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid doctorlocationschedule details.", ErrorLevel = ErrorLevel.Error };
-
             }
             else
             {
-                doctorlocationscheduleDB.CreateDate = doctorlocationscheduleBO.CreateDate;
-                doctorlocationscheduleDB.CreateByUserID = doctorlocationscheduleBO.CreateByUserID;
-                _dbSet.Add(doctorlocationscheduleDB);
+                if (!exists)
+                {
+                    doctorlocationscheduleDB.CreateDate = doctorlocationscheduleBO.CreateDate;
+                    doctorlocationscheduleDB.CreateByUserID = doctorlocationscheduleBO.CreateByUserID;
+                    _dbSet.Add(doctorlocationscheduleDB);
+                }
+                else
+                {
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Location for doctor already exists.", ErrorLevel = ErrorLevel.Error };
+                }
             }
             _context.SaveChanges();
 
@@ -209,10 +215,29 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get By Filter
-        public override object Get<T>(T entity)
+        /*public override object Get<T>(T entity)
         {
             List<BO.DoctorLocationSchedule> lstDoctorLocationSchedule = new List<BO.DoctorLocationSchedule>();
             BO.DoctorLocationSchedule doctorlocationscheduleBO = (BO.DoctorLocationSchedule)(object)entity;
+            var acc_ = _context.DoctorLocationSchedules.Include("Doctor").Include("Location").Include("Schedule").Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<DoctorLocationSchedule>();
+            if (acc_ == null || acc_.Count < 1)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            foreach (DoctorLocationSchedule item in acc_)
+            {
+                lstDoctorLocationSchedule.Add(Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(item));
+            }
+
+            return lstDoctorLocationSchedule;
+        }*/
+        #endregion
+
+        #region Get By Filter
+        public override object Get()
+        {
+            List<BO.DoctorLocationSchedule> lstDoctorLocationSchedule = new List<BO.DoctorLocationSchedule>();
+            //BO.DoctorLocationSchedule doctorlocationscheduleBO = (BO.DoctorLocationSchedule)(object)entity;
             var acc_ = _context.DoctorLocationSchedules.Include("Doctor").Include("Location").Include("Schedule").Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<DoctorLocationSchedule>();
             if (acc_ == null || acc_.Count < 1)
             {
