@@ -16,7 +16,7 @@
     --[BillStatus] [BIT] NULL, -- Billed Or Not Billed
 	--[BillDate] [DATETIME2] NULL, -- Billed Date
     --[BillNumber] [NVARCHAR](50) NULL, -- Bill Number
-    [VisitType] [TINYINT] NULL, --IE FU C--Rageesh--**************
+    [VisitType] [TINYINT] NULL, --IE FU C --Need to be Confirmed--**************
     --[ReschduleId] [INT] NULL, -- If Rechedule then its Id
     --[ReschduleDate] [DATETIME2] NULL, -- If Rechedule then its date
     --[StudyNumber] [NVARCHAR](50) NULL, 
