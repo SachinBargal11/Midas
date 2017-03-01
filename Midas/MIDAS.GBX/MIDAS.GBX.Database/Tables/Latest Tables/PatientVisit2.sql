@@ -31,7 +31,7 @@
 	[CreateDate] [datetime2](7) NOT NULL,
 	[UpdateByUserID] [int] NULL,
 	[UpdateDate] [datetime2](7) NULL, 
-    CONSTRAINT [PK_PatientVisits] PRIMARY KEY ([Id])
+    CONSTRAINT [PK_PatientVisit2] PRIMARY KEY ([Id])
 )
 GO
 
