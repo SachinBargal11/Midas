@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Rx';
-import { ScheduleDetail } from '../models/schedule-detail';
-import { ScheduleStore } from '../stores/schedule-store';
+import { ScheduleDetail } from '../../locations/models/schedule-detail';
+import { ScheduleStore } from '../../locations/stores/schedule-store';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -9,31 +9,31 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import * as moment from 'moment';
 import * as _ from 'underscore';
-import { LocationsStore } from '../stores/locations-store';
+import { DoctorLocationsStore } from '../stores/doctor-locations-store';
+import { DoctorLocationScheduleStore } from '../stores/doctor-location-schedule-store';
+import { DoctorsStore } from '../stores/doctors-store';
+import { Doctor } from '../models/doctor';
+import { DoctorLocationSchedule } from '../models/doctor-location-schedule';
 import { LocationDetails } from '../models/location-details';
-import { Schedule } from '../models/schedule';
+import { Schedule } from '../../locations/models/schedule';
 import { Notification } from '../../../commons/models/notification';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 
 @Component({
-    selector: 'schedule',
-    templateUrl: './schedule.html'
+    selector: 'doctor-location-schedule',
+    templateUrl: './doctor-location-schedule.html'
 })
 
-export class ScheduleComponent implements OnInit {
-    options = {
-        timeOut: 3000,
-        showProgressBar: true,
-        pauseOnHover: false,
-        clickToClose: false
-    };
+export class DoctorLocationScheduleComponent implements OnInit {
+    userId: number;
     scheduleform: FormGroup;
     scheduleformControls;
     isSaveProgress = false;
     currentSchedule: Schedule = null;
     scheduleJS: any;
+    doctorDetails: DoctorLocationSchedule;
     locationDetails: LocationDetails;
     isInEditMode: boolean = false;
     saveAsNew: boolean = false;
@@ -46,22 +46,31 @@ export class ScheduleComponent implements OnInit {
         public _route: ActivatedRoute,
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
-        private _locationsStore: LocationsStore,
+        private _doctorLocationsStore: DoctorLocationsStore,
+        private _doctorLocationScheduleStore: DoctorLocationScheduleStore,
+        private _doctorsStore: DoctorsStore,
         private _scheduleStore: ScheduleStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
+        this._route.parent.parent.parent.params.subscribe((params: any) => {
+            this.userId = parseInt(params.userId);
+        });
 
         this._route.parent.params.subscribe((params: any) => {
-            let locationId = parseInt(params.locationId);
+            let doctorLocationId = parseInt(params.doctorLocationId);
             this._progressBarService.show();
             let fetchSchedules = this._scheduleStore.getSchedules();
-            let fetchLocation = this._locationsStore.getLocationById(locationId);
+            let fetchLocation = this._doctorLocationsStore.getLocationById(doctorLocationId);
+            let fetchDoctorLocationSchedule = this._doctorLocationScheduleStore.getDoctorLocationScheduleByLocationId(doctorLocationId);
 
-            Observable.forkJoin([fetchSchedules, fetchLocation])
+            // Observable.forkJoin([fetchSchedules, fetchLocation])
+            Observable.forkJoin([fetchSchedules, fetchLocation, fetchDoctorLocationSchedule])
                 .subscribe((results) => {
-                    this.locationDetails = results[1];
+                    this.locationDetails =  results[1];
+                    this.doctorDetails =  results[2];
+                    // let scheduleId: number = this.doctorDetails.schedule.id;
                     let scheduleId: number = this.locationDetails.schedule.id;
                     this._fetchScheduleWithDetails(scheduleId);
                 },
@@ -183,7 +192,7 @@ export class ScheduleComponent implements OnInit {
     }
 
     updateScheduleForLocation(schedule: Schedule) {
-        return this._locationsStore.updateScheduleForLocation(this.locationDetails, schedule);
+        return this._doctorLocationScheduleStore.updateScheduleForLocation(this.doctorDetails, schedule);
     }
 
     updateSchedule() {
@@ -208,7 +217,7 @@ export class ScheduleComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../'], { relativeTo: this._route });
+                this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
                 this.isSaveProgress = false;
@@ -250,7 +259,7 @@ export class ScheduleComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../'], { relativeTo: this._route });
+                this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
                 this.isSaveProgress = false;

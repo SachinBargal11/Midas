@@ -10,6 +10,9 @@ import { AddUserComponent } from './components/add-user';
 import { UpdateUserComponent } from './components/update-user';
 import { LocationsComponent } from './components/locations';
 import { BillingComponent } from './components/Billing';
+import { DoctorLocationScheduleShellComponent } from './components/doctor-location-schedule-shell';
+import { DoctorLocationScheduleComponent } from './components/doctor-location-schedule';
+import { AddDoctorLocationComponent } from './components/add-doctor-location';
 import { ShellComponent } from '../../commons/shell-component';
 
 export const UsersRoutes: Routes = [
@@ -86,11 +89,50 @@ export const UsersRoutes: Routes = [
                     },
                     {
                         path: 'locations',
-                        component: LocationsComponent,
+                        component: ShellComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Locations'
-                        }
+                        },
+                        children: [
+                            {
+                                path: '',
+                                component: LocationsComponent,
+                                data: {
+                                    breadcrumb: 'root'
+                                }
+                            },
+                            {
+                                path: 'add',
+                                component: AddDoctorLocationComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'Add Location'
+                                }
+                            },
+                            {
+                                path: ':doctorLocationId',
+                                component: DoctorLocationScheduleShellComponent,
+                                data: {
+                                    breadcrumb: 'root'
+                                },
+                                children: [
+                                    {
+                                        path: '',
+                                        redirectTo: 'schedule',
+                                        pathMatch: 'full'
+                                    },
+                                    {
+                                        path: 'schedule',
+                                        component: DoctorLocationScheduleComponent,
+                                        canActivate: [ValidateActiveSession],
+                                        data: {
+                                            breadcrumb: 'Schedule'
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
                     },
                     {
                         path: 'billing',

@@ -42,5 +42,6 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetCurrentEmpByPatientId(HttpRequestMessage request, int PatientId);
 
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int param1, int param2);
+        HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int param1, int param2);
     }
 }
