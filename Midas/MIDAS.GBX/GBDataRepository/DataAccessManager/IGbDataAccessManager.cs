@@ -48,6 +48,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object DeleteById(int id);
 
         Object Get(int param1, int param2, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object Get2(int param1, int param2, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
 
     }
 }

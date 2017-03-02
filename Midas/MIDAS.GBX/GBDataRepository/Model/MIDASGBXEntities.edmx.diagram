@@ -150,7 +150,7 @@
         <AssociationConnector Association="MIDASGBXModel.FK_PatientVisit2_Patient2_PatientId" />
         <AssociationConnector Association="MIDASGBXModel.FK_PatientVisit2_Room_RoomId" />
         <AssociationConnector Association="MIDASGBXModel.FK_PatientVisit2_Specialty_SpecialtyId" />
-      </Diagram>
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

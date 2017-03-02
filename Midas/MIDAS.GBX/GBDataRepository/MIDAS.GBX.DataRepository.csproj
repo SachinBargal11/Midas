@@ -66,6 +66,7 @@
     <Compile Include="EntityRepository\AdjusterMaster\AdjusterMasterRepository.cs" />
     <Compile Include="EntityRepository\AttorneyMaster\AttorneyMasterRepository.cs" />
     <Compile Include="EntityRepository\BaseEntityRepo.cs" />
+    <Compile Include="EntityRepository\CalendarEvent\CalendarEventRepository.cs" />
     <Compile Include="EntityRepository\CaseInsuranceMapping\CaseInsuranceMappingRepository.cs" />
     <Compile Include="EntityRepository\Case\CaseRepository.cs" />
     <Compile Include="EntityRepository\Common\CaseStatusRepository.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="EntityRepository\PatientFamilyMember\PatientFamilyMemberRepository.cs" />
     <Compile Include="EntityRepository\PatientInsuranceInfo\PatientInsuranceInfoRepository.cs" />
     <Compile Include="EntityRepository\PatientVisitEvent\PatientVisitEventRepository.cs" />
+    <Compile Include="EntityRepository\PatientVisit\PatientVisit2Repository.cs" />
     <Compile Include="EntityRepository\PatientVisit\PatientVisitRepository.cs" />
     <Compile Include="EntityRepository\Patient\Patient2Repository.cs" />
     <Compile Include="EntityRepository\Patient\PatientRepository.cs" />

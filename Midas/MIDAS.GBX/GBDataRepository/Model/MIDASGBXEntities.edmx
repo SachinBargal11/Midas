@@ -569,7 +569,7 @@
           <Property Name="CaseId" Type="int" Nullable="false" />
           <Property Name="PatientId" Type="int" Nullable="false" />
           <Property Name="LocationId" Type="int" Nullable="false" />
-          <Property Name="RoomId" Type="int" Nullable="false" />
+          <Property Name="RoomId" Type="int" />
           <Property Name="DoctorId" Type="int" />
           <Property Name="SpecialtyId" Type="int" />
           <Property Name="EventStart" Type="datetime2" Precision="7" />
@@ -1721,7 +1721,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PatientVisit2_Room_RoomId">
-          <End Role="Room" Type="Self.Room" Multiplicity="1" />
+          <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
           <End Role="PatientVisit2" Type="Self.PatientVisit2" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Room">
@@ -4807,7 +4807,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Specialty" EntitySet="Specialties" />
             <End Role="PatientVisit2" EntitySet="PatientVisit2" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="CalendarEvent">
           <Key>
             <PropertyRef Name="Id" />
@@ -4838,7 +4838,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CaseId" Type="Int32" Nullable="false" />
           <Property Name="PatientId" Type="Int32" Nullable="false" />
           <Property Name="LocationId" Type="Int32" Nullable="false" />
-          <Property Name="RoomId" Type="Int32" Nullable="false" />
+          <Property Name="RoomId" Type="Int32" />
           <Property Name="DoctorId" Type="Int32" />
           <Property Name="SpecialtyId" Type="Int32" />
           <Property Name="EventStart" Type="DateTime" Precision="7" />
@@ -4920,7 +4920,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PatientVisit2_Room_RoomId">
-          <End Type="MIDASGBXModel.Room" Role="Room" Multiplicity="1" />
+          <End Type="MIDASGBXModel.Room" Role="Room" Multiplicity="0..1" />
           <End Type="MIDASGBXModel.PatientVisit2" Role="PatientVisit2" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Room">
@@ -4943,7 +4943,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>

@@ -226,6 +226,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object Get2(int param1, int param2)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

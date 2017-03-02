@@ -5,7 +5,7 @@
 	[CaseId] [INT] NOT NULL, --10 ------ GET optional--**************
 	[PatientId] [INT] NOT NULL, ------ GET--**************	
 	[LocationId] [INT] NOT NULL,  ------ GET--**************
-	[RoomId] [INT] NOT NULL,------ GET, --**************
+	[RoomId] [INT] NULL,------ GET, --**************
 	[DoctorId] [INT] NULL,     --15--**************
 	[SpecialtyId] [INT] NULL,--From [Specialty] table, AC, CH, PT add only visit no event, rest visit add event
 	[EventStart] [DATETIME2] NULL,

@@ -19,7 +19,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public int CaseId { get; set; }
         public int PatientId { get; set; }
         public int LocationId { get; set; }
-        public int RoomId { get; set; }
+        public Nullable<int> RoomId { get; set; }
         public Nullable<int> DoctorId { get; set; }
         public Nullable<int> SpecialtyId { get; set; }
         public Nullable<System.DateTime> EventStart { get; set; }

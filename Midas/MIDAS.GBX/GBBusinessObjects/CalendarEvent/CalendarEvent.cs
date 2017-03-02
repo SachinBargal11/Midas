@@ -38,10 +38,12 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("isAllDay")]
         [JsonConverter(typeof(BoolConverter))]
         public bool? IsAllDay { get; set; }
+
+
     }
 
     //---------------------------------------------------------
-
+    /*
     public class CalendarEventWithPatientVisit2 : GbObject
     {
         //PatientVisit2 Data
@@ -99,4 +101,5 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonConverter(typeof(BoolConverter))]
         public bool? IsAllDay { get; set; }
     }
+    */
 }
