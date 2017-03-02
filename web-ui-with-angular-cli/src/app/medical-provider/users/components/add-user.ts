@@ -59,8 +59,6 @@ export class AddUserComponent implements OnInit {
                 firstname: ['', Validators.required],
                 lastname: ['', Validators.required],
                 role: ['', Validators.required]
-
-
             }),
             contact: this.fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
@@ -120,8 +118,8 @@ export class AddUserComponent implements OnInit {
             firstName: userFormValues.userInfo.firstname,
             lastName: userFormValues.userInfo.lastname,
             userType: UserType.STAFF,
-            // role: roles,
-            role1: roles,
+            roles: roles,
+            // role1: roles,
             userName: userFormValues.contact.email,
             contact: new Contact({
                 cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,

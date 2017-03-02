@@ -27,7 +27,7 @@ export class UserAdapter {
             user = new User({
                 id: userData.id,
                 userType: userData.userType,
-                role: userData.userRole,
+                roles: userData.roles,
                 userName: userData.userName,
                 firstName: userData.firstName,
                 middleName: userData.middleName,

@@ -72,9 +72,9 @@ export class UserBasicComponent implements OnInit {
             result.subscribe(
                 (userDetail: User) => {
                     this.user = userDetail;
-                    //     this.selectedRole = _.map(this.user.role, (currentRole: any) => {
-                    //         return currentRole.toString();
-                    // });
+                        this.selectedRole = _.map(this.user.roles, (currentRole: any) => {
+                            return currentRole.roleType.toString();
+                    });
                     this.cellPhone = this._phoneFormatPipe.transform(this.user.contact.cellPhone);
                     this.faxNo = this._faxNoFormatPipe.transform(this.user.contact.faxNo);
                     this.selectedCity = userDetail.address.city;
