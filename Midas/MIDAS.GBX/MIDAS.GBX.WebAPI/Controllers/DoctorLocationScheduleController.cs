@@ -37,6 +37,26 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetGbObjects(Request, data);
         }
 
+        [HttpGet]
+        [Route("GetByLocationId/{id}")]
+        public HttpResponseMessage GetByLocationId(int id)
+        {
+            return requestHandler.GetByLocationId(Request, id);
+        }
+
+        [HttpGet]
+        [Route("GetByDoctorId/{id}")]
+        public HttpResponseMessage GetByDoctorId(int id)
+        {
+            return requestHandler.GetByDoctorId(Request, id);
+        }
+
+        [HttpGet]
+        [Route("GetByLocationAndDoctor/{locationId}/{doctorId}")]
+        public HttpResponseMessage GetByLocationAndDoctor(int locationId,int doctorId)
+        {
+            return requestHandler.GetGbObjects(Request, locationId, doctorId);
+        }
 
         [HttpGet]
         [Route("Get/{id}")]
