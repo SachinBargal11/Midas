@@ -46,5 +46,7 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("visitType")]
         public byte? VisitType { get; set; }
+
+        public CalendarEvent CalendarEvent { get; set; }
     }
 }

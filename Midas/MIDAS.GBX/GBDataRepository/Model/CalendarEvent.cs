@@ -12,30 +12,30 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Room
+    public partial class CalendarEvent
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Room()
+        public CalendarEvent()
         {
             this.PatientVisit2 = new HashSet<PatientVisit2>();
         }
     
-        public int id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
-        public string ContactPersonName { get; set; }
-        public string Phone { get; set; }
-        public Nullable<int> ScheduleID { get; set; }
-        public int LocationID { get; set; }
-        public int RoomTestID { get; set; }
+        public System.DateTime EventStart { get; set; }
+        public System.DateTime EventEnd { get; set; }
+        public string TimeZone { get; set; }
+        public string Description { get; set; }
+        public Nullable<int> RecurrenceId { get; set; }
+        public string RecurrenceRule { get; set; }
+        public string RecurrenceException { get; set; }
+        public Nullable<bool> IsAllDay { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
-        public virtual Location Location { get; set; }
-        public virtual RoomTest RoomTest { get; set; }
-        public virtual Schedule Schedule { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientVisit2> PatientVisit2 { get; set; }
     }

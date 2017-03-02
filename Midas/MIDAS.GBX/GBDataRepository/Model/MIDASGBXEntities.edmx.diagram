@@ -141,6 +141,15 @@
         <AssociationConnector Association="MIDASGBXModel.FK_User_UserType" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompany_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompanyRole_User" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MIDASGBXModel.CalendarEvent" Width="1.5" PointX="27.5" PointY="36" />
+        <EntityTypeShape EntityType="MIDASGBXModel.PatientVisit2" Width="1.5" PointX="29.75" PointY="41.125" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientVisit2_CalendarEvent_CaseId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientVisit2_Case_CaseId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientVisit2_Doctor_DoctorId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientVisit2_Location_LocationID" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientVisit2_Patient2_PatientId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientVisit2_Room_RoomId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_PatientVisit2_Specialty_SpecialtyId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

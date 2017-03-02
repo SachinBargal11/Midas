@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MIDAS.GBX.BusinessObjects.CalendarEvent
+namespace MIDAS.GBX.BusinessObjects
 {
     public class CalendarEvent : GbObject
     {
