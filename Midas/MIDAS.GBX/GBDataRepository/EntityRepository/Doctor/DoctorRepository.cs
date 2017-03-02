@@ -232,10 +232,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get By Filter
-        public override object Get<T>(T entity)
+        #region GetAll
+        public override object Get()
         {
-            BO.Doctor doctorBO = (BO.Doctor)(object)entity;
+            //BO.Doctor doctorBO = (BO.Doctor)(object)entity;
 
             var acc_ = _context.Doctors.Include("User").Where(p => p.IsDeleted == false || p.IsDeleted == null).Include(a => a.User.DoctorSpecialities).ToList<Doctor>();
             if (acc_ == null)

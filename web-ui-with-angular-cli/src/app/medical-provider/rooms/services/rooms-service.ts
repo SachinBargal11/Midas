@@ -6,6 +6,7 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import {environment} from '../../../../environments/environment';
 import { Room } from '../models/room';
+import { Schedule } from '../models/rooms-schedule';
 import { Tests } from '../models/tests';
 import { RoomsAdapter } from './adapters/rooms-adapter';
 import { TestsAdapter } from './adapters/tests-adapter';
@@ -106,6 +107,25 @@ export class RoomsService {
                 }, (error) => {
                     reject(error);
                 });
+        });
+        return <Observable<any>>Observable.fromPromise(promise);
+    }
+    updateScheduleForRoom(room: Room, schedule: Schedule): Observable<any> {
+        let promise: Promise<any> = new Promise((resolve, reject) => {
+
+            let requestData: any = room.toJS();
+            requestData.schedule = {
+                id: schedule.id
+            };
+            return this._http.post(this._url + '/Room/Add', JSON.stringify(requestData), {
+                headers: this._headers
+            }).map(res => res.json()).subscribe((data: any) => {
+                    let parsedRoom: Room = null;
+                    parsedRoom = RoomsAdapter.parseResponse(data);
+                    resolve(parsedRoom);
+            }, (error) => {
+                reject(error);
+            });
         });
         return <Observable<any>>Observable.fromPromise(promise);
     }

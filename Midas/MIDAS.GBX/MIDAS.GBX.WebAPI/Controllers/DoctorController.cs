@@ -29,12 +29,12 @@ namespace MIDAS.GBX.WebAPI.Controllers
             requestHandler = new GbApiRequestHandler<Doctor>();
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("GetAll")]
         
-        public HttpResponseMessage Get([FromBody]Doctor doctor)
+        public HttpResponseMessage Get()
         {
-            return requestHandler.GetGbObjects(Request, doctor);
+            return requestHandler.GetObjects(Request);
         }
 
         [HttpGet]

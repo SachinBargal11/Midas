@@ -30,11 +30,11 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
 
-        [HttpPost]
+        [HttpGet]
         [Route("GetAll")]
-        public HttpResponseMessage Get([FromBody]DoctorLocationSchedule data)
+        public HttpResponseMessage Get()
         {
-            return requestHandler.GetGbObjects(Request, data);
+            return requestHandler.GetObjects(Request);
         }
 
         [HttpGet]

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { Room } from '../models/room';
+import { Schedule } from '../models/rooms-schedule';
 import { Tests } from '../models/tests';
 import { RoomsService } from '../services/rooms-service';
 import { List } from 'immutable';
@@ -55,6 +56,17 @@ export class RoomsStore {
         return <Observable<Tests[]>>Observable.fromPromise(promise);
     }
 
+    getRoomById(roomId: number): Observable<Room> {
+        let promise = new Promise((resolve, reject) => {
+            this._roomsService.getRoom(roomId).subscribe((room: Room) => {
+                resolve(room);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Room>>Observable.fromPromise(promise);
+    }
+
       findRoomById(id: number) {
         let rooms = this._rooms.getValue();
         let index = rooms.findIndex((currentRoom: Room) => currentRoom.id === id);
@@ -98,6 +110,23 @@ export class RoomsStore {
                 });
                 this._rooms.next(roomDetails);
                 resolve(roomDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Room>>Observable.from(promise);
+    }
+
+    updateScheduleForRoom(basicInfo: Room, schedule: Schedule): Observable<Room> {
+        let promise = new Promise((resolve, reject) => {
+            this._roomsService.updateScheduleForRoom(basicInfo, schedule).subscribe((updatedRoom: Room) => {
+                let roomDetails: List<Room> = this._rooms.getValue();
+                let index = roomDetails.findIndex((currentRoom: Room) => currentRoom.id === updatedRoom.id);
+                roomDetails = roomDetails.update(index, function () {
+                    return updatedRoom;
+                });
+                this._rooms.next(roomDetails);
+                resolve(basicInfo);
             }, error => {
                 reject(error);
             });
