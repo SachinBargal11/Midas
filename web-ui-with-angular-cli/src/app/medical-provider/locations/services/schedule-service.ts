@@ -80,10 +80,10 @@ export class ScheduleService {
                 });
         });
 
-        return <Observable<any>>Observable.fromPromise(promise)
-            .flatMap((schedule: Schedule) => {
-                return this._locationsStore.updateScheduleForLocation(locationDetails, schedule);
-            });
+        return <Observable<any>>Observable.fromPromise(promise);
+            // .flatMap((schedule: Schedule) => {
+            //     return this._locationsStore.updateScheduleForLocation(locationDetails, schedule);
+            // });
     }
     updateSchedule(scheduleDetail: Schedule, locationDetails: LocationDetails): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
@@ -106,10 +106,10 @@ export class ScheduleService {
                     reject(error);
                 });
         });
-        return <Observable<any>>Observable.fromPromise(promise)
-            .flatMap((schedule: Schedule) => {
-                return this._locationsStore.updateScheduleForLocation(locationDetails, schedule);
-            });
+        return <Observable<any>>Observable.fromPromise(promise);
+            // .flatMap((schedule: Schedule) => {
+            //     return this._locationsStore.updateScheduleForLocation(locationDetails, schedule);
+            // });
     }
     deleteSchedule(schedule: Schedule): Observable<Schedule> {
         let promise = new Promise((resolve, reject) => {

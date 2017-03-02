@@ -1,5 +1,6 @@
+import { Case } from '../models/case';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { SelectItem } from 'primeng/primeng';
@@ -35,7 +36,8 @@ export class CaseMappingComponent implements OnInit {
     insurances: Insurance[] = [];
     insurancesArr: SelectItem[] = [];
     adjustersArr: SelectItem[];
-    selectedInsurances: string[] = [];
+    selectedInsurances: any;
+    // selectedInsurances: string[] = [];
     selectedInsurance: string[] = [];
     adjusters: Adjuster[] = [];
 
@@ -65,7 +67,7 @@ export class CaseMappingComponent implements OnInit {
 
             Observable.forkJoin([fetchInsurances, fetchInsuranceMappings, fetchAdjusters])
                 .subscribe((results) => {
-                    this.insurances = results[0];
+                    let insurances = results[0];
                     let mappedInsurances: Mapping[] = results[1].mappings;
                     this.adjusters = results[2];
 
@@ -75,15 +77,19 @@ export class CaseMappingComponent implements OnInit {
                             value: currentAdjuster.id.toString()
                         };
                     });
-                    this.insurancesArr = _.map(this.insurances, (currentInsurance: Insurance) => {
-                        return {
-                            label: `${currentInsurance.insuranceCompanyCode} - ${currentInsurance.policyHoldersName}`,
-                            value: currentInsurance.id.toString()
-                        };
+                    this.insurances = _.map(insurances, (currentInsurance: Insurance) => {
+                        this.addMappingDetails();
+                        return _.extend(currentInsurance);
                     });
-                    this.selectedInsurances = _.map(mappedInsurances, (currentInsurance: any) => {
-                            return currentInsurance.patientInsuranceInfo.id.toString();
-                    });
+                    // this.insurancesArr = _.map(this.insurances, (currentInsurance: Insurance) => {
+                    //     return {
+                    //         label: `${currentInsurance.insuranceCompanyCode} - ${currentInsurance.policyHoldersName}`,
+                    //         value: currentInsurance.id.toString()
+                    //     };
+                    // });
+                    // this.selectedInsurances = _.map(mappedInsurances, (currentInsurance: any) => {
+                    //     return currentInsurance.patientInsuranceInfo.id.toString();
+                    // });
                 },
                 (error) => {
                     this._router.navigate(['../../'], { relativeTo: this._route });
@@ -95,8 +101,8 @@ export class CaseMappingComponent implements OnInit {
         });
 
         this.caseMapForm = this.fb.group({
-            insurance: [''],
-            adjuster: ['']
+            mappingDetails: this.fb.array([
+            ])
         });
 
         this.caseMapFormControls = this.caseMapForm.controls;
@@ -104,22 +110,50 @@ export class CaseMappingComponent implements OnInit {
 
     ngOnInit() {
     }
+    initMappingDetails(): FormGroup {
+        return this.fb.group({
+            insurance: [],
+            adjuster: []
+        });
+    }
+    addMappingDetails(): void {
+        const control: FormArray = <FormArray>this.caseMapForm.controls['mappingDetails'];
+        control.push(this.initMappingDetails());
+    }
 
-    save() {
+    getMappingDetails() {
         let caseMapFormValues = this.caseMapForm.value;
-        let mappings = [];
-        let insurance = caseMapFormValues.insurance;
-        let adjuster = caseMapFormValues.adjuster;
-        for (let i = 0; i < insurance.length; ++i) {
-            mappings.push({
+        let mappingDetails: any[] = [];
+        for (let mappingDetail of caseMapFormValues.mappingDetails) {
+            let mapping = new Mapping({
                 patientInsuranceInfo: {
-                'id': parseInt(insurance)
+                    id: mappingDetail.insurance
                 },
                 adjusterMaster: {
-                'id': parseInt(adjuster)
+                    id: mappingDetail.adjuster
                 }
             });
+            mappingDetails.push(mapping);
         }
+        return mappingDetails;
+    }
+    save() {
+        this.selectedInsurances;
+        let caseMapFormValues = this.caseMapForm.value;
+        // let mappings = [];
+        // let insurance = caseMapFormValues.insurance;
+        // let adjuster = caseMapFormValues.adjuster;
+        // for (let i = 0; i < insurance.length; ++i) {
+        //     mappings.push({
+        //         patientInsuranceInfo: {
+        //             'id': parseInt(insurance)
+        //         },
+        //         adjusterMaster: {
+        //             'id': parseInt(adjuster)
+        //         }
+        //     });
+        // }
+        let mappings = this.getMappingDetails();
         let insuranceMapping = new InsuranceMapping({
             caseId: this.caseId,
             mappings: mappings
@@ -137,7 +171,7 @@ export class CaseMappingComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                    this._router.navigate(['../../'], { relativeTo: this._route });
+                this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
                 let errString = 'Unable to map insurance.';
