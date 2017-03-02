@@ -251,6 +251,65 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return lstDoctorLocationSchedule;
         }
         #endregion
+
+        #region Get By Location Id
+        public override object GetByLocationId(int id)
+        {
+            List<BO.DoctorLocationSchedule> lstDoctorLocationSchedule = new List<BO.DoctorLocationSchedule>();
+          //  BO.DoctorLocationSchedule doctorlocationscheduleBO = (BO.DoctorLocationSchedule)(object)entity;
+            var acc_ = _context.DoctorLocationSchedules.Include("Doctor").Include("Location").Include("Schedule").Where(p => p.LocationID== id && (p.IsDeleted == false || p.IsDeleted == null)).ToList<DoctorLocationSchedule>();
+            if (acc_ == null || acc_.Count < 1)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            foreach (DoctorLocationSchedule item in acc_)
+            {
+                lstDoctorLocationSchedule.Add(Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(item));
+            }
+
+            return lstDoctorLocationSchedule;
+        }
+        #endregion
+
+        #region Get By Doctor Id
+        public override object GetByDoctorId(int id)
+        {
+            List<BO.DoctorLocationSchedule> lstDoctorLocationSchedule = new List<BO.DoctorLocationSchedule>();
+            //  BO.DoctorLocationSchedule doctorlocationscheduleBO = (BO.DoctorLocationSchedule)(object)entity;
+            var acc_ = _context.DoctorLocationSchedules.Include("Doctor").Include("Location").Include("Schedule").Where(p => p.DoctorID == id && (p.IsDeleted == false || p.IsDeleted == null)).ToList<DoctorLocationSchedule>();
+            if (acc_ == null || acc_.Count < 1)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            foreach (DoctorLocationSchedule item in acc_)
+            {
+                lstDoctorLocationSchedule.Add(Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(item));
+            }
+
+            return lstDoctorLocationSchedule;
+        }
+        #endregion
+
+        #region Get By Location Id and Doctor Id
+        public override object Get(int locationId,int doctorId)
+        {
+            List<BO.DoctorLocationSchedule> lstDoctorLocationSchedule = new List<BO.DoctorLocationSchedule>();
+            //  BO.DoctorLocationSchedule doctorlocationscheduleBO = (BO.DoctorLocationSchedule)(object)entity;
+            var acc_ = _context.DoctorLocationSchedules.Include("Doctor").Include("Location").Include("Schedule").Where(p => (p.LocationID == locationId && p.DoctorID== doctorId) && (p.IsDeleted == false || p.IsDeleted == null)).ToList<DoctorLocationSchedule>();
+            if (acc_ == null || acc_.Count < 1)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            foreach (DoctorLocationSchedule item in acc_)
+            {
+                lstDoctorLocationSchedule.Add(Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(item));
+            }
+
+            return lstDoctorLocationSchedule;
+        }
+        #endregion
+
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

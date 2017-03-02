@@ -1,9 +1,10 @@
 <h3 class="with-border">Calendar</h3>
 <p-schedule [events]="events" [header]="header" [eventLimit]="4" [editable]="true" (onDayClick)="handleDayClick($event)"
-    (onEventClick)="handleEventClick($event)"></p-schedule>
-
-    <p-dialog [minWidth]="300" [width]="900" (onAfterHide)="handleDialogHide()" header="Visit" [(visible)]="dialogVisible" [responsive]="true" showEffect="fade"
-        [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'visible'}" [responsive]="true">
+    (onEventClick)="handleEventClick($event)" [eventRender]="eventRenderer"></p-schedule>
+    <p-confirmDialog acceptLabel="Edit Current Occurrence" rejectLabel="Edit The Series" header="Edit Recurring Item" icon="fa fa-question-circle" width="600"></p-confirmDialog>  
+    <!--<button type="text" (click)="confirm()" pButton icon="fa-check" label="Confirm"></button>-->
+    <p-dialog [minWidth]="300" [width]="900" (onAfterHide)="handleDialogHide()" header="Visit" [(visible)]="dialogVisible" [responsive]="true"
+        showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'visible'}" [responsive]="true">
         <form [formGroup]="calendarForm" (ngSubmit)="saveEvent()">
             <div class="" *ngIf="selectedEvent">
 

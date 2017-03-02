@@ -11,7 +11,7 @@ namespace MIDAS.GBX.BusinessObjects
         public User user { get; set; }
         public AddressInfo address { get; set; }
         public ContactInfo contactInfo { get; set; }
-        public Role role { get; set; }
+        public Role[] role { get; set; }
         public Company company { get; set; }
 
         public override List<BusinessValidation> Validate<T>(T entity)

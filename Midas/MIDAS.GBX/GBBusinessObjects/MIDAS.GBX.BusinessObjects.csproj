@@ -92,6 +92,7 @@
     <Compile Include="PatientEmpInfo\PatientEmpInfo.cs" />
     <Compile Include="PatientVisitEvent\PatientVisitEvent.cs" />
     <Compile Include="PatientVisit\PatientVisit.cs" />
+    <Compile Include="PatientVisit\PatientVisit2.cs" />
     <Compile Include="Patient\Patient.cs" />
     <Compile Include="Patient\Patient2.cs" />
     <Compile Include="Patient\PatientType.cs" />

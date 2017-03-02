@@ -11,8 +11,9 @@ const ScheduledEventRecord = Record({
     eventEnd: null,
     timezone: '',
     description: '',
+    recurrenceId: null,
     recurrenceRule: null,
-    recurrenceException: '',
+    recurrenceException: [],
     isAllDay: false,
     isDeleted: false,
     createByUserId: 0,
@@ -29,8 +30,9 @@ export class ScheduledEvent extends ScheduledEventRecord {
     eventEnd: moment.Moment;
     timezone: string;
     description: string;
+    recurrenceId: number;
     recurrenceRule: RRule.RRule;
-    recurrenceException: string;
+    recurrenceException: Array<moment.Moment>;
     isAllDay: boolean;
     isDeleted: boolean;
     createByUserId: number;
@@ -60,7 +62,11 @@ export class ScheduledEvent extends ScheduledEventRecord {
                 return true;
             });
             let duration: number = (this.eventEnd ? this.eventEnd : this.eventStart.clone().endOf('day')).diff(this.eventStart);
-            instaces = _.map(occurrences, (occurrence: Date) => {
+            instaces = _.chain(occurrences).filter((occurrence: Date) => {
+                return _.find(this.recurrenceException, (exception: moment.Moment) => {
+                    return moment(occurrence).isSame(exception, 'day');
+                }) ? false : true;
+            }).map((occurrence: Date) => {
                 return new ScheduledEventInstance({
                     title: this.name,
                     allDay: this.isAllDay,
@@ -68,7 +74,7 @@ export class ScheduledEvent extends ScheduledEventRecord {
                     end: moment(occurrence).add(duration),
                     owningEvent: this
                 });
-            });
+            }).value();
         } else {
             instaces = [
                 new ScheduledEventInstance({

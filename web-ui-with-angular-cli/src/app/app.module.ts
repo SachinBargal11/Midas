@@ -16,6 +16,7 @@ import { AuthenticationService } from './account/services/authentication-service
 import { SessionStore } from './commons/stores/session-store';
 import { NotificationsStore } from './commons/stores/notifications-store';
 import { ProgressBarService } from './commons/services/progress-bar-service';
+import { ConfirmationService } from 'primeng/primeng';
 
 import { ValidateActiveSession } from './commons/guards/validate-active-session';
 import { ValidateInActiveSession } from './commons/guards/validate-inactive-session';
@@ -75,6 +76,7 @@ import { DateFormatPipe } from './commons/pipes/date-format-pipe';
     DoctorsStore,
     DoctorsService,
     ProgressBarService,
+    ConfirmationService,
     SpecialityStore,
     SpecialityService,
     UsersService,

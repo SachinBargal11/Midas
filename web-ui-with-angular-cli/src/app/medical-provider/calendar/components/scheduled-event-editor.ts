@@ -38,9 +38,9 @@ export class ScheduledEventEditorComponent implements OnChanges {
     monthly_recur_count: number = 0;
     monthly_repeatEvery: number = 1;
     monthly_recur_monthday_radio: string = '0';
-    monthly_recur_weekday_offset: number = 1;
-    monthly_recur_monthday: number = 0;
-    monthly_recur_weekday: number = 1;
+    monthly_recur_weekday_offset: number | number[] = 1;
+    monthly_recur_monthday: number | number[] = 0;
+    monthly_recur_weekday: number | number[] | RRule.Weekday | RRule.Weekday[] = 1;
 
     // yearly
     yearly_end: string = '0';
@@ -48,11 +48,11 @@ export class ScheduledEventEditorComponent implements OnChanges {
     yearly_recur_count: number = 0;
     yearly_repeatEvery: number = 1;
     yearly_recur_year_radio: string = '0';
-    yearly_recur_month_1: number = 1;
-    yearly_recur_month_2: number = 1;
-    yearly_recur_monthday: number = 0;
-    yearly_recur_weekday_offset: number = 1;
-    yearly_recur_weekday: number = 1;
+    yearly_recur_month_1: number | number[] = 1;
+    yearly_recur_month_2: number | number[] = 1;
+    yearly_recur_monthday: number | number[] = 0;
+    yearly_recur_weekday_offset: number | number[] = 1;
+    yearly_recur_weekday: number | number[] | RRule.Weekday | RRule.Weekday[] = 1;
 
 
     scheduledEventEditorForm: FormGroup;
@@ -68,7 +68,6 @@ export class ScheduledEventEditorComponent implements OnChanges {
 
             if (this._selectedEvent.recurrenceRule) {
                 let options = this._selectedEvent.recurrenceRule.options;
-                debugger;
                 switch (options.freq) {
                     case RRule.DAILY:
                         this.repeatType = RRule.DAILY;
@@ -101,12 +100,12 @@ export class ScheduledEventEditorComponent implements OnChanges {
 
                         if (options.bymonthday) {
                             this.monthly_recur_monthday_radio = '0';
-                            // this.monthly_recur_monthday = options.bymonthday;
+                            this.monthly_recur_monthday = options.bymonthday;
                         }
                         if (options.byweekday || options.bysetpos) {
                             this.monthly_recur_monthday_radio = '1';
-                            // this.monthly_recur_weekday = options.byweekday;
-                            // this.monthly_recur_weekday_offset = options.bysetpos;
+                            this.monthly_recur_weekday = options.byweekday;
+                            this.monthly_recur_weekday_offset = options.bysetpos;
                         }
                         if (options.count > 1) {
                             this.monthly_end = '1';
@@ -121,14 +120,14 @@ export class ScheduledEventEditorComponent implements OnChanges {
                         this.yearly_repeatEvery = options.interval;
                         if (options.bymonth || options.bymonthday) {
                             this.yearly_recur_year_radio = '0';
-                            // this.yearly_recur_month_1 = options.bymonth;
-                            // this.yearly_recur_monthday = options.bymonthday;
+                            this.yearly_recur_month_1 = options.bymonth;
+                            this.yearly_recur_monthday = options.bymonthday;
                         }
                         if (options.byweekday || options.bysetpos || options.bymonthday) {
                             this.yearly_recur_year_radio = '1';
-                            // this.yearly_recur_month_2 = options.bymonthday;
-                            // this.yearly_recur_weekday_offset = options.byweekday;
-                            // this.yearly_recur_weekday = options.bysetpos;
+                            this.yearly_recur_month_2 = options.bymonthday;
+                            this.yearly_recur_weekday_offset = options.bysetpos;
+                            this.yearly_recur_weekday = options.byweekday;
                         }
                         if (options.count > 1) {
                             this.yearly_end = '1';
@@ -139,10 +138,9 @@ export class ScheduledEventEditorComponent implements OnChanges {
                         }
                         break;
                 }
+            } else {
+                this.repeatType = 7;
             }
-
-
-            // this.recur_until = this._selectedEvent.eventStartAsDate;
         } else {
             this._selectedEvent = null;
             this.eventStartAsDate = null;
@@ -324,14 +322,13 @@ export class ScheduledEventEditorComponent implements OnChanges {
 
         }
 
-        return new ScheduledEvent({
-            id: this.selectedEvent.id,
+        return new ScheduledEvent(_.extend(this.selectedEvent.toJS(), {
             name: scheduledEventEditorFormValues.name,
             eventStart: scheduledEventEditorFormValues.isAllDay ? moment.utc(this.eventStartAsDate).startOf('day') : moment(this.eventStartAsDate),
             eventEnd: scheduledEventEditorFormValues.isAllDay ? moment.utc(this.eventEndAsDate).endOf('day') : moment(this.eventEndAsDate),
             isAllDay: scheduledEventEditorFormValues.isAllDay,
             recurrenceRule: recurrenceRule ? recurrenceRule : null
-        });
+        }));
     }
 
 }

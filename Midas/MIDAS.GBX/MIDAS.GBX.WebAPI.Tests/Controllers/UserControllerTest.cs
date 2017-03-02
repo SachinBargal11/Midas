@@ -69,10 +69,10 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
             adduser.address.ZipCode = "400604";
             adduser.address.Country = "India";
 
-            adduser.role = new Role();
-            adduser.role.Name = "userrole";
-            adduser.role.RoleType = GBEnums.RoleType.Admin;
-            adduser.role.IsDeleted = false;
+            adduser.role[0] = new Role();
+            adduser.role[0].Name = "userrole";
+            adduser.role[0].RoleType = GBEnums.RoleType.Admin;
+            adduser.role[0].IsDeleted = false;
 
             adduser.company = new Company();
             adduser.company.Name = "bond002";

@@ -8,6 +8,7 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 import * as RRule from 'rrule';
+import * as moment from 'moment';
 
 @Injectable()
 export class ScheduledEventService {
@@ -39,14 +40,20 @@ export class ScheduledEventService {
     }
     addEvent(event: ScheduledEvent): Observable<ScheduledEvent> {
         let promise: Promise<ScheduledEvent> = new Promise((resolve, reject) => {
-            debugger;
-            return this._http.post(this._url, JSON.stringify(event), {
+            let requestData = _.extend(event.toJS(), {
+                recurrenceRule: event.recurrenceRule ? event.recurrenceRule.toString() : '',
+                recurrenceException: ''
+            });
+
+            return this._http.post(this._url, JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
                 .subscribe((data: any) => {
                     if (data) {
-
+                        let addedEvent: ScheduledEvent = null;
+                        addedEvent = ScheduledEventAdapter.parseResponse(data);
+                        resolve(addedEvent);
                     }
                     resolve(data);
                 }, (error) => {
@@ -58,7 +65,10 @@ export class ScheduledEventService {
     updateEvent(event: ScheduledEvent): Observable<ScheduledEvent> {
         let promise = new Promise((resolve, reject) => {
             let requestData = _.extend(event.toJS(), {
-                recurrenceRule: event.recurrenceRule ? event.recurrenceRule.toString() : ''
+                recurrenceRule: event.recurrenceRule ? event.recurrenceRule.toString() : '',
+                recurrenceException: _.map(event.recurrenceException, (datum: moment.Moment) => {
+                    return datum.format('YYYYMMDDThhmmss') + 'Z';
+                }).join(',')
             });
 
             return this._http.put(`${this._url}/${event.id}`, JSON.stringify(requestData), {
@@ -66,7 +76,9 @@ export class ScheduledEventService {
             })
                 .map(res => res.json())
                 .subscribe((data: any) => {
-                    resolve(data);
+                    let updatedEvent: ScheduledEvent = null;
+                    updatedEvent = ScheduledEventAdapter.parseResponse(data);
+                    resolve(updatedEvent);
                 }, (error) => {
                     reject(error);
                 });

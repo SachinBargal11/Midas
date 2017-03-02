@@ -31,7 +31,8 @@ import {
   MultiSelectModule,
   ScheduleModule,
   CheckboxModule,
-  SharedModule
+  SharedModule,
+  ConfirmDialogModule
 } from 'primeng/primeng';
 import { DropdownModule } from 'ng2-bootstrap';
 
@@ -54,7 +55,8 @@ import { DropdownModule } from 'ng2-bootstrap';
     MultiSelectModule,
     ScheduleModule,
     CheckboxModule,
-    SharedModule ,
+    SharedModule,
+    ConfirmDialogModule,
     DropdownModule.forRoot()
   ],
   declarations: [
@@ -104,6 +106,7 @@ import { DropdownModule } from 'ng2-bootstrap';
     ScheduleModule,
     CheckboxModule,
     SharedModule,
+    ConfirmDialogModule,
     DropdownModule,
     ShellComponent
   ]

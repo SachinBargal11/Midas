@@ -1,6 +1,7 @@
 import { ScheduledEvent } from '../../../../commons/models/scheduled-event';
 import * as moment from 'moment';
 import * as RRule from 'rrule';
+import * as _ from 'underscore';
 
 export class ScheduledEventAdapter {
     static parseResponse(data: any): ScheduledEvent {
@@ -12,6 +13,13 @@ export class ScheduledEventAdapter {
             options.dtstart = moment.utc(data.eventStart).toDate();
             recurrenceRule = new RRule(options);
         }
+        let exceptions = [];
+        if (data.recurrenceException) {
+            let exceptionsInString = data.recurrenceException.split(',');
+            exceptions = _.map(exceptionsInString, (datum: any) => {
+                return moment(datum);
+            });
+        }
 
         let scheduledEvent: ScheduledEvent = new ScheduledEvent({
             id: data.id,
@@ -21,7 +29,8 @@ export class ScheduledEventAdapter {
             timezone: data.timezone,
             description: data.description,
             recurrenceRule: recurrenceRule,
-            recurrenceException: data.recurrenceException,
+            recurrenceId: data.recurrenceId,
+            recurrenceException: exceptions,
             isAllDay: data.isAllDay ? true : false,
             isDeleted: data.isDeleted ? true : false,
             createByUserID: data.createbyuserID,
