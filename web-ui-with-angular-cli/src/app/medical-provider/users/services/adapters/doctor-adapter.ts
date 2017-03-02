@@ -34,7 +34,7 @@ export class DoctorAdapter {
                 taxType: doctorData.taxType,
                 title: doctorData.title,
                 user: UserAdapter.parseResponse(doctorData.user),
-                doctorSpecialities: doctorData.user.doctorSpecialities,
+                doctorSpecialities: doctorData.user ? doctorData.user.doctorSpecialities : null,
                 isDeleted: doctorData.isDeleted
             });
         }

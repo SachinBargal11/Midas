@@ -2,10 +2,12 @@ import { Record } from 'immutable';
 import * as moment from 'moment';
 import { CaseType } from './enums/case-types';
 import { CaseStatus } from './enums/case-status';
+import {Patient} from '../../patients/models/patient';
 
 const CaseRecord = Record({
     id: 0,
     patientId: 0,
+    patient: null,
     caseName: '',
     caseTypeId: CaseType.NOFAULT,
     locationId: 0,
@@ -24,6 +26,7 @@ const CaseRecord = Record({
 export class Case extends CaseRecord {
 
     id: number;
+    patient: Patient;
     patientId: number;
     caseName: string;
     caseTypeId: CaseType;

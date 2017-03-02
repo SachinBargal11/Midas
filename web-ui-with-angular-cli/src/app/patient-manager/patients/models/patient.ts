@@ -3,32 +3,9 @@ import { Record } from 'immutable';
 import { User } from '../../../commons/models/user';
 import { MaritalStatus } from './enums/marital-status';
 
-
-// export interface IPatient {
-//     id: number;
-//     user: User;
-//     ssn: string;
-//     wcbNo: string;
-//     weight: number;
-//     maritalStatusId: MaritalStatus;
-//     drivingLicence: string;
-//     emergencyContactName: string;
-//     emergencyContactRelation: string;
-//     emergencyContactNumber: string;
-//     isDeleted: boolean;
-//     createByUserID: number;
-//     createDate: moment.Moment;
-//     updateByUserID: number;
-//     updateDate: moment.Moment;
-
-// }
-
 const PatientRecord = Record({
     id: 0,
     user: null,
-    // employer: null,
-    // insurance: null,
-    // accident: null,
     companyId: 0,
     ssn: '',
     weight: 0,
@@ -46,9 +23,6 @@ export class Patient extends PatientRecord {
 
     id: number;
     user: User;
-    // employer: Employer;
-    // insurance: Insurance;
-    // accident: Accident;
     companyId: number;
     ssn: string;
     weight: number;

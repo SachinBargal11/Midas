@@ -1,5 +1,5 @@
 import { ScheduleAdapter } from '../../../locations/services/adapters/schedule-adapter';
-import { LocationAdapter } from './doctor-location-adapter';
+import { LocationDetailAdapter } from '../../services/adapters/location-detail-adapter';
 import { DoctorAdapter } from './doctor-adapter';
 import { DoctorLocationSchedule } from '../../models/doctor-location-schedule';
 
@@ -9,9 +9,9 @@ export class DoctorLocationScheduleAdapter {
         let doctorLocationSchedules = null;
         if (data) {
             doctorLocationSchedules = new DoctorLocationSchedule({
-                doctor: data.doctor,
-                // doctor: DoctorAdapter.parseResponse(data.doctor),
-                location: LocationAdapter.parseResponse(data.location),
+                id: data.id,
+                doctor: DoctorAdapter.parseResponse(data.doctor),
+                location: LocationDetailAdapter.parseResponse(data.location),
                 schedule: ScheduleAdapter.parseResponse(data.schedule)
             });
         }

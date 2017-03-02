@@ -54,7 +54,7 @@ export class ScheduleComponent implements OnInit {
     ) {
 
         this._route.parent.params.subscribe((params: any) => {
-            let locationId = parseInt(params.locationId);
+            let locationId = parseInt(params.locationId, 10);
             this._progressBarService.show();
             let fetchSchedules = this._scheduleStore.getSchedules();
             let fetchLocation = this._locationsStore.getLocationById(locationId);
@@ -198,7 +198,7 @@ export class ScheduleComponent implements OnInit {
         this.isSaveProgress = true;
         let result;
 
-        result = this._scheduleStore.updateSchedule(schedule, this.locationDetails);
+        result = this._scheduleStore.updateSchedule(schedule);
         result.subscribe(
             (response) => {
                 this.updateScheduleForLocation(schedule);
@@ -240,7 +240,7 @@ export class ScheduleComponent implements OnInit {
         this.isSaveProgress = true;
         let result;
 
-        result = this._scheduleStore.addSchedule(schedule, this.locationDetails);
+        result = this._scheduleStore.addSchedule(schedule);
         result.subscribe(
             (response) => {
                 this.updateScheduleForLocation(schedule);

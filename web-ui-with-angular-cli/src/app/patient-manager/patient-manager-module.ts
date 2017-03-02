@@ -54,7 +54,7 @@ import { InsuranceMappingStore } from './cases/stores/insurance-mapping-store';
 import { InsuranceMappingService } from './cases/services/insurance-mapping-service';
 import { ViewAllComponent } from './patients/components/view-all';
 
-import { CaseManagerComponent } from './case-manager/components/cases-manager-list';
+import { CompanyCasesComponent } from './cases/components/company-cases-list';
 
 import { CaseService } from './cases/services/cases-services';
 import { AdjusterMasterStore } from '../account-setup/stores/adjuster-store';
@@ -101,7 +101,7 @@ import { AdjusterMasterService } from '../account-setup/services/adjuster-servic
         InsuranceMapComponent,
         CaseMappingComponent,
         ViewAllComponent,
-        CaseManagerComponent
+        CompanyCasesComponent
     ],
     providers: [
         PatientsService,
