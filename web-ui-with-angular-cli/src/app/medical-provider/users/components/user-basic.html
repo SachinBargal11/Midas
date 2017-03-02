@@ -31,30 +31,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <label class="form-label"> Usertype
-                                <span class="color-red">*</span>
-                            </label>
-                        <div class="form-group" [class.error]="userformControls.userInfo.controls.userType.touched && !userformControls.userInfo.controls.userType.valid">
-                            <select formControlName="userType" [ngModel]="user.userType" class="select2-arrow form-control" [class.error]="userformControls.userInfo.controls.userType.touched && !userformControls.userInfo.controls.userType.valid">
-                                 <option value="">-Select UserType-</option>
-                                 <option disabled>────────────────────</option>
-                                 <option value="1">Patient</option>
-                                 <option value="2">Staff</option>
-                                 <!--<option value="3">Doctor</option>
-                                 <option value="4">Patient</option>
-                                 <option value="5">Attorney</option>
-                                 <option value="6">Adjuster</option>
-                                 <option value="7">Accounts</option>-->
-                             </select>
-                            <div class='error-list' *ngIf="userformControls.userInfo.controls.userType.touched && !userformControls.userInfo.controls.userType.valid">
-                                <ul>
-                                    <li *ngIf="userformControls.userInfo.controls.userType.hasError('required')">User Type is required.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    </div>                    
                 </div>
                 <div class="row">
                     <div class="col-lg-12">

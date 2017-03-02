@@ -72,8 +72,8 @@ export class UserBasicComponent implements OnInit {
             result.subscribe(
                 (userDetail: User) => {
                     this.user = userDetail;
-                        this.selectedRole = _.map(this.user.roles, (currentRole: any) => {
-                            return currentRole.roleType.toString();
+                    this.selectedRole = _.map(this.user.roles, (currentRole: any) => {
+                        return currentRole.roleType.toString();
                     });
                     this.cellPhone = this._phoneFormatPipe.transform(this.user.contact.cellPhone);
                     this.faxNo = this._faxNoFormatPipe.transform(this.user.contact.faxNo);
@@ -93,7 +93,6 @@ export class UserBasicComponent implements OnInit {
             userInfo: this.fb.group({
                 firstName: ['', Validators.required],
                 lastName: ['', Validators.required],
-                userType: [{ value: '', disabled: true }, Validators.required],
                 role: ['', Validators.required]
             }),
             contact: this.fb.group({
@@ -118,7 +117,7 @@ export class UserBasicComponent implements OnInit {
 
     ngOnInit() {
         this._statesStore.getStates()
-                .subscribe(states => this.states = states);
+            .subscribe(states => this.states = states);
         // this._statesStore.getCities()
         //         .subscribe(cities => this.cities = cities);
     }
@@ -129,14 +128,14 @@ export class UserBasicComponent implements OnInit {
             this.loadCities(currentState);
             this.selectedCity = this.user.address.city;
         } else {
-        this.loadCities(currentState);
-        this.selectedCity = '';
+            this.loadCities(currentState);
+            this.selectedCity = '';
         }
     }
     loadCities(stateName) {
         this.isCitiesLoading = true;
-        if ( stateName !== '') {
-        this._statesStore.getCitiesByStates(stateName)
+        if (stateName !== '') {
+            this._statesStore.getCitiesByStates(stateName)
                 .subscribe((cities) => { this.cities = cities; },
                 null,
                 () => { this.isCitiesLoading = false; });
@@ -156,10 +155,10 @@ export class UserBasicComponent implements OnInit {
         }
         let userDetail = new User({
             id: this.user.id,
-            //  role: roles,
+            roles: roles,
             firstName: userFormValues.userInfo.firstName,
             lastName: userFormValues.userInfo.lastName,
-            userType: this.user.userType,
+            userType: UserType.STAFF,
             userName: this.user.userName,
             contact: new Contact({
                 cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,
