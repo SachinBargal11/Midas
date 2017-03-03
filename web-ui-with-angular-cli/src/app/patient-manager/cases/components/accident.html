@@ -172,7 +172,7 @@
                                 <!--<span class="color-red">*</span>-->
                             </label>
                         <div class="form-group" [class.error]="accidentformControls.accidentState.touched && !accidentformControls.accidentState.valid">
-                            <select formControlName="accidentState" [ngModel]="currentAccident.accidentAddress.state" type="text" (change)="selectAccidentState($event)"
+                            <select formControlName="accidentState" [ngModel]="currentAccident.accidentAddress.state" type="text" 
                                 class="form-control" placeholder="" [class.error]="accidentformControls.accidentState.touched && !accidentformControls.accidentState.valid">
                                 <option value="">-Select State-</option>
                                 <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
@@ -186,9 +186,21 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <label class="form-label"> Accident City
-                                <!--<span class="color-red">*</span>-->
+                            </label>
+                        <div class="form-group" [class.error]="accidentformControls.accidentCity.touched && !accidentformControls.accidentCity.valid">
+                            <input formControlName="accidentCity" [ngModel]="currentAccident.accidentAddress.city" type="text" class="form-control"
+                                placeholder="" [class.error]="!accidentformControls.accidentCity.valid">
+                                <div class='error-list' *ngIf="accidentformControls.accidentCity.touched && !accidentformControls.accidentCity.valid">
+                                    <ul>
+                                        <li *ngIf="accidentformControls.accidentCity.hasError('required')">Accident City is required.</li>
+                                    </ul>
+                                </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-3">
+                        <label class="form-label"> Accident City
                             </label>
                         <div class="form-group" [class.error]="accidentformControls.accidentCity.touched && !accidentformControls.accidentCity.valid">
                             <select formControlName="accidentCity" [ngModel]="selectedAccidentCity" type="text" class="form-control"
@@ -205,7 +217,7 @@
                     </div>
                     <div class="col-lg-1 m-t-lg">
                         <loader [visible]="isAccidentCitiesLoading"></loader>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
                         <label class="form-label"> Accident Zip code
                                 <!--<span class="color-red">*</span>-->
@@ -275,7 +287,7 @@
                                 <!--<span class="color-red">*</span>-->
                             </label>
                         <div class="form-group" [class.error]="accidentformControls.state.touched && !accidentformControls.state.valid">
-                            <select formControlName="state" [ngModel]="currentAccident.hospitalAddress.state" type="text" (change)="selectState($event)"
+                            <select formControlName="state" [ngModel]="currentAccident.hospitalAddress.state" type="text"
                                 class="form-control" placeholder="" [class.error]="accidentformControls.state.touched && !accidentformControls.state.valid">
                                 <option value="">-Select State-</option>
                                 <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
@@ -289,9 +301,21 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <label class="form-label"> City
-                                <!--<span class="color-red">*</span>-->
+                            </label>
+                        <div class="form-group" [class.error]="accidentformControls.city.touched && !accidentformControls.city.valid">
+                            <input formControlName="zipcode" [ngModel]="currentAccident.hospitalAddress.city" type="text" class="form-control" placeholder=""
+                                [class.error]="!accidentformControls.city.valid">
+                                <div class='error-list' *ngIf="accidentformControls.city.touched && !accidentformControls.city.valid">
+                                    <ul>
+                                        <li *ngIf="accidentformControls.city.hasError('required')">City is required.</li>
+                                    </ul>
+                                </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-3">
+                        <label class="form-label"> City
                             </label>
                         <div class="form-group" [class.error]="accidentformControls.city.touched && !accidentformControls.city.valid">
                             <select formControlName="city" [ngModel]="selectedCity" type="text" class="form-control" placeholder=""
@@ -308,7 +332,7 @@
                     </div>
                     <div class="col-lg-1 m-t-lg">
                         <loader [visible]="isCitiesLoading"></loader>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
                         <label class="form-label"> Zip code
                                 <!--<span class="color-red">*</span>-->

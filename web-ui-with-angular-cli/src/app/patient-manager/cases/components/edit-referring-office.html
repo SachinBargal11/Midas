@@ -100,7 +100,7 @@
                         <label class="form-label"> State
                             </label>
                         <div class="form-group" [class.error]="referringOfficeformControls.state.touched && !referringOfficeformControls.state.valid">
-                            <select [ngModel]="referringOffice.addressInfo.state" formControlName="state" type="text" (change)="selectState($event)" class="form-control" placeholder="" [class.error]="referringOfficeformControls.state.touched && !referringOfficeformControls.state.valid">
+                            <select [ngModel]="referringOffice.addressInfo.state" formControlName="state" type="text" class="form-control" placeholder="" [class.error]="referringOfficeformControls.state.touched && !referringOfficeformControls.state.valid">
                             <option value="">-Select State-</option>
                             <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
                             </select>
@@ -113,7 +113,19 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
+                        <label class="form-label"> City
+                            </label>
+                        <div class="form-group" [class.error]="referringOfficeformControls.city.touched && !referringOfficeformControls.city.valid">
+                            <input [ngModel]="referringOffice.addressInfo.city" formControlName="city" type="text" class="form-control" placeholder="" [class.error]="!referringOfficeformControls.city.valid">
+                            <div class='error-list' *ngIf="referringOfficeformControls.city.touched && !referringOfficeformControls.city.valid">
+                                <ul>
+                                    <li *ngIf="referringOfficeformControls.city.hasError('required')">City is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-3">
                         <label class="form-label"> City
                             </label>
                         <div class="form-group" [class.error]="referringOfficeformControls.city.touched && !referringOfficeformControls.city.valid">
@@ -130,7 +142,7 @@
                     </div>
                     <div class="col-lg-1 m-t-lg">
                         <loader [visible]="isCitiesLoading"></loader>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
                         <label class="form-label"> Zip code
                             </label>

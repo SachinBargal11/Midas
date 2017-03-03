@@ -165,7 +165,20 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
+                        <label class="form-label"> City
+                            </label>
+                        <div class="form-group" [class.error]="userformControls.address.controls.city.touched && !userformControls.address.controls.city.valid">
+                            <input formControlName="city" [ngModel]="user.address.city" type="text" class="form-control" [class.error]="!userformControls.address.controls.city.valid"
+                                placeholder="" />
+                            <div class='error-list' *ngIf="userformControls.address.controls.city.touched && !userformControls.address.controls.city.valid">
+                                <ul>
+                                    <li *ngIf="userformControls.address.controls.city.hasError('required')">City is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-3">
                         <label class="form-label"> City
                             </label>
                         <div class="form-group" [class.error]="userformControls.address.controls.city.touched && !userformControls.address.controls.city.valid">
@@ -182,7 +195,7 @@
                     </div>
                     <div class="col-lg-1 m-t-lg">
                         <loader [visible]="isCitiesLoading"></loader>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
                         <label class="form-label"> Zipcode
                             </label>

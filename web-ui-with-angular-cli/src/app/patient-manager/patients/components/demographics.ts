@@ -71,9 +71,9 @@ export class DemographicsComponent implements OnInit {
                     this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment
                         ? this.patientInfo.dateOfFirstTreatment.toDate()
                         : null;
-                    if (this.patientInfo.user.address.state) {
-                        this.loadCities(this.patientInfo.user.address.state);
-                    }
+                    // if (this.patientInfo.user.address.state) {
+                    //     this.loadCities(this.patientInfo.user.address.state);
+                    // }
                 },
                 (error) => {
                     this._router.navigate(['/patient-manager/patients']);
@@ -113,25 +113,6 @@ export class DemographicsComponent implements OnInit {
     ngOnInit() {
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
-    }
-
-    selectState(event) {
-        this.selectedCity = 0;
-        let currentState = event.target.value;
-        this.loadCities(currentState);
-    }
-
-    loadCities(stateName) {
-        this.isCitiesLoading = true;
-        if (stateName !== '') {
-            this._statesStore.getCitiesByStates(stateName)
-                .subscribe((cities) => { this.cities = cities; },
-                null,
-                () => { this.isCitiesLoading = false; });
-        } else {
-            this.cities = [];
-            this.isCitiesLoading = false;
-        }
     }
 
     savePatient() {

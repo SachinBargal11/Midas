@@ -117,24 +117,6 @@ export class AddUserComponent implements OnInit {
             .subscribe(states => this.states = states);
     }
 
-    selectState(event) {
-        this.selectedCity = 0;
-        let currentState = event.target.value;
-        this.loadCities(currentState);
-    }
-    loadCities(stateName) {
-        this.isCitiesLoading = true;
-        if (stateName !== '') {
-            this._statesStore.getCitiesByStates(stateName)
-                .subscribe((cities) => { this.cities = cities; },
-                null,
-                () => { this.isCitiesLoading = false; });
-        } else {
-            this.cities = [];
-            this.isCitiesLoading = false;
-        }
-    }
-
 
     saveUser() {
         let userFormValues = this.userform.value;

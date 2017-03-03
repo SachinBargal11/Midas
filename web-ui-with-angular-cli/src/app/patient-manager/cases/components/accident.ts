@@ -77,8 +77,6 @@ export class AccidentInfoComponent implements OnInit {
                         if (this.currentAccident.accidentAddress.state || this.currentAccident.hospitalAddress.state) {
                             this.selectedCity = this.currentAccident.hospitalAddress.city;
                             this.selectedAccidentCity = this.currentAccident.accidentAddress.city;
-                            this.loadCities(this.currentAccident.hospitalAddress.state);
-                            this.loadAccidentCities(this.currentAccident.accidentAddress.state);
                         }
                     } else {
                         this.currentAccident = new Accident({
@@ -129,54 +127,6 @@ export class AccidentInfoComponent implements OnInit {
         this.maxDate.setDate(currentDate);
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
-    }
-
-    selectState(event) {
-        let currentState = event.target.value;
-        if (currentState === this.currentAccident.hospitalAddress.state) {
-            this.loadCities(currentState);
-            this.selectedCity = this.currentAccident.hospitalAddress.city;
-        } else {
-            this.loadCities(currentState);
-            this.selectedCity = '';
-        }
-    }
-
-    loadCities(stateName) {
-        this.isCitiesLoading = true;
-        if (stateName !== '') {
-            this._statesStore.getCitiesByStates(stateName)
-                .subscribe((cities) => { this.cities = cities; },
-                null,
-                () => { this.isCitiesLoading = false; });
-        } else {
-            this.cities = [];
-            this.isCitiesLoading = false;
-        }
-    }
-
-    selectAccidentState(event) {
-        let currentState = event.target.value;
-        if (currentState === this.currentAccident.accidentAddress.state) {
-            this.loadAccidentCities(currentState);
-            this.selectedAccidentCity = this.currentAccident.accidentAddress.city;
-        } else {
-            this.loadAccidentCities(currentState);
-            this.selectedAccidentCity = '';
-        }
-    }
-
-    loadAccidentCities(stateName) {
-        this.isAccidentCitiesLoading = true;
-        if (stateName !== '') {
-            this._statesStore.getCitiesByStates(stateName)
-                .subscribe((cities) => { this.accidentCities = cities; },
-                null,
-                () => { this.isAccidentCitiesLoading = false; });
-        } else {
-            this.accidentCities = [];
-            this.isAccidentCitiesLoading = false;
-        }
     }
 
     save() {

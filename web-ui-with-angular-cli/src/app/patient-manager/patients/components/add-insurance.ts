@@ -93,42 +93,42 @@ export class AddInsuranceComponent implements OnInit {
             .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
     }
 
-    selectPolicyState(event) {
-        this.selectedCity = 0;
-        let currentState = event.target.value;
-        this.loadPolicyCities(currentState);
-    }
+    // selectPolicyState(event) {
+    //     this.selectedCity = 0;
+    //     let currentState = event.target.value;
+    //     this.loadPolicyCities(currentState);
+    // }
 
-    loadPolicyCities(stateName) {
-        this.isPolicyCitiesLoading = true;
-        if (stateName !== '') {
-            this._statesStore.getCitiesByStates(stateName)
-                .subscribe((cities) => { this.policyCities = cities; },
-                null,
-                () => { this.isPolicyCitiesLoading = false; });
-        } else {
-            this.policyCities = [];
-            this.isPolicyCitiesLoading = false;
-        }
-    }
-    selectInsuranceState(event) {
-        this.selectedCity = 0;
-        let currentState = event.target.value;
-        this.loadInsuranceCities(currentState);
-    }
+    // loadPolicyCities(stateName) {
+    //     this.isPolicyCitiesLoading = true;
+    //     if (stateName !== '') {
+    //         this._statesStore.getCitiesByStates(stateName)
+    //             .subscribe((cities) => { this.policyCities = cities; },
+    //             null,
+    //             () => { this.isPolicyCitiesLoading = false; });
+    //     } else {
+    //         this.policyCities = [];
+    //         this.isPolicyCitiesLoading = false;
+    //     }
+    // }
+    // selectInsuranceState(event) {
+    //     this.selectedCity = 0;
+    //     let currentState = event.target.value;
+    //     this.loadInsuranceCities(currentState);
+    // }
 
-    loadInsuranceCities(stateName) {
-        this.isInsuranceCitiesLoading = true;
-        if (stateName !== '') {
-            this._statesStore.getCitiesByStates(stateName)
-                .subscribe((cities) => { this.insuranceCities = cities; },
-                null,
-                () => { this.isInsuranceCitiesLoading = false; });
-        } else {
-            this.insuranceCities = [];
-            this.isInsuranceCitiesLoading = false;
-        }
-    }
+    // loadInsuranceCities(stateName) {
+    //     this.isInsuranceCitiesLoading = true;
+    //     if (stateName !== '') {
+    //         this._statesStore.getCitiesByStates(stateName)
+    //             .subscribe((cities) => { this.insuranceCities = cities; },
+    //             null,
+    //             () => { this.isInsuranceCitiesLoading = false; });
+    //     } else {
+    //         this.insuranceCities = [];
+    //         this.isInsuranceCitiesLoading = false;
+    //     }
+    // }
 
     save() {
         this.isSaveProgress = true;
