@@ -161,24 +161,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override Object Save<T>(T entity)
         {
             BO.AddUser addUserBO = (BO.AddUser)(object)entity;
+            BO.User userBO = addUserBO.user;
+            if (addUserBO.user == null) return new BO.ErrorObject { ErrorMessage = "User object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            if (userBO.ID == 0) if (addUserBO.role == null) return new BO.ErrorObject { ErrorMessage = "Role object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };            
+
             BO.AddressInfo addressBO = addUserBO.address;
             BO.ContactInfo contactinfoBO = addUserBO.contactInfo;
-
-            BO.User userBO = addUserBO.user;
             BO.Role[] roleBO = addUserBO.role;
             BO.Company companyBO = addUserBO.company;
-
-            if (addUserBO.user == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "User object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
-            if (userBO.ID == 0)
-            {
-                if (addUserBO.role == null)
-                {
-                    return new BO.ErrorObject { ErrorMessage = "Role object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                }
-            }
+            foreach (Enum f in roleBO.Select(p => p.RoleType)) if (!Enum.IsDefined(typeof(BO.GBEnums.RoleType), f)) return new BO.ErrorObject { ErrorMessage = "RoleType does not exist.", errorObject = "", ErrorLevel = ErrorLevel.Warning };
 
             User userDB = new User();
             AddressInfo addressDB = new AddressInfo();
@@ -224,15 +215,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             userDB.UserType = System.Convert.ToByte(userBO.UserType);
             userDB.ImageLink = userBO.ImageLink;
             userDB.UserStatus = System.Convert.ToByte(userBO.Status);
-            if (userBO.DateOfBirth.HasValue)
-                userDB.DateOfBirth = userBO.DateOfBirth.Value;
             userDB.Password = userBO.Password;
-
-            if (userBO.IsDeleted.HasValue)
-                userDB.IsDeleted = userBO.IsDeleted.Value;
-
             userDB.AddressInfo = addressDB;
-            userDB.ContactInfo = contactinfoDB;
+            userDB.ContactInfo = contactinfoDB;            
+            if (userBO.DateOfBirth.HasValue) userDB.DateOfBirth = userBO.DateOfBirth.Value;
+            if (userBO.IsDeleted.HasValue) userDB.IsDeleted = userBO.IsDeleted.Value;
 
             #region Company
             if (companyBO != null)
@@ -245,72 +232,45 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         userCompanyDB.Company = company;
                         invitationDB.Company = company;
                     }
-                    else
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid company details.", ErrorLevel = ErrorLevel.Error };
+                    else return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid company details.", ErrorLevel = ErrorLevel.Error };
                 }
             #endregion
 
             switch (userBO.UserType)
             {
-                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Staff:
-                    break;
-                default:
-                    break;
+                case MIDAS.GBX.BusinessObjects.GBEnums.UserType.Staff: break;
+                default: break;
             }
             #endregion
 
             if (userDB.id > 0)
             {
                 //Find User By ID
-                User usr = userDB.id > 0 ? _context.Users.Include("AddressInfo").Include("ContactInfo").Where(p => p.id == userDB.id).FirstOrDefault<User>() : _context.Users.Include("Address").Include("ContactInfo").Where(p => p.id == userDB.id).FirstOrDefault<User>();
-                
-                using (var dbContextTransaction = _context.Database.BeginTransaction())
+                User usr = userDB.id > 0 ? _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanyRoles").Where(p => p.id == userDB.id).FirstOrDefault<User>() : _context.Users.Include("Address").Include("ContactInfo").Include("UserCompanyRoles").Where(p => p.id == userDB.id).FirstOrDefault<User>();
+
+                List<int> companyRoles_New = roleBO.Select(p => (int)p.RoleType).ToList<int>();
+
+                //Call for removing data
+                List<UserCompanyRole> removeUserCompanyRoles = _context.UserCompanyRoles.Where(p => p.UserID == usr.id && !companyRoles_New.Contains(p.RoleID) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<UserCompanyRole>();
+                if (removeUserCompanyRoles != null && removeUserCompanyRoles.Count > 0)
                 {
-                    
-                    List <int> companyRoles_New = roleBO.Select(p => (int)p.RoleType).ToList<int>();
-                    foreach (Enum f in roleBO.Select(p => p.RoleType))
-                    {
-                        if (!Enum.IsDefined(typeof(BO.GBEnums.RoleType), f))
-                            return new BO.ErrorObject { ErrorMessage = "RoleType does not exist.", errorObject = "", ErrorLevel = ErrorLevel.Warning };
-                    }
-
-                    //Call for removing data
-                    List<UserCompanyRole> removeUserCompanyRoles = _context.UserCompanyRoles.Where(p => p.UserID == usr.id
-                                                                    && !companyRoles_New.Contains(p.RoleID)
-                                                                    && (p.IsDeleted.HasValue == false ||
-                                                                       (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<UserCompanyRole>();
-                    if (removeUserCompanyRoles != null && removeUserCompanyRoles.Count > 0)
-                    {
-                        removeUserCompanyRoles.ForEach(p => p.IsDeleted = true);
-                        _context.SaveChanges();
-                    }
-                                        
-                    List<int> existingUserCompanyRoles = _context.UserCompanyRoles.Where(p => p.UserID == usr.id
-                                                                    && (p.IsDeleted.HasValue == false ||
-                                                                       (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => (int)p.RoleID).ToList<int>();
-                    //Call for insert data
-                    List<UserCompanyRole> insertUserCompanyRoles = companyRoles_New.Where(p => !existingUserCompanyRoles.Contains(p)).Select(p =>
-                    new UserCompanyRole
-                    {
-                        UserID = usr.id,
-                        RoleID = p
-                    }).ToList<UserCompanyRole>();
-
-                    //foreach (var child in usr.UserCompanyRoles.ToList()) _context.UserCompanyRoles.Remove(child);
-
-                    if (insertUserCompanyRoles != null && insertUserCompanyRoles.Count > 0)
-                        insertUserCompanyRoles.ForEach(P => _context.UserCompanyRoles.Add(P));
-                        //usr.UserCompanyRoles = insertUserCompanyRoles;
-
+                    removeUserCompanyRoles.ForEach(p => p.IsDeleted = true);
                     _context.SaveChanges();
-                    dbContextTransaction.Commit();
                 }
+
+                List<int> existingUserCompanyRoles = _context.UserCompanyRoles.Where(p => p.UserID == usr.id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => (int)p.RoleID).ToList<int>();
+                //Call to insert data
+                List<UserCompanyRole> insertUserCompanyRoles = companyRoles_New.Where(p => !existingUserCompanyRoles.Contains(p)).Select(p => new UserCompanyRole { UserID = usr.id, RoleID = p }).ToList<UserCompanyRole>();
+                //foreach (var child in usr.UserCompanyRoles.ToList()) _context.UserCompanyRoles.Remove(child);
+
+                if (insertUserCompanyRoles != null && insertUserCompanyRoles.Count > 0) insertUserCompanyRoles.ForEach(P => _context.UserCompanyRoles.Add(P));
+                //usr.UserCompanyRoles = insertUserCompanyRoles;
+
+                _context.SaveChanges();
 
                 if (usr != null)
                 {
-                    #region User
-                    if (userBO.UpdateByUserID.HasValue)
-                        usr.UpdateByUserID = userBO.UpdateByUserID.Value;
+                    #region User                    
                     usr.UpdateDate = DateTime.UtcNow;
                     usr.IsDeleted = userBO.IsDeleted;
                     usr.UserName = userBO.UserName == null ? usr.UserName : userBO.UserName;
@@ -322,8 +282,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     usr.UserStatus = System.Convert.ToByte(userBO.Status);
                     usr.ImageLink = userBO.ImageLink;
                     usr.DateOfBirth = userBO.DateOfBirth;
-                    if (userBO.Password != null)
-                        usr.Password = PasswordHash.HashPassword(userBO.Password);
+                    if (userBO.UpdateByUserID.HasValue) usr.UpdateByUserID = userBO.UpdateByUserID.Value;
+                    if (userBO.Password != null) usr.Password = PasswordHash.HashPassword(userBO.Password);
                     usr.IsDeleted = userBO.IsDeleted;
                     #endregion
 
@@ -332,8 +292,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         usr.AddressInfo.CreateByUserID = usr.CreateByUserID;
                         usr.AddressInfo.CreateDate = usr.CreateDate;
-                        if (userBO.UpdateByUserID.HasValue)
-                            usr.AddressInfo.UpdateByUserID = userBO.UpdateByUserID.Value;
                         usr.AddressInfo.UpdateDate = DateTime.UtcNow;
                         usr.AddressInfo.Name = addressBO.Name == null ? usr.AddressInfo.Name : addressBO.Name;
                         usr.AddressInfo.Address1 = addressBO.Address1 == null ? usr.AddressInfo.Address1 : addressBO.Address1;
@@ -342,6 +300,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         usr.AddressInfo.State = addressBO.State == null ? usr.AddressInfo.State : addressBO.State;
                         usr.AddressInfo.ZipCode = addressBO.ZipCode == null ? usr.AddressInfo.ZipCode : addressBO.ZipCode;
                         usr.AddressInfo.Country = addressBO.Country;
+                        if (userBO.UpdateByUserID.HasValue) usr.AddressInfo.UpdateByUserID = userBO.UpdateByUserID.Value;
                     }
                     #endregion
 
@@ -350,8 +309,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     {
                         usr.ContactInfo.CreateByUserID = usr.CreateByUserID;
                         usr.ContactInfo.CreateDate = usr.CreateDate;
-                        if (userBO.UpdateByUserID.HasValue)
-                            usr.ContactInfo.UpdateByUserID = userBO.UpdateByUserID.Value;
                         usr.ContactInfo.UpdateDate = DateTime.UtcNow;
                         usr.ContactInfo.Name = contactinfoBO.Name;
                         usr.ContactInfo.CellPhone = contactinfoBO.CellPhone;
@@ -359,16 +316,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         usr.ContactInfo.HomePhone = contactinfoBO.HomePhone;
                         usr.ContactInfo.WorkPhone = contactinfoBO.WorkPhone;
                         usr.ContactInfo.FaxNo = contactinfoBO.FaxNo;
+                        if (userBO.UpdateByUserID.HasValue) usr.ContactInfo.UpdateByUserID = userBO.UpdateByUserID.Value;
                     }
                     #endregion
                 }
-                else
-                {
-                    return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Warning };
-                }
+                else return new BO.ErrorObject { ErrorMessage = "No record found for this user.", errorObject = "", ErrorLevel = ErrorLevel.Warning };
 
                 _context.Entry(usr).State = System.Data.Entity.EntityState.Modified;
-                
                 userDB = usr;
                 _context.SaveChanges();
 
@@ -378,10 +332,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-                if (_context.Users.Any(o => o.UserName == userBO.UserName))
-                {
-                    return new BO.ErrorObject { ErrorMessage = "User already exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
-                }
+                if (_context.Users.Any(o => o.UserName == userBO.UserName)) return new BO.ErrorObject { ErrorMessage = "User already exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+
                 userDB.CreateDate = DateTime.UtcNow;
                 userDB.CreateByUserID = userBO.CreateByUserID;
 
@@ -397,24 +349,25 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             _context.SaveChanges();
 
             #region Insert User Block
-            userCompanyDB.CreateDate = DateTime.UtcNow;
-            userCompanyDB.CreateByUserID = companyBO.CreateByUserID;
-            _dbUserCompany.Add(userCompanyDB);
-            _context.SaveChanges();
+            if (userCompanyDB.Company.id > 0)
+            {
+                userCompanyDB.CreateDate = DateTime.UtcNow;
+                userCompanyDB.CreateByUserID = companyBO.CreateByUserID;
+                _dbUserCompany.Add(userCompanyDB);
+                _context.SaveChanges();
+            }
+            else { return new BO.ErrorObject { ErrorMessage = "Please pass valid company details.", errorObject = "", ErrorLevel = ErrorLevel.Information }; }
             #endregion
 
-            //#region Insert User Company Role            
+            #region Insert User Company Role
             //userCompanyRoleDB.User = userCompanyDB.User;
             //userCompanyRoleDB.RoleID = (int)(roleBO.RoleType);
             //userCompanyRoleDB.CreateDate = DateTime.UtcNow;
             //userCompanyRoleDB.CreateByUserID = companyBO.CreateByUserID;
             //_dbUserCompanyRole.Add(userCompanyRoleDB);
-            //#endregion
-
-            #region Insert User Company Role
             roleBO.ToList().ForEach(rl => _dbUserCompanyRole.Add(new UserCompanyRole()
             {
-                CreateByUserID = companyBO.CreateByUserID,
+                CreateByUserID = userBO.CreateByUserID,
                 CreateDate = DateTime.UtcNow,
                 RoleID = (int)rl.RoleType,
                 UserID = userDB.id,
@@ -425,10 +378,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             #region Insert Invitation
             invitationDB.User = userCompanyDB.User;
-
             invitationDB.UniqueID = Guid.NewGuid();
             invitationDB.CreateDate = DateTime.UtcNow;
-            invitationDB.CreateByUserID = companyBO.CreateByUserID;
+            invitationDB.CreateByUserID = userBO.CreateByUserID;
             _dbInvitation.Add(invitationDB);
             _context.SaveChanges();
             #endregion
@@ -443,10 +395,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 objEmail.SendMail();
                 #endregion
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) { }
 
-            }
             var res = (BO.GbObject)(object)acc_;
             return (object)res;
         }
