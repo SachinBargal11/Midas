@@ -9,6 +9,7 @@ import { SettingsComponent } from './components/settings';
 import { AccessComponent } from './components/access';
 import { AddLocationComponent } from './components/add-location';
 import { RoomsRoutes } from '../rooms/rooms-routes';
+import { DoctorsRoutes } from '../doctors/doctor-routes';
 import { ShellComponent } from '../../commons/shell-component';
 import { ScheduleDemo } from './components/schedule-demo';
 
@@ -91,7 +92,8 @@ export const LocationManagementRoutes: Routes = [
                             breadcrumb: 'Access'
                         }
                     },
-                    ...RoomsRoutes
+                    ...RoomsRoutes,
+                    ...DoctorsRoutes
                 ]
             }
         ]

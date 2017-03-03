@@ -5,6 +5,7 @@ import { CommonsModule } from '../commons/commons-module';
 import { LocationModule } from './locations/location-module';
 import { UsersModule } from './users/users-module';
 import { RoomsModule } from './rooms/rooms-module';
+import { DoctorModule } from '../medical-provider/doctors/doctor-module';
 import { CalendarModule } from './calendar/calendar-module';
 import { ReportsModule } from './reports/reports-module';
 import { MedicalProviderNavComponent } from './medical-provider-nav-bar';
@@ -21,7 +22,9 @@ import { MedicalProviderRoutingModule } from './medical-provider-routes';
     UsersModule,
     RoomsModule,
     CalendarModule,
+    DoctorModule,
     ReportsModule,
+
     MedicalProviderRoutingModule
   ],
   declarations: [
