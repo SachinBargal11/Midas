@@ -36,9 +36,7 @@ export class DoctorsService {
     }
     getDoctors(): Observable<Doctor[]> {
         let promise: Promise<Doctor[]> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/Doctor/getall', JSON.stringify({}), {
-                headers: this._headers
-            }).map(res => res.json())
+            return this._http.get(this._url + '/Doctor/getall').map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let doctors = (<Object[]>data).map((doctorData: any) => {
                         return DoctorAdapter.parseResponse(doctorData);

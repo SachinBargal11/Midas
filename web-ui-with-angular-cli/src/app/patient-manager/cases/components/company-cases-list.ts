@@ -4,16 +4,14 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Case } from '../../cases/models/case';
-import { Patient } from '../../patients/models/patient';
-import { PatientsStore } from '../../patients/stores/patients-store';
 
 @Component({
-    selector: 'case-manager',
-    templateUrl: './cases-manager-list.html'
+    selector: 'company-cases',
+    templateUrl: './company-cases-list.html'
 })
 
 
-export class CaseManagerComponent implements OnInit {
+export class CompanyCasesComponent implements OnInit {
     cases: any[];
 
     constructor(
@@ -21,7 +19,6 @@ export class CaseManagerComponent implements OnInit {
         private _router: Router,
         private _sessionStore: SessionStore,
         private _casesStore: CasesStore,
-        private _patientStore: PatientsStore,
         private _progressBarService: ProgressBarService
     ) {
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {

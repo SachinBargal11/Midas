@@ -111,10 +111,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Save<T>(T entity)
         {
             BO.Doctor doctorBO = (BO.Doctor)(object)entity;
-
+            BO.ErrorObject errObj = new BO.ErrorObject();
+            BO.User userBO = new BO.User();
             Doctor doctorDB = new Doctor();
             User userDB = new User();
             List<DoctorSpeciality> lstDoctorSpecility = new List<DoctorSpeciality>();
+
             #region Doctor
             doctorDB.id = doctorBO.ID;
             doctorDB.LicenseNumber = doctorBO.LicenseNumber;
@@ -127,79 +129,105 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             userDB.id = doctorBO.user.ID;
             #endregion
 
-            ////Find Record By ID
-            User user_ = _context.Users.Include("UserCompanyRoles").Where(p => p.id == doctorBO.user.ID && p.UserCompanyRoles.Any(x => x.RoleID == (int)BO.GBEnums.RoleType.Doctor)).FirstOrDefault<User>();
-            if (user_ != null)
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
-                doctorDB.User = user_;
-                _context.Entry(user_).State = System.Data.Entity.EntityState.Modified;
-            }else
-                return new BO.ErrorObject { ErrorMessage = "Invalid doctor details.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                ////Find Record By ID
+                User user_ = _context.Users.Include("UserCompanyRoles").Where(p => p.id == doctorBO.user.ID && p.UserCompanyRoles.Any(x => x.RoleID == (int)BO.GBEnums.RoleType.Doctor)).FirstOrDefault<User>();
+                if (user_ != null)
+                {
+                    doctorDB.User = user_;
+                    _context.Entry(user_).State = System.Data.Entity.EntityState.Modified;
+                }
+                else
+                {
+                    BO.AddUser addUserBO = new BO.AddUser();
+                    addUserBO.user = doctorBO.user;
+                    addUserBO.user.DoctorSpecialities = doctorBO.user.DoctorSpecialities;
+                    addUserBO.user.Roles = doctorBO.user.Roles;
+                    addUserBO.company = doctorBO.user.UserCompanies.ToList().Select(p => p.Company).FirstOrDefault();
+                    addUserBO.role = doctorBO.user.Roles.ToArray();
+                    addUserBO.address = doctorBO.user.AddressInfo;
+                    addUserBO.contactInfo = doctorBO.user.ContactInfo;
+                    using (UserRepository userRepo = new UserRepository(_context))
+                    {
+                        object obj = userRepo.Save<BO.AddUser>(addUserBO);
+                        if (obj.GetType() == errObj.GetType())
+                        {
+                            errObj = (BO.ErrorObject)obj;
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { ErrorMessage = errObj.ErrorMessage, errorObject = "", ErrorLevel = ErrorLevel.Error };
+                        }
+                        else userBO = (BO.User)obj;
+                        doctorBO.user.ID = userBO.ID;
+                        doctorDB.User = _context.Users.Include("UserCompanyRoles").Where(p => p.id == doctorBO.user.ID && p.UserCompanyRoles.Any(x => x.RoleID == (int)BO.GBEnums.RoleType.Doctor)).FirstOrDefault<User>();
+                    }
+                }
+                
+                if (doctorBO.user.DoctorSpecialities.Count > 0)
+                {
+                    _dbSetDocSpecility.RemoveRange(_context.DoctorSpecialities.Where(c => c.DoctorID == doctorBO.user.ID));
+                    _context.SaveChanges();
+                    Specialty specilityDB = null;
+                    DoctorSpeciality doctorSpecilityDB = null;
+                    foreach (var item in doctorBO.user.DoctorSpecialities)
+                    {
+                        BO.DoctorSpeciality doctorSpecialityBO = (BO.DoctorSpeciality)(object)item;
+                        specilityDB = new Specialty();
+                        doctorSpecilityDB = new DoctorSpeciality();
+                        doctorSpecilityDB.IsDeleted = doctorSpecialityBO.IsDeleted.HasValue ? doctorSpecialityBO.IsDeleted.Value : false;
+                        doctorSpecilityDB.User = user_;
+                        //Find Record By ID
+                        Specialty speclity = _context.Specialties.Where(p => p.id == doctorSpecialityBO.ID).FirstOrDefault<Specialty>();
+                        if (speclity == null)
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { ErrorMessage = "Invalid specility " + item.ToString() + " details.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                        }
 
-            if (doctorBO.user.DoctorSpecialities.Count > 0)
-            {
-                _dbSetDocSpecility.RemoveRange(_context.DoctorSpecialities.Where(c => c.DoctorID == doctorBO.user.ID));
+                        doctorSpecilityDB.Specialty = speclity;
+                        _context.Entry(speclity).State = System.Data.Entity.EntityState.Modified;
+                        lstDoctorSpecility.Add(doctorSpecilityDB);
+                    }
+                }
+                doctorDB.User.DoctorSpecialities = lstDoctorSpecility;
+
+                if (doctorDB.id > 0)
+                {
+                    //Find Doctor By ID
+                    Doctor doctor = _context.Doctors.Where(p => p.UserID == doctorDB.id).FirstOrDefault<Doctor>();
+
+                    if (doctor != null)
+                    {
+                        #region Doctor
+                        doctor.LicenseNumber = doctorBO.LicenseNumber != null ? doctorBO.LicenseNumber : doctor.LicenseNumber;
+                        doctor.WCBAuthorization = doctorBO.WCBAuthorization != null ? doctorBO.WCBAuthorization : doctor.WCBAuthorization;
+                        doctor.WcbRatingCode = doctorBO.WcbRatingCode != null ? doctorBO.WcbRatingCode : doctor.WcbRatingCode;
+                        doctor.NPI = doctorBO.NPI != null ? doctorBO.NPI : doctor.NPI;
+                        doctor.Title = doctorBO.Title != null ? doctorBO.Title : doctor.Title;
+                        doctor.TaxType = System.Convert.ToByte(doctorBO.TaxType);
+                        doctor.IsDeleted = doctorBO.IsDeleted.HasValue ? doctorBO.IsDeleted : false;
+                        doctor.UpdateDate = doctorBO.UpdateDate;
+                        doctor.UpdateByUserID = doctorBO.UpdateByUserID;
+                        #endregion
+
+                        _context.Entry(doctor).State = System.Data.Entity.EntityState.Modified;
+                    }
+                    else
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { ErrorMessage = "Please pass valid doctor details.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    }
+                }
+                else
+                {
+                    doctorDB.CreateDate = doctorBO.CreateDate;
+                    doctorDB.CreateByUserID = doctorBO.CreateByUserID;
+
+                    _dbSet.Add(doctorDB);
+                }
                 _context.SaveChanges();
-                Specialty specilityDB = null;
-                DoctorSpeciality doctorSpecilityDB = null;
-                foreach (var item in doctorBO.user.DoctorSpecialities)
-                {
-                    BO.DoctorSpeciality doctorSpecialityBO = (BO.DoctorSpeciality)(object)item;
-                    specilityDB = new Specialty();
-                    doctorSpecilityDB = new DoctorSpeciality();
-
-                    #region Doctor
-                    doctorSpecilityDB.IsDeleted = doctorSpecialityBO.IsDeleted.HasValue ? doctorSpecialityBO.IsDeleted.Value : false;
-                    #endregion
-
-                    doctorSpecilityDB.User = user_;
-
-                    //Find Record By ID
-                    Specialty speclity = _context.Specialties.Where(p => p.id == doctorSpecialityBO.ID).FirstOrDefault<Specialty>();
-                    if (speclity == null)
-                        return new BO.ErrorObject { ErrorMessage = "Invalid specility " + item.ToString() + " details.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-
-                    doctorSpecilityDB.Specialty = speclity;
-                    _context.Entry(speclity).State = System.Data.Entity.EntityState.Modified;
-                    lstDoctorSpecility.Add(doctorSpecilityDB);
-                }
+                dbContextTransaction.Commit();
             }
-            doctorDB.User.DoctorSpecialities = lstDoctorSpecility;
-
-
-            if (doctorDB.id > 0)
-            {
-
-                //Find Doctor By ID
-                Doctor doctor = _context.Doctors.Where(p => p.id == doctorDB.id).FirstOrDefault<Doctor>();
-
-                if (doctor != null)
-                {
-                    #region Doctor
-                    doctor.LicenseNumber = doctorBO.LicenseNumber!=null? doctorBO.LicenseNumber: doctor.LicenseNumber;
-                    doctor.WCBAuthorization = doctorBO.WCBAuthorization != null ? doctorBO.WCBAuthorization : doctor.WCBAuthorization;
-                    doctor.WcbRatingCode = doctorBO.WcbRatingCode != null ? doctorBO.WcbRatingCode : doctor.WcbRatingCode;
-                    doctor.NPI = doctorBO.NPI != null ? doctorBO.NPI : doctor.NPI;
-                    doctor.Title = doctorBO.Title != null ? doctorBO.Title : doctor.Title;
-                    doctor.TaxType = System.Convert.ToByte(doctorBO.TaxType);
-                    doctor.IsDeleted = doctorBO.IsDeleted.HasValue ? doctorBO.IsDeleted : false;
-                    doctor.UpdateDate = doctorBO.UpdateDate;
-                    doctor.UpdateByUserID = doctorBO.UpdateByUserID;
-                    #endregion
-
-                    _context.Entry(doctor).State = System.Data.Entity.EntityState.Modified;
-                }
-
-            }
-            else
-            {
-                doctorDB.CreateDate = doctorBO.CreateDate;
-                doctorDB.CreateByUserID = doctorBO.CreateByUserID;
-
-                _dbSet.Add(doctorDB);
-            }
-            _context.SaveChanges();
-
             var res = Convert<BO.Doctor, Doctor>(doctorDB);
             return (object)res;
         }
@@ -223,7 +251,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID
         public override object Get(int id)
         {
-            BO.Doctor acc_ = Convert<BO.Doctor, Doctor>(_context.Doctors.Include("User").Where(p => p.id == id && p.IsDeleted == false).Include(a => a.User.DoctorSpecialities).FirstOrDefault<Doctor>());
+            BO.Doctor acc_ = Convert<BO.Doctor, Doctor>(_context.Doctors.Include("User").Include("User.UserCompanyRoles").Where(p => p.id == id && p.IsDeleted == false).Include(a => a.User.DoctorSpecialities).FirstOrDefault<Doctor>());
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Specialty.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -237,7 +265,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             //BO.Doctor doctorBO = (BO.Doctor)(object)entity;
 
-            var acc_ = _context.Doctors.Include("User").Where(p => p.IsDeleted == false || p.IsDeleted == null).Include(a => a.User.DoctorSpecialities).ToList<Doctor>();
+            var acc_ = _context.Doctors.Include("User").Include("User.UserCompanyRoles").Where(p => p.IsDeleted == false || p.IsDeleted == null).Include(a => a.User.DoctorSpecialities).ToList<Doctor>();
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };

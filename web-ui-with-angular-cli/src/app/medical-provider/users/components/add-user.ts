@@ -15,10 +15,14 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
+import * as _ from 'underscore';
 import { StatesStore } from '../../../commons/stores/states-store';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { UserType } from '../../../commons/models/enums/user-type';
+import { SpecialityStore } from '../../../account-setup/stores/speciality-store';
+import { Speciality } from '../../../account-setup/models/speciality';
+import { SelectItem } from 'primeng/primeng';
 
 @Component({
     selector: 'add-user',
@@ -30,13 +34,8 @@ export class AddUserComponent implements OnInit {
     cities: any[];
     selectedRole: string[] = [];
     selectedCity = 0;
-    options = {
-        timeOut: 3000,
-        showProgressBar: true,
-        pauseOnHover: false,
-        clickToClose: false,
-        maxLength: 10
-    };
+    specialitiesArr: SelectItem[] = [];
+    selectedSpeciality: Speciality;
     userform: FormGroup;
     userformControls;
     isSaveUserProgress = false;
@@ -50,17 +49,45 @@ export class AddUserComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _usersStore: UsersStore,
+        private _specialityStore: SpecialityStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
+            this._progressBarService.show();
+             this._specialityStore.getSpecialities()
+                .subscribe((specialties) => {
+                    let specialities: Speciality[] = specialties;
+                    this.specialitiesArr = _.map(specialities, (currentSpeciality: Speciality) => {
+                        return {
+                            label: `${currentSpeciality.specialityCode} - ${currentSpeciality.name}`,
+                            value: currentSpeciality.id.toString()
+                        };
+                    });
+                },
+                (error) => {
+                    this._router.navigate(['../../']);
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+
+
         this.userform = this.fb.group({
             userInfo: this.fb.group({
                 firstname: ['', Validators.required],
                 lastname: ['', Validators.required],
                 role: ['', Validators.required]
-
-
+            }),
+            doctor: this.fb.group({
+                licenseNumber: ['', Validators.required],
+                wcbAuthorization: ['', Validators.required],
+                wcbRatingCode: ['', Validators.required],
+                npi: ['', Validators.required],
+                taxType: ['', [Validators.required, AppValidators.selectedValueValidator]],
+                title: ['', Validators.required],
+                speciality: ['', Validators.required]
             }),
             contact: this.fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
@@ -120,8 +147,7 @@ export class AddUserComponent implements OnInit {
             firstName: userFormValues.userInfo.firstname,
             lastName: userFormValues.userInfo.lastname,
             userType: UserType.STAFF,
-            // role: roles,
-            role1: roles,
+            roles: roles,
             userName: userFormValues.contact.email,
             contact: new Contact({
                 cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,

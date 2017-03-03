@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Rx';
-import { ScheduleDetail } from '../models/schedule-detail';
-import { ScheduleStore } from '../stores/schedule-store';
+import { ScheduleDetail } from '../../locations/models/schedule-detail';
+import { ScheduleStore } from '../../locations/stores/schedule-store';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -9,20 +9,20 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import * as moment from 'moment';
 import * as _ from 'underscore';
-import { LocationsStore } from '../stores/locations-store';
-import { LocationDetails } from '../models/location-details';
-import { Schedule } from '../models/schedule';
+import { LocationsStore } from '../../locations/stores/locations-store';
+import { LocationDetails } from '../../locations/models/location-details';
+import { Schedule } from '../../locations/models/schedule';
 import { Notification } from '../../../commons/models/notification';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 
 @Component({
-    selector: 'schedule',
-    templateUrl: './schedule.html'
+    selector: 'doctor-schedule',
+    templateUrl: './doctor-schedule.html'
 })
 
-export class ScheduleComponent implements OnInit {
+export class DoctorScheduleComponent implements OnInit {
     options = {
         timeOut: 3000,
         showProgressBar: true,
@@ -53,8 +53,8 @@ export class ScheduleComponent implements OnInit {
         private _elRef: ElementRef
     ) {
 
-        this._route.parent.params.subscribe((params: any) => {
-            let locationId = parseInt(params.locationId, 10);
+        this._route.parent.parent.parent.params.subscribe((params: any) => {
+            let locationId = parseInt(params.locationId);
             this._progressBarService.show();
             let fetchSchedules = this._scheduleStore.getSchedules();
             let fetchLocation = this._locationsStore.getLocationById(locationId);
@@ -182,10 +182,6 @@ export class ScheduleComponent implements OnInit {
         }
     }
 
-    updateScheduleForLocation(schedule: Schedule) {
-        return this._locationsStore.updateScheduleForLocation(this.locationDetails, schedule);
-    }
-
     updateSchedule() {
         let scheduleFormValues = this.scheduleform.value;
         let scheduleDetails = this.getScheduleDetails();
@@ -201,14 +197,13 @@ export class ScheduleComponent implements OnInit {
         result = this._scheduleStore.updateSchedule(schedule);
         result.subscribe(
             (response) => {
-                this.updateScheduleForLocation(schedule);
                 let notification = new Notification({
                     'title': 'Schedule updated successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../'], { relativeTo: this._route });
+                this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
                 this.isSaveProgress = false;
@@ -243,14 +238,13 @@ export class ScheduleComponent implements OnInit {
         result = this._scheduleStore.addSchedule(schedule);
         result.subscribe(
             (response) => {
-                this.updateScheduleForLocation(schedule);
                 let notification = new Notification({
                     'title': 'Schedule added successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../'], { relativeTo: this._route });
+                this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
                 this.isSaveProgress = false;

@@ -156,6 +156,172 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region save
+        public override object Save<T>(T entity)
+        {
+            BO.PatientVisit2 PatientVisit2BO = (BO.PatientVisit2)(object)entity;
+            BO.CalendarEvent CalendarEventBO = PatientVisit2BO.CalendarEvent;
+
+            PatientVisit2 PatientVisit2DB = new PatientVisit2();
+
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                bool IsEditMode = false;
+                IsEditMode = (PatientVisit2BO != null && PatientVisit2BO.ID > 0) ? true : false;
+
+                if (PatientVisit2BO.ID <= 0 && PatientVisit2BO.PatientId.HasValue == false && PatientVisit2BO.LocationId.HasValue == false)
+                {
+                    IsEditMode = (CalendarEventBO != null && CalendarEventBO.ID > 0) ? true : false;
+                }
+
+                CalendarEvent CalendarEventDB = new CalendarEvent();
+                #region Calendar Event
+                if (CalendarEventBO != null)
+                {
+                    bool Add_CalendarEventDB = false;
+                    CalendarEventDB = _context.CalendarEvents.Where(p => p.Id == CalendarEventBO.ID).FirstOrDefault();
+
+                    if (CalendarEventDB == null && CalendarEventBO.ID <= 0)
+                    {
+                        CalendarEventDB = new CalendarEvent();
+                        Add_CalendarEventDB = true;
+                    }
+                    else if (CalendarEventDB == null && CalendarEventBO.ID > 0)
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Calendar Event details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                    }
+
+                    CalendarEventDB.Name = IsEditMode == true && CalendarEventBO.Name == null ? CalendarEventDB.Name : CalendarEventBO.Name;
+                    CalendarEventDB.EventStart = IsEditMode == true && CalendarEventBO.EventStart.HasValue == false ? CalendarEventDB.EventStart : CalendarEventBO.EventStart.Value;
+                    CalendarEventDB.EventEnd = IsEditMode == true && CalendarEventBO.EventEnd.HasValue == false ? CalendarEventDB.EventEnd : CalendarEventBO.EventEnd.Value;
+                    CalendarEventDB.TimeZone = IsEditMode == true && CalendarEventBO.TimeZone == null ? CalendarEventDB.TimeZone : CalendarEventBO.TimeZone;
+                    CalendarEventDB.Description = IsEditMode == true && CalendarEventBO.Description == null ? CalendarEventDB.Description : CalendarEventBO.Description;
+                    CalendarEventDB.RecurrenceId = IsEditMode == true && CalendarEventBO.RecurrenceId.HasValue == false ? CalendarEventDB.RecurrenceId : CalendarEventBO.RecurrenceId;
+                    CalendarEventDB.RecurrenceRule = IsEditMode == true && CalendarEventBO.RecurrenceRule == null ? CalendarEventDB.RecurrenceRule : CalendarEventBO.RecurrenceRule;
+                    CalendarEventDB.RecurrenceException = IsEditMode == true && CalendarEventBO.RecurrenceException == null ? CalendarEventDB.RecurrenceException : CalendarEventBO.RecurrenceException;
+                    CalendarEventDB.IsAllDay = IsEditMode == true && CalendarEventBO.IsAllDay.HasValue == false ? CalendarEventDB.IsAllDay : CalendarEventBO.IsAllDay;
+
+                    if (IsEditMode == false)
+                    {
+                        CalendarEventDB.CreateByUserID = CalendarEventBO.CreateByUserID;
+                        CalendarEventDB.CreateDate = DateTime.UtcNow;
+                    }
+                    else
+                    {
+                        CalendarEventDB.UpdateByUserID = CalendarEventBO.UpdateByUserID;
+                        CalendarEventDB.UpdateDate = DateTime.UtcNow;
+                    }
+
+                    if (Add_CalendarEventDB == true)
+                    {
+                        CalendarEventDB = _context.CalendarEvents.Add(CalendarEventDB);
+                    }
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    if (IsEditMode == false)
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Calendar Event details.", ErrorLevel = ErrorLevel.Error };
+                    }
+                    CalendarEventDB = null;
+                }
+                #endregion
+
+                #region Patient Visit
+                if (PatientVisit2BO != null && (PatientVisit2BO.ID <= 0 && PatientVisit2BO.PatientId.HasValue == true && PatientVisit2BO.LocationId.HasValue == true))
+                {
+                    bool Add_PatientVisit2DB = false;
+                    PatientVisit2DB = _context.PatientVisit2.Where(p => p.Id == PatientVisit2BO.ID).FirstOrDefault();
+
+                    if (PatientVisit2DB == null && PatientVisit2BO.ID <= 0)
+                    {
+                        PatientVisit2DB = new PatientVisit2();
+                        Add_PatientVisit2DB = true;
+                    }
+                    else if (PatientVisit2DB == null && PatientVisit2BO.ID > 0)
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Patient Visit dosent exists.", ErrorLevel = ErrorLevel.Error };
+                    }
+
+                    //PatientVisit2DB.CalendarEventId = PatientVisit2BO.CalendarEventId.HasValue == false ? PatientVisit2DB.CalendarEventId : PatientVisit2BO.CalendarEventId.Value;
+                    PatientVisit2DB.CalendarEventId = (CalendarEventDB != null && CalendarEventDB.Id > 0) ? CalendarEventDB.Id : PatientVisit2DB.CalendarEventId;
+
+                    if (IsEditMode == false && PatientVisit2BO.CaseId.HasValue == false)
+                    {
+                        int CaseId = _context.Cases.Where(p => p.PatientId == PatientVisit2BO.PatientId.Value && p.CaseStatusId == 1).Select(p => p.Id).FirstOrDefault<int>();
+                        PatientVisit2DB.CaseId = CaseId;
+                    }
+                    else
+                    {
+                        PatientVisit2DB.CaseId = PatientVisit2BO.CaseId.HasValue == false ? PatientVisit2DB.CaseId : PatientVisit2BO.CaseId.Value;
+                    }
+
+                    PatientVisit2DB.PatientId = IsEditMode == true && PatientVisit2BO.PatientId.HasValue == false ? PatientVisit2DB.PatientId : PatientVisit2BO.PatientId.Value;
+                    PatientVisit2DB.LocationId = IsEditMode == true && PatientVisit2BO.LocationId.HasValue == false ? PatientVisit2DB.LocationId : PatientVisit2BO.LocationId.Value;
+                    PatientVisit2DB.RoomId = IsEditMode == true && PatientVisit2BO.RoomId.HasValue == false ? PatientVisit2DB.RoomId : PatientVisit2BO.RoomId;
+                    PatientVisit2DB.DoctorId = IsEditMode == true && PatientVisit2BO.DoctorId.HasValue == false ? PatientVisit2DB.DoctorId : PatientVisit2BO.DoctorId;
+                    PatientVisit2DB.SpecialtyId = IsEditMode == true && PatientVisit2BO.SpecialtyId.HasValue == false ? PatientVisit2DB.SpecialtyId : PatientVisit2BO.SpecialtyId;
+                    PatientVisit2DB.Notes = IsEditMode == true && PatientVisit2BO.Notes == null ? PatientVisit2DB.Notes : PatientVisit2BO.Notes;
+                    PatientVisit2DB.VisitStatusId = IsEditMode == true && PatientVisit2BO.VisitStatusId.HasValue == false ? PatientVisit2DB.VisitStatusId : PatientVisit2BO.VisitStatusId;
+                    PatientVisit2DB.VisitType = IsEditMode == true && PatientVisit2BO.VisitType.HasValue == false ? PatientVisit2DB.VisitType : PatientVisit2BO.VisitType;
+
+                    if (IsEditMode == false)
+                    {
+                        PatientVisit2DB.CreateByUserID = PatientVisit2BO.CreateByUserID;
+                        PatientVisit2DB.CreateDate = DateTime.UtcNow;
+                    }
+                    else
+                    {
+                        PatientVisit2DB.UpdateByUserID = PatientVisit2BO.UpdateByUserID;
+                        PatientVisit2DB.UpdateDate = DateTime.UtcNow;
+                    }
+
+                    if (Add_PatientVisit2DB == true)
+                    {
+                        PatientVisit2DB = _context.PatientVisit2.Add(PatientVisit2DB);
+                    }
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    if (IsEditMode == false)
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient Visit details.", ErrorLevel = ErrorLevel.Error };
+                    }
+                    PatientVisit2DB = null;
+                }
+
+                _context.SaveChanges();
+                #endregion
+
+                dbContextTransaction.Commit();
+
+                if (PatientVisit2DB != null)
+                {
+                    PatientVisit2DB = _context.PatientVisit2.Include("CalendarEvent")
+                                                            .Where(p => p.Id == PatientVisit2DB.Id
+                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                            .FirstOrDefault<PatientVisit2>();
+                }
+                else if (CalendarEventDB != null)
+                {
+                    PatientVisit2DB = _context.PatientVisit2.Include("CalendarEvent")
+                                                            .Where(p => p.CalendarEvent.Id == CalendarEventDB.Id
+                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                            .FirstOrDefault<PatientVisit2>();
+                }
+            }
+
+            var res = Convert<BO.PatientVisit2, PatientVisit2>(PatientVisit2DB);
+            return (object)res;
+        }
+        #endregion
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

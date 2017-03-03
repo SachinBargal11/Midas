@@ -22,17 +22,17 @@
     [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Locations</header>
     <p-column selectionMode="multiple"></p-column>
-    <p-column field="location.name" header="Name" [sortable]="true"></p-column>
-    <p-column field="address.address1" header="Address" [sortable]="true"></p-column>
+    <p-column field="location.location.name" header="Name" [sortable]="true"></p-column>
+    <p-column field="location.address.address1" header="Address" [sortable]="true"></p-column>
     <p-column header="Phone" [sortable]="true">
-            <template let-rowdata="rowData" pTemplate="body">
+            <template let-rowdata="rowData.location" pTemplate="body">
                 <span>{{rowdata.contact.workPhone | phoneFormat}}
             </span>
             </template>
     </p-column>
     <p-column styleClass="actions-cell" header="Actions">
-        <template let-location="rowData" pTemplate="body">
-            <a routerLink="{{location.location.id}}/schedule"><i class="glyphicon glyphicon-edit"></i></a>
+        <template let-schedule="rowData" pTemplate="body">
+            <a routerLink="{{schedule.id}}/schedule"><i class="glyphicon glyphicon-edit"></i></a>
         </template>
     </p-column>
 </p-dataTable>

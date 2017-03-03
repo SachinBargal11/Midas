@@ -12,6 +12,7 @@ import { EditReferringOfficeComponent } from './components/edit-referring-office
 import { AccidentInfoComponent } from './components/accident';
 import { InsuranceMapComponent } from './components/insurance-mapping';
 import { CaseMappingComponent } from './components/case-mapping';
+import { CompanyCasesComponent } from './components/company-cases-list';
 
 export const CasesShellRoutes: Routes = [
     {
@@ -20,7 +21,14 @@ export const CasesShellRoutes: Routes = [
         redirectTo: 'cases'
     },
     {
-        path: 'patients/:patientId/cases',
+        path: 'cases',
+        component: CompanyCasesComponent,
+        data: {
+            breadcrumb: 'Cases'
+        }
+    },
+    {
+        path: 'cases/:patientId',
         component: ShellComponent,
         data: {
             breadcrumb: 'Cases'

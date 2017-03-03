@@ -111,7 +111,7 @@ export const UsersRoutes: Routes = [
                                 }
                             },
                             {
-                                path: ':doctorLocationId',
+                                path: ':scheduleId',
                                 component: DoctorLocationScheduleShellComponent,
                                 data: {
                                     breadcrumb: 'root'

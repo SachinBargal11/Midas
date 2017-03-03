@@ -2,6 +2,7 @@ import { Record } from 'immutable';
 import * as moment from 'moment';
 import { Address } from './address';
 import { Contact } from './contact';
+import { UserRole } from './user-role';
 import { UserType } from './enums/user-type';
 import { Gender } from './enums/Gender';
 import { RoleType } from './enums/roles';
@@ -10,7 +11,7 @@ const UserRecord = Record({
     id: 0,
     // name: '',
     userType: UserType.STAFF,
-    role1: [],
+    roles: null,
     accountId: '',
     userName: '',
     firstName: '',
@@ -33,7 +34,7 @@ export class User extends UserRecord {
     id: number;
     // name: string;
     userType: UserType;
-    role1: RoleType[];
+    roles: UserRole[];
     accountId: number;
     userName: string;
     firstName: string;

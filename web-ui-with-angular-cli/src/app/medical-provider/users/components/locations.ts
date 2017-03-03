@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
@@ -7,8 +7,8 @@ import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
-import { LocationDetails } from '../../locations/models/location-details';
-import { LocationsStore } from '../../locations/stores/locations-store';
+import { DoctorLocationSchedule } from '../../users/models/doctor-location-schedule';
+import { DoctorLocationScheduleStore } from '../../users/stores/doctor-location-schedule-store';
 
 @Component({
     selector: 'locations',
@@ -17,17 +17,22 @@ import { LocationsStore } from '../../locations/stores/locations-store';
 
 
 export class LocationsComponent implements OnInit {
-    locations: LocationDetails[];
+    locations: DoctorLocationSchedule[];
+    userId: number;
     constructor(
+        public _route: ActivatedRoute,
         private _router: Router,
         private _notificationsStore: NotificationsStore,
-        private _locationsStore: LocationsStore,
+        private _doctorLocationScheduleStore: DoctorLocationScheduleStore,
         public _sessionStore: SessionStore,
         private _notificationsService: NotificationsService,
         private _progressBarService: ProgressBarService
     ) {
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadLocations();
+        });
+        this._route.parent.parent.params.subscribe((params: any) => {
+            this.userId = parseInt(params.userId, 10);
         });
     }
     ngOnInit() {
@@ -36,7 +41,7 @@ export class LocationsComponent implements OnInit {
 
     loadLocations() {
         this._progressBarService.show();
-        this._locationsStore.getLocations()
+        this._doctorLocationScheduleStore.getDoctorLocationScheduleByDoctorId(this.userId)
             .subscribe(
             (data) => {
                 this.locations = data;
@@ -53,7 +58,7 @@ export class LocationsComponent implements OnInit {
                 this._progressBarService.hide();
             },
             () => {
-            this._progressBarService.hide();
+                this._progressBarService.hide();
             });
     }
 }

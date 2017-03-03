@@ -91,16 +91,12 @@ export class UsersService {
                 company: {
                     id: this._sessionStore.session.currentCompany.id
                 },
-                role: {
-                    name: 'Doctor',
-                    roleType: 'Doctor',
-                    status: 'active'
-                }
+                role: requestData.roles
             };
 
             requestData.contactInfo = requestData.user.contact;
             requestData.address = requestData.user.address;
-            requestData.user = _.omit(requestData.user, 'contact', 'address');
+            requestData.user = _.omit(requestData.user, 'roles', 'contact', 'address');
             // requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
             // requestData = _.omit(requestData, 'accountStatus', 'subscriptionPlan', 'companies');
             return this._http.post(this._url + '/User/Add', JSON.stringify(requestData), {
@@ -129,16 +125,12 @@ export class UsersService {
                 company: {
                     id: this._sessionStore.session.currentCompany.id
                 },
-                role: {
-                    name: 'Doctor',
-                    roleType: 'Admin',
-                    status: 'active'
-                }
+                role: requestData.roles
             };
 
             requestData.contactInfo = requestData.user.contact;
             requestData.address = requestData.user.address;
-            requestData.user = _.omit(requestData.user, 'contact', 'address');
+            requestData.user = _.omit(requestData.user, 'roles', 'contact', 'address');
             // requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
             // requestData = _.omit(requestData, 'accountStatus', 'subscriptionPlan');
             return this._http.post(this._url + '/User/Add', JSON.stringify(requestData), {
@@ -233,17 +225,13 @@ export class UsersService {
                 company: {
                     id: this._sessionStore.session.currentCompany.id
                 },
-                role: {
-                    name: 'Doctor',
-                    roleType: 'Admin',
-                    status: 'active'
-                }
+                role: requestData.roles
             };
 
             requestData.user.isDeleted = 1;
             requestData.contactInfo = requestData.user.contact;
             requestData.address = requestData.user.address;
-            requestData.user = _.omit(requestData.user, 'contact', 'address');
+            requestData.user = _.omit(requestData.user, 'roles', 'contact', 'address');
             // requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
             // requestData = _.omit(requestData, 'accountStatus', 'subscriptionPlan');
             return this._http.post(this._url + '/User/Add', JSON.stringify(requestData), {

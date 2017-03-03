@@ -26,13 +26,26 @@ export class DoctorLocationScheduleStore {
         this._doctorLocationSchedules.next(this._doctorLocationSchedules.getValue().clear());
     }
 
-    get locations() {
+    get doctorLocationSchedules() {
         return this._doctorLocationSchedules.asObservable();
     }
 
-    getDoctorLocationSchedules(): Observable<DoctorLocationSchedule[]> {
+    // getDoctorLocationSchedulesByDoctorId(doctorId: number): Observable<DoctorLocationSchedule[]> {
+    //     let promise = new Promise((resolve, reject) => {
+    //         this._doctorLocationScheduleService.getDoctorLocationScheduleByDoctorId(doctorId)
+    //             .subscribe((doctorLocationSchedules: DoctorLocationSchedule[]) => {
+    //                 this._doctorLocationSchedules.next(List(doctorLocationSchedules));
+    //                 resolve(doctorLocationSchedules);
+    //             }, error => {
+    //                 reject(error);
+    //             });
+    //     });
+    //     return <Observable<DoctorLocationSchedule[]>>Observable.fromPromise(promise);
+    // }
+
+    getDoctorLocationSchedulesByLocationId(locationId: number): Observable<DoctorLocationSchedule[]> {
         let promise = new Promise((resolve, reject) => {
-            this._doctorLocationScheduleService.getDoctorLocationSchedules()
+            this._doctorLocationScheduleService.getDoctorLocationScheduleByLocationId(locationId)
                 .subscribe((doctorLocationSchedules: DoctorLocationSchedule[]) => {
                     this._doctorLocationSchedules.next(List(doctorLocationSchedules));
                     resolve(doctorLocationSchedules);
@@ -43,9 +56,9 @@ export class DoctorLocationScheduleStore {
         return <Observable<DoctorLocationSchedule[]>>Observable.fromPromise(promise);
     }
 
-    getDoctorLocationSchedule(id: number): Observable<DoctorLocationSchedule> {
+    getDoctorLocationSchedule(scheduleId: number): Observable<DoctorLocationSchedule> {
         let promise = new Promise((resolve, reject) => {
-            this._doctorLocationScheduleService.getDoctorLocationSchedule(id)
+            this._doctorLocationScheduleService.getDoctorLocationSchedule(scheduleId)
                 .subscribe((doctorLocationSchedule: DoctorLocationSchedule) => {
                     resolve(doctorLocationSchedule);
                 }, error => {
@@ -54,27 +67,27 @@ export class DoctorLocationScheduleStore {
         });
         return <Observable<DoctorLocationSchedule>>Observable.fromPromise(promise);
     }
-    getDoctorLocationScheduleByLocationId(id: number): Observable<DoctorLocationSchedule> {
+    getDoctorLocationScheduleByLocationId(id: number): Observable<DoctorLocationSchedule[]> {
         let promise = new Promise((resolve, reject) => {
             this._doctorLocationScheduleService.getDoctorLocationScheduleByLocationId(id)
-                .subscribe((doctorLocationSchedule: DoctorLocationSchedule) => {
+                .subscribe((doctorLocationSchedule: DoctorLocationSchedule[]) => {
                     resolve(doctorLocationSchedule);
                 }, error => {
                     reject(error);
                 });
         });
-        return <Observable<DoctorLocationSchedule>>Observable.fromPromise(promise);
+        return <Observable<DoctorLocationSchedule[]>>Observable.fromPromise(promise);
     }
-    getDoctorLocationScheduleByDoctorId(id: number): Observable<DoctorLocationSchedule> {
+    getDoctorLocationScheduleByDoctorId(doctorId: number): Observable<DoctorLocationSchedule[]> {
         let promise = new Promise((resolve, reject) => {
-            this._doctorLocationScheduleService.getDoctorLocationScheduleByDoctorId(id)
-                .subscribe((doctorLocationSchedule: DoctorLocationSchedule) => {
+            this._doctorLocationScheduleService.getDoctorLocationScheduleByDoctorId(doctorId)
+                .subscribe((doctorLocationSchedule: DoctorLocationSchedule[]) => {
                     resolve(doctorLocationSchedule);
                 }, error => {
                     reject(error);
                 });
         });
-        return <Observable<DoctorLocationSchedule>>Observable.fromPromise(promise);
+        return <Observable<DoctorLocationSchedule[]>>Observable.fromPromise(promise);
     }
 
 

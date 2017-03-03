@@ -61,9 +61,9 @@ export class ScheduleStore {
         });
         return <Observable<Schedule>>Observable.fromPromise(promise);
     }
-    addSchedule(scheduleDetail: Schedule, locationDetails: LocationDetails): Observable<Schedule> {
+    addSchedule(scheduleDetail: Schedule): Observable<Schedule> {
         let promise = new Promise((resolve, reject) => {
-            this._scheduleService.addSchedule(scheduleDetail, locationDetails).subscribe((schedule: Schedule) => {
+            this._scheduleService.addSchedule(scheduleDetail).subscribe((schedule: Schedule) => {
                 this._schedules.next(this._schedules.getValue().push(schedule));
                 resolve(schedule);
             }, error => {
@@ -72,9 +72,9 @@ export class ScheduleStore {
         });
         return <Observable<Schedule>>Observable.from(promise);
     }
-    updateSchedule(scheduleDetail: Schedule, locationDetails: LocationDetails): Observable<Schedule> {
+    updateSchedule(scheduleDetail: Schedule): Observable<Schedule> {
         let promise = new Promise((resolve, reject) => {
-            this._scheduleService.updateSchedule(scheduleDetail, locationDetails).subscribe((updatedScheduleDetail: Schedule) => {
+            this._scheduleService.updateSchedule(scheduleDetail).subscribe((updatedScheduleDetail: Schedule) => {
                 let scheduleDetails: List<Schedule> = this._schedules.getValue();
                 let index = scheduleDetails.findIndex((currentSchedule: Schedule) => currentSchedule.id === updatedScheduleDetail.id);
                 scheduleDetails = scheduleDetails.update(index, function () {

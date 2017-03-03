@@ -33,7 +33,7 @@ export class DoctorLocationScheduleComponent implements OnInit {
     isSaveProgress = false;
     currentSchedule: Schedule = null;
     scheduleJS: any;
-    doctorDetails: DoctorLocationSchedule;
+    doctorLocationScheduleDetail: DoctorLocationSchedule;
     locationDetails: LocationDetails;
     isInEditMode: boolean = false;
     saveAsNew: boolean = false;
@@ -59,20 +59,15 @@ export class DoctorLocationScheduleComponent implements OnInit {
         });
 
         this._route.parent.params.subscribe((params: any) => {
-            let doctorLocationId = parseInt(params.doctorLocationId);
+            let scheduleId = parseInt(params.scheduleId, 10);
             this._progressBarService.show();
             let fetchSchedules = this._scheduleStore.getSchedules();
-            let fetchLocation = this._doctorLocationsStore.getLocationById(doctorLocationId);
-            let fetchDoctorLocationSchedule = this._doctorLocationScheduleStore.getDoctorLocationScheduleByLocationId(doctorLocationId);
+            let fetchDoctorLocationSchedule = this._doctorLocationScheduleStore.getDoctorLocationSchedule(scheduleId);
 
-            // Observable.forkJoin([fetchSchedules, fetchLocation])
-            Observable.forkJoin([fetchSchedules, fetchLocation, fetchDoctorLocationSchedule])
+            Observable.forkJoin([fetchSchedules, fetchDoctorLocationSchedule])
                 .subscribe((results) => {
-                    this.locationDetails =  results[1];
-                    this.doctorDetails =  results[2];
-                    // let scheduleId: number = this.doctorDetails.schedule.id;
-                    let scheduleId: number = this.locationDetails.schedule.id;
-                    this._fetchScheduleWithDetails(scheduleId);
+                    this.doctorLocationScheduleDetail = results[1];
+                    this._fetchScheduleWithDetails(this.doctorLocationScheduleDetail.schedule.id);
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -191,9 +186,9 @@ export class DoctorLocationScheduleComponent implements OnInit {
         }
     }
 
-    updateScheduleForLocation(schedule: Schedule) {
-        return this._doctorLocationScheduleStore.updateScheduleForLocation(this.doctorDetails, schedule);
-    }
+    // updateScheduleForLocation(schedule: Schedule) {
+    //     return this._doctorLocationScheduleStore.updateScheduleForLocation(this.doctorLocationScheduleDetail, schedule);
+    // }
 
     updateSchedule() {
         let scheduleFormValues = this.scheduleform.value;
@@ -207,10 +202,12 @@ export class DoctorLocationScheduleComponent implements OnInit {
         this.isSaveProgress = true;
         let result;
 
-        result = this._scheduleStore.updateSchedule(schedule, this.locationDetails);
+        result = this._scheduleStore.updateSchedule(schedule).flatMap((schedule: Schedule) => {
+            return this._doctorLocationScheduleStore.updateScheduleForLocation(this.doctorLocationScheduleDetail, schedule);
+        });
         result.subscribe(
             (response) => {
-                this.updateScheduleForLocation(schedule);
+                // this.updateScheduleForLocation(schedule);
                 let notification = new Notification({
                     'title': 'Schedule updated successfully!',
                     'type': 'SUCCESS',
@@ -249,10 +246,12 @@ export class DoctorLocationScheduleComponent implements OnInit {
         this.isSaveProgress = true;
         let result;
 
-        result = this._scheduleStore.addSchedule(schedule, this.locationDetails);
+        result = this._scheduleStore.addSchedule(schedule).flatMap((schedule: Schedule) => {
+            return this._doctorLocationScheduleStore.updateScheduleForLocation(this.doctorLocationScheduleDetail, schedule);
+        });
         result.subscribe(
             (response) => {
-                this.updateScheduleForLocation(schedule);
+                // this.updateScheduleForLocation(schedule);
                 let notification = new Notification({
                     'title': 'Schedule added successfully!',
                     'type': 'SUCCESS',

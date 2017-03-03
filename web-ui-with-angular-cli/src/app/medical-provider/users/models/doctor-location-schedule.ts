@@ -1,6 +1,6 @@
 
 import { Record } from 'immutable';
-import { Location } from './doctor-location';
+import { LocationDetails } from '../../locations/models/location-details';
 import { Schedule } from '../../locations/models/schedule';
 import { Doctor } from './doctor';
 
@@ -14,7 +14,7 @@ const DoctorLocationScheduleRecord = Record({
 export class DoctorLocationSchedule extends DoctorLocationScheduleRecord {
     id: number;
     doctor: Doctor;
-    location: Location;
+    location: LocationDetails;
     schedule: Schedule;
 
     constructor(props) {

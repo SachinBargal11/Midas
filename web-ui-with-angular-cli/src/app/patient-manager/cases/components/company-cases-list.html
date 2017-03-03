@@ -12,8 +12,8 @@
     <header>Cases</header>
     <p-column field="caseName" header="Case Name" [sortable]="true"></p-column>
     <p-column header="Patient Name" [sortable]="true">
-        <template let-rowData="rowData" pTemplate="body">
-            <a routerLink="/patient-manager/patients/{{rowData.id}}/cases">{{rowData.firstName}} {{rowData.lastName}}
+        <template let-user="rowData.patient.user" pTemplate="body">
+            <a routerLink="{{user.id}}">{{user.firstName}} {{user.lastName}}
             </a>
         </template>
     </p-column>

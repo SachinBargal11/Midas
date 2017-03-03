@@ -1,21 +1,21 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { Case } from '../models/case';
-import {CaseService} from '../services/cases-services';
-import {List} from 'immutable';
-import {BehaviorSubject} from 'rxjs/Rx';
-import {SessionStore} from '../../../commons/stores/session-store';
-import { CaseManager } from '../../case-manager/models/case-manager';
+import { CaseService } from '../services/cases-services';
+import { List } from 'immutable';
+import { BehaviorSubject } from 'rxjs/Rx';
+import { SessionStore } from '../../../commons/stores/session-store';
 
 @Injectable()
 export class CasesStore {
 
     private _cases: BehaviorSubject<List<Case>> = new BehaviorSubject(List([]));
+    private _companyCases: BehaviorSubject<List<Case>> = new BehaviorSubject(List([]));
 
     constructor(
-        private _casesService:  CaseService,
+        private _casesService: CaseService,
         private _sessionStore: SessionStore
     ) {
         this._sessionStore.userLogoutEvent.subscribe(() => {
@@ -42,16 +42,17 @@ export class CasesStore {
         });
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
-    getCasesByCompany(): Observable<CaseManager[]> {
+    getCasesByCompany(): Observable<Case[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            this._casesService.getCasesByCompany(companyId).subscribe((cases: CaseManager[]) => {
+            this._casesService.getCasesByCompany(companyId).subscribe((cases: Case[]) => {
+                this._companyCases.next(List(cases));
                 resolve(cases);
             }, error => {
                 reject(error);
             });
         });
-        return <Observable<CaseManager[]>>Observable.fromPromise(promise);
+        return <Observable<Case[]>>Observable.fromPromise(promise);
     }
 
     findCaseById(id: number) {

@@ -40,7 +40,7 @@
     <p-column styleClass="actions-cell" header="Actions">
         <template let-patient="rowData" pTemplate="body">
             <a title="Edit" routerLink="{{patient.user.id}}/viewall"><i class="glyphicon glyphicon-edit"></i></a>
-            <a title="View Cases" routerLink="{{patient.user.id}}/cases"><i class="glyphicon glyphicon-list"></i></a>
+            <a title="View Cases" [routerLink]="['/patient-manager/cases/', patient.user.id]"><i class="glyphicon glyphicon-list"></i></a>
         </template>
     </p-column>
     </p-dataTable>

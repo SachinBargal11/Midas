@@ -7,7 +7,7 @@ import * as _ from 'underscore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import {environment} from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { Schedule } from '../models/schedule';
 import { ScheduleDetail } from '../models/schedule-detail';
 import { ScheduleAdapter } from './adapters/schedule-adapter';
@@ -31,7 +31,9 @@ export class ScheduleService {
             return this._http.get(this._url + '/Schedule/get/' + scheduleId).map(res => res.json())
                 .subscribe((data: any) => {
                     let parsedData: Schedule = null;
-                    parsedData = ScheduleAdapter.parseResponse(data);
+                    if (data) {
+                        parsedData = ScheduleAdapter.parseResponse(data);
+                    }
                     resolve(parsedData);
                 }, (error) => {
                     reject(error);
@@ -58,7 +60,7 @@ export class ScheduleService {
         return <Observable<Schedule[]>>Observable.fromPromise(promise);
     }
 
-    addSchedule(schedule: Schedule, locationDetails: LocationDetails): Observable<any> {
+    addSchedule(schedule: Schedule): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let requestData: any = schedule.toJS();
             requestData.scheduleDetails = _.map(requestData.scheduleDetails, function (currentScheduleDetail: ScheduleDetail) {
@@ -81,11 +83,15 @@ export class ScheduleService {
         });
 
         return <Observable<any>>Observable.fromPromise(promise);
-            // .flatMap((schedule: Schedule) => {
-            //     return this._locationsStore.updateScheduleForLocation(locationDetails, schedule);
-            // });
+        // .flatMap((schedule: Schedule) => {
+        //     return this._locationsStore.updateScheduleForLocation(locationDetails, schedule);
+        // });
+        // return <Observable<any>>Observable.fromPromise(promise)
+        // .flatMap((schedule: Schedule) => {
+        //     return this._locationsStore.updateScheduleForLocation(locationDetails, schedule);
+        // });
     }
-    updateSchedule(scheduleDetail: Schedule, locationDetails: LocationDetails): Observable<any> {
+    updateSchedule(scheduleDetail: Schedule): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let requestData: any = scheduleDetail.toJS();
             requestData.scheduleDetails = _.map(requestData.scheduleDetails, function (currentScheduleDetail: ScheduleDetail) {
@@ -107,9 +113,9 @@ export class ScheduleService {
                 });
         });
         return <Observable<any>>Observable.fromPromise(promise);
-            // .flatMap((schedule: Schedule) => {
-            //     return this._locationsStore.updateScheduleForLocation(locationDetails, schedule);
-            // });
+        // .flatMap((schedule: Schedule) => {
+        //     return this._locationsStore.updateScheduleForLocation(locationDetails, schedule);
+        // });
     }
     deleteSchedule(schedule: Schedule): Observable<Schedule> {
         let promise = new Promise((resolve, reject) => {

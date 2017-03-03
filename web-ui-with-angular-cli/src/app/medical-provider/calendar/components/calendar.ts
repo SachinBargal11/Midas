@@ -34,7 +34,6 @@ export class CalendarComponent implements OnInit {
     calendarFormControls;
     private scheduledEventEditorValid: boolean = false;
     eventRenderer: Function = (event, element) => {
-        // debugger;
         if (event.owningEvent.recurrenceId) {
             element.find('.fc-content').prepend('<i class="fa fa-exclamation-circle"></i>&nbsp;');
         } else if (event.owningEvent.recurrenceRule) {
@@ -102,6 +101,10 @@ export class CalendarComponent implements OnInit {
             });
     }
 
+    closeDialog() {
+        this.dialogVisible = false;
+    }
+
     handleDialogHide() {
         this.selectedEvent = null;
     }
@@ -164,7 +167,6 @@ export class CalendarComponent implements OnInit {
                 let exceptionResult: Observable<{ exceptionEvent: ScheduledEvent, recurringEvent: ScheduledEvent }> = this._scheduledEventStore.createExceptionInRecurringEvent(updatedEvent);
                 exceptionResult.subscribe(
                     (response: { exceptionEvent: ScheduledEvent, recurringEvent: ScheduledEvent }) => {
-                        debugger;
                         let notification = new Notification({
                             'title': `Occurrence for recurring event ${response.recurringEvent.name} created for ${response.exceptionEvent.eventStart.format('M d, yy')}`,
                             'type': 'SUCCESS',
