@@ -77,9 +77,7 @@ export class UserBasicComponent implements OnInit {
                     });
                     this.cellPhone = this._phoneFormatPipe.transform(this.user.contact.cellPhone);
                     this.faxNo = this._faxNoFormatPipe.transform(this.user.contact.faxNo);
-                    this.selectedCity = userDetail.address.city;
                     this.userType = UserType[userDetail.userType];
-                    this.loadCities(userDetail.address.state);
                 },
                 (error) => {
                     this._router.navigate(['/medical-provider/users']);
@@ -121,30 +119,6 @@ export class UserBasicComponent implements OnInit {
         // this._statesStore.getCities()
         //         .subscribe(cities => this.cities = cities);
     }
-
-    selectState(event) {
-        let currentState = event.target.value;
-        if (currentState === this.user.address.state) {
-            this.loadCities(currentState);
-            this.selectedCity = this.user.address.city;
-        } else {
-            this.loadCities(currentState);
-            this.selectedCity = '';
-        }
-    }
-    loadCities(stateName) {
-        this.isCitiesLoading = true;
-        if (stateName !== '') {
-            this._statesStore.getCitiesByStates(stateName)
-                .subscribe((cities) => { this.cities = cities; },
-                null,
-                () => { this.isCitiesLoading = false; });
-        } else {
-            this.cities = [];
-            this.isCitiesLoading = false;
-        }
-    }
-
 
     updateUser() {
         let userFormValues = this.userform.value;

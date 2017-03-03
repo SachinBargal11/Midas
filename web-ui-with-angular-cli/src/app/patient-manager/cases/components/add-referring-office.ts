@@ -82,25 +82,6 @@ export class AddReferringOfficeComponent implements OnInit {
             });
     }
 
-    selectState(event) {
-        this.selectedCity = 0;
-        let currentState = event.target.value;
-        this.loadCities(currentState);
-    }
-
-    loadCities(stateName) {
-        this.isCitiesLoading = true;
-        if (stateName !== '') {
-            this._statesStore.getCitiesByStates(stateName)
-                .subscribe((cities) => { this.cities = cities; },
-                null,
-                () => { this.isCitiesLoading = false; });
-        } else {
-            this.cities = [];
-            this.isCitiesLoading = false;
-        }
-    }
-
     save() {
         this.isSaveProgress = true;
         let referringOfficeformValues = this.referringOfficeform.value;

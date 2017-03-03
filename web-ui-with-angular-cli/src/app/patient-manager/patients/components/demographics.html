@@ -135,7 +135,7 @@
                         <label class="form-label"> State
                                         </label>
                         <div class="form-group" [class.error]="demographicsformControls.address.controls.state.touched && !demographicsformControls.address.controls.state.valid">
-                            <select [ngModel]="patientInfo.user.address.state" formControlName="state" type="text" (change)="selectState($event)" class="form-control"
+                            <select [ngModel]="patientInfo.user.address.state" formControlName="state" type="text" class="form-control"
                                 placeholder="" [class.error]="demographicsformControls.address.controls.state.touched && !demographicsformControls.address.controls.state.valid">
                                 <option value="">-Select State-</option>
                                 <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
@@ -149,7 +149,20 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
+                        <label class="form-label"> City
+                                        </label>
+                        <div class="form-group" [class.error]="demographicsformControls.address.controls.city.touched && !demographicsformControls.address.controls.city.valid">
+                            <input [ngModel]="patientInfo.user.address.city" formControlName="city" type="text" class="form-control" [class.error]="!demographicsformControls.address.controls.city.valid"
+                                placeholder="" />
+                                <div class='error-list' *ngIf="demographicsformControls.address.controls.city.touched && !demographicsformControls.address.controls.city.valid">
+                                    <ul>
+                                        <li *ngIf="demographicsformControls.address.controls.city.hasError('required')">City is required.</li>
+                                    </ul>
+                                </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-3">
                         <label class="form-label"> City
                                         </label>
                         <div class="form-group" [class.error]="demographicsformControls.address.controls.city.touched && !demographicsformControls.address.controls.city.valid">
@@ -167,7 +180,7 @@
                     </div>
                     <div class="col-lg-1 m-t-lg">
                         <loader [visible]="isCitiesLoading"></loader>
-                    </div>
+                    </div>-->
                     <div class="col-lg-4">
                         <label class="form-label"> Zipcode
                                         </label>
