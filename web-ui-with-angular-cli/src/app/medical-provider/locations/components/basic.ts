@@ -65,9 +65,7 @@ export class BasicComponent implements OnInit {
             result.subscribe(
                 (locationDetails: LocationDetails) => {
                     this.locationDetails = locationDetails;
-                    this.selectedCity = locationDetails.address.city;
                     this.locationType = LocationType[locationDetails.location.locationType];
-                    this.loadCities(locationDetails.address.state);
                 },
                 (error) => {
                     this._router.navigate(['/medical-provider/locations']);
@@ -97,30 +95,6 @@ export class BasicComponent implements OnInit {
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
     }
-
-    selectState(event) {
-        let currentState = event.target.value;
-        if (currentState === this.locationDetails.address.state) {
-            this.loadCities(currentState);
-            this.selectedCity = this.locationDetails.address.city;
-        } else {
-            this.loadCities(currentState);
-            this.selectedCity = '';
-        }
-    }
-    loadCities(stateName) {
-        this.isCitiesLoading = true;
-        if (stateName !== '') {
-            this._statesStore.getCitiesByStates(stateName)
-                .subscribe((cities) => { this.cities = cities; },
-                null,
-                () => { this.isCitiesLoading = false; });
-        } else {
-            this.cities = [];
-            this.isCitiesLoading = false;
-        }
-    }
-
 
     save() {
         let userId = this._sessionStore.session.user.id;

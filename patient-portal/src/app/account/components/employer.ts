@@ -77,10 +77,6 @@ export class PatientEmployerComponent implements OnInit {
                     if (this.currentEmployer) {
                         this.cellPhone = this._phoneFormatPipe.transform(this.currentEmployer.contact.cellPhone);
                         this.faxNo = this._faxNoFormatPipe.transform(this.currentEmployer.contact.faxNo);
-                        if (this.currentEmployer.address.state) {
-                            this.selectedCity = this.currentEmployer.address.city;
-                            this.loadCities(this.currentEmployer.address.state);
-                        }
                     } else {
                         this.currentEmployer = new Employer({
                             address: new Address({}),
@@ -120,30 +116,6 @@ export class PatientEmployerComponent implements OnInit {
     ngOnInit() {
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
-    }
-
-    selectState(event) {
-        let currentState = event.target.value;
-        if (currentState === this.currentEmployer.address.state) {
-            this.loadCities(currentState);
-            this.selectedCity = this.currentEmployer.address.city;
-        } else {
-            this.loadCities(currentState);
-            this.selectedCity = '';
-        }
-    }
-
-    loadCities(stateName) {
-        this.isCitiesLoading = true;
-        if (stateName !== '') {
-            this._statesStore.getCitiesByStates(stateName)
-                .subscribe((cities) => { this.cities = cities; },
-                null,
-                () => { this.isCitiesLoading = false; });
-        } else {
-            this.cities = [];
-            this.isCitiesLoading = false;
-        }
     }
 
 

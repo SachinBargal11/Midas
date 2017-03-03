@@ -152,7 +152,7 @@
                                             <!--<span class="color-red">*</span>-->
                                         </label>
                         <div class="form-group" [class.error]="employerformControls.state.touched && !employerformControls.state.valid">
-                            <select formControlName="state" [ngModel]="currentEmployer.address.state" type="text" (change)="selectState($event)" class="form-control"
+                            <select formControlName="state" [ngModel]="currentEmployer.address.state" type="text" class="form-control"
                                 placeholder="" [class.error]="employerformControls.state.touched && !employerformControls.state.valid">
                                 <option value="">-Select State-</option>
                                 <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
@@ -168,9 +168,21 @@
 
                 <div class="row">
 
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <label class="form-label"> City
-                                            <!--<span class="color-red">*</span>-->
+                                        </label>
+                        <div class="form-group" [class.error]="employerformControls.city.touched && !employerformControls.city.valid">
+                            <input formControlName="city" [ngModel]="currentEmployer.address.city" type="text" 
+                                    class="form-control" placeholder="" [class.error]="!employerformControls.city.valid">
+                            <div class='error-list' *ngIf="employerformControls.city.touched && !employerformControls.city.valid">
+                                <ul>
+                                    <li *ngIf="employerformControls.city.hasError('required')">City is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-lg-3">
+                        <label class="form-label"> City
                                         </label>
                         <div class="form-group" [class.error]="employerformControls.city.touched && !employerformControls.city.valid">
                             <select formControlName="city" [ngModel]="selectedCity" type="text" class="form-control" placeholder="" [class.error]="employerformControls.city.touched && !employerformControls.city.valid">
@@ -186,14 +198,15 @@
                     </div>
                     <div class="col-lg-1 m-t-lg">
                         <loader [visible]="isCitiesLoading"></loader>
-                    </div>
+                    </div>-->
 
                     <div class="col-lg-4">
                         <label class="form-label"> Zip code
                                             <!--<span class="color-red">*</span>-->
                                         </label>
                         <div class="form-group" [class.error]="employerformControls.zipcode.touched && !employerformControls.zipcode.valid">
-                            <input formControlName="zipcode" [ngModel]="currentEmployer.address.zipCode" type="text" class="form-control" placeholder="" [class.error]="!employerformControls.zipcode.valid">
+                            <input formControlName="zipcode" [ngModel]="currentEmployer.address.zipCode" type="text" 
+                                    class="form-control" placeholder="" [class.error]="!employerformControls.zipcode.valid">
                             <div class='error-list' *ngIf="employerformControls.zipcode.touched && !employerformControls.zipcode.valid">
                                 <ul>
                                     <li *ngIf="employerformControls.zipcode.hasError('required')">Zipcode is required.</li>

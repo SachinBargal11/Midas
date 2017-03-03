@@ -64,7 +64,6 @@ export class EditReferringOfficeComponent implements OnInit {
                 (referringOffice: ReferringOffice) => {
                     this.referringOffice = referringOffice;
                     this.selectedCity = referringOffice.addressInfo.city;
-                    this.loadCities(referringOffice.addressInfo.state);
                 },
                 (error) => {
                     this._router.navigate(['../../'], { relativeTo: this._route });
@@ -99,26 +98,6 @@ export class EditReferringOfficeComponent implements OnInit {
                 this.users = users;
             });
     }
-
-    selectState(event) {
-        this.selectedCity = 0;
-        let currentState = event.target.value;
-        this.loadCities(currentState);
-    }
-
-    loadCities(stateName) {
-        this.isCitiesLoading = true;
-        if (stateName !== '') {
-            this._statesStore.getCitiesByStates(stateName)
-                .subscribe((cities) => { this.cities = cities; },
-                null,
-                () => { this.isCitiesLoading = false; });
-        } else {
-            this.cities = [];
-            this.isCitiesLoading = false;
-        }
-    }
-
     save() {
         this.isSaveProgress = true;
         let referringOfficeformValues = this.referringOfficeform.value;
