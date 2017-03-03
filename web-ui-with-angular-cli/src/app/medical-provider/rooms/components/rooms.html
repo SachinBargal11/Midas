@@ -16,7 +16,12 @@
 <p-dataTable [value]="rooms" [(selection)]="selectedRooms" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]"
     [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <p-column selectionMode="multiple"></p-column>
-    <p-column field="name" header="Name" [sortable]="true"></p-column>
+    <p-column header="Name" [sortable]="true">
+        <template let-room="rowData" pTemplate="body">
+            <a routerLink="{{room.id}}/basic"><u>{{room.name}}</u>
+            </a>
+        </template>
+    </p-column>
     <p-column field="phone" header="Phone" [sortable]="true"></p-column>
     <p-column field="roomTest.name" header="Tests Provided" [sortable]="true"></p-column>
     <p-column styleClass="actions-cell" header="Actions">

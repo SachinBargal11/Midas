@@ -38,7 +38,7 @@
                                         </label>
                         <div class="form-group">
                             <div class='input-group date'>
-                                <p-calendar [ngModel]="dateOfFirstTreatment" formControlName="dateOfFirstTreatment" dateFormat="M d, yy" [maxDate]="maxDate"
+                                <p-calendar [ngModel]="dateOfFirstTreatment" formControlName="dateOfFirstTreatment" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate"
                                     [monthNavigator]="true" [yearNavigator]="true" yearRange="1920:2050" showAnim="slideDown"
                                     [showIcon]="true" icon="font-icon font-icon-calend">
                                     </p-calendar>

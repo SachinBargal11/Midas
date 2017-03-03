@@ -1,0 +1,17 @@
+<section class="tabs-section">
+    <div class="tabs-section-nav tabs-section-nav-inline">
+        <ul class="nav" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link" routerLink="schedule" [routerLinkActive]="['active']" role="tab" data-toggle="tab">		
+					Doctor Schedule
+					</a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active">
+
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</section>
