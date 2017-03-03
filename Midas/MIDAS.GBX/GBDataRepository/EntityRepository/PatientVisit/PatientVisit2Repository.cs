@@ -167,11 +167,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
                 bool IsEditMode = false;
+                bool IsAddModeCalendarEvent = false;
                 IsEditMode = (PatientVisit2BO != null && PatientVisit2BO.ID > 0) ? true : false;
 
                 if (PatientVisit2BO.ID <= 0 && PatientVisit2BO.PatientId.HasValue == false && PatientVisit2BO.LocationId.HasValue == false)
                 {
                     IsEditMode = (CalendarEventBO != null && CalendarEventBO.ID > 0) ? true : false;
+                    IsAddModeCalendarEvent = (CalendarEventBO != null && CalendarEventBO.ID > 0) ? false : true;
                 }
 
                 CalendarEvent CalendarEventDB = new CalendarEvent();
@@ -231,7 +233,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 #endregion
 
                 #region Patient Visit
-                if (PatientVisit2BO != null && (PatientVisit2BO.ID <= 0 && PatientVisit2BO.PatientId.HasValue == true && PatientVisit2BO.LocationId.HasValue == true))
+                if (PatientVisit2BO != null && ((PatientVisit2BO.ID <= 0 && PatientVisit2BO.PatientId.HasValue == true && PatientVisit2BO.LocationId.HasValue == true) || (PatientVisit2BO.ID > 0)))
                 {
                     bool Add_PatientVisit2DB = false;
                     PatientVisit2DB = _context.PatientVisit2.Where(p => p.Id == PatientVisit2BO.ID).FirstOrDefault();
@@ -288,7 +290,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 else
                 {
-                    if (IsEditMode == false)
+                    if (IsEditMode == false && IsAddModeCalendarEvent == false)
                     {
                         dbContextTransaction.Rollback();
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient Visit details.", ErrorLevel = ErrorLevel.Error };
