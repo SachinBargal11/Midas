@@ -50,6 +50,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetByDoctorId(Request, doctorId);
         }
 
+        [HttpPost]
+        [Route("Save")]
+        [AllowAnonymous]
+        public HttpResponseMessage Post([FromBody]PatientVisit2 data)
+        {
+            return requestHandler.CreateGbObject(Request, data);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
