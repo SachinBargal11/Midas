@@ -242,6 +242,44 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return lstSchedules;
         }
         #endregion
+
+        #region Get By Company Filter
+        public override object GetByCompanyId(int CompanyId)
+        {
+            List<BO.Schedule> lstSchedules = new List<BO.Schedule>();
+
+
+
+            if (CompanyId == 0)
+            {
+                var acc_ = _context.Schedules.Include("ScheduleDetails").Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<Schedule>();
+                if (acc_ == null)
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+                foreach (Schedule item in acc_)
+                {
+                    lstSchedules.Add(Convert<BO.Schedule, Schedule>(item));
+                }
+            }
+            else
+            {
+                var acc_ = _context.Schedules.Include("ScheduleDetails").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.ScheduleDetails.Any(x => x.ScheduleID == CompanyId)).ToList<Schedule>();
+                if (acc_ == null)
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+                foreach (Schedule item in acc_)
+                {
+                    lstSchedules.Add(Convert<BO.Schedule, Schedule>(item));
+                }
+            }
+
+
+            return lstSchedules;
+        }
+        #endregion
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
