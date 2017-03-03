@@ -248,33 +248,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             List<BO.Schedule> lstSchedules = new List<BO.Schedule>();
 
-
-
-            if (CompanyId == 0)
+            var acc_ = _context.Schedules.Include("ScheduleDetails").Where(p => p.Locations.Where(p2 => (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false)))
+                                                                                           .Any(p3 => p3.CompanyID == CompanyId 
+                                                                                                  && (p3.IsDeleted.HasValue == false || (p3.IsDeleted.HasValue == true && p3.IsDeleted.Value == false))) == true 
+                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                    .ToList<Schedule>();
+            if (acc_ == null)
             {
-                var acc_ = _context.Schedules.Include("ScheduleDetails").Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<Schedule>();
-                if (acc_ == null)
-                {
-                    return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                }
-                foreach (Schedule item in acc_)
-                {
-                    lstSchedules.Add(Convert<BO.Schedule, Schedule>(item));
-                }
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            else
+            foreach (Schedule item in acc_)
             {
-                var acc_ = _context.Schedules.Include("ScheduleDetails").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.ScheduleDetails.Any(x => x.ScheduleID == CompanyId)).ToList<Schedule>();
-                if (acc_ == null)
-                {
-                    return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                }
-                foreach (Schedule item in acc_)
-                {
-                    lstSchedules.Add(Convert<BO.Schedule, Schedule>(item));
-                }
+                lstSchedules.Add(Convert<BO.Schedule, Schedule>(item));
             }
-
 
             return lstSchedules;
         }
