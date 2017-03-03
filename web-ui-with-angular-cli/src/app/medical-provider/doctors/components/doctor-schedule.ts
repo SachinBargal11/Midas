@@ -194,7 +194,7 @@ export class DoctorScheduleComponent implements OnInit {
         this.isSaveProgress = true;
         let result;
 
-        result = this._scheduleStore.updateSchedule(schedule, this.locationDetails);
+        result = this._scheduleStore.updateSchedule(schedule);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
@@ -235,7 +235,7 @@ export class DoctorScheduleComponent implements OnInit {
         this.isSaveProgress = true;
         let result;
 
-        result = this._scheduleStore.addSchedule(schedule, this.locationDetails);
+        result = this._scheduleStore.addSchedule(schedule);
         result.subscribe(
             (response) => {
                 let notification = new Notification({

@@ -27,7 +27,7 @@
                             </label>
                         <div class="form-group" [class.error]="accidentformControls.doa.touched && !accidentformControls.doa.valid">
                             <div class='input-group date'>
-                                <p-calendar formControlName="doa" [ngModel]="accidentDate" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true"
+                                <p-calendar formControlName="doa" [ngModel]="accidentDate" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true"
                                     [yearNavigator]="true" yearRange="1920:2050" [class.error]="accidentformControls.doa.touched && !accidentformControls.doa.valid"
                                     showAnim="slideDown" [showIcon]="true" placeholder="Date of Accident" icon="font-icon font-icon-calend">
                                     </p-calendar>
@@ -45,7 +45,7 @@
                             </label>
                         <div class="form-group" [class.error]="accidentformControls.dot.touched && !accidentformControls.dot.valid">
                             <div class='input-group date'>
-                                <p-calendar formControlName="dot" [ngModel]="dateOfAdmission" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true"
+                                <p-calendar formControlName="dot" [ngModel]="dateOfAdmission" [readonlyInput]="true" dateFormat="M d, yy" [maxDate]="maxDate" [monthNavigator]="true"
                                     [yearNavigator]="true" yearRange="1920:2050" [class.error]="accidentformControls.dot.touched && !accidentformControls.dot.valid"
                                     showAnim="slideDown" [showIcon]="true" placeholder="Date of Admission" icon="font-icon font-icon-calend">
                                     </p-calendar>

@@ -48,8 +48,8 @@
                             <td>{{currentScheduleDetail.dayofWeekString}}</td>
                             <td><span class="label" [class.label-success]="currentScheduleDetail.scheduleStatus == 1"
                                     [class.label-default]="currentScheduleDetail.scheduleStatus == 0">{{getScheduleStatusLabel(currentScheduleDetail.scheduleStatus)}}</span></td>
-                            <td><span *ngIf="currentScheduleDetail.scheduleStatus == 1">{{currentScheduleDetail.slotStart.format('HH:mm')}}</span></td>
-                            <td><span *ngIf="currentScheduleDetail.scheduleStatus == 1">{{currentScheduleDetail.slotEnd.format('HH:mm')}}</span></td>
+                            <td><span *ngIf="currentScheduleDetail.scheduleStatus == 1">{{currentScheduleDetail.slotStart.format('LT')}}</span></td>
+                            <td><span *ngIf="currentScheduleDetail.scheduleStatus == 1">{{currentScheduleDetail.slotEnd.format('LT')}}</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -86,7 +86,7 @@
                             </div>
                             <div class="col-lg-3" *ngIf="currentScheduleDetail.scheduleStatus == 1">
                                 <div class='input-group date' *ngIf="isInEditMode">
-                                    <p-calendar formControlName="slotStart" [ngModel]="currentScheduleDetail.slotStart" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o">
+                                    <p-calendar formControlName="slotStart" [ngModel]="currentScheduleDetail.slotStart" hourFormat="12" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o">
                                     </p-calendar>
                                 </div>
                             </div>
@@ -95,7 +95,7 @@
                             </div>
                             <div class="col-lg-3" *ngIf="currentScheduleDetail.scheduleStatus == 1">
                                 <div class='input-group date' *ngIf="isInEditMode" [class.error]="scheduleformControls.scheduleDetails.controls[i].controls.slotEnd.touched && scheduleformControls.scheduleDetails.controls[i].hasError('timeValidation')">
-                                    <p-calendar formControlName="slotEnd" [ngModel]="currentScheduleDetail.slotEnd" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o">
+                                    <p-calendar formControlName="slotEnd" [ngModel]="currentScheduleDetail.slotEnd" hourFormat="12" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o">
                                     </p-calendar>
                                     <div class='error-list' *ngIf="scheduleformControls.scheduleDetails.controls[i].controls.slotEnd.touched && scheduleformControls.scheduleDetails.controls[i].hasError('timeValidation')">
                                         <ul>
