@@ -172,12 +172,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID
         public override object Get(int id)
         {
+            //Schedule if not found will return a empty list object, instead of message, as this was requested by UI Team
             BO.Schedule acc_ = Convert<BO.Schedule, Schedule>(_context.Schedules.Include("ScheduleDetails").Where(p => p.id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<Schedule>());
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this schedule.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             return (object)acc_;
+
+            //Schedule schedule = _context.Schedules.Include("ScheduleDetails").Where(p => p.id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<Schedule>();
+
+            //BO.Schedule acc_ = new BO.Schedule();
+            //if (schedule == null)
+            //{
+            //    return (object)acc_;
+            //}
+
+            //acc_ = Convert<BO.Schedule, Schedule>(schedule);
+            //return (object)acc_;
         }
         #endregion
 
