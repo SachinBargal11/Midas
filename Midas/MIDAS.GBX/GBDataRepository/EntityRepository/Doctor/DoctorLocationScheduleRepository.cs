@@ -156,7 +156,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             #endregion
 
             bool exists = _context.DoctorLocationSchedules.Any(d => d.DoctorID == doctorlocationscheduleBO.doctor.ID && d.LocationID == doctorlocationscheduleBO.location.ID && d.ScheduleID== doctorlocationscheduleBO.schedule.ID && (d.IsDeleted==false || d.IsDeleted==null));
-            if (doctorlocationscheduleBO.ID > 0 && exists)
+             if ((doctorlocationscheduleBO.ID > 0 && exists) || (doctorlocationscheduleBO.ID > 0))
             {
                 //For Update Record
                 //Find Doctor Location Schedule By ID
