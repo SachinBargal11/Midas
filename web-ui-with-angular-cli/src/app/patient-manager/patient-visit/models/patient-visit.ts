@@ -1,3 +1,4 @@
+import { IEventWrapper } from '../../../commons/models/i-event-wrapper';
 import { ScheduledEventInstance } from '../../../commons/models/scheduled-event-instance';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 import { Record } from 'immutable';
@@ -14,8 +15,8 @@ const PatientVisitRecord = Record({
     roomId: 0,
     doctorId: 0,
     specialtyId: 0,
-    eventStart: moment(),
-    eventEnd: moment(),
+    eventStart: null,
+    eventEnd: null,
     notes: '',
     visitStatusId: 0,
     visitType: 0,
@@ -27,7 +28,8 @@ const PatientVisitRecord = Record({
     updateDate: null //Moment
 });
 
-export class PatientVisit extends PatientVisitRecord {
+
+export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
 
     id: number;
     calendarEventId: number;

@@ -1,3 +1,4 @@
+import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -135,6 +136,27 @@ export class PatientVisitService {
                 });
         });
         return <Observable<PatientVisit>>Observable.fromPromise(promise);
+    }
+
+    updateCalendarEvent(scheduledEvent: ScheduledEvent): Observable<ScheduledEvent> {
+        let promise = new Promise((resolve, reject) => {
+            debugger;
+            let requestData = {
+                calendarEvent: scheduledEvent.toJS()
+            }
+            return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedPatientVisit: PatientVisit = null;
+                    parsedPatientVisit = PatientVisitAdapter.parseResponse(data);
+                    resolve(parsedPatientVisit);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<ScheduledEvent>>Observable.fromPromise(promise);
     }
 
     updatePatientVisit(patientVisitDetail: PatientVisit): Observable<PatientVisit> {

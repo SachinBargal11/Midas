@@ -1,5 +1,6 @@
 import { PatientVisit } from '../../patient-manager/patient-visit/models/patient-visit';
 import { ScheduledEvent } from './scheduled-event';
+import { IEventWrapper } from './i-event-wrapper';
 import * as moment from 'moment';
 
 export class ScheduledEventInstance {
@@ -10,7 +11,7 @@ export class ScheduledEventInstance {
     description: string;
     allDay: boolean;
     owningEvent: ScheduledEvent;
-    owningVisit: PatientVisit;
+    eventWrapper: IEventWrapper;
 
     constructor(props: {
         title: string;
@@ -20,7 +21,7 @@ export class ScheduledEventInstance {
         description?: string;
         allDay: boolean;
         owningEvent: ScheduledEvent;
-        owningVisit: PatientVisit;
+        eventWrapper: IEventWrapper;
     }) {
         this.title = props.title;
         this.start = props.start;
@@ -28,6 +29,6 @@ export class ScheduledEventInstance {
         this.timezone = props.timezone;
         this.allDay = props.allDay;
         this.owningEvent = props.owningEvent;
-        this.owningVisit = props.owningVisit;
+        this.eventWrapper = props.eventWrapper;
     }
 }

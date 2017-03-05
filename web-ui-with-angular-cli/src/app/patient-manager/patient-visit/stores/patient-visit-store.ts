@@ -7,6 +7,8 @@ import { PatientVisitService } from '../services/patient-visit-service';
 import { List } from 'immutable';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { SessionStore } from '../../../commons/stores/session-store';
+import { ScheduledEvent } from '../../../commons/models/scheduled-event';
+import * as _ from 'underscore';
 
 @Injectable()
 export class PatientVisitsStore {
@@ -80,7 +82,7 @@ export class PatientVisitsStore {
     }
 
 
-    findPatientVisitById(id: number) {
+    findPatientVisitById(id: number): PatientVisit {
         let patientVisits = this._patientVisits.getValue();
         let index = patientVisits.findIndex((currentPatientVisit: PatientVisit) => currentPatientVisit.id === id);
         return patientVisits.get(index);
@@ -145,32 +147,42 @@ export class PatientVisitsStore {
         return <Observable<PatientVisit>>Observable.from(promise);
     }
 
-    /*createExceptionInRecurringEvent(exceptionEvent: PatientVisit): Observable<{ exceptionEvent: ScheduledEvent, recurringEvent: ScheduledEvent }> {
-        let recurringEvent: ScheduledEvent = this.findEventById(exceptionEvent.recurrenceId);
-        let promise = this.addEvent(exceptionEvent).toPromise().then((updatedExceptionEvent: ScheduledEvent) => {
-            let recurrenceException = _.clone(recurringEvent.recurrenceException);
-            recurrenceException.push(exceptionEvent.eventStart);
-            let updatedEvent: ScheduledEvent = new ScheduledEvent({
-                id: recurringEvent.id,
-                name: recurringEvent.name,
-                eventStart: recurringEvent.eventStart,
-                eventEnd: recurringEvent.eventEnd,
-                timezone: recurringEvent.timezone,
-                description: recurringEvent.description,
-                recurrenceId: recurringEvent.recurrenceId,
-                recurrenceRule: recurringEvent.recurrenceRule,
-                recurrenceException: recurrenceException,
-                isAllDay: recurringEvent.isAllDay,
+    findPatientVisitByCalendarEventId(calendarEventId: number): PatientVisit {
+        let patientVisits = this._patientVisits.getValue();
+        let index = patientVisits.findIndex((currentPatientVisit: PatientVisit) => currentPatientVisit.calendarEventId === calendarEventId);
+        return patientVisits.get(index);
+    }
+
+    createExceptionInRecurringEvent(patientVisit: PatientVisit): Observable<{ exceptionEvent: ScheduledEvent, recurringEvent: ScheduledEvent }> {
+        let matchingPatientVisit: PatientVisit = this.findPatientVisitByCalendarEventId(patientVisit.calendarEvent.recurrenceId);
+        let recurringEvent: ScheduledEvent = matchingPatientVisit.calendarEvent;
+        let promise = this.addPatientVisit(patientVisit).toPromise()
+            .then((updatedPatientVisit: PatientVisit) => {
+                let updatedExceptionEvent: ScheduledEvent = updatedPatientVisit.calendarEvent;
+                let recurrenceException = _.clone(recurringEvent.recurrenceException);
+                recurrenceException.push(patientVisit.eventStart);
+                let updatedEvent: ScheduledEvent = new ScheduledEvent({
+                    id: recurringEvent.id,
+                    name: recurringEvent.name,
+                    eventStart: recurringEvent.eventStart,
+                    eventEnd: recurringEvent.eventEnd,
+                    timezone: recurringEvent.timezone,
+                    description: recurringEvent.description,
+                    recurrenceId: recurringEvent.recurrenceId,
+                    recurrenceRule: recurringEvent.recurrenceRule,
+                    recurrenceException: recurrenceException,
+                    isAllDay: recurringEvent.isAllDay,
+                });
+                return this._patientVisitsService.updateCalendarEvent(updatedEvent).toPromise()
+                    .then((updatedReccurringEvent: ScheduledEvent) => {
+                        return {
+                            exceptionEvent: updatedExceptionEvent,
+                            recurringEvent: updatedReccurringEvent
+                        };
+                    });
             });
-            return this.updateEvent(updatedEvent).toPromise().then((updatedReccurringEvent: ScheduledEvent) => {
-                return {
-                    exceptionEvent: updatedExceptionEvent,
-                    recurringEvent: updatedReccurringEvent
-                };
-            });
-        });
         return <Observable<{ exceptionEvent: ScheduledEvent, recurringEvent: ScheduledEvent }>>Observable.from(promise);
-    }*/
+    }
 
 }
 

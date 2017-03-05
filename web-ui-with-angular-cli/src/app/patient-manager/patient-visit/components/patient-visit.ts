@@ -1,4 +1,4 @@
-import { PatientVisit } from '../models/patient-visit';
+import { Observable } from 'rxjs/Observable';
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -6,7 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import * as _ from 'underscore';
 import { ConfirmationService } from 'primeng/primeng';
-
+import { PatientVisit } from '../models/patient-visit';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { PatientsStore } from '../../patients/stores/patients-store';
@@ -44,6 +44,12 @@ export class PatientVisitComponent implements OnInit {
     patientVisitFormControls;
     selectedVisit: PatientVisit;
 
+    selectedLocationId: number;
+    selectedDoctorId: number;
+    selectedRoomId: number;
+    selectedOption: number = 1;
+    selectedPatient: number;
+
     private scheduledEventEditorValid: boolean = false;
     eventRenderer: Function = (event, element) => {
         if (event.owningEvent.recurrenceId) {
@@ -71,7 +77,7 @@ export class PatientVisitComponent implements OnInit {
         private _confirmationService: ConfirmationService
     ) {
         this.patientVisitForm = this._fb.group({
-
+            patientId: ['', Validators.required]
         });
         this.patientVisitFormControls = this.patientVisitForm.controls;
     }
@@ -81,7 +87,8 @@ export class PatientVisitComponent implements OnInit {
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
         };
-        this.loadVisits();
+        // this.loadVisits();
+        this._locationsStore.getLocations();
     }
 
     isFormValid() {
@@ -92,14 +99,84 @@ export class PatientVisitComponent implements OnInit {
         }
     }
 
-    loadVisits() {
+    selectLocation(event) {
+        this.loadLocationVisits();
+        if (this.selectedOption === 1) {
+            this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.selectedLocationId);
+        } else if (this.selectedOption === 2) {
+            this._roomsStore.getRooms(this.selectedLocationId);
+        }
+    }
+
+    selectRoom(event) {
+        this.loadLocationRoomVisits();
+    }
+
+    selectDoctor(event) {
+        this.loadLocationDoctorVisits();
+    }
+
+    loadLocationDoctorVisits() {
         this._progressBarService.show();
-        this._patientVisitsStore.getPatientVisitsByLocationId(1)
+        this._patientVisitsStore.getPatientVisitsByLocationAndDoctorId(this.selectedLocationId, this.selectedDoctorId)
             .subscribe(
             (events: PatientVisit[]) => {
                 let occurrences: ScheduledEventInstance[] = [];
                 _.forEach(events, (event: PatientVisit) => {
-                    debugger;
+                    occurrences.push(...event.getEventInstances());
+                });
+                this.events = occurrences;
+                console.log(this.events);
+            },
+            (error) => {
+                this.events = [];
+                let notification = new Notification({
+                    'title': error.message,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+    loadLocationRoomVisits() {
+        this._progressBarService.show();
+        this._patientVisitsStore.getPatientVisitsByLocationAndRoomId(this.selectedLocationId, this.selectedRoomId)
+            .subscribe(
+            (events: PatientVisit[]) => {
+                let occurrences: ScheduledEventInstance[] = [];
+                _.forEach(events, (event: PatientVisit) => {
+                    occurrences.push(...event.getEventInstances());
+                });
+                this.events = occurrences;
+                console.log(this.events);
+            },
+            (error) => {
+                this.events = [];
+                let notification = new Notification({
+                    'title': error.message,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+    loadLocationVisits() {
+        this._progressBarService.show();
+        this._patientVisitsStore.getPatientVisitsByLocationId(this.selectedLocationId)
+            .subscribe(
+            (events: PatientVisit[]) => {
+                let occurrences: ScheduledEventInstance[] = [];
+                _.forEach(events, (event: PatientVisit) => {
                     occurrences.push(...event.getEventInstances());
                 });
                 this.events = occurrences;
@@ -130,6 +207,9 @@ export class PatientVisitComponent implements OnInit {
 
     handleDayClick(event) {
         this.selectedVisit = new PatientVisit({
+            locationId: this.selectedLocationId,
+            doctorId: this.selectedOption === 1 ? this.selectedDoctorId : 0,
+            roomId: this.selectedOption === 1 ? this.selectedRoomId : 0,
             calendarEvent: new ScheduledEvent({
                 name: '',
                 eventStart: event.date,
@@ -143,11 +223,9 @@ export class PatientVisitComponent implements OnInit {
     }
 
     handleEventClick(event) {
-        debugger;
-        console.log(event.calEvent);
         let owningEvent: ScheduledEvent = event.calEvent.owningEvent;
-        let owningVisit: PatientVisit = event.calEvent.owningVisit;
-        this.selectedVisit = new PatientVisit(_.extend(owningVisit.toJS(), {
+        let eventWrapper: PatientVisit = event.calEvent.eventWrapper;
+        this.selectedVisit = new PatientVisit(_.extend(eventWrapper.toJS(), {
             calendarEvent: owningEvent
         }));
         if (this.selectedVisit.calendarEvent.recurrenceRule || this.selectedVisit.calendarEvent.recurrenceId) {
@@ -161,10 +239,12 @@ export class PatientVisitComponent implements OnInit {
         this._confirmationService.confirm({
             message: 'Do you want to edit only this event occurrence or the whole series?',
             accept: () => {
-                debugger;
                 if (this.selectedVisit.calendarEvent.recurrenceRule) {
                     let seriesSelectedEvent: ScheduledEvent = this.selectedVisit.calendarEvent;
                     this.selectedVisit = new PatientVisit({
+                        locationId: this.selectedLocationId,
+                        doctorId: this.selectedOption === 1 ? this.selectedDoctorId : 0,
+                        roomId: this.selectedOption === 1 ? this.selectedRoomId : 0,
                         calendarEvent: new ScheduledEvent(_.extend(seriesSelectedEvent.toJS(), {
                             id: (!seriesSelectedEvent.recurrenceRule && seriesSelectedEvent.recurrenceId) ? seriesSelectedEvent.id : 0,
                             eventStart: event.calEvent.start,
@@ -178,7 +258,6 @@ export class PatientVisitComponent implements OnInit {
                 this.dialogVisible = true;
             },
             reject: () => {
-                debugger;
                 if (!this.selectedVisit.calendarEvent.recurrenceRule && this.selectedVisit.calendarEvent.recurrenceId) {
                     let eventId = this.selectedVisit.calendarEvent.recurrenceId;
                     this.selectedVisit = this._patientVisitsStore.findPatientVisitById(eventId);
@@ -189,10 +268,10 @@ export class PatientVisitComponent implements OnInit {
     }
 
     saveEvent() {
-        debugger;
         let updatedEvent: ScheduledEvent = this._scheduledEventEditorComponent.getEditedEvent();
         console.log(updatedEvent);
         let updatedVisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
+            patientId: this.selectedPatient,
             calendarEvent: updatedEvent
         }));
         if (updatedVisit.id) {
@@ -204,7 +283,7 @@ export class PatientVisitComponent implements OnInit {
                         'type': 'SUCCESS',
                         'createdAt': moment()
                     });
-                    this.loadVisits();
+                    // this.loadVisits();
                     this._notificationsStore.addNotification(notification);
                 },
                 (error) => {
@@ -221,116 +300,60 @@ export class PatientVisitComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         } else {
-            let result = this._patientVisitsStore.addPatientVisit(updatedVisit);
-            result.subscribe(
-                (response) => {
-                    let notification = new Notification({
-                        'title': 'Event added successfully!',
-                        'type': 'SUCCESS',
-                        'createdAt': moment()
+            if (updatedVisit.calendarEvent.recurrenceId) {
+                let exceptionResult: Observable<{ exceptionEvent: ScheduledEvent, recurringEvent: ScheduledEvent }> = this._patientVisitsStore.createExceptionInRecurringEvent(updatedVisit);
+                exceptionResult.subscribe(
+                    (response: { exceptionEvent: ScheduledEvent, recurringEvent: ScheduledEvent }) => {
+                        let notification = new Notification({
+                            'title': `Occurrence for recurring event ${response.recurringEvent.name} created for ${response.exceptionEvent.eventStart.format('M d, yy')}`,
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        // this.loadVisits();
+                        this._notificationsStore.addNotification(notification);
+                        // this.event = null;
+                    },
+                    (error) => {
+                        let errString = 'Unable to add event!';
+                        let notification = new Notification({
+                            'messages': `Unable to create occurrence for recurring event ${updatedEvent.name} created for ${updatedEvent.eventStart.format('M d, yy')}`,
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._progressBarService.hide();
+                        this._notificationsStore.addNotification(notification);
+                    },
+                    () => {
+                        this._progressBarService.hide();
                     });
-                    this.loadVisits();
-                    this._notificationsStore.addNotification(notification);
-                    // this.event = null;
-                },
-                (error) => {
-                    let errString = 'Unable to add event!';
-                    let notification = new Notification({
-                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                        'type': 'ERROR',
-                        'createdAt': moment()
+            } else {
+                let result = this._patientVisitsStore.addPatientVisit(updatedVisit);
+                result.subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            'title': 'Event added successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        // this.loadVisits();
+                        this._notificationsStore.addNotification(notification);
+                        // this.event = null;
+                    },
+                    (error) => {
+                        let errString = 'Unable to add event!';
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._progressBarService.hide();
+                        this._notificationsStore.addNotification(notification);
+                    },
+                    () => {
+                        this._progressBarService.hide();
                     });
-                    this._progressBarService.hide();
-                    this._notificationsStore.addNotification(notification);
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
+            }
         }
-        /*if (updatedVisit.id) {
-            let result = this._patientVisitsStore.updatePatientVisit(updatedVisit);
-            result.subscribe(
-                (response) => {
-                    let notification = new Notification({
-                        'title': 'Event updated successfully!',
-                        'type': 'SUCCESS',
-                        'createdAt': moment()
-                    });
-                    this.loadVisits();
-                    this._notificationsStore.addNotification(notification);
-                },
-                (error) => {
-                    let errString = 'Unable to update event!';
-                    let notification = new Notification({
-                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                        'type': 'ERROR',
-                        'createdAt': moment()
-                    });
-                    this._progressBarService.hide();
-                    this._notificationsStore.addNotification(notification);
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
-        }*/
-        // new
-        // else {
-        // if (updatedVisit.calendarEvent.recurrenceId) {
-        //     let exceptionResult: Observable<{ exceptionEvent: ScheduledEvent, recurringEvent: ScheduledEvent }> = this._patientVisitsStore.createExceptionInRecurringEvent(updatedVisit);
-        //     exceptionResult.subscribe(
-        //         (response: { exceptionEvent: ScheduledEvent, recurringEvent: ScheduledEvent }) => {
-        //             let notification = new Notification({
-        //                 'title': `Occurrence for recurring event ${response.recurringEvent.name} created for ${response.exceptionEvent.eventStart.format('M d, yy')}`,
-        //                 'type': 'SUCCESS',
-        //                 'createdAt': moment()
-        //             });
-        //             this.loadVisits();
-        //             this._notificationsStore.addNotification(notification);
-        //             // this.event = null;
-        //         },
-        //         (error) => {
-        //             let errString = 'Unable to add event!';
-        //             let notification = new Notification({
-        //                 'messages': `Unable to create occurrence for recurring event ${updatedEvent.name} created for ${updatedEvent.eventStart.format('M d, yy')}`,
-        //                 'type': 'ERROR',
-        //                 'createdAt': moment()
-        //             });
-        //             this._progressBarService.hide();
-        //             this._notificationsStore.addNotification(notification);
-        //         },
-        //         () => {
-        //             this._progressBarService.hide();
-        //         });
-        // } else {
-        /*let result = this._patientVisitsStore.addPatientVisit(updatedVisit);
-        result.subscribe(
-            (response) => {
-                let notification = new Notification({
-                    'title': 'Event added successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
-                });
-                this.loadVisits();
-                this._notificationsStore.addNotification(notification);
-                // this.event = null;
-            },
-            (error) => {
-                let errString = 'Unable to add event!';
-                let notification = new Notification({
-                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._progressBarService.hide();
-                this._notificationsStore.addNotification(notification);
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-    // }
-
-}*/
-
         this.dialogVisible = false;
     }
 }
