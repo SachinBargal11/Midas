@@ -15,6 +15,12 @@
                 </a>
             </li>
             <li class="brown" [routerLinkActive]="['opened']">
+                <a [routerLink]="['/patient-manager/patient-visit']">
+                    <i class="fa fa-calendar"></i>
+                    <span class="lbl">Visits</span>
+                </a>
+            </li>
+            <li class="brown" [routerLinkActive]="['opened']">
                 <a [routerLink]="['/patient-manager/referals']">
                     <i class="fa fa-refresh"></i>
                     <span class="lbl">Referals</span>

@@ -17,6 +17,7 @@ import { ProgressBarComponent } from './components/progress-bar/progress-bar';
 import { LoaderComponent } from './components/loader/loader';
 import { NotificationComponent } from './components/notification/notification';
 import { ShellComponent } from './shell-component';
+import { ScheduledEventEditorComponent } from '../medical-provider/calendar/components/scheduled-event-editor';
 
 import {
   AccordionModule,
@@ -73,7 +74,8 @@ import { DropdownModule } from 'ng2-bootstrap';
     ProgressBarComponent,
     LoaderComponent,
     NotificationComponent,
-    ShellComponent
+    ShellComponent,
+    ScheduledEventEditorComponent
   ],
   exports: [
     CommonModule,
@@ -108,7 +110,8 @@ import { DropdownModule } from 'ng2-bootstrap';
     SharedModule,
     ConfirmDialogModule,
     DropdownModule,
-    ShellComponent
+    ShellComponent,
+    ScheduledEventEditorComponent
   ]
 })
 export class CommonsModule { }

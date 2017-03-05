@@ -10,8 +10,8 @@ import { RoomsScheduleComponent } from './components/rooms-schedule';
 
 import { RoomsService } from './services/rooms-service';
 import { RoomsStore } from './stores/rooms-store';
-import { ScheduleService } from './services/rooms-schedule-service';
-import { ScheduleStore } from './stores/rooms-schedule-store';
+import { RoomScheduleService } from './services/rooms-schedule-service';
+import { RoomScheduleStore } from './stores/rooms-schedule-store';
 
 
 
@@ -31,8 +31,8 @@ import { ScheduleStore } from './stores/rooms-schedule-store';
     providers: [
         RoomsService,
         RoomsStore,
-        ScheduleService,
-        ScheduleStore
+        RoomScheduleService,
+        RoomScheduleStore
     ]
 })
 export class RoomsModule { }

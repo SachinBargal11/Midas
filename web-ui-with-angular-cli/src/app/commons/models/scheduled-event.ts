@@ -52,7 +52,7 @@ export class ScheduledEvent extends ScheduledEventRecord {
         return this.eventEnd ? this.eventEnd.toDate() : null;
     }
 
-    getEventInstances(): ScheduledEventInstance[] {
+    getEventInstances(visit): ScheduledEventInstance[] {
         let instaces: ScheduledEventInstance[];
         if (this.recurrenceRule) {
             let occurrences: Date[] = this.recurrenceRule.all((date: Date, index: number) => {
@@ -72,7 +72,8 @@ export class ScheduledEvent extends ScheduledEventRecord {
                     allDay: this.isAllDay,
                     start: moment(occurrence),
                     end: moment(occurrence).add(duration),
-                    owningEvent: this
+                    owningEvent: this,
+                    owningVisit: visit
                 });
             }).value();
         } else {
@@ -82,7 +83,8 @@ export class ScheduledEvent extends ScheduledEventRecord {
                     allDay: this.isAllDay,
                     start: this.eventStart ? this.eventStart.clone() : null,
                     end: this.eventEnd ? this.eventEnd.clone() : null,
-                    owningEvent: this
+                    owningEvent: this,
+                    owningVisit: visit
                 })
             ];
         }
