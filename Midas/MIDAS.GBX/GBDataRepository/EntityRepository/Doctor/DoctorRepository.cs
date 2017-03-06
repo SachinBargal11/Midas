@@ -38,7 +38,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             BO.Doctor doctorBO = new BO.Doctor();
 
-            doctorBO.ID = doctor.id;
+            doctorBO.ID = (int)doctor.UserID;
             doctorBO.LicenseNumber = doctor.LicenseNumber;
             doctorBO.WCBAuthorization = doctor.WCBAuthorization;
             doctorBO.WcbRatingCode = doctor.WcbRatingCode;
@@ -81,7 +81,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             BO.Doctor doctorBO = new BO.Doctor();
 
-            doctorBO.ID = doctor.id;
+            doctorBO.ID = (int)doctor.UserID;
             doctorBO.LicenseNumber = doctor.LicenseNumber;
             doctorBO.WCBAuthorization = doctor.WCBAuthorization;
             doctorBO.WcbRatingCode = doctor.WcbRatingCode;
