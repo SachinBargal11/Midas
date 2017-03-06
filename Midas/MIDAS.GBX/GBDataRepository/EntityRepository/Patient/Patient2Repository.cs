@@ -74,6 +74,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boAddress.State = patient2.AddressInfo.State;
                 boAddress.ZipCode = patient2.AddressInfo.ZipCode;
                 boAddress.Country = patient2.AddressInfo.Country;
+                //[STATECODE-CHANGE]
+                //boAddress.StateCode = patient2.AddressInfo.StateCode;
+                //[STATECODE-CHANGE]
                 boAddress.CreateByUserID = patient2.AddressInfo.CreateByUserID;
                 boAddress.ID = patient2.AddressInfo.id;
 
@@ -637,6 +640,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     addressUserDB.State = IsEditMode == true && addressUserBO.State == null ? addressUserDB.State : addressUserBO.State;
                     addressUserDB.ZipCode = IsEditMode == true && addressUserBO.ZipCode == null ? addressUserDB.ZipCode : addressUserBO.ZipCode;
                     addressUserDB.Country = IsEditMode == true && addressUserBO.Country == null ? addressUserDB.Country : addressUserBO.Country;
+                    //[STATECODE-CHANGE]
+                    //addressUserDB.StateCode = IsEditMode == true && addressUserBO.StateCode == null ? addressUserDB.StateCode : addressUserBO.StateCode;
+                    //[STATECODE-CHANGE]
+
                     if (Add_addressDB == true)
                     {
                         addressUserDB = _context.AddressInfoes.Add(addressUserDB);
@@ -796,7 +803,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     addressPatientDB.State = IsEditMode == true && addressPatientBO.State == null ? addressPatientDB.State : addressPatientBO.State;
                     addressPatientDB.ZipCode = IsEditMode == true && addressPatientBO.ZipCode == null ? addressPatientDB.ZipCode : addressPatientBO.ZipCode;
                     addressPatientDB.Country = IsEditMode == true && addressPatientBO.Country == null ? addressPatientDB.Country : addressPatientBO.Country;
-
+                    //[STATECODE-CHANGE]
+                    //addressPatientDB.StateCode = IsEditMode == true && addressPatientBO.StateCode == null ? addressPatientDB.StateCode : addressPatientBO.StateCode;
+                    //[STATECODE-CHANGE]
                     if (Add_addressDB == true)
                     {
                         addressPatientDB = _context.AddressInfoes.Add(addressPatientDB);

@@ -34,9 +34,9 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
         public virtual Location Location { get; set; }
-        public virtual RoomTest RoomTest { get; set; }
-        public virtual Schedule Schedule { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientVisit2> PatientVisit2 { get; set; }
+        public virtual RoomTest RoomTest { get; set; }
+        public virtual Schedule Schedule { get; set; }
     }
 }

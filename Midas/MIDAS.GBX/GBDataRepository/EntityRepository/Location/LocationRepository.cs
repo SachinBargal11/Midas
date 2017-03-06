@@ -64,6 +64,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boAddress.State = location.AddressInfo.State;
                 boAddress.ZipCode = location.AddressInfo.ZipCode;
                 boAddress.Country = location.AddressInfo.Country;
+                //[STATECODE-CHANGE]
+                //boAddress.StateCode = location.AddressInfo.StateCode;
+                //[STATECODE-CHANGE]
                 boAddress.CreateByUserID = location.AddressInfo.CreateByUserID;
                 boAddress.ID = location.AddressInfo.id;
                 if (location.AddressInfo.IsDeleted.HasValue)
@@ -186,6 +189,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 addressDB.State = addressBO.State;
                 addressDB.ZipCode = addressBO.ZipCode;
                 addressDB.Country = addressBO.Country;
+                //[STATECODE-CHANGE]
+                //addressDB.StateCode = addressBO.StateCode;
+                //[STATECODE-CHANGE]
             }
             #endregion
 
@@ -270,6 +276,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     location.AddressInfo.State = addressBO.State;
                     location.AddressInfo.ZipCode = addressBO.ZipCode;
                     location.AddressInfo.Country = addressBO.Country;
+                    //[STATECODE-CHANGE]
+                    //location.AddressInfo.StateCode = addressBO.StateCode;
+                    //[STATECODE-CHANGE]
                     location.AddressInfo.UpdateDate = addressBO.UpdateDate;
                     location.AddressInfo.UpdateByUserID = addressBO.UpdateByUserID;
                     #endregion

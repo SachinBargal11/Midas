@@ -29,5 +29,10 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("country")]
         public string Country { get; set; }
+
+        //[STATECODE-CHANGE]
+        [JsonProperty("stateCode")]
+        public string StateCode { get; set; }
+        //[STATECODE-CHANGE]
     }
 }

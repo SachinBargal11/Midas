@@ -386,7 +386,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     addressDB.State = addressBO.State;
                     addressDB.ZipCode = addressBO.ZipCode;
                     addressDB.Country = addressBO.Country;
-
+                    //[STATECODE-CHANGE]
+                    //addressDB.StateCode = addressBO.StateCode;
+                    //[STATECODE-CHANGE]
                     if (Add_addressDB == true)
                     {
                         addressDB = _context.AddressInfoes.Add(addressDB);
@@ -598,7 +600,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     addressDB.State = addressBO.State;
                     addressDB.ZipCode = addressBO.ZipCode;
                     addressDB.Country = addressBO.Country;
-
+                    //[STATECODE-CHANGE]
+                    //addressDB.StateCode = addressBO.StateCode;
+                    //[STATECODE-CHANGE]
                     if (Add_addressDB == true)
                     {
                         addressDB = _context.AddressInfoes.Add(addressDB);

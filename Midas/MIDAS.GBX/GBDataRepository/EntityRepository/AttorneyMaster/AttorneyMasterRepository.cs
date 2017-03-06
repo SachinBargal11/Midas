@@ -159,6 +159,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     addressUserDB.State = IsEditMode == true && addressUserBO.State == null ? addressUserDB.State : addressUserBO.State;
                     addressUserDB.ZipCode = IsEditMode == true && addressUserBO.ZipCode == null ? addressUserDB.ZipCode : addressUserBO.ZipCode;
                     addressUserDB.Country = IsEditMode == true && addressUserBO.Country == null ? addressUserDB.Country : addressUserBO.Country;
+                    //[STATECODE-CHANGE]
+                    //addressUserDB.StateCode = IsEditMode == true && addressUserBO.StateCode == null ? addressUserDB.StateCode : addressUserBO.StateCode;
+                    //[STATECODE-CHANGE]
                     if (Add_addressDB == true) addressUserDB = _context.AddressInfoes.Add(addressUserDB);
                     _context.SaveChanges();
                 }

@@ -58,6 +58,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boAddress.State = refferingOffice.AddressInfo.State;
                 boAddress.ZipCode = refferingOffice.AddressInfo.ZipCode;
                 boAddress.Country = refferingOffice.AddressInfo.Country;
+                //[STATECODE-CHANGE]
+                //boAddress.StateCode = refferingOffice.AddressInfo.StateCode;
+                //[STATECODE-CHANGE]
                 boAddress.CreateByUserID = refferingOffice.AddressInfo.CreateByUserID;
                 boAddress.ID = refferingOffice.AddressInfo.id;
                 refferenceOfficeBO2.AddressInfo = boAddress;
@@ -306,6 +309,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     addressDB.State = (IsEditMode == true && addressBO.State == null) ? addressDB.State : addressBO.State;
                     addressDB.ZipCode = (IsEditMode == true && addressBO.ZipCode == null) ? addressDB.ZipCode : addressBO.ZipCode;
                     addressDB.Country = (IsEditMode == true && addressBO.Country == null) ? addressDB.Country :  addressBO.Country;
+                    //[STATECODE-CHANGE]
+                    //addressDB.StateCode = (IsEditMode == true && addressBO.StateCode == null) ? addressDB.StateCode : addressBO.StateCode;
+                    //[STATECODE-CHANGE]
 
                     if (Add_addressDB == true)
                     {

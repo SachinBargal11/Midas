@@ -53,6 +53,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 boAddress.State = patientAccidentInfo.AddressInfo.State;
                 boAddress.ZipCode = patientAccidentInfo.AddressInfo.ZipCode;
                 boAddress.Country = patientAccidentInfo.AddressInfo.Country;
+                //[STATECODE-CHANGE]
+                //boAddress.StateCode = patientAccidentInfo.AddressInfo.StateCode;
+                //[STATECODE-CHANGE]
                 boAddress.CreateByUserID = patientAccidentInfo.AddressInfo.CreateByUserID;
                 boAddress.ID = patientAccidentInfo.AddressInfo.id;
                 PatientAccidentInfoBO.accidentAddressInfo = boAddress;
@@ -67,6 +70,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 boAddress1.State = patientAccidentInfo.AddressInfo1.State;
                 boAddress1.ZipCode = patientAccidentInfo.AddressInfo1.ZipCode;
                 boAddress1.Country = patientAccidentInfo.AddressInfo1.Country;
+                //[STATECODE-CHANGE]
+                //boAddress1.StateCode = patientAccidentInfo.AddressInfo1.StateCode;
+                //[STATECODE-CHANGE]
                 boAddress1.CreateByUserID = patientAccidentInfo.AddressInfo1.CreateByUserID;
                 boAddress1.ID = patientAccidentInfo.AddressInfo1.id;
                 PatientAccidentInfoBO.hospitalAddressInfo = boAddress1;
@@ -315,6 +321,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     AccidentAddressInfoDB.State = (IsAccAddressEditMode == true && AccidentAddressInfoBO.State == null) ? AccidentAddressInfoDB.State : AccidentAddressInfoBO.State;
                     AccidentAddressInfoDB.ZipCode = (IsAccAddressEditMode == true && AccidentAddressInfoBO.ZipCode == null) ? AccidentAddressInfoDB.ZipCode : AccidentAddressInfoBO.ZipCode;
                     AccidentAddressInfoDB.Country = (IsAccAddressEditMode == true && AccidentAddressInfoBO.Country == null) ? AccidentAddressInfoDB.Country : AccidentAddressInfoBO.Country;
+                    //[STATECODE-CHANGE]
+                    //AccidentAddressInfoDB.StateCode = (IsAccAddressEditMode == true && AccidentAddressInfoBO.StateCode == null) ? AccidentAddressInfoDB.StateCode : AccidentAddressInfoBO.StateCode;
+                    //[STATECODE-CHANGE]
 
                     if (Add_addressDB == true)
                     {
@@ -354,6 +363,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     HospitalAddressInfoDB.State = (IsHosAddressEditMode == true && HospitalAddressInfoBO.State == null) ? HospitalAddressInfoDB.State : HospitalAddressInfoBO.State;
                     HospitalAddressInfoDB.ZipCode = (IsHosAddressEditMode == true && HospitalAddressInfoBO.ZipCode == null) ? HospitalAddressInfoDB.ZipCode : HospitalAddressInfoBO.ZipCode;
                     HospitalAddressInfoDB.Country = (IsHosAddressEditMode == true && HospitalAddressInfoBO.Country == null) ? HospitalAddressInfoDB.Country : HospitalAddressInfoBO.Country;
+                    //[STATECODE-CHANGE]
+                    //HospitalAddressInfoDB.StateCode = (IsHosAddressEditMode == true && HospitalAddressInfoBO.StateCode == null) ? HospitalAddressInfoDB.StateCode : HospitalAddressInfoBO.StateCode;
+                    //[STATECODE-CHANGE]
 
                     if (Add_addressDB == true)
                     {
