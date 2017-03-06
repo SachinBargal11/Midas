@@ -41,7 +41,8 @@
                     <div class="form-group" [class.error]="userformControls.userInfo.controls.role.touched && !userformControls.userInfo.controls.role.valid">
                         <p-checkbox name="role" label="Regular Staff" formControlName="role" [(ngModel)]="selectedRole" value="1"></p-checkbox>
                         <p-checkbox name="role" label="Office Manager" formControlName="role" [(ngModel)]="selectedRole" value="2"></p-checkbox>
-                        <p-checkbox name="role" label="Doctor" formControlName="role" [(ngModel)]="selectedRole" value="3"></p-checkbox>
+                        <!--<p-checkbox name="role" label="Doctor" formControlName="role" [(ngModel)]="selectedRole" value="3"></p-checkbox>-->
+                        <p-checkbox id="doctorRole" name="role" label="Doctor" formControlName="role" [(ngModel)]="selectedRole" value="3" (click)="showDoctor()"></p-checkbox>
                         <p-checkbox name="role" label="Billing Staff" formControlName="role" [(ngModel)]="selectedRole" value="4"></p-checkbox>
                         <p-checkbox name="role" label="Nurse" formControlName="role" [(ngModel)]="selectedRole" value="5"></p-checkbox>
                         <div class='error-list' *ngIf="userformControls.userInfo.controls.role.touched && !userformControls.userInfo.controls.role.valid">
@@ -54,7 +55,7 @@
             </div>
         </div>
     </section>
-    <section class="card">
+    <section class="card" id="doctor" style="display: none;">
         <header class="card-header card-header-lg">
             Doctor's Information
         </header>

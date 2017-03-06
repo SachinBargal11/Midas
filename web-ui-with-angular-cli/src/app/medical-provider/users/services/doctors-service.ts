@@ -8,6 +8,8 @@ import {environment} from '../../../../environments/environment';
 import {Doctor} from '../models/doctor';
 import {DoctorSpeciality} from '../models/doctor-speciality';
 import { DoctorAdapter } from './adapters/doctor-adapter';
+import { SessionStore } from '../../../commons/stores/session-store';
+
 
 @Injectable()
 export class DoctorsService {
@@ -16,7 +18,8 @@ export class DoctorsService {
     private _headers: Headers = new Headers();
 
     constructor(
-        private _http: Http
+        private _http: Http,
+        private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
     }
@@ -55,6 +58,24 @@ export class DoctorsService {
 
 
             let doctorDetailRequestData = doctorDetail.toJS();
+            let userCompanies = [{
+                    company: {
+                        id: this._sessionStore.session.currentCompany.id
+                    }
+                }];
+            // doctorDetailRequestData = {
+            //     user: doctorDetailRequestData.user,
+            //     userCompanies: [{
+            //         company: {
+            //             id: this._sessionStore.session.currentCompany.id
+            //         }
+            //     }],
+            //     doctorSpecialities: doctorDetailRequestData.doctorSpecialities
+            // };
+
+            doctorDetailRequestData.user.userCompanies = userCompanies;
+            doctorDetailRequestData.user.doctorSpecialities = doctorDetailRequestData.doctorSpecialities;
+            doctorDetailRequestData = _.omit(doctorDetailRequestData, 'doctorSpecialities');
 
             // add/replace values which need to be changed
             // _.extend(doctorDetailRequestData.user, {
@@ -63,7 +84,7 @@ export class DoctorsService {
             // });
 
             // remove unneeded keys 
-            doctorDetailRequestData.user = _.omit(doctorDetailRequestData.user, 'accountId', 'gender', 'status', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+            // doctorDetailRequestData.user = _.omit(doctorDetailRequestData.user, 'accountId', 'gender', 'status', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
             // doctorDetailRequestData.address = _.omit(doctorDetailRequestData.address, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
             // doctorDetailRequestData.contactInfo = _.omit(doctorDetailRequestData.contactInfo, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
             // doctorDetailRequestData = _.omit(doctorDetailRequestData.doctor, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
@@ -88,6 +109,14 @@ export class DoctorsService {
 
 
             let doctorDetailRequestData = doctorDetail.toJS();
+            let userCompanies = [{
+                    company: {
+                        id: this._sessionStore.session.currentCompany.id
+                    }
+                }];
+            doctorDetailRequestData.user.userCompanies = userCompanies;
+            doctorDetailRequestData.user.doctorSpecialities = doctorDetailRequestData.doctorSpecialities;
+            doctorDetailRequestData = _.omit(doctorDetailRequestData, 'doctorSpecialities');
 
             // add/replace values which need to be changed
             // _.extend(doctorDetailRequestData.user, {
@@ -96,9 +125,9 @@ export class DoctorsService {
             // });
 
             // remove unneeded keys 
-            doctorDetailRequestData.user.doctorSpecialities = doctorDetailRequestData.doctorSpecialities;
-            doctorDetailRequestData.user = _.omit(doctorDetailRequestData.user, 'accountId', 'gender', 'status', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
-            doctorDetailRequestData = _.omit(doctorDetailRequestData, 'doctorSpecialities');
+            // doctorDetailRequestData.user.doctorSpecialities = doctorDetailRequestData.doctorSpecialities;
+            // doctorDetailRequestData.user = _.omit(doctorDetailRequestData.user, 'accountId', 'gender', 'status', 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
+            // doctorDetailRequestData = _.omit(doctorDetailRequestData, 'doctorSpecialities');
             // doctorDetailRequestData.address = _.omit(doctorDetailRequestData.address, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
             // doctorDetailRequestData.contactInfo = _.omit(doctorDetailRequestData.contactInfo, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
             // doctorDetailRequestData.doctor = _.omit(doctorDetailRequestData.doctor, 'createByUserId', 'createDate', 'updateByUserId', 'updateDate');
