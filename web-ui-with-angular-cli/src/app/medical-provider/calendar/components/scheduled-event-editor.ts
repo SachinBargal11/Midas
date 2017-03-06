@@ -213,13 +213,15 @@ export class ScheduledEventEditorComponent implements OnChanges {
         // if (!this.userProfile) {
         //     this.userProfile = BlankUserProfile;
         // }
+        // console.log(changes._selectedEvent);
     }
 
     getEditedEvent(): ScheduledEvent {
         let scheduledEventEditorFormValues = this.scheduledEventEditorForm.value;
         let recurrenceRule: RRule;
         let recurrenceString: string = null;
-        switch (parseInt(scheduledEventEditorFormValues.repeatType, 10)) {
+        let repeatType = parseInt(scheduledEventEditorFormValues.repeatType, 10);
+        switch (this.repeatType) {
             case RRule.DAILY:
                 let dailyRecurrenceCofig: any = {
                     freq: RRule.DAILY

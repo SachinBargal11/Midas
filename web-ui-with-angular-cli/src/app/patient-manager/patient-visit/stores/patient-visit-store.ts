@@ -153,14 +153,14 @@ export class PatientVisitsStore {
         return patientVisits.get(index);
     }
 
-    createExceptionInRecurringEvent(patientVisit: PatientVisit): Observable<{ exceptionEvent: ScheduledEvent, recurringEvent: ScheduledEvent }> {
+    createExceptionInRecurringEvent(patientVisit: PatientVisit): Observable<{ exceptionVisit: PatientVisit, recurringEvent: ScheduledEvent }> {
         let matchingPatientVisit: PatientVisit = this.findPatientVisitByCalendarEventId(patientVisit.calendarEvent.recurrenceId);
         let recurringEvent: ScheduledEvent = matchingPatientVisit.calendarEvent;
         let promise = this.addPatientVisit(patientVisit).toPromise()
             .then((updatedPatientVisit: PatientVisit) => {
                 let updatedExceptionEvent: ScheduledEvent = updatedPatientVisit.calendarEvent;
                 let recurrenceException = _.clone(recurringEvent.recurrenceException);
-                recurrenceException.push(patientVisit.eventStart);
+                recurrenceException.push(patientVisit.calendarEvent.eventStart);
                 let updatedEvent: ScheduledEvent = new ScheduledEvent({
                     id: recurringEvent.id,
                     name: recurringEvent.name,
@@ -176,12 +176,12 @@ export class PatientVisitsStore {
                 return this._patientVisitsService.updateCalendarEvent(updatedEvent).toPromise()
                     .then((updatedReccurringEvent: ScheduledEvent) => {
                         return {
-                            exceptionEvent: updatedExceptionEvent,
+                            exceptionVisit: updatedPatientVisit,
                             recurringEvent: updatedReccurringEvent
                         };
                     });
             });
-        return <Observable<{ exceptionEvent: ScheduledEvent, recurringEvent: ScheduledEvent }>>Observable.from(promise);
+        return <Observable<{ exceptionVisit: PatientVisit, recurringEvent: ScheduledEvent }>>Observable.from(promise);
     }
 
 }

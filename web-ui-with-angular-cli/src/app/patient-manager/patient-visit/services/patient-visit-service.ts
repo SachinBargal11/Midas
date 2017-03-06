@@ -140,10 +140,16 @@ export class PatientVisitService {
 
     updateCalendarEvent(scheduledEvent: ScheduledEvent): Observable<ScheduledEvent> {
         let promise = new Promise((resolve, reject) => {
-            debugger;
             let requestData = {
-                calendarEvent: scheduledEvent.toJS()
-            }
+                calendarEvent: _.extend(scheduledEvent.toJS(), {
+                    recurrenceRule: scheduledEvent.recurrenceRule
+                        ? scheduledEvent.recurrenceRule.toString()
+                        : '',
+                    recurrenceException: _.map(scheduledEvent.recurrenceException, (datum: moment.Moment) => {
+                        return datum.format('YYYYMMDDThhmmss') + 'Z';
+                    }).join(',')
+                })
+            };
             return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(requestData), {
                 headers: this._headers
             })
@@ -161,7 +167,6 @@ export class PatientVisitService {
 
     updatePatientVisit(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
         let promise = new Promise((resolve, reject) => {
-            debugger;
             let requestData = _.extend(patientVisitDetail.toJS(), {
                 calendarEvent: _.extend(patientVisitDetail.calendarEvent.toJS(), {
                     recurrenceRule: patientVisitDetail.calendarEvent.recurrenceRule

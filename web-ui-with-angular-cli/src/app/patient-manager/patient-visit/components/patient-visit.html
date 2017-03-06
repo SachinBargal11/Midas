@@ -1,26 +1,27 @@
 <h3 class="with-border">Patient Visits</h3>
-<div class="row">
+<div class="ui-widget-header row">
     <div class="col-lg-3">
-        <select [(ngModel)]="selectedLocationId" class="select2-arrow form-control" (change)="selectLocation($event)">
-            <option value="" selected> -- Select Location -- </option>
+        <select [(ngModel)]="selectedLocationId" class="select2-arrow form-control" (change)="selectLocation()">
+            <option value="0"> -- Select Location -- </option>
             <option *ngFor="let location of _locationsStore.locations | async" [value]="location.location.id">{{location.location.name}}</option>                                       
         </select>
     </div>
     <div class="col-lg-3">
-        <select [(ngModel)]="selectedOption" class="select2-arrow form-control">
-            <option value="1">For Doctor</option>
-            <option value="2">For Room</option>
+        <select [(ngModel)]="selectedOption" class="select2-arrow form-control" (change)="selectOption()">
+            <option value="0">Select Visit</option>
+            <option value="1">With Doctor</option>
+            <option value="2">With Room</option>
         </select>
     </div>
     <div class="col-lg-3" *ngIf="selectedOption == 1">
-        <select [(ngModel)]="selectedDoctorId" class="select2-arrow form-control" (change)="selectDoctor($event)">
-            <option value="" selected> -- Select Doctor -- </option>
+        <select [(ngModel)]="selectedDoctorId" class="select2-arrow form-control" (change)="selectDoctor()">
+            <option value="0"> -- Select Doctor -- </option>
             <option *ngFor="let doctorLocationSchedule of _doctorLocationScheduleStore.doctorLocationSchedules | async" [value]="doctorLocationSchedule.doctor.id">{{doctorLocationSchedule.doctor.user.displayName}}</option>                                       
         </select>
     </div>
     <div class="col-lg-3" *ngIf="selectedOption == 2">
-        <select [(ngModel)]="selectedRoomId" class="select2-arrow form-control" (change)="selectRoom($event)">
-            <option value="" selected> -- Select Room -- </option>
+        <select [(ngModel)]="selectedRoomId" class="select2-arrow form-control" (change)="selectRoom()">
+            <option value="0"> -- Select Room -- </option>
             <option *ngFor="let room of _roomsStore.rooms | async" [value]="room.id">{{room.name}}</option>                                       
         </select>
     </div>
@@ -35,21 +36,20 @@
 <p-dialog [minWidth]="300" [width]="900" (onAfterHide)="handleDialogHide()" header="Visit" [(visible)]="dialogVisible" [responsive]="true"
     showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'visible'}" [responsive]="true">
     <form [formGroup]="patientVisitForm" (ngSubmit)="saveEvent()">
-        <div class="row">
-            <div class="col-md-2"><label class="form-label">Patient</label></div>
-            <div class="col-lg-4">
-                <div class="form-group">
-                    <select formControlName="patientId" [(ngModel)]="selectedPatient" class="select2-arrow form-control">
-            <option value="" selected> -- Select Patient -- </option>
-            <option *ngFor="let patient of _patientsStore.patients | async" [value]="patient.id">{{patient.user.displayName}}</option>                                       
-        </select>
+        <div *ngIf="selectedVisit">
+            <div class="row" *ngIf="!selectedVisit.calendarEvent.recurrenceId">
+                <div class="col-md-2"><label class="form-label">Patient<span class="color-red">*</span></label></div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <select formControlName="patientId" [ngModel]="selectedVisit.patientId" class="select2-arrow form-control">
+                        <option value="0"> -- Select Patient -- </option>
+                        <option *ngFor="let patient of _patientsStore.patients | async" [value]="patient.id">{{patient.user.displayName}}</option>                                       
+                    </select>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="" *ngIf="selectedVisit">
 
             <scheduled-event-editor [selectedEvent]="selectedVisit.calendarEvent" (isValid)="scheduledEventEditorValid = $event"></scheduled-event-editor>
-
         </div>
         <p-footer>
             <div class="row">
