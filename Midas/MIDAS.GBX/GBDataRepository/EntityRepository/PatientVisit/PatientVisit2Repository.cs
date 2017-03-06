@@ -197,12 +197,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     CalendarEventDB.Name = IsEditMode == true && CalendarEventBO.Name == null ? CalendarEventDB.Name : CalendarEventBO.Name;
                     CalendarEventDB.EventStart = IsEditMode == true && CalendarEventBO.EventStart.HasValue == false ? CalendarEventDB.EventStart : CalendarEventBO.EventStart.Value;
                     CalendarEventDB.EventEnd = IsEditMode == true && CalendarEventBO.EventEnd.HasValue == false ? CalendarEventDB.EventEnd : CalendarEventBO.EventEnd.Value;
-                    CalendarEventDB.TimeZone = IsEditMode == true && CalendarEventBO.TimeZone == null ? CalendarEventDB.TimeZone : CalendarEventBO.TimeZone;
-                    CalendarEventDB.Description = IsEditMode == true && CalendarEventBO.Description == null ? CalendarEventDB.Description : CalendarEventBO.Description;
-                    CalendarEventDB.RecurrenceId = IsEditMode == true && CalendarEventBO.RecurrenceId.HasValue == false ? CalendarEventDB.RecurrenceId : CalendarEventBO.RecurrenceId;
+                    //CalendarEventDB.TimeZone = IsEditMode == true && CalendarEventBO.TimeZone == null ? CalendarEventDB.TimeZone : CalendarEventBO.TimeZone;
+                    CalendarEventDB.TimeZone = CalendarEventBO.TimeZone;
+                    //CalendarEventDB.Description = IsEditMode == true && CalendarEventBO.Description == null ? CalendarEventDB.Description : CalendarEventBO.Description;
+                    CalendarEventDB.Description = CalendarEventBO.Description;
+                    //CalendarEventDB.RecurrenceId = IsEditMode == true && CalendarEventBO.RecurrenceId.HasValue == false ? CalendarEventDB.RecurrenceId : CalendarEventBO.RecurrenceId;
+                    CalendarEventDB.RecurrenceId = CalendarEventBO.RecurrenceId;
                     CalendarEventDB.RecurrenceRule = IsEditMode == true && CalendarEventBO.RecurrenceRule == null ? CalendarEventDB.RecurrenceRule : CalendarEventBO.RecurrenceRule;
                     CalendarEventDB.RecurrenceException = IsEditMode == true && CalendarEventBO.RecurrenceException == null ? CalendarEventDB.RecurrenceException : CalendarEventBO.RecurrenceException;
-                    CalendarEventDB.IsAllDay = IsEditMode == true && CalendarEventBO.IsAllDay.HasValue == false ? CalendarEventDB.IsAllDay : CalendarEventBO.IsAllDay;
+                    //CalendarEventDB.IsAllDay = IsEditMode == true && CalendarEventBO.IsAllDay.HasValue == false ? CalendarEventDB.IsAllDay : CalendarEventBO.IsAllDay;
+                    CalendarEventDB.IsAllDay = CalendarEventBO.IsAllDay;
 
                     if (IsEditMode == false)
                     {
@@ -264,12 +268,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     PatientVisit2DB.PatientId = IsEditMode == true && PatientVisit2BO.PatientId.HasValue == false ? PatientVisit2DB.PatientId : PatientVisit2BO.PatientId.Value;
                     PatientVisit2DB.LocationId = IsEditMode == true && PatientVisit2BO.LocationId.HasValue == false ? PatientVisit2DB.LocationId : PatientVisit2BO.LocationId.Value;
-                    PatientVisit2DB.RoomId = IsEditMode == true && PatientVisit2BO.RoomId.HasValue == false ? PatientVisit2DB.RoomId : PatientVisit2BO.RoomId;
-                    PatientVisit2DB.DoctorId = IsEditMode == true && PatientVisit2BO.DoctorId.HasValue == false ? PatientVisit2DB.DoctorId : PatientVisit2BO.DoctorId;
-                    PatientVisit2DB.SpecialtyId = IsEditMode == true && PatientVisit2BO.SpecialtyId.HasValue == false ? PatientVisit2DB.SpecialtyId : PatientVisit2BO.SpecialtyId;
-                    PatientVisit2DB.Notes = IsEditMode == true && PatientVisit2BO.Notes == null ? PatientVisit2DB.Notes : PatientVisit2BO.Notes;
-                    PatientVisit2DB.VisitStatusId = IsEditMode == true && PatientVisit2BO.VisitStatusId.HasValue == false ? PatientVisit2DB.VisitStatusId : PatientVisit2BO.VisitStatusId;
-                    PatientVisit2DB.VisitType = IsEditMode == true && PatientVisit2BO.VisitType.HasValue == false ? PatientVisit2DB.VisitType : PatientVisit2BO.VisitType;
+                    //PatientVisit2DB.RoomId = IsEditMode == true && PatientVisit2BO.RoomId.HasValue == false ? PatientVisit2DB.RoomId : PatientVisit2BO.RoomId;
+                    PatientVisit2DB.RoomId = PatientVisit2BO.RoomId;
+                    //PatientVisit2DB.DoctorId = IsEditMode == true && PatientVisit2BO.DoctorId.HasValue == false ? PatientVisit2DB.DoctorId : PatientVisit2BO.DoctorId;
+                    PatientVisit2DB.DoctorId = PatientVisit2BO.DoctorId;
+                    //PatientVisit2DB.SpecialtyId = IsEditMode == true && PatientVisit2BO.SpecialtyId.HasValue == false ? PatientVisit2DB.SpecialtyId : PatientVisit2BO.SpecialtyId;
+                    PatientVisit2DB.SpecialtyId = PatientVisit2BO.SpecialtyId;
+                    //PatientVisit2DB.Notes = IsEditMode == true && PatientVisit2BO.Notes == null ? PatientVisit2DB.Notes : PatientVisit2BO.Notes;
+                    PatientVisit2DB.Notes = PatientVisit2BO.Notes;
+                    //PatientVisit2DB.VisitStatusId = IsEditMode == true && PatientVisit2BO.VisitStatusId.HasValue == false ? PatientVisit2DB.VisitStatusId : PatientVisit2BO.VisitStatusId;
+                    PatientVisit2DB.VisitStatusId = PatientVisit2BO.VisitStatusId;
+                    //PatientVisit2DB.VisitType = IsEditMode == true && PatientVisit2BO.VisitType.HasValue == false ? PatientVisit2DB.VisitType : PatientVisit2BO.VisitType;
+                    PatientVisit2DB.VisitType = PatientVisit2BO.VisitType;
 
                     if (IsEditMode == false)
                     {
