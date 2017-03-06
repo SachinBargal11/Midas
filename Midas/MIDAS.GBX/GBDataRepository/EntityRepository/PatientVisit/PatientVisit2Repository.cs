@@ -266,12 +266,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         PatientVisit2DB.CaseId = PatientVisit2BO.CaseId.HasValue == false ? PatientVisit2DB.CaseId : PatientVisit2BO.CaseId.Value;
                     }
 
-                    if (IsEditMode == false && PatientVisit2BO.CaseId.HasValue == true && PatientVisit2BO.CaseId.Value == 1)
+                    if (IsEditMode == false)
                     {
                         int CaseId = _context.Cases.Where(p => p.PatientId == PatientVisit2BO.PatientId.Value && p.CaseStatusId == 1).Select(p => p.Id).FirstOrDefault<int>();
-                        if (CaseId == null)
+
+                        if (CaseId == 0)
                         {
                             return new BO.ErrorObject { errorObject = "", ErrorMessage = "No open case exists for given patient.", ErrorLevel = ErrorLevel.Error };
+                        }
+                        else if (PatientVisit2BO.CaseId.HasValue == true && PatientVisit2BO.CaseId.Value != CaseId)
+                        {
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Case id dosent match with open case is for the given patient.", ErrorLevel = ErrorLevel.Error };
                         }
                         else
                         {
