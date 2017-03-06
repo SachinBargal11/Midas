@@ -429,6 +429,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Is existing User
+        public override Object Get(string user)
+        {
+            var acc = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanyRoles").Where(p => p.UserName == user && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<User>();
+            if (acc == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+        }
+        #endregion
+
         #region Login
 
         public override Object Login<T>(T entity)

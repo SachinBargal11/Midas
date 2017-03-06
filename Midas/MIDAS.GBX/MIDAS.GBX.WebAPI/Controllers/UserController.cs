@@ -98,6 +98,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.ValidateUniqueName(Request, User);
         }
 
+        
+        [HttpGet]
+        [Route("IsExisting/{user}")]
+        public HttpResponseMessage IsExisting(string User)
+        {
+            return requestHandler.GetObjects(Request, User);
+        }
+
         [HttpPost]
         [Route("ResetPassword")]
         [AllowAnonymous]
