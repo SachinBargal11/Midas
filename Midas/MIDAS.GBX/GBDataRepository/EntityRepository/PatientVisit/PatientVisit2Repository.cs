@@ -266,6 +266,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         PatientVisit2DB.CaseId = PatientVisit2BO.CaseId.HasValue == false ? PatientVisit2DB.CaseId : PatientVisit2BO.CaseId.Value;
                     }
 
+                    if (IsEditMode == false && PatientVisit2BO.CaseId.HasValue == true && PatientVisit2BO.CaseId.Value == 1)
+                    {
+                        int CaseId = _context.Cases.Where(p => p.PatientId == PatientVisit2BO.PatientId.Value && p.CaseStatusId == 1).Select(p => p.Id).FirstOrDefault<int>();
+                        if (CaseId == null)
+                        {
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "No open case exists for given patient.", ErrorLevel = ErrorLevel.Error };
+                        }
+                        else
+                        {
+                            PatientVisit2DB.CaseId = CaseId;
+                        }
+                    }
+                    else
+                    {
+                        PatientVisit2DB.CaseId = PatientVisit2BO.CaseId.HasValue == false ? PatientVisit2DB.CaseId : PatientVisit2BO.CaseId.Value;
+                    }
+
+
                     PatientVisit2DB.PatientId = IsEditMode == true && PatientVisit2BO.PatientId.HasValue == false ? PatientVisit2DB.PatientId : PatientVisit2BO.PatientId.Value;
                     PatientVisit2DB.LocationId = IsEditMode == true && PatientVisit2BO.LocationId.HasValue == false ? PatientVisit2DB.LocationId : PatientVisit2BO.LocationId.Value;
                     //PatientVisit2DB.RoomId = IsEditMode == true && PatientVisit2BO.RoomId.HasValue == false ? PatientVisit2DB.RoomId : PatientVisit2BO.RoomId;
