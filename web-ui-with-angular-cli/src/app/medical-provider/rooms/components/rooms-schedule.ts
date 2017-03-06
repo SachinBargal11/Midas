@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Rx';
 import { ScheduleDetail } from '../models/rooms-schedule-detail';
-import { ScheduleStore } from '../stores/rooms-schedule-store';
+import { RoomScheduleStore } from '../stores/rooms-schedule-store';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -51,7 +51,7 @@ export class RoomsScheduleComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _locationsStore: LocationsStore,
         private _roomsStore: RoomsStore,
-        private _scheduleStore: ScheduleStore,
+        private _roomScheduleStore: RoomScheduleStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
@@ -60,7 +60,7 @@ export class RoomsScheduleComponent implements OnInit {
         this._route.parent.params.subscribe((params: any) => {
             let roomId = parseInt(params.roomId);
             this._progressBarService.show();
-            let fetchSchedules = this._scheduleStore.getSchedules();
+            let fetchSchedules = this._roomScheduleStore.getSchedules();
             // let fetchRoom = this._roomsStore.fetchRoomById(roomId);
             let fetchRoom = this._roomsStore.getRoomById(roomId);
 
@@ -89,7 +89,7 @@ export class RoomsScheduleComponent implements OnInit {
     }
 
     private _fetchScheduleWithDetails(scheduleId: number): void {
-        this._scheduleStore.fetchScheduleById(scheduleId)
+        this._roomScheduleStore.fetchScheduleById(scheduleId)
             .subscribe(_.bind((schedule: Schedule) => {
                 this.currentSchedule = schedule;
                 this.hightlightChange = true;
@@ -199,7 +199,7 @@ export class RoomsScheduleComponent implements OnInit {
         this.isSaveProgress = true;
         let result;
 
-        result = this._scheduleStore.updateSchedule(schedule, this.room);
+        result = this._roomScheduleStore.updateSchedule(schedule, this.room);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
@@ -240,7 +240,7 @@ export class RoomsScheduleComponent implements OnInit {
         this.isSaveProgress = true;
         let result;
 
-        result = this._scheduleStore.addSchedule(schedule, this.room);
+        result = this._roomScheduleStore.addSchedule(schedule, this.room);
         result.subscribe(
             (response) => {
                 let notification = new Notification({

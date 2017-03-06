@@ -6,8 +6,6 @@ import { CalendarComponent } from './components/calendar';
 import { ScheduledEventService } from './services/scheduled-event-service';
 import { ScheduledEventStore } from './stores/scheduled-event-store';
 
-import { ScheduledEventEditorComponent } from './components/scheduled-event-editor';
-
 @NgModule({
     imports: [
         CommonModule,
@@ -15,8 +13,7 @@ import { ScheduledEventEditorComponent } from './components/scheduled-event-edit
         CommonsModule
     ],
     declarations: [
-        CalendarComponent,
-        ScheduledEventEditorComponent
+        CalendarComponent
     ],
     providers: [
         ScheduledEventService,

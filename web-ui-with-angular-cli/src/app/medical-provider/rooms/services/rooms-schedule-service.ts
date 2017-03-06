@@ -15,7 +15,7 @@ import { ScheduleDetail } from '../models/rooms-schedule-detail';
 import { ScheduleAdapter } from './adapters/rooms-schedule-adapter';
 
 @Injectable()
-export class ScheduleService {
+export class RoomScheduleService {
 
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     private _headers: Headers = new Headers();

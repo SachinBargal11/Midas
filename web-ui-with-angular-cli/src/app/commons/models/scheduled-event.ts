@@ -1,3 +1,4 @@
+import { IEventWrapper } from './i-event-wrapper';
 import { ScheduledEventInstance } from './scheduled-event-instance';
 import { Record } from 'immutable';
 import * as moment from 'moment';
@@ -52,7 +53,7 @@ export class ScheduledEvent extends ScheduledEventRecord {
         return this.eventEnd ? this.eventEnd.toDate() : null;
     }
 
-    getEventInstances(): ScheduledEventInstance[] {
+    getEventInstances(eventWrapper: IEventWrapper): ScheduledEventInstance[] {
         let instaces: ScheduledEventInstance[];
         if (this.recurrenceRule) {
             let occurrences: Date[] = this.recurrenceRule.all((date: Date, index: number) => {
@@ -72,7 +73,8 @@ export class ScheduledEvent extends ScheduledEventRecord {
                     allDay: this.isAllDay,
                     start: moment(occurrence),
                     end: moment(occurrence).add(duration),
-                    owningEvent: this
+                    owningEvent: this,
+                    eventWrapper: eventWrapper
                 });
             }).value();
         } else {
@@ -82,7 +84,8 @@ export class ScheduledEvent extends ScheduledEventRecord {
                     allDay: this.isAllDay,
                     start: this.eventStart ? this.eventStart.clone() : null,
                     end: this.eventEnd ? this.eventEnd.clone() : null,
-                    owningEvent: this
+                    owningEvent: this,
+                    eventWrapper: eventWrapper
                 })
             ];
         }

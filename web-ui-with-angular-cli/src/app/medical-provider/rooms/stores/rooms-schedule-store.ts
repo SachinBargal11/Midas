@@ -5,18 +5,18 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { Schedule } from '../models/rooms-schedule';
-import { ScheduleService } from '../services/rooms-schedule-service';
+import { RoomScheduleService } from '../services/rooms-schedule-service';
 import { List } from 'immutable';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { SessionStore } from '../../../commons/stores/session-store';
 
 @Injectable()
-export class ScheduleStore {
+export class RoomScheduleStore {
 
     private _schedules: BehaviorSubject<List<Schedule>> = new BehaviorSubject(List([]));
 
     constructor(
-        private _scheduleService: ScheduleService,
+        private _roomScheduleService: RoomScheduleService,
         private _sessionStore: SessionStore
     ) {
         this._sessionStore.userLogoutEvent.subscribe(() => {
@@ -30,7 +30,7 @@ export class ScheduleStore {
 
     getSchedules(): Observable<Schedule[]> {
         let promise = new Promise((resolve, reject) => {
-            this._scheduleService.getSchedules().subscribe((schedules: Schedule[]) => {
+            this._roomScheduleService.getSchedules().subscribe((schedules: Schedule[]) => {
                 this._schedules.next(List(schedules));
                 resolve(schedules);
             }, error => {
@@ -52,7 +52,7 @@ export class ScheduleStore {
             // if (matchedSchedule) {
             //     resolve(matchedSchedule);
             // } else {
-                this._scheduleService.getSchedule(id)
+                this._roomScheduleService.getSchedule(id)
                     .subscribe((schedule: Schedule) => {
                         resolve(schedule);
                     }, error => {
@@ -64,7 +64,7 @@ export class ScheduleStore {
     }
     addSchedule(scheduleDetail: Schedule, room: Room): Observable<Schedule> {
         let promise = new Promise((resolve, reject) => {
-            this._scheduleService.addSchedule(scheduleDetail, room).subscribe((schedule: Schedule) => {
+            this._roomScheduleService.addSchedule(scheduleDetail, room).subscribe((schedule: Schedule) => {
                 this._schedules.next(this._schedules.getValue().push(schedule));
                 resolve(schedule);
             }, error => {
@@ -75,7 +75,7 @@ export class ScheduleStore {
     }
     updateSchedule(scheduleDetail: Schedule, room: Room): Observable<Schedule> {
         let promise = new Promise((resolve, reject) => {
-            this._scheduleService.updateSchedule(scheduleDetail, room).subscribe((updatedScheduleDetail: Schedule) => {
+            this._roomScheduleService.updateSchedule(scheduleDetail, room).subscribe((updatedScheduleDetail: Schedule) => {
                 let scheduleDetails: List<Schedule> = this._schedules.getValue();
                 let index = scheduleDetails.findIndex((currentSchedule: Schedule) => currentSchedule.id === updatedScheduleDetail.id);
                 scheduleDetails = scheduleDetails.update(index, function () {
@@ -93,7 +93,7 @@ export class ScheduleStore {
         let schedules = this._schedules.getValue();
         let index = schedules.findIndex((currentSchedule: Schedule) => currentSchedule.id === schedule.id);
         let promise = new Promise((resolve, reject) => {
-            this._scheduleService.deleteSchedule(schedule)
+            this._roomScheduleService.deleteSchedule(schedule)
                 .subscribe((schedule: Schedule) => {
                     this._schedules.next(schedules.delete(index));
                     resolve(schedule);

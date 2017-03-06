@@ -57,6 +57,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     boAddress.State = eachInsuranceMaster.AddressInfo.State;
                     boAddress.ZipCode = eachInsuranceMaster.AddressInfo.ZipCode;
                     boAddress.Country = eachInsuranceMaster.AddressInfo.Country;
+                    //[STATECODE-CHANGE]
+                    //boAddress.StateCode = eachInsuranceMaster.AddressInfo.StateCode;
+                    //[STATECODE-CHANGE]
                     boAddress.CreateByUserID = eachInsuranceMaster.AddressInfo.CreateByUserID;
                     boAddress.ID = eachInsuranceMaster.AddressInfo.id;
                     boInsuranceMaster.AddressInfo = boAddress;

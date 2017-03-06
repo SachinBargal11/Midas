@@ -57,6 +57,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 boAddress.State = InsuranceInfos.AddressInfo.State;
                 boAddress.ZipCode = InsuranceInfos.AddressInfo.ZipCode;
                 boAddress.Country = InsuranceInfos.AddressInfo.Country;
+                //[STATECODE-CHANGE]
+                //boAddress.StateCode = InsuranceInfos.AddressInfo.StateCode;
+                //[STATECODE-CHANGE]
                 boAddress.CreateByUserID = InsuranceInfos.AddressInfo.CreateByUserID;
                 boAddress.ID = InsuranceInfos.AddressInfo.id;
                 insuranceBO.addressInfo = boAddress;
@@ -86,6 +89,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 boAddress1.State = InsuranceInfos.AddressInfo1.State;
                 boAddress1.ZipCode = InsuranceInfos.AddressInfo1.ZipCode;
                 boAddress1.Country = InsuranceInfos.AddressInfo1.Country;
+                //[STATECODE-CHANGE]
+                //boAddress1.StateCode = InsuranceInfos.AddressInfo1.StateCode;
+                //[STATECODE-CHANGE]
                 boAddress1.CreateByUserID = InsuranceInfos.AddressInfo1.CreateByUserID;
                 boAddress1.ID = InsuranceInfos.AddressInfo1.id;
                 insuranceBO.addressInfo1 = boAddress1;
@@ -222,6 +228,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     addressinfoPolicyHolderDB.State = IsEditMode == true && addressinfoPolicyHolderBO.State == null ? addressinfoPolicyHolderDB.State : addressinfoPolicyHolderBO.State;
                     addressinfoPolicyHolderDB.ZipCode = IsEditMode == true && addressinfoPolicyHolderBO.ZipCode == null ? addressinfoPolicyHolderDB.ZipCode : addressinfoPolicyHolderBO.ZipCode;
                     addressinfoPolicyHolderDB.Country = IsEditMode == true && addressinfoPolicyHolderBO.Country == null ? addressinfoPolicyHolderDB.Country : addressinfoPolicyHolderBO.Country;
+                    //[STATECODE-CHANGE]
+                    //addressinfoPolicyHolderDB.StateCode = IsEditMode == true && addressinfoPolicyHolderBO.StateCode == null ? addressinfoPolicyHolderDB.StateCode : addressinfoPolicyHolderBO.StateCode;
+                    //[STATECODE-CHANGE]
 
                     if (Add_addressDB == true)
                     {
@@ -307,6 +316,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     addressinfoInsuranceCompanyDB.State = IsEditMode == true && addressinfoInsuranceCompanyBO.State == null ? addressinfoInsuranceCompanyDB.State : addressinfoInsuranceCompanyBO.State;
                     addressinfoInsuranceCompanyDB.ZipCode = IsEditMode == true && addressinfoInsuranceCompanyBO.ZipCode == null ? addressinfoInsuranceCompanyDB.ZipCode : addressinfoInsuranceCompanyBO.ZipCode;
                     addressinfoInsuranceCompanyDB.Country = IsEditMode == true && addressinfoInsuranceCompanyBO.Country == null ? addressinfoInsuranceCompanyDB.Country : addressinfoInsuranceCompanyBO.Country;
+                    //[STATECODE-CHANGE]
+                    //addressinfoInsuranceCompanyDB.StateCode = IsEditMode == true && addressinfoInsuranceCompanyBO.StateCode == null ? addressinfoInsuranceCompanyDB.StateCode : addressinfoInsuranceCompanyBO.StateCode;
+                    //[STATECODE-CHANGE]
 
                     if (Add_addressDB == true)
                     {

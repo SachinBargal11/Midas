@@ -92,6 +92,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boAddress.State = user.AddressInfo.State;
                 boAddress.ZipCode = user.AddressInfo.ZipCode;
                 boAddress.Country = user.AddressInfo.Country;
+                //[STATECODE-CHANGE]
+                //boAddress.StateCode = user.AddressInfo.StateCode;
+                //[STATECODE-CHANGE]
                 boAddress.CreateByUserID = user.AddressInfo.CreateByUserID;
                 boAddress.ID = user.AddressInfo.id;
                 boUser.AddressInfo = boAddress;
@@ -189,6 +192,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 addressDB.State = addressBO.State;
                 addressDB.ZipCode = addressBO.ZipCode;
                 addressDB.Country = addressBO.Country;
+                //[STATECODE-CHANGE]
+                //addressDB.StateCode = addressBO.StateCode;
+                //[STATECODE-CHANGE]
             }
             #endregion
 
@@ -300,6 +306,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         usr.AddressInfo.State = addressBO.State == null ? usr.AddressInfo.State : addressBO.State;
                         usr.AddressInfo.ZipCode = addressBO.ZipCode == null ? usr.AddressInfo.ZipCode : addressBO.ZipCode;
                         usr.AddressInfo.Country = addressBO.Country;
+                        //[STATECODE-CHANGE]
+                        //usr.AddressInfo.StateCode = addressBO.StateCode;
+                        //[STATECODE-CHANGE]
                         if (userBO.UpdateByUserID.HasValue) usr.AddressInfo.UpdateByUserID = userBO.UpdateByUserID.Value;
                     }
                     #endregion
@@ -415,6 +424,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 BO.User acc_ = Convert<BO.User, User>(acc);
                 return (object)acc_;
+            }
+
+        }
+        #endregion
+
+        #region Is existing User
+        public override Object Get(string user)
+        {
+            var acc = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanyRoles").Where(p => p.UserName == user && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<User>();
+            if (acc == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
             }
 
         }

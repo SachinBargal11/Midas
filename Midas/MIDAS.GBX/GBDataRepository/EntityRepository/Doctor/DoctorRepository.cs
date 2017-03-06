@@ -38,7 +38,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             BO.Doctor doctorBO = new BO.Doctor();
 
-            doctorBO.ID = doctor.id;
+            doctorBO.ID = (int)doctor.UserID;
             doctorBO.LicenseNumber = doctor.LicenseNumber;
             doctorBO.WCBAuthorization = doctor.WCBAuthorization;
             doctorBO.WcbRatingCode = doctor.WcbRatingCode;
@@ -81,7 +81,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             BO.Doctor doctorBO = new BO.Doctor();
 
-            doctorBO.ID = doctor.id;
+            doctorBO.ID = (int)doctor.UserID;
             doctorBO.LicenseNumber = doctor.LicenseNumber;
             doctorBO.WCBAuthorization = doctor.WCBAuthorization;
             doctorBO.WcbRatingCode = doctor.WcbRatingCode;
@@ -162,7 +162,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         doctorDB.User = _context.Users.Include("UserCompanyRoles").Where(p => p.id == doctorBO.user.ID && p.UserCompanyRoles.Any(x => x.RoleID == (int)BO.GBEnums.RoleType.Doctor)).FirstOrDefault<User>();
                     }
                 }
-                
+
                 if (doctorBO.user.DoctorSpecialities.Count > 0)
                 {
                     _dbSetDocSpecility.RemoveRange(_context.DoctorSpecialities.Where(c => c.DoctorID == doctorBO.user.ID));
@@ -183,10 +183,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             dbContextTransaction.Rollback();
                             return new BO.ErrorObject { ErrorMessage = "Invalid specility " + item.ToString() + " details.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                         }
-
-                        doctorSpecilityDB.Specialty = speclity;
-                        _context.Entry(speclity).State = System.Data.Entity.EntityState.Modified;
-                        lstDoctorSpecility.Add(doctorSpecilityDB);
+                        if (!lstDoctorSpecility.Select(p => p.Specialty).Contains(speclity))
+                        {
+                            doctorSpecilityDB.Specialty = speclity;
+                            _context.Entry(speclity).State = System.Data.Entity.EntityState.Modified;
+                            lstDoctorSpecility.Add(doctorSpecilityDB);
+                        };
                     }
                 }
                 doctorDB.User.DoctorSpecialities = lstDoctorSpecility;

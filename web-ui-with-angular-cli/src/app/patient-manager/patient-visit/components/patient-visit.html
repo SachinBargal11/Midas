@@ -1,0 +1,66 @@
+<h3 class="with-border">Patient Visits</h3>
+<div class="row">
+    <div class="col-lg-3">
+        <select [(ngModel)]="selectedLocationId" class="select2-arrow form-control" (change)="selectLocation($event)">
+            <option value="" selected> -- Select Location -- </option>
+            <option *ngFor="let location of _locationsStore.locations | async" [value]="location.location.id">{{location.location.name}}</option>                                       
+        </select>
+    </div>
+    <div class="col-lg-3">
+        <select [(ngModel)]="selectedOption" class="select2-arrow form-control">
+            <option value="1">For Doctor</option>
+            <option value="2">For Room</option>
+        </select>
+    </div>
+    <div class="col-lg-3" *ngIf="selectedOption == 1">
+        <select [(ngModel)]="selectedDoctorId" class="select2-arrow form-control" (change)="selectDoctor($event)">
+            <option value="" selected> -- Select Doctor -- </option>
+            <option *ngFor="let doctorLocationSchedule of _doctorLocationScheduleStore.doctorLocationSchedules | async" [value]="doctorLocationSchedule.doctor.id">{{doctorLocationSchedule.doctor.user.displayName}}</option>                                       
+        </select>
+    </div>
+    <div class="col-lg-3" *ngIf="selectedOption == 2">
+        <select [(ngModel)]="selectedRoomId" class="select2-arrow form-control" (change)="selectRoom($event)">
+            <option value="" selected> -- Select Room -- </option>
+            <option *ngFor="let room of _roomsStore.rooms | async" [value]="room.id">{{room.name}}</option>                                       
+        </select>
+    </div>
+</div>
+
+<p-schedule *ngIf="events" [events]="events" [header]="header" [eventLimit]="4" [editable]="true" (onDayClick)="handleDayClick($event)"
+    (onEventClick)="handleEventClick($event)" [eventRender]="eventRenderer">
+</p-schedule>
+<p-confirmDialog acceptIcon="" rejectIcon="" acceptLabel="Edit Current Occurrence" rejectLabel="Edit The Series" header="Edit Recurring Item"
+    icon="fa fa-question-circle" width="600">
+</p-confirmDialog>
+<p-dialog [minWidth]="300" [width]="900" (onAfterHide)="handleDialogHide()" header="Visit" [(visible)]="dialogVisible" [responsive]="true"
+    showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'visible'}" [responsive]="true">
+    <form [formGroup]="patientVisitForm" (ngSubmit)="saveEvent()">
+        <div class="row">
+            <div class="col-md-2"><label class="form-label">Patient</label></div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <select formControlName="patientId" [(ngModel)]="selectedPatient" class="select2-arrow form-control">
+            <option value="" selected> -- Select Patient -- </option>
+            <option *ngFor="let patient of _patientsStore.patients | async" [value]="patient.id">{{patient.user.displayName}}</option>                                       
+        </select>
+                </div>
+            </div>
+        </div>
+        <div class="" *ngIf="selectedVisit">
+
+            <scheduled-event-editor [selectedEvent]="selectedVisit.calendarEvent" (isValid)="scheduledEventEditorValid = $event"></scheduled-event-editor>
+
+        </div>
+        <p-footer>
+            <div class="row">
+
+                <div class="col-md-4">
+                    <button [disabled]="!isFormValid() || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+                <loader [visible]="isSaveProgress"></loader>
+            </button>
+                    <button type="button" class="btn btn-secondary" (click)="closeDialog()">Cancel</button>
+                </div>
+            </div>
+        </p-footer>
+    </form>
+</p-dialog>

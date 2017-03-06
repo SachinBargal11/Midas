@@ -41,13 +41,16 @@ export class DoctorLocationScheduleService {
         });
         return <Observable<DoctorLocationSchedule>>Observable.fromPromise(promise);
     }
-    getDoctorLocationScheduleByLocationId(locationId: Number): Observable<any> {
+    getDoctorLocationScheduleByLocationId(locationId: Number): Observable<DoctorLocationSchedule[]> {
         let promise: Promise<DoctorLocationSchedule[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/DoctorLocationSchedule/GetByLocationId/' + locationId).map(res => res.json())
                 .subscribe((data: any) => {
-                    let schedules: any[] = (<Object[]>data).map((data: any) => {
-                        return DoctorLocationScheduleAdapter.parseResponse(data);
-                    });
+                    let schedules: DoctorLocationSchedule[] = [];
+                    if (_.isArray(data)) {
+                        schedules = (<Object[]>data).map((data: any) => {
+                            return DoctorLocationScheduleAdapter.parseResponse(data);
+                        });
+                    }
                     resolve(schedules);
                 }, (error) => {
                     reject(error);

@@ -60,12 +60,22 @@ import { CaseService } from './cases/services/cases-services';
 import { AdjusterMasterStore } from '../account-setup/stores/adjuster-store';
 import { AdjusterMasterService } from '../account-setup/services/adjuster-service';
 
+import { PatientVisitComponent } from './patient-visit/components/patient-visit';
+import { PatientVisitsStore } from './patient-visit/stores/patient-visit-store';
+import { PatientVisitService } from './patient-visit/services/patient-visit-service';
+
+import { RoomsModule } from '../medical-provider/rooms/rooms-module';
+import { UsersModule } from '../medical-provider/users/users-module';
+
+
 @NgModule({
     imports: [
         CommonModule,
         RouterModule,
         CommonsModule,
-        PatientRoutingModule
+        PatientRoutingModule,
+        RoomsModule,
+        UsersModule
     ],
     declarations: [
         AddPatientComponent,
@@ -97,6 +107,7 @@ import { AdjusterMasterService } from '../account-setup/services/adjuster-servic
         ReferalsComponent,
         AddCaseComponent,
         CasesListComponent,
+        PatientVisitComponent,
         CaseBasicComponent,
         InsuranceMapComponent,
         CaseMappingComponent,
@@ -123,7 +134,9 @@ import { AdjusterMasterService } from '../account-setup/services/adjuster-servic
         AccidentStore,
         InsuranceMappingStore,
         AdjusterMasterStore,
-        AdjusterMasterService
+        AdjusterMasterService,
+        PatientVisitsStore,
+        PatientVisitService
     ]
 })
 export class PatientManagerModule { }

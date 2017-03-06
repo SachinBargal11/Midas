@@ -28,6 +28,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<AddressInfo> AddressInfoes { get; set; }
         public virtual DbSet<AdjusterMaster> AdjusterMasters { get; set; }
         public virtual DbSet<Attorney> Attorneys { get; set; }
+        public virtual DbSet<CalendarEvent> CalendarEvents { get; set; }
         public virtual DbSet<Case> Cases { get; set; }
         public virtual DbSet<CaseInsuranceMapping> CaseInsuranceMappings { get; set; }
         public virtual DbSet<CaseStatu> CaseStatus { get; set; }
@@ -58,6 +59,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
         public virtual DbSet<PatientType> PatientTypes { get; set; }
         public virtual DbSet<PatientVisit> PatientVisits { get; set; }
+        public virtual DbSet<PatientVisit2> PatientVisit2 { get; set; }
         public virtual DbSet<PatientVisitEvent> PatientVisitEvents { get; set; }
         public virtual DbSet<PolicyOwner> PolicyOwners { get; set; }
         public virtual DbSet<RefferingOffice> RefferingOffices { get; set; }
@@ -76,7 +78,5 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<UserCompany> UserCompanies { get; set; }
         public virtual DbSet<UserCompanyRole> UserCompanyRoles { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
-        public virtual DbSet<CalendarEvent> CalendarEvents { get; set; }
-        public virtual DbSet<PatientVisit2> PatientVisit2 { get; set; }
     }
 }

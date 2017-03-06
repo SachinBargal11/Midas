@@ -50,6 +50,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 boAddress.State = adjusterMasterDB.AddressInfo.State;
                 boAddress.ZipCode = adjusterMasterDB.AddressInfo.ZipCode;
                 boAddress.Country = adjusterMasterDB.AddressInfo.Country;
+                //[STATECODE-CHANGE]
+                //boAddress.StateCode = adjusterMasterDB.AddressInfo.StateCode;
+                //[STATECODE-CHANGE]
                 boAddress.CreateByUserID = adjusterMasterDB.AddressInfo.CreateByUserID;
                 boAddress.ID = adjusterMasterDB.AddressInfo.id;
                 adjusterMasterBO.AddressInfo = boAddress;
@@ -236,6 +239,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     addressDB.State = IsEditMode == true && addressBO.State == null ? addressDB.State : addressBO.State;
                     addressDB.ZipCode = IsEditMode == true && addressBO.ZipCode == null ? addressDB.ZipCode : addressBO.ZipCode;
                     addressDB.Country = IsEditMode == true && addressBO.Country == null ? addressDB.Country : addressBO.Country;
+                    //[STATECODE-CHANGE]
+                    // addressDB.StateCode = IsEditMode == true && addressBO.StateCode == null ? addressDB.StateCode : addressBO.StateCode;
+                    //[STATECODE-CHANGE]
 
                     if (Add_addressDB == true)
                     {
