@@ -18,6 +18,7 @@ import { Notification } from '../../../commons/models/notification';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
+import { ScheduleStore } from '../../locations/stores/schedule-store';
 
 @Component({
     selector: 'rooms-schedule',
@@ -31,6 +32,7 @@ export class RoomsScheduleComponent implements OnInit {
         pauseOnHover: false,
         clickToClose: false
     };
+    schedules:Schedule[];
     scheduleform: FormGroup;
     scheduleformControls;
     isSaveProgress = false;
@@ -46,6 +48,7 @@ export class RoomsScheduleComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private _router: Router,
+        private _scheduleStore: ScheduleStore,
         public _route: ActivatedRoute,
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
@@ -160,6 +163,11 @@ export class RoomsScheduleComponent implements OnInit {
     }
 
     ngOnInit() {
+
+         this._scheduleStore.getSchedulesByCompanyId()
+        .subscribe((schedules) => {
+            this.schedules = schedules;
+        })
 
     }
 

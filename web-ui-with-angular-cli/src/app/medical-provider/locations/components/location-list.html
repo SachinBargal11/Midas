@@ -24,7 +24,12 @@
     [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Locations</header>
     <p-column selectionMode="multiple"></p-column>
-    <p-column field="location.name" header="Name" [sortable]="true"></p-column>
+    <p-column header="Name" [sortable]="true">
+         <template let-location="rowData" pTemplate="body">
+            <a routerLink="{{location.location.id}}/basic"><u>{{location.location.name}}</u>
+            </a>
+        </template>
+    </p-column>
     <p-column field="address.address1" header="Address" [sortable]="true"></p-column>
     <p-column header="Phone" [sortable]="true">
         <!-->

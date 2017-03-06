@@ -45,7 +45,7 @@ export const DoctorsRoutes: Routes = [
                 }
             },
             {
-                path: ':doctorId',
+                path: ':scheduleId',
                 component: DoctorShellComponent,
                 data: {
                     breadcrumb: 'root'

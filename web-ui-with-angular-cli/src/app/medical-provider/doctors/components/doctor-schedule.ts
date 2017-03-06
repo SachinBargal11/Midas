@@ -9,13 +9,18 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import * as moment from 'moment';
 import * as _ from 'underscore';
-import { LocationsStore } from '../../locations/stores/locations-store';
-import { LocationDetails } from '../../locations/models/location-details';
+import { DoctorLocationsStore } from '../../users/stores/doctor-locations-store';
+import { DoctorLocationScheduleStore } from '../../users/stores/doctor-location-schedule-store';
+import { DoctorsStore } from '../../users/stores/doctors-store';
+import { Doctor } from '../../users/models/doctor';
+import { DoctorLocationSchedule } from '../../users/models/doctor-location-schedule';
+import { LocationDetails } from '../../users/models/location-details';
 import { Schedule } from '../../locations/models/schedule';
 import { Notification } from '../../../commons/models/notification';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
+
 
 @Component({
     selector: 'doctor-schedule',
@@ -23,17 +28,14 @@ import { NotificationsService } from 'angular2-notifications';
 })
 
 export class DoctorScheduleComponent implements OnInit {
-    options = {
-        timeOut: 3000,
-        showProgressBar: true,
-        pauseOnHover: false,
-        clickToClose: false
-    };
+    schedules: Schedule[];
+    userId: number;
     scheduleform: FormGroup;
     scheduleformControls;
     isSaveProgress = false;
     currentSchedule: Schedule = null;
     scheduleJS: any;
+    doctorLocationScheduleDetail: DoctorLocationSchedule;
     locationDetails: LocationDetails;
     isInEditMode: boolean = false;
     saveAsNew: boolean = false;
@@ -46,24 +48,27 @@ export class DoctorScheduleComponent implements OnInit {
         public _route: ActivatedRoute,
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
-        private _locationsStore: LocationsStore,
+        private _doctorLocationsStore: DoctorLocationsStore,
+        private _doctorLocationScheduleStore: DoctorLocationScheduleStore,
+        private _doctorsStore: DoctorsStore,
         private _scheduleStore: ScheduleStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
-
-        this._route.parent.parent.parent.params.subscribe((params: any) => {
-            let locationId = parseInt(params.locationId);
+        this._route.parent.params.subscribe((params: any) => {
+            this.userId = parseInt(params.userId);
+        });
+        this._route.parent.params.subscribe((params: any) => {
+            let scheduleId = parseInt(params.scheduleId,10);
             this._progressBarService.show();
             let fetchSchedules = this._scheduleStore.getSchedules();
-            let fetchLocation = this._locationsStore.getLocationById(locationId);
+            let fetchDoctorLocationSchedule = this._doctorLocationScheduleStore.getDoctorLocationSchedule(scheduleId);
 
-            Observable.forkJoin([fetchSchedules, fetchLocation])
+            Observable.forkJoin([fetchSchedules, fetchDoctorLocationSchedule])
                 .subscribe((results) => {
-                    this.locationDetails = results[1];
-                    let scheduleId: number = this.locationDetails.schedule.id;
-                    this._fetchScheduleWithDetails(scheduleId);
+                    this.doctorLocationScheduleDetail = results[1];
+                    this._fetchScheduleWithDetails(this.doctorLocationScheduleDetail.schedule.id);
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -156,6 +161,11 @@ export class DoctorScheduleComponent implements OnInit {
 
     ngOnInit() {
 
+        this._scheduleStore.getSchedulesByCompanyId()
+            .subscribe((schedules) => {
+                this.schedules = schedules;
+            })
+
     }
 
     getScheduleDetails() {
@@ -182,6 +192,10 @@ export class DoctorScheduleComponent implements OnInit {
         }
     }
 
+    // updateScheduleForLocation(schedule: Schedule) {
+    //     return this._doctorLocationScheduleStore.updateScheduleForLocation(this.doctorLocationScheduleDetail, schedule);
+    // }
+
     updateSchedule() {
         let scheduleFormValues = this.scheduleform.value;
         let scheduleDetails = this.getScheduleDetails();
@@ -194,9 +208,12 @@ export class DoctorScheduleComponent implements OnInit {
         this.isSaveProgress = true;
         let result;
 
-        result = this._scheduleStore.updateSchedule(schedule);
+        result = this._scheduleStore.updateSchedule(schedule).flatMap((schedule: Schedule) => {
+            return this._doctorLocationScheduleStore.updateScheduleForLocation(this.doctorLocationScheduleDetail, schedule);
+        });
         result.subscribe(
             (response) => {
+                // this.updateScheduleForLocation(schedule);
                 let notification = new Notification({
                     'title': 'Schedule updated successfully!',
                     'type': 'SUCCESS',
@@ -235,9 +252,12 @@ export class DoctorScheduleComponent implements OnInit {
         this.isSaveProgress = true;
         let result;
 
-        result = this._scheduleStore.addSchedule(schedule);
+        result = this._scheduleStore.addSchedule(schedule).flatMap((schedule: Schedule) => {
+            return this._doctorLocationScheduleStore.updateScheduleForLocation(this.doctorLocationScheduleDetail, schedule);
+        });
         result.subscribe(
             (response) => {
+                // this.updateScheduleForLocation(schedule);
                 let notification = new Notification({
                     'title': 'Schedule added successfully!',
                     'type': 'SUCCESS',

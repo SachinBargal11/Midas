@@ -60,6 +60,23 @@ export class ScheduleService {
         return <Observable<Schedule[]>>Observable.fromPromise(promise);
     }
 
+
+    getSchedulesByCompanyId(companyId: Number): Observable<Schedule[]> {
+        let promise: Promise<Schedule[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Schedule/getByCompanyId/' + companyId ).map(res => res.json())
+                .subscribe((schedulesData: Array<Object>) => {
+                    let schedules: any[] = (<Object[]>schedulesData).map((schedulesData: any) => {
+                        return ScheduleAdapter.parseResponse(schedulesData);
+                    });
+                    resolve(schedules);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Schedule[]>>Observable.fromPromise(promise);
+    }
+
+
     addSchedule(schedule: Schedule): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let requestData: any = schedule.toJS();
