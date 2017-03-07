@@ -33,18 +33,24 @@
 <p-confirmDialog acceptIcon="" rejectIcon="" acceptLabel="Edit Current Occurrence" rejectLabel="Edit The Series" header="Edit Recurring Item"
     icon="fa fa-question-circle" width="600">
 </p-confirmDialog>
-<p-dialog [minWidth]="300" [width]="900" (onAfterHide)="handleDialogHide()" header="Visit" [(visible)]="dialogVisible" [responsive]="true"
-    showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'visible'}" [responsive]="true">
-    <form [formGroup]="patientVisitForm" (ngSubmit)="saveEvent()">
+<p-dialog [minWidth]="300" [width]="900" (onAfterHide)="handleEventDialogHide()" header="Visit" [(visible)]="eventDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'visible'}"
+    [responsive]="true">
+    <form [formGroup]="patientScheduleForm" (ngSubmit)="saveEvent()">
         <div *ngIf="selectedVisit">
             <div class="row" *ngIf="!selectedVisit.calendarEvent.recurrenceId">
                 <div class="col-md-2"><label class="form-label">Patient<span class="color-red">*</span></label></div>
-                <div class="col-lg-4">
-                    <div class="form-group">
+                <div class="col-md-4">
+                    <div class="form-group" [class.error]="patientScheduleFormControls.patientId && patientScheduleFormControls.patientId.touched && !patientScheduleFormControls.patientId.valid">
                         <select formControlName="patientId" [ngModel]="selectedVisit.patientId" class="select2-arrow form-control">
-                        <option value="0"> -- Select Patient -- </option>
+                        <option value=""> -- Select Patient -- </option>
                         <option *ngFor="let patient of _patientsStore.patients | async" [value]="patient.id">{{patient.user.displayName}}</option>                                       
                     </select>
+                        <div class='error-list' *ngIf="patientScheduleFormControls.patientId && patientScheduleFormControls.patientId.touched && !patientScheduleFormControls.patientId.valid">
+                            <ul>
+                                <li *ngIf="patientScheduleFormControls.patientId.hasError('required')">Please select any Patient.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -56,6 +62,33 @@
 
                 <div class="col-md-4">
                     <button [disabled]="!isFormValid() || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+                <loader [visible]="isSaveProgress"></loader>
+            </button>
+                    <button type="button" class="btn btn-secondary" (click)="closeDialog()">Cancel</button>
+                </div>
+            </div>
+        </p-footer>
+    </form>
+</p-dialog>
+<p-dialog [minWidth]="300" [width]="900" (onAfterHide)="handleVisitDialogHide()" header="Visit" [(visible)]="visitDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'visible'}"
+    [responsive]="true">
+    <form [formGroup]="patientVisitForm" (ngSubmit)="saveVisit()">
+        <div *ngIf="selectedVisit">
+            <div class="row">
+                <div class="col-md-2"><label class="form-label">Notes<span class="color-red">*</span></label></div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <textarea [ngModel]="selectedVisit.notes" formControlName="notes" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p-footer>
+            <div class="row">
+
+                <div class="col-md-4">
+                    <button [disabled]="!patientVisitForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                 <loader [visible]="isSaveProgress"></loader>
             </button>
                     <button type="button" class="btn btn-secondary" (click)="closeDialog()">Cancel</button>

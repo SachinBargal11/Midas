@@ -193,6 +193,25 @@ export class PatientVisitService {
         return <Observable<PatientVisit>>Observable.fromPromise(promise);
 
     }
+    updatePatientVisitDetail(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
+        let promise = new Promise((resolve, reject) => {
+            let requestData = patientVisitDetail.toJS();
+            requestData = _.omit(requestData, 'calendarEvent');
+            return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedPatientVisit: PatientVisit = null;
+                    parsedPatientVisit = PatientVisitAdapter.parseResponse(data);
+                    resolve(parsedPatientVisit);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<PatientVisit>>Observable.fromPromise(promise);
+
+    }
 
     deletePatientVisit(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
         let promise = new Promise((resolve, reject) => {

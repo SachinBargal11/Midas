@@ -34,7 +34,7 @@
         <div class="col-md-4">
             <div class="form-group" [class.error]="scheduledEventEditorFormControls.eventStartTime.touched && !scheduledEventEditorFormControls.eventStartTime.valid">
                 <p-calendar *ngIf="!isAllDay" [class.error]="!scheduledEventEditorFormControls.eventStartTime.valid" formControlName="eventStartTime"
-                    [(ngModel)]="eventStartAsDate" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o"></p-calendar>
+                    [(ngModel)]="eventStartAsDate" hourFormat="12" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o"></p-calendar>
                 <div class='error-list' *ngIf="scheduledEventEditorFormControls.eventStartTime.touched && !scheduledEventEditorFormControls.eventStartTime.valid">
                     <ul>
                         <li *ngIf="scheduledEventEditorFormControls.eventStartTime.hasError('required')">Start Time is required.</li>
@@ -60,7 +60,7 @@
         <div class="col-md-4">
             <div class="form-group" [class.error]="scheduledEventEditorFormControls.eventEndTime.touched && !scheduledEventEditorFormControls.eventEndTime.valid">
                 <p-calendar *ngIf="!isAllDay" [class.error]="!scheduledEventEditorFormControls.eventEndTime.valid" formControlName="eventEndTime"
-                    [(ngModel)]="eventEndAsDate" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o"></p-calendar>
+                    [(ngModel)]="eventEndAsDate" hourFormat="12" [timeOnly]="true" [showIcon]="true" icon="fa fa-clock-o"></p-calendar>
                 <div class='error-list' *ngIf="scheduledEventEditorFormControls.eventEndTime.touched && !scheduledEventEditorFormControls.eventEndTime.valid">
                     <ul>
                         <li *ngIf="scheduledEventEditorFormControls.eventEndTime.hasError('required')">End Time is required.</li>

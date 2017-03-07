@@ -39,7 +39,10 @@ export class PatientVisitComponent implements OnInit {
     private _scheduledEventEditorComponent: ScheduledEventEditorComponent;
     events: ScheduledEventInstance[];
     header: any;
-    dialogVisible: boolean = false;
+    eventDialogVisible: boolean = false;
+    visitDialogVisible: boolean = false;
+    patientScheduleForm: FormGroup;
+    patientScheduleFormControls;
     patientVisitForm: FormGroup;
     patientVisitFormControls;
     selectedVisit: PatientVisit;
@@ -77,10 +80,14 @@ export class PatientVisitComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _confirmationService: ConfirmationService
     ) {
-        this.patientVisitForm = this._fb.group({
+        this.patientScheduleForm = this._fb.group({
             patientId: ['', Validators.required]
         });
-        this.patientVisitFormControls = this.patientVisitForm.controls;
+        this.patientScheduleFormControls = this.patientScheduleForm.controls;
+        this.patientVisitForm = this._fb.group({
+            notes: ['', Validators.required]
+        });
+        this.patientScheduleFormControls = this.patientVisitForm.controls;
     }
     ngOnInit() {
         this.header = {
@@ -96,7 +103,7 @@ export class PatientVisitComponent implements OnInit {
     }
 
     isFormValid() {
-        if (this.scheduledEventEditorValid && this.patientVisitForm.valid) {
+        if (this.scheduledEventEditorValid && this.patientScheduleForm.valid) {
             return true;
         } else {
             return false;
@@ -227,11 +234,15 @@ export class PatientVisitComponent implements OnInit {
     }
 
     closeDialog() {
-        this.dialogVisible = false;
+        this.eventDialogVisible = false;
     }
 
-    handleDialogHide() {
+    handleEventDialogHide() {
         this.selectedVisit = null;
+    }
+
+    handleVisitDialogHide() {
+
     }
 
     handleDayClick(event) {
@@ -247,20 +258,39 @@ export class PatientVisitComponent implements OnInit {
                 isAllDay: false
             })
         });
-        this.dialogVisible = true;
+        this.eventDialogVisible = true;
         this._cd.detectChanges();
     }
 
     handleEventClick(event) {
-        let owningEvent: ScheduledEvent = event.calEvent.owningEvent;
-        let eventWrapper: PatientVisit = event.calEvent.eventWrapper;
-        this.selectedVisit = new PatientVisit(_.extend(eventWrapper.toJS(), {
-            calendarEvent: owningEvent
-        }));
-        if (this.selectedVisit.calendarEvent.recurrenceRule || this.selectedVisit.calendarEvent.recurrenceId) {
-            this.confirm(event);
+        let eventInstance: ScheduledEventInstance = event.calEvent;
+        let owningEvent: ScheduledEvent = eventInstance.owningEvent;
+        let eventWrapper: PatientVisit = <PatientVisit>(eventInstance.eventWrapper);
+
+        if (eventInstance.start.isBefore(moment())) {
+            if (owningEvent.recurrenceId) {
+                // Edit Visit Instance
+                this.selectedVisit = new PatientVisit(_.extend(eventWrapper.toJS(), {
+                    calendarEvent: owningEvent
+                }));
+            } else {
+                // Create Visit Instance                
+                this.selectedVisit = new PatientVisit(_.extend(eventWrapper.toJS(), {
+                    id: 0,
+                    calendarEvent: owningEvent
+                }));
+            }
+            this.visitDialogVisible = true;
+
         } else {
-            this.dialogVisible = true;
+            this.selectedVisit = new PatientVisit(_.extend(eventWrapper.toJS(), {
+                calendarEvent: owningEvent
+            }));
+            if (this.selectedVisit.calendarEvent.recurrenceRule || this.selectedVisit.calendarEvent.recurrenceId) {
+                this.confirm(event);
+            } else {
+                this.eventDialogVisible = true;
+            }
         }
     }
 
@@ -284,24 +314,56 @@ export class PatientVisitComponent implements OnInit {
                         }))
                     });
                 }
-                this.dialogVisible = true;
+                this.eventDialogVisible = true;
             },
             reject: () => {
                 if (!this.selectedVisit.calendarEvent.recurrenceRule && this.selectedVisit.calendarEvent.recurrenceId) {
                     let eventId = this.selectedVisit.calendarEvent.recurrenceId;
                     this.selectedVisit = this._patientVisitsStore.findPatientVisitByCalendarEventId(eventId);
                 }
-                this.dialogVisible = true;
+                this.eventDialogVisible = true;
             }
         });
     }
 
-    saveEvent() {
+    saveVisit() {
         let patientVisitFormValues = this.patientVisitForm.value;
+        let updatedVisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
+            notes: patientVisitFormValues.notes
+        }));
+        let result = this._patientVisitsStore.updatePatientVisitDetail(updatedVisit);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Event updated successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this.loadVisits();
+                this._notificationsStore.addNotification(notification);
+            },
+            (error) => {
+                let errString = 'Unable to update event!';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                this._notificationsStore.addNotification(notification);
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this.visitDialogVisible = false;
+    }
+
+    saveEvent() {
+        let patientScheduleFormValues = this.patientScheduleForm.value;
         let updatedEvent: ScheduledEvent = this._scheduledEventEditorComponent.getEditedEvent();
         console.log(updatedEvent);
         let updatedVisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
-            patientId: patientVisitFormValues.patientId,
+            patientId: patientScheduleFormValues.patientId,
             calendarEvent: updatedEvent
         }));
         if (updatedVisit.id) {
@@ -384,6 +446,6 @@ export class PatientVisitComponent implements OnInit {
                     });
             }
         }
-        this.dialogVisible = false;
+        this.eventDialogVisible = false;
     }
 }
