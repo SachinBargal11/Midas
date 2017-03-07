@@ -162,6 +162,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetByCompanyWithOpenCases(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object GetByInsuranceMasterId(int InsuranceMasterId)
         {
             throw new NotImplementedException();

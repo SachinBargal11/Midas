@@ -265,8 +265,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                             return new BO.ErrorObject { errorObject = "", ErrorMessage = "Open case already exists for this patient, cannot update this as open case.", ErrorLevel = ErrorLevel.Error };
                         }
                     }
+                    if (IsEditMode == true)
+                    {
+                        bool matchCaseAndPatient = _context.Cases.Any(p => p.PatientId == caseBO.PatientId && p.Id == caseBO.ID && (p.IsDeleted.HasValue == false || p.IsDeleted == false));
+                        if (matchCaseAndPatient == false)
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "The case is not associated with the given patient", ErrorLevel = ErrorLevel.Error };
+                        }
+                    }
 
-                        caseDB.PatientId = caseBO.PatientId;
+
+                    caseDB.PatientId = caseBO.PatientId;
                     caseDB.CaseName = IsEditMode == true && caseBO.CaseName == null ? caseDB.CaseName : caseBO.CaseName;
                     caseDB.CaseTypeId = IsEditMode == true && caseBO.CaseTypeId == null ? caseDB.CaseTypeId : caseBO.CaseTypeId;
                     caseDB.LocationId = IsEditMode == true && caseBO.LocationId.HasValue==false ? caseDB.LocationId : caseBO.LocationId.Value;
