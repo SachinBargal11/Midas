@@ -288,6 +288,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         PatientVisit2DB.CaseId = PatientVisit2BO.CaseId.HasValue == false ? PatientVisit2DB.CaseId : PatientVisit2BO.CaseId.Value;
                     }
 
+                    if (PatientVisit2BO.RoomId.HasValue == true)
+                    {
+                        bool RoomForLocationExists = _context.Rooms.Any(p => p.id == PatientVisit2BO.RoomId.Value && p.LocationID == PatientVisit2BO.LocationId
+                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+
+                        if (RoomForLocationExists == false)
+                        {
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Room dosent exists or not valid for the selected location.", ErrorLevel = ErrorLevel.Error };
+                        }
+                    }
+
+                    if (PatientVisit2BO.DoctorId.HasValue == true)
+                    {
+                        bool DoctorForLocationExists = _context.DoctorLocationSchedules.Any(p => p.DoctorID == PatientVisit2BO.DoctorId.Value && p.LocationID == PatientVisit2BO.LocationId
+                                                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+
+                        if (DoctorForLocationExists == false)
+                        {
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Doctor dosent exists or not valid for the selected location.", ErrorLevel = ErrorLevel.Error };
+                        }
+                    }
+
+                    if (PatientVisit2BO.SpecialtyId.HasValue == true)
+                    {
+                        bool DoctorForSpecialtyExists = _context.DoctorSpecialities.Any(p => p.DoctorID == PatientVisit2BO.DoctorId.Value && p.SpecialityID == PatientVisit2BO.SpecialtyId
+                                                                                         && (p.IsDeleted == false));
+
+                        if (DoctorForSpecialtyExists == false)
+                        {
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Specialty dosent exists or not valid for the selected doctor.", ErrorLevel = ErrorLevel.Error };
+                        }
+                    }
+
 
                     PatientVisit2DB.PatientId = IsEditMode == true && PatientVisit2BO.PatientId.HasValue == false ? PatientVisit2DB.PatientId : PatientVisit2BO.PatientId.Value;
                     PatientVisit2DB.LocationId = IsEditMode == true && PatientVisit2BO.LocationId.HasValue == false ? PatientVisit2DB.LocationId : PatientVisit2BO.LocationId.Value;
