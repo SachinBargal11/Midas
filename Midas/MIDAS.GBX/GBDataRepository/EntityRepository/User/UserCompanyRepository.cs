@@ -32,33 +32,67 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Entity Conversion
         public override T Convert<T, U>(U entity)
         {
-            UserCompany usercompany = entity as UserCompany;
-
-            if (usercompany == null)
-                return default(T);
-
-            BO.UserCompany usercompanyBO = new BO.UserCompany();
-
-            usercompanyBO.ID = usercompany.id;
-
-            if (usercompany.IsDeleted.HasValue)
-                usercompanyBO.IsDeleted = usercompany.IsDeleted.Value;
-            if (usercompany.UpdateByUserID.HasValue)
-                usercompanyBO.UpdateByUserID = usercompany.UpdateByUserID.Value;
-
-            using (UserRepository sr = new UserRepository(_context))
+            if (entity.GetType().Name != "User")
             {
-                BO.User boUser = sr.Convert<BO.User, User>(usercompany.User);
-                usercompanyBO.User = boUser;
-            }
+                UserCompany usercompany = entity as UserCompany;
 
-            using (CompanyRepository sr = new CompanyRepository(_context))
+                if (usercompany == null)
+                    return default(T);
+
+                BO.UserCompany usercompanyBO = new BO.UserCompany();
+
+                usercompanyBO.ID = usercompany.id;
+
+                if (usercompany.IsDeleted.HasValue)
+                    usercompanyBO.IsDeleted = usercompany.IsDeleted.Value;
+                if (usercompany.UpdateByUserID.HasValue)
+                    usercompanyBO.UpdateByUserID = usercompany.UpdateByUserID.Value;
+
+                using (UserRepository sr = new UserRepository(_context))
+                {
+                    BO.User boUser = sr.Convert<BO.User, User>(usercompany.User);
+                    usercompanyBO.User = boUser;
+                }
+
+                using (CompanyRepository sr = new CompanyRepository(_context))
+                {
+                    BO.Company boCompany = sr.Convert<BO.Company, Company>(usercompany.Company);
+                    usercompanyBO.Company = boCompany;
+                }
+
+                return (T)(object)usercompanyBO;
+            }
+            else
             {
-                BO.Company boCompany = sr.Convert<BO.Company, Company>(usercompany.Company);
-                usercompanyBO.Company = boCompany;
-            }
+                User userDB = entity as User;
+                BO.User boUser = new BO.User();
+                using (UserRepository sr = new UserRepository(_context))
+                {
+                    boUser = sr.Convert<BO.User, User>(userDB);
+                }
 
-            return (T)(object)usercompanyBO;
+                if (boUser.UserCompanies == null && userDB.UserCompanies != null)
+                {
+                    boUser.UserCompanies = new List<BO.UserCompany>();
+
+                    foreach (var eachUserCompany in userDB.UserCompanies)
+                    {
+                        BO.UserCompany usercompanyBO = new BO.UserCompany();
+
+                        usercompanyBO.ID = eachUserCompany.id;
+                        usercompanyBO.UserId = eachUserCompany.UserID;
+                        usercompanyBO.CompanyId = eachUserCompany.CompanyID;                        
+
+                        usercompanyBO.IsDeleted = eachUserCompany.IsDeleted;
+                        usercompanyBO.CreateByUserID = eachUserCompany.CreateByUserID;
+                        usercompanyBO.UpdateByUserID = eachUserCompany.UpdateByUserID;
+
+                        boUser.UserCompanies.Add(usercompanyBO);
+                    }
+                }
+
+                return (T)(object)boUser;
+            }
         }
         #endregion
 
@@ -99,13 +133,29 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Associate User To Company
-        public override object AssociateUserToCompany(string username, int companyid, bool verifyUser)
+        public override object AssociateUserToCompany(string UserName, int CompanyId, bool sendEmail)
         {
-            User UserDB = _context.Users.Where(p => p.UserName == username && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-            Company CompanyDB = _context.Companies.Where(p => p.id == companyid && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-            BO.UserCompany UserCompanyBO = new BO.UserCompany();
+            User UserDB = _context.Users.Where(p => p.UserName == UserName
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                        .FirstOrDefault();
 
-            UserCompany UserCompanyDB=new UserCompany();
+            if (UserDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "User dosent exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+            }
+
+            Company CompanyDB = _context.Companies.Where(p => p.id == CompanyId
+                                                          && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .FirstOrDefault();
+
+            if (CompanyDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Company dosent exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+            }
+
+            UserCompany UserCompanyDB = new UserCompany();
+
+            Guid invitationDB_UniqueID = Guid.NewGuid();
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
@@ -113,50 +163,31 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     UserCompanyDB.UserID = UserDB.id;
                     UserCompanyDB.CompanyID = CompanyDB.id;
-                    UserCompanyDB.IsDeleted = UserCompanyBO.IsDeleted;
-                    UserCompanyDB.CreateByUserID = UserCompanyBO.CreateByUserID;
-                    UserCompanyDB.CreateDate = UserCompanyBO.CreateDate;
-                    UserCompanyDB.UpdateByUserID = UserCompanyBO.UpdateByUserID;
-                    UserCompanyDB.UpdateDate = UserCompanyBO.UpdateDate;
-
+                    UserCompanyDB.IsDeleted = false;
+                    UserCompanyDB.CreateByUserID = 0;
+                    UserCompanyDB.CreateDate = DateTime.UtcNow;
 
                     UserCompanyDB = _context.UserCompanies.Add(UserCompanyDB);
 
                     _context.SaveChanges();
 
-
-
-                    BO.AddUser addUserBO = new BO.AddUser();
-                    BO.User userBO = addUserBO.user;
-                    User userDB = new User();
-                    Invitation invitationDB = new Invitation();
-                    if (verifyUser)
+                    if (sendEmail == true)
                     {
-
-
                         #region Insert Invitation
+                        Invitation invitationDB = new Invitation();
                         invitationDB.User = UserCompanyDB.User;
-                        invitationDB.UniqueID = Guid.NewGuid();
+                        invitationDB_UniqueID = Guid.NewGuid();
+
+                        invitationDB.UniqueID = invitationDB_UniqueID;
+                        invitationDB.CompanyID = UserCompanyDB.CompanyID;
                         invitationDB.CreateDate = DateTime.UtcNow;
-                        invitationDB.CreateByUserID = userBO.CreateByUserID;
-                        _dbInvitation.Add(invitationDB);
+                        invitationDB.CreateByUserID = UserCompanyDB.CreateByUserID;
+
+                        _context.Invitations.Add(invitationDB);
+
                         _context.SaveChanges();
                         #endregion
-
-                        BO.User acc_ = Convert<BO.User, User>(userDB);
-                        try
-                        {
-                            #region Send Email
-                            string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
-                            string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
-                            BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "User registered", Body = Message };
-                            objEmail.SendMail();
-                            #endregion
-                        }
-                        catch (Exception ex) { }
                     }
-
-
                 }
                 else
                 {
@@ -165,9 +196,32 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 dbContextTransaction.Commit();
 
+                UserDB = _context.Users.Include("AddressInfo")
+                                       .Include("ContactInfo")
+                                       .Include("UserCompanyRoles")
+                                       .Include("UserCompanies")
+                                       .Where(p => p.id == UserDB.id 
+                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                       .FirstOrDefault<User>();
             }
 
-            var res = Convert<BO.UserCompany, UserCompany>(UserCompanyDB);
+            if (sendEmail == true)
+            {
+                try
+                {
+                    #region Send Email
+                    string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                    string Message = "Dear " + UserDB.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + UserDB.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                    BO.Email objEmail = new BO.Email { ToEmail = UserDB.UserName, Subject = "User registered", Body = Message };
+                    objEmail.SendMail();
+                    #endregion
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+
+            var res = Convert<BO.User, User>(UserDB);
             return (object)res;
         }
         #endregion

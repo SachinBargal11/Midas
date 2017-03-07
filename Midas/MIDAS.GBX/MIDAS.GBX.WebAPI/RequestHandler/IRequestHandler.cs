@@ -44,7 +44,7 @@ namespace MIDAS.GBX.WebAPI
 
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int param1, int param2);
         HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int param1, int param2);
-        HttpResponseMessage AssociateUserToCompany(HttpRequestMessage request, string param1, int param2,bool param3);
+        HttpResponseMessage AssociateUserToCompany(HttpRequestMessage request, string UserName, int CompanyId, bool sendEmail);
 
         
     }

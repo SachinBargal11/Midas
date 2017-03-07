@@ -46,10 +46,11 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("AssociateUserToCompany/{userName}/{companyiId}/{verifyUser}")]
-        public HttpResponseMessage AssociateUserToCompany(string userName,int companyiId,bool verifyUser)
+        [HttpPost]
+        [Route("associateUserToCompany/{userName}/{companyId}/{sendEmail}")]
+        public HttpResponseMessage AssociateUserToCompany(string userName, int companyId, bool sendEmail)
         {
-            return requestHandler.AssociateUserToCompany(Request, userName, companyiId, verifyUser);
+            return requestHandler.AssociateUserToCompany(Request, userName, companyId, sendEmail);
         }
 
         // POST: api/Organizations

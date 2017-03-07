@@ -69,7 +69,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual object AssociateUserToCompany(string username, int companyid, bool verifyUser)
+        public virtual object AssociateUserToCompany(string UserName, int CompanyId, bool sendEmail)
         {
             throw new NotImplementedException();
         }

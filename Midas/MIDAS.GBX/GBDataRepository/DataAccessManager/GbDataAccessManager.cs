@@ -923,12 +923,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object AssociateUserToCompany(string param1, int param2,bool  param3, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object AssociateUserToCompany(string UserName, int CompanyId, bool sendEmail, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.AssociateUserToCompany(param1, param2,param3);
+                var gbdata = baseRepo.AssociateUserToCompany(UserName, CompanyId, sendEmail);
 
                 return gbdata;
             }

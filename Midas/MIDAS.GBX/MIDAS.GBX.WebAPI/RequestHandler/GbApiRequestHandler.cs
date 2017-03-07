@@ -551,9 +551,9 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage AssociateUserToCompany(HttpRequestMessage request, string param1, int param2,bool param3)
+        public HttpResponseMessage AssociateUserToCompany(HttpRequestMessage request, string UserName, int CompanyId, bool sendEmail)
         {
-            var objResult = dataAccessManager.AssociateUserToCompany(param1, param2,param3);
+            var objResult = dataAccessManager.AssociateUserToCompany(UserName, CompanyId, sendEmail);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
