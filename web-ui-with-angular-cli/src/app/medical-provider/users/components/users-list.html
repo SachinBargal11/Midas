@@ -21,8 +21,14 @@
     [stacked]="stacked">
     <header>Users</header>
     <p-column selectionMode="multiple"></p-column>
-    <p-column field="firstName" header="First Name" [sortable]="true"></p-column>
-    <p-column field="lastName" header="Last Name" [sortable]="true"></p-column>
+    <!--<p-column field="firstName" header="First Name" [sortable]="true"></p-column>
+    <p-column field="lastName" header="Last Name" [sortable]="true"></p-column>-->
+     <p-column header="User Name" [sortable]="true">
+       <template let-user="rowData" pTemplate="body">
+            <a routerLink="{{user.id}}/basic">{{user.firstName}} {{user.lastName}}
+            </a>
+        </template>
+    </p-column>
     <p-column field="userTypeLabel" header="User Type" [sortable]="true"></p-column>
     <p-column field="userName" header="Email" [sortable]="true"></p-column>
     <p-column styleClass="actions-cell" header="Actions">

@@ -11,7 +11,7 @@
                             <span class="color-red">*</span>
                         </label>
                         <select formControlName="schedule" [ngModel]="currentSchedule.id" class="select2-arrow form-control" (change)="selectSchedule($event)">
-                                 <option *ngFor="let schedule of _scheduleStore.schedules | async" [value]="schedule.id">{{schedule.name}}</option>                                       
+                                 <option *ngFor="let schedule of schedules" [value]="schedule.id">{{schedule.name}}</option>                                       
                         </select>
                     </div>
                 </div>

@@ -23,7 +23,7 @@ namespace MIDAS.GBX.DataRepository.Model
             this.PatientVisitEvents = new HashSet<PatientVisitEvent>();
         }
     
-        public int id { get; set; }
+        public int Id { get; set; }
         public string LicenseNumber { get; set; }
         public string WCBAuthorization { get; set; }
         public string WcbRatingCode { get; set; }
@@ -35,7 +35,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-        public Nullable<int> UserID { get; set; }
     
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -81,7 +81,7 @@ export class CalendarComponent implements OnInit {
             (events: ScheduledEvent[]) => {
                 let occurrences: ScheduledEventInstance[] = [];
                 _.forEach(events, (event: ScheduledEvent) => {
-                    occurrences.push(...event.getEventInstances());
+                    occurrences.push(...event.getEventInstances(null));
                 });
                 this.events = occurrences;
                 console.log(this.events);

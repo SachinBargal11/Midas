@@ -4,7 +4,9 @@ import { Router } from '@angular/router';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { UsersStore } from '../stores/users-store';
+import { DoctorsStore } from '../stores/doctors-store';
 import { User } from '../../../commons/models/user';
+import { Doctor } from '../models/doctor';
 import { UsersService } from '../services/users-service';
 // import { Account } from '../../../models/account';
 // import { Company } from '../../../models/company';
@@ -35,11 +37,13 @@ export class AddUserComponent implements OnInit {
     selectedRole: string[] = [];
     selectedCity = 0;
     specialitiesArr: SelectItem[] = [];
-    selectedSpeciality: Speciality;
+    selectedSpeciality: SelectItem[] = [];
+    // selectedSpeciality: Speciality;
     userform: FormGroup;
     userformControls;
     isSaveUserProgress = false;
     isCitiesLoading = false;
+    doctorRole;
 
     constructor(
         private _statesStore: StatesStore,
@@ -49,29 +53,36 @@ export class AddUserComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _usersStore: UsersStore,
+        private _doctorsStore: DoctorsStore,
         private _specialityStore: SpecialityStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
-            this._progressBarService.show();
-             this._specialityStore.getSpecialities()
-                .subscribe((specialties) => {
-                    let specialities: Speciality[] = specialties;
-                    this.specialitiesArr = _.map(specialities, (currentSpeciality: Speciality) => {
-                        return {
-                            label: `${currentSpeciality.specialityCode} - ${currentSpeciality.name}`,
-                            value: currentSpeciality.id.toString()
-                        };
-                    });
-                },
-                (error) => {
-                    this._router.navigate(['../../']);
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
+        this._progressBarService.show();
+        this._specialityStore.getSpecialities()
+            .subscribe((specialties) => {
+                let specialities: Speciality[] = specialties;
+                this.selectedSpeciality = [
+                     {
+                        label: 'CH - CH',
+                        value: '2'
+                    }
+                    ];
+                this.specialitiesArr = _.map(specialities, (currentSpeciality: Speciality) => {
+                    return {
+                        label: `${currentSpeciality.specialityCode} - ${currentSpeciality.name}`,
+                        value: currentSpeciality.id.toString()
+                    };
                 });
+            },
+            (error) => {
+                this._router.navigate(['../../']);
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
 
 
         this.userform = this.fb.group({
@@ -81,13 +92,13 @@ export class AddUserComponent implements OnInit {
                 role: ['', Validators.required]
             }),
             doctor: this.fb.group({
-                licenseNumber: ['', Validators.required],
-                wcbAuthorization: ['', Validators.required],
-                wcbRatingCode: ['', Validators.required],
-                npi: ['', Validators.required],
-                taxType: ['', [Validators.required, AppValidators.selectedValueValidator]],
-                title: ['', Validators.required],
-                speciality: ['', Validators.required]
+                licenseNumber: ['-', Validators.required],
+                wcbAuthorization: ['-', Validators.required],
+                wcbRatingCode: ['-', Validators.required],
+                npi: ['-', Validators.required],
+                taxType: ['1', [Validators.required, AppValidators.selectedValueValidator]],
+                title: ['-', Validators.required],
+                speciality: ['2', Validators.required]
             }),
             contact: this.fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
@@ -104,9 +115,6 @@ export class AddUserComponent implements OnInit {
                 state: [''],
                 country: ['']
             })
-            // userRole: this.fb.group({
-            //     role: ['', Validators.required]
-            // })
         });
 
         this.userformControls = this.userform.controls;
@@ -117,14 +125,28 @@ export class AddUserComponent implements OnInit {
             .subscribe(states => this.states = states);
     }
 
+    showDoctor() {
+        let x = document.getElementById('doctor');
+        if (x.style.display === 'none') {
+            x.style.display = 'block';
+        } else {
+            x.style.display = 'none';
+        }
+    }
+
 
     saveUser() {
+        let result;
         let userFormValues = this.userform.value;
         let roles = [];
         let input = this.selectedRole;
         for (let i = 0; i < input.length; ++i) {
             roles.push({ 'roleType': parseInt(input[i]) });
         }
+        this.selectedRole.forEach(element => {
+            this.doctorRole = element === '3';
+        });
+        if (!this.doctorRole) {
         let userDetail = new User({
             firstName: userFormValues.userInfo.firstname,
             lastName: userFormValues.userInfo.lastname,
@@ -147,11 +169,48 @@ export class AddUserComponent implements OnInit {
                 zipCode: userFormValues.address.zipCode,
             })
         });
+        result = this._usersStore.addUser(userDetail);
+    }
+    else {
+        let doctorDetail = new Doctor({
+            licenseNumber: userFormValues.doctor.licenseNumber,
+            wcbAuthorization: userFormValues.doctor.wcbAuthorization,
+            wcbRatingCode: userFormValues.doctor.wcbRatingCode,
+            npi: userFormValues.doctor.npi,
+            taxType: userFormValues.doctor.taxType,
+            title: userFormValues.doctor.title,
+            doctorSpecialities: this.selectedSpeciality,
+
+            user: new User({
+            firstName: userFormValues.userInfo.firstname,
+            lastName: userFormValues.userInfo.lastname,
+            userType: UserType.STAFF,
+            roles: roles,
+            userName: userFormValues.contact.email,
+            contact: new Contact({
+                cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,
+                emailAddress: userFormValues.contact.email,
+                faxNo: userFormValues.contact.faxNo ? userFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
+                homePhone: userFormValues.contact.homePhone,
+                workPhone: userFormValues.contact.workPhone,
+            }),
+            address: new Address({
+                address1: userFormValues.address.address1,
+                address2: userFormValues.address.address2,
+                city: userFormValues.address.city,
+                country: userFormValues.address.country,
+                state: userFormValues.address.state,
+                zipCode: userFormValues.address.zipCode,
+            })
+            })
+        });
+        result = this._doctorsStore.addDoctor(doctorDetail);
+        }
         this._progressBarService.show();
         this.isSaveUserProgress = true;
-        let result;
 
-        result = this._usersStore.addUser(userDetail);
+        // result = this._usersStore.addUser(userDetail);
+        // result = this._doctorsStore.addDoctor(doctorDetail);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
