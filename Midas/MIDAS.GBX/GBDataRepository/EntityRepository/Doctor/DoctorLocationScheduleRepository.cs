@@ -145,7 +145,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (doctorlocationscheduleBO.doctor != null)
                 if (doctorlocationscheduleBO.doctor.ID > 0)
                 {
-                    Doctor doctor = _context.Doctors.Where(p => p.id == doctorlocationscheduleBO.doctor.ID && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<Doctor>();
+                    Doctor doctor = _context.Doctors.Where(p => p.Id == doctorlocationscheduleBO.doctor.ID && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<Doctor>();
                     if (doctor != null)
                     {
                         doctorlocationscheduleDB.Doctor = doctor;
