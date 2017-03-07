@@ -49,6 +49,9 @@ namespace MIDAS.GBX.DataAccessManager
 
         Object Get(int param1, int param2, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object Get2(int param1, int param2, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object AssociateUserToCompany(string param1, int param2,bool param3, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+
+        
 
     }
 }

@@ -69,6 +69,12 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual object AssociateUserToCompany(string username, int companyid, bool verifyUser)
+        {
+            throw new NotImplementedException();
+        }
+
+
         public virtual Object Login<T>(T entity)
         {
             throw new NotImplementedException();

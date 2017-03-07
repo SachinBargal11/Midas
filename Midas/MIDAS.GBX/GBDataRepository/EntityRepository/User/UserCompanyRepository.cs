@@ -18,6 +18,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
     internal class UserCompanyRepository : BaseEntityRepo, IDisposable
     {
         private DbSet<UserCompany> _dbSet;
+        private DbSet<Invitation> _dbInvitation;
 
         #region Constructor
         public UserCompanyRepository(MIDASGBXEntities context)
@@ -96,6 +97,82 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return base.Save(data);
         }
         #endregion
+
+        #region Associate User To Company
+        public override object AssociateUserToCompany(string username, int companyid, bool verifyUser)
+        {
+            User UserDB = _context.Users.Where(p => p.UserName == username && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+            Company CompanyDB = _context.Companies.Where(p => p.id == companyid && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+            BO.UserCompany UserCompanyBO = new BO.UserCompany();
+
+            UserCompany UserCompanyDB=new UserCompany();
+
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                if (UserDB != null && CompanyDB != null)
+                {
+                    UserCompanyDB.UserID = UserDB.id;
+                    UserCompanyDB.CompanyID = CompanyDB.id;
+                    UserCompanyDB.IsDeleted = UserCompanyBO.IsDeleted;
+                    UserCompanyDB.CreateByUserID = UserCompanyBO.CreateByUserID;
+                    UserCompanyDB.CreateDate = UserCompanyBO.CreateDate;
+                    UserCompanyDB.UpdateByUserID = UserCompanyBO.UpdateByUserID;
+                    UserCompanyDB.UpdateDate = UserCompanyBO.UpdateDate;
+
+
+                    UserCompanyDB = _context.UserCompanies.Add(UserCompanyDB);
+
+                    _context.SaveChanges();
+
+
+
+                    BO.AddUser addUserBO = new BO.AddUser();
+                    BO.User userBO = addUserBO.user;
+                    User userDB = new User();
+                    Invitation invitationDB = new Invitation();
+                    if (verifyUser)
+                    {
+
+
+                        #region Insert Invitation
+                        invitationDB.User = UserCompanyDB.User;
+                        invitationDB.UniqueID = Guid.NewGuid();
+                        invitationDB.CreateDate = DateTime.UtcNow;
+                        invitationDB.CreateByUserID = userBO.CreateByUserID;
+                        _dbInvitation.Add(invitationDB);
+                        _context.SaveChanges();
+                        #endregion
+
+                        BO.User acc_ = Convert<BO.User, User>(userDB);
+                        try
+                        {
+                            #region Send Email
+                            string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+                            string Message = "Dear " + userBO.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + userBO.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                            BO.Email objEmail = new BO.Email { ToEmail = userBO.UserName, Subject = "User registered", Body = Message };
+                            objEmail.SendMail();
+                            #endregion
+                        }
+                        catch (Exception ex) { }
+                    }
+
+
+                }
+                else
+                {
+                    return new BO.ErrorObject { ErrorMessage = "Please pass valid user and company details.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+                }
+
+                dbContextTransaction.Commit();
+
+            }
+
+            var res = Convert<BO.UserCompany, UserCompany>(UserCompanyDB);
+            return (object)res;
+        }
+        #endregion
+
+
 
         #region Get User Company By ID
         public override Object Get(int id)
