@@ -17,7 +17,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
     eventStartAsDate: Date;
     eventEndAsDate: Date;
     isAllDay: boolean;
-    repeatType: RRule.Frequency = 7;
+    repeatType: string = '7';
 
     // Daily 
     daily_end: string = '0';
@@ -70,7 +70,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
                 let options = this._selectedEvent.recurrenceRule.options;
                 switch (options.freq) {
                     case RRule.DAILY:
-                        this.repeatType = RRule.DAILY;
+                        this.repeatType = '3';
                         this.daily_repeatEvery = options.interval;
                         if (options.count > 1) {
                             this.daily_end = '1';
@@ -81,7 +81,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
                         }
                         break;
                     case RRule.WEEKLY:
-                        this.repeatType = RRule.WEEKLY;
+                        this.repeatType = '2';
                         this.monthly_repeatEvery = options.interval;
                         if (options.count > 1) {
                             this.weekly_end = '1';
@@ -95,7 +95,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
                         }
                         break;
                     case RRule.MONTHLY:
-                        this.repeatType = RRule.MONTHLY;
+                        this.repeatType = '1';
                         this.monthly_repeatEvery = options.interval;
 
                         if (options.bymonthday) {
@@ -116,7 +116,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
                         }
                         break;
                     case RRule.YEARLY:
-                        this.repeatType = RRule.YEARLY;
+                        this.repeatType = '0';
                         this.yearly_repeatEvery = options.interval;
                         if (options.bymonth || options.bymonthday) {
                             this.yearly_recur_year_radio = '0';
@@ -139,7 +139,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
                         break;
                 }
             } else {
-                this.repeatType = 7;
+                this.repeatType = '7';
             }
         } else {
             this._selectedEvent = null;
@@ -213,14 +213,16 @@ export class ScheduledEventEditorComponent implements OnChanges {
         // if (!this.userProfile) {
         //     this.userProfile = BlankUserProfile;
         // }
+        // console.log(changes._selectedEvent);
     }
 
     getEditedEvent(): ScheduledEvent {
         let scheduledEventEditorFormValues = this.scheduledEventEditorForm.value;
         let recurrenceRule: RRule;
         let recurrenceString: string = null;
-        switch (parseInt(scheduledEventEditorFormValues.repeatType, 10)) {
-            case RRule.DAILY:
+        let repeatType = parseInt(scheduledEventEditorFormValues.repeatType, 10);
+        switch (this.repeatType) {
+            case '3':
                 let dailyRecurrenceCofig: any = {
                     freq: RRule.DAILY
                 };
@@ -239,7 +241,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
                 }
                 recurrenceRule = new RRule(dailyRecurrenceCofig);
                 break;
-            case RRule.WEEKLY:
+            case '2':
                 let weeklyRecurrenceCofig: any = {
                     freq: RRule.WEEKLY
                 };
@@ -261,7 +263,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
                 }
                 recurrenceRule = new RRule(weeklyRecurrenceCofig);
                 break;
-            case RRule.MONTHLY:
+            case '1':
                 let monthlyRecurrenceCofig: any = {
                     freq: RRule.MONTHLY
                 };
@@ -289,7 +291,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
                 }
                 recurrenceRule = new RRule(monthlyRecurrenceCofig);
                 break;
-            case RRule.YEARLY:
+            case '0':
                 let yearlyRecurrenceCofig: any = {
                     freq: RRule.YEARLY
                 };

@@ -29,6 +29,7 @@ export class ScheduleComponent implements OnInit {
         pauseOnHover: false,
         clickToClose: false
     };
+    schedules:Schedule[];
     scheduleform: FormGroup;
     scheduleformControls;
     isSaveProgress = false;
@@ -155,6 +156,10 @@ export class ScheduleComponent implements OnInit {
     }
 
     ngOnInit() {
+        this._scheduleStore.getSchedulesByCompanyId()
+        .subscribe((schedules) => {
+            this.schedules = schedules;
+        })
 
     }
 

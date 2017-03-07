@@ -145,7 +145,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (doctorlocationscheduleBO.doctor != null)
                 if (doctorlocationscheduleBO.doctor.ID > 0)
                 {
-                    Doctor doctor = _context.Doctors.Where(p => p.id == doctorlocationscheduleBO.doctor.ID && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<Doctor>();
+                    Doctor doctor = _context.Doctors.Where(p => p.Id == doctorlocationscheduleBO.doctor.ID && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<Doctor>();
                     if (doctor != null)
                     {
                         doctorlocationscheduleDB.Doctor = doctor;
@@ -248,16 +248,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<BO.DoctorLocationSchedule> lstDoctorLocationSchedule = new List<BO.DoctorLocationSchedule>();
             //BO.DoctorLocationSchedule doctorlocationscheduleBO = (BO.DoctorLocationSchedule)(object)entity;
             var acc_ = _context.DoctorLocationSchedules.Include("Doctor").Include("Location").Include("Schedule").Where(p => (p.IsDeleted == false || p.IsDeleted == null)).ToList<DoctorLocationSchedule>();
-            if (acc_ == null || acc_.Count < 1)
+            if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            foreach (DoctorLocationSchedule item in acc_)
+            else
             {
-                lstDoctorLocationSchedule.Add(Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(item));
-            }
+                foreach (DoctorLocationSchedule item in acc_)
+                {
+                    lstDoctorLocationSchedule.Add(Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(item));
+                }
 
-            return lstDoctorLocationSchedule;
+                return lstDoctorLocationSchedule;
+            }
         }
         #endregion
 
@@ -270,16 +273,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                        .Include("Location").Include("Location.AddressInfo").Include("Location.ContactInfo")
                                                        .Include("Schedule")
                                                        .Where(p => p.LocationID== id && (p.IsDeleted == false || p.IsDeleted == null)).ToList<DoctorLocationSchedule>();
-            if (acc_ == null || acc_.Count < 1)
+            if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            foreach (DoctorLocationSchedule item in acc_)
+            else
             {
-                lstDoctorLocationSchedule.Add(Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(item));
-            }
+                foreach (DoctorLocationSchedule item in acc_)
+                {
+                    lstDoctorLocationSchedule.Add(Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(item));
+                }
 
-            return lstDoctorLocationSchedule;
+                return lstDoctorLocationSchedule;
+            }
         }
         #endregion
 
@@ -292,16 +298,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                        .Include("Location").Include("Location.AddressInfo").Include("Location.ContactInfo")
                                                        .Include("Schedule")
                                                        .Where(p => p.DoctorID == id && (p.IsDeleted == false || p.IsDeleted == null)).ToList<DoctorLocationSchedule>();
-            if (acc_ == null || acc_.Count < 1)
+            if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            foreach (DoctorLocationSchedule item in acc_)
+            else
             {
-                lstDoctorLocationSchedule.Add(Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(item));
-            }
+                foreach (DoctorLocationSchedule item in acc_)
+                {
+                    lstDoctorLocationSchedule.Add(Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(item));
+                }
 
-            return lstDoctorLocationSchedule;
+                return lstDoctorLocationSchedule;
+            }
         }
         #endregion
 
@@ -313,16 +322,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var acc_ = _context.DoctorLocationSchedules.Include("Doctor").Include("Doctor.User")
                                                        .Include("Location").Include("Location.AddressInfo").Include("Location.ContactInfo")
                                                        .Include("Schedule").Where(p => (p.LocationID == locationId && p.DoctorID== doctorId) && (p.IsDeleted == false || p.IsDeleted == null)).ToList<DoctorLocationSchedule>();
-            if (acc_ == null || acc_.Count < 1)
+            if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            foreach (DoctorLocationSchedule item in acc_)
+            else
             {
-                lstDoctorLocationSchedule.Add(Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(item));
-            }
+                foreach (DoctorLocationSchedule item in acc_)
+                {
+                    lstDoctorLocationSchedule.Add(Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(item));
+                }
 
-            return lstDoctorLocationSchedule;
+                return lstDoctorLocationSchedule;
+            }
         }
         #endregion
 

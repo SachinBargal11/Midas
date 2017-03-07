@@ -21,12 +21,14 @@ import { AppValidators } from '../../../commons/utils/AppValidators';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 
+
 @Component({
     selector: 'doctor-location-schedule',
     templateUrl: './doctor-location-schedule.html'
 })
 
 export class DoctorLocationScheduleComponent implements OnInit {
+    schedules:Schedule[];
     userId: number;
     scheduleform: FormGroup;
     scheduleformControls;
@@ -159,6 +161,11 @@ export class DoctorLocationScheduleComponent implements OnInit {
     }
 
     ngOnInit() {
+
+          this._scheduleStore.getSchedulesByCompanyId()
+        .subscribe((schedules) => {
+            this.schedules = schedules;
+        })
 
     }
 

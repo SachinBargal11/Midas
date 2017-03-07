@@ -360,6 +360,19 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.GetByCompanyWithOpenCases(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetgbObjects(HttpRequestMessage request, int id)
         {
             var objResult = dataAccessManager.GetByInsuranceMasterId(id);

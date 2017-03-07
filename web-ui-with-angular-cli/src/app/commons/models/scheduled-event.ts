@@ -71,8 +71,8 @@ export class ScheduledEvent extends ScheduledEventRecord {
                 return new ScheduledEventInstance({
                     title: this.name,
                     allDay: this.isAllDay,
-                    start: moment(occurrence),
-                    end: moment(occurrence).add(duration),
+                    start: moment(occurrence).local(),
+                    end: moment(occurrence).add(duration).local(),
                     owningEvent: this,
                     eventWrapper: eventWrapper
                 });
@@ -82,8 +82,8 @@ export class ScheduledEvent extends ScheduledEventRecord {
                 new ScheduledEventInstance({
                     title: this.name,
                     allDay: this.isAllDay,
-                    start: this.eventStart ? this.eventStart.clone() : null,
-                    end: this.eventEnd ? this.eventEnd.clone() : null,
+                    start: this.eventStart ? this.eventStart.clone().local() : null,
+                    end: this.eventEnd ? this.eventEnd.clone().local() : null,
                     owningEvent: this,
                     eventWrapper: eventWrapper
                 })

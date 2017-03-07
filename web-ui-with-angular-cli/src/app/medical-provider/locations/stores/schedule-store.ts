@@ -39,6 +39,19 @@ export class ScheduleStore {
         return <Observable<Schedule[]>>Observable.fromPromise(promise);
     }
 
+       getSchedulesByCompanyId(): Observable<Schedule[]> {
+           let companyId:number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._scheduleService.getSchedulesByCompanyId(companyId).subscribe((schedules: Schedule[]) => {
+                this._schedules.next(List(schedules));
+                resolve(schedules);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Schedule[]>>Observable.fromPromise(promise);
+    }
+
     findScheduleById(id: number) {
         let schedules = this._schedules.getValue();
         let index = schedules.findIndex((currentSchedule: Schedule) => currentSchedule.id === id);
