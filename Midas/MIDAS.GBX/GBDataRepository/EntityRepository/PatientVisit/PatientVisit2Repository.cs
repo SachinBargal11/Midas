@@ -227,7 +227,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 else
                 {
-                    if (IsEditMode == false)
+                    if (IsEditMode == false && PatientVisit2BO.CalendarEventId <= 0)
                     {
                         dbContextTransaction.Rollback();
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Calendar Event details.", ErrorLevel = ErrorLevel.Error };
@@ -254,7 +254,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
 
                     //PatientVisit2DB.CalendarEventId = PatientVisit2BO.CalendarEventId.HasValue == false ? PatientVisit2DB.CalendarEventId : PatientVisit2BO.CalendarEventId.Value;
-                    PatientVisit2DB.CalendarEventId = (CalendarEventDB != null && CalendarEventDB.Id > 0) ? CalendarEventDB.Id : PatientVisit2DB.CalendarEventId;
+                    PatientVisit2DB.CalendarEventId = (CalendarEventDB != null && CalendarEventDB.Id > 0) ? CalendarEventDB.Id : ((PatientVisit2BO.CalendarEventId.HasValue == true) ? PatientVisit2BO.CalendarEventId.Value : PatientVisit2DB.CalendarEventId);
 
                     if (IsEditMode == false && PatientVisit2BO.CaseId.HasValue == false)
                     {
