@@ -253,12 +253,31 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID
         public override object Get(int id)
         {
-            BO.Doctor acc_ = Convert<BO.Doctor, Doctor>(_context.Doctors.Include("User").Include("User.UserCompanyRoles").Where(p => p.Id == id && p.IsDeleted == false).Include(a => a.User.DoctorSpecialities).FirstOrDefault<Doctor>());
-            if (acc_ == null)
+            //BO.Doctor acc_ = Convert<BO.Doctor, Doctor>(_context.Doctors.Include("User").Include("User.UserCompanyRoles").Where(p => p.Id == id && p.IsDeleted == false).Include(a => a.User.DoctorSpecialities).FirstOrDefault<Doctor>());
+            //if (acc_ == null)
+            //{
+            //    return new BO.ErrorObject { ErrorMessage = "No record found for this Specialty.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            //}
+
+            Doctor doctorDB = _context.Doctors.Include("User")
+                                              .Include("User.AddressInfo")
+                                              .Include("User.ContactInfo")
+                                              .Include("User.DoctorSpecialities")
+                                              .Include("User.DoctorSpecialities.Specialty")
+                                              .Include("User.UserCompanyRoles").Where(p => p.Id == id && p.IsDeleted == false).Include(a => a.User.DoctorSpecialities).FirstOrDefault<Doctor>();
+
+            BO.Doctor doctorBO = new BO.Doctor();
+
+            if (doctorDB == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No record found for this Specialty.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Doctor.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            return (object)acc_;
+            else
+            {
+                doctorBO = Convert<BO.Doctor, Doctor>(doctorDB);
+            }
+
+            return (object)doctorBO;
         }
         #endregion
 
