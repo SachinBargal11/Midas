@@ -20,7 +20,12 @@
 <!--<p-dataTable [value]="cases" [(selection)]="selectedCase" selectionMode="single" (onRowSelect)="onRowSelect(selectedCase)" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">-->
 <p-dataTable [value]="cases" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Cases</header>
-    <p-column field="caseName" header="Name" [sortable]="true"></p-column>
+    <p-column header="Patient Name" [sortable]="true">
+           <template pTemplate="body">
+            {{patientName}}
+            
+        </template>
+    </p-column>
     <p-column field="caseStatusLabel" header="Case Status" [sortable]="true"></p-column>
     <p-column field="caseTypeLabel" header="Case Type" [sortable]="true"></p-column>
     <p-column styleClass="actions-cell" header="Actions">

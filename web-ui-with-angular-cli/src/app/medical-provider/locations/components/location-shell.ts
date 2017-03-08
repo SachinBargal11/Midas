@@ -11,11 +11,16 @@ export class LocationShellComponent implements OnInit {
 
     test: boolean = true;
     constructor(
-        public router: Router,
-        public _route: ActivatedRoute,
-        private _sessionStore: SessionStore
-    ) {
 
+        public _router: Router,
+        public _route: ActivatedRoute,
+        private _sessionStore: SessionStore,
+       
+        
+    ) {
+       this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+            this._router.navigate(['/medical-provider/locations']); ;
+        });
     }
 
     ngOnInit() {

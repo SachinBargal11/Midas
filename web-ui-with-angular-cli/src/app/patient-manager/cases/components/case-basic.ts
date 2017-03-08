@@ -54,6 +54,24 @@ export class CaseBasicComponent implements OnInit {
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);   
+            this._progressBarService.show();
+            this._patientStore.fetchPatientById(this.patientId)
+                .subscribe(
+                (patient: Patient) => {
+                    this.patient = patient;
+                    this.patientName = patient.user.firstName + ' ' + patient.user.lastName ;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+            // if(this.patientId){
+            //  this._employerStore.getCurrentEmployer(this.patientId)
+            // .subscribe(employer => this.employer = employer);
+            // }
         });
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
@@ -73,8 +91,8 @@ export class CaseBasicComponent implements OnInit {
 
         });
         this.caseform = this.fb.group({
-            caseName: [''],
-            // patientId: ['', Validators.required],
+            // caseName: [''],
+            patientId: [{ value: '', disabled: true }],
             caseTypeId: [''],
             carrierCaseNo: [''],
             locationId: ['', Validators.required],
@@ -101,33 +119,37 @@ export class CaseBasicComponent implements OnInit {
         let result;
         let caseDetailJS = this.caseDetail.toJS();
         let caseDetail: Case = new Case(_.extend(caseDetailJS, {
-            caseName: caseFormValues.caseName,
+
+            // caseName: caseFormValues.caseName,
+            id:this.caseId,
+            patientId: this.patientId,
             caseTypeId: caseFormValues.caseTypeId,
             carrierCaseNo: caseFormValues.carrierCaseNo,
             locationId: parseInt(caseFormValues.locationId, 10),
             patientEmpInfoId: this.employer.id,
             caseStatusId: caseFormValues.caseStatusId,
             attorneyId: caseFormValues.attorneyId,
-            caseStatus: caseFormValues.caseStatus,
+            caseStatus: caseFormValues.caseStatusId,
             transportation: caseFormValues.transportation,
             updateByUserID: this._sessionStore.session.account.user.id,
             updateDate: moment()
         }));
 
         this._progressBarService.show();
-        result = this._casesStore.addCase(caseDetail);
+        result = this._casesStore.updateCase(caseDetail);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'Patient added successfully!',
+                    'title': 'Case updated successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
                 this._router.navigate(['../../'], { relativeTo: this._route });
+                // this._router.navigate(['/patient-manager/cases']);
             },
             (error) => {
-                let errString = 'Unable to add patient.';
+                let errString = 'Unable to update case.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
