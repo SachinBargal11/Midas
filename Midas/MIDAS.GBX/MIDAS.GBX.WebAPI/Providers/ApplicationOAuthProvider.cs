@@ -49,9 +49,7 @@ namespace MIDAS.GBX.WebAPI.Providers
             {
                 context.SetError("invalid_grant", "Provided username and password is incorrect");
                 return;
-            }
-            System.Web.Caching.Cache cache = new System.Web.Caching.Cache();
-            cache.Insert("RolesMapping", (object)res);
+            }            
             try
             {
                 var res_ = (OTP)(object)res;

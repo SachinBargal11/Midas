@@ -14,30 +14,38 @@ namespace MIDAS.GBX.WebAPI
 {
     public class MidasAuthorize : System.Web.Http.AuthorizeAttribute
     {
-        /*private DbSet<UserCompanyRole> _dbUserCompanyRole;
-        private DbSet<User> _dbUser;
+        private DbSet<UserCompanyRole> _dbUserCompanyRole;
+        private DbSet<UserApiRoleMapping> _dbUserRoleMapping;
         private DBContextProvider dbContextProvider = new DBContextProvider();
         private MIDASGBXEntities context = null;
+        private List<string> roles = new List<string>();
+        private IEnumerable<string> authorisedRolesDB = new List<string>();
+        private string controllerName = string.Empty;
+        private string actionName = string.Empty;
+        private bool returnStatus = false;
 
         public MidasAuthorize()
         {
             context = dbContextProvider.GetGbDBContext();
-            _dbUser = context.Set<User>();
-            _dbUserCompanyRole = context.Set<UserCompanyRole>();
+            _dbUserRoleMapping = context.Set<UserApiRoleMapping>();
         }
-        
+
         protected override bool IsAuthorized(HttpActionContext actionContext)
         {            
-            List<string> roles = new List<string>();
-            string controllerName = actionContext.ControllerContext.ControllerDescriptor.ControllerName;
-            ((ClaimsIdentity)HttpContext.Current.User.Identity).Claims.ToList().ForEach(p => roles = p.Type.ToUpper() == "ROLE" ? p.Value.Split(',').ToList<string>() : roles);
+            controllerName = actionContext.ControllerContext.ControllerDescriptor.ControllerName.ToUpper();
+            actionName = actionContext.ActionDescriptor.ActionName.ToUpper();
 
-             _dbUser.Include("UserCompanyRoles").ToList();
-            
-            if (roles.Any(p => System.Configuration.ConfigurationManager.AppSettings.Get("attorney").Split(',').ToList().Contains(p)))
-                return true;
-            else
-                return false;
-        }*/
+            ((ClaimsIdentity)HttpContext.Current.User.Identity).Claims.ToList().ForEach(p => roles = p.Type.ToUpper() == "ROLE" ? p.Value.Split(',').ToList<string>() : roles);
+            authorisedRolesDB = _dbUserRoleMapping.Where(p => p.API.ToUpper() == controllerName.ToUpper() && (p.METHODS.IndexOf(actionName) >= 0)).ToList()
+                                        .Select(x => x.ROLES).ToList().Distinct<string>();
+
+            if (roles.Any(p => authorisedRolesDB.Contains(p.ToUpper()))) return returnStatus = true;
+            else return returnStatus = false;
+        }
+
+        protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)
+        {
+            if (!returnStatus) actionContext.Response = new System.Net.Http.HttpResponseMessage(System.Net.HttpStatusCode.Forbidden);
+        }
     }
 }
