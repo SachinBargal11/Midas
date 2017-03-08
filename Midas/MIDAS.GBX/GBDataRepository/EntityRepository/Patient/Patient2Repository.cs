@@ -182,7 +182,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region GetByCompanyWithOpenCases For Patient 
         public override object GetByCompanyWithOpenCases(int CompanyId)
         {
-            var openCase = _context.Cases.Where(p => p.CaseStatusId.HasValue == true && p.CaseStatusId == 1 
+            var openCase = _context.Cases.Where(p => p.CaseStatusId.HasValue == true && p.CaseStatusId == 1
                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                          .Select(p => p.PatientId)
                                          .Distinct<int>();
