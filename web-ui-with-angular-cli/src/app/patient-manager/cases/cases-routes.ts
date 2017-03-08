@@ -28,6 +28,22 @@ export const CasesShellRoutes: Routes = [
         }
     },
     {
+        path: 'cases',
+        component: ShellComponent,
+        data: {
+            breadcrumb: 'Cases'
+        },
+        children: [
+            {
+                path: 'add',
+                component: AddCaseComponent,
+                data: {
+                    breadcrumb: 'Add Case'
+                }
+            },
+        ]
+    },
+    {
         path: 'cases/:patientId',
         component: ShellComponent,
         data: {

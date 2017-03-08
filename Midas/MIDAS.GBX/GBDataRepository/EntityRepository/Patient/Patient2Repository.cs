@@ -215,6 +215,41 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region GetByLocationWithOpenCases For Patient 
+        public override object GetByLocationWithOpenCases(int LocationId)
+        {
+            var openCase = _context.Cases.Where(p => p.CaseStatusId.HasValue == true && p.CaseStatusId == 1 && p.LocationId == LocationId
+                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                         .Select(p => p.PatientId)
+                                         .Distinct<int>();
+
+            var acc = _context.Patient2.Include("AddressInfo")
+                                       .Include("ContactInfo")
+                                       .Include("User")
+                                       .Include("User.AddressInfo")
+                                       .Include("User.ContactInfo")
+                                       .Where(p => (openCase.Contains(p.Id))
+                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                       .ToList<Patient2>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.Patient2> lstpatients = new List<BO.Patient2>();
+                //acc.ForEach(p => lstpatients.Add(Convert<BO.Patient2, Patient2>(p)));
+                foreach (Patient2 item in acc)
+                {
+                    lstpatients.Add(Convert<BO.Patient2, Patient2>(item));
+                }
+
+                return lstpatients;
+            }
+        }
+        #endregion
+
         #region Get By ID For Patient 
         public override object Get(int id)
         {

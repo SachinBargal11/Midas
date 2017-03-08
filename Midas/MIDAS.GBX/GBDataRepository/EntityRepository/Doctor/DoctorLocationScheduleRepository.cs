@@ -211,6 +211,29 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+
+        #region Delete
+        public override object Delete(int id)
+        {
+            
+            DoctorLocationSchedule doctorlocationscheduleDB = _context.DoctorLocationSchedules.Include("Doctor").Include("Location").Include("Schedule").Where(p => p.id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<DoctorLocationSchedule>();
+
+            if(doctorlocationscheduleDB==null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this DoctorLocationSchedule.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            doctorlocationscheduleDB.IsDeleted = true;
+          
+            _context.Entry(doctorlocationscheduleDB).State = System.Data.Entity.EntityState.Modified;
+
+            _context.SaveChanges();
+
+            var res = Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(doctorlocationscheduleDB);
+            return (object)res;
+        }
+        #endregion
+
         #region Get By ID
         public override object Get(int id)
         {

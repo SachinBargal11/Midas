@@ -275,12 +275,23 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                         }
                     }
 
+                    //Commented, need to be implemented
+                    //if (IsEditMode == false)
+                    //{
+                    //    Patient2 patientDB = _context.Patient2.Where(p => p.Id == caseBO.PatientId && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).FirstOrDefault();
+                    //    bool machCompanyAndLocation= _context.Locations.Any(p => (p.id == caseBO.LocationId && p.CompanyID == patientDB.CompanyId) &&(p.IsDeleted.HasValue == false || p.IsDeleted == false));
+                    //    if (machCompanyAndLocation == false)
+                    //    {
+                    //        dbContextTransaction.Rollback();
+                    //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Company location for this user is invalid.", ErrorLevel = ErrorLevel.Error };
+                    //    }
+                    //}
 
                     caseDB.PatientId = caseBO.PatientId;
                     caseDB.CaseName = IsEditMode == true && caseBO.CaseName == null ? caseDB.CaseName : caseBO.CaseName;
                     caseDB.CaseTypeId = IsEditMode == true && caseBO.CaseTypeId == null ? caseDB.CaseTypeId : caseBO.CaseTypeId;
                     caseDB.LocationId = IsEditMode == true && caseBO.LocationId.HasValue==false ? caseDB.LocationId : caseBO.LocationId.Value;
-                    caseDB.PatientEmpInfoId = IsEditMode == true && caseBO.PatientEmpInfoId.HasValue == false ? caseDB.PatientEmpInfoId : caseBO.PatientEmpInfoId.Value;
+                    caseDB.PatientEmpInfoId = IsEditMode == true && caseBO.PatientEmpInfoId.HasValue == false ? caseDB.PatientEmpInfoId : caseBO.PatientEmpInfoId;
                     caseDB.CarrierCaseNo = IsEditMode == true && caseBO.CarrierCaseNo == null ? caseDB.CarrierCaseNo : caseBO.CarrierCaseNo;
                     caseDB.Transportation = IsEditMode == true && caseBO.Transportation.HasValue == false ? caseDB.Transportation : caseBO.Transportation.Value;
                     caseDB.CaseStatusId = IsEditMode == true && caseBO.CaseStatusId.HasValue == false ? caseDB.CaseStatusId : caseBO.CaseStatusId.Value;

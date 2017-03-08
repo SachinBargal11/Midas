@@ -56,6 +56,7 @@ import { ViewAllComponent } from './patients/components/view-all';
 
 import { CompanyCasesComponent } from './cases/components/company-cases-list';
 
+
 import { CaseService } from './cases/services/cases-services';
 import { AdjusterMasterStore } from '../account-setup/stores/adjuster-store';
 import { AdjusterMasterService } from '../account-setup/services/adjuster-service';
@@ -66,6 +67,8 @@ import { PatientVisitService } from './patient-visit/services/patient-visit-serv
 
 import { RoomsModule } from '../medical-provider/rooms/rooms-module';
 import { UsersModule } from '../medical-provider/users/users-module';
+
+
 
 
 @NgModule({
@@ -112,7 +115,8 @@ import { UsersModule } from '../medical-provider/users/users-module';
         InsuranceMapComponent,
         CaseMappingComponent,
         ViewAllComponent,
-        CompanyCasesComponent
+        CompanyCasesComponent,
+       
     ],
     providers: [
         PatientsService,
