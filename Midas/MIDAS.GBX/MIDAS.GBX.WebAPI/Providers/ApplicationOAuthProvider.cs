@@ -16,6 +16,7 @@ namespace MIDAS.GBX.WebAPI.Providers
 {
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
     {
+        public ClaimsIdentity identity;
         private readonly string _publicClientId;
         MIDAS.GBX.DataRepository.DataAccessManager dataAccessManager;
         public ApplicationOAuthProvider(string publicClientId)
@@ -30,7 +31,7 @@ namespace MIDAS.GBX.WebAPI.Providers
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-            var identity = new ClaimsIdentity(context.Options.AuthenticationType);
+            identity = new ClaimsIdentity(context.Options.AuthenticationType);
             if(string.IsNullOrEmpty(context.UserName))
             {
                 context.SetError("invalid_grant", "Provided username and password is incorrect");
@@ -41,7 +42,7 @@ namespace MIDAS.GBX.WebAPI.Providers
                 context.SetError("invalid_grant", "Provided username and password is incorrect");
                 return;
             }
-            User user = new User { UserName = context.UserName, Password = context.Password,forceLogin=true };
+            User user = new User { UserName = context.UserName, Password = context.Password ,forceLogin=true };
 
             var res = dataAccessManager.Login(user);
             if (res == null)
@@ -49,11 +50,15 @@ namespace MIDAS.GBX.WebAPI.Providers
                 context.SetError("invalid_grant", "Provided username and password is incorrect");
                 return;
             }
+            System.Web.Caching.Cache cache = new System.Web.Caching.Cache();
+            cache.Insert("RolesMapping", (object)res);
             try
             {
                 var res_ = (OTP)(object)res;
                 identity.AddClaim(new Claim("username", context.UserName));
                 identity.AddClaim(new Claim(ClaimTypes.Name, res_.User.FirstName));
+                identity.AddClaim(new Claim(ClaimTypes.Email, res_.User.UserName));
+                identity.AddClaim(new Claim("Role", string.Join(",", res_.User.Roles.Select(p => p.RoleType))));                
                 context.Validated(identity);
             }
             catch
