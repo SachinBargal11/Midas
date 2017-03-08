@@ -93,6 +93,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpDelete]
+        [HttpPost]
         [Route("Delete/{id}")]
         public HttpResponseMessage Delete(int id)
         {
