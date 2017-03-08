@@ -297,6 +297,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     PatientVisit2DB.DoctorId = PatientVisit2BO.DoctorId;
                     //PatientVisit2DB.SpecialtyId = IsEditMode == true && PatientVisit2BO.SpecialtyId.HasValue == false ? PatientVisit2DB.SpecialtyId : PatientVisit2BO.SpecialtyId;
                     PatientVisit2DB.SpecialtyId = PatientVisit2BO.SpecialtyId;
+
+                    PatientVisit2DB.EventStart = PatientVisit2BO.EventStart;
+                    PatientVisit2DB.EventEnd = PatientVisit2BO.EventEnd;
+
                     //PatientVisit2DB.Notes = IsEditMode == true && PatientVisit2BO.Notes == null ? PatientVisit2DB.Notes : PatientVisit2BO.Notes;
                     PatientVisit2DB.Notes = PatientVisit2BO.Notes;
                     //PatientVisit2DB.VisitStatusId = IsEditMode == true && PatientVisit2BO.VisitStatusId.HasValue == false ? PatientVisit2DB.VisitStatusId : PatientVisit2BO.VisitStatusId;
