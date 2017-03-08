@@ -22,7 +22,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         // GET: api/getAttornyById/
         [HttpGet]
         [Route("getAll/")]        
-        [MidasAuthorize(Roles ="Admin,Manager")]
+        [MidasAuthorize]
         public HttpResponseMessage GetAllAttornies()
         { return requestHandler.GetObjects(Request); }
 
