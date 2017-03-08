@@ -132,9 +132,37 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
                 ////Find Record By ID
-                User user_ = _context.Users.Include("UserCompanyRoles").Where(p => p.id == doctorBO.user.ID && p.UserCompanyRoles.Any(x => x.RoleID == (int)BO.GBEnums.RoleType.Doctor)).FirstOrDefault<User>();
+                User user_ = _context.Users.Include("UserCompanyRoles").Include("AddressInfo").Include("ContactInfo").Where(p => p.id == doctorBO.user.ID && p.UserCompanyRoles.Any(x => x.RoleID == (int)BO.GBEnums.RoleType.Doctor)).FirstOrDefault<User>();
                 if (user_ != null)
-                {
+                {                    
+                    if (doctorBO.user.AddressInfo!=null && doctorBO.user.AddressInfo.ID > 0)
+                    {
+                        user_.AddressInfo.Name = string.IsNullOrEmpty(doctorBO.user.AddressInfo.Name)? user_.AddressInfo.Name: doctorBO.user.AddressInfo.Name;
+                        user_.AddressInfo.Address1 = string.IsNullOrEmpty(doctorBO.user.AddressInfo.Address1) ? user_.AddressInfo.Address1 : doctorBO.user.AddressInfo.Address1;
+                        user_.AddressInfo.Address2 = string.IsNullOrEmpty(doctorBO.user.AddressInfo.Address2) ? user_.AddressInfo.Address2 : doctorBO.user.AddressInfo.Address2;
+                        user_.AddressInfo.City = string.IsNullOrEmpty(doctorBO.user.AddressInfo.City) ? user_.AddressInfo.City: doctorBO.user.AddressInfo.City;
+                        user_.AddressInfo.State = string.IsNullOrEmpty(doctorBO.user.AddressInfo.State) ? user_.AddressInfo.State: doctorBO.user.AddressInfo.State;
+                        user_.AddressInfo.ZipCode = string.IsNullOrEmpty(doctorBO.user.AddressInfo.ZipCode) ? user_.AddressInfo.ZipCode: doctorBO.user.AddressInfo.ZipCode;
+                        user_.AddressInfo.Country = string.IsNullOrEmpty(doctorBO.user.AddressInfo.Country) ? user_.AddressInfo.Country : doctorBO.user.AddressInfo.Country;
+                        //[STATECODE-CHANGE]
+                        //user_.AddressInfo.StateCode = doctorBO.user.AddressInfo.StateCode;
+                        //[STATECODE-CHANGE]
+                        user_.AddressInfo.CreateByUserID = doctorBO.user.AddressInfo.CreateByUserID <=0 ? user_.AddressInfo.CreateByUserID : doctorBO.user.AddressInfo.CreateByUserID;                        
+                    }
+
+                    if (doctorBO.user.ContactInfo != null && doctorBO.user.ContactInfo.ID > 0)
+                    {
+                        user_.ContactInfo.Name = string.IsNullOrEmpty(doctorBO.user.ContactInfo.Name) ? user_.ContactInfo.Name : doctorBO.user.ContactInfo.Name;
+                        user_.ContactInfo.CellPhone = string.IsNullOrEmpty(doctorBO.user.ContactInfo.CellPhone) ? user_.ContactInfo.CellPhone: doctorBO.user.ContactInfo.CellPhone;
+                        user_.ContactInfo.EmailAddress = string.IsNullOrEmpty(doctorBO.user.ContactInfo.EmailAddress) ? user_.ContactInfo.EmailAddress : doctorBO.user.ContactInfo.EmailAddress;
+                        user_.ContactInfo.HomePhone= string.IsNullOrEmpty(doctorBO.user.ContactInfo.HomePhone) ? user_.ContactInfo.HomePhone : doctorBO.user.ContactInfo.HomePhone;
+                        user_.ContactInfo.WorkPhone = string.IsNullOrEmpty(doctorBO.user.ContactInfo.WorkPhone) ? user_.ContactInfo.WorkPhone : doctorBO.user.ContactInfo.WorkPhone;
+                        user_.ContactInfo.FaxNo = string.IsNullOrEmpty(doctorBO.user.ContactInfo.FaxNo) ? user_.ContactInfo.FaxNo: doctorBO.user.ContactInfo.FaxNo;                        
+                        //[STATECODE-CHANGE]
+                        //user_.AddressInfo.StateCode = doctorBO.user.AddressInfo.StateCode;
+                        //[STATECODE-CHANGE]
+                        user_.ContactInfo.CreateByUserID = doctorBO.user.ContactInfo.CreateByUserID <= 0 ? user_.ContactInfo.CreateByUserID : doctorBO.user.ContactInfo.CreateByUserID;
+                    }
                     doctorDB.User = user_;
                     _context.Entry(user_).State = System.Data.Entity.EntityState.Modified;
                 }
