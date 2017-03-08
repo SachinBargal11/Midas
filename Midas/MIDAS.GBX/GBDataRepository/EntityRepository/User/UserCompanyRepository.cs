@@ -153,6 +153,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { ErrorMessage = "Company dosent exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
             }
 
+            UserCompany UserCompanyDB1 = _context.UserCompanies.Where(p => (p.UserID == UserDB.id && p.CompanyID== CompanyId)
+                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                       .FirstOrDefault();
+            if (UserCompanyDB1==null)
+            { 
             UserCompany UserCompanyDB = new UserCompany();
 
             Guid invitationDB_UniqueID = Guid.NewGuid();
@@ -199,8 +204,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 UserDB = _context.Users.Include("AddressInfo")
                                        .Include("ContactInfo")
                                        .Include("UserCompanyRoles")
-                                       .Include("UserCompanies")
-                                       .Where(p => p.id == UserDB.id 
+                                       .Include("UserCompanies")                                     
+                                       .Where(p => p.id == UserDB.id
                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                        .FirstOrDefault<User>();
             }
@@ -220,6 +225,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                 }
             }
+
+        }
+        else
+         {
+                return new BO.ErrorObject { ErrorMessage = "User is already  associated with this Company.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+         }
 
             var res = Convert<BO.User, User>(UserDB);
             return (object)res;
