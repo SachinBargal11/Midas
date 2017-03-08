@@ -63,15 +63,6 @@ export class DoctorsService {
                         id: this._sessionStore.session.currentCompany.id
                     }
                 }];
-            // doctorDetailRequestData = {
-            //     user: doctorDetailRequestData.user,
-            //     userCompanies: [{
-            //         company: {
-            //             id: this._sessionStore.session.currentCompany.id
-            //         }
-            //     }],
-            //     doctorSpecialities: doctorDetailRequestData.doctorSpecialities
-            // };
 
             doctorDetailRequestData.user.userCompanies = userCompanies;
             doctorDetailRequestData.user.doctorSpecialities = doctorDetailRequestData.doctorSpecialities;

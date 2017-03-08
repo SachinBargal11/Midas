@@ -22,6 +22,8 @@ import { NotificationsService } from 'angular2-notifications';
 export class UsersListComponent implements OnInit {
     selectedUsers: User[];
     users: User[];
+    user: User;
+    role;
     constructor(
         private _router: Router,
         private _usersStore: UsersStore,
@@ -47,8 +49,17 @@ export class UsersListComponent implements OnInit {
             (error) => {
             },
             () => {
-            this._progressBarService.hide();
+                this._progressBarService.hide();
             });
+    }
+    editUser(user) {
+        let userRoleFlag: number = 1;
+        user.roles.forEach(role => {
+            if (role.roleType === 3) {
+                userRoleFlag = 2;
+            }
+        });
+        this._router.navigate(['/medical-provider/users/' + user.id + '/' + userRoleFlag + '/basic']);
     }
     deleteUser() {
         if (this.selectedUsers !== undefined) {
