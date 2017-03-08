@@ -218,7 +218,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region GetByLocationWithOpenCases For Patient 
         public override object GetByLocationWithOpenCases(int LocationId)
         {
-            var openCase = _context.Cases.Where(p => p.CaseStatusId.HasValue == true && p.CaseStatusId == 1 && p.Id == p.LocationId
+            var openCase = _context.Cases.Where(p => p.CaseStatusId.HasValue == true && p.CaseStatusId == 1 && p.LocationId == LocationId
                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                          .Select(p => p.PatientId)
                                          .Distinct<int>();
