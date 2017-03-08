@@ -16,6 +16,8 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import { NotificationsService } from 'angular2-notifications';
+import { PatientsStore } from '../../patients/stores/patients-store';
+import { Patient } from '../../patients/models/patient';
 
 @Component({
     selector: 'add-case',
@@ -29,10 +31,15 @@ export class AddCaseComponent implements OnInit {
     employer: Employer;
     isSaveProgress = false;
     patientId: number;
+    idPatient: any;
+    patient:Patient;
+    patientName: string;
+    patients: Patient[];
 
     constructor(
         private fb: FormBuilder,
         private _router: Router,
+        private _patientsStore: PatientsStore,
         public _route: ActivatedRoute,
         private _statesStore: StatesStore,
         private _notificationsStore: NotificationsStore,
@@ -41,15 +48,38 @@ export class AddCaseComponent implements OnInit {
         private _locationsStore: LocationsStore,
         private _employerStore: EmployerStore,
         private _casesStore: CasesStore,
+        private _patientStore: PatientsStore,
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
-        this._route.parent.params.subscribe((routeParams: any) => {
+            this._route.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
+            if(this.patientId){
+                  this._progressBarService.show();
+            this._patientStore.fetchPatientById(this.patientId)
+                .subscribe(
+                (patient: Patient) => {
+                    this.patient = patient;
+                    this.patientName = patient.user.firstName + ' ' + patient.user.lastName ;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+            
+             this._employerStore.getCurrentEmployer(this.patientId)
+            .subscribe(employer => this.employer = employer);
+            }
         });
+
+        
+        
         this.caseform = this.fb.group({
-            caseName: [''],
-            // patientId: ['', Validators.required],
+            // caseName: [''],
+            patientId: [''],
             caseTypeId: [''],
             carrierCaseNo: [''],
             locationId: ['', Validators.required],
@@ -66,8 +96,32 @@ export class AddCaseComponent implements OnInit {
     ngOnInit() {
         this._locationsStore.getLocations()
             .subscribe(locations => this.locations = locations);
-        this._employerStore.getCurrentEmployer(this.patientId)
-            .subscribe(employer => this.employer = employer);
+   
+
+        this.loadPatients();
+    }
+
+    selectPatient(event){
+        let currentPatient: number = parseInt(event.target.value);
+        let idPatient = parseInt(event.target.value);
+        let result = this._employerStore.getCurrentEmployer(currentPatient);
+            result.subscribe((employer) => {this.employer = employer;}, null);
+            console.log(this.employer)
+    }
+    
+
+    loadPatients() {
+        this._progressBarService.show();
+        this._patientsStore.getPatients()
+            .subscribe(patients => {
+                this.patients = patients;
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
 
     saveCase() {
@@ -75,12 +129,14 @@ export class AddCaseComponent implements OnInit {
         let caseFormValues = this.caseform.value;
         let result;
         let caseDetail: Case = new Case({
-            patientId: this.patientId,
-            caseName: caseFormValues.caseName,
+            // patientId: this.patientId,
+            patientId: (this.patientId) ? this.patientId : parseInt(this.idPatient),
+            // patientId: caseFormValues.patientId,
+            caseName: 'caseName',
             caseTypeId: caseFormValues.caseTypeId,
             carrierCaseNo: caseFormValues.carrierCaseNo,
             locationId: caseFormValues.locationId,
-            patientEmpInfoId: this.employer.id,
+            patientEmpInfoId: (this.employer.id) ? this.employer.id  : null,
             caseStatusId: caseFormValues.caseStatusId,
             attorneyId: caseFormValues.attorneyId,
             // caseStatus: caseFormValues.caseStatus,
@@ -99,10 +155,10 @@ export class AddCaseComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../'], { relativeTo: this._route });
+                this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
-                let errString = 'Unable to add Case.';
+                let errString = 'Unable to add case.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

@@ -112,6 +112,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandlerPatient2.GetGbObjects2(Request, CompanyId);
         }
 
+        [HttpGet]
+        [Route("getByLocationWithOpenCases/{LocationId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetByLocationWithOpenCases(int LocationId)
+        {
+            return requestHandlerPatient2.GetGbObjects3(Request, LocationId);
+        }
 
         [HttpGet]
         [Route("getPatientById/{id}")]

@@ -1,7 +1,7 @@
 <h3 class="with-border">Add Case</h3>
 <form [formGroup]="caseform" (ngSubmit)="saveCase()">
     <div class="row">
-        <div class="col-lg-4">
+        <!--<div class="col-lg-4">
             <label class="form-label">Case Name
                                 <span class="color-red">*</span>
                             </label>
@@ -14,14 +14,25 @@
                     </ul>
                 </div>
             </div>
-        </div>
-        <!--<div class="col-lg-4">
-            <label class="form-label"> Patient
+        </div>-->
+        <div class="col-lg-4">
+            <label class="form-label"> Patient Name
                                 <span class="color-red">*</span>
                             </label>
+            <div *ngIf="patientName">
+                 
+                            <div class="form-group">
+                    <!--<input type="text" class="form-control" [ngModel]="patientName" formControlName="patientId">-->
+                    <label class="form-label"> {{patientName}}
+                            </label>
+                </div>
+                </div>
+            <div *ngIf="!patientName">  
             <div class="form-group" [class.error]="caseformControls.patientId.touched && !caseformControls.patientId.valid">
-                <select formControlName="patientId" type="text" class="form-control" placeholder="" [class.error]="caseformControls.patientId.touched && !caseformControls.patientId.valid">
+                <select formControlName="patientId" type="text" [(ngModel)]="idPatient" (change)="selectPatient($event)" class="form-control"
+                    placeholder="" [class.error]="caseformControls.patientId.touched && !caseformControls.patientId.valid">
                             <option value="">-Select -</option>
+                            <option *ngFor="let patient of patients" value="{{patient.id}}">{{patient.user.firstName}} {{patient.user.lastName}}</option>
                         </select>
                 <div class='error-list' *ngIf="caseformControls.patientId.touched && !caseformControls.patientId.valid">
                     <ul>
@@ -29,7 +40,8 @@
                     </ul>
                 </div>
             </div>
-        </div>-->
+            </div>
+        </div>
         <div class="col-lg-4">
             <label class="form-label"> Case Type
                                 <!--<span class="color-red">*</span>-->
@@ -112,7 +124,7 @@
                 </div>
             </div>
         </div>-->
-          <div class="col-lg-4">
+        <div class="col-lg-4">
             <label class="form-label">Attorney
                                 <!--<span class="color-red">*</span>-->
                             </label>
@@ -140,7 +152,7 @@
                 <p-radioButton formControlName="transportation" name="transportation" value="0" label="No"></p-radioButton>
             </div>
         </div>
-      
+
     </div>
     <button [disabled]="!caseform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveProgress"></loader>

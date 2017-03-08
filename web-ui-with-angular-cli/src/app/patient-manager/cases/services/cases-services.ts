@@ -94,7 +94,7 @@ export class CaseService {
 
     updateCase(caseDetail: Case): Observable<Case> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.put(`${this._url}/${caseDetail.id}`, JSON.stringify(caseDetail), {
+            return this._http.post(this._url + '/Case/Save', JSON.stringify(caseDetail), {
                 headers: this._headers
             })
                 .map(res => res.json())
