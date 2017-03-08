@@ -187,7 +187,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                        .Include("User")
                                        .Include("User.AddressInfo")
                                        .Include("User.ContactInfo")
-                                       .Where(p => p.CompanyId == CompanyId && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
+                                       .Where(p => p.CompanyId == CompanyId
+                                               && (p.Cases != null && p.Cases.Any(p2 => p2.CaseStatusId.HasValue == true && p2.CaseStatusId.Value == 1) == true)
+                                               && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
                                        .ToList<Patient2>();
 
             if (acc == null)
