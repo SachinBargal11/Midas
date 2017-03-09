@@ -18,17 +18,17 @@
             <option value="0"> -- Select Doctor -- </option>
             <option *ngFor="let doctorLocationSchedule of _doctorLocationScheduleStore.doctorLocationSchedules | async" [value]="doctorLocationSchedule.doctor.id">{{doctorLocationSchedule.doctor.user.displayName}}</option>                                       
         </select>
-        <span *ngIf="doctorSchedule">{{doctorSchedule.name}}</span>
+        <!--<span *ngIf="doctorSchedule">{{doctorSchedule.name}}</span>-->
     </div>
     <div class="col-lg-3" *ngIf="selectedOption == 2">
         <select [(ngModel)]="selectedRoomId" class="select2-arrow form-control" (change)="selectRoom()">
             <option value="0"> -- Select Room -- </option>
             <option *ngFor="let room of _roomsStore.rooms | async" [value]="room.id">{{room.name}}</option>                                       
         </select> 
-        <span *ngIf="roomSchedule">{{roomSchedule.name}}</span>
+        <!--<span *ngIf="roomSchedule">{{roomSchedule.name}}</span>-->
     </div>
 </div>
-{{businessHours | json}}
+<!--{{businessHours | json}}-->
 <p-schedule *ngIf="events" [events]="events" [views]="views" [header]="header" [eventLimit]="4" [editable]="true" (onDayClick)="handleDayClick($event)"
     (onEventClick)="handleEventClick($event)" [eventRender]="eventRenderer" [dayRender]="dayRenderer" [businessHours]="businessHours">
 </p-schedule>
