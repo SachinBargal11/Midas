@@ -22,6 +22,12 @@ export class UserShellComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _usersStore: UsersStore
     ) {
+
+         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+            this._router.navigate(['/medical-provider/users']);
+        });
+
+        
         this._route.params.subscribe((routeParams: any) => {
             let userId: number = parseInt(routeParams.userId);
             this.userRoleFlag = parseInt(routeParams.userRoleFlag);

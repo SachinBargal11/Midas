@@ -57,6 +57,11 @@ export class EditAttorneyComponent implements OnInit {
         private _attorneyMasterStore: AttorneyMasterStore,
         private _elRef: ElementRef
     ) {
+
+          this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+            this._router.navigate(['/account-setup/attorney']);
+        });
+
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId);
         });
