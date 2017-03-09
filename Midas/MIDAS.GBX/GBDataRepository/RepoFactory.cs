@@ -97,6 +97,10 @@ namespace MIDAS.GBX
             {
                 repo = new DoctorLocationScheduleRepository(context);
             }
+            else if (typeof(T) == typeof(List<BO.DoctorLocationSchedule>))
+            {
+                repo = new DoctorLocationScheduleRepository(context);
+            }
             if (typeof(T) == typeof(BO.Patient))
             {
                 repo = new PatientRepository(context);
