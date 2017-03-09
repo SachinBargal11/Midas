@@ -64,7 +64,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object Get()
         {
             var acc_ = _context.Attorneys.Include("User").Include("User.AddressInfo").Include("User.ContactInfo").Where(p => p.IsDeleted.HasValue == false || p.IsDeleted == false).ToList<Attorney>();
-            if (acc_ == null || acc_.Count == 0) return new BO.ErrorObject { ErrorMessage = "No records found for Attorney.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            if (acc_ == null) return new BO.ErrorObject { ErrorMessage = "No records found for Attorney.", errorObject = "", ErrorLevel = ErrorLevel.Error };
 
             List<BO.AttorneyMaster> lstattornies = new List<BO.AttorneyMaster>();
             acc_.ForEach(item => lstattornies.Add(Convert<BO.AttorneyMaster, Attorney>(item)));
