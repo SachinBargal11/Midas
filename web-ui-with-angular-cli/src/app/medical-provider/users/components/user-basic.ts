@@ -43,6 +43,7 @@ export class UserBasicComponent implements OnInit {
     selectedCity;
     specialitiesArr: SelectItem[] = [];
     selectedSpecialities: SelectItem[] = [];
+    selectedDoctorSpecialities: SelectItem[] = [];
     user: User;
     doctor: Doctor;
     doctorDetail: Doctor;
@@ -98,55 +99,61 @@ export class UserBasicComponent implements OnInit {
             });
         // this._route.params.subscribe((routeParams: any) => {
         //     let userRoleFlag: number = parseInt(routeParams.userRoleFlag);
-            if (this.userRoleFlag === 2) {
-                this._progressBarService.show();
-                this._doctorsStore.fetchDoctorById(this.userId)
-                    .subscribe(
-                    (doctorDetail: Doctor) => {
-                        this.doctorDetail = doctorDetail;
-                        this.doctor = doctorDetail;
-                        this.user = doctorDetail.user;
-                        this.cellPhone = this._phoneFormatPipe.transform(this.user.contact.cellPhone);
-                        this.faxNo = this._faxNoFormatPipe.transform(this.user.contact.faxNo);
-                        this.selectedRole = _.map(this.user.roles, (currentRole: any) => {
-                            return currentRole.roleType;
-                        });
-                        this.selectedSpecialities = _.map(doctorDetail.doctorSpecialities, (currentDoctorSpeciality: any) => {
-                            return currentDoctorSpeciality.specialty.id.toString();
-                        });
-                        if (!this.user.address || !this.user.contact) {
+        if (this.userRoleFlag === 2) {
+            this._progressBarService.show();
+            this._doctorsStore.fetchDoctorById(this.userId)
+                .subscribe(
+                (doctorDetail: Doctor) => {
+                    this.doctorDetail = doctorDetail;
+                    this.doctor = doctorDetail;
+                    this.user = doctorDetail.user;
+                    this.cellPhone = this._phoneFormatPipe.transform(this.user.contact.cellPhone);
+                    this.faxNo = this._faxNoFormatPipe.transform(this.user.contact.faxNo);
+                    this.selectedRole = _.map(this.user.roles, (currentRole: any) => {
+                        return currentRole.roleType;
+                    });
+                    this.selectedDoctorSpecialities = _.map(doctorDetail.doctorSpecialities, (currentDoctorSpeciality: any) => {
+                        return currentDoctorSpeciality.specialty.id.toString();
+                    });
+                    this.selectedSpecialities = _.map(doctorDetail.doctorSpecialities, (currentDoctorSpeciality: any) => {
+                        return currentDoctorSpeciality.specialty.id.toString();
+                    });
+                    if (!this.user.address || !this.user.contact) {
                         this.user = new User({
                             address: new Address({}),
                             contact: new Contact({})
                         });
-                        }
-                    },
-                    (error) => {
-                        this._router.navigate(['/medical-provider/users']);
-                        this._progressBarService.hide();
-                    },
-                    () => {
-                        this._progressBarService.hide();
+                    }
+                },
+                (error) => {
+                    this._router.navigate(['/medical-provider/users']);
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        } else if (this.userRoleFlag === 1) {
+            this._progressBarService.show();
+            let result = this._usersStore.fetchUserById(this.userId);
+            result.subscribe(
+                (userDetail: User) => {
+                    // this.selectedSpecialities = ['2'];
+                    this.user = userDetail;
+                    this.cellPhone = this._phoneFormatPipe.transform(this.user.contact.cellPhone);
+                    this.faxNo = this._faxNoFormatPipe.transform(this.user.contact.faxNo);
+                    this.userType = UserType[userDetail.userType];
+                    this.selectedRole = _.map(this.user.roles, (currentRole: any) => {
+                        return currentRole.roleType;
                     });
-            } else if (this.userRoleFlag === 1) {
-                this._progressBarService.show();
-                let result = this._usersStore.fetchUserById(this.userId);
-                result.subscribe(
-                    (userDetail: User) => {
-                        // this.selectedSpecialities = ['2'];
-                        this.user = userDetail;
-                        this.cellPhone = this._phoneFormatPipe.transform(this.user.contact.cellPhone);
-                        this.faxNo = this._faxNoFormatPipe.transform(this.user.contact.faxNo);
-                        this.userType = UserType[userDetail.userType];
-                    },
-                    (error) => {
-                        this._router.navigate(['/medical-provider/users']);
-                        this._progressBarService.hide();
-                    },
-                    () => {
-                        this._progressBarService.hide();
-                    });
-            }
+                },
+                (error) => {
+                    this._router.navigate(['/medical-provider/users']);
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        }
         // });
         this.userform = this.fb.group({
             userInfo: this.fb.group({
@@ -161,7 +168,7 @@ export class UserBasicComponent implements OnInit {
                 npi: ['-', Validators.required],
                 taxType: ['1', [Validators.required, AppValidators.selectedValueValidator]],
                 title: ['-', Validators.required],
-                speciality: ['', Validators.required]
+                speciality: ['']
             }),
             contact: this.fb.group({
                 emailAddress: [{ value: '', disabled: true }, [Validators.required, AppValidators.emailValidator]],
@@ -193,7 +200,19 @@ export class UserBasicComponent implements OnInit {
                 if (element !== '3') {
                     this.doctor = null;
                 } else if (element === '3') {
-                    this.doctor = this.doctorDetail;
+                    if (this.doctorDetail) {
+                        this.doctor = this.doctorDetail;
+                        this.selectedSpecialities = this.selectedDoctorSpecialities;
+                    } else {
+                        this.doctor = new Doctor({
+                            licenseNumber: '-',
+                            wcbAuthorization: '-',
+                            wcbRatingCode: '-',
+                            npi: '-',
+                            taxType: '1',
+                            title: '-'
+                        });
+                    }
                 }
             });
         } else {
@@ -215,29 +234,29 @@ export class UserBasicComponent implements OnInit {
             }
         });
         if (!this.doctorRole) {
-            let userDetail = new User({
-                id: this.user.id,
+            let existingUserJS = this.user.toJS();
+            let userDetail = new User(_.extend(existingUserJS, {
                 firstName: userFormValues.userInfo.firstName,
                 lastName: userFormValues.userInfo.lastName,
                 userType: UserType.STAFF,
                 roles: roles,
                 userName: this.user.userName,
-                contact: new Contact({
+                contact: new Contact(_.extend(existingUserJS.contact, {
                     cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,
                     emailAddress: this.user.contact.emailAddress,
                     faxNo: userFormValues.contact.faxNo ? userFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
                     homePhone: userFormValues.contact.homePhone,
                     workPhone: userFormValues.contact.workPhone,
-                }),
-                address: new Address({
+                })),
+                address: new Address(_.extend(existingUserJS.address, {
                     address1: userFormValues.address.address1,
                     address2: userFormValues.address.address2,
                     city: userFormValues.address.city,
                     country: userFormValues.address.country,
                     state: userFormValues.address.state,
                     zipCode: userFormValues.address.zipCode,
-                })
-            });
+                }))
+            }));
             result = this._usersStore.updateUser(userDetail);
         }
         else {
@@ -246,8 +265,8 @@ export class UserBasicComponent implements OnInit {
             for (let i = 0; i < input.length; ++i) {
                 doctorSpecialities.push({ 'id': parseInt(input[i]) });
             }
-            let doctorDetail = new Doctor({
-                id: this.user.id,
+            let existingDoctorJS = this.doctor.toJS();
+            let doctorDetail = new Doctor(_.extend(existingDoctorJS, {
                 licenseNumber: userFormValues.doctor.licenseNumber,
                 wcbAuthorization: userFormValues.doctor.wcbAuthorization,
                 wcbRatingCode: userFormValues.doctor.wcbRatingCode,
@@ -255,31 +274,29 @@ export class UserBasicComponent implements OnInit {
                 taxType: userFormValues.doctor.taxType,
                 title: userFormValues.doctor.title,
                 doctorSpecialities: doctorSpecialities,
-
-                user: new User({
-                    id: this.user.id,
+                user: new User(_.extend(existingDoctorJS.user, {
                     firstName: userFormValues.userInfo.firstName,
                     lastName: userFormValues.userInfo.lastName,
                     userType: UserType.STAFF,
                     roles: roles,
                     userName: this.user.userName,
-                    contact: new Contact({
+                    contact: new Contact(_.extend(existingDoctorJS.user.contact, {
                         cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,
                         emailAddress: this.user.contact.emailAddress,
                         faxNo: userFormValues.contact.faxNo ? userFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
                         homePhone: userFormValues.contact.homePhone,
                         workPhone: userFormValues.contact.workPhone,
-                    }),
-                    address: new Address({
+                    })),
+                    address: new Address(_.extend(existingDoctorJS.user.address, {
                         address1: userFormValues.address.address1,
                         address2: userFormValues.address.address2,
                         city: userFormValues.address.city,
                         country: userFormValues.address.country,
                         state: userFormValues.address.state,
                         zipCode: userFormValues.address.zipCode,
-                    })
-                })
-            });
+                    }))
+                }))
+            }));
             result = this._doctorsStore.updateDoctor(doctorDetail);
         }
         this._progressBarService.show();

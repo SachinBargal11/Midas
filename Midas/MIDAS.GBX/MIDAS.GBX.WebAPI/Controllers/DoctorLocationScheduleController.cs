@@ -74,6 +74,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.CreateGbObject(Request, data);
         }
 
+        [HttpPost]
+        [Route("associateLocationToDoctors")]
+        public HttpResponseMessage associateLocationToDoctors([FromBody]DoctorLocationSchedule data)
+        {
+            return requestHandler.CreateGbObject1(Request, data);
+        }
+
         // PUT: api/Organizations/5
 
         [Route("Update")]

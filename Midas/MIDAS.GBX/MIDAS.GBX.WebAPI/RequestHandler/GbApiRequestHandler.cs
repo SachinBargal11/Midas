@@ -36,7 +36,24 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
-        
+
+        public HttpResponseMessage CreateGbObject1(HttpRequestMessage request, T gbObject)
+        {
+            var objResult = dataAccessManager.associateLocationToDoctors(gbObject);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
 
         private static string GetCurrentUserFromContext(HttpRequestMessage request)
         {
