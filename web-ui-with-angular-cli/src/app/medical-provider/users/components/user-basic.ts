@@ -23,6 +23,8 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { NotificationsService } from 'angular2-notifications';
 import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
+import { SpecialityStore } from '../../../account-setup/stores/speciality-store';
+import { Speciality } from '../../../account-setup/models/speciality';
 
 @Component({
     selector: 'basic',
@@ -30,16 +32,21 @@ import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 })
 
 export class UserBasicComponent implements OnInit {
+    userId: number;
+    userRoleFlag: number;
     cellPhone: string;
-    selectedRole: string[] = [];
+    selectedRole: any[] = [];
     faxNo: string;
     userType: any;
     states: any[];
     cities: any[];
     selectedCity;
-    selectedSpeciality: SelectItem[] = [];
+    specialitiesArr: SelectItem[] = [];
+    selectedSpecialities: SelectItem[] = [];
     user: User;
-    doctorRole;
+    doctor: Doctor;
+    doctorDetail: Doctor;
+    doctorRole = false;
     address = new Address({});
     contact = new Contact({});
     options = {
@@ -69,30 +76,78 @@ export class UserBasicComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _phoneFormatPipe: PhoneFormatPipe,
         private _faxNoFormatPipe: FaxNoFormatPipe,
+        private _specialityStore: SpecialityStore,
         private _elRef: ElementRef
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
-            let userId: number = parseInt(routeParams.userId);
-            this._progressBarService.show();
-            let result = this._usersStore.fetchUserById(userId);
-            result.subscribe(
-                (userDetail: User) => {
-                    this.user = userDetail;
-                    this.selectedRole = _.map(this.user.roles, (currentRole: any) => {
-                        return currentRole.roleType.toString();
-                    });
-                    this.cellPhone = this._phoneFormatPipe.transform(this.user.contact.cellPhone);
-                    this.faxNo = this._faxNoFormatPipe.transform(this.user.contact.faxNo);
-                    this.userType = UserType[userDetail.userType];
-                },
-                (error) => {
-                    this._router.navigate(['/medical-provider/users']);
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
+            this.userId = parseInt(routeParams.userId);
+            this.userRoleFlag = parseInt(routeParams.userRoleFlag);
         });
+        this._specialityStore.getSpecialities()
+            .subscribe((specialties) => {
+                let specialities: Speciality[] = specialties;
+                this.specialitiesArr = _.map(specialities, (currentSpeciality: Speciality) => {
+                    return {
+                        label: `${currentSpeciality.specialityCode} - ${currentSpeciality.name}`,
+                        value: currentSpeciality.id.toString()
+                    };
+                });
+            },
+            (error) => {
+                this._router.navigate(['../../']);
+            });
+        // this._route.params.subscribe((routeParams: any) => {
+        //     let userRoleFlag: number = parseInt(routeParams.userRoleFlag);
+            if (this.userRoleFlag === 2) {
+                this._progressBarService.show();
+                this._doctorsStore.fetchDoctorById(this.userId)
+                    .subscribe(
+                    (doctorDetail: Doctor) => {
+                        this.doctorDetail = doctorDetail;
+                        this.doctor = doctorDetail;
+                        this.user = doctorDetail.user;
+                        this.cellPhone = this._phoneFormatPipe.transform(this.user.contact.cellPhone);
+                        this.faxNo = this._faxNoFormatPipe.transform(this.user.contact.faxNo);
+                        this.selectedRole = _.map(this.user.roles, (currentRole: any) => {
+                            return currentRole.roleType;
+                        });
+                        this.selectedSpecialities = _.map(doctorDetail.doctorSpecialities, (currentDoctorSpeciality: any) => {
+                            return currentDoctorSpeciality.specialty.id.toString();
+                        });
+                        if (!this.user.address || !this.user.contact) {
+                        this.user = new User({
+                            address: new Address({}),
+                            contact: new Contact({})
+                        });
+                        }
+                    },
+                    (error) => {
+                        this._router.navigate(['/medical-provider/users']);
+                        this._progressBarService.hide();
+                    },
+                    () => {
+                        this._progressBarService.hide();
+                    });
+            } else if (this.userRoleFlag === 1) {
+                this._progressBarService.show();
+                let result = this._usersStore.fetchUserById(this.userId);
+                result.subscribe(
+                    (userDetail: User) => {
+                        // this.selectedSpecialities = ['2'];
+                        this.user = userDetail;
+                        this.cellPhone = this._phoneFormatPipe.transform(this.user.contact.cellPhone);
+                        this.faxNo = this._faxNoFormatPipe.transform(this.user.contact.faxNo);
+                        this.userType = UserType[userDetail.userType];
+                    },
+                    (error) => {
+                        this._router.navigate(['/medical-provider/users']);
+                        this._progressBarService.hide();
+                    },
+                    () => {
+                        this._progressBarService.hide();
+                    });
+            }
+        // });
         this.userform = this.fb.group({
             userInfo: this.fb.group({
                 firstName: ['', Validators.required],
@@ -100,16 +155,16 @@ export class UserBasicComponent implements OnInit {
                 role: ['', Validators.required]
             }),
             doctor: this.fb.group({
-                licenseNumber: ['', Validators.required],
-                wcbAuthorization: ['', Validators.required],
-                wcbRatingCode: ['', Validators.required],
-                npi: ['', Validators.required],
-                taxType: ['', [Validators.required, AppValidators.selectedValueValidator]],
-                title: ['', Validators.required],
+                licenseNumber: ['-', Validators.required],
+                wcbAuthorization: ['-', Validators.required],
+                wcbRatingCode: ['-', Validators.required],
+                npi: ['-', Validators.required],
+                taxType: ['1', [Validators.required, AppValidators.selectedValueValidator]],
+                title: ['-', Validators.required],
                 speciality: ['', Validators.required]
             }),
             contact: this.fb.group({
-                email: [{ value: '', disabled: true }, [Validators.required, AppValidators.emailValidator]],
+                emailAddress: [{ value: '', disabled: true }, [Validators.required, AppValidators.emailValidator]],
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
                 homePhone: [''],
                 workPhone: [''],
@@ -131,15 +186,18 @@ export class UserBasicComponent implements OnInit {
     ngOnInit() {
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
-        // this._statesStore.getCities()
-        //         .subscribe(cities => this.cities = cities);
     }
     showDoctor() {
-        let x = document.getElementById('doctor');
-        if (x.style.display === 'none') {
-            x.style.display = 'block';
+        if (this.selectedRole.length !== 0) {
+            this.selectedRole.forEach(element => {
+                if (element !== '3') {
+                    this.doctor = null;
+                } else if (element === '3') {
+                    this.doctor = this.doctorDetail;
+                }
+            });
         } else {
-            x.style.display = 'none';
+            this.doctor = null;
         }
     }
 
@@ -152,69 +210,77 @@ export class UserBasicComponent implements OnInit {
             roles.push({ 'roleType': parseInt(input[i]) });
         }
         this.selectedRole.forEach(element => {
-            this.doctorRole = element === '3';
+            if (element === 3) {
+                this.doctorRole = true;
+            }
         });
         if (!this.doctorRole) {
-        let userDetail = new User({
-            id: this.user.id,
-            firstName: userFormValues.userInfo.firstname,
-            lastName: userFormValues.userInfo.lastname,
-            userType: UserType.STAFF,
-            roles: roles,
-            userName: userFormValues.contact.email,
-            contact: new Contact({
-                cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,
-                emailAddress: userFormValues.contact.email,
-                faxNo: userFormValues.contact.faxNo ? userFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
-                homePhone: userFormValues.contact.homePhone,
-                workPhone: userFormValues.contact.workPhone,
-            }),
-            address: new Address({
-                address1: userFormValues.address.address1,
-                address2: userFormValues.address.address2,
-                city: userFormValues.address.city,
-                country: userFormValues.address.country,
-                state: userFormValues.address.state,
-                zipCode: userFormValues.address.zipCode,
-            })
-        });
-        result = this._usersStore.updateUser(userDetail);
-    }
-    else {
-        let doctorDetail = new Doctor({
-            id: this.user.id,
-            licenseNumber: userFormValues.doctor.licenseNumber,
-            wcbAuthorization: userFormValues.doctor.wcbAuthorization,
-            wcbRatingCode: userFormValues.doctor.wcbRatingCode,
-            npi: userFormValues.doctor.npi,
-            taxType: userFormValues.doctor.taxType,
-            title: userFormValues.doctor.title,
-            doctorSpecialities: this.selectedSpeciality,
+            let userDetail = new User({
+                id: this.user.id,
+                firstName: userFormValues.userInfo.firstName,
+                lastName: userFormValues.userInfo.lastName,
+                userType: UserType.STAFF,
+                roles: roles,
+                userName: this.user.userName,
+                contact: new Contact({
+                    cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,
+                    emailAddress: this.user.contact.emailAddress,
+                    faxNo: userFormValues.contact.faxNo ? userFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
+                    homePhone: userFormValues.contact.homePhone,
+                    workPhone: userFormValues.contact.workPhone,
+                }),
+                address: new Address({
+                    address1: userFormValues.address.address1,
+                    address2: userFormValues.address.address2,
+                    city: userFormValues.address.city,
+                    country: userFormValues.address.country,
+                    state: userFormValues.address.state,
+                    zipCode: userFormValues.address.zipCode,
+                })
+            });
+            result = this._usersStore.updateUser(userDetail);
+        }
+        else {
+            let doctorSpecialities = [];
+            let input = userFormValues.doctor.speciality;
+            for (let i = 0; i < input.length; ++i) {
+                doctorSpecialities.push({ 'id': parseInt(input[i]) });
+            }
+            let doctorDetail = new Doctor({
+                id: this.user.id,
+                licenseNumber: userFormValues.doctor.licenseNumber,
+                wcbAuthorization: userFormValues.doctor.wcbAuthorization,
+                wcbRatingCode: userFormValues.doctor.wcbRatingCode,
+                npi: userFormValues.doctor.npi,
+                taxType: userFormValues.doctor.taxType,
+                title: userFormValues.doctor.title,
+                doctorSpecialities: doctorSpecialities,
 
-            user: new User({
-            firstName: userFormValues.userInfo.firstname,
-            lastName: userFormValues.userInfo.lastname,
-            userType: UserType.STAFF,
-            roles: roles,
-            userName: userFormValues.contact.email,
-            contact: new Contact({
-                cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,
-                emailAddress: userFormValues.contact.email,
-                faxNo: userFormValues.contact.faxNo ? userFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
-                homePhone: userFormValues.contact.homePhone,
-                workPhone: userFormValues.contact.workPhone,
-            }),
-            address: new Address({
-                address1: userFormValues.address.address1,
-                address2: userFormValues.address.address2,
-                city: userFormValues.address.city,
-                country: userFormValues.address.country,
-                state: userFormValues.address.state,
-                zipCode: userFormValues.address.zipCode,
-            })
-            })
-        });
-        result = this._doctorsStore.updateDoctor(doctorDetail);
+                user: new User({
+                    id: this.user.id,
+                    firstName: userFormValues.userInfo.firstName,
+                    lastName: userFormValues.userInfo.lastName,
+                    userType: UserType.STAFF,
+                    roles: roles,
+                    userName: this.user.userName,
+                    contact: new Contact({
+                        cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,
+                        emailAddress: this.user.contact.emailAddress,
+                        faxNo: userFormValues.contact.faxNo ? userFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
+                        homePhone: userFormValues.contact.homePhone,
+                        workPhone: userFormValues.contact.workPhone,
+                    }),
+                    address: new Address({
+                        address1: userFormValues.address.address1,
+                        address2: userFormValues.address.address2,
+                        city: userFormValues.address.city,
+                        country: userFormValues.address.country,
+                        state: userFormValues.address.state,
+                        zipCode: userFormValues.address.zipCode,
+                    })
+                })
+            });
+            result = this._doctorsStore.updateDoctor(doctorDetail);
         }
         this._progressBarService.show();
         this.isSaveUserProgress = true;

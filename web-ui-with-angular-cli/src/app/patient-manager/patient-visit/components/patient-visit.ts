@@ -84,10 +84,12 @@ export class PatientVisitComponent implements OnInit {
             patientId: ['', Validators.required]
         });
         this.patientScheduleFormControls = this.patientScheduleForm.controls;
+
         this.patientVisitForm = this._fb.group({
-            notes: ['', Validators.required]
+            notes: ['', Validators.required],
+            visitStatusId: ['']
         });
-        this.patientScheduleFormControls = this.patientVisitForm.controls;
+        this.patientVisitFormControls = this.patientVisitForm.controls;
     }
     ngOnInit() {
         this.header = {
@@ -152,17 +154,48 @@ export class PatientVisitComponent implements OnInit {
         }
     }
 
+    getVisitOccurrences(visits) {
+        let occurrences: ScheduledEventInstance[] = [];
+        let calendarEvents: ScheduledEvent[] = _.chain(visits)
+            .map((visit: PatientVisit) => {
+                return visit.calendarEvent;
+            })
+            .unique((event: ScheduledEvent) => {
+                return event.id;
+            })
+            .value();
+        _.forEach(calendarEvents, (event: ScheduledEvent) => {
+            occurrences.push(...event.getEventInstances(null));
+        });
+        let occurrencesWithVisits: ScheduledEventInstance[] = _.map(occurrences, (occurrence: ScheduledEventInstance) => {
+            let matchingVisits: PatientVisit[] = _.filter(visits, (currentVisit: PatientVisit) => {
+                return currentVisit.calendarEvent.id === occurrence.owningEvent.id;
+            });
+            let visitForOccurrence: PatientVisit = _.find(matchingVisits, (currentMatchingVisit: PatientVisit) => {
+                if (!currentMatchingVisit.isOriginalVisit) {
+                    return currentMatchingVisit.eventStart.isSame(occurrence.start, 'day');
+                }
+                return false;
+            });
+            if (visitForOccurrence) {
+                occurrence.eventWrapper = visitForOccurrence;
+            } else {
+                let originalVisit: PatientVisit = _.find(matchingVisits, (currentMatchingVisit: PatientVisit) => {
+                    return currentMatchingVisit.isOriginalVisit;
+                });
+                occurrence.eventWrapper = originalVisit;
+            }
+            return occurrence;
+        });
+        return occurrences;
+    }
+
     loadLocationDoctorVisits() {
         this._progressBarService.show();
         this._patientVisitsStore.getPatientVisitsByLocationAndDoctorId(this.selectedLocationId, this.selectedDoctorId)
             .subscribe(
-            (events: PatientVisit[]) => {
-                let occurrences: ScheduledEventInstance[] = [];
-                _.forEach(events, (event: PatientVisit) => {
-                    occurrences.push(...event.getEventInstances());
-                });
-                this.events = occurrences;
-                console.log(this.events);
+            (visits: PatientVisit[]) => {
+                this.events = this.getVisitOccurrences(visits);
             },
             (error) => {
                 this.events = [];
@@ -183,13 +216,8 @@ export class PatientVisitComponent implements OnInit {
         this._progressBarService.show();
         this._patientVisitsStore.getPatientVisitsByLocationAndRoomId(this.selectedLocationId, this.selectedRoomId)
             .subscribe(
-            (events: PatientVisit[]) => {
-                let occurrences: ScheduledEventInstance[] = [];
-                _.forEach(events, (event: PatientVisit) => {
-                    occurrences.push(...event.getEventInstances());
-                });
-                this.events = occurrences;
-                console.log(this.events);
+            (visits: PatientVisit[]) => {
+                this.events = this.getVisitOccurrences(visits);
             },
             (error) => {
                 this.events = [];
@@ -210,12 +238,8 @@ export class PatientVisitComponent implements OnInit {
         this._progressBarService.show();
         this._patientVisitsStore.getPatientVisitsByLocationId(this.selectedLocationId)
             .subscribe(
-            (events: PatientVisit[]) => {
-                let occurrences: ScheduledEventInstance[] = [];
-                _.forEach(events, (event: PatientVisit) => {
-                    occurrences.push(...event.getEventInstances());
-                });
-                this.events = occurrences;
+            (visits: PatientVisit[]) => {
+                this.events = this.getVisitOccurrences(visits);
                 console.log(this.events);
             },
             (error) => {
@@ -233,8 +257,12 @@ export class PatientVisitComponent implements OnInit {
             });
     }
 
-    closeDialog() {
+    closeEventDialog() {
         this.eventDialogVisible = false;
+    }
+
+    closePatientVisitDialog() {
+        this.visitDialogVisible = false;
     }
 
     handleEventDialogHide() {
@@ -242,7 +270,7 @@ export class PatientVisitComponent implements OnInit {
     }
 
     handleVisitDialogHide() {
-
+        this.selectedVisit = null;
     }
 
     handleDayClick(event) {
@@ -274,11 +302,22 @@ export class PatientVisitComponent implements OnInit {
                     calendarEvent: owningEvent
                 }));
             } else {
-                // Create Visit Instance                
-                this.selectedVisit = new PatientVisit(_.extend(eventWrapper.toJS(), {
-                    id: 0,
-                    calendarEvent: owningEvent
-                }));
+                // Create Visit Instance 
+                if (!eventWrapper.isOriginalVisit) {
+                    this.selectedVisit = new PatientVisit(_.extend(eventWrapper.toJS(), {
+                        eventStart: moment.utc(eventInstance.start),
+                        eventEnd: moment.utc(eventInstance.end),
+                        calendarEvent: owningEvent
+                    }));
+                } else {
+                    this.selectedVisit = new PatientVisit(_.extend(eventWrapper.toJS(), {
+                        id: 0,
+                        eventStart: moment.utc(eventInstance.start),
+                        eventEnd: moment.utc(eventInstance.end),
+                        calendarEvent: owningEvent
+                    }));
+                }
+
             }
             this.visitDialogVisible = true;
 
@@ -328,8 +367,10 @@ export class PatientVisitComponent implements OnInit {
 
     saveVisit() {
         let patientVisitFormValues = this.patientVisitForm.value;
-        let updatedVisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
-            notes: patientVisitFormValues.notes
+        let updatedVisit: PatientVisit;
+        updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
+            notes: patientVisitFormValues.notes,
+            visitStatusId: patientVisitFormValues.visitStatusId
         }));
         let result = this._patientVisitsStore.updatePatientVisitDetail(updatedVisit);
         result.subscribe(

@@ -108,7 +108,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             if (patient2.User != null && patient2.Cases != null)
             {
-                foreach (var eachCase in patient2.Cases)
+                //foreach (var eachCase in patient2.Cases)
+                foreach (var eachCase in GetByPatientId(patient2.Id) as List<BO.Case>)
                 {
                     BO.CaseWithUserAndPatient caseWithUserAndPatient = new BO.CaseWithUserAndPatient();
 
@@ -120,7 +121,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     caseWithUserAndPatient.MiddleName = patient2.User.MiddleName;
                     caseWithUserAndPatient.LastName = patient2.User.LastName;
 
-                    caseWithUserAndPatient.CaseId = eachCase.Id;
+                    caseWithUserAndPatient.CaseId = eachCase.ID;
                     caseWithUserAndPatient.PatientId = eachCase.PatientId;
                     caseWithUserAndPatient.CaseName = eachCase.CaseName;
                     caseWithUserAndPatient.CaseTypeId = eachCase.CaseTypeId;
@@ -135,12 +136,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     caseWithUserAndPatient.CreateByUserID = eachCase.CreateByUserID;
                     caseWithUserAndPatient.UpdateByUserID = eachCase.UpdateByUserID;
 
-                    BO.PatientEmpInfo boPatientEmpInfo = new BO.PatientEmpInfo();
+                    //BO.PatientEmpInfo boPatientEmpInfo = new BO.PatientEmpInfo();
                     using (PatientEmpInfoRepository cmp = new PatientEmpInfoRepository(_context))
                     {
 
-                        boPatientEmpInfo = cmp.Convert<BO.PatientEmpInfo, PatientEmpInfo>(eachCase.PatientEmpInfo);
-                        caseWithUserAndPatient.PatientEmpInfo = boPatientEmpInfo;
+                        //boPatientEmpInfo = cmp.Convert<BO.PatientEmpInfo, PatientEmpInfo>(eachCase.PatientEmpInfo);
+                        //caseWithUserAndPatient.PatientEmpInfo = boPatientEmpInfo;
+                        caseWithUserAndPatient.PatientEmpInfo = eachCase.PatientEmpInfo;
                     }
 
                     //Common 
@@ -380,11 +382,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By Company Id
         public override object GetByCompanyId(int CompanyId)
         {
+            var allCase = _context.Cases.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                        .Select(p => p.PatientId)
+                                        .Distinct<int>();
+
             var acc = _context.Patient2.Include("User")
-                                       .Include("Cases")
                                        .Where(p => p.CompanyId == CompanyId
-                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               && (allCase.Contains(p.Id))
+                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                        .ToList<Patient2>();
+
 
             if (acc == null)
             {
@@ -392,14 +399,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             }
             else
             {
-                //List<BO.Patient2> lstpatients = new List<BO.Patient2>();
-                //foreach (Patient2 eachPatient in acc)
-                //{
-                //    lstpatients.Add(ConvertWithPatient<BO.Patient2, Patient2>(eachPatient));
-                //}
-
-                //return lstpatients;
-
                 List<BO.CaseWithUserAndPatient> lstCaseWithUserAndPatient = new List<BO.CaseWithUserAndPatient>();
                 foreach (Patient2 eachPatient in acc)
                 {
