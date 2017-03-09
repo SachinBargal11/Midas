@@ -18,17 +18,19 @@
             <option value="0"> -- Select Doctor -- </option>
             <option *ngFor="let doctorLocationSchedule of _doctorLocationScheduleStore.doctorLocationSchedules | async" [value]="doctorLocationSchedule.doctor.id">{{doctorLocationSchedule.doctor.user.displayName}}</option>                                       
         </select>
+        <span *ngIf="doctorSchedule">{{doctorSchedule.name}}</span>
     </div>
     <div class="col-lg-3" *ngIf="selectedOption == 2">
         <select [(ngModel)]="selectedRoomId" class="select2-arrow form-control" (change)="selectRoom()">
             <option value="0"> -- Select Room -- </option>
             <option *ngFor="let room of _roomsStore.rooms | async" [value]="room.id">{{room.name}}</option>                                       
-        </select>
+        </select> 
+        <span *ngIf="roomSchedule">{{roomSchedule.name}}</span>
     </div>
 </div>
-
-<p-schedule *ngIf="events" [events]="events" [header]="header" [eventLimit]="4" [editable]="true" (onDayClick)="handleDayClick($event)"
-    (onEventClick)="handleEventClick($event)" [eventRender]="eventRenderer">
+{{businessHours | json}}
+<p-schedule *ngIf="events" [events]="events" [views]="views" [header]="header" [eventLimit]="4" [editable]="true" (onDayClick)="handleDayClick($event)"
+    (onEventClick)="handleEventClick($event)" [eventRender]="eventRenderer" [dayRender]="dayRenderer" [businessHours]="businessHours">
 </p-schedule>
 <p-confirmDialog acceptIcon="" rejectIcon="" acceptLabel="Edit Current Occurrence" rejectLabel="Edit The Series" header="Edit Recurring Item"
     icon="fa fa-question-circle" width="600">
@@ -44,7 +46,7 @@
                     <div class="form-group" [class.error]="patientScheduleFormControls.patientId && patientScheduleFormControls.patientId.touched && !patientScheduleFormControls.patientId.valid">
                         <select formControlName="patientId" [ngModel]="selectedVisit.patientId" class="select2-arrow form-control">
                         <option value=""> -- Select Patient -- </option>
-                        <option *ngFor="let patient of _patientsStore.patients | async" [value]="patient.id">{{patient.user.displayName}}</option>                                       
+                        <option *ngFor="let patient of _patientsStore.patientsWithOpenCases | async" [value]="patient.id">{{patient.user.displayName}}</option>                                       
                     </select>
                         <div class='error-list' *ngIf="patientScheduleFormControls.patientId && patientScheduleFormControls.patientId.touched && !patientScheduleFormControls.patientId.valid">
                             <ul>

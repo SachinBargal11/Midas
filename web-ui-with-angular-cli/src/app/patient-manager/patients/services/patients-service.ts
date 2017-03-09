@@ -42,6 +42,24 @@ export class PatientsService {
         return <Observable<Patient>>Observable.fromPromise(promise);
     }
 
+    getPatientsWithOpenCases() {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise: Promise<Patient[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Patient/getByCompanyWithOpenCases/' + companyId)
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let patients = (<Object[]>data).map((patientData: any) => {
+                        return PatientAdapter.parseResponse(patientData);
+                    });
+                    resolve(patients);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<Patient[]>>Observable.fromPromise(promise);
+    }
+
     getPatients(): Observable<Patient[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise: Promise<Patient[]> = new Promise((resolve, reject) => {

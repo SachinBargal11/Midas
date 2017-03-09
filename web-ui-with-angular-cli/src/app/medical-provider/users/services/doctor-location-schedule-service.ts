@@ -82,10 +82,11 @@ export class DoctorLocationScheduleService {
             return this._http.get(this._url + '/DoctorLocationSchedule/GetByLocationAndDoctor/' + locationId + '/' + doctorId)
                 .map(res => res.json())
                 .subscribe((data: any) => {
-                    let schedules: any[] = (<Object[]>data).map((data: any) => {
-                        return DoctorLocationScheduleAdapter.parseResponse(data);
-                    });
-                    resolve(schedules);
+                    let schedule: DoctorLocationSchedule;
+                    // let schedules: any[] = (<Object[]>data).map((data: any) => {
+                    schedule = DoctorLocationScheduleAdapter.parseResponse(data[0]);
+                    // });
+                    resolve(schedule);
                 }, (error) => {
                     reject(error);
                 });

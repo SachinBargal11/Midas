@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import { Schedule } from '../../models/rooms-schedule';
-import { ScheduleDetail } from '../../models/rooms-schedule-detail';
+import { ScheduleDetail } from '../../../locations/models/schedule-detail';
 
 
 export class ScheduleAdapter {
