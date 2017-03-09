@@ -61,7 +61,7 @@
                         <select [ngModel]="caseDetail.caseStatusId" formControlName="caseStatusId" type="text" class="form-control" placeholder=""
                             [class.error]="caseformControls.caseStatusId.touched && !caseformControls.caseStatusId.valid">
                             <option value="1">Open</option>
-                            <option value="0">Close</option>
+                            <option value="2">Close</option>
                         </select>
                         <div class='error-list' *ngIf="caseformControls.caseStatusId.touched && !caseformControls.caseStatusId.valid">
                             <ul>

@@ -4,6 +4,12 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Case } from '../../cases/models/case';
+import { NotificationsService } from 'angular2-notifications';
+import * as moment from 'moment';
+import { Notification } from '../../../commons/models/notification';
+import { NotificationsStore } from '../../../commons/stores/notifications-store';
+import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
+
 
 @Component({
     selector: 'company-cases',
@@ -13,13 +19,17 @@ import { Case } from '../../cases/models/case';
 
 export class CompanyCasesComponent implements OnInit {
     cases: any[];
+    selectedCases: Case[] = [];
 
     constructor(
         public _route: ActivatedRoute,
         private _router: Router,
         private _sessionStore: SessionStore,
         private _casesStore: CasesStore,
-        private _progressBarService: ProgressBarService
+        private _progressBarService: ProgressBarService,
+        private _notificationsService: NotificationsService,
+        private _notificationsStore: NotificationsStore,
+
     ) {
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadCases();
@@ -42,4 +52,49 @@ export class CompanyCasesComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
+
+     deleteCases() {
+        if (this.selectedCases.length > 0) {
+            this.selectedCases.forEach(currentCase => {
+                this._progressBarService.show();
+                this. _casesStore.deleteCase(currentCase)
+             .subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            'title': 'Case deleted successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                       
+                        });
+                        this.loadCases();
+                        this._notificationsStore.addNotification(notification);
+                        this.selectedCases = [];
+                    },
+                    (error) => {
+                        let errString = 'Unable to delete case';
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this.selectedCases = [];
+                        this._progressBarService.hide();
+                        this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                    },
+                    () => {
+                        this._progressBarService.hide();
+                    });
+            });
+        } else {
+            let notification = new Notification({
+                'title': 'select case to delete',
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'select case to delete');
+        }    
+    }
+
 }

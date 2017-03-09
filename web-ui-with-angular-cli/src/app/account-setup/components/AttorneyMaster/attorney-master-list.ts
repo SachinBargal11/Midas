@@ -31,6 +31,10 @@ export class AttorneyMasterListComponent implements OnInit {
         private _sessionStore: SessionStore
     ) {
 
+         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+           this.loadAttorney();
+        });
+
     }
 
     ngOnInit() {
