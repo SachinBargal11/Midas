@@ -49,6 +49,11 @@ export class AddAdjusterComponent implements OnInit {
         // private _patientsStore: PatientsStore,
         private _elRef: ElementRef
     ) {
+
+         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+            this._router.navigate(['/account-setup/adjuster']);
+        });
+
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId);
         });

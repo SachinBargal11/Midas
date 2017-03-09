@@ -56,7 +56,7 @@ export class AddInsuranceComponent implements OnInit {
                 policyNumber: ['', Validators.required],
                 policyOwner: ['', Validators.required],
                 policyHolderName: ['', Validators.required],
-                insuranceCompanyCode: ['', Validators.required],
+                insuranceCompanyCode: [''],
                 insuranceMasterId: ['', Validators.required],
                 insuranceType: ['', Validators.required],
                 contactPerson: ['', Validators.required],

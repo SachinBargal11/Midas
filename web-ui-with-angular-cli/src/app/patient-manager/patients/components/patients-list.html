@@ -15,7 +15,7 @@
         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Patients">
     </div>
 </div>
-<p-dataTable [value]="patients" [(selection)]="selectedPatients" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
+<p-dataTable [value]="patients" [(selection)]="selectedPatients" [rows]="10" [rowsPerPageOptions]="[5,10,15,20]" [paginator]="true" [globalFilter]="gb" [responsive]="true"
     [stacked]="stacked">
     <header>Patients</header>
     <p-column selectionMode="multiple"></p-column>

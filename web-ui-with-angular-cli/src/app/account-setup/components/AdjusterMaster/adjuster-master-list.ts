@@ -30,6 +30,12 @@ export class AdjusterMasterListComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _sessionStore: SessionStore
     ) {
+
+        this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+           this.loadAdjuster();
+        });
+
+
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
         });

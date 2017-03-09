@@ -112,10 +112,13 @@ export class CaseService {
 
     deleteCase(caseDetail: Case): Observable<Case> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.delete(`${this._url}/${caseDetail.id}`)
-                .map(res => res.json())
-                .subscribe((data) => {
-                    resolve(data);
+            return this._http.get(this._url + '/Case/delete/' + caseDetail.id, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedCase: Case = null;
+                    parsedCase = CaseAdapter.parseResponse(data);
+                    resolve(parsedCase);
                 }, (error) => {
                     reject(error);
                 });

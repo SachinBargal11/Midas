@@ -58,6 +58,11 @@ export class EditAdjusterComponent implements OnInit {
         // private _patientsStore: PatientsStore,
         private _elRef: ElementRef
     ) {
+
+          this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+            this._router.navigate(['/account-setup/adjuster']);
+        });
+
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId);
         });
@@ -74,7 +79,7 @@ export class EditAdjusterComponent implements OnInit {
                     this.loadCities(adjuster.adjusterAddress.state);
                 },
                 (error) => {
-                    this._router.navigate(['../../'], { relativeTo: this._route });
+                    this._router.navigate(['../'], { relativeTo: this._route });
                     this._progressBarService.hide();
                 },
                 () => {

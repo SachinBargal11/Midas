@@ -19,7 +19,7 @@ export class LocationShellComponent implements OnInit {
         
     ) {
        this._sessionStore.userCompanyChangeEvent.subscribe(() => {
-            this._router.navigate(['/medical-provider/locations']); ;
+            this._router.navigate(['/medical-provider/locations']);
         });
     }
 
