@@ -101,7 +101,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                         .ToList<Attorney>();
 
             List<BO.AttorneyMaster> lstattornies = new List<BO.AttorneyMaster>();
-            if (acc == null || acc.Count == 0) return new BO.ErrorObject { ErrorMessage = "No record found for this Company Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            if (acc == null) return new BO.ErrorObject { ErrorMessage = "No record found for this Company Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             else
             {
                 acc.ForEach(item => lstattornies.Add(Convert<BO.AttorneyMaster, Attorney>(item)));

@@ -342,30 +342,31 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                     .FirstOrDefault<Case>();
             if (acc != null)
             {
-                if (acc.PatientEmpInfo != null)
-                {
-                    acc.PatientEmpInfo.IsDeleted = true;
-                }
-                else
-                {
-                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                }
-                if (acc.PatientEmpInfo.AddressInfo != null)
-                {
-                    acc.PatientEmpInfo.AddressInfo.IsDeleted = true;
-                }
-                else
-                {
-                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                }
-                if (acc.PatientEmpInfo.ContactInfo != null)
-                {
-                    acc.PatientEmpInfo.ContactInfo.IsDeleted = true;
-                }
-                else
-                {
-                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                }
+                //if (acc.PatientEmpInfo != null)
+                //{
+                //    acc.PatientEmpInfo.IsDeleted = true;
+                //}
+                //else
+                //{
+                //    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                //}
+                //if (acc.PatientEmpInfo.AddressInfo != null)
+                //{
+                //    acc.PatientEmpInfo.AddressInfo.IsDeleted = true;
+                //}
+                //else
+                //{
+                //    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                //}
+                //if (acc.PatientEmpInfo.ContactInfo != null)
+                //{
+                //    acc.PatientEmpInfo.ContactInfo.IsDeleted = true;
+                //}
+                //else
+                //{
+                //    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                //}
+
                 acc.IsDeleted = true;
                 _context.SaveChanges();
             }
