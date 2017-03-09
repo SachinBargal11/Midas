@@ -379,11 +379,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By Company Id
         public override object GetByCompanyId(int CompanyId)
         {
+            //var acc = _context.Patient2.Include("User")
+            //                           .Include("Cases")
+            //                           .Where(p => p.CompanyId == CompanyId
+            //                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                           .ToList<Patient2>();
+
+
+
             var acc = _context.Patient2.Include("User")
-                                       .Include("Cases")
-                                       .Where(p => p.CompanyId == CompanyId
-                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                       .ToList<Patient2>();
+                                        .Include("Cases")
+                                        .Where(p => p.CompanyId == CompanyId
+                                                 && p.Cases.Where(p2 => p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
+                                                           .Any(p2 => p2.PatientId == p.Id) == true
+                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                        .ToList<Patient2>();
+
 
             if (acc == null)
             {
