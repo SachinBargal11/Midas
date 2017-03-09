@@ -169,9 +169,11 @@ export class DoctorLocationScheduleService {
         });
         return <Observable<any>>Observable.fromPromise(promise);
     }
-    deleteDoctorLocationSchedule(schedule: DoctorLocationSchedule): Observable<DoctorLocationSchedule> {
+    deleteDoctorLocationSchedule(doctorLocationSchedule: DoctorLocationSchedule): Observable<DoctorLocationSchedule> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.delete(`${this._url}/${schedule.id}`)
+            return this._http.post(this._url + '/DoctorLocationSchedule/Delete/' + doctorLocationSchedule.id, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((schedule) => {
                     resolve(schedule);
