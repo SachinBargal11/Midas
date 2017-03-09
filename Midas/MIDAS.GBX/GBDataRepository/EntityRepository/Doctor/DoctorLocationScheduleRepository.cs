@@ -196,6 +196,56 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region save
+        public override object associateLocationToDoctors<T>(T entity)
+        {
+            BO.DoctorLocationSchedule doctorLocationScheduleBO = (BO.DoctorLocationSchedule)(object)entity;
+            BO.Doctor doctorBO = new BO.Doctor();
+            List<DoctorLocationSchedule> lstDoctorLocationSchedule = new List<DoctorLocationSchedule>();
+
+            DoctorLocationSchedule doctorLocationScheduleDB = new DoctorLocationSchedule();
+            Doctor doctorDB = new Doctor();
+
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                #region schedule
+                if (doctorLocationScheduleBO.schedule.ID > 0)
+                {
+                    Schedule schedule = _context.Schedules.Where(p => p.id == doctorLocationScheduleBO.schedule.ID).FirstOrDefault<Schedule>();
+
+                    if (schedule != null)
+                    {
+                        doctorLocationScheduleDB.Schedule = schedule;
+                    }
+                    else
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Schedule.", ErrorLevel = ErrorLevel.Error };
+
+                }
+                #endregion
+
+                #region Doctor
+                if (doctorBO != null)
+                {
+                    doctorDB = _context.Doctors.Where(p => p.Id == doctorLocationScheduleBO.doctor.ID).FirstOrDefault<Doctor>();
+                    if (doctorDB != null)
+                    {
+                        doctorLocationScheduleDB.Doctor = doctorDB;
+                    }
+                    else
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Doctor.", ErrorLevel = ErrorLevel.Error };
+                }
+                #endregion
+
+
+            }
+
+            _context.SaveChanges();
+
+            var res = Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(doctorLocationScheduleDB);
+            return (object)res;
+        }
+        #endregion
+
         #region Delete
         public override object Delete<T>(T entity)
         {
