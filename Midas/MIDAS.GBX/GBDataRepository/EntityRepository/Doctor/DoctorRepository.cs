@@ -241,6 +241,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 else
                 {
+                    doctorDB.LicenseNumber = doctorBO.LicenseNumber;
+                    doctorDB.WCBAuthorization = doctorBO.WCBAuthorization;
+                    doctorDB.WcbRatingCode = doctorBO.WcbRatingCode;
+                    doctorDB.NPI = doctorBO.NPI;
+                    doctorDB.Title = doctorBO.Title;
+                    doctorDB.TaxType = System.Convert.ToByte(doctorBO.TaxType);
+                    doctorDB.IsDeleted = doctorBO.IsDeleted.HasValue ? doctorBO.IsDeleted : false;
+                    doctorDB.UpdateDate = doctorBO.UpdateDate;
+                    doctorDB.UpdateByUserID = doctorBO.UpdateByUserID;
                     doctorDB.CreateDate = doctorBO.CreateDate;
                     doctorDB.CreateByUserID = doctorBO.CreateByUserID;
 
