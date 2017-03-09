@@ -159,7 +159,7 @@ export class ScheduleComponent implements OnInit {
         this._scheduleStore.getSchedulesByCompanyId()
         .subscribe((schedules) => {
             this.schedules = schedules;
-        })
+        });
 
     }
 

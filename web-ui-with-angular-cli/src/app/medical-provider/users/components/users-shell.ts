@@ -12,7 +12,9 @@ import * as _ from 'underscore';
 
 export class UserShellComponent implements OnInit {
     user: User;
+    userRoleFlag: number;
     role;
+    roleType;
 
     constructor(
         public _router: Router,
@@ -22,13 +24,23 @@ export class UserShellComponent implements OnInit {
     ) {
         this._route.params.subscribe((routeParams: any) => {
             let userId: number = parseInt(routeParams.userId);
+            this.userRoleFlag = parseInt(routeParams.userRoleFlag);
             let result = this._usersStore.fetchUserById(userId);
             result.subscribe(
                 (userDetail: User) => {
                     this.user = userDetail;
                     this.role = _.map(this.user.roles, (currentRole: any) => {
-                            return currentRole;
+                        return currentRole.roleType;
                     });
+                    this.role.forEach(roleType => {
+                        if (roleType === 3) {
+                            this.roleType = roleType;
+                        }
+                    });
+                    if (this.roleType !== 3) {
+                        // document.getElementById('doctorInfo').style.display = 'none';
+                        document.getElementById('doctorLocation').style.display = 'none';
+                    }
                 },
                 (error) => {
                     this._router.navigate(['/medical-provider/users']);
@@ -36,11 +48,13 @@ export class UserShellComponent implements OnInit {
                 () => {
                 });
         });
-
+        // if (this.userRoleFlag === 2) {
+        //     document.getElementById('doctorLocation').style.display = 'block';
+        // }
     }
 
-    ngOnInit() {
+        ngOnInit() {
+
+        }
 
     }
-
-}

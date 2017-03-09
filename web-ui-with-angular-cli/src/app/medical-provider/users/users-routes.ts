@@ -52,7 +52,7 @@ export const UsersRoutes: Routes = [
                 }
             },
             {
-                path: ':userId',
+                path: ':userId/:userRoleFlag',
                 component: UserShellComponent,
                 data: {
                     breadcrumb: 'root'

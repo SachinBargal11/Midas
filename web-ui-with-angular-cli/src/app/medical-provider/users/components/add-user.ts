@@ -18,6 +18,7 @@ import { NotificationsStore } from '../../../commons/stores/notifications-store'
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
 import * as _ from 'underscore';
+import * as $ from 'jquery';
 import { StatesStore } from '../../../commons/stores/states-store';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
@@ -34,16 +35,16 @@ import { SelectItem } from 'primeng/primeng';
 export class AddUserComponent implements OnInit {
     states: any[];
     cities: any[];
-    selectedRole: string[] = [];
+    selectedRole: any[] = [];
     selectedCity = 0;
     specialitiesArr: SelectItem[] = [];
-    selectedSpeciality: SelectItem[] = [];
-    // selectedSpeciality: Speciality;
+    // selectedSpeciality: SelectItem[] = [];
+    selectedSpeciality: any[];
     userform: FormGroup;
     userformControls;
     isSaveUserProgress = false;
     isCitiesLoading = false;
-    doctorRole;
+    doctorRole = false;
 
     constructor(
         private _statesStore: StatesStore,
@@ -63,12 +64,7 @@ export class AddUserComponent implements OnInit {
         this._specialityStore.getSpecialities()
             .subscribe((specialties) => {
                 let specialities: Speciality[] = specialties;
-                this.selectedSpeciality = [
-                     {
-                        label: 'CH - CH',
-                        value: '2'
-                    }
-                    ];
+                this.selectedSpeciality = ['2'];
                 this.specialitiesArr = _.map(specialities, (currentSpeciality: Speciality) => {
                     return {
                         label: `${currentSpeciality.specialityCode} - ${currentSpeciality.name}`,
@@ -138,73 +134,81 @@ export class AddUserComponent implements OnInit {
     saveUser() {
         let result;
         let userFormValues = this.userform.value;
+        let doctorSpecialities = [];
+        let selectedSpeciality = userFormValues.doctor.speciality;
+        selectedSpeciality.forEach(element => {
+            doctorSpecialities.push({ 'id': parseInt(element) });
+        });
+
         let roles = [];
         let input = this.selectedRole;
         for (let i = 0; i < input.length; ++i) {
             roles.push({ 'roleType': parseInt(input[i]) });
         }
         this.selectedRole.forEach(element => {
-            this.doctorRole = element === '3';
+            if (element === '3') {
+                this.doctorRole = true;
+            }
         });
         if (!this.doctorRole) {
-        let userDetail = new User({
-            firstName: userFormValues.userInfo.firstname,
-            lastName: userFormValues.userInfo.lastname,
-            userType: UserType.STAFF,
-            roles: roles,
-            userName: userFormValues.contact.email,
-            contact: new Contact({
-                cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,
-                emailAddress: userFormValues.contact.email,
-                faxNo: userFormValues.contact.faxNo ? userFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
-                homePhone: userFormValues.contact.homePhone,
-                workPhone: userFormValues.contact.workPhone,
-            }),
-            address: new Address({
-                address1: userFormValues.address.address1,
-                address2: userFormValues.address.address2,
-                city: userFormValues.address.city,
-                country: userFormValues.address.country,
-                state: userFormValues.address.state,
-                zipCode: userFormValues.address.zipCode,
-            })
-        });
-        result = this._usersStore.addUser(userDetail);
-    }
-    else {
-        let doctorDetail = new Doctor({
-            licenseNumber: userFormValues.doctor.licenseNumber,
-            wcbAuthorization: userFormValues.doctor.wcbAuthorization,
-            wcbRatingCode: userFormValues.doctor.wcbRatingCode,
-            npi: userFormValues.doctor.npi,
-            taxType: userFormValues.doctor.taxType,
-            title: userFormValues.doctor.title,
-            doctorSpecialities: this.selectedSpeciality,
+            let userDetail = new User({
+                firstName: userFormValues.userInfo.firstname,
+                lastName: userFormValues.userInfo.lastname,
+                userType: UserType.STAFF,
+                roles: roles,
+                userName: userFormValues.contact.email,
+                contact: new Contact({
+                    cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,
+                    emailAddress: userFormValues.contact.email,
+                    faxNo: userFormValues.contact.faxNo ? userFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
+                    homePhone: userFormValues.contact.homePhone,
+                    workPhone: userFormValues.contact.workPhone,
+                }),
+                address: new Address({
+                    address1: userFormValues.address.address1,
+                    address2: userFormValues.address.address2,
+                    city: userFormValues.address.city,
+                    country: userFormValues.address.country,
+                    state: userFormValues.address.state,
+                    zipCode: userFormValues.address.zipCode,
+                })
+            });
+            result = this._usersStore.addUser(userDetail);
+        }
+        else {
+            let doctorDetail = new Doctor({
+                licenseNumber: userFormValues.doctor.licenseNumber,
+                wcbAuthorization: userFormValues.doctor.wcbAuthorization,
+                wcbRatingCode: userFormValues.doctor.wcbRatingCode,
+                npi: userFormValues.doctor.npi,
+                taxType: userFormValues.doctor.taxType,
+                title: userFormValues.doctor.title,
+                doctorSpecialities: doctorSpecialities,
 
-            user: new User({
-            firstName: userFormValues.userInfo.firstname,
-            lastName: userFormValues.userInfo.lastname,
-            userType: UserType.STAFF,
-            roles: roles,
-            userName: userFormValues.contact.email,
-            contact: new Contact({
-                cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,
-                emailAddress: userFormValues.contact.email,
-                faxNo: userFormValues.contact.faxNo ? userFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
-                homePhone: userFormValues.contact.homePhone,
-                workPhone: userFormValues.contact.workPhone,
-            }),
-            address: new Address({
-                address1: userFormValues.address.address1,
-                address2: userFormValues.address.address2,
-                city: userFormValues.address.city,
-                country: userFormValues.address.country,
-                state: userFormValues.address.state,
-                zipCode: userFormValues.address.zipCode,
-            })
-            })
-        });
-        result = this._doctorsStore.addDoctor(doctorDetail);
+                user: new User({
+                    firstName: userFormValues.userInfo.firstname,
+                    lastName: userFormValues.userInfo.lastname,
+                    userType: UserType.STAFF,
+                    roles: roles,
+                    userName: userFormValues.contact.email,
+                    contact: new Contact({
+                        cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,
+                        emailAddress: userFormValues.contact.email,
+                        faxNo: userFormValues.contact.faxNo ? userFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
+                        homePhone: userFormValues.contact.homePhone,
+                        workPhone: userFormValues.contact.workPhone,
+                    }),
+                    address: new Address({
+                        address1: userFormValues.address.address1,
+                        address2: userFormValues.address.address2,
+                        city: userFormValues.address.city,
+                        country: userFormValues.address.country,
+                        state: userFormValues.address.state,
+                        zipCode: userFormValues.address.zipCode,
+                    })
+                })
+            });
+            result = this._doctorsStore.addDoctor(doctorDetail);
         }
         this._progressBarService.show();
         this.isSaveUserProgress = true;

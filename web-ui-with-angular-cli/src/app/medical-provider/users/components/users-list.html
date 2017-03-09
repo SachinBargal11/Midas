@@ -33,7 +33,7 @@
     <p-column field="userName" header="Email" [sortable]="true"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
         <template let-user="rowData" pTemplate="body">
-            <a routerLink="{{user.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
+            <a (click)="editUser(user)"><i class="glyphicon glyphicon-edit"></i></a>
             <!--<a routerLink="edit/{{user.id}}"><i class="glyphicon glyphicon-edit"></i></a>-->
         </template>
     </p-column>

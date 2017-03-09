@@ -5,6 +5,7 @@ import { Record } from 'immutable';
 import * as moment from 'moment';
 import * as _ from 'underscore';
 import * as RRule from 'rrule';
+import { VisitStatus } from './enums/visit-status';
 
 const PatientVisitRecord = Record({
     id: 0,
@@ -18,7 +19,7 @@ const PatientVisitRecord = Record({
     eventStart: null,
     eventEnd: null,
     notes: '',
-    visitStatusId: 0,
+    visitStatusId: VisitStatus.SCHEDULED,
     visitType: 0,
     calendarEvent: null,
     isDeleted: false,
@@ -42,7 +43,7 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     eventStart: moment.Moment;
     eventEnd: moment.Moment;
     notes: string;
-    visitStatusId: number;
+    visitStatusId: VisitStatus;
     visitType: number;
     calendarEvent: ScheduledEvent;
     isDeleted: boolean;
@@ -63,9 +64,7 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
         return this.eventEnd ? this.eventEnd.toDate() : null;
     }
 
-    getEventInstances(): ScheduledEventInstance[] {
-        let instaces: ScheduledEventInstance[];
-        instaces = this.calendarEvent.getEventInstances(this);
-        return instaces;
+    get isOriginalVisit(): boolean {
+        return !this.eventStart ? true : false;
     }
 }
