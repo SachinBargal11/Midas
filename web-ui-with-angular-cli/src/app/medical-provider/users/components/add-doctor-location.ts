@@ -2,6 +2,7 @@ import { Schedule } from '../../rooms/models/rooms-schedule';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SelectItem } from 'primeng/primeng';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import { DoctorLocationsStore } from '../stores/doctor-locations-store';
@@ -18,6 +19,7 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
+import * as _ from 'underscore';
 import { StatesStore } from '../../../commons/stores/states-store';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
@@ -32,6 +34,8 @@ export class AddDoctorLocationComponent implements OnInit {
     schedule: Schedule;
     selectedLocation;
     locations: LocationDetails[];
+    locationsArr: SelectItem[] = [];
+    selectedLocations: string[] = [];
 
     addlocationform: FormGroup;
     addlocationformControls;
@@ -59,6 +63,12 @@ export class AddDoctorLocationComponent implements OnInit {
             .subscribe(
             (data) => {
                 this.locations = data;
+                // this.locationsArr = _.map(this.locations, (currentLocation: LocationDetails) => {
+                //     return {
+                //         label: `${currentLocation.location.name}`,
+                //         value: currentLocation.location.id.toString()
+                //     };
+                // });
             },
             (error) => {
                 this.locations = [];
@@ -72,7 +82,7 @@ export class AddDoctorLocationComponent implements OnInit {
                 this._progressBarService.hide();
             },
             () => {
-            this._progressBarService.hide();
+                this._progressBarService.hide();
             });
         this.addlocationform = this.fb.group({
             location: ['', Validators.required]
@@ -88,12 +98,16 @@ export class AddDoctorLocationComponent implements OnInit {
         this.loadSchedule(currentLocation);
     }
     loadSchedule(locationId) {
-            this._doctorLocationsStore.getLocationById(locationId)
-                .subscribe((location) => { this.schedule = location.schedule; });
+        this._doctorLocationsStore.getLocationById(locationId)
+            .subscribe((location) => { this.schedule = location.schedule; });
     }
 
     save() {
         let addlocationformValues = this.addlocationform.value;
+        // let selectedLocations = [];
+        // addlocationformValues.location.forEach(location => {
+        //     selectedLocations.push({ 'id': parseInt(location) });
+        // });
         let basicInfo = new DoctorLocationSchedule({
             doctor: {
                 id: this.userId
