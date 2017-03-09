@@ -114,8 +114,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boUser.ContactInfo = boContactInfo;
             }
 
+            if (user.UserCompanies != null &&user.UserCompanies.Count > 0)
+            {
+                List<BO.UserCompany> boUserCompany = new List<BO.UserCompany>();
+                user.UserCompanies.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                  .ToList().ForEach(x => boUserCompany.Add(new BO.UserCompany() { CompanyId = x.CompanyID, CreateByUserID = x.CreateByUserID, ID = x.id, IsDeleted = x.IsDeleted, UpdateByUserID = x.UpdateByUserID }));
+                boUser.UserCompanies = boUserCompany;
+            }
+
             if (user.UserCompanyRoles != null)
-            {               
+            {
                 List<BO.Role> roles = new List<BO.Role>();
                 //user.UserCompanyRoles.ToList().ForEach(p => roles.Add(new BO.Role() { RoleType = (BO.GBEnums.RoleType)p.RoleID, Name = Enum.GetName(typeof(BO.GBEnums.RoleType), p.RoleID) }));
                 user.UserCompanyRoles.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
@@ -193,7 +201,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 addressDB.ZipCode = addressBO.ZipCode;
                 addressDB.Country = addressBO.Country;
                 //[STATECODE-CHANGE]
-                addressDB.StateCode = addressBO.StateCode;
+                //addressDB.StateCode = addressBO.StateCode;
                 //[STATECODE-CHANGE]
             }
             #endregion
@@ -252,7 +260,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (userDB.id > 0)
             {
                 //Find User By ID
-                User usr = userDB.id > 0 ? _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanyRoles").Where(p => p.id == userDB.id).FirstOrDefault<User>() : _context.Users.Include("Address").Include("ContactInfo").Include("UserCompanyRoles").Where(p => p.id == userDB.id).FirstOrDefault<User>();
+                User usr = userDB.id > 0 ? _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanyRoles").Include("UserCompanies").Where(p => p.id == userDB.id).FirstOrDefault<User>() : _context.Users.Include("Address").Include("ContactInfo").Include("UserCompanyRoles").Where(p => p.id == userDB.id).FirstOrDefault<User>();
 
                 List<int> companyRoles_New = roleBO.Select(p => (int)p.RoleType).ToList<int>();
 

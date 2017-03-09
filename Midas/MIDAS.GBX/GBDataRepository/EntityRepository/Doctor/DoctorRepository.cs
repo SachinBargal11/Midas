@@ -116,55 +116,45 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             Doctor doctorDB = new Doctor();
             User userDB = new User();
             List<DoctorSpeciality> lstDoctorSpecility = new List<DoctorSpeciality>();
-
-            #region Doctor
             doctorDB.Id = doctorBO.ID;
-            doctorDB.LicenseNumber = doctorBO.LicenseNumber;
-            doctorDB.WCBAuthorization = doctorBO.WCBAuthorization;
-            doctorDB.WcbRatingCode = doctorBO.WcbRatingCode;
-            doctorDB.NPI = doctorBO.NPI;
-            doctorDB.Title = doctorBO.Title;
-            doctorDB.TaxType = System.Convert.ToByte(doctorBO.TaxType);
-            doctorDB.IsDeleted = doctorBO.IsDeleted.HasValue ? doctorBO.IsDeleted : false;
-            userDB.id = doctorBO.user.ID;
-            #endregion
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
                 ////Find Record By ID
-                User user_ = _context.Users.Include("UserCompanyRoles").Include("AddressInfo").Include("ContactInfo").Where(p => p.id == doctorBO.user.ID && p.UserCompanyRoles.Any(x => x.RoleID == (int)BO.GBEnums.RoleType.Doctor)).FirstOrDefault<User>();
+                User user_ = _context.Users.Include("UserCompanyRoles").Include("AddressInfo").Include("ContactInfo").Where(p => p.id == doctorBO.user.ID).FirstOrDefault<User>();
                 if (user_ != null)
-                {                    
-                    if (doctorBO.user.AddressInfo!=null && doctorBO.user.AddressInfo.ID > 0)
+                {
+                    BO.AddUser updUserBO = new BO.AddUser();                    
+                    updUserBO.user = doctorBO.user;
+                    updUserBO.user.UserName = string.IsNullOrEmpty(user_.UserName) ? user_.UserName : doctorBO.user.UserName;
+                    updUserBO.user.FirstName = string.IsNullOrEmpty(user_.FirstName) ? user_.FirstName : doctorBO.user.FirstName;
+                    updUserBO.user.LastName = string.IsNullOrEmpty(user_.LastName) ? user_.LastName : doctorBO.user.LastName;
+                    updUserBO.user.MiddleName = string.IsNullOrEmpty(user_.MiddleName) ? user_.MiddleName: doctorBO.user.MiddleName;                    
+                    updUserBO.user.Gender = doctorBO.user.Gender;
+                    updUserBO.user.UserType = !Enum.IsDefined(typeof(BO.GBEnums.UserType), doctorBO.user.UserType) ? (BO.GBEnums.UserType)user_.UserType : doctorBO.user.UserType;
+                    updUserBO.user.ImageLink = string.IsNullOrEmpty(doctorBO.user.ImageLink) ? user_.ImageLink : doctorBO.user.ImageLink;
+                    updUserBO.user.C2FactAuthEmailEnabled = doctorBO.user.C2FactAuthEmailEnabled == true || doctorBO.user.C2FactAuthEmailEnabled == false ? doctorBO.user.C2FactAuthEmailEnabled : (bool)user_.C2FactAuthEmailEnabled;
+                    updUserBO.user.C2FactAuthEmailEnabled = doctorBO.user.C2FactAuthSMSEnabled == true || doctorBO.user.C2FactAuthSMSEnabled == false ? doctorBO.user.C2FactAuthSMSEnabled : (bool)user_.C2FactAuthSMSEnabled;
+                    updUserBO.user.ID = doctorBO.user.ID;                    
+                    updUserBO.user.Roles = doctorBO.user.Roles;                    
+                    updUserBO.company = doctorBO.user.UserCompanies.ToList().Select(p => p.Company).FirstOrDefault();
+                    updUserBO.role = doctorBO.user.Roles.ToArray();
+                    if (doctorBO.user.DoctorSpecialities.Count > 0) updUserBO.user.DoctorSpecialities = doctorBO.user.DoctorSpecialities;
+                    if (doctorBO.user.AddressInfo != null && doctorBO.user.AddressInfo.ID > 0) updUserBO.address = doctorBO.user.AddressInfo;
+                    if (doctorBO.user.ContactInfo != null && doctorBO.user.ContactInfo.ID > 0) updUserBO.contactInfo = doctorBO.user.ContactInfo;
+                    using (UserRepository userRepo = new UserRepository(_context))
                     {
-                        user_.AddressInfo.Name = string.IsNullOrEmpty(doctorBO.user.AddressInfo.Name)? user_.AddressInfo.Name: doctorBO.user.AddressInfo.Name;
-                        user_.AddressInfo.Address1 = string.IsNullOrEmpty(doctorBO.user.AddressInfo.Address1) ? user_.AddressInfo.Address1 : doctorBO.user.AddressInfo.Address1;
-                        user_.AddressInfo.Address2 = string.IsNullOrEmpty(doctorBO.user.AddressInfo.Address2) ? user_.AddressInfo.Address2 : doctorBO.user.AddressInfo.Address2;
-                        user_.AddressInfo.City = string.IsNullOrEmpty(doctorBO.user.AddressInfo.City) ? user_.AddressInfo.City: doctorBO.user.AddressInfo.City;
-                        user_.AddressInfo.State = string.IsNullOrEmpty(doctorBO.user.AddressInfo.State) ? user_.AddressInfo.State: doctorBO.user.AddressInfo.State;
-                        user_.AddressInfo.ZipCode = string.IsNullOrEmpty(doctorBO.user.AddressInfo.ZipCode) ? user_.AddressInfo.ZipCode: doctorBO.user.AddressInfo.ZipCode;
-                        user_.AddressInfo.Country = string.IsNullOrEmpty(doctorBO.user.AddressInfo.Country) ? user_.AddressInfo.Country : doctorBO.user.AddressInfo.Country;
-                        //[STATECODE-CHANGE]
-                        //user_.AddressInfo.StateCode = doctorBO.user.AddressInfo.StateCode;
-                        //[STATECODE-CHANGE]
-                        user_.AddressInfo.CreateByUserID = doctorBO.user.AddressInfo.CreateByUserID <=0 ? user_.AddressInfo.CreateByUserID : doctorBO.user.AddressInfo.CreateByUserID;                        
-                    }
-
-                    if (doctorBO.user.ContactInfo != null && doctorBO.user.ContactInfo.ID > 0)
-                    {
-                        user_.ContactInfo.Name = string.IsNullOrEmpty(doctorBO.user.ContactInfo.Name) ? user_.ContactInfo.Name : doctorBO.user.ContactInfo.Name;
-                        user_.ContactInfo.CellPhone = string.IsNullOrEmpty(doctorBO.user.ContactInfo.CellPhone) ? user_.ContactInfo.CellPhone: doctorBO.user.ContactInfo.CellPhone;
-                        user_.ContactInfo.EmailAddress = string.IsNullOrEmpty(doctorBO.user.ContactInfo.EmailAddress) ? user_.ContactInfo.EmailAddress : doctorBO.user.ContactInfo.EmailAddress;
-                        user_.ContactInfo.HomePhone= string.IsNullOrEmpty(doctorBO.user.ContactInfo.HomePhone) ? user_.ContactInfo.HomePhone : doctorBO.user.ContactInfo.HomePhone;
-                        user_.ContactInfo.WorkPhone = string.IsNullOrEmpty(doctorBO.user.ContactInfo.WorkPhone) ? user_.ContactInfo.WorkPhone : doctorBO.user.ContactInfo.WorkPhone;
-                        user_.ContactInfo.FaxNo = string.IsNullOrEmpty(doctorBO.user.ContactInfo.FaxNo) ? user_.ContactInfo.FaxNo: doctorBO.user.ContactInfo.FaxNo;                        
-                        //[STATECODE-CHANGE]
-                        //user_.AddressInfo.StateCode = doctorBO.user.AddressInfo.StateCode;
-                        //[STATECODE-CHANGE]
-                        user_.ContactInfo.CreateByUserID = doctorBO.user.ContactInfo.CreateByUserID <= 0 ? user_.ContactInfo.CreateByUserID : doctorBO.user.ContactInfo.CreateByUserID;
-                    }
-                    doctorDB.User = user_;
-                    _context.Entry(user_).State = System.Data.Entity.EntityState.Modified;
+                        object obj = userRepo.Save<BO.AddUser>(updUserBO);
+                        if (obj.GetType() == errObj.GetType())
+                        {
+                            errObj = (BO.ErrorObject)obj;
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { ErrorMessage = errObj.ErrorMessage, errorObject = "", ErrorLevel = ErrorLevel.Error };
+                        }
+                        else userBO = (BO.User)obj;                        
+                        doctorDB.User = _context.Users.Include("UserCompanyRoles").Include("UserCompanies").Where(p => p.id == doctorBO.user.ID).FirstOrDefault<User>();
+                    }                    
+                    //_context.Entry(user_).State = System.Data.Entity.EntityState.Modified;
                 }
                 else
                 {
@@ -187,7 +177,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         }
                         else userBO = (BO.User)obj;
                         doctorBO.user.ID = userBO.ID;
-                        doctorDB.User = _context.Users.Include("UserCompanyRoles").Where(p => p.id == doctorBO.user.ID && p.UserCompanyRoles.Any(x => x.RoleID == (int)BO.GBEnums.RoleType.Doctor)).FirstOrDefault<User>();
+                        doctorDB.User = _context.Users.Include("UserCompanyRoles").Include("UserCompanies").Where(p => p.id == doctorBO.user.ID && p.UserCompanyRoles.Any(x => x.RoleID == (int)BO.GBEnums.RoleType.Doctor)).FirstOrDefault<User>();
                     }
                 }
 
@@ -220,7 +210,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
                 doctorDB.User.DoctorSpecialities = lstDoctorSpecility;
-
+                
                 if (doctorDB.Id > 0)
                 {
                     //Find Doctor By ID
@@ -229,17 +219,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     if (doctor != null)
                     {
                         #region Doctor
-                        doctor.LicenseNumber = doctorBO.LicenseNumber != null ? doctorBO.LicenseNumber : doctor.LicenseNumber;
-                        doctor.WCBAuthorization = doctorBO.WCBAuthorization != null ? doctorBO.WCBAuthorization : doctor.WCBAuthorization;
-                        doctor.WcbRatingCode = doctorBO.WcbRatingCode != null ? doctorBO.WcbRatingCode : doctor.WcbRatingCode;
-                        doctor.NPI = doctorBO.NPI != null ? doctorBO.NPI : doctor.NPI;
-                        doctor.Title = doctorBO.Title != null ? doctorBO.Title : doctor.Title;
-                        doctor.TaxType = System.Convert.ToByte(doctorBO.TaxType);
-                        doctor.IsDeleted = doctorBO.IsDeleted.HasValue ? doctorBO.IsDeleted : false;
+                        doctor.Id = doctorBO.ID;
+                        doctor.LicenseNumber = string.IsNullOrEmpty(doctorBO.LicenseNumber) ? doctor.LicenseNumber : doctorBO.LicenseNumber;
+                        doctor.WCBAuthorization = string.IsNullOrEmpty(doctorBO.WCBAuthorization) ? doctor.WCBAuthorization : doctorBO.WCBAuthorization;
+                        doctor.WcbRatingCode = string.IsNullOrEmpty(doctorBO.WcbRatingCode) ? doctor.WcbRatingCode : doctorBO.WcbRatingCode;
+                        doctor.NPI = string.IsNullOrEmpty(doctorBO.NPI) ? doctor.NPI : doctorBO.NPI;
+                        doctor.Title = string.IsNullOrEmpty(doctorBO.Title) ? doctor.Title : doctorBO.Title;
+                        doctor.TaxType = !Enum.IsDefined(typeof(BO.GBEnums.TaxType), doctorBO.TaxType) ? System.Convert.ToByte((BO.GBEnums.TaxType)doctor.TaxType) : System.Convert.ToByte(doctorBO.TaxType);
+                        doctor.IsDeleted = doctorBO.IsDeleted.HasValue ? doctorBO.IsDeleted : (doctorBO.IsDeleted.HasValue ? doctor.IsDeleted : false);
                         doctor.UpdateDate = doctorBO.UpdateDate;
                         doctor.UpdateByUserID = doctorBO.UpdateByUserID;
                         #endregion
-
+                        doctorDB = doctor;                                
                         _context.Entry(doctor).State = System.Data.Entity.EntityState.Modified;
                     }
                     else
