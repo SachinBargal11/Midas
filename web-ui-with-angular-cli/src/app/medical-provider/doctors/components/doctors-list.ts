@@ -60,51 +60,49 @@ export class DoctorsListComponent implements OnInit {
             this._progressBarService.hide();
             });
     }
-    // deleteUser() {
-    //     if (this.selectedUsers !== undefined) {
-    //         this.selectedUsers.forEach(currentUser => {
-    //             this._progressBarService.show();
-    //             let result;
-    //             result = this._usersStore.deleteUser(currentUser);
-    //             result.subscribe(
-    //                 (response) => {
-    //                     let notification = new Notification({
-    //                         'title': 'User ' + currentUser.firstName + ' ' + currentUser.lastName + ' deleted successfully!',
-    //                         'type': 'SUCCESS',
-    //                         'createdAt': moment()
-    //                     });
-    //                     this.loadUsers();
-    //                     this._notificationsStore.addNotification(notification);
-    //                     this.selectedUsers = undefined;
-    //                     // this.users.splice(this.users.indexOf(currentUser), 1);
-    //                 },
-    //                 (error) => {
-    //                     let errString = 'Unable to delete user ' + currentUser.firstName + ' ' + currentUser.lastName;
-    //                     let notification = new Notification({
-    //                         'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-    //                         'type': 'ERROR',
-    //                         'createdAt': moment()
-    //                     });
-    //                     this._progressBarService.hide();
-    //                     this._notificationsStore.addNotification(notification);
-    //                     this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-    //                 },
-    //                 () => {
-    //                     this._progressBarService.hide();
-    //                 });
-    //         });
-    //     }
-    //     else {
-    //         let notification = new Notification({
-    //             'title': 'select users to delete',
-    //             'type': 'ERROR',
-    //             'createdAt': moment()
-    //         });
-    //         this._notificationsStore.addNotification(notification);
-    //         this._notificationsService.error('Oh No!', 'select users to delete');
-    //     }
-    // }
-    onRowSelect(user) {
-        this._router.navigate(['/medical-provider/users/' + user.id + '/basic']);
+    deleteDoctors() {
+        if (this.selectedDoctors !== undefined) {
+            this.selectedDoctors.forEach(currentDoctor => {
+                this._progressBarService.show();
+                let result;
+                result = this._doctorLocationScheduleStore.deleteDoctorLocationSchedule(currentDoctor);
+                result.subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            'title': 'Doctor deleted successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        this.loadDoctors();
+                        this._notificationsStore.addNotification(notification);
+                        this.selectedDoctors = undefined;
+                        // this.users.splice(this.users.indexOf(currentUser), 1);
+                    },
+                    (error) => {
+                        let errString = 'Unable to delete doctor ';
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._progressBarService.hide();
+                        this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                    },
+                    () => {
+                        this._progressBarService.hide();
+                    });
+            });
+        }
+        else {
+            let notification = new Notification({
+                'title': 'select doctor to delete',
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'select doctor to delete');
+        }
     }
+    
 }

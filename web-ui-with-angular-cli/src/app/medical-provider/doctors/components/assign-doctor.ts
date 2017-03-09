@@ -2,6 +2,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SelectItem } from 'primeng/primeng';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import { DoctorsStore } from '../../users/stores/doctors-store';
@@ -38,7 +39,9 @@ export class AssignDoctorComponent implements OnInit {
     schedule: Schedule;
     selectedLocation;
     doctors: Doctor[];
-    currentSchedule:Schedule;
+    doctorsArr: SelectItem[] = [];
+    selectedDoctors: string[] = [];
+    currentSchedule: Schedule;
     location: LocationDetails;
 
     assigndoctorform: FormGroup;
@@ -92,6 +95,12 @@ export class AssignDoctorComponent implements OnInit {
             .subscribe(
             (data) => {
                 this.doctors = data;
+                // this.doctorsArr = _.map(this.doctors, (currentDoctor: Doctor) => {
+                //         return {
+                //             label: `${currentDoctor.user.firstName} - ${currentDoctor.user.lastName}`,
+                //             value: currentDoctor.id.toString()
+                //         };
+                //     });
             },
             (error) => {
                 this.doctors = [];
@@ -118,7 +127,7 @@ export class AssignDoctorComponent implements OnInit {
         this._scheduleStore.fetchScheduleById(scheduleId)
             .subscribe(_.bind((schedule: Schedule) => {
                 this.currentSchedule = schedule;
-                
+
             }, this));
     }
 
@@ -127,6 +136,10 @@ export class AssignDoctorComponent implements OnInit {
 
     save() {
         let assigndoctorformValues = this.assigndoctorform.value;
+        // let selectedDoctors = [];
+        // assigndoctorformValues.doctors.forEach(doctor => {
+        //     selectedDoctors.push({ 'id': parseInt(doctor)});
+        // });
         let basicInfo = new DoctorLocationSchedule({
             doctor: {
                 id: parseInt(assigndoctorformValues.doctors)

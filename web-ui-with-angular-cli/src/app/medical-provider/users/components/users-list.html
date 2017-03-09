@@ -25,7 +25,8 @@
     <p-column field="lastName" header="Last Name" [sortable]="true"></p-column>-->
      <p-column header="User Name" [sortable]="true">
        <template let-user="rowData" pTemplate="body">
-            <a routerLink="{{user.id}}/basic">{{user.firstName}} {{user.lastName}}
+            <a (click)="editUser(user)">{{user.firstName}} {{user.lastName}}
+            <!--<a routerLink="{{user.id}}/basic">{{user.firstName}} {{user.lastName}}-->
             </a>
         </template>
     </p-column>
