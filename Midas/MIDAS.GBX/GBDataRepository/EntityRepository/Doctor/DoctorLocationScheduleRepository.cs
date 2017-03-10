@@ -274,7 +274,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                     else
                     {
-                        bool ExistsSchedule = _context.Doctors.Any(p => p.Id == ScheduleId.Value
+                        bool ExistsSchedule = _context.Schedules.Any(p => p.id == ScheduleId.Value
                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
 
                         if (ExistsSchedule == false)
@@ -389,7 +389,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                     else
                     {
-                        bool ExistsSchedule = _context.Doctors.Any(p => p.Id == ScheduleId.Value
+                        bool ExistsSchedule = _context.Schedules.Any(p => p.id == ScheduleId.Value
                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
 
                         if (ExistsSchedule == false)
