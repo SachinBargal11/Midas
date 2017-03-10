@@ -39,7 +39,7 @@ namespace MIDAS.GBX.WebAPI
 
         public HttpResponseMessage CreateGbObject1(HttpRequestMessage request, T gbObject)
         {
-            var objResult = dataAccessManager.associateLocationToDoctors(gbObject);
+            var objResult = dataAccessManager.AssociateLocationToDoctors(gbObject);
 
             try
             {
@@ -57,7 +57,7 @@ namespace MIDAS.GBX.WebAPI
 
         public HttpResponseMessage CreateGb(HttpRequestMessage request, T gbObject)
         {
-            var objResult = dataAccessManager.associateDoctorToLocations(gbObject);
+            var objResult = dataAccessManager.AssociateDoctorToLocations(gbObject);
 
             try
             {
