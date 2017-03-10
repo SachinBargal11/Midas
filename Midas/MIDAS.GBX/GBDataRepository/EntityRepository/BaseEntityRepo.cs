@@ -35,6 +35,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object associateDoctorToLocations<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
             throw new NotImplementedException();

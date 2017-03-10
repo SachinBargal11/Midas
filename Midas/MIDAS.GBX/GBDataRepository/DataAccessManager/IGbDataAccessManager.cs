@@ -11,6 +11,7 @@ namespace MIDAS.GBX.DataAccessManager
     {
         Object Save(T gbObject);
         Object associateLocationToDoctors(T gbObject);
+        Object associateDoctorToLocations(T gbObject);
         int Delete(T entity);
         object Delete(int id);
         Object Get(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
