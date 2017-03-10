@@ -271,10 +271,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
 
 
-            var location = _context.Locations.Where(p => p.id == LocationId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                  .Select(p => p.ScheduleID);
-            var acc = _context.Schedules.Include("ScheduleDetails").Where(p => location.Contains(p.id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                   .FirstOrDefault<Schedule>();
+            //var location = _context.Locations.Where(p => p.id == LocationId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                                                      .Select(p => p.ScheduleID);
+            //var acc = _context.Schedules.Include("ScheduleDetails").Where(p => location.Contains(p.id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                                                       .FirstOrDefault<Schedule>();
+
+            var acc = _context.Schedules.Include("ScheduleDetails")
+                                         .Where(p => p.Locations.Any(p2 => p2.id == LocationId
+                                                                          && (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))) == true)
+                                         .FirstOrDefault();
+                                        
 
             if (acc == null)
             {
