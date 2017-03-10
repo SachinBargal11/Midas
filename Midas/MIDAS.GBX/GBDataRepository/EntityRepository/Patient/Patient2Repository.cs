@@ -219,7 +219,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region GetByCompanyWithCloseCases For Patient 
         public override object GetByCompanyWithCloseCases(int CompanyId)
         {
-            var closeCase = _context.Cases.Where(p => p.CaseStatusId.HasValue == true && p.CaseStatusId == 2
+            var closeCase = _context.Cases.Where(p => (p.CaseStatusId.HasValue == true && p.CaseStatusId == 2)
                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                          .Select(p => p.PatientId)
                                          .Distinct<int>();
@@ -230,7 +230,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                        .Include("User.AddressInfo")
                                        .Include("User.ContactInfo")
                                        .Where(p => p.CompanyId == CompanyId
-                                               && (closeCase.Contains(p.Id))
+                                               && ((closeCase.Contains(p.Id)) || (p.Cases.Count <= 0))
                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                        .ToList<Patient2>();
 
