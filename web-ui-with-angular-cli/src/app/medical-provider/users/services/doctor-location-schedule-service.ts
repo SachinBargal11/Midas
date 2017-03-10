@@ -170,6 +170,47 @@ export class DoctorLocationScheduleService {
         });
         return <Observable<any>>Observable.fromPromise(promise);
     }
+
+    associateDoctorsToLocation(doctorLocationSchedule: DoctorLocationSchedule[]): Observable<any[]> {
+        let promise: Promise<any[]> = new Promise((resolve, reject) => {
+
+            return this._http.post(this._url + '/DoctorLocationSchedule/associateLocationToDoctors', JSON.stringify(doctorLocationSchedule), {
+                headers: this._headers
+            }).map(res => res.json()).subscribe((data: any) => {
+                    let schedules: DoctorLocationSchedule[];
+                    if (data) {
+                        schedules = (<Object[]>data).map((data: any) => {
+                            return DoctorLocationScheduleAdapter.parseResponse(data);
+                        });
+                    }
+                    resolve(schedules);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any[]>>Observable.fromPromise(promise);
+    }
+    associateLocationsToDoctor(doctorLocationSchedule: DoctorLocationSchedule[]): Observable<any[]> {
+        let promise: Promise<any[]> = new Promise((resolve, reject) => {
+
+            return this._http.post(this._url + '/DoctorLocationSchedule/associateDoctorToLocations', JSON.stringify(doctorLocationSchedule), {
+                headers: this._headers
+            }).map(res => res.json()).subscribe((data: any) => {
+                    let schedules: DoctorLocationSchedule[];
+                    if (data) {
+                        schedules = (<Object[]>data).map((data: any) => {
+                            return DoctorLocationScheduleAdapter.parseResponse(data);
+                        });
+                    }
+                    resolve(schedules);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any[]>>Observable.fromPromise(promise);
+    }
+
+
     deleteDoctorLocationSchedule(doctorLocationSchedule: DoctorLocationSchedule): Observable<DoctorLocationSchedule> {
         let promise = new Promise((resolve, reject) => {
             return this._http.post(this._url + '/DoctorLocationSchedule/Delete/' + doctorLocationSchedule.id, {

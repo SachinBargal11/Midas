@@ -40,7 +40,7 @@ export class AssignDoctorComponent implements OnInit {
     selectedLocation;
     doctors: Doctor[];
     doctorsArr: SelectItem[] = [];
-    selectedDoctors: string[] = [];
+    selectedDoctors: Doctor[] = [];
     currentSchedule: Schedule;
     location: LocationDetails;
 
@@ -136,26 +136,39 @@ export class AssignDoctorComponent implements OnInit {
 
     save() {
         let assigndoctorformValues = this.assigndoctorform.value;
-        // let selectedDoctors = [];
-        // assigndoctorformValues.doctors.forEach(doctor => {
-        //     selectedDoctors.push({ 'id': parseInt(doctor)});
-        // });
-        let basicInfo = new DoctorLocationSchedule({
-            doctor: {
-                id: parseInt(assigndoctorformValues.doctors)
-            },
-            location: {
-                id: this.locationId
-            },
-            schedule: {
-                id: this.currentSchedule.id
-            }
+        let selectedDoctors = [];
+        let basicInfo = [];
+        this.selectedDoctors.forEach(element => {
+            basicInfo.push(
+                {
+                    doctor: {
+                        id: element.id
+                    },
+                    location: {
+                        id: this.locationId
+                    },
+                    schedule: {
+                        id: this.currentSchedule.id
+                    }
+                });
         });
+        // let basicInfo = new DoctorLocationSchedule({
+        //     doctor: {
+        //         id: parseInt(assigndoctorformValues.doctors)
+        //     },
+        //     location: {
+        //         id: this.locationId
+        //     },
+        //     schedule: {
+        //         id: this.currentSchedule.id
+        //     }
+        // });
         this._progressBarService.show();
         this.isSaveProgress = true;
         let result;
 
-        result = this._doctorLocationScheduleStore.addDoctorLocationSchedule(basicInfo);
+        // result = this._doctorLocationScheduleStore.addDoctorLocationSchedule(basicInfo);
+        result = this._doctorLocationScheduleStore.associateDoctorsToLocation(basicInfo);
         result.subscribe(
             (response) => {
                 let notification = new Notification({

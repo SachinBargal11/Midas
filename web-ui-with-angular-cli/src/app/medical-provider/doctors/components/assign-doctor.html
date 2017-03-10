@@ -29,8 +29,8 @@
     <p-column field="user.userName" header="Email" [sortable]="true"></p-column>
 </p-dataTable>
     </div><br>
-    <!--<button [disabled]="!assigndoctorform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+    <button [disabled]="isSaveProgress" type="submit" class="btn btn-success sign-up">Save
         <loader [visible]="isSaveProgress"></loader>
-    </button>-->
+    </button>
     <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
 </form>

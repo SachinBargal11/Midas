@@ -35,7 +35,7 @@ export class AddDoctorLocationComponent implements OnInit {
     selectedLocation;
     locations: LocationDetails[];
     locationsArr: SelectItem[] = [];
-    selectedLocations: string[] = [];
+    selectedLocations: LocationDetails[] = [];
 
     addlocationform: FormGroup;
     addlocationformControls;
@@ -108,22 +108,37 @@ export class AddDoctorLocationComponent implements OnInit {
         // addlocationformValues.location.forEach(location => {
         //     selectedLocations.push({ 'id': parseInt(location) });
         // });
-        let basicInfo = new DoctorLocationSchedule({
-            doctor: {
-                id: this.userId
-            },
-            location: {
-                id: parseInt(addlocationformValues.location)
-            },
-            schedule: {
-                id: this.schedule.id
-            }
+        let basicInfo = [];
+        this.selectedLocations.forEach(element => {
+            basicInfo.push(
+                {
+                    doctor: {
+                        id: this.userId
+                    },
+                    location: {
+                        id: element.location.id
+                    },
+                    schedule: {
+                        id: element.schedule.id
+                    }
+                });
         });
+        // let basicInfo = new DoctorLocationSchedule({
+        //     doctor: {
+        //         id: this.userId
+        //     },
+        //     location: {
+        //         id: parseInt(addlocationformValues.location)
+        //     },
+        //     schedule: {
+        //         id: this.schedule.id
+        //     }
+        // });
         this._progressBarService.show();
         this.isSaveProgress = true;
         let result;
 
-        result = this._doctorLocationScheduleStore.addDoctorLocationSchedule(basicInfo);
+        result = this._doctorLocationScheduleStore.associateLocationsToDoctor(basicInfo);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
