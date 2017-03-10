@@ -79,14 +79,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("associateLocationToDoctors")]
-        public HttpResponseMessage associateLocationToDoctors([FromBody]List<DoctorLocationSchedule> data)
+        public HttpResponseMessage AssociateLocationToDoctors([FromBody]List<DoctorLocationSchedule> data)
         {
             return requestHandlerList.CreateGbObject1(Request, data);
         }
 
         [HttpPost]
         [Route("associateDoctorToLocations")]
-        public HttpResponseMessage associateDoctorToLocations([FromBody]List<DoctorLocationSchedule> data)
+        public HttpResponseMessage AssociateDoctorToLocations([FromBody]List<DoctorLocationSchedule> data)
         {
             return requestHandlerList.CreateGb(Request, data);
         }

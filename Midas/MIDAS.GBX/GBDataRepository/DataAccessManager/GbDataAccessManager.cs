@@ -217,7 +217,7 @@ namespace MIDAS.GBX.DataAccessManager
         }
         #endregion
 
-        public Object associateLocationToDoctors(T data)
+        public Object AssociateLocationToDoctors(T data)
         {
             try
             {
@@ -236,7 +236,7 @@ namespace MIDAS.GBX.DataAccessManager
                 }
                 else
                 {
-                    var gbdata = baseRepo.associateLocationToDoctors(data);
+                    var gbdata = baseRepo.AssociateLocationToDoctors(data);
                     return gbdata;
                 }
             }
@@ -261,7 +261,7 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object associateDoctorToLocations(T data)
+        public Object AssociateDoctorToLocations(T data)
         {
             try
             {
@@ -280,7 +280,7 @@ namespace MIDAS.GBX.DataAccessManager
                 }
                 else
                 {
-                    var gbdata = baseRepo.associateDoctorToLocations(data);
+                    var gbdata = baseRepo.AssociateDoctorToLocations(data);
                     return gbdata;
                 }
             }
