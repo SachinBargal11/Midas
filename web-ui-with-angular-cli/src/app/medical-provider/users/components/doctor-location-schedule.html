@@ -22,8 +22,9 @@
         <header class="card-header card-header-lg clearfix">
             Details for {{currentSchedule.name}}
             <div class="pull-right" *ngIf="!isInEditMode">
-                <button type="button" class="btn btn-sm btn-primary-outline" (click)="enableSaveAsNew()">Duplicate</button>
-                <button type="button" class="btn btn-sm btn-primary" (click)="enableEdit()">Edit</button>
+                <button type="button" class="btn btn-sm btn-primary-outline" (click)="enableAssign()">Assign this schedule</button>
+                <button type="button" class="btn btn-sm btn-primary-outline" (click)="enableSaveAsNew()">Customize</button>
+                <button type="button" *ngIf="!isDefaultSchedule" class="btn btn-sm btn-primary" (click)="enableEdit()">Edit</button>
             </div>
             <div class="pull-right" *ngIf="isInEditMode">
                 <!--<button type="button" class="btn btn-sm btn-secondary" (click)="resetEditMode()">Cancel</button>                            {{scheduleform.valid}}

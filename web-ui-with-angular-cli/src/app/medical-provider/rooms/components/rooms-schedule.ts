@@ -43,6 +43,7 @@ export class RoomsScheduleComponent implements OnInit {
     isInEditMode: boolean = false;
     saveAsNew: boolean = false;
     hightlightChange: boolean = false;
+    isDefaultSchedule: boolean = false;
 
 
     constructor(
@@ -95,6 +96,11 @@ export class RoomsScheduleComponent implements OnInit {
         this._roomScheduleStore.fetchScheduleById(scheduleId)
             .subscribe(_.bind((schedule: Schedule) => {
                 this.currentSchedule = schedule;
+                if (this.currentSchedule.id === 1) {
+                    this.isDefaultSchedule = true;
+                } else {
+                    this.isDefaultSchedule = false;
+                }
                 this.hightlightChange = true;
                 setTimeout(() => {
                     this.hightlightChange = false;
@@ -216,7 +222,7 @@ export class RoomsScheduleComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../'], { relativeTo: this._route });
+                this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
                 this.isSaveProgress = false;
@@ -257,11 +263,45 @@ export class RoomsScheduleComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../'], { relativeTo: this._route });
+                this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
                 this.isSaveProgress = false;
                 let errString = 'Unable to add Schedule.';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                this._progressBarService.hide();
+            },
+            () => {
+                this.isSaveProgress = false;
+                this._progressBarService.hide();
+            });
+    }
+
+    enableAssign() {
+        this._progressBarService.show();
+        this.isSaveProgress = true;
+        let result;
+
+        result = this._roomScheduleStore.updateSchedule(this.currentSchedule, this.room);
+        result.subscribe(
+            (schedule) => {
+                let notification = new Notification({
+                    'title': 'Schedule updated successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                // this._router.navigate(['../'], { relativeTo: this._route });
+            },
+            (error) => {
+                this.isSaveProgress = false;
+                let errString = 'Unable to update Schedule.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',

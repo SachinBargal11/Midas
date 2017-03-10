@@ -32,7 +32,7 @@ export class AddCaseComponent implements OnInit {
     isSaveProgress = false;
     patientId: number;
     idPatient: any;
-    patient:Patient;
+    patient: Patient;
     patientName: string;
     patients: Patient[];
 
@@ -52,31 +52,28 @@ export class AddCaseComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
-            this._route.parent.params.subscribe((routeParams: any) => {
+        this._route.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
-            if(this.patientId){
-                  this._progressBarService.show();
-            this._patientStore.fetchPatientById(this.patientId)
-                .subscribe(
-                (patient: Patient) => {
-                    this.patient = patient;
-                    this.patientName = patient.user.firstName + ' ' + patient.user.lastName ;
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
-            
-             this._employerStore.getCurrentEmployer(this.patientId)
-            .subscribe(employer => this.employer = employer);
+            if (this.patientId) {
+                this._progressBarService.show();
+                this._patientStore.fetchPatientById(this.patientId)
+                    .subscribe(
+                    (patient: Patient) => {
+                        this.patient = patient;
+                        this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
+                    },
+                    (error) => {
+                        this._router.navigate(['../'], { relativeTo: this._route });
+                        this._progressBarService.hide();
+                    },
+                    () => {
+                        this._progressBarService.hide();
+                    });
+
+                this._employerStore.getCurrentEmployer(this.patientId)
+                    .subscribe(employer => this.employer = employer);
             }
         });
-
-        
-        
         this.caseform = this.fb.group({
             // caseName: [''],
             patientId: [''],
@@ -96,19 +93,19 @@ export class AddCaseComponent implements OnInit {
     ngOnInit() {
         this._locationsStore.getLocations()
             .subscribe(locations => this.locations = locations);
-   
+
 
         this.loadPatients();
     }
 
-    selectPatient(event){
+    selectPatient(event) {
         let currentPatient: number = parseInt(event.target.value);
         let idPatient = parseInt(event.target.value);
         let result = this._employerStore.getCurrentEmployer(currentPatient);
-            result.subscribe((employer) => {this.employer = employer;}, null);
-            console.log(this.employer)
+        result.subscribe((employer) => { this.employer = employer; }, null);
+        console.log(this.employer)
     }
-    
+
 
     loadPatients() {
         this._progressBarService.show();
@@ -136,7 +133,7 @@ export class AddCaseComponent implements OnInit {
             caseTypeId: caseFormValues.caseTypeId,
             carrierCaseNo: caseFormValues.carrierCaseNo,
             locationId: caseFormValues.locationId,
-            patientEmpInfoId: (this.employer.id) ? this.employer.id  : null,
+            patientEmpInfoId: (this.employer.id) ? this.employer.id : null,
             caseStatusId: caseFormValues.caseStatusId,
             attorneyId: caseFormValues.attorneyId,
             // caseStatus: caseFormValues.caseStatus,
@@ -155,7 +152,7 @@ export class AddCaseComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../../'], { relativeTo: this._route });
+                this._router.navigate(['../'], { relativeTo: this._route });
             },
             (error) => {
                 let errString = 'Unable to add case.';
