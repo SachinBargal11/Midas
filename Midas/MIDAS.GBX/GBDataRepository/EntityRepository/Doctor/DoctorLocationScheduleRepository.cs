@@ -210,9 +210,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             List<BO.DoctorLocationSchedule> lstDoctorLocationScheduleBO = (List<BO.DoctorLocationSchedule>)(object)entity;
 
+            if (lstDoctorLocationScheduleBO == null || (lstDoctorLocationScheduleBO != null && lstDoctorLocationScheduleBO.Count == 0))
+            {
+                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid info.", ErrorLevel = ErrorLevel.Error };
+            }
+
             List<DoctorLocationSchedule> lstDoctorLocationScheduleDB = new List<DoctorLocationSchedule>();
 
-            int? forLocationId = null;
+            List<int> forLocationIds = lstDoctorLocationScheduleBO.Select(p => p.location.ID).Distinct().ToList<int>();
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
@@ -222,12 +227,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     if (eachDoctorLocationScheduleBO.location != null)
                     {
-                        LocationId = eachDoctorLocationScheduleBO.location.ID;
-
-                        if (forLocationId.HasValue == false)
-                        {
-                            forLocationId = eachDoctorLocationScheduleBO.location.ID;
-                        }
+                        LocationId = eachDoctorLocationScheduleBO.location.ID;                        
                     }
                     if (eachDoctorLocationScheduleBO.doctor != null)
                     {
@@ -305,15 +305,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 dbContextTransaction.Commit();
 
-                if (forLocationId.HasValue == true)
-                {
-                    lstDoctorLocationScheduleDB = _context.DoctorLocationSchedules.Include("Doctor")
-                                                                                  .Include("Location")
-                                                                                  .Include("Schedule")
-                                                                                  .Where(p => p.LocationID == forLocationId.Value
+                lstDoctorLocationScheduleDB = _context.DoctorLocationSchedules.Include("Doctor")
+                                                                              .Include("Location")
+                                                                              .Include("Schedule")
+                                                                              .Where(p => forLocationIds.Contains(p.LocationID)
                                                                                           && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                                   .ToList<DoctorLocationSchedule>();
-                }
             }
 
             List<BO.DoctorLocationSchedule> res = new List<BO.DoctorLocationSchedule>();
