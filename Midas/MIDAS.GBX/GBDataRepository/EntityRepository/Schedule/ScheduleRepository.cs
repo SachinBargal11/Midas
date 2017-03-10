@@ -69,7 +69,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (T)(object)scheduleBO;
         }
         #endregion
-
+   
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
@@ -263,6 +263,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
             return lstSchedules;
+        }
+        #endregion
+
+        #region Get By Location Filter
+        public override object GetByLocationId(int LocationId)
+        {
+
+
+            var location = _context.Locations.Where(p => p.id == LocationId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                  .Select(p => p.ScheduleID);
+            var acc = _context.Schedules.Include("ScheduleDetails").Where(p => location.Contains(p.id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                   .FirstOrDefault<Schedule>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            BO.Schedule acc_ = Convert<BO.Schedule, Schedule>(acc);
+            return (object)acc_;
+
+
         }
         #endregion
 
