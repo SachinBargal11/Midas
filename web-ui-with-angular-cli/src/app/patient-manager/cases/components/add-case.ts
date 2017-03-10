@@ -35,6 +35,7 @@ export class AddCaseComponent implements OnInit {
     patient: Patient;
     patientName: string;
     patients: Patient[];
+    patientsWithoutCase: Patient[];
 
     constructor(
         private fb: FormBuilder,
@@ -74,6 +75,9 @@ export class AddCaseComponent implements OnInit {
                     .subscribe(employer => this.employer = employer);
             }
         });
+
+
+
         this.caseform = this.fb.group({
             // caseName: [''],
             patientId: [''],
@@ -95,7 +99,8 @@ export class AddCaseComponent implements OnInit {
             .subscribe(locations => this.locations = locations);
 
 
-        this.loadPatients();
+        // this.loadPatients();
+        this.loadPatientsWithoutCase();
     }
 
     selectPatient(event) {
@@ -107,11 +112,27 @@ export class AddCaseComponent implements OnInit {
     }
 
 
-    loadPatients() {
+    // loadPatients() {
+    //     this._progressBarService.show();
+    //     this._patientsStore.getPatients()
+    //         .subscribe(patients => {
+    //             this.patients = patients;
+    //         },
+    //         (error) => {
+    //             this._progressBarService.hide();
+    //         },
+    //         () => {
+    //             this._progressBarService.hide();
+    //         });
+    // }
+
+
+
+    loadPatientsWithoutCase() {
         this._progressBarService.show();
-        this._patientsStore.getPatients()
+        this._patientsStore.getPatientsWithNoCase()
             .subscribe(patients => {
-                this.patients = patients;
+                this.patientsWithoutCase = patients;
             },
             (error) => {
                 this._progressBarService.hide();
