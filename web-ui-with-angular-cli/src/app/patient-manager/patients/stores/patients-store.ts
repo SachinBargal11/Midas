@@ -12,6 +12,7 @@ import {SessionStore} from '../../../commons/stores/session-store';
 export class PatientsStore {
 
     private _patients: BehaviorSubject<List<Patient>> = new BehaviorSubject(List([]));
+    private _patientsWithOpenCases: BehaviorSubject<List<Patient>> = new BehaviorSubject(List([]));
     private _selectedPatients: BehaviorSubject<List<Patient>> = new BehaviorSubject(List([]));
 
     constructor(
@@ -33,6 +34,10 @@ export class PatientsStore {
         return this._patients.asObservable();
     }
 
+    get patientsWithOpenCases() {
+        return this._patientsWithOpenCases.asObservable();
+    }
+
     get selectedPatients() {
         return this._selectedPatients.asObservable();
     }
@@ -41,6 +46,18 @@ export class PatientsStore {
         let promise = new Promise((resolve, reject) => {
             this._patientsService.getPatients().subscribe((patients: Patient[]) => {
                 this._patients.next(List(patients));
+                resolve(patients);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Patient[]>>Observable.fromPromise(promise);
+    }
+
+    getPatientsWithOpenCases(): Observable<Patient[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientsService.getPatientsWithOpenCases().subscribe((patients: Patient[]) => {
+                this._patientsWithOpenCases.next(List(patients));
                 resolve(patients);
             }, error => {
                 reject(error);

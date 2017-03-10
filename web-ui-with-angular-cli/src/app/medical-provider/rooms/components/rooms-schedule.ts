@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Rx';
-import { ScheduleDetail } from '../models/rooms-schedule-detail';
+import { ScheduleDetail } from '../../locations/models/schedule-detail';
 import { RoomScheduleStore } from '../stores/rooms-schedule-store';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';

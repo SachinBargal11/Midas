@@ -30,7 +30,12 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object associateLocationToDoctors<T>(T entity)
+        public virtual Object AssociateLocationToDoctors<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object AssociateDoctorToLocations<T>(T entity)
         {
             throw new NotImplementedException();
         }
@@ -182,6 +187,11 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+
+        public virtual Object GetByCompanyWithCloseCases(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }        
 
         public virtual Object GetByInsuranceMasterId(int InsuranceMasterId)
         {

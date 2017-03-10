@@ -46,6 +46,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("getByLocationId/{id}")]
+
+        public HttpResponseMessage GetByLocationId(int id)
+        {
+            return requestHandler.GetByLocationId(Request, id);
+        }
+
+        [HttpGet]
         [Route("Get/{id}")]
         
         public HttpResponseMessage Get(int id)

@@ -24,9 +24,12 @@ namespace MIDAS.GBX.WebAPI.Controllers
     {
 
         private IRequestHandler<DoctorLocationSchedule> requestHandler;
+        private IRequestHandler<List<DoctorLocationSchedule>> requestHandlerList;
+
         public DoctorLocationScheduleController()
         {
             requestHandler = new GbApiRequestHandler<DoctorLocationSchedule>();
+            requestHandlerList = new GbApiRequestHandler<List<DoctorLocationSchedule>>();
         }
 
 
@@ -76,10 +79,18 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         [HttpPost]
         [Route("associateLocationToDoctors")]
-        public HttpResponseMessage associateLocationToDoctors([FromBody]DoctorLocationSchedule data)
+        public HttpResponseMessage AssociateLocationToDoctors([FromBody]List<DoctorLocationSchedule> data)
         {
-            return requestHandler.CreateGbObject1(Request, data);
+            return requestHandlerList.CreateGbObject1(Request, data);
         }
+
+        [HttpPost]
+        [Route("associateDoctorToLocations")]
+        public HttpResponseMessage AssociateDoctorToLocations([FromBody]List<DoctorLocationSchedule> data)
+        {
+            return requestHandlerList.CreateGb(Request, data);
+        }
+
 
         // PUT: api/Organizations/5
 

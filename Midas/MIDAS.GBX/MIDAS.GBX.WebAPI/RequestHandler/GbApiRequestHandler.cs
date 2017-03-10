@@ -39,7 +39,25 @@ namespace MIDAS.GBX.WebAPI
 
         public HttpResponseMessage CreateGbObject1(HttpRequestMessage request, T gbObject)
         {
-            var objResult = dataAccessManager.associateLocationToDoctors(gbObject);
+            var objResult = dataAccessManager.AssociateLocationToDoctors(gbObject);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage CreateGb(HttpRequestMessage request, T gbObject)
+        {
+            var objResult = dataAccessManager.AssociateDoctorToLocations(gbObject);
 
             try
             {
@@ -393,6 +411,19 @@ namespace MIDAS.GBX.WebAPI
         public HttpResponseMessage GetGbObjects3(HttpRequestMessage request, int id)
         {
             var objResult = dataAccessManager.GetByLocationWithOpenCases(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetGbObjects4(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.GetByCompanyWithCloseCases(id);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);

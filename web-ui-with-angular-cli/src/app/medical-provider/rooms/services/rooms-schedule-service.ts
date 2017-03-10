@@ -11,7 +11,7 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import {environment} from '../../../../environments/environment';
 import { Schedule } from '../models/rooms-schedule';
-import { ScheduleDetail } from '../models/rooms-schedule-detail';
+import { ScheduleDetail } from '../../locations/models/schedule-detail';
 import { ScheduleAdapter } from './adapters/rooms-schedule-adapter';
 
 @Injectable()

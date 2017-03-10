@@ -1,3 +1,5 @@
+import { DoctorLocationSchedule } from '../../../medical-provider/users/models/doctor-location-schedule';
+import { ScheduleDetail } from '../../../medical-provider/locations/models/schedule-detail';
 import { Observable } from 'rxjs/Observable';
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
@@ -6,6 +8,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import * as _ from 'underscore';
 import { ConfirmationService } from 'primeng/primeng';
+import { NotificationsService } from 'angular2-notifications';
+
+import { Schedule } from '../../../medical-provider/rooms/models/rooms-schedule';
+import { Room } from '../../../medical-provider/rooms/models/room';
+import { Patient } from '../../patients/models/patient';
 import { PatientVisit } from '../models/patient-visit';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
@@ -39,6 +46,10 @@ export class PatientVisitComponent implements OnInit {
     private _scheduledEventEditorComponent: ScheduledEventEditorComponent;
     events: ScheduledEventInstance[];
     header: any;
+    views: any;
+    patients: Patient[];
+    roomSchedule: Schedule;
+    doctorSchedule: Schedule;
     eventDialogVisible: boolean = false;
     visitDialogVisible: boolean = false;
     patientScheduleForm: FormGroup;
@@ -55,6 +66,10 @@ export class PatientVisitComponent implements OnInit {
     isFormValidBoolean: boolean = false;
 
     private scheduledEventEditorValid: boolean = false;
+    businessHours: any[];
+    hiddenDays: any = [];
+
+    // weekends: boolean = true;
     eventRenderer: Function = (event, element) => {
         if (event.owningEvent.recurrenceId) {
             element.find('.fc-content').prepend('<i class="fa fa-exclamation-circle"></i>&nbsp;');
@@ -62,6 +77,11 @@ export class PatientVisitComponent implements OnInit {
             element.find('.fc-content').prepend('<i class="fa fa-refresh"></i>&nbsp;');
         }
     }
+    dayRenderer: Function = (date, cell) => {
+        // console.log(date);
+        // console.log(cell);
+    }
+
 
     constructor(
         public _route: ActivatedRoute,
@@ -78,7 +98,8 @@ export class PatientVisitComponent implements OnInit {
         private _doctorLocationScheduleStore: DoctorLocationScheduleStore,
         private _progressBarService: ProgressBarService,
         private _notificationsStore: NotificationsStore,
-        private _confirmationService: ConfirmationService
+        private _confirmationService: ConfirmationService,
+        private _notificationsService: NotificationsService,
     ) {
         this.patientScheduleForm = this._fb.group({
             patientId: ['', Validators.required]
@@ -95,13 +116,19 @@ export class PatientVisitComponent implements OnInit {
         this.header = {
             left: 'prev,next today',
             center: 'title',
-            right: 'month,agendaWeek,agendaDay'
+            right: 'month,agendaWeek,agendaDay,listWeek,listDay'
         };
+        this.views = {
+            listDay: { buttonText: 'list day' },
+            listWeek: { buttonText: 'list week' }
+        };
+
         // this.loadVisits();
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this._locationsStore.getLocations();
         });
         this._locationsStore.getLocations();
+        this._patientsStore.getPatientsWithOpenCases();
     }
 
     isFormValid() {
@@ -124,14 +151,41 @@ export class PatientVisitComponent implements OnInit {
     selectRoom() {
         if (this.selectedRoomId != 0) {
             this.loadLocationRoomVisits();
+            this.fetchRoomSchedule();
         }
+    }
+
+    fetchRoomSchedule() {
+        let fetchRoom = this._roomsStore.getRoomById(this.selectedRoomId);
+        fetchRoom.subscribe((results) => {
+            let room: Room = results;
+            let scheduleId: number = room.schedule.id;
+            this._roomScheduleStore.fetchScheduleById(scheduleId)
+                .subscribe((schedule: Schedule) => {
+                    this.roomSchedule = schedule;
+                });
+        });
     }
 
     selectDoctor() {
         if (this.selectedDoctorId != 0) {
             this.loadLocationDoctorVisits();
+            this.fetchDoctorSchedule();
         }
     }
+
+    fetchDoctorSchedule() {
+        let fetchDoctorLocationSchedule = this._doctorLocationScheduleStore.getDoctorLocationScheduleByDoctorIdAndLocationId(this.selectedDoctorId, this.selectedLocationId);
+        fetchDoctorLocationSchedule.subscribe((results) => {
+            let doctorSchedule: DoctorLocationSchedule = results;
+            let scheduleId: number = doctorSchedule.schedule.id;
+            this._roomScheduleStore.fetchScheduleById(scheduleId)
+                .subscribe((schedule: Schedule) => {
+                    this.doctorSchedule = schedule;
+                });
+        });
+    }
+
 
     selectOption() {
         if (this.selectedOption == 1) {
@@ -274,20 +328,63 @@ export class PatientVisitComponent implements OnInit {
     }
 
     handleDayClick(event) {
-        this.selectedVisit = new PatientVisit({
-            locationId: this.selectedLocationId,
-            doctorId: this.selectedOption == 1 ? this.selectedDoctorId : null,
-            roomId: this.selectedOption == 2 ? this.selectedRoomId : null,
-            calendarEvent: new ScheduledEvent({
-                name: '',
-                eventStart: event.date,
-                eventEnd: event.date,
-                timezone: '',
-                isAllDay: false
-            })
-        });
-        this.eventDialogVisible = true;
-        this._cd.detectChanges();
+        let considerTime:boolean = true;
+        if(event.view.name == 'month') {
+            considerTime = false;
+        }
+        let canScheduleAppointement: boolean = true;
+        if (!this.selectedOption) {
+            canScheduleAppointement = false;
+            this._notificationsService.alert('', 'Please select visit type!');
+        } else if (this.selectedOption == 1) {
+            if (!this.selectedDoctorId) {
+                canScheduleAppointement = false;
+                this._notificationsService.alert('', 'Please select Doctor!');
+            } else {
+                if (this.doctorSchedule) {
+                    let scheduleDetails: ScheduleDetail[] = this.doctorSchedule.scheduleDetails;
+                    let matchingScheduleDetail: ScheduleDetail = _.find(scheduleDetails, (currentScheduleDetail: ScheduleDetail) => {
+                        return currentScheduleDetail.isInAllowedSlot(event.date, considerTime);
+                    });
+                    if (!matchingScheduleDetail) {
+                        canScheduleAppointement = false;
+                        this._notificationsService.alert('', 'You cannot schedule an appointment on this day!');
+                    }
+                }
+            }
+        } else if (this.selectedOption == 2) {
+            if (!this.selectedRoomId) {
+                canScheduleAppointement = false;
+                this._notificationsService.alert('', 'Please select Room!');
+            } else {
+                if (this.roomSchedule) {
+                    let scheduleDetails: ScheduleDetail[] = this.roomSchedule.scheduleDetails;
+                    let matchingScheduleDetail: ScheduleDetail = _.find(scheduleDetails, (currentScheduleDetail: ScheduleDetail) => {
+                        return currentScheduleDetail.isInAllowedSlot(event.date, considerTime);
+                    });
+                    if (!matchingScheduleDetail) {
+                        canScheduleAppointement = false;
+                        this._notificationsService.alert('', 'You cannot schedule an appointment on this day!');
+                    }
+                }
+            }
+        }
+        if (canScheduleAppointement) {
+            this.selectedVisit = new PatientVisit({
+                locationId: this.selectedLocationId,
+                doctorId: this.selectedOption == 1 ? this.selectedDoctorId : null,
+                roomId: this.selectedOption == 2 ? this.selectedRoomId : null,
+                calendarEvent: new ScheduledEvent({
+                    name: '',
+                    eventStart: event.date.clone().local(),
+                    eventEnd: event.date.clone().local().add(30, 'minutes'),
+                    timezone: '',
+                    isAllDay: false
+                })
+            });
+            this.eventDialogVisible = true;
+            this._cd.detectChanges();
+        }
     }
 
     handleEventClick(event) {

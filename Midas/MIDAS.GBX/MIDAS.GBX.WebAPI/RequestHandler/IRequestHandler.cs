@@ -12,6 +12,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetObject(HttpRequestMessage request, int id);
         HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage CreateGbObject1(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage CreateGb(HttpRequestMessage request, T gbObject);
         HttpResponseMessage UpdateGbObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage DeleteGbObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage ValidateUniqueName(HttpRequestMessage request, T gbObject);
@@ -34,6 +35,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int id);
         HttpResponseMessage GetGbObjects3(HttpRequestMessage request, int id);
         HttpResponseMessage GetgbObjects(HttpRequestMessage request, int id);
+        HttpResponseMessage GetGbObjects4(HttpRequestMessage request, int id);
         HttpResponseMessage ResetPassword(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetByCaseId(HttpRequestMessage request, int CaseId);
         HttpResponseMessage GetByPatientId(HttpRequestMessage request, int CaseId);

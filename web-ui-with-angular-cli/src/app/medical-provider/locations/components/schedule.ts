@@ -205,7 +205,7 @@ export class ScheduleComponent implements OnInit {
 
         result = this._scheduleStore.updateSchedule(schedule);
         result.subscribe(
-            (response) => {
+            (schedule) => {
                 this.updateScheduleForLocation(schedule);
                 let notification = new Notification({
                     'title': 'Schedule updated successfully!',
@@ -247,7 +247,7 @@ export class ScheduleComponent implements OnInit {
 
         result = this._scheduleStore.addSchedule(schedule);
         result.subscribe(
-            (response) => {
+            (schedule) => {
                 this.updateScheduleForLocation(schedule);
                 let notification = new Notification({
                     'title': 'Schedule added successfully!',

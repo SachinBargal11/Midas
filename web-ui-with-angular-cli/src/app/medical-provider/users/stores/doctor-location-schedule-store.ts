@@ -90,6 +90,18 @@ export class DoctorLocationScheduleStore {
         return <Observable<DoctorLocationSchedule[]>>Observable.fromPromise(promise);
     }
 
+    getDoctorLocationScheduleByDoctorIdAndLocationId(doctorId: number, locationId: number): Observable<DoctorLocationSchedule> {
+        let promise = new Promise((resolve, reject) => {
+            this._doctorLocationScheduleService.getDoctorLocationScheduleByDoctorIdAndLocationId(doctorId, locationId)
+                .subscribe((doctorLocationSchedule: DoctorLocationSchedule) => {
+                    resolve(doctorLocationSchedule);
+                }, error => {
+                    reject(error);
+                });
+        });
+        return <Observable<DoctorLocationSchedule>>Observable.fromPromise(promise);
+    }
+
 
     fetchDoctorLocationScheduleById(id: number): Observable<DoctorLocationSchedule> {
         let promise = new Promise((resolve, reject) => {

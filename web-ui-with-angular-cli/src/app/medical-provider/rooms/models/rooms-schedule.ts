@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import { Record } from 'immutable';
-import { ScheduleDetail } from './rooms-schedule-detail';
+import { ScheduleDetail } from '../../locations/models/schedule-detail';
 
 
 const ScheduleRecord = Record({

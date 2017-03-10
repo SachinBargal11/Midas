@@ -30,6 +30,7 @@ export class LocationComponent implements OnInit {
     ) {
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadLocations();
+            this._router.navigate(['/medical-provider/locations']);
         });
     }
 
