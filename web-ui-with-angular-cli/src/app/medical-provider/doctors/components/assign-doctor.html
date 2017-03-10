@@ -1,15 +1,14 @@
 <h3 class="with-border">Assign Doctor</h3>
 <form [formGroup]="assigndoctorform" (ngSubmit)="save()">
     <div class="row">
-        <div class="col-lg-5">
+        <!--<div class="col-lg-5">
             <label class="form-label"> Doctors
                                 <span class="color-red">*</span>
                             </label>
             <div class="form-group" [class.error]="assigndoctorformControls.doctors.touched && !assigndoctorformControls.doctors.valid">
-               <!--<p-multiSelect [ngModel]="selectedDoctors" [options]="doctorsArr" defaultLabel="Select Doctors" formControlName="doctors"></p-multiSelect>-->
-                         <select formControlName="doctors" type="text" class="form-control"  [class.error]="assigndoctorformControls.doctors.touched && !assigndoctorformControls.doctors.valid">
+                <select formControlName="doctors" type="text" class="form-control"  [class.error]="assigndoctorformControls.doctors.touched && !assigndoctorformControls.doctors.valid">
                             <option value="">-Select doctors-</option>
-                            <option *ngFor="let doctor of doctors" value="{{doctor.id}}">{{doctor.user.firstName}} {{doctor.user.lastName}}</option>
+                            <option *ngFor="let doctor of doctors" value="{{doctor.id}}">{{doctor.user.firstName}}</option>
                         </select>
                 <div class='error-list' *ngIf="assigndoctorformControls.doctors.touched && !assigndoctorformControls.doctors.valid">
                     <ul>
@@ -17,9 +16,20 @@
                     </ul>
                 </div>
             </div>
-        </div>
-    </div>
-    <button [disabled]="!assigndoctorform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+        </div>-->
+    <p-dataTable [value]="doctors" [(selection)]="selectedDoctors" [rows]="10" [rowsPerPageOptions]="[5,10,15,20]" [paginator]="true" [globalFilter]="gb" [responsive]="true"
+    [stacked]="stacked">
+    <header>Doctors</header>
+    <p-column selectionMode="multiple"></p-column>
+    <p-column header="Doctor Name" [sortable]="true">
+       <template let-doctor="rowData" pTemplate="body">
+        {{doctor.user.firstName}} {{doctor.user.lastName}}   
+        </template>
+    </p-column>
+    <p-column field="user.userName" header="Email" [sortable]="true"></p-column>
+</p-dataTable>
+    </div><br>
+    <button [disabled]="isSaveProgress" type="submit" class="btn btn-success sign-up">Save
         <loader [visible]="isSaveProgress"></loader>
     </button>
     <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>

@@ -42,7 +42,7 @@ export class UserBasicComponent implements OnInit {
     cities: any[];
     selectedCity;
     specialitiesArr: SelectItem[] = [];
-    selectedSpecialities: SelectItem[] = [];
+    selectedSpecialities: any[] = [];
     selectedDoctorSpecialities: SelectItem[] = [];
     user: User;
     doctor: Doctor;
@@ -137,7 +137,7 @@ export class UserBasicComponent implements OnInit {
             let result = this._usersStore.fetchUserById(this.userId);
             result.subscribe(
                 (userDetail: User) => {
-                    // this.selectedSpecialities = ['2'];
+                    this.selectedSpecialities = ['2'];
                     this.user = userDetail;
                     this.cellPhone = this._phoneFormatPipe.transform(this.user.contact.cellPhone);
                     this.faxNo = this._faxNoFormatPipe.transform(this.user.contact.faxNo);

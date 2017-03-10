@@ -93,7 +93,7 @@ export class AddUserComponent implements OnInit {
                 wcbRatingCode: ['-', Validators.required],
                 npi: ['-', Validators.required],
                 taxType: ['1', [Validators.required, AppValidators.selectedValueValidator]],
-                title: ['-', Validators.required],
+                // title: ['-', Validators.required],
                 speciality: ['2', Validators.required]
             }),
             contact: this.fb.group({
@@ -182,7 +182,8 @@ export class AddUserComponent implements OnInit {
                 wcbRatingCode: userFormValues.doctor.wcbRatingCode,
                 npi: userFormValues.doctor.npi,
                 taxType: userFormValues.doctor.taxType,
-                title: userFormValues.doctor.title,
+                title: 'Dr',
+                // title: userFormValues.doctor.title,
                 doctorSpecialities: doctorSpecialities,
 
                 user: new User({

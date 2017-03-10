@@ -32,7 +32,7 @@
                 <select formControlName="patientId" type="text" [(ngModel)]="idPatient" (change)="selectPatient($event)" class="form-control"
                     placeholder="" [class.error]="caseformControls.patientId.touched && !caseformControls.patientId.valid">
                             <option value="">-Select -</option>
-                            <option *ngFor="let patient of patients" value="{{patient.id}}">{{patient.user.firstName}} {{patient.user.lastName}}</option>
+                            <option *ngFor="let patient of patientsWithoutCase" value="{{patient.id}}">{{patient.user.firstName}} {{patient.user.lastName}}</option>
                         </select>
                 <div class='error-list' *ngIf="caseformControls.patientId.touched && !caseformControls.patientId.valid">
                     <ul>

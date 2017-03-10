@@ -176,6 +176,29 @@ export class DoctorLocationScheduleStore {
         return <Observable<DoctorLocationSchedule>>Observable.from(promise);
     }
 
+    associateDoctorsToLocation(doctorLocationSchedule: DoctorLocationSchedule[]): Observable<DoctorLocationSchedule[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._doctorLocationScheduleService.associateDoctorsToLocation(doctorLocationSchedule)
+                .subscribe((updatedDoctorLocationSchedule: DoctorLocationSchedule[]) => {
+                    resolve(doctorLocationSchedule);
+                }, error => {
+                    reject(error);
+                });
+        });
+        return <Observable<DoctorLocationSchedule[]>>Observable.from(promise);
+    }
+    associateLocationsToDoctor(doctorLocationSchedule: DoctorLocationSchedule[]): Observable<DoctorLocationSchedule[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._doctorLocationScheduleService.associateLocationsToDoctor(doctorLocationSchedule)
+                .subscribe((updatedDoctorLocationSchedule: DoctorLocationSchedule[]) => {
+                    resolve(doctorLocationSchedule);
+                }, error => {
+                    reject(error);
+                });
+        });
+        return <Observable<DoctorLocationSchedule[]>>Observable.from(promise);
+    }
+
 
     deleteDoctorLocationSchedule(doctorLocationSchedule: DoctorLocationSchedule) {
         let doctorLocationSchedules = this._doctorLocationSchedules.getValue();
