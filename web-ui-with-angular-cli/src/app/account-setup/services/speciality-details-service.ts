@@ -37,7 +37,7 @@ export class SpecialityDetailsService {
         return <Observable<SpecialityDetail>>Observable.fromPromise(promise);
     }
 
-    getSpecialityDetails(requestData): Observable<any> {
+    getSpecialityDetails(requestData): Observable<SpecialityDetail> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             return this._http.post(this._url + '/CompanySpecialtyDetails/getall', requestData, {
                 headers: this._headers
@@ -55,7 +55,7 @@ export class SpecialityDetailsService {
                     reject(error);
                 });
         });
-        return <Observable<any>>Observable.fromPromise(promise);
+        return <Observable<SpecialityDetail>>Observable.fromPromise(promise);
     }
     addSpecialityDetail(location: SpecialityDetail): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {

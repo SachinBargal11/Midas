@@ -186,7 +186,7 @@ export class UsersService {
         let promise: Promise<any> = new Promise((resolve, reject) => {
 
 
-            let userDetailRequestData = userDetail.toJS();
+            let userDetailRequestData: any = userDetail.toJS();
 
             // add/replace values which need to be changed
             _.extend(userDetailRequestData.user, {

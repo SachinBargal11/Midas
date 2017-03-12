@@ -9,7 +9,7 @@ const UserRecord = Record({
     id: 0,
     name: '',
     userType: UserType.Owner,
-    accountId: '',
+    accountId: 0,
     userName: '',
     firstName: '',
     middleName: '',
@@ -19,7 +19,7 @@ const UserRecord = Record({
     address: null, //Address
     contact: null, //Contact
     dateOfBirth: moment(), //Moment
-    isDeleted: 0,
+    isDeleted: false,
     createByUserId: 0,
     updateByUserId: 0,
     // createDate: null, //Moment

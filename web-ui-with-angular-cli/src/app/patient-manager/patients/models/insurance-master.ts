@@ -3,8 +3,8 @@ import * as moment from 'moment';
 import { Address } from '../../../commons/models/address';
 import { Contact } from '../../../commons/models/contact';
 import { Adjuster } from '../../../account-setup/models/adjuster';
-import {InsuranceType} from './enums/insurance-type';
-import {PolicyOwner} from './enums/policy-owner';
+import { InsuranceType } from './enums/insurance-type';
+import { PolicyOwner } from './enums/policy-owner';
 
 const InsuranceMasterRecord = Record({
     id: 0,
@@ -12,7 +12,7 @@ const InsuranceMasterRecord = Record({
     companyName: '',
     Address: null,
     Contact: null,
-    adjusterMasters:''
+    adjusterMasters: null
 
 });
 
@@ -25,7 +25,7 @@ export class InsuranceMaster extends InsuranceMasterRecord {
     Address: Address;
     Contact: Contact;
     adjusterMasters: Adjuster;
-  
+
 
     constructor(props) {
         super(props);
