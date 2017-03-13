@@ -6,7 +6,7 @@ import { SelectItem } from 'primeng/primeng';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import { DoctorsStore } from '../../users/stores/doctors-store';
-// import { LocationDetails } from '../models/doctor-location-details';
+import { Observable } from 'rxjs/Rx';
 import { Doctor } from '../../users/models/doctor';
 import { Company } from '../../../account/models/company';
 import { Contact } from '../../../commons/models/contact';
@@ -91,16 +91,19 @@ export class AssignDoctorComponent implements OnInit {
                 });
         });
         this._progressBarService.show();
-        this._doctorsStore.getDoctors()
-            .subscribe(
-            (data) => {
-                this.doctors = data;
-                // this.doctorsArr = _.map(this.doctors, (currentDoctor: Doctor) => {
-                //         return {
-                //             label: `${currentDoctor.user.firstName} - ${currentDoctor.user.lastName}`,
-                //             value: currentDoctor.id.toString()
-                //         };
-                //     });
+        let fetchDoctors = this._doctorsStore.getDoctors();
+        let fetchLocationDoctors = this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.locationId);
+
+        Observable.forkJoin([fetchDoctors, fetchLocationDoctors])
+            .subscribe((results) => {
+                let doctors: Doctor[] = results[0];
+                let locationDoctors: DoctorLocationSchedule[] = results[1];
+                let locationDoctorIds: number[] = _.map(locationDoctors, (currentLocationDoctor: DoctorLocationSchedule) => {
+                    return currentLocationDoctor.doctor.id;
+                });
+                this.doctors = _.filter(doctors, (currentDoctor: Doctor) => {
+                    return _.indexOf(locationDoctorIds, currentDoctor.id) < 0 ? true : false;
+                });
             },
             (error) => {
                 this.doctors = [];

@@ -1,4 +1,4 @@
-<h3 class="with-border">Add Location</h3>
+<h3 class="with-border">Assign Location to Doctor</h3>
 <form [formGroup]="addlocationform" (ngSubmit)="save()">
     <div class="row">
         <!--<div class="col-lg-5">
@@ -22,7 +22,13 @@
             [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
             <header>Locations</header>
             <p-column selectionMode="multiple"></p-column>
-            <p-column field="location.name" header="Doctor Name" [sortable]="true"></p-column>
+            <p-column field="location.name" header="Location Name" [sortable]="true"></p-column>
+            <p-column field="address.address1" header="Address" [sortable]="true"></p-column>
+            <p-column header="Phone" [sortable]="true">
+                <template let-rowdata="rowData" pTemplate="body">
+                    <span>{{rowdata.contact.workPhone | phoneFormat}}</span>
+                </template>
+            </p-column>
         </p-dataTable>
     </div><br>
     <button [disabled]="isSaveProgress" type="submit" class="btn btn-success sign-up">Save

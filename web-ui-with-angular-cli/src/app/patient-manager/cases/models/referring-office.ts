@@ -8,7 +8,7 @@ const ReferringOfficeRecord = Record({
     refferingOfficeId: 0,
     refferingDoctorId: 0,
     npi: '',
-    isCurrentReffOffice: 1,
+    isCurrentReffOffice: true,
     addressInfo: null,
     isDeleted: false,
     createByUserID: 0,

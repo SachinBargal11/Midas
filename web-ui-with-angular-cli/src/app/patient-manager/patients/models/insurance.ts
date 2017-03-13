@@ -18,7 +18,7 @@ const InsuranceRecord = Record({
     insuranceType: InsuranceType.PRIMARY,
     insuranceCompanyCode: '',
     caseInsuranceMapping: null,
-    isinactive: 0,
+    isinactive: false,
     policyAddress: null,
     policyContact: null,
     insuranceAddress: null,
