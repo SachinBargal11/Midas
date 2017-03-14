@@ -3,7 +3,7 @@
 	[Id] INT NOT NULL IDENTITY(1,1),
 	[PatientId] INT NOT NULL,
 	[RelationId] TINYINT NOT NULL, 
-	[FullName] [NVARCHAR](50) NOT NULL, 
+	[FullName] [NVARCHAR](50) NULL, 
 	[FamilyName] NVARCHAR(50) NULL, 
     [Prefix] NVARCHAR(10) NULL,  
 	[Sufix] NVARCHAR(10) NULL, 
@@ -45,3 +45,6 @@ GO
 
 ALTER TABLE [dbo].[PatientFamilyMembers] CHECK CONSTRAINT [FK_PatientFamilyMembers_Gender_GenderId]
 GO
+
+--ALTER TABLE [dbo].[PatientFamilyMembers] ALTER COLUMN [FullName] [NVARCHAR](50) NULL
+--GO

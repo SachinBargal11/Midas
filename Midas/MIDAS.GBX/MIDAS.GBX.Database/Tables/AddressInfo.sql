@@ -6,7 +6,7 @@
 	[City] [nvarchar](50) NULL,
 	[State] [nvarchar](50) NULL,
 	[ZipCode] [nvarchar](10) NULL,
-	[Country] [nvarchar](10) NULL,
+	[Country] [nvarchar](50) NULL,
 	[IsDeleted] [bit] NULL CONSTRAINT [DF_AddressInfo_IsDeleted]  DEFAULT ((0)),
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NOT NULL,
@@ -33,4 +33,7 @@ GO
 --ADD FOREIGN KEY (StateCode)
 --REFERENCES [dbo].[State](StateCode)
 
+--GO
+
+--ALTER TABLE [dbo].[AddressInfo] ALTER COLUMN [Country] [nvarchar](50) NULL
 --GO
