@@ -309,6 +309,43 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get By Company ID
+        public override object GetByCompanyId(int id)
+        {                    
+            var doctorDB = _context.Doctors.Include("User")
+                                              .Include("User.AddressInfo")
+                                              .Include("User.ContactInfo")
+                                              .Include("User.DoctorSpecialities")
+                                              .Include("User.DoctorSpecialities.Specialty")
+                                              .Include("User.UserCompanyRoles")
+                                              .Where(p => p.User.UserCompanies.Where(p2=> (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false)))
+                                              .Any(p3=> p3.CompanyID==id && (p3.IsDeleted.HasValue == false || (p3.IsDeleted.HasValue == true && p3.IsDeleted.Value == false)))
+                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+
+                                       .ToList<Doctor>();
+
+
+            BO.Doctor doctorBO = new BO.Doctor();
+            List<BO.Doctor> boDoctor = new List<BO.Doctor>();
+            if (doctorDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Doctor.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+              
+                foreach(var EachDoctor in doctorDB)
+                {
+                    boDoctor.Add(Convert<BO.Doctor, Doctor>(EachDoctor));
+                }
+              
+            }
+
+            return (object)boDoctor;
+        }
+        #endregion
+
+
         #region GetAll
         public override object Get()
         {
