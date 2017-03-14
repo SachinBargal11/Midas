@@ -79,7 +79,27 @@ namespace MIDAS.GBX.DataAccessManager
                 throw;
             }
         }
+        
+        public object DeleteCalendarEvent(int id)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
 
+                var refid = baseRepo.DeleteCalendarEvent(id);
+
+                return refid;
+            }
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity))
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
 
         #region Token Realated Functions
         public object DeleteByUserId(int userId)

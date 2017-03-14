@@ -601,6 +601,19 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage DeleteCalendarEvent(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.DeleteCalendarEvent(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetGbObjects(HttpRequestMessage request, int param1, int param2)
         {
             var objResult = dataAccessManager.Get(param1, param2);

@@ -361,6 +361,45 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region DeleteVisit By ID
+        public override object Delete(int id)
+        {
+            var acc = _context.PatientVisit2.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<PatientVisit2>();
+            if (acc != null)
+            {
+                acc.IsDeleted = true;
+                _context.SaveChanges();
+            }
+            else if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var res = Convert<BO.PatientVisit2, PatientVisit2>(acc);
+            return (object)res;
+        }
+        #endregion
+
+        #region DeleteCalendarEvent By ID
+        public override object DeleteCalendarEvent(int id)
+        {
+            var acc = _context.CalendarEvents.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<CalendarEvent>();
+            if (acc != null)
+            {
+                acc.IsDeleted = true;
+                _context.SaveChanges();
+            }
+            else if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var res = Convert<BO.CalendarEvent, CalendarEvent>(acc);
+            return (object)res;
+        }
+        #endregion
+
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
