@@ -12,7 +12,7 @@ const UserRecord = Record({
     // name: '',
     userType: UserType.STAFF,
     roles: null,
-    accountId: '',
+    accountId: 0,
     userName: '',
     firstName: '',
     middleName: '',
@@ -22,7 +22,7 @@ const UserRecord = Record({
     address: null, //Address
     contact: null, //Contact
     dateOfBirth: moment(),
-    isDeleted: 0,
+    isDeleted: false,
     createByUserId: 0,
     updateByUserId: 0,
     // createDate: null, //Moment

@@ -21,7 +21,7 @@ export class Adjuster extends AdjusterRecord {
     id: number;
     companyId: number;
     insuranceMasterId: number;
-    firstName: number;
+    firstName: string;
     middleName: string;
     lastName: string;
     adjusterAddress: Address;

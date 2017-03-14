@@ -11,7 +11,7 @@ const RoomRecord = Record({
     roomTest: null,
     location: null,
     schedule: null,
-    isDeleted: 0
+    isDeleted: false
 });
 
 export class Room extends RoomRecord {

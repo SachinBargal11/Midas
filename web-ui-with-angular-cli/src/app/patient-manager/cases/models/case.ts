@@ -13,7 +13,7 @@ const CaseRecord = Record({
     locationId: 0,
     patientEmpInfoId: null,
     carrierCaseNo: '',
-    transportation: 1,
+    transportation: true,
     caseStatusId: CaseStatus.OPEN,
     attorneyId: 0,
     isDeleted: false,

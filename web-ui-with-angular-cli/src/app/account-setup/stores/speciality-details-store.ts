@@ -35,9 +35,9 @@ export class SpecialityDetailsStore {
     getSpecialityDetails(requestData): Observable<SpecialityDetail> {
         let promise = new Promise((resolve, reject) => {
             this._specialityDetailsService.getSpecialityDetails(requestData)
-                .subscribe((specialities: SpecialityDetail) => {
-                    this._specialityDetails.next(List(specialities));
-                    resolve(specialities);
+                .subscribe((specialityDetail: SpecialityDetail) => {
+                    // this._specialityDetails.next(List(specialityDetail));
+                    resolve(specialityDetail);
                 }, error => {
                     reject(error);
                 });

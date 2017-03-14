@@ -6,7 +6,7 @@ const SpecialityRecord = Record({
     name: '',
     specialityCode: '',
     isunitApply: false,
-    isDeleted: 0,
+    isDeleted: false,
     createByUserID: 0,
     updateByUserID: 0,
     createDate: null,

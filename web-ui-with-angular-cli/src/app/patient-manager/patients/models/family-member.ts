@@ -17,7 +17,7 @@ const FamilyMemberRecord = Record({
     ethnicitiesId: 0,
     cellPhone: '',
     workPhone: '',
-    primaryContact: ''
+    primaryContact: false
 });
 
 export class FamilyMember extends FamilyMemberRecord {

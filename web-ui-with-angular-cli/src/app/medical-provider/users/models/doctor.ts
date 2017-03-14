@@ -14,7 +14,7 @@ const DoctorRecord = Record({
     userId: 0,
     user: null,
     doctorSpecialities: null,
-    isDeleted: 0,
+    isDeleted: false,
     createByUserId: 0,
     updateByUserId: 0,
     createDate: null, //Moment

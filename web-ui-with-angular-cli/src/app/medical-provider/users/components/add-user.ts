@@ -85,7 +85,7 @@ export class AddUserComponent implements OnInit {
             userInfo: this.fb.group({
                 firstname: ['', Validators.required],
                 lastname: ['', Validators.required],
-                role: ['', Validators.required]
+                role: ['', [Validators.required]]
             }),
             doctor: this.fb.group({
                 licenseNumber: ['-', Validators.required],
@@ -182,8 +182,8 @@ export class AddUserComponent implements OnInit {
                 wcbRatingCode: userFormValues.doctor.wcbRatingCode,
                 npi: userFormValues.doctor.npi,
                 taxType: userFormValues.doctor.taxType,
-                title: 'Dr',
-                // title: userFormValues.doctor.title,
+                // title: 'Dr',
+                title: userFormValues.doctor.title,
                 doctorSpecialities: doctorSpecialities,
 
                 user: new User({
