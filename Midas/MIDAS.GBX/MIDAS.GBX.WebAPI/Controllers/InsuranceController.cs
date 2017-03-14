@@ -39,8 +39,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetByPatientId(Request, PatientId);
         }
 
-        
-
+        [HttpGet]
+        [Route("isInsuranceInfoAdded/{PatientId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage IsInsuranceInfoAdded(int PatientId)
+        {
+            return requestHandler.IsInsuranceInfoAdded(Request, PatientId);
+        }
 
         [HttpPost]
         [Route("save")]
