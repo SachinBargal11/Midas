@@ -16,7 +16,7 @@
           <Property Name="City" Type="nvarchar" MaxLength="50" />
           <Property Name="State" Type="nvarchar" MaxLength="50" />
           <Property Name="ZipCode" Type="nvarchar" MaxLength="10" />
-          <Property Name="Country" Type="nvarchar" MaxLength="10" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -220,28 +220,6 @@
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'MIDASGBX.dbo.Doctor_old' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="Doctor_old">
-          <Key>
-            <PropertyRef Name="id" />
-            <PropertyRef Name="CreateByUserID" />
-            <PropertyRef Name="CreateDate" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LicenseNumber" Type="nvarchar" MaxLength="50" />
-          <Property Name="WCBAuthorization" Type="nvarchar" MaxLength="50" />
-          <Property Name="WcbRatingCode" Type="nvarchar" MaxLength="50" />
-          <Property Name="NPI" Type="nvarchar" MaxLength="50" />
-          <Property Name="TaxType" Type="tinyint" />
-          <Property Name="Title" Type="nvarchar" MaxLength="10" />
-          <Property Name="IsDeleted" Type="bit" />
-          <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-          <Property Name="UserID" Type="int" />
         </EntityType>
         <EntityType Name="DoctorLocationSchedule">
           <Key>
@@ -498,7 +476,7 @@ warning 6002: The table/view 'MIDASGBX.dbo.Doctor_old' does not have a primary k
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PatientId" Type="int" Nullable="false" />
           <Property Name="RelationId" Type="tinyint" Nullable="false" />
-          <Property Name="FullName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="50" />
           <Property Name="FamilyName" Type="nvarchar" MaxLength="50" />
           <Property Name="Prefix" Type="nvarchar" MaxLength="10" />
           <Property Name="Sufix" Type="nvarchar" MaxLength="10" />
@@ -832,6 +810,15 @@ warning 6002: The table/view 'MIDASGBX.dbo.Doctor_old' does not have a primary k
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="2FactAuthEmailEnabled" Type="bit" />
           <Property Name="2FactAuthSMSEnabled" Type="bit" />
+        </EntityType>
+        <EntityType Name="UserApiRoleMapping">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="API" Type="varchar" MaxLength="100" />
+          <Property Name="ROLES" Type="varchar" MaxLength="50" />
+          <Property Name="METHODS" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="UserCompany">
           <Key>
@@ -2032,26 +2019,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="SubscriptionPlan" EntityType="Self.SubscriptionPlan" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserApiRoleMapping" EntityType="Self.UserApiRoleMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserCompany" EntityType="Self.UserCompany" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserCompanyRole" EntityType="Self.UserCompanyRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Doctor_old" EntityType="Self.Doctor_old" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Doctor_old].[id] AS [id], 
-    [Doctor_old].[LicenseNumber] AS [LicenseNumber], 
-    [Doctor_old].[WCBAuthorization] AS [WCBAuthorization], 
-    [Doctor_old].[WcbRatingCode] AS [WcbRatingCode], 
-    [Doctor_old].[NPI] AS [NPI], 
-    [Doctor_old].[TaxType] AS [TaxType], 
-    [Doctor_old].[Title] AS [Title], 
-    [Doctor_old].[IsDeleted] AS [IsDeleted], 
-    [Doctor_old].[CreateByUserID] AS [CreateByUserID], 
-    [Doctor_old].[CreateDate] AS [CreateDate], 
-    [Doctor_old].[UpdateByUserID] AS [UpdateByUserID], 
-    [Doctor_old].[UpdateDate] AS [UpdateDate], 
-    [Doctor_old].[UserID] AS [UserID]
-    FROM [dbo].[Doctor_old] AS [Doctor_old]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_AdjusterMaster_AddressInfo_AddressInfoId" Association="Self.FK_AdjusterMaster_AddressInfo_AddressInfoId">
             <End Role="AddressInfo" EntitySet="AddressInfo" />
             <End Role="AdjusterMaster" EntitySet="AdjusterMaster" />
@@ -2437,7 +2408,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ZipCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="Country" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
@@ -3011,7 +2982,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PatientId" Type="Int32" Nullable="false" />
           <Property Name="RelationId" Type="Byte" Nullable="false" />
-          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="FamilyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Prefix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Name="Sufix" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
@@ -3412,6 +3383,15 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="UserCompanies" Relationship="Self.FK_UserCompany_User" FromRole="User" ToRole="UserCompany" />
           <NavigationProperty Name="UserCompanyRoles" Relationship="Self.FK_UserCompanyRole_User" FromRole="User" ToRole="UserCompanyRole" />
         </EntityType>
+        <EntityType Name="UserApiRoleMapping">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="API" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ROLES" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="METHODS" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="UserCompany">
           <Key>
             <PropertyRef Name="id" />
@@ -3453,26 +3433,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Users" Relationship="Self.FK_User_UserType" FromRole="UserType" ToRole="User" />
-        </EntityType>
-        <EntityType Name="Doctor_old">
-          <Key>
-            <PropertyRef Name="id" />
-            <PropertyRef Name="CreateByUserID" />
-            <PropertyRef Name="CreateDate" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LicenseNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WCBAuthorization" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="WcbRatingCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="NPI" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="TaxType" Type="Byte" />
-          <Property Name="Title" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdateByUserID" Type="Int32" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <Property Name="UserID" Type="Int32" />
         </EntityType>
         <Association Name="FK_AdjusterMaster_AddressInfo_AddressInfoId">
           <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="0..1" />
@@ -4629,10 +4589,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="SubscriptionPlans" EntityType="Self.SubscriptionPlan" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="UserApiRoleMappings" EntityType="Self.UserApiRoleMapping" />
           <EntitySet Name="UserCompanies" EntityType="Self.UserCompany" />
           <EntitySet Name="UserCompanyRoles" EntityType="Self.UserCompanyRole" />
           <EntitySet Name="UserTypes" EntityType="Self.UserType" />
-          <EntitySet Name="Doctor_old" EntityType="Self.Doctor_old" />
           <AssociationSet Name="FK_AdjusterMaster_AddressInfo_AddressInfoId" Association="Self.FK_AdjusterMaster_AddressInfo_AddressInfoId">
             <End Role="AddressInfo" EntitySet="AddressInfoes" />
             <End Role="AdjusterMaster" EntitySet="AdjusterMasters" />
@@ -5864,6 +5824,16 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="UserApiRoleMappings">
+            <EntityTypeMapping TypeName="MIDASGBXModel.UserApiRoleMapping">
+              <MappingFragment StoreEntitySet="UserApiRoleMapping">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="API" ColumnName="API" />
+                <ScalarProperty Name="ROLES" ColumnName="ROLES" />
+                <ScalarProperty Name="METHODS" ColumnName="METHODS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="UserCompanies">
             <EntityTypeMapping TypeName="MIDASGBXModel.UserCompany">
               <MappingFragment StoreEntitySet="UserCompany">
@@ -5902,25 +5872,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Doctor_old">
-            <EntityTypeMapping TypeName="MIDASGBXModel.Doctor_old">
-              <MappingFragment StoreEntitySet="Doctor_old">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="LicenseNumber" ColumnName="LicenseNumber" />
-                <ScalarProperty Name="WCBAuthorization" ColumnName="WCBAuthorization" />
-                <ScalarProperty Name="WcbRatingCode" ColumnName="WcbRatingCode" />
-                <ScalarProperty Name="NPI" ColumnName="NPI" />
-                <ScalarProperty Name="TaxType" ColumnName="TaxType" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

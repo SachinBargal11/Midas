@@ -33,10 +33,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             patientfamilymemberBO.ID = patientfamilymember.Id;
             patientfamilymemberBO.PatientId = patientfamilymember.PatientId;
             patientfamilymemberBO.RelationId = patientfamilymember.RelationId;
-            patientfamilymemberBO.FullName = patientfamilymember.FullName;
-            patientfamilymemberBO.FamilyName = patientfamilymember.FamilyName;
-            patientfamilymemberBO.Prefix = patientfamilymember.Prefix;
-            patientfamilymemberBO.Sufix = patientfamilymember.Sufix;
+            //patientfamilymemberBO.FullName = patientfamilymember.FullName;
+            //patientfamilymemberBO.FamilyName = patientfamilymember.FamilyName;
+            //patientfamilymemberBO.Prefix = patientfamilymember.Prefix;
+            //patientfamilymemberBO.Sufix = patientfamilymember.Sufix;
             patientfamilymemberBO.Age = patientfamilymember.Age;
             patientfamilymemberBO.RaceId = (byte)patientfamilymember.RaceId;
             patientfamilymemberBO.EthnicitesId = (byte)patientfamilymember.EthnicitesId;
@@ -44,7 +44,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             patientfamilymemberBO.CellPhone = patientfamilymember.CellPhone;
             patientfamilymemberBO.WorkPhone = patientfamilymember.WorkPhone;
             patientfamilymemberBO.PrimaryContact = patientfamilymember.PrimaryContact;
-            patientfamilymemberBO.IsInActive = patientfamilymember.IsInActive;
+            //patientfamilymemberBO.IsInActive = patientfamilymember.IsInActive;
             patientfamilymemberBO.IsDeleted = patientfamilymember.IsDeleted;
             patientfamilymemberBO.CreateByUserID = patientfamilymember.CreateByUserID;
             patientfamilymemberBO.UpdateByUserID = patientfamilymember.UpdateByUserID;
@@ -154,10 +154,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     }
                     
                     patientfamilymemberDB.RelationId = (IsEditMode == true && patientfamilymemberBO.RelationId <= 0) ? patientfamilymemberDB.RelationId : patientfamilymemberBO.RelationId;
-                    patientfamilymemberDB.FullName = (IsEditMode == true && patientfamilymemberBO.FullName == null) ? patientfamilymemberDB.FullName : patientfamilymemberBO.FullName;
-                    patientfamilymemberDB.FamilyName = (IsEditMode == true && patientfamilymemberBO.FamilyName == null) ? patientfamilymemberDB.FamilyName : patientfamilymemberBO.FamilyName;
-                    patientfamilymemberDB.Prefix = (IsEditMode == true && patientfamilymemberBO.Prefix == null) ? patientfamilymemberDB.Prefix : patientfamilymemberBO.Prefix;
-                    patientfamilymemberDB.Sufix = (IsEditMode == true && patientfamilymemberBO.Sufix == null) ? patientfamilymemberDB.Sufix : patientfamilymemberBO.Sufix;
+                    //patientfamilymemberDB.FullName = (IsEditMode == true && patientfamilymemberBO.FullName == null) ? patientfamilymemberDB.FullName : patientfamilymemberBO.FullName;
+                   // patientfamilymemberDB.FamilyName = (IsEditMode == true && patientfamilymemberBO.FamilyName == null) ? patientfamilymemberDB.FamilyName : patientfamilymemberBO.FamilyName;
+                   // patientfamilymemberDB.Prefix = (IsEditMode == true && patientfamilymemberBO.Prefix == null) ? patientfamilymemberDB.Prefix : patientfamilymemberBO.Prefix;
+                    //patientfamilymemberDB.Sufix = (IsEditMode == true && patientfamilymemberBO.Sufix == null) ? patientfamilymemberDB.Sufix : patientfamilymemberBO.Sufix;
                     patientfamilymemberDB.Age = (IsEditMode == true && patientfamilymemberBO.Age <= 0) ? patientfamilymemberDB.Age : patientfamilymemberBO.Age;
                     patientfamilymemberDB.RaceId = (IsEditMode == true && patientfamilymemberBO.RaceId.HasValue == false) ? patientfamilymemberDB.RaceId : patientfamilymemberBO.RaceId;
                     patientfamilymemberDB.EthnicitesId = (IsEditMode == true && patientfamilymemberBO.EthnicitesId.HasValue == false) ? patientfamilymemberDB.EthnicitesId : patientfamilymemberBO.EthnicitesId;
@@ -165,7 +165,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     patientfamilymemberDB.CellPhone = (IsEditMode == true && patientfamilymemberBO.CellPhone == null) ? patientfamilymemberDB.CellPhone : patientfamilymemberBO.CellPhone;
                     patientfamilymemberDB.WorkPhone = (IsEditMode == true && patientfamilymemberBO.WorkPhone == null) ? patientfamilymemberDB.WorkPhone : patientfamilymemberBO.WorkPhone;
                     patientfamilymemberDB.PrimaryContact = (IsEditMode == true && patientfamilymemberBO.PrimaryContact == null) ? patientfamilymemberDB.PrimaryContact : patientfamilymemberBO.PrimaryContact;
-                    patientfamilymemberDB.IsInActive = (IsEditMode == true && patientfamilymemberBO.IsInActive.HasValue == false) ? patientfamilymemberDB.IsInActive : patientfamilymemberBO.IsInActive;
+                    //patientfamilymemberDB.IsInActive = (IsEditMode == true && patientfamilymemberBO.IsInActive.HasValue == false) ? patientfamilymemberDB.IsInActive : patientfamilymemberBO.IsInActive;
 
                     if (Add_patientfamilymemberDB == true)
                     {

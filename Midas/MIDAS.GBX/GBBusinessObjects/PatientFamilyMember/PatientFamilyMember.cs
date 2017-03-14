@@ -16,17 +16,17 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("relationId")]
         public byte RelationId { get; set; }
 
-        [JsonProperty("fullName")]
-        public string FullName { get; set; }
+        //[JsonProperty("fullName")]
+        //public string FullName { get; set; }
 
-        [JsonProperty("familyName")]
-        public string FamilyName { get; set; }
+        //[JsonProperty("familyName")]
+        //public string FamilyName { get; set; }
 
-        [JsonProperty("Prefix")]
-        public string Prefix { get; set; }
+        //[JsonProperty("Prefix")]
+        //public string Prefix { get; set; }
 
-        [JsonProperty("Sufix")]
-        public string Sufix { get; set; }
+        //[JsonProperty("Sufix")]
+        //public string Sufix { get; set; }
 
         [JsonProperty("Age")]
         public byte Age { get; set; }
@@ -49,8 +49,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("primaryContact")]
         public bool? PrimaryContact { get; set; }
 
-        [JsonProperty("isInActive")]
-        public bool? IsInActive { get; set; }
+        //[JsonProperty("isInActive")]
+        //public bool? IsInActive { get; set; }
 
         //[JsonProperty("Gender")]
         //public Gender Gender { get; set; }

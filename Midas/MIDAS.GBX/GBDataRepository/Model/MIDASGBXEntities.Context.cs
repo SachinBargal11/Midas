@@ -75,9 +75,9 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<SubscriptionPlan> SubscriptionPlans { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserApiRoleMapping> UserApiRoleMappings { get; set; }
         public virtual DbSet<UserCompany> UserCompanies { get; set; }
         public virtual DbSet<UserCompanyRole> UserCompanyRoles { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
-        public virtual DbSet<Doctor_old> Doctor_old { get; set; }
     }
 }

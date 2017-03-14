@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="f58f51e566d34ca7ba9e1a4d0dd0861b" Name="Diagram1">
+      <Diagram DiagramId="e6d83110e1994cd2a545744f936718c7" Name="Diagram1">
         <EntityTypeShape EntityType="MIDASGBXModel.AddressInfo" Width="1.5" PointX="0.75" PointY="51.375" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.AdjusterMaster" Width="1.5" PointX="3" PointY="52.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.Attorney" Width="1.5" PointX="14.25" PointY="53" IsExpanded="true" />
@@ -55,10 +55,10 @@
         <EntityTypeShape EntityType="MIDASGBXModel.SubscriptionPlan" Width="1.5" PointX="3.75" PointY="60.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.sysdiagram" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.User" Width="1.5" PointX="9" PointY="50.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.UserApiRoleMapping" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.UserCompany" Width="1.5" PointX="17.25" PointY="46.875" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.UserCompanyRole" Width="1.5" PointX="11.25" PointY="59.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.UserType" Width="1.5" PointX="6.75" PointY="58" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.Doctor_old" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
         <AssociationConnector Association="MIDASGBXModel.FK_AdjusterMaster_AddressInfo_AddressInfoId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Company_AddressInfo" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_InsuranceMaster_AddressInfo_AddressInfoId" ManuallyRouted="false" />
