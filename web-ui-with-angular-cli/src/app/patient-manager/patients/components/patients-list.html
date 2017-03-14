@@ -19,6 +19,7 @@
     [stacked]="stacked">
     <header>Patients</header>
     <p-column selectionMode="multiple"></p-column>
+    <!--<p-column header="Name" [filter]="true" filterPlaceholder="Search Patient Name" [sortable]="true">-->
     <p-column header="Name" [sortable]="true">
         <template let-currentPatient="rowData" pTemplate="body">
             <span>
@@ -26,6 +27,12 @@
             </span>
         </template>
     </p-column>
+    <!--<p-column field="brand" header="Brand (Custom)" [filter]="true" [style]="{'overflow':'visible'}" filterMatchMode="equals">
+    <template pTemplate="filter" let-col>
+        <p-dropdown [options]="brands" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
+    </template>
+</p-column>-->
+
     <!--<p-column field="user.firstName" header="First Name" [sortable]="true"></p-column>-->
     <!--<p-column field="user.lastName" header="Last Name" [sortable]="true"></p-column>-->
     <p-column field="user.address.address1" header="Address" [sortable]="true"></p-column>

@@ -5,7 +5,7 @@ import { Relation } from './enums/relation';
 const FamilyMemberRecord = Record({
     id: 0,
     patientId: 0,
-    relationId: Relation.FATHER,
+    relationId: Relation.SPOUSE,
     isInActive: false,
     fullName: '',
     familyName: '',
@@ -48,14 +48,14 @@ export class FamilyMember extends FamilyMemberRecord {
     // tslint:disable-next-line:member-ordering
     static getRelationLabel(relation: Relation): string {
         switch (relation) {
-            case Relation.FATHER:
-                return 'Father';
-            case Relation.MOTHER:
-                return 'Mother';
-            case Relation.SISTER:
-                return 'Sister';
-            case Relation.BROTHER:
-                return 'Brother';
+            case Relation.SPOUSE:
+                return 'Spouse';
+            case Relation.CHILD:
+                return 'Child';
+            // case Relation.SISTER:
+            //     return 'Sister';
+            // case Relation.BROTHER:
+            //     return 'Brother';
         }
     }
 

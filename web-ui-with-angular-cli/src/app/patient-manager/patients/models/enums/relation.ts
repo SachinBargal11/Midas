@@ -1,6 +1,6 @@
 export enum Relation {
-    FATHER = 1,
-    MOTHER = 2,
-    SISTER = 3,
-    BROTHER = 4
+    SPOUSE = 1,
+    CHILD = 2,
+    // SISTER = 3,
+    // BROTHER = 4
 }
