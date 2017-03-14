@@ -128,6 +128,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     //    existingPatientInfoDB.ForEach(p => p.IsInActive = false);
                     //}
 
+                    if (patientfamilymemberBO.PrimaryContact.HasValue == true && patientfamilymemberBO.PrimaryContact == true)
+                    {
+                        var existingPatientInfoDB = _context.PatientFamilyMembers.Where(p => p.PatientId == patientfamilymemberBO.PatientId).ToList();
+                        existingPatientInfoDB.ForEach(p => p.PrimaryContact = false);
+                    }
+
                     bool Add_patientfamilymemberDB = false;
                     patientfamilymemberDB = _context.PatientFamilyMembers.Where(p => p.Id == patientfamilymemberBO.ID).FirstOrDefault();
 
