@@ -180,6 +180,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        #region Is InsuranceInfo Added
+        public override object IsInsuranceInfoAdded(int id)
+        {
+            var acc = _context.PatientInsuranceInfoes.Where(p => p.PatientId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                     .FirstOrDefault<PatientInsuranceInfo>();
+           
+            if (acc == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }            
+        }
+        #endregion
+
+
         #region save
         public override object Save<T>(T entity)
         {

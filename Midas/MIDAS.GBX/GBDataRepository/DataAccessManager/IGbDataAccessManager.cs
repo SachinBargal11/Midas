@@ -15,7 +15,7 @@ namespace MIDAS.GBX.DataAccessManager
         int Delete(T entity);
         object Delete(int id);
         Object Get(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
-
+        Object IsInsuranceInfoAdded(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);        
         Object Get(T gbObject, int? nestingLevels = null);
         Object Signup(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object Login(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
