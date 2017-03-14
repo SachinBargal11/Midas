@@ -40,6 +40,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<ContactInfo> ContactInfoes { get; set; }
         public virtual DbSet<Doctor> Doctors { get; set; }
         public virtual DbSet<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }
+        public virtual DbSet<DoctorLocationSpecialty> DoctorLocationSpecialties { get; set; }
         public virtual DbSet<DoctorSpeciality> DoctorSpecialities { get; set; }
         public virtual DbSet<Gender> Genders { get; set; }
         public virtual DbSet<InsuranceMaster> InsuranceMasters { get; set; }
