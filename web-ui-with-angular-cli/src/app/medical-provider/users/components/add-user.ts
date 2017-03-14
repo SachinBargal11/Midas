@@ -35,7 +35,7 @@ import { SelectItem } from 'primeng/primeng';
 export class AddUserComponent implements OnInit {
     states: any[];
     cities: any[];
-    selectedRole: any[] = [];
+    selectedRole: any[] = ['1'];
     selectedCity = 0;
     specialitiesArr: SelectItem[] = [];
     // selectedSpeciality: SelectItem[] = [];
@@ -45,6 +45,7 @@ export class AddUserComponent implements OnInit {
     isSaveUserProgress = false;
     isCitiesLoading = false;
     doctorRole = false;
+    doctorFlag: boolean = false;
 
     constructor(
         private _statesStore: StatesStore,
@@ -87,15 +88,7 @@ export class AddUserComponent implements OnInit {
                 lastname: ['', Validators.required],
                 role: ['', [Validators.required]]
             }),
-            doctor: this.fb.group({
-                licenseNumber: ['-', Validators.required],
-                wcbAuthorization: ['-', Validators.required],
-                wcbRatingCode: ['-', Validators.required],
-                npi: ['-', Validators.required],
-                taxType: ['1', [Validators.required, AppValidators.selectedValueValidator]],
-                // title: ['-', Validators.required],
-                speciality: ['2', Validators.required]
-            }),
+            doctor: this.fb.group(this.initDoctorModel()),
             contact: this.fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
@@ -121,13 +114,33 @@ export class AddUserComponent implements OnInit {
             .subscribe(states => this.states = states);
     }
 
-    showDoctor() {
-        let x = document.getElementById('doctor');
-        if (x.style.display === 'none') {
-            x.style.display = 'block';
+    onSelectedRoleChange(roleValues: any) {
+        const doctorCtrl = this.userformControls.doctor;
+        if (_.contains(roleValues, '3')) {
+            Object.keys(doctorCtrl.controls).forEach(key => {
+                doctorCtrl.controls[key].setValidators(this.initDoctorModel()[key][1]);
+                doctorCtrl.controls[key].updateValueAndValidity();
+            });
+            this.doctorFlag = true;
         } else {
-            x.style.display = 'none';
+            Object.keys(doctorCtrl.controls).forEach(key => {
+                doctorCtrl.controls[key].setValidators(null);
+                doctorCtrl.controls[key].updateValueAndValidity();
+            });
+            this.doctorFlag = false;
         }
+    }
+    initDoctorModel() {
+        const model = {
+            licenseNumber: ['', Validators.required],
+            wcbAuthorization: ['', Validators.required],
+            wcbRatingCode: ['', Validators.required],
+            npi: ['', Validators.required],
+            taxType: ['', [Validators.required, AppValidators.selectedValueValidator]],
+            title: ['', Validators.required],
+            speciality: ['2', Validators.required]
+        };
+        return model;
     }
 
 
