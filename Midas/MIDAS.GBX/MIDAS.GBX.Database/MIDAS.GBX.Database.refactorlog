@@ -168,4 +168,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="EventStatus" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="1138450c-5bfe-4c5e-9d4e-2502eec8c602" ChangeDateTime="03/14/2017 11:33:01">
+    <Property Name="ElementName" Value="[dbo].[DoctorLocationSpecialty].[DoctorID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DoctorLocationSpecialty]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DoctorId" />
+  </Operation>
 </Operations>
