@@ -32,39 +32,61 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Entity Conversion
         public override T Convert<T, U>(U entity)
         {
-            PatientVisit2 patientVisit2 = entity as PatientVisit2;
-
-            if (patientVisit2 == null)
-                return default(T);
-            
-            BO.PatientVisit2 patientVisit2BO = new BO.PatientVisit2();
-            patientVisit2BO.ID = patientVisit2.Id;
-            patientVisit2BO.CalendarEventId = patientVisit2.CalendarEventId;
-            patientVisit2BO.CaseId = patientVisit2.CaseId;
-            patientVisit2BO.PatientId = patientVisit2.PatientId;
-            patientVisit2BO.LocationId = patientVisit2.LocationId;
-            patientVisit2BO.RoomId = patientVisit2.RoomId;
-            patientVisit2BO.DoctorId = patientVisit2.DoctorId;
-            patientVisit2BO.SpecialtyId = patientVisit2.SpecialtyId;
-            patientVisit2BO.EventStart = patientVisit2.EventStart;
-            patientVisit2BO.EventEnd = patientVisit2.EventEnd;
-            patientVisit2BO.Notes = patientVisit2.Notes;
-            patientVisit2BO.VisitStatusId = patientVisit2.VisitStatusId;
-            patientVisit2BO.VisitType = patientVisit2.VisitType;
-            
-            patientVisit2BO.IsDeleted = patientVisit2.IsDeleted;
-            patientVisit2BO.CreateByUserID = patientVisit2.CreateByUserID;
-            patientVisit2BO.UpdateByUserID = patientVisit2.UpdateByUserID;
-
-            patientVisit2BO.CalendarEvent = new BO.CalendarEvent();
-
-            using (CalendarEventRepository calEventRep = new CalendarEventRepository(_context))
+            if (entity is PatientVisit2)
             {
-                patientVisit2BO.CalendarEvent = calEventRep.Convert<BO.CalendarEvent, CalendarEvent>(patientVisit2.CalendarEvent);
+                PatientVisit2 patientVisit2 = entity as PatientVisit2;
+
+                if (patientVisit2 == null)
+                    return default(T);
+
+                BO.PatientVisit2 patientVisit2BO = new BO.PatientVisit2();
+                patientVisit2BO.ID = patientVisit2.Id;
+                patientVisit2BO.CalendarEventId = patientVisit2.CalendarEventId;
+                patientVisit2BO.CaseId = patientVisit2.CaseId;
+                patientVisit2BO.PatientId = patientVisit2.PatientId;
+                patientVisit2BO.LocationId = patientVisit2.LocationId;
+                patientVisit2BO.RoomId = patientVisit2.RoomId;
+                patientVisit2BO.DoctorId = patientVisit2.DoctorId;
+                patientVisit2BO.SpecialtyId = patientVisit2.SpecialtyId;
+                patientVisit2BO.EventStart = patientVisit2.EventStart;
+                patientVisit2BO.EventEnd = patientVisit2.EventEnd;
+                patientVisit2BO.Notes = patientVisit2.Notes;
+                patientVisit2BO.VisitStatusId = patientVisit2.VisitStatusId;
+                patientVisit2BO.VisitType = patientVisit2.VisitType;
+
+                patientVisit2BO.IsDeleted = patientVisit2.IsDeleted;
+                patientVisit2BO.CreateByUserID = patientVisit2.CreateByUserID;
+                patientVisit2BO.UpdateByUserID = patientVisit2.UpdateByUserID;
+
+                if (patientVisit2.CalendarEvent != null)
+                {
+                    patientVisit2BO.CalendarEvent = new BO.CalendarEvent();
+
+                    using (CalendarEventRepository calEventRep = new CalendarEventRepository(_context))
+                    {
+                        patientVisit2BO.CalendarEvent = calEventRep.Convert<BO.CalendarEvent, CalendarEvent>(patientVisit2.CalendarEvent);
+                    }
+                }
+
+                return (T)(object)patientVisit2BO;
             }
-            
-            return (T)(object)patientVisit2BO;
-            
+            else if (entity is CalendarEvent)
+            {
+                CalendarEvent CalendarEventDB = entity as CalendarEvent;
+
+                if (CalendarEventDB == null)
+                    return default(T);
+
+                BO.CalendarEvent CalendarEvent = new BO.CalendarEvent();
+                using (CalendarEventRepository calEventRep = new CalendarEventRepository(_context))
+                {
+                    CalendarEvent = calEventRep.Convert<BO.CalendarEvent, CalendarEvent>(CalendarEventDB);
+                }
+
+                return (T)(object)CalendarEvent;
+            }
+
+            return default(T);
         }
         #endregion
 
@@ -360,6 +382,45 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (object)res;
         }
         #endregion
+
+        #region DeleteVisit By ID
+        public override object Delete(int id)
+        {
+            var acc = _context.PatientVisit2.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<PatientVisit2>();
+            if (acc != null)
+            {
+                acc.IsDeleted = true;
+                _context.SaveChanges();
+            }
+            else if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var res = Convert<BO.PatientVisit2, PatientVisit2>(acc);
+            return (object)res;
+        }
+        #endregion
+
+        #region DeleteCalendarEvent By ID
+        public override object DeleteCalendarEvent(int id)
+        {
+            var acc = _context.CalendarEvents.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<CalendarEvent>();
+            if (acc != null)
+            {
+                acc.IsDeleted = true;
+                _context.SaveChanges();
+            }
+            else if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var res = Convert<BO.CalendarEvent, CalendarEvent>(acc);
+            return (object)res;
+        }
+        #endregion
+
 
         public void Dispose()
         {
