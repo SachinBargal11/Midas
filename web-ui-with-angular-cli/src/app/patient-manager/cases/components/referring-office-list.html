@@ -24,8 +24,8 @@
     <p-column field="refferingDoctorId" header="Referring Doctor" [sortable]="true"></p-column>
     <p-column field="isCurrentReffOffice" header="Current Referring Office" [sortable]="true"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
-        <template let-referringOffice="rowData" pTemplate="body">
+        <ng-template let-referringOffice="rowData" pTemplate="body">
             <a routerLink="edit/{{referringOffice.id}}"><i class="glyphicon glyphicon-edit"></i></a>
-        </template>
+        </ng-template>
     </p-column>
 </p-dataTable>

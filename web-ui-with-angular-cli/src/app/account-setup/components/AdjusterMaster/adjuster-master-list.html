@@ -21,14 +21,14 @@
     <p-column selectionMode="multiple"></p-column>
     <p-column field="firstName" header="Adjuster Name" [sortable]="true"></p-column>
     <p-column header="Phone Number" [sortable]="true">
-            <template let-rowdata="rowData" pTemplate="body">
+            <ng-template let-rowdata="rowData" pTemplate="body">
                 <span>{{rowdata.adjusterContact.cellPhone | phoneFormat}}
             </span>
-            </template>
+            </ng-template>
     </p-column>
     <p-column styleClass="actions-cell" header="Actions">
-        <template let-adjuster="rowData" pTemplate="body">
+        <ng-template let-adjuster="rowData" pTemplate="body">
             <a routerLink="edit/{{adjuster.id}}"><i class="glyphicon glyphicon-edit"></i></a>
-        </template>
+        </ng-template>
     </p-column>
 </p-dataTable>

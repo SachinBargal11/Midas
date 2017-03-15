@@ -1,4 +1,5 @@
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -53,6 +54,7 @@ import { DateFormatPipe } from './commons/pipes/date-format-pipe';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpModule,
     ReactiveFormsModule,

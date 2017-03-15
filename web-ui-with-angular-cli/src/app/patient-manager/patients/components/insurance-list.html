@@ -23,8 +23,8 @@
     <p-column field="policyNo" header="Policy Number" [sortable]="true"></p-column>
     <p-column field="insuranceTypeLabel" header="Insurance Type" [sortable]="true"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
-        <template let-insurance="rowData" pTemplate="body">
+        <ng-template let-insurance="rowData" pTemplate="body">
             <a routerLink="edit/{{insurance.id}}"><i class="glyphicon glyphicon-edit"></i></a>
-        </template>
+        </ng-template>
     </p-column>
 </p-dataTable>

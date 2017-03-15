@@ -12,12 +12,12 @@
                 <p-column field="insuranceTypeLabel" header="Insurance Type" [sortable]="true"></p-column>
                 <p-column field="insuranceCompanyCode" header="Insurance Company Code" [sortable]="true"></p-column>
                 <p-column header="Adjuster" [sortable]="true">
-                    <template let-rowdata="rowData" pTemplate="body">
+                    <ng-template let-rowdata="rowData" pTemplate="body">
                         <select class="form-control">
                                     <option value="">-Select Adjuster-</option>
                                     <option *ngFor="let adjuster of adjusters" value="{{adjuster.id}}">{{adjuster.firstName}}</option>
                                 </select>
-                    </template>
+                    </ng-template>
                 </p-column>
                 </p-dataTable>
 

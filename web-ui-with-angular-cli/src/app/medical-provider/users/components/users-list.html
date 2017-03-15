@@ -24,22 +24,22 @@
     <!--<p-column field="firstName" header="First Name" [sortable]="true"></p-column>
     <p-column field="lastName" header="Last Name" [sortable]="true"></p-column>-->
     <p-column header="User Name" [sortable]="true">
-        <template let-user="rowData" pTemplate="body">
+        <ng-template let-user="rowData" pTemplate="body">
             <a (click)="editUser(user)">{{user.firstName}} {{user.lastName}}
             <!--<a routerLink="{{user.id}}/basic">{{user.firstName}} {{user.lastName}}-->
             </a>
-        </template>
+        </ng-template>
     </p-column>
     <p-column header="User Role" [sortable]="true">
-        <template let-user="rowData" pTemplate="body">
+        <ng-template let-user="rowData" pTemplate="body">
             {{user.userRole}}
-        </template>
+        </ng-template>
     </p-column>
     <p-column field="userName" header="Email" [sortable]="true"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
-        <template let-user="rowData" pTemplate="body">
+        <ng-template let-user="rowData" pTemplate="body">
             <a (click)="editUser(user)"><i class="glyphicon glyphicon-edit"></i></a>
             <!--<a routerLink="edit/{{user.id}}"><i class="glyphicon glyphicon-edit"></i></a>-->
-        </template>
+        </ng-template>
     </p-column>
 </p-dataTable>

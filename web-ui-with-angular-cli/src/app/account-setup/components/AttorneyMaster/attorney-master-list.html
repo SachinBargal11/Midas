@@ -21,14 +21,14 @@
     <p-column selectionMode="multiple"></p-column>
     <p-column field="user.firstName" header="Attorney Name" [sortable]="true"></p-column>
     <p-column header="Phone Number" [sortable]="true">
-            <template let-rowdata="rowData" pTemplate="body">
+            <ng-template let-rowdata="rowData" pTemplate="body">
                 <span>{{rowdata.user.contact.cellPhone | phoneFormat}}
             </span>
-            </template>
+            </ng-template>
     </p-column>
     <p-column styleClass="actions-cell" header="Actions">
-        <template let-attorney="rowData" pTemplate="body">
+        <ng-template let-attorney="rowData" pTemplate="body">
             <a routerLink="edit/{{attorney.id}}"><i class="glyphicon glyphicon-edit"></i></a>
-        </template>
+        </ng-template>
     </p-column>
 </p-dataTable>

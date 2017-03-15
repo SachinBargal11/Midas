@@ -20,16 +20,16 @@
     <header>Doctors</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column header="Doctor Name" [sortable]="true">
-       <template let-doctor="rowData" pTemplate="body">
+       <ng-template let-doctor="rowData" pTemplate="body">
             <a routerLink="{{doctor.id}}">{{doctor.doctor.user.firstName}} {{doctor.doctor.user.lastName}}
             </a>
-        </template>
+        </ng-template>
     </p-column>
     <p-column field="doctor.user.userTypeLabel" header="User Type" [sortable]="true"></p-column>
     <p-column field="doctor.user.userName" header="Email" [sortable]="true"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
-        <template let-schedule="rowData" pTemplate="body">
+        <ng-template let-schedule="rowData" pTemplate="body">
             <a routerLink="{{schedule.id}}/schedule"><i class="glyphicon glyphicon-edit"></i></a>
-        </template>
+        </ng-template>
     </p-column>
 </p-dataTable>

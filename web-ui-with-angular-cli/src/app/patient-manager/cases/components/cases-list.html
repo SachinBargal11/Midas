@@ -22,18 +22,18 @@
     <header>Cases</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column header="Patient Name" [sortable]="true">
-           <template pTemplate="body">
+           <ng-template pTemplate="body">
             {{patientName}}
             
-        </template>
+        </ng-template>
     </p-column>
     <p-column field="caseStatusLabel" header="Case Status" [sortable]="true"></p-column>
     <p-column field="caseTypeLabel" header="Case Type" [sortable]="true"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
-        <template let-case="rowData" pTemplate="body">
+        <ng-template let-case="rowData" pTemplate="body">
             <!--<a><i class="glyphicon glyphicon-edit"></i></a>-->
             <a routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
-        </template>
+        </ng-template>
     </p-column>
 </p-dataTable>
 <router-outlet></router-outlet>
