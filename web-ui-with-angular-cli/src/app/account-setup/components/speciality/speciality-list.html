@@ -8,7 +8,8 @@
          <input #gb type="text" class="form-control" style="float:left" placeholder="Search Speciality">
     </div>
 </div>
-<p-dataTable [value]="specialities" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+<p-dataTable [value]="specialities" [lazy]="true" [rows]="10" [paginator]="true" [globalFilter]="gb" 
+[totalRecords]="totalRecords" (onLazyLoad)="loadSpecialitiesLazy($event)" [responsive]="true" [stacked]="stacked">
     <header>List of Specialities</header>
     <p-column field="name" header="Name" [sortable]="true"></p-column>
     <p-column field="specialityCode" header="Speciality Code" [sortable]="true"></p-column>
