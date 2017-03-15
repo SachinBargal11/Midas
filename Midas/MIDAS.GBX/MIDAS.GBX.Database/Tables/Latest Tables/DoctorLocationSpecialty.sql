@@ -14,21 +14,21 @@
 GO
 
 ALTER TABLE [dbo].[DoctorLocationSpecialty]  WITH CHECK ADD  CONSTRAINT [FK_DoctorLocationSpecialty_Doctor_DoctorId] FOREIGN KEY([DoctorId])
-REFERENCES [dbo].[Doctor] ([Id])
+	REFERENCES [dbo].[Doctor] ([Id])
 GO
 
 ALTER TABLE [dbo].[DoctorLocationSpecialty] CHECK CONSTRAINT [FK_DoctorLocationSpecialty_Doctor_DoctorId]
 GO
 
 ALTER TABLE [dbo].[DoctorLocationSpecialty]  WITH CHECK ADD  CONSTRAINT [FK_DoctorLocationSpecialty_Location_LocationId] FOREIGN KEY([LocationId])
-REFERENCES [dbo].[Location] ([id])
+	REFERENCES [dbo].[Location] ([id])
 GO
 
 ALTER TABLE [dbo].[DoctorLocationSpecialty] CHECK CONSTRAINT [FK_DoctorLocationSpecialty_Location_LocationId]
 GO
 
 ALTER TABLE [dbo].[DoctorLocationSpecialty]  WITH CHECK ADD  CONSTRAINT [FK_DoctorLocationSpecialty_SpecialtyId] FOREIGN KEY([SpecialtyId])
-REFERENCES [dbo].[Specialty] ([id])
+	REFERENCES [dbo].[Specialty] ([id])
 GO
 
 ALTER TABLE [dbo].[DoctorLocationSpecialty] CHECK CONSTRAINT [FK_DoctorLocationSpecialty_SpecialtyId]
