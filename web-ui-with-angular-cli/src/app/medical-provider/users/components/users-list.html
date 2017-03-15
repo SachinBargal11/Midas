@@ -1,21 +1,21 @@
 <div class="input-group">
-<h3 class="with-border">Users
-    <a class="btn btn-danger btn-sm pull-right" (click)="deleteUser()">
-        <i class="fa fa-trash-o fa-1x"></i>
-        <span class="hidden-md-down">Delete Selected Users</span>
-        <loader [visible]="isDeleteProgress"></loader>
-    </a>
-    <a class="pull-right btn btn-primary btn-sm btn-inline" [routerLink]="['add']"><i class="fa fa-plus" aria-hidden="true"></i> 
+    <h3 class="with-border">Users
+        <a class="btn btn-danger btn-sm pull-right" (click)="deleteUser()">
+            <i class="fa fa-trash-o fa-1x"></i>
+            <span class="hidden-md-down">Delete Selected Users</span>
+            <loader [visible]="isDeleteProgress"></loader>
+        </a>
+        <a class="pull-right btn btn-primary btn-sm btn-inline" [routerLink]="['add']"><i class="fa fa-plus" aria-hidden="true"></i> 
     <span class="hidden-md-down">Add User</span></a>
-</h3>
+    </h3>
 </div>
 <div class="ui-widget-header row">
-   <div class="col-lg-4 input-group">
-       <span class="input-group-addon"><i class="fa fa-search"></i></span>
-       <!--<i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>-->
-       <!--<input #gb type="text" pInputText size="50" style="float:left" placeholder="Search User">-->
-       <input #gb type="text" class="form-control" style="float:left" placeholder="Search User">
-   </div>
+    <div class="col-lg-4 input-group">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        <!--<i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>-->
+        <!--<input #gb type="text" pInputText size="50" style="float:left" placeholder="Search User">-->
+        <input #gb type="text" class="form-control" style="float:left" placeholder="Search User">
+    </div>
 </div>
 <p-dataTable [value]="users" [(selection)]="selectedUsers" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
     [stacked]="stacked">
@@ -23,14 +23,18 @@
     <p-column selectionMode="multiple"></p-column>
     <!--<p-column field="firstName" header="First Name" [sortable]="true"></p-column>
     <p-column field="lastName" header="Last Name" [sortable]="true"></p-column>-->
-     <p-column header="User Name" [sortable]="true">
-       <template let-user="rowData" pTemplate="body">
+    <p-column header="User Name" [sortable]="true">
+        <template let-user="rowData" pTemplate="body">
             <a (click)="editUser(user)">{{user.firstName}} {{user.lastName}}
             <!--<a routerLink="{{user.id}}/basic">{{user.firstName}} {{user.lastName}}-->
             </a>
         </template>
     </p-column>
-    <p-column field="userTypeLabel" header="User Type" [sortable]="true"></p-column>
+    <p-column header="User Role" [sortable]="true">
+        <template let-user="rowData" pTemplate="body">
+            {{user.userRole}}
+        </template>
+    </p-column>
     <p-column field="userName" header="Email" [sortable]="true"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
         <template let-user="rowData" pTemplate="body">

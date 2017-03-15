@@ -54,6 +54,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientVisit2BO.VisitStatusId = patientVisit2.VisitStatusId;
                 patientVisit2BO.VisitType = patientVisit2.VisitType;
 
+                patientVisit2BO.IsCancelled = patientVisit2.IsCancelled;
                 patientVisit2BO.IsDeleted = patientVisit2.IsDeleted;
                 patientVisit2BO.CreateByUserID = patientVisit2.CreateByUserID;
                 patientVisit2BO.UpdateByUserID = patientVisit2.UpdateByUserID;
@@ -384,7 +385,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region DeleteVisit By ID
-        public override object Delete(int id)
+        public override object DeleteVisit(int id)
         {
             var acc = _context.PatientVisit2.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<PatientVisit2>();
             if (acc != null)
@@ -420,6 +421,68 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (object)res;
         }
         #endregion
+
+        #region CancleVisit By ID
+        public override object CancleVisit(int id)
+        {
+            var acc = _context.PatientVisit2.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<PatientVisit2>();
+            if (acc != null)
+            {
+                acc.IsCancelled = true;
+                _context.SaveChanges();
+            }
+            else if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var res = Convert<BO.PatientVisit2, PatientVisit2>(acc);
+            return (object)res;
+        }
+        #endregion
+
+        #region CancleCalendarEvent By ID
+        public override object CancleCalendarEvent(int id)
+        {
+            var acc = _context.CalendarEvents.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<CalendarEvent>();
+            if (acc != null)
+            {
+                acc.IsCancelled = true;
+                _context.SaveChanges();
+            }
+            else if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var res = Convert<BO.CalendarEvent, CalendarEvent>(acc);
+            return (object)res;
+        }
+        #endregion
+
+        #region Get By Case Id
+        public override object GetByCaseId(int CaseId)
+        {
+            var acc = _context.PatientVisit2
+                              .Where(p => p.CaseId == CaseId
+                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                              .ToList<PatientVisit2>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Case Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PatientVisit2> lstpatientvisit = new List<BO.PatientVisit2>();
+                foreach (PatientVisit2 item in acc)
+                {
+                    lstpatientvisit.Add(Convert<BO.PatientVisit2, PatientVisit2>(item));
+                }
+                return lstpatientvisit;
+            }
+        }
+        #endregion 
 
 
         public void Dispose()

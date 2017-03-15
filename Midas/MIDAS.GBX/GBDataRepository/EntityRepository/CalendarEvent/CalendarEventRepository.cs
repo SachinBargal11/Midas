@@ -49,6 +49,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             calendarEventBO.RecurrenceException = calendarEvent.RecurrenceException;
             calendarEventBO.IsAllDay = calendarEvent.IsAllDay;
 
+            calendarEventBO.IsCancelled = calendarEvent.IsCancelled;
             calendarEventBO.IsDeleted = calendarEvent.IsDeleted;
             calendarEventBO.CreateByUserID = calendarEvent.CreateByUserID;
             calendarEventBO.UpdateByUserID = calendarEvent.UpdateByUserID;            

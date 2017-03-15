@@ -1,60 +1,79 @@
-import { FamilyMember } from '../models/family-member';
-import {Component, OnInit, ElementRef} from '@angular/core';
-import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
-import * as moment from 'moment';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-import {SessionStore} from '../../../commons/stores/session-store';
-import {NotificationsStore} from '../../../commons/stores/notifications-store';
-import { ProgressBarService } from '../../../commons/services/progress-bar-service';
+import { SessionStore } from '../../../commons/stores/session-store';
+import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
+import * as moment from 'moment';
+import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { AppValidators } from '../../../commons/utils/AppValidators';
-import { StatesStore } from '../../../commons/stores/states-store';
+import { FamilyMember } from '../models/family-member';
 import { FamilyMemberStore } from '../stores/family-member-store';
+import { PatientsStore } from '../stores/patients-store';
+import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 
 @Component({
-    selector: 'add-family-member',
-    templateUrl: './add-family-member.html'
+    selector: 'edit-family-member',
+    templateUrl: './edit-family-member.html'
 })
 
 
-export class AddFamilyMemberComponent implements OnInit {
-    isCitiesLoading = false;
+export class EditFamilyMemberComponent implements OnInit {
+    cellPhone: string;
     patientId: number;
-
     familyMemberForm: FormGroup;
     familyMemberFormControls;
     isSaveProgress = false;
+    familyMember: FamilyMember;
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
         public _route: ActivatedRoute,
+        private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
-        private _statesStore: StatesStore,
-        private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _familyMemberStore: FamilyMemberStore,
+        private _patientsStore: PatientsStore,
+        private _phoneFormatPipe: PhoneFormatPipe,
         private _elRef: ElementRef
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId);
+        });
+        this._route.params.subscribe((routeParams: any) => {
+            let familyMemberId: number = parseInt(routeParams.id);
+            this._progressBarService.show();
+            let result = this._familyMemberStore.fetchFamilyMemberById(familyMemberId);
+            result.subscribe(
+                (familyMember: any) => {
+                    this.familyMember = familyMember.toJS();
+                    this.cellPhone = this._phoneFormatPipe.transform(this.familyMember.cellPhone);
+                },
+                (error) => {
+                    this._router.navigate(['../../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
         });
         this.familyMemberForm = this.fb.group({
                 relationId: ['', Validators.required],
                 firstName: ['', Validators.required],
                 middleName: [''],
                 lastName: ['', Validators.required],
-                // suffix: ['', Validators.required],
                 age: ['', Validators.required],
                 races: ['', Validators.required],
                 ethnicities: ['', Validators.required],
                 gender: ['', Validators.required],
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
                 workPhone: [''],
-                primaryContact: [1]
-            });
+                primaryContact: ['']
+        });
 
         this.familyMemberFormControls = this.familyMemberForm.controls;
     }
@@ -68,12 +87,9 @@ export class AddFamilyMemberComponent implements OnInit {
         let familyMember = new FamilyMember({
             patientId: this.patientId,
             relationId: familyMemberFormValues.relationId,
-            // fullName: familyMemberFormValues.fullName,
             firstName: familyMemberFormValues.firstName,
-            // familyName: familyMemberFormValues.familyName,
             middleName: familyMemberFormValues.middleName,
             lastName: familyMemberFormValues.lastName,
-            // sufix: familyMemberFormValues.suffix,
             age: familyMemberFormValues.age,
             raceId: familyMemberFormValues.races,
             ethnicitiesId: familyMemberFormValues.ethnicities,
@@ -83,19 +99,19 @@ export class AddFamilyMemberComponent implements OnInit {
             primaryContact: familyMemberFormValues.primaryContact
         });
         this._progressBarService.show();
-        result = this._familyMemberStore.addFamilyMember(familyMember);
+        result = this._familyMemberStore.updateFamilyMember(familyMember, this.familyMember.id);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
-                    'title': 'Family Member added successfully!',
+                    'title': 'Family Member updated successfully!',
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../'], { relativeTo: this._route });
+                this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
-                let errString = 'Unable to add Family Member.';
+                let errString = 'Unable to update Family Member.';
                 let notification = new Notification({
                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
                     'type': 'ERROR',
@@ -110,5 +126,5 @@ export class AddFamilyMemberComponent implements OnInit {
                 this.isSaveProgress = false;
                 this._progressBarService.hide();
             });
-        }
+    }
 }

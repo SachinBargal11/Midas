@@ -49,5 +49,9 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("calendarEvent")]
         public CalendarEvent CalendarEvent { get; set; }
+
+        [JsonProperty("isCancelled")]
+        public bool? IsCancelled { get; set; }
+
     }
 }

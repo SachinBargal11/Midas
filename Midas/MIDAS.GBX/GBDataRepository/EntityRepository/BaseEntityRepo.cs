@@ -232,6 +232,14 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+        public virtual Object CancleVisit(int id)
+        {
+            throw new NotImplementedException();
+        }
+        public virtual Object CancleCalendarEvent(int id)
+        {
+            throw new NotImplementedException();
+        }
         public virtual object Delete(int id)
         {
             throw new NotImplementedException();
@@ -240,7 +248,10 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
-        
+        public virtual object DeleteVisit(int id)
+        {
+            throw new NotImplementedException();
+        }
         public virtual object GetPatientAccidentInfoByPatientId(int id)
         {
             throw new NotImplementedException();

@@ -34,6 +34,7 @@ import { Speciality } from '../../../account-setup/models/speciality';
 export class UserBasicComponent implements OnInit {
     userId: number;
     userRoleFlag: number;
+    doctorFlag: boolean = false;
     cellPhone: string;
     selectedRole: any[] = [];
     faxNo: string;
@@ -46,7 +47,6 @@ export class UserBasicComponent implements OnInit {
     selectedDoctorSpecialities: SelectItem[] = [];
     user: User;
     doctor: Doctor;
-    doctorDetail: Doctor;
     doctorRole = false;
     address = new Address({});
     contact = new Contact({});
@@ -104,13 +104,12 @@ export class UserBasicComponent implements OnInit {
             this._doctorsStore.fetchDoctorById(this.userId)
                 .subscribe(
                 (doctorDetail: Doctor) => {
-                    this.doctorDetail = doctorDetail;
                     this.doctor = doctorDetail;
                     this.user = doctorDetail.user;
                     this.cellPhone = this._phoneFormatPipe.transform(this.user.contact.cellPhone);
                     this.faxNo = this._faxNoFormatPipe.transform(this.user.contact.faxNo);
                     this.selectedRole = _.map(this.user.roles, (currentRole: any) => {
-                        return currentRole.roleType;
+                        return currentRole.roleType.toString();
                     });
                     this.selectedDoctorSpecialities = _.map(doctorDetail.doctorSpecialities, (currentDoctorSpeciality: any) => {
                         return currentDoctorSpeciality.specialty.id.toString();
@@ -161,15 +160,7 @@ export class UserBasicComponent implements OnInit {
                 lastName: ['', Validators.required],
                 role: ['', Validators.required]
             }),
-            doctor: this.fb.group({
-                licenseNumber: ['-', Validators.required],
-                wcbAuthorization: ['-', Validators.required],
-                wcbRatingCode: ['-', Validators.required],
-                npi: ['-', Validators.required],
-                taxType: ['1', [Validators.required, AppValidators.selectedValueValidator]],
-                title: ['-', Validators.required],
-                speciality: ['']
-            }),
+            doctor: this.fb.group(this.initDoctorModel()),
             contact: this.fb.group({
                 emailAddress: [{ value: '', disabled: true }, [Validators.required, AppValidators.emailValidator]],
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
@@ -194,30 +185,33 @@ export class UserBasicComponent implements OnInit {
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
     }
-    showDoctor() {
-        if (this.selectedRole.length !== 0) {
-            this.selectedRole.forEach(element => {
-                if (element !== '3') {
-                    this.doctor = null;
-                } else if (element === '3') {
-                    if (this.doctorDetail) {
-                        this.doctor = this.doctorDetail;
-                        this.selectedSpecialities = this.selectedDoctorSpecialities;
-                    } else {
-                        this.doctor = new Doctor({
-                            licenseNumber: '-',
-                            wcbAuthorization: '-',
-                            wcbRatingCode: '-',
-                            npi: '-',
-                            taxType: '1',
-                            title: '-'
-                        });
-                    }
-                }
+    onSelectedRoleChange(roleValues: any) {
+        const doctorCtrl = this.userformControls.doctor;
+        if (_.contains(roleValues, '3')) {
+            Object.keys(doctorCtrl.controls).forEach(key => {
+                doctorCtrl.controls[key].setValidators(this.initDoctorModel()[key][1]);
+                doctorCtrl.controls[key].updateValueAndValidity();
             });
+            this.doctorFlag = true;
         } else {
-            this.doctor = null;
+            Object.keys(doctorCtrl.controls).forEach(key => {
+                doctorCtrl.controls[key].setValidators(null);
+                doctorCtrl.controls[key].updateValueAndValidity();
+            });
+            this.doctorFlag = false;
         }
+    }
+    initDoctorModel() {
+        const model = {
+            licenseNumber: ['', Validators.required],
+            wcbAuthorization: ['', Validators.required],
+            wcbRatingCode: ['', Validators.required],
+            npi: ['', Validators.required],
+            taxType: ['', [Validators.required, AppValidators.selectedValueValidator]],
+            title: ['', Validators.required],
+            speciality: ['2', Validators.required]
+        };
+        return model;
     }
 
     updateUser() {

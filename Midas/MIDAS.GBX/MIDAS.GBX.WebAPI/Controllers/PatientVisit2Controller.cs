@@ -63,7 +63,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [AllowAnonymous]
         public HttpResponseMessage DeleteVisit(int id)
         {
-            return requestHandler.Delete(Request, id);
+            return requestHandler.DeleteVisit(Request, id);
         }
 
         [HttpDelete]
@@ -72,6 +72,30 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public HttpResponseMessage DeleteCalendarEvent(int id)
         {
             return requestHandler.DeleteCalendarEvent(Request, id);
+        }
+
+        [HttpGet]
+        [Route("CancleVisit/{id}")]
+        [AllowAnonymous]
+        public HttpResponseMessage CancleVisit(int id)
+        {
+            return requestHandler.CancleVisit(Request, id);
+        }
+
+        [HttpGet]
+        [Route("CancleCalendarEvent/{id}")]
+        [AllowAnonymous]
+        public HttpResponseMessage CancleCalendarEvent(int id)
+        {
+            return requestHandler.CancleCalendarEvent(Request, id);
+        }
+
+        [HttpGet]
+        [Route("getByCaseId/{CaseId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetByCaseId(int CaseId)
+        {
+            return requestHandler.GetByCaseId(Request, CaseId);
         }
 
 

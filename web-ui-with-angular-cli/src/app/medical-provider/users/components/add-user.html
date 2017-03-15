@@ -39,12 +39,11 @@
                         <span class="color-red">*</span>
                             </label>
                     <div class="form-group" [class.error]="!userformControls.userInfo.controls.role.valid">
-                        <p-checkbox name="role" label="Regular Staff" formControlName="role" [(ngModel)]="selectedRole" value="1"></p-checkbox>
-                        <p-checkbox name="role" label="Office Manager" formControlName="role" [(ngModel)]="selectedRole" value="2"></p-checkbox>
-                        <!--<p-checkbox name="role" label="Doctor" formControlName="role" [(ngModel)]="selectedRole" value="3"></p-checkbox>-->
-                        <p-checkbox id="doctorRole" name="role" label="Doctor" formControlName="role" [(ngModel)]="selectedRole" value="3" (click)="showDoctor()"></p-checkbox>
-                        <p-checkbox name="role" label="Billing Staff" formControlName="role" [(ngModel)]="selectedRole" value="4"></p-checkbox>
-                        <p-checkbox name="role" label="Nurse" formControlName="role" [(ngModel)]="selectedRole" value="5"></p-checkbox>
+                        <p-checkbox name="role" label="Regular Staff" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)" value="1"></p-checkbox>
+                        <p-checkbox name="role" label="Office Manager" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)" value="2"></p-checkbox>
+                        <p-checkbox id="doctorRole" name="role" label="Doctor" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)" value="3"></p-checkbox>
+                        <p-checkbox name="role" label="Billing Staff" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)" value="4"></p-checkbox>
+                        <p-checkbox name="role" label="Nurse" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)" value="5"></p-checkbox>
                         <div class='error-list' *ngIf="!userformControls.userInfo.controls.role.valid">
                             <ul>
                                 <li *ngIf="userformControls.userInfo.controls.role.hasError('required')">Minimum 1 role must be selected.</li>
@@ -55,7 +54,7 @@
             </div>
         </div>
     </section>
-    <section class="card" id="doctor" style="display: none;">
+    <section class="card" *ngIf="doctorFlag">
         <header class="card-header card-header-lg">
             Doctor's Information
         </header>
@@ -122,7 +121,7 @@
                             </label>
                     <div class="form-group" [class.error]="userformControls.doctor.controls.taxType.touched && !userformControls.doctor.controls.taxType.valid">
                         <select formControlName="taxType" class="selectpicker form-control" title="Select Tax Type." [class.error]="userformControls.doctor.controls.taxType.touched && !userformControls.doctor.controls.taxType.valid">
-                                 <option value="0">-Select Tax Type-</option>
+                                 <option value="">-Select Tax Type-</option>
                                  <option disabled>────────────────────</option>
                                  <option value="1">Tax1</option>
                                  <option value="2">Tax2</option>
@@ -134,7 +133,7 @@
                         </div>
                     </div>
                 </div>
-                <!--<div class="col-lg-4">
+                <div class="col-lg-4">
                     <label class="form-label"> Title
                                 <span class="color-red">*</span>
                             </label>
@@ -146,7 +145,20 @@
                             </ul>
                         </div>
                     </div>
+                </div>
+                <!--<div class="col-lg-4">
+                    <label class="form-label"> Speciality <span class="color-red">*</span></label>
+                    <div class="form-group" [class.error]="userformControls.doctor.controls.speciality.touched && !userformControls.doctor.controls.speciality.valid">
+                        <p-multiSelect [options]="specialitiesArr" [(ngModel)]="selectedSpeciality" defaultLabel="Select Speciality" formControlName="speciality"></p-multiSelect>
+                        <div class='error-list' *ngIf="userformControls.doctor.controls.speciality.touched && !userformControls.doctor.controls.speciality.valid">
+                            <ul>
+                                <li *ngIf="userformControls.doctor.controls.speciality.hasError('selectedValueValidator')">Speciality is required.</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>-->
+            </div>
+            <div class="row">
                 <div class="col-lg-4">
                     <label class="form-label"> Speciality <span class="color-red">*</span></label>
                     <div class="form-group" [class.error]="userformControls.doctor.controls.speciality.touched && !userformControls.doctor.controls.speciality.valid">
@@ -159,19 +171,6 @@
                     </div>
                 </div>
             </div>
-            <!--<div class="row">
-                <div class="col-lg-4">
-                    <label class="form-label"> Speciality <span class="color-red">*</span></label>
-                    <div class="form-group" [class.error]="userformControls.doctor.controls.speciality.touched && !userformControls.doctor.controls.speciality.valid">
-                        <p-multiSelect [options]="specialitiesArr" [(ngModel)]="selectedSpeciality" defaultLabel="Select Speciality" formControlName="speciality"></p-multiSelect>
-                        <div class='error-list' *ngIf="userformControls.doctor.controls.speciality.touched && !userformControls.doctor.controls.speciality.valid">
-                            <ul>
-                                <li *ngIf="userformControls.doctor.controls.speciality.hasError('selectedValueValidator')">Speciality is required.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>-->
         </div>
     </section>
     <section class="card">

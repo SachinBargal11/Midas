@@ -16,6 +16,8 @@
 	[Transportation] [bit] NOT NULL DEFAULT 0,
 	[CaseStatusId] [TINYINT] NULL,
 	[AttorneyId] [int] NULL,
+	[IsConsentFormSigned] BIT NOT NULL DEFAULT 0, 
+
 	[IsDeleted] [bit] NULL,
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NOT NULL,
@@ -80,3 +82,10 @@ GO
 ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_CaseStatus_CaseStatusId]
 GO
 
+--ALTER TABLE [dbo].[Case] ADD [IsConsentFormSigned] BIT NOT NULL DEFAULT 0
+--GO
+--ALTER TABLE [dbo].[Case] DROP [LocationId]
+/*
+	Create a new table CaseCompanyLocationMapping, once the consent form is given then the entry is made into CaseCompanyLocationMapping table to make the company view the case.
+*/
+--GO
