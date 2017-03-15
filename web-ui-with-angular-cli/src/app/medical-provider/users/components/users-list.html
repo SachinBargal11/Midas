@@ -15,8 +15,9 @@
         <input #gb type="text" class="form-control" style="float:left" placeholder="Search User">
     </div>
 </div>
-<p-dataTable [value]="users" [(selection)]="selectedUsers" [lazy]="true" [rows]="10" [paginator]="true" [globalFilter]="gb" 
-[totalRecords]="totalRecords" (onLazyLoad)="loadUsersLazy($event)" [responsive]="true" [stacked]="stacked">
+<!--<p-dataTable [value]="users" [(selection)]="selectedUsers" [lazy]="true" [rows]="10" [paginator]="true" [globalFilter]="gb" 
+[totalRecords]="totalRecords" (onLazyLoad)="loadUsersLazy($event)" [responsive]="true" [stacked]="stacked">-->
+<p-dataTable [value]="users" [(selection)]="selectedUsers" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Users</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column header="User Name" [sortable]="true">

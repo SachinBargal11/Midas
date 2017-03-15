@@ -13,8 +13,9 @@
     <i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
     <input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Rooms">
 </div>-->
-<p-dataTable [value]="rooms" [(selection)]="selectedRooms" [lazy]="true" [rows]="10" [paginator]="true"
-    [totalRecords]="totalRecords" (onLazyLoad)="loadRoomsLazy($event)" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+<!--<p-dataTable [value]="rooms" [(selection)]="selectedRooms" [lazy]="true" [rows]="10" [paginator]="true"
+    [totalRecords]="totalRecords" (onLazyLoad)="loadRoomsLazy($event)" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">-->
+<p-dataTable [value]="rooms" [(selection)]="selectedRooms" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <p-column selectionMode="multiple"></p-column>
     <p-column header="Name" [sortable]="true">
         <template let-room="rowData" pTemplate="body">

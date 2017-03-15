@@ -18,8 +18,9 @@
 </div>
 </div>
 
-<p-dataTable [value]="locations" [(selection)]="selectedLocations" [lazy]="true" [rows]="10" [paginator]="true"
-    [totalRecords]="totalRecords" (onLazyLoad)="loadLocationsLazy($event)" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+<!--<p-dataTable [value]="locations" [(selection)]="selectedLocations" [lazy]="true" [rows]="10" [paginator]="true"
+    [totalRecords]="totalRecords" (onLazyLoad)="loadLocationsLazy($event)" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">-->
+<p-dataTable [value]="locations" [(selection)]="selectedLocations" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Locations</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column field="location.location.name" header="Name" [sortable]="true"></p-column>
