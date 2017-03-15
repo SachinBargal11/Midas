@@ -425,7 +425,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region CancleVisit By ID
         public override object CancleVisit(int id)
         {
-            var acc = _context.PatientVisit2.Where(p => p.Id == id && (p.IsCancelled.HasValue == false || (p.IsCancelled.HasValue == true && p.IsCancelled.Value == false))).FirstOrDefault<PatientVisit2>();
+            var acc = _context.PatientVisit2.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<PatientVisit2>();
             if (acc != null)
             {
                 acc.IsCancelled = true;
@@ -444,7 +444,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region CancleCalendarEvent By ID
         public override object CancleCalendarEvent(int id)
         {
-            var acc = _context.CalendarEvents.Where(p => p.Id == id && (p.IsCancelled.HasValue == false || (p.IsCancelled.HasValue == true && p.IsCancelled.Value == false))).FirstOrDefault<CalendarEvent>();
+            var acc = _context.CalendarEvents.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<CalendarEvent>();
             if (acc != null)
             {
                 acc.IsCancelled = true;
