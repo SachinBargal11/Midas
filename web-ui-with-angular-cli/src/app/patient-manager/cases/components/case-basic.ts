@@ -126,7 +126,7 @@ export class CaseBasicComponent implements OnInit {
             caseTypeId: caseFormValues.caseTypeId,
             carrierCaseNo: caseFormValues.carrierCaseNo,
             locationId: parseInt(caseFormValues.locationId, 10),
-            patientEmpInfoId: this.employer.id,
+            patientEmpInfoId: (this.employer.id) ? this.employer.id : null,
             caseStatusId: caseFormValues.caseStatusId,
             attorneyId: caseFormValues.attorneyId,
             caseStatus: caseFormValues.caseStatusId,
