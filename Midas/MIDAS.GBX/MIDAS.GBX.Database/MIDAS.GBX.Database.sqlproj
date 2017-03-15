@@ -112,8 +112,9 @@
     <Build Include="Tables\Latest Tables\PatientVisitEvent.sql" />
     <Build Include="Tables\Latest Tables\CalendarEvent.sql" />
     <Build Include="Tables\Latest Tables\PatientVisit2.sql" />
-    <Build Include="Tables\Latest Tables\RefferPatient.sql" />
+    <Build Include="Tables\Latest Tables\ReferPatient.sql" />
     <Build Include="Tables\Latest Tables\DoctorLocationSpecialty.sql" />
+    <Build Include="Tables\Latest Tables\CaseCompanyLocationMapping.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />

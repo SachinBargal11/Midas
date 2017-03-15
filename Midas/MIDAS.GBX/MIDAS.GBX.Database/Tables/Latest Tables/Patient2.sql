@@ -13,6 +13,7 @@ CREATE TABLE [dbo].[Patient2](
 	[Height] [DECIMAL](5, 2) NULL,
 	[MaritalStatusId] [TINYINT] NULL,
 	[DateOfFirstTreatment] [DATETIME2](7) NULL,
+	/*
 	[AttorneyName] [NVARCHAR](50) NULL,
 	[AttorneyAddressInfoId] [INT] NULL,
 	[AttorneyContactInfoId] [INT] NULL,
@@ -21,7 +22,7 @@ CREATE TABLE [dbo].[Patient2](
 	[AccidentInfoId] [INT] NULL,
 	[AttorneyInfoId] [INT] NULL,
 	[ReferingOfficeId] [INT] NULL,
-
+	*/
 	[IsDeleted] [bit] NULL DEFAULT (0),
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NOT NULL,
@@ -60,7 +61,7 @@ GO
 
 ALTER TABLE [dbo].[Patient2] CHECK CONSTRAINT [FK_Patient2_MaritalStatusId]
 GO
-
+/*
 ALTER TABLE [dbo].[Patient2]  WITH CHECK ADD  CONSTRAINT [FK_Patient2_AddressInfo_AttorneyAddressInfoId] FOREIGN KEY([AttorneyAddressInfoId])
 	REFERENCES [dbo].[AddressInfo] ([Id])
 GO
@@ -87,4 +88,11 @@ ALTER TABLE [dbo].[Patient2]  WITH CHECK ADD  CONSTRAINT [FK_Patient2_PatientIns
 GO
 
 ALTER TABLE [dbo].[Patient2] CHECK CONSTRAINT [FK_Patient2_PatientInsuranceInfo_InsuranceInfoId]
+GO
+*/
+
+--ALTER TABLE [dbo].[Patient2] DROP COLUMN [CompanyId]
+/*
+Link Patient with user company table
+*/
 GO
