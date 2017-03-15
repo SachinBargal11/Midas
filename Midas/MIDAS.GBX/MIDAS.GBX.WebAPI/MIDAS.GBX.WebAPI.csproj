@@ -260,6 +260,7 @@
     <Compile Include="Controllers\DoctorController.cs" />
     <Compile Include="Controllers\DoctorSpecialityController.cs" />
     <Compile Include="Controllers\DoctorLocationScheduleController.cs" />
+    <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InsuranceController.cs" />
     <Compile Include="Controllers\InsuranceMasterController.cs" />
