@@ -601,6 +601,19 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage DeleteVisit(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.DeleteVisit(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        
         public HttpResponseMessage DeleteCalendarEvent(HttpRequestMessage request, int id)
         {
             var objResult = dataAccessManager.DeleteCalendarEvent(id);
@@ -613,6 +626,33 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+
+        public HttpResponseMessage CancleVisit(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.CancleVisit(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        
+        public HttpResponseMessage CancleCalendarEvent(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.CancleCalendarEvent(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
 
         public HttpResponseMessage GetGbObjects(HttpRequestMessage request, int param1, int param2)
         {

@@ -39,6 +39,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonConverter(typeof(BoolConverter))]
         public bool? IsAllDay { get; set; }
 
+        [JsonProperty("isCancelled")]
+        public bool? IsCancelled { get; set; }
 
     }
 

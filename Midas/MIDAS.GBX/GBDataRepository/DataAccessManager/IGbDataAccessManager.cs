@@ -52,6 +52,9 @@ namespace MIDAS.GBX.DataAccessManager
         Object ResetPassword(T gbObject);
         Object DeleteById(int id);
         Object DeleteCalendarEvent(int id);
+        Object DeleteVisit(int id);
+        Object CancleVisit(int id);
+        Object CancleCalendarEvent(int id);
         
         Object Get(int param1, int param2, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object Get2(int param1, int param2, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
