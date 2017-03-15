@@ -63,10 +63,9 @@ export class EditFamilyMemberComponent implements OnInit {
         });
         this.familyMemberForm = this.fb.group({
                 relationId: ['', Validators.required],
-                fullName: ['', Validators.required],
-                familyName: ['', Validators.required],
-                prefix: ['', Validators.required],
-                suffix: ['', Validators.required],
+                firstName: ['', Validators.required],
+                middleName: [''],
+                lastName: ['', Validators.required],
                 age: ['', Validators.required],
                 races: ['', Validators.required],
                 ethnicities: ['', Validators.required],
@@ -88,10 +87,9 @@ export class EditFamilyMemberComponent implements OnInit {
         let familyMember = new FamilyMember({
             patientId: this.patientId,
             relationId: familyMemberFormValues.relationId,
-            fullName: familyMemberFormValues.fullName,
-            familyName: familyMemberFormValues.familyName,
-            prefix: familyMemberFormValues.prefix,
-            sufix: familyMemberFormValues.suffix,
+            firstName: familyMemberFormValues.firstName,
+            middleName: familyMemberFormValues.middleName,
+            lastName: familyMemberFormValues.lastName,
             age: familyMemberFormValues.age,
             raceId: familyMemberFormValues.races,
             ethnicitiesId: familyMemberFormValues.ethnicities,

@@ -59,7 +59,7 @@ export class AddAdjusterComponent implements OnInit {
         });
         this.adjusterform = this.fb.group({
                 firstname: ['', Validators.required],
-                middlename: ['', Validators.required],
+                middlename: [''],
                 lastname: ['', Validators.required],
                 adjusterInsuranceMaster: ['', Validators.required],
                 adjusterAddress: ['', Validators.required],

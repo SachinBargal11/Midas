@@ -10,6 +10,7 @@
     [RecurrenceRule] [NVARCHAR](500) NULL, 
     [RecurrenceException] [NVARCHAR](1000) NULL, --wed
     [IsAllDay] [BIT] NULL DEFAULT 0, 
+	[IsCancelled] [bit] NULL DEFAULT 0,
 
 	[IsDeleted] [bit] NULL DEFAULT 0,
 	[CreateByUserID] [int] NOT NULL,
@@ -19,3 +20,6 @@
     CONSTRAINT [PK_CalendarEvent] PRIMARY KEY ([Id])
 )
 GO
+
+--ALTER TABLE [dbo].[CalendarEvent] ADD [IsCancelled] [bit] NULL DEFAULT 0
+--GO

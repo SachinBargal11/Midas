@@ -25,6 +25,7 @@
     --[CheckInUserId] [INT] NULL, 
     --Is doctor vist from website
     --[BillManualyUnFinalized] [BIT] NULL, --UnFinalized
+	[IsCancelled] [bit] NULL DEFAULT 0,
 
 	[IsDeleted] [bit] NULL DEFAULT 0,
 	[CreateByUserID] [int] NOT NULL,
@@ -83,3 +84,6 @@ GO
 
 ALTER TABLE [dbo].[PatientVisit2] CHECK CONSTRAINT [FK_PatientVisit2_Doctor_DoctorId]
 GO
+
+--ALTER TABLE [dbo].[PatientVisit2] ADD [IsCancelled] [bit] NULL DEFAULT 0
+--GO
