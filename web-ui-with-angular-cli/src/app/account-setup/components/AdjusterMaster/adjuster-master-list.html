@@ -20,8 +20,12 @@
 <p-dataTable [value]="adjusters" [(selection)]="selectedAdjuster" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Adjuster List</header>
     <p-column selectionMode="multiple"></p-column>
-    <p-column field="firstName" header="Adjuster Name" [sortable]="true"></p-column>
-    <p-column header="Phone Number" [sortable]="true">
+    <p-column field="firstName" header="Adjuster Name" [sortable]="true">
+    <template let-adjuster="rowData" pTemplate="body">
+   <a title="Edit" routerLink="edit/{{adjuster.id}}">{{adjuster.firstName}}</a>
+        </template>
+    </p-column>
+    <p-column field="adjusterContact.cellPhone" header="Phone Number" [sortable]="true">
             <template let-rowdata="rowData" pTemplate="body">
                 <span>{{rowdata.adjusterContact.cellPhone | phoneFormat}}
             </span>

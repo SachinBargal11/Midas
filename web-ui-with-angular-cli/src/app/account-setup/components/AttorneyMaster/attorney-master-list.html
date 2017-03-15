@@ -20,8 +20,12 @@
 <p-dataTable [value]="attorneys" [(selection)]="selectedAttorneys" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Attorney List</header>
     <p-column selectionMode="multiple"></p-column>
-    <p-column field="user.firstName" header="Attorney Name" [sortable]="true"></p-column>
-    <p-column header="Phone Number" [sortable]="true">
+    <p-column field="user.firstName" header="Attorney Name" [sortable]="true">
+         <template let-attorney="rowData" pTemplate="body">
+         <a title="Edit" routerLink="edit/{{attorney.id}}">{{attorney.user.firstName}}</a>
+        </template>
+    </p-column>
+    <p-column field="user.contact.cellPhone" header="Phone Number" [sortable]="true">
             <template let-rowdata="rowData" pTemplate="body">
                 <span>{{rowdata.user.contact.cellPhone | phoneFormat}}
             </span>
