@@ -36,7 +36,7 @@ import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 
 @Component({
     selector: 'patient-visit',
-    template: '<h1>wrong</h1>'
+    templateUrl: './patient-visit.html'
    
 })
 

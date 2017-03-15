@@ -23,9 +23,13 @@
 <p-dataTable [value]="locations" [(selection)]="selectedLocations" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Locations</header>
     <p-column selectionMode="multiple"></p-column>
-    <p-column field="location.location.name" header="Name" [sortable]="true"></p-column>
+    <p-column field="location.location.name" header="Name" [sortable]="true">
+        <template let-schedule="rowData" pTemplate="body">
+            <a routerLink="{{schedule.id}}/schedule"><u>{{ schedule.location.location.name }}</u></a>
+        </template>
+    </p-column>
     <p-column field="location.address.address1" header="Address" [sortable]="true"></p-column>
-    <p-column header="Phone" [sortable]="true">
+    <p-column field="location.contact.workPhone" header="Phone" [sortable]="true">
             <template let-rowdata="rowData.location" pTemplate="body">
                 <span>{{rowdata.contact.workPhone | phoneFormat}}
             </span>
