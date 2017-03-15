@@ -19,10 +19,10 @@
     [stacked]="stacked">
     <header>Cases</header>
     <p-column selectionMode="multiple"></p-column>
-    <!--<p-column field="caseName" header="Case Name" [sortable]="true"></p-column>-->
-    <p-column header="Patient Name" [sortable]="true">
-        <template let-user="rowData.patient.user" pTemplate="body">
-            <a routerLink="{{user.id}}">{{user.firstName}} {{user.lastName}}
+    <p-column field="patient.user.displayName" header="Patient Name" [sortable]="true">
+        <template let-currentUser="rowData" pTemplate="body">
+            <a  title="Edit" routerLink="{{currentUser.patient.user.id}}">{{currentUser.patient.user.displayName}}
+            <!--<a routerLink="{{user.id}}">{{user.firstName}} {{user.lastName}}-->
             </a>
         </template>
     </p-column>
