@@ -113,6 +113,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 foreach (var eachDoctorLocationSpecialityBO in lstDoctorLocationSpecialityBO)
                 {
+                    DoctorLocationSpecialty doctorLocationSpecialityDB = null;
+                    if (eachDoctorLocationSpecialityBO.ID > 0)
+                    {
+                        doctorLocationSpecialityDB = _context.DoctorLocationSpecialties.Where(p => p.Id == eachDoctorLocationSpecialityBO.ID).FirstOrDefault();
+
+                        if (doctorLocationSpecialityDB == null)
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { ErrorMessage = "Doctor,Location,Speciality record not found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                        }
+                    }
+
                     int? LocationId = null, DoctorId = null, SpecialityId = null;
 
                     if (eachDoctorLocationSpecialityBO.location != null)
@@ -130,6 +142,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     if (LocationId.HasValue == false || (LocationId.HasValue == true && LocationId.Value <= 0))
                     {
+                        dbContextTransaction.Rollback();
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Location Id.", ErrorLevel = ErrorLevel.Error };
                     }
                     else
@@ -139,12 +152,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                         if (ExistsLocation == false)
                         {
+                            dbContextTransaction.Rollback();
                             return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass existing Location Id.", ErrorLevel = ErrorLevel.Error };
                         }
                     }
 
                     if (DoctorId.HasValue == false || (DoctorId.HasValue == true && DoctorId.Value <= 0))
                     {
+                        dbContextTransaction.Rollback();
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Doctor Id.", ErrorLevel = ErrorLevel.Error };
                     }
                     else
@@ -154,12 +169,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                         if (ExistsDoctor == false)
                         {
+                            dbContextTransaction.Rollback();
                             return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass existing Doctor Id.", ErrorLevel = ErrorLevel.Error };
                         }
                     }
 
                     if (SpecialityId.HasValue == false || (SpecialityId.HasValue == true && SpecialityId.Value <= 0))
                     {
+                        dbContextTransaction.Rollback();
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Speciality Id.", ErrorLevel = ErrorLevel.Error };
                     }
                     else
@@ -169,19 +186,30 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                         if (ExistsSpeciality == false)
                         {
+                            dbContextTransaction.Rollback();
                             return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass existing Speciality Id.", ErrorLevel = ErrorLevel.Error };
                         }
                     }
 
-                    DoctorLocationSpecialty doctorLocationSpecialityDB = _context.DoctorLocationSpecialties.Where(p => p.LocationId == LocationId.Value && p.DoctorId == DoctorId.Value
-                                                                                                              && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<DoctorLocationSpecialty>();
-
                     if (doctorLocationSpecialityDB != null)
                     {
+                        doctorLocationSpecialityDB.LocationId = LocationId.Value;
+                        doctorLocationSpecialityDB.DoctorId = DoctorId.Value;
                         doctorLocationSpecialityDB.SpecialtyId = SpecialityId.Value;
                     }
                     else
                     {
+                        bool ExistsDoctorLocationSpeciality = _context.DoctorLocationSpecialties.Any(p => p.LocationId == LocationId.Value
+                                                                                                       && p.DoctorId == DoctorId.Value
+                                                                                                       && p.SpecialtyId == SpecialityId.Value
+                                                                                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+
+                        if (ExistsDoctorLocationSpeciality == true)
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Location, Doctor, Specialty already exists", ErrorLevel = ErrorLevel.Error };
+                        }
+
                         doctorLocationSpecialityDB = new DoctorLocationSpecialty();
                         doctorLocationSpecialityDB.LocationId = LocationId.Value;
                         doctorLocationSpecialityDB.DoctorId = DoctorId.Value;
@@ -228,6 +256,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 foreach (var eachDoctorLocationSpecialityBO in lstDoctorLocationSpecialityBO)
                 {
+                    DoctorLocationSpecialty doctorLocationSpecialityDB = null;
+                    if (eachDoctorLocationSpecialityBO.ID > 0)
+                    {
+                        doctorLocationSpecialityDB = _context.DoctorLocationSpecialties.Where(p => p.Id == eachDoctorLocationSpecialityBO.ID).FirstOrDefault();
+
+                        if (doctorLocationSpecialityDB == null)
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { ErrorMessage = "Doctor, Location, Speciality record not found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                        }
+                    }
+
                     int? LocationId = null, DoctorId = null, SpecialityId = null;
 
                     if (eachDoctorLocationSpecialityBO.location != null)
@@ -245,6 +285,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     if (LocationId.HasValue == false || (LocationId.HasValue == true && LocationId.Value <= 0))
                     {
+                        dbContextTransaction.Rollback();
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Location Id.", ErrorLevel = ErrorLevel.Error };
                     }
                     else
@@ -254,12 +295,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                         if (ExistsLocation == false)
                         {
+                            dbContextTransaction.Rollback();
                             return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass existing Location Id.", ErrorLevel = ErrorLevel.Error };
                         }
                     }
 
                     if (DoctorId.HasValue == false || (DoctorId.HasValue == true && DoctorId.Value <= 0))
                     {
+                        dbContextTransaction.Rollback();
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Doctor Id.", ErrorLevel = ErrorLevel.Error };
                     }
                     else
@@ -269,12 +312,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                         if (ExistsDoctor == false)
                         {
+                            dbContextTransaction.Rollback();
                             return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass existing Doctor Id.", ErrorLevel = ErrorLevel.Error };
                         }
                     }
 
                     if (SpecialityId.HasValue == false || (SpecialityId.HasValue == true && SpecialityId.Value <= 0))
                     {
+                        dbContextTransaction.Rollback();
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Speciality Id.", ErrorLevel = ErrorLevel.Error };
                     }
                     else
@@ -284,19 +329,30 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                         if (ExistsSpeciality == false)
                         {
+                            dbContextTransaction.Rollback();
                             return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass existing Speciality Id.", ErrorLevel = ErrorLevel.Error };
                         }
                     }
 
-                    DoctorLocationSpecialty doctorLocationSpecialityDB = _context.DoctorLocationSpecialties.Where(p => p.LocationId == LocationId.Value && p.DoctorId == DoctorId.Value
-                                                                                                              && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<DoctorLocationSpecialty>();
-
                     if (doctorLocationSpecialityDB != null)
                     {
+                        doctorLocationSpecialityDB.LocationId = LocationId.Value;
+                        doctorLocationSpecialityDB.DoctorId = DoctorId.Value;
                         doctorLocationSpecialityDB.SpecialtyId = SpecialityId.Value;
                     }
                     else
                     {
+                        bool ExistsDoctorLocationSpeciality = _context.DoctorLocationSpecialties.Any(p => p.LocationId == LocationId.Value
+                                                                                                       && p.DoctorId == DoctorId.Value
+                                                                                                       && p.SpecialtyId == SpecialityId.Value
+                                                                                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+
+                        if (ExistsDoctorLocationSpeciality == true)
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Location, Doctor, Specialty already exists", ErrorLevel = ErrorLevel.Error };
+                        }
+
                         doctorLocationSpecialityDB = new DoctorLocationSpecialty();
                         doctorLocationSpecialityDB.LocationId = LocationId.Value;
                         doctorLocationSpecialityDB.DoctorId = DoctorId.Value;
@@ -460,6 +516,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     return new BO.ErrorObject { ErrorMessage = "Doctor,Location,Speciality record not found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
             }
+
             if (doctorLocationSpecialityBO.location == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "Location object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -524,8 +581,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             if (doctorLocationSpecialityBO.ID <= 0)
             {
+                bool ExistsDoctorLocationSpeciality = _context.DoctorLocationSpecialties.Any(p => p.LocationId == doctorLocationSpecialityDB.Location.id
+                                                                                                       && p.DoctorId == doctorLocationSpecialityDB.Doctor.Id
+                                                                                                       && p.SpecialtyId == doctorLocationSpecialityDB.Specialty.id
+                                                                                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+
+                if (ExistsDoctorLocationSpeciality == true)
+                {
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Location, Doctor, Specialty already exists", ErrorLevel = ErrorLevel.Error };
+                }
+
                 _context.DoctorLocationSpecialties.Add(doctorLocationSpecialityDB);
             }
+
             _context.SaveChanges();
 
             doctorLocationSpecialityDB = _context.DoctorLocationSpecialties.Include("Doctor").Include("Location").Include("Specialty").Where(p => p.Id == doctorLocationSpecialityDB.Id).FirstOrDefault<DoctorLocationSpecialty>();
