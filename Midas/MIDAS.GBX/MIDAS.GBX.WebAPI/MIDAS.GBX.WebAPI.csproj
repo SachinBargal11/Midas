@@ -258,6 +258,7 @@
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CompanySpecialtyDetailsController.cs" />
     <Compile Include="Controllers\DoctorController.cs" />
+    <Compile Include="Controllers\DoctorLocationSpecialityController.cs" />
     <Compile Include="Controllers\DoctorSpecialityController.cs" />
     <Compile Include="Controllers\DoctorLocationScheduleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />

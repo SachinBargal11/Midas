@@ -2,7 +2,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SelectItem } from 'primeng/primeng';
+import { SelectItem, LazyLoadEvent } from 'primeng/primeng';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import { DoctorsStore } from '../../users/stores/doctors-store';
@@ -39,6 +39,8 @@ export class AssignDoctorComponent implements OnInit {
     schedule: Schedule;
     selectedLocation;
     doctors: Doctor[];
+    datasource: Doctor[];
+    totalRecords: number;
     doctorsArr: SelectItem[] = [];
     selectedDoctors: Doctor[] = [];
     currentSchedule: Schedule;
@@ -91,7 +93,7 @@ export class AssignDoctorComponent implements OnInit {
                 });
         });
         this._progressBarService.show();
-        let fetchDoctors = this._doctorsStore.getDoctors();
+        let fetchDoctors = this._doctorsStore.getDoctorsByCompanyId();
         let fetchLocationDoctors = this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.locationId);
 
         Observable.forkJoin([fetchDoctors, fetchLocationDoctors])
@@ -101,9 +103,12 @@ export class AssignDoctorComponent implements OnInit {
                 let locationDoctorIds: number[] = _.map(locationDoctors, (currentLocationDoctor: DoctorLocationSchedule) => {
                     return currentLocationDoctor.doctor.id;
                 });
-                this.doctors = _.filter(doctors, (currentDoctor: Doctor) => {
+                let doctorDetails = _.filter(doctors, (currentDoctor: Doctor) => {
                     return _.indexOf(locationDoctorIds, currentDoctor.id) < 0 ? true : false;
                 });
+                this.datasource = doctorDetails;
+                this.totalRecords = this.datasource.length;
+                this.doctors = this.datasource.slice(0, 10);
             },
             (error) => {
                 this.doctors = [];
@@ -135,6 +140,14 @@ export class AssignDoctorComponent implements OnInit {
     }
 
     ngOnInit() {
+    }
+    
+    loadDoctorsLazy(event: LazyLoadEvent) {
+        setTimeout(() => {
+            if(this.datasource) {
+                this.doctors = this.datasource.slice(event.first, (event.first + event.rows));
+            }
+        }, 250);
     }
 
     save() {

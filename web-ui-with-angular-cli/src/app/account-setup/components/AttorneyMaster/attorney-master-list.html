@@ -15,12 +15,17 @@
          <input #gb type="text" class="form-control" style="float:left" placeholder="Search Attorney">
     </div>
 </div>
-<p-dataTable [value]="attorneys" [(selection)]="selectedAttorneys" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
-             [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+<!--<p-dataTable [value]="attorneys" [(selection)]="selectedAttorneys" [lazy]="true" [rows]="10" [paginator]="true"
+[totalRecords]="totalRecords" (onLazyLoad)="loadAttorneysLazy($event)" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">-->
+<p-dataTable [value]="attorneys" [(selection)]="selectedAttorneys" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Attorney List</header>
     <p-column selectionMode="multiple"></p-column>
-    <p-column field="user.firstName" header="Attorney Name" [sortable]="true"></p-column>
-    <p-column header="Phone Number" [sortable]="true">
+    <p-column field="user.firstName" header="Attorney Name" [sortable]="true">
+         <template let-attorney="rowData" pTemplate="body">
+         <a title="Edit" routerLink="edit/{{attorney.id}}">{{attorney.user.firstName}}</a>
+        </template>
+    </p-column>
+    <p-column field="user.contact.cellPhone" header="Phone Number" [sortable]="true">
             <template let-rowdata="rowData" pTemplate="body">
                 <span>{{rowdata.user.contact.cellPhone | phoneFormat}}
             </span>

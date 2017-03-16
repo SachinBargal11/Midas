@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { LazyLoadEvent } from 'primeng/primeng'
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { Room } from '../models/room';
 import { RoomsStore } from '../stores/rooms-store';
@@ -22,6 +23,8 @@ export class RoomsComponent implements OnInit {
     rooms: Room[];
     locationDetails = new LocationDetails({});
     locationId: number;
+    datasource: Room[];
+    totalRecords: number;
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
@@ -46,7 +49,10 @@ export class RoomsComponent implements OnInit {
         this._progressBarService.show();
         this._roomsStore.getRooms(this.locationId)
             .subscribe(rooms => {
-                this.rooms = rooms;
+                // this.rooms = rooms;
+                this.datasource = rooms;
+                this.totalRecords = this.datasource.length;
+                this.rooms = this.datasource.slice(0, 10);
             },
             (error) => {
                 let notification = new Notification({
@@ -62,6 +68,15 @@ export class RoomsComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
+    
+    loadRoomsLazy(event: LazyLoadEvent) {
+        setTimeout(() => {
+            if(this.datasource) {
+                this.rooms = this.datasource.slice(event.first, (event.first + event.rows));
+            }
+        }, 250);
+    }
+
     deleteRooms() {
         if (this.selectedRooms !== undefined) {
             this.selectedRooms.forEach(currentRoom => {

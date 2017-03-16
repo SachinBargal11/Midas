@@ -94,7 +94,7 @@ export class EditInsuranceComponent implements OnInit {
                 policyNo: ['', Validators.required],
                 policyOwner: ['', Validators.required],
                 policyHolderName: ['', Validators.required],
-                insuranceCompanyCode: ['', Validators.required],
+                insuranceCompanyCode: [''],
                 insuranceType: ['', Validators.required],
                 insuranceMasterId: ['', Validators.required],
                 contactPerson: ['', Validators.required],

@@ -15,13 +15,15 @@
        <input #gb type="text" class="form-control" style="float:left" placeholder="Search Doctors">
    </div>
 </div>
-<p-dataTable [value]="doctors" [(selection)]="selectedDoctors" [rows]="10" [rowsPerPageOptions]="[5,10,15,20]" [paginator]="true" [globalFilter]="gb" [responsive]="true"
-    [stacked]="stacked">
+<!--<p-dataTable [value]="doctors" [(selection)]="selectedDoctors" [lazy]="true" [rows]="10" [paginator]="true" 
+[totalRecords]="totalRecords" (onLazyLoad)="loadDoctorsLazy($event)" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">-->
+<p-dataTable [value]="doctors" [(selection)]="selectedDoctors" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Doctors</header>
     <p-column selectionMode="multiple"></p-column>
-    <p-column header="Doctor Name" [sortable]="true">
+    <p-column field="doctor.user.displayName" header="Doctor Name" [sortable]="true">
        <template let-doctor="rowData" pTemplate="body">
-            <a routerLink="{{doctor.id}}">{{doctor.doctor.user.firstName}} {{doctor.doctor.user.lastName}}
+            <a routerLink="{{doctor.id}}">{{doctor.doctor.user.firstName}}
+            <!--<a routerLink="{{doctor.id}}">{{doctor.doctor.user.firstName}} {{doctor.doctor.user.lastName}}-->
             </a>
         </template>
     </p-column>
