@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { LazyLoadEvent } from 'primeng/primeng'
 import { FamilyMemberStore } from '../stores/family-member-store';
 import { FamilyMember } from '../models/family-member';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
@@ -18,6 +19,8 @@ export class FamilyMemberListComponent implements OnInit {
     selectedFamilyMembers: FamilyMember[] = [];
     familyMembers: FamilyMember[];
     patientId: number;
+    datasource: FamilyMember[];
+    totalRecords: number;
 
     constructor(
         private _router: Router,
@@ -41,6 +44,9 @@ export class FamilyMemberListComponent implements OnInit {
         this._familyMemberStore.getFamilyMembers(this.patientId)
             .subscribe(familyMembers => {
                 this.familyMembers = familyMembers;
+                // this.datasource = familyMembers;
+                // this.totalRecords = this.datasource.length;
+                // this.familyMembers = this.datasource.slice(0, 10);
             },
             (error) => {
                 this._progressBarService.hide();
@@ -48,6 +54,13 @@ export class FamilyMemberListComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+    }
+    loadSpecialitiesLazy(event: LazyLoadEvent) {
+        setTimeout(() => {
+            if(this.datasource) {
+                this.familyMembers = this.datasource.slice(event.first, (event.first + event.rows));
+            }
+        }, 250);
     }
 
     deleteFamilyMember() {

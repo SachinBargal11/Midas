@@ -49,10 +49,10 @@ export class RoomsComponent implements OnInit {
         this._progressBarService.show();
         this._roomsStore.getRooms(this.locationId)
             .subscribe(rooms => {
-                // this.rooms = rooms;
-                this.datasource = rooms;
-                this.totalRecords = this.datasource.length;
-                this.rooms = this.datasource.slice(0, 10);
+                this.rooms = rooms;
+                // this.datasource = rooms;
+                // this.totalRecords = this.datasource.length;
+                // this.rooms = this.datasource.slice(0, 10);
             },
             (error) => {
                 let notification = new Notification({

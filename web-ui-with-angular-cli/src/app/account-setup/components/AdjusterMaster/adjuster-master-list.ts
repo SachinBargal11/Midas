@@ -52,10 +52,10 @@ export class AdjusterMasterListComponent implements OnInit {
         this._progressBarService.show();
         this._adjusterMasterStore.getAdjusterMasters()
             .subscribe(adjusters => {
-                // this.adjusters = adjusters;
-                this.datasource = adjusters;
-                this.totalRecords = this.datasource.length;
-                this.adjusters = this.datasource.slice(0, 10);
+                this.adjusters = adjusters;
+                // this.datasource = adjusters;
+                // this.totalRecords = this.datasource.length;
+                // this.adjusters = this.datasource.slice(0, 10);
             },
             (error) => {
                 this._progressBarService.hide();

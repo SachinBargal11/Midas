@@ -48,10 +48,10 @@ export class LocationsComponent implements OnInit {
         this._doctorLocationScheduleStore.getDoctorLocationScheduleByDoctorId(this.userId)
             .subscribe(
             (data) => {
-                // this.locations = data;
-                this.datasource = data;
-                this.totalRecords = this.datasource.length;
-                this.locations = this.datasource.slice(0, 10);
+                this.locations = data;
+                // this.datasource = data;
+                // this.totalRecords = this.datasource.length;
+                // this.locations = this.datasource.slice(0, 10);
             },
             (error) => {
                 this.locations = [];
