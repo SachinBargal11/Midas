@@ -1,6 +1,7 @@
 // import { Company } from '../../../models/company';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LazyLoadEvent } from 'primeng/primeng'
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { UsersStore } from '../stores/users-store';
@@ -23,6 +24,8 @@ export class UsersListComponent implements OnInit {
     selectedUsers: User[];
     users: User[];
     user: User;
+    datasource: User[];
+    totalRecords: number;
     role;
     constructor(
         private _router: Router,
@@ -44,7 +47,10 @@ export class UsersListComponent implements OnInit {
         this._progressBarService.show();
         this._usersStore.getUsers()
             .subscribe(users => {
-                this.users = users;
+                this.users = users.reverse();
+                // this.datasource = users;
+                // this.totalRecords = this.datasource.length;
+                // this.users = this.datasource.slice(0, 10);
             },
             (error) => {
             },
@@ -52,6 +58,22 @@ export class UsersListComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
+    loadUsersLazy(event: LazyLoadEvent) {
+        //in a real application, make a remote request to load data using state metadata from event
+        //event.first = First row offset
+        //event.rows = Number of rows per page
+        //event.sortField = Field name to sort with
+        //event.sortOrder = Sort order as number, 1 for asc and -1 for dec
+        //filters: FilterMetadata object having field as key and filter value, filter matchMode as value
+        
+        //imitate db connection over a network
+        setTimeout(() => {
+            if(this.datasource) {
+                this.users = this.datasource.slice(event.first, (event.first + event.rows));
+            }
+        }, 250);
+    }
+
     editUser(user) {
         let userRoleFlag: number = 1;
         user.roles.forEach(role => {

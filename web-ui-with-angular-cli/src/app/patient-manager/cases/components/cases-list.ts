@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { LazyLoadEvent } from 'primeng/primeng'
 import { SessionStore } from '../../../commons/stores/session-store';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { CasesStore } from '../stores/case-store';
@@ -24,6 +25,8 @@ export class CasesListComponent implements OnInit {
     patientName: string;
     patient:Patient;
     selectedCases: Case[] = [];
+    datasource: Case[];
+    totalRecords: number;
 
     constructor(
         public _route: ActivatedRoute,
@@ -62,6 +65,9 @@ export class CasesListComponent implements OnInit {
         this._casesStore.getCases(this.patientId)
             .subscribe(cases => {
                 this.cases = cases;
+                // this.datasource = cases;
+                // this.totalRecords = this.datasource.length;
+                // this.cases = this.datasource.slice(0, 10);
             },
             (error) => {
                 this._progressBarService.hide();
@@ -69,6 +75,13 @@ export class CasesListComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+    }
+    loadCasesLazy(event: LazyLoadEvent) {
+        setTimeout(() => {
+            if(this.datasource) {
+                this.cases = this.datasource.slice(event.first, (event.first + event.rows));
+            }
+        }, 250);
     }
 
          deleteCases() {

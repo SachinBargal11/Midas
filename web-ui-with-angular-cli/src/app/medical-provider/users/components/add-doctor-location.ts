@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Rx';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SelectItem } from 'primeng/primeng';
+import { SelectItem, LazyLoadEvent } from 'primeng/primeng';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import { DoctorLocationsStore } from '../stores/doctor-locations-store';
@@ -39,6 +39,8 @@ export class AddDoctorLocationComponent implements OnInit {
     locationsArr: SelectItem[] = [];
     selectedLocations: LocationDetails[] = [];
 
+    datasource: LocationDetails[];
+    totalRecords: number;
     addlocationform: FormGroup;
     addlocationformControls;
     isSaveProgress = false;
@@ -74,6 +76,12 @@ export class AddDoctorLocationComponent implements OnInit {
                 this.locations = _.filter(locations, (currentLocation: LocationDetails) => {
                     return _.indexOf(doctorLocationIds, currentLocation.location.id) < 0 ? true : false;
                 });
+                // let locationDetails = _.filter(locations, (currentLocation: LocationDetails) => {
+                //     return _.indexOf(doctorLocationIds, currentLocation.location.id) < 0 ? true : false;
+                // });
+                // this.datasource = locationDetails;
+                // this.totalRecords = this.datasource.length;
+                // this.locations = this.datasource.slice(0, 10);
             },
             (error) => {
                 this.locations = [];
@@ -116,6 +124,14 @@ export class AddDoctorLocationComponent implements OnInit {
     }
 
     ngOnInit() {
+    }
+    
+    loadLocationsLazy(event: LazyLoadEvent) {
+        setTimeout(() => {
+            if(this.datasource) {
+                this.locations = this.datasource.slice(event.first, (event.first + event.rows));
+            }
+        }, 250);
     }
     selectLocation(event) {
         let currentLocation = event.target.value;

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LazyLoadEvent } from 'primeng/primeng'
 import { PatientsStore } from '../stores/patients-store';
 import { Patient } from '../models/patient';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
@@ -18,6 +19,8 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 export class PatientsListComponent implements OnInit {
     selectedPatients: Patient[] = [];
     patients: Patient[];
+    datasource: Patient[];
+    totalRecords: number;
 
     constructor(
         private _router: Router,
@@ -42,6 +45,9 @@ export class PatientsListComponent implements OnInit {
         this._patientsStore.getPatients()
             .subscribe(patients => {
                 this.patients = patients;
+                // this.datasource = patients;
+                // this.totalRecords = this.datasource.length;
+                // this.patients = this.datasource.slice(0, 10);
             },
             (error) => {
                 this._progressBarService.hide();
@@ -51,6 +57,13 @@ export class PatientsListComponent implements OnInit {
             });
     }
 
+    loadPatientsLazy(event: LazyLoadEvent) {
+        setTimeout(() => {
+            if(this.datasource) {
+                this.patients = this.datasource.slice(event.first, (event.first + event.rows));
+            }
+        }, 250);
+    }
     deletePatients() {
         if (this.selectedPatients.length > 0) {
             this.selectedPatients.forEach(currentPatient => {

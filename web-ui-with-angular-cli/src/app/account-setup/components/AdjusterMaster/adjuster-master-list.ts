@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { LazyLoadEvent } from 'primeng/primeng'
 import { AdjusterMasterStore } from '../../stores/adjuster-store';
 import { Adjuster } from '../../models/adjuster';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
@@ -18,6 +19,8 @@ import { SessionStore } from '../../../commons/stores/session-store';
 export class AdjusterMasterListComponent implements OnInit {
        selectedAdjusters: Adjuster[] = [];
        adjusters: Adjuster[];
+    datasource: Adjuster[];
+    totalRecords: number;
        companyId: number;
        patientId: number;
 
@@ -50,6 +53,9 @@ export class AdjusterMasterListComponent implements OnInit {
         this._adjusterMasterStore.getAdjusterMasters()
             .subscribe(adjusters => {
                 this.adjusters = adjusters;
+                // this.datasource = adjusters;
+                // this.totalRecords = this.datasource.length;
+                // this.adjusters = this.datasource.slice(0, 10);
             },
             (error) => {
                 this._progressBarService.hide();
@@ -57,6 +63,14 @@ export class AdjusterMasterListComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+    }
+    
+    loadAdjustersLazy(event: LazyLoadEvent) {
+        setTimeout(() => {
+            if(this.datasource) {
+                this.adjusters = this.datasource.slice(event.first, (event.first + event.rows));
+            }
+        }, 250);
     }
 
     deleteAdjusters() {

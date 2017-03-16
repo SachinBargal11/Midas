@@ -12,35 +12,36 @@
 <div class="ui-widget-header row">
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
-        <input #gb type="text" class="form-control" style="float:left" placeholder="Search Patients">
+        <input #gb type="text" class="form-control" style="float:left" placeholder="Search Patient">
     </div>
 </div>
+<!--<p-dataTable [value]="patients" [(selection)]="selectedPatients" [lazy]="true" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
+    [totalRecords]="totalRecords" (onLazyLoad)="loadPatientsLazy($event)" [stacked]="stacked">-->
 <p-dataTable [value]="patients" [(selection)]="selectedPatients" [rows]="10" [rowsPerPageOptions]="[5,10,15,20]" [paginator]="true" [globalFilter]="gb" [responsive]="true"
     [stacked]="stacked">
     <header>Patients</header>
     <p-column selectionMode="multiple"></p-column>
-    <!--<p-column header="Name" [filter]="true" filterPlaceholder="Search Patient Name" [sortable]="true">-->
-    <p-column header="Name" [sortable]="true">
+    <p-column field="user.displayName" header="Name">
+    <!--<p-column field="user.displayName" header="Name" [filter]="true" filterPlaceholder="Search Patient Name" >-->
+
         <template let-currentPatient="rowData" pTemplate="body">
-            <span>
-                {{currentPatient.user.displayName}} 
-            </span>
+            <!--{{currentPatient.user.displayName}}-->
+
+            <a title="Edit" routerLink="{{currentPatient.user.id}}/viewall">{{currentPatient.user.displayName}}</a>
         </template>
     </p-column>
-    <!--<p-column field="brand" header="Brand (Custom)" [filter]="true" [style]="{'overflow':'visible'}" filterMatchMode="equals">
-    <template pTemplate="filter" let-col>
-        <p-dropdown [options]="brands" [style]="{'width':'100%'}" (onChange)="dt.filter($event.value,col.field,col.filterMatchMode)" styleClass="ui-column-filter"></p-dropdown>
-    </template>
-</p-column>-->
 
-    <!--<p-column field="user.firstName" header="First Name" [sortable]="true"></p-column>-->
-    <!--<p-column field="user.lastName" header="Last Name" [sortable]="true"></p-column>-->
+
+    <!--<p-column field="user.firstName" [filter]="true" filterPlaceholder="Search Patient Name" header="First Name" [sortable]="true"></p-column>-->
+    <!--<p-column field="user.firstName" header="First Name" [sortable]="true"></p-column>
+    <p-column field="user.lastName" header="Last Name" [sortable]="true"></p-column>-->
+
     <p-column field="user.address.address1" header="Address" [sortable]="true"></p-column>
-    <p-column header="Phone" [sortable]="true">
+    <p-column field="user.contact.cellPhone" header="Phone" [sortable]="true">
         <template let-currentPatient="rowData" pTemplate="body">
-            <span>
+            
                 {{currentPatient.user.contact.cellPhone | phoneFormat}}
-            </span>
+            
         </template>
     </p-column>
     <p-column field="user.contact.emailAddress" header="Email" [sortable]="true"></p-column>
