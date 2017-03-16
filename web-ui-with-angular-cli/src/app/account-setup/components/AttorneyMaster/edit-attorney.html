@@ -221,7 +221,13 @@
                                 <!--<span class="color-red">*</span>-->
                             </label>
                     <div class="form-group" [class.error]="attorneyformControls.attorneyCountry.touched && !attorneyformControls.attorneyCountry.valid">
-                        <input formControlName="attorneyCountry" [ngModel]="attorney.user.address.country" type="text" class="form-control" placeholder="" [class.error]="!attorneyformControls.attorneyCountry.valid">
+                        <!--<input formControlName="attorneyCountry" [ngModel]="attorney.user.address.country" type="text" class="form-control" placeholder=""
+                         [class.error]="!attorneyformControls.attorneyCountry.valid">-->
+                         <select formControlName="attorneyCountry" type="text" [ngModel]="attorney.user.address.country" class="form-control" placeholder="" [class.error]="attorneyformControls.attorneyCountry.touched && !attorneyformControls.attorneyCountry.valid">
+                                        <option value="">-Select -</option>
+                                        <option disabled>────────────────────</option>
+                                        <option value="US">United States</option>
+                                    </select>
                         <div class='error-list' *ngIf="attorneyformControls.attorneyCountry.touched && !attorneyformControls.attorneyCountry.valid">
                             <ul>
                                 <li *ngIf="attorneyformControls.attorneyCountry.hasError('required')">Country is required.</li>

@@ -36,6 +36,7 @@ export class AddUserComponent implements OnInit {
     states: any[];
     cities: any[];
     selectedRole: any[] = ['1'];
+    // selectedRole: any[] = [];
     selectedCity = 0;
     specialitiesArr: SelectItem[] = [];
     // selectedSpeciality: SelectItem[] = [];
@@ -148,10 +149,7 @@ export class AddUserComponent implements OnInit {
         let result;
         let userFormValues = this.userform.value;
         let doctorSpecialities = [];
-        let selectedSpeciality = userFormValues.doctor.speciality;
-        selectedSpeciality.forEach(element => {
-            doctorSpecialities.push({ 'id': parseInt(element) });
-        });
+
 
         let roles = [];
         let input = this.selectedRole;
@@ -189,6 +187,11 @@ export class AddUserComponent implements OnInit {
             result = this._usersStore.addUser(userDetail);
         }
         else {
+            let selectedSpeciality = userFormValues.doctor.speciality;
+            selectedSpeciality.forEach(element => {
+                doctorSpecialities.push({ 'id': parseInt(element) });
+            });
+
             let doctorDetail = new Doctor({
                 licenseNumber: userFormValues.doctor.licenseNumber,
                 wcbAuthorization: userFormValues.doctor.wcbAuthorization,
