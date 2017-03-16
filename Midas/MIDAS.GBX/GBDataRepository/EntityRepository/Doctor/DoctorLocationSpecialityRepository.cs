@@ -37,7 +37,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.DoctorLocationSpeciality doctorlocationspecialityBO = new BO.DoctorLocationSpeciality();
 
             doctorlocationspecialityBO.ID = doctorlocationspeciality.Id;
-            if (doctorlocationspecialityBO.IsDeleted.HasValue)
+            if (doctorlocationspeciality.IsDeleted.HasValue)
                 doctorlocationspecialityBO.IsDeleted = doctorlocationspeciality.IsDeleted.Value;
             if (doctorlocationspeciality.UpdateByUserID.HasValue)
                 doctorlocationspecialityBO.UpdateByUserID = doctorlocationspeciality.UpdateByUserID.Value;
@@ -422,6 +422,120 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Delete
+        public override object Delete(int id)
+        {
+
+            DoctorLocationSpecialty doctorlocationspecialityDB = _context.DoctorLocationSpecialties.Include("Doctor").Include("Location").Include("Specialty").Where(p => p.Id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<DoctorLocationSpecialty>();
+
+            if (doctorlocationspecialityDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this DoctorLocationSpeciality.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            doctorlocationspecialityDB.IsDeleted = true;
+
+            _context.Entry(doctorlocationspecialityDB).State = System.Data.Entity.EntityState.Modified;
+
+            _context.SaveChanges();
+
+            var res = Convert<BO.DoctorLocationSpeciality, DoctorLocationSpecialty>(doctorlocationspecialityDB);
+            return (object)res;
+        }
+        #endregion
+
+        #region Save
+        public override object Save<T>(T entity)
+        {
+            BO.DoctorLocationSpeciality doctorLocationSpecialityBO = (BO.DoctorLocationSpeciality)(object)entity;
+
+            DoctorLocationSpecialty doctorLocationSpecialityDB = new DoctorLocationSpecialty();
+
+            if (doctorLocationSpecialityBO.ID > 0)
+            {
+                doctorLocationSpecialityDB = _context.DoctorLocationSpecialties.Where(p => p.Id == doctorLocationSpecialityBO.ID).FirstOrDefault();
+
+                if (doctorLocationSpecialityDB == null)
+                {
+                    return new BO.ErrorObject { ErrorMessage = "Doctor,Location,Speciality record not found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+            }
+            if (doctorLocationSpecialityBO.location == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Location object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            if (doctorLocationSpecialityBO.doctor == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Doctor object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            if (doctorLocationSpecialityBO.speciality == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Speciality object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            #region Speciality
+            if (doctorLocationSpecialityBO.speciality != null)
+            {
+                if (doctorLocationSpecialityBO.speciality.ID > 0)
+                {
+                    Specialty speciality = _context.Specialties.Where(p => p.id == doctorLocationSpecialityBO.speciality.ID).FirstOrDefault<Specialty>();
+                    if (speciality != null)
+                    {
+                        doctorLocationSpecialityDB.Specialty = speciality;
+                    }
+                    else
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass the valid speciality.", ErrorLevel = ErrorLevel.Error };
+                }
+            }
+            #endregion
+
+            #region Location
+            if (doctorLocationSpecialityBO.location != null)
+            {
+                if (doctorLocationSpecialityBO.location.ID > 0)
+                {
+                    Location location = _context.Locations.Where(p => p.id == doctorLocationSpecialityBO.location.ID).FirstOrDefault<Location>();
+                    if (location != null)
+                    {
+                        doctorLocationSpecialityDB.Location = location;
+                    }
+                    else
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid location.", ErrorLevel = ErrorLevel.Error };
+                }
+            }
+            #endregion
+
+            #region doctor
+            if (doctorLocationSpecialityBO.doctor != null)
+            {
+                if (doctorLocationSpecialityBO.doctor.ID > 0)
+                {
+                    Doctor doctor = _context.Doctors.Where(p => p.Id == doctorLocationSpecialityBO.doctor.ID).FirstOrDefault<Doctor>();
+                    if (doctor != null)
+                    {
+                        doctorLocationSpecialityDB.Doctor = doctor;
+                    }
+                    else
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid doctor.", ErrorLevel = ErrorLevel.Error };
+                }
+            }
+
+            #endregion
+
+            if (doctorLocationSpecialityBO.ID <= 0)
+            {
+                _context.DoctorLocationSpecialties.Add(doctorLocationSpecialityDB);
+            }
+            _context.SaveChanges();
+
+            doctorLocationSpecialityDB = _context.DoctorLocationSpecialties.Include("Doctor").Include("Location").Include("Specialty").Where(p => p.Id == doctorLocationSpecialityDB.Id).FirstOrDefault<DoctorLocationSpecialty>();
+
+            _context.SaveChanges();
+
+            var res = Convert<BO.DoctorLocationSpeciality, DoctorLocationSpecialty>(doctorLocationSpecialityDB);
+            return (object)res;
+        }
+        #endregion
 
         public void Dispose()
         {
