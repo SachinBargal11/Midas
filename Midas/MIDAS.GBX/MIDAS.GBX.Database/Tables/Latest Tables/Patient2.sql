@@ -1,15 +1,8 @@
-﻿/*
-Table Name: [dbo].[Patient2]
-[PatientID] not required since the id from user table can be used
-[DateOfBirth] not required since the user table has date of birth
-Address not included as User table has address info
-*/
-CREATE TABLE [dbo].[Patient2](
+﻿CREATE TABLE [dbo].[Patient2](
 	[Id] [INT] NOT NULL,
-	[SSN] [NVARCHAR](20) NOT NULL, /*Social Security Number*/
+	[SSN] [NVARCHAR](20) NOT NULL, 
 	[CompanyId] [INT] NULL,
---	[LocationID] [INT] NULL, /*Location id where current case is registered*/
-	[Weight] [DECIMAL](5, 2) NULL, /*Weight in KG OR Pounds*/
+	[Weight] [DECIMAL](5, 2) NULL, 
 	[Height] [DECIMAL](5, 2) NULL,
 	[MaritalStatusId] [TINYINT] NULL,
 	[DateOfFirstTreatment] [DATETIME2](7) NULL,
@@ -17,6 +10,7 @@ CREATE TABLE [dbo].[Patient2](
 	[AttorneyName] [NVARCHAR](50) NULL,
 	[AttorneyAddressInfoId] [INT] NULL,
 	[AttorneyContactInfoId] [INT] NULL,
+	
 	[PatientEmpInfoId] [INT] NULL,
 	[InsuranceInfoId] [INT] NULL,
 	[AccidentInfoId] [INT] NULL,
