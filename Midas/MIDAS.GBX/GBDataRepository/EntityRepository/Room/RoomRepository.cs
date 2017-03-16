@@ -181,7 +181,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             if (roomDB.id > 0)
             {
-                if (_context.Rooms.Any(o => o.Name == roomBO.name && o.LocationID == roomBO.location.ID  && o.id!= roomDB.id))
+                if (_context.Rooms.Any(o => o.Name == roomBO.name && o.LocationID == roomBO.location.ID  && o.id!= roomDB.id && (o.IsDeleted == false || o.IsDeleted == null)))
                 {
                     return new BO.ErrorObject { ErrorMessage = "Room already exists for selected location and test.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
