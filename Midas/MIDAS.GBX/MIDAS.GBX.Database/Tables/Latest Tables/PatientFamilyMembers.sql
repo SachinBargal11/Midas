@@ -48,3 +48,11 @@ GO
 
 --ALTER TABLE [dbo].[PatientFamilyMembers] ALTER COLUMN [FullName] [NVARCHAR](50) NULL
 --GO
+/*
+ALTER TABLE [dbo].[PatientFamilyMembers] ADD [FirstName] [NVARCHAR](50) NULL
+GO
+ALTER TABLE [dbo].[PatientFamilyMembers] ADD [MiddleName] [NVARCHAR](50) NULL
+GO
+ALTER TABLE [dbo].[PatientFamilyMembers] ADD [LastName] [NVARCHAR](50) NULL
+GO
+*/
