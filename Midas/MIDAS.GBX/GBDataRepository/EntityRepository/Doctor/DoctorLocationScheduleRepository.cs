@@ -95,112 +95,206 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        //#region Save
+        //public override object Save<T>(T entity)
+        //{
+        //    BO.DoctorLocationSchedule doctorlocationscheduleBO = (BO.DoctorLocationSchedule)(object)entity;
+
+        //    DoctorLocationSchedule doctorlocationscheduleDB = new DoctorLocationSchedule();
+
+        //    #region LocationSchedule
+        //    doctorlocationscheduleDB.id = doctorlocationscheduleBO.ID;
+        //    doctorlocationscheduleDB.IsDeleted = doctorlocationscheduleBO.IsDeleted.HasValue ? doctorlocationscheduleBO.IsDeleted : false;
+        //    #endregion
+
+        //    #region Location
+        //    if (doctorlocationscheduleBO.location != null)
+        //        if (doctorlocationscheduleBO.location.ID > 0)
+        //        {
+        //            Location location = _context.Locations.Where(p => p.id == doctorlocationscheduleBO.location.ID).FirstOrDefault<Location>();
+        //            if (location != null)
+        //            {
+        //                doctorlocationscheduleDB.Location = location;
+        //            }
+        //            else
+        //                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid location detail.", ErrorLevel = ErrorLevel.Error };
+        //        }
+        //    #endregion
+
+        //    if (doctorlocationscheduleBO.schedule != null)
+        //    {
+        //        #region Schedule
+        //        if (doctorlocationscheduleBO.schedule != null)
+        //            if (doctorlocationscheduleBO.schedule.ID > 0)
+        //            {
+        //                Schedule schedule = _context.Schedules.Where(p => p.id == doctorlocationscheduleBO.schedule.ID).FirstOrDefault<Schedule>();
+        //                if (schedule != null)
+        //                {
+        //                    doctorlocationscheduleDB.Schedule = schedule;
+        //                }
+        //                else
+        //                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Schedule.", ErrorLevel = ErrorLevel.Error };
+        //            }
+        //        #endregion
+        //    }
+        //    else
+        //    {
+        //        //Default schedule
+
+        //        Schedule defaultschedule = _context.Schedules.Where(p => p.IsDefault == true).FirstOrDefault<Schedule>();
+        //        if (defaultschedule != null)
+        //        {
+        //            doctorlocationscheduleDB.Schedule = defaultschedule;
+        //        }
+        //        else
+        //            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please set default schedule in database.", ErrorLevel = ErrorLevel.Error };
+        //    }
+
+        //    #region Doctor
+        //    if (doctorlocationscheduleBO.doctor != null)
+        //        if (doctorlocationscheduleBO.doctor.ID > 0)
+        //        {
+        //            Doctor doctor = _context.Doctors.Where(p => p.Id == doctorlocationscheduleBO.doctor.ID && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<Doctor>();
+        //            if (doctor != null)
+        //            {
+        //                doctorlocationscheduleDB.Doctor = doctor;
+        //            }
+        //            else
+        //                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid doctor detail.", ErrorLevel = ErrorLevel.Error };
+        //        }
+        //    #endregion
+
+        //    bool exists = _context.DoctorLocationSchedules.Any(d => d.DoctorID == doctorlocationscheduleBO.doctor.ID && d.LocationID == doctorlocationscheduleBO.location.ID && d.ScheduleID == doctorlocationscheduleBO.schedule.ID && (d.IsDeleted == false || d.IsDeleted == null));
+        //    if ((doctorlocationscheduleBO.ID > 0 && exists) || (doctorlocationscheduleBO.ID > 0))
+        //    {
+        //        //For Update Record
+        //        //Find Doctor Location Schedule By ID
+        //        DoctorLocationSchedule doctorlocationschedule = _context.DoctorLocationSchedules.Where(p => p.id == doctorlocationscheduleBO.ID && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<DoctorLocationSchedule>();
+
+        //        if (doctorlocationschedule != null)
+        //        {
+        //            #region Location
+        //            doctorlocationschedule.id = doctorlocationscheduleBO.ID;
+        //            doctorlocationschedule.IsDeleted = doctorlocationscheduleBO.IsDeleted == null ? doctorlocationscheduleBO.IsDeleted : doctorlocationschedule.IsDeleted;
+        //            doctorlocationschedule.UpdateDate = doctorlocationscheduleBO.UpdateDate;
+        //            doctorlocationschedule.UpdateByUserID = doctorlocationscheduleBO.UpdateByUserID;
+        //            #endregion
+
+        //            _context.Entry(doctorlocationschedule).State = System.Data.Entity.EntityState.Modified;
+        //        }
+        //        else
+        //            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid doctorlocationschedule details.", ErrorLevel = ErrorLevel.Error };
+        //    }
+        //    else
+        //    {
+        //        if (!exists)
+        //        {
+        //            doctorlocationscheduleDB.CreateDate = doctorlocationscheduleBO.CreateDate;
+        //            doctorlocationscheduleDB.CreateByUserID = doctorlocationscheduleBO.CreateByUserID;
+        //            _dbSet.Add(doctorlocationscheduleDB);
+        //        }
+        //        else
+        //        {
+        //            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Schedule already exists for doctor's location.", ErrorLevel = ErrorLevel.Error };
+        //        }
+        //    }
+        //    _context.SaveChanges();
+
+        //    var res = Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(doctorlocationscheduleDB);
+        //    return (object)res;
+        //}
+        //#endregion
+
+
         #region Save
         public override object Save<T>(T entity)
         {
-            BO.DoctorLocationSchedule doctorlocationscheduleBO = (BO.DoctorLocationSchedule)(object)entity;
+            BO.DoctorLocationSchedule doctorLocationScheduleBO = (BO.DoctorLocationSchedule)(object)entity;
 
-            DoctorLocationSchedule doctorlocationscheduleDB = new DoctorLocationSchedule();
+            DoctorLocationSchedule doctorLocationScheduleDB = new DoctorLocationSchedule();
 
-            #region LocationSchedule
-            doctorlocationscheduleDB.id = doctorlocationscheduleBO.ID;
-            doctorlocationscheduleDB.IsDeleted = doctorlocationscheduleBO.IsDeleted.HasValue ? doctorlocationscheduleBO.IsDeleted : false;
+            if(doctorLocationScheduleBO.ID > 0)
+            {
+                doctorLocationScheduleDB = _context.DoctorLocationSchedules.Where(p => p.id == doctorLocationScheduleBO.ID).FirstOrDefault();
+
+                if (doctorLocationScheduleDB == null)
+                {
+                    return new BO.ErrorObject { ErrorMessage = "Doctor,Location,Schedule record not found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+            }
+            if (doctorLocationScheduleBO.location == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Location object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            if (doctorLocationScheduleBO.doctor == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Doctor object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            if (doctorLocationScheduleBO.schedule == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "Schedule object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            #region schedule
+            if (doctorLocationScheduleBO.schedule != null)
+            {
+                if (doctorLocationScheduleBO.schedule.ID > 0)
+                {
+                    Schedule schedule = _context.Schedules.Where(p => p.id == doctorLocationScheduleBO.schedule.ID).FirstOrDefault<Schedule>();
+                    if (schedule != null)
+                    {
+                        doctorLocationScheduleDB.Schedule = schedule;
+                    }
+                    else
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass the valid schedule.", ErrorLevel = ErrorLevel.Error };
+                }
+            }
             #endregion
 
             #region Location
-            if (doctorlocationscheduleBO.location != null)
-                if (doctorlocationscheduleBO.location.ID > 0)
+            if (doctorLocationScheduleBO.location != null)
+            {
+                if (doctorLocationScheduleBO.location.ID > 0)
                 {
-                    Location location = _context.Locations.Where(p => p.id == doctorlocationscheduleBO.location.ID).FirstOrDefault<Location>();
+                    Location location = _context.Locations.Where(p => p.id == doctorLocationScheduleBO.location.ID).FirstOrDefault<Location>();
                     if (location != null)
                     {
-                        doctorlocationscheduleDB.Location = location;
+                        doctorLocationScheduleDB.Location = location;
                     }
                     else
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid location detail.", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid location.", ErrorLevel = ErrorLevel.Error };
                 }
+            }
             #endregion
 
-            if (doctorlocationscheduleBO.schedule != null)
+            #region doctor
+            if (doctorLocationScheduleBO.doctor != null)
             {
-                #region Schedule
-                if (doctorlocationscheduleBO.schedule != null)
-                    if (doctorlocationscheduleBO.schedule.ID > 0)
-                    {
-                        Schedule schedule = _context.Schedules.Where(p => p.id == doctorlocationscheduleBO.schedule.ID).FirstOrDefault<Schedule>();
-                        if (schedule != null)
-                        {
-                            doctorlocationscheduleDB.Schedule = schedule;
-                        }
-                        else
-                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Schedule.", ErrorLevel = ErrorLevel.Error };
-                    }
-                #endregion
-            }
-            else
-            {
-                //Default schedule
-
-                Schedule defaultschedule = _context.Schedules.Where(p => p.IsDefault == true).FirstOrDefault<Schedule>();
-                if (defaultschedule != null)
+                if (doctorLocationScheduleBO.doctor.ID > 0)
                 {
-                    doctorlocationscheduleDB.Schedule = defaultschedule;
-                }
-                else
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please set default schedule in database.", ErrorLevel = ErrorLevel.Error };
-            }
-
-            #region Doctor
-            if (doctorlocationscheduleBO.doctor != null)
-                if (doctorlocationscheduleBO.doctor.ID > 0)
-                {
-                    Doctor doctor = _context.Doctors.Where(p => p.Id == doctorlocationscheduleBO.doctor.ID && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<Doctor>();
+                    Doctor doctor = _context.Doctors.Where(p => p.Id == doctorLocationScheduleBO.doctor.ID).FirstOrDefault<Doctor>();
                     if (doctor != null)
                     {
-                        doctorlocationscheduleDB.Doctor = doctor;
+                        doctorLocationScheduleDB.Doctor = doctor;
                     }
                     else
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid doctor detail.", ErrorLevel = ErrorLevel.Error };
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid doctor.", ErrorLevel = ErrorLevel.Error };
                 }
+            }
+
             #endregion
 
-            bool exists = _context.DoctorLocationSchedules.Any(d => d.DoctorID == doctorlocationscheduleBO.doctor.ID && d.LocationID == doctorlocationscheduleBO.location.ID && d.ScheduleID== doctorlocationscheduleBO.schedule.ID && (d.IsDeleted==false || d.IsDeleted==null));
-             if ((doctorlocationscheduleBO.ID > 0 && exists) || (doctorlocationscheduleBO.ID > 0))
+            if (doctorLocationScheduleBO.ID <= 0)
             {
-                //For Update Record
-                //Find Doctor Location Schedule By ID
-                DoctorLocationSchedule doctorlocationschedule = _context.DoctorLocationSchedules.Where(p => p.id == doctorlocationscheduleBO.ID && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<DoctorLocationSchedule>();
-
-                if (doctorlocationschedule != null)
-                {
-                    #region Location
-                    doctorlocationschedule.id = doctorlocationscheduleBO.ID;
-                    doctorlocationschedule.IsDeleted = doctorlocationscheduleBO.IsDeleted == null ? doctorlocationscheduleBO.IsDeleted : doctorlocationschedule.IsDeleted;
-                    doctorlocationschedule.UpdateDate = doctorlocationscheduleBO.UpdateDate;
-                    doctorlocationschedule.UpdateByUserID = doctorlocationscheduleBO.UpdateByUserID;
-                    #endregion
-
-                    _context.Entry(doctorlocationschedule).State = System.Data.Entity.EntityState.Modified;
-                }
-                else
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid doctorlocationschedule details.", ErrorLevel = ErrorLevel.Error };
-            }
-            else
-            {
-                if (!exists)
-                {
-                    doctorlocationscheduleDB.CreateDate = doctorlocationscheduleBO.CreateDate;
-                    doctorlocationscheduleDB.CreateByUserID = doctorlocationscheduleBO.CreateByUserID;
-                    _dbSet.Add(doctorlocationscheduleDB);
-                }
-                else
-                {
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Schedule already exists for doctor's location.", ErrorLevel = ErrorLevel.Error };
-                }
+                _context.DoctorLocationSchedules.Add(doctorLocationScheduleDB);
             }
             _context.SaveChanges();
 
-            var res = Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(doctorlocationscheduleDB);
+            doctorLocationScheduleDB = _context.DoctorLocationSchedules.Include("Doctor").Include("Location").Include("Schedule").Where(p => p.id == doctorLocationScheduleDB.id).FirstOrDefault<DoctorLocationSchedule>();
+
+            _context.SaveChanges();
+
+            var res = Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(doctorLocationScheduleDB);
             return (object)res;
         }
         #endregion
