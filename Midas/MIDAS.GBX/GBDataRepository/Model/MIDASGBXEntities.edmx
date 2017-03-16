@@ -699,6 +699,7 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="IsDefault" Type="bit" Nullable="false" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="CompanyId" Type="int" />
         </EntityType>
         <EntityType Name="ScheduleDetail">
           <Key>
@@ -1903,6 +1904,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Schedule_Company_CompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ScheduleDetail_Schedule">
           <End Role="Schedule" Type="Self.Schedule" Multiplicity="1" />
           <End Role="ScheduleDetail" Type="Self.ScheduleDetail" Multiplicity="*" />
@@ -2419,6 +2432,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Schedule" EntitySet="Schedule" />
             <End Role="Room" EntitySet="Room" />
           </AssociationSet>
+          <AssociationSet Name="FK_Schedule_Company_CompanyId" Association="Self.FK_Schedule_Company_CompanyId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Schedule" EntitySet="Schedule" />
+          </AssociationSet>
           <AssociationSet Name="FK_ScheduleDetail_Schedule" Association="Self.FK_ScheduleDetail_Schedule">
             <End Role="Schedule" EntitySet="Schedule" />
             <End Role="ScheduleDetail" EntitySet="ScheduleDetail" />
@@ -2657,6 +2674,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Locations" Relationship="Self.FK_Location_Company" FromRole="Company" ToRole="Location" />
           <NavigationProperty Name="Patients" Relationship="Self.FK_Patient_Company" FromRole="Company" ToRole="Patient" />
           <NavigationProperty Name="Patient2" Relationship="Self.FK_Patient2_Company_CompanyId" FromRole="Company" ToRole="Patient2" />
+          <NavigationProperty Name="Schedules" Relationship="Self.FK_Schedule_Company_CompanyId" FromRole="Company" ToRole="Schedule" />
           <NavigationProperty Name="UserCompanies" Relationship="Self.FK_UserCompany_Company" FromRole="Company" ToRole="UserCompany" />
         </EntityType>
         <EntityType Name="CompanySpecialtyDetail">
@@ -3316,6 +3334,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="IsDefault" Type="Boolean" Nullable="false" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="CompanyId" Type="Int32" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_Schedule_Company_CompanyId" FromRole="Schedule" ToRole="Company" />
           <NavigationProperty Name="DoctorLocationSchedules" Relationship="Self.FK_DoctorLocationSchedule_Schedule" FromRole="Schedule" ToRole="DoctorLocationSchedule" />
           <NavigationProperty Name="Locations" Relationship="Self.FK_Location_Schedule" FromRole="Schedule" ToRole="Location" />
           <NavigationProperty Name="Rooms" Relationship="Self.FK_Room_Schedule" FromRole="Schedule" ToRole="Room" />
@@ -3979,6 +3999,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="Patient2">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Schedule_Company_CompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Schedule">
               <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
@@ -4874,6 +4906,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_Patient2_Company_CompanyId" Association="Self.FK_Patient2_Company_CompanyId">
             <End Role="Company" EntitySet="Companies" />
             <End Role="Patient2" EntitySet="Patient2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedule_Company_CompanyId" Association="Self.FK_Schedule_Company_CompanyId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Schedule" EntitySet="Schedules" />
           </AssociationSet>
           <AssociationSet Name="FK_UserCompany_Company" Association="Self.FK_UserCompany_Company">
             <End Role="Company" EntitySet="Companies" />
@@ -5845,6 +5881,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
