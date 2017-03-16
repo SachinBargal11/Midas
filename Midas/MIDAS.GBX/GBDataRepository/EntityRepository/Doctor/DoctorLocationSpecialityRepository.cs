@@ -164,7 +164,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                     else
                     {
-                        bool ExistsSpeciality= _context.Specialties.Any(p => p.id == SpecialityId.Value
+                        bool ExistsSpeciality = _context.Specialties.Any(p => p.id == SpecialityId.Value
                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
 
                         if (ExistsSpeciality == false)
@@ -196,11 +196,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 dbContextTransaction.Commit();
 
                 lstDoctorLocationScheduleDB = _context.DoctorLocationSpecialties.Include("Doctor")
-                                                                              .Include("Location")
-                                                                              .Include("Specialty")
-                                                                              .Where(p => forLocationIds.Contains(p.LocationId)
+                                                                                .Include("Location")
+                                                                                .Include("Specialty")
+                                                                                .Where(p => forLocationIds.Contains(p.LocationId)
                                                                                           && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                                  .ToList<DoctorLocationSpecialty>();
+                                                                                .ToList<DoctorLocationSpecialty>();
             }
 
             List<BO.DoctorLocationSpeciality> res = new List<BO.DoctorLocationSpeciality>();
@@ -279,7 +279,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                     else
                     {
-                        bool ExistsSpeciality= _context.Schedules.Any(p => p.id == SpecialityId.Value
+                        bool ExistsSpeciality = _context.Schedules.Any(p => p.id == SpecialityId.Value
                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
 
                         if (ExistsSpeciality == false)
@@ -311,9 +311,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 dbContextTransaction.Commit();
 
                 lstDoctorLocationSpecialityDB = _context.DoctorLocationSpecialties.Include("Doctor")
-                                                                              .Include("Location")
-                                                                              .Include("Specialty")
-                                                                              .Where(p => forDoctorIds.Contains(p.DoctorId)
+                                                                                  .Include("Location")
+                                                                                  .Include("Specialty")
+                                                                                  .Where(p => forDoctorIds.Contains(p.DoctorId)
                                                                                           && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                                   .ToList<DoctorLocationSpecialty>();
             }
@@ -328,12 +328,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID
         public override object Get(int id)
         {
-            BO.DoctorLocationSpeciality acc_ = Convert<BO.DoctorLocationSpeciality, DoctorLocationSpecialty>(_context.DoctorLocationSpecialties.Include("Doctor").Include("Location").Include("Specialty").Where(p => p.Id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault<DoctorLocationSpecialty>());
+            var acc_ = _context.DoctorLocationSpecialties.Include("Doctor").Include("Location").Include("Specialty")
+                                                         .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                         .FirstOrDefault<DoctorLocationSpecialty>();
+
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this DoctorLocationSpeciality.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            return (object)acc_;
+
+            BO.DoctorLocationSpeciality result = Convert<BO.DoctorLocationSpeciality, DoctorLocationSpecialty>(acc_);
+            
+            return (object)result;
         }
         #endregion
                 
@@ -343,9 +349,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<BO.DoctorLocationSpeciality> lstDoctorLocationSpeciality = new List<BO.DoctorLocationSpeciality>();
 
             var acc_ = _context.DoctorLocationSpecialties.Include("Doctor").Include("Doctor.User")
-                                                       .Include("Location").Include("Location.AddressInfo").Include("Location.ContactInfo")
-                                                       .Include("Specialty")
-                                                       .Where(p => p.LocationId == id && (p.IsDeleted == false || p.IsDeleted == null)).ToList<DoctorLocationSpecialty>();
+                                                         .Include("Location").Include("Location.AddressInfo").Include("Location.ContactInfo")
+                                                         .Include("Specialty")
+                                                         .Where(p => p.LocationId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                         .ToList<DoctorLocationSpecialty>();
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -368,9 +375,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<BO.DoctorLocationSpeciality> lstDoctorLocationSpeciality = new List<BO.DoctorLocationSpeciality>();
 
             var acc_ = _context.DoctorLocationSpecialties.Include("Doctor").Include("Doctor.User")
-                                                       .Include("Location").Include("Location.AddressInfo").Include("Location.ContactInfo")
-                                                       .Include("Specialty")
-                                                       .Where(p => p.DoctorId == id && (p.IsDeleted == false || p.IsDeleted == null)).ToList<DoctorLocationSpecialty>();
+                                                         .Include("Location").Include("Location.AddressInfo").Include("Location.ContactInfo")
+                                                         .Include("Specialty")
+                                                         .Where(p => p.DoctorId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                         .ToList<DoctorLocationSpecialty>();
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -393,8 +401,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<BO.DoctorLocationSpeciality> lstDoctorLocationSpeciality = new List<BO.DoctorLocationSpeciality>();
 
             var acc_ = _context.DoctorLocationSpecialties.Include("Doctor").Include("Doctor.User")
-                                                       .Include("Location").Include("Location.AddressInfo").Include("Location.ContactInfo")
-                                                       .Include("Specialty").Where(p => (p.LocationId == locationId && p.DoctorId == doctorId) && (p.IsDeleted == false || p.IsDeleted == null)).ToList<DoctorLocationSpecialty>();
+                                                         .Include("Location").Include("Location.AddressInfo").Include("Location.ContactInfo")
+                                                         .Include("Specialty")
+                                                         .Where(p => (p.LocationId == locationId && p.DoctorId == doctorId) 
+                                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                         .ToList<DoctorLocationSpecialty>();
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
