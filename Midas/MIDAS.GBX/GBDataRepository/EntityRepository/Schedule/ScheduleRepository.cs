@@ -193,6 +193,32 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get By Company ID
+        public override object GetByCompanyId(int id)
+        {
+            var acc = _context.Schedules.Where(p =>p.CompanyId == id  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                           .ToList<Schedule>();
+
+            BO.Schedule scheduleBO = new BO.Schedule();
+            List<BO.Schedule> lstschedule = new List<BO.Schedule>();
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this schedule.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+
+                foreach (var Eachschedule in acc)
+                {
+                    lstschedule.Add(Convert<BO.Schedule, Schedule>(Eachschedule));
+                }
+
+            }
+
+            return (object)lstschedule;
+        }
+        #endregion
+
         #region Get By Filter
         public override object Get<T>(T entity)
         {
@@ -243,28 +269,28 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get By Company Filter
-        public override object GetByCompanyId(int CompanyId)
-        {
-            List<BO.Schedule> lstSchedules = new List<BO.Schedule>();
+        //#region Get By Company Filter
+        //public override object GetByCompanyId(int CompanyId)
+        //{
+        //    List<BO.Schedule> lstSchedules = new List<BO.Schedule>();
 
-            var acc_ = _context.Schedules.Include("ScheduleDetails").Where(p => p.Locations.Where(p2 => (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false)))
-                                                                                           .Any(p3 => p3.CompanyID == CompanyId 
-                                                                                                  && (p3.IsDeleted.HasValue == false || (p3.IsDeleted.HasValue == true && p3.IsDeleted.Value == false))) == true 
-                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                    .ToList<Schedule>();
-            if (acc_ == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
-            foreach (Schedule item in acc_)
-            {
-                lstSchedules.Add(Convert<BO.Schedule, Schedule>(item));
-            }
+        //    var acc_ = _context.Schedules.Include("ScheduleDetails").Where(p => p.Locations.Where(p2 => (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false)))
+        //                                                                                   .Any(p3 => p3.CompanyID == CompanyId 
+        //                                                                                          && (p3.IsDeleted.HasValue == false || (p3.IsDeleted.HasValue == true && p3.IsDeleted.Value == false))) == true 
+        //                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+        //                                                            .ToList<Schedule>();
+        //    if (acc_ == null)
+        //    {
+        //        return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+        //    }
+        //    foreach (Schedule item in acc_)
+        //    {
+        //        lstSchedules.Add(Convert<BO.Schedule, Schedule>(item));
+        //    }
 
-            return lstSchedules;
-        }
-        #endregion
+        //    return lstSchedules;
+        //}
+        //#endregion
 
         #region Get By Location Filter
         public override object GetByLocationId(int LocationId)
