@@ -48,10 +48,10 @@ export class AttorneyMasterListComponent implements OnInit {
         this._progressBarService.show();
         this._attorneyMasterStore.getAttorneyMasters()
             .subscribe(attorneys => {
-                // this.attorneys = attorneys;
-                this.datasource = attorneys;
-                this.totalRecords = this.datasource.length;
-                this.attorneys = this.datasource.slice(0, 10);
+                this.attorneys = attorneys;
+                // this.datasource = attorneys;
+                // this.totalRecords = this.datasource.length;
+                // this.attorneys = this.datasource.slice(0, 10);
             },
             (error) => {
                 this._progressBarService.hide();

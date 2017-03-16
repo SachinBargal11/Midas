@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { LazyLoadEvent } from 'primeng/primeng'
 import { ReferringOfficeStore } from '../stores/referring-office-store';
 import { ReferringOffice } from '../models/referring-office';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
@@ -18,6 +19,8 @@ export class ReferringOfficeListComponent implements OnInit {
     selectedReferringOffices: ReferringOffice[] = [];
     referringOffices: ReferringOffice[];
     caseId: number;
+    datasource: ReferringOffice[];
+    totalRecords: number;
 
     constructor(
         private _router: Router,
@@ -41,6 +44,9 @@ export class ReferringOfficeListComponent implements OnInit {
         this._referringOfficeStore.getReferringOffices(this.caseId)
             .subscribe(referringOffices => {
                 this.referringOffices = referringOffices;
+                // this.datasource = referringOffices;
+                // this.totalRecords = this.datasource.length;
+                // this.referringOffices = this.datasource.slice(0, 10);
             },
             (error) => {
                 this._progressBarService.hide();
@@ -48,6 +54,13 @@ export class ReferringOfficeListComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+    }
+    loadRefferingOfficesLazy(event: LazyLoadEvent) {
+        setTimeout(() => {
+            if(this.datasource) {
+                this.referringOffices = this.datasource.slice(event.first, (event.first + event.rows));
+            }
+        }, 250);
     }
 
     deleteReferringOffice() {

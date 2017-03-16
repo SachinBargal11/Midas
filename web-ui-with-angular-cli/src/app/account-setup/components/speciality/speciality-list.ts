@@ -41,10 +41,10 @@ export class SpecialityListComponent implements OnInit {
         this._progressBarService.show();
         this._specialityStore.getSpecialities()
             .subscribe(specialities => { 
-                // this.specialities = specialities; 
-                this.datasource = specialities;
-                this.totalRecords = this.datasource.length;
-                this.specialities = this.datasource.slice(0, 10);
+                this.specialities = specialities; 
+                // this.datasource = specialities;
+                // this.totalRecords = this.datasource.length;
+                // this.specialities = this.datasource.slice(0, 10);
             },
             null,
             () => { this._progressBarService.hide(); });

@@ -103,12 +103,15 @@ export class AssignDoctorComponent implements OnInit {
                 let locationDoctorIds: number[] = _.map(locationDoctors, (currentLocationDoctor: DoctorLocationSchedule) => {
                     return currentLocationDoctor.doctor.id;
                 });
-                let doctorDetails = _.filter(doctors, (currentDoctor: Doctor) => {
+                this.doctors = _.filter(doctors, (currentDoctor: Doctor) => {
                     return _.indexOf(locationDoctorIds, currentDoctor.id) < 0 ? true : false;
                 });
-                this.datasource = doctorDetails;
-                this.totalRecords = this.datasource.length;
-                this.doctors = this.datasource.slice(0, 10);
+                // let doctorDetails = _.filter(doctors, (currentDoctor: Doctor) => {
+                //     return _.indexOf(locationDoctorIds, currentDoctor.id) < 0 ? true : false;
+                // });
+                // this.datasource = doctorDetails;
+                // this.totalRecords = this.datasource.length;
+                // this.doctors = this.datasource.slice(0, 10);
             },
             (error) => {
                 this.doctors = [];
