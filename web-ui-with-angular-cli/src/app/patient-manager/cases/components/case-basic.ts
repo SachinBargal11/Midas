@@ -92,14 +92,13 @@ export class CaseBasicComponent implements OnInit {
         });
         this.caseform = this.fb.group({
             // caseName: [''],
-            patientId: [{ value: '', disabled: true }],
-            caseTypeId: [''],
+            patientId: [{ value: '', disabled: true }, Validators.required],
+            caseTypeId: ['', Validators.required],
             carrierCaseNo: [''],
             locationId: ['', Validators.required],
             // patientEmpInfoId: ['', Validators.required],
             caseStatusId: ['', Validators.required],
             attorneyId: [''],
-            caseStatus: [''],
             transportation: [1, Validators.required],
         });
 

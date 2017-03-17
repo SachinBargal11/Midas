@@ -79,7 +79,7 @@ export class BasicComponent implements OnInit {
         // this.id = parentActivatedRoute.params.map(routeParams => routeParams.id);
         this.basicform = this.fb.group({
             officeName: ['', Validators.required],
-            address: [''],
+            address: ['', Validators.required],
             city: ['', Validators.required],
             state: ['', Validators.required],
             zipcode: ['', Validators.required],
