@@ -15,11 +15,14 @@ import { UserShellComponent } from './components/users-shell';
 import { DoctorLocationScheduleComponent } from './components/doctor-location-schedule';
 import { DoctorLocationScheduleShellComponent } from './components/doctor-location-schedule-shell';
 import { AddDoctorLocationComponent } from './components/add-doctor-location';
+import { AddDoctorLocationSpecialityComponent } from './components/add-doctor-location-speciality';
 
 import { DoctorLocationScheduleService } from './services/doctor-location-schedule-service';
 import { DoctorLocationScheduleStore } from './stores/doctor-location-schedule-store';
 import { DoctorLocationsService } from './services/doctor-locations-service';
 import { DoctorLocationsStore } from './stores/doctor-locations-store';
+import { DoctorLocationSpecialityService } from './services/doctor-location-speciality-service';
+import { DoctorLocationSpecialityStore } from './stores/doctor-location-speciality-store';
 
 @NgModule({
   imports: [
@@ -40,13 +43,16 @@ import { DoctorLocationsStore } from './stores/doctor-locations-store';
     UserShellComponent,
     DoctorLocationScheduleShellComponent,
     DoctorLocationScheduleComponent,
-    AddDoctorLocationComponent
+    AddDoctorLocationComponent,
+    AddDoctorLocationSpecialityComponent
   ],
   providers: [
     DoctorLocationScheduleService,
     DoctorLocationScheduleStore,
     DoctorLocationsService,
-    DoctorLocationsStore
+    DoctorLocationsStore,
+    DoctorLocationSpecialityService,
+    DoctorLocationSpecialityStore
   ]
 })
 export class UsersModule { }
