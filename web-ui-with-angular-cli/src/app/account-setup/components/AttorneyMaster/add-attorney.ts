@@ -93,7 +93,7 @@ export class AddAttorneyComponent implements OnInit {
     selectState(event) {
         this.selectedCity = 0;
         let currentState = event.target.value;
-        this.loadCities(currentState);
+        // this.loadCities(currentState);
     }
 
     loadCities(stateName) {

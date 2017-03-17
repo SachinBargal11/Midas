@@ -120,7 +120,7 @@ export class EditAdjusterComponent implements OnInit {
             this.loadCities(currentState);
             this.selectedCity = this.adjuster.adjusterAddress.city;
         } else {
-        this.loadCities(currentState);
+        // this.loadCities(currentState);
         this.selectedCity = '';
         }
     }
