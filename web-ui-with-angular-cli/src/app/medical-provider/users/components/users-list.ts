@@ -53,6 +53,7 @@ export class UsersListComponent implements OnInit {
                 // this.users = this.datasource.slice(0, 10);
             },
             (error) => {
+                this._progressBarService.hide();
             },
             () => {
                 this._progressBarService.hide();

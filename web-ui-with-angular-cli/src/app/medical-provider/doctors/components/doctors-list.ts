@@ -61,6 +61,7 @@ export class DoctorsListComponent implements OnInit {
                 
             },
             (error) => {
+                this._progressBarService.hide();
             },
             () => {
             this._progressBarService.hide();
