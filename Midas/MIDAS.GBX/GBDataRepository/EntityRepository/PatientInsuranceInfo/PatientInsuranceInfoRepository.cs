@@ -202,10 +202,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object Save<T>(T entity)
         {
             BO.PatientInsuranceInfo insuranceBO = (BO.PatientInsuranceInfo)(object)entity;
-            BO.AddressInfo addressinfoPolicyHolderBO = insuranceBO.addressInfo;
-            BO.ContactInfo contactinfoPolicyHolderBO = insuranceBO.contactInfo;
-            BO.AddressInfo addressinfoInsuranceCompanyBO = insuranceBO.addressInfo1;
-            BO.ContactInfo contactinfoInsuranceCompanyBO = insuranceBO.contactInfo1;
+            BO.AddressInfo addressinfoPolicyHolderBO = insuranceBO.addressInfo1;
+            BO.ContactInfo contactinfoPolicyHolderBO = insuranceBO.contactInfo1;
+            BO.AddressInfo addressinfoInsuranceCompanyBO = insuranceBO.addressInfo;
+            BO.ContactInfo contactinfoInsuranceCompanyBO = insuranceBO.contactInfo;
 
             PatientInsuranceInfo insuranceDB = new PatientInsuranceInfo();
 
@@ -346,11 +346,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 }
                 else
                 {
-                    if (IsEditMode == false)
-                    {
-                        dbContextTransaction.Rollback();
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid insurance address details.", ErrorLevel = ErrorLevel.Error };
-                    }
+                    //if (IsEditMode == false)
+                    //{
+                    //    dbContextTransaction.Rollback();
+                    //    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid insurance address details.", ErrorLevel = ErrorLevel.Error };
+                    //}
                     addressinfoInsuranceCompanyDB = null;
                 }
                 #endregion
