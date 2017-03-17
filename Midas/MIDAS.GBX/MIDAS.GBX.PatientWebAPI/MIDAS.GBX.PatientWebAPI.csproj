@@ -262,6 +262,7 @@
     <Compile Include="Controllers\PatientController.cs" />
     <Compile Include="Controllers\PatientEmpInfoController.cs" />
     <Compile Include="Controllers\PatientFamilyMemberController.cs" />
+    <Compile Include="Controllers\PatientVisit2Controller.cs" />
     <Compile Include="Controllers\PatientVisitController.cs" />
     <Compile Include="Controllers\PatientVisitEventController.cs" />
     <Compile Include="Controllers\RefferingOfficeController.cs" />
@@ -375,7 +376,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>49899</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
