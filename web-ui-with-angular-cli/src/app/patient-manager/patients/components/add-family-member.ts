@@ -46,7 +46,6 @@ export class AddFamilyMemberComponent implements OnInit {
                 firstName: ['', Validators.required],
                 middleName: [''],
                 lastName: ['', Validators.required],
-                // suffix: ['', Validators.required],
                 age: ['', Validators.required],
                 races: ['', Validators.required],
                 ethnicities: ['', Validators.required],
@@ -84,7 +83,7 @@ export class AddFamilyMemberComponent implements OnInit {
             genderId: familyMemberFormValues.gender,
             cellPhone: familyMemberFormValues.cellPhone ? familyMemberFormValues.cellPhone.replace(/\-/g, '') : null,
             workPhone: familyMemberFormValues.workPhone,
-            primaryContact: familyMemberFormValues.primaryContact
+            primaryContact: parseInt(familyMemberFormValues.primaryContact)
         });
         this._progressBarService.show();
         result = this._familyMemberStore.addFamilyMember(familyMember);

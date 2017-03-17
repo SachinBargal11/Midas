@@ -323,8 +323,13 @@
                         <label class="form-label"> Country
                             </label>
                         <div class="form-group" [class.error]="userformControls.address.controls.country.touched && !userformControls.address.controls.country.valid">
-                            <input formControlName="country" [ngModel]="user.address.country" type="text" class="form-control" [class.error]="!userformControls.address.controls.country.valid"
-                                placeholder="" />
+                            <!--<input formControlName="country" [ngModel]="user.address.country" type="text" class="form-control" [class.error]="!userformControls.address.controls.country.valid"
+                                placeholder="" />-->
+                                <select formControlName="country" [ngModel]="user.address.country" type="text" class="form-control" placeholder="" [class.error]="userformControls.address.controls.country.touched && !userformControls.address.controls.valid">
+                                        <option value="">-Select -</option>
+                                        <option disabled>────────────────────</option>
+                                        <option value="US">United States</option>
+                                    </select>
                             <div class='error-list' *ngIf="userformControls.address.controls.country.touched && !userformControls.address.controls.country.valid">
                                 <ul>
                                     <li *ngIf="userformControls.address.controls.country.hasError('required')">Country is required.</li>

@@ -36,6 +36,8 @@ namespace MIDAS.GBX.BusinessObjects
             }
         }
 
+        public int CompanyId { get; set; }
+
         //public List<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }
         public List<Location> Locations { get; set; }
         public List<ScheduleDetail> ScheduleDetails { get; set; }

@@ -210,7 +210,12 @@
                                 <!--<span class="color-red">*</span>-->
                             </label>
                     <div class="form-group" [class.error]="insuranceformControls.policyCountry.touched && !insuranceformControls.policyCountry.valid">
-                        <input formControlName="policyCountry" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.policyCountry.valid">
+                        <!--<input formControlName="policyCountry" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.policyCountry.valid">-->
+                        <select formControlName="country" type="text" class="form-control" placeholder="" [class.error]="insuranceformControls.policyCountry.touched && !insuranceformControls.policyCountry.valid">
+                                        <option value="">-Select -</option>
+                                        <option disabled>────────────────────</option>
+                                        <option value="US">United States</option>
+                                    </select>
                         <div class='error-list' *ngIf="insuranceformControls.policyCountry.touched && !insuranceformControls.policyCountry.valid">
                             <ul>
                                 <li *ngIf="insuranceformControls.policyCountry.hasError('required')">Country is required.</li>
@@ -466,7 +471,12 @@
                                 <!--<span class="color-red">*</span>-->
                             </label>
                     <div class="form-group" [class.error]="insuranceformControls.country.touched && !insuranceformControls.country.valid">
-                        <input formControlName="country" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.country.valid">
+                        <!--<input formControlName="country" type="text" class="form-control" placeholder="" [class.error]="!insuranceformControls.country.valid">-->
+                         <select formControlName="country" type="text" class="form-control" placeholder="" [class.error]="insuranceformControls.country.touched && !insuranceformControls.country.valid">
+                                        <option value="">-Select -</option>
+                                        <option disabled>────────────────────</option>
+                                        <option value="US">United States</option>
+                                    </select>
                         <div class='error-list' *ngIf="insuranceformControls.country.touched && !insuranceformControls.country.valid">
                             <ul>
                                 <li *ngIf="insuranceformControls.country.hasError('required')">Country is required.</li>

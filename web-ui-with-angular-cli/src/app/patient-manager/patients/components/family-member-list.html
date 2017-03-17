@@ -21,8 +21,11 @@
              [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Family Member List</header>
     <p-column selectionMode="multiple"></p-column>
-    <p-column field="fullName" header="Full Name" [sortable]="true"></p-column>
-    <p-column field="familyName" header="Family Name" [sortable]="true"></p-column>
+    <p-column field="displayName" header="Name" [sortable]="true">
+        <template let-familyMember="rowData" pTemplate="body">
+        <a routerLink="edit/{{familyMember.id}}">{{familyMember.displayName}}</a>
+        </template>
+    </p-column>
     <p-column field="relationLabel" header="Relation" [sortable]="true"></p-column>
     <p-column field="age" header="Age" [sortable]="true"></p-column>
     <!--<p-column styleClass="actions-cell" header="Actions">

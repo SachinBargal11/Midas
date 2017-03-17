@@ -7,10 +7,13 @@ const FamilyMemberRecord = Record({
     patientId: 0,
     relationId: Relation.SPOUSE,
     isInActive: false,
-    fullName: '',
-    familyName: '',
-    prefix: '',
-    sufix: '',
+    // fullName: '',
+    // familyName: '',
+    // prefix: '',
+    // sufix: '',
+    firstName: '',
+    middleName: '',
+    lastName: '',
     age: 0,
     genderId: 0,
     raceId: 0,
@@ -26,10 +29,13 @@ export class FamilyMember extends FamilyMemberRecord {
     patientId: number;
     relationId: Relation;
     isInActive: boolean;
-    fullName: string;
-    familyName: string;
-    prefix: string;
-    sufix: string;
+    // fullName: string;
+    // familyName: string
+    // prefix: string;
+    // sufix: string;
+    firstName: string;
+    middleName: string;
+    lastName: string;
     age: number;
     genderId: number;
     raceId: number;
@@ -57,6 +63,10 @@ export class FamilyMember extends FamilyMemberRecord {
             // case Relation.BROTHER:
             //     return 'Brother';
         }
+    }
+
+     get displayName(): string {
+        return this.firstName + ' ' + this.lastName;
     }
 
 }

@@ -75,7 +75,22 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             return requestHandler.GetObject(Request, id);
         }
-                    
+
+        [HttpDelete]
+        [HttpPost]
+        [Route("Delete/{id}")]
+        public HttpResponseMessage Delete(int id)
+        {
+            return requestHandler.Delete(Request, id);
+        }
+
+        [HttpPost]
+        [Route("Add")]
+        public HttpResponseMessage Post([FromBody]DoctorLocationSpeciality data)
+        {
+            return requestHandler.CreateGbObject(Request, data);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
