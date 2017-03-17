@@ -367,5 +367,85 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             }
         }
 
+        public HttpResponseMessage GetByDoctorId(HttpRequestMessage request, int DoctorId)
+        {
+            var objResult = dataAccessManager.GetByDoctorId(DoctorId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage DeleteVisit(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.DeleteVisit(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage DeleteCalendarEvent(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.DeleteCalendarEvent(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage CancleVisit(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.CancleVisit(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage CancleCalendarEvent(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.CancleCalendarEvent(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage IsInsuranceInfoAdded(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.IsInsuranceInfoAdded(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+
+
     }
 }

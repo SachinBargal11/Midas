@@ -38,6 +38,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.Schedule scheduleBO = new BO.Schedule();
             scheduleBO.Name = schedule.Name;
             scheduleBO.ID = schedule.id;
+            scheduleBO.CompanyId = schedule.CompanyId;
             scheduleBO.isDefault = schedule.IsDefault;
 
             if (schedule.IsDeleted.HasValue)
@@ -95,7 +96,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             #endregion
 
             if(scheduleDB.id==0)
-            if (_context.Schedules.Any(o => o.Name == scheduleBO.Name && o.CompanyId == scheduleBO.CompanyId))
+            if (_context.Schedules.Any(o => o.Name == scheduleBO.Name && (o.CompanyId == scheduleBO.CompanyId || o.IsDefault == true)))
             {
                 return new BO.ErrorObject { ErrorMessage = "Schedule already exists.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
@@ -141,13 +142,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     return new BO.ErrorObject { errorObject = "", ErrorMessage = "Invalid schedule details or default schdule.", ErrorLevel = ErrorLevel.Error };
                 schedule.ScheduleDetails = scheduleDB.ScheduleDetails;
 
-                if (scheduleBO.CompanyId <= 0)
+                if (scheduleBO.CompanyId.HasValue == false || (scheduleBO.CompanyId.HasValue == true && scheduleBO.CompanyId.Value <= 0))
                 {
                     return new BO.ErrorObject { errorObject = "", ErrorMessage = "Invalid company id.", ErrorLevel = ErrorLevel.Error };
                 }
                 else
                 {
-                    bool ExistsCompany = _context.Companies.Any(p => p.id == scheduleBO.CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+                    bool ExistsCompany = _context.Companies.Any(p => p.id == scheduleBO.CompanyId.Value && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
                     if (ExistsCompany == false)
                     {
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Company id dosent exists.", ErrorLevel = ErrorLevel.Error };
@@ -160,13 +161,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 scheduleDB.CreateDate = scheduleBO.CreateDate;
                 scheduleDB.CreateByUserID = scheduleBO.CreateByUserID;
 
-                if (scheduleBO.CompanyId <= 0)
+                if (scheduleBO.CompanyId.HasValue == false || (scheduleBO.CompanyId.HasValue == true && scheduleBO.CompanyId.Value <= 0))
                 {
                     return new BO.ErrorObject { errorObject = "", ErrorMessage = "Invalid company id.", ErrorLevel = ErrorLevel.Error };
                 }
                 else
                 {
-                    bool ExistsCompany = _context.Companies.Any(p => p.id == scheduleBO.CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+                    bool ExistsCompany = _context.Companies.Any(p => p.id == scheduleBO.CompanyId.Value && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
                     if (ExistsCompany == false)
                     {
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "Company id dosent exists.", ErrorLevel = ErrorLevel.Error };
@@ -225,7 +226,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Company ID
         public override object GetByCompanyId(int id)
         {
-            var acc = _context.Schedules.Where(p => p.CompanyId == id  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            bool ExistsCompany = _context.Companies.Any(p => p.id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
+            var acc = _context.Schedules.Where(p => (p.CompanyId == id || p.IsDefault == true) && ExistsCompany == true
+                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                        .OrderBy(p => p.id)
                                         .ToList<Schedule>();
 
             List<BO.Schedule> lstschedule = new List<BO.Schedule>();

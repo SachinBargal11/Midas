@@ -22,37 +22,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             requestHandlerPatient2 = new GbApiRequestHandler<Patient2>();
         }
 
-        //[HttpGet]
-        //[Route("Get/{id}")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage Get(int id)
-        //{
-        //    return requestHandler.GetObject(Request, id);
-        //}
-
-        //[Route("Update")]
-        //[HttpPut]
-        //[AllowAnonymous]
-        //public HttpResponseMessage Put([FromBody]Patient patient)
-        //{
-        //    return requestHandler.UpdateGbObject(Request, patient);
-        //}
-
-        //[HttpGet]
-        //[Route("GetAllPatient")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage GetAllPatient([FromBody]Patient2 data)
-        //{
-        //    return requestHandlerPatient2.GetGbObjects(Request, data);
-        //}
-
-        //[HttpGet]
-        //[Route("getPatientsByCompanyId")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage GetPatientsByCompanyId(int CompanyId)
-        //{
-        //    return requestHandlerPatient2.GetGbObjects(Request, CompanyId);
-        //}
 
         [HttpGet]
         [Route("getPatientById/{id}")]
@@ -69,6 +38,10 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         {
             return requestHandlerPatient2.CreateGbObject(Request, patient2);
         }
+
+
+
+
 
         protected override void Dispose(bool disposing)
         {

@@ -118,11 +118,11 @@ export class EditAttorneyComponent implements OnInit {
         this.maxDate.setDate(currentDate);
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
-        this._statesStore.getStates()
-            .subscribe(states => this.states = states);
+        // this._statesStore.getStates()
+        //     .subscribe(states => this.states = states);
 
-        this._statesStore.getStates()
-            .subscribe(states => this.states = states);
+        // this._statesStore.getStates()
+        //     .subscribe(states => this.states = states);
 
     }
 
@@ -132,7 +132,7 @@ export class EditAttorneyComponent implements OnInit {
             this.loadCities(currentState);
             this.selectedCity = this.attorney.user.address.city;
         } else {
-            this.loadCities(currentState);
+            // this.loadCities(currentState);
             this.selectedCity = '';
         }
     }

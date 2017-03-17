@@ -55,7 +55,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         }
 
         [HttpGet]
-        //[HttpDelete]
         [Route("Delete/{id}")]
         [AllowAnonymous]
         public HttpResponseMessage Delete(int id)
