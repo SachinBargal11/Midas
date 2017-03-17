@@ -7,6 +7,7 @@ import { AssignDoctorComponent } from './components/assign-doctor';
 // import { EditRoomComponent } from './components/edit-room';
 import { DoctorsListComponent } from './components/doctors-list';
 import { DoctorScheduleComponent } from './components/doctor-schedule';
+import { AddLocationDoctorSpecialityComponent } from './components/add-location-doctor-speciality';
 import { ScheduleService } from '../locations/services/schedule-service';
 import { ScheduleStore } from '../locations/stores/schedule-store';
 
@@ -22,7 +23,8 @@ import { ScheduleStore } from '../locations/stores/schedule-store';
         DoctorShellComponent,
         DoctorsListComponent,
         AssignDoctorComponent,
-        DoctorScheduleComponent
+        DoctorScheduleComponent,
+        AddLocationDoctorSpecialityComponent
 
        
     ],
