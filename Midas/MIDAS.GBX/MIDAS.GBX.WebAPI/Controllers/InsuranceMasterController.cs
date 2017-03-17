@@ -35,6 +35,21 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetObject(Request, id);
         }
 
+        [HttpDelete]
+        [HttpGet]
+        [Route("Delete/{id}")]
+        public HttpResponseMessage Delete(int id)
+        {
+            return requestHandler.Delete(Request, id);
+        }
+
+        [HttpPost]
+        [Route("Add")]
+        public HttpResponseMessage Post([FromBody]InsuranceMaster data)
+        {
+            return requestHandler.CreateGbObject(Request, data);
+        }
+
 
     }
 }
