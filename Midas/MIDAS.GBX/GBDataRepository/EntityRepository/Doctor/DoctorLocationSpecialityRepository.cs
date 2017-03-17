@@ -105,7 +105,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid info.", ErrorLevel = ErrorLevel.Error };
             }
 
-            List<DoctorLocationSpecialty> lstDoctorLocationScheduleDB = new List<DoctorLocationSpecialty>();
+            List<DoctorLocationSpecialty> lstDoctorLocationSpecialityDB = new List<DoctorLocationSpecialty>();
 
             List<int> forLocationIds = lstDoctorLocationSpecialityBO.Select(p => p.location.ID).Distinct().ToList<int>();
 
@@ -223,7 +223,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 dbContextTransaction.Commit();
 
-                lstDoctorLocationScheduleDB = _context.DoctorLocationSpecialties.Include("Doctor")
+                lstDoctorLocationSpecialityDB = _context.DoctorLocationSpecialties.Include("Doctor")
                                                                                 .Include("Location")
                                                                                 .Include("Specialty")
                                                                                 .Where(p => forLocationIds.Contains(p.LocationId)
@@ -232,7 +232,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
             List<BO.DoctorLocationSpeciality> res = new List<BO.DoctorLocationSpeciality>();
-            lstDoctorLocationScheduleDB.ForEach(p => res.Add(Convert<BO.DoctorLocationSpeciality, DoctorLocationSpecialty>(p)));
+            lstDoctorLocationSpecialityDB.ForEach(p => res.Add(Convert<BO.DoctorLocationSpeciality, DoctorLocationSpecialty>(p)));
 
             return (object)res;
         }
@@ -324,7 +324,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                     else
                     {
-                        bool ExistsSpeciality = _context.Schedules.Any(p => p.id == SpecialityId.Value
+                        bool ExistsSpeciality = _context.Specialties.Any(p => p.id == SpecialityId.Value
                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)));
 
                         if (ExistsSpeciality == false)

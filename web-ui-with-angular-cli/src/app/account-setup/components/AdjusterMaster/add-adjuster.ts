@@ -88,7 +88,7 @@ export class AddAdjusterComponent implements OnInit {
     selectAdjusterState(event) {
         this.selectedCity = 0;
         let currentState = event.target.value;
-        this.loadCities(currentState);
+        // this.loadCities(currentState);
     }
 
     loadCities(stateName) {
