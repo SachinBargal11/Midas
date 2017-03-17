@@ -54,8 +54,8 @@ export class DoctorsListComponent implements OnInit {
         this._progressBarService.show();
         this._doctorLocationScheduleStore.getDoctorLocationScheduleByLocationId(this.locationId)
             .subscribe(doctors => {
-                this.doctors = doctors;
-                // this.datasource = doctors;
+                this.doctors = doctors.reverse();
+                // this.datasource = doctors.reverse();
                 // this.totalRecords = this.datasource.length;
                 // this.doctors = this.datasource.slice(0, 10);
                 

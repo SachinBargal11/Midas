@@ -44,8 +44,8 @@ export class PatientsListComponent implements OnInit {
         this._progressBarService.show();
         this._patientsStore.getPatients()
             .subscribe(patients => {
-                this.patients = patients;
-                // this.datasource = patients;
+                this.patients = patients.reverse();
+                // this.datasource = patients.reverse();
                 // this.totalRecords = this.datasource.length;
                 // this.patients = this.datasource.slice(0, 10);
             },

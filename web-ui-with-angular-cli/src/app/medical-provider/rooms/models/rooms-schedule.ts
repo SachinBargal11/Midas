@@ -5,6 +5,7 @@ import { ScheduleDetail } from '../../locations/models/schedule-detail';
 
 const ScheduleRecord = Record({
     id: 0,
+    companyId: 0,
     name: '',
     isDefault: false,
     scheduleDetails: null,
@@ -17,6 +18,7 @@ const ScheduleRecord = Record({
 export class Schedule extends ScheduleRecord {
 
     id: number;
+    companyId: number;
     name: string;
     isDefault: boolean;
     scheduleDetails: ScheduleDetail[];

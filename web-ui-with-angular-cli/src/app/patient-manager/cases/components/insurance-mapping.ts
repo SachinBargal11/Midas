@@ -66,12 +66,13 @@ export class InsuranceMapComponent implements OnInit {
                     let insurances: Insurance[] = results[0];
                     let mappedInsurances: InsuranceMapping = results[1].mappings;
 
-                    this.insurancesArr = _.map(insurances, (currentInsurance: Insurance) => {
+                    let insurancesArr = _.map(insurances, (currentInsurance: Insurance) => {
                         return {
                             label: `${currentInsurance.insuranceCompanyCode} - ${currentInsurance.policyHoldersName}`,
                             value: currentInsurance.id.toString()
                         };
                     });
+                    this.insurancesArr = insurancesArr.reverse();
                         this.selectedInsurances = _.map(mappedInsurances, (currentInsurance: any) => {
                             return currentInsurance.patientInsuranceInfo.id.toString();
                     });

@@ -102,6 +102,9 @@ export class EditRoomComponent implements OnInit {
             },
             location: {
                 id: this.room.location.id
+            },
+            schedule: {
+                id: this.room.schedule.id
             }
         });
         this._progressBarService.show();
