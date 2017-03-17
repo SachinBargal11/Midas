@@ -485,17 +485,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get By Dates
-        public override object GetByDates(DateTime FromDate,DateTime ToDate)
+        public override object GetByDates(DateTime FromDate, DateTime ToDate)
         {
-            
-            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2
-                                                                        .Where(p => p.EventStart >= FromDate && p.EventStart <= ToDate
+            if (ToDate.Hour == 0 && ToDate.Minute == 0 && ToDate.Second == 0)
+            {
+                ToDate = ToDate.AddDays(1).AddSeconds(-1);
+            }
+
+            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Where(p => p.EventStart >= FromDate && p.EventStart < ToDate
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))               
-                                                                                .ToList<PatientVisit2>();
+                                                                        .ToList<PatientVisit2>();
           
             if (lstPatientVisit == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No visits found for these Date.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No visits found for these Date range.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {
