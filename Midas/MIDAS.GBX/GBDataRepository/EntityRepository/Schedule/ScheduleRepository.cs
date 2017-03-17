@@ -38,6 +38,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.Schedule scheduleBO = new BO.Schedule();
             scheduleBO.Name = schedule.Name;
             scheduleBO.ID = schedule.id;
+            scheduleBO.CompanyId = (int)schedule.CompanyId;
             scheduleBO.isDefault = schedule.IsDefault;
 
             if (schedule.IsDeleted.HasValue)

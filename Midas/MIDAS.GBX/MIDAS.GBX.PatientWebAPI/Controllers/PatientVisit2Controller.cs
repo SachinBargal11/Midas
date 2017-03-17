@@ -19,77 +19,53 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             requestHandler = new GbApiRequestHandler<PatientVisit2>();
         }
 
-        //[HttpGet]
-        //[Route("getByLocationId/{locationId}")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage GetByLocationId(int locationId)
-        //{
-        //    return requestHandler.GetByLocationId(Request, locationId);
-        //}
+        [HttpGet]
+        [Route("getByDoctorId/{doctorId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetByDoctorId(int doctorId)
+        {
+            return requestHandler.GetByDoctorId(Request, doctorId);
+        }
 
-        //[HttpGet]
-        //[Route("getByLocationAndRoomId/{locationId}/{roomId}")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage GetByLocationAndRoomId(int locationId, int roomId)
-        //{
-        //    return requestHandler.GetGbObjects(Request, locationId, roomId);
-        //}
+        [HttpPost]
+        [Route("Save")]
+        [AllowAnonymous]
+        public HttpResponseMessage Post([FromBody]PatientVisit2 data)
+        {
+            return requestHandler.CreateGbObject(Request, data);
+        }
 
-        //[HttpGet]
-        //[Route("getByLocationAndDoctorId/{locationId}/{doctorId}")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage GetByLocationAndDoctorId(int locationId, int doctorId)
-        //{
-        //    return requestHandler.GetGbObjects2(Request, locationId, doctorId);
-        //}
+        [HttpGet]
+        [Route("DeleteVisit/{id}")]
+        [AllowAnonymous]
+        public HttpResponseMessage DeleteVisit(int id)
+        {
+            return requestHandler.DeleteVisit(Request, id);
+        }
 
-        //[HttpGet]
-        //[Route("getByDoctorId/{doctorId}")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage GetByDoctorId(int doctorId)
-        //{
-        //    return requestHandler.GetByDoctorId(Request, doctorId);
-        //}
+        [HttpGet]
+        [Route("DeleteCalendarEvent/{id}")]
+        [AllowAnonymous]
+        public HttpResponseMessage DeleteCalendarEvent(int id)
+        {
+            return requestHandler.DeleteCalendarEvent(Request, id);
+        }
 
-        //[HttpPost]
-        //[Route("Save")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage Post([FromBody]PatientVisit2 data)
-        //{
-        //    return requestHandler.CreateGbObject(Request, data);
-        //}
+        [HttpGet]
+        [Route("CancleVisit/{id}")]
+        [AllowAnonymous]
+        public HttpResponseMessage CancleVisit(int id)
+        {
+            return requestHandler.CancleVisit(Request, id);
+        }
 
-        //[HttpGet]
-        //[Route("DeleteVisit/{id}")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage DeleteVisit(int id)
-        //{
-        //    return requestHandler.DeleteVisit(Request, id);
-        //}
-
-        //[HttpGet]
-        //[Route("DeleteCalendarEvent/{id}")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage DeleteCalendarEvent(int id)
-        //{
-        //    return requestHandler.DeleteCalendarEvent(Request, id);
-        //}
-
-        //[HttpGet]
-        //[Route("CancleVisit/{id}")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage CancleVisit(int id)
-        //{
-        //    return requestHandler.CancleVisit(Request, id);
-        //}
-
-        //[HttpGet]
-        //[Route("CancleCalendarEvent/{id}")]
-        //[AllowAnonymous]
-        //public HttpResponseMessage CancleCalendarEvent(int id)
-        //{
-        //    return requestHandler.CancleCalendarEvent(Request, id);
-        //}
+        [HttpGet]
+        [Route("CancleCalendarEvent/{id}")]
+        [AllowAnonymous]
+        public HttpResponseMessage CancleCalendarEvent(int id)
+        {
+            return requestHandler.CancleCalendarEvent(Request, id);
+        }
 
         [HttpGet]
         [Route("getByCaseId/{CaseId}")]
