@@ -98,7 +98,7 @@ export class AccidentInfoComponent implements OnInit {
         this.accidentform = this.fb.group({
             doa: ['', Validators.required],
             dot: ['', Validators.required],
-            plateNumber: ['', Validators.required],
+            plateNumber: [''],
             address: [''],
             accidentAddress: [''],
             accidentAddress2: [''],

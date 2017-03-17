@@ -43,8 +43,8 @@ export class InsuranceListComponent implements OnInit {
         this._progressBarService.show();
         this._insuranceStore.getInsurances(this.patientId)
             .subscribe(insurances => {
-                this.insurances = insurances;
-                // this.datasource = insurances;
+                this.insurances = insurances.reverse();
+                // this.datasource = insurances.reverse();
                 // this.totalRecords = this.datasource.length;
                 // this.insurances = this.datasource.slice(0, 10);
             },

@@ -46,8 +46,8 @@ export class CompanyCasesComponent implements OnInit {
         this._progressBarService.show();
         this._casesStore.getCasesByCompany()
             .subscribe(cases => {
-                this.cases = cases;
-                // this.datasource = cases;
+                this.cases = cases.reverse();
+                // this.datasource = cases.reverse();
                 // this.totalRecords = this.datasource.length;
                 // this.cases = this.datasource.slice(0, 10);
             },

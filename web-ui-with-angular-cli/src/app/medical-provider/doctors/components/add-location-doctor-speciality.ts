@@ -86,13 +86,14 @@ export class AddLocationDoctorSpecialityComponent implements OnInit {
                 let doctorLocationSpecialityIds: number[] = _.map(doctorLocationSpeciality, (currentDoctorLocationSpeciality: DoctorLocationSpeciality) => {
                     return currentDoctorLocationSpeciality.speciality.id;
                 });
+                this.selectedSpecialities = doctorLocationSpecialityIds;
                 let fetchDoctor = this._doctorsStore.fetchDoctorById(this.userId);
                 fetchDoctor.subscribe((doctor: Doctor) => {
                 let doctorsSpeciality = doctor.doctorSpecialities;
                 let doctorsSpecialityIds = _.map(doctorsSpeciality, (currentDoctorSpeciality: any) => {
                     return currentDoctorSpeciality.specialty.id;
                 });
-                this.selectedSpecialities = _.union(doctorLocationSpecialityIds, doctorsSpecialityIds );
+                // this.selectedSpecialities = _.union(doctorLocationSpecialityIds, doctorsSpecialityIds );
                 })
                 // let doctorsSpecialityIds: number[] = _.map(this.doctorsSpeciality, (currentDoctorSpeciality: any) => {
                 //     return currentDoctorSpeciality.specialty.id;

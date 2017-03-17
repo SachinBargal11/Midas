@@ -29,8 +29,9 @@ export class RoomScheduleStore {
     }
 
     getSchedules(): Observable<Schedule[]> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            this._roomScheduleService.getSchedules().subscribe((schedules: Schedule[]) => {
+            this._roomScheduleService.getSchedules(companyId).subscribe((schedules: Schedule[]) => {
                 this._schedules.next(List(schedules));
                 resolve(schedules);
             }, error => {
@@ -63,8 +64,9 @@ export class RoomScheduleStore {
         return <Observable<Schedule>>Observable.fromPromise(promise);
     }
     addSchedule(scheduleDetail: Schedule, room: Room): Observable<Schedule> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            this._roomScheduleService.addSchedule(scheduleDetail, room).subscribe((schedule: Schedule) => {
+            this._roomScheduleService.addSchedule(scheduleDetail, room, companyId).subscribe((schedule: Schedule) => {
                 this._schedules.next(this._schedules.getValue().push(schedule));
                 resolve(schedule);
             }, error => {
@@ -74,8 +76,9 @@ export class RoomScheduleStore {
         return <Observable<Schedule>>Observable.from(promise);
     }
     updateSchedule(scheduleDetail: Schedule, room: Room): Observable<Schedule> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            this._roomScheduleService.updateSchedule(scheduleDetail, room).subscribe((updatedScheduleDetail: Schedule) => {
+            this._roomScheduleService.updateSchedule(scheduleDetail, room, companyId).subscribe((updatedScheduleDetail: Schedule) => {
                 let scheduleDetails: List<Schedule> = this._schedules.getValue();
                 let index = scheduleDetails.findIndex((currentSchedule: Schedule) => currentSchedule.id === updatedScheduleDetail.id);
                 scheduleDetails = scheduleDetails.update(index, function () {

@@ -49,8 +49,8 @@ export class RoomsComponent implements OnInit {
         this._progressBarService.show();
         this._roomsStore.getRooms(this.locationId)
             .subscribe(rooms => {
-                this.rooms = rooms;
-                // this.datasource = rooms;
+                this.rooms = rooms.reverse();
+                // this.datasource = rooms.reverse();
                 // this.totalRecords = this.datasource.length;
                 // this.rooms = this.datasource.slice(0, 10);
             },

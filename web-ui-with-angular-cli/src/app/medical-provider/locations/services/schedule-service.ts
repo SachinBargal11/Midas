@@ -77,9 +77,10 @@ export class ScheduleService {
     }
 
 
-    addSchedule(schedule: Schedule): Observable<any> {
+    addSchedule(schedule: Schedule, companyId: number): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let requestData: any = schedule.toJS();
+            requestData.companyId = companyId;
             requestData.scheduleDetails = _.map(requestData.scheduleDetails, function (currentScheduleDetail: ScheduleDetail) {
                 let currentScheduleDetailData: any = currentScheduleDetail.toJS();
                 return _.extend(currentScheduleDetailData, {
@@ -108,9 +109,10 @@ export class ScheduleService {
         //     return this._locationsStore.updateScheduleForLocation(locationDetails, schedule);
         // });
     }
-    updateSchedule(scheduleDetail: Schedule): Observable<any> {
+    updateSchedule(scheduleDetail: Schedule, companyId: number): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let requestData: any = scheduleDetail.toJS();
+            requestData.companyId = companyId;
             requestData.scheduleDetails = _.map(requestData.scheduleDetails, function (currentScheduleDetail: ScheduleDetail) {
                 let currentScheduleDetailData: any = currentScheduleDetail.toJS();
                 return _.extend(currentScheduleDetailData, {

@@ -52,8 +52,8 @@ export class AdjusterMasterListComponent implements OnInit {
         this._progressBarService.show();
         this._adjusterMasterStore.getAdjusterMasters()
             .subscribe(adjusters => {
-                this.adjusters = adjusters;
-                // this.datasource = adjusters;
+                this.adjusters = adjusters.reverse();
+                // this.datasource = adjusters.reverse();
                 // this.totalRecords = this.datasource.length;
                 // this.adjusters = this.datasource.slice(0, 10);
             },

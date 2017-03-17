@@ -44,7 +44,21 @@ export class RoomScheduleService {
         return <Observable<Schedule>>Observable.fromPromise(promise);
     }
 
-    getSchedules(): Observable<Schedule[]> {
+    getSchedules(companyId: number): Observable<Schedule[]> {
+        let promise: Promise<Schedule[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Schedule/getByCompanyId/' + companyId).map(res => res.json())
+                .subscribe((schedulesData: Array<Object>) => {
+                    let schedules: any[] = (<Object[]>schedulesData).map((schedulesData: any) => {
+                        return ScheduleAdapter.parseResponse(schedulesData);
+                    });
+                    resolve(schedules);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Schedule[]>>Observable.fromPromise(promise);
+    }
+    getAllSchedules(): Observable<Schedule[]> {
         let promise: Promise<Schedule[]> = new Promise((resolve, reject) => {
             return this._http.post(this._url + '/Schedule/GetAll', null, {
                 headers: this._headers
@@ -61,9 +75,10 @@ export class RoomScheduleService {
         return <Observable<Schedule[]>>Observable.fromPromise(promise);
     }
 
-    addSchedule(schedule: Schedule, room: Room): Observable<any> {
+    addSchedule(schedule: Schedule, room: Room, companyId: number): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let requestData: any = schedule.toJS();
+            requestData.companyId = companyId;
             requestData.scheduleDetails = _.map(requestData.scheduleDetails, function (currentScheduleDetail: ScheduleDetail) {
                 let currentScheduleDetailData: any = currentScheduleDetail.toJS();
                 return _.extend(currentScheduleDetailData, {
@@ -88,9 +103,10 @@ export class RoomScheduleService {
                 return this._roomsStore.updateScheduleForRoom(room, schedule);
             });
     }
-    updateSchedule(scheduleDetail: Schedule, room: Room): Observable<any> {
+    updateSchedule(scheduleDetail: Schedule, room: Room, companyId: number): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let requestData: any = scheduleDetail.toJS();
+            requestData.companyId = companyId;
             requestData.scheduleDetails = _.map(requestData.scheduleDetails, function (currentScheduleDetail: ScheduleDetail) {
                 let currentScheduleDetailData: any = currentScheduleDetail.toJS();
                 return _.extend(currentScheduleDetailData, {

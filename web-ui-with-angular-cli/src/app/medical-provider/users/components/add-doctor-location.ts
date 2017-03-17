@@ -73,13 +73,14 @@ export class AddDoctorLocationComponent implements OnInit {
                 let doctorLocationIds: number[] = _.map(doctorLocations, (currentDoctorLocation: DoctorLocationSchedule) => {
                     return currentDoctorLocation.location.location.id;
                 });
-                this.locations = _.filter(locations, (currentLocation: LocationDetails) => {
+                let locationDetails = _.filter(locations, (currentLocation: LocationDetails) => {
                     return _.indexOf(doctorLocationIds, currentLocation.location.id) < 0 ? true : false;
                 });
+                this.locations = locationDetails.reverse();
                 // let locationDetails = _.filter(locations, (currentLocation: LocationDetails) => {
                 //     return _.indexOf(doctorLocationIds, currentLocation.location.id) < 0 ? true : false;
                 // });
-                // this.datasource = locationDetails;
+                // this.datasource = locationDetails.reverse();
                 // this.totalRecords = this.datasource.length;
                 // this.locations = this.datasource.slice(0, 10);
             },
