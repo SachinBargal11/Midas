@@ -26,6 +26,8 @@ import { PatientsStore } from '../stores/patients-store';
 export class AddInsuranceComponent implements OnInit {
     states: any[];
     insuranceMasters: InsuranceMaster[];
+    insuranceMaster: InsuranceMaster;
+    insuranceMastersAdress: Address;
     policyCities: any[];
     insuranceCities: any[];
     patientId: number;
@@ -52,6 +54,16 @@ export class AddInsuranceComponent implements OnInit {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId);
         });
+        //  this._insuranceStore.getInsurancesMaster()
+        //     .subscribe(
+        //     (insuranceMasters) => {
+        //         this.insuranceMasters = insuranceMasters;
+        //         this.insuranceMasters.forEach(element => {
+        //             this.insuranceMastersAdress = element.Address
+        //         });
+        //     });
+
+
         this.insuranceform = this.fb.group({
                 policyNumber: ['', Validators.required],
                 policyOwner: ['', Validators.required],
@@ -71,7 +83,7 @@ export class AddInsuranceComponent implements OnInit {
                 policyHomePhone: [''],
                 policyWorkPhone: [''],
                 policyFaxNo: [''],
-                address: ['', Validators.required],
+                address: [''],
                 address2: [''],
                 state: [''],
                 city: [''],
@@ -91,6 +103,22 @@ export class AddInsuranceComponent implements OnInit {
             .subscribe(states => this.states = states);
         this._insuranceStore.getInsurancesMaster()
             .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
+    }
+
+      selectInsurance(event) {
+        // this.selectedInsurance = 0;
+        let currentInsurance:number = parseInt(event.target.value); 
+        this.loadInsuranceMasterAddress(currentInsurance);
+        
+    }
+
+    loadInsuranceMasterAddress(currentInsurance) {
+         this._insuranceStore.getInsuranceMasterById(currentInsurance)
+            .subscribe(
+            (insuranceMaster) => {
+                this.insuranceMaster = insuranceMaster;
+                    this.insuranceMastersAdress = insuranceMaster.Address
+            });
     }
 
     // selectPolicyState(event) {

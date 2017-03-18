@@ -13,6 +13,7 @@ import { BillingComponent } from './components/Billing';
 import { DoctorLocationScheduleShellComponent } from './components/doctor-location-schedule-shell';
 import { DoctorLocationScheduleComponent } from './components/doctor-location-schedule';
 import { AddDoctorLocationComponent } from './components/add-doctor-location';
+import { AddDoctorLocationSpecialityComponent } from './components/add-doctor-location-speciality';
 import { ShellComponent } from '../../commons/shell-component';
 
 export const UsersRoutes: Routes = [
@@ -128,6 +129,14 @@ export const UsersRoutes: Routes = [
                                         canActivate: [ValidateActiveSession],
                                         data: {
                                             breadcrumb: 'Schedule'
+                                        }
+                                    },
+                                    {
+                                        path: 'assign-speciality',
+                                        component: AddDoctorLocationSpecialityComponent,
+                                        canActivate: [ValidateActiveSession],
+                                        data: {
+                                            breadcrumb: 'Assign Speciality'
                                         }
                                     }
                                 ]

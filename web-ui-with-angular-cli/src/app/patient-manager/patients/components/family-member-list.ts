@@ -43,8 +43,8 @@ export class FamilyMemberListComponent implements OnInit {
         this._progressBarService.show();
         this._familyMemberStore.getFamilyMembers(this.patientId)
             .subscribe(familyMembers => {
-                this.familyMembers = familyMembers;
-                // this.datasource = familyMembers;
+                this.familyMembers = familyMembers.reverse();
+                // this.datasource = familyMembers.reverse();
                 // this.totalRecords = this.datasource.length;
                 // this.familyMembers = this.datasource.slice(0, 10);
             },

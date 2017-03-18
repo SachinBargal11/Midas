@@ -95,6 +95,9 @@ export class AddRoomComponent implements OnInit {
             },
             location: {
                 id: this.locationDetails.location.id
+            },
+            schedule: {
+                id: this.locationDetails.schedule.id
             }
         });
         this._progressBarService.show();

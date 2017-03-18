@@ -120,14 +120,10 @@ export class InsuranceService {
      getInsuranceMasterById(insuranceMasterId: Number): Observable<InsuranceMaster> {
         let promise: Promise<InsuranceMaster> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/InsuranceMaster/get/' + insuranceMasterId).map(res => res.json())
-                .subscribe((data: Array<any>) => {
+                .subscribe((data) => {
                     let insuranceMaster = null;
-                    if (data.length) {
                         insuranceMaster = InsuranceMasterAdapter.parseResponse(data);
                         resolve(insuranceMaster);
-                    } else {
-                        reject(new Error('NOT_FOUND'));
-                    }
                 }, (error) => {
                     reject(error);
                 });

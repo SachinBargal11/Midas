@@ -215,21 +215,21 @@ export class DoctorScheduleComponent implements OnInit {
         let result;
 
         result = this._scheduleStore.updateSchedule(schedule).flatMap((schedule: Schedule) => {
-            let doctorLocationScheduleDetail = [];
-            doctorLocationScheduleDetail.push(
-                {
-                    doctor: {
-                        id: this.doctorLocationScheduleDetail.doctor.id
-                    },
-                    location: {
-                        id: this.doctorLocationScheduleDetail.location.location.id
-                    },
-                    schedule: {
-                        id: schedule.id
-                    }
-                });
-            return this._doctorLocationScheduleStore.associateDoctorsToLocation(doctorLocationScheduleDetail);
-            // return this._doctorLocationScheduleStore.updateScheduleForLocation(this.doctorLocationScheduleDetail, schedule);
+            return this._doctorLocationScheduleStore.updateScheduleForLocation(this.doctorLocationScheduleDetail, schedule);
+            // let doctorLocationScheduleDetail = [];
+            // doctorLocationScheduleDetail.push(
+            //     {
+            //         doctor: {
+            //             id: this.doctorLocationScheduleDetail.doctor.id
+            //         },
+            //         location: {
+            //             id: this.doctorLocationScheduleDetail.location.location.id
+            //         },
+            //         schedule: {
+            //             id: schedule.id
+            //         }
+            //     });
+            // return this._doctorLocationScheduleStore.associateDoctorsToLocation(doctorLocationScheduleDetail);
         });
         result.subscribe(
             (response) => {
@@ -273,21 +273,21 @@ export class DoctorScheduleComponent implements OnInit {
         let result;
 
         result = this._scheduleStore.addSchedule(schedule).flatMap((schedule: Schedule) => {
-            let doctorLocationScheduleDetail = [];
-            doctorLocationScheduleDetail.push(
-                {
-                    doctor: {
-                        id: this.doctorLocationScheduleDetail.doctor.id
-                    },
-                    location: {
-                        id: this.doctorLocationScheduleDetail.location.location.id
-                    },
-                    schedule: {
-                        id: schedule.id
-                    }
-                });
-            return this._doctorLocationScheduleStore.associateDoctorsToLocation(doctorLocationScheduleDetail);
-            // return this._doctorLocationScheduleStore.updateScheduleForLocation(this.doctorLocationScheduleDetail, schedule);
+            return this._doctorLocationScheduleStore.updateScheduleForLocation(this.doctorLocationScheduleDetail, schedule);
+            // let doctorLocationScheduleDetail = [];
+            // doctorLocationScheduleDetail.push(
+            //     {
+            //         doctor: {
+            //             id: this.doctorLocationScheduleDetail.doctor.id
+            //         },
+            //         location: {
+            //             id: this.doctorLocationScheduleDetail.location.location.id
+            //         },
+            //         schedule: {
+            //             id: schedule.id
+            //         }
+            //     });
+            // return this._doctorLocationScheduleStore.associateDoctorsToLocation(doctorLocationScheduleDetail);
         });
         result.subscribe(
             (response) => {

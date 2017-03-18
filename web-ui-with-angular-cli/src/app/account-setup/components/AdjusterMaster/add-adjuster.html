@@ -45,17 +45,16 @@
                                 <span class="color-red">*</span>
                             </label>
                     <div class="form-group" [class.error]="adjusterformControls.adjusterInsuranceMaster.touched && !adjusterformControls.adjusterInsuranceMaster.valid">
-                        <select formControlName="adjusterInsuranceMaster" type="text" class="form-control"
-                            placeholder="" [class.error]="adjusterformControls.adjusterInsuranceMaster.touched && !adjusterformControls.adjusterInsuranceMaster.valid">
+                        <select formControlName="adjusterInsuranceMaster" type="text" class="form-control" placeholder="" [class.error]="adjusterformControls.adjusterInsuranceMaster.touched && !adjusterformControls.adjusterInsuranceMaster.valid">
                             <option value="">-Select Insurance Master-</option>
                             <option *ngFor="let insurance of insuranceMaster" value="{{insurance.id}}">{{insurance.companyName}}</option>
                             <!--<option value="1">Insurance Master 1</option>-->
                             </select>
-                            <div class='error-list' *ngIf="adjusterformControls.adjusterInsuranceMaster.touched && !adjusterformControls.adjusterInsuranceMaster.valid">
-                                <ul>
-                                    <li *ngIf="adjusterformControls.adjusterInsuranceMaster.hasError('required')">Insurance Master is required.</li>
-                                </ul>
-                            </div>
+                        <div class='error-list' *ngIf="adjusterformControls.adjusterInsuranceMaster.touched && !adjusterformControls.adjusterInsuranceMaster.valid">
+                            <ul>
+                                <li *ngIf="adjusterformControls.adjusterInsuranceMaster.hasError('required')">Insurance Master is required.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -89,12 +88,12 @@
                     <div class="form-group" [class.error]="adjusterformControls.adjusterCellPhone.touched && !adjusterformControls.adjusterCellPhone.valid">
                         <p-inputMask mask="999-999-9999" formControlName="adjusterCellPhone" [class.error]="adjusterformControls.adjusterCellPhone.touched && !adjusterformControls.adjusterCellPhone.valid"
                             placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
-                            <div class='error-list' *ngIf="adjusterformControls.adjusterCellPhone.touched && !adjusterformControls.adjusterCellPhone.valid">
-                                <ul>
-                                    <li *ngIf="adjusterformControls.adjusterCellPhone.hasError('required')">Adjuster Cellphone number is required.</li>
-                                    <li *ngIf="adjusterformControls.adjusterCellPhone.hasError('mobileNoValidator')">Adjuster Cellphone number is invalid.</li>
-                                </ul>
-                            </div>
+                        <div class='error-list' *ngIf="adjusterformControls.adjusterCellPhone.touched && !adjusterformControls.adjusterCellPhone.valid">
+                            <ul>
+                                <li *ngIf="adjusterformControls.adjusterCellPhone.hasError('required')">Adjuster Cellphone number is required.</li>
+                                <li *ngIf="adjusterformControls.adjusterCellPhone.hasError('mobileNoValidator')">Adjuster Cellphone number is invalid.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -161,20 +160,30 @@
                             <option value="">-Select State-</option>
                             <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
                             </select>
-                            <div class='error-list' *ngIf="adjusterformControls.adjusterState.touched && !adjusterformControls.adjusterState.valid">
-                                <ul>
-                                    <li *ngIf="adjusterformControls.adjusterState.hasError('required')">State is required.</li>
-                                </ul>
-                            </div>
+                        <div class='error-list' *ngIf="adjusterformControls.adjusterState.touched && !adjusterformControls.adjusterState.valid">
+                            <ul>
+                                <li *ngIf="adjusterformControls.adjusterState.hasError('required')">State is required.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <label class="form-label"> City
                                 <!--<span class="color-red">*</span>-->
                             </label>
                     <div class="form-group" [class.error]="adjusterformControls.adjusterCity.touched && !adjusterformControls.adjusterCity.valid">
+                        <input formControlName="adjusterCity" type="text" class="form-control" [class.error]="!adjusterformControls.adjusterCity.touched && !adjusterformControls.adjusterCity.valid"
+                            placeholder="" />
+                        <div class='error-list' *ngIf="adjusterformControls.adjusterCity.touched && !adjusterformControls.adjusterCity.valid">
+                            <ul>
+                                <li *ngIf="adjusterformControls.adjusterCity.hasError('required')">City is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="form-group" [class.error]="adjusterformControls.adjusterCity.touched && !adjusterformControls.adjusterCity.valid">
                         <select formControlName="adjusterCity" type="text" class="form-control" placeholder="" [class.error]="adjusterformControls.adjusterCity.touched && !adjusterformControls.adjusterCity.valid">
                             <option value="">-Select City-</option>
                             <option *ngFor="let city of adjusterCities" value="{{city.citytext}}">{{city.citytext}}</option>
@@ -185,7 +194,7 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+                </div>-->
                 <div class="col-lg-1 m-t-lg">
                     <loader [visible]="isadjusterCitiesLoading"></loader>
                 </div>
@@ -207,7 +216,12 @@
                                 <!--<span class="color-red">*</span>-->
                             </label>
                     <div class="form-group" [class.error]="adjusterformControls.adjusterCountry.touched && !adjusterformControls.adjusterCountry.valid">
-                        <input formControlName="adjusterCountry" type="text" class="form-control" placeholder="" [class.error]="!adjusterformControls.adjusterCountry.valid">
+                        <!--<input formControlName="adjusterCountry" type="text" class="form-control" placeholder="" [class.error]="!adjusterformControls.adjusterCountry.valid">-->
+                        <select formControlName="adjusterCountry" type="text" class="form-control" placeholder="" [class.error]="adjusterformControls.adjusterCountry.touched && !adjusterformControls.adjusterCountry.valid">
+                                        <option value="">-Select -</option>
+                                        <option disabled>────────────────────</option>
+                                        <option value="US">United States</option>
+                                    </select>
                         <div class='error-list' *ngIf="adjusterformControls.adjusterCountry.touched && !adjusterformControls.adjusterCountry.valid">
                             <ul>
                                 <li *ngIf="adjusterformControls.adjusterCountry.hasError('required')">Country is required.</li>

@@ -43,8 +43,8 @@ export class ReferringOfficeListComponent implements OnInit {
         this._progressBarService.show();
         this._referringOfficeStore.getReferringOffices(this.caseId)
             .subscribe(referringOffices => {
-                this.referringOffices = referringOffices;
-                // this.datasource = referringOffices;
+                this.referringOffices = referringOffices.reverse();
+                // this.datasource = referringOffices.reverse();
                 // this.totalRecords = this.datasource.length;
                 // this.referringOffices = this.datasource.slice(0, 10);
             },

@@ -98,6 +98,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetByCaseId(Request, CaseId);
         }
 
+        [HttpGet]
+        [Route("getByDates/{FromDate}/{ToDate}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetByDates(DateTime FromDate,DateTime ToDate)
+        {
+            return requestHandler.GetByDates(Request, FromDate, ToDate);
+        }
 
         protected override void Dispose(bool disposing)
         {

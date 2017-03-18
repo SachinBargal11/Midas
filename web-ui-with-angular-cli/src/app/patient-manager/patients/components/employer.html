@@ -220,7 +220,13 @@
                                             <!--<span class="color-red">*</span>-->
                                         </label>
                         <div class="form-group" [class.error]="employerformControls.country.touched && !employerformControls.country.valid">
-                            <input formControlName="country" [ngModel]="currentEmployer.address.country" type="text" class="form-control" placeholder="" [class.error]="!employerformControls.country.valid">
+                            <!--<input formControlName="country" [ngModel]="currentEmployer.address.country" type="text" class="form-control" placeholder="" 
+                            [class.error]="!employerformControls.country.valid">-->
+                             <select formControlName="country" type="text" [ngModel]="currentEmployer.address.country" class="form-control" placeholder="" [class.error]="employerformControls.country.touched && !employerformControls.country.valid">
+                                        <option value="">-Select -</option>
+                                        <option disabled>────────────────────</option>
+                                        <option value="US">United States</option>
+                                    </select>
                             <div class='error-list' *ngIf="employerformControls.country.touched && !employerformControls.country.valid">
                                 <ul>
                                     <li *ngIf="employerformControls.country.hasError('required')">Country is required.</li>

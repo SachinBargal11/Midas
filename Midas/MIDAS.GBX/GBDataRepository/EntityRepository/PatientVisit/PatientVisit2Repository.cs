@@ -482,7 +482,35 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return lstpatientvisit;
             }
         }
-        #endregion 
+        #endregion
+
+        #region Get By Dates
+        public override object GetByDates(DateTime FromDate, DateTime ToDate)
+        {
+            if (ToDate.Hour == 0 && ToDate.Minute == 0 && ToDate.Second == 0)
+            {
+                ToDate = ToDate.AddDays(1).AddSeconds(-1);
+            }
+
+            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Where(p => p.EventStart >= FromDate && p.EventStart < ToDate
+                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))               
+                                                                        .ToList<PatientVisit2>();
+          
+            if (lstPatientVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No visits found for these Date range.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PatientVisit2> lstBOPatientVisit = new List<BO.PatientVisit2>();
+                lstPatientVisit.ForEach(p => lstBOPatientVisit.Add(Convert<BO.PatientVisit2, PatientVisit2>(p)));
+
+                return lstBOPatientVisit;
+            }
+        }
+        #endregion
+
+        
 
 
         public void Dispose()

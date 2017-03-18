@@ -30,5 +30,15 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage GetCurrentEmpByPatientId(HttpRequestMessage request, int PatientId);
         HttpResponseMessage GetCurrentROByPatientId(HttpRequestMessage request, int PatientId);
         HttpResponseMessage Delete(HttpRequestMessage request, int id);
+        HttpResponseMessage GetByDoctorId(HttpRequestMessage request, int id);
+        HttpResponseMessage DeleteVisit(HttpRequestMessage request, int id);
+        HttpResponseMessage DeleteCalendarEvent(HttpRequestMessage request, int id);
+        HttpResponseMessage CancleVisit(HttpRequestMessage request, int id);
+        HttpResponseMessage CancleCalendarEvent(HttpRequestMessage request, int id);
+        HttpResponseMessage IsInsuranceInfoAdded(HttpRequestMessage request, int id);
+        HttpResponseMessage GetByLocationId(HttpRequestMessage request, int id);
+        HttpResponseMessage GetGbObjects(HttpRequestMessage request, int param1, int param2);
+
+
     }
 }

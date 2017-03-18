@@ -10,7 +10,7 @@ using System.Web.Http;
 namespace MIDAS.GBX.PatientWebAPI.Controllers
 {
 
-    [RoutePrefix("midaspatientapi/PatientVisit")]
+    [RoutePrefix("midaspatientapi/PatientVisitOld")]
 
     public class PatientVisitController : ApiController
     {

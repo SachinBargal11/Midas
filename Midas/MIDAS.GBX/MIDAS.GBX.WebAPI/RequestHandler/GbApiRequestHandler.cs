@@ -693,6 +693,19 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-      
+        public HttpResponseMessage GetByDates(HttpRequestMessage request, DateTime FromDate, DateTime ToDate)
+        {
+            var objResult = dataAccessManager.GetByDates(FromDate, ToDate);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+
     }
 }

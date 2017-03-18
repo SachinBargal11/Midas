@@ -5,6 +5,7 @@ import { DoctorsListComponent } from './components/doctors-list';
 import { AssignDoctorComponent } from './components/assign-doctor';
 import { DoctorShellComponent } from './components/doctor-shell';
 import { DoctorScheduleComponent } from './components/doctor-schedule';
+import { AddLocationDoctorSpecialityComponent } from './components/add-location-doctor-speciality';
 import { ShellComponent } from '../../commons/shell-component';
 
 export const DoctorsRoutes: Routes = [
@@ -63,6 +64,14 @@ export const DoctorsRoutes: Routes = [
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Doctor Schedule'
+                        }
+                    },
+                    {
+                        path: 'add-speciality',
+                        component: AddLocationDoctorSpecialityComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Add Speciality'
                         }
                     }
                 ]
