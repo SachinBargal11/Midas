@@ -49,6 +49,18 @@ export class DoctorsStore {
         });
         return <Observable<Doctor[]>>Observable.fromPromise(promise);
     }
+    getDoctorsByCompanyId(): Observable<Doctor[]> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._doctorsService.getDoctorsByCompanyId(companyId).subscribe((doctors: Doctor[]) => {
+                this._doctors.next(List(doctors));
+                resolve(doctors);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Doctor[]>>Observable.fromPromise(promise);
+    }
 
     findDoctorById(id: number) {
         let doctors = this._doctors.getValue();

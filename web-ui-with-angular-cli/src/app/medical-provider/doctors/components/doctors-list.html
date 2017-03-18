@@ -15,21 +15,23 @@
        <input #gb type="text" class="form-control" style="float:left" placeholder="Search Doctors">
    </div>
 </div>
-<p-dataTable [value]="doctors" [(selection)]="selectedDoctors" [rows]="10" [rowsPerPageOptions]="[5,10,15,20]" [paginator]="true" [globalFilter]="gb" [responsive]="true"
-    [stacked]="stacked">
+<!--<p-dataTable [value]="doctors" [(selection)]="selectedDoctors" [lazy]="true" [rows]="10" [paginator]="true" 
+[totalRecords]="totalRecords" (onLazyLoad)="loadDoctorsLazy($event)" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">-->
+<p-dataTable [value]="doctors" [(selection)]="selectedDoctors" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Doctors</header>
     <p-column selectionMode="multiple"></p-column>
-    <p-column header="Doctor Name" [sortable]="true">
-       <ng-template let-doctor="rowData" pTemplate="body">
-            <a routerLink="{{doctor.id}}">{{doctor.doctor.user.firstName}} {{doctor.doctor.user.lastName}}
+    <p-column field="doctor.user.displayName" header="Doctor Name" [sortable]="true">
+       <template let-doctor="rowData" pTemplate="body">
+            <a routerLink="{{doctor.id}}">{{doctor.doctor.user.firstName}}
+            <!--<a routerLink="{{doctor.id}}">{{doctor.doctor.user.firstName}} {{doctor.doctor.user.lastName}}-->
             </a>
-        </ng-template>
+        </template>
     </p-column>
     <p-column field="doctor.user.userTypeLabel" header="User Type" [sortable]="true"></p-column>
     <p-column field="doctor.user.userName" header="Email" [sortable]="true"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
-        <ng-template let-schedule="rowData" pTemplate="body">
+        <template let-schedule="rowData" pTemplate="body">
             <a routerLink="{{schedule.id}}/schedule"><i class="glyphicon glyphicon-edit"></i></a>
-        </ng-template>
+        </template>
     </p-column>
 </p-dataTable>

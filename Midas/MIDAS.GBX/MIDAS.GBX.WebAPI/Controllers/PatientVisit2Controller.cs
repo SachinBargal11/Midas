@@ -58,7 +58,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.CreateGbObject(Request, data);
         }
 
-        [HttpDelete]
+        [HttpGet]
         [Route("DeleteVisit/{id}")]
         [AllowAnonymous]
         public HttpResponseMessage DeleteVisit(int id)
@@ -66,7 +66,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.DeleteVisit(Request, id);
         }
 
-        [HttpDelete]
+        [HttpGet]
         [Route("DeleteCalendarEvent/{id}")]
         [AllowAnonymous]
         public HttpResponseMessage DeleteCalendarEvent(int id)

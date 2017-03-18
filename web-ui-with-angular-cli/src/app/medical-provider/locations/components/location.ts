@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LazyLoadEvent } from 'primeng/primeng'
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { MedicalProviderService } from '../services/medical-provider-service';
 import { LocationDetails } from '../models/location-details';
@@ -19,6 +20,8 @@ import { NotificationsService } from 'angular2-notifications';
 export class LocationComponent implements OnInit {
     selectedLocations: LocationDetails[];
     locations: LocationDetails[];
+    datasource: LocationDetails[];
+    totalRecords: number;
     constructor(
         private _router: Router,
         private _notificationsStore: NotificationsStore,
@@ -44,6 +47,9 @@ export class LocationComponent implements OnInit {
             .subscribe(
             (data) => {
                 this.locations = data;
+                // this.datasource = data;
+                // this.totalRecords = this.datasource.length;
+                // this.locations = this.datasource.slice(0, 10);
             },
             (error) => {
                 this.locations = [];
@@ -59,6 +65,14 @@ export class LocationComponent implements OnInit {
             () => {
             this._progressBarService.hide();
             });
+    }
+    
+    loadLocationsLazy(event: LazyLoadEvent) {
+        setTimeout(() => {
+            if(this.datasource) {
+                this.locations = this.datasource.slice(event.first, (event.first + event.rows));
+            }
+        }, 250);
     }
 
     deleteLocations() {

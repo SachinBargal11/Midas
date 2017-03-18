@@ -1,6 +1,7 @@
 // import { Company } from '../../../models/company';
 import { Component, OnInit } from '@angular/core';
 import { Router,ActivatedRoute } from '@angular/router';
+import { LazyLoadEvent } from 'primeng/primeng'
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { UsersStore } from '../../users/stores/users-store';
@@ -25,6 +26,8 @@ import { DoctorLocationSchedule } from '../../users/models/doctor-location-sched
 export class DoctorsListComponent implements OnInit {
     selectedDoctors: DoctorLocationSchedule[];
     doctors: DoctorLocationSchedule[];
+    datasource: DoctorLocationSchedule[];
+    totalRecords: number;
     locationId: number;
     constructor(
         private _router: Router,
@@ -52,6 +55,9 @@ export class DoctorsListComponent implements OnInit {
         this._doctorLocationScheduleStore.getDoctorLocationScheduleByLocationId(this.locationId)
             .subscribe(doctors => {
                 this.doctors = doctors;
+                // this.datasource = doctors;
+                // this.totalRecords = this.datasource.length;
+                // this.doctors = this.datasource.slice(0, 10);
                 
             },
             (error) => {
@@ -60,6 +66,15 @@ export class DoctorsListComponent implements OnInit {
             this._progressBarService.hide();
             });
     }
+    
+    loadDoctorsLazy(event: LazyLoadEvent) {
+        setTimeout(() => {
+            if(this.datasource) {
+                this.doctors = this.datasource.slice(event.first, (event.first + event.rows));
+            }
+        }, 250);
+    }
+
     deleteDoctors() {
         if (this.selectedDoctors !== undefined) {
             this.selectedDoctors.forEach(currentDoctor => {

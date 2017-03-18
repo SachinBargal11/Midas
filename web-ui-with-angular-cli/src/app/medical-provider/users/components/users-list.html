@@ -12,34 +12,29 @@
 <div class="ui-widget-header row">
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
-        <!--<i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>-->
-        <!--<input #gb type="text" pInputText size="50" style="float:left" placeholder="Search User">-->
         <input #gb type="text" class="form-control" style="float:left" placeholder="Search User">
     </div>
 </div>
-<p-dataTable [value]="users" [(selection)]="selectedUsers" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
-    [stacked]="stacked">
+<!--<p-dataTable [value]="users" [(selection)]="selectedUsers" [lazy]="true" [rows]="10" [paginator]="true" [globalFilter]="gb" 
+[totalRecords]="totalRecords" (onLazyLoad)="loadUsersLazy($event)" [responsive]="true" [stacked]="stacked">-->
+<p-dataTable [value]="users" [(selection)]="selectedUsers" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Users</header>
     <p-column selectionMode="multiple"></p-column>
-    <!--<p-column field="firstName" header="First Name" [sortable]="true"></p-column>
-    <p-column field="lastName" header="Last Name" [sortable]="true"></p-column>-->
-    <p-column header="User Name" [sortable]="true">
-        <ng-template let-user="rowData" pTemplate="body">
-            <a (click)="editUser(user)">{{user.firstName}} {{user.lastName}}
-            <!--<a routerLink="{{user.id}}/basic">{{user.firstName}} {{user.lastName}}-->
-            </a>
-        </ng-template>
+    <p-column field="displayName" header="User Name" [sortable]="true">
+        <template let-user="rowData" pTemplate="body">
+            <a (click)="editUser(user)"><u>{{user.displayName}}</u></a>
+        </template>
     </p-column>
-    <p-column header="User Role" [sortable]="true">
-        <ng-template let-user="rowData" pTemplate="body">
+    <p-column field="userRole" header="User Role" [sortable]="true">
+        <template let-user="rowData" pTemplate="body">
             {{user.userRole}}
-        </ng-template>
+        </template>
     </p-column>
     <p-column field="userName" header="Email" [sortable]="true"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
-        <ng-template let-user="rowData" pTemplate="body">
+        <template let-user="rowData" pTemplate="body">
             <a (click)="editUser(user)"><i class="glyphicon glyphicon-edit"></i></a>
             <!--<a routerLink="edit/{{user.id}}"><i class="glyphicon glyphicon-edit"></i></a>-->
-        </ng-template>
+        </template>
     </p-column>
 </p-dataTable>

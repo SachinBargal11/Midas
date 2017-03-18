@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LazyLoadEvent } from 'primeng/primeng'
 //
 import { SpecialityDetail } from '../../models/speciality-details';
 //
@@ -19,6 +20,8 @@ export class SpecialityListComponent implements OnInit {
     specialities: Speciality[];
     // specialityDetails: SpecialityDetail[];
     specialityDetail: any;
+    datasource: Speciality[];
+    totalRecords: number;
 
     constructor(
         private _router: Router,
@@ -37,9 +40,22 @@ export class SpecialityListComponent implements OnInit {
     loadSpeciality() {
         this._progressBarService.show();
         this._specialityStore.getSpecialities()
-            .subscribe(specialities => { this.specialities = specialities; },
+            .subscribe(specialities => { 
+                this.specialities = specialities; 
+                // this.datasource = specialities;
+                // this.totalRecords = this.datasource.length;
+                // this.specialities = this.datasource.slice(0, 10);
+            },
             null,
             () => { this._progressBarService.hide(); });
+    }
+    
+    loadSpecialitiesLazy(event: LazyLoadEvent) {
+        setTimeout(() => {
+            if(this.datasource) {
+                this.specialities = this.datasource.slice(event.first, (event.first + event.rows));
+            }
+        }, 250);
     }
 
 

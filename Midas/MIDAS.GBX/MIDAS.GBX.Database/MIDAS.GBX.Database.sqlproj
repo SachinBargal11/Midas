@@ -114,7 +114,8 @@
     <Build Include="Tables\Latest Tables\PatientVisit2.sql" />
     <Build Include="Tables\Latest Tables\ReferPatient.sql" />
     <Build Include="Tables\Latest Tables\DoctorLocationSpecialty.sql" />
-    <Build Include="Tables\Latest Tables\CaseCompanyLocationMapping.sql" />
+    <Build Include="Tables\Latest Tables\CaseCompanyMapping.sql" />
+    <Build Include="Tables\Latest Tables\DoctorCaseConsentApproval.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />

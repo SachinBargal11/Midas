@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { LazyLoadEvent } from 'primeng/primeng'
 import { AttorneyMasterStore } from '../../stores/attorney-store';
 import { Attorney } from '../../models/attorney';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
@@ -18,6 +19,8 @@ import { SessionStore } from '../../../commons/stores/session-store';
 export class AttorneyMasterListComponent implements OnInit {
     selectedAttorneys: Attorney[] = [];
     attorneys: Attorney[];
+    datasource: Attorney[];
+    totalRecords: number;
     companyId: number;
     patientId: number;
 
@@ -46,6 +49,9 @@ export class AttorneyMasterListComponent implements OnInit {
         this._attorneyMasterStore.getAttorneyMasters()
             .subscribe(attorneys => {
                 this.attorneys = attorneys;
+                // this.datasource = attorneys;
+                // this.totalRecords = this.datasource.length;
+                // this.attorneys = this.datasource.slice(0, 10);
             },
             (error) => {
                 this._progressBarService.hide();
@@ -53,6 +59,14 @@ export class AttorneyMasterListComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+    }
+    
+    loadAttorneysLazy(event: LazyLoadEvent) {
+        setTimeout(() => {
+            if(this.datasource) {
+                this.attorneys = this.datasource.slice(event.first, (event.first + event.rows));
+            }
+        }, 250);
     }
 
     deleteAttorneys() {

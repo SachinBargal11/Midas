@@ -15,24 +15,26 @@
         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Cases">
     </div>
 </div>
+<!--<p-dataTable [value]="cases" [(selection)]="selectedCases" [lazy]="true" [rows]="10" [paginator]="true" [globalFilter]="gb" 
+[totalRecords]="totalRecords" (onLazyLoad)="loadCasesLazy($event)" [responsive]="true" [stacked]="stacked">-->
 <p-dataTable [value]="cases" [(selection)]="selectedCases" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true"
     [stacked]="stacked">
     <header>Cases</header>
     <p-column selectionMode="multiple"></p-column>
-    <!--<p-column field="caseName" header="Case Name" [sortable]="true"></p-column>-->
-    <p-column header="Patient Name" [sortable]="true">
-        <ng-template let-user="rowData.patient.user" pTemplate="body">
-            <a routerLink="{{user.id}}">{{user.firstName}} {{user.lastName}}
+    <p-column field="patient.user.displayName" header="Patient Name" [sortable]="true">
+        <template let-currentUser="rowData" pTemplate="body">
+            <a  title="Edit" routerLink="{{currentUser.patient.user.id}}">{{currentUser.patient.user.displayName}}
+            <!--<a routerLink="{{user.id}}">{{user.firstName}} {{user.lastName}}-->
             </a>
-        </ng-template>
+        </template>
     </p-column>
     <p-column field="caseStatusLabel" header="Case Status" [sortable]="true"></p-column>
     <p-column field="caseTypeLabel" header="Case Type" [sortable]="true"></p-column>
      <p-column styleClass="actions-cell" header="Actions">
-        <ng-template let-case="rowData" pTemplate="body">
+        <template let-case="rowData" pTemplate="body">
             <!--<a><i class="glyphicon glyphicon-edit"></i></a>-->
             <a routerLink="{{case.patient.user.id}}/{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
-        </ng-template>
+        </template>
     </p-column>
 </p-dataTable>
 <router-outlet></router-outlet>

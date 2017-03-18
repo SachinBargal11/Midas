@@ -18,21 +18,26 @@
 </div>
 </div>
 
-<p-dataTable [value]="locations" [(selection)]="selectedLocations" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
-    [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+<!--<p-dataTable [value]="locations" [(selection)]="selectedLocations" [lazy]="true" [rows]="10" [paginator]="true"
+    [totalRecords]="totalRecords" (onLazyLoad)="loadLocationsLazy($event)" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">-->
+<p-dataTable [value]="locations" [(selection)]="selectedLocations" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Locations</header>
     <p-column selectionMode="multiple"></p-column>
-    <p-column field="location.location.name" header="Name" [sortable]="true"></p-column>
+    <p-column field="location.location.name" header="Name" [sortable]="true">
+        <template let-schedule="rowData" pTemplate="body">
+            <a routerLink="{{schedule.id}}/schedule"><u>{{ schedule.location.location.name }}</u></a>
+        </template>
+    </p-column>
     <p-column field="location.address.address1" header="Address" [sortable]="true"></p-column>
-    <p-column header="Phone" [sortable]="true">
-            <ng-template let-rowdata="rowData.location" pTemplate="body">
+    <p-column field="location.contact.workPhone" header="Phone" [sortable]="true">
+            <template let-rowdata="rowData.location" pTemplate="body">
                 <span>{{rowdata.contact.workPhone | phoneFormat}}
             </span>
-            </ng-template>
+            </template>
     </p-column>
     <p-column styleClass="actions-cell" header="Actions">
-        <ng-template let-schedule="rowData" pTemplate="body">
+        <template let-schedule="rowData" pTemplate="body">
             <a routerLink="{{schedule.id}}/schedule"><i class="glyphicon glyphicon-edit"></i></a>
-        </ng-template>
+        </template>
     </p-column>
 </p-dataTable>

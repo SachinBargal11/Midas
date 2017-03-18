@@ -17,23 +17,23 @@
          <input #gb type="text" class="form-control" style="float:left" placeholder="Search Cases">
     </div>
 </div>
-<!--<p-dataTable [value]="cases" [(selection)]="selectedCase" selectionMode="single" (onRowSelect)="onRowSelect(selectedCase)" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">-->
+<!--<p-dataTable [value]="cases" [(selection)]="selectedCases" [lazy]="true" [rows]="10" [paginator]="true" 
+[totalRecords]="totalRecords" (onLazyLoad)="loadCasesLazy($event)" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">-->
 <p-dataTable [value]="cases" [(selection)]="selectedCases" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
     <header>Cases</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column header="Patient Name" [sortable]="true">
-           <ng-template pTemplate="body">
+           <template pTemplate="body">
             {{patientName}}
-            
-        </ng-template>
+         </template>
     </p-column>
     <p-column field="caseStatusLabel" header="Case Status" [sortable]="true"></p-column>
     <p-column field="caseTypeLabel" header="Case Type" [sortable]="true"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
-        <ng-template let-case="rowData" pTemplate="body">
+        <template let-case="rowData" pTemplate="body">
             <!--<a><i class="glyphicon glyphicon-edit"></i></a>-->
             <a routerLink="{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
-        </ng-template>
+        </template>
     </p-column>
 </p-dataTable>
 <router-outlet></router-outlet>

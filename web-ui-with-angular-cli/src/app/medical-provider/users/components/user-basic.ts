@@ -47,6 +47,7 @@ export class UserBasicComponent implements OnInit {
     selectedDoctorSpecialities: SelectItem[] = [];
     user: User;
     doctor: Doctor;
+    doctorDetail: Doctor;
     doctorRole = false;
     address = new Address({});
     contact = new Contact({});
@@ -104,6 +105,7 @@ export class UserBasicComponent implements OnInit {
             this._doctorsStore.fetchDoctorById(this.userId)
                 .subscribe(
                 (doctorDetail: Doctor) => {
+                    this.doctorDetail = doctorDetail;
                     this.doctor = doctorDetail;
                     this.user = doctorDetail.user;
                     this.cellPhone = this._phoneFormatPipe.transform(this.user.contact.cellPhone);
@@ -142,7 +144,7 @@ export class UserBasicComponent implements OnInit {
                     this.faxNo = this._faxNoFormatPipe.transform(this.user.contact.faxNo);
                     this.userType = UserType[userDetail.userType];
                     this.selectedRole = _.map(this.user.roles, (currentRole: any) => {
-                        return currentRole.roleType;
+                        return currentRole.roleType.toString();
                     });
                 },
                 (error) => {
@@ -188,12 +190,18 @@ export class UserBasicComponent implements OnInit {
     onSelectedRoleChange(roleValues: any) {
         const doctorCtrl = this.userformControls.doctor;
         if (_.contains(roleValues, '3')) {
+            if(this.doctorDetail) {
+                this.doctor = this.doctorDetail;
+            } else {
+                this.doctor = new Doctor({speciality: '2'});
+            }
             Object.keys(doctorCtrl.controls).forEach(key => {
                 doctorCtrl.controls[key].setValidators(this.initDoctorModel()[key][1]);
                 doctorCtrl.controls[key].updateValueAndValidity();
             });
             this.doctorFlag = true;
         } else {
+            this.doctor = new Doctor({});
             Object.keys(doctorCtrl.controls).forEach(key => {
                 doctorCtrl.controls[key].setValidators(null);
                 doctorCtrl.controls[key].updateValueAndValidity();
