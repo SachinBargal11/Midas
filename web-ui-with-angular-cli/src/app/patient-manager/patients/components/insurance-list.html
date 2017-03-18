@@ -22,9 +22,9 @@
     <header>Insurance List</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column field="policyHoldersName" header="Policy Holder Name" [sortable]="true">
-        <template let-insurance="rowData" pTemplate="body">
+        <ng-template let-insurance="rowData" pTemplate="body">
             <a title="Edit" routerLink="edit/{{insurance.id}}">{{insurance.policyHoldersName}}</a>
-        </template>
+        </ng-template>
     </p-column>
     <p-column field="policyNo" header="Policy Number" [sortable]="true"></p-column>
     <p-column field="insuranceTypeLabel" header="Insurance Type" [sortable]="true"></p-column>

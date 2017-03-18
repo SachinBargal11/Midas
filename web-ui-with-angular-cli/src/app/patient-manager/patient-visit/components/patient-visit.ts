@@ -37,7 +37,7 @@ import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 @Component({
     selector: 'patient-visit',
     templateUrl: './patient-visit.html'
-   
+
 })
 
 
@@ -83,7 +83,6 @@ export class PatientVisitComponent implements OnInit {
         // console.log(cell);
     }
 
-
     constructor(
         public _route: ActivatedRoute,
         private _fb: FormBuilder,
@@ -112,6 +111,8 @@ export class PatientVisitComponent implements OnInit {
             visitStatusId: ['']
         });
         this.patientVisitFormControls = this.patientVisitForm.controls;
+
+
     }
     ngOnInit() {
         this.header = {
@@ -164,8 +165,30 @@ export class PatientVisitComponent implements OnInit {
             this._roomScheduleStore.fetchScheduleById(scheduleId)
                 .subscribe((schedule: Schedule) => {
                     this.roomSchedule = schedule;
+                    this.updateAvaibility(this.roomSchedule.scheduleDetails);
                 });
         });
+    }
+
+    updateAvaibility(scheduleDetails: ScheduleDetail[]) {
+        let businessHours: any = [];
+        businessHours = _.chain(scheduleDetails)
+            .filter((currentScheduleDetail: ScheduleDetail) => {
+                return currentScheduleDetail.scheduleStatus === 1;
+            })
+            .groupBy((currentRoomSchedule: ScheduleDetail) => {
+                return `${currentRoomSchedule.slotStart ? currentRoomSchedule.slotStart.format('HH:mm') : '00:00'} - ${currentRoomSchedule.slotEnd ? currentRoomSchedule.slotEnd.format('HH:mm') : '23:59'}`;
+            }).map((timewiseGroup: Array<ScheduleDetail>) => {
+                let firstScheduleDetail: ScheduleDetail = timewiseGroup[0];
+                return {
+                    dow: _.map(timewiseGroup, (currentScheduleDetail: ScheduleDetail) => {
+                        return currentScheduleDetail.dayofWeek - 1;
+                    }),
+                    start: firstScheduleDetail.slotStart ? firstScheduleDetail.slotStart.format('HH:mm') : '00:00',
+                    end: firstScheduleDetail.slotEnd ? firstScheduleDetail.slotEnd.format('HH:mm') : '23:59'
+                };
+            }).value();
+        this.businessHours = businessHours;
     }
 
     selectDoctor() {
@@ -183,6 +206,7 @@ export class PatientVisitComponent implements OnInit {
             this._roomScheduleStore.fetchScheduleById(scheduleId)
                 .subscribe((schedule: Schedule) => {
                     this.doctorSchedule = schedule;
+                    this.updateAvaibility(this.doctorSchedule.scheduleDetails);
                 });
         });
     }
@@ -194,6 +218,13 @@ export class PatientVisitComponent implements OnInit {
             this.selectDoctor();
         } else if (this.selectedOption == 2) {
             this._roomsStore.getRooms(this.selectedLocationId);
+            this.businessHours = [ // specify an array instead
+                {
+                    dow: [1, 6, 7], // Monday, Tuesday, Wednesday
+                    start: '00:00', // 8am
+                    end: '00:01' // 6pm
+                }
+            ];
             this.selectRoom();
         }
 
@@ -329,8 +360,8 @@ export class PatientVisitComponent implements OnInit {
     }
 
     handleDayClick(event) {
-        let considerTime:boolean = true;
-        if(event.view.name == 'month') {
+        let considerTime: boolean = true;
+        if (event.view.name == 'month') {
             considerTime = false;
         }
         let canScheduleAppointement: boolean = true;
@@ -389,6 +420,7 @@ export class PatientVisitComponent implements OnInit {
     }
 
     handleEventClick(event) {
+        debugger;
         let eventInstance: ScheduledEventInstance = event.calEvent;
         let owningEvent: ScheduledEvent = eventInstance.owningEvent;
         let eventWrapper: PatientVisit = <PatientVisit>(eventInstance.eventWrapper);

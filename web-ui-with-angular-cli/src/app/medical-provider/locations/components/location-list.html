@@ -26,26 +26,26 @@
     <header>Locations</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column field="location.name" header="Name" [sortable]="true">
-         <template let-location="rowData" pTemplate="body">
+         <ng-template let-location="rowData" pTemplate="body">
             <a routerLink="{{location.location.id}}/basic">{{location.location.name}}
             </a>
-        </template>
+        </ng-template>
     </p-column>
     <p-column field="address.address1" header="Address" [sortable]="true"></p-column>
     <p-column field="contact.workPhone" header="Phone" [sortable]="true">
         <!-->
         <-->
-            <template let-rowdata="rowData" pTemplate="body">
+            <ng-template let-rowdata="rowData" pTemplate="body">
                 <span>{{rowdata.contact.workPhone | phoneFormat}}
             </span>
-            </template>
+            </ng-template>
 
             <!-->
             <-->
     </p-column>
     <p-column styleClass="actions-cell" header="Actions">
-        <template let-location="rowData" pTemplate="body">
+        <ng-template let-location="rowData" pTemplate="body">
             <a routerLink="{{location.location.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>
-        </template>
+        </ng-template>
     </p-column>
 </p-dataTable>

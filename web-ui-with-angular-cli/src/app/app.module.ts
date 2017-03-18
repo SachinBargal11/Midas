@@ -41,6 +41,7 @@ import { LocationsStore } from './medical-provider/locations/stores/locations-st
 import { LocationsService } from './medical-provider/locations/services/locations-service';
 
 import { SimpleNotificationsModule } from 'angular2-notifications';
+import { NotificationsService } from 'angular2-notifications';
 
 import { PhoneFormatPipe } from './commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from './commons/pipes/faxno-format-pipe';
@@ -85,6 +86,7 @@ import { DateFormatPipe } from './commons/pipes/date-format-pipe';
     UsersStore,
     LocationsStore,
     LocationsService,
+    NotificationsService,
     PhoneFormatPipe,
     FaxNoFormatPipe,
     DateFormatPipe
