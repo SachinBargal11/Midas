@@ -200,7 +200,7 @@
                         <div class="form-group" [class.error]="demographicsformControls.address.controls.country.touched && !demographicsformControls.address.controls.country.valid">
                             <!--<input [ngModel]="patientInfo.user.address.country" formControlName="country" type="text" class="form-control" [class.error]="!demographicsformControls.address.controls.country.valid"
                                 placeholder="" />-->
-                                <select formControlName="country" [ngModel]="patientInfo.user.address.country" type="text" class="form-control" placeholder="" [class.error]="patientformControls.address.controls.country.touched && !patientformControls.address.controls.country.valid">
+                                <select formControlName="country" [ngModel]="patientInfo.user.address.country" class="form-control" [class.error]="demographicsformControls.address.controls.country.touched && !demographicsformControls.address.controls.country.valid">
                                         <option value="">-Select -</option>
                                         <option disabled>────────────────────</option>
                                         <option value="US">United States</option>
