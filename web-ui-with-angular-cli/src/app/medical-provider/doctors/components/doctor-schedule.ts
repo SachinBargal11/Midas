@@ -63,7 +63,7 @@ export class DoctorScheduleComponent implements OnInit {
         this._route.parent.params.subscribe((params: any) => {
             let scheduleId = parseInt(params.scheduleId,10);
             this._progressBarService.show();
-            let fetchSchedules = this._scheduleStore.getSchedules();
+            let fetchSchedules = this._scheduleStore.getSchedulesByCompanyId();
             let fetchDoctorLocationSchedule = this._doctorLocationScheduleStore.getDoctorLocationSchedule(scheduleId);
 
             Observable.forkJoin([fetchSchedules, fetchDoctorLocationSchedule])

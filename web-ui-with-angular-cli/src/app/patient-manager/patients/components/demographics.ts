@@ -85,7 +85,6 @@ export class DemographicsComponent implements OnInit {
 
         });
         this.demographicsform = this.fb.group({
-            username: [],
             userInfo: this.fb.group({
                 ssn: ['', Validators.required],
                 weight: [''],

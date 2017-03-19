@@ -64,7 +64,7 @@ export class RoomsScheduleComponent implements OnInit {
         this._route.parent.params.subscribe((params: any) => {
             let roomId = parseInt(params.roomId);
             this._progressBarService.show();
-            let fetchSchedules = this._roomScheduleStore.getSchedules();
+            let fetchSchedules = this._scheduleStore.getSchedulesByCompanyId();
             // let fetchRoom = this._roomsStore.fetchRoomById(roomId);
             let fetchRoom = this._roomsStore.getRoomById(roomId);
 
@@ -93,7 +93,7 @@ export class RoomsScheduleComponent implements OnInit {
     }
 
     private _fetchScheduleWithDetails(scheduleId: number): void {
-        this._roomScheduleStore.fetchScheduleById(scheduleId)
+        this._scheduleStore.fetchScheduleById(scheduleId)
             .subscribe(_.bind((schedule: Schedule) => {
                 this.currentSchedule = schedule;
                 if (this.currentSchedule.id === 1) {
@@ -169,11 +169,6 @@ export class RoomsScheduleComponent implements OnInit {
     }
 
     ngOnInit() {
-
-         this._scheduleStore.getSchedulesByCompanyId()
-        .subscribe((schedules) => {
-            this.schedules = schedules;
-        })
 
     }
 
