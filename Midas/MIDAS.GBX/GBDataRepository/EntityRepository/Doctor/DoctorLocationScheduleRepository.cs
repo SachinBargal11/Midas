@@ -102,7 +102,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             DoctorLocationSchedule doctorLocationScheduleDB = new DoctorLocationSchedule();
 
-            if(doctorLocationScheduleBO.ID > 0)
+            int? LocationId = null, DoctorId = null;
+
+            if (doctorLocationScheduleBO.ID > 0)
             {
                 doctorLocationScheduleDB = _context.DoctorLocationSchedules.Where(p => p.id == doctorLocationScheduleBO.ID).FirstOrDefault();
 
@@ -111,19 +113,30 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     return new BO.ErrorObject { ErrorMessage = "Doctor,Location,Schedule record not found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
             }
+
             if (doctorLocationScheduleBO.location == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "Location object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
+            else
+            {
+                LocationId = doctorLocationScheduleBO.location.ID;
+            }
+
             if (doctorLocationScheduleBO.doctor == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "Doctor object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
+            else
+            {
+                DoctorId = doctorLocationScheduleBO.doctor.ID;
+            }
+
             if (doctorLocationScheduleBO.schedule == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "Schedule object can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
-            int? LocationId = null, DoctorId = null;
+            
             bool ExistsLinkage = CheckLinkage(null, LocationId, DoctorId);
 
             if (ExistsLinkage == false)
