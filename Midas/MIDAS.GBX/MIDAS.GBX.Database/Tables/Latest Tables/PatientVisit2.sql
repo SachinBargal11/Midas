@@ -88,4 +88,4 @@ GO
 
 --ALTER TABLE [dbo].[PatientVisit2] ADD [IsCancelled] [bit] NULL DEFAULT 0
 --GO
-ALTER TABLE [dbo].[PatientVisit2] ADD [FileUploadPath] [NVARCHAR](250) NULL
+--ALTER TABLE [dbo].[PatientVisit2] ADD [FileUploadPath] [NVARCHAR](250) NULL
