@@ -1048,6 +1048,27 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object AddUploadedFileData(int id, string FileUploadPath, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.AddUploadedFileData(id,FileUploadPath);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
 
         public Object GetPatientAccidentInfoByPatientId(int PatientId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {

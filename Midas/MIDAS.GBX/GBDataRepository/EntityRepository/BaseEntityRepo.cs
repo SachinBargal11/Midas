@@ -30,6 +30,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object AddUploadedFileData(int id, string FileUploadPath)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object AssociateLocationToDoctors<T>(T entity)
         {
             throw new NotImplementedException();

@@ -33,6 +33,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public Nullable<bool> IsCancelled { get; set; }
+        public string FileUploadPath { get; set; }
     
         public virtual CalendarEvent CalendarEvent { get; set; }
         public virtual Case Case { get; set; }

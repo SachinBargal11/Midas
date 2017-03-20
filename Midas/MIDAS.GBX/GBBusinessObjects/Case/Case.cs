@@ -36,6 +36,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("attorneyId")]
         public int? AttorneyId { get; set; }
 
+        [JsonProperty("fileUploadPath")]
+        public string FileUploadPath { get; set; }
+        
         //[JsonProperty("location")]
         //public Location Location { get; set; }
 

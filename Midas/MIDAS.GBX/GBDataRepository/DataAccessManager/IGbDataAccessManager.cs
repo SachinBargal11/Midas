@@ -21,6 +21,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object Login(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object ValidateInvitation(T gbObject, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
 
+        Object AddUploadedFileData(int id, string FileUploadPath, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GenerateToken(int userId);
         Object ValidateToken(string tokenId);
         Object Kill(int tokenId);

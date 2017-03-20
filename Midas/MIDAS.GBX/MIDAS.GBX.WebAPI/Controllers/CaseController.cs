@@ -55,6 +55,15 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.CreateGbObject(Request, data);
         }
 
+        [HttpPost]
+        [Route("addUploadedFileData")]
+        [AllowAnonymous]
+        public HttpResponseMessage AddUploadedFileData(int id, string FileUploadPath)
+        {
+            return requestHandler.AddUploadedFileData(Request, id, FileUploadPath);
+        }
+
+
         [HttpGet]
         //[HttpDelete]
         [Route("Delete/{id}")]

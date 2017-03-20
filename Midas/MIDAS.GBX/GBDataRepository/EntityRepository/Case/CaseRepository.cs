@@ -211,8 +211,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             return lstcase;
         }
-        #endregion 
+        #endregion
 
+        #region save
+        public override object AddUploadedFileData(int id, string FileUploadPath)
+        {
+            bool res=false;
+            return res;
+        }
+        #endregion
 
         #region save
         public override object Save<T>(T entity)
@@ -333,6 +340,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             return (object)res;
         }
         #endregion
+
+
 
         #region Delete By ID
         public override object Delete(int id)
