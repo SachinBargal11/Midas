@@ -299,6 +299,23 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        public bool CheckLinkage(int? CompanyId, int? LocationId, int? DoctorId)
+        {
+            bool result = false;
+
+            if (CompanyId.HasValue == true)
+            {
+
+            }
+            else if (LocationId.HasValue == true && DoctorId.HasValue == true)
+            {
+                result = _context.Locations.Any(p => p.id == LocationId.Value && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                  && p.Company.UserCompanies.Any(p2 => p2.User.Doctor.Id == DoctorId.Value) == true);
+            }
+
+            return result;
+        }
+
         #region Associate Location To Doctors
         public override object AssociateLocationToDoctors<T>(T entity)
         {
@@ -377,14 +394,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         }
                     }
 
-                    var comp = _context.Companies.Where(p =>
-                                                   (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                  .Select(p => p.id);
-                    var Locationid = _context.Locations.Where(p => comp.Contains(p.CompanyID)).Select(p2 => p2.id);
-                    var DoctorLocationSchedule = _context.DoctorLocationSchedules.Where(p => Locationid.Contains(p.LocationID)
-                                                                                      && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                                  .ToList<DoctorLocationSchedule>();
-                    if (DoctorLocationSchedule == null)
+                    //var comp = _context.Companies.Where(p =>
+                    //                               (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                    //                              .Select(p => p.id);
+                    //var Locationid = _context.Locations.Where(p => comp.Contains(p.CompanyID)).Select(p2 => p2.id);
+                    //var DoctorLocationSchedule = _context.DoctorLocationSchedules.Where(p => Locationid.Contains(p.LocationID)
+                    //                                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                    ////                                                              .ToList<DoctorLocationSchedule>();
+                    //if (DoctorLocationSchedule == null)
+                    //{
+                    //    return new BO.ErrorObject { errorObject = "", ErrorMessage = "The Doctor does not belongs to this location.", ErrorLevel = ErrorLevel.Error };
+                    //}
+
+                    bool ExistsLinkage = CheckLinkage(null, LocationId, DoctorId);
+
+                    if (ExistsLinkage == true)
                     {
                         return new BO.ErrorObject { errorObject = "", ErrorMessage = "The Doctor does not belongs to this location.", ErrorLevel = ErrorLevel.Error };
                     }
