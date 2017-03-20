@@ -619,6 +619,18 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetDocumentList(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.GetDocumentList(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
         public HttpResponseMessage DeleteVisit(HttpRequestMessage request, int id)
         {
             var objResult = dataAccessManager.DeleteVisit(id);

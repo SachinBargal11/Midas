@@ -80,6 +80,27 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public object GetDocumentList(int id)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+
+                var refid = baseRepo.GetDocumentList(id);
+
+                return refid;
+            }
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity))
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         public object DeleteVisit(int id)
         {
             try

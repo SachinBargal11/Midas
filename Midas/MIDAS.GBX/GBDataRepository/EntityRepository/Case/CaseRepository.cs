@@ -40,6 +40,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             caseBO.Transportation = cases.Transportation;
             caseBO.CaseStatusId = cases.CaseStatusId;
             caseBO.AttorneyId = cases.AttorneyId;
+            caseBO.FileUploadPath = cases.FileUploadPath;
 
             caseBO.IsDeleted = cases.IsDeleted;
             caseBO.CreateByUserID = cases.CreateByUserID;
@@ -214,14 +215,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #endregion
 
         #region save
-        public override object AddUploadedFileData(int id, string FileUploadPath)
-        {
-            bool res=false;
-            return res;
-        }
-        #endregion
-
-        #region save
         public override object Save<T>(T entity)
         {
             BO.Case caseBO = (BO.Case)(object)entity;
@@ -341,7 +334,48 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        #region AddUploadedFileData
+        public override object AddUploadedFileData(int id, string FileUploadPath)
+        {
+            BO.Case caseBO = new BusinessObjects.Case();
 
+            Case caseDB = new Case();
+
+            caseDB = _context.Cases.Include("PatientEmpInfo")
+                                      .Include("PatientEmpInfo.AddressInfo")
+                                      .Include("PatientEmpInfo.ContactInfo")
+                                      .Where(p => p.Id == id).FirstOrDefault<Case>();
+
+            caseDB.FileUploadPath = FileUploadPath;
+
+            _context.Entry(caseDB).State = System.Data.Entity.EntityState.Modified;
+            _context.SaveChanges();
+
+            var res = Convert<BO.Case, Case>(caseDB);
+            return (object)res;
+        }
+        #endregion
+
+        #region Get DocumentList By ID
+        public override object GetDocumentList(int id)
+        {
+            var acc = _context.Cases.Include("PatientEmpInfo")
+                                    .Include("PatientEmpInfo.AddressInfo")
+                                    .Include("PatientEmpInfo.ContactInfo")
+                                    .Where(p => p.Id == id
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                    .FirstOrDefault<Case>();
+
+            BO.Case acc_ = Convert<BO.Case, Case>(acc);
+
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            return (object)acc_;
+        }
+        #endregion
 
         #region Delete By ID
         public override object Delete(int id)

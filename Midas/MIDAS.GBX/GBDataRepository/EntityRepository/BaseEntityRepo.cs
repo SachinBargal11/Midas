@@ -249,6 +249,10 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+        public virtual object GetDocumentList(int id)
+        {
+            throw new NotImplementedException();
+        }
         public virtual object DeleteCalendarEvent(int id)
         {
             throw new NotImplementedException();
