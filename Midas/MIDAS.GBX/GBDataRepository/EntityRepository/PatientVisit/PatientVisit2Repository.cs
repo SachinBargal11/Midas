@@ -487,7 +487,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Dates
         public override object GetByDates(DateTime FromDate, DateTime ToDate)
         {
-            if (ToDate.Hour == 0 && ToDate.Minute == 0 && ToDate.Second == 0)
+            //if (ToDate.Hour == 0 && ToDate.Minute == 0 && ToDate.Second == 0)
+            //{
+            //    ToDate = ToDate.AddDays(1).AddSeconds(-1);
+            //}
+
+            if (ToDate == ToDate.Date)
             {
                 ToDate = ToDate.AddDays(1).AddSeconds(-1);
             }
@@ -513,21 +518,23 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Name
         public override object Get(string Name)
         {
-            List<string> names = Name.Split(' ').ToList();
+            List<string> names = Name.Trim().Split(' ').ToList();
             List<string> names2 = new List<string>();
            foreach (var name in names)
             {
-                if(string.IsNullOrEmpty(name)==false)
+                if(string.IsNullOrEmpty(name.Trim()) == false)
                 {
-                    names2.Add(name);
+                    names2.Add(name.Trim());
                 }
             }
+
             var userId = _context.Users.Where(p => names2.Contains(p.FirstName) || names2.Contains(p.MiddleName) || names2.Contains(p.LastName)
                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                   .Select(p => p.id);
+
             List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Where(p => userId.Contains(p.PatientId)
-                                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                                    .ToList<PatientVisit2>();
+                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                        .ToList<PatientVisit2>();
 
             if (lstPatientVisit == null)
             {
@@ -542,8 +549,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
         }
         #endregion
-
-
 
         public void Dispose()
         {
