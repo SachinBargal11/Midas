@@ -21,20 +21,20 @@
     <header>Users</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column field="displayName" header="User Name" [sortable]="true">
-        <template let-user="rowData" pTemplate="body">
+        <ng-template let-user="rowData" pTemplate="body">
             <a (click)="editUser(user)"><u>{{user.displayName}}</u></a>
-        </template>
+        </ng-template>
     </p-column>
     <p-column field="userRole" header="User Role" [sortable]="true">
-        <template let-user="rowData" pTemplate="body">
+        <ng-template let-user="rowData" pTemplate="body">
             {{user.userRole}}
-        </template>
+        </ng-template>
     </p-column>
     <p-column field="userName" header="Email" [sortable]="true"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
-        <template let-user="rowData" pTemplate="body">
+        <ng-template let-user="rowData" pTemplate="body">
             <a (click)="editUser(user)"><i class="glyphicon glyphicon-edit"></i></a>
             <!--<a routerLink="edit/{{user.id}}"><i class="glyphicon glyphicon-edit"></i></a>-->
-        </template>
+        </ng-template>
     </p-column>
 </p-dataTable>

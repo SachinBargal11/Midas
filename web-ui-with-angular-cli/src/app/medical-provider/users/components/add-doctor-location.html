@@ -10,9 +10,9 @@
             <p-column field="location.name" header="Location Name" [sortable]="true"></p-column>
             <p-column field="address.address1" header="Address" [sortable]="true"></p-column>
             <p-column header="Phone" [sortable]="true">
-                <template let-rowdata="rowData" pTemplate="body">
+                <ng-template let-rowdata="rowData" pTemplate="body">
                     <span>{{rowdata.contact.workPhone | phoneFormat}}</span>
-                </template>
+                </ng-template>
             </p-column>
         </p-dataTable>
     </div><br>

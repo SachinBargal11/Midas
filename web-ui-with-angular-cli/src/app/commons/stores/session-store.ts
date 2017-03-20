@@ -1,3 +1,4 @@
+import { CompanyAdapter } from '../../account/services/adapters/company-adapter';
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
@@ -18,6 +19,7 @@ export class SessionStore {
     private _session: Session = new Session();
 
     private __ACCOUNT_STORAGE_KEY__ = 'logged_account';
+    private __CURRENT_COMPANY__ = 'current_company';
 
     public get session(): Session {
         return this._session;
@@ -114,7 +116,10 @@ export class SessionStore {
 
     private _populateSession(account: Account) {
         this._session.account = account;
-        this._session.currentCompany = account.companies[0];
+        let storedCompany: any = JSON.parse(window.localStorage.getItem(this.__CURRENT_COMPANY__));
+        let company: Company = CompanyAdapter.parseResponse(storedCompany);
+        this._session.currentCompany = company ? company : account.companies[0];
+        window.localStorage.setItem(this.__CURRENT_COMPANY__, JSON.stringify(this._session.currentCompany));
         window.localStorage.setItem(this.__ACCOUNT_STORAGE_KEY__, JSON.stringify(account.toJS()));
     }
 
@@ -125,8 +130,9 @@ export class SessionStore {
 
     selectCurrentCompany(event, companyId) {
         event.preventDefault();
-        let company: Company = _.find(this.session.companies, {id: parseInt(companyId, 10)});
+        let company: Company = _.find(this.session.companies, { id: parseInt(companyId, 10) });
         this._session.currentCompany = company;
+        window.localStorage.setItem(this.__CURRENT_COMPANY__, JSON.stringify(company));
         this.userCompanyChangeEvent.emit(null);
     }
 }

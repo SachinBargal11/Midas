@@ -9,7 +9,7 @@ import * as _ from 'underscore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import {environment} from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { Schedule } from '../models/rooms-schedule';
 import { ScheduleDetail } from '../../locations/models/schedule-detail';
 import { ScheduleAdapter } from './adapters/rooms-schedule-adapter';
@@ -75,7 +75,8 @@ export class RoomScheduleService {
         return <Observable<Schedule[]>>Observable.fromPromise(promise);
     }
 
-    addSchedule(schedule: Schedule, room: Room, companyId: number): Observable<any> {
+    addSchedule(schedule: Schedule, room: Room): Observable<any> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let requestData: any = schedule.toJS();
             requestData.companyId = companyId;
@@ -103,7 +104,8 @@ export class RoomScheduleService {
                 return this._roomsStore.updateScheduleForRoom(room, schedule);
             });
     }
-    updateSchedule(scheduleDetail: Schedule, room: Room, companyId: number): Observable<any> {
+    updateSchedule(scheduleDetail: Schedule, room: Room): Observable<any> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let requestData: any = scheduleDetail.toJS();
             requestData.companyId = companyId;

@@ -168,11 +168,6 @@ export class DoctorLocationScheduleComponent implements OnInit {
 
     ngOnInit() {
 
-        this._scheduleStore.getSchedulesByCompanyId()
-            .subscribe((schedules) => {
-                this.schedules = schedules;
-            })
-
     }
 
     getScheduleDetails() {
