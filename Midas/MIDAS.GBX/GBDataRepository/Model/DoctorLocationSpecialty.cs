@@ -12,20 +12,20 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Doctor_old
+    public partial class DoctorLocationSpecialty
     {
-        public int id { get; set; }
-        public string LicenseNumber { get; set; }
-        public string WCBAuthorization { get; set; }
-        public string WcbRatingCode { get; set; }
-        public string NPI { get; set; }
-        public Nullable<byte> TaxType { get; set; }
-        public string Title { get; set; }
+        public int Id { get; set; }
+        public int DoctorId { get; set; }
+        public int LocationId { get; set; }
+        public int SpecialtyId { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-        public Nullable<int> UserID { get; set; }
+    
+        public virtual Doctor Doctor { get; set; }
+        public virtual Location Location { get; set; }
+        public virtual Specialty Specialty { get; set; }
     }
 }
