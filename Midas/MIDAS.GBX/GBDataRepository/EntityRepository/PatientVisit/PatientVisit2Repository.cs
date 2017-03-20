@@ -482,8 +482,73 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return lstpatientvisit;
             }
         }
-        #endregion 
+        #endregion
 
+        #region Get By Dates
+        public override object GetByDates(DateTime FromDate, DateTime ToDate)
+        {
+            //if (ToDate.Hour == 0 && ToDate.Minute == 0 && ToDate.Second == 0)
+            //{
+            //    ToDate = ToDate.AddDays(1).AddSeconds(-1);
+            //}
+
+            if (ToDate == ToDate.Date)
+            {
+                ToDate = ToDate.AddDays(1).AddSeconds(-1);
+            }
+
+            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Where(p => p.EventStart >= FromDate && p.EventStart < ToDate
+                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))               
+                                                                        .ToList<PatientVisit2>();
+          
+            if (lstPatientVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No visits found for these Date range.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PatientVisit2> lstBOPatientVisit = new List<BO.PatientVisit2>();
+                lstPatientVisit.ForEach(p => lstBOPatientVisit.Add(Convert<BO.PatientVisit2, PatientVisit2>(p)));
+
+                return lstBOPatientVisit;
+            }
+        }
+        #endregion
+
+        #region Get By Name
+        public override object Get(string Name)
+        {
+            List<string> names = Name.Trim().Split(' ').ToList();
+            List<string> names2 = new List<string>();
+           foreach (var name in names)
+            {
+                if(string.IsNullOrEmpty(name.Trim()) == false)
+                {
+                    names2.Add(name.Trim());
+                }
+            }
+
+            var userId = _context.Users.Where(p => names2.Contains(p.FirstName) || names2.Contains(p.MiddleName) || names2.Contains(p.LastName)
+                                                   && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .Select(p => p.id);
+
+            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Where(p => userId.Contains(p.PatientId)
+                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                        .ToList<PatientVisit2>();
+
+            if (lstPatientVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No visits found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PatientVisit2> lstBOPatientVisit = new List<BO.PatientVisit2>();
+                lstPatientVisit.ForEach(p => lstBOPatientVisit.Add(Convert<BO.PatientVisit2, PatientVisit2>(p)));
+
+                return lstBOPatientVisit;
+            }
+        }
+        #endregion
 
         public void Dispose()
         {

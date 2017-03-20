@@ -58,7 +58,7 @@ export class ScheduleComponent implements OnInit {
         this._route.parent.params.subscribe((params: any) => {
             let locationId = parseInt(params.locationId, 10);
             this._progressBarService.show();
-            let fetchSchedules = this._scheduleStore.getSchedules();
+            let fetchSchedules = this._scheduleStore.getSchedulesByCompanyId();
             let fetchLocation = this._locationsStore.getLocationById(locationId);
 
             Observable.forkJoin([fetchSchedules, fetchLocation])
@@ -162,10 +162,10 @@ export class ScheduleComponent implements OnInit {
     }
 
     ngOnInit() {
-        this._scheduleStore.getSchedulesByCompanyId()
-            .subscribe((schedules) => {
-                this.schedules = schedules;
-            });
+        // this._scheduleStore.getSchedulesByCompanyId()
+        //     .subscribe((schedules) => {
+        //         this.schedules = schedules;
+        //     });
 
     }
 

@@ -57,7 +57,7 @@ export class AddLocationComponent implements OnInit {
         this.locationJS = this.location.toJS();
         this.addlocationform = this.fb.group({
             name: ['', Validators.required],
-            address: [''],
+            address: ['', Validators.required],
             city: ['', Validators.required],
             state: ['', Validators.required],
             zipCode: ['', Validators.required],

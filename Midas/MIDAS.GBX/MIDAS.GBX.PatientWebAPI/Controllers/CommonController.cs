@@ -46,27 +46,6 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getstatesbycity/{city}")]
-        public HttpResponseMessage GetStatesByCity(string City)
-        {
-            return requestStateHandler.GetObjects(Request, City);
-        }
-
-        [HttpGet]
-        [Route("getcities")]
-        public HttpResponseMessage GetCities()
-        {
-            return requestCityHandler.GetObjects(Request);
-        }
-
-        [HttpGet]
-        [Route("getcitiesbystates/{state}")]
-        public HttpResponseMessage GetCitiesByStates(string State)
-        {
-            return requestCityHandler.GetObjects(Request, State);
-        }
-
-        [HttpGet]
         [Route("Mstatusgetall")]
         public HttpResponseMessage GetMstatusAll()
         {

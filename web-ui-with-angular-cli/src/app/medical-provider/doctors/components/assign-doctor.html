@@ -7,9 +7,9 @@
     <header>Doctors</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column header="Doctor Name" [sortable]="true">
-       <template let-doctor="rowData" pTemplate="body">
+       <ng-template let-doctor="rowData" pTemplate="body">
         {{doctor.user.firstName}} {{doctor.user.lastName}}   
-        </template>
+        </ng-template>
     </p-column>
     <p-column field="user.userName" header="Email" [sortable]="true"></p-column>
 </p-dataTable>

@@ -22,15 +22,15 @@
     <header>Family Member List</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column field="displayName" header="Name" [sortable]="true">
-        <template let-familyMember="rowData" pTemplate="body">
+        <ng-template let-familyMember="rowData" pTemplate="body">
         <a routerLink="edit/{{familyMember.id}}">{{familyMember.displayName}}</a>
-        </template>
+        </ng-template>
     </p-column>
     <p-column field="relationLabel" header="Relation" [sortable]="true"></p-column>
     <p-column field="age" header="Age" [sortable]="true"></p-column>
-    <!--<p-column styleClass="actions-cell" header="Actions">
-        <template let-familyMember="rowData" pTemplate="body">
+    <p-column styleClass="actions-cell" header="Actions">
+        <ng-template let-familyMember="rowData" pTemplate="body">
             <a routerLink="edit/{{familyMember.id}}"><i class="glyphicon glyphicon-edit"></i></a>
-        </template>
-    </p-column>-->
+        </ng-template>
+    </p-column>
 </p-dataTable>

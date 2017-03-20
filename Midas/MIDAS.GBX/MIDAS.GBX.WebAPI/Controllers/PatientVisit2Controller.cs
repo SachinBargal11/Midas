@@ -98,7 +98,23 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetByCaseId(Request, CaseId);
         }
 
+        [HttpGet]
+        [Route("getByDates/{FromDate}/{ToDate}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetByDates(DateTime FromDate,DateTime ToDate)
+        {
+            return requestHandler.GetByDates(Request, FromDate, ToDate);
+        }
 
+        [HttpGet]
+        [Route("getByPatientName/{Name}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetByName(string Name)
+        {
+            return requestHandler.GetObjects(Request, Name);
+        }
+
+        
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

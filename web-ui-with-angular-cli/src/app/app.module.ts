@@ -1,4 +1,5 @@
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -39,7 +40,11 @@ import { UsersStore } from './medical-provider/users/stores/users-store';
 import { LocationsStore } from './medical-provider/locations/stores/locations-store';
 import { LocationsService } from './medical-provider/locations/services/locations-service';
 
+import { ScheduleStore } from './medical-provider/locations/stores/schedule-store';
+import { ScheduleService } from './medical-provider/locations/services/schedule-service';
+
 import { SimpleNotificationsModule } from 'angular2-notifications';
+import { NotificationsService } from 'angular2-notifications';
 
 import { PhoneFormatPipe } from './commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from './commons/pipes/faxno-format-pipe';
@@ -53,6 +58,7 @@ import { DateFormatPipe } from './commons/pipes/date-format-pipe';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpModule,
     ReactiveFormsModule,
@@ -83,6 +89,9 @@ import { DateFormatPipe } from './commons/pipes/date-format-pipe';
     UsersStore,
     LocationsStore,
     LocationsService,
+    ScheduleService,
+    ScheduleStore,
+    NotificationsService,
     PhoneFormatPipe,
     FaxNoFormatPipe,
     DateFormatPipe

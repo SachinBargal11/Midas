@@ -28,40 +28,42 @@ export class RoomScheduleStore {
         return this._schedules.asObservable();
     }
 
-    getSchedules(): Observable<Schedule[]> {
-        let promise = new Promise((resolve, reject) => {
-            this._roomScheduleService.getSchedules().subscribe((schedules: Schedule[]) => {
-                this._schedules.next(List(schedules));
-                resolve(schedules);
-            }, error => {
-                reject(error);
-            });
-        });
-        return <Observable<Schedule[]>>Observable.fromPromise(promise);
-    }
+    // getSchedules(): Observable<Schedule[]> {
+    //     let companyId: number = this._sessionStore.session.currentCompany.id;
+    //     let promise = new Promise((resolve, reject) => {
+    //         this._roomScheduleService.getSchedules(companyId).subscribe((schedules: Schedule[]) => {
+    //             this._schedules.next(List(schedules));
+    //             resolve(schedules);
+    //         }, error => {
+    //             reject(error);
+    //         });
+    //     });
+    //     return <Observable<Schedule[]>>Observable.fromPromise(promise);
+    // }
 
-    findScheduleById(id: number) {
-        let schedules = this._schedules.getValue();
-        let index = schedules.findIndex((currentSchedule: Schedule) => currentSchedule.id === id);
-        return schedules.get(index);
-    }
+    // findScheduleById(id: number) {
+    //     let schedules = this._schedules.getValue();
+    //     let index = schedules.findIndex((currentSchedule: Schedule) => currentSchedule.id === id);
+    //     return schedules.get(index);
+    // }
 
-    fetchScheduleById(id: number): Observable<Schedule> {
-        let promise = new Promise((resolve, reject) => {
-            // let matchedSchedule: Schedule = this.findScheduleById(id);
-            // if (matchedSchedule) {
-            //     resolve(matchedSchedule);
-            // } else {
-                this._roomScheduleService.getSchedule(id)
-                    .subscribe((schedule: Schedule) => {
-                        resolve(schedule);
-                    }, error => {
-                        reject(error);
-                    });
-            // }
-        });
-        return <Observable<Schedule>>Observable.fromPromise(promise);
-    }
+    // fetchScheduleById(id: number): Observable<Schedule> {
+    //     let promise = new Promise((resolve, reject) => {
+    //         // let matchedSchedule: Schedule = this.findScheduleById(id);
+    //         // if (matchedSchedule) {
+    //         //     resolve(matchedSchedule);
+    //         // } else {
+    //             this._roomScheduleService.getSchedule(id)
+    //                 .subscribe((schedule: Schedule) => {
+    //                     resolve(schedule);
+    //                 }, error => {
+    //                     reject(error);
+    //                 });
+    //         // }
+    //     });
+    //     return <Observable<Schedule>>Observable.fromPromise(promise);
+    // }
+
     addSchedule(scheduleDetail: Schedule, room: Room): Observable<Schedule> {
         let promise = new Promise((resolve, reject) => {
             this._roomScheduleService.addSchedule(scheduleDetail, room).subscribe((schedule: Schedule) => {

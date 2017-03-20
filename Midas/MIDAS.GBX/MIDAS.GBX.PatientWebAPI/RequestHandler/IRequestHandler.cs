@@ -36,6 +36,8 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage CancleVisit(HttpRequestMessage request, int id);
         HttpResponseMessage CancleCalendarEvent(HttpRequestMessage request, int id);
         HttpResponseMessage IsInsuranceInfoAdded(HttpRequestMessage request, int id);
+        HttpResponseMessage GetByLocationId(HttpRequestMessage request, int id);
+        HttpResponseMessage GetGbObjects(HttpRequestMessage request, int param1, int param2);
 
 
     }

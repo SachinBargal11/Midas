@@ -9,9 +9,7 @@ import { BasicComponent } from './components/basic';
 import { LocationShellComponent } from './components/location-shell';
 import { ScheduleComponent } from './components/schedule';
 import { SettingsComponent } from './components/settings';
-import { ScheduleService } from './services/schedule-service';
 
-import { ScheduleStore } from './stores/schedule-store';
 import { ScheduleDemo } from './components/schedule-demo';
 import { EventService } from './services/event-service';
 import { EventStore } from './stores/event-store';
@@ -34,8 +32,6 @@ import { EventStore } from './stores/event-store';
         ScheduleDemo
     ],
     providers: [
-        ScheduleService,
-        ScheduleStore,
         EventStore,
         EventService
     ]

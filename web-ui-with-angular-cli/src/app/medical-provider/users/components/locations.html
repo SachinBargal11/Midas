@@ -24,20 +24,20 @@
     <header>Locations</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column field="location.location.name" header="Name" [sortable]="true">
-        <template let-schedule="rowData" pTemplate="body">
+        <ng-template let-schedule="rowData" pTemplate="body">
             <a routerLink="{{schedule.id}}/schedule"><u>{{ schedule.location.location.name }}</u></a>
-        </template>
+        </ng-template>
     </p-column>
     <p-column field="location.address.address1" header="Address" [sortable]="true"></p-column>
     <p-column field="location.contact.workPhone" header="Phone" [sortable]="true">
-            <template let-rowdata="rowData.location" pTemplate="body">
+            <ng-template let-rowdata="rowData.location" pTemplate="body">
                 <span>{{rowdata.contact.workPhone | phoneFormat}}
             </span>
-            </template>
+            </ng-template>
     </p-column>
     <p-column styleClass="actions-cell" header="Actions">
-        <template let-schedule="rowData" pTemplate="body">
+        <ng-template let-schedule="rowData" pTemplate="body">
             <a routerLink="{{schedule.id}}/schedule"><i class="glyphicon glyphicon-edit"></i></a>
-        </template>
+        </ng-template>
     </p-column>
 </p-dataTable>

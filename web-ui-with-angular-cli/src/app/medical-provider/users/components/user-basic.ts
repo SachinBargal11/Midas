@@ -228,10 +228,10 @@ export class UserBasicComponent implements OnInit {
         let roles = [];
         let input = this.selectedRole;
         for (let i = 0; i < input.length; ++i) {
-            roles.push({ 'roleType': parseInt(input[i]) });
+            roles.push({ 'roleType': parseInt(input[i], 10) });
         }
-        this.selectedRole.forEach(element => {
-            if (element === 3) {
+        this.selectedRole.forEach((element) => {
+            if (parseInt(element, 10) === 3) {
                 this.doctorRole = true;
             }
         });

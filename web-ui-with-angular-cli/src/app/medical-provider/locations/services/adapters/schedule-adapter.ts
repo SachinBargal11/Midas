@@ -16,6 +16,7 @@ export class ScheduleAdapter {
             }
             schedule = new Schedule({
                 id: scheduleData.id,
+                companyId: scheduleData.companyId,
                 name: scheduleData.name,
                 scheduleDetails: scheduleDetails
             });

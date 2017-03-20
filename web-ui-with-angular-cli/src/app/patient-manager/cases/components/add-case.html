@@ -20,31 +20,31 @@
                                 <span class="color-red">*</span>
                             </label>
             <div *ngIf="patientName">
-                 
-                            <div class="form-group">
+
+                <div class="form-group">
                     <!--<input type="text" class="form-control" [ngModel]="patientName" formControlName="patientId">-->
                     <label class="form-label"> {{patientName}}
                             </label>
                 </div>
-                </div>
-            <div *ngIf="!patientName">  
-            <div class="form-group" [class.error]="caseformControls.patientId.touched && !caseformControls.patientId.valid">
-                <select formControlName="patientId" type="text" [(ngModel)]="idPatient" (change)="selectPatient($event)" class="form-control"
-                    placeholder="" [class.error]="caseformControls.patientId.touched && !caseformControls.patientId.valid">
-                            <option value="">-Select -</option>
+            </div>
+            <div *ngIf="!patientName">
+                <div class="form-group" [class.error]="caseformControls.patientId.touched && !caseformControls.patientId.valid">
+                    <select formControlName="patientId" type="text" [(ngModel)]="idPatient" (change)="selectPatient($event)" class="form-control"
+                        placeholder="" [class.error]="caseformControls.patientId.touched && !caseformControls.patientId.valid">
+                            <option value="0">-Select -</option>
                             <option *ngFor="let patient of patientsWithoutCase" value="{{patient.id}}">{{patient.user.firstName}} {{patient.user.lastName}}</option>
                         </select>
-                <div class='error-list' *ngIf="caseformControls.patientId.touched && !caseformControls.patientId.valid">
-                    <ul>
-                        <li *ngIf="caseformControls.patientId.hasError('required')">Patient is required.</li>
-                    </ul>
+                    <div class='error-list' *ngIf="caseformControls.patientId.touched && !caseformControls.patientId.valid">
+                        <ul>
+                            <li *ngIf="caseformControls.patientId.hasError('required')">Patient is required.</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
         <div class="col-lg-4">
             <label class="form-label"> Case Type
-                                <!--<span class="color-red">*</span>-->
+                                <span class="color-red">*</span>
                             </label>
             <div class="form-group" [class.error]="caseformControls.caseTypeId.touched && !caseformControls.caseTypeId.valid">
                 <select formControlName="caseTypeId" type="text" class="form-control" placeholder="" [class.error]="caseformControls.caseTypeId.touched && !caseformControls.caseTypeId.valid">
@@ -63,7 +63,7 @@
         </div>
         <div class="col-lg-4">
             <label class="form-label"> Case Status
-                                <!--<span class="color-red">*</span>-->
+                                <span class="color-red">*</span>
                             </label>
             <div class="form-group" [class.error]="caseformControls.caseStatusId.touched && !caseformControls.caseStatusId.valid">
                 <select formControlName="caseStatusId" type="text" class="form-control" placeholder="" [class.error]="caseformControls.caseStatusId.touched && !caseformControls.caseStatusId.valid">
@@ -81,18 +81,6 @@
     </div>
     <div class="row">
         <div class="col-lg-4">
-            <label class="form-label"> Carrier Case Number
-                            </label>
-            <div class="form-group" [class.error]="caseformControls.carrierCaseNo.touched && !caseformControls.carrierCaseNo.valid">
-                <input formControlName="carrierCaseNo" type="text" class="form-control" placeholder="" [class.error]="!caseformControls.carrierCaseNo.valid">
-                <div class='error-list' *ngIf="caseformControls.carrierCaseNo.touched && !caseformControls.carrierCaseNo.valid">
-                    <ul>
-                        <li *ngIf="caseformControls.carrierCaseNo.hasError('required')">Carrier Case Number is required.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">
             <label class="form-label"> Location
                                 <span class="color-red">*</span>
                             </label>
@@ -104,6 +92,18 @@
                 <div class='error-list' *ngIf="caseformControls.locationId.touched && !caseformControls.locationId.valid">
                     <ul>
                         <li *ngIf="caseformControls.locationId.hasError('required')">Location is required.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <label class="form-label"> Carrier Case Number
+                            </label>
+            <div class="form-group" [class.error]="caseformControls.carrierCaseNo.touched && !caseformControls.carrierCaseNo.valid">
+                <input formControlName="carrierCaseNo" type="text" class="form-control" placeholder="" [class.error]="!caseformControls.carrierCaseNo.valid">
+                <div class='error-list' *ngIf="caseformControls.carrierCaseNo.touched && !caseformControls.carrierCaseNo.valid">
+                    <ul>
+                        <li *ngIf="caseformControls.carrierCaseNo.hasError('required')">Carrier Case Number is required.</li>
                     </ul>
                 </div>
             </div>
@@ -144,7 +144,7 @@
     <div class="row">
 
         <div class="col-lg-4">
-            <label class="form-label"> Transportation Required?
+            <label class="form-label"> Transportation Required
                         <span class="color-red">*</span>
                     </label>
             <div class="form-group">

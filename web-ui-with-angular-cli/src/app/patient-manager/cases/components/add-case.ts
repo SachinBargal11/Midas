@@ -31,7 +31,7 @@ export class AddCaseComponent implements OnInit {
     employer: Employer;
     isSaveProgress = false;
     patientId: number;
-    idPatient: any;
+    idPatient: any = 0;
     patient: Patient;
     patientName: string;
     patients: Patient[];
@@ -80,14 +80,14 @@ export class AddCaseComponent implements OnInit {
 
         this.caseform = this.fb.group({
             // caseName: [''],
-            patientId: [''],
-            caseTypeId: [''],
+            patientId: ['',Validators.required],
+            caseTypeId: ['',Validators.required],
             carrierCaseNo: [''],
             locationId: ['', Validators.required],
             // patientEmpInfoId: ['', Validators.required],
             caseStatusId: ['', Validators.required],
             attorneyId: [''],
-            caseStatus: [''],
+            // caseStatus: [''],
             transportation: [1, Validators.required],
         });
 

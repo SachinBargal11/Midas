@@ -9,6 +9,7 @@
 	[Transportation] [bit] NOT NULL DEFAULT 0,
 	[CaseStatusId] [TINYINT] NULL,
 	[AttorneyId] [int] NULL,
+	[FileUploadPath] [NVARCHAR](250) NULL,
 
 	[IsDeleted] [bit] NULL,
 	[CreateByUserID] [int] NOT NULL,
@@ -55,3 +56,4 @@ ALTER TABLE [dbo].[Case] CHECK CONSTRAINT [FK_Case_CaseStatus_CaseStatusId]
 GO
 
 --ALTER TABLE [dbo].[Case] DROP [LocationId]
+--ALTER TABLE [dbo].[Case] ADD [FileUploadPath] [NVARCHAR](250) NULL

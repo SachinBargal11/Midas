@@ -26,6 +26,7 @@
     --Is doctor vist from website
     --[BillManualyUnFinalized] [BIT] NULL, --UnFinalized
 	[IsCancelled] [bit] NULL DEFAULT 0,
+	[FileUploadPath] [NVARCHAR](250) NULL,
 
 	[IsDeleted] [bit] NULL DEFAULT 0,
 	[CreateByUserID] [int] NOT NULL,
@@ -87,3 +88,4 @@ GO
 
 --ALTER TABLE [dbo].[PatientVisit2] ADD [IsCancelled] [bit] NULL DEFAULT 0
 --GO
+ALTER TABLE [dbo].[PatientVisit2] ADD [FileUploadPath] [NVARCHAR](250) NULL

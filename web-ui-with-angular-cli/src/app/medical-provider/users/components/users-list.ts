@@ -48,11 +48,12 @@ export class UsersListComponent implements OnInit {
         this._usersStore.getUsers()
             .subscribe(users => {
                 this.users = users.reverse();
-                // this.datasource = users;
+                // this.datasource = users.reverse();
                 // this.totalRecords = this.datasource.length;
                 // this.users = this.datasource.slice(0, 10);
             },
             (error) => {
+                this._progressBarService.hide();
             },
             () => {
                 this._progressBarService.hide();

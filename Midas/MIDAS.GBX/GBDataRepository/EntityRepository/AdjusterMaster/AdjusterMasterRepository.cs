@@ -376,10 +376,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 {
                     acc.ContactInfo.IsDeleted = true;
                 }
-                if (acc.InsuranceMaster != null)
-                {
-                    acc.InsuranceMaster.IsDeleted = true;
-                }
+                //if (acc.InsuranceMaster != null)
+                //{
+                //    acc.InsuranceMaster.IsDeleted = true;
+                //}
                 acc.IsDeleted = true;
                 _context.SaveChanges();
             }

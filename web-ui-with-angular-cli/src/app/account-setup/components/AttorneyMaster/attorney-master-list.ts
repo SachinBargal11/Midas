@@ -48,8 +48,8 @@ export class AttorneyMasterListComponent implements OnInit {
         this._progressBarService.show();
         this._attorneyMasterStore.getAttorneyMasters()
             .subscribe(attorneys => {
-                this.attorneys = attorneys;
-                // this.datasource = attorneys;
+                this.attorneys = attorneys.reverse();
+                // this.datasource = attorneys.reverse();
                 // this.totalRecords = this.datasource.length;
                 // this.attorneys = this.datasource.slice(0, 10);
             },

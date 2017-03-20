@@ -77,10 +77,11 @@ export class CaseMappingComponent implements OnInit {
                             value: currentAdjuster.id.toString()
                         };
                     });
-                    this.insurances = _.map(insurances, (currentInsurance: Insurance) => {
+                    let insuranceDetails = _.map(insurances, (currentInsurance: Insurance) => {
                         this.addMappingDetails();
                         return _.extend(currentInsurance);
                     });
+                    this.insurances = insuranceDetails.reverse();
                     // this.insurancesArr = _.map(this.insurances, (currentInsurance: Insurance) => {
                     //     return {
                     //         label: `${currentInsurance.insuranceCompanyCode} - ${currentInsurance.policyHoldersName}`,
