@@ -31,7 +31,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
             requestHandler = new GbApiRequestHandler<DoctorLocationSpeciality>();
             requestHandlerList = new GbApiRequestHandler<List<DoctorLocationSpeciality>>();
         }
-
+/*
 
         [HttpPost]
         [Route("associateLocationToDoctors")]
@@ -90,6 +90,8 @@ namespace MIDAS.GBX.WebAPI.Controllers
         {
             return requestHandler.CreateGbObject(Request, data);
         }
+
+    */
 
         protected override void Dispose(bool disposing)
         {
