@@ -377,6 +377,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         }
                     }
 
+                    var comp = _context.Companies.Where(p =>
+                                                   (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .Select(p => p.id);
+                    var Locationid = _context.Locations.Where(p => comp.Contains(p.CompanyID)).Select(p2 => p2.id);
+                    var DoctorLocationSchedule = _context.DoctorLocationSchedules.Where(p => Locationid.Contains(p.LocationID)
+                                                                                      && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                                  .ToList<DoctorLocationSchedule>();
+                    if (DoctorLocationSchedule == null)
+                    {
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "The Doctor does not belongs to this location.", ErrorLevel = ErrorLevel.Error };
+                    }
+
+
                     DoctorLocationSchedule doctorLocationScheduleDB = _context.DoctorLocationSchedules.Where(p => p.LocationID == LocationId.Value && p.DoctorID == DoctorId.Value
                                                                                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<DoctorLocationSchedule>();
 
