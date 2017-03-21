@@ -633,11 +633,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Get(int id)
         {
             var acc = _context.PatientVisit2.Include("Doctor")
-                                    .Include("Room")
-                                    .Include("Specialty")
-                                    .Where(p => p.Id == id
-                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                    .FirstOrDefault<PatientVisit2>();
+                                            .Include("Doctor.User")
+                                            .Include("Room")
+                                            .Include("Specialty")
+                                            .Where(p => p.Id == id
+                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                            .FirstOrDefault<PatientVisit2>();
 
             BO.PatientVisit2 acc_ = Convert<BO.PatientVisit2, PatientVisit2>(acc);
 

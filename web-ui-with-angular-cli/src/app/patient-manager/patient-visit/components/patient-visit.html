@@ -28,8 +28,6 @@
         <!--<span *ngIf="roomSchedule">{{roomSchedule.name}}</span>-->
     </div>
 </div>
-<!--{{businessHours | json}}-->
-<!--<p-schedule *ngIf="events" [events]="events" [views]="views" [header]="header" [eventLimit]="4" [editable]="true" (onDayClick)="handleDayClick($event)"-->
 <p-schedule *ngIf="events" [events]="events" [header]="header" [eventLimit]="4" [editable]="true" (onDayClick)="handleDayClick($event)"
     (onEventClick)="handleEventClick($event)" [eventRender]="eventRenderer" [dayRender]="dayRenderer" [businessHours]="businessHours">
 </p-schedule>
