@@ -22,7 +22,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         public FileUploadController()
         {
-            sourcePath = HttpContext.Current.Server.MapPath("~/uploads").ToString();
+            sourcePath = HttpContext.Current.Server.MapPath("~/App_Data/uploads").ToString();
             remotePath = ConfigurationManager.AppSettings.Get("FILE_UPLOAD_PATH").ToString();            
         }
 
