@@ -606,7 +606,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get By ID
+        #region Get By GetDocumentList
         public override object GetDocumentList(int id)
         {
             var acc = _context.PatientVisit2.Where(p => p.Id == id
@@ -626,6 +626,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
 
             return (object)Document;
+        }
+        #endregion
+
+        #region Get By ID
+        public override object Get(int id)
+        {
+            var acc = _context.PatientVisit2.Include("Doctor")
+                                    .Include("Room")
+                                    .Include("Specialty")
+                                    .Where(p => p.Id == id
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                    .FirstOrDefault<PatientVisit2>();
+
+            BO.PatientVisit2 acc_ = Convert<BO.PatientVisit2, PatientVisit2>(acc);
+
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            return (object)acc_;
         }
         #endregion
 
