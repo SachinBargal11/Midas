@@ -492,10 +492,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Case Id
         public override object GetByCaseId(int CaseId)
         {
-            var acc = _context.PatientVisit2.Include("Doctor").Include("Room").Include("Specialty")
-                              .Where(p => p.CaseId == CaseId
-                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                              .ToList<PatientVisit2>();
+            var acc = _context.PatientVisit2.Include("Doctor")
+                                            .Include("Doctor.User")
+                                            .Include("Room")
+                                            .Include("Specialty")
+                                            .Where(p => p.CaseId == CaseId
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                            .ToList<PatientVisit2>();
 
             if (acc == null)
             {
@@ -633,7 +636,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Get(int id)
         {
             var acc = _context.PatientVisit2.Include("Doctor")
-                                            .Include("Doctor.User")
                                             .Include("Room")
                                             .Include("Specialty")
                                             .Where(p => p.Id == id
