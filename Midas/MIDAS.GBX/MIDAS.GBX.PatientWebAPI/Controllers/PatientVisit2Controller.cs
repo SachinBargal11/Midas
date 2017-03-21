@@ -91,6 +91,14 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             return requestHandler.GetDocumentList(Request, id);
         }
 
+        [HttpGet]
+        [Route("get/{id}")]
+        [AllowAnonymous]
+        public HttpResponseMessage Get(int id)
+        {
+            return requestHandler.GetObject(Request, id);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
