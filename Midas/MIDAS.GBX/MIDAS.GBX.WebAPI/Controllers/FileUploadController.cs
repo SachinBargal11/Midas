@@ -18,33 +18,43 @@ namespace MIDAS.GBX.WebAPI.Controllers
     {
         internal string sourcePath = string.Empty;
         internal string remotePath = string.Empty;
+        internal DirectoryInfo directinfo;
 
         public FileUploadController()
         {
             sourcePath = HttpContext.Current.Server.MapPath("~/uploads").ToString();
-            remotePath = ConfigurationManager.AppSettings.Get("FILE_UPLOAD_PATH").ToString();
+            remotePath = ConfigurationManager.AppSettings.Get("FILE_UPLOAD_PATH").ToString();            
         }
 
         [HttpPost]
-        [Route("upload")]
-        public async Task<HttpResponseMessage> Post()
+        [Route("upload/{id}/{type}")]
+        public async Task<HttpResponseMessage> Post(int id, string type)
         {
             if (Request.Content.IsMimeMultipartContent())
             {
+                if (type == "case")
+                {
+                    directinfo = Directory.CreateDirectory(remotePath + "/patient/case-" + id + "/CH/reports");
+                }
+                else if (type == "visit")
+                {
+                    directinfo = Directory.CreateDirectory(remotePath + "/patient/visit-" + id + "/CH/reports");
+                }
+
                 var streamProvider = new MultipartFormDataStreamProvider(sourcePath);
                 await Request.Content.ReadAsMultipartAsync(streamProvider);
                 foreach (MultipartFileData fileData in streamProvider.FileData)
                 {
                     if (string.IsNullOrEmpty(fileData.Headers.ContentDisposition.FileName))
                         return Request.CreateResponse(HttpStatusCode.NotAcceptable, "This request is not properly formatted");
-                    string fileName = fileData.Headers.ContentDisposition.FileName;                    
-                    fileName = (fileName.StartsWith("\"") && fileName.EndsWith("\"")) ? fileName.Trim('"') : fileName;                    
+                    string fileName = fileData.Headers.ContentDisposition.FileName;
+                    fileName = (fileName.StartsWith("\"") && fileName.EndsWith("\"")) ? fileName.Trim('"') : fileName;
                     fileName = (fileName.Contains(@"/") || fileName.Contains(@"\")) ? Path.GetFileName(fileName) : fileName;
 
-                    if (File.Exists(Path.Combine(remotePath, fileName))) File.Delete(Path.Combine(remotePath, fileName));
-                    File.Move(fileData.LocalFileName, Path.Combine(remotePath, fileName));
+                    if (File.Exists(Path.Combine(directinfo.FullName, fileName))) File.Delete(Path.Combine(directinfo.FullName, fileName));
+                    File.Move(fileData.LocalFileName, Path.Combine(directinfo.FullName, fileName));
                 }
-                return Request.CreateResponse(HttpStatusCode.OK);
+                return Request.CreateResponse(HttpStatusCode.OK,"Uploaded file successfully.");
             }
             else return Request.CreateResponse(HttpStatusCode.NotAcceptable, "This request is not properly formatted");
         }

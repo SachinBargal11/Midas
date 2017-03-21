@@ -15,7 +15,7 @@ namespace MIDAS.GBX.WebAPI
     {
         public void Configuration(IAppBuilder app)
         {
-            app.UseIdentityServerBearerTokenAuthentication(new IdentityServerBearerTokenAuthenticationOptions
+            /*app.UseIdentityServerBearerTokenAuthentication(new IdentityServerBearerTokenAuthenticationOptions
             {
                 Authority = "https://localhost:44396/identity",
                 RequiredScopes = new[] { "WebAPI" },
@@ -23,7 +23,7 @@ namespace MIDAS.GBX.WebAPI
 
             AntiForgeryConfig.UniqueClaimTypeIdentifier = IdentityServer3.Core.Constants.ClaimTypes.Subject;
             JwtSecurityTokenHandler.InboundClaimTypeMap = new Dictionary<string, string>();
-
+            */
 
             ConfigureAuth(app);
         }
