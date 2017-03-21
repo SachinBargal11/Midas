@@ -114,7 +114,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boUser.ContactInfo = boContactInfo;
             }
 
-            if (user.UserCompanies != null &&user.UserCompanies.Count > 0)
+            if (user.UserCompanies != null && user.UserCompanies.Count > 0)
             {
                 List<BO.UserCompany> boUserCompany = new List<BO.UserCompany>();
                 user.UserCompanies.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
