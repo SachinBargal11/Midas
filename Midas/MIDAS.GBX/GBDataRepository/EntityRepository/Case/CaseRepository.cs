@@ -359,21 +359,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get DocumentList By ID
         public override object GetDocumentList(int id)
         {
-            var acc = _context.Cases.Include("PatientEmpInfo")
-                                    .Include("PatientEmpInfo.AddressInfo")
-                                    .Include("PatientEmpInfo.ContactInfo")
-                                    .Where(p => p.Id == id
-                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            var acc = _context.Cases.Where(p => p.Id == id
+                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .FirstOrDefault<Case>();
 
             BO.Case acc_ = Convert<BO.Case, Case>(acc);
+
+            Dictionary<string, object> Document = new Dictionary<string, object>();
+            if (acc != null)
+            {
+                Document.Add("id", acc_.ID);
+                Document.Add("fileUploadPath", acc_.FileUploadPath);
+            }
+
 
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            return (object)acc_;
+            return (object)Document;
         }
         #endregion
 
