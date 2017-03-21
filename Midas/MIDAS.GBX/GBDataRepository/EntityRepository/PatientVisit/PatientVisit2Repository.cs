@@ -585,12 +585,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                             .FirstOrDefault<PatientVisit2>();
             BO.PatientVisit2 acc_ = Convert<BO.PatientVisit2, PatientVisit2>(acc);
 
+            Dictionary<string, object> Document = new Dictionary<string, object>();
+            if (acc_ != null)
+            {               
+                Document.Add("id", acc_.ID);
+                Document.Add("fileUploadPath", acc_.FileUploadPath);
+            }
+
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            return (object)acc_;
+            return (object)Document;
         }
         #endregion
 
