@@ -126,7 +126,6 @@ export class PatientVisitComponent implements OnInit {
             listWeek: { buttonText: 'list week' }
         };
 
-        // this.loadVisits();
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this._locationsStore.getLocations();
         });
@@ -346,10 +345,12 @@ export class PatientVisitComponent implements OnInit {
 
     closeEventDialog() {
         this.eventDialogVisible = false;
+        this.handleEventDialogHide();
     }
 
     closePatientVisitDialog() {
         this.visitDialogVisible = false;
+        this.handleVisitDialogHide();
     }
 
     handleEventDialogHide() {
@@ -533,6 +534,7 @@ export class PatientVisitComponent implements OnInit {
         let patientScheduleFormValues = this.patientScheduleForm.value;
         let updatedEvent: ScheduledEvent = this._scheduledEventEditorComponent.getEditedEvent();
         console.log(updatedEvent);
+        debugger;
         let updatedVisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             patientId: patientScheduleFormValues.patientId,
             calendarEvent: updatedEvent

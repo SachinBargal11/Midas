@@ -53,6 +53,7 @@
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
+    "@angular/cli": "^1.0.0-rc.4",
     "@angular/compiler-cli": "4.0.0-rc.3",
     "@types/chart.js": "2.4.1",
     "@types/immutable": "^3.8.7",
@@ -60,7 +61,6 @@
     "@types/jquery": "^2.0.41",
     "@types/node": "^7.0.8",
     "@types/underscore": "^1.8.0",
-    "angular-cli": "1.0.0-beta.28.3",
     "codelyzer": "~3.0.0-beta.3",
     "jasmine-core": "2.5.2",
     "jasmine-spec-reporter": "3.2.0",
