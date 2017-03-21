@@ -51,22 +51,25 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (doctor.UpdateByUserID.HasValue)
                 doctorBO.UpdateByUserID = doctor.UpdateByUserID.Value;
 
-            BO.User boUser = new BO.User();
-            using (UserRepository sr = new UserRepository(_context))
+            if (doctor.User != null)
             {
-                boUser = sr.Convert<BO.User, User>(doctor.User);
-                doctorBO.user = boUser;
-            }
-
-            List<BO.DoctorSpeciality> lstDoctorSpecility = new List<BO.DoctorSpeciality>();
-            foreach (var item in doctor.User.DoctorSpecialities)
-            {
-                using (DoctorSpecialityRepository sr = new DoctorSpecialityRepository(_context))
+                BO.User boUser = new BO.User();
+                using (UserRepository sr = new UserRepository(_context))
                 {
-                    lstDoctorSpecility.Add(sr.ObjectConvert<BO.DoctorSpeciality, DoctorSpeciality>(item));
+                    boUser = sr.Convert<BO.User, User>(doctor.User);
+                    doctorBO.user = boUser;
                 }
+
+                List<BO.DoctorSpeciality> lstDoctorSpecility = new List<BO.DoctorSpeciality>();
+                foreach (var item in doctor.User.DoctorSpecialities)
+                {
+                    using (DoctorSpecialityRepository sr = new DoctorSpecialityRepository(_context))
+                    {
+                        lstDoctorSpecility.Add(sr.ObjectConvert<BO.DoctorSpeciality, DoctorSpeciality>(item));
+                    }
+                }
+                doctorBO.user.DoctorSpecialities = lstDoctorSpecility;
             }
-           doctorBO.user.DoctorSpecialities = lstDoctorSpecility;
 
             return (T)(object)doctorBO;
         }

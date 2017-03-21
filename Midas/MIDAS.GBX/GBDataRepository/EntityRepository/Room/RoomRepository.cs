@@ -45,15 +45,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (room.UpdateByUserID.HasValue)
                 roomBO.UpdateByUserID = room.UpdateByUserID.Value;
 
-            BO.RoomTest roomtestBO = new BO.RoomTest();
-            roomtestBO.name = room.RoomTest.Name;
-            roomtestBO.ID = room.RoomTest.id;
+            if (room.RoomTest != null)
+            {
+                BO.RoomTest roomtestBO = new BO.RoomTest();
+                roomtestBO.name = room.RoomTest.Name;
+                roomtestBO.ID = room.RoomTest.id;
 
-            if (room.RoomTest.IsDeleted.HasValue)
-                roomtestBO.IsDeleted = room.RoomTest.IsDeleted.Value;
-            if (room.RoomTest.UpdateByUserID.HasValue)
-                roomtestBO.UpdateByUserID = room.RoomTest.UpdateByUserID.Value;
-            roomBO.roomTest = roomtestBO;
+                if (room.RoomTest.IsDeleted.HasValue)
+                    roomtestBO.IsDeleted = room.RoomTest.IsDeleted.Value;
+                if (room.RoomTest.UpdateByUserID.HasValue)
+                    roomtestBO.UpdateByUserID = room.RoomTest.UpdateByUserID.Value;
+                roomBO.roomTest = roomtestBO;
+            }
 
             BO.Location boLocation = new BO.Location();
             using (LocationRepository sr = new LocationRepository(_context))
