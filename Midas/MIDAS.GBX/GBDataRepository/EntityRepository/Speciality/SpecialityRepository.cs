@@ -178,6 +178,33 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get By LocationId
+        public override object GetByLocationId(int LocationId)
+        {
+            List<int> doctorsInLocation = _context.DoctorLocationSchedules.Where(p => p.LocationID == LocationId
+                                                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                          .Select(p => p.DoctorID)
+                                                                          .Distinct()
+                                                                          .ToList();
+
+            var acc_ = _context.Specialties.Where(p => (p.DoctorSpecialities.Any(p2 => doctorsInLocation.Contains(p2.DoctorID)
+                                                                                   && (p2.IsDeleted == false)) == true)
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                           .Distinct()
+                                           .ToList();
+
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Specialty.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            List<BO.Specialty> SpecialtyBO = new List<BO.Specialty>();
+
+            acc_.ForEach(p => SpecialtyBO.Add(Convert<BO.Specialty, Specialty>(p)));
+
+            return (object)SpecialtyBO;
+        }
+        #endregion
 
         public void Dispose()
         {

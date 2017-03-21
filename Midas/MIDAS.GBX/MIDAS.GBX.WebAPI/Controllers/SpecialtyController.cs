@@ -72,6 +72,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.DeleteGbObject(Request, User);
         }
 
+        [HttpGet]
+        [Route("getByLocationId/{locationId}")]
+        public HttpResponseMessage GetByLocationId(int LocationId)
+        {
+            return requestHandler.GetByLocationId(Request, LocationId);
+        }
+
 
         // Unique Name Validation
         [HttpGet]

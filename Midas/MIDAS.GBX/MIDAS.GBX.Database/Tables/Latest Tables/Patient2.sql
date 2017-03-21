@@ -90,3 +90,34 @@ GO
 Link Patient with user company table
 */
 GO
+
+/*
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [AttorneyName]
+GO
+ALTER TABLE [dbo].[Patient2] DROP CONSTRAINT [FK_Patient2_AddressInfo_AttorneyAddressInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [AttorneyAddressInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP CONSTRAINT [FK_Patient2_AddressInfo_AttorneyContactInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [AttorneyContactInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP CONSTRAINT [FK_Patient2_PatientEmpInfo_PatientEmpInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [PatientEmpInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP CONSTRAINT [FK_Patient2_PatientInsuranceInfo_InsuranceInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [InsuranceInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [AccidentInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [AttorneyInfoId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [ReferingOfficeId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP CONSTRAINT [FK_Patient2_Company_CompanyId]
+GO
+ALTER TABLE [dbo].[Patient2] DROP COLUMN [CompanyId]
+GO
+*/
