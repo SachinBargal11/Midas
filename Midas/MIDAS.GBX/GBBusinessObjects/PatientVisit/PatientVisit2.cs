@@ -53,5 +53,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("isCancelled")]
         public bool? IsCancelled { get; set; }
 
+        [JsonProperty("fileUploadPath")]
+        public string FileUploadPath { get; set; }
+        
+
     }
 }

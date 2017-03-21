@@ -58,7 +58,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientVisit2BO.IsDeleted = patientVisit2.IsDeleted;
                 patientVisit2BO.CreateByUserID = patientVisit2.CreateByUserID;
                 patientVisit2BO.UpdateByUserID = patientVisit2.UpdateByUserID;
-
+                patientVisit2BO.FileUploadPath = patientVisit2.FileUploadPath;
                 if (patientVisit2.CalendarEvent != null)
                 {
                     patientVisit2BO.CalendarEvent = new BO.CalendarEvent();
@@ -547,6 +547,50 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 return lstBOPatientVisit;
             }
+        }
+        #endregion
+
+
+        #region AddUploadedFileData
+        public override object AddUploadedFileData(int id, string FileUploadPath)
+        {
+            
+            PatientVisit2 patientVisitDB = new PatientVisit2();
+
+            patientVisitDB = _context.PatientVisit2.Where(p => p.Id == id
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                   .FirstOrDefault<PatientVisit2>();
+            if (patientVisitDB!=null)
+            {
+                patientVisitDB.FileUploadPath = FileUploadPath;
+            }
+           else
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            _context.Entry(patientVisitDB).State = System.Data.Entity.EntityState.Modified;
+            _context.SaveChanges();
+
+            var res = Convert<BO.PatientVisit2, PatientVisit2>(patientVisitDB);
+            return (object)res;
+        }
+        #endregion
+
+        #region Get By ID
+        public override object GetDocumentList(int id)
+        {
+            var acc = _context.PatientVisit2.Where(p => p.Id == id
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                            .FirstOrDefault<PatientVisit2>();
+            BO.PatientVisit2 acc_ = Convert<BO.PatientVisit2, PatientVisit2>(acc);
+
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            return (object)acc_;
         }
         #endregion
 
