@@ -111,6 +111,12 @@
                             </div>
                     </div>
                 </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Fax No</label>
+                        <p-inputMask mask="9-999-999 9999" [ngModel]="faxNo" formControlName="attorneyFaxNo" formControlName="attorneyFaxNo" placeholder="9-999-999 9999" styleClass="form-control"></p-inputMask>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-lg-4">
@@ -123,12 +129,6 @@
                     <div class="form-group">
                         <label class="form-label"> Work Phone No</label>
                         <input formControlName="attorneyWorkPhone" [ngModel]="attorney.user.contact.workPhone" type="text" class="form-control" placeholder="" />
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        <label class="form-label"> Fax No</label>
-                        <p-inputMask mask="9-999-999 9999" [ngModel]="faxNo" formControlName="attorneyFaxNo" formControlName="attorneyFaxNo" placeholder="9-999-999 9999" styleClass="form-control"></p-inputMask>
                     </div>
                 </div>
             </div>
