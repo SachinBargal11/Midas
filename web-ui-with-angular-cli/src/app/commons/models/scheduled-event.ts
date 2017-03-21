@@ -16,6 +16,7 @@ const ScheduledEventRecord = Record({
     recurrenceRule: null,
     recurrenceException: [],
     isAllDay: false,
+    isCancelled: false,
     isDeleted: false,
     createByUserId: 0,
     updateByUserId: 0,
@@ -35,6 +36,7 @@ export class ScheduledEvent extends ScheduledEventRecord {
     recurrenceRule: RRule.RRule;
     recurrenceException: Array<moment.Moment>;
     isAllDay: boolean;
+    isCancelled:boolean;
     isDeleted: boolean;
     createByUserId: number;
     updateByUserId: number;
@@ -54,7 +56,7 @@ export class ScheduledEvent extends ScheduledEventRecord {
     }
 
     getEventInstances(eventWrapper: IEventWrapper): ScheduledEventInstance[] {
-        let instaces: ScheduledEventInstance[];
+        let instances: ScheduledEventInstance[];
         if (this.recurrenceRule) {
             let occurrences: Date[] = this.recurrenceRule.all((date: Date, index: number) => {
                 if (index > 500) {
@@ -63,7 +65,7 @@ export class ScheduledEvent extends ScheduledEventRecord {
                 return true;
             });
             let duration: number = (this.eventEnd ? this.eventEnd : this.eventStart.clone().endOf('day')).diff(this.eventStart);
-            instaces = _.chain(occurrences).filter((occurrence: Date) => {
+            instances = _.chain(occurrences).filter((occurrence: Date) => {
                 return _.find(this.recurrenceException, (exception: moment.Moment) => {
                     return moment(occurrence).isSame(exception, 'day');
                 }) ? false : true;
@@ -78,7 +80,7 @@ export class ScheduledEvent extends ScheduledEventRecord {
                 });
             }).value();
         } else {
-            instaces = [
+            instances = [
                 new ScheduledEventInstance({
                     title: this.name,
                     allDay: this.isAllDay,
@@ -89,6 +91,6 @@ export class ScheduledEvent extends ScheduledEventRecord {
                 })
             ];
         }
-        return instaces;
+        return instances;
     }
 }

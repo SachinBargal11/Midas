@@ -24,15 +24,26 @@
         <select [(ngModel)]="selectedRoomId" class="select2-arrow form-control" (change)="selectRoom()">
             <option value="0"> -- Select Room -- </option>
             <option *ngFor="let room of _roomsStore.rooms | async" [value]="room.id">{{room.name}}</option>                                       
-        </select> 
+        </select>
         <!--<span *ngIf="roomSchedule">{{roomSchedule.name}}</span>-->
     </div>
 </div>
 <p-schedule *ngIf="events" [events]="events" [header]="header" [eventLimit]="4" [editable]="true" (onDayClick)="handleDayClick($event)"
     (onEventClick)="handleEventClick($event)" [eventRender]="eventRenderer" [dayRender]="dayRenderer" [businessHours]="businessHours">
 </p-schedule>
-<p-confirmDialog acceptIcon="" rejectIcon="" acceptLabel="Edit Current Occurrence" rejectLabel="Edit The Series" header="Edit Recurring Item"
-    icon="fa fa-question-circle" width="600">
+<p-confirmDialog header="Edit/Cancel Recurring Item" icon="fa fa-question-circle" width="800" #cd>
+    <p-footer>
+        <button [disabled]="isSaveProgress" type="button" class="btn btn-primary" (click)="cancelSeries()">
+            Cancel Series
+            <loader [visible]="isSaveProgress"></loader>
+        </button>
+        <button type="button" pButton icon="" label="Edit The Series" (click)="cd.reject()"></button>
+        <button [disabled]="isSaveProgress" type="button" class="btn btn-primary" (click)="cancelCurrentOccurrence()">
+            Cancel Current Occurrence
+            <loader [visible]="isSaveProgress"></loader>
+        </button>
+        <button type="button" pButton icon="" label="Edit Current Occurrence" (click)="cd.accept()"></button>
+    </p-footer>
 </p-confirmDialog>
 <p-dialog [minWidth]="300" [width]="900" (onAfterHide)="handleEventDialogHide()" header="Visit" [(visible)]="eventDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'visible'}"
@@ -59,11 +70,11 @@
         </div>
         <p-footer>
             <div class="row">
-
                 <div class="col-md-4">
-                    <button [disabled]="!isFormValid() || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
-                <loader [visible]="isSaveProgress"></loader>
-            </button>
+                    <button [disabled]="!isFormValid() || isSaveProgress" type="submit" class="btn btn-success sign-up">
+                        Save
+                        <loader [visible]="isSaveProgress"></loader>
+                    </button>
                     <button type="button" class="btn btn-secondary" (click)="closeEventDialog()">Cancel</button>
                 </div>
             </div>
