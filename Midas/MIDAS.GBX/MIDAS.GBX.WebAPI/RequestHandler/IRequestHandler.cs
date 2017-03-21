@@ -19,6 +19,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage SignUp(HttpRequestMessage request, T gbObject);
         HttpResponseMessage Login(HttpRequestMessage request, T gbObject);
 
+        HttpResponseMessage AddUploadedFileData(HttpRequestMessage request, int id, string FileUploadPath);
         HttpResponseMessage GenerateToken(HttpRequestMessage request,int userId);
         HttpResponseMessage ValidateToken(HttpRequestMessage request,string tokenId);
         HttpResponseMessage Kill(HttpRequestMessage requeststring,int tokenId);
@@ -26,6 +27,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage ValidateOTP(HttpRequestMessage request, T gbObject);
         HttpResponseMessage RegenerateOTP(HttpRequestMessage request, T gbObject);
         HttpResponseMessage Delete(HttpRequestMessage request, int id);
+        HttpResponseMessage GetDocumentList(HttpRequestMessage request, int id);
         HttpResponseMessage GeneratePasswordLink(HttpRequestMessage request, T gbObject);
         HttpResponseMessage ValidatePassword(HttpRequestMessage request, T gbObject);
 

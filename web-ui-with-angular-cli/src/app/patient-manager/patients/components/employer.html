@@ -90,6 +90,12 @@
                                 </div>
                         </div>
                     </div>
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="form-label"> Fax No</label>
+                            <p-inputMask mask="9-999-999 9999" formControlName="faxNo" [ngModel]="faxNo" placeholder="9-999-999 9999" styleClass="form-control"></p-inputMask>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-4">
@@ -102,12 +108,6 @@
                         <div class="form-group">
                             <label class="form-label"> Work Phone No</label>
                             <input formControlName="workPhone" [ngModel]="currentEmployer.contact.workPhone" type="text" class="form-control" placeholder="" />
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label class="form-label"> Fax No</label>
-                            <p-inputMask mask="9-999-999 9999" formControlName="faxNo" [ngModel]="faxNo" placeholder="9-999-999 9999" styleClass="form-control"></p-inputMask>
                         </div>
                     </div>
                 </div>

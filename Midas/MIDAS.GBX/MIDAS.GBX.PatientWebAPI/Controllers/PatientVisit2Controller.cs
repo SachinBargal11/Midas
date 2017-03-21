@@ -75,6 +75,29 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             return requestHandler.GetByCaseId(Request, CaseId);
         }
 
+        [HttpGet]
+        [Route("addUploadedFileData/{id}/{FileUploadPath}")]
+        [AllowAnonymous]
+        public HttpResponseMessage AddUploadedFileData(int id, string FileUploadPath)
+        {
+            return requestHandler.AddUploadedFileData(Request, id, FileUploadPath);
+        }
+
+        [HttpGet]
+        [Route("getDocumentList/{id}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetDocumentList(int id)
+        {
+            return requestHandler.GetDocumentList(Request, id);
+        }
+
+        [HttpGet]
+        [Route("get/{id}")]
+        [AllowAnonymous]
+        public HttpResponseMessage Get(int id)
+        {
+            return requestHandler.GetObject(Request, id);
+        }
 
         protected override void Dispose(bool disposing)
         {

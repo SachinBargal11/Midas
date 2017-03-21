@@ -471,5 +471,36 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             }
         }
 
+        public HttpResponseMessage AddUploadedFileData(HttpRequestMessage request, int id, string FileUploadPath)
+        {
+            var objResult = dataAccessManager.AddUploadedFileData(id, FileUploadPath);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetDocumentList(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.GetDocumentList(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
     }
 }

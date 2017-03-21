@@ -26,8 +26,15 @@ import { EmployerStore } from '../account/stores/employer-store';
 import { FamilyMemberStore } from '../account/stores/family-member-store';
 import { PatientsStore } from '../account/stores/patients-store';
 import { InsuranceStore } from '../account/stores/insurance-store';
+import { LocationsService } from './services/locations-service';
+import { ScheduleService } from './services/schedule-service';
+import { LocationsStore } from './stores/locations-store';
+import { ScheduleStore } from './stores/schedule-store';
+import { UsersService } from './services/users-service';
+import { UsersStore } from './stores/users-store';
 
 import {
+  AccordionModule,
   InputTextModule,
   ChartModule,
   DataTableModule,
@@ -36,7 +43,11 @@ import {
   CalendarModule,
   InputMaskModule,
   RadioButtonModule,
-  MultiSelectModule
+  MultiSelectModule,
+  ScheduleModule,
+  CheckboxModule,
+  SharedModule,
+  ConfirmDialogModule
 } from 'primeng/primeng';
 import { DropdownModule } from 'ng2-bootstrap';
 
@@ -55,6 +66,11 @@ import { DropdownModule } from 'ng2-bootstrap';
     CalendarModule,
     InputMaskModule,
     RadioButtonModule,
+    MultiSelectModule,
+    ScheduleModule,
+    CheckboxModule,
+    SharedModule,
+    ConfirmDialogModule,
     MultiSelectModule,
     DropdownModule.forRoot()
   ],
@@ -85,7 +101,13 @@ import { DropdownModule } from 'ng2-bootstrap';
     EmployerStore,
     FamilyMemberStore,
     PatientsStore,
-    InsuranceStore
+    InsuranceStore,
+    LocationsService,
+    ScheduleService,
+    LocationsStore,
+    ScheduleStore,
+    UsersService,
+    UsersStore
   ],
   exports: [
     CommonModule,
@@ -113,6 +135,11 @@ import { DropdownModule } from 'ng2-bootstrap';
     CalendarModule,
     InputMaskModule,
     RadioButtonModule,
+    MultiSelectModule,
+    ScheduleModule,
+    CheckboxModule,
+    SharedModule,
+    ConfirmDialogModule,
     MultiSelectModule,
     DropdownModule,
     ShellComponent

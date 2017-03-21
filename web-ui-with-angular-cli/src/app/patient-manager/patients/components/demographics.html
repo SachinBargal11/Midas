@@ -70,28 +70,28 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4">
+                <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="form-label"> Fax No</label>
+                            <!--<input type="text" formControlName="faxNo" [ngModel]="faxNo" class="form-control" />-->
+                            <p-inputMask [(ngModel)]="faxNo" mask="9-999-999 9999" formControlName="faxNo" placeholder="9-999-999 9999"
+                                styleClass="form-control"></p-inputMask>
+                        </div>
+                    </div>
+                <div class="col-lg-4">
                         <div class="form-group">
                             <label class="form-label"> Home Phone No</label>
                             <input [ngModel]="patientInfo.user.contact.homePhone" formControlName="homePhone" type="text" class="form-control" placeholder=""
                             />
                         </div>
                     </div>
+                </div>
+                <div class="row">  
                     <div class="col-lg-4">
                         <div class="form-group">
                             <label class="form-label"> Work Phone No</label>
                             <input [ngModel]="patientInfo.user.contact.workPhone" formControlName="workPhone" type="text" class="form-control" placeholder=""
                             />
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label class="form-label"> Fax No</label>
-                            <!--<input type="text" formControlName="faxNo" [ngModel]="faxNo" class="form-control" />-->
-                            <p-inputMask [(ngModel)]="faxNo" mask="9-999-999 9999" formControlName="faxNo" placeholder="9-999-999 9999"
-                                styleClass="form-control"></p-inputMask>
                         </div>
                     </div>
                 </div>

@@ -58,6 +58,35 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientVisit2BO.IsDeleted = patientVisit2.IsDeleted;
                 patientVisit2BO.CreateByUserID = patientVisit2.CreateByUserID;
                 patientVisit2BO.UpdateByUserID = patientVisit2.UpdateByUserID;
+                patientVisit2BO.FileUploadPath = patientVisit2.FileUploadPath;
+
+                if (patientVisit2.Doctor != null)
+                {
+                    BO.Doctor boDoctor = new BO.Doctor();
+                    using (DoctorRepository cmp = new DoctorRepository(_context))
+                    {
+                        boDoctor = cmp.Convert<BO.Doctor, Doctor>(patientVisit2.Doctor);
+                        patientVisit2BO.Doctor = boDoctor;
+                    }
+                }
+                if (patientVisit2.Room != null)
+                {
+                    BO.Room boRoom = new BO.Room();
+                    using (RoomRepository cmp = new RoomRepository(_context))
+                    {
+                        boRoom = cmp.Convert<BO.Room, Room>(patientVisit2.Room);
+                        patientVisit2BO.Room = boRoom;
+                    }
+                }
+                if (patientVisit2.Specialty != null)
+                {
+                    BO.Specialty boSpecialty = new BO.Specialty();
+                    using (SpecialityRepository cmp = new SpecialityRepository(_context))
+                    {
+                        boSpecialty = cmp.Convert<BO.Specialty, Specialty>(patientVisit2.Specialty);
+                        patientVisit2BO.Specialty = boSpecialty;
+                    }
+                }
 
                 if (patientVisit2.CalendarEvent != null)
                 {
@@ -463,7 +492,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Case Id
         public override object GetByCaseId(int CaseId)
         {
-            var acc = _context.PatientVisit2
+            var acc = _context.PatientVisit2.Include("Doctor").Include("Room").Include("Specialty")
                               .Where(p => p.CaseId == CaseId
                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                               .ToList<PatientVisit2>();
@@ -547,6 +576,77 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 return lstBOPatientVisit;
             }
+        }
+        #endregion
+
+
+        #region AddUploadedFileData
+        public override object AddUploadedFileData(int id, string FileUploadPath)
+        {
+            
+            PatientVisit2 patientVisitDB = new PatientVisit2();
+
+            patientVisitDB = _context.PatientVisit2.Where(p => p.Id == id
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                   .FirstOrDefault<PatientVisit2>();
+            if (patientVisitDB!=null)
+            {
+                patientVisitDB.FileUploadPath = FileUploadPath;
+            }
+           else
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            _context.Entry(patientVisitDB).State = System.Data.Entity.EntityState.Modified;
+            _context.SaveChanges();
+
+            var res = Convert<BO.PatientVisit2, PatientVisit2>(patientVisitDB);
+            return (object)res;
+        }
+        #endregion
+
+        #region Get By GetDocumentList
+        public override object GetDocumentList(int id)
+        {
+            var acc = _context.PatientVisit2.Where(p => p.Id == id
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                            .FirstOrDefault<PatientVisit2>();
+            BO.PatientVisit2 acc_ = Convert<BO.PatientVisit2, PatientVisit2>(acc);
+
+            Dictionary<string, object> Document = new Dictionary<string, object>();
+            if (acc_ != null)
+            {               
+                Document.Add("id", acc_.ID);
+                Document.Add("fileUploadPath", acc_.FileUploadPath);
+            }
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            return (object)Document;
+        }
+        #endregion
+
+        #region Get By ID
+        public override object Get(int id)
+        {
+            var acc = _context.PatientVisit2.Include("Doctor")
+                                    .Include("Room")
+                                    .Include("Specialty")
+                                    .Where(p => p.Id == id
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                    .FirstOrDefault<PatientVisit2>();
+
+            BO.PatientVisit2 acc_ = Convert<BO.PatientVisit2, PatientVisit2>(acc);
+
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            return (object)acc_;
         }
         #endregion
 

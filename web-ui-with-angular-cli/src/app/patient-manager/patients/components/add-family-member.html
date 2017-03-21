@@ -45,22 +45,20 @@
         </div>
     </div>
     <div class="row">
-
         <div class="col-lg-4">
-            <label class="form-label"> Relation to patient
+            <label class="form-label"> Gender
                                 <span class="color-red">*</span>
                             </label>
-            <div class="form-group" [class.error]="familyMemberFormControls.relationId.touched && !familyMemberFormControls.relationId.valid">
-                <select formControlName="relationId" type="text" class="form-control" placeholder="" [class.error]="familyMemberFormControls.relationId.touched && !familyMemberFormControls.relationId.valid">
+            <div class="form-group" [class.error]="familyMemberFormControls.gender.touched && !familyMemberFormControls.gender.valid">
+                <select formControlName="gender" type="text" class="form-control" placeholder="" [class.error]="familyMemberFormControls.gender.touched && !familyMemberFormControls.gender.valid">
                             <option value="">-Select -</option>
-                            <option value="1">Spouse</option>
-                            <option value="2">Child</option>
-                            <!--<option value="3">Sister</option>
-                            <option value="4">Brother</option>-->
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                            <option value="3">Other</option>
                         </select>
-                <div class='error-list' *ngIf="familyMemberFormControls.relationId.touched && !familyMemberFormControls.relationId.valid">
+                <div class='error-list' *ngIf="familyMemberFormControls.gender.touched && !familyMemberFormControls.gender.valid">
                     <ul>
-                        <li *ngIf="familyMemberFormControls.relationId.hasError('required')">Relation to patient is required.</li>
+                        <li *ngIf="familyMemberFormControls.gender.hasError('required')">Gender is required.</li>
                     </ul>
                 </div>
             </div>
@@ -80,10 +78,22 @@
                     </div>
                 </div>-->
         <div class="col-lg-4">
-            <div class="form-group">
-                <label class="form-label"> Primary Contact</label>
-                <p-radioButton formControlName="primaryContact" name="primaryContact" value="1" label="Yes"></p-radioButton>
-                <p-radioButton formControlName="primaryContact" name="primaryContact" value="0" label="No"></p-radioButton>
+            <label class="form-label"> Relation to patient
+                                <span class="color-red">*</span>
+                            </label>
+            <div class="form-group" [class.error]="familyMemberFormControls.relationId.touched && !familyMemberFormControls.relationId.valid">
+                <select formControlName="relationId" type="text" class="form-control" placeholder="" [class.error]="familyMemberFormControls.relationId.touched && !familyMemberFormControls.relationId.valid">
+                            <option value="">-Select -</option>
+                            <option value="1">Spouse</option>
+                            <option value="2">Child</option>
+                            <!--<option value="3">Sister</option>
+                            <option value="4">Brother</option>-->
+                        </select>
+                <div class='error-list' *ngIf="familyMemberFormControls.relationId.touched && !familyMemberFormControls.relationId.valid">
+                    <ul>
+                        <li *ngIf="familyMemberFormControls.relationId.hasError('required')">Relation to patient is required.</li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="col-lg-4">
@@ -101,25 +111,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-4">
-            <label class="form-label"> Gender
-                                <span class="color-red">*</span>
-                            </label>
-            <div class="form-group" [class.error]="familyMemberFormControls.gender.touched && !familyMemberFormControls.gender.valid">
-                <select formControlName="gender" type="text" class="form-control" placeholder="" [class.error]="familyMemberFormControls.gender.touched && !familyMemberFormControls.gender.valid">
-                            <option value="">-Select -</option>
-                            <option value="1">Male</option>
-                            <option value="2">Female</option>
-                            <option value="3">Other</option>
-                        </select>
-                <div class='error-list' *ngIf="familyMemberFormControls.gender.touched && !familyMemberFormControls.gender.valid">
-                    <ul>
-                        <li *ngIf="familyMemberFormControls.gender.hasError('required')">Gender is required.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+     <div class="row">
         <div class="col-lg-4">
             <label class="form-label"> Races
                                 <span class="color-red">*</span>
@@ -161,7 +153,14 @@
                 </div>
             </div>
         </div>
-    </div>
+         <div class="col-lg-4">
+            <div class="form-group">
+                <label class="form-label"> Primary Contact</label>
+                <p-radioButton formControlName="primaryContact" name="primaryContact" value="1" label="Yes"></p-radioButton>
+                <p-radioButton formControlName="primaryContact" name="primaryContact" value="0" label="No"></p-radioButton>
+            </div>
+        </div>
+     </div>
     <div class="row">
         <div class="col-lg-4">
             <label class="form-label"> Cellphone
@@ -191,3 +190,5 @@
     </button>
     <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
 </form>
+
+ 

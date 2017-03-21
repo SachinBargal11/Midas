@@ -94,6 +94,7 @@
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="FileUploadPath" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="CaseInsuranceMapping">
           <Key>
@@ -600,6 +601,7 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="IsCancelled" Type="bit" />
+          <Property Name="FileUploadPath" Type="nvarchar" MaxLength="250" />
         </EntityType>
         <EntityType Name="PatientVisitEvent">
           <Key>
@@ -2591,6 +2593,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="FileUploadPath" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CaseStatu" Relationship="Self.FK_Case_CaseStatus_CaseStatusId" FromRole="Case" ToRole="CaseStatus" />
           <NavigationProperty Name="CaseType" Relationship="Self.FK_Case_CaseType_CaseTypeId" FromRole="Case" ToRole="CaseType" />
           <NavigationProperty Name="Location" Relationship="Self.FK_Case_Location_LocationID" FromRole="Case" ToRole="Location" />
@@ -3216,6 +3219,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="IsCancelled" Type="Boolean" />
+          <Property Name="FileUploadPath" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CalendarEvent" Relationship="Self.FK_PatientVisit2_CalendarEvent_CaseId" FromRole="PatientVisit2" ToRole="CalendarEvent" />
           <NavigationProperty Name="Case" Relationship="Self.FK_PatientVisit2_Case_CaseId" FromRole="PatientVisit2" ToRole="Case" />
           <NavigationProperty Name="Doctor" Relationship="Self.FK_PatientVisit2_Doctor_DoctorId" FromRole="PatientVisit2" ToRole="Doctor" />
@@ -5238,6 +5242,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="FileUploadPath" ColumnName="FileUploadPath" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5775,6 +5780,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="IsCancelled" ColumnName="IsCancelled" />
+                <ScalarProperty Name="FileUploadPath" ColumnName="FileUploadPath" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
