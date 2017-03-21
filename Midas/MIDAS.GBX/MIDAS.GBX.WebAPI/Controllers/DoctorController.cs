@@ -53,6 +53,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetGbObjects(Request, id);
         }
 
+        [HttpGet]
+        [Route("getByLocationAndSpecialty/{locationId}/{SpecialtyId}")]
+        public HttpResponseMessage GetByLocationAndSpecialty(int locationId, int specialtyId)
+        {
+            return requestHandler.GetByLocationAndSpecialty(Request, locationId, specialtyId);
+        }
+
         // POST: api/Organizations
         [HttpPost]
         [Route("Add")]
