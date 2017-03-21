@@ -8,7 +8,7 @@ import { Gender } from './enums/Gender';
 const UserRecord = Record({
     id: 0,
     name: '',
-    userType: UserType.Owner,
+    userType: UserType.PATIENT,
     accountId: 0,
     userName: '',
     firstName: '',
@@ -61,20 +61,10 @@ export class User extends UserRecord {
 
     static getUserTypeLabel(userType: UserType): string {
         switch (userType) {
-            case UserType.Admin:
-                return 'Admin';
-            case UserType.Owner:
-                return 'Owner';
-            case UserType.Doctor:
-                return 'Doctor';
-            case UserType.Patient:
+            case UserType.PATIENT:
                 return 'Patient';
-            case UserType.Attorney:
-                return 'Attorney';
-            case UserType.Adjuster:
-                return 'Adjuster';
-            case UserType.Accounts:
-                return 'Accounts';
+            case UserType.STAFF:
+                return 'Staff';
         }
     }
 

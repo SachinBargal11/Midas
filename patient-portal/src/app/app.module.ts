@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { SimpleNotificationsModule } from 'angular2-notifications';
+import { NotificationsService } from 'angular2-notifications';
 
 import { AppComponent } from './app.component';
 import { NoContentComponent } from './no-content-component';
@@ -18,6 +19,7 @@ import { ValidateActiveSession } from './commons/guards/validate-active-session'
 import { ValidateInActiveSession } from './commons/guards/validate-inactive-session';
 import { StatesStore } from './commons/stores/states-store';
 import { StateService } from './commons/services/state-service';
+// import { PatientManagerModule } from './patient-manager/patient-manager-module';
 
 
 @NgModule({
@@ -31,6 +33,7 @@ import { StateService } from './commons/services/state-service';
     HttpModule,
     ReactiveFormsModule,
     CommonsModule,
+    // PatientManagerModule,
     AppRoutingModule,
     DashboardModule,
     SimpleNotificationsModule
@@ -39,6 +42,7 @@ import { StateService } from './commons/services/state-service';
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     ValidateActiveSession,
     ValidateInActiveSession,
+    NotificationsService,
     FormBuilder,
     SessionStore,
     AuthenticationService,

@@ -16,7 +16,7 @@ const InsuranceRecord = Record({
     wcbNo: '',
     insuranceType: InsuranceType.PRIMARY,
     insuranceCompanyCode: '',
-    isinactive: 0,
+    isinactive: false,
     policyAddress: null,
     policyContact: null,
     insuranceAddress: null,

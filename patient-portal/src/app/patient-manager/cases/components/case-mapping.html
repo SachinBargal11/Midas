@@ -1,0 +1,107 @@
+<form [formGroup]="caseMapForm" (ngSubmit)="save()" *ngIf="insurances">
+    <section class="card">
+        <header class="card-header card-header-lg clearfix">
+            Details
+        </header>
+        <div class="card-block">
+
+            <p-dataTable [value]="insurances" [(selection)]="selectedInsurances" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
+                [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+                <p-column selectionMode="multiple"></p-column>
+                <p-column field="policyHoldersName" header="Policy Holder" [sortable]="true"></p-column>
+                <p-column field="insuranceTypeLabel" header="Insurance Type" [sortable]="true"></p-column>
+                <p-column field="insuranceCompanyCode" header="Insurance Company Code" [sortable]="true"></p-column>
+                <p-column header="Adjuster" [sortable]="true">
+                    <ng-template let-rowdata="rowData" pTemplate="body">
+                        <select class="form-control">
+                                    <option value="">-Select Adjuster-</option>
+                                    <option *ngFor="let adjuster of adjusters" value="{{adjuster.id}}">{{adjuster.firstName}}</option>
+                                </select>
+                    </ng-template>
+                </p-column>
+                </p-dataTable>
+
+
+                <!--<div class="table-responsive" *ngIf="insurances">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Policy Holder</th>
+                            <th>Insurance Type</th>
+                            <th>Insurance Company Code</th>
+                            <th>Select Adjuster</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let currentInsurance of insurances">
+                            <td>
+                                <p-checkbox name="insurance" formControlName="insurance" value="{{currentInsurance.id}}" [(ngModel)]="selectedInsurances"></p-checkbox>
+                            </td>
+                            <td>{{currentInsurance.policyHoldersName}}</td>
+                            <td>{{currentInsurance.insuranceTypeLabel}}</td>
+                            <td>{{currentInsurance.insuranceCompanyCode}}</td>
+                            <td>
+                                <select class="form-control" formControlName="adjuster" >
+                                    <option value="">-Select Adjuster-</option>
+                                    <option *ngFor="let adjuster of adjusters" value="{{adjuster.id}}">{{adjuster.firstName}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>-->
+
+                <!--<div class="m-t-md">
+                <div class="row form-group">
+                    <div>
+                        <div class="col-lg-1"> </div>
+                        <div class="col-lg-2">
+                            <label class="form-label semibold"> Policy Holder</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <label class="form-label semibold">Insurance Type</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <label class="form-label semibold">Insurance Company Code</label>
+                        </div>
+                        <div class="col-lg-3">
+                            <label class="form-label semibold">Adjuster</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div formArrayName="mappingDetails" class="m-t-md">
+                <div class="row form-group" [formGroupName]="i" *ngFor="let currentInsurance of insurances; let i=index">
+                    <div>
+                        <div class="col-lg-1">
+                            <p-checkbox name="insurance" formControlName="insurance" value="{{currentInsurance.id}}" [(ngModel)]="selectedInsurances"></p-checkbox>
+                        </div>
+                        <div class="col-lg-2">
+                            <label class="form-label"> {{currentInsurance.policyHoldersName}} </label>
+                        </div>
+                        <div class="col-lg-3">
+                            <label class="form-label"> {{currentInsurance.insuranceTypeLabel}} </label>
+                        </div>
+                        <div class="col-lg-3">
+                            <label class="form-label"> {{currentInsurance.insuranceCompanyCode}} </label>
+                        </div>
+                        <div class="col-lg-3" *ngIf="adjusters">
+                            <select class="form-control" formControlName="adjuster">
+                                    <option value="0">-Select Adjuster-</option>
+                                    <option *ngFor="let adjuster of adjusters" value="{{adjuster.id}}">{{adjuster.firstName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+        </div>
+
+    </section>
+    <div class="text-center">
+        <button type="submit" class="btn btn-success">Save
+                    <loader [visible]="isSaveProgress"></loader>
+                </button>
+        <button type="button" class="btn btn-secondary">Cancel</button>
+    </div>
+</form>
