@@ -59,6 +59,35 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientVisit2BO.CreateByUserID = patientVisit2.CreateByUserID;
                 patientVisit2BO.UpdateByUserID = patientVisit2.UpdateByUserID;
                 patientVisit2BO.FileUploadPath = patientVisit2.FileUploadPath;
+
+                if (patientVisit2.Doctor != null)
+                {
+                    BO.Doctor boDoctor = new BO.Doctor();
+                    using (DoctorRepository cmp = new DoctorRepository(_context))
+                    {
+                        boDoctor = cmp.Convert<BO.Doctor, Doctor>(patientVisit2.Doctor);
+                        patientVisit2BO.Doctor = boDoctor;
+                    }
+                }
+                if (patientVisit2.Room != null)
+                {
+                    BO.Room boRoom = new BO.Room();
+                    using (RoomRepository cmp = new RoomRepository(_context))
+                    {
+                        boRoom = cmp.Convert<BO.Room, Room>(patientVisit2.Room);
+                        patientVisit2BO.Room = boRoom;
+                    }
+                }
+                if (patientVisit2.Specialty != null)
+                {
+                    BO.Specialty boSpecialty = new BO.Specialty();
+                    using (SpecialityRepository cmp = new SpecialityRepository(_context))
+                    {
+                        boSpecialty = cmp.Convert<BO.Specialty, Specialty>(patientVisit2.Specialty);
+                        patientVisit2BO.Specialty = boSpecialty;
+                    }
+                }
+
                 if (patientVisit2.CalendarEvent != null)
                 {
                     patientVisit2BO.CalendarEvent = new BO.CalendarEvent();
@@ -463,7 +492,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Case Id
         public override object GetByCaseId(int CaseId)
         {
-            var acc = _context.PatientVisit2
+            var acc = _context.PatientVisit2.Include("Doctor").Include("Room").Include("Specialty")
                               .Where(p => p.CaseId == CaseId
                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                               .ToList<PatientVisit2>();
