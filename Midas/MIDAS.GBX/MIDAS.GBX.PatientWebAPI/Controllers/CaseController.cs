@@ -49,6 +49,22 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("addUploadedFileData/{id}/{FileUploadPath}")]
+        [AllowAnonymous]
+        public HttpResponseMessage AddUploadedFileData(int id, string FileUploadPath)
+        {
+            return requestHandler.AddUploadedFileData(Request, id, FileUploadPath);
+        }
+
+        [HttpGet]
+        [Route("getDocumentList/{id}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetDocumentList(int id)
+        {
+            return requestHandler.GetDocumentList(Request, id);
+        }
+
+        [HttpGet]
         //[HttpDelete]
         [Route("Delete/{id}")]
         [AllowAnonymous]
