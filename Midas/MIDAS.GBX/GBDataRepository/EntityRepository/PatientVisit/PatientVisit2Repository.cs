@@ -591,7 +591,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 Document.Add("id", acc_.ID);
                 Document.Add("fileUploadPath", acc_.FileUploadPath);
             }
-
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
