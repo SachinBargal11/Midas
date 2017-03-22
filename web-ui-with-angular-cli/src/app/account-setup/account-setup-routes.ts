@@ -5,6 +5,7 @@ import { AccountSetupShellComponent } from './account-setup-shell';
 import { SpecialityRoutes } from './components/speciality/speciality-routes';
 import { AdjusterRoutes } from './components/AdjusterMaster/adjuster-routes';
 import { AttorneyRoutes } from './components/AttorneyMaster/attorney-routes';
+import { InsuranceMasterRoutes } from './components/insurance-master/insurance-master-routes';
 // import { SpecialityDetailsRoutes } from './components/speciality-details/speciality-details-routes';
 
 
@@ -16,7 +17,8 @@ let AccountSetupRoutes: Routes = [
         children: [
             ...SpecialityRoutes,
             ...AdjusterRoutes,
-            ...AttorneyRoutes
+            ...AttorneyRoutes,
+            ...InsuranceMasterRoutes
 
         ],
         data: {

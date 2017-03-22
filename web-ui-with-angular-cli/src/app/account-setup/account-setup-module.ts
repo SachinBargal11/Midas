@@ -15,9 +15,14 @@ import { SpecialityShellComponent } from './components/speciality/speciality-she
 import { AddSpecialityDetailsComponent } from './components/speciality-details/add-speciality-detail';
 import { EditSpecialityDetailsComponent } from './components/speciality-details/edit-speciality-detail';
 // import { SpecialityDetailComponent } from './components/speciality-details/speciality-details';
+import { AddInsuranceMasterComponent } from './components/insurance-master/add-insurance-master';
+import { EditInsuranceMasterComponent } from './components/insurance-master/edit-insurance-master';
+import { InsuranceMasterListComponent } from './components/insurance-master/insurance-master-list';
+
 import { AccountSetupNavComponent } from './components/navigation/account-setup-nav-bar';
 import { AccountSetupShellComponent } from './account-setup-shell';
 import { AccountSetupRoutingModule } from './account-setup-routes';
+
 import { SpecialityService } from './services/speciality-service';
 import { SpecialityDetailsService } from './services/speciality-details-service';
 import { SpecialityStore } from './stores/speciality-store';
@@ -26,6 +31,9 @@ import { AdjusterMasterStore } from './stores/adjuster-store';
 import { AdjusterMasterService } from './services/adjuster-service';
 import { AttorneyMasterStore } from './stores/attorney-store';
 import { AttorneyMasterService } from './services/attorney-service';
+import { InsuranceMasterService } from './services/insurance-master-service';
+import { InsuranceMasterStore } from './stores/insurance-master-store';
+
 import { InsuranceStore } from '../patient-manager/patients/stores/insurance-store';
 import { InsuranceService } from '../patient-manager/patients/services/insurance-service';
 
@@ -48,7 +56,10 @@ import { InsuranceService } from '../patient-manager/patients/services/insurance
         EditAdjusterComponent,
         AddAttorneyComponent,
         EditAttorneyComponent,
-        AttorneyMasterListComponent
+        AttorneyMasterListComponent,
+        AddInsuranceMasterComponent,
+        EditInsuranceMasterComponent,
+        InsuranceMasterListComponent
 
     ],
     providers: [
@@ -61,11 +72,9 @@ import { InsuranceService } from '../patient-manager/patients/services/insurance
         InsuranceStore,
         InsuranceService,
         AttorneyMasterService,
-        AttorneyMasterStore
-        
-
-
-
+        AttorneyMasterStore,
+        InsuranceMasterService,
+        InsuranceMasterStore
     ]
 })
 export class AccountSetupModule { }
