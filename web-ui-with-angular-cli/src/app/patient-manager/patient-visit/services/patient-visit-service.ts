@@ -250,18 +250,19 @@ export class PatientVisitService {
     }
 
     deletePatientVisit(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
-        let promise = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/PatientVisit/Save', JSON.stringify(patientVisitDetail), {
-                headers: this._headers
-            })
+
+           let promise = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/PatientVisit/DeleteVisit/' + patientVisitDetail.id)
                 .map(res => res.json())
-                .subscribe((data) => {
+                .subscribe((data: any) => {
                     resolve(data);
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<PatientVisit>>Observable.from(promise);
+        return <Observable<PatientVisit>>Observable.fromPromise(promise);
     }
+
+
 }
 
