@@ -434,31 +434,32 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By Company Id
         public override object GetByCompanyId(int CompanyId)
         {
-            var allCase = _context.Cases.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
-                                        .Select(p => p.PatientId)
-                                        .Distinct<int>();
+            //    var allCase = _context.Cases.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+            //                                .Select(p => p.PatientId)
+            //                                .Distinct<int>();
 
-            var acc = _context.Patient2.Include("User")
-                                       .Where(p => p.CompanyId == CompanyId
-                                               && (allCase.Contains(p.Id))
-                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                       .ToList<Patient2>();
+            //    var acc = _context.Patient2.Include("User")
+            //                               .Where(p => p.CompanyId == CompanyId
+            //                                       && (allCase.Contains(p.Id))
+            //                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+            //                               .ToList<Patient2>();
 
 
-            if (acc == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
-            else
-            {
-                List<BO.CaseWithUserAndPatient> lstCaseWithUserAndPatient = new List<BO.CaseWithUserAndPatient>();
-                foreach (Patient2 eachPatient in acc)
-                {
-                    lstCaseWithUserAndPatient.AddRange(ConvertToCaseWithUserAndPatient<List<BO.CaseWithUserAndPatient>, Patient2>(eachPatient));
-                }
+            //    if (acc == null)
+            //    {
+            //        return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            //    }
+            //    else
+            //    {
+            //        List<BO.CaseWithUserAndPatient> lstCaseWithUserAndPatient = new List<BO.CaseWithUserAndPatient>();
+            //        foreach (Patient2 eachPatient in acc)
+            //        {
+            //            lstCaseWithUserAndPatient.AddRange(ConvertToCaseWithUserAndPatient<List<BO.CaseWithUserAndPatient>, Patient2>(eachPatient));
+            //        }
 
-                return lstCaseWithUserAndPatient;
-            }
+            //        return lstCaseWithUserAndPatient;
+            //    }
+            return new object();
         }
         #endregion
 

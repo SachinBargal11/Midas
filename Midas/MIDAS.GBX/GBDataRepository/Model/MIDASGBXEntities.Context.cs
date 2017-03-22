@@ -30,6 +30,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<Attorney> Attorneys { get; set; }
         public virtual DbSet<CalendarEvent> CalendarEvents { get; set; }
         public virtual DbSet<Case> Cases { get; set; }
+        public virtual DbSet<CaseCompanyMapping> CaseCompanyMappings { get; set; }
         public virtual DbSet<CaseInsuranceMapping> CaseInsuranceMappings { get; set; }
         public virtual DbSet<CaseStatu> CaseStatus { get; set; }
         public virtual DbSet<CaseType> CaseTypes { get; set; }
@@ -39,6 +40,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<CompanyType> CompanyTypes { get; set; }
         public virtual DbSet<ContactInfo> ContactInfoes { get; set; }
         public virtual DbSet<Doctor> Doctors { get; set; }
+        public virtual DbSet<DoctorCaseConsentApproval> DoctorCaseConsentApprovals { get; set; }
         public virtual DbSet<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }
         public virtual DbSet<DoctorLocationSpecialty> DoctorLocationSpecialties { get; set; }
         public virtual DbSet<DoctorSpeciality> DoctorSpecialities { get; set; }
