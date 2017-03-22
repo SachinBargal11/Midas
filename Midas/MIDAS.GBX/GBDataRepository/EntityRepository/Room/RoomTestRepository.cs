@@ -159,6 +159,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return lstRoomTest;
         }
         #endregion
+
+        #region Get By RoomId
+        public override object GetByRoomId(int RoomId)
+        {
+            var acc_ = _context.RoomTests.Where(p => p.Rooms.Any(p2 => p2.id == RoomId
+                                                                   && (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))) == true
+                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList();
+
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Specialty.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            List<BO.RoomTest> RoomTestBO = new List<BO.RoomTest>();
+
+            acc_.ForEach(p => RoomTestBO.Add(Convert<BO.RoomTest, RoomTest>(p)));
+
+            return (object)RoomTestBO;
+        }
+        #endregion
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);

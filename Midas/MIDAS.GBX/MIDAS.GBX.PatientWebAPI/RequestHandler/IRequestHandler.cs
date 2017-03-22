@@ -40,6 +40,6 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int param1, int param2);
         HttpResponseMessage AddUploadedFileData(HttpRequestMessage request, int id, string FileUploadPath);
         HttpResponseMessage GetDocumentList(HttpRequestMessage request, int id);
-
+        HttpResponseMessage GetByRoomId(HttpRequestMessage request, int RoomId);
     }
 }
