@@ -30,8 +30,9 @@ export class CaseBasicComponent implements OnInit {
     caseform: FormGroup;
     caseformControls;
     locations: LocationDetails[];
+    locationDetail: LocationDetails;
     employer: Employer;
-    patient:Patient;
+    patient: Patient;
     isSaveProgress = false;
     caseId: number;
     patientId: number;
@@ -52,27 +53,28 @@ export class CaseBasicComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
-        this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId, 10);   
-            this._progressBarService.show();
-            this._patientStore.fetchPatientById(this.patientId)
-                .subscribe(
-                (patient: Patient) => {
-                    this.patient = patient;
-                    this.patientName = patient.user.firstName + ' ' + patient.user.lastName ;
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
-            // if(this.patientId){
-            //  this._employerStore.getCurrentEmployer(this.patientId)
-            // .subscribe(employer => this.employer = employer);
-            // }
-        });
+        // this._route.parent.parent.params.subscribe((routeParams: any) => {
+        //     this.patientId = parseInt(routeParams.patientId, 10);
+        this.patientId = this._sessionStore.session.user.id;
+        this._progressBarService.show();
+        this._patientStore.fetchPatientById(this.patientId)
+            .subscribe(
+            (patient: Patient) => {
+                this.patient = patient;
+                this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
+            },
+            (error) => {
+                this._router.navigate(['../'], { relativeTo: this._route });
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        // if(this.patientId){
+        //  this._employerStore.getCurrentEmployer(this.patientId)
+        // .subscribe(employer => this.employer = employer);
+        // }
+        // });
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
             this._progressBarService.show();
@@ -80,6 +82,11 @@ export class CaseBasicComponent implements OnInit {
             result.subscribe(
                 (caseDetail: Case) => {
                     this.caseDetail = caseDetail;
+                    // this._locationsStore.fetchLocationById(this.caseDetail.locationId)
+                    // .subscribe(
+                    //     (locationDetail: LocationDetails) => {
+                    //         this.locationDetail = locationDetail;
+                    //     });
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -120,7 +127,7 @@ export class CaseBasicComponent implements OnInit {
         let caseDetail: Case = new Case(_.extend(caseDetailJS, {
 
             // caseName: caseFormValues.caseName,
-            id:this.caseId,
+            id: this.caseId,
             patientId: this.patientId,
             caseTypeId: caseFormValues.caseTypeId,
             carrierCaseNo: caseFormValues.carrierCaseNo,

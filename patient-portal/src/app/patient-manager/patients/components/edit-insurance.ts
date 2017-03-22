@@ -65,9 +65,10 @@ export class EditInsuranceComponent implements OnInit {
         private _faxNoFormatPipe: FaxNoFormatPipe,
         private _elRef: ElementRef
     ) {
-        this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId);
-        });
+         this.patientId = this._sessionStore.session.user.id;
+        // this._route.parent.parent.params.subscribe((routeParams: any) => {
+        //     this.patientId = parseInt(routeParams.patientId);
+        // });
         this._route.params.subscribe((routeParams: any) => {
             let insuranceId: number = parseInt(routeParams.id);
             this._progressBarService.show();
@@ -87,7 +88,7 @@ export class EditInsuranceComponent implements OnInit {
                     // this.loadPolicyCities(insurance.policyAddress.state);
                 },
                 (error) => {
-                    this._router.navigate(['../../'], { relativeTo: this._route });
+                    this._router.navigate(['/patient-manager/patient/viewall']);
                     this._progressBarService.hide();
                 },
                 () => {
@@ -291,7 +292,7 @@ export class EditInsuranceComponent implements OnInit {
                 });
                 this._notificationsStore.addNotification(notification);
                 // this._router.navigate(['/patient-manager/patients/' + this.patientId + '/insurances']);
-                this._router.navigate(['../../'], { relativeTo: this._route });
+                this._router.navigate(['/patient-manager/patient/viewall']);
             },
             (error) => {
                 let errString = 'Unable to update Insurance.';

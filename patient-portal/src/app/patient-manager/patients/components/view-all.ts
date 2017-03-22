@@ -74,7 +74,6 @@ export class ViewAllComponent implements OnInit {
                         : null;
                 },
                 (error) => {
-                    this._router.navigate(['/patient-manager/patients']);
                     this._progressBarService.hide();
                 },
                 () => {
@@ -94,7 +93,6 @@ export class ViewAllComponent implements OnInit {
 
                 },
                 (error) => {
-                    this._router.navigate(['/patient-manager/patients']);
                     this._progressBarService.hide();
                 },
                 () => {
@@ -113,7 +111,6 @@ export class ViewAllComponent implements OnInit {
                     }
                 },
                 (error) => {
-                    this._router.navigate(['/patient-manager/patients']);
                     this._progressBarService.hide();
                 },
                 () => {

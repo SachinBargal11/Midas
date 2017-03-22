@@ -24,21 +24,14 @@ export const PatientsShellRoutes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'patients'
+        redirectTo: 'patient'
     },
     {
-        // path: 'patients',
-        // component: ShellComponent,
-        // data: {
-        //     breadcrumb: 'Patients'
-        // },
-        // children: [
-        //     {
-        path: 'patients',
+        path: 'patient',
         component: PatientsShellComponent,
         canActivate: [ValidateActiveSession],
         data: {
-            breadcrumb: 'Patients'
+            breadcrumb: 'Patient'
         },
         children: [
             {
@@ -148,8 +141,6 @@ export const PatientsShellRoutes: Routes = [
             }
         ]
     }
-    //     ]
-    // }
 ];
 
 @NgModule({

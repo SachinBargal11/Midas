@@ -19,7 +19,7 @@ import { ValidateActiveSession } from './commons/guards/validate-active-session'
 import { ValidateInActiveSession } from './commons/guards/validate-inactive-session';
 import { StatesStore } from './commons/stores/states-store';
 import { StateService } from './commons/services/state-service';
-// import { PatientManagerModule } from './patient-manager/patient-manager-module';
+import { PatientManagerModule } from './patient-manager/patient-manager-module';
 
 
 @NgModule({
@@ -33,8 +33,8 @@ import { StateService } from './commons/services/state-service';
     HttpModule,
     ReactiveFormsModule,
     CommonsModule,
-    // PatientManagerModule,
     AppRoutingModule,
+    PatientManagerModule,
     DashboardModule,
     SimpleNotificationsModule
   ],

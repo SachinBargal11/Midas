@@ -57,8 +57,9 @@ export class CaseMappingComponent implements OnInit {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId);
         });
-        this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId);
+        // this._route.parent.parent.params.subscribe((routeParams: any) => {
+        //     this.patientId = parseInt(routeParams.patientId);
+            this.patientId = this._sessionStore.session.user.id;
             this._progressBarService.show();
 
             let fetchInsuranceMappings = this._insuranceMappingStore.getInsuranceMappings(this.caseId);
@@ -99,7 +100,7 @@ export class CaseMappingComponent implements OnInit {
                 () => {
                     this._progressBarService.hide();
                 });
-        });
+        // });
 
         this.caseMapForm = this.fb.group({
             mappingDetails: this.fb.array([

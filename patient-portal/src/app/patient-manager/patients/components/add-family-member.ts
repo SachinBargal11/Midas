@@ -38,9 +38,10 @@ export class AddFamilyMemberComponent implements OnInit {
         private _familyMemberStore: FamilyMemberStore,
         private _elRef: ElementRef
     ) {
-        this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId);
-        });
+         this.patientId = this._sessionStore.session.user.id;
+        // this._route.parent.parent.params.subscribe((routeParams: any) => {
+        //     this.patientId = parseInt(routeParams.patientId);
+        // });
         this.familyMemberForm = this.fb.group({
                 relationId: ['', Validators.required],
                 firstName: ['', Validators.required],
@@ -95,7 +96,7 @@ export class AddFamilyMemberComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../'], { relativeTo: this._route });
+                this._router.navigate(['/patient-manager/patient/viewall']);
             },
             (error) => {
                 let errString = 'Unable to add Family Member.';

@@ -56,7 +56,7 @@ export class PatientBasicComponent implements OnInit {
                         : null;
                 },
                 (error) => {
-                    this._router.navigate(['/patient-manager/patients']);
+                    this._router.navigate(['/patient-manager/patient/viewall']);
                     this._progressBarService.hide();
                 },
                 () => {
@@ -108,7 +108,7 @@ export class PatientBasicComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/patient-manager/patients']);
+                this._router.navigate(['/patient-manager/patient/viewall']);
             },
             (error) => {
                 let errString = 'Unable to update patient.';

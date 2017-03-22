@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ValidateActiveSession } from '../../commons/guards/validate-active-session';
-import { AddCaseComponent } from './components/add-case';
 import { CasesListComponent } from './components/cases-list';
 import { ShellComponent } from '../../commons/shell-component';
 import { CaseShellComponent } from './components/cases-shell';
@@ -12,7 +11,6 @@ import { EditReferringOfficeComponent } from './components/edit-referring-office
 import { AccidentInfoComponent } from './components/accident';
 import { InsuranceMapComponent } from './components/insurance-mapping';
 import { CaseMappingComponent } from './components/case-mapping';
-import { CompanyCasesComponent } from './components/company-cases-list';
 
 export const CasesShellRoutes: Routes = [
     {
@@ -33,14 +31,6 @@ export const CasesShellRoutes: Routes = [
                 component: CasesListComponent,
                 data: {
                     breadcrumb: 'root'
-                }
-            },
-            {
-                path: 'add',
-                component: AddCaseComponent,
-                canActivate: [ValidateActiveSession],
-                data: {
-                    breadcrumb: 'Add Case'
                 }
             },
             {

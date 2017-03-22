@@ -9,12 +9,10 @@ import { AddPatientComponent } from './patients/components/add-patient';
 import { DemographicsComponent } from './patients/components/demographics';
 // import { DocumentsComponent } from './patients/components/documents';
 import { PatientBasicComponent } from './patients/components/patient-basic';
-import { PatientDetailsComponent } from './patients/components/patient-details';
 import { PatientNavComponent } from './patients/components/patient-nav-bar';
 import { PatientsListComponent } from './patients/components/patients-list';
 import { PatientsManagerShellComponent } from './patients-manager-shell';
 import { PatientsShellComponent } from './patients/components/patients-shell';
-import { PatientProfileComponent } from './patients/components/profile-patient';
 import { AddFamilyMemberComponent } from './patients/components/add-family-member';
 import { FamilyMemberListComponent } from './patients/components/family-member-list';
 import { EditFamilyMemberComponent } from './patients/components/edit-family-member';
@@ -43,7 +41,6 @@ import { AttorneyStore } from './patients/stores/attorney-store';
 import { InsuranceStore } from './patients/stores/insurance-store';
 import { ReferringOfficeStore } from './cases/stores/referring-office-store';
 import { PatientRoutingModule } from './patient-manager-routes';
-import { AddCaseComponent } from './cases/components/add-case';
 import { CaseBasicComponent } from './cases/components/case-basic';
 import { CasesListComponent } from './cases/components/cases-list';
 import { InsuranceMapComponent } from './cases/components/insurance-mapping';
@@ -52,8 +49,6 @@ import { CasesStore } from './cases/stores/case-store';
 import { InsuranceMappingStore } from './cases/stores/insurance-mapping-store';
 import { InsuranceMappingService } from './cases/services/insurance-mapping-service';
 import { ViewAllComponent } from './patients/components/view-all';
-
-import { CompanyCasesComponent } from './cases/components/company-cases-list';
 
 
 import { CaseService } from './cases/services/cases-services';
@@ -86,12 +81,10 @@ import { AdjusterMasterService } from './patients/services/adjuster-service';
         DemographicsComponent,
         // DocumentsComponent,
         PatientBasicComponent,
-        PatientDetailsComponent,
         PatientNavComponent,
         PatientsListComponent,
         PatientsManagerShellComponent,
         PatientsShellComponent,
-        PatientProfileComponent,
         AddFamilyMemberComponent,
         FamilyMemberListComponent,
         EditFamilyMemberComponent,
@@ -107,14 +100,12 @@ import { AdjusterMasterService } from './patients/services/adjuster-service';
         EditInsuranceComponent,
         // ConsentFormsComponent,
         // ReferalsComponent,
-        AddCaseComponent,
         CasesListComponent,
         // PatientVisitComponent,
         CaseBasicComponent,
         InsuranceMapComponent,
         CaseMappingComponent,
-        ViewAllComponent,
-        CompanyCasesComponent
+        ViewAllComponent
     ],
     providers: [
         PatientsService,
