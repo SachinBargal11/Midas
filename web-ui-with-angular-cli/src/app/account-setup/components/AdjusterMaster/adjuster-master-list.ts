@@ -73,8 +73,53 @@ export class AdjusterMasterListComponent implements OnInit {
         }, 250);
     }
 
-    deleteAdjusters() {
-        
+  deleteAdjusterMaster() {
+
+        if (this.selectedAdjusters.length > 0) {
+            this.selectedAdjusters.forEach(CurrentAdjuster => {
+                this._progressBarService.show();
+                let result;
+                result = this._adjusterMasterStore.deleteAdjuster(CurrentAdjuster);
+                result.subscribe(
+                    (response) => {
+
+                        let notification = new Notification(
+                            {
+                                'title': 'Adjuster deleted successfully!',
+                                'type': 'SUCCESS',
+                                'createdAt': moment()
+                            });
+                        this.loadAdjuster();
+                        this._notificationsStore.addNotification(notification);
+                        this.selectedAdjusters = [];
+                        // this._notificationsService.error('','Adjuster deleted successfully!');
+
+                    },
+                    (error) => {
+                        let errString = 'Unable to delete Adjuster';
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this.selectedAdjusters = [];
+                        this._progressBarService.hide();
+                        this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                    },
+                    () => {
+                        this._progressBarService.hide();
+                    });
+            });
+        } else {
+            let notification = new Notification({
+                'title': 'select Adjuster to delete',
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'select adjuster to delete');
+        }
     }
 
 }

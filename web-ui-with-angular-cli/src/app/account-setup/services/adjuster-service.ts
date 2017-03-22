@@ -140,7 +140,7 @@ export class AdjusterMasterService {
     }
     deleteAdjuster(adjuster: Adjuster): Observable<Adjuster> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/delete/' + adjuster.id, {
+            return this._http.get(this._url + '/AdjusterMaster/delete/' + adjuster.id, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data) => {
