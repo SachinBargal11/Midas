@@ -1,0 +1,200 @@
+<div class="container-fluid" *ngIf="insuranceMaster">
+<h3 class="with-border">Edit Insurance master</h3>
+<form [formGroup]="editInsuranceMasterForm" (ngSubmit)="save()">
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Insurance master Information
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Company Code
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="editInsuranceMasterForm.controls.companyCode.touched && !editInsuranceMasterForm.controls.companyCode.valid">
+                        <input formControlName="companyCode" [ngModel]="insuranceMaster.companyCode" type="text" class="form-control" placeholder="" [class.error]="!editInsuranceMasterForm.controls.companyCode.valid">
+                        <div class='error-list' *ngIf="editInsuranceMasterForm.controls.companyCode.touched && !editInsuranceMasterForm.controls.companyCode.valid">
+                            <ul>
+                                <li *ngIf="editInsuranceMasterForm.controls.companyCode.hasError('required')">Company Code is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Company Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                    <div class="form-group" [class.error]="editInsuranceMasterForm.controls.companyName.touched && !editInsuranceMasterForm.controls.companyName.valid">
+                        <input formControlName="companyName" [ngModel]="insuranceMaster.companyName" type="text" class="form-control" placeholder="" [class.error]="!editInsuranceMasterForm.controls.companyName.valid">
+                        <div class='error-list' *ngIf="editInsuranceMasterForm.controls.companyName.touched && !editInsuranceMasterForm.controls.companyName.valid">
+                            <ul>
+                                <li *ngIf="editInsuranceMasterForm.controls.companyName.hasError('required')">Company Name is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Contact Info
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> E-Mail
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="editInsuranceMasterFormControls.email.touched && !editInsuranceMasterFormControls.email.valid">
+                        <input type="email" formControlName="email" [ngModel]="insuranceMaster.Contact.emailAddress" [class.error]="!editInsuranceMasterFormControls.email.valid" class="form-control"
+                            type="text" placeholder="" />
+                        <div class='error-list' *ngIf="editInsuranceMasterFormControls.email.touched && !editInsuranceMasterFormControls.email.valid">
+                            <ul>
+                                <li *ngIf="editInsuranceMasterFormControls.email.hasError('required')">Email is required.</li>
+                                <li *ngIf="editInsuranceMasterFormControls.email.hasError('emailValidator')">Email is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Cellphone
+                                <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="editInsuranceMasterFormControls.cellPhone.touched && !editInsuranceMasterFormControls.cellPhone.valid">
+                        <p-inputMask mask="999-999-9999" formControlName="cellPhone" [ngModel]="insuranceMaster.Contact.cellPhone" [class.error]="editInsuranceMasterFormControls.cellPhone.touched && !editInsuranceMasterFormControls.cellPhone.valid"
+                            placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
+                        <div class='error-list' *ngIf="editInsuranceMasterFormControls.cellPhone.touched && !editInsuranceMasterFormControls.cellPhone.valid">
+                            <ul>
+                                <li *ngIf="editInsuranceMasterFormControls.cellPhone.hasError('required')">Cellphone number is required.</li>
+                                <li *ngIf="editInsuranceMasterFormControls.cellPhone.hasError('mobileNoValidator')">Cellphone number is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Fax No</label>
+                        <p-inputMask mask="9-999-999 9999" formControlName="faxNo" [ngModel]="insuranceMaster.Contact.faxNo" placeholder="9-999-999 9999" styleClass="form-control"></p-inputMask>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Home Phone No</label>
+                        <input formControlName="homePhone" [ngModel]="insuranceMaster.Contact.homePhone" type="text" class="form-control" placeholder="" />
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Work Phone No</label>
+                        <input formControlName="workPhone" [ngModel]="insuranceMaster.Contact.workPhone" type="text" class="form-control" placeholder="" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="card">
+        <header class="card-header card-header-lg">
+            Attorney Address
+        </header>
+        <div class="card-block">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> Address1
+                         <span class="color-red">*</span>
+                            </label>
+                    <div class="form-group" [class.error]="editInsuranceMasterFormControls.address1.touched && !editInsuranceMasterFormControls.address1.valid">
+                        <input formControlName="address1" [ngModel]="insuranceMaster.Address.address1" type="text" class="form-control" placeholder="" [class.error]="!editInsuranceMasterFormControls.address1.valid">
+                        <div class='error-list' *ngIf="editInsuranceMasterFormControls.address1.touched && !editInsuranceMasterFormControls.address1.valid">
+                            <ul>
+                                <li *ngIf="editInsuranceMasterFormControls.address1.hasError('required')">Address1 is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Address2
+                            </label>
+                    <div class="form-group" [class.error]="editInsuranceMasterFormControls.address2.touched && !editInsuranceMasterFormControls.address2.valid">
+                        <input formControlName="address2" [ngModel]="insuranceMaster.Address.address2" type="text" class="form-control" placeholder="" [class.error]="!editInsuranceMasterFormControls.address2.valid">
+                        <div class='error-list' *ngIf="editInsuranceMasterFormControls.address2.touched && !editInsuranceMasterFormControls.address2.valid">
+                            <ul>
+                                <li *ngIf="editInsuranceMasterFormControls.address2.hasError('required')">Address2 is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> State
+                                <!--<span class="color-red">*</span>-->
+                            </label>
+                    <div class="form-group" [class.error]="editInsuranceMasterFormControls.state.touched && !editInsuranceMasterFormControls.state.valid">
+                        <select formControlName="state" [ngModel]="insuranceMaster.Address.state" type="text" class="form-control" placeholder="" [class.error]="editInsuranceMasterFormControls.state.touched && !editInsuranceMasterFormControls.state.valid">
+                            <option value="0">-Select State-</option>
+                            <option *ngFor="let state of states" value="{{state.statetext}}">{{state.statetext}}</option>
+                            </select>
+                        <div class='error-list' *ngIf="editInsuranceMasterFormControls.state.touched && !editInsuranceMasterFormControls.state.valid">
+                            <ul>
+                                <li *ngIf="editInsuranceMasterFormControls.state.hasError('required')">State is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label class="form-label"> City
+                                <!--<span class="color-red">*</span>-->
+                            </label>
+                    <div class="form-group" [class.error]="editInsuranceMasterFormControls.city.touched && !editInsuranceMasterFormControls.city.valid">
+                        <input formControlName="city" [ngModel]="insuranceMaster.Address.city" type="text" class="form-control" [class.error]="editInsuranceMasterFormControls.city.touched && !editInsuranceMasterFormControls.city.valid"
+                            placeholder="" />
+                        <div class='error-list' *ngIf="editInsuranceMasterFormControls.city.touched && !editInsuranceMasterFormControls.city.valid">
+                            <ul>
+                                <li *ngIf="editInsuranceMasterFormControls.city.hasError('required')">City is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Zip code
+                                <!--<span class="color-red">*</span>-->
+                            </label>
+                    <div class="form-group" [class.error]="editInsuranceMasterFormControls.zipCode.touched && !editInsuranceMasterFormControls.zipCode.valid">
+                        <input formControlName="zipCode" [ngModel]="insuranceMaster.Address.zipCode" type="text" class="form-control" placeholder="" [class.error]="!editInsuranceMasterFormControls.zipCode.valid">
+                        <div class='error-list' *ngIf="editInsuranceMasterFormControls.zipCode.touched && !editInsuranceMasterFormControls.zipCode.valid">
+                            <ul>
+                                <li *ngIf="editInsuranceMasterFormControls.zipCode.hasError('required')">zipCode is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label"> Country
+                                <!--<span class="color-red">*</span>-->
+                            </label>
+                    <div class="form-group" [class.error]="editInsuranceMasterFormControls.country.touched && !editInsuranceMasterFormControls.country.valid">
+                        <!--<input formControlName="country" type="text" class="form-control" placeholder="" [class.error]="!editInsuranceMasterFormControls.country.valid">-->
+                        <select formControlName="country" [ngModel]="insuranceMaster.Address.country" type="text" class="form-control" placeholder="" [class.error]="editInsuranceMasterFormControls.country.touched && !editInsuranceMasterFormControls.country.valid">
+                                        <option value="0">-Select -</option>
+                                        <option disabled>────────────────────</option>
+                                        <option value="US">United States</option>
+                                    </select>
+                        <div class='error-list' *ngIf="editInsuranceMasterFormControls.country.touched && !editInsuranceMasterFormControls.country.valid">
+                            <ul>
+                                <li *ngIf="editInsuranceMasterFormControls.country.hasError('required')">Country is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <button [disabled]="!editInsuranceMasterForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Update
+        <loader [visible]="isSaveProgress"></loader>
+    </button>
+    <a [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>
+</form>
+</div>

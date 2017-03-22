@@ -72,13 +72,19 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.DeleteGbObject(Request, User);
         }
 
-
         // Unique Name Validation
         [HttpGet]
         [Route("IsUnique")]
         public HttpResponseMessage IsUnique([FromBody]RoomTest User)
         {
             return requestHandler.ValidateUniqueName(Request, User);
+        }
+
+        [HttpGet]
+        [Route("getByRoomId/{RoomId}")]
+        public HttpResponseMessage GetByRoomId(int RoomId)
+        {
+            return requestHandler.GetByRoomId(Request, RoomId);
         }
 
         protected override void Dispose(bool disposing)
