@@ -13,6 +13,7 @@ import { RoomsStore } from '../../../medical-provider/rooms/stores/rooms-store';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
+import * as _ from 'underscore';
 
 @Component({
     selector: 'patient-visit-list',
@@ -53,8 +54,12 @@ export class PatientVisitListComponent implements OnInit {
     loadPatientVisits() {
         this._progressBarService.show();
         this._patientVisitStore.getPatientVisitsByCaseId(this.caseId)
-            .subscribe(visits => {
-                this.visits = visits.reverse();
+            .subscribe((visits: PatientVisit[]) => {
+                let matchingVisits: PatientVisit[] = _.filter(visits, (currentVisit: PatientVisit) => {
+                    return currentVisit.eventStart != null && currentVisit.eventEnd != null;
+                });
+                
+                this.visits = matchingVisits.reverse();
                 // this.visits.forEach(visit => {
                 //     if (visit.doctorId != null) {
                 //     // this.currentDoctorName = this.doctor.user.firstName + '' + this.doctor.user.lastName;
@@ -86,11 +91,11 @@ export class PatientVisitListComponent implements OnInit {
     //         .subscribe(doctor => {
     //             this.doctor = doctor;
     //             this.currentDoctorName = this.doctor.user.firstName + '' + this.doctor.user.lastName;
-                
+
     //         });
-     
+
     // }
-   // return this.currentDoctorName = this.doctor.user.firstName + '' + this.doctor.user.lastName;
+    // return this.currentDoctorName = this.doctor.user.firstName + '' + this.doctor.user.lastName;
 
     // roomName(roomId: number) {
 

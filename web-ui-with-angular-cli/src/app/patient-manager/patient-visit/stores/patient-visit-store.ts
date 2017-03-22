@@ -45,19 +45,17 @@ export class PatientVisitsStore {
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
 
-          //
-    getPatientVisitsByCaseId(caseId: number): Observable<PatientVisit[]> {
-        let promise = new Promise((resolve, reject) => {
-            this._patientVisitsService.getPatientVisitsByCaseId(caseId).subscribe((patientVisits: PatientVisit[]) => {
-                // this._patientVisits.next(List(patientVisits));
-                resolve(patientVisits);
-            }, error => {
-                reject(error);
-            });
-        });
-        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
-    }
-    //
+    getPatientVisitsByCaseId(caseId: number): Observable<PatientVisit[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getPatientVisitsByCaseId(caseId).subscribe((patientVisits: PatientVisit[]) => {
+                // this._patientVisits.next(List(patientVisits));
+                resolve(patientVisits);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
 
     getPatientVisitsByDoctorId(doctorId: number): Observable<PatientVisit[]> {
         let promise = new Promise((resolve, reject) => {
