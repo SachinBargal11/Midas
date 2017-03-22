@@ -7,9 +7,12 @@ import { ShellComponent } from '../../commons/shell-component';
 import { CaseShellComponent } from './components/cases-shell';
 import { CaseBasicComponent } from './components/case-basic';
 import { ReferringOfficeListComponent } from './components/referring-office-list';
+import { PatientVisitListComponent } from './components/patient-visits-list';
+import { PatientVisitNotesComponent } from './components/patient-visit-notes';
 import { AddReferringOfficeComponent } from './components/add-referring-office';
 import { EditReferringOfficeComponent } from './components/edit-referring-office';
 import { AccidentInfoComponent } from './components/accident';
+import { DocumentsUploadComponent } from './components/documents';
 import { InsuranceMapComponent } from './components/insurance-mapping';
 import { CaseMappingComponent } from './components/case-mapping';
 import { CompanyCasesComponent } from './components/company-cases-list';
@@ -119,11 +122,46 @@ export const CasesShellRoutes: Routes = [
                         ]
                     },
                     {
+                        path: 'patient-visit',
+                        component: ShellComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Visits'
+
+                    },
+                    children: [
+                            {
+                                path: '',
+                                component: PatientVisitListComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'root'
+                                }
+                            },
+                            {
+                                path: 'edit/:id',
+                                component: PatientVisitNotesComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'Visit Notes'
+                                }
+                            }
+                    ]
+                    },
+                    {
                         path: 'accident',
                         component: AccidentInfoComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Accident'
+                        }
+                    },
+                       {
+                        path: 'documents',
+                        component: DocumentsUploadComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Documents'
                         }
                     },
                     {

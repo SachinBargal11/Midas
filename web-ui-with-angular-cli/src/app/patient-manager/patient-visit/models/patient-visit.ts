@@ -6,6 +6,8 @@ import * as moment from 'moment';
 import * as _ from 'underscore';
 import * as RRule from 'rrule';
 import { VisitStatus } from './enums/visit-status';
+import { Room } from '../../../medical-provider/rooms/models/room';
+import { Doctor } from '../../../medical-provider/users/models/doctor';
 
 const PatientVisitRecord = Record({
     id: 0,
@@ -14,6 +16,8 @@ const PatientVisitRecord = Record({
     patientId: 0,
     locationId: null,
     roomId: null,
+    room:null,
+    doctor:null,
     doctorId: null,
     specialtyId: null,
     eventStart: null,
@@ -35,6 +39,8 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     id: number;
     calendarEventId: number;
     caseId: number;
+    room:Room;
+    doctor:Doctor;
     patientId: number;
     locationId: number;
     roomId: number;
