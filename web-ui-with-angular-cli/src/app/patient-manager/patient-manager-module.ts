@@ -53,6 +53,10 @@ import { CasesStore } from './cases/stores/case-store';
 import { InsuranceMappingStore } from './cases/stores/insurance-mapping-store';
 import { InsuranceMappingService } from './cases/services/insurance-mapping-service';
 import { ViewAllComponent } from './patients/components/view-all';
+import { PatientVisitListComponent } from './cases/components/patient-visits-list';
+import { PatientVisitNotesComponent } from './cases/components/patient-visit-notes';
+import { DocumentsUploadComponent } from './cases/components/documents';
+
 
 import { CompanyCasesComponent } from './cases/components/company-cases-list';
 
@@ -116,7 +120,9 @@ import { UsersModule } from '../medical-provider/users/users-module';
         CaseMappingComponent,
         ViewAllComponent,
         CompanyCasesComponent,
-       
+        PatientVisitListComponent,
+        PatientVisitNotesComponent,
+        DocumentsUploadComponent
     ],
     providers: [
         PatientsService,

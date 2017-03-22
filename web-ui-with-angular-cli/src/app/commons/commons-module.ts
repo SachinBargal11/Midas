@@ -7,6 +7,7 @@ import { DateFormatPipe } from './pipes/date-format-pipe';
 import { MapToJSPipe } from './pipes/map-to-js';
 import { TimeAgoPipe } from './pipes/time-ago-pipe';
 import { ReversePipe } from './pipes/reverse-array-pipe';
+import { DateTimeFormatPipe } from './pipes/date-time-format-pipe';
 import { PhoneFormatPipe } from './pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from './pipes/faxno-format-pipe';
 
@@ -75,7 +76,8 @@ import { DropdownModule } from 'ng2-bootstrap';
     LoaderComponent,
     NotificationComponent,
     ShellComponent,
-    ScheduledEventEditorComponent
+    ScheduledEventEditorComponent,
+    DateTimeFormatPipe
   ],
   exports: [
     CommonModule,
@@ -87,6 +89,7 @@ import { DropdownModule } from 'ng2-bootstrap';
     TimeAgoPipe,
     ReversePipe,
     PhoneFormatPipe,
+    DateTimeFormatPipe,
     FaxNoFormatPipe,
     AppHeaderComponent,
     BreadcrumbComponent,

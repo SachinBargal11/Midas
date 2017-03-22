@@ -23,7 +23,7 @@ export class CasesListComponent implements OnInit {
     cases: Case[];
     patientId: number;
     patientName: string;
-    patient:Patient;
+    patient: Patient;
     selectedCases: Case[] = [];
     datasource: Case[];
     totalRecords: number;
@@ -38,23 +38,24 @@ export class CasesListComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _notificationsStore: NotificationsStore,
     ) {
-        this._route.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId, 10);
-                  this._progressBarService.show();
-            this._patientStore.fetchPatientById(this.patientId)
-                .subscribe(
-                (patient: Patient) => {
-                    this.patient = patient;
-                    this.patientName = patient.user.firstName + ' ' + patient.user.lastName ;
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
-        });
+        // this._route.parent.params.subscribe((routeParams: any) => {
+        //     this.patientId = parseInt(routeParams.patientId, 10);
+        this.patientId = this._sessionStore.session.user.id;
+        this._progressBarService.show();
+        this._patientStore.fetchPatientById(this.patientId)
+            .subscribe(
+            (patient: Patient) => {
+                this.patient = patient;
+                this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
+            },
+            (error) => {
+                this._router.navigate(['../'], { relativeTo: this._route });
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        // });
     }
     ngOnInit() {
         this.loadCases();
@@ -78,24 +79,23 @@ export class CasesListComponent implements OnInit {
     }
     loadCasesLazy(event: LazyLoadEvent) {
         setTimeout(() => {
-            if(this.datasource) {
+            if (this.datasource) {
                 this.cases = this.datasource.slice(event.first, (event.first + event.rows));
             }
         }, 250);
     }
 
-         deleteCases() {
+    deleteCases() {
         if (this.selectedCases.length > 0) {
             this.selectedCases.forEach(currentCase => {
                 this._progressBarService.show();
-                this. _casesStore.deleteCase(currentCase)
-             .subscribe(
+                this._casesStore.deleteCase(currentCase)
+                    .subscribe(
                     (response) => {
                         let notification = new Notification({
                             'title': 'Case deleted successfully!',
                             'type': 'SUCCESS',
                             'createdAt': moment()
-                       
                         });
                         this.loadCases();
                         this._notificationsStore.addNotification(notification);
@@ -125,6 +125,6 @@ export class CasesListComponent implements OnInit {
             });
             this._notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'select case to delete');
-        }    
+        }
     }
 }

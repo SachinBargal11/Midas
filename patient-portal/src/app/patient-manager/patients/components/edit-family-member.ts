@@ -41,9 +41,10 @@ export class EditFamilyMemberComponent implements OnInit {
         private _phoneFormatPipe: PhoneFormatPipe,
         private _elRef: ElementRef
     ) {
-        this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId);
-        });
+         this.patientId = this._sessionStore.session.user.id;
+        // this._route.parent.parent.params.subscribe((routeParams: any) => {
+        //     this.patientId = parseInt(routeParams.patientId);
+        // });
         this._route.params.subscribe((routeParams: any) => {
             let familyMemberId: number = parseInt(routeParams.id);
             this._progressBarService.show();
@@ -54,7 +55,7 @@ export class EditFamilyMemberComponent implements OnInit {
                     this.cellPhone = this._phoneFormatPipe.transform(this.familyMember.cellPhone);
                 },
                 (error) => {
-                    this._router.navigate(['../../'], { relativeTo: this._route });
+                    this._router.navigate(['/patient-manager/patient/viewall']);
                     this._progressBarService.hide();
                 },
                 () => {
@@ -108,7 +109,7 @@ export class EditFamilyMemberComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../../'], { relativeTo: this._route });
+                this._router.navigate(['/patient-manager/patient/viewall']);
             },
             (error) => {
                 let errString = 'Unable to update Family Member.';

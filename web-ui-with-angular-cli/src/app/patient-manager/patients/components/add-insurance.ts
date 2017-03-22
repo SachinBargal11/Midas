@@ -1,10 +1,10 @@
-import {Component, OnInit, ElementRef} from '@angular/core';
-import {Validators, FormGroup, FormBuilder} from '@angular/forms';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Component, OnInit, ElementRef } from '@angular/core';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-import {SessionStore} from '../../../commons/stores/session-store';
-import {NotificationsStore} from '../../../commons/stores/notifications-store';
+import { SessionStore } from '../../../commons/stores/session-store';
+import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
@@ -65,36 +65,36 @@ export class AddInsuranceComponent implements OnInit {
 
 
         this.insuranceform = this.fb.group({
-                policyNumber: ['', Validators.required],
-                policyOwner: ['', Validators.required],
-                policyHolderName: ['', Validators.required],
-                insuranceCompanyCode: [''],
-                insuranceMasterId: ['', Validators.required],
-                insuranceType: ['', Validators.required],
-                contactPerson: ['', Validators.required],
-                policyAddress: ['', Validators.required],
-                policyAddress2: [''],
-                policyState: [''],
-                policyCity: [''],
-                policyZipcode: [''],
-                policyCountry: [''],
-                policyEmail: ['', [Validators.required, AppValidators.emailValidator]],
-                policyCellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                policyHomePhone: [''],
-                policyWorkPhone: [''],
-                policyFaxNo: [''],
-                address: [''],
-                address2: [''],
-                state: [''],
-                city: [''],
-                zipcode: [''],
-                country: [''],
-                email: ['', [Validators.required, AppValidators.emailValidator]],
-                cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                homePhone: [''],
-                workPhone: [''],
-                faxNo: ['']
-            });
+            policyNumber: ['', Validators.required],
+            policyOwner: ['', Validators.required],
+            policyHolderName: ['', Validators.required],
+            insuranceCompanyCode: [''],
+            insuranceMasterId: ['', Validators.required],
+            insuranceType: ['', Validators.required],
+            contactPerson: ['', Validators.required],
+            policyAddress: ['', Validators.required],
+            policyAddress2: [''],
+            policyState: [''],
+            policyCity: [''],
+            policyZipcode: [''],
+            policyCountry: [''],
+            policyEmail: ['', [Validators.required, AppValidators.emailValidator]],
+            policyCellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            policyHomePhone: [''],
+            policyWorkPhone: [''],
+            policyFaxNo: [''],
+            address: [''],
+            address2: [''],
+            state: [''],
+            city: [''],
+            zipcode: [''],
+            country: [''],
+            email: ['', [Validators.required, AppValidators.emailValidator]],
+            cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            homePhone: [''],
+            workPhone: [''],
+            faxNo: ['']
+        });
 
         this.insuranceformControls = this.insuranceform.controls;
     }
@@ -105,20 +105,24 @@ export class AddInsuranceComponent implements OnInit {
             .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
     }
 
-      selectInsurance(event) {
+    selectInsurance(event) {
         // this.selectedInsurance = 0;
-        let currentInsurance:number = parseInt(event.target.value); 
+        let currentInsurance: number = parseInt(event.target.value);
         this.loadInsuranceMasterAddress(currentInsurance);
-        
     }
 
     loadInsuranceMasterAddress(currentInsurance) {
-         this._insuranceStore.getInsuranceMasterById(currentInsurance)
+        if (currentInsurance) {
+        this._insuranceStore.getInsuranceMasterById(currentInsurance)
             .subscribe(
             (insuranceMaster) => {
                 this.insuranceMaster = insuranceMaster;
-                    this.insuranceMastersAdress = insuranceMaster.Address
+                this.insuranceMastersAdress = insuranceMaster.Address
             });
+        } else {
+            this.insuranceMaster = null;
+            this.insuranceMastersAdress = null;
+        }
     }
 
     // selectPolicyState(event) {
@@ -230,5 +234,5 @@ export class AddInsuranceComponent implements OnInit {
                 this.isSaveProgress = false;
                 this._progressBarService.hide();
             });
-        }
+    }
 }
