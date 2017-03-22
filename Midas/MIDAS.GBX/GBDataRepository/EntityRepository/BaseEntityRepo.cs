@@ -34,6 +34,11 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+        
+        public virtual Object GetByLocationAndSpecialty(int locationId, int specialtyId)
+        {
+            throw new NotImplementedException();
+        }
 
         public virtual Object AssociateLocationToDoctors<T>(T entity)
         {

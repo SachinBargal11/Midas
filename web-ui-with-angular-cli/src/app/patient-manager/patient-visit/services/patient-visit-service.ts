@@ -1,3 +1,4 @@
+import { ScheduledEventAdapter } from '../../../medical-provider/locations/services/adapters/scheduled-event-adapter';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
@@ -146,7 +147,7 @@ export class PatientVisitService {
                         ? scheduledEvent.recurrenceRule.toString()
                         : '',
                     recurrenceException: _.map(scheduledEvent.recurrenceException, (datum: moment.Moment) => {
-                        return datum.format('YYYYMMDDThhmmss') + 'Z';
+                        return `${datum.format('YYYYMMDD')}T${datum.format('hhmmss')}Z`;
                     }).join(',')
                 })
             };
@@ -193,6 +194,24 @@ export class PatientVisitService {
         return <Observable<PatientVisit>>Observable.fromPromise(promise);
 
     }
+
+    cancelPatientVisit(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
+        let promise = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/PatientVisit/CancleCalendarEvent/' + patientVisitDetail.calendarEvent.id)
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedCalendarEvent: ScheduledEvent = null;
+                    parsedCalendarEvent = ScheduledEventAdapter.parseResponse(data);
+                    let updatedPatientVisitDetail: PatientVisit = <PatientVisit>patientVisitDetail.set('calendarEvent', parsedCalendarEvent);
+                    resolve(updatedPatientVisitDetail);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<PatientVisit>>Observable.fromPromise(promise);
+
+    }
+
     updatePatientVisitDetail(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
         let promise = new Promise((resolve, reject) => {
             let requestData = patientVisitDetail.toJS();

@@ -350,6 +350,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region GetByLocationAndSpecialty
+        public override object GetByLocationAndSpecialty(int locationId, int specialtyId)
+        {
+            List<int> doctorInLocation = _context.DoctorLocationSchedules.Where(p => p.LocationID == locationId 
+                                                                          && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                          .Select(p => p.DoctorID)
+                                                                          .Distinct()
+                                                                          .ToList();
+
+            List<int> doctorWithSpecialty = _context.DoctorSpecialities.Where(p => p.SpecialityID == specialtyId
+                                                                               && (p.IsDeleted == false))
+                                                                               .Select(p => p.DoctorID)
+                                                                               .Distinct()
+                                                                               .ToList();
+
+            var acc_ = _context.Doctors.Where(p => doctorInLocation.Contains(p.Id) && doctorWithSpecialty.Contains(p.Id)
+                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                 .ToList();
+
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Specialty.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            List<BO.Doctor> doctorBO = new List<BO.Doctor>();
+
+            foreach (Doctor item in acc_)
+            {
+                doctorBO.Add(Convert<BO.Doctor, Doctor>(item));
+            }
+            return (object)doctorBO;
+        }
+        #endregion
 
         #region GetAll
         public override object Get()

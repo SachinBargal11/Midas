@@ -32,6 +32,7 @@ export class ScheduledEventAdapter {
             recurrenceId: data.recurrenceId,
             recurrenceException: exceptions,
             isAllDay: data.isAllDay ? true : false,
+            isCancelled: data.isCancelled ? true : false,
             isDeleted: data.isDeleted ? true : false,
             createByUserID: data.createbyuserID,
             createDate: data.createDate ? moment.utc(data.createDate) : null,
