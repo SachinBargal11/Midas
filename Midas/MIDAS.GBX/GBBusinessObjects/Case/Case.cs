@@ -40,7 +40,7 @@ namespace MIDAS.GBX.BusinessObjects
         public string FileUploadPath { get; set; }
 
         [JsonProperty("caseCompanyMapping")]
-        public List<CaseCompanyMapping> CaseCompanyMapping { get; set; }
+        public List<CaseCompanyMapping> CaseCompanyMappings { get; set; }
 
         //[JsonProperty("doctorCaseConsentApproval")]
         //public List<DoctorCaseConsentApproval> DoctorCaseConsentApproval { get; set; }

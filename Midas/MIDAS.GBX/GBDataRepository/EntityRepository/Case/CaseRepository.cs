@@ -62,7 +62,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     boCaseCompanyMapping.Add(cmp.Convert<BO.CaseCompanyMapping, CaseCompanyMapping>(casemap));
                 }
             }
-            caseBO.CaseCompanyMapping = boCaseCompanyMapping;
+            caseBO.CaseCompanyMappings = boCaseCompanyMapping;
 
             return (T)(object)caseBO;
         }
@@ -183,6 +183,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             var acc = _context.Cases.Include("PatientEmpInfo")
                                     .Include("PatientEmpInfo.AddressInfo")
                                     .Include("PatientEmpInfo.ContactInfo")
+                                    .Include("CaseCompanyMappings")
                                     .Where(p => p.Id == id 
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .FirstOrDefault<Case>();
@@ -204,6 +205,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             var acc = _context.Cases.Include("PatientEmpInfo")
                                     .Include("PatientEmpInfo.AddressInfo")
                                     .Include("PatientEmpInfo.ContactInfo")
+                                    .Include("CaseCompanyMappings")
                                     .Where(p => p.PatientId == PatientId 
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .ToList<Case>();
@@ -227,9 +229,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object Save<T>(T entity)
         {
             BO.Case caseBO = (BO.Case)(object)entity;
-            //BO.Patient2 patient2BO = new BO.Patient2();
             BO.Location locationBO = new BO.Location();
-            List<BO.CaseCompanyMapping> lstCaseCompanyMapping = caseBO.CaseCompanyMapping;
+            List<BO.CaseCompanyMapping> lstCaseCompanyMapping = caseBO.CaseCompanyMappings;
             BO.CaseCompanyMapping caseCompanyMappingBO = new BO.CaseCompanyMapping();
 
             Case caseDB = new Case();
@@ -348,6 +349,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 caseDB = _context.Cases.Include("PatientEmpInfo")
                                        .Include("PatientEmpInfo.AddressInfo")
                                        .Include("PatientEmpInfo.ContactInfo")
+                                       .Include("CaseCompanyMappings")
                                        .Where(p => p.Id == caseDB.Id).FirstOrDefault<Case>();
             }
 

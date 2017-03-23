@@ -30,9 +30,9 @@ GO
 ALTER TABLE [dbo].[DoctorCaseConsentApproval] CHECK CONSTRAINT [FK_DoctorCaseConsentApproval_Doctor_DoctorId]
 GO
 
-ALTER TABLE [dbo].[CaseDocuments]  WITH CHECK ADD CONSTRAINT [FK_CaseDocuments_MidasDocuments_MidasDocumentId] FOREIGN KEY([MidasDocumentId])
-	REFERENCES [dbo].[MidasDocuments] ([Id])
-GO
+--ALTER TABLE [dbo].[CaseDocuments]  WITH CHECK ADD CONSTRAINT [FK_CaseDocuments_MidasDocuments_MidasDocumentId] FOREIGN KEY([MidasDocumentId])
+--	REFERENCES [dbo].[MidasDocuments] ([Id])
+--GO
 
-ALTER TABLE [dbo].[CaseDocuments] CHECK CONSTRAINT [FK_CaseDocuments_MidasDocuments_MidasDocumentId]
-GO
+--ALTER TABLE [dbo].[CaseDocuments] CHECK CONSTRAINT [FK_CaseDocuments_MidasDocuments_MidasDocumentId]
+--GO
