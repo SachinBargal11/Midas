@@ -223,103 +223,103 @@ export class ScheduledEventEditorComponent implements OnChanges {
         let repeatType = parseInt(scheduledEventEditorFormValues.repeatType, 10);
         switch (this.repeatType) {
             case '3':
-                let dailyRecurrenceCofig: any = {
+                let dailyRecurrenceConfig: any = {
                     freq: RRule.DAILY
                 };
                 if (scheduledEventEditorFormValues.dailyInfo.repeatEvery > 1) {
-                    dailyRecurrenceCofig.interval = scheduledEventEditorFormValues.dailyInfo.repeatEvery;
+                    dailyRecurrenceConfig.interval = scheduledEventEditorFormValues.dailyInfo.repeatEvery;
                 }
                 switch (scheduledEventEditorFormValues.dailyInfo.end) {
                     case '0':
                         break;
                     case '1':
-                        dailyRecurrenceCofig.count = scheduledEventEditorFormValues.dailyInfo.recur_count;
+                        dailyRecurrenceConfig.count = scheduledEventEditorFormValues.dailyInfo.recur_count;
                         break;
                     case '2':
-                        dailyRecurrenceCofig.until = scheduledEventEditorFormValues.dailyInfo.recur_until;
+                        dailyRecurrenceConfig.until = scheduledEventEditorFormValues.dailyInfo.recur_until;
                         break;
                 }
-                recurrenceRule = new RRule(dailyRecurrenceCofig);
+                recurrenceRule = new RRule(dailyRecurrenceConfig);
                 break;
             case '2':
-                let weeklyRecurrenceCofig: any = {
+                let weeklyRecurrenceConfig: any = {
                     freq: RRule.WEEKLY
                 };
                 if (scheduledEventEditorFormValues.weeklyInfo.repeatEvery > 1) {
-                    weeklyRecurrenceCofig.interval = scheduledEventEditorFormValues.weeklyInfo.repeatEvery;
+                    weeklyRecurrenceConfig.interval = scheduledEventEditorFormValues.weeklyInfo.repeatEvery;
                 }
                 switch (scheduledEventEditorFormValues.weeklyInfo.end) {
                     case '0':
                         break;
                     case '1':
-                        weeklyRecurrenceCofig.count = scheduledEventEditorFormValues.weeklyInfo.recur_count;
+                        weeklyRecurrenceConfig.count = scheduledEventEditorFormValues.weeklyInfo.recur_count;
                         break;
                     case '2':
-                        weeklyRecurrenceCofig.until = scheduledEventEditorFormValues.weeklyInfo.recur_until;
+                        weeklyRecurrenceConfig.until = scheduledEventEditorFormValues.weeklyInfo.recur_until;
                         break;
                 }
                 if (scheduledEventEditorFormValues.weeklyInfo.repeatOnWeekDay.length > 0) {
-                    weeklyRecurrenceCofig.byweekday = scheduledEventEditorFormValues.weeklyInfo.repeatOnWeekDay;
+                    weeklyRecurrenceConfig.byweekday = scheduledEventEditorFormValues.weeklyInfo.repeatOnWeekDay;
                 }
-                recurrenceRule = new RRule(weeklyRecurrenceCofig);
+                recurrenceRule = new RRule(weeklyRecurrenceConfig);
                 break;
             case '1':
-                let monthlyRecurrenceCofig: any = {
+                let monthlyRecurrenceConfig: any = {
                     freq: RRule.MONTHLY
                 };
                 if (scheduledEventEditorFormValues.monthlyInfo.repeatEvery > 1) {
-                    monthlyRecurrenceCofig.interval = scheduledEventEditorFormValues.monthlyInfo.repeatEvery;
+                    monthlyRecurrenceConfig.interval = scheduledEventEditorFormValues.monthlyInfo.repeatEvery;
                 }
                 switch (scheduledEventEditorFormValues.monthlyInfo.end) {
                     case '0':
                         break;
                     case '1':
-                        monthlyRecurrenceCofig.count = scheduledEventEditorFormValues.monthlyInfo.recur_count;
+                        monthlyRecurrenceConfig.count = scheduledEventEditorFormValues.monthlyInfo.recur_count;
                         break;
                     case '2':
-                        monthlyRecurrenceCofig.until = scheduledEventEditorFormValues.monthlyInfo.recur_until;
+                        monthlyRecurrenceConfig.until = scheduledEventEditorFormValues.monthlyInfo.recur_until;
                         break;
                 }
                 switch (scheduledEventEditorFormValues.monthlyInfo.recur_monthday_radio) {
                     case '0':
-                        monthlyRecurrenceCofig.bymonthday = scheduledEventEditorFormValues.monthlyInfo.recur_monthday;
+                        monthlyRecurrenceConfig.bymonthday = scheduledEventEditorFormValues.monthlyInfo.recur_monthday;
                         break;
                     case '1':
-                        monthlyRecurrenceCofig.byweekday = scheduledEventEditorFormValues.monthlyInfo.recur_weekday;
-                        monthlyRecurrenceCofig.bysetpos = scheduledEventEditorFormValues.monthlyInfo.recur_weekday_offset;
+                        monthlyRecurrenceConfig.byweekday = scheduledEventEditorFormValues.monthlyInfo.recur_weekday;
+                        monthlyRecurrenceConfig.bysetpos = scheduledEventEditorFormValues.monthlyInfo.recur_weekday_offset;
                         break;
                 }
-                recurrenceRule = new RRule(monthlyRecurrenceCofig);
+                recurrenceRule = new RRule(monthlyRecurrenceConfig);
                 break;
             case '0':
-                let yearlyRecurrenceCofig: any = {
+                let yearlyRecurrenceConfig: any = {
                     freq: RRule.YEARLY
                 };
                 if (scheduledEventEditorFormValues.yearlyInfo.repeatEvery > 1) {
-                    yearlyRecurrenceCofig.interval = scheduledEventEditorFormValues.yearlyInfo.repeatEvery;
+                    yearlyRecurrenceConfig.interval = scheduledEventEditorFormValues.yearlyInfo.repeatEvery;
                 }
                 switch (scheduledEventEditorFormValues.yearlyInfo.end) {
                     case '0':
                         break;
                     case '1':
-                        yearlyRecurrenceCofig.count = scheduledEventEditorFormValues.yearlyInfo.recur_count;
+                        yearlyRecurrenceConfig.count = scheduledEventEditorFormValues.yearlyInfo.recur_count;
                         break;
                     case '2':
-                        yearlyRecurrenceCofig.until = scheduledEventEditorFormValues.yearlyInfo.recur_until;
+                        yearlyRecurrenceConfig.until = scheduledEventEditorFormValues.yearlyInfo.recur_until;
                         break;
                 }
                 switch (scheduledEventEditorFormValues.yearlyInfo.recur_year_radio) {
                     case '0':
-                        yearlyRecurrenceCofig.bymonth = scheduledEventEditorFormValues.yearlyInfo.recur_month;
-                        yearlyRecurrenceCofig.bymonthday = scheduledEventEditorFormValues.yearlyInfo.recur_monthday;
+                        yearlyRecurrenceConfig.bymonth = scheduledEventEditorFormValues.yearlyInfo.recur_month;
+                        yearlyRecurrenceConfig.bymonthday = scheduledEventEditorFormValues.yearlyInfo.recur_monthday;
                         break;
                     case '1':
-                        yearlyRecurrenceCofig.byweekday = scheduledEventEditorFormValues.yearlyInfo.recur_weekday_offset;
-                        yearlyRecurrenceCofig.bysetpos = scheduledEventEditorFormValues.yearlyInfo.recur_weekday;
-                        yearlyRecurrenceCofig.bymonthday = scheduledEventEditorFormValues.yearlyInfo.recur_monthday;
+                        yearlyRecurrenceConfig.byweekday = scheduledEventEditorFormValues.yearlyInfo.recur_weekday_offset;
+                        yearlyRecurrenceConfig.bysetpos = scheduledEventEditorFormValues.yearlyInfo.recur_weekday;
+                        yearlyRecurrenceConfig.bymonthday = scheduledEventEditorFormValues.yearlyInfo.recur_monthday;
                         break;
                 }
-                recurrenceRule = new RRule(yearlyRecurrenceCofig);
+                recurrenceRule = new RRule(yearlyRecurrenceConfig);
                 break;
 
         }

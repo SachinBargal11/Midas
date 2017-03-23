@@ -34,6 +34,8 @@ import { NotificationsStore } from '../../../commons/stores/notifications-store'
 
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
 
+import * as RRule from 'rrule';
+
 @Component({
     selector: 'patient-visit',
     templateUrl: './patient-visit.html'
@@ -579,7 +581,75 @@ export class PatientVisitComponent implements OnInit {
     }
 
     cancelSeries() {
-        debugger;
+        if (!this.selectedVisit.calendarEvent.recurrenceRule && this.selectedVisit.calendarEvent.recurrenceId) {
+            let eventId = this.selectedVisit.calendarEvent.recurrenceId;
+            this.selectedVisit = this._patientVisitsStore.findPatientVisitByCalendarEventId(eventId);
+        }
+        let rrule: RRule;
+        if (moment(this.selectedVisit.calendarEvent.recurrenceRule.options.dtstart).isBefore(moment())) {
+            rrule = new RRule(_.extend({}, this.selectedVisit.calendarEvent.recurrenceRule.origOptions, {
+                count: 0,
+                until: this.selectedCalEvent.start.utc().toDate()
+            }));
+            let updatedvisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
+                calendarEvent: new ScheduledEvent(_.extend(this.selectedVisit.calendarEvent.toJS(), {
+                    recurrenceRule: rrule
+                }))
+            }));
+            this._progressBarService.show();
+            let result = this._patientVisitsStore.updateCalendarEvent(updatedvisit);
+            result.subscribe(
+                (response) => {
+                    let notification = new Notification({
+                        'title': 'Event cancelled successfully!',
+                        'type': 'SUCCESS',
+                        'createdAt': moment()
+                    });
+                    this.loadVisits();
+                    this._notificationsStore.addNotification(notification);
+                },
+                (error) => {
+                    let errString = 'Unable to cancel event!';
+                    let notification = new Notification({
+                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    this._progressBarService.hide();
+                    this._notificationsStore.addNotification(notification);
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        } else {
+            this._progressBarService.show();
+            let result = this._patientVisitsStore.cancelCalendarEvent(this.selectedVisit);
+            result.subscribe(
+                (response) => {
+                    let notification = new Notification({
+                        'title': 'Event cancelled successfully!',
+                        'type': 'SUCCESS',
+                        'createdAt': moment()
+                    });
+                    this.loadVisits();
+                    this._notificationsStore.addNotification(notification);
+                },
+                (error) => {
+                    let errString = 'Unable to cancel event!';
+                    let notification = new Notification({
+                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    this._progressBarService.hide();
+                    this._notificationsStore.addNotification(notification);
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        }
+        this._confirmationDialog.hide();
+
     }
 
     saveEvent() {

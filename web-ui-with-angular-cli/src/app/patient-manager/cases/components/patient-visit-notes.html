@@ -8,11 +8,11 @@
                 <div class="row">
                     <div class="col-md-2"><label class="form-label">Notes<span class="color-red">*</span></label></div>
                     <div class="col-md-4">
-                        <div class="form-group" [class.error]="patientVisitFormControls.notes && patientVisitFormControls.notes.touched && !patientVisitFormControls.notes.valid">
+                        <div class="form-group" [class.error]="patientVisitNotesControls.notes && patientVisitNotesControls.notes.touched && !patientVisitNotesControls.notes.valid">
                             <textarea [ngModel]="currentVisit.notes" formControlName="notes" class="form-control" rows="3"></textarea>
-                            <div class='error-list' *ngIf="patientVisitFormControls.notes && patientVisitFormControls.notes.touched && !patientVisitFormControls.notes.valid">
+                            <div class='error-list' *ngIf="patientVisitNotesControls.notes && patientVisitNotesControls.notes.touched && !patientVisitNotesControls.notes.valid">
                                 <ul>
-                                    <li *ngIf="patientVisitFormControls.notes.hasError('required')">Please enter Notes.</li>
+                                    <li *ngIf="patientVisitNotesControls.notes.hasError('required')">Please enter Notes.</li>
                                 </ul>
                             </div>
                         </div>
