@@ -15,8 +15,8 @@ import { AddReferringOfficeComponent } from './components/add-referring-office';
 import { EditReferringOfficeComponent } from './components/edit-referring-office';
 import { AccidentInfoComponent } from './components/accident';
 import { DocumentsUploadComponent } from './components/documents';
-import { InsuranceMapComponent } from './components/insurance-mapping';
-import { CaseMappingComponent } from './components/case-mapping';
+import { InsuranceMappingComponent } from './components/insurance-mapping';
+import { AssignInsuranceComponent } from './components/assign-insurance';
 import { CompanyCasesComponent } from './components/company-cases-list';
 
 export const CasesShellRoutes: Routes = [
@@ -196,20 +196,29 @@ export const CasesShellRoutes: Routes = [
                         }
                     },
                     {
-                        path: 'cases-mapping',
-                        component: CaseMappingComponent,
-                        canActivate: [ValidateActiveSession],
-                        data: {
-                            breadcrumb: 'Case Mapping'
-                        }
-                    },
-                    {
                         path: 'insurance-mapping',
-                        component: InsuranceMapComponent,
+                        component: InsuranceMappingComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Insurance Mapping'
                         }
+                    },
+                    {
+                        path: 'insurance-mapping',
+                        component: ShellComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Insurance Mapping'
+                        },
+                        children: [
+                            {
+                                path: 'assign',
+                                component: AssignInsuranceComponent,
+                                data: {
+                                    breadcrumb: 'Assign Insurance'
+                                }
+                            },
+                        ]
                     }
                 ]
             }
