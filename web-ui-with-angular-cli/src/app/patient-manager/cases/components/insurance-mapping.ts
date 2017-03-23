@@ -1,5 +1,6 @@
+import { Case } from '../models/case';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { SelectItem } from 'primeng/primeng';
@@ -11,7 +12,10 @@ import { CasesStore } from '../stores/case-store';
 import { InsuranceMappingStore } from '../stores/insurance-mapping-store';
 import { InsuranceStore } from '../../patients/stores/insurance-store';
 import { InsuranceMapping } from '../models/insurance-mapping';
+import { Mapping } from '../models/mapping';
 import { Insurance } from '../../patients/models/insurance';
+import { Adjuster } from '../../../account-setup/models/adjuster';
+import { AdjusterMasterStore } from '../../../account-setup/stores/adjuster-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
 import * as _ from 'underscore';
@@ -19,25 +23,22 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { NotificationsService } from 'angular2-notifications';
 
 @Component({
-    selector: 'insurance-map',
+    selector: 'insurance-mapping',
     templateUrl: './insurance-mapping.html'
 })
 
-export class InsuranceMapComponent implements OnInit {
-    options = {
-        timeOut: 3000,
-        showProgressBar: true,
-        pauseOnHover: false,
-        clickToClose: false
-    };
-    insuranceMapform: FormGroup;
-    insuranceMapformControls: any;
-    isSaveProgress = false;
+export class InsuranceMappingComponent implements OnInit {
     patientId: number;
     caseId: number;
     insurances: Insurance[] = [];
+    // insurances: Insurance[] = [];
     insurancesArr: SelectItem[] = [];
-    selectedInsurances: string[] = [];
+    adjustersArr: SelectItem[];
+    insuranceMapping: InsuranceMapping[];
+    selectedInsurances: InsuranceMapping[];
+    // selectedInsurances: string[] = [];
+    selectedInsurance: string[] = [];
+    adjusters: Adjuster[] = [];
 
     constructor(
         private fb: FormBuilder,
@@ -47,6 +48,7 @@ export class InsuranceMapComponent implements OnInit {
         private _insuranceMappingStore: InsuranceMappingStore,
         private _casesStore: CasesStore,
         private _insuranceStore: InsuranceStore,
+        private _adjusterMasterStore: AdjusterMasterStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _route: ActivatedRoute
@@ -60,90 +62,104 @@ export class InsuranceMapComponent implements OnInit {
 
             let fetchInsuranceMappings = this._insuranceMappingStore.getInsuranceMappings(this.caseId);
             let fetchInsurances = this._insuranceStore.getInsurances(this.patientId);
+            let fetchAdjusters = this._adjusterMasterStore.getAdjusterMasters();
 
-            Observable.forkJoin([fetchInsurances, fetchInsuranceMappings])
+            Observable.forkJoin([fetchInsurances, fetchInsuranceMappings, fetchAdjusters])
                 .subscribe((results) => {
-                    let insurances: Insurance[] = results[0];
-                    let mappedInsurances: InsuranceMapping = results[1].mappings;
+                    let insurances = results[0];
+                    this.insuranceMapping = results[1];
+                    let mappings: Mapping[] = results[1].mappings;
+                    this.adjusters = results[2];
 
-                    let insurancesArr = _.map(insurances, (currentInsurance: Insurance) => {
+                    this.adjustersArr = _.map(this.adjusters, (currentAdjuster: Adjuster) => {
                         return {
-                            label: `${currentInsurance.insuranceCompanyCode} - ${currentInsurance.policyHoldersName}`,
-                            value: currentInsurance.id.toString()
+                            label: `${currentAdjuster.firstName} - ${currentAdjuster.lastName}`,
+                            value: currentAdjuster.id.toString()
                         };
                     });
-                    this.insurancesArr = insurancesArr.reverse();
-                        this.selectedInsurances = _.map(mappedInsurances, (currentInsurance: any) => {
-                            return currentInsurance.patientInsuranceInfo.id.toString();
+
+                    let insuranceDetails: Insurance[] = _.map(mappings, (currentInsurance: any) => {
+                        return currentInsurance.patientInsuranceInfo;
                     });
-                    // mappedInsurances.forEach(element => {
-                    //      _.map(element.patientInsuranceInfos, (currentInsurance: Insurance) => {
-                    //         return this.selectedInsurances.push(currentInsurance.id.toString());
-                    //     });
-                    // });
+                    insuranceDetails.forEach(insurance => {
+                        this._insuranceStore.fetchInsuranceById(insurance.id)
+                            .subscribe((insurance: Insurance) => {
+                                this.insurances.push(insurance);
+                            });
+                    });
+                    // this.insurances = insuranceDetails.reverse();
+                    // this.insurances = mappings.reverse();
                 },
                 (error) => {
-                    this._router.navigate(['../../'], { relativeTo: this._route });
                     this._progressBarService.hide();
                 },
                 () => {
                     this._progressBarService.hide();
                 });
         });
-
-        this.insuranceMapform = this.fb.group({
-            insurance: ['']
-        });
-
-        this.insuranceMapformControls = this.insuranceMapform.controls;
     }
 
     ngOnInit() {
     }
 
-    saveInsuranceMapping() {
-        let insuranceMapformValues = this.insuranceMapform.value;
-        let patientInsuranceInfos = [];
-        let input = insuranceMapformValues.insurance;
-        for (let i = 0; i < input.length; ++i) {
-            patientInsuranceInfos.push({ 'id': parseInt(input[i]) });
-        }
-        let insuranceMapping = new InsuranceMapping({
-            caseId: this.caseId,
-            patientInsuranceInfos: patientInsuranceInfos
-        });
-        this._progressBarService.show();
-        this.isSaveProgress = true;
-        let result;
-
-        result = this._insuranceMappingStore.addInsuranceMapping(insuranceMapping);
-        result.subscribe(
-            (response) => {
-                let notification = new Notification({
-                    'title': 'Insurance mapped successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
+    deleteInsurance() {
+        if (this.selectedInsurances !== undefined) {
+            this.selectedInsurances.forEach(currentInsurance => {
+                let mappings = [];
+                let insurance: any[] = this.selectedInsurances;
+                insurance.forEach(currentInsurance => {
+                    mappings.push({
+                        patientInsuranceInfo: {
+                            'id': parseInt(currentInsurance.id, 10)
+                        },
+                        adjusterMaster: {
+                            // 'id': parseInt(adjuster)
+                        }
+                    });
                 });
-                this._notificationsStore.addNotification(notification);
-                    this._router.navigate(['../../'], { relativeTo: this._route });
-            },
-            (error) => {
-                let errString = 'Unable to map insurance.';
-                let notification = new Notification({
-                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                    'type': 'ERROR',
-                    'createdAt': moment()
+                let insuranceMapping = new InsuranceMapping({
+                    caseId: this.caseId,
+                    mappings: mappings
                 });
-                this.isSaveProgress = false;
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
-            },
-            () => {
-                this.isSaveProgress = false;
-                this._progressBarService.hide();
+                this._progressBarService.show();
+                let result;
+                result = this._insuranceMappingStore.deleteInsuranceMapping(insuranceMapping);
+                result.subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            'title': 'Insurance deleted successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        // this.loadPatients();
+                        this._notificationsStore.addNotification(notification);
+                        this.selectedInsurances = [];
+                    },
+                    (error) => {
+                        let errString = 'Unable to delete Insurance ';
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this.selectedInsurances = [];
+                        this._progressBarService.hide();
+                        this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                    },
+                    () => {
+                        this._progressBarService.hide();
+                    });
             });
-
+        } else {
+            let notification = new Notification({
+                'title': 'select Insurances to delete',
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'select Insurances to delete');
+        }
     }
 
 }

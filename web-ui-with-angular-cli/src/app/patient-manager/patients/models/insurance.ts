@@ -15,6 +15,7 @@ const InsuranceRecord = Record({
     policyHoldersName: '',
     contactPerson: '',
     insuranceMasterId: 0,
+    insuranceMaster: null,
     insuranceType: InsuranceType.PRIMARY,
     insuranceCompanyCode: '',
     caseInsuranceMapping: null,
@@ -34,6 +35,7 @@ export class Insurance extends InsuranceRecord {
     policyHoldersName: string;
     contactPerson: string;
     insuranceMasterId: number;
+    insuranceMaster: InsuranceMaster;
     insuranceType: InsuranceType;
     insuranceCompanyCode: string;
     caseInsuranceMapping: InsuranceMapping;

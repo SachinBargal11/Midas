@@ -23,13 +23,13 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { NotificationsService } from 'angular2-notifications';
 
 @Component({
-    selector: 'case-mapping',
-    templateUrl: './case-mapping.html'
+    selector: 'assign-insurance',
+    templateUrl: './assign-insurance.html'
 })
 
-export class CaseMappingComponent implements OnInit {
-    caseMapForm: FormGroup;
-    caseMapFormControls: any;
+export class AssignInsuranceComponent implements OnInit {
+    assignInsuranceForm: FormGroup;
+    assignInsuranceFormControls: any;
     isSaveProgress = false;
     patientId: number;
     caseId: number;
@@ -54,46 +54,30 @@ export class CaseMappingComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _route: ActivatedRoute
     ) {
-        this._route.parent.params.subscribe((routeParams: any) => {
+        this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId);
         });
-        this._route.parent.parent.params.subscribe((routeParams: any) => {
+        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId);
             this._progressBarService.show();
 
-            let fetchInsuranceMappings = this._insuranceMappingStore.getInsuranceMappings(this.caseId);
             let fetchInsurances = this._insuranceStore.getInsurances(this.patientId);
-            let fetchAdjusters = this._adjusterMasterStore.getAdjusterMasters();
+            let fetchInsuranceMappings = this._insuranceMappingStore.getInsuranceMappings(this.caseId);
 
-            Observable.forkJoin([fetchInsurances, fetchInsuranceMappings, fetchAdjusters])
+            Observable.forkJoin([fetchInsurances, fetchInsuranceMappings])
                 .subscribe((results) => {
                     let insurances = results[0];
                     let mappedInsurances: Mapping[] = results[1].mappings;
-                    this.adjusters = results[2];
-
-                    this.adjustersArr = _.map(this.adjusters, (currentAdjuster: Adjuster) => {
-                        return {
-                            label: `${currentAdjuster.firstName} - ${currentAdjuster.lastName}`,
-                            value: currentAdjuster.id.toString()
-                        };
+                    let mappedInsuranceIds: number[] = _.map(mappedInsurances, (currentMapping: Mapping) => {
+                        return currentMapping.patientInsuranceInfo.id;
                     });
-                    let insuranceDetails = _.map(insurances, (currentInsurance: Insurance) => {
-                        this.addMappingDetails();
-                        return _.extend(currentInsurance);
+                    let insuranceDetails = _.filter(insurances, (currentInsurance: Insurance) => {
+                        return _.indexOf(mappedInsuranceIds, currentInsurance.id) < 0 ? true : false;
                     });
                     this.insurances = insuranceDetails.reverse();
-                    // this.insurancesArr = _.map(this.insurances, (currentInsurance: Insurance) => {
-                    //     return {
-                    //         label: `${currentInsurance.insuranceCompanyCode} - ${currentInsurance.policyHoldersName}`,
-                    //         value: currentInsurance.id.toString()
-                    //     };
-                    // });
-                    // this.selectedInsurances = _.map(mappedInsurances, (currentInsurance: any) => {
-                    //     return currentInsurance.patientInsuranceInfo.id.toString();
-                    // });
                 },
                 (error) => {
-                    this._router.navigate(['../../'], { relativeTo: this._route });
+                    // this._router.navigate(['../../'], { relativeTo: this._route });
                     this._progressBarService.hide();
                 },
                 () => {
@@ -101,60 +85,41 @@ export class CaseMappingComponent implements OnInit {
                 });
         });
 
-        this.caseMapForm = this.fb.group({
-            mappingDetails: this.fb.array([
-            ])
+        this.assignInsuranceForm = this.fb.group({
+            insurances: ['']
         });
 
-        this.caseMapFormControls = this.caseMapForm.controls;
+        this.assignInsuranceFormControls = this.assignInsuranceForm.controls;
     }
 
     ngOnInit() {
     }
-    initMappingDetails(): FormGroup {
-        return this.fb.group({
-            insurance: [],
-            adjuster: []
-        });
-    }
-    addMappingDetails(): void {
-        const control: FormArray = <FormArray>this.caseMapForm.controls['mappingDetails'];
-        control.push(this.initMappingDetails());
-    }
 
-    getMappingDetails() {
-        let caseMapFormValues = this.caseMapForm.value;
-        let mappingDetails: any[] = [];
-        for (let mappingDetail of caseMapFormValues.mappingDetails) {
-            let mapping = new Mapping({
-                patientInsuranceInfo: {
-                    id: mappingDetail.insurance
-                },
-                adjusterMaster: {
-                    id: mappingDetail.adjuster
-                }
-            });
-            mappingDetails.push(mapping);
-        }
-        return mappingDetails;
-    }
     save() {
         this.selectedInsurances;
-        let caseMapFormValues = this.caseMapForm.value;
-        // let mappings = [];
-        // let insurance = caseMapFormValues.insurance;
-        // let adjuster = caseMapFormValues.adjuster;
-        // for (let i = 0; i < insurance.length; ++i) {
-        //     mappings.push({
-        //         patientInsuranceInfo: {
-        //             'id': parseInt(insurance)
-        //         },
-        //         adjusterMaster: {
-        //             'id': parseInt(adjuster)
-        //         }
-        //     });
-        // }
-        let mappings = this.getMappingDetails();
+        let assignInsuranceFormValues = this.assignInsuranceForm.value;
+        // let mappingDetails: any[] = [];
+        // let mapping = new Mapping({
+        //     patientInsuranceInfo: {
+        //         id: mappingDetail.insurance
+        //     },
+        //     adjusterMaster: {
+        //     }
+        // });
+        // mappingDetails.push(mapping);
+        let mappings = [];
+        let insurance: any[] = this.selectedInsurances;
+        let adjuster = assignInsuranceFormValues.adjuster;
+        insurance.forEach(currentInsurance => {
+            mappings.push({
+                patientInsuranceInfo: {
+                    'id': parseInt(currentInsurance.id, 10)
+                },
+                adjusterMaster: {
+                    // 'id': parseInt(adjuster)
+                }
+            });
+        });
         let insuranceMapping = new InsuranceMapping({
             caseId: this.caseId,
             mappings: mappings
@@ -172,7 +137,7 @@ export class CaseMappingComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../../'], { relativeTo: this._route });
+                this._router.navigate(['../'], { relativeTo: this._route });
             },
             (error) => {
                 let errString = 'Unable to map insurance.';
