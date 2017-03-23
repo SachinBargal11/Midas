@@ -5,7 +5,7 @@ import { NoContentComponent } from './no-content-component';
 export const routes: Routes = [
     // { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
     // { path: 'dashboard', loadChildren: 'app/dashboard/dashboard-module#DashboardModule', data: { breadcrumb: 'root' } },
-    { path: '', redirectTo: '/patient-manager/patient/viewall', pathMatch: 'full' },
+    { path: '', redirectTo: '/patient-manager/profile/viewall', pathMatch: 'full' },
     { path: 'patient-manager', loadChildren: 'app/patient-manager/patient-manager-module#PatientManagerModule', data: { breadcrumb: 'root' } },
     { path: 'account', loadChildren: 'app/account/account-module#AccountModule', data: { breadcrumb: 'root' } },
     { path: '404', component: NoContentComponent },

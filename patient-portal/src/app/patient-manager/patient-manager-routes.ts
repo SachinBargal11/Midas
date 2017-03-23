@@ -37,14 +37,14 @@ let PatientManagerRoutes: Routes = [
             {
                 path: '',
                 pathMatch: 'full',
-                redirectTo: 'patient'
+                redirectTo: 'profile'
             },
             {
-                path: 'patient',
+                path: 'profile',
                 component: PatientsShellComponent,
                 canActivate: [ValidateActiveSession],
                 data: {
-                    breadcrumb: 'Patient'
+                    breadcrumb: 'Profile'
                 },
                 children: [
                     {
