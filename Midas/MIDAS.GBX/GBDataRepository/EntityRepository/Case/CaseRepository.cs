@@ -53,7 +53,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 boPatientEmpInfo = cmp.Convert<BO.PatientEmpInfo, PatientEmpInfo>(cases.PatientEmpInfo);
                 caseBO.PatientEmpInfo = boPatientEmpInfo;
             }
-
+            List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
+            foreach (var casemap in cases.CaseCompanyMappings)
+            {
+                using (CaseCompanyMappingRepository cmp = new CaseCompanyMappingRepository(_context))
+                {
+                    boCaseCompanyMapping.Add(cmp.Convert<BO.CaseCompanyMapping, CaseCompanyMapping>(casemap));
+                }
+            }
+            caseBO.CaseCompanyMapping = boCaseCompanyMapping;
 
             return (T)(object)caseBO;
         }
@@ -220,14 +228,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             BO.Case caseBO = (BO.Case)(object)entity;
             //BO.Patient2 patient2BO = new BO.Patient2();
             BO.Location locationBO = new BO.Location();
-
+            List<BO.CaseCompanyMapping> lstCaseCompanyMapping = caseBO.CaseCompanyMapping;
+            BO.CaseCompanyMapping caseCompanyMappingBO = new BO.CaseCompanyMapping();
 
             Case caseDB = new Case();
-
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
                 Patient2 patient2DB = new Patient2();
                 Location locationDB = new Location();
+                CaseCompanyMapping caseCompanyMappingDB = new CaseCompanyMapping();
 
                 bool IsEditMode = false;
                 IsEditMode = (caseBO != null && caseBO.ID > 0) ? true : false;
@@ -321,8 +330,35 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 _context.SaveChanges();
                 #endregion
 
-                dbContextTransaction.Commit();
+                #region caseCompanymapping
+                if (lstCaseCompanyMapping != null)
+                {
+                    foreach (var eachcaseCompanyMapping in lstCaseCompanyMapping)
+                    {
+                        bool Add_case = false;
+                        caseCompanyMappingDB = _context.CaseCompanyMappings.Where(p => p.Id == eachcaseCompanyMapping.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                        if (caseCompanyMappingDB == null && eachcaseCompanyMapping.ID <= 0)
+                        {
+                            caseCompanyMappingDB = new CaseCompanyMapping();
+                            Add_case = true;
+                        }
+                        else if (caseCompanyMappingDB == null && eachcaseCompanyMapping.ID > 0)
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Case dosent exists.", ErrorLevel = ErrorLevel.Error };
+                        }
+                        caseCompanyMappingDB.CaseId = caseDB.Id;
+                        caseCompanyMappingDB.CompanyId =eachcaseCompanyMapping.CompanyId;
+                        if (Add_case == true)
+                        {
+                            caseCompanyMappingDB = _context.CaseCompanyMappings.Add(caseCompanyMappingDB);
+                        }
+                        _context.SaveChanges();
+                    }
+                }
+                #endregion
 
+                dbContextTransaction.Commit();
                 caseDB = _context.Cases.Include("PatientEmpInfo")
                                        .Include("PatientEmpInfo.AddressInfo")
                                        .Include("PatientEmpInfo.ContactInfo")
@@ -434,31 +470,30 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By Company Id
         public override object GetByCompanyId(int CompanyId)
         {
-            //    var allCase = _context.Cases.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
-            //                                .Select(p => p.PatientId)
-            //                                .Distinct<int>();
+            var User = _context.UserCompanies.Where(p => p.CompanyID == CompanyId && p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                        .Select(p => p.UserID)
+                                        .Distinct<int>();
 
-            //    var acc = _context.Patient2.Include("User")
-            //                               .Where(p => p.CompanyId == CompanyId
-            //                                       && (allCase.Contains(p.Id))
-            //                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-            //                               .ToList<Patient2>();
+            var acc = _context.Patient2.Include("User")
+                                       .Where(p =>  (User.Contains(p.Id))
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                    .ToList<Patient2>();
 
 
-            //    if (acc == null)
-            //    {
-            //        return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            //    }
-            //    else
-            //    {
-            //        List<BO.CaseWithUserAndPatient> lstCaseWithUserAndPatient = new List<BO.CaseWithUserAndPatient>();
-            //        foreach (Patient2 eachPatient in acc)
-            //        {
-            //            lstCaseWithUserAndPatient.AddRange(ConvertToCaseWithUserAndPatient<List<BO.CaseWithUserAndPatient>, Patient2>(eachPatient));
-            //        }
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Case.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.CaseWithUserAndPatient> lstCaseWithUserAndPatient = new List<BO.CaseWithUserAndPatient>();
+                foreach (Patient2 eachPatient in acc)
+                {
+                    lstCaseWithUserAndPatient.AddRange(ConvertToCaseWithUserAndPatient<List<BO.CaseWithUserAndPatient>, Patient2>(eachPatient));
+                }
 
-            //        return lstCaseWithUserAndPatient;
-            //    }
+                return lstCaseWithUserAndPatient;
+            }
             return new object();
         }
         #endregion

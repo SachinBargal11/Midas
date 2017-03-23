@@ -38,12 +38,12 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("fileUploadPath")]
         public string FileUploadPath { get; set; }
-        
-        //[JsonProperty("location")]
-        //public Location Location { get; set; }
 
-        //[JsonProperty("patient2")]
-        //public Patient2 Patient2 { get; set; }
+        [JsonProperty("caseCompanyMapping")]
+        public List<CaseCompanyMapping> CaseCompanyMapping { get; set; }
+
+        //[JsonProperty("doctorCaseConsentApproval")]
+        //public List<DoctorCaseConsentApproval> DoctorCaseConsentApproval { get; set; }
 
         //[JsonProperty("patientAccidentInfo")]
         //public PatientAccidentInfo PatientAccidentInfo { get; set; }

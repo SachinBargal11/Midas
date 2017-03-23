@@ -221,7 +221,14 @@ namespace MIDAS.GBX
             {
                 repo = new DoctorLocationSpecialityRepository(context);
             }
-
+            else if (typeof(T) == typeof(BO.CaseCompanyMapping))
+            {
+                repo = new CaseCompanyMappingRepository(context);
+            }
+            else if (typeof(T) == typeof(BO.DoctorCaseConsentApproval))
+            {
+                repo = new DoctorCaseConsentApprovalRepository(context);
+            }
             return repo;
         }
     }

@@ -38,6 +38,14 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             return requestHandler.GetGbObjects(Request, id);
         }
 
+        [HttpGet]
+        [Route("getByLocationAndSpecialty/{locationId}/{SpecialtyId}")]
+        public HttpResponseMessage GetByLocationAndSpecialty(int locationId, int specialtyId)
+        {
+            return requestHandler.GetByLocationAndSpecialty(Request, locationId, specialtyId);
+        }
+
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
