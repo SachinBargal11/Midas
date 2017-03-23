@@ -53,6 +53,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 boPatientEmpInfo = cmp.Convert<BO.PatientEmpInfo, PatientEmpInfo>(cases.PatientEmpInfo);
                 caseBO.PatientEmpInfo = boPatientEmpInfo;
             }
+
             List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
             foreach (var casemap in cases.CaseCompanyMappings)
             {
@@ -333,27 +334,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 #region caseCompanymapping
                 if (lstCaseCompanyMapping != null)
                 {
-                    foreach (var eachcaseCompanyMapping in lstCaseCompanyMapping)
+                    foreach (BO.CaseCompanyMapping eachcaseCompanyMapping in lstCaseCompanyMapping)
                     {
-                        bool Add_case = false;
-                        caseCompanyMappingDB = _context.CaseCompanyMappings.Where(p => p.Id == eachcaseCompanyMapping.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-                        if (caseCompanyMappingDB == null && eachcaseCompanyMapping.ID <= 0)
+                        using (CaseCompanyMappingRepository caseCompanyMapRepo = new CaseCompanyMappingRepository(_context))
                         {
-                            caseCompanyMappingDB = new CaseCompanyMapping();
-                            Add_case = true;
+                            caseCompanyMapRepo.Save(eachcaseCompanyMapping);
                         }
-                        else if (caseCompanyMappingDB == null && eachcaseCompanyMapping.ID > 0)
-                        {
-                            dbContextTransaction.Rollback();
-                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Case dosent exists.", ErrorLevel = ErrorLevel.Error };
-                        }
-                        caseCompanyMappingDB.CaseId = caseDB.Id;
-                        caseCompanyMappingDB.CompanyId =eachcaseCompanyMapping.CompanyId;
-                        if (Add_case == true)
-                        {
-                            caseCompanyMappingDB = _context.CaseCompanyMappings.Add(caseCompanyMappingDB);
-                        }
-                        _context.SaveChanges();
                     }
                 }
                 #endregion
@@ -493,8 +479,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 }
 
                 return lstCaseWithUserAndPatient;
-            }
-            return new object();
+            }            
         }
         #endregion
 
