@@ -15,16 +15,26 @@
 
 GO
 
-ALTER TABLE [dbo].[DoctorSpecialities]  WITH CHECK ADD  CONSTRAINT [FK_DoctorSpecialities_Doctor] FOREIGN KEY([DoctorID])
-REFERENCES [dbo].[User] ([id])
-GO
+--ALTER TABLE [dbo].[DoctorSpecialities]  WITH CHECK ADD  CONSTRAINT [FK_DoctorSpecialities_Doctor] FOREIGN KEY([DoctorID])
+--	REFERENCES [dbo].[User] ([id])
+--GO
 
-ALTER TABLE [dbo].[DoctorSpecialities] CHECK CONSTRAINT [FK_DoctorSpecialities_Doctor]
-GO
+--ALTER TABLE [dbo].[DoctorSpecialities] CHECK CONSTRAINT [FK_DoctorSpecialities_Doctor]
+--GO
 
 ALTER TABLE [dbo].[DoctorSpecialities]  WITH CHECK ADD  CONSTRAINT [FK_DoctorSpecialities_Specialty] FOREIGN KEY([SpecialityID])
-REFERENCES [dbo].[Specialty] ([id])
+	REFERENCES [dbo].[Specialty] ([id])
 GO
 
 ALTER TABLE [dbo].[DoctorSpecialities] CHECK CONSTRAINT [FK_DoctorSpecialities_Specialty]
+GO
+
+--ALTER TABLE [dbo].[DoctorSpecialities] DROP CONSTRAINT [FK_DoctorSpecialities_Doctor]
+--GO
+
+ALTER TABLE [dbo].[DoctorSpecialities]  WITH CHECK ADD  CONSTRAINT [FK_DoctorSpecialities_Doctor_DoctorID] FOREIGN KEY([DoctorID])
+	REFERENCES [dbo].[Doctor] ([Id])
+GO
+
+ALTER TABLE [dbo].[DoctorSpecialities] CHECK CONSTRAINT [FK_DoctorSpecialities_Doctor_DoctorID]
 GO
