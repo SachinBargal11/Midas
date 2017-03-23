@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BO = MIDAS.GBX.BusinessObjects;
 using Newtonsoft.Json.Linq;
 using MIDAS.GBX.DataRepository.Model;
+using System.Net.Http;
 
 namespace MIDAS.GBX.EntityRepository
 {
@@ -26,6 +27,11 @@ namespace MIDAS.GBX.EntityRepository
         }
 
         public virtual Object Save<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object Save(int id, string type, List<HttpContent> streamContent)
         {
             throw new NotImplementedException();
         }
@@ -51,6 +57,11 @@ namespace MIDAS.GBX.EntityRepository
         }
 
         public virtual List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate(int id, string type, List<HttpContent> streamContent)
         {
             throw new NotImplementedException();
         }

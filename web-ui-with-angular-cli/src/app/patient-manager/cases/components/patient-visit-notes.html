@@ -1,4 +1,4 @@
-<form [formGroup]="patientVisitNotes">
+<form [formGroup]="patientVisitNotes" (ngSubmit)="saveVisit()">
     <div *ngIf="currentVisit">
         <section class="card">
             <header class="card-header card-header-lg">
@@ -29,17 +29,30 @@
                         </div>
                     </div>
                 </div>
+
+                <p-footer>
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <!--<button [disabled]="!patientVisitNotesControls.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save-->
+                            <button [disabled]="isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+                <loader [visible]="isSaveProgress"></loader>
+            </button>
+                            <button [routerLink]="['../../']" type="button" class="btn btn-secondary">Cancel</button>
+                        </div>
+                    </div><br>
+                </p-footer>
             </div>
         </section>
+    </div>
+
+
+    <!--<section class="card">
+        <header class="card-header card-header-lg">
+            Upload Documents
+        </header>
+        <div class="card-block">
+            <label class="form-label">Documents Upload</label>
         </div>
-
-
-        <section class="card">
-            <header class="card-header card-header-lg">
-                Documents
-            </header>
-            <div class="card-block">
-                <label class="form-label">Documents Upload</label>
-            </div>
-        </section>
+    </section>-->
 </form>

@@ -55,6 +55,8 @@ import { InsuranceMappingService } from './cases/services/insurance-mapping-serv
 import { ViewAllComponent } from './patients/components/view-all';
 import { PatientVisitListComponent } from './cases/components/patient-visits-list';
 import { PatientVisitNotesComponent } from './cases/components/patient-visit-notes';
+import { PatientVisitListShellComponent } from './cases/components/patient-visit-list-shell';
+import { VisitDocumentsUploadComponent } from './cases/components/visit-document';
 import { DocumentsUploadComponent } from './cases/components/documents';
 
 
@@ -122,7 +124,9 @@ import { UsersModule } from '../medical-provider/users/users-module';
         CompanyCasesComponent,
         PatientVisitListComponent,
         PatientVisitNotesComponent,
-        DocumentsUploadComponent
+        DocumentsUploadComponent,
+        PatientVisitListShellComponent,
+        VisitDocumentsUploadComponent
     ],
     providers: [
         PatientsService,

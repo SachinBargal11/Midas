@@ -136,7 +136,7 @@ export class PatientVisitsStore {
                 patientVisitDetail = patientVisitDetail.update(index, function () {
                     return updatedPatientVisit;
                 });
-                this._patientVisits.next(patientVisitDetail);
+                // this._patientVisits.next(patientVisitDetail);
                 resolve(patientVisitDetail);
             }, error => {
                 reject(error);
