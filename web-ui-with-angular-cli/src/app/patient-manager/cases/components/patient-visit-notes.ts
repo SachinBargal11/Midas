@@ -41,8 +41,8 @@ export class PatientVisitNotesComponent implements OnInit {
          this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
         });
-        this._route.params.subscribe((routeParams: any) => {
-            this.currentVisitId = parseInt(routeParams.id, 10);
+        this._route.parent.params.subscribe((routeParams: any) => {
+            this.currentVisitId = parseInt(routeParams.visitId, 10);
             this._progressBarService.show();
         this._patientVisitStore.fetchPatientVisitById(this.currentVisitId)
             .subscribe(currentVisit => {

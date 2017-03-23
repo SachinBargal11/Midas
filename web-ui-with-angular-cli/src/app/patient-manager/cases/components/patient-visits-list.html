@@ -12,6 +12,45 @@
 <div class="ui-widget-header row">
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        <input #gbb type="text" class="form-control" style="float:left" placeholder="Search Doctors Visits">
+    </div>
+</div>
+
+<p-dataTable [value]="doctorsVisits" [(selection)]="selectedDoctorsVisits" [rows]="10" [paginator]="true" [pageLinks]="3"
+    [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbb" [responsive]="true" [stacked]="stacked">
+    <header>Patient Doctors Visits List</header>
+    <p-column selectionMode="multiple"></p-column>
+    <p-column field="eventStart" header="Visit Start Date" [sortable]="true">
+        <ng-template let-visit="rowData" pTemplate="body">
+
+            {{visit.eventStart | dateTimeFormat}}
+
+        </ng-template>
+    </p-column>
+    <p-column field="eventEnd" header="Visit End Date" [sortable]="true">
+        <ng-template let-visit="rowData" pTemplate="body">
+
+            {{visit.eventEnd | dateTimeFormat}}
+
+        </ng-template>
+    </p-column>
+    <p-column field="doctor.user.displayName" header="Doctor Name" [sortable]="true">
+        <ng-template let-visit="rowData" pTemplate="body">
+            {{visit.doctor.user.displayName}}
+        </ng-template>
+    </p-column>
+
+    <p-column styleClass="actions-cell" header="Actions">
+        <ng-template let-visit="rowData" pTemplate="body">
+            <a routerLink="{{visit.id}}/visitNotes"><i class="glyphicon glyphicon-edit"></i></a>
+            <!--<a routerLink=""><i class="glyphicon glyphicon-edit"></i></a>-->
+        </ng-template>
+    </p-column>
+</p-dataTable><br><br>
+
+<div class="ui-widget-header row">
+    <div class="col-lg-4 input-group">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Rooms Visits">
     </div>
 </div>
@@ -44,46 +83,7 @@
 
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-visit="rowData" pTemplate="body">
-            <a routerLink="edit/{{visit.id}}"><i class="glyphicon glyphicon-edit"></i></a>
-            <!--<a routerLink=""><i class="glyphicon glyphicon-edit"></i></a>-->
-        </ng-template>
-    </p-column>
-</p-dataTable><br><br>
-
-<div class="ui-widget-header row">
-    <div class="col-lg-4 input-group">
-        <span class="input-group-addon"><i class="fa fa-search"></i></span>
-        <input #gbb type="text" class="form-control" style="float:left" placeholder="Search Doctors Visits">
-    </div>
-</div>
-
-<p-dataTable [value]="doctorsVisits" [(selection)]="selectedDoctorsVisits" [rows]="10" [paginator]="true" [pageLinks]="3"
-    [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbb" [responsive]="true" [stacked]="stacked">
-    <header>Patient Doctors Visits List</header>
-    <p-column selectionMode="multiple"></p-column>
-    <p-column field="eventStart" header="Visit Start Date" [sortable]="true">
-        <ng-template let-visit="rowData" pTemplate="body">
-
-            {{visit.eventStart | dateTimeFormat}}
-
-        </ng-template>
-    </p-column>
-    <p-column field="eventEnd" header="Visit End Date" [sortable]="true">
-        <ng-template let-visit="rowData" pTemplate="body">
-
-            {{visit.eventEnd | dateTimeFormat}}
-
-        </ng-template>
-    </p-column>
-    <p-column field="doctor.user.displayName" header="Doctor Name" [sortable]="true">
-        <ng-template let-visit="rowData" pTemplate="body">
-            {{visit.doctor.user.displayName}}
-        </ng-template>
-    </p-column>
-
-    <p-column styleClass="actions-cell" header="Actions">
-        <ng-template let-visit="rowData" pTemplate="body">
-            <a routerLink="edit/{{visit.id}}"><i class="glyphicon glyphicon-edit"></i></a>
+            <a routerLink="{{visit.id}}/visitNotes"><i class="glyphicon glyphicon-edit"></i></a>
             <!--<a routerLink=""><i class="glyphicon glyphicon-edit"></i></a>-->
         </ng-template>
     </p-column>
