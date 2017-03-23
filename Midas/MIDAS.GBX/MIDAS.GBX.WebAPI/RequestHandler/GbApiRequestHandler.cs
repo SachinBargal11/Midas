@@ -439,6 +439,42 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetBySpecialityInAllApp(HttpRequestMessage request, int specialtyId)
+        {
+            var objResult = dataAccessManager.GetBySpecialityInAllApp(specialtyId);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByRoomInAllApp(HttpRequestMessage request, int roomId)
+        {
+            var objResult = dataAccessManager.GetByRoomInAllApp(roomId);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetGbObjects(HttpRequestMessage request, int id)
         {
             var objResult = dataAccessManager.GetByCompanyId(id);

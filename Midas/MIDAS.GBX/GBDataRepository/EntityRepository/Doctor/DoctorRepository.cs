@@ -384,6 +384,28 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region GetBySpecialty
+        public override object GetBySpecialityInAllApp(int specialtyId)
+        {
+
+            var acc_ = _context.Doctors.Include("User").Where(p => p.User.DoctorSpecialities.Where(p2 => p2.IsDeleted == false).Any(p3 => p3.SpecialityID == specialtyId)
+                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                 .ToList();
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Specialty.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            List<BO.Doctor> doctorBO = new List<BO.Doctor>();
+
+            foreach (Doctor item in acc_)
+            {
+                doctorBO.Add(Convert<BO.Doctor, Doctor>(item));
+            }
+            return (object)doctorBO;
+        }
+        #endregion
+
         #region GetAll
         public override object Get()
         {

@@ -316,6 +316,16 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+
+        public virtual Object GetBySpecialityInAllApp(int specialityId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByRoomInAllApp(int roomId)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

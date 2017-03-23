@@ -32,6 +32,8 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GeneratePasswordLink(HttpRequestMessage request, T gbObject);
         HttpResponseMessage ValidatePassword(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetByLocationAndSpecialty(HttpRequestMessage request, int locationId, int specialtyId);
+        HttpResponseMessage GetBySpecialityInAllApp(HttpRequestMessage request, int specialtyId);
+        HttpResponseMessage GetByRoomInAllApp(HttpRequestMessage request, int roomId);
 
         HttpResponseMessage GetObjects(HttpRequestMessage request);
         HttpResponseMessage GetObjects(HttpRequestMessage request, string param1);

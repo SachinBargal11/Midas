@@ -1087,30 +1087,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             _context.UserCompanies.Add(UserCompanyDB);                          
                         }
                         _context.SaveChanges();
-                    }
-
-                    //if (UserCompanyDB.CompanyID >0)
-                    //{
-                    //    var acc = _context.UserCompanies.Where(p => p.UserID == UserCompanyDB.UserID && p.CompanyID == UserCompanyDB.CompanyID
-                    //                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                    //                                  .FirstOrDefault<UserCompany>();
-                    //    if (acc != null)
-                    //    {
-                    //        dbContextTransaction.Rollback();
-                    //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "User is already associated with given company.", ErrorLevel = ErrorLevel.Error };
-                    //    }
-                    //    else
-                    //    {
-                    //        _context.UserCompanies.Add(UserCompanyDB);
-                    //        _context.SaveChanges();
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    dbContextTransaction.Rollback();
-                    //    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid company id.", ErrorLevel = ErrorLevel.Error };
-                    //}
-
+                    }                   
 
                 }
                 #endregion
