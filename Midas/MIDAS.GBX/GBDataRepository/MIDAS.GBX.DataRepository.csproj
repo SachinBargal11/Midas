@@ -45,6 +45,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
@@ -87,6 +88,7 @@
     <Compile Include="EntityRepository\Doctor\DoctorRepository.cs" />
     <Compile Include="EntityRepository\Doctor\DoctorSpecialityRepository.cs" />
     <Compile Include="EntityRepository\Company\InvitationRepository.cs" />
+    <Compile Include="EntityRepository\FileUpload\FileUploadRepository.cs" />
     <Compile Include="EntityRepository\InsuranceMaster\InsuranceMasterRepository.cs" />
     <Compile Include="EntityRepository\Location\LocationRepository.cs" />
     <Compile Include="EntityRepository\Log\LogRepository.cs" />

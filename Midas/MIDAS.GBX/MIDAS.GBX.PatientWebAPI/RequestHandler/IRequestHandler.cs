@@ -13,6 +13,7 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage RegenerateOTP(HttpRequestMessage request, T gbObject);
         HttpResponseMessage ValidateOTP(HttpRequestMessage request, T gbObject);
         HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage CreateGbDocObject(HttpRequestMessage request, int id, string type, List<HttpContent> streamContent);
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetObject(HttpRequestMessage request, int id);
         HttpResponseMessage ValidatePassword(HttpRequestMessage request, T gbObject);
