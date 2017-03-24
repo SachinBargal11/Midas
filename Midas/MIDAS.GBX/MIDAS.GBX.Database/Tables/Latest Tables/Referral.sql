@@ -10,7 +10,8 @@
     [ReferredToDoctorId] INT NULL, 
     [ReferredToRoomId] INT NULL, 
     [Note] NVARCHAR(250) NULL, 
-	[ReferredByEmail] [NVARCHAR](50) NULL, -- This email should not be a active user in MIDAS, else give message the user exists in MIDAS
+	[ReferredByEmail] [NVARCHAR](50) NULL,
+	[ReferredToEmail] [NVARCHAR](50) NULL, -- This email should not be a active user in MIDAS, else give message the user exists in MIDAS
 	[ReferralAccepted] [BIT] NULL DEFAULT 0, -- When the user register with MIDAS this will se it as true, these referred patient will be displayed with limited data
 
 	[IsDeleted] [bit] NULL DEFAULT 0,
