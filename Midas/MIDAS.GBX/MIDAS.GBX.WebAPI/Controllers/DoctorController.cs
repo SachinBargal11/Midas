@@ -87,11 +87,11 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         // DELETE: api/Organizations/id={organizationId}
         [HttpDelete]
-        [Route("Delete")]
+        [Route("Delete/{id}")]
         
-        public HttpResponseMessage Delete([FromBody]Doctor doctor)
+        public HttpResponseMessage Delete(int id)
         {
-            return requestHandler.DeleteGbObject(Request, doctor);
+            return requestHandler.Delete(Request, id);
         }
 
 

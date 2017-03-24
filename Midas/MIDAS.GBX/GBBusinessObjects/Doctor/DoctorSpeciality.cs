@@ -8,7 +8,7 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class DoctorSpeciality:GbObject
     {
-        public User Doctor { get; set; }
+        public Doctor Doctor { get; set; }
         public Specialty Specialty { get; set; }
         public int [] Specialties { get; set; }
     }

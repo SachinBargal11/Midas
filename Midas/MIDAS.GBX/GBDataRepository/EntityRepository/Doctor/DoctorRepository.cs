@@ -61,14 +61,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
 
                 List<BO.DoctorSpeciality> lstDoctorSpecility = new List<BO.DoctorSpeciality>();
-                foreach (var item in doctor.User.DoctorSpecialities)
+                foreach (var item in doctor.DoctorSpecialities)
                 {
                     using (DoctorSpecialityRepository sr = new DoctorSpecialityRepository(_context))
                     {
                         lstDoctorSpecility.Add(sr.ObjectConvert<BO.DoctorSpeciality, DoctorSpeciality>(item));
                     }
                 }
-                doctorBO.user.DoctorSpecialities = lstDoctorSpecility;
+                doctorBO.DoctorSpecialities = lstDoctorSpecility;
             }
 
             return (T)(object)doctorBO;
@@ -142,7 +142,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     updUserBO.user.Roles = doctorBO.user.Roles;                    
                     updUserBO.company = doctorBO.user.UserCompanies.ToList().Select(p => p.Company).FirstOrDefault();
                     updUserBO.role = doctorBO.user.Roles.ToArray();
-                    if (doctorBO.user.DoctorSpecialities.Count > 0) updUserBO.user.DoctorSpecialities = doctorBO.user.DoctorSpecialities;
+                   // if (doctorBO.DoctorSpecialities.Count > 0) updUserBO.DoctorSpecialities = doctorBO.user.DoctorSpecialities;
                     if (doctorBO.user.AddressInfo != null && doctorBO.user.AddressInfo.ID > 0) updUserBO.address = doctorBO.user.AddressInfo;
                     if (doctorBO.user.ContactInfo != null && doctorBO.user.ContactInfo.ID > 0) updUserBO.contactInfo = doctorBO.user.ContactInfo;
                     using (UserRepository userRepo = new UserRepository(_context))
@@ -163,7 +163,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     BO.AddUser addUserBO = new BO.AddUser();
                     addUserBO.user = doctorBO.user;
-                    addUserBO.user.DoctorSpecialities = doctorBO.user.DoctorSpecialities;
+                   // addUserBO.user.DoctorSpecialities = doctorBO.DoctorSpecialities;
                     addUserBO.user.Roles = doctorBO.user.Roles;
                     addUserBO.company = doctorBO.user.UserCompanies.ToList().Select(p => p.Company).FirstOrDefault();
                     addUserBO.role = doctorBO.user.Roles.ToArray();
@@ -184,19 +184,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
 
-                if (doctorBO.user.DoctorSpecialities.Count > 0)
+                if (doctorBO.DoctorSpecialities.Count > 0)
                 {
                     _dbSetDocSpecility.RemoveRange(_context.DoctorSpecialities.Where(c => c.DoctorID == doctorBO.user.ID));
                     _context.SaveChanges();
                     Specialty specilityDB = null;
                     DoctorSpeciality doctorSpecilityDB = null;
-                    foreach (var item in doctorBO.user.DoctorSpecialities)
+                    foreach (var item in doctorBO.DoctorSpecialities)
                     {
                         BO.DoctorSpeciality doctorSpecialityBO = (BO.DoctorSpeciality)(object)item;
                         specilityDB = new Specialty();
                         doctorSpecilityDB = new DoctorSpeciality();
                         doctorSpecilityDB.IsDeleted = doctorSpecialityBO.IsDeleted.HasValue ? doctorSpecialityBO.IsDeleted.Value : false;
-                        doctorSpecilityDB.User = user_;
+                        doctorSpecilityDB.Doctor  = doctorDB;
                         //Find Record By ID
                         Specialty speclity = _context.Specialties.Where(p => p.id == doctorSpecialityBO.ID).FirstOrDefault<Specialty>();
                         if (speclity == null)
@@ -212,7 +212,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         };
                     }
                 }
-                doctorDB.User.DoctorSpecialities = lstDoctorSpecility;
+                doctorDB.DoctorSpecialities = lstDoctorSpecility;
                 
                 if (doctorDB.Id > 0)
                 {
@@ -267,17 +267,31 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Delete
-        public override object Delete<T>(T entity)
+        public override object Delete(int id)
         {
-            BO.Doctor doctorBO = entity as BO.Doctor;
-
+                      
             Doctor doctorDB = new Doctor();
-            doctorDB.Id = doctorBO.ID;
-            _dbSet.Remove(_context.Doctors.Single<Doctor>(p => p.Id == doctorBO.ID));
-            _context.SaveChanges();
+           
 
-            var res = (BO.GbObject)(object)entity;
-            return doctorBO;
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                doctorDB = _context.Doctors.Where(p => p.Id == id && (p.IsDeleted == false || p.IsDeleted == null)).FirstOrDefault();
+
+                if (doctorDB != null)
+                {
+                    doctorDB.IsDeleted = true;
+                    _context.SaveChanges();                   
+                }
+                else
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Doctor details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                }
+                dbContextTransaction.Commit();
+
+            }
+            var res = ObjectConvert<BO.Doctor, Doctor>(doctorDB);
+            return (object)res;
         }
         #endregion
 
@@ -293,9 +307,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             Doctor doctorDB = _context.Doctors.Include("User")
                                               .Include("User.AddressInfo")
                                               .Include("User.ContactInfo")
-                                              .Include("User.DoctorSpecialities")
-                                              .Include("User.DoctorSpecialities.Specialty")
-                                              .Include("User.UserCompanyRoles").Where(p => p.Id == id && p.IsDeleted == false).Include(a => a.User.DoctorSpecialities).FirstOrDefault<Doctor>();
+                                              .Include("DoctorSpecialities")
+                                              .Include("DoctorSpecialities.Specialty")
+                                              .Include("User.UserCompanyRoles").Where(p => p.Id == id && p.IsDeleted == false).Include(a => a.DoctorSpecialities).FirstOrDefault<Doctor>();
 
             BO.Doctor doctorBO = new BO.Doctor();
 
@@ -318,8 +332,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var doctorDB = _context.Doctors.Include("User")
                                            .Include("User.AddressInfo")
                                            .Include("User.ContactInfo")
-                                           .Include("User.DoctorSpecialities")
-                                           .Include("User.DoctorSpecialities.Specialty")
+                                           .Include("DoctorSpecialities")
+                                           .Include("DoctorSpecialities.Specialty")
                                            .Include("User.UserCompanyRoles")
                                            .Where(p => (p.User.IsDeleted.HasValue == false || (p.User.IsDeleted.HasValue == true && p.User.IsDeleted.Value == false)) 
                                                      && p.User.UserCompanies.Where(p2 => (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false)))
@@ -388,7 +402,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object GetBySpecialityInAllApp(int specialtyId)
         {
 
-            var acc_ = _context.Doctors.Include("User").Where(p => p.User.DoctorSpecialities.Where(p2 => p2.IsDeleted == false).Any(p3 => p3.SpecialityID == specialtyId)
+            var acc_ = _context.Doctors.Include("User").Where(p => p.DoctorSpecialities.Where(p2 => p2.IsDeleted == false).Any(p3 => p3.SpecialityID == specialtyId)
                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                  .ToList();
             if (acc_ == null)
@@ -411,7 +425,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             //BO.Doctor doctorBO = (BO.Doctor)(object)entity;
 
-            var acc_ = _context.Doctors.Include("User").Include("User.UserCompanyRoles").Where(p => p.IsDeleted == false || p.IsDeleted == null).Include(a => a.User.DoctorSpecialities).ToList<Doctor>();
+            var acc_ = _context.Doctors.Include("User").Include("User.UserCompanyRoles").Where(p => p.IsDeleted == false || p.IsDeleted == null).Include(a => a.DoctorSpecialities).ToList<Doctor>();
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };

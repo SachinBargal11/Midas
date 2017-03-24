@@ -36,5 +36,7 @@ namespace MIDAS.GBX.BusinessObjects
         public string Title { get; set; }
 
         public User user { get; set; }
+
+        public List<DoctorSpeciality> DoctorSpecialities { get; set; }
     }
 }

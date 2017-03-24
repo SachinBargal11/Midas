@@ -1329,12 +1329,12 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_DoctorSpecialities_Doctor">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+        <Association Name="FK_DoctorSpecialities_Doctor_DoctorID">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
           <End Role="DoctorSpecialities" Type="Self.DoctorSpecialities" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="id" />
+            <Principal Role="Doctor">
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="DoctorSpecialities">
               <PropertyRef Name="DoctorID" />
@@ -2289,8 +2289,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Specialty" EntitySet="Specialty" />
             <End Role="DoctorLocationSpecialty" EntitySet="DoctorLocationSpecialty" />
           </AssociationSet>
-          <AssociationSet Name="FK_DoctorSpecialities_Doctor" Association="Self.FK_DoctorSpecialities_Doctor">
-            <End Role="User" EntitySet="User" />
+          <AssociationSet Name="FK_DoctorSpecialities_Doctor_DoctorID" Association="Self.FK_DoctorSpecialities_Doctor_DoctorID">
+            <End Role="Doctor" EntitySet="Doctor" />
             <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
           </AssociationSet>
           <AssociationSet Name="FK_DoctorSpecialities_Specialty" Association="Self.FK_DoctorSpecialities_Specialty">
@@ -2864,6 +2864,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="DoctorCaseConsentApprovals" Relationship="Self.FK_DoctorCaseConsentApproval_Doctor_DoctorId" FromRole="Doctor" ToRole="DoctorCaseConsentApproval" />
           <NavigationProperty Name="DoctorLocationSchedules" Relationship="Self.FK_DoctorLocationSchedule_Doctor" FromRole="Doctor" ToRole="DoctorLocationSchedule" />
           <NavigationProperty Name="DoctorLocationSpecialties" Relationship="Self.FK_DoctorLocationSpecialty_Doctor_DoctorId" FromRole="Doctor" ToRole="DoctorLocationSpecialty" />
+          <NavigationProperty Name="DoctorSpecialities" Relationship="Self.FK_DoctorSpecialities_Doctor_DoctorID" FromRole="Doctor" ToRole="DoctorSpecialities" />
           <NavigationProperty Name="PatientVisits" Relationship="Self.FK_PatientVisit_Doctor_DoctorId" FromRole="Doctor" ToRole="PatientVisit" />
           <NavigationProperty Name="PatientVisit2" Relationship="Self.FK_PatientVisit2_Doctor_DoctorId" FromRole="Doctor" ToRole="PatientVisit2" />
           <NavigationProperty Name="PatientVisitEvents" Relationship="Self.FK_PatientVisitEvent_Doctor_ReadingDoctorId" FromRole="Doctor" ToRole="PatientVisitEvent" />
@@ -2930,7 +2931,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="User" Relationship="Self.FK_DoctorSpecialities_Doctor" FromRole="DoctorSpecialities" ToRole="User" />
+          <NavigationProperty Name="Doctor" Relationship="Self.FK_DoctorSpecialities_Doctor_DoctorID" FromRole="DoctorSpecialities" ToRole="Doctor" />
           <NavigationProperty Name="Specialty" Relationship="Self.FK_DoctorSpecialities_Specialty" FromRole="DoctorSpecialities" ToRole="Specialty" />
         </EntityType>
         <EntityType Name="Gender">
@@ -3608,7 +3609,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Attorney" Relationship="Self.FK_Attorney_User_id" FromRole="User" ToRole="Attorney" />
           <NavigationProperty Name="ContactInfo" Relationship="Self.FK_User_ContactInfo" FromRole="User" ToRole="ContactInfo" />
           <NavigationProperty Name="Doctor" Relationship="Self.FK_Doctor_User" FromRole="User" ToRole="Doctor" />
-          <NavigationProperty Name="DoctorSpecialities" Relationship="Self.FK_DoctorSpecialities_Doctor" FromRole="User" ToRole="DoctorSpecialities" />
           <NavigationProperty Name="Invitations" Relationship="Self.FK_Invitation_User_Invitation" FromRole="User" ToRole="Invitation" />
           <NavigationProperty Name="Patients" Relationship="Self.FK_Patient_User" FromRole="User" ToRole="Patient" />
           <NavigationProperty Name="Patient2" Relationship="Self.FK_Patient2_User_id" FromRole="User" ToRole="Patient2" />
@@ -4315,6 +4315,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DoctorSpecialities_Doctor_DoctorID">
+          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
+          <End Role="DoctorSpecialities" Type="Self.DoctorSpeciality" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctor">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DoctorSpecialities">
+              <PropertyRef Name="DoctorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PatientVisit_Doctor_DoctorId">
           <End Role="Doctor" Type="Self.Doctor" Multiplicity="0..1" />
           <End Role="PatientVisit" Type="Self.PatientVisit" Multiplicity="*" />
@@ -4396,18 +4408,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="DoctorLocationSpecialty">
               <PropertyRef Name="SpecialtyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DoctorSpecialities_Doctor">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="DoctorSpecialities" Type="Self.DoctorSpeciality" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="DoctorSpecialities">
-              <PropertyRef Name="DoctorID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5107,6 +5107,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Doctor" EntitySet="Doctors" />
             <End Role="DoctorLocationSpecialty" EntitySet="DoctorLocationSpecialties" />
           </AssociationSet>
+          <AssociationSet Name="FK_DoctorSpecialities_Doctor_DoctorID" Association="Self.FK_DoctorSpecialities_Doctor_DoctorID">
+            <End Role="Doctor" EntitySet="Doctors" />
+            <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
+          </AssociationSet>
           <AssociationSet Name="FK_PatientVisit_Doctor_DoctorId" Association="Self.FK_PatientVisit_Doctor_DoctorId">
             <End Role="Doctor" EntitySet="Doctors" />
             <End Role="PatientVisit" EntitySet="PatientVisits" />
@@ -5134,10 +5138,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_DoctorLocationSpecialty_SpecialtyId" Association="Self.FK_DoctorLocationSpecialty_SpecialtyId">
             <End Role="Specialty" EntitySet="Specialties" />
             <End Role="DoctorLocationSpecialty" EntitySet="DoctorLocationSpecialties" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorSpecialities_Doctor" Association="Self.FK_DoctorSpecialities_Doctor">
-            <End Role="User" EntitySet="Users" />
-            <End Role="DoctorSpecialities" EntitySet="DoctorSpecialities" />
           </AssociationSet>
           <AssociationSet Name="FK_DoctorSpecialities_Specialty" Association="Self.FK_DoctorSpecialities_Specialty">
             <End Role="Specialty" EntitySet="Specialties" />
