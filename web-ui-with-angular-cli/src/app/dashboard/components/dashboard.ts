@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import * as RRule from 'rrule';
-// import {UsersStore} from '../../stores/users-store';
-// import {DoctorsStore} from '../../stores/doctors-store';
+
 
 @Component({
     selector: 'dashboard',
@@ -15,17 +13,47 @@ export class DashboardComponent {
     medicalfacilities: any;
     constructor(
     ) {
-        // let str: string = 'INTERVAL=2;FREQ=DAILY;COUNT=4';
-        // let rule: RRule = RRule.fromString(str);
-        // console.log(rule.all());
-        // // debugger;
-        // let ruleSet: RRule.RRuleSet = new RRule.RRuleSet();
-        // let rule1: RRule = new RRule({
-        //     freq: RRule.WEEKLY,
-        //     count: 30,
-        //     interval: 2
-        // });
-        
-        // ruleSet.rrule(rule1);
+
+
     }
+
+    /*displayResponseOnPage(successful, mesg, response) {
+        if (!successful) { // On error
+            document.getElementById('response').innerHTML = 'Failed: ' + mesg;
+            return;
+        }
+        if (successful && mesg != null && mesg.toLowerCase().indexOf('user cancel') >= 0) { // User cancelled.
+            document.getElementById('response').innerHTML = 'User cancelled';
+            return;
+        }
+        document.getElementById('response').innerHTML = (<any>window).scanner.getSaveResponse(response);
+    }
+
+    scanToLocalDisk() {
+        /*
+        scanner.listSources((isSuccessful, message, result) =>
+            {
+                if(isSuccessful)
+                {
+                    console.log(result);
+                }
+                else
+                {
+                    console.error(message);
+                }
+            }, false, "all", true, true);
+            
+        (<any>window).scanner.scan(this.displayResponseOnPage,
+            {
+                'output_settings': [
+                    {
+                        'type': 'save',
+                        'format': 'pdf',
+                        'save_path': '${TMP}\\${TMS}${EXT}'
+                    }
+                ]
+            }
+        );
+    }*/
+
 }

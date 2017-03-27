@@ -585,8 +585,8 @@ export class PatientVisitComponent implements OnInit {
             let eventId = this.selectedVisit.calendarEvent.recurrenceId;
             this.selectedVisit = this._patientVisitsStore.findPatientVisitByCalendarEventId(eventId);
         }
-        let rrule: RRule;
         if (moment(this.selectedVisit.calendarEvent.recurrenceRule.options.dtstart).isBefore(moment())) {
+            let rrule: RRule;
             rrule = new RRule(_.extend({}, this.selectedVisit.calendarEvent.recurrenceRule.origOptions, {
                 count: 0,
                 until: this.selectedCalEvent.start.utc().toDate()
@@ -661,30 +661,119 @@ export class PatientVisitComponent implements OnInit {
             calendarEvent: updatedEvent
         }));
         if (updatedVisit.id) {
-            let result = this._patientVisitsStore.updatePatientVisit(updatedVisit);
-            result.subscribe(
-                (response) => {
-                    let notification = new Notification({
-                        'title': 'Event updated successfully!',
-                        'type': 'SUCCESS',
-                        'createdAt': moment()
+            if (moment(this.selectedVisit.calendarEvent.recurrenceRule.options.dtstart).isBefore(this.selectedCalEvent.start, 'day')) {
+                let endDate: Date = this.selectedVisit.calendarEvent.recurrenceRule.before(this.selectedCalEvent.start.startOf('day').toDate());
+                let rrule: RRule;
+                rrule = new RRule(_.extend({}, this.selectedVisit.calendarEvent.recurrenceRule.origOptions, {
+                    count: 0,
+                    until: endDate
+                }));
+                let updatedvisitWithRecurrence: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
+                    calendarEvent: new ScheduledEvent(_.extend(this.selectedVisit.calendarEvent.toJS(), {
+                        recurrenceRule: rrule
+                    }))
+                }));
+                this._progressBarService.show();
+                let result = this._patientVisitsStore.updateCalendarEvent(updatedvisitWithRecurrence);
+                result.subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            'title': 'Event cancelled successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        this.loadVisits();
+                        this._notificationsStore.addNotification(notification);
+                    },
+                    (error) => {
+                        let errString = 'Unable to cancel event!';
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._progressBarService.hide();
+                        this._notificationsStore.addNotification(notification);
+                    },
+                    () => {
+                        this._progressBarService.hide();
                     });
-                    this.loadVisits();
-                    this._notificationsStore.addNotification(notification);
-                },
-                (error) => {
-                    let errString = 'Unable to update event!';
-                    let notification = new Notification({
-                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                        'type': 'ERROR',
-                        'createdAt': moment()
+                // Add New Visit
+                // Change the recurrence rule of selected event to start with selected date from the form 
+                // but end on same date as selected Visit rule.
+                // new series should start from selected/clicked date
+                // debugger;
+                let occurrences: Date[] = this.selectedVisit.calendarEvent.recurrenceRule.all();
+                let until: Date = moment(occurrences[occurrences.length - 1]).set({'hour': updatedVisit.calendarEvent.eventStart.hour(), 'minute': updatedVisit.calendarEvent.eventStart.minute()}).toDate();
+                let eventStart: Date = this.selectedCalEvent.start.set({'hour': updatedVisit.calendarEvent.eventStart.hour(), 'minute': updatedVisit.calendarEvent.eventStart.minute()}).toDate();
+                let eventEnd: Date = this.selectedCalEvent.end.set({'hour': updatedVisit.calendarEvent.eventEnd.hour(), 'minute': updatedVisit.calendarEvent.eventEnd.minute()}).toDate();
+                rrule = new RRule(_.extend({}, updatedVisit.calendarEvent.recurrenceRule.origOptions, {
+                    count: 0,
+                    dtstart: eventStart,
+                    until: until
+                }));
+                
+                let updatedAddNewVisit: PatientVisit = new PatientVisit(_.extend(updatedVisit.toJS(), {
+                    id: 0,
+                    calendarEventId: 0,
+                    calendarEvent: new ScheduledEvent(_.extend(updatedVisit.calendarEvent.toJS(), {
+                        id: 0,
+                        eventStart: moment(eventStart),
+                        eventEnd: moment(eventEnd),
+                        recurrenceRule: rrule
+                    }))
+                }));
+                let addVisitResult = this._patientVisitsStore.addPatientVisit(updatedAddNewVisit);
+                addVisitResult.subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            'title': 'Event added successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        this.loadVisits();
+                        this._notificationsStore.addNotification(notification);
+                        // this.event = null;
+                    },
+                    (error) => {
+                        let errString = 'Unable to add event!';
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._progressBarService.hide();
+                        this._notificationsStore.addNotification(notification);
+                    },
+                    () => {
+                        this._progressBarService.hide();
                     });
-                    this._progressBarService.hide();
-                    this._notificationsStore.addNotification(notification);
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
+            } else {
+                let result = this._patientVisitsStore.updatePatientVisit(updatedVisit);
+                result.subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            'title': 'Event updated successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+                        });
+                        this.loadVisits();
+                        this._notificationsStore.addNotification(notification);
+                    },
+                    (error) => {
+                        let errString = 'Unable to update event!';
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._progressBarService.hide();
+                        this._notificationsStore.addNotification(notification);
+                    },
+                    () => {
+                        this._progressBarService.hide();
+                    });
+            }
         } else {
             if (updatedVisit.calendarEvent.recurrenceId) {
                 let exceptionResult: Observable<{ exceptionVisit: PatientVisit, recurringEvent: ScheduledEvent }> = this._patientVisitsStore.createExceptionInRecurringEvent(updatedVisit);
