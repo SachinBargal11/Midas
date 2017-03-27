@@ -8,7 +8,7 @@ using MIDAS.GBX.EntityRepository;
 using MIDAS.GBX.DataRepository.Model;
 using MIDAS.GBX.DataRepository.EntityRepository;
 using MIDAS.GBX.DataRepository.EntityRepository.Common;
-
+using MIDAS.GBX.DataRepository.EntityRepository.FileUpload;
 
 namespace MIDAS.GBX
 {
@@ -229,6 +229,11 @@ namespace MIDAS.GBX
             {
                 repo = new DoctorCaseConsentApprovalRepository(context);
             }
+            else if (typeof(T) == typeof(BO.Document))
+            {
+                repo = new FileUploadRepository(context);
+            }
+
             return repo;
         }
     }

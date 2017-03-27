@@ -37,9 +37,9 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage CreateGbDocObject(HttpRequestMessage request, int id, string type, List<HttpContent> streamContent)
+        public HttpResponseMessage CreateGbDocObject(HttpRequestMessage request, int id, string type, List<HttpContent> streamContent,string uploadpath)
         {
-            var objResult = dataAccessManager.Save(id, type, streamContent);
+            var objResult = dataAccessManager.Save(id, type, streamContent, uploadpath);
 
             try
             {
@@ -98,6 +98,18 @@ namespace MIDAS.GBX.WebAPI
         {
             //use the usertoken to determine the  user
             return "";
+        }
+        public HttpResponseMessage GetObject(HttpRequestMessage request, int id, string type)
+        {
+            var objResult = dataAccessManager.Get(id, type);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
         }
 
         public HttpResponseMessage GetObject(HttpRequestMessage request, int id)

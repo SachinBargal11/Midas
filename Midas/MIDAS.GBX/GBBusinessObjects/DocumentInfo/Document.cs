@@ -19,6 +19,15 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("documentPath")]
         public string DocumentPath { get; set; }
 
+        [JsonProperty("documentName")]
+        public string DocumentName { get; set; }
+
+        [JsonProperty("status")]
+        public string Status { get; set; }
+
+        [JsonProperty("message")]
+        public string Message { get; set; }
+
         public virtual List<BusinessValidation> Validate(int id, string type, List<HttpContent> streamContent)
         {
             List<BusinessValidation> validations = new List<BusinessValidation>();
