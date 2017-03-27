@@ -543,6 +543,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         boOTP.usercompanies = ((List<BO.UserCompany>)sr.Get(usrComp)).ToList();
                     }
                     boOTP.User = acc_;
+
+                    List<BO.Role> RoleBO1 = new List<BO.Role>();
+                    var roles1 = _context.UserCompanyRoles.Where(p => p.UserID == acc_.ID && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).ToList();
+                    foreach (var item in roles1)
+                    {
+                        RoleBO1.Add(new BO.Role()
+                        {
+                            ID = item.RoleID,
+                            Name = Enum.GetName(typeof(BO.GBEnums.RoleType), item.RoleID),
+                            RoleType = (BO.GBEnums.RoleType)item.RoleID
+                        });
+                    }
+                    boOTP.User.Roles = RoleBO1;
                     return boOTP;
                 }
                 else if (acc_.C2FactAuthSMSEnabled)
@@ -560,6 +573,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boOTP_.usercompanies = ((List<BO.UserCompany>)sr.Get(usrComp)).ToList();
             }
             boOTP_.User = acc_;
+
+            List<BO.Role> RoleBO = new List<BO.Role>();
+            var roles = _context.UserCompanyRoles.Where(p => p.UserID == acc_.ID && (p.IsDeleted.HasValue == false || p.IsDeleted == false)).ToList();
+            foreach (var item in roles)
+            {
+                RoleBO.Add(new BO.Role()
+                {
+                    ID = item.RoleID,
+                    Name = Enum.GetName(typeof(BO.GBEnums.RoleType), item.RoleID),
+                    RoleType = (BO.GBEnums.RoleType)item.RoleID
+                });
+            }
+            boOTP_.User.Roles = RoleBO;
             return boOTP_;
         }
         #endregion

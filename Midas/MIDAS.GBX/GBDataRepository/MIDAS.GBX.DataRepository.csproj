@@ -101,6 +101,7 @@
     <Compile Include="EntityRepository\PatientVisit\PatientVisitRepository.cs" />
     <Compile Include="EntityRepository\Patient\Patient2Repository.cs" />
     <Compile Include="EntityRepository\Patient\PatientRepository.cs" />
+    <Compile Include="EntityRepository\Referral\ReferralRepository.cs" />
     <Compile Include="EntityRepository\RefferingOffice\RefferingOfficeRepository.cs" />
     <Compile Include="EntityRepository\Room\RoomRepository.cs" />
     <Compile Include="EntityRepository\Room\RoomTestRepository.cs" />
@@ -255,6 +256,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PolicyOwner.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Referral.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\RefferingOffice.cs">
