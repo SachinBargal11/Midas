@@ -8,7 +8,7 @@ using MIDAS.GBX.EntityRepository;
 using MIDAS.GBX.DataRepository.Model;
 using MIDAS.GBX.DataRepository.EntityRepository;
 using MIDAS.GBX.DataRepository.EntityRepository.Common;
-using MIDAS.GBX.DataRepository.EntityRepository.FileUpload;
+
 
 namespace MIDAS.GBX
 {
@@ -29,71 +29,71 @@ namespace MIDAS.GBX
             {
                 repo = new UserRepository(context);
             }
-            else if(typeof(T) == typeof(BO.OTP))
+            else if (typeof(T) == typeof(BO.OTP))
             {
                 repo = new OTPRepository(context);
             }
-            else if(typeof(T) == typeof(BO.PasswordToken))
+            else if (typeof(T) == typeof(BO.PasswordToken))
             {
                 repo = new PasswordTokenRepository(context);
             }
-            else if(typeof(T) == typeof(BO.Location))
+            else if (typeof(T) == typeof(BO.Location))
             {
                 repo = new LocationRepository(context);
             }
-            else if(typeof(T) == typeof(BO.Invitation))
+            else if (typeof(T) == typeof(BO.Invitation))
             {
                 repo = new InvitationRepository(context);
             }
-            else if(typeof(T) == typeof(BO.SaveLocation))
+            else if (typeof(T) == typeof(BO.SaveLocation))
             {
                 repo = new LocationRepository(context);
             }
-            else if(typeof(T) == typeof(BO.AddUser))
+            else if (typeof(T) == typeof(BO.AddUser))
             {
                 repo = new UserRepository(context);
             }
-            else if(typeof(T) == typeof(BO.ValidateOTP))
+            else if (typeof(T) == typeof(BO.ValidateOTP))
             {
                 repo = new OTPRepository(context);
             }
-            else if(typeof(T) == typeof(BO.Specialty))
+            else if (typeof(T) == typeof(BO.Specialty))
             {
                 repo = new SpecialityRepository(context);
             }
-            else if(typeof(T) == typeof(BO.SpecialtyDetails))
+            else if (typeof(T) == typeof(BO.SpecialtyDetails))
             {
                 repo = new SpecialityDetailsRepository(context);
             }
-            else if(typeof(T) == typeof(BO.CompanySpecialtyDetails))
+            else if (typeof(T) == typeof(BO.CompanySpecialtyDetails))
             {
                 repo = new CompanySpecialityDetailsRepository(context);
             }
-            else if(typeof(T) == typeof(BO.Doctor))
+            else if (typeof(T) == typeof(BO.Doctor))
             {
                 repo = new DoctorRepository(context);
             }
-            else if(typeof(T) == typeof(BO.DoctorSpeciality))
+            else if (typeof(T) == typeof(BO.DoctorSpeciality))
             {
                 repo = new DoctorSpecialityRepository(context);
             }
-            else if(typeof(T) == typeof(BO.RoomTest))
+            else if (typeof(T) == typeof(BO.RoomTest))
             {
                 repo = new RoomTestRepository(context);
             }
-            else if(typeof(T) == typeof(BO.Room))
+            else if (typeof(T) == typeof(BO.Room))
             {
                 repo = new RoomRepository(context);
             }
-            else if(typeof(T) == typeof(BO.Schedule))
+            else if (typeof(T) == typeof(BO.Schedule))
             {
                 repo = new ScheduleRepository(context);
             }
-            else if(typeof(T) == typeof(BO.UserCompany))
+            else if (typeof(T) == typeof(BO.UserCompany))
             {
                 repo = new UserCompanyRepository(context);
             }
-            else if(typeof(T) == typeof(BO.DoctorLocationSchedule))
+            else if (typeof(T) == typeof(BO.DoctorLocationSchedule))
             {
                 repo = new DoctorLocationScheduleRepository(context);
             }
@@ -101,19 +101,19 @@ namespace MIDAS.GBX
             {
                 repo = new DoctorLocationScheduleRepository(context);
             }
-            else if(typeof(T) == typeof(BO.Patient))
+            else if (typeof(T) == typeof(BO.Patient))
             {
                 repo = new PatientRepository(context);
             }
-            else if(typeof(T) == typeof(BO.Log))
+            else if (typeof(T) == typeof(BO.Log))
             {
                 repo = new LogRepository(context);
             }
-            else if(typeof(T) == typeof(BO.UserCompany))
+            else if (typeof(T) == typeof(BO.UserCompany))
             {
                 repo = new UserCompanyRepository(context);
             }
-            else if(typeof(T) == typeof(BO.Common.State))
+            else if (typeof(T) == typeof(BO.Common.State))
             {
                 repo = new StateRepository(context);
             }
@@ -121,95 +121,95 @@ namespace MIDAS.GBX
             {
                 repo = new CityRepository(context);
             }
-            else if(typeof(T) == typeof(BO.Common.MaritalStatus))
+            else if (typeof(T) == typeof(BO.Common.MaritalStatus))
             {
                 repo = new MaritalStatusRepository(context);
             }
-            else if(typeof(T) == typeof(BO.Common.Gender))
+            else if (typeof(T) == typeof(BO.Common.Gender))
             {
                 repo = new GenderRepository(context);
             }
-            else if(typeof(T) == typeof(BO.Patient2))
+            else if (typeof(T) == typeof(BO.Patient2))
             {
                 repo = new Patient2Repository(context);
             }
-            else if(typeof(T) == typeof(BO.Case))
+            else if (typeof(T) == typeof(BO.Case))
             {
                 repo = new CaseRepository(context);
             }
-            else if(typeof(T) == typeof(BO.PatientInsuranceInfo))
+            else if (typeof(T) == typeof(BO.PatientInsuranceInfo))
             {
                 repo = new PatientInsuranceInfoRepository(context);
             }
-            else if(typeof(T) == typeof(BO.PatientEmpInfo))
+            else if (typeof(T) == typeof(BO.PatientEmpInfo))
             {
                 repo = new PatientEmpInfoRepository(context);
             }
-            else if(typeof(T) == typeof(BO.Common.PolicyOwner))
+            else if (typeof(T) == typeof(BO.Common.PolicyOwner))
             {
                 repo = new PolicyOwnerRepository(context);
             }
-            else if(typeof(T) == typeof(BO.Common.InsuranceType))
+            else if (typeof(T) == typeof(BO.Common.InsuranceType))
             {
                 repo = new InsuranceTypeRepository(context);
             }
-            else if(typeof(T) == typeof(BO.PatientAccidentInfo))
+            else if (typeof(T) == typeof(BO.PatientAccidentInfo))
             {
                 repo = new PatientAccidentInfoRepository(context);
             }
-            else if(typeof(T) == typeof(BO.PatientFamilyMember))
+            else if (typeof(T) == typeof(BO.PatientFamilyMember))
             {
                 repo = new PatientFamilyMemberRepository(context);
             }
-            else if(typeof(T) == typeof(BO.Common.PatientType))
+            else if (typeof(T) == typeof(BO.Common.PatientType))
             {
                 repo = new PatientTypeRepository(context);
             }
-            else if(typeof(T) == typeof(BO.Common.Relation))
+            else if (typeof(T) == typeof(BO.Common.Relation))
             {
                 repo = new RelationRepository(context);
             }
-            else if(typeof(T) == typeof(BO.RefferingOffice))
+            else if (typeof(T) == typeof(BO.RefferingOffice))
             {
                 repo = new RefferingOfficeRepository(context);
             }
-            else if(typeof(T) == typeof(BO.AttorneyMaster))
+            else if (typeof(T) == typeof(BO.AttorneyMaster))
             {
                 repo = new AttorneyMasterRepository(context);
             }
-            else if(typeof(T) == typeof(BO.CaseInsuranceMapping))
+            else if (typeof(T) == typeof(BO.CaseInsuranceMapping))
             {
                 repo = new CaseInsuranceMappingRepository(context);
             }
-            else if(typeof(T) == typeof(BO.Common.CaseType))
+            else if (typeof(T) == typeof(BO.Common.CaseType))
             {
                 repo = new CaseTypeRepository(context);
             }
-            else if(typeof(T) == typeof(BO.Common.CaseStatus))
+            else if (typeof(T) == typeof(BO.Common.CaseStatus))
             {
                 repo = new CaseStatusRepository(context);
             }
-            else if(typeof(T) == typeof(BO.AdjusterMaster))
+            else if (typeof(T) == typeof(BO.AdjusterMaster))
             {
                 repo = new AdjusterMasterRepository(context);
             }
-            else if(typeof(T) == typeof(BO.InsuranceMaster))
+            else if (typeof(T) == typeof(BO.InsuranceMaster))
             {
                 repo = new InsuranceMasterRepository(context);
             }
-            else if(typeof(T) == typeof(BO.PatientVisit))
+            else if (typeof(T) == typeof(BO.PatientVisit))
             {
                 repo = new PatientVisitRepository(context);
             }
-            else if(typeof(T) == typeof(BO.PatientVisitEvent))
+            else if (typeof(T) == typeof(BO.PatientVisitEvent))
             {
                 repo = new PatientVisitEventRepository(context);
             }
-            else if(typeof(T) == typeof(BO.PatientVisit2))
+            else if (typeof(T) == typeof(BO.PatientVisit2))
             {
                 repo = new PatientVisit2Repository(context);
             }
-            else if(typeof(T) == typeof(BO.CalendarEvent))
+            else if (typeof(T) == typeof(BO.CalendarEvent))
             {
                 repo = new CalendarEventRepository(context);
             }
@@ -229,11 +229,10 @@ namespace MIDAS.GBX
             {
                 repo = new DoctorCaseConsentApprovalRepository(context);
             }
-            else if (typeof(T) == typeof(BO.Document))
+            else if (typeof(T) == typeof(BO.Referral))
             {
-                repo = new FileUploadRepository(context);
+                repo = new ReferralRepository(context);
             }
-
             return repo;
         }
     }

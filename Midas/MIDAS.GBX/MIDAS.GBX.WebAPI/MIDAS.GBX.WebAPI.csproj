@@ -279,6 +279,7 @@
     <Compile Include="Controllers\PatientVisit2Controller.cs" />
     <Compile Include="Controllers\PatientVisitController.cs" />
     <Compile Include="Controllers\PatientVisitEventController.cs" />
+    <Compile Include="Controllers\ReferralController.cs" />
     <Compile Include="Controllers\RefferingOfficeController.cs" />
     <Compile Include="Controllers\Room\RoomController.cs" />
     <Compile Include="Controllers\Room\RoomTestController.cs" />
