@@ -112,7 +112,7 @@
     <Build Include="Tables\Latest Tables\PatientVisitEvent.sql" />
     <Build Include="Tables\Latest Tables\CalendarEvent.sql" />
     <Build Include="Tables\Latest Tables\PatientVisit2.sql" />
-    <Build Include="Tables\Latest Tables\ReferPatient.sql" />
+    <Build Include="Tables\Latest Tables\Referral.sql" />
     <Build Include="Tables\Latest Tables\DoctorLocationSpecialty.sql" />
     <Build Include="Tables\Latest Tables\CaseCompanyMapping.sql" />
     <Build Include="Tables\Latest Tables\DoctorCaseConsentApproval.sql" />

@@ -136,7 +136,7 @@ export class PatientVisitsStore {
                 patientVisitDetail = patientVisitDetail.update(index, function () {
                     return updatedPatientVisit;
                 });
-                this._patientVisits.next(patientVisitDetail);
+                // this._patientVisits.next(patientVisitDetail);
                 resolve(patientVisitDetail);
             }, error => {
                 reject(error);
@@ -154,7 +154,7 @@ export class PatientVisitsStore {
                     return updatedPatientVisit;
                 });
                 this._patientVisits.next(patientVisitDetail);
-                resolve(patientVisitDetail);
+                resolve(updatedPatientVisit);
             }, error => {
                 reject(error);
             });
@@ -227,6 +227,43 @@ export class PatientVisitsStore {
                         return cancelledPatientVisit;
                     });
             });
+        return <Observable<PatientVisit>>Observable.from(promise);
+    }
+
+    updateCalendarEvent(patientVisit: PatientVisit): Observable<PatientVisit> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.updateCalendarEvent(patientVisit.calendarEvent)
+                .subscribe((updatedCalendarEvent: ScheduledEvent) => {
+                    let patientVisits: List<PatientVisit> = this._patientVisits.getValue();
+                    let index = patientVisits.findIndex((currentPatientVisit: PatientVisit) => currentPatientVisit.id === patientVisit.id);
+                    let updatedPatientVisit: PatientVisit = <PatientVisit>patientVisit.set('calendarEvent', updatedCalendarEvent);
+                    patientVisits = patientVisits.update(index, () => {
+                        return updatedPatientVisit;
+                    });
+                    this._patientVisits.next(patientVisits);
+                    resolve(updatedPatientVisit);
+                }, error => {
+                    reject(error);
+                });
+        });
+        return <Observable<PatientVisit>>Observable.from(promise);
+    }
+
+    cancelCalendarEvent(patientVisit: PatientVisit): Observable<PatientVisit> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.cancelPatientVisit(patientVisit)
+                .subscribe((updatedPatientVisit: PatientVisit) => {
+                    let patientVisits: List<PatientVisit> = this._patientVisits.getValue();
+                    let index = patientVisits.findIndex((currentPatientVisit: PatientVisit) => currentPatientVisit.id === patientVisit.id);
+                    patientVisits = patientVisits.update(index, () => {
+                        return updatedPatientVisit;
+                    });
+                    this._patientVisits.next(patientVisits);
+                    resolve(updatedPatientVisit);
+                }, error => {
+                    reject(error);
+                });
+        });
         return <Observable<PatientVisit>>Observable.from(promise);
     }
 

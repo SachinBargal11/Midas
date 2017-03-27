@@ -30,6 +30,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<Attorney> Attorneys { get; set; }
         public virtual DbSet<CalendarEvent> CalendarEvents { get; set; }
         public virtual DbSet<Case> Cases { get; set; }
+        public virtual DbSet<CaseCompanyMapping> CaseCompanyMappings { get; set; }
+        public virtual DbSet<CaseDocument> CaseDocuments { get; set; }
         public virtual DbSet<CaseInsuranceMapping> CaseInsuranceMappings { get; set; }
         public virtual DbSet<CaseStatu> CaseStatus { get; set; }
         public virtual DbSet<CaseType> CaseTypes { get; set; }
@@ -39,6 +41,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<CompanyType> CompanyTypes { get; set; }
         public virtual DbSet<ContactInfo> ContactInfoes { get; set; }
         public virtual DbSet<Doctor> Doctors { get; set; }
+        public virtual DbSet<DoctorCaseConsentApproval> DoctorCaseConsentApprovals { get; set; }
         public virtual DbSet<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }
         public virtual DbSet<DoctorLocationSpecialty> DoctorLocationSpecialties { get; set; }
         public virtual DbSet<DoctorSpeciality> DoctorSpecialities { get; set; }
@@ -50,6 +53,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<MaritalStatu> MaritalStatus { get; set; }
+        public virtual DbSet<MidasDocument> MidasDocuments { get; set; }
         public virtual DbSet<OTP> OTPs { get; set; }
         public virtual DbSet<PasswordToken> PasswordTokens { get; set; }
         public virtual DbSet<Patient> Patients { get; set; }
@@ -63,6 +67,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<PatientVisit2> PatientVisit2 { get; set; }
         public virtual DbSet<PatientVisitEvent> PatientVisitEvents { get; set; }
         public virtual DbSet<PolicyOwner> PolicyOwners { get; set; }
+        public virtual DbSet<Referral> Referrals { get; set; }
         public virtual DbSet<RefferingOffice> RefferingOffices { get; set; }
         public virtual DbSet<Relation> Relations { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }

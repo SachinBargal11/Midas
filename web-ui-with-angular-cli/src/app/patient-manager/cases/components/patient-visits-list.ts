@@ -6,6 +6,8 @@ import { PatientVisit } from '../../patient-visit/models/patient-visit';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
+import { PatientsStore } from '../../patients/stores/patients-store';
+import { Patient } from '../../patients/models/patient';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
 import { Room } from '../../../medical-provider/rooms/models/room';
 import { DoctorsStore } from '../../../medical-provider/users/stores/doctors-store';
@@ -22,15 +24,23 @@ import * as _ from 'underscore';
 
 export class PatientVisitListComponent implements OnInit {
     selectedVisits: PatientVisit[] = [];
+    selectedDoctorsVisits: PatientVisit[] = [];
+    selectedRoomsVisits: PatientVisit[] = [];
     visits: PatientVisit[];
     caseId: number;
+    patientId: number;
     datasource: PatientVisit[];
     totalRecords: number;
     currentDoctorName: string;
     currentRoomName: string;
+    // matchingVisits: PatientVisit[];
+    doctorsVisits: PatientVisit[];
+    roomsVisits: PatientVisit[];
     // doctors:Doctor[];
     doctor: Doctor;
     room: Room;
+    patientName: string;
+    patient:Patient;
 
     constructor(
         private _router: Router,
@@ -38,6 +48,7 @@ export class PatientVisitListComponent implements OnInit {
         private _patientVisitStore: PatientVisitsStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
+        private _patientStore: PatientsStore,
         private _notificationsService: NotificationsService,
         private _doctorsStore: DoctorsStore,
         private _roomsStore: RoomsStore,
@@ -45,6 +56,25 @@ export class PatientVisitListComponent implements OnInit {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
         });
+
+          this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
+            this.patientId = parseInt(routeParams.patientId, 10);
+             this._progressBarService.show();
+            this._patientStore.fetchPatientById(this.patientId)
+                .subscribe(
+                (patient: Patient) => {
+                    this.patient = patient;
+                    this.patientName = patient.user.firstName + ' ' + patient.user.lastName ;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        });
+     
     }
 
     ngOnInit() {
@@ -59,15 +89,17 @@ export class PatientVisitListComponent implements OnInit {
                     return currentVisit.eventStart != null && currentVisit.eventEnd != null;
                 });
                 
-                this.visits = matchingVisits.reverse();
-                // this.visits.forEach(visit => {
-                //     if (visit.doctorId != null) {
-                //     // this.currentDoctorName = this.doctor.user.firstName + '' + this.doctor.user.lastName;
-                //     }
-                //    else{
-                //         // this.currentRoomName = this.doctor.user.firstName + '' + this.doctor.user.lastName;
-                //        }
-                // });
+                // this.visits = matchingVisits.reverse();
+                let matchingDoctorVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
+                    return currentVisit.doctor != null;
+                });
+                this.doctorsVisits = matchingDoctorVisits.reverse();
+
+                let matchingRoomVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
+                    return currentVisit.room != null;
+                });
+                this.roomsVisits = matchingRoomVisits.reverse();
+                
 
             },
             (error) => {
@@ -108,6 +140,7 @@ export class PatientVisitListComponent implements OnInit {
     // }
 
     deletePatientVisits() {
+        this.selectedVisits = _.union(this.selectedRoomsVisits, this.selectedDoctorsVisits);
         if (this.selectedVisits.length > 0) {
             this.selectedVisits.forEach(currentVisit => {
                 this._progressBarService.show();

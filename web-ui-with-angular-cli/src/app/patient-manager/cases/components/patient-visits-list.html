@@ -1,56 +1,89 @@
 <div class="input-group">
-<h3 class="with-border">Patients Visits
-    <a class="pull-right btn btn-danger btn-sm" (click)="deletePatientVisits()">
-        <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Selected Visits</span>
-        <loader [visible]="isDeleteProgress"></loader>
-    </a>
-    <!--<a class="pull-right btn-inline btn btn-primary btn-sm" [routerLink]="['add']"><i class="fa fa-plus" aria-hidden="true"></i>
+    <h3 class="with-border">{{patientName}} Visits
+        <a class="pull-right btn btn-danger btn-sm" (click)="deletePatientVisits()">
+            <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Selected Visits</span>
+            <loader [visible]="isDeleteProgress"></loader>
+        </a>
+        <!--<a class="pull-right btn-inline btn btn-primary btn-sm" [routerLink]="['add']"><i class="fa fa-plus" aria-hidden="true"></i>
       <span class="hidden-md-down">Add Visit</span>
     </a>-->
-</h3>
+    </h3>
 </div>
 <div class="ui-widget-header row">
     <div class="col-lg-4 input-group">
-         <span class="input-group-addon"><i class="fa fa-search"></i></span>
-         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Visits">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        <input #gbb type="text" class="form-control" style="float:left" placeholder="Search Doctors Visits">
     </div>
 </div>
-<!--<pre>{{visits | json}}</pre>-->
-<!--<p-dataTable [value]="referringOffices" [(selection)]="selectedReferringOffices" [rows]="10" [rows]="10" [paginator]="true" 
-            [totalRecords]="totalRecords" (onLazyLoad)="loadRefferingOfficesLazy($event)" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">-->
-<p-dataTable [value]="visits" [(selection)]="selectedVisits" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
-             [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
-    <header>Patient Visits List</header>
+
+<p-dataTable [value]="doctorsVisits" [(selection)]="selectedDoctorsVisits" [rows]="10" [paginator]="true" [pageLinks]="3"
+    [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbb" [responsive]="true" [stacked]="stacked">
+    <header>Patient Doctors Visits List</header>
     <p-column selectionMode="multiple"></p-column>
-    <p-column field="visitStartAsDate" header="Visit Start Date" [sortable]="true">
-         <ng-template let-visit="rowData" pTemplate="body">
-            
-                {{visit.eventStart | dateTimeFormat}}
-            
-        </ng-template>
-    </p-column>
-    <p-column field="visitEndAsDate" header="Visit End Date" [sortable]="true">
+    <p-column field="eventStart" header="Visit Start Date" [sortable]="true">
         <ng-template let-visit="rowData" pTemplate="body">
-            
-                {{visit.eventEnd | dateTimeFormat}}
-            
+
+            {{visit.eventStart | dateTimeFormat}}
+
         </ng-template>
     </p-column>
-     <!--<p-column *ngIf="doctorId != 0" field="doctor.user.displayName"  header="Doctor Name" [sortable]="true">
+    <p-column field="eventEnd" header="Visit End Date" [sortable]="true">
+        <ng-template let-visit="rowData" pTemplate="body">
+
+            {{visit.eventEnd | dateTimeFormat}}
+
+        </ng-template>
+    </p-column>
+    <p-column field="doctor.user.displayName" header="Doctor Name" [sortable]="true">
         <ng-template let-visit="rowData" pTemplate="body">
             {{visit.doctor.user.displayName}}
         </ng-template>
-    </p-column>-->
-     
-     <p-column field="room.name" header="Room Name" [sortable]="true">
-        <ng-template let-visit="rowData" pTemplate="body">
-               {{visit.room.name}}     
-        </ng-template>
     </p-column>
-     
+
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-visit="rowData" pTemplate="body">
-            <a routerLink="edit/{{visit.id}}"><i class="glyphicon glyphicon-edit"></i></a>
+            <a routerLink="{{visit.id}}/visitNotes"><i class="glyphicon glyphicon-edit"></i></a>
+            <!--<a routerLink=""><i class="glyphicon glyphicon-edit"></i></a>-->
+        </ng-template>
+    </p-column>
+</p-dataTable><br><br>
+
+<div class="ui-widget-header row">
+    <div class="col-lg-4 input-group">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        <input #gb type="text" class="form-control" style="float:left" placeholder="Search Rooms Visits">
+    </div>
+</div>
+<!--<pre>{{visits | json}}</pre>-->
+
+<p-dataTable [value]="roomsVisits" [(selection)]="selectedRoomsVisits" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
+    [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+    <header>Patient Rooms Visits List</header>
+    <p-column selectionMode="multiple"></p-column>
+    <p-column field="eventStart" header="Visit Start Date" [sortable]="true">
+        <ng-template let-visit="rowData" pTemplate="body">
+
+            {{visit.eventStart | dateTimeFormat}}
+
+        </ng-template>
+    </p-column>
+    <p-column field="eventEnd" header="Visit End Date" [sortable]="true">
+        <ng-template let-visit="rowData" pTemplate="body">
+
+            {{visit.eventEnd | dateTimeFormat}}
+
+        </ng-template>
+    </p-column>
+
+    <p-column field="room.name" header="Room Name" [sortable]="true">
+        <ng-template let-visit="rowData" pTemplate="body">
+            {{visit.room.name}}
+        </ng-template>
+    </p-column>
+
+    <p-column styleClass="actions-cell" header="Actions">
+        <ng-template let-visit="rowData" pTemplate="body">
+            <a routerLink="{{visit.id}}/visitNotes"><i class="glyphicon glyphicon-edit"></i></a>
             <!--<a routerLink=""><i class="glyphicon glyphicon-edit"></i></a>-->
         </ng-template>
     </p-column>

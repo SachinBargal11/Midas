@@ -12,6 +12,8 @@ using MIDAS.GBX.Common;
 using MIDAS.GBX.BusinessObjects;
 using MIDAS.GBX.EntityRepository;
 using System.Data.Entity.Infrastructure;
+using System.Net.Http;
+
 namespace MIDAS.GBX.DataAccessManager
 {
     public class GbDataAccessManager<T> : IGbDataAccessManager<T>
@@ -274,7 +276,26 @@ namespace MIDAS.GBX.DataAccessManager
                 throw new GbException(string.Format("An unknown Error occurred while saving {0} [{1}]", ((GbObject)(object)(data)).ID, ex.Message));
             }
         }
-#endregion
+        #endregion
+
+        #region Save
+        public Object Save(int id, string type, List<HttpContent> streamContent,string uploadpath)
+        {
+            BaseEntityRepo baseRepo = RepoFactory.GetRepo<Document>(dbContextProvider.GetGbDBContext());
+            List<MIDAS.GBX.BusinessObjects.BusinessValidation> validationResults = baseRepo.Validate(id, type, streamContent);
+            if (validationResults.Count > 0)
+            {
+                return new ErrorObject { ErrorMessage = "Please check error object for more details", errorObject = validationResults, ErrorLevel = ErrorLevel.Validation };
+            }
+            else
+            {
+                var gbdata = baseRepo.Save(id, type, streamContent, uploadpath);
+                return gbdata;
+            }
+        }
+        #endregion
+
+
         #region Save
         public Object Save(T data)
         {
@@ -518,6 +539,29 @@ namespace MIDAS.GBX.DataAccessManager
                 return ex;
             }
         }
+
+        public Object Get(int id, string type)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.Get(id, type);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
 
         public object ValidateOTP(T data)
         {
@@ -1097,6 +1141,50 @@ namespace MIDAS.GBX.DataAccessManager
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
                 var gbdata = baseRepo.GetByLocationAndSpecialty(locationId, specialtyId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
+        public Object GetBySpecialityInAllApp(int specialtyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetBySpecialityInAllApp(specialtyId);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
+        public Object GetByRoomInAllApp(int roomId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetByRoomInAllApp(roomId);
 
                 return gbdata;
             }

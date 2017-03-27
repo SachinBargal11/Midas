@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 
 namespace MIDAS.GBX.DataAccessManager
@@ -10,12 +11,14 @@ namespace MIDAS.GBX.DataAccessManager
     public interface IGbDataAccessManager<T>
     {
         Object Save(T gbObject);
+        Object Save(int id, string type, List<HttpContent> streamContent,string uploadpath);
         Object AssociateLocationToDoctors(T gbObject);
         Object AssociateDoctorToLocations(T gbObject);
         int Delete(T entity);
         object Delete(int id);
         object GetDocumentList(int id);
-        
+
+        Object Get(int id, string type);
         Object Get(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object IsInsuranceInfoAdded(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);        
         Object Get(T gbObject, int? nestingLevels = null);
@@ -25,6 +28,8 @@ namespace MIDAS.GBX.DataAccessManager
         
         Object AddUploadedFileData(int id, string FileUploadPath, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByLocationAndSpecialty(int locationId, int specialtyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetBySpecialityInAllApp(int specialtyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByRoomInAllApp(int roomId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GenerateToken(int userId);
         Object ValidateToken(string tokenId);
         Object Kill(int tokenId);

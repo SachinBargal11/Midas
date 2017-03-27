@@ -79,6 +79,25 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             }
         }
 
+        public HttpResponseMessage CreateGbDocObject(HttpRequestMessage request, int id, string type, List<HttpContent> streamContent,string uploadpath)
+        {
+            var objResult = dataAccessManager.Save(id, type, streamContent,uploadpath);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+            return new HttpResponseMessage();
+        }
+
         public HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject)
         {
             var objResult = dataAccessManager.Save(gbObject);
@@ -90,6 +109,19 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
                     return request.CreateResponse(HttpStatusCode.Created, res);
                 else
                     return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetObject(HttpRequestMessage request, int id, string type)
+        {
+            var objResult = dataAccessManager.Get(id, type);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
             }
             catch (Exception ex)
             {
@@ -508,6 +540,24 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByLocationAndSpecialty(HttpRequestMessage request, int locationId, int specialtyId)
+        {
+            var objResult = dataAccessManager.GetByLocationAndSpecialty(locationId, specialtyId);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
             }
             catch (Exception ex)
             {

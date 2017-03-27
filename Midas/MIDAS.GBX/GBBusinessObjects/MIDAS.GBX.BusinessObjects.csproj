@@ -58,6 +58,7 @@
     <Compile Include="BusinessValidationResult.cs" />
     <Compile Include="CalendarEvent\CalendarEvent.cs" />
     <Compile Include="Case\Case.cs" />
+    <Compile Include="Case\CaseCompanyMapping.cs" />
     <Compile Include="Case\CaseInsuranceMapping.cs" />
     <Compile Include="Common\CaseStatus.cs" />
     <Compile Include="Common\CaseType.cs" />
@@ -73,9 +74,11 @@
     <Compile Include="Company\Signup.cs" />
     <Compile Include="ContactInfo\ContactInfo.cs" />
     <Compile Include="Doctor\Doctor.cs" />
+    <Compile Include="Doctor\DoctorCaseConsentApproval.cs" />
     <Compile Include="Doctor\DoctorLocationSpeciality.cs" />
     <Compile Include="Doctor\DoctorLocation.cs" />
     <Compile Include="Doctor\DoctorSpeciality.cs" />
+    <Compile Include="DocumentInfo\Document.cs" />
     <Compile Include="Email.cs" />
     <Compile Include="ErrorObject.cs" />
     <Compile Include="ErrorHandler.cs" />
@@ -98,6 +101,7 @@
     <Compile Include="Patient\Patient.cs" />
     <Compile Include="Patient\Patient2.cs" />
     <Compile Include="Patient\PatientType.cs" />
+    <Compile Include="Referral\Referral.cs" />
     <Compile Include="RefferingOffice\RefferingOffice.cs" />
     <Compile Include="Relation\Relation.cs" />
     <Compile Include="Room\Room.cs" />

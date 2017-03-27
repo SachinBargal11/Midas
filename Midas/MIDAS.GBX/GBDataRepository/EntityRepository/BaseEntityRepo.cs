@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BO = MIDAS.GBX.BusinessObjects;
 using Newtonsoft.Json.Linq;
 using MIDAS.GBX.DataRepository.Model;
+using System.Net.Http;
 
 namespace MIDAS.GBX.EntityRepository
 {
@@ -26,6 +27,21 @@ namespace MIDAS.GBX.EntityRepository
         }
 
         public virtual Object Save<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object Save(int id, string type, List<HttpContent> streamContent,string uploadpath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object Get(int id, string type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object Upload(List<HttpContent> streamContent, string path, int id, string type,string sourcePath)
         {
             throw new NotImplementedException();
         }
@@ -51,6 +67,11 @@ namespace MIDAS.GBX.EntityRepository
         }
 
         public virtual List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate(int id, string type, List<HttpContent> streamContent)
         {
             throw new NotImplementedException();
         }
@@ -302,6 +323,16 @@ namespace MIDAS.GBX.EntityRepository
         }
 
         public virtual Object GetByRoomId(int RoomId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetBySpecialityInAllApp(int specialityId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByRoomInAllApp(int roomId)
         {
             throw new NotImplementedException();
         }

@@ -120,4 +120,6 @@ ALTER TABLE [dbo].[Patient2] DROP CONSTRAINT [FK_Patient2_Company_CompanyId]
 GO
 ALTER TABLE [dbo].[Patient2] DROP COLUMN [CompanyId]
 GO
+ALTER TABLE [dbo].[Patient2] DROP CONSTRAINT [UK_Patient2_SSN]
+GO
 */

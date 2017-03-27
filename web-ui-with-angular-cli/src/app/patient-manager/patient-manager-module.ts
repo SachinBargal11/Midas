@@ -47,14 +47,16 @@ import { PatientRoutingModule } from './patient-manager-routes';
 import { AddCaseComponent } from './cases/components/add-case';
 import { CaseBasicComponent } from './cases/components/case-basic';
 import { CasesListComponent } from './cases/components/cases-list';
-import { InsuranceMapComponent } from './cases/components/insurance-mapping';
-import { CaseMappingComponent } from './cases/components/case-mapping';
+import { InsuranceMappingComponent } from './cases/components/insurance-mapping';
+import { AssignInsuranceComponent } from './cases/components/assign-insurance';
 import { CasesStore } from './cases/stores/case-store';
 import { InsuranceMappingStore } from './cases/stores/insurance-mapping-store';
 import { InsuranceMappingService } from './cases/services/insurance-mapping-service';
 import { ViewAllComponent } from './patients/components/view-all';
 import { PatientVisitListComponent } from './cases/components/patient-visits-list';
 import { PatientVisitNotesComponent } from './cases/components/patient-visit-notes';
+import { PatientVisitListShellComponent } from './cases/components/patient-visit-list-shell';
+import { VisitDocumentsUploadComponent } from './cases/components/visit-document';
 import { DocumentsUploadComponent } from './cases/components/documents';
 
 
@@ -116,13 +118,15 @@ import { UsersModule } from '../medical-provider/users/users-module';
         CasesListComponent,
         PatientVisitComponent,
         CaseBasicComponent,
-        InsuranceMapComponent,
-        CaseMappingComponent,
+        InsuranceMappingComponent,
+        AssignInsuranceComponent,
         ViewAllComponent,
         CompanyCasesComponent,
         PatientVisitListComponent,
         PatientVisitNotesComponent,
-        DocumentsUploadComponent
+        DocumentsUploadComponent,
+        PatientVisitListShellComponent,
+        VisitDocumentsUploadComponent
     ],
     providers: [
         PatientsService,

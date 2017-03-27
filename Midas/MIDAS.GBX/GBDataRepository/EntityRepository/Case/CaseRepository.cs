@@ -54,6 +54,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 caseBO.PatientEmpInfo = boPatientEmpInfo;
             }
 
+            List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
+            foreach (var casemap in cases.CaseCompanyMappings)
+            {
+                using (CaseCompanyMappingRepository cmp = new CaseCompanyMappingRepository(_context))
+                {
+                    boCaseCompanyMapping.Add(cmp.Convert<BO.CaseCompanyMapping, CaseCompanyMapping>(casemap));
+                }
+            }
+            caseBO.CaseCompanyMappings = boCaseCompanyMapping;
 
             return (T)(object)caseBO;
         }
@@ -174,6 +183,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             var acc = _context.Cases.Include("PatientEmpInfo")
                                     .Include("PatientEmpInfo.AddressInfo")
                                     .Include("PatientEmpInfo.ContactInfo")
+                                    .Include("CaseCompanyMappings")
                                     .Where(p => p.Id == id 
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .FirstOrDefault<Case>();
@@ -195,6 +205,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             var acc = _context.Cases.Include("PatientEmpInfo")
                                     .Include("PatientEmpInfo.AddressInfo")
                                     .Include("PatientEmpInfo.ContactInfo")
+                                    .Include("CaseCompanyMappings")
                                     .Where(p => p.PatientId == PatientId 
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .ToList<Case>();
@@ -218,16 +229,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object Save<T>(T entity)
         {
             BO.Case caseBO = (BO.Case)(object)entity;
-            //BO.Patient2 patient2BO = new BO.Patient2();
             BO.Location locationBO = new BO.Location();
-
+            List<BO.CaseCompanyMapping> lstCaseCompanyMapping = caseBO.CaseCompanyMappings;
+            BO.CaseCompanyMapping caseCompanyMappingBO = new BO.CaseCompanyMapping();
 
             Case caseDB = new Case();
-
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
                 Patient2 patient2DB = new Patient2();
                 Location locationDB = new Location();
+                CaseCompanyMapping caseCompanyMappingDB = new CaseCompanyMapping();
 
                 bool IsEditMode = false;
                 IsEditMode = (caseBO != null && caseBO.ID > 0) ? true : false;
@@ -321,11 +332,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 _context.SaveChanges();
                 #endregion
 
-                dbContextTransaction.Commit();
+                #region caseCompanymapping
+                if (lstCaseCompanyMapping != null)
+                {
+                    foreach (BO.CaseCompanyMapping eachcaseCompanyMapping in lstCaseCompanyMapping)
+                    {
+                        using (CaseCompanyMappingRepository caseCompanyMapRepo = new CaseCompanyMappingRepository(_context))
+                        {
+                            caseCompanyMapRepo.Save(eachcaseCompanyMapping);
+                        }
+                    }
+                }
+                #endregion
 
+                dbContextTransaction.Commit();
                 caseDB = _context.Cases.Include("PatientEmpInfo")
                                        .Include("PatientEmpInfo.AddressInfo")
                                        .Include("PatientEmpInfo.ContactInfo")
+                                       .Include("CaseCompanyMappings")
                                        .Where(p => p.Id == caseDB.Id).FirstOrDefault<Case>();
             }
 
@@ -434,20 +458,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get By Company Id
         public override object GetByCompanyId(int CompanyId)
         {
-            var allCase = _context.Cases.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
-                                        .Select(p => p.PatientId)
+            var User = _context.UserCompanies.Where(p => p.CompanyID == CompanyId && p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                        .Select(p => p.UserID)
                                         .Distinct<int>();
 
             var acc = _context.Patient2.Include("User")
-                                       .Where(p => p.CompanyId == CompanyId
-                                               && (allCase.Contains(p.Id))
-                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                       .ToList<Patient2>();
+                                       .Where(p =>  (User.Contains(p.Id))
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                    .ToList<Patient2>();
 
 
             if (acc == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Case.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {
@@ -458,7 +481,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 }
 
                 return lstCaseWithUserAndPatient;
-            }
+            }            
         }
         #endregion
 

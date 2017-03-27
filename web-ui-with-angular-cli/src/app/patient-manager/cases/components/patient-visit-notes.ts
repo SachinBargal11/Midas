@@ -5,6 +5,7 @@ import { PatientVisit } from '../../patient-visit/models/patient-visit';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
+import * as _ from 'underscore';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
 import { Room } from '../../../medical-provider/rooms/models/room';
@@ -30,6 +31,7 @@ export class PatientVisitNotesComponent implements OnInit {
         private fb: FormBuilder,
         private _router: Router,
         public  _route: ActivatedRoute,
+        private _patientVisitsStore: PatientVisitsStore,
         private _patientVisitStore: PatientVisitsStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
@@ -39,8 +41,8 @@ export class PatientVisitNotesComponent implements OnInit {
          this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
         });
-        this._route.params.subscribe((routeParams: any) => {
-            this.currentVisitId = parseInt(routeParams.id, 10);
+        this._route.parent.params.subscribe((routeParams: any) => {
+            this.currentVisitId = parseInt(routeParams.visitId, 10);
             this._progressBarService.show();
         this._patientVisitStore.fetchPatientVisitById(this.currentVisitId)
             .subscribe(currentVisit => {
@@ -66,6 +68,41 @@ export class PatientVisitNotesComponent implements OnInit {
     }
 
     ngOnInit() {
+        
+    }
+
+    saveVisit() {
+        let patientVisitFormValues = this.patientVisitNotes.value;
+        let updatedVisit: PatientVisit;
+        updatedVisit = new PatientVisit(_.extend(this.currentVisit.toJS(), {
+            notes: patientVisitFormValues.notes,
+            visitStatusId: patientVisitFormValues.visitStatusId
+        }));
+        let result = this._patientVisitsStore.updatePatientVisitDetail(updatedVisit);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Event updated successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                // this.loadVisits();
+                this._notificationsStore.addNotification(notification);
+                this._router.navigate(['../../'], { relativeTo: this._route });
+            },
+            (error) => {
+                let errString = 'Unable to update event!';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                this._notificationsStore.addNotification(notification);
+            },
+            () => {
+                this._progressBarService.hide();
+            });
         
     }
 

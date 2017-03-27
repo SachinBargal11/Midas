@@ -10,8 +10,10 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage ValidateInvitation(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetObject(HttpRequestMessage request, int id);
+        HttpResponseMessage GetObject(HttpRequestMessage request, int id, string type);
         HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage CreateGbObject1(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage CreateGbDocObject(HttpRequestMessage request, int id, string type, List<HttpContent> streamContent,string uploadpath);
         HttpResponseMessage CreateGb(HttpRequestMessage request, T gbObject);
         HttpResponseMessage UpdateGbObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage DeleteGbObject(HttpRequestMessage request, T gbObject);
@@ -31,6 +33,8 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GeneratePasswordLink(HttpRequestMessage request, T gbObject);
         HttpResponseMessage ValidatePassword(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetByLocationAndSpecialty(HttpRequestMessage request, int locationId, int specialtyId);
+        HttpResponseMessage GetBySpecialityInAllApp(HttpRequestMessage request, int specialtyId);
+        HttpResponseMessage GetByRoomInAllApp(HttpRequestMessage request, int roomId);
 
         HttpResponseMessage GetObjects(HttpRequestMessage request);
         HttpResponseMessage GetObjects(HttpRequestMessage request, string param1);

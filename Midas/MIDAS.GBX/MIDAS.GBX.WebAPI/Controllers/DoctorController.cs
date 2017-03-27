@@ -60,6 +60,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetByLocationAndSpecialty(Request, locationId, specialtyId);
         }
 
+        [HttpGet]
+        [Route("getBySpecialityInAllApp/{SpecialtyId}")]
+        public HttpResponseMessage GetBySpecialityInAllApp(int specialtyId)
+        {
+            return requestHandler.GetBySpecialityInAllApp(Request, specialtyId);
+        }
+
         // POST: api/Organizations
         [HttpPost]
         [Route("Add")]
@@ -80,11 +87,11 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         // DELETE: api/Organizations/id={organizationId}
         [HttpDelete]
-        [Route("Delete")]
+        [Route("Delete/{id}")]
         
-        public HttpResponseMessage Delete([FromBody]Doctor doctor)
+        public HttpResponseMessage Delete(int id)
         {
-            return requestHandler.DeleteGbObject(Request, doctor);
+            return requestHandler.Delete(Request, id);
         }
 
 

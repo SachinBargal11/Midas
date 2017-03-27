@@ -37,6 +37,25 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage CreateGbDocObject(HttpRequestMessage request, int id, string type, List<HttpContent> streamContent,string uploadpath)
+        {
+            var objResult = dataAccessManager.Save(id, type, streamContent, uploadpath);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+            return new HttpResponseMessage();
+        }
+
         public HttpResponseMessage CreateGbObject1(HttpRequestMessage request, T gbObject)
         {
             var objResult = dataAccessManager.AssociateLocationToDoctors(gbObject);
@@ -79,6 +98,18 @@ namespace MIDAS.GBX.WebAPI
         {
             //use the usertoken to determine the  user
             return "";
+        }
+        public HttpResponseMessage GetObject(HttpRequestMessage request, int id, string type)
+        {
+            var objResult = dataAccessManager.Get(id, type);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
         }
 
         public HttpResponseMessage GetObject(HttpRequestMessage request, int id)
@@ -405,6 +436,42 @@ namespace MIDAS.GBX.WebAPI
         public HttpResponseMessage GetByLocationAndSpecialty(HttpRequestMessage request, int locationId, int specialtyId)
         {
             var objResult = dataAccessManager.GetByLocationAndSpecialty(locationId, specialtyId);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetBySpecialityInAllApp(HttpRequestMessage request, int specialtyId)
+        {
+            var objResult = dataAccessManager.GetBySpecialityInAllApp(specialtyId);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByRoomInAllApp(HttpRequestMessage request, int roomId)
+        {
+            var objResult = dataAccessManager.GetByRoomInAllApp(roomId);
 
             try
             {

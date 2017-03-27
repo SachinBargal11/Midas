@@ -8,13 +8,15 @@ import { CaseShellComponent } from './components/cases-shell';
 import { CaseBasicComponent } from './components/case-basic';
 import { ReferringOfficeListComponent } from './components/referring-office-list';
 import { PatientVisitListComponent } from './components/patient-visits-list';
+import { PatientVisitListShellComponent } from './components/patient-visit-list-shell';
+import { VisitDocumentsUploadComponent } from './components/visit-document';
 import { PatientVisitNotesComponent } from './components/patient-visit-notes';
 import { AddReferringOfficeComponent } from './components/add-referring-office';
 import { EditReferringOfficeComponent } from './components/edit-referring-office';
 import { AccidentInfoComponent } from './components/accident';
 import { DocumentsUploadComponent } from './components/documents';
-import { InsuranceMapComponent } from './components/insurance-mapping';
-import { CaseMappingComponent } from './components/case-mapping';
+import { InsuranceMappingComponent } from './components/insurance-mapping';
+import { AssignInsuranceComponent } from './components/assign-insurance';
 import { CompanyCasesComponent } from './components/company-cases-list';
 
 export const CasesShellRoutes: Routes = [
@@ -127,9 +129,8 @@ export const CasesShellRoutes: Routes = [
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Visits'
-
-                    },
-                    children: [
+                        },
+                        children: [
                             {
                                 path: '',
                                 component: PatientVisitListComponent,
@@ -139,14 +140,44 @@ export const CasesShellRoutes: Routes = [
                                 }
                             },
                             {
-                                path: 'edit/:id',
-                                component: PatientVisitNotesComponent,
-                                canActivate: [ValidateActiveSession],
+                                path: ':visitId',
+                                component: PatientVisitListShellComponent,
                                 data: {
-                                    breadcrumb: 'Visit Notes'
-                                }
+                                    breadcrumb: 'root'
+                                },
+                                children: [
+                                    {
+                                        path: '',
+                                        redirectTo: 'visitNotes',
+                                        pathMatch: 'full'
+                                    },
+                                    {
+                                        path: 'visitNotes',
+                                        component: PatientVisitNotesComponent,
+                                        canActivate: [ValidateActiveSession],
+                                        data: {
+                                            breadcrumb: 'Visit Notes'
+                                        }
+                                    },
+                                    {
+                                        path: 'visitDocument',
+                                        component: VisitDocumentsUploadComponent,
+                                        canActivate: [ValidateActiveSession],
+                                        data: {
+                                            breadcrumb: 'Documents Upload'
+                                        }
+                                    }
+                                ]
                             }
-                    ]
+                            // {
+                            //     path: 'edit/:id',
+                            //     component: PatientVisitNotesComponent,
+                            //     canActivate: [ValidateActiveSession],
+                            //     data: {
+                            //         breadcrumb: 'Visit Notes'
+                            //     }
+                            // }
+                        ]
                     },
                     {
                         path: 'accident',
@@ -156,7 +187,7 @@ export const CasesShellRoutes: Routes = [
                             breadcrumb: 'Accident'
                         }
                     },
-                       {
+                    {
                         path: 'documents',
                         component: DocumentsUploadComponent,
                         canActivate: [ValidateActiveSession],
@@ -165,20 +196,29 @@ export const CasesShellRoutes: Routes = [
                         }
                     },
                     {
-                        path: 'cases-mapping',
-                        component: CaseMappingComponent,
-                        canActivate: [ValidateActiveSession],
-                        data: {
-                            breadcrumb: 'Case Mapping'
-                        }
-                    },
-                    {
                         path: 'insurance-mapping',
-                        component: InsuranceMapComponent,
+                        component: InsuranceMappingComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Insurance Mapping'
                         }
+                    },
+                    {
+                        path: 'insurance-mapping',
+                        component: ShellComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Insurance Mapping'
+                        },
+                        children: [
+                            {
+                                path: 'assign',
+                                component: AssignInsuranceComponent,
+                                data: {
+                                    breadcrumb: 'Assign Insurance'
+                                }
+                            },
+                        ]
                     }
                 ]
             }

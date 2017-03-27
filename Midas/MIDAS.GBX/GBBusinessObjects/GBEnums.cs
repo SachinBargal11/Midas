@@ -105,5 +105,17 @@ namespace MIDAS.GBX.BusinessObjects
         }
         #endregion
 
+        #region File Types
+        public enum FileTypes
+        {
+            pdf = 1,
+            doc = 2,
+            jpg = 3,
+            jpeg = 4,
+            docx = 5,
+            txt = 6
+        }
+        #endregion
+
     }
 }

@@ -64,7 +64,7 @@ namespace MIDAS.GBX.BusinessObjects
 
         public List<UserCompany> UserCompanies { get; set; }
 
-        public List<DoctorSpeciality> DoctorSpecialities { get; set; }
+       // public List<DoctorSpeciality> DoctorSpecialities { get; set; }
 
         public List<Role> Roles { get; set; }
 

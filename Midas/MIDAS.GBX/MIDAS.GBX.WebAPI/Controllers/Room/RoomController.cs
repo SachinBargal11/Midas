@@ -88,6 +88,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetByLocationId(Request, LocationId);
         }
 
+        [HttpGet]
+        [Route("getByRoomInAllApp/{roomId}")]
+        public HttpResponseMessage GetByRoomInAllApp(int roomId)
+        {
+            return requestHandler.GetByRoomInAllApp(Request, roomId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

@@ -1,0 +1,24 @@
+<section class="tabs-section">
+	<div class="tabs-section-nav tabs-section-nav-inline">
+			<ul class="nav" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link" routerLink="visitNotes" [routerLinkActive]="['active']" role="tab" data-toggle="tab">	
+					Visit Notes
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLink="visitDocument" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						
+					 Upload Documents
+					</a>
+				</li>
+			</ul>
+	</div>
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane fade in active">
+
+			<router-outlet></router-outlet>
+
+		</div>
+	</div>
+</section>
