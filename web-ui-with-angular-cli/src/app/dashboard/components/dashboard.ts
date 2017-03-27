@@ -17,7 +17,7 @@ export class DashboardComponent {
 
     }
 
-    displayResponseOnPage(successful, mesg, response) {
+    /*displayResponseOnPage(successful, mesg, response) {
         if (!successful) { // On error
             document.getElementById('response').innerHTML = 'Failed: ' + mesg;
             return;
@@ -42,7 +42,7 @@ export class DashboardComponent {
                     console.error(message);
                 }
             }, false, "all", true, true);
-            */
+            
         (<any>window).scanner.scan(this.displayResponseOnPage,
             {
                 'output_settings': [
@@ -54,6 +54,6 @@ export class DashboardComponent {
                 ]
             }
         );
-    }
+    }*/
 
 }
