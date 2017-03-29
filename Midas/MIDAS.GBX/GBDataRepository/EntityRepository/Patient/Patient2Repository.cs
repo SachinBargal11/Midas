@@ -210,9 +210,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                          .Select(p => p.PatientId)
                                          .Distinct<int>();
 
-            var acc = _context.Patient2.Include("AddressInfo")
-                                       .Include("ContactInfo")
-                                       .Include("User")
+            var acc = _context.Patient2.Include("User")
                                        .Include("User.AddressInfo")
                                        .Include("User.ContactInfo")
                                        .Where(p => (openCase.Contains(p.Id))

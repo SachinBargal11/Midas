@@ -84,6 +84,30 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
 
+                if (patientVisit2.Case != null)
+                {
+                    BO.Case CaseBO = new BO.Case();
+                    using (CaseRepository caseRepo = new CaseRepository(_context))
+                    {
+                        CaseBO = caseRepo.Convert<BO.Case, Case>(patientVisit2.Case);
+                        patientVisit2BO.Case = CaseBO;
+
+                        if (patientVisit2.Case.PatientAccidentInfoes != null && patientVisit2.Case.PatientAccidentInfoes.Count > 0)
+                        {
+                            List<BO.PatientAccidentInfo> PatientAccidentInfoBOList = new List<BO.PatientAccidentInfo>();
+                            using (PatientAccidentInfoRepository patientAccidentInfoRepo = new PatientAccidentInfoRepository(_context))
+                            {
+                                foreach (PatientAccidentInfo eachPatientInsuranceInfo in patientVisit2.Case.PatientAccidentInfoes)
+                                {
+                                    PatientAccidentInfoBOList.Add(patientAccidentInfoRepo.Convert<BO.PatientAccidentInfo, PatientAccidentInfo>(eachPatientInsuranceInfo));
+                                }
+
+                                patientVisit2BO.Case.PatientAccidentInfoes = PatientAccidentInfoBOList;
+                            }
+                        }
+                    }
+                }
+
                 if (patientVisit2.Doctor != null)
                 {
                     BO.Doctor boDoctor = new BO.Doctor();
@@ -552,7 +576,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("Patient2").Include("Patient2.PatientInsuranceInfoes")
                                                                         .Include("Case").Include("Case.PatientAccidentInfoes")
-                                                                        .Where(p => p.DoctorId == DoctorId && p.EventStart >= FromDate && p.EventStart < ToDate
+                                                                        .Where(p => p.DoctorId == DoctorId 
+                                                                                 && p.EventStart >= FromDate && p.EventStart < ToDate
+                                                                                && (p.Patient2.IsDeleted.HasValue == false || (p.Patient2.IsDeleted.HasValue == true && p.Patient2.IsDeleted.Value == false))
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))               
                                                                         .ToList<PatientVisit2>();
           
