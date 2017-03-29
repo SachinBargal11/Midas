@@ -217,7 +217,7 @@ export class AddInsuranceComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/patient-manager/patient/viewall']);
+                this._router.navigate(['../'], { relativeTo: this._route });
             },
             (error) => {
                 let errString = 'Unable to add Insurance.';

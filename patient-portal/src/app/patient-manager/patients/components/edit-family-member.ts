@@ -41,7 +41,7 @@ export class EditFamilyMemberComponent implements OnInit {
         private _phoneFormatPipe: PhoneFormatPipe,
         private _elRef: ElementRef
     ) {
-         this.patientId = this._sessionStore.session.user.id;
+        this.patientId = this._sessionStore.session.user.id;
         // this._route.parent.parent.params.subscribe((routeParams: any) => {
         //     this.patientId = parseInt(routeParams.patientId);
         // });
@@ -55,7 +55,7 @@ export class EditFamilyMemberComponent implements OnInit {
                     this.cellPhone = this._phoneFormatPipe.transform(this.familyMember.cellPhone);
                 },
                 (error) => {
-                    this._router.navigate(['/patient-manager/patient/viewall']);
+                    // this._router.navigate(['../../'], { relativeTo: this._route });
                     this._progressBarService.hide();
                 },
                 () => {
@@ -63,17 +63,17 @@ export class EditFamilyMemberComponent implements OnInit {
                 });
         });
         this.familyMemberForm = this.fb.group({
-                relationId: ['', Validators.required],
-                firstName: ['', Validators.required],
-                middleName: [''],
-                lastName: ['', Validators.required],
-                age: ['', Validators.required],
-                races: ['', Validators.required],
-                ethnicities: ['', Validators.required],
-                gender: ['', Validators.required],
-                cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                workPhone: [''],
-                primaryContact: ['']
+            relationId: ['', Validators.required],
+            firstName: ['', Validators.required],
+            middleName: [''],
+            lastName: ['', Validators.required],
+            age: ['', Validators.required],
+            races: ['', Validators.required],
+            ethnicities: ['', Validators.required],
+            gender: ['', Validators.required],
+            cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            workPhone: [''],
+            primaryContact: ['']
         });
 
         this.familyMemberFormControls = this.familyMemberForm.controls;
@@ -109,7 +109,7 @@ export class EditFamilyMemberComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/patient-manager/patient/viewall']);
+                this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
                 let errString = 'Unable to update Family Member.';

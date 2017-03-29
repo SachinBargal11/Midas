@@ -65,7 +65,7 @@ export class EditInsuranceComponent implements OnInit {
         private _faxNoFormatPipe: FaxNoFormatPipe,
         private _elRef: ElementRef
     ) {
-         this.patientId = this._sessionStore.session.user.id;
+        this.patientId = this._sessionStore.session.user.id;
         // this._route.parent.parent.params.subscribe((routeParams: any) => {
         //     this.patientId = parseInt(routeParams.patientId);
         // });
@@ -77,7 +77,7 @@ export class EditInsuranceComponent implements OnInit {
                 (insurance: any) => {
                     this.insurance = insurance.toJS();
 
-            this.loadInsuranceMasterAddress(this.insurance.insuranceMasterId);
+                    this.loadInsuranceMasterAddress(this.insurance.insuranceMasterId);
                     this.policyCellPhone = this._phoneFormatPipe.transform(this.insurance.policyContact.cellPhone);
                     this.policyFaxNo = this._faxNoFormatPipe.transform(this.insurance.policyContact.faxNo);
                     this.insuranceCellPhone = this._phoneFormatPipe.transform(this.insurance.insuranceContact.cellPhone);
@@ -88,7 +88,7 @@ export class EditInsuranceComponent implements OnInit {
                     // this.loadPolicyCities(insurance.policyAddress.state);
                 },
                 (error) => {
-                    this._router.navigate(['/patient-manager/patient/viewall']);
+                    this._router.navigate(['../../'], { relativeTo: this._route });
                     this._progressBarService.hide();
                 },
                 () => {
@@ -144,19 +144,19 @@ export class EditInsuranceComponent implements OnInit {
 
         this._insuranceStore.getInsurancesMaster()
             .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
-            
-            // this.loadInsuranceMasterAddress(this.insurance.insuranceMasterId);
+
+        // this.loadInsuranceMasterAddress(this.insurance.insuranceMasterId);
 
     }
 
     selectInsurance(event) {
         let currentInsurance: number = parseInt(event.target.value);
-        if ( currentInsurance !== 0) {
-        this.loadInsuranceMasterAddress(currentInsurance);
+        if (currentInsurance !== 0) {
+            this.loadInsuranceMasterAddress(currentInsurance);
         } else {
             this.insuranceMastersAdress = null
         }
-        
+
     }
 
     loadInsuranceMasterAddress(currentInsurance) {
@@ -291,8 +291,7 @@ export class EditInsuranceComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                // this._router.navigate(['/patient-manager/patients/' + this.patientId + '/insurances']);
-                this._router.navigate(['/patient-manager/patient/viewall']);
+                this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
                 let errString = 'Unable to update Insurance.';
