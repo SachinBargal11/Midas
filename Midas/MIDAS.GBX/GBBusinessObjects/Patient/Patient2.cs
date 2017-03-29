@@ -29,21 +29,6 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("dateOfFirstTreatment")]
         public DateTime? DateOfFirstTreatment { get; set; }
-        /*
-        [JsonProperty("attorneyName")]
-        public string AttorneyName { get; set; }
-
-        [JsonProperty("attorneyAddressInfoId")]
-        public int? AttorneyAddressInfoId { get; set; }
-
-        [JsonProperty("attorneyContactInfoId")]
-        public int? AttorneyContactInfoId { get; set; }
-*/
-        [JsonProperty("attorneyAddressInfo")]
-        public AddressInfo AddressInfo { get; set; }
-
-        [JsonProperty("attorneyContactInfo")]
-        public ContactInfo ContactInfo { get; set; }
 
         [JsonProperty("user")]
         public User User { get; set; }
@@ -135,8 +120,6 @@ namespace MIDAS.GBX.BusinessObjects
             //{
             //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Please select MaritalStatus." });
             //}
-
-           
 
             return validations;
         }
