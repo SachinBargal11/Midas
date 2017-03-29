@@ -48,22 +48,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (patient2.UpdateByUserID.HasValue)
                 patientBO2.UpdateByUserID = patient2.UpdateByUserID.Value;
 
-            //useful to get whole structure in responce.
-            //if (patientBO2.CompanyId.HasValue == true)
-            //{ 
-            //    BO.Company boCompany = new BO.Company();
-            //    using (CompanyRepository cmp = new CompanyRepository(_context))
-            //    {
-            //        boCompany = cmp.Convert<BO.Company, Company>(patient2.Company);
-            //        patientBO2.Company = boCompany;
-            //    }
-            //}
+            if (patient2.User != null)
+            {
                 BO.User boUser = new BO.User();
                 using (UserRepository cmp = new UserRepository(_context))
                 {
                     boUser = cmp.Convert<BO.User, User>(patient2.User);
                     patientBO2.User = boUser;
                 }
+            }                
 
             patientBO2.IsDeleted = patient2.IsDeleted;
             patientBO2.CreateByUserID = patient2.CreateByUserID;
