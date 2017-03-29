@@ -31,7 +31,7 @@ export class CaseBasicComponent implements OnInit {
     caseformControls;
     locations: LocationDetails[];
     employer: Employer;
-    patient:Patient;
+    patient: Patient;
     isSaveProgress = false;
     caseId: number;
     patientId: number;
@@ -53,13 +53,13 @@ export class CaseBasicComponent implements OnInit {
         private _elRef: ElementRef
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId, 10);   
+            this.patientId = parseInt(routeParams.patientId, 10);
             this._progressBarService.show();
             this._patientStore.fetchPatientById(this.patientId)
                 .subscribe(
                 (patient: Patient) => {
                     this.patient = patient;
-                    this.patientName = patient.user.firstName + ' ' + patient.user.lastName ;
+                    this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -118,9 +118,8 @@ export class CaseBasicComponent implements OnInit {
         let result;
         let caseDetailJS = this.caseDetail.toJS();
         let caseDetail: Case = new Case(_.extend(caseDetailJS, {
-
             // caseName: caseFormValues.caseName,
-            id:this.caseId,
+            id: this.caseId,
             patientId: this.patientId,
             caseTypeId: caseFormValues.caseTypeId,
             carrierCaseNo: caseFormValues.carrierCaseNo,
