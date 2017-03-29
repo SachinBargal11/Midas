@@ -229,6 +229,10 @@ namespace MIDAS.GBX
             {
                 repo = new DoctorCaseConsentApprovalRepository(context);
             }
+            else if (typeof(T) == typeof(BO.Notification))
+            {
+                repo = new NotificationRepository(context);
+            }
             return repo;
         }
     }

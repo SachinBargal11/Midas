@@ -20,9 +20,12 @@ namespace MIDAS.GBX.DataRepository.Model
             this.Cases = new HashSet<Case>();
             this.DoctorLocationSchedules = new HashSet<DoctorLocationSchedule>();
             this.DoctorLocationSpecialties = new HashSet<DoctorLocationSpecialty>();
+            this.Notifications = new HashSet<Notification>();
             this.Patients = new HashSet<Patient>();
             this.PatientVisits = new HashSet<PatientVisit>();
             this.PatientVisit2 = new HashSet<PatientVisit2>();
+            this.Referrals = new HashSet<Referral>();
+            this.Referrals1 = new HashSet<Referral>();
             this.Rooms = new HashSet<Room>();
         }
     
@@ -51,11 +54,17 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<DoctorLocationSpecialty> DoctorLocationSpecialties { get; set; }
         public virtual Schedule Schedule { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Notification> Notifications { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Patient> Patients { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientVisit> PatientVisits { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PatientVisit2> PatientVisit2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Referral> Referrals { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Referral> Referrals1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Room> Rooms { get; set; }
     }

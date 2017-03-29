@@ -54,6 +54,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<MaritalStatu> MaritalStatus { get; set; }
         public virtual DbSet<MidasDocument> MidasDocuments { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<OTP> OTPs { get; set; }
         public virtual DbSet<PasswordToken> PasswordTokens { get; set; }
         public virtual DbSet<Patient> Patients { get; set; }
@@ -67,6 +68,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<PatientVisit2> PatientVisit2 { get; set; }
         public virtual DbSet<PatientVisitEvent> PatientVisitEvents { get; set; }
         public virtual DbSet<PolicyOwner> PolicyOwners { get; set; }
+        public virtual DbSet<Referral> Referrals { get; set; }
         public virtual DbSet<RefferingOffice> RefferingOffices { get; set; }
         public virtual DbSet<Relation> Relations { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }

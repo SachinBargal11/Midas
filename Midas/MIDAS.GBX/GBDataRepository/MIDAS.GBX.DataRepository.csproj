@@ -92,6 +92,7 @@
     <Compile Include="EntityRepository\InsuranceMaster\InsuranceMasterRepository.cs" />
     <Compile Include="EntityRepository\Location\LocationRepository.cs" />
     <Compile Include="EntityRepository\Log\LogRepository.cs" />
+    <Compile Include="EntityRepository\Notification\NotificationRepository.cs" />
     <Compile Include="EntityRepository\PatientAccidentInfo\PatientAccidentInfoRepository.cs" />
     <Compile Include="EntityRepository\PatientEmpInfo\PatientEmpInfoRepository.cs" />
     <Compile Include="EntityRepository\PatientFamilyMember\PatientFamilyMemberRepository.cs" />
@@ -218,6 +219,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MIDASGBXEntities.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Model\Notification.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\OTP.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
@@ -255,6 +259,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PolicyOwner.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Referral.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\RefferingOffice.cs">
