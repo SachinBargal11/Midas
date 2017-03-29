@@ -1091,12 +1091,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetByDates(DateTime FromDate,DateTime ToDate, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object GetByDates(int DoctorId, DateTime FromDate,DateTime ToDate, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetByDates(FromDate, ToDate);
+                var gbdata = baseRepo.GetByDates(DoctorId, FromDate, ToDate);
 
                 return gbdata;
             }

@@ -808,9 +808,9 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage GetByDates(HttpRequestMessage request, DateTime FromDate, DateTime ToDate)
+        public HttpResponseMessage GetByDates(HttpRequestMessage request, int DoctorId, DateTime FromDate, DateTime ToDate)
         {
-            var objResult = dataAccessManager.GetByDates(FromDate, ToDate);
+            var objResult = dataAccessManager.GetByDates(DoctorId, FromDate, ToDate);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
