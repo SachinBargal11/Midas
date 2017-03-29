@@ -27,9 +27,8 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         public FileUploadController()
         {
-            sourcePath = HttpContext.Current.Server.MapPath("~/App_Data/uploads").ToString();
-            remotePath = ConfigurationManager.AppSettings.Get("FILE_UPLOAD_PATH").ToString();
-            requestHandler = new GbApiRequestHandler<Document>();                        
+            sourcePath = HttpContext.Current.Server.MapPath("~/App_Data/uploads").ToString();            
+            requestHandler = new GbApiRequestHandler<Document>();
         }
 
         [HttpPost]
@@ -84,6 +83,14 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("get/{id}/{type}")]
+        [AllowAnonymous]
+        public HttpResponseMessage Get(int id, string type)
+        {
+            return requestHandler.GetObject(Request, id, type);
+        }
+
         [HttpPost]
         [Route("multiupload/{id}/{type}")]
         public async Task<HttpResponseMessage> Upload(int id, string type)
@@ -91,13 +98,13 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             // Check if the request contains multipart/form-data.
             if (!Request.Content.IsMimeMultipartContent("form-data"))
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
-            
+
             //If size of a file is not big then read file directly into stream
-            var streamProvider = new MultipartMemoryStreamProvider();            
+            var streamProvider = new MultipartMemoryStreamProvider();
             //If size is quite big to upload then store file to desk and then move to appropriate directory
             //var streamProvider = new MultipartFormDataStreamProvider(sourcePath);
             await Request.Content.ReadAsMultipartAsync(streamProvider);
-            
+
             List<HttpContent> streamContent = streamProvider.Contents.ToList();
             /*foreach (HttpContent ctnt in streamProvider.Contents)
             {                
@@ -111,8 +118,8 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
                     filestream.Close();
                 }
             }*/
-            
-            return requestHandler.CreateGbDocObject(Request, id, type, streamContent);
+
+            return requestHandler.CreateGbDocObject(Request, id, type, streamContent, sourcePath);
         }
         /*[HttpPost]
         [Route("upload")]

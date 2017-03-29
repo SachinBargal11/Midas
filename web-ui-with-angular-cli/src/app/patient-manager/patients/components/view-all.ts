@@ -60,7 +60,7 @@ export class ViewAllComponent implements OnInit {
         this._route.parent.params.subscribe((params: any) => {
             this.patientId = parseInt(params.patientId, 10);
             this._progressBarService.show();
-            let result = this._patientsStore.getPatientById(this.patientId);
+            let result = this._patientsStore.fetchPatientById(this.patientId);
             result.subscribe(
                 (patient: Patient) => {
                     this.patientInfo = patient;

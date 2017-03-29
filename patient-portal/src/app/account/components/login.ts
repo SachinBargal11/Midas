@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
                 if (this.checkSecuredLogin(this.loginForm.value.email)) {
                     this._router.navigate(['/account/security-check']);
                 } else {
-                    this._router.navigate(['/patient-manager/patient/viewall']);
+                    this._router.navigate(['/patient-manager/profile/viewall']);
                     // this._router.navigate(['/dashboard']);
                 }
             },

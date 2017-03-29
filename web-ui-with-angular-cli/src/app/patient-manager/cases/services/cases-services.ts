@@ -76,7 +76,12 @@ export class CaseService {
 
     addCase(caseDetail: Case): Observable<Case> {
         let promise: Promise<Case> = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/Case/Save', JSON.stringify(caseDetail), {
+            let caseRequestData = caseDetail.toJS();
+            let caseCompanyMapping = [{
+                        companyId: this._sessionStore.session.currentCompany.id
+                }];
+                caseRequestData.caseCompanyMapping = caseCompanyMapping;
+            return this._http.post(this._url + '/Case/Save', JSON.stringify(caseRequestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -94,7 +99,12 @@ export class CaseService {
 
     updateCase(caseDetail: Case): Observable<Case> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.post(this._url + '/Case/Save', JSON.stringify(caseDetail), {
+            let caseRequestData = caseDetail.toJS();
+            let caseCompanyMapping = [{
+                        companyId: this._sessionStore.session.currentCompany.id
+                }];
+                caseRequestData.caseCompanyMapping = caseCompanyMapping;
+            return this._http.post(this._url + '/Case/Save', JSON.stringify(caseRequestData), {
                 headers: this._headers
             })
                 .map(res => res.json())

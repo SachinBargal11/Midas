@@ -88,6 +88,7 @@
     <Compile Include="EntityRepository\Doctor\DoctorRepository.cs" />
     <Compile Include="EntityRepository\Doctor\DoctorSpecialityRepository.cs" />
     <Compile Include="EntityRepository\Company\InvitationRepository.cs" />
+    <Compile Include="EntityRepository\FileUpload\FileUploadManager.cs" />
     <Compile Include="EntityRepository\FileUpload\FileUploadRepository.cs" />
     <Compile Include="EntityRepository\InsuranceMaster\InsuranceMasterRepository.cs" />
     <Compile Include="EntityRepository\Location\LocationRepository.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="EntityRepository\PatientVisit\PatientVisitRepository.cs" />
     <Compile Include="EntityRepository\Patient\Patient2Repository.cs" />
     <Compile Include="EntityRepository\Patient\PatientRepository.cs" />
+    <Compile Include="EntityRepository\Referral\ReferralRepository.cs" />
     <Compile Include="EntityRepository\RefferingOffice\RefferingOfficeRepository.cs" />
     <Compile Include="EntityRepository\Room\RoomRepository.cs" />
     <Compile Include="EntityRepository\Room\RoomTestRepository.cs" />

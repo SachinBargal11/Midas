@@ -116,6 +116,11 @@ export class PatientsService {
                     name: 'sergi----'
                 }
             });
+            requestData.user = _.extend(requestData.user, {
+                UserCompanies: [{
+                    CompanyId: this._sessionStore.session.currentCompany.id
+                }]
+            });
 
             return this._http.post(this._url + '/patient/savePatient', JSON.stringify(requestData), {
                 headers: this._headers
@@ -140,6 +145,11 @@ export class PatientsService {
             requestData.user.dateOfBirth = requestData.user.dateOfBirth ? requestData.user.dateOfBirth.format('YYYY-MM-DD') : null;
             requestData.user.contactInfo = requestData.user.contact;
             requestData.user.addressInfo = requestData.user.address;
+            // requestData.user = _.extend(requestData.user, {
+            //     UserCompanies: [{
+            //         CompanyId: this._sessionStore.session.currentCompany.id
+            //     }]
+            // });
             requestData.user = _.omit(requestData.user, 'contact', 'address');
             return this._http.post(this._url + '/patient/savePatient', JSON.stringify(requestData), {
                 headers: this._headers

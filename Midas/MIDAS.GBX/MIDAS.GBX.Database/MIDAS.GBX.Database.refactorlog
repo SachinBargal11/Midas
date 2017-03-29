@@ -175,4 +175,25 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="DoctorId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="7c27467f-6904-4508-bd4a-0ef41c01083d" ChangeDateTime="03/27/2017 10:26:32">
+    <Property Name="ElementName" Value="[dbo].[MidasDocuments].[DocumentPath]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[MidasDocuments]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreateDate" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="afeae164-585f-42ee-9faf-13dfa9d7343b" ChangeDateTime="03/27/2017 10:26:36">
+    <Property Name="ElementName" Value="[dbo].[MidasDocuments].[DocumentName]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[MidasDocuments]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="UpdateDate" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="09d05e9d-2fa1-443c-8ecb-72d4a8862aa3" ChangeDateTime="03/27/2017 10:27:26">
+    <Property Name="ElementName" Value="[dbo].[MidasDocuments].[ObjectType]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[MidasDocuments]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DocumentName" />
+  </Operation>
 </Operations>

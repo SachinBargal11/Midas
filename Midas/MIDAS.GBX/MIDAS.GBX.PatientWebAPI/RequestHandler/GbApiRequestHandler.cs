@@ -79,9 +79,9 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             }
         }
 
-        public HttpResponseMessage CreateGbDocObject(HttpRequestMessage request, int id, string type, List<HttpContent> streamContent)
+        public HttpResponseMessage CreateGbDocObject(HttpRequestMessage request, int id, string type, List<HttpContent> streamContent,string uploadpath)
         {
-            var objResult = dataAccessManager.Save(id, type, streamContent);
+            var objResult = dataAccessManager.Save(id, type, streamContent,uploadpath);
 
             try
             {
@@ -109,6 +109,19 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
                     return request.CreateResponse(HttpStatusCode.Created, res);
                 else
                     return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetObject(HttpRequestMessage request, int id, string type)
+        {
+            var objResult = dataAccessManager.Get(id, type);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
             }
             catch (Exception ex)
             {
