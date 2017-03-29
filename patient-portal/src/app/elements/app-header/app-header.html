@@ -19,7 +19,8 @@
 							  <img src="assets/theme/img/avatar.png" alt="">
                         </button>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd-user-menu">
-							<a routerLink="account/basic" class="dropdown-item"><span class="font-icon glyphicon glyphicon-user"></span>{{ sessionStore.session.user.displayName }}</a>
+							<!--<a routerLink="account/basic" class="dropdown-item"><span class="font-icon glyphicon glyphicon-user"></span>{{ sessionStore.session.user.displayName }}</a>-->
+							<a class="dropdown-item"><span class="font-icon glyphicon glyphicon-user"></span>{{ sessionStore.session.user.displayName }}</a>
 							<div class="dropdown-divider"></div>
 							<a (click)="changePassword()" class="dropdown-item"><span class="font-icon glyphicon glyphicon-edit"></span>Change Password</a>
 							<a (click)="logout()" class="dropdown-item"><span class="font-icon glyphicon glyphicon-log-out"></span>Logout</a>

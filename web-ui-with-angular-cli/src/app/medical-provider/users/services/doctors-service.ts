@@ -80,11 +80,11 @@ export class DoctorsService {
                 }];
 
             doctorDetailRequestData.user.userCompanies = userCompanies;
-            doctorDetailRequestData.user.doctorSpecialities = doctorDetailRequestData.doctorSpecialities;
+            // doctorDetailRequestData.user.doctorSpecialities = doctorDetailRequestData.doctorSpecialities;
             doctorDetailRequestData.user.contactInfo = doctorDetailRequestData.user.contact;
             doctorDetailRequestData.user.addressInfo = doctorDetailRequestData.user.address;
             doctorDetailRequestData.user = _.omit(doctorDetailRequestData.user, 'contact', 'address');
-            doctorDetailRequestData = _.omit(doctorDetailRequestData, 'doctorSpecialities');
+            // doctorDetailRequestData = _.omit(doctorDetailRequestData, 'doctorSpecialities');
 
             // add/replace values which need to be changed
             // _.extend(doctorDetailRequestData.user, {
@@ -124,8 +124,8 @@ export class DoctorsService {
                     }
                 }];
             doctorDetailRequestData.user.userCompanies = userCompanies;
-            doctorDetailRequestData.user.doctorSpecialities = doctorDetailRequestData.doctorSpecialities;
-            doctorDetailRequestData = _.omit(doctorDetailRequestData, 'doctorSpecialities');
+            // doctorDetailRequestData.user.doctorSpecialities = doctorDetailRequestData.doctorSpecialities;
+            // doctorDetailRequestData = _.omit(doctorDetailRequestData, 'doctorSpecialities');
             doctorDetailRequestData.user.contactInfo = doctorDetailRequestData.user.contact;
             doctorDetailRequestData.user.addressInfo = doctorDetailRequestData.user.address;
             doctorDetailRequestData.user = _.omit(doctorDetailRequestData.user, 'contact', 'address');

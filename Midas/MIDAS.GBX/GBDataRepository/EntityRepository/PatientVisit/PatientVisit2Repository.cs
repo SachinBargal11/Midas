@@ -60,6 +60,54 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientVisit2BO.UpdateByUserID = patientVisit2.UpdateByUserID;
                 patientVisit2BO.FileUploadPath = patientVisit2.FileUploadPath;
 
+                if (patientVisit2.Patient2 != null)
+                {
+                    BO.Patient2 Patient2BO = new BO.Patient2();
+                    using (Patient2Repository patient2Repo = new Patient2Repository(_context))
+                    {
+                        Patient2BO = patient2Repo.Convert<BO.Patient2, Patient2>(patientVisit2.Patient2);
+                        patientVisit2BO.Patient2 = Patient2BO;
+
+                        if (patientVisit2.Patient2.PatientInsuranceInfoes != null && patientVisit2.Patient2.PatientInsuranceInfoes.Count > 0)
+                        {
+                            List<BO.PatientInsuranceInfo> PatientInsuranceInfoBOList = new List<BO.PatientInsuranceInfo>();
+                            using (PatientInsuranceInfoRepository patientInsuranceInfoRepo = new PatientInsuranceInfoRepository(_context))
+                            {
+                                foreach (PatientInsuranceInfo eachPatientInsuranceInfo in patientVisit2.Patient2.PatientInsuranceInfoes)
+                                {
+                                    PatientInsuranceInfoBOList.Add(patientInsuranceInfoRepo.Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(eachPatientInsuranceInfo));
+                                }
+
+                                patientVisit2BO.Patient2.PatientInsuranceInfoes = PatientInsuranceInfoBOList;
+                            }
+                        }                        
+                    }
+                }
+
+                if (patientVisit2.Case != null)
+                {
+                    BO.Case CaseBO = new BO.Case();
+                    using (CaseRepository caseRepo = new CaseRepository(_context))
+                    {
+                        CaseBO = caseRepo.Convert<BO.Case, Case>(patientVisit2.Case);
+                        patientVisit2BO.Case = CaseBO;
+
+                        if (patientVisit2.Case.PatientAccidentInfoes != null && patientVisit2.Case.PatientAccidentInfoes.Count > 0)
+                        {
+                            List<BO.PatientAccidentInfo> PatientAccidentInfoBOList = new List<BO.PatientAccidentInfo>();
+                            using (PatientAccidentInfoRepository patientAccidentInfoRepo = new PatientAccidentInfoRepository(_context))
+                            {
+                                foreach (PatientAccidentInfo eachPatientInsuranceInfo in patientVisit2.Case.PatientAccidentInfoes)
+                                {
+                                    PatientAccidentInfoBOList.Add(patientAccidentInfoRepo.Convert<BO.PatientAccidentInfo, PatientAccidentInfo>(eachPatientInsuranceInfo));
+                                }
+
+                                patientVisit2BO.Case.PatientAccidentInfoes = PatientAccidentInfoBOList;
+                            }
+                        }
+                    }
+                }
+
                 if (patientVisit2.Doctor != null)
                 {
                     BO.Doctor boDoctor = new BO.Doctor();
@@ -69,6 +117,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         patientVisit2BO.Doctor = boDoctor;
                     }
                 }
+
                 if (patientVisit2.Room != null)
                 {
                     BO.Room boRoom = new BO.Room();
@@ -78,6 +127,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         patientVisit2BO.Room = boRoom;
                     }
                 }
+
                 if (patientVisit2.Specialty != null)
                 {
                     BO.Specialty boSpecialty = new BO.Specialty();
@@ -517,19 +567,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get By Dates
-        public override object GetByDates(DateTime FromDate, DateTime ToDate)
+        public override object GetByDates(int DoctorId, DateTime FromDate, DateTime ToDate)
         {
-            //if (ToDate.Hour == 0 && ToDate.Minute == 0 && ToDate.Second == 0)
-            //{
-            //    ToDate = ToDate.AddDays(1).AddSeconds(-1);
-            //}
-
             if (ToDate == ToDate.Date)
             {
-                ToDate = ToDate.AddDays(1).AddSeconds(-1);
+                ToDate = ToDate.AddDays(1);
             }
 
-            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Where(p => p.EventStart >= FromDate && p.EventStart < ToDate
+            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("Patient2").Include("Patient2.PatientInsuranceInfoes")
+                                                                        .Include("Case").Include("Case.PatientAccidentInfoes")
+                                                                        .Where(p => p.DoctorId == DoctorId 
+                                                                                 && p.EventStart >= FromDate && p.EventStart < ToDate
+                                                                                && (p.Patient2.IsDeleted.HasValue == false || (p.Patient2.IsDeleted.HasValue == true && p.Patient2.IsDeleted.Value == false))
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))               
                                                                         .ToList<PatientVisit2>();
           
@@ -552,7 +601,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             List<string> names = Name.Trim().Split(' ').ToList();
             List<string> names2 = new List<string>();
-           foreach (var name in names)
+            foreach (var name in names)
             {
                 if(string.IsNullOrEmpty(name.Trim()) == false)
                 {

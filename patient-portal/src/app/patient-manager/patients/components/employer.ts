@@ -97,7 +97,7 @@ export class PatientEmployerComponent implements OnInit {
 
                 },
                 (error) => {
-                    this._router.navigate(['/patient-manager/patient/viewall']);
+                    this._router.navigate(['/patient-manager/profile/viewall']);
                     this._progressBarService.hide();
                 },
                 () => {
@@ -170,7 +170,7 @@ export class PatientEmployerComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
-                    this._router.navigate(['/patient-manager/patient/viewall']);
+                    this._router.navigate(['/patient-manager/profile/viewall']);
                 },
                 (error) => {
                     let errString = 'Unable to update employer.';
@@ -200,7 +200,7 @@ export class PatientEmployerComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
-                    this._router.navigate(['/patient-manager/patients']);
+                    this._router.navigate(['/patient-manager/profile/viewall']);
                 },
                 (error) => {
                     let errString = 'Unable to add employer.';

@@ -46,25 +46,47 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getByreferringCompanyId/{id}")]
-
-        public HttpResponseMessage GetByCompanyId(int id)
+        [Route("getByReferringCompanyId/{id}")]
+        public HttpResponseMessage GetByReferringCompanyId(int id)
         {
-            return requestHandler.GetGbObjects(Request, id);
+            return requestHandler.GetByReferringCompanyId(Request, id);
+        }
+
+        [HttpGet]
+        [Route("getByReferredToCompanyId/{id}")]
+        public HttpResponseMessage GetByReferredToCompanyId(int id)
+        {
+            return requestHandler.GetByReferredToCompanyId(Request, id);
         }
 
         [HttpGet]
         [Route("getByreferringLocationId/{id}")]
-        public HttpResponseMessage GetByLocationId(int id)
+        public HttpResponseMessage GetByReferringLocationId(int id)
         {
-            return requestHandler.GetByLocationId(Request, id);
+            return requestHandler.GetByReferringLocationId(Request, id);
         }
 
         [HttpGet]
-        [Route("getByreferringDoctorId/{id}")]
-        public HttpResponseMessage GetByDoctorId(int id)
+        [Route("getByreferringToLocationId/{id}")]
+        public HttpResponseMessage GetByReferringToLocationId(int id)
         {
-            return requestHandler.GetByDoctorId(Request, id);
+            return requestHandler.GetByReferringToLocationId(Request, id);
+        }
+
+        [HttpGet]
+        [Route("getByReferringDoctorId/{doctorId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetByReferringDoctorId(int doctorId)
+        {
+            return requestHandler.GetByReferringDoctorId(Request, doctorId);
+        }
+
+        [HttpGet]
+        [Route("getByReferredToDoctorId/{doctorId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetByReferredToDoctorId(int doctorId)
+        {
+            return requestHandler.GetByReferredToDoctorId(Request, doctorId);
         }
 
         [HttpGet]

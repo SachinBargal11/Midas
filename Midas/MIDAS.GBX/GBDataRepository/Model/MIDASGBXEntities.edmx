@@ -423,6 +423,23 @@
           <Property Name="UpdateUserId" Type="int" />
           <Property Name="IsDeleted" Type="bit" />
         </EntityType>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="LocationId" Type="int" />
+          <Property Name="NotificationMessage" Type="nvarchar" MaxLength="100" />
+          <Property Name="StartDate" Type="datetime2" Precision="7" />
+          <Property Name="EndDate" Type="datetime2" Precision="7" />
+          <Property Name="IsViewed" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
         <EntityType Name="OTP">
           <Key>
             <PropertyRef Name="id" />
@@ -1472,6 +1489,30 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Notification_Company_CompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notification_Location_LocationId">
+          <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
+          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Patient_Company">
           <End Role="Company" Type="Self.Company" Multiplicity="1" />
           <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
@@ -2246,6 +2287,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MaritalStatus" EntityType="Self.MaritalStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MidasDocuments" EntityType="Self.MidasDocuments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Notification" EntityType="Self.Notification" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OTP" EntityType="Self.OTP" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PasswordToken" EntityType="Self.PasswordToken" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient" EntityType="Self.Patient" Schema="dbo" store:Type="Tables" />
@@ -2448,6 +2490,14 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_Location_Schedule" Association="Self.FK_Location_Schedule">
             <End Role="Schedule" EntitySet="Schedule" />
             <End Role="Location" EntitySet="Location" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notification_Company_CompanyId" Association="Self.FK_Notification_Company_CompanyId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Notification" EntitySet="Notification" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notification_Location_LocationId" Association="Self.FK_Notification_Location_LocationId">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="Notification" EntitySet="Notification" />
           </AssociationSet>
           <AssociationSet Name="FK_Patient_Company" Association="Self.FK_Patient_Company">
             <End Role="Company" EntitySet="Company" />
@@ -2929,6 +2979,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="CompanySpecialtyDetails" Relationship="Self.FK_CompanySpecialtyDetails_Company" FromRole="Company" ToRole="CompanySpecialtyDetails" />
           <NavigationProperty Name="Invitations" Relationship="Self.FK_Invitation_Company" FromRole="Company" ToRole="Invitation" />
           <NavigationProperty Name="Locations" Relationship="Self.FK_Location_Company" FromRole="Company" ToRole="Location" />
+          <NavigationProperty Name="Notifications" Relationship="Self.FK_Notification_Company_CompanyId" FromRole="Company" ToRole="Notification" />
           <NavigationProperty Name="Patients" Relationship="Self.FK_Patient_Company" FromRole="Company" ToRole="Patient" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_Company_ReferredToCompanyId" FromRole="Company" ToRole="Referral" />
           <NavigationProperty Name="Referrals1" Relationship="Self.FK_Referral_Company_ReferringCompanyId" FromRole="Company" ToRole="Referral" />
@@ -3182,6 +3233,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="DoctorLocationSchedules" Relationship="Self.FK_DoctorLocationSchedule_Location" FromRole="Location" ToRole="DoctorLocationSchedule" />
           <NavigationProperty Name="DoctorLocationSpecialties" Relationship="Self.FK_DoctorLocationSpecialty_Location_LocationId" FromRole="Location" ToRole="DoctorLocationSpecialty" />
           <NavigationProperty Name="Schedule" Relationship="Self.FK_Location_Schedule" FromRole="Location" ToRole="Schedule" />
+          <NavigationProperty Name="Notifications" Relationship="Self.FK_Notification_Location_LocationId" FromRole="Location" ToRole="Notification" />
           <NavigationProperty Name="Patients" Relationship="Self.FK_Patient_Location" FromRole="Location" ToRole="Patient" />
           <NavigationProperty Name="PatientVisits" Relationship="Self.FK_PatientVisit_Location_LocationID" FromRole="Location" ToRole="PatientVisit" />
           <NavigationProperty Name="PatientVisit2" Relationship="Self.FK_PatientVisit2_Location_LocationID" FromRole="Location" ToRole="PatientVisit2" />
@@ -3232,6 +3284,25 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateUserId" Type="Int32" />
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="CaseDocuments" Relationship="Self.FK_CaseDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="CaseDocuments" />
+        </EntityType>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="LocationId" Type="Int32" />
+          <Property Name="NotificationMessage" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Precision="7" />
+          <Property Name="EndDate" Type="DateTime" Precision="7" />
+          <Property Name="IsViewed" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_Notification_Company_CompanyId" FromRole="Notification" ToRole="Company" />
+          <NavigationProperty Name="Location" Relationship="Self.FK_Notification_Location_LocationId" FromRole="Notification" ToRole="Location" />
         </EntityType>
         <EntityType Name="OTP">
           <Key>
@@ -4350,6 +4421,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Notification_Company_CompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Patient_Company">
           <End Role="Company" Type="Self.Company" Multiplicity="1" />
           <End Role="Patient" Type="Self.Patient" Multiplicity="*" />
@@ -4731,6 +4814,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="Location">
               <PropertyRef Name="ScheduleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notification_Location_LocationId">
+          <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
+          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="LocationId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5148,6 +5243,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="Logs" EntityType="Self.Log" />
           <EntitySet Name="MaritalStatus" EntityType="Self.MaritalStatu" />
           <EntitySet Name="MidasDocuments" EntityType="Self.MidasDocument" />
+          <EntitySet Name="Notifications" EntityType="Self.Notification" />
           <EntitySet Name="OTPs" EntityType="Self.OTP" />
           <EntitySet Name="PasswordTokens" EntityType="Self.PasswordToken" />
           <EntitySet Name="Patients" EntityType="Self.Patient" />
@@ -5343,6 +5439,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Company" EntitySet="Companies" />
             <End Role="Location" EntitySet="Locations" />
           </AssociationSet>
+          <AssociationSet Name="FK_Notification_Company_CompanyId" Association="Self.FK_Notification_Company_CompanyId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="Notification" EntitySet="Notifications" />
+          </AssociationSet>
           <AssociationSet Name="FK_Patient_Company" Association="Self.FK_Patient_Company">
             <End Role="Company" EntitySet="Companies" />
             <End Role="Patient" EntitySet="Patients" />
@@ -5470,6 +5570,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_Location_Schedule" Association="Self.FK_Location_Schedule">
             <End Role="Schedule" EntitySet="Schedules" />
             <End Role="Location" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notification_Location_LocationId" Association="Self.FK_Notification_Location_LocationId">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="Notification" EntitySet="Notifications" />
           </AssociationSet>
           <AssociationSet Name="FK_Patient_Location" Association="Self.FK_Patient_Location">
             <End Role="Location" EntitySet="Locations" />
@@ -6050,6 +6154,24 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
                 <ScalarProperty Name="UpdateUserId" ColumnName="UpdateUserId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notifications">
+            <EntityTypeMapping TypeName="MIDASGBXModel.Notification">
+              <MappingFragment StoreEntitySet="Notification">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="NotificationMessage" ColumnName="NotificationMessage" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="IsViewed" ColumnName="IsViewed" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

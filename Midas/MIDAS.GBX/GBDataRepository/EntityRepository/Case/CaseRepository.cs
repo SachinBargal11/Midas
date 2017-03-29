@@ -8,7 +8,7 @@ using MIDAS.GBX.DataRepository.Model;
 using System.Data.Entity;
 using BO = MIDAS.GBX.BusinessObjects;
 
-namespace MIDAS.GBX.DataRepository.EntityRepository.Common
+namespace MIDAS.GBX.DataRepository.EntityRepository
 {
     internal class CaseRepository : BaseEntityRepo, IDisposable
     {

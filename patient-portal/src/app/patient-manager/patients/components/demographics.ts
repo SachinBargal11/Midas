@@ -77,7 +77,7 @@ export class DemographicsComponent implements OnInit {
                     // }
                 },
                 (error) => {
-                    this._router.navigate(['/patient-manager/patient/viewall']);
+                    // this._router.navigate(['/patient-manager/profile/viewall']);
                     this._progressBarService.hide();
                 },
                 () => {
@@ -157,7 +157,7 @@ export class DemographicsComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                this._router.navigate(['/patient-manager/patient/viewall']);
+                this._router.navigate(['/patient-manager/profile/viewall']);
             },
             (error) => {
                 let errString = 'Unable to update patient.';

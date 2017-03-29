@@ -270,6 +270,7 @@
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\LocationSpeclityController.cs" />
     <Compile Include="Controllers\LogController.cs" />
+    <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\OTPController.cs" />
     <Compile Include="Controllers\PasswordTokenController.cs" />
     <Compile Include="Controllers\PatientAccidentInfoController.cs" />
@@ -383,6 +384,7 @@
     <Folder Include="Views\DoctorSpecility\" />
     <Folder Include="Views\LocationRoom\" />
     <Folder Include="Views\LocationSpeclity\" />
+    <Folder Include="Views\Notification\" />
     <Folder Include="Views\OTP\" />
     <Folder Include="Views\PasswordToken\" />
     <Folder Include="Views\RoomTest\" />
