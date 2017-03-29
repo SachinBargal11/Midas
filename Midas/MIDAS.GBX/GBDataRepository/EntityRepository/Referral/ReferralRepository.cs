@@ -47,67 +47,86 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             referralBO.CreateByUserID = referral.CreateByUserID;
             referralBO.UpdateByUserID = referral.UpdateByUserID;
 
-            BO.Company boCompany = new BO.Company();
-            using (CompanyRepository cmp = new CompanyRepository(_context))
+            if (referral.Company !=null)
             {
+                BO.Company boCompany = new BO.Company();
+                using (CompanyRepository cmp = new CompanyRepository(_context))
+                {
 
-                boCompany = cmp.Convert<BO.Company, Company>(referral.Company);
-                referralBO.Company = boCompany;
+                    boCompany = cmp.Convert<BO.Company, Company>(referral.Company);
+                    referralBO.Company = boCompany;
+                }
             }
-            BO.Company boCompany1 = new BO.Company();
-            using (CompanyRepository cmp = new CompanyRepository(_context))
+            if (referral.Company1 != null)
             {
+                BO.Company boCompany1 = new BO.Company();
+                using (CompanyRepository cmp = new CompanyRepository(_context))
+                {
 
-                boCompany1 = cmp.Convert<BO.Company, Company>(referral.Company1);
-                referralBO.Company1 = boCompany1;
+                    boCompany1 = cmp.Convert<BO.Company, Company>(referral.Company1);
+                    referralBO.Company1 = boCompany1;
+                }
             }
-
-            BO.Location boLocation = new BO.Location();
-            using (LocationRepository cmp = new LocationRepository(_context))
+            if (referral.Location !=null)
             {
+                BO.Location boLocation = new BO.Location();
+                using (LocationRepository cmp = new LocationRepository(_context))
+                {
 
-                boLocation = cmp.Convert<BO.Location, Location>(referral.Location);
-                referralBO.Location = boLocation;
+                    boLocation = cmp.Convert<BO.Location, Location>(referral.Location);
+                    referralBO.Location = boLocation;
+                }
             }
-            BO.Location boLocation1 = new BO.Location();
-            using (LocationRepository cmp = new LocationRepository(_context))
+            if (referral.Location1 != null)
             {
+                BO.Location boLocation1 = new BO.Location();
+                using (LocationRepository cmp = new LocationRepository(_context))
+                {
 
-                boLocation1 = cmp.Convert<BO.Location, Location>(referral.Location1);
-                referralBO.Location1 = boLocation1;
+                    boLocation1 = cmp.Convert<BO.Location, Location>(referral.Location1);
+                    referralBO.Location1 = boLocation1;
+                }
             }
-
-            BO.Doctor boDoctor = new BO.Doctor();
-            using (DoctorRepository cmp = new DoctorRepository(_context))
+            if (referral.Doctor != null)
             {
+                BO.Doctor boDoctor = new BO.Doctor();
+                using (DoctorRepository cmp = new DoctorRepository(_context))
+                {
 
-                boDoctor = cmp.Convert<BO.Doctor, Doctor>(referral.Doctor);
-                referralBO.Doctor = boDoctor;
+                    boDoctor = cmp.Convert<BO.Doctor, Doctor>(referral.Doctor);
+                    referralBO.Doctor = boDoctor;
+                }
             }
-            BO.Doctor boDoctor1 = new BO.Doctor();
-            using (DoctorRepository cmp = new DoctorRepository(_context))
+            if (referral.Doctor1 != null)
             {
+                BO.Doctor boDoctor1 = new BO.Doctor();
+                using (DoctorRepository cmp = new DoctorRepository(_context))
+                {
 
-                boDoctor1 = cmp.Convert<BO.Doctor, Doctor>(referral.Doctor1);
-                referralBO.Doctor1 = boDoctor1;
+                    boDoctor1 = cmp.Convert<BO.Doctor, Doctor>(referral.Doctor1);
+                    referralBO.Doctor1 = boDoctor1;
+                }
             }
-
-            BO.Case boCase = new BO.Case();
-            using (CaseRepository cmp = new CaseRepository(_context))
+            if (referral.Case != null)
             {
+                BO.Case boCase = new BO.Case();
+                using (CaseRepository cmp = new CaseRepository(_context))
+                {
 
-                boCase = cmp.Convert<BO.Case, Case>(referral.Case);
-                referralBO.Case = boCase;
+                    boCase = cmp.Convert<BO.Case, Case>(referral.Case);
+                    referralBO.Case = boCase;
+                }
             }
-
-            BO.Room boRoom = new BO.Room();
-            using (RoomRepository cmp = new RoomRepository(_context))
+            if (referral.Room != null)
             {
+                BO.Room boRoom = new BO.Room();
+                using (RoomRepository cmp = new RoomRepository(_context))
+                {
 
-                boRoom = cmp.Convert<BO.Room, Room>(referral.Room);
-                referralBO.Room = boRoom;
+                    boRoom = cmp.Convert<BO.Room, Room>(referral.Room);
+                    referralBO.Room = boRoom;
+                }
             }
-
             return (T)(object)referralBO;
         }
         #endregion
