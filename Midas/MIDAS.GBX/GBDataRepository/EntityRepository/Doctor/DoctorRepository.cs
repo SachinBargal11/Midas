@@ -57,7 +57,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 using (UserRepository sr = new UserRepository(_context))
                 {
                     boUser = sr.Convert<BO.User, User>(doctor.User);
-                    doctorBO.user = boUser;
+                    doctorBO.user = boUser;             
                 }
 
                 List<BO.DoctorSpeciality> lstDoctorSpecility = new List<BO.DoctorSpeciality>();
@@ -69,6 +69,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
                 doctorBO.DoctorSpecialities = lstDoctorSpecility;
+
+                List<BO.UserCompany> lstUserCompany = new List<BO.UserCompany>();
+                foreach (var item in doctor.User.UserCompanies)
+                {
+                    using (UserCompanyRepository sr = new UserCompanyRepository(_context))
+                    {
+                        lstUserCompany.Add(sr.Convert<BO.UserCompany, UserCompany>(item));
+                    }
+
+
+                }
+                doctorBO.user.UserCompanies = lstUserCompany;
+
+
             }
 
             return (T)(object)doctorBO;
@@ -402,7 +416,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object GetBySpecialityInAllApp(int specialtyId)
         {
 
-            var acc_ = _context.Doctors.Include("User").Where(p => p.DoctorSpecialities.Where(p2 => p2.IsDeleted == false).Any(p3 => p3.SpecialityID == specialtyId)
+            var acc_ = _context.Doctors.Include("User").Include("User.UserCompanies.Company").Include("DoctorSpecialities.Specialty").Where(p => p.DoctorSpecialities.Where(p2 => p2.IsDeleted == false).Any(p3 => p3.SpecialityID == specialtyId)
                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                  .ToList();
             if (acc_ == null)
