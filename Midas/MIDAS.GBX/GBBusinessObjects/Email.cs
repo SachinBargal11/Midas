@@ -82,11 +82,11 @@ namespace MIDAS.GBX.BusinessObjects
         {
             var client = new SmtpClient("smtp.zoho.com", 587)
             {
-                Credentials = new NetworkCredential("mangesh.s@codearray.tech", "mangesh123 "),
+                Credentials = new NetworkCredential("support@codearray.tech", "supp0rt@2017"),
                 EnableSsl = true,
             };
 
-            var mail = new System.Net.Mail.MailMessage("mangesh.s@codearray.tech", ToEmail);
+            var mail = new System.Net.Mail.MailMessage("support@codearray.tech", ToEmail);
             mail.Subject = Subject;
             mail.Body = Body;
             mail.IsBodyHtml = true;

@@ -104,7 +104,6 @@
   <ItemGroup>
     <Compile Include="Controllers\CompanyControllerTest.cs" />
     <Compile Include="Controllers\CompanySpecialtyDetailsControllerTest.cs" />
-    <Compile Include="Controllers\DoctorControllerTest.cs" />
     <Compile Include="Controllers\LocationControllerTest.cs" />
     <Compile Include="Controllers\OTPControllerTest.cs" />
     <Compile Include="Controllers\PasswordTokenControllerTest.cs" />

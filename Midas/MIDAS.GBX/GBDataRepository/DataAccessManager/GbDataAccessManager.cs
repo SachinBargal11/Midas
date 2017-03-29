@@ -279,7 +279,7 @@ namespace MIDAS.GBX.DataAccessManager
         #endregion
 
         #region Save
-        public Object Save(int id, string type, List<HttpContent> streamContent)
+        public Object Save(int id, string type, List<HttpContent> streamContent,string uploadpath)
         {
             BaseEntityRepo baseRepo = RepoFactory.GetRepo<Document>(dbContextProvider.GetGbDBContext());
             List<MIDAS.GBX.BusinessObjects.BusinessValidation> validationResults = baseRepo.Validate(id, type, streamContent);
@@ -289,7 +289,7 @@ namespace MIDAS.GBX.DataAccessManager
             }
             else
             {
-                var gbdata = baseRepo.Save(id, type, streamContent);
+                var gbdata = baseRepo.Save(id, type, streamContent, uploadpath);
                 return gbdata;
             }
         }
@@ -539,6 +539,29 @@ namespace MIDAS.GBX.DataAccessManager
                 return ex;
             }
         }
+
+        public Object Get(int id, string type)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.Get(id, type);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
 
         public object ValidateOTP(T data)
         {

@@ -11,13 +11,14 @@ namespace MIDAS.GBX.DataAccessManager
     public interface IGbDataAccessManager<T>
     {
         Object Save(T gbObject);
-        Object Save(int id, string type, List<HttpContent> streamContent);
+        Object Save(int id, string type, List<HttpContent> streamContent,string uploadpath);
         Object AssociateLocationToDoctors(T gbObject);
         Object AssociateDoctorToLocations(T gbObject);
         int Delete(T entity);
         object Delete(int id);
         object GetDocumentList(int id);
-        
+
+        Object Get(int id, string type);
         Object Get(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object IsInsuranceInfoAdded(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);        
         Object Get(T gbObject, int? nestingLevels = null);

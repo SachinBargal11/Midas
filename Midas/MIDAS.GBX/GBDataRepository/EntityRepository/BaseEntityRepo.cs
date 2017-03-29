@@ -31,7 +31,17 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object Save(int id, string type, List<HttpContent> streamContent)
+        public virtual Object Save(int id, string type, List<HttpContent> streamContent,string uploadpath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object Get(int id, string type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object Upload(List<HttpContent> streamContent, string path, int id, string type,string sourcePath)
         {
             throw new NotImplementedException();
         }
