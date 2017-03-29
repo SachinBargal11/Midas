@@ -10,34 +10,26 @@ using BO = MIDAS.GBX.BusinessObjects;
 
 namespace MIDAS.GBX.BusinessObjects
 {
-    public class Patient2 : GbObject
-    {
-        [JsonProperty("ssn")]
-        public string SSN { get; set; }
+    public class Notification : GbObject
+    {       
+        //public int Id { get; set; }
+        [JsonProperty("companyId")]
+        public int? CompanyId { get; set; }
 
-        //[JsonProperty("companyId")]
-        //public int? CompanyId { get; set; }
+        [JsonProperty("locationId")]
+        public Nullable<int> LocationId { get; set; }
 
-        [JsonProperty("weight")]
-        public decimal? Weight { get; set; }
+        [JsonProperty("notificationMessage")]
+        public string NotificationMessage { get; set; }
 
-        [JsonProperty("height")]
-        public decimal? Height { get; set; }
+        [JsonProperty("startDate")]
+        public Nullable<System.DateTime> StartDate { get; set; }
 
-        [JsonProperty("maritalStatusId")]
-        public byte? MaritalStatusId { get; set; }
+        [JsonProperty("endDate")]
+        public Nullable<System.DateTime> EndDate { get; set; }
 
-        [JsonProperty("dateOfFirstTreatment")]
-        public DateTime? DateOfFirstTreatment { get; set; }
-
-        [JsonProperty("user")]
-        public User User { get; set; }
-
-        [JsonProperty("cases")]
-        public List<Case> Cases { get; set; }
-
-        [JsonProperty("patientInsuranceInfoes")]
-        public List<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
+        [JsonProperty("isViewed")]
+        public bool IsViewed { get; set; }
 
         public override List<BusinessValidation> Validate<T>(T entity)
         {
@@ -123,6 +115,8 @@ namespace MIDAS.GBX.BusinessObjects
             //{
             //    validations.Add(new BusinessValidation { ValidationResult = BusinessValidationResult.Failure, ValidationMessage = "Please select MaritalStatus." });
             //}
+
+
 
             return validations;
         }

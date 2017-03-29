@@ -214,6 +214,17 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetByReferringCompanyId(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByReferredToCompanyId(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+
         public virtual Object GetByCompanyWithOpenCases(int CompanyId)
         {
             throw new NotImplementedException();
@@ -249,7 +260,28 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetByReferringLocationId(int LocationId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByReferringToLocationId(int LocationId)
+        {
+            throw new NotImplementedException();
+        }
+
+
         public virtual Object GetByDoctorId(int DoctorId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByReferringDoctorId(int DoctorId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByReferredToDoctorId(int DoctorId)
         {
             throw new NotImplementedException();
         }

@@ -47,6 +47,51 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             referralBO.CreateByUserID = referral.CreateByUserID;
             referralBO.UpdateByUserID = referral.UpdateByUserID;
 
+            BO.Company boCompany = new BO.Company();
+            using (CompanyRepository cmp = new CompanyRepository(_context))
+            {
+
+                boCompany = cmp.Convert<BO.Company, Company>(referral.Company);
+                referralBO.Company = boCompany;
+            }
+            BO.Company boCompany1 = new BO.Company();
+            using (CompanyRepository cmp = new CompanyRepository(_context))
+            {
+
+                boCompany1 = cmp.Convert<BO.Company, Company>(referral.Company1);
+                referralBO.Company1 = boCompany1;
+            }
+
+            BO.Location boLocation = new BO.Location();
+            using (LocationRepository cmp = new LocationRepository(_context))
+            {
+
+                boLocation = cmp.Convert<BO.Location, Location>(referral.Location);
+                referralBO.Location = boLocation;
+            }
+            BO.Location boLocation1 = new BO.Location();
+            using (LocationRepository cmp = new LocationRepository(_context))
+            {
+
+                boLocation1 = cmp.Convert<BO.Location, Location>(referral.Location1);
+                referralBO.Location1 = boLocation1;
+            }
+
+            BO.Doctor boDoctor = new BO.Doctor();
+            using (DoctorRepository cmp = new DoctorRepository(_context))
+            {
+
+                boDoctor = cmp.Convert<BO.Doctor, Doctor>(referral.Doctor);
+                referralBO.Doctor = boDoctor;
+            }
+            BO.Doctor boDoctor1 = new BO.Doctor();
+            using (DoctorRepository cmp = new DoctorRepository(_context))
+            {
+
+                boDoctor1 = cmp.Convert<BO.Doctor, Doctor>(referral.Doctor1);
+                referralBO.Doctor1 = boDoctor1;
+            }
+
             BO.Case boCase = new BO.Case();
             using (CaseRepository cmp = new CaseRepository(_context))
             {
@@ -54,12 +99,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 boCase = cmp.Convert<BO.Case, Case>(referral.Case);
                 referralBO.Case = boCase;
             }
-            BO.Doctor boDoctor = new BO.Doctor();
-            using (DoctorRepository cmp = new DoctorRepository(_context))
+
+            BO.Room boRoom = new BO.Room();
+            using (RoomRepository cmp = new RoomRepository(_context))
             {
 
-                boDoctor = cmp.Convert<BO.Doctor, Doctor>(referral.Doctor);
-                referralBO.Doctor = boDoctor;
+                boRoom = cmp.Convert<BO.Room, Room>(referral.Room);
+                referralBO.Room = boRoom;
             }
 
             return (T)(object)referralBO;
@@ -166,6 +212,190 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     lstreferral.Add(Convert<BO.Referral, Referral>(item));
                 }
                 return lstreferral;
+            }
+        }
+        #endregion
+
+        #region Get By referringCompanyId
+        public override object GetByReferringCompanyId(int id)
+        {
+            var referralDB = _context.Referrals.Include("Company")
+                                               .Include("Company1")
+                                               .Include("Location")
+                                               .Include("Location1")
+                                               .Include("Doctor")
+                                               .Include("Doctor1")
+                                               .Include("Case")
+                                               .Include("Room")
+                                               .Where(p => p.ReferringCompanyId == id
+                                                &&(p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .ToList<Referral>();
+
+            List<BO.Referral> boReferral = new List<BO.Referral>();
+            if (referralDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Company ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+
+                foreach (var EachDoctor in referralDB)
+                {
+                    boReferral.Add(Convert<BO.Referral, Referral>(EachDoctor));
+                }
+
+            }
+
+            return (object)boReferral;
+        }
+        #endregion
+
+        #region Get By referredToCompanyId
+        public override object GetByReferredToCompanyId(int id)
+        {
+            var referralDB = _context.Referrals.Include("Company")
+                                               .Include("Company1")
+                                               .Include("Location")
+                                               .Include("Location1")
+                                               .Include("Doctor")
+                                               .Include("Doctor1")
+                                               .Include("Case")
+                                               .Include("Room")
+                                               .Where(p => p.ReferredToCompanyId == id
+                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .ToList<Referral>();
+
+            List<BO.Referral> boReferral = new List<BO.Referral>();
+            if (referralDB == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Company ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+
+                foreach (var EachDoctor in referralDB)
+                {
+                    boReferral.Add(Convert<BO.Referral, Referral>(EachDoctor));
+                }
+
+            }
+
+            return (object)boReferral;
+        }
+        #endregion
+
+        #region Get By ReferredLocationId
+        public override object GetByReferringLocationId(int id)
+        {
+            List<Referral> lstReferral = _context.Referrals.Include("Company")
+                                                           .Include("Company1")
+                                                           .Include("Location")
+                                                           .Include("Location1")
+                                                           .Include("Doctor")
+                                                           .Include("Doctor1")
+                                                           .Include("Case")
+                                                           .Include("Room")
+                                                           .Where(p => p.ReferringLocationId == id
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                            .ToList<Referral>();
+
+            if (lstReferral == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No visit found for this Location ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.Referral> lstBOReferral = new List<BO.Referral>();
+                lstReferral.ForEach(p => lstBOReferral.Add(Convert<BO.Referral, Referral>(p)));
+
+                return lstBOReferral;
+            }
+        }
+        #endregion
+
+        #region Get By ReferredLocationId
+        public override object GetByReferringToLocationId(int id)
+        {
+            List<Referral> lstReferral = _context.Referrals.Include("Company")
+                                                           .Include("Company1")
+                                                           .Include("Location")
+                                                           .Include("Location1")
+                                                           .Include("Doctor")
+                                                           .Include("Doctor1")
+                                                           .Include("Case")
+                                                           .Include("Room")
+                                                           .Where(p => p.ReferringLocationId == id
+                                                           && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                           .ToList<Referral>();
+
+            if (lstReferral == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No visit found for this Location ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.Referral> lstBOReferral = new List<BO.Referral>();
+                lstReferral.ForEach(p => lstBOReferral.Add(Convert<BO.Referral, Referral>(p)));
+
+                return lstBOReferral;
+            }
+        }
+        #endregion
+
+        #region GetByReferringDoctorId
+        public override object GetByReferringDoctorId(int id)
+        {
+            List<Referral> lstReferral = _context.Referrals.Include("Location")
+                                                            .Include("Location1")
+                                                            .Include("Company")
+                                                            .Include("Company1")
+                                                            .Include("Doctor")
+                                                            .Include("Doctor1")
+                                                            .Include("Case")
+                                                            .Include("Room")
+                                                            .Where(p => p.ReferringDoctorId == id
+                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                            .ToList<Referral>();
+
+            if (lstReferral == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No Referral found for this Doctor ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.Referral> lstBOReferral = new List<BO.Referral>();
+                lstReferral.ForEach(p => lstBOReferral.Add(Convert<BO.Referral, Referral>(p)));
+
+                return lstBOReferral;
+            }
+        }
+        #endregion
+
+        #region GetByReferredToDoctorId
+        public override object GetByReferredToDoctorId(int id)
+        {
+            List<Referral> lstReferral = _context.Referrals.Include("Location")
+                                                            .Include("Location1")
+                                                            .Include("Company")
+                                                            .Include("Company1")
+                                                            .Include("Doctor")
+                                                            .Include("Doctor1")
+                                                            .Include("Case")
+                                                            .Include("Room")
+                                                            .Where(p => p.ReferredToDoctorId == id
+                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                            .ToList<Referral>();
+
+            if (lstReferral == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No Referral found for this Doctor ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.Referral> lstBOReferral = new List<BO.Referral>();
+                lstReferral.ForEach(p => lstBOReferral.Add(Convert<BO.Referral, Referral>(p)));
+
+                return lstBOReferral;
             }
         }
         #endregion

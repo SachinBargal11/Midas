@@ -237,6 +237,10 @@ namespace MIDAS.GBX
             {
                 repo = new FileUploadRepository(context);
             }
+            else if (typeof(T) == typeof(BO.Notification))
+            {
+                repo = new NotificationRepository(context);
+            }
             return repo;
         }
     }

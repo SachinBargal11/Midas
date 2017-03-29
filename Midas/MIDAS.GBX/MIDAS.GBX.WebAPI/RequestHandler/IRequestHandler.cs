@@ -43,12 +43,18 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetGbObjects3(HttpRequestMessage request, int id);
         HttpResponseMessage GetgbObjects(HttpRequestMessage request, int id);
         HttpResponseMessage GetGbObjects4(HttpRequestMessage request, int id);
+        HttpResponseMessage GetByReferringCompanyId(HttpRequestMessage request, int id);
+        HttpResponseMessage GetByReferredToCompanyId(HttpRequestMessage request, int id);
         HttpResponseMessage IsInsuranceInfoAdded(HttpRequestMessage request, int id);
         HttpResponseMessage ResetPassword(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetByCaseId(HttpRequestMessage request, int CaseId);
         HttpResponseMessage GetByPatientId(HttpRequestMessage request, int CaseId);
         HttpResponseMessage GetByLocationId(HttpRequestMessage request, int id);
+        HttpResponseMessage GetByReferringLocationId(HttpRequestMessage request, int id);
+        HttpResponseMessage GetByReferringToLocationId(HttpRequestMessage request, int id);
         HttpResponseMessage GetByDoctorId(HttpRequestMessage request, int id);
+        HttpResponseMessage GetByReferringDoctorId(HttpRequestMessage request, int id);
+        HttpResponseMessage GetByReferredToDoctorId(HttpRequestMessage request, int id);
         HttpResponseMessage GetPatientAccidentInfoByPatientId(HttpRequestMessage request, int PatientId);
         HttpResponseMessage GetCurrentROByPatientId(HttpRequestMessage request, int PatientId);
         HttpResponseMessage DeleteById(HttpRequestMessage request, int id);
