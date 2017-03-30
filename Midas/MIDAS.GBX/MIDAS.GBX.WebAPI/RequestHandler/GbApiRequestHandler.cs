@@ -43,7 +43,7 @@ namespace MIDAS.GBX.WebAPI
 
             try
             {
-                var res = (GbObject)(object)objResult;
+                var res = (object)objResult;
                 if (res != null)
                     return request.CreateResponse(HttpStatusCode.Created, res);
                 else

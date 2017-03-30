@@ -50,7 +50,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                 id = id,
                 DocumentId = x.Id,
                 DocumentName = x.DocumentName,
-                DocumentPath = ConfigurationManager.AppSettings.Get("BLOB_SERVER") + x.DocumentPath + "/" + x.DocumentName
+                DocumentPath = x.DocumentPath + "/" + x.DocumentName
             }));
 
             return (object)docInfo;
