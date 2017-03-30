@@ -13,7 +13,7 @@
                     <div class="form-group" [class.error]="consentformControls.doctor.touched && !consentformControls.doctor.valid">
                         <select formControlName="doctor" type="text" (change)="selectDoctor($event)" class="form-control" placeholder="" [class.error]="consentformControls.doctor.touched && !consentformControls.doctor.valid">
                             <option value="">-Select Doctor-</option>
-                            <option *ngFor="let doctor of doctor" value="{{doctor.statetext}}">{{doctor.statetext}}</option>
+                            <option *ngFor="let doctors of doctors" value="{{doctors.id}}">{{doctors.user.firstName}}</option>
                             </select>
                         <div class='error-list' *ngIf="consentformControls.doctor.touched && !consentformControls.doctor.valid">
                             <ul>
@@ -52,22 +52,34 @@
                     </div>-->
 
 
-    <!--<p-growl [value]="msgs"></p-growl>-->
-    <!--<p-fileUpload name="demo[]" url="http://localhost:3000/upload" (onUpload)="onUpload($event)" multiple="multiple" accept="image/*"-->
-    <p-fileUpload name="demo[]" url="url" (onUpload)="onUpload($event)" multiple="multiple" 
-        maxFileSize="1000000">
-        <ng-template pTemplate type="content">
-            <ul *ngIf="uploadedFiles.length">
-                <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
-            </ul>
-        </ng-template>
-    </p-fileUpload>                 
-                     <!-- <button [disabled]="!consentForm.valid || isSaveProgress" type="submit" (click)="upload()" class="btn btn-success sign-up">Upload
+                    <!--<p-growl [value]="msgs"></p-growl>
+                    <!--<p-fileUpload name="demo[]" url="http://localhost:3000/upload" (onUpload)="onUpload($event)" multiple="multiple" accept="image/*"-->
+
+                    <div>
+                        <label class="form-label">
+                               <a href="/ConsentForm.pdf">Download Sample</a>
+                               
+                            </label>
+
+                        <label class="form-label">Form Upload
+                                <span class="color-red"></span>
+                            </label>
+                        <p-fileUpload name="demo[]" url={{url}} (onUpload)="onUpload($event)" maxFileSize="1000000">
+                            <ng-template pTemplate-type="content">
+                                <ul *ngIf="uploadedFiles.length">
+                                    <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                                </ul>
+                            </ng-template>
+                        </p-fileUpload>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <button type="submit" (click)="Save()" class="btn btn-success sign-up">Submit
         <loader [visible]="isSaveProgress"></loader>
     </button>
-                    <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
--->
+                        <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
 
+                    </div>
                 </div>
             </div>
         </div>

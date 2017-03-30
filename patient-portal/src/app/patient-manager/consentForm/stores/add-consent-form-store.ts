@@ -8,7 +8,6 @@ import {List} from 'immutable';
 import {BehaviorSubject} from 'rxjs/Rx';
 import {SessionStore} from '../../../commons/stores/session-store';
 
-
 @Injectable()
 export class AddConsentStore {
 
@@ -32,6 +31,7 @@ export class AddConsentStore {
     }
 
     getdoctors(patientId: Number): Observable<AddConsent[]> {
+      
         let promise = new Promise((resolve, reject) => {
             this._AddConsentFormService.getdoctors(patientId).subscribe((doctors: AddConsent[]) => {
                 this._AddConsent.next(List(doctors));
@@ -42,6 +42,20 @@ export class AddConsentStore {
         });
         return <Observable<AddConsent[]>>Observable.fromPromise(promise);
     }  
-   
+
+
+    Save(consentDetail: AddConsent): Observable<AddConsent> {
+        let promise = new Promise((resolve, reject) => {
+            this._AddConsentFormService.Save(consentDetail).subscribe((consentDetail:AddConsent) => {
+                this._AddConsent.next(this._AddConsent.getValue().push(consentDetail));
+                resolve(consentDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<AddConsent>>Observable.from(promise);
+    }
+
+    
   
 }

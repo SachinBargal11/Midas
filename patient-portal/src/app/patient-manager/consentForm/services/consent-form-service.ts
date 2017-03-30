@@ -25,9 +25,10 @@ export class AddConsentFormService {
         this._headers.append('Content-Type', 'application/json');
     }
 
- getdoctors(PatientId: Number): Observable<AddConsentAdapter> {
+ getdoctors(CompanyId: Number): Observable<AddConsentAdapter> {
+    
         let promise: Promise<AddConsentAdapter> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Doctor/get/' + PatientId).map(res => res.json())
+            return this._http.get(this._url + '/Doctor/getByCompanyId/' + CompanyId).map(res => res.json())
                 .subscribe((data: Array<any>) => {
                     if (data.length) {
                         resolve(data);
@@ -42,14 +43,38 @@ export class AddConsentFormService {
         return <Observable<AddConsentAdapter>>Observable.fromPromise(promise);
     }
 
+   Save(consentDetail: AddConsent): Observable<AddConsent> {
+       debugger;
+        let promise: Promise<AddConsent> = new Promise((resolve, reject) => {
+            let caseRequestData = consentDetail.toJS();
+           
+            return this._http.post(this._url + '/DoctorCaseConsentApproval/save', JSON.stringify(caseRequestData), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedCase: AddConsent = null;
+                    parsedCase = AddConsentAdapter.parseResponse(data);
+                    resolve(parsedCase);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<AddConsent>>Observable.fromPromise(promise);
+
+    }
+
+
     // constructor () {
     //   this.progress$ = Observable.create(observer => {
     //    this.progressObserver = observer
     //  }).share();
     // }
 
+
+
     public makeFileRequest(url: string, params: string[], files: File[]): Observable<AddConsent> {
-        debugger;
+      
         return Observable.create(observer => {
             let formData: FormData = new FormData(),
                 xhr: XMLHttpRequest = new XMLHttpRequest();

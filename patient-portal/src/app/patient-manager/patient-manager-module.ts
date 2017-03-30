@@ -68,6 +68,12 @@ import { AddConsentStore } from './consentForm/stores/add-consent-form-store';
  import { AddConsentFormService } from './consentForm/services/consent-form-service';
 import { ConsentListComponent } from './consentForm/components/list-consent-form'
 
+import { ListConsentStore } from './consentForm/stores/list-consent-form-store';
+import { ListConsentFormService } from './consentForm/services/list-consent-form-service';
+
+
+
+
 @NgModule({
     imports: [
         CommonModule,
@@ -131,7 +137,7 @@ import { ConsentListComponent } from './consentForm/components/list-consent-form
         AccidentStore,
         InsuranceMappingStore,
         AdjusterMasterStore,
-        AdjusterMasterService,AddConsentStore,AddConsentFormService
+        AdjusterMasterService,AddConsentStore,AddConsentFormService,ListConsentStore,ListConsentFormService
         // PatientVisitsStore,
         // PatientVisitService
     ]

@@ -9,6 +9,10 @@ import * as moment from 'moment';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
+import { ListConsentStore } from '../../consentForm/stores/list-consent-form-store';
+import { ListConsent } from '../../consentForm/models/list-consent-form';
+
+
 
 @Component({
     selector: 'list-consent-list',
@@ -16,16 +20,16 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 })
 
 export class ConsentListComponent implements OnInit {
-    selectedConsentList: AddConsent[] = [];
-    AddConsent: AddConsent[];
+    selectedConsentList: ListConsent[] = [];
+    ListConsent: ListConsent[];
     caseId: number;
-    datasource: AddConsent[];
+    datasource: ListConsent[];
     totalRecords: number;
 
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
-        private _AddConsentStore: AddConsentStore,
+        private _ListConsentStore: ListConsentStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService
@@ -40,32 +44,73 @@ export class ConsentListComponent implements OnInit {
     }
 
     loadConsentForm() {
-        // this._progressBarService.show();
-        // this._referringOfficeStore.getReferringOffices(this.caseId)
-        //     .subscribe(referringOffices => {
-        //         this.referringOffices = referringOffices.reverse();
-        //         // this.datasource = referringOffices.reverse();
-        //         // this.totalRecords = this.datasource.length;
-        //         // this.referringOffices = this.datasource.slice(0, 10);
-        //     },
-        //     (error) => {
-        //         this._progressBarService.hide();
-        //     },
-        //     () => {
-        //         this._progressBarService.hide();
-        //     });
+       
+        this._progressBarService.show();
+        this._ListConsentStore.getConsetForm(this.caseId)
+            .subscribe(ListConsent => {
+                this.ListConsent = ListConsent.reverse();
+                // this.datasource = referringOffices.reverse();
+                // this.totalRecords = this.datasource.length;
+                // this.referringOffices = this.datasource.slice(0, 10);
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
     loadConsentFormLazy(event: LazyLoadEvent) {
         setTimeout(() => {
             if (this.datasource) {
-                this.AddConsent = this.datasource.slice(event.first, (event.first + event.rows));
+                this.ListConsent = this.datasource.slice(event.first, (event.first + event.rows));
             }
         }, 250);
     }
 
     deleteConsentForm() {
+         if (this.selectedConsentList.length > 0) {
+            this.selectedConsentList.forEach(currentCase => {
+                this._progressBarService.show();
+                this._ListConsentStore.deleteConsetForm(currentCase)
+                    .subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            'title': 'record deleted successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
+
+                        });
+                        this.loadConsentForm();
+                        this._notificationsStore.addNotification(notification);
+                        this.selectedConsentList = [];
+                    },
+                    (error) => {
+                        let errString = 'Unable to delete record';
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this.selectedConsentList = [];
+                        this._progressBarService.hide();
+                        this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                    },
+                    () => {
+                        this._progressBarService.hide();
+                    });
+            });
+        } else {
+            let notification = new Notification({
+                'title': 'select record to delete',
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'select record to delete');
+        }
 
 
     }
-
 }

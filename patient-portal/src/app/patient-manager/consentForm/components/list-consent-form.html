@@ -12,14 +12,15 @@
 <div class="ui-widget-header row">
     <div class="col-lg-4 input-group">
          <span class="input-group-addon"><i class="fa fa-search"></i></span>
-         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Patients">
+         <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
     </div>
 </div>
 
-<p-dataTable [value]="AddConsentStore" [(selection)]="selectedReferringOffices" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
+<p-dataTable [value]="ListConsent" [(selection)]="selectedConsentList" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
              [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
-    <header>ReferringOffice List</header>
+    <header> List</header>
     <p-column selectionMode="multiple"></p-column>  
-    <p-column field="DoctorName" header="Doctor Name" [sortable]="true"></p-column>
-    <p-column field="filePath" header="File path" [sortable]="true"></p-column> 
+    <p-column field="doctor.user.firstName" header="Doctor Name" [sortable]="true"></p-column>
+    <p-column field="consentReceived" header="File Name" [sortable]="true"></p-column> 
+    
 </p-dataTable>
