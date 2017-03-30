@@ -65,7 +65,8 @@ export class DoctorAppointmentComponent {
 
     loadPatientVisits() {
         this._progressBarService.show();
-        this._patientVisitStore.getVisitsByDatesAndDoctorId(moment(this.startDate), moment(this.endDate), this.doctorId)
+        // this._patientVisitStore.getVisitsByDatesAndDoctorId(moment(this.startDate), moment(this.endDate), this.doctorId)
+        this._patientVisitStore.getVisitsByDoctorAndDates(moment(this.startDate), moment(this.endDate), this.doctorId)
             .subscribe((visits: PatientVisit[]) => {
                 // visits.forEach(visit => {
                 //     this._patientStore.fetchPatientById(visit.patientId)
