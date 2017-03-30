@@ -82,22 +82,22 @@ export class PatientVisitService {
     }
 
     
-    //   getDocumentsForVisitId(visitId: number): Observable<VisitDocument[]> {
-    //     let promise: Promise<VisitDocument[]> = new Promise((resolve, reject) => {
-    //         return this._http.get(this._url + '/fileupload/upload/' + visitId + 'visit')
-    //             .map(res => res.json())
-    //             .subscribe((data: Array<Object>) => {
-    //                 let document = (<Object[]>data).map((data: any) => {
-    //                     return VisitDocumentAdapter.parseResponse(data);
-    //                 });
-    //                 resolve(document);
-    //             }, (error) => {
-    //                 reject(error);
-    //             });
+      getDocumentsForVisitId(visitId: number): Observable<VisitDocument[]> {
+        let promise: Promise<VisitDocument[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/fileupload/get/' + visitId + '/visit')
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let document = (<Object[]>data).map((data: any) => {
+                        return VisitDocumentAdapter.parseResponse(data);
+                    });
+                    resolve(document);
+                }, (error) => {
+                    reject(error);
+                });
 
-    //     });
-    //     return <Observable<VisitDocument[]>>Observable.fromPromise(promise);
-    // }
+        });
+        return <Observable<VisitDocument[]>>Observable.fromPromise(promise);
+    }
 
         uploadDocumentForVisit(VisitDocument: VisitDocument,currentVisitId:number ): Observable<VisitDocument> {
         let promise: Promise<VisitDocument> = new Promise((resolve, reject) => {

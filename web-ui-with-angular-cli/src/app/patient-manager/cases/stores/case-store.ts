@@ -57,16 +57,16 @@ export class CasesStore {
     }
 
 
-    //     getDocumentsForCaseId(caseId: number): Observable<CaseDocument[]> {
-    //     let promise = new Promise((resolve, reject) => {
-    //         this._casesService.getDocumentsForCaseId(caseId).subscribe((documents: CaseDocument) => {
-    //             resolve(documents);
-    //         }, error => {
-    //             reject(error);
-    //         });
-    //     });
-    //     return <Observable<CaseDocument>>Observable.fromPromise(promise);
-    // }
+        getDocumentsForCaseId(caseId: number): Observable<CaseDocument[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._casesService.getDocumentsForCaseId(caseId).subscribe((documents: CaseDocument[]) => {
+                resolve(documents);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<CaseDocument[]>>Observable.fromPromise(promise);
+    }
 
         uploadDocument(DocumentsDetail:CaseDocument[],currentCaseId:number): Observable<CaseDocument[]> {
         let promise = new Promise((resolve, reject) => {

@@ -9,7 +9,10 @@ export class VisitDocumentAdapter {
         visitDocument = new VisitDocument({
             id: data.id,
             visitId: data.id,
-            fileUploadPath: data.fileUploadPath,
+            documentPath: data.documentPath,
+            documentName: data.documentName,
+            status: data.status,
+            message: data.message,
             createByUserID: data.createbyuserID,
             createDate: data.createDate ? moment.utc(data.createDate) : null,
             updateByUserID: data.updateByUserID,

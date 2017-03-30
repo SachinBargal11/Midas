@@ -94,17 +94,17 @@ export class PatientVisitsStore {
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
 
-    //
-    //     getDocumentsForVisitId(visitId: number): Observable<VisitDocument> {
-    //     let promise = new Promise((resolve, reject) => {
-    //         this._patientVisitsService.getDocumentsForVisitId(visitId).subscribe((documents: VisitDocument) => {
-    //             resolve(documents);
-    //         }, error => {
-    //             reject(error);
-    //         });
-    //     });
-    //     return <Observable<VisitDocument>>Observable.fromPromise(promise);
-    // }
+    
+        getDocumentsForVisitId(visitId: number): Observable<VisitDocument[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.getDocumentsForVisitId(visitId).subscribe((documents: VisitDocument[]) => {
+                resolve(documents);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<VisitDocument[]>>Observable.fromPromise(promise);
+    }
 
         uploadDocument(DocumentsDetail: VisitDocument,currentVisitId:number): Observable<VisitDocument> {
         let promise = new Promise((resolve, reject) => {
@@ -120,7 +120,7 @@ export class PatientVisitsStore {
 
 
 
-    //
+    
 
 
     findPatientVisitById(id: number): PatientVisit {

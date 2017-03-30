@@ -4,7 +4,10 @@ import * as moment from 'moment';
 const VisitDocumentRecord = Record({
     id: 0,
     visitId: 0,
-    fileUploadPath:'',
+    documentPath:'',
+    documentName:'',
+    status:'',
+    message:'',
     isDeleted: false,
     createByUserID: 0,
     createDate: null,
@@ -16,7 +19,10 @@ export class VisitDocument extends VisitDocumentRecord {
 
     id: number;
     visitId: number;
-    fileUploadPath:string;
+    documentPath:string;
+    documentName:string;
+    status:string;
+    message:string;
     isDeleted: boolean;
     createByUserID: number;
     createDate: moment.Moment;

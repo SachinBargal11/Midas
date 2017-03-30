@@ -1,13 +1,28 @@
-<h3 class="with-border">Upload Case Documents</h3>
+<h3 class="with-border"></h3>
 <form>
-    <!--<p-growl [value]="msgs"></p-growl>-->
-    <p-fileUpload name="demo[]" url={{url}} (onUpload)="onUpload($event)" multiple="multiple"  maxFileSize="1000000">
-    <!--<p-fileUpload name="demo[]" (onUpload)="onUpload($event)" multiple="multiple"
-        maxFileSize="1000000">-->
+    <section class="card">
+        <header class="card-header card-header-lg">
+           Upload Documents for Case
+        </header>
+        <div class="card-block">
+    <p-growl [value]="msgs"></p-growl>
+    <p-fileUpload name="demo[]" url={{url}} multiple="multiple" (onUpload)="onUpload($event)" maxFileSize="1000000">
         <ng-template pTemplate type="content">
             <ul *ngIf="uploadedFiles.length">
                 <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
             </ul>
         </ng-template>
     </p-fileUpload>
+    </div>
+    </section>
+    <section class="card">
+        <header class="card-header card-header-lg">
+           Uploaded Documents 
+        </header>
+        <div class="card-block">
+            <ul *ngIf="document.length">
+                <li *ngFor="let doc of document">{{doc.documentName}}</li>
+            </ul> 
+        </div>
+    </section>
 </form>

@@ -35,7 +35,8 @@ import {
   CheckboxModule,
   SharedModule,
   ConfirmDialogModule,
-  FileUploadModule
+  FileUploadModule,
+  GrowlModule
 
 } from 'primeng/primeng';
 import { DropdownModule } from 'ng2-bootstrap';
@@ -62,7 +63,8 @@ import { DropdownModule } from 'ng2-bootstrap';
     SharedModule,
     ConfirmDialogModule,
 DropdownModule.forRoot(),
-    FileUploadModule    
+    FileUploadModule,
+    GrowlModule    
   ],
   declarations: [
     LimitPipe,
@@ -119,6 +121,7 @@ DropdownModule.forRoot(),
     ShellComponent,
 ScheduledEventEditorComponent,
     FileUploadModule,
+    GrowlModule
     
   ]
 })

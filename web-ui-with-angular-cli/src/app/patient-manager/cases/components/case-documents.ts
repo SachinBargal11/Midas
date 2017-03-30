@@ -27,7 +27,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
     msgs: Message[];
     uploadedFiles: any[] = [];
     currentCaseId: number;
-    // document: CaseDocument;
+    document: CaseDocument[] = [];
     url;
 
     constructor(
@@ -59,6 +59,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.downloadDocument()
     }
 
     onUpload(event) {
@@ -70,22 +71,23 @@ export class CaseDocumentsUploadComponent implements OnInit {
 
         this.msgs = [];
         this.msgs.push({ severity: 'info', summary: 'File Uploaded', detail: '' });
+        this.downloadDocument()
     }
 
 
-    downloadDocument(event) {
-        //  this._progressBarService.show();
-        //     this._casesStore.getDocumentsForVisitId(this.currentVisitId)
-        //         .subscribe(document => {
-        //             this.document = document
+    downloadDocument() {
+         this._progressBarService.show();
+            this._casesStore.getDocumentsForCaseId(this.currentCaseId)
+                .subscribe(document => {
+                    this.document = document
 
-        //         },
-        //         (error) => {
-        //             this._progressBarService.hide();
-        //         },
-        //         () => {
-        //             this._progressBarService.hide();
-        //         });
+                },
+                (error) => {
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
         }
       
 

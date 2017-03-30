@@ -77,22 +77,22 @@ export class CaseService {
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
 
-        //   getDocumentsForCaseId(caseId: number): Observable<CaseDocument[]> {
-        //     let promise: Promise<CaseDocument[]> = new Promise((resolve, reject) => {
-        //         return this._http.get(this._url + '/fileupload/upload/' + caseId + 'case')
-        //             .map(res => res.json())
-        //             .subscribe((data: Array<Object>) => {
-        //                 let document = (<Object[]>data).map((data: any) => {
-        //                     return CaseDocumentAdapter.parseResponse(data);
-        //                 });
-        //                 resolve(document);
-        //             }, (error) => {
-        //                 reject(error);
-        //             });
+    getDocumentsForCaseId(caseId:  number):  Observable<CaseDocument[]>  {
+        let  promise:  Promise<CaseDocument[]>  =  new  Promise((resolve,  reject)  =>  {
+            return  this._http.get(this._url  +  '/fileupload/get/'  +  caseId  +  '/case')
+                .map(res  =>  res.json())
+                .subscribe((data:  Array<Object>)  =>  {
+                    let  document  =  (<Object[]>data).map((data:  any)  =>  {
+                        return  CaseDocumentAdapter.parseResponse(data);
+                    });
+                    resolve(document);
+                },  (error)  =>  {
+                    reject(error);
+                });
 
-        //     });
-        //     return <Observable<CaseDocument[]>>Observable.fromPromise(promise);
-        // }
+        });
+        return  <Observable<CaseDocument[]>>Observable.fromPromise(promise);
+    }
 
 
     uploadDocumentsForCase(CaseDocument: CaseDocument[], currentCaseId: number): Observable<CaseDocument[]> {

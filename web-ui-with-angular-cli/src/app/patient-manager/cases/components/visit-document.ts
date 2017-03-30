@@ -23,7 +23,7 @@ export class VisitDocumentsUploadComponent implements OnInit {
     msgs: Message[];
     uploadedFiles: any[] = [];
     currentVisitId: number;
-    document: VisitDocument;
+    document: VisitDocument[] = [];
     url;
 
     constructor(
@@ -37,7 +37,7 @@ export class VisitDocumentsUploadComponent implements OnInit {
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.currentVisitId = parseInt(routeParams.visitId, 10);
-            // this.url = this._url + '/fileupload/upload/'+ this.currentVisitId +'/visit';
+            this.url = this._url + '/fileupload/multiupload/'+ this.currentVisitId +'/visit';
             // this._progressBarService.show();
             // this._patientVisitStore.getDocumentsForVisitId(this.currentVisitId)
             //     .subscribe(document => {
@@ -55,6 +55,7 @@ export class VisitDocumentsUploadComponent implements OnInit {
     }
 
     ngOnInit() {
+    this.downloadDocument()
     }
 
     onUpload(event) {
@@ -66,6 +67,23 @@ export class VisitDocumentsUploadComponent implements OnInit {
 
         this.msgs = [];
         this.msgs.push({ severity: 'info', summary: 'File Uploaded', detail: '' });
+        this.downloadDocument()
     }
+
+
+    downloadDocument() {
+         this._progressBarService.show();
+            this._patientVisitStore.getDocumentsForVisitId(this.currentVisitId)
+                .subscribe(document => {
+                    this.document = document
+
+                },
+                (error) => {
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        }
 
 }
