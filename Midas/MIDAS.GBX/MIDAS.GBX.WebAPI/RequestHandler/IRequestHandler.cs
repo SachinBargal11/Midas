@@ -36,6 +36,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetBySpecialityInAllApp(HttpRequestMessage request, int specialtyId);
         HttpResponseMessage GetByRoomInAllApp(HttpRequestMessage request, int roomId);
 
+        HttpResponseMessage GetViewStatus(HttpRequestMessage request, int id, bool status);
         HttpResponseMessage GetObjects(HttpRequestMessage request);
         HttpResponseMessage GetObjects(HttpRequestMessage request, string param1);
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int id);
@@ -67,7 +68,8 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int param1, int param2);
         HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int param1, int param2);
         HttpResponseMessage AssociateUserToCompany(HttpRequestMessage request, string UserName, int CompanyId, bool sendEmail);
-        HttpResponseMessage GetByDates(HttpRequestMessage request, int DoctorId,  DateTime FromDate,DateTime ToDate);
+        HttpResponseMessage GetByDoctorAndDates(HttpRequestMessage request, int DoctorId,  DateTime FromDate,DateTime ToDate);
+        HttpResponseMessage GetByDoctorDatesAndName(HttpRequestMessage request, int DoctorId, DateTime FromDate, DateTime ToDate,string Name);       
         HttpResponseMessage GetByRoomId(HttpRequestMessage request, int RoomId);
     }
 }

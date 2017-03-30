@@ -7,6 +7,7 @@ import { CaseService } from '../services/cases-services';
 import { List } from 'immutable';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { SessionStore } from '../../../commons/stores/session-store';
+import { CaseDocument } from '../models/case-document';
 
 @Injectable()
 export class CasesStore {
@@ -54,6 +55,31 @@ export class CasesStore {
         });
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
+
+
+        getDocumentsForCaseId(caseId: number): Observable<CaseDocument[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._casesService.getDocumentsForCaseId(caseId).subscribe((documents: CaseDocument[]) => {
+                resolve(documents);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<CaseDocument[]>>Observable.fromPromise(promise);
+    }
+
+        uploadDocument(DocumentsDetail:CaseDocument[],currentCaseId:number): Observable<CaseDocument[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._casesService.uploadDocumentsForCase(DocumentsDetail,currentCaseId).subscribe((DocumentsDetail: CaseDocument[]) => {
+                resolve(DocumentsDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<CaseDocument[]>>Observable.from(promise);
+    }
+
+
 
     findCaseById(id: number) {
         let cases = this._cases.getValue();

@@ -11,7 +11,7 @@ import { PatientsStore } from '../../patient-manager/patients/stores/patients-st
 import { Patient } from '../../patient-manager/patients/models/patient';
 import { Doctor } from '../../medical-provider/users/models/doctor';
 import { Room } from '../../medical-provider/rooms/models/room';
-// import { DoctorsStore } from '../../medical-provider/users/stores/doctors-store';
+import { DoctorsStore } from '../../medical-provider/users/stores/doctors-store';
 // import { RoomsStore } from '../../medical-provider/rooms/stores/rooms-store';
 import { ProgressBarService } from '../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
@@ -26,7 +26,6 @@ import * as _ from 'underscore';
 export class DoctorAppointmentComponent {
     selectedVisits: PatientVisit[] = [];
     selectedDoctorsVisits: PatientVisit[] = [];
-    selectedRoomsVisits: PatientVisit[] = [];
     visits: PatientVisit[];
     caseId: number;
     doctorId: number;
@@ -34,15 +33,13 @@ export class DoctorAppointmentComponent {
     datasource: PatientVisit[];
     totalRecords: number;
     currentDoctorName: string;
-    currentRoomName: string;
-    // matchingVisits: PatientVisit[];
     doctorsVisits: PatientVisit[];
     roomsVisits: PatientVisit[];
-    // doctors:Doctor[];
     doctor: Doctor;
-    room: Room;
     patientName: string;
     patient: Patient;
+    startDate: Date;
+    endDate: Date;
 
     constructor(
         private _router: Router,
@@ -53,42 +50,30 @@ export class DoctorAppointmentComponent {
         private _patientStore: PatientsStore,
         private _notificationsService: NotificationsService,
         private _sessionStore: SessionStore,
-        // private _doctorsStore: DoctorsStore,
+        private _doctorsStore: DoctorsStore,
         // private _roomsStore: RoomsStore,
     ) {
-        // this._route.parent.parent.params.subscribe((routeParams: any) => {
-        //     this.caseId = parseInt(routeParams.caseId, 10);
-        // });
-
-        // this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
-        //     this.patientId = parseInt(routeParams.patientId, 10);
             this.doctorId = this._sessionStore.session.user.id;
 
     }
 
     ngOnInit() {
+         this.startDate = moment().toDate();
+         this.endDate = moment().toDate();
         this.loadPatientVisits();
     }
 
     loadPatientVisits() {
         this._progressBarService.show();
-        this._patientVisitStore.getPatientVisitsByDoctorId(this.doctorId)
+        this._patientVisitStore.getVisitsByDatesAndDoctorId(moment(this.startDate), moment(this.endDate), this.doctorId)
             .subscribe((visits: PatientVisit[]) => {
-                let matchingVisits: PatientVisit[] = _.filter(visits, (currentVisit: PatientVisit) => {
-                    return currentVisit.eventStart != null && currentVisit.eventEnd != null;
-                });
-
-                // this.visits = matchingVisits.reverse();
-                let matchingDoctorVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
-                    return currentVisit.doctor != null;
-                });
-                this.doctorsVisits = matchingDoctorVisits.reverse();
-
-                // let matchingRoomVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
-                //     return currentVisit.room != null;
+                // visits.forEach(visit => {
+                //     this._patientStore.fetchPatientById(visit.patientId)
+                //         .subscribe((patient) => {
+                //             visit.patient2 = patient;
+                //         });
                 // });
-                // this.roomsVisits = matchingRoomVisits.reverse();
-
+                this.doctorsVisits = visits.reverse();
 
             },
             (error) => {
@@ -106,8 +91,9 @@ export class DoctorAppointmentComponent {
         }, 250);
     }
 
-    deletePatientVisits() {
-        this.selectedVisits = _.union(this.selectedRoomsVisits, this.selectedDoctorsVisits);
+    deleteVisits() {
+        // this.selectedVisits = _.union(this.selectedRoomsVisits, this.selectedDoctorsVisits);
+        this.selectedVisits = this.selectedDoctorsVisits;
         if (this.selectedVisits.length > 0) {
             this.selectedVisits.forEach(currentVisit => {
                 this._progressBarService.show();

@@ -3,6 +3,7 @@ import { PatientVisit } from '../../models/patient-visit';
 import { RoomsAdapter } from '../../../../medical-provider/rooms/services/adapters/rooms-adapter';
 import { DoctorAdapter } from '../../../../medical-provider/users/services/adapters/doctor-adapter';
 import { ScheduledEventAdapter } from '../../../../medical-provider/locations/services/adapters/scheduled-event-adapter';
+import { PatientAdapter } from '../../../../patient-manager/patients/services/adapters/patient-adapter';
 
 export class PatientVisitAdapter {
     static parseResponse(data: any): PatientVisit {
@@ -14,6 +15,7 @@ export class PatientVisitAdapter {
             calendarEventId: data.calendarEventId,
             caseId: data.caseId,
             patientId: data.patientId,
+            patient: PatientAdapter.parseResponse(data.patient2),
             locationId: data.locationId,
             roomId: data.roomId,
             // room: data.room ? RoomsAdapter.parseResponse(data.room):null,

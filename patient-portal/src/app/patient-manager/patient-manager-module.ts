@@ -62,8 +62,11 @@ import { AdjusterMasterService } from './patients/services/adjuster-service';
 // import { RoomsModule } from '../medical-provider/rooms/rooms-module';
 // import { UsersModule } from '../medical-provider/users/users-module';
 
-
-
+import { ConsentShellRoutingModule } from './consentForm/consent-form-routes';
+import { AddConsentFormComponent } from './consentForm/components/add-consent-form';
+import { AddConsentStore } from './consentForm/stores/add-consent-form-store';
+ import { AddConsentFormService } from './consentForm/services/consent-form-service';
+import { ConsentListComponent } from './consentForm/components/list-consent-form'
 
 @NgModule({
     imports: [
@@ -71,6 +74,7 @@ import { AdjusterMasterService } from './patients/services/adjuster-service';
         RouterModule,
         CommonsModule,
         PatientRoutingModule
+        ,ConsentShellRoutingModule
         // RoomsModule,
         // UsersModule
     ],
@@ -105,7 +109,7 @@ import { AdjusterMasterService } from './patients/services/adjuster-service';
         CaseBasicComponent,
         InsuranceMapComponent,
         CaseMappingComponent,
-        ViewAllComponent
+        ViewAllComponent,AddConsentFormComponent,ConsentListComponent
     ],
     providers: [
         PatientsService,
@@ -127,7 +131,7 @@ import { AdjusterMasterService } from './patients/services/adjuster-service';
         AccidentStore,
         InsuranceMappingStore,
         AdjusterMasterStore,
-        AdjusterMasterService,
+        AdjusterMasterService,AddConsentStore,AddConsentFormService
         // PatientVisitsStore,
         // PatientVisitService
     ]

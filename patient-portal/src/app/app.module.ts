@@ -20,7 +20,7 @@ import { ValidateInActiveSession } from './commons/guards/validate-inactive-sess
 import { StatesStore } from './commons/stores/states-store';
 import { StateService } from './commons/services/state-service';
 import { PatientManagerModule } from './patient-manager/patient-manager-module';
-
+import { AddConsentFormComponent } from './patient-manager/consentForm/components/add-consent-form';
 
 @NgModule({
   declarations: [

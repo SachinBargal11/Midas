@@ -5,8 +5,11 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { environment } from '../../../../environments/environment';
 import { Case } from '../models/case';
+import { CaseDocument } from '../models/case-document';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { CaseAdapter } from './adapters/case-adapter';
+import { CaseDocumentAdapter } from './adapters/case-document-adapters';
+import * as _ from 'underscore';
 
 @Injectable()
 export class CaseService {
@@ -74,13 +77,50 @@ export class CaseService {
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
 
+    getDocumentsForCaseId(caseId:  number):  Observable<CaseDocument[]>  {
+        let  promise:  Promise<CaseDocument[]>  =  new  Promise((resolve,  reject)  =>  {
+            return  this._http.get(this._url  +  '/fileupload/get/'  +  caseId  +  '/case')
+                .map(res  =>  res.json())
+                .subscribe((data:  Array<Object>)  =>  {
+                    let  document  =  (<Object[]>data).map((data:  any)  =>  {
+                        return  CaseDocumentAdapter.parseResponse(data);
+                    });
+                    resolve(document);
+                },  (error)  =>  {
+                    reject(error);
+                });
+
+        });
+        return  <Observable<CaseDocument[]>>Observable.fromPromise(promise);
+    }
+
+
+    uploadDocumentsForCase(CaseDocument: CaseDocument[], currentCaseId: number): Observable<CaseDocument[]> {
+        let promise: Promise<CaseDocument[]> = new Promise((resolve, reject) => {
+            // let requestData = _.extend(CaseDocument.toJS());
+            // requestData = _.omit(requestData, 'caseId');
+            return this._http.post(this._url + '/fileupload/multiupload/' + currentCaseId + '/case', JSON.stringify(CaseDocument), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedCaseDocuments: CaseDocument = null;
+                    parsedCaseDocuments = CaseDocumentAdapter.parseResponse(data);
+                    resolve(parsedCaseDocuments);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<CaseDocument[]>>Observable.fromPromise(promise);
+    }
+
     addCase(caseDetail: Case): Observable<Case> {
         let promise: Promise<Case> = new Promise((resolve, reject) => {
             let caseRequestData = caseDetail.toJS();
             let caseCompanyMapping = [{
-                        companyId: this._sessionStore.session.currentCompany.id
-                }];
-                caseRequestData.caseCompanyMapping = caseCompanyMapping;
+                companyId: this._sessionStore.session.currentCompany.id
+            }];
+            caseRequestData.caseCompanyMapping = caseCompanyMapping;
             return this._http.post(this._url + '/Case/Save', JSON.stringify(caseRequestData), {
                 headers: this._headers
             })
@@ -101,9 +141,9 @@ export class CaseService {
         let promise = new Promise((resolve, reject) => {
             let caseRequestData = caseDetail.toJS();
             let caseCompanyMapping = [{
-                        companyId: this._sessionStore.session.currentCompany.id
-                }];
-                caseRequestData.caseCompanyMapping = caseCompanyMapping;
+                companyId: this._sessionStore.session.currentCompany.id
+            }];
+            caseRequestData.caseCompanyMapping = caseCompanyMapping;
             return this._http.post(this._url + '/Case/Save', JSON.stringify(caseRequestData), {
                 headers: this._headers
             })

@@ -47,7 +47,9 @@ import {
   ScheduleModule,
   CheckboxModule,
   SharedModule,
-  ConfirmDialogModule
+  ConfirmDialogModule,
+  FileUploadModule
+  
 } from 'primeng/primeng';
 import { DropdownModule } from 'ng2-bootstrap';
 
@@ -72,7 +74,7 @@ import { DropdownModule } from 'ng2-bootstrap';
     SharedModule,
     ConfirmDialogModule,
     MultiSelectModule,
-    DropdownModule.forRoot()
+    DropdownModule.forRoot(),FileUploadModule
   ],
   declarations: [
     LimitPipe,
@@ -142,7 +144,7 @@ import { DropdownModule } from 'ng2-bootstrap';
     ConfirmDialogModule,
     MultiSelectModule,
     DropdownModule,
-    ShellComponent
+    ShellComponent,FileUploadModule
   ]
 })
 export class CommonsModule { }

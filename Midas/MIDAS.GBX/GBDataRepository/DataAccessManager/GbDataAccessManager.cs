@@ -187,6 +187,28 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object GetViewStatus(int id, bool status)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetViewStatus(id, status);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
         #region Token Realated Functions
         public object DeleteByUserId(int userId)
         {
@@ -1224,12 +1246,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetByDates(int DoctorId, DateTime FromDate, DateTime ToDate, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object GetByDoctorAndDates(int DoctorId, DateTime FromDate, DateTime ToDate, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetByDates(DoctorId, FromDate, ToDate);
+                var gbdata = baseRepo.GetByDoctorAndDates(DoctorId, FromDate, ToDate);
 
                 return gbdata;
             }
@@ -1245,6 +1267,30 @@ namespace MIDAS.GBX.DataAccessManager
                 return ex;
             }
         }
+
+        public Object GetByDoctorDatesAndName(int DoctorId, DateTime FromDate, DateTime ToDate,string Name, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetByDoctorDatesAndName(DoctorId, FromDate, ToDate,Name);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
+        
 
         public Object AddUploadedFileData(int id, string FileUploadPath, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {

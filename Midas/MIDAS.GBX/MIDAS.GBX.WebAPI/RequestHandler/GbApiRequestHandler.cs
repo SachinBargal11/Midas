@@ -43,7 +43,7 @@ namespace MIDAS.GBX.WebAPI
 
             try
             {
-                var res = (GbObject)(object)objResult;
+                var res = (object)objResult;
                 if (res != null)
                     return request.CreateResponse(HttpStatusCode.Created, res);
                 else
@@ -99,6 +99,7 @@ namespace MIDAS.GBX.WebAPI
             //use the usertoken to determine the  user
             return "";
         }
+
         public HttpResponseMessage GetObject(HttpRequestMessage request, int id, string type)
         {
             var objResult = dataAccessManager.Get(id, type);
@@ -174,6 +175,23 @@ namespace MIDAS.GBX.WebAPI
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetViewStatus(HttpRequestMessage request, int id, bool status)
+        {
+            var objResult = dataAccessManager.GetViewStatus(id, status);
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
             }
             catch (Exception ex)
             {
@@ -886,9 +904,9 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage GetByDates(HttpRequestMessage request, int DoctorId, DateTime FromDate, DateTime ToDate)
+        public HttpResponseMessage GetByDoctorAndDates(HttpRequestMessage request, int DoctorId, DateTime FromDate, DateTime ToDate)
         {
-            var objResult = dataAccessManager.GetByDates(DoctorId, FromDate, ToDate);
+            var objResult = dataAccessManager.GetByDoctorAndDates(DoctorId, FromDate, ToDate);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
@@ -899,6 +917,19 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetByDoctorDatesAndName(HttpRequestMessage request, int DoctorId, DateTime FromDate, DateTime ToDate,string Name)
+        {
+            var objResult = dataAccessManager.GetByDoctorDatesAndName(DoctorId, FromDate, ToDate,Name);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        
         public HttpResponseMessage GetByRoomId(HttpRequestMessage request, int RoomId)
         {
             var objResult = dataAccessManager.GetByRoomId(RoomId);

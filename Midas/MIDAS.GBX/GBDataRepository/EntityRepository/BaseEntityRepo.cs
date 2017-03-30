@@ -41,6 +41,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetViewStatus(int id, bool status)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object Upload(List<HttpContent> streamContent, string path, int id, string type,string sourcePath)
         {
             throw new NotImplementedException();
@@ -349,10 +354,17 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object GetByDates(int DoctorId, DateTime FromDate, DateTime ToDate)
+        public virtual Object GetByDoctorAndDates(int DoctorId, DateTime FromDate, DateTime ToDate)
         {
             throw new NotImplementedException();
         }
+
+        public virtual Object GetByDoctorDatesAndName(int DoctorId, DateTime FromDate, DateTime ToDate, string Name)
+        {
+            throw new NotImplementedException();
+        }
+
+        
 
         public virtual Object GetByRoomId(int RoomId)
         {
