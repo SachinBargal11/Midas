@@ -200,8 +200,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 if (doctorBO.DoctorSpecialities.Count > 0)
                 {
-                    _dbSetDocSpecility.RemoveRange(_context.DoctorSpecialities.Where(c => c.DoctorID == doctorBO.user.ID));
-                    _context.SaveChanges();
+                    //_dbSetDocSpecility.RemoveRange(_context.DoctorSpecialities.Where(c => c.DoctorID == doctorBO.user.ID));
+                    //_context.SaveChanges();
                     Specialty specilityDB = null;
                     DoctorSpeciality doctorSpecilityDB = null;
                     foreach (var item in doctorBO.DoctorSpecialities)
@@ -236,19 +236,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     if (doctor != null)
                     {
                         #region Doctor
-                        doctor.Id = doctorBO.ID;
-                        doctor.LicenseNumber = string.IsNullOrEmpty(doctorBO.LicenseNumber) ? doctor.LicenseNumber : doctorBO.LicenseNumber;
-                        doctor.WCBAuthorization = string.IsNullOrEmpty(doctorBO.WCBAuthorization) ? doctor.WCBAuthorization : doctorBO.WCBAuthorization;
-                        doctor.WcbRatingCode = string.IsNullOrEmpty(doctorBO.WcbRatingCode) ? doctor.WcbRatingCode : doctorBO.WcbRatingCode;
-                        doctor.NPI = string.IsNullOrEmpty(doctorBO.NPI) ? doctor.NPI : doctorBO.NPI;
-                        doctor.Title = string.IsNullOrEmpty(doctorBO.Title) ? doctor.Title : doctorBO.Title;
-                        doctor.TaxType = !Enum.IsDefined(typeof(BO.GBEnums.TaxType), doctorBO.TaxType) ? System.Convert.ToByte((BO.GBEnums.TaxType)doctor.TaxType) : System.Convert.ToByte(doctorBO.TaxType);
-                        doctor.IsDeleted = doctorBO.IsDeleted.HasValue ? doctorBO.IsDeleted : (doctorBO.IsDeleted.HasValue ? doctor.IsDeleted : false);
-                        doctor.UpdateDate = doctorBO.UpdateDate;
-                        doctor.UpdateByUserID = doctorBO.UpdateByUserID;
+                        // doctorDB.Id = doctorBO.ID;
+                        doctorDB.LicenseNumber = string.IsNullOrEmpty(doctorBO.LicenseNumber) ? doctor.LicenseNumber : doctorBO.LicenseNumber;
+                        doctorDB.WCBAuthorization = string.IsNullOrEmpty(doctorBO.WCBAuthorization) ? doctor.WCBAuthorization : doctorBO.WCBAuthorization;
+                        doctorDB.WcbRatingCode = string.IsNullOrEmpty(doctorBO.WcbRatingCode) ? doctor.WcbRatingCode : doctorBO.WcbRatingCode;
+                        doctorDB.NPI = string.IsNullOrEmpty(doctorBO.NPI) ? doctor.NPI : doctorBO.NPI;
+                        doctorDB.Title = string.IsNullOrEmpty(doctorBO.Title) ? doctor.Title : doctorBO.Title;
+                        doctorDB.TaxType = !Enum.IsDefined(typeof(BO.GBEnums.TaxType), doctorBO.TaxType) ? System.Convert.ToByte((BO.GBEnums.TaxType)doctor.TaxType) : System.Convert.ToByte(doctorBO.TaxType);
+                        doctorDB.IsDeleted = doctorBO.IsDeleted.HasValue ? doctorBO.IsDeleted : (doctorBO.IsDeleted.HasValue ? doctor.IsDeleted : false);
+                        doctorDB.UpdateDate = doctorBO.UpdateDate;
+                        doctorDB.UpdateByUserID = doctorBO.UpdateByUserID;
                         #endregion
-                        doctorDB = doctor;                                
-                        _context.Entry(doctor).State = System.Data.Entity.EntityState.Modified;
+                       // doctorDB = doctor;                                
+                       // _context.Entry(doctorDB).State = System.Data.Entity.EntityState.Modified;
                     }
                     else
                     {

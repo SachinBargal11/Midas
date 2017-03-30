@@ -349,10 +349,17 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object GetByDates(int DoctorId, DateTime FromDate, DateTime ToDate)
+        public virtual Object GetByDoctorAndDates(int DoctorId, DateTime FromDate, DateTime ToDate)
         {
             throw new NotImplementedException();
         }
+
+        public virtual Object GetByDoctorDatesAndName(int DoctorId, DateTime FromDate, DateTime ToDate, string Name)
+        {
+            throw new NotImplementedException();
+        }
+
+        
 
         public virtual Object GetByRoomId(int RoomId)
         {

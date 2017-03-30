@@ -72,7 +72,8 @@ namespace MIDAS.GBX.DataAccessManager
         Object DeleteVisit(int id);
         Object CancleVisit(int id);
         Object CancleCalendarEvent(int id);
-        Object GetByDates(int DoctorId, DateTime FromDate,DateTime ToDate, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByDoctorAndDates(int DoctorId, DateTime FromDate,DateTime ToDate, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByDoctorDatesAndName(int DoctorId, DateTime FromDate, DateTime ToDate,string Name, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         
         Object Get(int param1, int param2, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object Get2(int param1, int param2, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
