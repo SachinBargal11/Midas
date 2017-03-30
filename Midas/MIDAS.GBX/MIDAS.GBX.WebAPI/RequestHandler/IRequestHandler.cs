@@ -68,7 +68,8 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int param1, int param2);
         HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int param1, int param2);
         HttpResponseMessage AssociateUserToCompany(HttpRequestMessage request, string UserName, int CompanyId, bool sendEmail);
-        HttpResponseMessage GetByDates(HttpRequestMessage request, int DoctorId,  DateTime FromDate,DateTime ToDate);
+        HttpResponseMessage GetByDoctorAndDates(HttpRequestMessage request, int DoctorId,  DateTime FromDate,DateTime ToDate);
+        HttpResponseMessage GetByDoctorDatesAndName(HttpRequestMessage request, int DoctorId, DateTime FromDate, DateTime ToDate,string Name);       
         HttpResponseMessage GetByRoomId(HttpRequestMessage request, int RoomId);
     }
 }

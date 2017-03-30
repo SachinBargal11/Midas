@@ -27,6 +27,7 @@
     "@angular/upgrade": "2.4.10",
     "@types/jquery": "^2.0.40",
     "@types/moment": "^2.13.0",
+    "@types/ng-file-upload": "^12.2.0",
     "@types/rrule": "^2.1.4",
     "angular2-notifications": "^0.4.53",
     "animate.css": "^3.5.2",

@@ -567,14 +567,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get By Dates
-        public override object GetByDates(int DoctorId, DateTime FromDate, DateTime ToDate)
+        public override object GetByDoctorAndDates(int DoctorId, DateTime FromDate, DateTime ToDate)
         {
             if (ToDate == ToDate.Date)
             {
                 ToDate = ToDate.AddDays(1);
             }
 
-            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("Patient2").Include("Patient2.PatientInsuranceInfoes")
+            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("Patient2").Include("Patient2.User").Include("Patient2.PatientInsuranceInfoes")
                                                                         .Include("Case").Include("Case.PatientAccidentInfoes")
                                                                         .Where(p => p.DoctorId == DoctorId 
                                                                                  && p.EventStart >= FromDate && p.EventStart < ToDate
@@ -597,13 +597,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get By Name
-        public override object Get(string Name)
+        public override object GetByDoctorDatesAndName(int DoctorId, DateTime FromDate, DateTime ToDate, string Name)
+
         {
             List<string> names = Name.Trim().Split(' ').ToList();
             List<string> names2 = new List<string>();
             foreach (var name in names)
             {
-                if(string.IsNullOrEmpty(name.Trim()) == false)
+                if (string.IsNullOrEmpty(name.Trim()) == false)
                 {
                     names2.Add(name.Trim());
                 }
@@ -612,10 +613,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var userId = _context.Users.Where(p => names2.Contains(p.FirstName) || names2.Contains(p.MiddleName) || names2.Contains(p.LastName)
                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                   .Select(p => p.id);
-
-            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Where(p => userId.Contains(p.PatientId)
-                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                        .ToList<PatientVisit2>();
+           
+            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("Patient2").Include("Patient2.User").Include("Patient2.PatientInsuranceInfoes")
+                                                                       .Include("Case").Include("Case.PatientAccidentInfoes")
+                                                                       .Where(p => p.DoctorId == DoctorId
+                                                                                && userId.Contains(p.PatientId)
+                                                                                && p.EventStart >= FromDate && p.EventStart < ToDate
+                                                                                && (p.Patient2.IsDeleted.HasValue == false || (p.Patient2.IsDeleted.HasValue == true && p.Patient2.IsDeleted.Value == false))
+                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))             
+                                                                                .ToList<PatientVisit2>();
+                    
 
             if (lstPatientVisit == null)
             {
@@ -630,6 +637,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
         }
         #endregion
+
 
 
         #region AddUploadedFileData

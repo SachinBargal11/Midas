@@ -57,7 +57,7 @@ import { PatientVisitListComponent } from './cases/components/patient-visits-lis
 import { PatientVisitNotesComponent } from './cases/components/patient-visit-notes';
 import { PatientVisitListShellComponent } from './cases/components/patient-visit-list-shell';
 import { VisitDocumentsUploadComponent } from './cases/components/visit-document';
-import { DocumentsUploadComponent } from './cases/components/documents';
+import { CaseDocumentsUploadComponent } from './cases/components/case-documents';
 
 
 import { CompanyCasesComponent } from './cases/components/company-cases-list';
@@ -74,6 +74,15 @@ import { PatientVisitService } from './patient-visit/services/patient-visit-serv
 import { RoomsModule } from '../medical-provider/rooms/rooms-module';
 import { UsersModule } from '../medical-provider/users/users-module';
 
+import { ConsentListComponent } from './cases/components/list-consent-form';
+
+import { AddConsentFormComponent } from './cases/components/add-consent-form';
+ 
+import { AddConsentStore } from './cases/stores/add-consent-form-store';
+import { AddConsentFormService } from './cases/services/consent-form-service';
+
+import { ListConsentStore } from './cases/stores/list-consent-form-store';
+import { ListConsentFormService } from './cases/services/list-consent-form-service';
 
 
 
@@ -124,9 +133,9 @@ import { UsersModule } from '../medical-provider/users/users-module';
         CompanyCasesComponent,
         PatientVisitListComponent,
         PatientVisitNotesComponent,
-        DocumentsUploadComponent,
+        CaseDocumentsUploadComponent,
         PatientVisitListShellComponent,
-        VisitDocumentsUploadComponent
+        VisitDocumentsUploadComponent,ConsentListComponent,AddConsentFormComponent
     ],
     providers: [
         PatientsService,
@@ -150,7 +159,7 @@ import { UsersModule } from '../medical-provider/users/users-module';
         AdjusterMasterStore,
         AdjusterMasterService,
         PatientVisitsStore,
-        PatientVisitService
+        PatientVisitService,AddConsentStore,AddConsentFormService	,ListConsentStore,ListConsentFormService			
     ]
 })
 export class PatientManagerModule { }
