@@ -18,7 +18,8 @@ import { DocumentsUploadComponent } from './components/documents';
 import { InsuranceMappingComponent } from './components/insurance-mapping';
 import { AssignInsuranceComponent } from './components/assign-insurance';
 import { CompanyCasesComponent } from './components/company-cases-list';
-
+import { ConsentListComponent } from './components/list-consent-form';
+import { AddConsentFormComponent } from './components/add-consent-form';
 export const CasesShellRoutes: Routes = [
     {
         path: '',
@@ -219,7 +220,34 @@ export const CasesShellRoutes: Routes = [
                                 }
                             },
                         ]
-                    }
+                    },
+
+
+        {
+        path: 'consentForm',
+        component: ShellComponent,
+        canActivate: [ValidateActiveSession],
+        data: {
+            breadcrumb: 'consentForm'
+        },
+        children: [
+            {
+                path: '',
+                component: ConsentListComponent,
+                data: {
+                    breadcrumb: 'root'
+                }
+            },
+            {
+                path: 'add',
+                component: AddConsentFormComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Add Consent form'
+                }
+            },
+        ]
+    }
                 ]
             }
         ]
