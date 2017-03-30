@@ -14,7 +14,7 @@ import { PatientVisitNotesComponent } from './components/patient-visit-notes';
 import { AddReferringOfficeComponent } from './components/add-referring-office';
 import { EditReferringOfficeComponent } from './components/edit-referring-office';
 import { AccidentInfoComponent } from './components/accident';
-import { DocumentsUploadComponent } from './components/documents';
+import { CaseDocumentsUploadComponent } from './components/case-documents';
 import { InsuranceMappingComponent } from './components/insurance-mapping';
 import { AssignInsuranceComponent } from './components/assign-insurance';
 import { CompanyCasesComponent } from './components/company-cases-list';
@@ -189,7 +189,7 @@ export const CasesShellRoutes: Routes = [
                     },
                     {
                         path: 'documents',
-                        component: DocumentsUploadComponent,
+                        component: CaseDocumentsUploadComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Documents'
