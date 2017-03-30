@@ -36,6 +36,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetBySpecialityInAllApp(HttpRequestMessage request, int specialtyId);
         HttpResponseMessage GetByRoomInAllApp(HttpRequestMessage request, int roomId);
 
+        HttpResponseMessage GetViewStatus(HttpRequestMessage request, int id, bool status);
         HttpResponseMessage GetObjects(HttpRequestMessage request);
         HttpResponseMessage GetObjects(HttpRequestMessage request, string param1);
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int id);

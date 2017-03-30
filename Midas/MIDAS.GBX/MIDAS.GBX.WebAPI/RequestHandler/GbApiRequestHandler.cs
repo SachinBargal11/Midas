@@ -99,6 +99,7 @@ namespace MIDAS.GBX.WebAPI
             //use the usertoken to determine the  user
             return "";
         }
+
         public HttpResponseMessage GetObject(HttpRequestMessage request, int id, string type)
         {
             var objResult = dataAccessManager.Get(id, type);
@@ -174,6 +175,23 @@ namespace MIDAS.GBX.WebAPI
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetViewStatus(HttpRequestMessage request, int id, bool status)
+        {
+            var objResult = dataAccessManager.GetViewStatus(id, status);
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
             }
             catch (Exception ex)
             {

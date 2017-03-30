@@ -18,6 +18,7 @@ namespace MIDAS.GBX.DataAccessManager
         object Delete(int id);
         object GetDocumentList(int id);
 
+        Object GetViewStatus(int id, bool status);
         Object Get(int id, string type);
         Object Get(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object IsInsuranceInfoAdded(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);        

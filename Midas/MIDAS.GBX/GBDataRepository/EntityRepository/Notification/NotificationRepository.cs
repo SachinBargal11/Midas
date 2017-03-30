@@ -226,8 +226,29 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (object)res;
         }
         #endregion
-                  
-       
+
+        #region Viewstatus
+        public override object GetViewStatus(int id, bool status)
+        {
+            var acc = _context.Notifications.Where(p => p.Id == id
+                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                            .FirstOrDefault<Notification>();
+            if (acc != null)
+            {
+                acc.IsViewed = status;
+                _context.SaveChanges();
+            }
+            BO.Notification acc_ = Convert<BO.Notification, Notification>(acc);
+
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            return (object)acc_;
+        }
+        #endregion
+
         #region Get By ID
         public override object Get(int id)
         {

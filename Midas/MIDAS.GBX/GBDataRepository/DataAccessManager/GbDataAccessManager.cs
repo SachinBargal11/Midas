@@ -187,6 +187,28 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public Object GetViewStatus(int id, bool status)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetViewStatus(id, status);
+
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
+
         #region Token Realated Functions
         public object DeleteByUserId(int userId)
         {

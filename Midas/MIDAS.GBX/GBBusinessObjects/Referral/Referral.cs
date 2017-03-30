@@ -46,7 +46,7 @@ namespace MIDAS.GBX.BusinessObjects
         public bool? ReferralAccepted{ get; set; }
 
         [JsonProperty("referredToDoctor")]
-        public Doctor Doctor{ get; set; }
+        public Doctor Doctor { get; set; }
 
         [JsonProperty("referringDoctor")]
         public Doctor Doctor1 { get; set; }

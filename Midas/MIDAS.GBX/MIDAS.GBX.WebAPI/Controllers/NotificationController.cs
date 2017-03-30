@@ -68,6 +68,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandlerNotification.CreateGbObject(Request, notification);
         }
 
+        [HttpGet]
+        [Route("getViewStatus/{id}/{status}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetViewStatus(int id, bool status)
+        {
+            return requestHandlerNotification.GetViewStatus(Request, id, status);
+        }
+
         //[HttpGet]
         //[Route("Delete/{id}")]
         //public HttpResponseMessage Delete(int id)
