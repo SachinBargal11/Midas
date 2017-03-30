@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { PatientVisit } from '../models/patient-visit';
+import { VisitDocument } from '../models/visit-document';
 import { PatientVisitService } from '../services/patient-visit-service';
 import { List } from 'immutable';
 import { BehaviorSubject } from 'rxjs/Rx';
@@ -92,6 +93,34 @@ export class PatientVisitsStore {
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
+
+    //
+    //     getDocumentsForVisitId(visitId: number): Observable<VisitDocument> {
+    //     let promise = new Promise((resolve, reject) => {
+    //         this._patientVisitsService.getDocumentsForVisitId(visitId).subscribe((documents: VisitDocument) => {
+    //             resolve(documents);
+    //         }, error => {
+    //             reject(error);
+    //         });
+    //     });
+    //     return <Observable<VisitDocument>>Observable.fromPromise(promise);
+    // }
+
+        uploadDocument(DocumentsDetail: VisitDocument,currentVisitId:number): Observable<VisitDocument> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.uploadDocumentForVisit(DocumentsDetail,currentVisitId).subscribe((DocumentsDetail: VisitDocument) => {
+                // this._patientVisits.next(this._patientVisits.getValue().push(DocumentsDetail));
+                resolve(DocumentsDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<VisitDocument>>Observable.from(promise);
+    }
+
+
+
+    //
 
 
     findPatientVisitById(id: number): PatientVisit {

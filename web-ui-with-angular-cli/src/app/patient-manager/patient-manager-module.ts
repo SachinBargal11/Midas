@@ -57,7 +57,7 @@ import { PatientVisitListComponent } from './cases/components/patient-visits-lis
 import { PatientVisitNotesComponent } from './cases/components/patient-visit-notes';
 import { PatientVisitListShellComponent } from './cases/components/patient-visit-list-shell';
 import { VisitDocumentsUploadComponent } from './cases/components/visit-document';
-import { DocumentsUploadComponent } from './cases/components/documents';
+import { CaseDocumentsUploadComponent } from './cases/components/case-documents';
 
 
 import { CompanyCasesComponent } from './cases/components/company-cases-list';
@@ -133,7 +133,7 @@ import { ListConsentFormService } from './cases/services/list-consent-form-servi
         CompanyCasesComponent,
         PatientVisitListComponent,
         PatientVisitNotesComponent,
-        DocumentsUploadComponent,
+        CaseDocumentsUploadComponent,
         PatientVisitListShellComponent,
         VisitDocumentsUploadComponent,ConsentListComponent,AddConsentFormComponent
     ],

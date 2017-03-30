@@ -61,7 +61,8 @@ import { DropdownModule } from 'ng2-bootstrap';
     CheckboxModule,
     SharedModule,
     ConfirmDialogModule,
-    DropdownModule.forRoot(),FileUploadModule
+DropdownModule.forRoot(),
+    FileUploadModule    
   ],
   declarations: [
     LimitPipe,
@@ -116,7 +117,9 @@ import { DropdownModule } from 'ng2-bootstrap';
     ConfirmDialogModule,
     DropdownModule,
     ShellComponent,
-    ScheduledEventEditorComponent,FileUploadModule
+ScheduledEventEditorComponent,
+    FileUploadModule,
+    
   ]
 })
 export class CommonsModule { }

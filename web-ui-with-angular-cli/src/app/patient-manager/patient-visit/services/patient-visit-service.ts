@@ -7,8 +7,10 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { environment } from '../../../../environments/environment';
 import { PatientVisit } from '../models/patient-visit';
+import { VisitDocument } from '../models/visit-document';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { PatientVisitAdapter } from './adapters/patient-visit-adapter';
+import { VisitDocumentAdapter } from './adapters/visit-document-adapter';
 import * as moment from 'moment';
 import * as _ from 'underscore';
 
@@ -78,6 +80,44 @@ export class PatientVisitService {
         });
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
+
+    
+    //   getDocumentsForVisitId(visitId: number): Observable<VisitDocument[]> {
+    //     let promise: Promise<VisitDocument[]> = new Promise((resolve, reject) => {
+    //         return this._http.get(this._url + '/fileupload/upload/' + visitId + 'visit')
+    //             .map(res => res.json())
+    //             .subscribe((data: Array<Object>) => {
+    //                 let document = (<Object[]>data).map((data: any) => {
+    //                     return VisitDocumentAdapter.parseResponse(data);
+    //                 });
+    //                 resolve(document);
+    //             }, (error) => {
+    //                 reject(error);
+    //             });
+
+    //     });
+    //     return <Observable<VisitDocument[]>>Observable.fromPromise(promise);
+    // }
+
+        uploadDocumentForVisit(VisitDocument: VisitDocument,currentVisitId:number ): Observable<VisitDocument> {
+        let promise: Promise<VisitDocument> = new Promise((resolve, reject) => {
+            let requestData = _.extend(VisitDocument.toJS());
+            // requestData = _.omit(requestData, 'caseId');
+            return this._http.post(this._url +  '/fileupload/upload/'+ currentVisitId +'/visit', JSON.stringify(requestData), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedVisitDocuments: VisitDocument = null;
+                    parsedVisitDocuments = VisitDocumentAdapter.parseResponse(data);
+                    resolve(parsedVisitDocuments);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<VisitDocument>>Observable.fromPromise(promise);
+    }
+    
 
     getPatientVisitsByDoctorId(doctorId: number): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {

@@ -40,7 +40,8 @@ export class AccidentInfoComponent implements OnInit {
     accidentformControls;
     isSaveProgress = false;
     isSaveAccidentProgress = false;
-
+    accAddId: number;
+    hospAddId :number;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -56,6 +57,7 @@ export class AccidentInfoComponent implements OnInit {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
             this._progressBarService.show();
+            debugger;
             let result = this._accidentStore.getAccidents(this.caseId);
             result.subscribe(
                 (accidents: Accident[]) => {
@@ -78,6 +80,8 @@ export class AccidentInfoComponent implements OnInit {
                             this.selectedCity = this.currentAccident.hospitalAddress.city;
                             this.selectedAccidentCity = this.currentAccident.accidentAddress.city;
                         }
+
+                       
                     } else {
                         this.currentAccident = new Accident({
                             accidentAddress: new Address({}),
@@ -125,16 +129,19 @@ export class AccidentInfoComponent implements OnInit {
         let currentDate = today.getDate();
         this.maxDate = new Date();
         this.maxDate.setDate(currentDate);
+        debugger;
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
     }
 
     save() {
+      
         this.isSaveAccidentProgress = true;
         let accidentformValues = this.accidentform.value;
         let addResult;
         let result;
         let accident = new Accident({
+            
             caseId: this.caseId,
             isCurrentAccident: 1,
             plateNumber: accidentformValues.plateNumber,
@@ -146,14 +153,17 @@ export class AccidentInfoComponent implements OnInit {
             additionalPatients: accidentformValues.additionalPatient,
             accidentDate: accidentformValues.doa ? moment(accidentformValues.doa) : null,
             accidentAddress: new Address({
+                id: this.currentAccident.accidentAddress.id,
                 address1: accidentformValues.accidentAddress,
                 address2: accidentformValues.accidentAddress2,
                 city: accidentformValues.accidentCity,
                 country: accidentformValues.accidentCountry,
                 state: accidentformValues.accidentState,
                 zipCode: accidentformValues.accidentZipcode
+                 
             }),
             hospitalAddress: new Address({
+                 id: this.currentAccident.hospitalAddress.id,
                 address1: accidentformValues.address,
                 address2: accidentformValues.address2,
                 city: accidentformValues.city,
