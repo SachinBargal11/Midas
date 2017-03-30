@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
     loginForm: FormGroup;
     loginFormControls;
     isLoginInProgress;
+    doctorRole = false;
     options = {
         timeOut: 50000,
         showProgressBar: false,
@@ -62,7 +63,16 @@ export class LoginComponent implements OnInit {
                 if (this.checkSecuredLogin(this.loginForm.value.email)) {
                     this._router.navigate(['/account/security-check']);
                 } else {
-                    this._router.navigate(['/dashboard']);
+                    session.user.roles.forEach(role => {
+                        if (role.roleType === 3) {
+                            this.doctorRole = true;
+                        }
+                    });
+                    if (this.doctorRole) {
+                        this._router.navigate(['/doctor-manager/doctor-appointment']);
+                    } else {
+                        this._router.navigate(['/dashboard']);
+                    }
                 }
             },
             (error: Error) => {

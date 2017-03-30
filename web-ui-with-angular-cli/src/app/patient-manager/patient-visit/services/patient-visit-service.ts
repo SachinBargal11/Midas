@@ -81,8 +81,63 @@ export class PatientVisitService {
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
 
-    
-      getDocumentsForVisitId(visitId: number): Observable<VisitDocument[]> {
+    getVisitsByDatesAndDoctorId(starDate: any, endDate: any, doctorId: number): Observable<PatientVisit[]> {
+        let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
+            let fromDate = starDate.format('YYYY-MM-DD');
+            let toDate = endDate.format('YYYY-MM-DD');
+            return this._http.get(this._url + '/patientVisit/getByDates/' + doctorId + '/' + fromDate + '/' + toDate)
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let patientVisits = (<Object[]>data).map((data: any) => {
+                        return PatientVisitAdapter.parseResponse(data);
+                    });
+                    resolve(patientVisits);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+    getVisitsByDoctorAndDates(starDate: any, endDate: any, doctorId: number): Observable<PatientVisit[]> {
+        let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
+            let fromDate = starDate.format('YYYY-MM-DD');
+            let toDate = endDate.format('YYYY-MM-DD');
+            return this._http.get(this._url + '/patientVisit/getByDoctorAndDates/' + doctorId + '/' + fromDate + '/' + toDate)
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let patientVisits = (<Object[]>data).map((data: any) => {
+                        return PatientVisitAdapter.parseResponse(data);
+                    });
+                    resolve(patientVisits);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+    getVisitsByDoctorDatesAndName(starDate: any, endDate: any, doctorName: string): Observable<PatientVisit[]> {
+        let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
+            let fromDate = starDate.format('YYYY-MM-DD');
+            let toDate = endDate.format('YYYY-MM-DD');
+            return this._http.get(this._url + '/patientVisit/getByDoctorDatesAndName/' + fromDate + '/' + toDate + '/' + doctorName)
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let patientVisits = (<Object[]>data).map((data: any) => {
+                        return PatientVisitAdapter.parseResponse(data);
+                    });
+                    resolve(patientVisits);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
+    }
+
+
+    getDocumentsForVisitId(visitId: number): Observable<VisitDocument[]> {
         let promise: Promise<VisitDocument[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/fileupload/get/' + visitId + '/visit')
                 .map(res => res.json())
@@ -99,11 +154,11 @@ export class PatientVisitService {
         return <Observable<VisitDocument[]>>Observable.fromPromise(promise);
     }
 
-        uploadDocumentForVisit(VisitDocument: VisitDocument,currentVisitId:number ): Observable<VisitDocument> {
+    uploadDocumentForVisit(VisitDocument: VisitDocument, currentVisitId: number): Observable<VisitDocument> {
         let promise: Promise<VisitDocument> = new Promise((resolve, reject) => {
             let requestData = _.extend(VisitDocument.toJS());
             // requestData = _.omit(requestData, 'caseId');
-            return this._http.post(this._url +  '/fileupload/upload/'+ currentVisitId +'/visit', JSON.stringify(requestData), {
+            return this._http.post(this._url + '/fileupload/upload/' + currentVisitId + '/visit', JSON.stringify(requestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -117,7 +172,7 @@ export class PatientVisitService {
         });
         return <Observable<VisitDocument>>Observable.fromPromise(promise);
     }
-    
+
 
     getPatientVisitsByDoctorId(doctorId: number): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
@@ -291,7 +346,7 @@ export class PatientVisitService {
 
     deletePatientVisit(patientVisitDetail: PatientVisit): Observable<PatientVisit> {
 
-           let promise = new Promise((resolve, reject) => {
+        let promise = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/PatientVisit/DeleteVisit/' + patientVisitDetail.id)
                 .map(res => res.json())
                 .subscribe((data: any) => {
