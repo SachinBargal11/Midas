@@ -416,7 +416,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object GetBySpecialityInAllApp(int specialtyId)
         {
 
-            var acc_ = _context.Doctors.Include("User").Include("User.UserCompanies.Company").Include("DoctorSpecialities.Specialty").Where(p => p.DoctorSpecialities.Where(p2 => p2.IsDeleted == false).Any(p3 => p3.SpecialityID == specialtyId)
+            var acc_ = _context.Doctors.Include("User").Include("DoctorSpecialities.Specialty").Where(p => p.DoctorSpecialities.Where(p2 => p2.IsDeleted == false).Any(p3 => p3.SpecialityID == specialtyId)
                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                  .ToList();
             if (acc_ == null)

@@ -28,6 +28,7 @@ import { AddInsuranceComponent } from './patients/components/add-insurance';
 import { EditInsuranceComponent } from './patients/components/edit-insurance';
 import { ViewAllComponent } from './patients/components/view-all';
 import { ConsentShellRoutes } from './consentForm/consent-form-routes';
+
 let PatientManagerRoutes: Routes = [
     {
         path: '',

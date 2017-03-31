@@ -45,7 +45,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
         public override object Get(int id, string type)
         {
             List<BO.Document> docInfo = new List<BO.Document>();
-            _context.MidasDocuments.Where(p => p.ObjectId == id && p.ObjectType.ToUpper() == type.ToUpper()).ToList().ForEach(x => docInfo.Add(new BO.Document()
+            _context.MidasDocuments.Where(p => p.ObjectId == id && p.ObjectType.ToUpper() == type.ToUpper() && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList().ForEach(x => docInfo.Add(new BO.Document()
             {
                 id = id,
                 DocumentId = x.Id,
@@ -91,7 +91,50 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
             return docInfo;
         }
         #endregion
-    
+
+        #region Delete By ID
+        public override object DeleteFile(int caseId, int id)
+        {
+            BO.Document docInfo = new BO.Document();
+            var casedocument = _context.CaseDocuments.Where(p => p.CaseId == caseId && p.MidasDocumentId == id
+                                                      && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                      .FirstOrDefault<CaseDocument>();
+
+            var acc = _context.MidasDocuments.Where(p => p.Id == id
+                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                             .FirstOrDefault<MidasDocument>();
+            if (casedocument != null)
+            {
+                casedocument.IsDeleted = true;
+                _context.SaveChanges();
+            }
+            else if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            if (acc != null)
+            {
+                acc.IsDeleted = true;
+                _context.SaveChanges();
+            }
+            else if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            
+            docInfo.id= id;
+            docInfo.DocumentId = acc.Id;
+            docInfo.DocumentName = acc.DocumentName;
+            docInfo.DocumentPath = acc.DocumentPath;
+            docInfo.IsDeleted = acc.IsDeleted;
+
+            return (object)docInfo;
+
+        }
+        #endregion
+
+
         public void Dispose() { GC.SuppressFinalize(this); }
     }
 }

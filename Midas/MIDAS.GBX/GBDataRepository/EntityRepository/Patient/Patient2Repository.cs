@@ -99,7 +99,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get By ID For Patient 
+        #region Get By Company ID For Patient 
         public override object GetByCompanyId(int CompanyId)
         {
                       var acc = _context.Patient2.Include("User")
@@ -126,6 +126,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 return lstpatients;
             }
            
+        }
+        #endregion
+
+
+        #region Get By Company ID and DoctorId For Patient 
+        public override object Get(int CompanyId, int DoctorId)
+        {
+            var acc = _context.Patient2.Include("User")
+                                       .Include("User.AddressInfo")
+                                       .Include("User.ContactInfo")
+                                       .Where(p => p.User.UserCompanies.Where(p2 => p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
+                                       .Any(p3 => p3.CompanyID == CompanyId)
+                                       && p.PatientVisit2.Where(p4 => p4.IsDeleted.HasValue == false || (p4.IsDeleted.HasValue == true && p4.IsDeleted.Value == false))
+                                       .Any(p5 => p5.DoctorId == DoctorId)
+                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                       .ToList<Patient2>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.Patient2> lstpatients = new List<BO.Patient2>();
+                //acc.ForEach(p => lstpatients.Add(Convert<BO.Patient2, Patient2>(p)));
+                foreach (Patient2 item in acc)
+                {
+                    lstpatients.Add(Convert<BO.Patient2, Patient2>(item));
+                }
+
+                return lstpatients;
+            }
+
         }
         #endregion
 

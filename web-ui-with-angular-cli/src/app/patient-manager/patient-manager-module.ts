@@ -77,7 +77,8 @@ import { UsersModule } from '../medical-provider/users/users-module';
 import { ConsentListComponent } from './cases/components/list-consent-form';
 
 import { AddConsentFormComponent } from './cases/components/add-consent-form';
- 
+import { DocumentsUploadComponent } from './cases/components/documents';
+
 import { AddConsentStore } from './cases/stores/add-consent-form-store';
 import { AddConsentFormService } from './cases/services/consent-form-service';
 
@@ -135,7 +136,10 @@ import { ListConsentFormService } from './cases/services/list-consent-form-servi
         PatientVisitNotesComponent,
         CaseDocumentsUploadComponent,
         PatientVisitListShellComponent,
-        VisitDocumentsUploadComponent,ConsentListComponent,AddConsentFormComponent
+        VisitDocumentsUploadComponent,
+        ConsentListComponent,
+        AddConsentFormComponent,
+        DocumentsUploadComponent
     ],
     providers: [
         PatientsService,
@@ -159,7 +163,7 @@ import { ListConsentFormService } from './cases/services/list-consent-form-servi
         AdjusterMasterStore,
         AdjusterMasterService,
         PatientVisitsStore,
-        PatientVisitService,AddConsentStore,AddConsentFormService	,ListConsentStore,ListConsentFormService			
+        PatientVisitService, AddConsentStore, AddConsentFormService, ListConsentStore, ListConsentFormService
     ]
 })
 export class PatientManagerModule { }

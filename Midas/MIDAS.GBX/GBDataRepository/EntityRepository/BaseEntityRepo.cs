@@ -300,6 +300,11 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+        
+        public virtual Object DeleteFile(int caseId, int id)
+        {
+            throw new NotImplementedException();
+        }
         public virtual Object CancleVisit(int id)
         {
             throw new NotImplementedException();

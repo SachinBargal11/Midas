@@ -44,5 +44,6 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage GetDocumentList(HttpRequestMessage request, int id);
         HttpResponseMessage GetByRoomId(HttpRequestMessage request, int RoomId);
         HttpResponseMessage GetByLocationAndSpecialty(HttpRequestMessage request, int locationId, int specialtyId);
+        HttpResponseMessage DeleteFile(HttpRequestMessage request, int caseId, int id);
     }
 }

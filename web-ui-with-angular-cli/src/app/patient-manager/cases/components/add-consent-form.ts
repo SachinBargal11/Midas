@@ -213,6 +213,7 @@ export class AddConsentFormComponent implements OnInit {
     isPassChangeInProgress;
     companyId: number;
     fileName: string;
+    fileUploaded:string;
     constructor(
         private fb: FormBuilder,
         private service: AddConsentFormService,
@@ -260,7 +261,8 @@ export class AddConsentFormComponent implements OnInit {
 
     onUpload(event) {
         for (let file of event.files) {
-            this.uploadedFiles.push(file);
+            this.uploadedFiles.push(file);           
+            
         }
 
         this.msgs = [];
@@ -298,7 +300,7 @@ export class AddConsentFormComponent implements OnInit {
     }
 
     Save() {
-
+debugger;
         this.isSaveProgress = true;
         let consentFormValues = this.consentForm.value;
         let result;
@@ -306,7 +308,7 @@ export class AddConsentFormComponent implements OnInit {
             caseId: this.caseId,
             patientId: this.patientId,
             doctorId: parseInt(consentFormValues.doctor),
-            consentReceived: 'yes'
+            consentReceived: this.fileUploaded
         });
 
         this._progressBarService.show();

@@ -1,4 +1,13 @@
 <h3 class="with-border"></h3>
+<select [(ngModel)]="selectedTwainSource">
+    <option *ngFor="let source of twainSources" [ngValue]="source">{{source.name}}</option>
+    </select>
+<input type="button" value="Scan" (click)="AcquireImage()" />
+<input type="button" value="Upload" (click)="uploadDocuments()" />
+<div id="{{scannerContainerId}}">
+
+</div>
+<br><br><br>
 <form>
     <section class="card">
         <header class="card-header card-header-lg">

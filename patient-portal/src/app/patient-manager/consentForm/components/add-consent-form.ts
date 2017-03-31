@@ -1,4 +1,5 @@
 
+
 // import { FileUploadModule } from 'primeng/primeng';
 // import { Component, OnInit, ElementRef } from '@angular/core';
 
@@ -173,10 +174,14 @@ import { Message } from 'primeng/primeng'
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-import { FileUpload, FileUploadModule } from 'primeng/primeng';
+//import { FileUpload, FileUploadModule } from 'primeng/primeng';
 import { AddConsentStore } from '../stores/add-consent-form-store';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { AddConsentFormService } from '../services/consent-form-service';
+import { AddConsent } from '../models/add-consent-form';
+import { ElementRef, Input, ViewChild } from '@angular/core';
+import { Http } from '@angular/http';
+import * as _ from 'underscore';
 
 @Component({
     selector: 'add-consent-form',
@@ -194,34 +199,41 @@ export class AddConsentFormComponent implements OnInit {
     doctors: any[];
     isdoctorsLoading = false;
     isSaveProgress = false;
-    states: any[]
+    states: any[];
+    consentDetail: AddConsent;
     consentForm: FormGroup;
     consentformControls;
 
     minDate: Date;
     maxDate: Date;
     patientId: number;
+    caseId: number;
+    doctroId: number;
     selectedDoctor = 0;
     isPassChangeInProgress;
-companyId: number;
+    companyId: number;
+    fileName: string;
+    fileUploaded:string;
     constructor(
         private fb: FormBuilder,
         private service: AddConsentFormService,
         private _router: Router,
+        private _sessionStore: SessionStore,
         public _route: ActivatedRoute,
         private _AddConsentStore: AddConsentStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
-  private _sessionStore: SessionStore,
+        private http: Http,
 
     ) {
 
-        this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId, 10);
-            //let companyId: number = this._sessionStore.session.currentCompany.id;
-            this.url = this._url + '/fileupload/upload/' + this.currentId + '/visit';
-            this.companyId = 0;//this._sessionStore.session.currentCompany.id;
+        this._route.parent.parent.params.subscribe((routeParams: any) => {
+
+            this.caseId = parseInt(routeParams.caseId, 10);
+            // let companyId: number = this._sessionStore.session.currentCompany.id;
+           // this.companyId = this._sessionStore.session.currentCompany.id;
+            this.url = this._url + '/fileupload/multiupload/' + this.caseId + '/case';
             this.consentForm = this.fb.group({
                 doctor: ['', Validators.required]
             });
@@ -249,11 +261,144 @@ companyId: number;
 
     onUpload(event) {
         for (let file of event.files) {
-            this.uploadedFiles.push(file);
+            this.uploadedFiles.push(file);           
+            
         }
+
+        this.msgs = [];
+      
+        this.msgs.push({ severity: 'info', summary: 'File Uploaded', detail: '' });
+    }
+
+    onUploadss(event) {
+
+        let fileName: string;
+        for (let file of event.files) {
+            this.uploadedFiles.push(file);
+            fileName = file;
+
+        }
+        this.isSaveProgress = true;
+        let consentFormValues = this.consentForm.value;
+        let result;
+        let consentDetailJS = this.consentDetail.toJS();
+        let consentDetail: AddConsent = new AddConsent(_.extend(consentDetailJS, {
+            // caseName: caseFormValues.caseName,
+            caseId: this.caseId,
+            patientId: this.patientId,
+            //doctorID: consentFormValues.doctor,
+            // doctorID=this.do;
+            fileName: fileName
+        }));
+
+        this._progressBarService.show();
+        result = this._AddConsentStore.Save(consentDetail);
+
 
         this.msgs = [];
         this.msgs.push({ severity: 'info', summary: 'File Uploaded', detail: '' });
     }
+
+    Save() {
+debugger;
+        this.isSaveProgress = true;
+        let consentFormValues = this.consentForm.value;
+        let result;
+        let consentDetail = new AddConsent({
+            caseId: this.caseId,
+            patientId: this.patientId,
+            doctorId: parseInt(consentFormValues.doctor),
+            consentReceived: this.fileUploaded
+        });
+
+        this._progressBarService.show();
+        result = this._AddConsentStore.Save(consentDetail);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Consent form added successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._router.navigate(['../'], { relativeTo: this._route });
+            },
+            (error) => {
+                let errString = 'Unable to add Consent form.';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this.isSaveProgress = false;
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                this._progressBarService.hide();
+            },
+            () => {
+                this.isSaveProgress = false;
+                this._progressBarService.hide();
+            });
+    }
+
+    //  deleteCase(caseDetail: Case): Observable<Case> {
+    //         let promise = new Promise((resolve, reject) => {
+    //             return this._http.get(this._url + '/Case/delete/' + caseDetail.id, {
+    //                 headers: this._headers
+    //             }).map(res => res.json())
+    //                 .subscribe((data: any) => {
+    //                     let parsedCase: Case = null;
+    //                     parsedCase = CaseAdapter.parseResponse(data);
+    //                     resolve(parsedCase);
+    //                 }, (error) => {
+    //                     reject(error);
+    //                 });
+    //         });
+    //         return <Observable<Case>>Observable.from(promise);
+    //     }
+
+
+    upload() {
+
+        this.isSaveProgress = true;
+        let consentFormValues = this.consentForm.value;
+        let result;
+        let consentDetailJS = this.consentDetail.toJS();
+        let consentDetail: AddConsent = new AddConsent(_.extend(consentDetailJS, {
+            // caseName: caseFormValues.caseName,
+            caseId: this.caseId,
+            patientId: this.patientId,
+            doctorID: consentFormValues.doctor,
+            fileName: 'ssss'
+        }));
+
+        this._progressBarService.show();
+        result = this._AddConsentStore.Save(consentDetail)
+
+            .subscribe(
+            data => {
+                console.log("data submitted");
+                this._notificationsService.success('Success', 'File Uploaded successfully!');
+                setTimeout(() => {
+                    this._router.navigate(['/account/login']);
+                }, 3000);
+            },
+            error => {
+                debugger;
+                console.log(error),
+                    this.isPassChangeInProgress = false;
+                let errString = 'Unable to upload.';
+                this._notificationsService.error('Error!', ErrorMessageFormatter.getErrorMessages(error, errString));
+            },
+
+            () => {
+                console.log('Authentication Complete');
+                this.isPassChangeInProgress = false;
+            }
+            );
+    }
+
+
+
 
 }

@@ -1,21 +1,22 @@
 import * as moment from 'moment';
-import { AddConsent } from '../../models/add-consent-form';
+import { ListConsent } from '../../models/list-consent-form';
 import { AddressAdapter } from '../../../../commons/services/adapters/address-adapter';
 
-export class AddConsentAdapter {
-    static parseResponse(data: any): AddConsent {
+export class ListConsentAdapter {
+    static parseResponse(data: any): ListConsent {
 
-        let addConsent = null;
+        let listConsent = null;
         if (data) {
-            addConsent = new AddConsent({
+            listConsent = new ListConsent({
                 id: data.id,
                 caseId: data.caseId,
                 doctorId:data.doctorId,
-                consentReceived:'yes'
+                consentReceived:'yes',
+                path:data.path
                 //accidentAddress: AddressAdapter.parseResponse(data.accidentAddressInfo),
                
             });
         }
-        return addConsent;
+        return listConsent;
     }
 }

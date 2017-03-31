@@ -224,11 +224,11 @@ export const CasesShellRoutes: Routes = [
 
 
         {
-        path: 'consentForm',
+        path: 'consent-form',
         component: ShellComponent,
         canActivate: [ValidateActiveSession],
         data: {
-            breadcrumb: 'consentForm'
+            breadcrumb: 'consent-form'
         },
         children: [
             {

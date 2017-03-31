@@ -29,6 +29,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage ValidateOTP(HttpRequestMessage request, T gbObject);
         HttpResponseMessage RegenerateOTP(HttpRequestMessage request, T gbObject);
         HttpResponseMessage Delete(HttpRequestMessage request, int id);
+        HttpResponseMessage DeleteFile(HttpRequestMessage request,int caseId, int id);
         HttpResponseMessage GetDocumentList(HttpRequestMessage request, int id);
         HttpResponseMessage GeneratePasswordLink(HttpRequestMessage request, T gbObject);
         HttpResponseMessage ValidatePassword(HttpRequestMessage request, T gbObject);
