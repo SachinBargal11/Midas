@@ -7,6 +7,7 @@ import { NotificationsStore } from '../../../commons/stores/notifications-store'
 import { SessionStore } from '../../../commons/stores/session-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
+import * as _ from 'underscore';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
@@ -31,13 +32,29 @@ export class PatientsListComponent implements OnInit {
         private _notificationsService: NotificationsService,
     ) {
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
-            this.loadPatients();
+            this.loadPatientsCheckingDoctor();
             this._router.navigate(['/patient-manager/patients']);
         });
     }
 
     ngOnInit() {
-        this.loadPatients();
+        this.loadPatientsCheckingDoctor();
+    }
+    loadPatientsCheckingDoctor() {
+        let doctorRoleOnly = null;
+        let roles = this._sessionStore.session.user.roles;
+        if (roles) {
+            if (roles.length === 1) {
+                doctorRoleOnly = _.find(roles, (currentRole) => {
+                    return currentRole.roleType === 3;
+                });
+            }
+            if (doctorRoleOnly) {
+                this.loadPatientsByCompanyAndDoctor();
+            } else {
+                this.loadPatients();
+            }
+        }
     }
 
     loadPatients() {
@@ -56,10 +73,26 @@ export class PatientsListComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
+    loadPatientsByCompanyAndDoctor() {
+        this._progressBarService.show();
+        this._patientsStore.getPatientsByCompanyAndDoctorId()
+            .subscribe(patients => {
+                this.patients = patients.reverse();
+                // this.datasource = patients.reverse();
+                // this.totalRecords = this.datasource.length;
+                // this.patients = this.datasource.slice(0, 10);
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
 
     loadPatientsLazy(event: LazyLoadEvent) {
         setTimeout(() => {
-            if(this.datasource) {
+            if (this.datasource) {
                 this.patients = this.datasource.slice(event.first, (event.first + event.rows));
             }
         }, 250);

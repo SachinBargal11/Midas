@@ -81,7 +81,7 @@ export class RegisterCompanyComponent implements OnInit {
                 })
             }),
             role: new UserRole({
-                name: 'Doctor',
+                name: 'Admin',
                 roleType: 'Admin',
                 status: 'active'
             }),

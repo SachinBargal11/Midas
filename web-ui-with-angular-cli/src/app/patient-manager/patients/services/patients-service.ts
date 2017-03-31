@@ -78,6 +78,25 @@ export class PatientsService {
         });
         return <Observable<Patient[]>>Observable.fromPromise(promise);
     }
+    getPatientsByCompanyAndDoctorId(): Observable<Patient[]> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let doctorId: number = this._sessionStore.session.user.id;
+        let promise: Promise<Patient[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Patient/getByCompanyAndDoctorId/' + companyId + '/' + doctorId)
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let patients = (<Object[]>data).map((patientData: any) => {
+                        return PatientAdapter.parseResponse(patientData);
+                    });
+                    resolve(patients);
+                    // resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<Patient[]>>Observable.fromPromise(promise);
+    }
 
 
         getPatientsWithNoCase(): Observable<Patient[]> {

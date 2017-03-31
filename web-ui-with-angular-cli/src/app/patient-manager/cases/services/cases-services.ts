@@ -76,6 +76,23 @@ export class CaseService {
         });
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
+    getCasesByCompanyAndDoctorId(companyId: number): Observable<Case[]> {
+        let doctorId = this._sessionStore.session.user.id;
+        let promise: Promise<Case[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Case/getByCompanyAndDoctorId/' + companyId + '/' + doctorId)
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let cases = (<Object[]>data).map((data: any) => {
+                        return CaseAdapter.parseCaseComapnyResponse(data);
+                    });
+                    resolve(cases);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<Case[]>>Observable.fromPromise(promise);
+    }
 
     getDocumentsForCaseId(caseId:  number):  Observable<CaseDocument[]>  {
         let  promise:  Promise<CaseDocument[]>  =  new  Promise((resolve,  reject)  =>  {

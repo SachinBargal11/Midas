@@ -7,6 +7,7 @@ import { CasesStore } from '../../cases/stores/case-store';
 import { Case } from '../../cases/models/case';
 import { NotificationsService } from 'angular2-notifications';
 import * as moment from 'moment';
+import * as _ from 'underscore';
 import { Notification } from '../../../commons/models/notification';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
@@ -35,11 +36,27 @@ export class CompanyCasesComponent implements OnInit {
 
     ) {
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
-            this.loadCases();
+            this.loadCasesCheckingDoctor();
         });
     }
     ngOnInit() {
-        this.loadCases();
+        this.loadCasesCheckingDoctor();
+    }
+    loadCasesCheckingDoctor() {
+        let doctorRoleOnly;
+        let roles = this._sessionStore.session.user.roles;
+        if (roles) {
+            if (roles.length === 1) {
+                doctorRoleOnly = _.find(roles, (currentRole) => {
+                    return currentRole.roleType === 3;
+                });
+            }
+            if (doctorRoleOnly) {
+                this.loadCasesByCompanyAndDoctorId();
+            } else {
+                this.loadCases();
+            }
+        }
     }
 
     loadCases() {
@@ -58,26 +75,41 @@ export class CompanyCasesComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
- 
+    loadCasesByCompanyAndDoctorId() {
+        this._progressBarService.show();
+        this._casesStore.getCasesByCompanyAndDoctorId()
+            .subscribe(cases => {
+                this.cases = cases.reverse();
+                // this.datasource = cases.reverse();
+                // this.totalRecords = this.datasource.length;
+                // this.cases = this.datasource.slice(0, 10);
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
     loadCasesLazy(event: LazyLoadEvent) {
         setTimeout(() => {
-            if(this.datasource) {
+            if (this.datasource) {
                 this.cases = this.datasource.slice(event.first, (event.first + event.rows));
             }
         }, 250);
     }
-     deleteCases() {
+    deleteCases() {
         if (this.selectedCases.length > 0) {
             this.selectedCases.forEach(currentCase => {
                 this._progressBarService.show();
-                this. _casesStore.deleteCase(currentCase)
-             .subscribe(
+                this._casesStore.deleteCase(currentCase)
+                    .subscribe(
                     (response) => {
                         let notification = new Notification({
                             'title': 'Case deleted successfully!',
                             'type': 'SUCCESS',
                             'createdAt': moment()
-                       
                         });
                         this.loadCases();
                         this._notificationsStore.addNotification(notification);
@@ -107,7 +139,7 @@ export class CompanyCasesComponent implements OnInit {
             });
             this._notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'select case to delete');
-        }    
+        }
     }
 
 }

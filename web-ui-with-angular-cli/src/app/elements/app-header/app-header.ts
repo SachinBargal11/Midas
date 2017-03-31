@@ -1,8 +1,10 @@
+import { UserRole } from '../../commons/models/user-role';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../account/services/authentication-service';
 import { SessionStore } from '../../commons/stores/session-store';
 import { NotificationsStore } from '../../commons/stores/notifications-store';
+import * as _ from 'underscore';
 
 @Component({
     selector: 'app-header',
@@ -12,6 +14,7 @@ import { NotificationsStore } from '../../commons/stores/notifications-store';
 
 export class AppHeaderComponent implements OnInit {
 
+    doctorRoleFlag = false;
     disabled: boolean = false;
     status: { isopen: boolean } = { isopen: false };
     menu_right_opened: boolean = false;
@@ -33,6 +36,27 @@ export class AppHeaderComponent implements OnInit {
     }
 
     ngOnInit() {
+        let doctorRolewithOther;
+        let doctorRolewithoutOther;
+        let roles = this.sessionStore.session.user.roles;
+        if (roles) {
+            if (roles.length === 1) {
+                doctorRolewithoutOther = _.find(roles, (currentRole) => {
+                    return currentRole.roleType === 3;
+                });
+            } else if (roles.length > 1) {
+                doctorRolewithOther = _.find(roles, (currentRole) => {
+                    return currentRole.roleType === 3;
+                });
+            }
+            if (doctorRolewithoutOther) {
+                this.doctorRoleFlag = true;
+            } else if (doctorRolewithOther) {
+                this.doctorRoleFlag = false;
+            } else {
+                this.doctorRoleFlag = false;
+            }
+        }
 
     }
     onLeftBurgerClick() {

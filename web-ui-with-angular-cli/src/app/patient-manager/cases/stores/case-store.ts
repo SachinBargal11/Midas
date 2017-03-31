@@ -55,6 +55,18 @@ export class CasesStore {
         });
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
+    getCasesByCompanyAndDoctorId(): Observable<Case[]> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._casesService.getCasesByCompanyAndDoctorId(companyId).subscribe((cases: Case[]) => {
+                this._companyCases.next(List(cases));
+                resolve(cases);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Case[]>>Observable.fromPromise(promise);
+    }
 
 
         getDocumentsForCaseId(caseId: number): Observable<CaseDocument[]> {
