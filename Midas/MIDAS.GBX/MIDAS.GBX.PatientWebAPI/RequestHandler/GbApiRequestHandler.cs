@@ -172,6 +172,19 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             }
         }
 
+        public HttpResponseMessage DeleteFile(HttpRequestMessage request, int caseId, int id)
+        {
+            var res = dataAccessManager.DeleteFile(caseId, id);
+            if (id > 0)
+            {
+                return request.CreateResponse(HttpStatusCode.Accepted, res);
+            }
+            else
+            {
+                return request.CreateResponse(HttpStatusCode.NoContent, new ErrorObject { ErrorMessage = "Id can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+        }
+
         public HttpResponseMessage GeneratePasswordLink(HttpRequestMessage request, T gbObject)
         {
             PasswordToken otpBO = (PasswordToken)(object)gbObject;

@@ -16,8 +16,8 @@ namespace MIDAS.GBX.DataAccessManager
         Object AssociateDoctorToLocations(T gbObject);
         int Delete(T entity);
         object Delete(int id);
+        object DeleteFile(int caseId, int id);
         object GetDocumentList(int id);
-
         Object GetViewStatus(int id, bool status);
         Object Get(int id, string type);
         Object Get(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
