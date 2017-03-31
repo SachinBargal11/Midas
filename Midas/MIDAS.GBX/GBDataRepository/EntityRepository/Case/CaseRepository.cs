@@ -485,6 +485,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+
+        #region Get By Company ID and DoctorId For
+        public override object Get(int CompanyId,int DoctorId)
+        {
+            var User = _context.UserCompanies.Where(p => p.CompanyID == CompanyId && p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                        .Select(p => p.UserID)
+                                        .Distinct<int>();
+
+            var acc = _context.Patient2.Include("User")
+                                       .Where(p => (User.Contains(p.Id))
+                                                   && p.PatientVisit2.Where(p2 => p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
+                                                                     .Any(p3 => p3.DoctorId == DoctorId)
+                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                        .ToList<Patient2>();
+
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Case.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.CaseWithUserAndPatient> lstCaseWithUserAndPatient = new List<BO.CaseWithUserAndPatient>();
+                foreach (Patient2 eachPatient in acc)
+                {
+                    lstCaseWithUserAndPatient.AddRange(ConvertToCaseWithUserAndPatient<List<BO.CaseWithUserAndPatient>, Patient2>(eachPatient));
+                }
+
+                return lstCaseWithUserAndPatient;
+            }
+        }
+        #endregion
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
