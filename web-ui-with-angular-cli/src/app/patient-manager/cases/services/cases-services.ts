@@ -94,21 +94,21 @@ export class CaseService {
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
 
-    getDocumentsForCaseId(caseId:  number):  Observable<CaseDocument[]>  {
-        let  promise:  Promise<CaseDocument[]>  =  new  Promise((resolve,  reject)  =>  {
-            return  this._http.get(this._url  +  '/fileupload/get/'  +  caseId  +  '/case')
-                .map(res  =>  res.json())
-                .subscribe((data:  Array<Object>)  =>  {
-                    let  document  =  (<Object[]>data).map((data:  any)  =>  {
-                        return  CaseDocumentAdapter.parseResponse(data);
+    getDocumentsForCaseId(caseId: number): Observable<CaseDocument[]> {
+        let promise: Promise<CaseDocument[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/fileupload/get/' + caseId + '/case')
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let document = (<Object[]>data).map((data: any) => {
+                        return CaseDocumentAdapter.parseResponse(data);
                     });
                     resolve(document);
-                },  (error)  =>  {
+                }, (error) => {
                     reject(error);
                 });
 
         });
-        return  <Observable<CaseDocument[]>>Observable.fromPromise(promise);
+        return <Observable<CaseDocument[]>>Observable.fromPromise(promise);
     }
 
 
@@ -129,6 +129,46 @@ export class CaseService {
                 });
         });
         return <Observable<CaseDocument[]>>Observable.fromPromise(promise);
+    }
+
+    uploadScannedDocuments(dwObject: any, currentCaseId: number): Observable<CaseDocument[]> {
+        let promise: Promise<CaseDocument[]> = new Promise((resolve, reject) => {
+            dwObject.IfSSL = false; // Set whether SSL is used
+            dwObject.HTTPPort = 80;
+            dwObject.HttpFieldNameOfUploadedImage = 'demo[]';
+            // dwObject.SaveAsPDF(`C:\\Users\\Mitali\\Downloads\\scanned_file_${currentCaseId}.pdf`);
+            dwObject.HTTPUploadAllThroughPostAsPDF(
+                'midas.codearray.tk',
+                'midasapi/fileupload/multiupload/' + currentCaseId + '/case',
+                `scanned_file_${currentCaseId}.pdf`,
+                (response: any) => {
+                    resolve(response);
+                },
+                (errorCode: string, errorString: string, response: any) => {
+                    reject(new Error(errorString));
+                });
+        });
+        return <Observable<CaseDocument[]>>Observable.fromPromise(promise);
+
+
+        /*let promise: Promise<CaseDocument[]> = new Promise((resolve, reject) => {
+            dwObject.IfSSL = true; // Set whether SSL is used
+            dwObject.HTTPPort = 80;
+            // dwObject.HttpFieldNameOfUploadedImage = 'demo[]';
+            // dwObject.SaveAsPDF(`C:\\Users\\Mitali\\Downloads\\scanned_file_${currentCaseId}.pdf`);
+            dwObject.HTTPUploadAllThroughPostAsPDF(
+                'www.dynamsoft.com',
+                'Demo/DWT/SaveToDB.aspx',
+                `scanned_file_${currentCaseId}.pdf`,
+                (response: any) => {
+                    resolve(response);
+                },
+                (errorCode: string, errorString: string, response: any) => {
+                    reject(new Error(errorString));
+                });
+        });
+        return <Observable<CaseDocument[]>>Observable.fromPromise(promise);*/
+
     }
 
     addCase(caseDetail: Case): Observable<Case> {
