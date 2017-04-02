@@ -30,6 +30,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
     msgs: Message[];
     uploadedFiles: any[] = [];
     currentCaseId: number;
+    documentMode: string = '1';
     documents: CaseDocument[] = [];
     url;
 
@@ -109,7 +110,6 @@ export class CaseDocumentsUploadComponent implements OnInit {
     }
 
     uploadDocuments() {
-        debugger;
         this._casesStore.uploadScannedDocuments(this._dwObject, this.currentCaseId)
             .subscribe(
             (documents: CaseDocument[]) => {

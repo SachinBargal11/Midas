@@ -148,14 +148,13 @@ export class CaseService {
                     reject(new Error(errorString));
                 });
         });
-        return <Observable<CaseDocument[]>>Observable.fromPromise(promise);
+        return <Observable<CaseDocument[]>>Observable.fromPromise(promise); 
 
 
         /*let promise: Promise<CaseDocument[]> = new Promise((resolve, reject) => {
+            debugger;
             dwObject.IfSSL = true; // Set whether SSL is used
             dwObject.HTTPPort = 80;
-            // dwObject.HttpFieldNameOfUploadedImage = 'demo[]';
-            // dwObject.SaveAsPDF(`C:\\Users\\Mitali\\Downloads\\scanned_file_${currentCaseId}.pdf`);
             dwObject.HTTPUploadAllThroughPostAsPDF(
                 'www.dynamsoft.com',
                 'Demo/DWT/SaveToDB.aspx',
