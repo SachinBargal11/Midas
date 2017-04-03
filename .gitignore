@@ -214,3 +214,4 @@ ModelManifest.xml
 *.jfm
 /Midas/MIDAS.GBX/GBBusinessObjects/AttorneyInfo/AttorneyInfo.cs
 /Midas/MIDAS.GBX/GBDataRepository/EntityRepository/AttorneyInfo/AttorneyInfoRepository.cs
+/patient-portal/README.md
