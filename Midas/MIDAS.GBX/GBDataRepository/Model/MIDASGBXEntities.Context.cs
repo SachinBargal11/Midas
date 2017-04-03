@@ -28,6 +28,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<AddressInfo> AddressInfoes { get; set; }
         public virtual DbSet<AdjusterMaster> AdjusterMasters { get; set; }
         public virtual DbSet<Attorney> Attorneys { get; set; }
+        public virtual DbSet<BlobStorage> BlobStorages { get; set; }
+        public virtual DbSet<BlobStorageType> BlobStorageTypes { get; set; }
         public virtual DbSet<CalendarEvent> CalendarEvents { get; set; }
         public virtual DbSet<Case> Cases { get; set; }
         public virtual DbSet<CaseCompanyMapping> CaseCompanyMappings { get; set; }

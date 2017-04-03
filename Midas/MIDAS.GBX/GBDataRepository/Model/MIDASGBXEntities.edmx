@@ -54,6 +54,22 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
+        <EntityType Name="BlobStorage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="BlobStorageTypeId" Type="int" Nullable="false" />
+          <Property Name="BlobStoargeURL" Type="varchar" MaxLength="5000" />
+          <Property Name="BlobStorageKey" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="BlobStorageType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="BlobStorageType" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="CalendarEvent">
           <Key>
             <PropertyRef Name="Id" />
@@ -179,6 +195,7 @@
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="BlobStorageTypeId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CompanySpecialtyDetails">
           <Key>
@@ -232,6 +249,9 @@
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="OfficeExtension" Type="varchar" MaxLength="20" />
+          <Property Name="AlternateEmail" Type="nvarchar" MaxLength="100" />
+          <Property Name="PreferredCommunication" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Doctor">
           <Key>
@@ -1042,6 +1062,30 @@ warning 6035: The relationship 'FK_AddressInfo_State_StateCode' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_BlobStorage_Company_BlobStorageTypeId">
+          <End Role="BlobStorageType" Type="Self.BlobStorageType" Multiplicity="1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BlobStorageType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="BlobStorageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BlobStorageType_BlobStorage_BlobStorageTypeId">
+          <End Role="BlobStorageType" Type="Self.BlobStorageType" Multiplicity="1" />
+          <End Role="BlobStorage" Type="Self.BlobStorage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BlobStorageType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BlobStorage">
+              <PropertyRef Name="BlobStorageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Case_CaseStatus_CaseStatusId">
           <End Role="CaseStatus" Type="Self.CaseStatus" Multiplicity="0..1" />
           <End Role="Case" Type="Self.Case" Multiplicity="*" />
@@ -1123,18 +1167,6 @@ warning 6035: The relationship 'FK_AddressInfo_State_StateCode' has columns that
             </Principal>
             <Dependent Role="CaseCompanyMapping">
               <PropertyRef Name="CompanyId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CaseDocuments_Case_CaseId">
-          <End Role="Case" Type="Self.Case" Multiplicity="1" />
-          <End Role="CaseDocuments" Type="Self.CaseDocuments" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Case">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CaseDocuments">
-              <PropertyRef Name="CaseId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2261,6 +2293,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="AddressInfo" EntityType="Self.AddressInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AdjusterMaster" EntityType="Self.AdjusterMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Attorney" EntityType="Self.Attorney" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BlobStorage" EntityType="Self.BlobStorage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BlobStorageType" EntityType="Self.BlobStorageType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CalendarEvent" EntityType="Self.CalendarEvent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Case" EntityType="Self.Case" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CaseCompanyMapping" EntityType="Self.CaseCompanyMapping" Schema="dbo" store:Type="Tables" />
@@ -2343,6 +2377,14 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="User" EntitySet="User" />
             <End Role="Attorney" EntitySet="Attorney" />
           </AssociationSet>
+          <AssociationSet Name="FK_BlobStorage_Company_BlobStorageTypeId" Association="Self.FK_BlobStorage_Company_BlobStorageTypeId">
+            <End Role="BlobStorageType" EntitySet="BlobStorageType" />
+            <End Role="Company" EntitySet="Company" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BlobStorageType_BlobStorage_BlobStorageTypeId" Association="Self.FK_BlobStorageType_BlobStorage_BlobStorageTypeId">
+            <End Role="BlobStorageType" EntitySet="BlobStorageType" />
+            <End Role="BlobStorage" EntitySet="BlobStorage" />
+          </AssociationSet>
           <AssociationSet Name="FK_Case_CaseStatus_CaseStatusId" Association="Self.FK_Case_CaseStatus_CaseStatusId">
             <End Role="CaseStatus" EntitySet="CaseStatus" />
             <End Role="Case" EntitySet="Case" />
@@ -2370,10 +2412,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_CaseCompanyMapping_Company_CompanyId" Association="Self.FK_CaseCompanyMapping_Company_CompanyId">
             <End Role="Company" EntitySet="Company" />
             <End Role="CaseCompanyMapping" EntitySet="CaseCompanyMapping" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CaseDocuments_Case_CaseId" Association="Self.FK_CaseDocuments_Case_CaseId">
-            <End Role="Case" EntitySet="Case" />
-            <End Role="CaseDocuments" EntitySet="CaseDocuments" />
           </AssociationSet>
           <AssociationSet Name="FK_CaseDocuments_MidasDocuments_MidasDocumentId" Association="Self.FK_CaseDocuments_MidasDocuments_MidasDocumentId">
             <End Role="MidasDocuments" EntitySet="MidasDocuments" />
@@ -2820,6 +2858,25 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Company" Relationship="Self.FK_Attorney_Company_CompanyId" FromRole="Attorney" ToRole="Company" />
           <NavigationProperty Name="User" Relationship="Self.FK_Attorney_User_id" FromRole="Attorney" ToRole="User" />
         </EntityType>
+        <EntityType Name="BlobStorage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="BlobStorageTypeId" Type="Int32" Nullable="false" />
+          <Property Name="BlobStoargeURL" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+          <Property Name="BlobStorageKey" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="BlobStorageType" Relationship="Self.FK_BlobStorageType_BlobStorage_BlobStorageTypeId" FromRole="BlobStorage" ToRole="BlobStorageType" />
+        </EntityType>
+        <EntityType Name="BlobStorageType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="BlobStorageType1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="BlobStorages" Relationship="Self.FK_BlobStorageType_BlobStorage_BlobStorageTypeId" FromRole="BlobStorageType" ToRole="BlobStorage" />
+          <NavigationProperty Name="Companies" Relationship="Self.FK_BlobStorage_Company_BlobStorageTypeId" FromRole="BlobStorageType" ToRole="Company" />
+        </EntityType>
         <EntityType Name="CalendarEvent">
           <Key>
             <PropertyRef Name="Id" />
@@ -2868,7 +2925,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Patient2" Relationship="Self.FK_Case_Patient2_PatientId" FromRole="Case" ToRole="Patient2" />
           <NavigationProperty Name="PatientEmpInfo" Relationship="Self.FK_Case_PatientEmpInfo_PatientEmpInfoId" FromRole="Case" ToRole="PatientEmpInfo" />
           <NavigationProperty Name="CaseCompanyMappings" Relationship="Self.FK_CaseCompanyMapping_Case_CaseId" FromRole="Case" ToRole="CaseCompanyMapping" />
-          <NavigationProperty Name="CaseDocuments" Relationship="Self.FK_CaseDocuments_Case_CaseId" FromRole="Case" ToRole="CaseDocuments" />
           <NavigationProperty Name="CaseInsuranceMappings" Relationship="Self.FK_CaseInsuranceMapping_Case_CaseId" FromRole="Case" ToRole="CaseInsuranceMapping" />
           <NavigationProperty Name="DoctorCaseConsentApprovals" Relationship="Self.FK_DoctorCaseConsentApproval_Case_CaseId" FromRole="Case" ToRole="DoctorCaseConsentApproval" />
           <NavigationProperty Name="PatientAccidentInfoes" Relationship="Self.FK_PatientAccidentInfo_Case_CaseId" FromRole="Case" ToRole="PatientAccidentInfo" />
@@ -2905,7 +2961,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateUserId" Type="Int32" />
           <Property Name="UpdateUserId" Type="Int32" />
           <Property Name="IsDeleted" Type="Boolean" />
-          <NavigationProperty Name="Case" Relationship="Self.FK_CaseDocuments_Case_CaseId" FromRole="CaseDocuments" ToRole="Case" />
           <NavigationProperty Name="MidasDocument" Relationship="Self.FK_CaseDocuments_MidasDocuments_MidasDocumentId" FromRole="CaseDocuments" ToRole="MidasDocuments" />
         </EntityType>
         <EntityType Name="CaseInsuranceMapping">
@@ -2969,9 +3024,11 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="BlobStorageTypeId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AddressInfo" Relationship="Self.FK_Company_AddressInfo" FromRole="Company" ToRole="AddressInfo" />
           <NavigationProperty Name="AdjusterMasters" Relationship="Self.FK_AdjusterMaster_Company_CompanyId" FromRole="Company" ToRole="AdjusterMaster" />
           <NavigationProperty Name="Attorneys" Relationship="Self.FK_Attorney_Company_CompanyId" FromRole="Company" ToRole="Attorney" />
+          <NavigationProperty Name="BlobStorageType" Relationship="Self.FK_BlobStorage_Company_BlobStorageTypeId" FromRole="Company" ToRole="BlobStorageType" />
           <NavigationProperty Name="CaseCompanyMappings" Relationship="Self.FK_CaseCompanyMapping_Company_CompanyId" FromRole="Company" ToRole="CaseCompanyMapping" />
           <NavigationProperty Name="CompanyType1" Relationship="Self.FK_Company_CompanyType" FromRole="Company" ToRole="CompanyType" />
           <NavigationProperty Name="ContactInfo" Relationship="Self.FK_Company_ContactInfo" FromRole="Company" ToRole="ContactInfo" />
@@ -3041,6 +3098,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="OfficeExtension" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="AlternateEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PreferredCommunication" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AdjusterMasters" Relationship="Self.FK_AdjusterMaster_AddressInfo_ContactInfoId" FromRole="ContactInfo" ToRole="AdjusterMaster" />
           <NavigationProperty Name="Companies" Relationship="Self.FK_Company_ContactInfo" FromRole="ContactInfo" ToRole="Company" />
           <NavigationProperty Name="InsuranceMasters" Relationship="Self.FK_InsuranceMaster_AddressInfo_ContactInfoId" FromRole="ContactInfo" ToRole="InsuranceMaster" />
@@ -4133,6 +4193,30 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_BlobStorageType_BlobStorage_BlobStorageTypeId">
+          <End Role="BlobStorageType" Type="Self.BlobStorageType" Multiplicity="1" />
+          <End Role="BlobStorage" Type="Self.BlobStorage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BlobStorageType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BlobStorage">
+              <PropertyRef Name="BlobStorageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BlobStorage_Company_BlobStorageTypeId">
+          <End Role="BlobStorageType" Type="Self.BlobStorageType" Multiplicity="1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BlobStorageType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="BlobStorageTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PatientVisit2_CalendarEvent_CaseId">
           <End Role="CalendarEvent" Type="Self.CalendarEvent" Multiplicity="1" />
           <End Role="PatientVisit2" Type="Self.PatientVisit2" Multiplicity="*" />
@@ -4213,18 +4297,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="CaseCompanyMapping">
-              <PropertyRef Name="CaseId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CaseDocuments_Case_CaseId">
-          <End Role="Case" Type="Self.Case" Multiplicity="1" />
-          <End Role="CaseDocuments" Type="Self.CaseDocument" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Case">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="CaseDocuments">
               <PropertyRef Name="CaseId" />
             </Dependent>
           </ReferentialConstraint>
@@ -5217,6 +5289,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="AddressInfoes" EntityType="Self.AddressInfo" />
           <EntitySet Name="AdjusterMasters" EntityType="Self.AdjusterMaster" />
           <EntitySet Name="Attorneys" EntityType="Self.Attorney" />
+          <EntitySet Name="BlobStorages" EntityType="Self.BlobStorage" />
+          <EntitySet Name="BlobStorageTypes" EntityType="Self.BlobStorageType" />
           <EntitySet Name="CalendarEvents" EntityType="Self.CalendarEvent" />
           <EntitySet Name="Cases" EntityType="Self.Case" />
           <EntitySet Name="CaseCompanyMappings" EntityType="Self.CaseCompanyMapping" />
@@ -5343,6 +5417,14 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="User" EntitySet="Users" />
             <End Role="Attorney" EntitySet="Attorneys" />
           </AssociationSet>
+          <AssociationSet Name="FK_BlobStorageType_BlobStorage_BlobStorageTypeId" Association="Self.FK_BlobStorageType_BlobStorage_BlobStorageTypeId">
+            <End Role="BlobStorageType" EntitySet="BlobStorageTypes" />
+            <End Role="BlobStorage" EntitySet="BlobStorages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BlobStorage_Company_BlobStorageTypeId" Association="Self.FK_BlobStorage_Company_BlobStorageTypeId">
+            <End Role="BlobStorageType" EntitySet="BlobStorageTypes" />
+            <End Role="Company" EntitySet="Companies" />
+          </AssociationSet>
           <AssociationSet Name="FK_PatientVisit2_CalendarEvent_CaseId" Association="Self.FK_PatientVisit2_CalendarEvent_CaseId">
             <End Role="CalendarEvent" EntitySet="CalendarEvents" />
             <End Role="PatientVisit2" EntitySet="PatientVisit2" />
@@ -5370,10 +5452,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_CaseCompanyMapping_Case_CaseId" Association="Self.FK_CaseCompanyMapping_Case_CaseId">
             <End Role="Case" EntitySet="Cases" />
             <End Role="CaseCompanyMapping" EntitySet="CaseCompanyMappings" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CaseDocuments_Case_CaseId" Association="Self.FK_CaseDocuments_Case_CaseId">
-            <End Role="Case" EntitySet="Cases" />
-            <End Role="CaseDocuments" EntitySet="CaseDocuments" />
           </AssociationSet>
           <AssociationSet Name="FK_CaseInsuranceMapping_Case_CaseId" Association="Self.FK_CaseInsuranceMapping_Case_CaseId">
             <End Role="Case" EntitySet="Cases" />
@@ -5762,6 +5840,24 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="BlobStorages">
+            <EntityTypeMapping TypeName="MIDASGBXModel.BlobStorage">
+              <MappingFragment StoreEntitySet="BlobStorage">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="BlobStorageTypeId" ColumnName="BlobStorageTypeId" />
+                <ScalarProperty Name="BlobStoargeURL" ColumnName="BlobStoargeURL" />
+                <ScalarProperty Name="BlobStorageKey" ColumnName="BlobStorageKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BlobStorageTypes">
+            <EntityTypeMapping TypeName="MIDASGBXModel.BlobStorageType">
+              <MappingFragment StoreEntitySet="BlobStorageType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="BlobStorageType1" ColumnName="BlobStorageType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="CalendarEvents">
             <EntityTypeMapping TypeName="MIDASGBXModel.CalendarEvent">
               <MappingFragment StoreEntitySet="CalendarEvent">
@@ -5894,6 +5990,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="BlobStorageTypeId" ColumnName="BlobStorageTypeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -5950,6 +6047,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="OfficeExtension" ColumnName="OfficeExtension" />
+                <ScalarProperty Name="AlternateEmail" ColumnName="AlternateEmail" />
+                <ScalarProperty Name="PreferredCommunication" ColumnName="PreferredCommunication" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
