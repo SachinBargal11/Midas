@@ -12,6 +12,8 @@ using MIDAS.GBX.Common;
 using MIDAS.GBX.BusinessObjects;
 using MIDAS.GBX.EntityRepository;
 using System.Data.Entity.Infrastructure;
+using MIDAS.GBX.DocumentManager;
+
 namespace MIDAS.GBX.DataAccessManager
 {
     public class GbDataAccessManager<T> : IGbDataAccessManager<T>
@@ -942,6 +944,19 @@ namespace MIDAS.GBX.DataAccessManager
             {
                 //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
                 return ex;
+            }
+        }
+
+        public Object GetBlobServiceProvider(int companyId)
+        {
+            try
+            {
+                BlobServiceProvider serviceprovider = BlobStorageFactory.GetBlobServiceProviders(companyId, dbContextProvider.GetGbDBContext());
+                return (Object)serviceprovider;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
             }
         }
     }

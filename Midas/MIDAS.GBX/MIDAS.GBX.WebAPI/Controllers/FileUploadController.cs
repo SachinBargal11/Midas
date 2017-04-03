@@ -9,7 +9,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-
+using MIDAS.GBX.DataRepository.EntitySearch;
+using MIDAS.GBX.BusinessObjects;
+using System.Web.Script.Serialization;
+using MIDAS.GBX.DocumentManager;
+//using MIDAS.GBX.EntityRepository;
 
 namespace MIDAS.GBX.WebAPI.Controllers
 {
@@ -20,44 +24,123 @@ namespace MIDAS.GBX.WebAPI.Controllers
         internal string remotePath = string.Empty;
         internal DirectoryInfo directinfo;
 
+        private IRequestHandler<Document> requestHandler;
+        private IBlobService blobhandler;
+
         public FileUploadController()
         {
-            sourcePath = HttpContext.Current.Server.MapPath("~/uploads").ToString();
-            remotePath = ConfigurationManager.AppSettings.Get("FILE_UPLOAD_PATH").ToString();            
+            sourcePath = HttpContext.Current.Server.MapPath("~/App_Data/uploads").ToString();
+            remotePath = "C:\\Users\\Sonali.A\\Midas\\Midas\\MIDAS.GBX\\MIDAS.GBX.PatientWebAPI\\App_Data\\uploads";
+            requestHandler = new GbApiRequestHandler<Document>();
+            blobhandler = new BlobServiceHandler();
         }
 
         [HttpPost]
         [Route("upload/{id}/{type}")]
         public async Task<HttpResponseMessage> Post(int id, string type)
         {
-            if (Request.Content.IsMimeMultipartContent())
+            try
             {
-                if (type == "case")
+                if (Request.Content.IsMimeMultipartContent())
                 {
-                    directinfo = Directory.CreateDirectory(remotePath + "/patient/case-" + id + "/CH/reports");
-                }
-                else if (type == "visit")
-                {
-                    directinfo = Directory.CreateDirectory(remotePath + "/patient/visit-" + id + "/CH/reports");
-                }
+                    var streamProvider = new MultipartFormDataStreamProvider(sourcePath);
+                    await Request.Content.ReadAsMultipartAsync(streamProvider);
+                    foreach (MultipartFileData fileData in streamProvider.FileData)
+                    {
+                        if (type == "case")
+                        {
+                            directinfo = Directory.CreateDirectory(remotePath + "/case-" + id + "/CH/reports");
+                        }
+                        else if (type == "visit")
+                        {
+                            directinfo = Directory.CreateDirectory(remotePath + "/visit-" + id + "/CH/reports");
+                        }
+                        if (string.IsNullOrEmpty(fileData.Headers.ContentDisposition.FileName))
+                            return Request.CreateResponse(HttpStatusCode.NotAcceptable, "This request is not properly formatted");
+                        string fileName = fileData.Headers.ContentDisposition.FileName;
+                        fileName = (fileName.StartsWith("\"") && fileName.EndsWith("\"")) ? fileName.Trim('"') : fileName;
+                        fileName = (fileName.Contains(@"/") || fileName.Contains(@"\")) ? Path.GetFileName(fileName) : fileName;
 
-                var streamProvider = new MultipartFormDataStreamProvider(sourcePath);
-                await Request.Content.ReadAsMultipartAsync(streamProvider);
-                foreach (MultipartFileData fileData in streamProvider.FileData)
-                {
-                    if (string.IsNullOrEmpty(fileData.Headers.ContentDisposition.FileName))
-                        return Request.CreateResponse(HttpStatusCode.NotAcceptable, "This request is not properly formatted");
-                    string fileName = fileData.Headers.ContentDisposition.FileName;
-                    fileName = (fileName.StartsWith("\"") && fileName.EndsWith("\"")) ? fileName.Trim('"') : fileName;
-                    fileName = (fileName.Contains(@"/") || fileName.Contains(@"\")) ? Path.GetFileName(fileName) : fileName;
+                        if (File.Exists(Path.Combine(directinfo.FullName, fileName))) File.Delete(Path.Combine(directinfo.FullName, fileName));
+                        File.Move(fileData.LocalFileName, Path.Combine(directinfo.FullName, fileName));
 
-                    if (File.Exists(Path.Combine(directinfo.FullName, fileName))) File.Delete(Path.Combine(directinfo.FullName, fileName));
-                    File.Move(fileData.LocalFileName, Path.Combine(directinfo.FullName, fileName));
+                        if (type == "case")
+                        {
+                            CaseController caseAPI = new CaseController();
+                            caseAPI.ControllerContext = ControllerContext;
+                            return caseAPI.AddUploadedFileData(id, Path.Combine(directinfo.FullName, fileName));
+                        }
+                        else if (type == "visit")
+                        {
+                            PatientVisit2Controller visitAPI = new PatientVisit2Controller();
+                            visitAPI.ControllerContext = ControllerContext;
+                            return visitAPI.AddUploadedFileData(id, Path.Combine(directinfo.FullName, fileName));
+                        }
+                    }
+                    return Request.CreateResponse(HttpStatusCode.OK, "Uploaded file successfully.");
                 }
-                return Request.CreateResponse(HttpStatusCode.OK,"Uploaded file successfully.");
+                else return Request.CreateResponse(HttpStatusCode.NotAcceptable, new JavaScriptSerializer().Deserialize("{\"fileUploadPath\":\"\"}", typeof(object)));
             }
-            else return Request.CreateResponse(HttpStatusCode.NotAcceptable, "This request is not properly formatted");
+            catch (Exception)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotAcceptable, new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize("{\"fileUploadPath\":\"\"}", typeof(object)));
+            }
         }
+
+        [HttpGet]
+        [Route("get/{id}/{type}")]
+        [AllowAnonymous]
+        public HttpResponseMessage Get(int id, string type)
+        {
+            return requestHandler.GetObject(Request, id, type);
+        }
+
+        [HttpPost]
+        [Route("multiupload/{id}/{type}")]
+        public async Task<HttpResponseMessage> Upload(int id, string type)
+        {
+            // Check if the request contains multipart/form-data.
+            if (!Request.Content.IsMimeMultipartContent("form-data"))
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+
+            //If size of a file is not big then read file directly into stream
+            var streamProvider = new MultipartMemoryStreamProvider();
+            //If size is quite big to upload then store file to desk and then move to appropriate directory
+            //var streamProvider = new MultipartFormDataStreamProvider(sourcePath);
+            await Request.Content.ReadAsMultipartAsync(streamProvider);
+
+            List<HttpContent> streamContent = streamProvider.Contents.ToList();
+            /*foreach (HttpContent ctnt in streamProvider.Contents)
+            {                
+                using (Stream stream = ctnt.ReadAsStreamAsync().Result)
+                {                   
+                    stream.Seek(0, SeekOrigin.Begin);
+                    FileStream filestream = File.Create(remotePath+ "/"+ctnt.Headers.ContentDisposition.FileName.Replace("\"", string.Empty));
+                    
+                    stream.CopyTo(filestream);
+                    stream.Close();
+                    filestream.Close();
+                }
+            }*/
+
+            return requestHandler.CreateGbDocObject(Request, id, type, streamContent, sourcePath);
+        }
+
+        [HttpPost]
+        [Route("uploadtoblob/{id}")]
+        public HttpResponseMessage UploadToBlob(int id)
+        {
+            return blobhandler.UploadToBlob(Request, Request.Content, id);
+        }
+
+        [HttpGet]
+        [Route("downloadfromblob/{companyid}/{documentid}")]
+        public HttpResponseMessage DownlodFromBlob(int companyid, int documentid)
+        {
+            return blobhandler.DownloadFromBlob(Request, companyid, documentid);
+            //return new HttpResponseMessage();
+        }
+
         /*[HttpPost]
         [Route("upload")]
         public HttpResponseMessage Post()
