@@ -62,6 +62,11 @@ import { CaseDocumentsUploadComponent } from './cases/components/case-documents'
 
 import { CompanyCasesComponent } from './cases/components/company-cases-list';
 
+import { ReferralListComponent } from './cases/components/referral-list';
+
+import { ReferralService } from './cases/services/referral-service';
+import { ReferralStore } from './cases/stores/referral-store';
+
 
 import { CaseService } from './cases/services/cases-services';
 import { AdjusterMasterStore } from '../account-setup/stores/adjuster-store';
@@ -139,7 +144,9 @@ import { EditConsentFormComponent } from './cases/components/edit-consent-form';
         VisitDocumentsUploadComponent,
         ConsentListComponent,
         AddConsentFormComponent,
-        DocumentsUploadComponent,EditConsentFormComponent
+        DocumentsUploadComponent,
+        EditConsentFormComponent,
+        ReferralListComponent
     ],
     providers: [
         PatientsService,
@@ -163,7 +170,13 @@ import { EditConsentFormComponent } from './cases/components/edit-consent-form';
         AdjusterMasterStore,
         AdjusterMasterService,
         PatientVisitsStore,
-        PatientVisitService, AddConsentStore, AddConsentFormService, ListConsentStore, ListConsentFormService,
+        PatientVisitService,
+        AddConsentStore,
+        AddConsentFormService,
+        ListConsentStore,
+        ListConsentFormService,
+        ReferralService,
+        ReferralStore
     ]
 })
 export class PatientManagerModule { }
