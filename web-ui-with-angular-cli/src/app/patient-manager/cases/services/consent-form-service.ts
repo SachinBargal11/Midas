@@ -25,8 +25,8 @@ export class AddConsentFormService {
         this._headers.append('Content-Type', 'application/json');
     }
 
- getdoctors(CompanyId: Number): Observable<AddConsentAdapter> {
-    
+    getdoctors(CompanyId: Number): Observable<AddConsentAdapter> {
+
         let promise: Promise<AddConsentAdapter> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/Doctor/getByCompanyId/' + CompanyId).map(res => res.json())
                 .subscribe((data: Array<any>) => {
@@ -43,11 +43,10 @@ export class AddConsentFormService {
         return <Observable<AddConsentAdapter>>Observable.fromPromise(promise);
     }
 
-   Save(consentDetail: AddConsent): Observable<AddConsent> {
-       debugger;
+    Save(consentDetail: AddConsent): Observable<AddConsent> {       
         let promise: Promise<AddConsent> = new Promise((resolve, reject) => {
             let caseRequestData = consentDetail.toJS();
-           
+
             return this._http.post(this._url + '/DoctorCaseConsentApproval/save', JSON.stringify(caseRequestData), {
                 headers: this._headers
             })
@@ -64,44 +63,36 @@ export class AddConsentFormService {
 
     }
 
+    getDocumentsForCaseId(caseId: number): Observable<AddConsent[]> {
+        let promise: Promise<AddConsent[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/DoctorCaseConsentApproval/getByCaseId/' + caseId )
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let document = (<Object[]>data).map((data: any) => {
+                        return AddConsentAdapter.parseResponse(data);
+                    });
+                    resolve(document);
+                }, (error) => {
+                    reject(error);
+                });
 
-    // constructor () {
-    //   this.progress$ = Observable.create(observer => {
-    //    this.progressObserver = observer
-    //  }).share();
-    // }
-
-
-
-    public makeFileRequest(url: string, params: string[], files: File[]): Observable<AddConsent> {
-      
-        return Observable.create(observer => {
-            let formData: FormData = new FormData(),
-                xhr: XMLHttpRequest = new XMLHttpRequest();
-
-            for (let i = 0; i < files.length; i++) {
-                formData.append("uploads[]", files[i], files[i].name);
-            }
-
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        observer.next(JSON.parse(xhr.response));
-                        observer.complete();
-                    } else {
-                        observer.error(xhr.response);
-                    }
-                }
-            };
-
-            //xhr.upload.onprogress = (event) => {
-            //  this.progress = Math.round(event.loaded / event.total * 100);
-
-            // this.progressObserver.next(this.progress);
-            // };
-
-            xhr.open('POST', url, true);
-            xhr.send(formData);
         });
+        return <Observable<AddConsent[]>>Observable.fromPromise(promise);
+    }
+
+
+    getDoctorCaseConsentApproval(Id: Number): Observable<AddConsent[]> {      
+        let promise: Promise<AddConsent[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/DoctorCaseConsentApproval/get/' +Id)
+                .map(res => res.json())
+                .subscribe((data) => {
+                    let docData =  AddConsentAdapter.parseResponse(data);
+                    resolve(docData);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<AddConsent[]>>Observable.fromPromise(promise);
     }
 }

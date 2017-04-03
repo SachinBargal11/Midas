@@ -20,6 +20,7 @@ import { AssignInsuranceComponent } from './components/assign-insurance';
 import { CompanyCasesComponent } from './components/company-cases-list';
 import { ConsentListComponent } from './components/list-consent-form';
 import { AddConsentFormComponent } from './components/add-consent-form';
+import { EditConsentFormComponent } from './components/edit-consent-form';
 export const CasesShellRoutes: Routes = [
     {
         path: '',
@@ -223,31 +224,40 @@ export const CasesShellRoutes: Routes = [
                     },
 
 
-        {
-        path: 'consent-form',
-        component: ShellComponent,
-        canActivate: [ValidateActiveSession],
-        data: {
-            breadcrumb: 'consent-form'
-        },
-        children: [
-            {
-                path: '',
-                component: ConsentListComponent,
-                data: {
-                    breadcrumb: 'root'
-                }
-            },
-            {
-                path: 'add',
-                component: AddConsentFormComponent,
-                canActivate: [ValidateActiveSession],
-                data: {
-                    breadcrumb: 'Add Consent form'
-                }
-            },
-        ]
-    }
+                    {
+                        path: 'consent-form',
+                        component: ShellComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Consent Form'
+                        },
+                        children: [
+                            {
+                                path: '',
+                                component: ConsentListComponent,
+                                data: {
+                                    breadcrumb: 'root'
+                                }
+                            },
+                            {
+                                path: 'add',
+                                component: AddConsentFormComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'Add Consent form'
+                                }
+                            },
+                            {
+                                path: 'edit/:id',
+                                component: EditConsentFormComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'Edit Consent form'
+                                }
+                            }
+                            ,
+                        ]
+                    }
                 ]
             }
         ]

@@ -56,6 +56,39 @@ export class AddConsentStore {
         return <Observable<AddConsent>>Observable.from(promise);
     }
 
-    
+        getDocumentsForCaseId(caseId: number): Observable<AddConsent[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._AddConsentFormService.getDocumentsForCaseId(caseId).subscribe((documents: AddConsent[]) => {
+                resolve(documents);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<AddConsent[]>>Observable.fromPromise(promise);
+    }
+
+
+    findById(id: number) {
+        let editConsent = this._AddConsent.getValue();
+        let index = editConsent.findIndex((currentId: AddConsent) => currentId.id === id);
+        return editConsent.get(index);
+    }
+
+
+     editDoctorCaseConsentApproval(id: number): Observable<AddConsent> {
+        let promise = new Promise((resolve, reject) => {
+            // let matchedDoctorConsent: AddConsent = this.findById(id);
+            // if (matchedDoctorConsent) {
+            //     resolve(matchedDoctorConsent);
+            // } else {
+                this._AddConsentFormService.getDoctorCaseConsentApproval(id).subscribe((editConsent: AddConsent[]) => {
+                    resolve(editConsent);
+                }, error => {
+                    reject(error);
+                });
+            //}
+        });
+        return <Observable<AddConsent>>Observable.fromPromise(promise);
+    }
   
 }

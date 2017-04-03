@@ -84,7 +84,7 @@ import { AddConsentFormService } from './cases/services/consent-form-service';
 
 import { ListConsentStore } from './cases/stores/list-consent-form-store';
 import { ListConsentFormService } from './cases/services/list-consent-form-service';
-
+import { EditConsentFormComponent } from './cases/components/edit-consent-form';
 
 
 @NgModule({
@@ -139,7 +139,7 @@ import { ListConsentFormService } from './cases/services/list-consent-form-servi
         VisitDocumentsUploadComponent,
         ConsentListComponent,
         AddConsentFormComponent,
-        DocumentsUploadComponent
+        DocumentsUploadComponent,EditConsentFormComponent
     ],
     providers: [
         PatientsService,
@@ -163,7 +163,7 @@ import { ListConsentFormService } from './cases/services/list-consent-form-servi
         AdjusterMasterStore,
         AdjusterMasterService,
         PatientVisitsStore,
-        PatientVisitService, AddConsentStore, AddConsentFormService, ListConsentStore, ListConsentFormService
+        PatientVisitService, AddConsentStore, AddConsentFormService, ListConsentStore, ListConsentFormService,
     ]
 })
 export class PatientManagerModule { }
