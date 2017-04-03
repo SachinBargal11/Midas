@@ -132,16 +132,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
         #region Get By Company ID and DoctorId For Patient 
         public override object Get(int CompanyId, int DoctorId)
-        {
+        {          
             var acc = _context.Patient2.Include("User")
-                                       .Include("User.AddressInfo")
-                                       .Include("User.ContactInfo")
-                                       .Where(p => p.User.UserCompanies.Where(p2 => p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
-                                       .Any(p3 => p3.CompanyID == CompanyId)
-                                       && p.PatientVisit2.Where(p4 => p4.IsDeleted.HasValue == false || (p4.IsDeleted.HasValue == true && p4.IsDeleted.Value == false))
-                                       .Any(p5 => p5.DoctorId == DoctorId)
-                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                       .ToList<Patient2>();
+                                      .Include("User.AddressInfo")
+                                      .Include("User.ContactInfo")
+                                      .Where(p => p.User.UserCompanies.Where(p2 => p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
+                                                                      .Any(p3 => p3.CompanyID == CompanyId)
+                                                  && p.Cases.Where(p4 =>p4.DoctorCaseConsentApprovals.Where( p5 => p5.IsDeleted.HasValue == false || (p5.IsDeleted.HasValue == true && p5.IsDeleted.Value == false))                                    
+                                                                                                     .Any(p6 => p6.DoctorId == DoctorId))                                                                            
+                                                            .Any(p7 => p7.IsDeleted.HasValue == false || (p7.IsDeleted.HasValue == true && p7.IsDeleted.Value == false))
+                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                      .ToList<Patient2>();        
 
             if (acc == null)
             {
