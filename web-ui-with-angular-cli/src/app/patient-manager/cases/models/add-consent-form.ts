@@ -19,6 +19,8 @@ export class AddConsent extends ConsentForm {
     patientId: number;
     consentReceived: string;
 
+    
+
     constructor(props) {
         super(props);
     }
