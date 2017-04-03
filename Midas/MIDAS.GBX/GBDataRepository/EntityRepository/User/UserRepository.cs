@@ -234,6 +234,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             userDB.ContactInfo = contactinfoDB;            
             if (userBO.DateOfBirth.HasValue) userDB.DateOfBirth = userBO.DateOfBirth.Value;
             if (userBO.IsDeleted.HasValue) userDB.IsDeleted = userBO.IsDeleted.Value;
+            userDB.C2FactAuthEmailEnabled = true;
 
             #region Company
             if (companyBO != null)

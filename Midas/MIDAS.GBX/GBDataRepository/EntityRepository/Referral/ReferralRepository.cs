@@ -328,6 +328,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("Doctor")
                                                .Include("Doctor1")
                                                .Include("Case")
+                                               .Include("Case.Patient2")
+                                               .Include("Case.Patient2.User")
                                                .Include("Room")
                                                .Where(p => p.ReferredToCompanyId == id
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))

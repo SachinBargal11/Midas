@@ -87,7 +87,7 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             {
                 var res = (object)objResult;
                 if (res != null)
-                    return request.CreateResponse(HttpStatusCode.Created, res);
+                    return request.CreateResponse(HttpStatusCode.OK, res);
                 else
                     return request.CreateResponse(HttpStatusCode.NotFound, res);
             }

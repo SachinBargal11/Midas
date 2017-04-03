@@ -46,7 +46,7 @@
                                 Patient Manager
 							</a>
 						</div>
-						<div class="dropdown dropdown-typical">
+						<div class="dropdown dropdown-typical" *ngIf="!doctorRoleFlag">
 							<a [routerLink]="['/medical-provider']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
                                 Medical Office Manager
 							</a>
@@ -61,7 +61,7 @@
                                 Medical Facilities
 							</a>
 						</div>-->
-						<div class="dropdown dropdown-typical">
+						<div class="dropdown dropdown-typical" *ngIf="!doctorRoleFlag">
 							<a [routerLink]="['/account-setup']" [routerLinkActive]="['active']" class="dropdown-toggle no-arr">
                                 Account Setup
 							</a>

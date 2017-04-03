@@ -55,9 +55,21 @@ export class CasesStore {
         });
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
+    getCasesByCompanyAndDoctorId(): Observable<Case[]> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._casesService.getCasesByCompanyAndDoctorId(companyId).subscribe((cases: Case[]) => {
+                this._companyCases.next(List(cases));
+                resolve(cases);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Case[]>>Observable.fromPromise(promise);
+    }
 
 
-        getDocumentsForCaseId(caseId: number): Observable<CaseDocument[]> {
+    getDocumentsForCaseId(caseId: number): Observable<CaseDocument[]> {
         let promise = new Promise((resolve, reject) => {
             this._casesService.getDocumentsForCaseId(caseId).subscribe((documents: CaseDocument[]) => {
                 resolve(documents);
@@ -68,9 +80,20 @@ export class CasesStore {
         return <Observable<CaseDocument[]>>Observable.fromPromise(promise);
     }
 
-        uploadDocument(DocumentsDetail:CaseDocument[],currentCaseId:number): Observable<CaseDocument[]> {
+    uploadDocument(DocumentsDetail: CaseDocument[], currentCaseId: number): Observable<CaseDocument[]> {
         let promise = new Promise((resolve, reject) => {
-            this._casesService.uploadDocumentsForCase(DocumentsDetail,currentCaseId).subscribe((DocumentsDetail: CaseDocument[]) => {
+            this._casesService.uploadDocumentsForCase(DocumentsDetail, currentCaseId).subscribe((DocumentsDetail: CaseDocument[]) => {
+                resolve(DocumentsDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<CaseDocument[]>>Observable.from(promise);
+    }
+
+    uploadScannedDocuments(dwObject: any, currentCaseId: number): Observable<CaseDocument[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._casesService.uploadScannedDocuments(dwObject, currentCaseId).subscribe((DocumentsDetail: CaseDocument[]) => {
                 resolve(DocumentsDetail);
             }, error => {
                 reject(error);
