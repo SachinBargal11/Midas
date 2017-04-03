@@ -190,10 +190,10 @@ export class UserBasicComponent implements OnInit {
     onSelectedRoleChange(roleValues: any) {
         const doctorCtrl = this.userformControls.doctor;
         if (_.contains(roleValues, '3')) {
-            if(this.doctorDetail) {
+            if (this.doctorDetail) {
                 this.doctor = this.doctorDetail;
             } else {
-                this.doctor = new Doctor({speciality: '2'});
+                this.doctor = new Doctor({ speciality: '2' });
             }
             Object.keys(doctorCtrl.controls).forEach(key => {
                 doctorCtrl.controls[key].setValidators(this.initDoctorModel()[key][1]);
@@ -226,7 +226,7 @@ export class UserBasicComponent implements OnInit {
         let result;
         let userFormValues = this.userform.value;
         let roles = [];
-        let input = this.selectedRole;
+        let input = _.uniq(this.selectedRole);
         for (let i = 0; i < input.length; ++i) {
             roles.push({ 'roleType': parseInt(input[i], 10) });
         }
@@ -237,38 +237,41 @@ export class UserBasicComponent implements OnInit {
         });
         if (!this.doctorRole) {
             let existingUserJS = this.user.toJS();
-            let userDetail = new User(_.extend(existingUserJS, {
+            let userDetail = new User({
+                id: this.user.id,
                 firstName: userFormValues.userInfo.firstName,
                 lastName: userFormValues.userInfo.lastName,
                 userType: UserType.STAFF,
                 roles: roles,
                 userName: this.user.userName,
-                contact: new Contact(_.extend(existingUserJS.contact, {
+                contact: new Contact({
+                    id: this.user.contact.id,
                     cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,
                     emailAddress: this.user.contact.emailAddress,
                     faxNo: userFormValues.contact.faxNo ? userFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
                     homePhone: userFormValues.contact.homePhone,
                     workPhone: userFormValues.contact.workPhone,
-                })),
-                address: new Address(_.extend(existingUserJS.address, {
+                }),
+                address: new Address({
+                    id: this.user.address.id,
                     address1: userFormValues.address.address1,
                     address2: userFormValues.address.address2,
                     city: userFormValues.address.city,
                     country: userFormValues.address.country,
                     state: userFormValues.address.state,
                     zipCode: userFormValues.address.zipCode,
-                }))
-            }));
+                })
+            });
             result = this._usersStore.updateUser(userDetail);
-        }
-        else {
+        } else {
             let doctorSpecialities = [];
             let input = userFormValues.doctor.speciality;
             for (let i = 0; i < input.length; ++i) {
                 doctorSpecialities.push({ 'id': parseInt(input[i]) });
             }
             let existingDoctorJS = this.doctor.toJS();
-            let doctorDetail = new Doctor(_.extend(existingDoctorJS, {
+            let doctorDetail = new Doctor({
+                id: this.user.id,
                 licenseNumber: userFormValues.doctor.licenseNumber,
                 wcbAuthorization: userFormValues.doctor.wcbAuthorization,
                 wcbRatingCode: userFormValues.doctor.wcbRatingCode,
@@ -276,29 +279,32 @@ export class UserBasicComponent implements OnInit {
                 taxType: userFormValues.doctor.taxType,
                 title: userFormValues.doctor.title,
                 doctorSpecialities: doctorSpecialities,
-                user: new User(_.extend(existingDoctorJS.user, {
+                user: new User({
+                    id: this.user.id,
                     firstName: userFormValues.userInfo.firstName,
                     lastName: userFormValues.userInfo.lastName,
                     userType: UserType.STAFF,
                     roles: roles,
                     userName: this.user.userName,
-                    contact: new Contact(_.extend(existingDoctorJS.user.contact, {
+                    contact: new Contact({
+                        id: this.user.contact.id,
                         cellPhone: userFormValues.contact.cellPhone ? userFormValues.contact.cellPhone.replace(/\-/g, '') : null,
                         emailAddress: this.user.contact.emailAddress,
                         faxNo: userFormValues.contact.faxNo ? userFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
                         homePhone: userFormValues.contact.homePhone,
                         workPhone: userFormValues.contact.workPhone,
-                    })),
-                    address: new Address(_.extend(existingDoctorJS.user.address, {
+                    }),
+                    address: new Address({
+                        id: this.user.address.id,
                         address1: userFormValues.address.address1,
                         address2: userFormValues.address.address2,
                         city: userFormValues.address.city,
                         country: userFormValues.address.country,
                         state: userFormValues.address.state,
                         zipCode: userFormValues.address.zipCode,
-                    }))
-                }))
-            }));
+                    })
+                })
+            });
             result = this._doctorsStore.updateDoctor(doctorDetail);
         }
         this._progressBarService.show();

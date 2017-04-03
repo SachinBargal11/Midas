@@ -45,7 +45,7 @@ namespace MIDAS.GBX.WebAPI
             {
                 var res = (object)objResult;
                 if (res != null)
-                    return request.CreateResponse(HttpStatusCode.Created, res);
+                    return request.CreateResponse(HttpStatusCode.OK, res);
                 else
                     return request.CreateResponse(HttpStatusCode.NotFound, res);
             }
@@ -158,6 +158,20 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.NoContent, new ErrorObject { ErrorMessage = "Id can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
             }
         }
+
+        public HttpResponseMessage DeleteFile(HttpRequestMessage request,int caseId, int id)
+        {
+            var res = dataAccessManager.DeleteFile(caseId,id);
+            if (id > 0)
+            {
+                return request.CreateResponse(HttpStatusCode.Accepted, res);
+            }
+            else
+            {
+                return request.CreateResponse(HttpStatusCode.NoContent, new ErrorObject { ErrorMessage = "Id can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+        }
+        
 
         public HttpResponseMessage ValidateUniqueName(HttpRequestMessage request, T gbObject)
         {

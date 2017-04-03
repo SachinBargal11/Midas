@@ -87,7 +87,7 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             {
                 var res = (object)objResult;
                 if (res != null)
-                    return request.CreateResponse(HttpStatusCode.Created, res);
+                    return request.CreateResponse(HttpStatusCode.OK, res);
                 else
                     return request.CreateResponse(HttpStatusCode.NotFound, res);
             }
@@ -169,6 +169,19 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             catch (Exception ex)
             {
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage DeleteFile(HttpRequestMessage request, int caseId, int id)
+        {
+            var res = dataAccessManager.DeleteFile(caseId, id);
+            if (id > 0)
+            {
+                return request.CreateResponse(HttpStatusCode.Accepted, res);
+            }
+            else
+            {
+                return request.CreateResponse(HttpStatusCode.NoContent, new ErrorObject { ErrorMessage = "Id can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
             }
         }
 

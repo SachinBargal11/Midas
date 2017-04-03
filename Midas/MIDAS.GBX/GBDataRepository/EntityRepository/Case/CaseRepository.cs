@@ -54,6 +54,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 caseBO.PatientEmpInfo = boPatientEmpInfo;
             }
 
+            BO.Patient2 boPatient2 = new BO.Patient2();
+            using (Patient2Repository cmp = new Patient2Repository(_context))
+            {
+
+                boPatient2 = cmp.Convert<BO.Patient2, Patient2>(cases.Patient2);
+                caseBO.Patient2 = boPatient2;
+            }
+
+
             List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
             foreach (var casemap in cases.CaseCompanyMappings)
             {

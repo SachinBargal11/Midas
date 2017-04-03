@@ -14,6 +14,7 @@ import { Observable } from 'rxjs/Rx';
 import { FileUpload, FileUploadModule } from 'primeng/primeng';
 import { CaseDocument } from '../models/case-document';
 import { CasesStore } from '../../cases/stores/case-store';
+import { CaseService } from '../../cases/services/cases-services';
 import { ScannerService } from '../../../commons/services/scanner-service';
 
 
@@ -29,7 +30,8 @@ export class CaseDocumentsUploadComponent implements OnInit {
     msgs: Message[];
     uploadedFiles: any[] = [];
     currentCaseId: number;
-    document: CaseDocument[] = [];
+    documentMode: string = '1';
+    documents: CaseDocument[] = [];
     url;
 
     scannerContainerId: string = `scanner_${moment().valueOf()}`;
@@ -41,6 +43,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
         private _router: Router,
         public _route: ActivatedRoute,
         private _casesStore: CasesStore,
+        private _caseService: CaseService,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
@@ -71,6 +74,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
 
     ngOnDestroy() {
         this._scannerService.deleteWebTwain(this.scannerContainerId);
+        this._scannerService.unloadAll();
     }
 
     ngAfterViewInit() {
@@ -82,14 +86,11 @@ export class CaseDocumentsUploadComponent implements OnInit {
                         for (let i = 0; i < this._dwObject.SourceCount; i++) {
                             this.twainSources.push({ idx: i, name: this._dwObject.GetSourceNameItems(i) });
                         }
-                        // this._dwObject.HTTPUpload('www.dynamsoft.com/SaveToFile.aspx?filename=001.pdf', [0, 1], EnumDWT_ImageType.IT_PDF, EnumDWT_UploadDataFormat.Binary, OnHttpUploadSuccess, OnHttpUploadFailure);
-                        // function OnHttpUploadSuccess(httpResponse) {
-                        //     console.log("HTTPResponseString: " + httpResponse);
-                        // }
-                        // function OnHttpUploadFailure(errorCode, errorString, httpResponse) {
-                        //     alert("ErrorCode: " + errorCode + "ErrorString: " + errorString + "HTTPResponseString: " + httpResponse);
-                        // }
+
                     }
+                }).catch(() => {
+                    // (<any>window).OnWebTwainNotFoundOnWindowsCallback();
+                    this._notificationsService.alert('', 'Not able to connect scanner. Please refresh the page again and download the software prompted.');
                 });
         });
 
@@ -98,15 +99,28 @@ export class CaseDocumentsUploadComponent implements OnInit {
     AcquireImage() {
         if (this._dwObject) {
             this._dwObject.IfDisableSourceAfterAcquire = true;
-            this._dwObject.SelectSource();
+            if (this.selectedTwainSource) {
+                this._dwObject.SelectSourceByIndex(this.selectedTwainSource.idx);
+            } else {
+                this._dwObject.SelectSource();
+            }
             this._dwObject.OpenSource();
             this._dwObject.AcquireImage();
-            debugger;
         }
     }
 
     uploadDocuments() {
-        debugger;
+        this._casesStore.uploadScannedDocuments(this._dwObject, this.currentCaseId)
+            .subscribe(
+            (documents: CaseDocument[]) => {
+                this.documents = documents;
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
 
     onUpload(event) {
@@ -126,8 +140,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
         this._progressBarService.show();
         this._casesStore.getDocumentsForCaseId(this.currentCaseId)
             .subscribe(document => {
-                this.document = document
-
+                this.documents = document;
             },
             (error) => {
                 this._progressBarService.hide();

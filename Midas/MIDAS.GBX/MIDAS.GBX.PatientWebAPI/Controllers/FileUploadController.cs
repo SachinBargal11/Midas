@@ -160,5 +160,13 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             }
             return new HttpResponseMessage();
         }*/
+
+        [HttpGet]
+        [Route("Delete/{caseId}/{id}")]
+        [AllowAnonymous]
+        public HttpResponseMessage DeleteFile(int caseId, int id)
+        {
+            return requestHandler.DeleteFile(Request, caseId, id);
+        }
     }
 }

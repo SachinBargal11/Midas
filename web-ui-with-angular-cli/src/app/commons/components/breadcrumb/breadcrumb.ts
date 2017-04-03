@@ -42,11 +42,13 @@ export class BreadcrumbComponent implements OnInit {
 
     home() {
         let roles = this._sessionStore.session.user.roles;
-        roles.forEach(role => {
-            if (role.roleType === 3) {
-                this.doctorRole = true;
-            }
-        });
+        if (roles) {
+            roles.forEach(role => {
+                if (role.roleType === 3) {
+                    this.doctorRole = true;
+                }
+            });
+        }
         if (this.doctorRole) {
             this.router.navigate(['/doctor-manager/doctor-appointment']);
         } else {
@@ -62,11 +64,13 @@ export class BreadcrumbComponent implements OnInit {
      */
     ngOnInit() {
         let roles = this._sessionStore.session.user.roles;
-        roles.forEach(role => {
-            if (role.roleType === 3) {
-                this.doctorRole = true;
-            }
-        });
+        if (roles) {
+            roles.forEach(role => {
+                if (role.roleType === 3) {
+                    this.doctorRole = true;
+                }
+            });
+        }
         // const ROUTE_DATA_BREADCRUMB: string = 'breadcrumb';
 
         //subscribe to the NavigationEnd event
