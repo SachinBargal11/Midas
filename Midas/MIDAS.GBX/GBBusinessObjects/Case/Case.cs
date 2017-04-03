@@ -51,8 +51,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("patientEmpInfo")]
         public PatientEmpInfo PatientEmpInfo { get; set; }
 
-        //[JsonProperty("caseInsuranceMapping")]
-        //public CaseInsuranceMapping CaseInsuranceMapping { get; set; }
+        [JsonProperty("patient2")]
+        public Patient2 Patient2 { get; set; }
 
         //[JsonProperty("refferingOffice")]
         //public RefferingOffice RefferingOffice { get; set; }
