@@ -66,9 +66,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
             foreach (var casemap in cases.CaseCompanyMappings)
             {
-                using (CaseCompanyMappingRepository cmp = new CaseCompanyMappingRepository(_context))
+                if (casemap.CaseId == cases.Id)
                 {
-                    boCaseCompanyMapping.Add(cmp.Convert<BO.CaseCompanyMapping, CaseCompanyMapping>(casemap));
+                    using (CaseCompanyMappingRepository cmp = new CaseCompanyMappingRepository(_context))
+                    {
+                        boCaseCompanyMapping.Add(cmp.Convert<BO.CaseCompanyMapping, CaseCompanyMapping>(casemap));
+                    }
                 }
             }
             caseBO.CaseCompanyMappings = boCaseCompanyMapping;
@@ -346,6 +349,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     foreach (BO.CaseCompanyMapping eachcaseCompanyMapping in lstCaseCompanyMapping)
                     {
+                        eachcaseCompanyMapping.CaseId = caseDB.Id;
                         using (CaseCompanyMappingRepository caseCompanyMapRepo = new CaseCompanyMappingRepository(_context))
                         {
                             caseCompanyMapRepo.Save(eachcaseCompanyMapping);

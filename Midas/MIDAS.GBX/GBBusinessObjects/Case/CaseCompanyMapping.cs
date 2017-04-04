@@ -12,8 +12,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("caseId")]
         public int CaseId { get; set; }
 
-        [JsonProperty("companyId")]
-        public int CompanyId { get; set; }
+        //[JsonProperty("companyId")]
+        //public int CompanyId { get; set; }
 
         [JsonProperty("case")]
         public Case Case { get; set; }

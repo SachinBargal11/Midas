@@ -111,6 +111,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (doctor.UpdateByUserID.HasValue)
                 doctorBO.UpdateByUserID = doctor.UpdateByUserID.Value;
 
+            if (doctor.DoctorSpecialities != null)
+            {
+                List<BO.DoctorSpeciality> lstDoctorSpecility = new List<BO.DoctorSpeciality>();
+                foreach (var item in doctor.DoctorSpecialities)
+                {
+                    using (DoctorSpecialityRepository sr = new DoctorSpecialityRepository(_context))
+                    {
+                        lstDoctorSpecility.Add(sr.ObjectConvert<BO.DoctorSpeciality, DoctorSpeciality>(item));
+                    }
+                }
+                doctorBO.DoctorSpecialities = lstDoctorSpecility;
+            }
+
+
             return (T)(object)doctorBO;
         }
         #endregion

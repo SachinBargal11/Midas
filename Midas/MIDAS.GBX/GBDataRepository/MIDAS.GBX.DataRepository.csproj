@@ -128,6 +128,12 @@
     <Compile Include="Model\Attorney.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\BlobStorage.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\BlobStorageType.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\CalendarEvent.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
