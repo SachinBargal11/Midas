@@ -991,6 +991,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 patient2DB = _context.Patient2.Include("User")
                                               .Include("User.UserCompanies")
+                                              .Include("User.UserCompanies.Company")
                                               .Include("User.AddressInfo")
                                               .Include("User.ContactInfo")
                                               .Where(p => p.Id == patient2DB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
