@@ -134,19 +134,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
         #region Get By Company ID and DoctorId For Patient 
         public override object Get(int CompanyId, int DoctorId)
-        {          
-            var userInCompany = _context.UserCompanies.Where(p => p.CompanyID == CompanyId).Select(p2 => p2.UserID);
-            var patientInCaseMapping = _context.DoctorCaseConsentApprovals.Where(p => p.DoctorId == DoctorId).Select(p2 => p2.CaseId);
-            var patientWithCase = _context.Cases.Where(p => patientInCaseMapping.Contains(p.Id)).Select(p2=> p2.PatientId);
+        {
+            var userInCompany = _context.UserCompanies.Where(p => p.CompanyID == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID);
+            var patientInCaseMapping = _context.DoctorCaseConsentApprovals.Where(p => p.DoctorId == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CaseId);
+            var patientWithCase = _context.Cases.Where(p => patientInCaseMapping.Contains(p.Id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.PatientId);
 
             var acc = _context.Patient2.Include("User")
                                        .Include("User.UserCompanies")
                                        .Include("User.AddressInfo")
                                        .Include("User.ContactInfo")
-                                       .Where(p => userInCompany.Contains(p.Id) && patientWithCase.Contains(p.Id)).ToList<Patient2>();
-
-
-           
+                                       .Where(p => userInCompany.Contains(p.Id) && patientWithCase.Contains(p.Id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Patient2>();
 
             if (acc == null)
             {
@@ -923,51 +920,53 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 #endregion
 
                 #region User Companies
-                if (patient2BO.User.UserCompanies!=null)
+                if (patient2BO.User.UserCompanies != null)
                 {
                     bool add_UserCompany = false;
-                    
+
 
                     Company companyDB = new Company();
 
                     foreach (var userCompany in patient2BO.User.UserCompanies)
                     {
-                        
-                        UserCompanyDB = _context.UserCompanies.Where(p => p.id == userCompany.ID
-                                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                        userCompany.UserId = userDB.id;
+                        //UserCompanyDB = _context.UserCompanies.Where(p => p.id == userCompany.ID
+                        //                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                        //                                       .FirstOrDefault<UserCompany>();
+                        UserCompanyDB = _context.UserCompanies.Where(p => p.UserID == userDB.id && p.CompanyID == userCompany.Company.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                .FirstOrDefault<UserCompany>();
-                          
 
-                        if (UserCompanyDB == null && userCompany.ID <= 0)
+
+                        if (UserCompanyDB == null)
                         {
                             UserCompanyDB = new UserCompany();
                             add_UserCompany = true;
                         }
-                        else if (UserCompanyDB == null && userCompany.ID > 0)
-                        {
-                            dbContextTransaction.Rollback();
-                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "UserCompany details dosent exists.", ErrorLevel = ErrorLevel.Error };
-                        }
+                        //else if (UserCompanyDB == null && userCompany.ID > 0)
+                        //{
+                        //    dbContextTransaction.Rollback();
+                        //    return new BO.ErrorObject { errorObject = "", ErrorMessage = "UserCompany details dosent exists.", ErrorLevel = ErrorLevel.Error };
+                        //}
 
-                        var acc = _context.UserCompanies.Where(p => p.UserID == patient2DB.Id && p.CompanyID == userCompany.CompanyId
-                                                         &&(p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                        .FirstOrDefault<UserCompany>();
-                        if (acc != null)
-                        {
-                            dbContextTransaction.Rollback();
-                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "User is already associated with given company.", ErrorLevel = ErrorLevel.Error };
-                        }
-                                             
-                        UserCompanyDB.CompanyID = IsEditMode == true && userCompany.CompanyId <=0 ? UserCompanyDB.CompanyID : userCompany.CompanyId;                      
-                        UserCompanyDB.UserID = IsEditMode == true && patient2DB.Id <= 0 ? UserCompanyDB.UserID : patient2DB.Id;
-                       
+                        //var acc = _context.UserCompanies.Where(p => p.UserID == patient2DB.Id && p.CompanyID == userCompany.CompanyId
+                        //                                 &&(p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                        //                                .FirstOrDefault<UserCompany>();
+                        //if (acc != null)
+                        //{
+                        //    dbContextTransaction.Rollback();
+                        //    return new BO.ErrorObject { errorObject = "", ErrorMessage = "User is already associated with given company.", ErrorLevel = ErrorLevel.Error };
+                        //}
 
-                        if(add_UserCompany)
+                        UserCompanyDB.CompanyID = userCompany.Company.ID;
+                        UserCompanyDB.UserID = userCompany.UserId;
+
+
+                        if (add_UserCompany)
                         {
-                            _context.UserCompanies.Add(UserCompanyDB);                          
+                            _context.UserCompanies.Add(UserCompanyDB);
                         }
                         _context.SaveChanges();
-                    }                   
+                    }
 
                 }
                 #endregion
