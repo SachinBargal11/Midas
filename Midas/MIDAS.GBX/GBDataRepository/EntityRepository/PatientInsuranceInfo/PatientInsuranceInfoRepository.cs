@@ -74,6 +74,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boContactInfo.HomePhone = InsuranceInfos.ContactInfo.HomePhone;
                 boContactInfo.WorkPhone = InsuranceInfos.ContactInfo.WorkPhone;
                 boContactInfo.FaxNo = InsuranceInfos.ContactInfo.FaxNo;
+                boContactInfo.OfficeExtension = InsuranceInfos.ContactInfo.OfficeExtension;
+                boContactInfo.AlternateEmail = InsuranceInfos.ContactInfo.AlternateEmail;
+                boContactInfo.PreferredCommunication = InsuranceInfos.ContactInfo.PreferredCommunication;
                 boContactInfo.CreateByUserID = InsuranceInfos.ContactInfo.CreateByUserID;
                 boContactInfo.ID = InsuranceInfos.ContactInfo.id;
                 insuranceBO.contactInfo = boContactInfo;
@@ -106,6 +109,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boContactInfo1.HomePhone = InsuranceInfos.ContactInfo1.HomePhone;
                 boContactInfo1.WorkPhone = InsuranceInfos.ContactInfo1.WorkPhone;
                 boContactInfo1.FaxNo = InsuranceInfos.ContactInfo1.FaxNo;
+                boContactInfo1.OfficeExtension = InsuranceInfos.ContactInfo1.OfficeExtension;
+                boContactInfo1.AlternateEmail = InsuranceInfos.ContactInfo1.AlternateEmail;
+                boContactInfo1.PreferredCommunication = InsuranceInfos.ContactInfo1.PreferredCommunication;
                 boContactInfo1.CreateByUserID = InsuranceInfos.ContactInfo1.CreateByUserID;
                 boContactInfo1.ID = InsuranceInfos.ContactInfo1.id;
                 insuranceBO.contactInfo1 = boContactInfo1;
@@ -290,6 +296,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     contactinfoPolicyHolderDB.HomePhone = IsEditMode == true && contactinfoPolicyHolderBO.HomePhone == null ? contactinfoPolicyHolderDB.HomePhone : contactinfoPolicyHolderBO.HomePhone;
                     contactinfoPolicyHolderDB.WorkPhone = IsEditMode == true && contactinfoPolicyHolderBO.WorkPhone == null ? contactinfoPolicyHolderDB.WorkPhone : contactinfoPolicyHolderBO.WorkPhone;
                     contactinfoPolicyHolderDB.FaxNo = IsEditMode == true && contactinfoPolicyHolderBO.FaxNo == null ? contactinfoPolicyHolderDB.FaxNo : contactinfoPolicyHolderBO.FaxNo;
+                    contactinfoPolicyHolderDB.OfficeExtension = IsEditMode == true && contactinfoPolicyHolderBO.OfficeExtension == null ? contactinfoPolicyHolderDB.OfficeExtension : contactinfoPolicyHolderBO.OfficeExtension;
+                    contactinfoPolicyHolderDB.AlternateEmail = IsEditMode == true && contactinfoPolicyHolderBO.AlternateEmail == null ? contactinfoPolicyHolderDB.AlternateEmail : contactinfoPolicyHolderBO.AlternateEmail;
+                    contactinfoPolicyHolderDB.PreferredCommunication = IsEditMode == true && contactinfoPolicyHolderBO.PreferredCommunication == null ? contactinfoPolicyHolderDB.PreferredCommunication : contactinfoPolicyHolderBO.PreferredCommunication;
                     contactinfoPolicyHolderDB.IsDeleted = contactinfoPolicyHolderBO.IsDeleted;
 
                     if (Add_contactinfoDB == true)
@@ -378,6 +387,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     contactinfoInsuranceCompanyDB.HomePhone = IsEditMode == true && contactinfoInsuranceCompanyBO.HomePhone == null ? contactinfoInsuranceCompanyDB.HomePhone : contactinfoInsuranceCompanyBO.HomePhone;
                     contactinfoInsuranceCompanyDB.WorkPhone = IsEditMode == true && contactinfoInsuranceCompanyBO.WorkPhone == null ? contactinfoInsuranceCompanyDB.WorkPhone : contactinfoInsuranceCompanyBO.WorkPhone;
                     contactinfoInsuranceCompanyDB.FaxNo = IsEditMode == true && contactinfoInsuranceCompanyBO.FaxNo == null ? contactinfoInsuranceCompanyDB.FaxNo : contactinfoInsuranceCompanyBO.FaxNo;
+                    contactinfoInsuranceCompanyDB.OfficeExtension = IsEditMode == true && contactinfoInsuranceCompanyBO.OfficeExtension == null ? contactinfoInsuranceCompanyDB.OfficeExtension : contactinfoInsuranceCompanyBO.OfficeExtension;
+                    contactinfoInsuranceCompanyDB.AlternateEmail = IsEditMode == true && contactinfoInsuranceCompanyBO.AlternateEmail == null ? contactinfoInsuranceCompanyDB.AlternateEmail : contactinfoInsuranceCompanyBO.AlternateEmail;
+                    contactinfoInsuranceCompanyDB.PreferredCommunication = IsEditMode == true && contactinfoInsuranceCompanyBO.PreferredCommunication == null ? contactinfoInsuranceCompanyDB.PreferredCommunication : contactinfoInsuranceCompanyBO.PreferredCommunication;
                     contactinfoInsuranceCompanyDB.IsDeleted = contactinfoInsuranceCompanyBO.IsDeleted;
 
                     if (Add_contactinfoDB == true)

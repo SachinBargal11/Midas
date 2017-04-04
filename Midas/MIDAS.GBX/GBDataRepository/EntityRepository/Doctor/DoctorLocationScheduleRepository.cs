@@ -578,10 +578,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             List<BO.DoctorLocationSchedule> lstDoctorLocationSchedule = new List<BO.DoctorLocationSchedule>();
 
-            var acc_ = _context.DoctorLocationSchedules.Include("Doctor").Include("Doctor.User")
-                                                       .Include("Location").Include("Location.AddressInfo").Include("Location.ContactInfo")
+            var acc_ = _context.DoctorLocationSchedules.Include("Doctor").Include("Doctor.DoctorSpecialities")
+                                                        .Include("Doctor.User")
+                                                        .Include("Location").Include("Location.AddressInfo").Include("Location.ContactInfo")
                                                        .Include("Schedule")
-                                                       .Where(p => p.LocationID== id && (p.IsDeleted == false || p.IsDeleted == null)).ToList<DoctorLocationSchedule>();
+                                                       .Where(p => p.LocationID== id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<DoctorLocationSchedule>();
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
@@ -604,6 +605,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<BO.DoctorLocationSchedule> lstDoctorLocationSchedule = new List<BO.DoctorLocationSchedule>();
 
             var acc_ = _context.DoctorLocationSchedules.Include("Doctor").Include("Doctor.User")
+                                                        .Include("Doctor.DoctorSpeciality")
                                                        .Include("Location").Include("Location.AddressInfo").Include("Location.ContactInfo")
                                                        .Include("Schedule")
                                                        .Where(p => p.DoctorID == id && (p.IsDeleted == false || p.IsDeleted == null)).ToList<DoctorLocationSchedule>();
