@@ -120,7 +120,43 @@
                                 placeholder="" />
                         </div>
                     </div>
+                    <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Office Extension</label>
+                        <input formControlName="adjusterofficeExtension" [ngModel]="adjuster.adjusterContact.officeExtension" type="text" class="form-control" placeholder="" />
+                    </div>
+            </div>
+            </div>
+         <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Alternate E-Mail                                                                                                                                     
+                                </label>
+                        <div class="form-group" [class.error]="adjusterformControls.adjusteralternateEmail.touched && !adjusterformControls.adjusteralternateEmail.valid">
+                        <input formControlName="adjusteralternateEmail" [ngModel]="adjuster.adjusterContact.alternateEmail" [class.error]="!adjusterformControls.adjusteralternateEmail.valid" class="form-control" type="text" placeholder="" />
+                        <div class='error-list' *ngIf="adjusterformControls.adjusteralternateEmail.touched && !adjusterformControls.adjusteralternateEmail.valid">
+                            <ul>
+                                <li *ngIf="adjusterformControls.adjusteralternateEmail.hasError('emailValidator')">Email is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
+                </div>
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Preferred Communication
+                                        </label>
+                        <select formControlName="adjusterpreferredcommunication" [ngModel]="adjuster.adjusterContact.preferredcommunication" type="text" class="form-control" placeholder="">
+                                        <option value="">-Select -</option>
+                                        <option disabled>────────────────────</option>
+                                        <option value="US">Cellphone</option>
+                                        <option value="US">Email</option>
+                                        <option value="US">Work Phone</option>
+                                        <option value="US">Post</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
             </div>
         </section>
         <section class="card">

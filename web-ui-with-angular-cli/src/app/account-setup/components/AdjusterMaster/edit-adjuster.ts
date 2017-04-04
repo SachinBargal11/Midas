@@ -102,6 +102,9 @@ export class EditAdjusterComponent implements OnInit {
                 adjusterHomePhone: [''],
                 adjusterWorkPhone: [''],
                 adjusterFaxNo: [''],
+                adjusteralternateEmail:  ['', [AppValidators.emailValidator]],
+                adjusterofficeExtension: [''],
+                adjusterpreferredcommunication: ['']
             });
 
         this.adjusterformControls = this.adjusterform.controls;
@@ -155,7 +158,11 @@ export class EditAdjusterComponent implements OnInit {
                 emailAddress: adjusterformValues.adjusterEmail,
                 faxNo: adjusterformValues.adjusterFaxNo ? adjusterformValues.adjusterFaxNo.replace(/\-|\s/g, '') : null,
                 homePhone: adjusterformValues.adjusterHomePhone,
-                workPhone: adjusterformValues.adjusterWorkPhone
+                workPhone: adjusterformValues.adjusterWorkPhone,
+                //officeExtension: adjusterformValues.officeExtension,
+                //alternateEmail: adjusterformValues.alternateEmail,
+                //preferredcommunication: adjusterformValues.preferredcommunication,
+
             }),
             adjusterAddress: new Address({
                 address1: adjusterformValues.adjusterAddress,

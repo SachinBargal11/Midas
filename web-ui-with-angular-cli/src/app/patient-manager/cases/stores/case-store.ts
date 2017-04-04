@@ -168,4 +168,18 @@ export class CasesStore {
         });
         return <Observable<Case>>Observable.from(promise);
     }
+    
+    deleteDocument(caseDetail: CaseDocument): Observable<Case> {
+        let cases = this._cases.getValue();
+        let index = cases.findIndex((currentCase: Case) => currentCase.id === caseDetail.id);
+        let promise = new Promise((resolve, reject) => {
+            this._casesService.deleteDocument(caseDetail).subscribe((caseDetail: Case) => {
+                this._cases.next(cases.delete(index));
+                resolve(caseDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Case>>Observable.from(promise);
+    }
 }

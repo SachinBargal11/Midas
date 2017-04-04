@@ -13,7 +13,11 @@ const ContactRecord = Record({
     createByUserId: 0,
     updateByUserId: 0,
     createDate: null, //Moment
-    updateDate: null //Moment
+    updateDate: null, //Moment
+    alternateEmail: '',
+    officeExtension: '',
+    preferredcommunication: '',
+
 });
 
 export class Contact extends ContactRecord {
@@ -30,6 +34,9 @@ export class Contact extends ContactRecord {
     updateByUserId: number;
     createDate: moment.Moment;
     updateDate: moment.Moment;
+    alternateEmail: string;
+    officeExtension: string;
+    preferredcommunication: string
 
     constructor(props) {
         super(props);

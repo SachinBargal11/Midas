@@ -45,6 +45,11 @@
         </ng-template>
     </p-column>
     <p-column field="user.contact.emailAddress" header="Email" [sortable]="true"></p-column>
+    <p-column field="user.contact.lastAppoinment" header="Last Appt" [sortable]="true"></p-column>
+    <p-column field="user.contact.nextAppointment" header="Next Appt" [sortable]="true"></p-column>
+    <p-column field="user.contact.followup" header="Follow-Up" [sortable]="true"></p-column>
+    <!--<p-column field="user.contact.followup" header="Follow-Up" [sortable]="true"></p-column>-->
+    <p-column field="user.contact.validInsurance" header="Valid Insurance" [sortable]="true"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-patient="rowData" pTemplate="body">
             <a title="Edit" routerLink="{{patient.user.id}}/viewall"><i class="glyphicon glyphicon-edit"></i></a>

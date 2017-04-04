@@ -63,7 +63,10 @@ export class AddPatientComponent implements OnInit {
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
                 homePhone: [''],
                 workPhone: [''],
-                faxNo: ['']
+                faxNo: [''],
+                alternateEmail:  ['', AppValidators.emailValidator],
+                officeExtension: [''],
+                preferredcommunication: ['']
             }),
             address: this.fb.group({
                 address1: [''],
@@ -114,6 +117,9 @@ export class AddPatientComponent implements OnInit {
                     faxNo: patientFormValues.contact.faxNo ? patientFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
                     homePhone: patientFormValues.contact.homePhone,
                     workPhone: patientFormValues.contact.workPhone,
+                    //officeExtension: patientFormValues.contact.officeExtension,
+                   //alternateEmail: patientFormValues.contact.alternateEmail,
+                    //preferredcommunication: patientFormValues.contact.preferredcommunication,
                     createByUserId: this._sessionStore.session.account.user.id
                 }),
                 address: new Address({

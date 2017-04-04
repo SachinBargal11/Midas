@@ -17,7 +17,11 @@ export class ContactAdapter {
                 createByUserId: contactData.createByUserId,
                 updateByUserId: contactData.updateByUserId,
                 createDate: moment(contactData.createDate), // Moment
-                updateDate: moment(contactData.updateDate) // Moment
+                updateDate: moment(contactData.updateDate), // Moment
+                alternateEmail: contactData.alternateEmail,
+                officeExtension: contactData.officeExtension,
+                preferredcommunication: contactData.preferredcommunication,
+
             });
         }
         return contact;

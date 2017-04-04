@@ -18,6 +18,7 @@ import { CaseService } from '../../cases/services/cases-services';
 import { ScannerService } from '../../../commons/services/scanner-service';
 
 
+
 @Component({
     selector: 'case-documents',
     templateUrl: './case-documents.html'
@@ -28,11 +29,13 @@ export class CaseDocumentsUploadComponent implements OnInit {
 
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     msgs: Message[];
+    selectedDocumentList= [];
     uploadedFiles: any[] = [];
     currentCaseId: number;
     documentMode: string = '1';
     documents: CaseDocument[] = [];
     url;
+    isSaveProgress = false;
 
     scannerContainerId: string = `scanner_${moment().valueOf()}`;
     twainSources: TwainSource[] = [];
@@ -127,13 +130,42 @@ export class CaseDocumentsUploadComponent implements OnInit {
         for (let file of event.files) {
             this.uploadedFiles.push(file);
         }
+        let notification = new Notification({
+                        'title': 'Document added successfully!',
+                        'type': 'SUCCESS',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
         // let file = this.uploadedFiles;
         // this._casesStore.uploadDocument(this.uploadedFiles,this.currentCaseId);
 
         this.msgs = [];
         this.msgs.push({ severity: 'info', summary: 'File Uploaded', detail: '' });
         this.downloadDocument();
-    }
+        
+    };
+
+    // onError(event) {
+    //     for (let file of event.files) {
+    //         this.uploadedFiles.push(file);
+    //     }
+    //                 let errString = 'Document Already Exists';
+    //                 let notification = new Notification({
+    //                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+    //                     'type': 'ERROR',
+    //                     'createdAt': moment()
+    //                 });
+    //                 this.isSaveProgress = false;
+    //                 this._notificationsStore.addNotification(notification);
+    //                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+    //     // let file = this.uploadedFiles;
+    //     // this._casesStore.uploadDocument(this.uploadedFiles,this.currentCaseId);
+
+    //     this.msgs = [];
+    //     this.msgs.push({ severity: 'info', summary: 'File Uploaded', detail: '' });
+    //     this.downloadDocument();
+    // };
+
 
 
     downloadDocument() {
@@ -150,7 +182,49 @@ export class CaseDocumentsUploadComponent implements OnInit {
             });
     }
 
+    deleteDocument() {
+         if (this.selectedDocumentList.length > 0) {
+            this.selectedDocumentList.forEach(currentCase => {
+                this._progressBarService.show();
+                this._casesStore.deleteDocument(currentCase)
+                    .subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            'title': 'record deleted successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
 
+                        });
+                        this.downloadDocument();
+                        this._notificationsStore.addNotification(notification);
+                        this.selectedDocumentList = [];
+                    },
+                    (error) => {
+                        let errString = 'Unable to delete record';
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this.selectedDocumentList = [];
+                        this._progressBarService.hide();
+                        this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                    },
+                    () => {
+                        this._progressBarService.hide();
+                    });
+            });
+        } else {
+            let notification = new Notification({
+                'title': 'select record to delete',
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'select record to delete');
+        }
+    }
 }
 
 export interface TwainSource {

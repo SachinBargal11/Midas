@@ -92,6 +92,42 @@
                         <input formControlName="workPhone" [ngModel]="insuranceMaster.Contact.workPhone" type="text" class="form-control" placeholder="" />
                     </div>
                 </div>
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Office Extension</label>
+                        <input formControlName="officeExtension" [ngModel]="insuranceMaster.Contact.officeExtension" type="text" class="form-control" placeholder="" />
+                    </div>
+            </div>
+            </div>
+         <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Alternate E-Mail                                                                                                                                     
+                                </label>
+                        <div class="form-group" [class.error]="editInsuranceMasterFormControls.alternateEmail.touched && !editInsuranceMasterFormControls.alternateEmail.valid">
+                        <input formControlName="alternateEmail" [ngModel]="insuranceMaster.Contact.alternateEmail" [class.error]="!editInsuranceMasterFormControls.alternateEmail.valid" class="form-control" type="text" placeholder="" />
+                        <div class='error-list' *ngIf="editInsuranceMasterFormControls.alternateEmail.touched && !editInsuranceMasterFormControls.alternateEmail.valid">
+                            <ul>
+                                <li *ngIf="editInsuranceMasterFormControls.alternateEmail.hasError('emailValidator')">Email is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Preferred Communication
+                                        </label>
+                        <select formControlName="preferredcommunication" [ngModel]="insuranceMaster.Contact.preferredcommunication" type="text" class="form-control" placeholder="">
+                                        <option value="">-Select -</option>
+                                        <option disabled>────────────────────</option>
+                                        <option value="US">Cellphone</option>
+                                        <option value="US">Email</option>
+                                        <option value="US">Work Phone</option>
+                                        <option value="US">Post</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

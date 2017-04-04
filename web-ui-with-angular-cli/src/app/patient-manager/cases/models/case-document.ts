@@ -12,7 +12,8 @@ const CaseDocumentRecord = Record({
     createByUserID: 0,
     createDate: null,
     updateByUserID: 0,
-    updateDate: null
+    updateDate: null,
+    documentId:0
 });
 
 export class CaseDocument extends CaseDocumentRecord {
@@ -28,6 +29,7 @@ export class CaseDocument extends CaseDocumentRecord {
     createDate: moment.Moment;
     updateByUserID: number;
     updateDate: moment.Moment;
+    documentId: number;
 
     constructor(props) {
         super(props);

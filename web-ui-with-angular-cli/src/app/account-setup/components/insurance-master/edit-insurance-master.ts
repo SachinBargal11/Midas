@@ -80,6 +80,9 @@ export class EditInsuranceMasterComponent implements OnInit {
             homePhone: [''],
             workPhone: [''],
             faxNo: [''],
+            alternateEmail:  ['', [AppValidators.emailValidator]],
+            officeExtension: [''],
+            preferredcommunication: ['']
         });
 
         this.editInsuranceMasterFormControls = this.editInsuranceMasterForm.controls;
@@ -104,6 +107,9 @@ export class EditInsuranceMasterComponent implements OnInit {
                 faxNo: editInsuranceMasterFormValues.faxNo ? editInsuranceMasterFormValues.faxNo.replace(/\-|\s/g, '') : null,
                 homePhone: editInsuranceMasterFormValues.homePhone,
                 workPhone: editInsuranceMasterFormValues.workPhone,
+                //officeExtension: editInsuranceMasterFormValues.officeExtension,
+                //alternateEmail: editInsuranceMasterFormValues.alternateEmail,
+                //preferredcommunication: editInsuranceMasterFormValues.preferredcommunication,
                 updateByUserId: this._sessionStore.session.account.user.id
             })),
             Address: new Address(_.extend(existingInsuranceMasterJS.Address, {

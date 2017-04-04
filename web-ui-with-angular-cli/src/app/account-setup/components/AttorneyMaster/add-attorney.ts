@@ -74,6 +74,9 @@ export class AddAttorneyComponent implements OnInit {
             attorneyHomePhone: [''],
             attorneyWorkPhone: [''],
             attorneyFaxNo: [''],
+            attorneyalternateEmail:  ['', [AppValidators.emailValidator]],
+            attorneyofficeExtension: [''],
+            attorneypreferredcommunication: ['']
         });
 
         this.attorneyformControls = this.attorneyform.controls;
@@ -131,6 +134,9 @@ export class AddAttorneyComponent implements OnInit {
                     faxNo: attorneyformValues.attorneyFaxNo ? attorneyformValues.attorneyFaxNo.replace(/\-|\s/g, '') : null,
                     homePhone: attorneyformValues.attorneyHomePhone,
                     workPhone: attorneyformValues.attorneyWorkPhone,
+                    //officeExtension: attorneyformValues.officeExtension,
+                    //alternateEmail: attorneyformValues.alternateEmail,
+                    //preferredcommunication: attorneyformValues.preferredcommunication,
                     createByUserId: this._sessionStore.session.account.user.id
                 }),
                 address: new Address({

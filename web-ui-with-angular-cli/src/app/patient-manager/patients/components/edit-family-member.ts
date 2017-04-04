@@ -72,7 +72,10 @@ export class EditFamilyMemberComponent implements OnInit {
                 gender: ['', Validators.required],
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
                 workPhone: [''],
-                primaryContact: ['']
+                primaryContact: [''],
+                alternateEmail:  ['', [AppValidators.emailValidator]],
+                officeExtension: [''],
+                preferredcommunication: ['']
         });
 
         this.familyMemberFormControls = this.familyMemberForm.controls;
@@ -96,7 +99,11 @@ export class EditFamilyMemberComponent implements OnInit {
             genderId: familyMemberFormValues.gender,
             cellPhone: familyMemberFormValues.cellPhone ? familyMemberFormValues.cellPhone.replace(/\-/g, '') : null,
             workPhone: familyMemberFormValues.workPhone,
-            primaryContact: familyMemberFormValues.primaryContact
+            primaryContact: familyMemberFormValues.primaryContact,
+            //officeExtension: familyMemberFormValues.officeExtension,
+            //alternateEmail: familyMemberFormValues.alternateEmail,
+            //preferredcommunication: familyMemberFormValues.preferredcommunication,   
+            
         });
         this._progressBarService.show();
         result = this._familyMemberStore.updateFamilyMember(familyMember, this.familyMember.id);

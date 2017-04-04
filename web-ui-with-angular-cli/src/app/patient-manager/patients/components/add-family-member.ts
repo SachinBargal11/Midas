@@ -52,6 +52,9 @@ export class AddFamilyMemberComponent implements OnInit {
                 gender: ['', Validators.required],
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
                 workPhone: [''],
+                alternateEmail:  ['', [AppValidators.emailValidator]],
+                officeExtension: [''],
+                preferredcommunication: [''],
                 primaryContact: [1]
             });
 
@@ -83,6 +86,9 @@ export class AddFamilyMemberComponent implements OnInit {
             genderId: familyMemberFormValues.gender,
             cellPhone: familyMemberFormValues.cellPhone ? familyMemberFormValues.cellPhone.replace(/\-/g, '') : null,
             workPhone: familyMemberFormValues.workPhone,
+            //officeExtension: familyMemberFormValues.officeExtension,
+            //alternateEmail: familyMemberFormValues.alternateEmail,
+           //preferredcommunication: familyMemberFormValues.preferredcommunication,
             primaryContact: parseInt(familyMemberFormValues.primaryContact)
         });
         this._progressBarService.show();
