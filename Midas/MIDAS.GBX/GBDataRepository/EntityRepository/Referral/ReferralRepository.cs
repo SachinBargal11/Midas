@@ -442,9 +442,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                             .Include("Doctor")
                                                             .Include("Doctor.User")
                                                             .Include("Doctor.DoctorSpecialities")
+                                                            .Include("Doctor.DoctorSpecialities.Specialty")
                                                             .Include("Doctor1")
                                                             .Include("Doctor1.User")
                                                             .Include("Doctor1.DoctorSpecialities")
+                                                            .Include("Doctor1.DoctorSpecialities.Specialty")
                                                             .Include("Case")
                                                             .Include("Room")
                                                             .Where(p => p.ReferringDoctorId == id
@@ -475,9 +477,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                             .Include("Doctor")
                                                             .Include("Doctor.User")
                                                             .Include("Doctor.DoctorSpecialities")
+                                                            .Include("Doctor.DoctorSpecialities.Specialty")
                                                             .Include("Doctor1")
                                                             .Include("Doctor1.User")
                                                             .Include("Doctor1.DoctorSpecialities")
+                                                            .Include("Doctor1.DoctorSpecialities.Specialty")
                                                             .Include("Case")
                                                             .Include("Room")
                                                             .Where(p => p.ReferredToDoctorId == id

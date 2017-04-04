@@ -196,6 +196,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("PatientEmpInfo.AddressInfo")
                                     .Include("PatientEmpInfo.ContactInfo")
                                     .Include("CaseCompanyMappings")
+                                    .Include("CaseCompanyMappings.Company")
                                     .Where(p => p.Id == id 
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .FirstOrDefault<Case>();
@@ -218,6 +219,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("PatientEmpInfo.AddressInfo")
                                     .Include("PatientEmpInfo.ContactInfo")
                                     .Include("CaseCompanyMappings")
+                                    .Include("CaseCompanyMappings.Company")
                                     .Where(p => p.PatientId == PatientId 
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .ToList<Case>();
@@ -363,6 +365,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                        .Include("PatientEmpInfo.AddressInfo")
                                        .Include("PatientEmpInfo.ContactInfo")
                                        .Include("CaseCompanyMappings")
+                                       .Include("CaseCompanyMappings.Company")
                                        .Where(p => p.Id == caseDB.Id).FirstOrDefault<Case>();
             }
 

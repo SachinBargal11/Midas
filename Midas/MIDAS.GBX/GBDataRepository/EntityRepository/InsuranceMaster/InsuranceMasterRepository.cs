@@ -134,6 +134,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boContactInfo.HomePhone = insuranceMaster.ContactInfo.HomePhone;
                 boContactInfo.WorkPhone = insuranceMaster.ContactInfo.WorkPhone;
                 boContactInfo.FaxNo = insuranceMaster.ContactInfo.FaxNo;
+                boContactInfo.OfficeExtension = insuranceMaster.ContactInfo.OfficeExtension;
+                boContactInfo.AlternateEmail = insuranceMaster.ContactInfo.AlternateEmail;
+                boContactInfo.PreferredCommunication = insuranceMaster.ContactInfo.PreferredCommunication;
                 boContactInfo.CreateByUserID = insuranceMaster.ContactInfo.CreateByUserID;
                 boContactInfo.ID = insuranceMaster.ContactInfo.id;
                 boContactInfo.IsDeleted = insuranceMaster.ContactInfo.IsDeleted;
@@ -301,6 +304,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     contactinfoDB.HomePhone = IsEditMode == true && contactinfoBO.HomePhone == null ? contactinfoDB.HomePhone : contactinfoBO.HomePhone;
                     contactinfoDB.WorkPhone = IsEditMode == true && contactinfoBO.WorkPhone == null ? contactinfoDB.WorkPhone : contactinfoBO.WorkPhone;
                     contactinfoDB.FaxNo = IsEditMode == true && contactinfoBO.FaxNo == null ? contactinfoDB.FaxNo : contactinfoBO.FaxNo;
+                    contactinfoDB.OfficeExtension = IsEditMode == true && contactinfoBO.OfficeExtension == null ? contactinfoDB.OfficeExtension : contactinfoBO.OfficeExtension;
+                    contactinfoDB.AlternateEmail = IsEditMode == true && contactinfoBO.AlternateEmail == null ? contactinfoDB.AlternateEmail : contactinfoBO.AlternateEmail;
+                    contactinfoDB.PreferredCommunication = IsEditMode == true && contactinfoBO.PreferredCommunication == null ? contactinfoDB.PreferredCommunication : contactinfoBO.PreferredCommunication;
                     contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
 
                     if (Add_contactinfoDB == true)
