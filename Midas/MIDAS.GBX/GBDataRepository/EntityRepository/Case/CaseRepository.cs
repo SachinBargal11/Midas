@@ -502,18 +502,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Company ID and DoctorId For
         public override object Get(int CompanyId,int DoctorId)
         {
-            var User = _context.UserCompanies.Where(p => p.CompanyID == CompanyId && p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
-                                        .Select(p => p.UserID)
-                                        .Distinct<int>();
-           
-            var acc = _context.Patient2.Include("User")
-                                       .Where(p => (User.Contains(p.Id))
-                                                   && p.Cases.Where(p2 => p2.DoctorCaseConsentApprovals.Where(p3 => p3.IsDeleted.HasValue == false || (p3.IsDeleted.HasValue == true && p3.IsDeleted.Value == false))
-                                                                                                       .Any(p4 => p4.DoctorId == DoctorId))
-                                                             .Any(p5 => p5.IsDeleted.HasValue == false || (p5.IsDeleted.HasValue == true && p5.IsDeleted.Value == false))
-                                                   && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                       .ToList<Patient2>();
+            var userInCompany = _context.UserCompanies.Where(p => p.CompanyID == CompanyId).Select(p2 => p2.UserID);
+            var patientInCaseMapping = _context.DoctorCaseConsentApprovals.Where(p => p.DoctorId == DoctorId).Select(p2 => p2.CaseId);
+            var patientWithCase = _context.Cases.Where(p => patientInCaseMapping.Contains(p.Id)).Select(p2 => p2.PatientId);
 
+            var acc = _context.Patient2.Include("User")                                       
+                                       .Where(p => userInCompany.Contains(p.Id) && patientWithCase.Contains(p.Id)).ToList<Patient2>();
 
             if (acc == null)
             {

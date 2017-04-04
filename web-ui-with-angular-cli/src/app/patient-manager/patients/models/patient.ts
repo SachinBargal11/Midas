@@ -1,6 +1,7 @@
 import * as moment from 'moment';
 import { Record } from 'immutable';
 import { User } from '../../../commons/models/user';
+import { Company } from '../../../account/models/company';
 import { MaritalStatus } from './enums/marital-status';
 
 const PatientRecord = Record({
@@ -12,6 +13,7 @@ const PatientRecord = Record({
     height: 0,
     maritalStatusId: MaritalStatus.SINGLE,
     dateOfFirstTreatment: moment(),
+    companies: null,
     isDeleted: false,
     createByUserID: 0,
     createDate: null,
@@ -29,6 +31,7 @@ export class Patient extends PatientRecord {
     height: number;
     maritalStatusId: MaritalStatus;
     dateOfFirstTreatment: moment.Moment;
+    companies: Company[];
     isDeleted: boolean;
     createByUserID: number;
     createDate: moment.Moment;
