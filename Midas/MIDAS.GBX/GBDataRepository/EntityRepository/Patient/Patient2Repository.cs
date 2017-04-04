@@ -81,6 +81,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.Patient2 patientBO = (BO.Patient2)(object)entity;
 
             var acc_ = _context.Patient2.Include("User")
+                                        .Include("User.UserCompanies")
                                         .Include("User.AddressInfo")
                                         .Include("User.ContactInfo")
                                         .Where(p => p.IsDeleted.HasValue == false || p.IsDeleted == false)
@@ -103,6 +104,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object GetByCompanyId(int CompanyId)
         {
                       var acc = _context.Patient2.Include("User")
+                                                 .Include("User.UserCompanies")
                                                  .Include("User.AddressInfo")
                                                  .Include("User.ContactInfo")
                                                  .Where(p => p.User.UserCompanies.Where(p2 =>p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
@@ -133,16 +135,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Company ID and DoctorId For Patient 
         public override object Get(int CompanyId, int DoctorId)
         {          
+            var userInCompany = _context.UserCompanies.Where(p => p.CompanyID == CompanyId).Select(p2 => p2.UserID);
+            var patientInCaseMapping = _context.DoctorCaseConsentApprovals.Where(p => p.DoctorId == DoctorId).Select(p2 => p2.CaseId);
+            var patientWithCase = _context.Cases.Where(p => patientInCaseMapping.Contains(p.Id)).Select(p2=> p2.PatientId);
+
             var acc = _context.Patient2.Include("User")
-                                      .Include("User.AddressInfo")
-                                      .Include("User.ContactInfo")
-                                      .Where(p => p.User.UserCompanies.Where(p2 => p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
-                                                                      .Any(p3 => p3.CompanyID == CompanyId)
-                                                  && p.Cases.Where(p4 =>p4.DoctorCaseConsentApprovals.Where( p5 => p5.IsDeleted.HasValue == false || (p5.IsDeleted.HasValue == true && p5.IsDeleted.Value == false))                                    
-                                                                                                     .Any(p6 => p6.DoctorId == DoctorId))                                                                            
-                                                            .Any(p7 => p7.IsDeleted.HasValue == false || (p7.IsDeleted.HasValue == true && p7.IsDeleted.Value == false))
-                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                      .ToList<Patient2>();        
+                                       .Include("User.UserCompanies")
+                                       .Include("User.AddressInfo")
+                                       .Include("User.ContactInfo")
+                                       .Where(p => userInCompany.Contains(p.Id) && patientWithCase.Contains(p.Id)).ToList<Patient2>();
+
+
+           
 
             if (acc == null)
             {
@@ -173,6 +177,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
 
             var acc = _context.Patient2.Include("User")
+                                      .Include("User.UserCompanies")
                                       .Include("User.AddressInfo")
                                       .Include("User.ContactInfo")
                                       .Where(p => p.User.UserCompanies.Where(p2 => p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
@@ -211,6 +216,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
 
             var acc = _context.Patient2.Include("User")
+                                     .Include("User.UserCompanies")
                                      .Include("User.AddressInfo")
                                      .Include("User.ContactInfo")
                                      .Where(p => p.User.UserCompanies.Where(p2 => p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
@@ -245,6 +251,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                          .Distinct<int>();
 
             var acc = _context.Patient2.Include("User")
+                                       .Include("User.UserCompanies")
                                        .Include("User.AddressInfo")
                                        .Include("User.ContactInfo")
                                        .Where(p => (openCase.Contains(p.Id))
@@ -273,6 +280,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Get(int id)
         {
             var acc = _context.Patient2.Include("User")
+                                       .Include("User.UserCompanies")
                                        .Include("User.AddressInfo")
                                        .Include("User.ContactInfo")
                                        .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
