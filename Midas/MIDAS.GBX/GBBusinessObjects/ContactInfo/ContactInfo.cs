@@ -34,7 +34,7 @@ namespace MIDAS.GBX.BusinessObjects
         public string AlternateEmail { get; set; }
 
         [JsonProperty("preferredCommunication")]
-        public string PreferredCommunication { get; set; }
+        public byte? PreferredCommunication { get; set; }
 
     }
 }
