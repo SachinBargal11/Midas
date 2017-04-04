@@ -251,7 +251,7 @@
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="OfficeExtension" Type="varchar" MaxLength="20" />
           <Property Name="AlternateEmail" Type="nvarchar" MaxLength="100" />
-          <Property Name="PreferredCommunication" Type="nvarchar" MaxLength="50" />
+          <Property Name="PreferredCommunication" Type="tinyint" />
         </EntityType>
         <EntityType Name="Doctor">
           <Key>
@@ -3100,7 +3100,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="OfficeExtension" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="AlternateEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="PreferredCommunication" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PreferredCommunication" Type="Byte" />
           <NavigationProperty Name="AdjusterMasters" Relationship="Self.FK_AdjusterMaster_AddressInfo_ContactInfoId" FromRole="ContactInfo" ToRole="AdjusterMaster" />
           <NavigationProperty Name="Companies" Relationship="Self.FK_Company_ContactInfo" FromRole="ContactInfo" ToRole="Company" />
           <NavigationProperty Name="InsuranceMasters" Relationship="Self.FK_InsuranceMaster_AddressInfo_ContactInfoId" FromRole="ContactInfo" ToRole="InsuranceMaster" />
