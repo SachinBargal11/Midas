@@ -1,4 +1,6 @@
 import { PatientAdapter } from '../../../patients/services/adapters/patient-adapter';
+import { Company } from '../../../../account/models/company';
+import { CompanyAdapter } from '../../../../account/services/adapters/company-adapter';
 import * as moment from 'moment';
 import { Case } from '../../models/case';
 
@@ -6,12 +8,19 @@ export class CaseAdapter {
     static parseResponse(data: any): Case {
 
         let patient_case = null;
+        let companies: Company[] = [];
         if (data) {
+            if (data.caseCompanyMapping) {
+                for (let company of data.caseCompanyMapping) {
+                    companies.push(CompanyAdapter.parseResponse(company.company));
+                }
+            }
             patient_case = new Case({
                 id: data.id,
                 patientId: data.patientId,
                 caseName: data.caseName,
                 caseTypeId: data.caseTypeId,
+                companies: companies,
                 locationId: data.locationId,
                 carrierCaseNo: data.carrierCaseNo,
                 transportation: data.transportation ? true : false,
@@ -30,7 +39,13 @@ export class CaseAdapter {
 
     static parseCaseComapnyResponse(data: any): Case {
         let patient_case = null;
+        let companies: Company[] = [];
         if (data) {
+            if (data.caseCompanyMapping) {
+                for (let company of data.caseCompanyMapping) {
+                    companies.push(CompanyAdapter.parseResponse(company.company));
+                }
+            }
             patient_case = new Case({
                 id: data.caseId,
                 patient: PatientAdapter.parseResponse({
@@ -45,6 +60,7 @@ export class CaseAdapter {
                 }),
                 caseName: data.caseName,
                 caseTypeId: data.caseTypeId,
+                companies: companies,
                 locationId: data.locationId,
                 carrierCaseNo: data.carrierCaseNo,
                 transportation: data.transportation ? true : false,

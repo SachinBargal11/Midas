@@ -12,18 +12,13 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class CaseDocument
+    public partial class BlobStorage
     {
         public int Id { get; set; }
-        public int CaseId { get; set; }
-        public int MidasDocumentId { get; set; }
-        public string DocumentName { get; set; }
-        public Nullable<System.DateTime> CreateDate { get; set; }
-        public Nullable<System.DateTime> UpdateDate { get; set; }
-        public Nullable<int> CreateUserId { get; set; }
-        public Nullable<int> UpdateUserId { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
+        public int BlobStorageTypeId { get; set; }
+        public string BlobStoargeURL { get; set; }
+        public string BlobStorageKey { get; set; }
     
-        public virtual MidasDocument MidasDocument { get; set; }
+        public virtual BlobStorageType BlobStorageType { get; set; }
     }
 }
