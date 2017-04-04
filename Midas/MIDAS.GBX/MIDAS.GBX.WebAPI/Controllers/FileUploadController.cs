@@ -12,11 +12,13 @@ using System.Web.Http;
 using MIDAS.GBX.DataRepository.EntitySearch;
 using MIDAS.GBX.BusinessObjects;
 using System.Web.Script.Serialization;
+using System.Web.Http.Cors;
 //using MIDAS.GBX.EntityRepository;
 
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/FileUpload")]
+    [EnableCors(origins: "*", headers: "Content-Type, Accept, x-requested-with", methods: "*")]
     public class FileUploadController : ApiController
     {
         internal string sourcePath = string.Empty;
