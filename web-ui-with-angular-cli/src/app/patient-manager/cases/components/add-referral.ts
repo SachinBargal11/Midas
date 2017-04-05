@@ -66,9 +66,9 @@ export class AddReferralComponent implements OnInit {
             this.caseId = parseInt(routeParams.caseId, 10);
         });
         this.referralForm = this.fb.group({
-            speciality: ['', Validators.required],
-            tests: ['', Validators.required],
-            notes: ['', Validators.required]
+            speciality: [''],
+            tests: [''],
+            note: ['', Validators.required]
         });
 
         this.referralFormControls = this.referralForm.controls;
@@ -141,27 +141,27 @@ export class AddReferralComponent implements OnInit {
             });
     }
 
-    saveCase() {
+    save() {
         this.isSaveProgress = true;
         let referralFormValues = this.referralForm.value;
-        let result;
-        let referral: Referral = new Referral({
+        // let result;
+        let referralDetail = new Referral({
             caseId: this.caseId,
             referringCompanyId: this._sessionStore.session.currentCompany.id,
-            referringLocationId: 64,
+            referringLocationId: null,
             referringDoctorId: this._sessionStore.session.user.id,
-            referredToCompanyId: 55,
-            referredToLocationId: 72,
-            referredToDoctorId: this.selectedDoctor.id,
-            referredToRoomId: this.selectedRoom.id,
-            note: referralFormValues.notes,
+            referredToCompanyId: null,
+            referredToLocationId: null,
+            referredToDoctorId: this.selectedDoctor ? this.selectedDoctor.id : null,
+            referredToRoomId: this.selectedRoom ? this.selectedRoom.id : null,
+            note: referralFormValues.note,
             referredByEmail: this._sessionStore.session.user.userName,
-            referredToEmail: this.selectedDoctor.user.userName,
+            referredToEmail: this.selectedDoctor ? this.selectedDoctor.user.userName : null,
             referralAccepted: 0
         });
 
         this._progressBarService.show();
-        result = this._referralStore.addReferral(referral);
+        let result = this._referralStore.addReferral(referralDetail);
         result.subscribe(
             (response) => {
                 let notification = new Notification({
