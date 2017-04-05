@@ -143,7 +143,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                 File.Copy(acc.DocumentPath + "/" + oldfile, acc.DocumentPath + "/" + newFile);
                 File.Delete(acc.DocumentPath + "/" + oldfile);
 
-                docInfo.id = id;
+                docInfo.id = caseId;
                 docInfo.DocumentId = acc.Id;
                 docInfo.DocumentName = newFile;
                 docInfo.DocumentPath = acc.DocumentPath;
