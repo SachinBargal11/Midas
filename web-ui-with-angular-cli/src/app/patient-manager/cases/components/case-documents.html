@@ -34,7 +34,7 @@
     </header>
     <div class="card-block">
         <p-growl [value]="msgs"></p-growl>
-        <p-fileUpload name="demo[]" url={{url}} multiple="multiple" (onUpload)="onUpload($event)" maxFileSize="1000000">
+        <p-fileUpload name="demo[]" url={{url}} multiple="multiple" (onUpload)="onUpload($event)"  maxFileSize="1000000">
             <ng-template pTemplate type="content">
                 <ul *ngIf="uploadedFiles.length">
                     <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
@@ -77,9 +77,9 @@
     <p-column selectionMode="multiple"></p-column>  
     <p-column field="documentName" header="Document Name" [sortable]="true"></p-column>
     <p-column field="createDate" header="Created Date" [sortable]="true">  
-        <!--<ng-template let-document="rowData" pTemplate="body">
-        {{ createDate || dateFormat }}  
-        </ng-template> -->
+        <ng-template let-document="rowData" pTemplate="body">
+        {{ document.createDate | dateFormat }}  
+        </ng-template> 
     </p-column> 
     
 </p-dataTable>

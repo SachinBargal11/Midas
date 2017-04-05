@@ -145,29 +145,6 @@ export class CaseDocumentsUploadComponent implements OnInit {
         
     };
 
-    // onError(event) {
-    //     for (let file of event.files) {
-    //         this.uploadedFiles.push(file);
-    //     }
-    //                 let errString = 'Document Already Exists';
-    //                 let notification = new Notification({
-    //                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-    //                     'type': 'ERROR',
-    //                     'createdAt': moment()
-    //                 });
-    //                 this.isSaveProgress = false;
-    //                 this._notificationsStore.addNotification(notification);
-    //                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-    //     // let file = this.uploadedFiles;
-    //     // this._casesStore.uploadDocument(this.uploadedFiles,this.currentCaseId);
-
-    //     this.msgs = [];
-    //     this.msgs.push({ severity: 'info', summary: 'File Uploaded', detail: '' });
-    //     this.downloadDocument();
-    // };
-
-
-
     downloadDocument() {
         this._progressBarService.show();
         this._casesStore.getDocumentsForCaseId(this.currentCaseId)
