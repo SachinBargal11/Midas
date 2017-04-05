@@ -76,6 +76,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     boContactInfo.FaxNo = eachInsuranceMaster.ContactInfo.FaxNo;
                     boContactInfo.CreateByUserID = eachInsuranceMaster.ContactInfo.CreateByUserID;
                     boContactInfo.ID = eachInsuranceMaster.ContactInfo.id;
+                    boContactInfo.OfficeExtension = eachInsuranceMaster.ContactInfo.OfficeExtension;
+                    boContactInfo.AlternateEmail = eachInsuranceMaster.ContactInfo.AlternateEmail;
+                    boContactInfo.PreferredCommunication = eachInsuranceMaster.ContactInfo.PreferredCommunication;
                     boInsuranceMaster.ContactInfo = boContactInfo;
                 }
 
@@ -139,7 +142,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boContactInfo.PreferredCommunication = insuranceMaster.ContactInfo.PreferredCommunication;
                 boContactInfo.CreateByUserID = insuranceMaster.ContactInfo.CreateByUserID;
                 boContactInfo.ID = insuranceMaster.ContactInfo.id;
-                boContactInfo.IsDeleted = insuranceMaster.ContactInfo.IsDeleted;
+                boContactInfo.IsDeleted = insuranceMaster.ContactInfo.IsDeleted;               
                 boInsuranceMaster.ContactInfo = boContactInfo;
             }
 

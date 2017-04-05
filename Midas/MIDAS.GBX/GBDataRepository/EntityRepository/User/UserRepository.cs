@@ -111,6 +111,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boContactInfo.FaxNo = user.ContactInfo.FaxNo;
                 boContactInfo.CreateByUserID = user.ContactInfo.CreateByUserID;
                 boContactInfo.ID = user.ContactInfo.id;
+                boContactInfo.OfficeExtension = user.ContactInfo.OfficeExtension;
+                boContactInfo.AlternateEmail = user.ContactInfo.AlternateEmail;
+                boContactInfo.PreferredCommunication = user.ContactInfo.PreferredCommunication;
+
+
                 boUser.ContactInfo = boContactInfo;
             }
 
@@ -217,6 +222,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 contactinfoDB.WorkPhone = contactinfoBO.WorkPhone;
                 contactinfoDB.FaxNo = contactinfoBO.FaxNo;
                 contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
+                contactinfoDB.OfficeExtension = contactinfoBO.OfficeExtension;
+                contactinfoDB.AlternateEmail = contactinfoBO.AlternateEmail;
+                contactinfoDB.PreferredCommunication = contactinfoBO.PreferredCommunication;
             }
             #endregion
 
@@ -335,6 +343,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         usr.ContactInfo.WorkPhone = contactinfoBO.WorkPhone;
                         usr.ContactInfo.FaxNo = contactinfoBO.FaxNo;
                         if (userBO.UpdateByUserID.HasValue) usr.ContactInfo.UpdateByUserID = userBO.UpdateByUserID.Value;
+                        usr.ContactInfo.OfficeExtension = contactinfoBO.OfficeExtension;
+                        usr.ContactInfo.AlternateEmail = contactinfoBO.AlternateEmail;
+                        usr.ContactInfo.PreferredCommunication = contactinfoBO.PreferredCommunication;
+
                     }
                     #endregion
                 }

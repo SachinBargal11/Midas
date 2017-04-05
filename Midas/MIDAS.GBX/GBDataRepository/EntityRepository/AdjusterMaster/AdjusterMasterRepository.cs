@@ -68,6 +68,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 boContactInfo.FaxNo = adjusterMasterDB.ContactInfo.FaxNo;
                 boContactInfo.CreateByUserID = adjusterMasterDB.ContactInfo.CreateByUserID;
                 boContactInfo.ID = adjusterMasterDB.ContactInfo.id;
+                boContactInfo.OfficeExtension = adjusterMasterDB.ContactInfo.OfficeExtension;
+                boContactInfo.AlternateEmail = adjusterMasterDB.ContactInfo.AlternateEmail;
+                boContactInfo.PreferredCommunication = adjusterMasterDB.ContactInfo.PreferredCommunication;
+
                 adjusterMasterBO.ContactInfo = boContactInfo;
             }
                      
@@ -284,6 +288,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     contactinfoDB.WorkPhone = IsEditMode == true && contactinfoBO.WorkPhone == null ? contactinfoDB.WorkPhone : contactinfoBO.WorkPhone;
                     contactinfoDB.FaxNo = IsEditMode == true && contactinfoBO.FaxNo == null ? contactinfoDB.FaxNo : contactinfoBO.FaxNo;
                     contactinfoDB.IsDeleted = contactinfoBO.IsDeleted;
+                    contactinfoDB.OfficeExtension = IsEditMode == true && contactinfoBO.OfficeExtension == null ? contactinfoDB.OfficeExtension : contactinfoBO.OfficeExtension;
+                    contactinfoDB.AlternateEmail = IsEditMode == true && contactinfoBO.AlternateEmail == null ? contactinfoDB.AlternateEmail : contactinfoBO.AlternateEmail;
+                    contactinfoDB.PreferredCommunication = IsEditMode == true && contactinfoBO.PreferredCommunication == null ? contactinfoDB.PreferredCommunication : contactinfoBO.PreferredCommunication;
 
                     if (Add_contactinfoDB == true)
                     {
