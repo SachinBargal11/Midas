@@ -46,6 +46,7 @@ export class EditInsuranceComponent implements OnInit {
     patientId;
     isPolicyCitiesLoading = false;
     isInsuranceCitiesLoading = false;
+    uploadedFiles: any[] = [];
 
     insuranceform: FormGroup;
     insuranceformControls;
@@ -132,7 +133,10 @@ export class EditInsuranceComponent implements OnInit {
             cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
             homePhone: [''],
             workPhone: [''],
-            faxNo: ['']
+            faxNo: [''],
+            alternateEmail:  ['', [AppValidators.emailValidator]],
+            officeExtension: [''],
+            preferredcommunication: ['']
         });
 
         this.insuranceformControls = this.insuranceform.controls;
@@ -156,6 +160,12 @@ export class EditInsuranceComponent implements OnInit {
             this.insuranceMastersAdress = null
         }
         
+    }
+    onUpload(event) {
+          
+        for(let file of event.files) {
+            this.uploadedFiles.push(file);
+        }
     }
 
     loadInsuranceMasterAddress(currentInsurance) {
@@ -254,7 +264,11 @@ export class EditInsuranceComponent implements OnInit {
                 emailAddress: insuranceformValues.policyEmail,
                 faxNo: insuranceformValues.policyFaxNo ? insuranceformValues.policyFaxNo.replace(/\-|\s/g, '') : null,
                 homePhone: insuranceformValues.policyHomePhone,
-                workPhone: insuranceformValues.policyWorkPhone
+                workPhone: insuranceformValues.policyWorkPhone,
+                //officeExtension: insuranceformValues.officeExtension,
+                //alternateEmail: insuranceformValues.alternateEmail,
+                //preferredcommunication: insuranceformValues.preferredcommunication,
+
             }),
             policyAddress: new Address({
                 address1: insuranceformValues.policyAddress,
@@ -269,7 +283,10 @@ export class EditInsuranceComponent implements OnInit {
                 emailAddress: insuranceformValues.policyEmail,
                 faxNo: insuranceformValues.policyFaxNo ? insuranceformValues.policyFaxNo.replace(/\-|\s/g, '') : null,
                 homePhone: insuranceformValues.policyHomePhone,
-                workPhone: insuranceformValues.policyWorkPhone
+                workPhone: insuranceformValues.policyWorkPhone,
+                //officeExtension: insuranceformValues.officeExtension,
+                //alternateEmail: insuranceformValues.alternateEmail,
+                //preferredcommunication: insuranceformValues.preferredcommunication,
             }),
             insuranceAddress: new Address({
                 // address1: insuranceformValues.address,

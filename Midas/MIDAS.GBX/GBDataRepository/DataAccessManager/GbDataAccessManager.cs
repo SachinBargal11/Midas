@@ -82,6 +82,27 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
+        public string Download(int caseId, int documentid)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+
+                string path = baseRepo.Download(caseId, documentid);
+
+                return path;
+            }
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity))
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         public object DeleteFile(int caseId, int id)
         {
             try
@@ -1379,12 +1400,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetByRoomInAllApp(int roomId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object GetByRoomInAllApp(int roomTestId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetByRoomInAllApp(roomId);
+                var gbdata = baseRepo.GetByRoomInAllApp(roomTestId);
 
                 return gbdata;
             }

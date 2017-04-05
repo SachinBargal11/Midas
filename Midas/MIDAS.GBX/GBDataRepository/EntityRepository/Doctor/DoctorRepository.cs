@@ -82,6 +82,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 doctorBO.user.UserCompanies = lstUserCompany;
 
+                List<BO.DoctorLocationSchedule> lstDoctorLocationSchedule = new List<BO.DoctorLocationSchedule>();
+                foreach (var item in doctor.DoctorLocationSchedules)
+                {
+                    using (DoctorLocationScheduleRepository sr = new DoctorLocationScheduleRepository(_context))
+                    {
+                        lstDoctorLocationSchedule.Add(sr.Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(item));
+                    }
+
+
+                }
+                doctorBO.DoctorLocationSchedules = lstDoctorLocationSchedule;
+
+
+
 
             }
 
@@ -430,9 +444,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object GetBySpecialityInAllApp(int specialtyId)
         {
 
-            var acc_ = _context.Doctors.Include("User").Include("DoctorSpecialities.Specialty").Where(p => p.DoctorSpecialities.Where(p2 => p2.IsDeleted == false).Any(p3 => p3.SpecialityID == specialtyId)
-                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                 .ToList();
+            var acc_ = _context.Doctors.Include("User").Include("DoctorSpecialities.Specialty").Include("User.UserCompanies.Company").Include("DoctorLocationSchedules.Location").Where(p => p.DoctorSpecialities.Where(p2 => p2.IsDeleted == false).Any(p3 => p3.SpecialityID == specialtyId)
+                                              && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                              .ToList();
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Specialty.", errorObject = "", ErrorLevel = ErrorLevel.Error };

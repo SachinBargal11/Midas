@@ -19,6 +19,19 @@ namespace MIDAS.GBX.WebAPI
             dataAccessManager = new GbDataAccessManager<T>();
         }
 
+        public string Download(HttpRequestMessage request, int caseId, int documentid)
+        {
+            string path = dataAccessManager.Download(caseId, documentid);
+            if (caseId > 0)
+            {
+                return path;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
         public HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject)
         {
             var objResult = dataAccessManager.Save(gbObject);
@@ -489,7 +502,8 @@ namespace MIDAS.GBX.WebAPI
 
             try
             {
-                var res = (GbObject)(object)objResult;
+                //var res = (GbObject)(object)objResult;
+                var res = (object)objResult;
                 if (res != null)
                     return request.CreateResponse(HttpStatusCode.Created, res);
                 else
@@ -501,13 +515,14 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage GetByRoomInAllApp(HttpRequestMessage request, int roomId)
+        public HttpResponseMessage GetByRoomInAllApp(HttpRequestMessage request, int roomTestId)
         {
-            var objResult = dataAccessManager.GetByRoomInAllApp(roomId);
+            var objResult = dataAccessManager.GetByRoomInAllApp(roomTestId);
 
             try
             {
-                var res = (GbObject)(object)objResult;
+                // var res = (GbObject)(object)objResult;
+                var res = (object)objResult;
                 if (res != null)
                     return request.CreateResponse(HttpStatusCode.Created, res);
                 else

@@ -58,6 +58,23 @@ export class RoomsService {
         });
         return <Observable<Room[]>>Observable.fromPromise(promise);
     }
+    getRoomsByTestInAllApp(testId: number): Observable<Room[]> {
+        let promise: Promise<Room[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/room/getByRoomInAllApp/' + testId).map(res => res.json())
+                .subscribe((roomsData: any) => {
+                    let rooms: any[] = [];
+                    if (_.isArray(roomsData)) {
+                        rooms = (<Object[]>roomsData).map((roomsData: any) => {
+                            return RoomsAdapter.parseResponse(roomsData);
+                        });
+                    }
+                    resolve(rooms);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Room[]>>Observable.fromPromise(promise);
+    }
     getTests(): Observable<Tests[]> {
         let promise: Promise<Tests[]> = new Promise((resolve, reject) => {
             return this._http.post(this._url + '/RoomTest/GetAll', JSON.stringify({}), {

@@ -17,6 +17,7 @@ import { AddConsent } from '../models/add-consent-form';
 import { ElementRef, Input, ViewChild } from '@angular/core';
 import { Http } from '@angular/http';
 import * as _ from 'underscore';
+import { ScannerService } from '../../../commons/services/scanner-service';
 
 @Component({
     selector: 'edit-consent-form',
@@ -50,7 +51,11 @@ export class EditConsentFormComponent implements OnInit {
     companyId: number;  
     document: AddConsent[] = [];
     doctorApprovalId: number;
-
+  documentMode: string = '2';
+    scannerContainerId: string = `scanner_${moment().valueOf()}`;
+    twainSources: TwainSource[] = [];
+    selectedTwainSource: TwainSource = null;
+    _dwObject: any = null;
 
     constructor(
         private fb: FormBuilder,
@@ -63,6 +68,8 @@ export class EditConsentFormComponent implements OnInit {
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private http: Http,
+         private _scannerService: ScannerService,
+
 
     ) {
 
@@ -117,7 +124,37 @@ export class EditConsentFormComponent implements OnInit {
             .subscribe(doctor => this.doctors = doctor);
         // this.downloadDocument();
     }
+ngAfterViewInit() {
+        _.defer(() => {
+            this._scannerService.getWebTwain(this.scannerContainerId)
+                .then((dwObject) => {
+                    this._dwObject = dwObject;
+                    if (this._dwObject) {
+                        for (let i = 0; i < this._dwObject.SourceCount; i++) {
+                            this.twainSources.push({ idx: i, name: this._dwObject.GetSourceNameItems(i) });
+                        }
 
+                    }
+                }).catch(() => {
+                    // (<any>window).OnWebTwainNotFoundOnWindowsCallback();
+                    this._notificationsService.alert('', 'Not able to connect scanner. Please refresh the page again and download the software prompted.');
+                });
+        });
+
+    }
+
+    AcquireImage() {
+        if (this._dwObject) {
+            this._dwObject.IfDisableSourceAfterAcquire = true;
+            if (this.selectedTwainSource) {
+                this._dwObject.SelectSourceByIndex(this.selectedTwainSource.idx);
+            } else {
+                this._dwObject.SelectSource();
+            }
+            this._dwObject.OpenSource();
+            this._dwObject.AcquireImage();
+        }
+    }
     selectDoctor(event) {
         this.selectedDoctor = 0;
         let currentDoctor = event.target.value;
@@ -198,4 +235,8 @@ export class EditConsentFormComponent implements OnInit {
             });
     }
 
+}
+export interface TwainSource {
+    idx: number;
+    name: string;
 }

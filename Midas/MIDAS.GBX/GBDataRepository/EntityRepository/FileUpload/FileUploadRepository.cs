@@ -67,7 +67,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
             string CASE= "/CASE_";
             string VISIT = "/VISIT_";
 
-            if (type == "case")
+            if (type == "case" || type == "consent")
             {                
                 storagePath.Append(remotePath)
                            .Append(COMPANY)
@@ -92,45 +92,66 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
         }
         #endregion
 
+
+        public override string Download(int caseid, int documentid)
+        {
+            var acc = _context.MidasDocuments.Where(p => p.ObjectType.ToUpper()=="CONSENT" && p.ObjectId == caseid
+                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                 .FirstOrDefault<MidasDocument>();
+
+            return acc.DocumentPath + "/" + acc.DocumentName;
+        }
+
         #region Delete By ID
         public override object DeleteFile(int caseId, int id)
         {
             BO.Document docInfo = new BO.Document();
-            var casedocument = _context.CaseDocuments.Where(p => p.CaseId == caseId && p.MidasDocumentId == id
-                                                      && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                      .FirstOrDefault<CaseDocument>();
+            try
+            {
+                var casedocument = _context.CaseDocuments.Where(p => p.CaseId == caseId && p.MidasDocumentId == id
+                                                          && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                          .FirstOrDefault<CaseDocument>();
 
-            var acc = _context.MidasDocuments.Where(p => p.Id == id
-                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                             .FirstOrDefault<MidasDocument>();
-            if (casedocument != null)
-            {
-                casedocument.IsDeleted = true;
-                _context.SaveChanges();
-            }
-            else if (acc == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
+                var acc = _context.MidasDocuments.Where(p => p.Id == id
+                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                 .FirstOrDefault<MidasDocument>();
+                string newFile = string.Concat(Path.GetFileNameWithoutExtension(acc.DocumentName), DateTime.Now.ToString("yyyyMMddHHmm"), Path.GetExtension(acc.DocumentName));
+                string oldfile = acc.DocumentName;
 
-            if (acc != null)
-            {
-                acc.IsDeleted = true;
-                _context.SaveChanges();
-            }
-            else if (acc == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
-            
-            docInfo.id= id;
-            docInfo.DocumentId = acc.Id;
-            docInfo.DocumentName = acc.DocumentName;
-            docInfo.DocumentPath = acc.DocumentPath;
-            docInfo.IsDeleted = acc.IsDeleted;
+                if (casedocument != null)
+                {
+                    casedocument.IsDeleted = true;
+                    casedocument.DocumentName = newFile;
+                    _context.SaveChanges();
+                }
+                else if (casedocument == null)
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
 
+                if (acc != null)
+                {
+                    acc.IsDeleted = true;
+                    acc.DocumentName = newFile;
+                    _context.SaveChanges();
+                }
+                else if (acc == null)
+                {
+                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+
+                File.Copy(acc.DocumentPath + "/" + oldfile, acc.DocumentPath + "/" + newFile);
+                File.Delete(acc.DocumentPath + "/" + oldfile);
+
+                docInfo.id = caseId;
+                docInfo.DocumentId = acc.Id;
+                docInfo.DocumentName = newFile;
+                docInfo.DocumentPath = acc.DocumentPath;
+                docInfo.IsDeleted = acc.IsDeleted;
+            }
+            catch (Exception err)
+            { return new BO.ErrorObject { ErrorMessage = "System error.", errorObject = err.Message.ToString(), ErrorLevel = ErrorLevel.Error }; }
             return (object)docInfo;
-
         }
         #endregion
 

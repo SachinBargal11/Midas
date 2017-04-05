@@ -168,7 +168,10 @@ export class UserBasicComponent implements OnInit {
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
                 homePhone: [''],
                 workPhone: [''],
-                faxNo: ['']
+                faxNo: [''],
+                alternateEmail:  ['', [AppValidators.emailValidator]],
+                officeExtension: [''],
+                preferredcommunication: [''],
             }),
             address: this.fb.group({
                 address1: [''],
@@ -251,6 +254,10 @@ export class UserBasicComponent implements OnInit {
                     faxNo: userFormValues.contact.faxNo ? userFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
                     homePhone: userFormValues.contact.homePhone,
                     workPhone: userFormValues.contact.workPhone,
+                    //officeExtension: userFormValues.officeExtension,
+                    //alternateEmail: userFormValues.alternateEmail,
+                    //preferredcommunication: userFormValues.preferredcommunication,
+
                 }),
                 address: new Address({
                     id: this.user.address.id,

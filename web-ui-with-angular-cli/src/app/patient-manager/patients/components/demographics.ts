@@ -89,13 +89,18 @@ export class DemographicsComponent implements OnInit {
                 ssn: ['', Validators.required],
                 weight: [''],
                 height: [''],
-                dateOfFirstTreatment: ['']
+                dateOfFirstTreatment: [''],
+                races: ['', Validators.required],
+                ethnicities: ['', Validators.required],
             }),
             contact: this.fb.group({
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
                 homePhone: [''],
                 workPhone: [''],
-                faxNo: ['']
+                faxNo: [''],
+                alternateEmail:  ['', AppValidators.emailValidator],
+                officeExtension: [''],
+                preferredcommunication: ['']
             }),
             address: this.fb.group({
                 address1: [''],
@@ -125,6 +130,8 @@ export class DemographicsComponent implements OnInit {
             weight: parseInt(demographicsFormValues.userInfo.weight, 10),
             height: parseInt(demographicsFormValues.userInfo.height, 10),
             dateOfFirstTreatment: demographicsFormValues.userInfo.dateOfFirstTreatment ? moment(demographicsFormValues.userInfo.dateOfFirstTreatment) : null,
+            //raceId: demographicsFormValues.userInfo.races,
+            //ethnicitiesId: demographicsFormValues.userInfo.ethnicities,
             updateByUserId: this._sessionStore.session.account.user.id,
             user: new User(_.extend(existingPatientJS.user, {
                 updateByUserId: this._sessionStore.session.account.user.id,
@@ -133,6 +140,9 @@ export class DemographicsComponent implements OnInit {
                     faxNo: demographicsFormValues.contact.faxNo ? demographicsFormValues.contact.faxNo.replace(/\-|\s/g, '') : '',
                     homePhone: demographicsFormValues.contact.homePhone,
                     workPhone: demographicsFormValues.contact.workPhone,
+                    //officeExtension: demographicsFormValues.contact.officeExtension,
+                    //alternateEmail: demographicsFormValues.contact.alternateEmail,
+                    //preferredcommunication: demographicsFormValues.contact.preferredcommunication,
                     updateByUserId: this._sessionStore.session.account.user.id
                 })),
                 address: new Address(_.extend(existingPatientJS.user.address, {

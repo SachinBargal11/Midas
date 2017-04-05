@@ -2,7 +2,7 @@ import { Record } from 'immutable';
 import * as moment from 'moment';
 import { Case } from '../models/case';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
-import { Location } from '../../../medical-provider/users/models/location';
+import { LocationDetails } from '../../../medical-provider/users/models//location-details';
 import { Company } from '../../../account/models/company';
 
 const ReferralRecord = Record({
@@ -50,10 +50,10 @@ export class Referral extends ReferralRecord {
     referralAccepted: number;
     case: Case;
     referringDoctor: Doctor;
-    referringLocation: Location;
+    referringLocation: LocationDetails;
     referringCompany: Company;
     referredToDoctor: Doctor;
-    referredToLocation: Location;
+    referredToLocation: LocationDetails;
     referredToCompany: Company;
     isDeleted: boolean;
     createByUserID: number;

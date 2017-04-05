@@ -75,7 +75,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             {
                                 foreach (PatientInsuranceInfo eachPatientInsuranceInfo in patientVisit2.Patient2.PatientInsuranceInfoes)
                                 {
-                                    PatientInsuranceInfoBOList.Add(patientInsuranceInfoRepo.Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(eachPatientInsuranceInfo));
+                                    if (eachPatientInsuranceInfo.IsDeleted.HasValue == false || (eachPatientInsuranceInfo.IsDeleted.HasValue == true && eachPatientInsuranceInfo.IsDeleted.Value == false))
+                                    {
+                                        PatientInsuranceInfoBOList.Add(patientInsuranceInfoRepo.Convert<BO.PatientInsuranceInfo, PatientInsuranceInfo>(eachPatientInsuranceInfo));
+                                    }                                    
                                 }
 
                                 patientVisit2BO.Patient2.PatientInsuranceInfoes = PatientInsuranceInfoBOList;
@@ -99,7 +102,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             {
                                 foreach (PatientAccidentInfo eachPatientInsuranceInfo in patientVisit2.Case.PatientAccidentInfoes)
                                 {
-                                    PatientAccidentInfoBOList.Add(patientAccidentInfoRepo.Convert<BO.PatientAccidentInfo, PatientAccidentInfo>(eachPatientInsuranceInfo));
+                                    if (eachPatientInsuranceInfo.IsDeleted.HasValue == false || (eachPatientInsuranceInfo.IsDeleted.HasValue == true && eachPatientInsuranceInfo.IsDeleted.Value == false))
+                                    {
+                                        PatientAccidentInfoBOList.Add(patientAccidentInfoRepo.Convert<BO.PatientAccidentInfo, PatientAccidentInfo>(eachPatientInsuranceInfo));
+                                    }
                                 }
 
                                 patientVisit2BO.Case.PatientAccidentInfoes = PatientAccidentInfoBOList;
@@ -579,6 +585,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                         .Where(p => p.DoctorId == DoctorId 
                                                                                  && p.EventStart >= FromDate && p.EventStart < ToDate
                                                                                 && (p.Patient2.IsDeleted.HasValue == false || (p.Patient2.IsDeleted.HasValue == true && p.Patient2.IsDeleted.Value == false))
+                                                                                && (p.Case.IsDeleted.HasValue == false || (p.Case.IsDeleted.HasValue == true && p.Case.IsDeleted.Value == false))
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))               
                                                                         .ToList<PatientVisit2>();
           
@@ -598,7 +605,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
         #region Get By Name
         public override object GetByDoctorDatesAndName(int DoctorId, DateTime FromDate, DateTime ToDate, string Name)
-
         {
             List<string> names = Name.Trim().Split(' ').ToList();
             List<string> names2 = new List<string>();
@@ -620,6 +626,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                                 && userId.Contains(p.PatientId)
                                                                                 && p.EventStart >= FromDate && p.EventStart < ToDate
                                                                                 && (p.Patient2.IsDeleted.HasValue == false || (p.Patient2.IsDeleted.HasValue == true && p.Patient2.IsDeleted.Value == false))
+                                                                                && (p.Case.IsDeleted.HasValue == false || (p.Case.IsDeleted.HasValue == true && p.Case.IsDeleted.Value == false))
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))             
                                                                                 .ToList<PatientVisit2>();
                     

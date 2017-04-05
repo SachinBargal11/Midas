@@ -63,6 +63,7 @@ import { CaseDocumentsUploadComponent } from './cases/components/case-documents'
 import { CompanyCasesComponent } from './cases/components/company-cases-list';
 
 import { ReferralListComponent } from './cases/components/referral-list';
+import { AddReferralComponent } from './cases/components/add-referral';
 
 import { ReferralService } from './cases/services/referral-service';
 import { ReferralStore } from './cases/stores/referral-store';
@@ -90,6 +91,9 @@ import { AddConsentFormService } from './cases/services/consent-form-service';
 import { ListConsentStore } from './cases/stores/list-consent-form-store';
 import { ListConsentFormService } from './cases/services/list-consent-form-service';
 import { EditConsentFormComponent } from './cases/components/edit-consent-form';
+
+import { AttorneyMasterService } from '../account-setup/services/attorney-service';
+import { AttorneyMasterStore } from '../account-setup/stores/attorney-store';
 
 
 @NgModule({
@@ -146,7 +150,8 @@ import { EditConsentFormComponent } from './cases/components/edit-consent-form';
         AddConsentFormComponent,
         DocumentsUploadComponent,
         EditConsentFormComponent,
-        ReferralListComponent
+        ReferralListComponent,
+        AddReferralComponent
     ],
     providers: [
         PatientsService,
@@ -176,7 +181,9 @@ import { EditConsentFormComponent } from './cases/components/edit-consent-form';
         ListConsentStore,
         ListConsentFormService,
         ReferralService,
-        ReferralStore
+        ReferralStore,
+        AttorneyMasterService,
+        AttorneyMasterStore
     ]
 })
 export class PatientManagerModule { }

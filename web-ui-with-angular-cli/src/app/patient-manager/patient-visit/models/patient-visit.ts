@@ -76,4 +76,22 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     get isOriginalVisit(): boolean {
         return !this.eventStart ? true : false;
     }
+
+    get visitStatusLabel(): string {
+        return PatientVisit.getvisitStatusLabel(this.visitStatusId);
+    }
+
+    static getvisitStatusLabel(visitStatus: VisitStatus): string {
+        switch (visitStatus) {
+            case VisitStatus.SCHEDULED:
+                return 'Scheduled';
+            case VisitStatus.COMPLETE:
+                return 'Complete';
+            case VisitStatus.RESCHEDULE:
+                return 'Rescheduled';
+            case VisitStatus.NOSHOW:
+                return 'Noshow';
+
+      }
+    }
 }

@@ -26,6 +26,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual string Download(int caseId, int documentid)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object Save<T>(T entity)
         {
             throw new NotImplementedException();
@@ -381,7 +386,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object GetByRoomInAllApp(int roomId)
+        public virtual Object GetByRoomInAllApp(int roomTestId)
         {
             throw new NotImplementedException();
         }

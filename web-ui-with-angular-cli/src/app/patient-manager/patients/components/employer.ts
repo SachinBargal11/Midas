@@ -114,10 +114,13 @@ export class PatientEmployerComponent implements OnInit {
             zipcode: [''],
             country: [''],
             email: ['', [Validators.required, AppValidators.emailValidator]],
-            cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            cellPhone: ['', [Validators.required,AppValidators.mobileNoValidator]],
             homePhone: [''],
             workPhone: [''],
-            faxNo: ['']
+            faxNo: [''],
+            alternateEmail:  ['', [AppValidators.emailValidator]],
+            officeExtension: [''],
+            preferredcommunication: ['']
         });
 
         this.employerformControls = this.employerform.controls;
@@ -144,7 +147,10 @@ export class PatientEmployerComponent implements OnInit {
                 emailAddress: employerformValues.email,
                 faxNo: employerformValues.faxNo ? employerformValues.faxNo.replace(/\-|\s/g, '') : '',
                 homePhone: employerformValues.homePhone,
-                workPhone: employerformValues.workPhone
+                workPhone: employerformValues.workPhone,
+                //officeExtension: employerformValues.officeExtension,
+                //alternateEmail: employerformValues.alternateEmail,
+                //preferredcommunication: employerformValues.preferredcommunication,
 
             }),
             address: new Address({

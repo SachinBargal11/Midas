@@ -2,7 +2,7 @@ import { CaseAdapter } from './case-adapter';
 import * as moment from 'moment';
 import { Referral } from '../../models/referral';
 import { DoctorAdapter } from '../../../../medical-provider/users/services/adapters/doctor-adapter';
-import { LocationAdapter } from '../../../../medical-provider/locations/services/adapters/location-adapter';
+import { LocationDetailAdapter } from '../../../../medical-provider/locations/services/adapters/location-detail-adapter';
 import { CompanyAdapter } from '../../../../account/services/adapters/company-adapter';
 
 export class ReferralAdapter {
@@ -26,10 +26,10 @@ export class ReferralAdapter {
                 referralAccepted: data.referralAccepted,
                 case: CaseAdapter.parseResponse(data.case),
                 referringDoctor: DoctorAdapter.parseResponse(data.referringDoctor),
-                referringLocation: LocationAdapter.parseResponse(data.referringLocation),
+                referringLocation: LocationDetailAdapter.parseResponse(data.referringLocation),
                 referringCompany: CompanyAdapter.parseResponse(data.referringCompany),
                 referredToDoctor: DoctorAdapter.parseResponse(data.referredToDoctor),
-                referredToLocation: LocationAdapter.parseResponse(data.referredToLocation),
+                referredToLocation: LocationDetailAdapter.parseResponse(data.referredToLocation),
                 referredToCompany: CompanyAdapter.parseResponse(data.referredToCompany),
                 isDeleted: data.isDeleted ? true : false,
                 createByUserID: data.createbyuserID,

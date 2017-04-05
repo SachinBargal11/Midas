@@ -112,7 +112,42 @@
                         <input formControlName="policyWorkPhone" type="text" class="form-control" placeholder="" />
                     </div>
                 </div>
+                 <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Office Extension</label>
+                        <input formControlName="officeExtension" type="text" class="form-control" placeholder="" />
+                    </div>
+                </div>
             </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Alternate E-Mail </label>
+                         <div class="form-group" [class.error]="insuranceformControls.alternateEmail.touched && !insuranceformControls.alternateEmail.valid">
+                        <input formControlName="alternateEmail" [class.error]="!insuranceformControls.alternateEmail.valid" class="form-control" type="text" placeholder="" />
+                        <div class='error-list' *ngIf="insuranceformControls.alternateEmail.touched && !insuranceformControls.alternateEmail.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.alternateEmail.hasError('emailValidator')">Email is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                 <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Preferred Communication
+                                        </label>
+                        <select formControlName="preferredcommunication" type="text" class="form-control" placeholder="">
+                                        <option value="">-Select -</option>
+                                        <option disabled>────────────────────</option>
+                                        <option value="US">Cellphone</option>
+                                        <option value="US">Email</option>
+                                        <option value="US">Work Phone</option>
+                                        <option value="US">Post</option>
+                        </select>
+                    </div>
+                </div>
+             </div>
         </div>
     </section>
     <section class="card">
@@ -283,9 +318,34 @@
                         </div>
                     </div>
                 </div>
-
-            </div>
-            <div class="row">
+            </div>            
+            <div class="row">  
+                 <div class="col-lg-4">
+                    <label class="form-label">Insurance Photo
+                                <!--<span class="color-red">*</span>-->
+                            </label>
+                <p-fileUpload name="demo[]" url="http://localhost:3000/upload" (onUpload)="onUpload($event)" 
+                    multiple="multiple" accept="image/*" maxFileSize="1000000">
+                        <ng-template pTemplate type="content">
+                            <ul *ngIf="uploadedFiles.length">
+                                <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                            </ul>
+                        </ng-template>        
+                </p-fileUpload>
+                 </div>  
+                 <!--<div class="col-lg-4">
+                    <label class="form-label">Insurance Photo Back
+                                <span class="color-red">*</span>
+                            </label>
+                <p-fileUpload name="demo[]" url="http://localhost:3000/upload" (onUpload)="onUpload($event)" 
+                    multiple="multiple" accept="image/*" maxFileSize="1000000">
+                        <ng-template pTemplate type="content">
+                            <ul *ngIf="uploadedFiles.length">
+                                <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                            </ul>
+                        </ng-template>        
+                </p-fileUpload>
+                 </div>-->
                 <!--<div class="col-lg-4">
                     <label class="form-label">Contact Person
                                 <span class="color-red">*</span>
@@ -374,6 +434,41 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+               <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Office Extension</label>
+                        <input formControlName="officeExtension" type="text" class="form-control" placeholder="" />
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Alternate E-Mail </label>
+                         <div class="form-group" [class.error]="insuranceformControls.alternateEmail.touched && !insuranceformControls.alternateEmail.valid">
+                        <input formControlName="alternateEmail" [class.error]="!insuranceformControls.alternateEmail.valid" class="form-control" type="text" placeholder="" />
+                         <div class='error-list' *ngIf="insuranceformControls.alternateEmail.touched && !insuranceformControls.alternateEmail.valid">
+                            <ul>
+                                <li *ngIf="insuranceformControls.alternateEmail.hasError('emailValidator')">Email is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                 <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Preferred Communication
+                                        </label>
+                        <select formControlName="preferredcommunication" type="text" class="form-control" placeholder="">
+                                        <option value="">-Select -</option>
+                                        <option disabled>────────────────────</option>
+                                        <option value="US">Cellphone</option>
+                                        <option value="US">Email</option>
+                                        <option value="US">Work Phone</option>
+                                        <option value="US">Post</option>
+                        </select>
+                    </div>
+                </div>
+             </div>
         </div>
     </section>
     <section class="card" *ngIf="insuranceMastersAdress">

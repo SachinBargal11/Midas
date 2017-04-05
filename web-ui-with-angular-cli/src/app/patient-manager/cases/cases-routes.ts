@@ -22,6 +22,7 @@ import { ConsentListComponent } from './components/list-consent-form';
 import { AddConsentFormComponent } from './components/add-consent-form';
 import { EditConsentFormComponent } from './components/edit-consent-form';
 import { ReferralListComponent } from './components/referral-list';
+import { AddReferralComponent } from './components/add-referral';
 export const CasesShellRoutes: Routes = [
     {
         path: '',
@@ -151,11 +152,11 @@ export const CasesShellRoutes: Routes = [
                                 children: [
                                     {
                                         path: '',
-                                        redirectTo: 'visitNotes',
+                                        redirectTo: 'visit-note',
                                         pathMatch: 'full'
                                     },
                                     {
-                                        path: 'visitNotes',
+                                        path: 'visit-note',
                                         component: PatientVisitNotesComponent,
                                         canActivate: [ValidateActiveSession],
                                         data: {
@@ -163,7 +164,7 @@ export const CasesShellRoutes: Routes = [
                                         }
                                     },
                                     {
-                                        path: 'visitDocument',
+                                        path: 'visit-document',
                                         component: VisitDocumentsUploadComponent,
                                         canActivate: [ValidateActiveSession],
                                         data: {
@@ -255,31 +256,32 @@ export const CasesShellRoutes: Routes = [
                                 data: {
                                     breadcrumb: 'Edit Consent form'
                                 }
-                            },
+                            }
+                        ]
+                    },
+                    {
+                        path: 'referrals',
+                        component: ShellComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Referrals'
+                        },
+                        children: [
                             {
-                                path: 'referrals',
-                                component: ShellComponent,
+                                path: '',
+                                component: ReferralListComponent,
                                 canActivate: [ValidateActiveSession],
                                 data: {
-                                    breadcrumb: 'Referrals'
-                                },
-                                children: [
-                                    {
-                                        path: '',
-                                        component: ReferralListComponent,
-                                        data: {
-                                            breadcrumb: 'root'
-                                        }
-                                    },
-                                    // {
-                                    //     path: 'add',
-                                    //     component: AddReferralComponent,
-                                    //     canActivate: [ValidateActiveSession],
-                                    //     data: {
-                                    //         breadcrumb: 'Add Referral'
-                                    //     }
-                                    // }
-                                ]
+                                    breadcrumb: 'root'
+                                }
+                            },
+                            {
+                                path: 'add',
+                                component: AddReferralComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'Add Referral'
+                                }
                             }
                         ]
                     }

@@ -17,6 +17,7 @@ namespace MIDAS.GBX.DataAccessManager
         int Delete(T entity);
         object Delete(int id);
         object DeleteFile(int caseId, int id);
+        string Download(int caseId, int documentid);
         object GetDocumentList(int id);
         Object GetViewStatus(int id, bool status);
         Object Get(int id, string type);
@@ -30,7 +31,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object AddUploadedFileData(int id, string FileUploadPath, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByLocationAndSpecialty(int locationId, int specialtyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetBySpecialityInAllApp(int specialtyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
-        Object GetByRoomInAllApp(int roomId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByRoomInAllApp(int roomTestId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GenerateToken(int userId);
         Object ValidateToken(string tokenId);
         Object Kill(int tokenId);

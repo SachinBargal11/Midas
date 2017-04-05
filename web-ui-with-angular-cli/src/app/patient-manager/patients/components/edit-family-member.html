@@ -171,6 +171,42 @@
                     <input formControlName="workPhone" [ngModel]="familyMember.workPhone" type="text" class="form-control" placeholder="" />
                 </div>
             </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label class="form-label"> Office Extension</label>
+                    <input formControlName="officeExtension" [ngModel]="familyMember.officeExtension" type="text" class="form-control" placeholder="" />
+                </div>
+            </div>
+        </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="form-label"> Alternate E-Mail </label>
+                         <div class="form-group" [class.error]="familyMemberFormControls.alternateEmail.touched && !familyMemberFormControls.alternateEmail.valid">
+                        <input formControlName="alternateEmail" [ngModel]="familyMember.alternateEmail" [class.error]="!familyMemberFormControls.alternateEmail.valid" class="form-control" type="text" placeholder="" />
+                        <div class='error-list' *ngIf="familyMemberFormControls.alternateEmail.touched && !familyMemberFormControls.alternateEmail.valid">
+                            <ul>
+                                <li *ngIf="familyMemberFormControls.alternateEmail.hasError('emailValidator')">Email is invalid.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            <div class="col-lg-4">
+                 <div class="form-group">
+                     <label class="form-label"> Preferred Communication
+                                        </label>
+                        <select formControlName="preferredcommunication" [ngModel]="familyMember.preferredcommunication" type="text" class="form-control" placeholder="">
+                                        <option value="">-Select -</option>
+                                        <option disabled>────────────────────</option>
+                                        <option value="US">Cellphone</option>
+                                        <option value="US">Email</option>
+                                        <option value="US">Work Phone</option>
+                                        <option value="US">Post</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
             <!--<div class="col-lg-4">
                 <div class="form-group">
                     <label class="form-label"> Primary Contact</label>
@@ -178,7 +214,6 @@
                     <p-radioButton formControlName="primaryContact" [ngModel]="familyMember.primaryContact" name="primaryContact" value="0" label="No"></p-radioButton>
                 </div>
             </div>-->
-        </div>
         <button [disabled]="!familyMemberForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Update
         <loader [visible]="isSaveProgress"></loader>
     </button>
