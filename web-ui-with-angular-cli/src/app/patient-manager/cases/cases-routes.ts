@@ -152,11 +152,11 @@ export const CasesShellRoutes: Routes = [
                                 children: [
                                     {
                                         path: '',
-                                        redirectTo: 'visitNotes',
+                                        redirectTo: 'visit-note',
                                         pathMatch: 'full'
                                     },
                                     {
-                                        path: 'visitNotes',
+                                        path: 'visit-note',
                                         component: PatientVisitNotesComponent,
                                         canActivate: [ValidateActiveSession],
                                         data: {
@@ -164,7 +164,7 @@ export const CasesShellRoutes: Routes = [
                                         }
                                     },
                                     {
-                                        path: 'visitDocument',
+                                        path: 'visit-document',
                                         component: VisitDocumentsUploadComponent,
                                         canActivate: [ValidateActiveSession],
                                         data: {
