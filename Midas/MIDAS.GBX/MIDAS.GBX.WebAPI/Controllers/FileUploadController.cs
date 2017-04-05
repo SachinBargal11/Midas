@@ -122,7 +122,12 @@ namespace MIDAS.GBX.WebAPI.Controllers
                 }
             }*/
 
-            return requestHandler.CreateGbDocObject(Request, id, type, streamContent, sourcePath);
+            string contenttype = streamContent.ToList().Select(p => p.Headers.ContentType).FirstOrDefault().MediaType;
+            HttpResponseMessage resMessage = requestHandler.CreateGbDocObject(Request, id, type, streamContent, sourcePath);
+            resMessage.Content.Headers.Add("Access-Control-Allow-Origin", "*");
+            resMessage.Content.Headers.Add("Access-Control-Allow-Methods", "POST,PUT,GET,DELETE");
+            resMessage.Content.Headers.Add("x-requested-with", "XMLHttpRequest");
+            return resMessage;
         }
         /*[HttpPost]
         [Route("upload")]
@@ -164,6 +169,20 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return new HttpResponseMessage();
         }*/
 
+        [HttpGet]
+        [Route("download/{caseId}/{documentid}")]
+        [AllowAnonymous]
+        public void Download(int caseId, int documentid)
+        {
+            //Response           
+            string filepath = requestHandler.Download(Request, caseId, documentid);
+            FileInfo fileInfo = new System.IO.FileInfo(filepath);
+            HttpContext.Current.Response.ContentType = "application/octet-stream";
+            HttpContext.Current.Response.AddHeader("Content-Disposition", String.Format("attachment;filename=\"{0}\"", fileInfo.Name));
+            HttpContext.Current.Response.AddHeader("Content-Length", fileInfo.Length.ToString());
+            HttpContext.Current.Response.WriteFile(filepath);
+            HttpContext.Current.Response.End();
+        }
 
         [HttpGet]
         [Route("Delete/{caseId}/{id}")]

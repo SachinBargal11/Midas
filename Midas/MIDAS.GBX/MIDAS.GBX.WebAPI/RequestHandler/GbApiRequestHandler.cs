@@ -19,6 +19,19 @@ namespace MIDAS.GBX.WebAPI
             dataAccessManager = new GbDataAccessManager<T>();
         }
 
+        public string Download(HttpRequestMessage request, int caseId, int documentid)
+        {
+            string path = dataAccessManager.Download(caseId, documentid);
+            if (caseId > 0)
+            {
+                return path;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
         public HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject)
         {
             var objResult = dataAccessManager.Save(gbObject);

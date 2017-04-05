@@ -17,6 +17,7 @@ namespace MIDAS.GBX.DataAccessManager
         int Delete(T entity);
         object Delete(int id);
         object DeleteFile(int caseId, int id);
+        string Download(int caseId, int documentid);
         object GetDocumentList(int id);
         Object GetViewStatus(int id, bool status);
         Object Get(int id, string type);
