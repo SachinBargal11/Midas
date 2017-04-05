@@ -18,6 +18,8 @@ import { Notification } from '../../../commons/models/notification';
 import { NotificationsService } from 'angular2-notifications';
 import { PatientsStore } from '../../patients/stores/patients-store';
 import { Patient } from '../../patients/models/patient';
+import { Attorney } from '../../../account-setup/models/attorney';
+import { AttorneyMasterStore } from '../../../account-setup/stores/attorney-store';
 
 @Component({
     selector: 'add-case',
@@ -28,6 +30,7 @@ export class AddCaseComponent implements OnInit {
     caseform: FormGroup;
     caseformControls;
     locations: LocationDetails[];
+    attorneys: Attorney[];
     employer: Employer;
     isSaveProgress = false;
     patientId: number;
@@ -50,6 +53,7 @@ export class AddCaseComponent implements OnInit {
         private _employerStore: EmployerStore,
         private _casesStore: CasesStore,
         private _patientStore: PatientsStore,
+        private _attorneyMasterStore: AttorneyMasterStore,
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
@@ -80,8 +84,8 @@ export class AddCaseComponent implements OnInit {
 
         this.caseform = this.fb.group({
             // caseName: [''],
-            patientId: ['',Validators.required],
-            caseTypeId: ['',Validators.required],
+            patientId: ['', Validators.required],
+            caseTypeId: ['', Validators.required],
             carrierCaseNo: [''],
             locationId: ['', Validators.required],
             // patientEmpInfoId: ['', Validators.required],
@@ -97,6 +101,9 @@ export class AddCaseComponent implements OnInit {
     ngOnInit() {
         this._locationsStore.getLocations()
             .subscribe(locations => this.locations = locations);
+
+        this._attorneyMasterStore.getAttorneyMasters()
+            .subscribe(attorneys => this.attorneys = attorneys);
 
 
         // this.loadPatients();

@@ -44,6 +44,17 @@ export class RoomsStore {
         });
         return <Observable<Room[]>>Observable.fromPromise(promise);
     }
+    getRoomsByTestInAllApp(testId: number): Observable<Room[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._roomsService.getRoomsByTestInAllApp(testId).subscribe((rooms: Room[]) => {
+                this._rooms.next(List(rooms));
+                resolve(rooms);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Room[]>>Observable.fromPromise(promise);
+    }
     getTests(): Observable<Tests[]> {
         let promise = new Promise((resolve, reject) => {
             this._roomsService.getTests().subscribe((tests: Tests[]) => {

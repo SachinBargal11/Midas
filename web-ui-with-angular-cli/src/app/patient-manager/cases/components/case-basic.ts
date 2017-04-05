@@ -19,6 +19,8 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import { NotificationsService } from 'angular2-notifications';
+import { Attorney } from '../../../account-setup/models/attorney';
+import { AttorneyMasterStore } from '../../../account-setup/stores/attorney-store';
 
 @Component({
     selector: 'case-basic',
@@ -30,6 +32,7 @@ export class CaseBasicComponent implements OnInit {
     caseform: FormGroup;
     caseformControls;
     locations: LocationDetails[];
+    attorneys: Attorney[];
     employer: Employer;
     patient: Patient;
     isSaveProgress = false;
@@ -48,6 +51,7 @@ export class CaseBasicComponent implements OnInit {
         private _locationsStore: LocationsStore,
         private _employerStore: EmployerStore,
         private _patientStore: PatientsStore,
+        private _attorneyMasterStore: AttorneyMasterStore,
         private _casesStore: CasesStore,
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
@@ -110,6 +114,8 @@ export class CaseBasicComponent implements OnInit {
             .subscribe(locations => this.locations = locations);
         this._employerStore.getCurrentEmployer(this.patientId)
             .subscribe(employer => this.employer = employer);
+        this._attorneyMasterStore.getAttorneyMasters()
+            .subscribe(attorneys => this.attorneys = attorneys);
     }
 
     saveCase() {

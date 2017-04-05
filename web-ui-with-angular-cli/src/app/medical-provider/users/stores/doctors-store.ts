@@ -61,6 +61,17 @@ export class DoctorsStore {
         });
         return <Observable<Doctor[]>>Observable.fromPromise(promise);
     }
+    getDoctorsBySpecialityInAllApp(specialityId: number): Observable<Doctor[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._doctorsService.getDoctorsBySpecialityInAllApp(specialityId).subscribe((doctors: Doctor[]) => {
+                this._doctors.next(List(doctors));
+                resolve(doctors);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Doctor[]>>Observable.fromPromise(promise);
+    }
 
     findDoctorById(id: number) {
         let doctors = this._doctors.getValue();

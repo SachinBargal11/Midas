@@ -1,3 +1,4 @@
+import { Speciality } from '../../../account-setup/models/speciality';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/primeng';
@@ -6,6 +7,7 @@ import { Referral } from '../models/referral';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
+import * as _ from 'underscore';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
@@ -61,6 +63,17 @@ export class ReferralListComponent implements OnInit {
                 this.referrals = this.datasource.slice(event.first, (event.first + event.rows));
             }
         }, 250);
+    }
+    getCurrentDoctorSpeciality(currentReferral): string {
+        let specialityString: string = null;
+        let speciality: any = [];
+        _.forEach(currentReferral.referredToDoctor.doctorSpecialities, (currentDoctorSpeciality: any) => {
+            speciality.push(currentDoctorSpeciality.specialty.specialityCode);
+        });
+        if (speciality.length > 0) {
+            specialityString = speciality.join(', ');
+        }
+        return specialityString;
     }
 
     deleteReferral() {
