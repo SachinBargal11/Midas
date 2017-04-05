@@ -354,7 +354,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         eachcaseCompanyMapping.CaseId = caseDB.Id;
                         using (CaseCompanyMappingRepository caseCompanyMapRepo = new CaseCompanyMappingRepository(_context))
                         {
-                            caseCompanyMapRepo.Save(eachcaseCompanyMapping);
+                            var result = caseCompanyMapRepo.Save(eachcaseCompanyMapping);
+                            if (result is BO.ErrorObject)
+                            {
+                                return result;
+                            }
                         }
                     }
                 }
