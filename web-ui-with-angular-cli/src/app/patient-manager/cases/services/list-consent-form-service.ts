@@ -47,8 +47,7 @@ export class ListConsentFormService {
     }
 
 
-     deleteConsentform(caseDetail: ListConsent): Observable<ListConsent> {
-         debugger;
+     deleteConsentform(caseDetail: ListConsent): Observable<ListConsent> {       
         let promise = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/DoctorCaseConsentApproval/delete/' + caseDetail.id, {
                 headers: this._headers
