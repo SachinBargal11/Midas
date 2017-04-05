@@ -374,10 +374,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region GetByRoom
         public override object GetByRoomInAllApp(int roomTestId)
         {
-
-            var acc_ = _context.Rooms.Include("RoomTest").Include("Location").Where(p => p.RoomTest.id == roomTestId
-                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                .ToList();
+           
+            var acc_ = _context.Rooms.Include("RoomTest").Include("Location").Include("Location.Company").Where(p => p.RoomTest.id == roomTestId
+                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .ToList();
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this room Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
