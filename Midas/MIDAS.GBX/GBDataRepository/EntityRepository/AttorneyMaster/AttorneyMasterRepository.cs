@@ -201,6 +201,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     contactinfoDB.WorkPhone = IsEditMode == true && contactinfoUserBO.WorkPhone == null ? contactinfoDB.WorkPhone : contactinfoUserBO.WorkPhone;
                     contactinfoDB.FaxNo = IsEditMode == true && contactinfoUserBO.FaxNo == null ? contactinfoDB.FaxNo : contactinfoUserBO.FaxNo;
                     contactinfoDB.IsDeleted = IsEditMode == true && contactinfoUserBO.IsDeleted == null ? contactinfoDB.IsDeleted : contactinfoUserBO.IsDeleted;
+                    contactinfoDB.OfficeExtension = IsEditMode == true && contactinfoUserBO.OfficeExtension == null ? contactinfoDB.OfficeExtension : contactinfoUserBO.OfficeExtension;
+                    contactinfoDB.AlternateEmail = IsEditMode == true && contactinfoUserBO.AlternateEmail == null ? contactinfoDB.AlternateEmail : contactinfoUserBO.AlternateEmail;
+                    contactinfoDB.PreferredCommunication = IsEditMode == true && contactinfoUserBO.PreferredCommunication == null ? contactinfoDB.PreferredCommunication : contactinfoUserBO.PreferredCommunication;
 
                     if (Add_contactinfoDB == true) contactinfoDB = _context.ContactInfoes.Add(contactinfoDB);
                     _context.SaveChanges();
