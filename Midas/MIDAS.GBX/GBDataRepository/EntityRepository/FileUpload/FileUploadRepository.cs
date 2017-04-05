@@ -67,7 +67,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
             string CASE= "/CASE_";
             string VISIT = "/VISIT_";
 
-            if (type == "case")
+            if (type == "case" || type == "consent")
             {                
                 storagePath.Append(remotePath)
                            .Append(COMPANY)
@@ -95,7 +95,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
 
         public override string Download(int caseid, int documentid)
         {
-            var acc = _context.MidasDocuments.Where(p => p.Id == documentid && p.ObjectId == caseid
+            var acc = _context.MidasDocuments.Where(p => p.ObjectType.ToUpper()=="CONSENT" && p.ObjectId == caseid
                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                  .FirstOrDefault<MidasDocument>();
 
