@@ -126,7 +126,8 @@ namespace MIDAS.GBX.WebAPI.Controllers
             HttpResponseMessage resMessage = requestHandler.CreateGbDocObject(Request, id, type, streamContent, sourcePath);
             resMessage.Content.Headers.Add("Access-Control-Allow-Origin", "*");
             resMessage.Content.Headers.Add("Access-Control-Allow-Methods", "POST,PUT,GET,DELETE");
-            resMessage.Content.Headers.Add("x-requested-with", "XMLHttpRequest");
+            resMessage.Content.Headers.Add("Access-Control-Allow-Headers", "Accept, x-requested-with");
+            resMessage.Content.Headers.Add("Access-Control-Allow-Credentials", "true");
             return resMessage;
         }
         /*[HttpPost]
