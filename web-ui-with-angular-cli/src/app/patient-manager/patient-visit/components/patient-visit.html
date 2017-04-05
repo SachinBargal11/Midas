@@ -6,24 +6,40 @@
             <option *ngFor="let location of _locationsStore.locations | async" [value]="location.location.id">{{location.location.name}}</option>                                       
         </select>
     </div>
-    <div class="col-lg-3">
+    <!--<div class="col-lg-3">
         <select [(ngModel)]="selectedOption" class="select2-arrow form-control" (change)="selectOption()">
             <option value="0">Select Visit</option>
             <option value="1">With Doctor</option>
             <option value="2">With Room</option>
         </select>
+    </div>-->
+    <div class="col-lg-3">
+        <input type="radio" name="selectOption" [(ngModel)]="selectedOption" value="1" (change)="selectOption()"> Doctor
+        <input type="radio" name="selectOption" [(ngModel)]="selectedOption" value="2" (change)="selectOption()"> Room
+    </div>
+    <div class="col-lg-3" *ngIf="selectedOption == 1">
+        <select [(ngModel)]="selectedSpecialityId" class="select2-arrow form-control" (change)="selectSpeciality()">
+            <option value="0"> -- Select Speciality -- </option>
+            <option *ngFor="let speciality of specialities" [value]="speciality.id">{{speciality.name}}</option>                                       
+        </select>
     </div>
     <div class="col-lg-3" *ngIf="selectedOption == 1">
         <select [(ngModel)]="selectedDoctorId" class="select2-arrow form-control" (change)="selectDoctor()">
             <option value="0"> -- Select Doctor -- </option>
-            <option *ngFor="let doctorLocationSchedule of _doctorLocationScheduleStore.doctorLocationSchedules | async" [value]="doctorLocationSchedule.doctor.id">{{doctorLocationSchedule.doctor.user.displayName}}</option>                                       
+            <option *ngFor="let doctorLocationSchedule of doctorLocationSchedules" [value]="doctorLocationSchedule.doctor.id">{{doctorLocationSchedule.doctor.user.displayName}}</option>                                       
         </select>
         <!--<span *ngIf="doctorSchedule">{{doctorSchedule.name}}</span>-->
     </div>
     <div class="col-lg-3" *ngIf="selectedOption == 2">
+        <select [(ngModel)]="selectedTestId" class="select2-arrow form-control" (change)="selectTest()">
+            <option value="0"> -- Select Test -- </option>
+            <option *ngFor="let test of tests" [value]="test.id">{{test.name}}</option>                                       
+        </select>
+    </div>
+    <div class="col-lg-3" *ngIf="selectedOption == 2">
         <select [(ngModel)]="selectedRoomId" class="select2-arrow form-control" (change)="selectRoom()">
             <option value="0"> -- Select Room -- </option>
-            <option *ngFor="let room of _roomsStore.rooms | async" [value]="room.id">{{room.name}}</option>                                       
+            <option *ngFor="let room of rooms" [value]="room.id">{{room.name}}</option>                                       
         </select>
         <!--<span *ngIf="roomSchedule">{{roomSchedule.name}}</span>-->
     </div>

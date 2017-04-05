@@ -138,8 +138,9 @@ export class CaseService {
             dwObject.HttpFieldNameOfUploadedImage = 'demo[]';
             // dwObject.SaveAsPDF(`C:\\Users\\Mitali\\Downloads\\scanned_file_${currentCaseId}.pdf`);
             dwObject.HTTPUploadAllThroughPostAsPDF(
-                'midas.codearray.tk',
-                'midasapi/fileupload/multiupload/' + currentCaseId + '/case',
+                // 'midas.codearray.tk',
+                this._url,
+                'fileupload/multiupload/' + currentCaseId + '/case',
                 `scanned_file_${currentCaseId}.pdf`,
                 (response: any) => {
                     resolve(response);
