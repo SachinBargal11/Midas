@@ -148,7 +148,7 @@ export class CaseService {
                     reject(new Error(errorString));
                 });
         });
-        return <Observable<CaseDocument[]>>Observable.fromPromise(promise); 
+        return <Observable<CaseDocument[]>>Observable.fromPromise(promise);
 
 
         /*let promise: Promise<CaseDocument[]> = new Promise((resolve, reject) => {
@@ -174,7 +174,9 @@ export class CaseService {
         let promise: Promise<Case> = new Promise((resolve, reject) => {
             let caseRequestData = caseDetail.toJS();
             let caseCompanyMapping = [{
-                companyId: this._sessionStore.session.currentCompany.id
+                company: {
+                    id: this._sessionStore.session.currentCompany.id
+                }
             }];
             caseRequestData.caseCompanyMapping = caseCompanyMapping;
             return this._http.post(this._url + '/Case/Save', JSON.stringify(caseRequestData), {
@@ -197,7 +199,9 @@ export class CaseService {
         let promise = new Promise((resolve, reject) => {
             let caseRequestData = caseDetail.toJS();
             let caseCompanyMapping = [{
-                companyId: this._sessionStore.session.currentCompany.id
+                company: {
+                    id: this._sessionStore.session.currentCompany.id
+                }
             }];
             caseRequestData.caseCompanyMapping = caseCompanyMapping;
             return this._http.post(this._url + '/Case/Save', JSON.stringify(caseRequestData), {

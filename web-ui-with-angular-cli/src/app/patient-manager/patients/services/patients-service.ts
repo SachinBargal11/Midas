@@ -99,7 +99,7 @@ export class PatientsService {
     }
 
 
-        getPatientsWithNoCase(): Observable<Patient[]> {
+    getPatientsWithNoCase(): Observable<Patient[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise: Promise<Patient[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/Patient/getByCompanyWithCloseCases/' + companyId)
@@ -137,7 +137,9 @@ export class PatientsService {
             });
             requestData.user = _.extend(requestData.user, {
                 UserCompanies: [{
-                    CompanyId: this._sessionStore.session.currentCompany.id
+                    company: {
+                        id: this._sessionStore.session.currentCompany.id
+                    }
                 }]
             });
 
