@@ -72,7 +72,7 @@ public class PreflightRequestsHandler : DelegatingHandler
         {
             var response = new HttpResponseMessage { StatusCode = HttpStatusCode.OK };
             response.Headers.Add("Access-Control-Allow-Origin", "*");
-            response.Headers.Add("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization");
+            response.Headers.Add("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization, x-requested-with, dwt-md5");
             response.Headers.Add("Access-Control-Allow-Methods", "*");
             var tsc = new TaskCompletionSource<HttpResponseMessage>();
             tsc.SetResult(response);

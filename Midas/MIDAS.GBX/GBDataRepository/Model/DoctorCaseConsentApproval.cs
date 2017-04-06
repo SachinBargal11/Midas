@@ -16,15 +16,18 @@ namespace MIDAS.GBX.DataRepository.Model
     {
         public int Id { get; set; }
         public int DoctorId { get; set; }
-        public int CaseId { get; set; }
+        public Nullable<int> CaseId { get; set; }
         public string ConsentReceived { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
+        public Nullable<int> Patientid { get; set; }
+        public string FileName { get; set; }
     
         public virtual Case Case { get; set; }
         public virtual Doctor Doctor { get; set; }
+        public virtual Patient2 Patient2 { get; set; }
     }
 }

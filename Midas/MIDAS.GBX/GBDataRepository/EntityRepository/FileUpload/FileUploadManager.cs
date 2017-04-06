@@ -89,7 +89,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                         {
                             Status = errMessage.Equals(string.Empty) ? "Success" : "Failed",
                             Message = errMessage,
-                            DocumentId = errMessage.Equals(string.Empty) ? 0 : midasdoc.Id,
+                            DocumentId = midasdoc.Id,
                             DocumentPath = errMessage.Equals(string.Empty) ? midasdoc.DocumentPath + "/" + caseDoc.DocumentName : caseDoc.DocumentName,
                             DocumentName = caseDoc.DocumentName,
                             id = id

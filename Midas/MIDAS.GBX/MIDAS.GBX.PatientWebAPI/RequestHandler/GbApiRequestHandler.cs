@@ -18,6 +18,19 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             dataAccessManager = new GbDataAccessManager<T>();
         }
 
+        public string Download(HttpRequestMessage request, int caseId, int documentid)
+        {
+            string path = dataAccessManager.Download(caseId, documentid);
+            if (caseId > 0)
+            {
+                return path;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
         public HttpResponseMessage Login(HttpRequestMessage request, T gbObject)
         {
             User userBO = (User)(object)gbObject;
@@ -101,6 +114,24 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         public HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject)
         {
             var objResult = dataAccessManager.Save(gbObject);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage SaveDoctor(HttpRequestMessage request, T gbObject)
+        {
+            var objResult = dataAccessManager.SaveDoctor(gbObject);
 
             try
             {

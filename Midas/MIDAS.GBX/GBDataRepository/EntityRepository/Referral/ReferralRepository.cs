@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MIDAS.GBX.DataRepository.Model;
 using System.Data.Entity;
 using BO = MIDAS.GBX.BusinessObjects;
+using Docs.Pdf;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 {
@@ -524,6 +525,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             return (object)res;
         }
         #endregion
+
+        public string GetTemplateDocument(string type)
+        {
+            type = "Referral";
+            return type;
+        }
+        
+        public override object GenerateReferralDocument(int id)
+        {
+            HtmlToPdf htmlPDF = new HtmlToPdf();
+            htmlPDF.BasePath = "D:\test.html";
+
+
+            var acc = _context.Referrals.Where(p => p.Id == id).FirstOrDefault();
+            return acc;
+        }
 
         public void Dispose()
         {

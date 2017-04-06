@@ -11,6 +11,7 @@ namespace MIDAS.GBX.DataAccessManager
     public interface IGbDataAccessManager<T>
     {
         Object Save(T gbObject);
+        Object SaveDoctor(T gbObject);
         Object Save(int id, string type, List<HttpContent> streamContent,string uploadpath);
         Object AssociateLocationToDoctors(T gbObject);
         Object AssociateDoctorToLocations(T gbObject);
@@ -81,5 +82,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object Get2(int param1, int param2, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object AssociateUserToCompany(string UserName, int CompanyId, bool sendEmail, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByRoomId(int RoomId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GenerateReferralDocument(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+
     }
 }
