@@ -1,7 +1,7 @@
 <input type="radio" value="1" name="documentMode" [(ngModel)]="documentMode"> Scan Documents
 <input type="radio" value="2" name="documentMode" [(ngModel)]="documentMode"> Upload Documents
 
-<section class="card" *ngIf="documentMode == 1">
+<section class="card" [hidden]="documentMode != 1">
     <header class="card-header card-header-lg">
         Scan Documents
     </header>
@@ -28,7 +28,7 @@
         </div>
     </div>
 </section>
-<section class="card" *ngIf="documentMode == 2">
+<section class="card" [hidden]="documentMode != 2">
     <header class="card-header card-header-lg">
         Upload Documents for Case
     </header>
