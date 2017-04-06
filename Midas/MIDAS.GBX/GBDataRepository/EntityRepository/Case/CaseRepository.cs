@@ -352,6 +352,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     foreach (BO.CaseCompanyMapping eachcaseCompanyMapping in lstCaseCompanyMapping)
                     {
+                        eachcaseCompanyMapping.CaseId = caseDB.Id;
                         using (CaseCompanyMappingRepository caseCompanyMapRepo = new CaseCompanyMappingRepository(_context))
                         {
                             var result = caseCompanyMapRepo.Save(eachcaseCompanyMapping);
