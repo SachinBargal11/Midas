@@ -18,7 +18,7 @@ using System.Web.Http.Cors;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/FileUpload")]
-    [EnableCors(origins: "*", headers: "Content-Type, Accept, x-requested-with", methods: "*")]
+    //[EnableCors(origins:"*",headers: "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With", methods: "GET,POST,PUT,DELETE,OPTIONS")]
     public class FileUploadController : ApiController
     {
         internal string sourcePath = string.Empty;
@@ -95,6 +95,20 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Route("multiuploadtest/{id}/{type}")]
+        public async Task<HttpResponseMessage> UploadTest(int id, string type)
+        {
+            if (!Request.Content.IsMimeMultipartContent("form-data")) return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            var streamProvider = new MultipartMemoryStreamProvider();            
+            await Request.Content.ReadAsMultipartAsync(streamProvider);
+            List<HttpContent> streamContent = streamProvider.Contents.ToList();            
+            string contenttype = streamContent.ToList().Select(p => p.Headers.ContentType).FirstOrDefault().MediaType;
+            HttpResponseMessage resMessage = requestHandler.CreateGbDocObject(Request, id, type, streamContent, sourcePath);
+            
+            return resMessage;
+        }
+
+        [HttpPost]
         [Route("multiupload/{id}/{type}")]
         public async Task<HttpResponseMessage> Upload(int id, string type)
         {
@@ -124,10 +138,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
             string contenttype = streamContent.ToList().Select(p => p.Headers.ContentType).FirstOrDefault().MediaType;
             HttpResponseMessage resMessage = requestHandler.CreateGbDocObject(Request, id, type, streamContent, sourcePath);
-            resMessage.Content.Headers.Add("Access-Control-Allow-Origin", "*");
-            resMessage.Content.Headers.Add("Access-Control-Allow-Methods", "POST,PUT,GET,DELETE");
-            resMessage.Content.Headers.Add("Access-Control-Allow-Headers", "Accept, x-requested-with");
-            resMessage.Content.Headers.Add("Access-Control-Allow-Credentials", "true");
             return resMessage;
         }
         /*[HttpPost]
@@ -174,9 +184,9 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [Route("download/{caseId}/{documentid}")]
         [AllowAnonymous]
         public void Download(int caseId, int documentid)
-        {
-            //Response           
+        {            
             string filepath = requestHandler.Download(Request, caseId, documentid);
+            filepath = filepath.Replace("http://midas.codearray.tk/midasapi", "F:\\Websites\\MIDAS.GBX.WebAPI\\");
             FileInfo fileInfo = new System.IO.FileInfo(filepath);
             HttpContext.Current.Response.ContentType = "application/octet-stream";
             HttpContext.Current.Response.AddHeader("Content-Disposition", String.Format("attachment;filename=\"{0}\"", fileInfo.Name));
