@@ -18,6 +18,19 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             dataAccessManager = new GbDataAccessManager<T>();
         }
 
+        public string Download(HttpRequestMessage request, int caseId, int documentid)
+        {
+            string path = dataAccessManager.Download(caseId, documentid);
+            if (caseId > 0)
+            {
+                return path;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
         public HttpResponseMessage Login(HttpRequestMessage request, T gbObject)
         {
             User userBO = (User)(object)gbObject;
