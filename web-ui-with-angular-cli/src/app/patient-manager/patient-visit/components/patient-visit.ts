@@ -1,3 +1,4 @@
+import { DoctorSpeciality } from '../../../medical-provider/users/models/doctor-speciality';
 
 import { DoctorLocationSchedule } from '../../../medical-provider/users/models/doctor-location-schedule';
 import { ScheduleDetail } from '../../../medical-provider/locations/models/schedule-detail';
@@ -214,8 +215,8 @@ export class PatientVisitComponent implements OnInit {
         if (this.selectedSpecialityId) {
             let doctorLocationSchedules: DoctorLocationSchedule[] = this._doctorLocationScheduleStore.doctorLocationSchedules.getValue().toArray();
             this.doctorLocationSchedules = _.filter(doctorLocationSchedules, (currentDoctorLocationSchedule: DoctorLocationSchedule) => {
-                let matchedSpeciality: Speciality = _.find(currentDoctorLocationSchedule.doctor.doctorSpecialities, (currentSpeciality: Speciality) => {
-                    return currentSpeciality.id == this.selectedSpecialityId;
+                let matchedSpeciality: DoctorSpeciality = _.find(currentDoctorLocationSchedule.doctor.doctorSpecialities, (currentSpeciality: DoctorSpeciality) => {
+                    return currentSpeciality.speciality.id == this.selectedSpecialityId;
                 });
                 return matchedSpeciality ? true : false;
             });

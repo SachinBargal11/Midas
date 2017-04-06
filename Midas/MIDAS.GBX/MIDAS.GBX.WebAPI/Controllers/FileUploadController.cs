@@ -19,6 +19,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/FileUpload")]
     //[EnableCors(origins:"*",headers: "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With", methods: "GET,POST,PUT,DELETE,OPTIONS")]
+    //[EnableCors(origins: "*", headers: "*", methods: "*", exposedHeaders: "X-My-Header")] 
     public class FileUploadController : ApiController
     {
         internal string sourcePath = string.Empty;
@@ -183,16 +184,24 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpGet]
         [Route("download/{caseId}/{documentid}")]
         [AllowAnonymous]
-        public void Download(int caseId, int documentid)
+        public HttpResponse Download(int caseId, int documentid)
         {            
             string filepath = requestHandler.Download(Request, caseId, documentid);
-            filepath = filepath.Replace("http://midas.codearray.tk/midasapi", "F:\\Websites\\MIDAS.GBX.WebAPI\\");
+            filepath = filepath.Replace(ConfigurationManager.AppSettings.Get("BLOB_PATH"), ConfigurationManager.AppSettings.Get("LOCAL_PATH"));
             FileInfo fileInfo = new System.IO.FileInfo(filepath);
+            System.IO.FileStream fs = null;
+            fs = System.IO.File.Open(filepath, FileMode.Open);
+            byte[] btFile = new byte[fs.Length];
+            fs.Read(btFile, 0, Convert.ToInt32(fs.Length));
+            fs.Close();
             HttpContext.Current.Response.ContentType = "application/octet-stream";
             HttpContext.Current.Response.AddHeader("Content-Disposition", String.Format("attachment;filename=\"{0}\"", fileInfo.Name));
-            //HttpContext.Current.Response.AddHeader("Content-Length", fileInfo.Length.ToString());
-            HttpContext.Current.Response.WriteFile(filepath);
-            HttpContext.Current.Response.End();
+            HttpContext.Current.Response.AddHeader("Content-Length", fileInfo.Length.ToString());
+            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
+            //HttpContext.Current.Response.WriteFile(filepath);   
+            HttpContext.Current.Response.BinaryWrite(btFile);
+            //HttpContext.Current.Response.End();
+            return HttpContext.Current.Response;
         }
 
         [HttpGet]

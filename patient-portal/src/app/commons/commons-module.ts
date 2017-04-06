@@ -49,6 +49,7 @@ import {
   SharedModule,
   ConfirmDialogModule,
   FileUploadModule
+  ,GrowlModule
   
 } from 'primeng/primeng';
 import { DropdownModule } from 'ng2-bootstrap';
@@ -74,7 +75,7 @@ import { DropdownModule } from 'ng2-bootstrap';
     SharedModule,
     ConfirmDialogModule,
     MultiSelectModule,
-    DropdownModule.forRoot(),FileUploadModule
+    DropdownModule.forRoot(),FileUploadModule,GrowlModule
   ],
   declarations: [
     LimitPipe,
@@ -91,6 +92,7 @@ import { DropdownModule } from 'ng2-bootstrap';
     LoaderComponent,
     NotificationComponent,
     ShellComponent
+    
   ],
   providers: [
     PhoneFormatPipe,
@@ -144,7 +146,7 @@ import { DropdownModule } from 'ng2-bootstrap';
     ConfirmDialogModule,
     MultiSelectModule,
     DropdownModule,
-    ShellComponent,FileUploadModule
+    ShellComponent,FileUploadModule,GrowlModule
   ]
 })
 export class CommonsModule { }

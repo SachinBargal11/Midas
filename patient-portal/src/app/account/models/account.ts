@@ -3,8 +3,10 @@ import { UserRole } from '../../commons/models/user-role';
 import { User } from '../../commons/models/user';
 import { AccountStatus } from '../../commons/models/enums/account-status';
 import { SubscriptionPlan } from '../../commons/models/enums/subscription-plan';
+import { Company } from './company';
 
 const AccountRecord = Record({
+      companies: null,
     user: null,
     role: null,
     accountStatus: AccountStatus.IN_ACTIVE,
@@ -12,6 +14,7 @@ const AccountRecord = Record({
 });
 
 export class Account extends AccountRecord {
+     companies: Company[];
     user: User;
     role: UserRole;
     accountStatus: AccountStatus;

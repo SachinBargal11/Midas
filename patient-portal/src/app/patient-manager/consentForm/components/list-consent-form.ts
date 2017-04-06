@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/primeng'
-import { AddConsentStore } from '../stores/add-consent-form-store';
+import { AddDocConsentStore } from '../stores/add-consent-form-store';
 import { AddConsent } from '../models/add-consent-form';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
@@ -9,7 +9,7 @@ import * as moment from 'moment';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-import { ListConsentStore } from '../../consentForm/stores/list-consent-form-store';
+import { ListDocConsentStore } from '../../consentForm/stores/list-consent-form-store';
 import { ListConsent } from '../../consentForm/models/list-consent-form';
 
 
@@ -19,7 +19,7 @@ import { ListConsent } from '../../consentForm/models/list-consent-form';
     templateUrl: './list-consent-form.html'
 })
 
-export class ConsentListComponent implements OnInit {
+export class ConsentDocListComponent implements OnInit {
     selectedConsentList: ListConsent[] = [];
     ListConsent: ListConsent[];
     caseId: number;
@@ -29,7 +29,7 @@ export class ConsentListComponent implements OnInit {
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
-        private _ListConsentStore: ListConsentStore,
+        private _ListConsentStore: ListDocConsentStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService
@@ -46,7 +46,7 @@ export class ConsentListComponent implements OnInit {
     loadConsentForm() {
        
         this._progressBarService.show();
-        this._ListConsentStore.getConsetForm(this.caseId)
+        this._ListConsentStore.getConsetForm(0)//this.caseId
             .subscribe(ListConsent => {
                 this.ListConsent = ListConsent.reverse();
                 // this.datasource = referringOffices.reverse();
@@ -112,5 +112,19 @@ export class ConsentListComponent implements OnInit {
         }
 
 
+    }
+
+     DownloadPdf() {  
+        this._progressBarService.show();
+        this._ListConsentStore.DownloadConsentForm(this.caseId)
+            .subscribe(document => {
+                // this.document = document
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
 }

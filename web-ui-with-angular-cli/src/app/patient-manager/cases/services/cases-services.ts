@@ -237,7 +237,6 @@ export class CaseService {
         return <Observable<Case>>Observable.from(promise);
     }
     deleteDocument(caseDetail: CaseDocument): Observable<Case> {
-        debugger;
         let promise = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/fileupload/delete/' + caseDetail.id + '/' + caseDetail.documentId, {
                 headers: this._headers
