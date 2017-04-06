@@ -168,7 +168,7 @@ export class CasesStore {
         });
         return <Observable<Case>>Observable.from(promise);
     }
-    
+
     deleteDocument(caseDetail: CaseDocument): Observable<Case> {
         let cases = this._cases.getValue();
         let index = cases.findIndex((currentCase: Case) => currentCase.id === caseDetail.id);

@@ -33,7 +33,6 @@
         Upload Documents for Case
     </header>
     <div class="card-block">
-        <p-growl [value]="msgs"></p-growl>
         <p-fileUpload name="demo[]" url={{url}} multiple="multiple" (onUpload)="onUpload($event)"  maxFileSize="1000000">
             <ng-template pTemplate type="content">
                 <ul *ngIf="uploadedFiles.length">
@@ -78,7 +77,7 @@
     <p-column field="documentName" header="Document Name" [sortable]="true"></p-column>
     <p-column field="createDate" header="Created Date" [sortable]="true">  
         <ng-template let-document="rowData" pTemplate="body">
-        {{ document.createDate | dateFormat }}  
+        {{ document.createDate | dateTimeFormat }}  
         </ng-template> 
     </p-column> 
     
