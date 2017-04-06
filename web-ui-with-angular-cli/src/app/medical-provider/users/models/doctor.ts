@@ -1,7 +1,7 @@
-import {Record} from 'immutable';
+import { Record } from 'immutable';
 import * as moment from 'moment';
-import {User} from '../../../commons/models/user';
-import {Speciality} from '../../../account-setup/models/speciality';
+import { User } from '../../../commons/models/user';
+import { DoctorSpeciality } from './doctor-speciality';
 
 const DoctorRecord = Record({
     id: 0,
@@ -32,7 +32,7 @@ export class Doctor extends DoctorRecord {
     title: string;
     userId: number;
     user: User;
-    doctorSpecialities: Speciality[];
+    doctorSpecialities: DoctorSpeciality[];
     isDeleted: boolean;
     createByUserId: number;
     updateByUserId: number;

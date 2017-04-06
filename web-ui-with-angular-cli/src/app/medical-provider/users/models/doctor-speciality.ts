@@ -1,19 +1,26 @@
-import {Record} from 'immutable';
-import {Speciality} from '../../../account-setup/models/speciality';
-import {Doctor} from './doctor';
+import { Record } from 'immutable';
+import * as moment from 'moment';
+import { Speciality } from '../../../account-setup/models/speciality';
 
 const DoctorSpecialityRecord = Record({
-
-    doctor: null,
-    specialties: null
-
+    id: 0,
+    speciality: null,
+    isDeleted: false,
+    createByUserId: 0,
+    updateByUserId: 0,
+    createDate: null, //Moment
+    updateDate: null //Moment
 });
 
 export class DoctorSpeciality extends DoctorSpecialityRecord {
 
-    doctor: Doctor;
-    specialties: Speciality[];
-
+    id: number;
+    speciality: Speciality;
+    isDeleted: boolean;
+    createByUserId: number;
+    updateByUserId: number;
+    createDate: moment.Moment;
+    updateDate: moment.Moment;
 
     constructor(props) {
         super(props);

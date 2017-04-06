@@ -1,3 +1,4 @@
+import { DoctorSpeciality } from '../models/doctor-speciality';
 import { Observable } from 'rxjs/Rx';
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
@@ -82,7 +83,7 @@ export class AddDoctorLocationSpecialityComponent implements OnInit {
         Observable.forkJoin([fetchDoctor, fetchDoctorSpecialities, fetchDoctorLocations])
             .subscribe((results) => {
                 let doctor: Doctor = results[0];
-                let doctorsSpeciality: Speciality[] = doctor.doctorSpecialities;
+                let doctorsSpeciality: DoctorSpeciality[] = doctor.doctorSpecialities;
                 let doctorLocationSpeciality: DoctorLocationSpeciality[] = results[1];
                 let doctorLocationSchedule: DoctorLocationSchedule = results[2];
                 this.locationId = doctorLocationSchedule.location.location.id;
