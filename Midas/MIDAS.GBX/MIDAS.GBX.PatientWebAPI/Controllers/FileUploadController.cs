@@ -27,7 +27,8 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
 
         public FileUploadController()
         {
-            sourcePath = HttpContext.Current.Server.MapPath("~/App_Data/uploads").ToString();            
+            sourcePath = HttpContext.Current.Server.MapPath("~/App_Data/uploads").ToString();
+            remotePath = "C:\\Users\\Sonali.A\\Midas\\Midas\\MIDAS.GBX\\MIDAS.GBX.PatientWebAPI\\App_Data\\uploads";
             requestHandler = new GbApiRequestHandler<Document>();
         }
 
@@ -92,6 +93,20 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         }
 
         [HttpPost]
+        [Route("multiuploadtest/{id}/{type}")]
+        public async Task<HttpResponseMessage> UploadTest(int id, string type)
+        {
+            if (!Request.Content.IsMimeMultipartContent("form-data")) return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            var streamProvider = new MultipartMemoryStreamProvider();
+            await Request.Content.ReadAsMultipartAsync(streamProvider);
+            List<HttpContent> streamContent = streamProvider.Contents.ToList();
+            string contenttype = streamContent.ToList().Select(p => p.Headers.ContentType).FirstOrDefault().MediaType;
+            HttpResponseMessage resMessage = requestHandler.CreateGbDocObject(Request, id, type, streamContent, sourcePath);
+
+            return resMessage;
+        }
+
+        [HttpPost]
         [Route("multiupload/{id}/{type}")]
         public async Task<HttpResponseMessage> Upload(int id, string type)
         {
@@ -119,7 +134,9 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
                 }
             }*/
 
-            return requestHandler.CreateGbDocObject(Request, id, type, streamContent, sourcePath);
+            string contenttype = streamContent.ToList().Select(p => p.Headers.ContentType).FirstOrDefault().MediaType;
+            HttpResponseMessage resMessage = requestHandler.CreateGbDocObject(Request, id, type, streamContent, sourcePath);
+            return resMessage;
         }
         /*[HttpPost]
         [Route("upload")]
@@ -162,11 +179,27 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         }*/
 
         [HttpGet]
+        [Route("download/{caseId}/{documentid}")]
+        [AllowAnonymous]
+        public void Download(int caseId, int documentid)
+        {
+            string filepath = requestHandler.Download(Request, caseId, documentid);
+            filepath = filepath.Replace("http://midas.codearray.tk/midasapi", "F:\\Websites\\MIDAS.GBX.WebAPI\\");
+            FileInfo fileInfo = new System.IO.FileInfo(filepath);
+            HttpContext.Current.Response.ContentType = "application/octet-stream";
+            HttpContext.Current.Response.AddHeader("Content-Disposition", String.Format("attachment;filename=\"{0}\"", fileInfo.Name));
+            //HttpContext.Current.Response.AddHeader("Content-Length", fileInfo.Length.ToString());
+            HttpContext.Current.Response.WriteFile(filepath);
+            HttpContext.Current.Response.End();
+        }
+
+        [HttpGet]
         [Route("Delete/{caseId}/{id}")]
         [AllowAnonymous]
         public HttpResponseMessage DeleteFile(int caseId, int id)
         {
             return requestHandler.DeleteFile(Request, caseId, id);
         }
+
     }
 }

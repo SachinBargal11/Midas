@@ -140,8 +140,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                     return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 }
 
-                File.Copy(acc.DocumentPath + "/" + oldfile, acc.DocumentPath + "/" + newFile);
-                File.Delete(acc.DocumentPath + "/" + oldfile);
+                File.Copy(acc.DocumentPath.Replace(ConfigurationManager.AppSettings.Get("BLOB_PATH"), ConfigurationManager.AppSettings.Get("LOCAL_PATH")) + "\\" + oldfile, acc.DocumentPath.Replace(ConfigurationManager.AppSettings.Get("BLOB_PATH"), ConfigurationManager.AppSettings.Get("LOCAL_PATH")) + "\\" + newFile);
+                File.Delete(acc.DocumentPath.Replace(ConfigurationManager.AppSettings.Get("BLOB_PATH"), ConfigurationManager.AppSettings.Get("LOCAL_PATH")) + "\\" + oldfile);
 
                 docInfo.id = caseId;
                 docInfo.DocumentId = acc.Id;
