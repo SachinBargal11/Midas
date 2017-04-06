@@ -1,10 +1,11 @@
+
 import { DoctorLocationSchedule } from '../../../medical-provider/users/models/doctor-location-schedule';
 import { ScheduleDetail } from '../../../medical-provider/locations/models/schedule-detail';
 import { Observable } from 'rxjs/Observable';
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-
+import { List } from 'immutable';
 import * as moment from 'moment';
 import * as _ from 'underscore';
 import { ConfirmationService } from 'primeng/primeng';
@@ -24,10 +25,12 @@ import { ScheduleStore } from '../../../medical-provider/locations/stores/schedu
 import { RoomScheduleStore } from '../../../medical-provider/rooms/stores/rooms-schedule-store';
 import { DoctorLocationScheduleStore } from '../../../medical-provider/users/stores/doctor-location-schedule-store';
 import { PatientVisitsStore } from '../stores/patient-visit-store';
-
+import { RoomsService } from '../../../medical-provider/rooms/services/rooms-service';
+import { Tests } from '../../../medical-provider/rooms/models/tests';
+import { Speciality } from '../../../account-setup/models/speciality';
 import { ScheduledEventEditorComponent } from '../../../medical-provider/calendar/components/scheduled-event-editor';
 import { ScheduledEventInstance } from '../../../commons/models/scheduled-event-instance';
-
+import { SpecialityService } from '../../../account-setup/services/speciality-service';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { Notification } from '../../../commons/models/notification';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
@@ -55,6 +58,10 @@ export class PatientVisitComponent implements OnInit {
     header: any;
     views: any;
     patients: Patient[];
+    specialities: Speciality[];
+    tests: Tests[];
+    rooms: Room[];
+    doctorLocationSchedules: DoctorLocationSchedule[];
     roomSchedule: Schedule;
     doctorSchedule: Schedule;
     eventDialogVisible: boolean = false;
@@ -69,6 +76,8 @@ export class PatientVisitComponent implements OnInit {
     selectedDoctorId: number = 0;
     selectedRoomId: number = 0;
     selectedOption: number = 0;
+    selectedTestId: number = 0;
+    selectedSpecialityId: number = 0;
 
     isFormValidBoolean: boolean = false;
     isSaveProgress: boolean = false;
@@ -108,6 +117,8 @@ export class PatientVisitComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _confirmationService: ConfirmationService,
         private _notificationsService: NotificationsService,
+        private _roomsService: RoomsService,
+        private _specialityService: SpecialityService
     ) {
         this.patientScheduleForm = this._fb.group({
             patientId: ['', Validators.required]
@@ -138,6 +149,10 @@ export class PatientVisitComponent implements OnInit {
         });
         this._locationsStore.getLocations();
         this._patientsStore.getPatientsWithOpenCases();
+        this._roomsService.getTests()
+            .subscribe(tests => { this.tests = tests; });
+        this._specialityService.getSpecialities()
+            .subscribe(specialities => { this.specialities = specialities; });
     }
 
     isFormValid() {
@@ -149,18 +164,61 @@ export class PatientVisitComponent implements OnInit {
     }
 
     selectLocation() {
-        this.loadLocationVisits();
-        if (this.selectedOption == 1) {
-            this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.selectedLocationId);
-        } else if (this.selectedOption == 2) {
-            this._roomsStore.getRooms(this.selectedLocationId);
+        if (this.selectedLocationId == 0) {
+            this.selectedOption = 0;
+            this.selectedDoctorId = 0;
+            this.selectedRoomId = 0;
+            this.selectedSpecialityId = 0;
+            this.selectedTestId = 0;
+            this.events = [];
+        } else {
+            this.loadLocationVisits();
+            if (this.selectedOption == 1) {
+                this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.selectedLocationId);
+            } else if (this.selectedOption == 2) {
+                this._roomsStore.getRooms(this.selectedLocationId);
+            }
         }
     }
 
     selectRoom() {
+        this.selectedSpecialityId = 0;
+        this.selectedDoctorId = 0;
+        this.events = [];
         if (this.selectedRoomId != 0) {
             this.loadLocationRoomVisits();
             this.fetchRoomSchedule();
+        }
+    }
+
+    selectDoctor() {
+        this.selectedRoomId = 0;
+        this.selectedTestId = 0;
+        this.events = [];
+        if (this.selectedDoctorId != 0) {
+            this.loadLocationDoctorVisits();
+            this.fetchDoctorSchedule();
+        }
+    }
+
+    selectTest() {
+        if (this.selectedTestId) {
+            let rooms: Room[] = this._roomsStore.rooms.getValue().toArray();
+            this.rooms = _.filter(rooms, (currentRoom: Room) => {
+                return currentRoom.roomTest.id == this.selectedTestId;
+            });
+        }
+    }
+
+    selectSpeciality() {
+        if (this.selectedSpecialityId) {
+            let doctorLocationSchedules: DoctorLocationSchedule[] = this._doctorLocationScheduleStore.doctorLocationSchedules.getValue().toArray();
+            this.doctorLocationSchedules = _.filter(doctorLocationSchedules, (currentDoctorLocationSchedule: DoctorLocationSchedule) => {
+                let matchedSpeciality: Speciality = _.find(currentDoctorLocationSchedule.doctor.doctorSpecialities, (currentSpeciality: Speciality) => {
+                    return currentSpeciality.id == this.selectedSpecialityId;
+                });
+                return matchedSpeciality ? true : false;
+            });
         }
     }
 
@@ -198,12 +256,7 @@ export class PatientVisitComponent implements OnInit {
         this.businessHours = businessHours;
     }
 
-    selectDoctor() {
-        if (this.selectedDoctorId != 0) {
-            this.loadLocationDoctorVisits();
-            this.fetchDoctorSchedule();
-        }
-    }
+
 
     fetchDoctorSchedule() {
         let fetchDoctorLocationSchedule = this._doctorLocationScheduleStore.getDoctorLocationScheduleByDoctorIdAndLocationId(this.selectedDoctorId, this.selectedLocationId);
@@ -704,15 +757,15 @@ export class PatientVisitComponent implements OnInit {
                 // new series should start from selected/clicked date
                 // debugger;
                 let occurrences: Date[] = this.selectedVisit.calendarEvent.recurrenceRule.all();
-                let until: Date = moment(occurrences[occurrences.length - 1]).set({'hour': updatedVisit.calendarEvent.eventStart.hour(), 'minute': updatedVisit.calendarEvent.eventStart.minute()}).toDate();
-                let eventStart: Date = this.selectedCalEvent.start.set({'hour': updatedVisit.calendarEvent.eventStart.hour(), 'minute': updatedVisit.calendarEvent.eventStart.minute()}).toDate();
-                let eventEnd: Date = this.selectedCalEvent.end.set({'hour': updatedVisit.calendarEvent.eventEnd.hour(), 'minute': updatedVisit.calendarEvent.eventEnd.minute()}).toDate();
+                let until: Date = moment(occurrences[occurrences.length - 1]).set({ 'hour': updatedVisit.calendarEvent.eventStart.hour(), 'minute': updatedVisit.calendarEvent.eventStart.minute() }).toDate();
+                let eventStart: Date = this.selectedCalEvent.start.set({ 'hour': updatedVisit.calendarEvent.eventStart.hour(), 'minute': updatedVisit.calendarEvent.eventStart.minute() }).toDate();
+                let eventEnd: Date = this.selectedCalEvent.end.set({ 'hour': updatedVisit.calendarEvent.eventEnd.hour(), 'minute': updatedVisit.calendarEvent.eventEnd.minute() }).toDate();
                 rrule = new RRule(_.extend({}, updatedVisit.calendarEvent.recurrenceRule.origOptions, {
                     count: 0,
                     dtstart: eventStart,
                     until: until
                 }));
-                
+
                 let updatedAddNewVisit: PatientVisit = new PatientVisit(_.extend(updatedVisit.toJS(), {
                     id: 0,
                     calendarEventId: 0,

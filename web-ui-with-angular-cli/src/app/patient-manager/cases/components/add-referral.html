@@ -27,8 +27,15 @@
                         [stacked]="stacked">
                         <header>Doctors</header>
                         <p-column selectionMode="single"></p-column>
-                        <p-column field="doctor.user.displayName" header="Doctor Name" [sortable]="true"></p-column>
-                        <p-column field="doctor.user.userName" header="Email" [sortable]="true"></p-column>
+                        <p-column field="user.displayName" header="Doctor Name" [sortable]="true"></p-column>
+                        <p-column field="user.userName" header="Email" [sortable]="true"></p-column>
+                        <p-column field="" header="Company" [sortable]="true"></p-column>
+                        <p-column field="" header="Location" [sortable]="true"></p-column>
+                        <!--<p-column field="user.doctorSpecialities" header="Speciality" [sortable]="true">
+                            <ng-template let-currentReferral="rowData" pTemplate="body">
+                                {{getCurrentDoctorSpeciality(currentReferral)}}
+                            </ng-template>
+                        </p-column>-->
                     </p-dataTable>
                 </div>
             </div>
@@ -62,6 +69,7 @@
                         <p-column field="name" header="Name" [sortable]="true"></p-column>
                         <p-column field="phone" header="Phone" [sortable]="true"></p-column>
                         <p-column field="roomTest.name" header="Tests Provided" [sortable]="true"></p-column>
+                        <p-column field="location.name" header="Location" [sortable]="true"></p-column>
                     </p-dataTable>
                 </div>
             </div>
@@ -71,13 +79,13 @@
         <div class="card-block">
             <div class="row">
                 <div class="col-md-4">
-                        <label class="form-label">Notes
+                    <label class="form-label">Notes
                             </label>
-                    <div class="form-group" [class.error]="referralFormControls.notes.touched && !referralFormControls.notes.valid">
-                        <textarea formControlName="notes" class="form-control" rows="3"></textarea>
-                        <div class='error-list' *ngIf="referralFormControls.notes.touched && !referralFormControls.notes.valid">
+                    <div class="form-group" [class.error]="referralFormControls.note.touched && !referralFormControls.note.valid">
+                        <textarea formControlName="note" class="form-control" rows="3" [class.error]="referralFormControls.note.touched && !referralFormControls.note.valid"></textarea>
+                        <div class='error-list' *ngIf="referralFormControls.note.touched && !referralFormControls.note.valid">
                             <ul>
-                                <li *ngIf="referralFormControls.notes.hasError('required')">Please enter Notes.</li>
+                                <li *ngIf="referralFormControls.note.hasError('required')">Please enter Notes.</li>
                             </ul>
                         </div>
                     </div>
@@ -85,7 +93,7 @@
             </div>
         </div>
     </section>
-    <button [disabled]="isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+    <button [disabled]="!referralForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
         <loader [visible]="isSaveProgress"></loader>
     </button>
     <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>

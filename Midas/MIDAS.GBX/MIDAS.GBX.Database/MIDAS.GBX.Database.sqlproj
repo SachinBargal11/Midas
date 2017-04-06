@@ -119,6 +119,7 @@
     <Build Include="Tables\MidasDocuments.sql" />
     <Build Include="Tables\CaseDocuments.sql" />
     <Build Include="Tables\Latest Tables\Notification.sql" />
+    <Build Include="Tables\Latest Tables\Templates.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />
