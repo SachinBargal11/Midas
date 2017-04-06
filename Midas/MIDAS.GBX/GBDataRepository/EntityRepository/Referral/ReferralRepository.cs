@@ -486,6 +486,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                             .Include("Doctor1.DoctorSpecialities")
                                                             .Include("Doctor1.DoctorSpecialities.Specialty")
                                                             .Include("Case")
+                                                            .Include("Case.Patient2")
+                                                            .Include("Case.Patient2.User")
                                                             .Include("Room")
                                                             .Where(p => p.ReferredToDoctorId == id
                                                              && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
