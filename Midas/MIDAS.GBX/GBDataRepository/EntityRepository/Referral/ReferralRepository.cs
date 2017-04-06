@@ -530,7 +530,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             type = "Referral";
 
-            string FileData = "<!DOCTYPE html>" +
+            String FileData = "<!DOCTYPE html>" +
                                 "<html>" +
                                 "<head>" +
                                     "< title></title>" +
@@ -543,7 +543,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                     "< br />" +
                                     "< p>Referal order date : {{CreateDate}}</p>" +
                                     "< br />" +
-                                    "< p>Referral: {{ReferredToDoctorId}}</p>" +
+                                    "< p>Referral: {{ReferredToDoctor}}</p>" +
                                     "< p>Address: </p>" +
                                     "< br />" +
                                     "< p>Insurance info:</p>" +
@@ -553,16 +553,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                     "< p>Signature of ordering physician:</p>" +
                                 "</body>" +
                                 "</html>";
+            
             return FileData;
         }
         
         public override object GenerateReferralDocument(int id)
         {
             HtmlToPdf htmlPDF = new HtmlToPdf();
-            htmlPDF.BasePath = "D:\test.html";
 
+            string st = "";
 
-            var acc = _context.Referrals.Where(p => p.Id == id).FirstOrDefault();
+           var acc = _context.Referrals.Include("Case")
+                                        .Include("Case.Patient2")
+                                        .Include("Case.Patient2.User")
+                                        .Include("Doctor")
+                                        .Where(p => p.Id == id).FirstOrDefault();
+
+            st = st.Replace("{{PatientName}}", acc.Case.Patient2.User.FirstName) + st.Replace("{{ReferredToDoctorId}}", (acc.ReferredToDoctorId).ToString()) + st.Replace("{{Note}}", acc.Note);
+            //st.Replace("{{ReferredToDoctor}}",acc.Doctor.User.FirstName);
+            htmlPDF.OpenHTML(st);
+            htmlPDF.SavePDF(st);
+            htmlPDF.ShowPDF(st);
 
             return acc;
         }
