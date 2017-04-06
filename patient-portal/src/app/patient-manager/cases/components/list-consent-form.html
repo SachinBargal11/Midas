@@ -24,7 +24,7 @@
     <!--<p-column field="consentReceived" header="File Name" [sortable]="true" onclick="test()">-->
     <p-column field="consentReceived" header="File Name">
         <ng-template let-ListConsents="rowData" pTemplate="body">
-            <u> <a (click)="DownloadPdf()">{{ListConsents.consentReceived}}    </a></u>
+            <u> <a  style="color: blue"  (click)="DownloadPdf()">{{ListConsents.consentReceived}}    </a></u>
         </ng-template>
     </p-column>
 
