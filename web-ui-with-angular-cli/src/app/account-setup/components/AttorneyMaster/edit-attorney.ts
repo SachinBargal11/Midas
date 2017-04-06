@@ -71,7 +71,7 @@ export class EditAttorneyComponent implements OnInit {
             let result = this._attorneyMasterStore.fetchAttorneyById(attorneyId);
             result.subscribe(
                 (attorney: any) => {
-                    
+
                     this.attorney = attorney.toJS();
                     this.dateOfBirth = this.attorney.user.dateOfBirth
                         ? this.attorney.user.dateOfBirth.toDate()
@@ -177,9 +177,9 @@ export class EditAttorneyComponent implements OnInit {
                     faxNo: attorneyformValues.attorneyFaxNo ? attorneyformValues.attorneyFaxNo.replace(/\-|\s/g, '') : null,
                     homePhone: attorneyformValues.attorneyHomePhone,
                     workPhone: attorneyformValues.attorneyWorkPhone,
-                    //officeExtension: attorneyformValues.officeExtension,
-                    //alternateEmail: attorneyformValues.alternateEmail,
-                    //preferredcommunication: attorneyformValues.preferredcommunication,
+                    officeExtension: attorneyformValues.attorneyofficeExtension,
+                    alternateEmail: attorneyformValues.attorneyalternateEmail,
+                    preferredcommunication: attorneyformValues.attorneypreferredcommunication,
                     createByUserId: this._sessionStore.session.account.user.id
                 }),
                 address: new Address({

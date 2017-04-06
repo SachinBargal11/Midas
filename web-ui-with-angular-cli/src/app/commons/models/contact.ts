@@ -1,5 +1,6 @@
 import {Record} from 'immutable';
 import * as moment from 'moment';
+import { PreferredCommunication } from './enums/preferred-communication';
 
 const ContactRecord = Record({
     id: 0,
@@ -16,7 +17,7 @@ const ContactRecord = Record({
     updateDate: null, //Moment
     alternateEmail: '',
     officeExtension: '',
-    preferredcommunication: '',
+    preferredcommunication: PreferredCommunication.CELLPHONE,
 
 });
 
@@ -36,7 +37,7 @@ export class Contact extends ContactRecord {
     updateDate: moment.Moment;
     alternateEmail: string;
     officeExtension: string;
-    preferredcommunication: string
+    preferredcommunication: PreferredCommunication;
 
     constructor(props) {
         super(props);

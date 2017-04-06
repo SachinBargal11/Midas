@@ -103,7 +103,7 @@ export class EditFamilyMemberComponent implements OnInit {
             //officeExtension: familyMemberFormValues.officeExtension,
             //alternateEmail: familyMemberFormValues.alternateEmail,
             //preferredcommunication: familyMemberFormValues.preferredcommunication,   
-            
+
         });
         this._progressBarService.show();
         result = this._familyMemberStore.updateFamilyMember(familyMember, this.familyMember.id);
