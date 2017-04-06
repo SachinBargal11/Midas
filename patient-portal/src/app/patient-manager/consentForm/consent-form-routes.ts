@@ -2,10 +2,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ValidateActiveSession } from '../../commons/guards/validate-active-session';
 
-import { AddConsentFormComponent } from './components/add-consent-form'
-import { ConsentListComponent } from './components/list-consent-form'
+import { AddDocConsentFormComponent } from './components/add-consent-form'
+import { ConsentDocListComponent } from './components/list-consent-form'
 import { ShellComponent } from '../../commons/shell-component';
 import { SessionStore } from '../../commons/stores/session-store';
+
+import { EditDocConsentFormComponent } from './components/edit-consent-form';
 export const ConsentShellRoutes: Routes = [
     {
         path: '',
@@ -13,16 +15,16 @@ export const ConsentShellRoutes: Routes = [
         redirectTo: 'consentForm'
     },
     {
-        path: 'consentForm',
+        path: 'consent-form',
         component: ShellComponent,
         canActivate: [ValidateActiveSession],
         data: {
-            breadcrumb: 'consentForm'
+            breadcrumb: 'Consent Form'
         },
         children: [
             {
                 path: '',
-                component: ConsentListComponent,
+                component: ConsentDocListComponent,
                 data: {
                     breadcrumb: 'root'
                 }
@@ -30,10 +32,17 @@ export const ConsentShellRoutes: Routes = [
 
             {
                 path: 'add',
-                component: AddConsentFormComponent,
+                component: AddDocConsentFormComponent,
                 canActivate: [ValidateActiveSession],
                 data: {
                     breadcrumb: 'Add Consent form'
+                }
+            }, {
+                path: 'edit/:id',
+                component: EditDocConsentFormComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Edit Consent form'
                 }
             },
 

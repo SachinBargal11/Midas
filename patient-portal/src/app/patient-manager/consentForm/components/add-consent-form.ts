@@ -1,168 +1,3 @@
-
-
-// import { FileUploadModule } from 'primeng/primeng';
-// import { Component, OnInit, ElementRef } from '@angular/core';
-
-// import { Router,ActivatedRoute } from '@angular/router';
-// import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-// import { AppValidators } from '../../../commons/utils/AppValidators';
-
-// import { User } from '../../../commons/models/user';
-// import { NotificationsStore } from '../../../commons/stores/notifications-store';
-// import { Notification } from '../../../commons/models/notification';
-// import * as moment from 'moment';
-// import { ProgressBarService } from '../../../commons/services/progress-bar-service';
-// import { NotificationsService } from 'angular2-notifications';
-// import { UserType } from '../../../commons/models/enums/user-type';
-// import { Contact } from '../../../commons/models/contact';
-// import { Address } from '../../../commons/models/address';
-// import { SessionStore } from '../../../commons/stores/session-store';
-// import { AddConsentStore } from '../stores/add-consent-form-store';
-
-// import { AddConsentFormService } from '../services/consent-form-service';
-// import { Http, Response, RequestOptions, Headers, Request, RequestMethod } from '@angular/http';
-// @Component({
-//     selector: 'add-consent-form',
-//     templateUrl: './add-consent-form.html',
-//     providers: [AddConsentFormService]
-// })
-
-// export class AddConsentFormComponent implements OnInit {
-
-//     doctors: any[];
-//     isdoctorsLoading = false;
-//     isSaveProgress = false;
-//     states: any[]
-//     consentform: FormGroup;
-//     consentformControls;
-
-//     minDate: Date;
-//     maxDate: Date;
-//     patientId: number;
-//     selectedCity = 0;
-//     isPassChangeInProgress;
-
-//     // public base_path_service: string = "http://128.199.190.109/api/";
-//     constructor(
-
-//         private service: AddConsentFormService,
-
-//         public http: Http,
-//         private _AddConsentStore: AddConsentStore,
-//         private fb: FormBuilder,
-//         private _router: Router,
-//            public _route: ActivatedRoute,
-//         private _notificationsStore: NotificationsStore,
-//         private _sessionStore: SessionStore,
-//         private _progressBarService: ProgressBarService,
-//         private _notificationsService: NotificationsService,
-//         private _elRef: ElementRef,
-//        // private _statesStore: StatesStore,
-
-
-//     ) 
-
-//     {
-//           this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
-//             this.c = parseInt(routeParams.patientId, 10);
-//         this.consentform = this.fb.group({
-//             attorneyState: ['', Validators.required]
-//         });
-//         this.consentformControls = this.consentform.controls;
-//     }
-//     )}
-
-//     ngOnInit() {
-//         let today = new Date();
-//         let currentDate = today.getDate();
-//         this.maxDate = new Date();
-//         this.maxDate.setDate(currentDate);
-//         this._AddConsentStore.getdoctors(this.patientId)
-//             .subscribe(doctor => this.doctors = doctor);
-
-
-//     }
-
-//     selectDoctor(event) {
-//         this.selectedDoctor = 0;
-//         let currentState = event.target.value;
-//         // this.loadCities(currentState);
-//     }
-
-//     myfile = {
-//         "name": "Upload",
-//         "image": ''
-//     }
-
-//     // fileChangeEvent(fileInput: any){
-//     //    this.myfile.image = fileInput.target.files;        
-//     // }
-
-//     onChange(event) {
-//         console.log('onChange');
-//         var files = event.srcElement.files;
-//         console.log(files);
-//         this.service.makeFileRequest('http://midas.codearray.tk/patientapi/fileupload/upload/5/case/', [], files)
-//             .subscribe(() => {
-//                // console.log('sent');
-//                 this._notificationsService.success('Success', 'File Uploaded successfully!');
-//                 setTimeout(() => {
-//                     this._router.navigate(['/account/login']);
-//                 }, 3000);
-//             },
-//             error => {
-//                 debugger;
-//                // console.log(error),
-//                     this.isPassChangeInProgress = false;
-//                 let errString = 'Unable to upload.';
-//                 this._notificationsService.error('Error!', ErrorMessageFormatter.getErrorMessages(error, errString));
-//             },
-
-//             () => {
-//                // console.log('Authentication Complete');
-//                 this.isPassChangeInProgress = false;
-//             }
-//             );
-
-//     }
-
-//     upload() {       
-//         debugger;
-//        this.isSaveProgress = true;
-//         let consentFormValues = this.consentform.value;
-//         let result;
-
-//         // let consentForm = new Consent({
-//         //     doctorID: consentFormValues.State,
-//         //      });
-
-//         this._progressBarService.show();
-//         this.http.post('http://midas.codearray.tk/patientapi/fileupload/upload/5/case/', this.myfile)
-//             .subscribe(
-//             data => {
-//                 console.log("data submitted");
-//                 this._notificationsService.success('Success', 'File Uploaded successfully!');
-//                 setTimeout(() => {
-//                     this._router.navigate(['/account/login']);
-//                 }, 3000);
-//             },
-//             error => {
-//                 debugger;
-//                 console.log(error),
-//                     this.isPassChangeInProgress = false;
-//                 let errString = 'Unable to upload.';
-//                 this._notificationsService.error('Error!', ErrorMessageFormatter.getErrorMessages(error, errString));
-//             },
-
-//             () => {
-//                 console.log('Authentication Complete');
-//                 this.isPassChangeInProgress = false;
-//             }
-//             );
-//     }
-
-// }
-
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -175,25 +10,28 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 //import { FileUpload, FileUploadModule } from 'primeng/primeng';
-import { AddConsentStore } from '../stores/add-consent-form-store';
+import { AddDocConsentStore } from '../stores/add-consent-form-store';
 import { SessionStore } from '../../../commons/stores/session-store';
-import { AddConsentFormService } from '../services/consent-form-service';
+import { AddDocConsentFormService } from '../services/consent-form-service';
 import { AddConsent } from '../models/add-consent-form';
 import { ElementRef, Input, ViewChild } from '@angular/core';
 import { Http } from '@angular/http';
 import * as _ from 'underscore';
+import { ScannerService } from '../../../commons/services/scanner-service';
 
 @Component({
     selector: 'add-consent-form',
     templateUrl: './add-consent-form.html',
-    providers: [AddConsentFormService]
+    providers: [AddDocConsentFormService]
 })
 
-export class AddConsentFormComponent implements OnInit {
-    private _url: string = `${environment.SERVICE_BASE_URL}`;
+export class AddDocConsentFormComponent implements OnInit {
+   private _url: string = `${environment.SERVICE_BASE_URL}`;
     msgs: Message[];
     uploadedFiles: any[] = [];
+    uploadedFile = "";
     currentId: number;
+    UploadedFileName: string;
     //document: VisitDocument;
     url;
     doctors: any[];
@@ -213,18 +51,29 @@ export class AddConsentFormComponent implements OnInit {
     isPassChangeInProgress;
     companyId: number;
     fileName: string;
-    fileUploaded:string;
+    fileUploaded: string;
+    document: AddConsent[] = [];
+    selectedDoctoredit = 0;
+    doctorApprovalId: 0;
+    documentMode: string = '1';
+    scannerContainerId: string = `scanner_${moment().valueOf()}`;
+    twainSources: TwainSource[] = [];
+    selectedTwainSource: TwainSource = null;
+    _dwObject: any = null;
+
+
     constructor(
         private fb: FormBuilder,
-        private service: AddConsentFormService,
+        private service: AddDocConsentFormService,
         private _router: Router,
         private _sessionStore: SessionStore,
         public _route: ActivatedRoute,
-        private _AddConsentStore: AddConsentStore,
+        private _AddConsentStore: AddDocConsentStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private http: Http,
+        private _scannerService: ScannerService
 
     ) {
 
@@ -232,11 +81,13 @@ export class AddConsentFormComponent implements OnInit {
 
             this.caseId = parseInt(routeParams.caseId, 10);
             // let companyId: number = this._sessionStore.session.currentCompany.id;
-           // this.companyId = this._sessionStore.session.currentCompany.id;
-            this.url = this._url + '/fileupload/multiupload/' + this.caseId + '/case';
+            this.companyId = this._sessionStore.session.currentCompany.id;
+            this.url = this._url + '/fileupload/multiupload/' + this.caseId + '/consent';
             this.consentForm = this.fb.group({
                 doctor: ['', Validators.required]
+                // ,uploadedFiles: ['', Validators.required]
             });
+
             this.consentformControls = this.consentForm.controls;
         })
 
@@ -250,95 +101,152 @@ export class AddConsentFormComponent implements OnInit {
         this._AddConsentStore.getdoctors(this.companyId)
             .subscribe(doctor => this.doctors = doctor);
 
-
     }
-
     selectDoctor(event) {
         this.selectedDoctor = 0;
         let currentDoctor = event.target.value;
 
     }
 
-    onUpload(event) {
-        for (let file of event.files) {
-            this.uploadedFiles.push(file);           
-            
-        }
 
-        this.msgs = [];
-      
-        this.msgs.push({ severity: 'info', summary: 'File Uploaded', detail: '' });
+    ngOnDestroy() {
+        this._scannerService.deleteWebTwain(this.scannerContainerId);
+        this._scannerService.unloadAll();
     }
 
-    onUploadss(event) {
+    ngAfterViewInit() {
+        _.defer(() => {
+            this._scannerService.getWebTwain(this.scannerContainerId)
+                .then((dwObject) => {
+                    debugger;
+                    this._dwObject = dwObject;
+                    if (this._dwObject) {
+                        for (let i = 0; i < this._dwObject.SourceCount; i++) {
+                            this.twainSources.push({ idx: i, name: this._dwObject.GetSourceNameItems(i) });
+                        }
 
-        let fileName: string;
-        for (let file of event.files) {
-            this.uploadedFiles.push(file);
-            fileName = file;
-
-        }
-        this.isSaveProgress = true;
-        let consentFormValues = this.consentForm.value;
-        let result;
-        let consentDetailJS = this.consentDetail.toJS();
-        let consentDetail: AddConsent = new AddConsent(_.extend(consentDetailJS, {
-            // caseName: caseFormValues.caseName,
-            caseId: this.caseId,
-            patientId: this.patientId,
-            //doctorID: consentFormValues.doctor,
-            // doctorID=this.do;
-            fileName: fileName
-        }));
-
-        this._progressBarService.show();
-        result = this._AddConsentStore.Save(consentDetail);
-
-
-        this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'File Uploaded', detail: '' });
-    }
-
-    Save() {
-debugger;
-        this.isSaveProgress = true;
-        let consentFormValues = this.consentForm.value;
-        let result;
-        let consentDetail = new AddConsent({
-            caseId: this.caseId,
-            patientId: this.patientId,
-            doctorId: parseInt(consentFormValues.doctor),
-            consentReceived: this.fileUploaded
+                    }
+                }).catch(() => {
+                    // (<any>window).OnWebTwainNotFoundOnWindowsCallback();
+                    this._notificationsService.alert('', 'Not able to connect scanner. Please refresh the page again and download the software prompted.');
+                });
         });
 
+    }
+
+    AcquireImage() {
+        if (this._dwObject) {
+            this._dwObject.IfDisableSourceAfterAcquire = true;
+            if (this.selectedTwainSource) {
+                this._dwObject.SelectSourceByIndex(this.selectedTwainSource.idx);
+            } else {
+                this._dwObject.SelectSource();
+            }
+            this._dwObject.OpenSource();
+            this._dwObject.AcquireImage();
+        }
+    }
+
+    myfile = {
+        "name": "Mubashshir",
+        "image": ''
+    }
+
+    onUpload(event) {
+   this.uploadedFiles = [];
+        for (let file of event.files) {
+
+            this.uploadedFile = file.name;
+            this.uploadedFiles.push(file);
+            // this.UploadedFileName.push( this.uploadedFiles.push(file));
+            //  this.myfile.image = file.name; 
+            this.UploadedFileName = file.name;
+            // alert(file.name);   
+        }
+
+        this.msgs = [];
+        let notification = new Notification({
+
+            'title': 'File Uploaded!',
+            'type': 'SUCCESS',
+            'createdAt': moment()
+        });
+        this._notificationsStore.addNotification(notification);
+        // this.msgs.push({ severity: 'info', summary: 'File Uploaded', detail: this.UploadedFileName });
+        // this.msgs.push({ UploadedFileName});
+        // this.downloadDocument();
+
+    }
+    downloadDocument() {
         this._progressBarService.show();
-        result = this._AddConsentStore.Save(consentDetail);
-        result.subscribe(
-            (response) => {
-                let notification = new Notification({
-                    'title': 'Consent form added successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../'], { relativeTo: this._route });
+        this._AddConsentStore.getDocumentsForCaseId(this.caseId)
+            .subscribe(document => {
+                this.document = document
+
             },
             (error) => {
-                let errString = 'Unable to add Consent form.';
-                let notification = new Notification({
-                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this.isSaveProgress = false;
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 this._progressBarService.hide();
             },
             () => {
-                this.isSaveProgress = false;
                 this._progressBarService.hide();
             });
+    }
+
+    Save() {
+        if (this.uploadedFiles.length == 0) {
+            let errString = 'Please upload file.'
+            let notification = new Notification({
+
+                'title': 'Please upload file!',
+                'type': 'SUCCESS',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            // this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(notification, notification));
+            this._notificationsService.error('Oh No!', "Please upload file");
+            this._progressBarService.hide();
+        }
+        else {
+            this.isSaveProgress = true;
+            let consentFormValues = this.consentForm.value;
+            let result;
+            let consentDetail = new AddConsent({
+
+                caseId: this.caseId,
+                patientId: this.patientId,
+                doctorId: parseInt(consentFormValues.doctor),
+                consentReceived: this.UploadedFileName
+            });
+
+            this._progressBarService.show();
+            result = this._AddConsentStore.Save(consentDetail);
+            result.subscribe(
+                (response) => {
+                    let notification = new Notification({
+                        'title': 'Consent form added successfully!',
+                        'type': 'SUCCESS',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                },
+                (error) => {
+                    let errString = 'Unable to add Consent form.';
+                    let notification = new Notification({
+                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    this.isSaveProgress = false;
+                    this._notificationsStore.addNotification(notification);
+                    this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this.isSaveProgress = false;
+                    this._progressBarService.hide();
+                });
+        }
     }
 
     //  deleteCase(caseDetail: Case): Observable<Case> {
@@ -357,48 +265,11 @@ debugger;
     //         return <Observable<Case>>Observable.from(promise);
     //     }
 
+   GenerateConsentForm() {
 
-    upload() {
-
-        this.isSaveProgress = true;
-        let consentFormValues = this.consentForm.value;
-        let result;
-        let consentDetailJS = this.consentDetail.toJS();
-        let consentDetail: AddConsent = new AddConsent(_.extend(consentDetailJS, {
-            // caseName: caseFormValues.caseName,
-            caseId: this.caseId,
-            patientId: this.patientId,
-            doctorID: consentFormValues.doctor,
-            fileName: 'ssss'
-        }));
-
-        this._progressBarService.show();
-        result = this._AddConsentStore.Save(consentDetail)
-
-            .subscribe(
-            data => {
-                console.log("data submitted");
-                this._notificationsService.success('Success', 'File Uploaded successfully!');
-                setTimeout(() => {
-                    this._router.navigate(['/account/login']);
-                }, 3000);
-            },
-            error => {
-                debugger;
-                console.log(error),
-                    this.isPassChangeInProgress = false;
-                let errString = 'Unable to upload.';
-                this._notificationsService.error('Error!', ErrorMessageFormatter.getErrorMessages(error, errString));
-            },
-
-            () => {
-                console.log('Authentication Complete');
-                this.isPassChangeInProgress = false;
-            }
-            );
     }
-
-
-
-
+}
+export interface TwainSource {
+    idx: number;
+    name: string;
 }

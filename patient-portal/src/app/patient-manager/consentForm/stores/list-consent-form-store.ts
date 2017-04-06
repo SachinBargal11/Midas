@@ -11,21 +11,21 @@ import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { ListConsent } from '../models/list-consent-form';
 
-import { ListConsentFormService } from '../services/list-consent-form-service';
+import { ListDocConsentFormService } from '../services/list-consent-form-service';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import {List} from 'immutable';
 import {BehaviorSubject} from 'rxjs/Rx';
 
 
 @Injectable()
-export class ListConsentStore {
+export class ListDocConsentStore {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     private _headers: Headers = new Headers();
   private _ListConsent: BehaviorSubject<List<ListConsent>> = new BehaviorSubject(List([]));
   
     constructor(private _http: Http,
         private _sessionStore: SessionStore,
-        private _listconsentFormService:  ListConsentFormService
+        private _listconsentFormService:  ListDocConsentFormService
     ) {
         this._headers.append('Content-Type', 'application/json');
     }
@@ -57,5 +57,18 @@ export class ListConsentStore {
         });
         return <Observable<ListConsent>>Observable.from(promise);
     }
+
+  DownloadConsentForm(CaseId: Number): Observable<ListConsent[]> {
+    
+        let promise = new Promise((resolve, reject) => {
+            this._listconsentFormService.DownloadConsentForm(CaseId).subscribe((consent: ListConsent[]) => {
+                this._ListConsent.next(List(consent));
+                resolve(consent);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<ListConsent[]>>Observable.fromPromise(promise);
+    }  
 
 }
