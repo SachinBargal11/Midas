@@ -114,7 +114,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
                 else
                 {
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid case company mapping.", ErrorLevel = ErrorLevel.Error };
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid case company mapping", ErrorLevel = ErrorLevel.Error };
                 }
 
                 _context.SaveChanges();
