@@ -195,7 +195,7 @@
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-          <Property Name="BlobStorageTypeId" Type="int" Nullable="false" />
+          <Property Name="BlobStorageTypeId" Type="int" />
         </EntityType>
         <EntityType Name="CompanySpecialtyDetails">
           <Key>
@@ -1078,7 +1078,7 @@ warning 6035: The relationship 'FK_AddressInfo_State_StateCode' has columns that
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BlobStorage_Company_BlobStorageTypeId">
-          <End Role="BlobStorageType" Type="Self.BlobStorageType" Multiplicity="1" />
+          <End Role="BlobStorageType" Type="Self.BlobStorageType" Multiplicity="0..1" />
           <End Role="Company" Type="Self.Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BlobStorageType">
@@ -3056,7 +3056,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <Property Name="BlobStorageTypeId" Type="Int32" Nullable="false" />
+          <Property Name="BlobStorageTypeId" Type="Int32" />
           <NavigationProperty Name="AddressInfo" Relationship="Self.FK_Company_AddressInfo" FromRole="Company" ToRole="AddressInfo" />
           <NavigationProperty Name="AdjusterMasters" Relationship="Self.FK_AdjusterMaster_Company_CompanyId" FromRole="Company" ToRole="AdjusterMaster" />
           <NavigationProperty Name="Attorneys" Relationship="Self.FK_Attorney_Company_CompanyId" FromRole="Company" ToRole="Attorney" />
@@ -4255,7 +4255,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BlobStorage_Company_BlobStorageTypeId">
-          <End Role="BlobStorageType" Type="Self.BlobStorageType" Multiplicity="1" />
+          <End Role="BlobStorageType" Type="Self.BlobStorageType" Multiplicity="0..1" />
           <End Role="Company" Type="Self.Company" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="BlobStorageType">
