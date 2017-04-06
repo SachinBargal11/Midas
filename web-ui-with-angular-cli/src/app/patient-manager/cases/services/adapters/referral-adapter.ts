@@ -1,6 +1,7 @@
 import { CaseAdapter } from './case-adapter';
 import * as moment from 'moment';
 import { Referral } from '../../models/referral';
+import { RoomsAdapter } from '../../../../medical-provider/rooms/services/adapters/rooms-adapter';
 import { DoctorAdapter } from '../../../../medical-provider/users/services/adapters/doctor-adapter';
 import { LocationDetailAdapter } from '../../../../medical-provider/locations/services/adapters/location-detail-adapter';
 import { CompanyAdapter } from '../../../../account/services/adapters/company-adapter';
@@ -24,6 +25,7 @@ export class ReferralAdapter {
                 referredByEmail: data.referredByEmail,
                 referredToEmail: data.referredToEmail,
                 referralAccepted: data.referralAccepted,
+                room: RoomsAdapter.parseResponse(data.room),
                 case: CaseAdapter.parseResponse(data.case),
                 referringDoctor: DoctorAdapter.parseResponse(data.referringDoctor),
                 referringLocation: LocationDetailAdapter.parseResponse(data.referringLocation),
