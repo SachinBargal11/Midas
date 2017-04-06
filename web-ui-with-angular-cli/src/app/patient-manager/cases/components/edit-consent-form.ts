@@ -47,11 +47,11 @@ export class EditConsentFormComponent implements OnInit {
     patientId: number;
     caseId: number;
     doctroId: number;
-    selectedDoctor = 0;  
-    companyId: number;  
+    selectedDoctor = 0;
+    companyId: number;
     document: AddConsent[] = [];
     doctorApprovalId: number;
-  documentMode: string = '2';
+    documentMode: string = '1';
     scannerContainerId: string = `scanner_${moment().valueOf()}`;
     twainSources: TwainSource[] = [];
     selectedTwainSource: TwainSource = null;
@@ -68,7 +68,7 @@ export class EditConsentFormComponent implements OnInit {
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private http: Http,
-         private _scannerService: ScannerService,
+        private _scannerService: ScannerService,
 
 
     ) {
@@ -77,7 +77,7 @@ export class EditConsentFormComponent implements OnInit {
             this.caseId = parseInt(routeParams.caseId, 10);
             // let companyId: number = this._sessionStore.session.currentCompany.id;
             this.companyId = this._sessionStore.session.currentCompany.id;
-            this.url = this._url + '/fileupload/multiupload/' + this.caseId + '/case';
+            this.url = this._url + '/fileupload/multiupload/' + this.caseId + '/consent';
             this.consentForm = this.fb.group({
                 doctor: ['', Validators.required]
                 //uploadedFile: ['', Validators.required]
@@ -85,17 +85,17 @@ export class EditConsentFormComponent implements OnInit {
 
             this.consentformControls = this.consentForm.controls;
         })
-        this._route.params.subscribe((routeParams: any) => {            
+        this._route.params.subscribe((routeParams: any) => {
             this.doctorApprovalId = parseInt(routeParams.id);
             this._progressBarService.show();
-            let resultD = this._AddConsentStore.editDoctorCaseConsentApproval(this.doctorApprovalId);           
+            let resultD = this._AddConsentStore.editDoctorCaseConsentApproval(this.doctorApprovalId);
             resultD.subscribe(
                 (consentDetail: AddConsent) => {
                     this.consentDetail = consentDetail;
                     this.selectedDoctor = consentDetail.doctorId;
                     this.file.name = consentDetail.consentReceived;
                     this.uploadedFiles.push(this.file);
-                    this.UploadedFileName = this.file.name; 
+                    this.UploadedFileName = this.file.name;
                     //this.selectedDoctoredit = consentDetail.doctorId.toString();
                 },
                 (error) => {
@@ -112,7 +112,7 @@ export class EditConsentFormComponent implements OnInit {
         "name": "",
         "image": '',
         "webkitRelativePath": "../download.jpg"
-        
+
     }
 
     ngOnInit() {
@@ -124,7 +124,7 @@ export class EditConsentFormComponent implements OnInit {
             .subscribe(doctor => this.doctors = doctor);
         // this.downloadDocument();
     }
-ngAfterViewInit() {
+    ngAfterViewInit() {
         _.defer(() => {
             this._scannerService.getWebTwain(this.scannerContainerId)
                 .then((dwObject) => {
@@ -169,15 +169,25 @@ ngAfterViewInit() {
         this.uploadedFiles = [];
 
         for (let file of event.files) {
-            this.uploadedFiles.push(file);            
-            this.UploadedFileName = file.name;              
+            this.uploadedFiles.push(file);
+            this.UploadedFileName = file.name;
         }
         this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'File Uploaded', detail: this.UploadedFileName });
+        this.msgs = [];
+        let notification = new Notification({
+
+            'title': 'File Uploaded!',
+            'type': 'SUCCESS',
+            'createdAt': moment()
+        });
+        this._notificationsStore.addNotification(notification);
+
+        //this.msgs.push({ severity: 'info', summary: 'File Uploaded', detail: this.UploadedFileName });
         // this.msgs.push({ UploadedFileName});
         // this.downloadDocument();
 
     }
+    
     downloadDocument() {
         this._progressBarService.show();
         this._AddConsentStore.getDocumentsForCaseId(this.caseId)
@@ -234,7 +244,10 @@ ngAfterViewInit() {
                 this._progressBarService.hide();
             });
     }
+    GenerateConsentForm() {
 
+
+    }
 }
 export interface TwainSource {
     idx: number;

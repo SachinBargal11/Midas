@@ -11,7 +11,8 @@
                             </label>
 
             <div [formGroup]="consentForm" class="form-group" [class.error]="consentformControls.doctor.touched && !consentformControls.doctor.valid">
-                <select formControlName="doctor" [ngModel]="selectedDoctor" type="text" (change)="selectDoctor($event)" class="form-control" placeholder="" [class.error]="consentformControls.doctor.touched && !consentformControls.doctor.valid">
+                <select formControlName="doctor" [ngModel]="selectedDoctor" type="text" (change)="selectDoctor($event)" class="form-control"
+                    placeholder="" [class.error]="consentformControls.doctor.touched && !consentformControls.doctor.valid">
                             <option value="">-Select Doctor-</option>
                             <option *ngFor="let doctors of doctors" value="{{doctors.id}}">{{doctors.user.firstName}}</option>
                             </select>
@@ -55,70 +56,41 @@
 
 
 <section class="card" *ngIf="documentMode == 2">
-
     <div class="card-block">
-        <!--<div class="row">
-                <div class="col-lg-4">
-                    <label class="form-label">Doctor Name
-                                <span class="color-red">*</span>
-                            </label>
-
-                    <div class="form-group" [class.error]="consentformControls.doctor.touched && !consentformControls.doctor.valid">
-                        <select formControlName="doctor" type="text" (change)="selectDoctor($event)" class="form-control" placeholder="" [class.error]="consentformControls.doctor.touched && !consentformControls.doctor.valid">
-                            <option value="">-Select Doctor-</option>
-                            <option *ngFor="let doctors of doctors" value="{{doctors.id}}">{{doctors.user.firstName}}</option>
-                            </select>
-                        <div class='error-list' *ngIf="consentformControls.doctor.touched && !consentformControls.doctor.valid">
-                            <ul>
-                                <li *ngIf="consentformControls.doctor.hasError('required')">Doctor is required.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
-            </div>-->
         <div>
-            <label class="form-label">
-                               <a href="/ConsentForm.pdf">Download Sample</a>
-                               
-                            </label>
+            <section class="card">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success sign-up" (click)="GenerateConsentForm()">Generate Consent Form
+        <!--<loader [visible]="isSaveProgress"></loader>-->
+    </button>
+                    <label class="form-label" style="display: none">
+<a href="/ConsentForm.pdf">Download Consent Form</a>
 
-            <label class="form-label">Form Upload
+</label>
+
+
+
+</div>
+</section>
+
+<label class="form-label">Form Upload
                                 <span class="color-red">*</span>
                             </label>
 
+<p-growl [value]="msgs"></p-growl>
+<p-fileUpload name="demo[]" url={{url}} (onUpload)="onUpload($event)" maxFileSize="1000000">
+    <ng-template pTemplate type="content">
+        <ul *ngIf="uploadedFiles.length">
+            <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+        </ul>
+    </ng-template>
 
-            <!--<div class="form-group" [class.error]="consentformControls.uploadedFile.touched && !consentformControls.uploadedFile.valid">
-
-                    <p-fileUpload name="demo[]" formControlName="uploadedFile" class="form-control" url={{url}} (onUpload)="onUpload($event)"
-                        maxFileSize="1000000" ngDefaultControl [class.error]="consentformControls.uploadedFile.touched && !consentformControls.uploadedFile.valid">
-                        <ng-template pTemplate type="content">
-                            <ul *ngIf="uploadedFiles.length">
-                                <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
-                            </ul>
-                        </ng-template>
-                    </p-fileUpload>
-                    <div class='error-list' *ngIf="consentformControls.uploadedFile.touched && !consentformControls.uploadedFile.valid">
-                        <ul>
-                            <li *ngIf="consentformControls.uploadedFile.hasError('required')">Doctor is required.</li>
-                        </ul>
-                    </div>
-                </div>-->
-
-            <p-growl [value]="msgs"></p-growl>
-            <p-fileUpload name="demo[]" url={{url}} (onUpload)="onUpload($event)" maxFileSize="1000000">
-                <ng-template pTemplate type="content">
-                    <ul *ngIf="uploadedFiles.length">
-                        <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
-                    </ul>
-                </ng-template>
-
-            </p-fileUpload>
-        </div>
+</p-fileUpload>
+</div>
 
 
 
-    </div>
+</div>
 </section>
 
 <br>
