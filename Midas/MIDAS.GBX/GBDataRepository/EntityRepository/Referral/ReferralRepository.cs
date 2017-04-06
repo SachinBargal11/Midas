@@ -529,7 +529,31 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public string GetTemplateDocument(string type)
         {
             type = "Referral";
-            return type;
+
+            string FileData = "<!DOCTYPE html>" +
+                                "<html>" +
+                                "<head>" +
+                                    "< title></title>" +
+                                    "< meta charset=\"utf -8\" />" +
+                                "</head>" +
+                                "< body>" +
+                                    "< p style=\"text -align:center\">Company name (citimedical)</p>" +
+                                    "< br />" +
+                                    "< p>Patient name: {{PatientName}}</p>" +
+                                    "< br />" +
+                                    "< p>Referal order date : {{CreateDate}}</p>" +
+                                    "< br />" +
+                                    "< p>Referral: {{ReferredToDoctorId}}</p>" +
+                                    "< p>Address: </p>" +
+                                    "< br />" +
+                                    "< p>Insurance info:</p>" +
+                                    "< br />" +
+                                    "< p>Referral information: {{Note}}</p>" +
+                                    "< br />" +
+                                    "< p>Signature of ordering physician:</p>" +
+                                "</body>" +
+                                "</html>";
+            return FileData;
         }
         
         public override object GenerateReferralDocument(int id)
@@ -539,6 +563,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
 
             var acc = _context.Referrals.Where(p => p.Id == id).FirstOrDefault();
+
             return acc;
         }
 
