@@ -30,12 +30,14 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
-
         public virtual Object Save<T>(T entity)
         {
             throw new NotImplementedException();
         }
-
+        public virtual Object SaveDoctor<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
         public virtual Object Save(int id, string type, List<HttpContent> streamContent,string uploadpath)
         {
             throw new NotImplementedException();
@@ -116,6 +118,11 @@ namespace MIDAS.GBX.EntityRepository
         }
 
         public virtual Object Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GenerateReferralDocument(int id)
         {
             throw new NotImplementedException();
         }

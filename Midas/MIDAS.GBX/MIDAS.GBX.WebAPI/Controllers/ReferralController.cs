@@ -97,6 +97,15 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.Delete(Request, id);
         }
 
+        [HttpGet]
+        [Route("generateReferralDocument/{id}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GenerateReferralDocument(int id)
+        {
+            return requestHandler.GenerateReferralDocument(Request, id);
+        }
+
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
