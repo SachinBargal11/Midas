@@ -80,9 +80,9 @@ namespace MIDAS.GBX.BusinessObjects
         }
         public void SendMail()
         {
-            var client = new SmtpClient("smtp.zoho.com", 587)
+            var client = new SmtpClient("smtp.mailgun.org", 25)
             {
-                Credentials = new NetworkCredential("support@codearray.tech", "supp0rt@2017"),
+                Credentials = new NetworkCredential("postmaster@chartingview.com", "Abc123def"),
                 EnableSsl = true,
             };
 

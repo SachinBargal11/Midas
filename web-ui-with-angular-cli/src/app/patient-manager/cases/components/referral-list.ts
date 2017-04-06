@@ -84,7 +84,7 @@ export class ReferralListComponent implements OnInit {
         let specialityString: string = null;
         let speciality: any = [];
         _.forEach(currentReferral.doctorSpecialities, (currentDoctorSpeciality: any) => {
-            speciality.push(currentDoctorSpeciality.specialty.specialityCode);
+            speciality.push(currentDoctorSpeciality.speciality.specialityCode);
             // _.forEach(currentReferral.referredToDoctor.doctorSpecialities, (currentDoctorSpeciality: any) => {
             //     speciality.push(currentDoctorSpeciality.specialty.specialityCode);
         });
