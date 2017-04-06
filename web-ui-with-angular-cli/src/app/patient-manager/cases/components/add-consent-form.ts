@@ -83,7 +83,7 @@ export class AddConsentFormComponent implements OnInit {
             this.caseId = parseInt(routeParams.caseId, 10);
             // let companyId: number = this._sessionStore.session.currentCompany.id;
             this.companyId = this._sessionStore.session.currentCompany.id;
-            this.url = this._url + '/fileupload/multiupload/' + this.caseId + '/case';
+            this.url = this._url + '/fileupload/multiupload/' + this.caseId + '/consent';
             this.consentForm = this.fb.group({
                 doctor: ['', Validators.required]
                 // ,uploadedFiles: ['', Validators.required]
@@ -150,9 +150,7 @@ export class AddConsentFormComponent implements OnInit {
     }
 
     onUpload(event) {
-
         for (let file of event.files) {
-
             this.uploadedFile = file.name;
             this.uploadedFiles.push(file);
             // this.UploadedFileName.push( this.uploadedFiles.push(file));
@@ -160,7 +158,6 @@ export class AddConsentFormComponent implements OnInit {
             this.UploadedFileName = file.name;
             // alert(file.name);   
         }
-
         this.msgs = [];
         let notification = new Notification({
 
@@ -261,6 +258,10 @@ export class AddConsentFormComponent implements OnInit {
     //         });
     //         return <Observable<Case>>Observable.from(promise);
     //     }
+
+    GenerateConsentForm() {
+
+    }
 
 
 }
