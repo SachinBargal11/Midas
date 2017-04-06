@@ -11,6 +11,8 @@ import * as _ from 'underscore';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
+import { ReferralStore } from '../../cases/stores/referral-store';
+import { Referral } from '../../cases/models/referral';
 
 @Component({
     selector: 'patients-list',
@@ -20,6 +22,7 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 export class PatientsListComponent implements OnInit {
     selectedPatients: Patient[] = [];
     patients: Patient[];
+    referrals: Referral[];
     datasource: Patient[];
     totalRecords: number;
 
@@ -28,6 +31,7 @@ export class PatientsListComponent implements OnInit {
         private _patientsStore: PatientsStore,
         private _notificationsStore: NotificationsStore,
         public _sessionStore: SessionStore,
+        private _referralStore: ReferralStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
     ) {
@@ -51,8 +55,10 @@ export class PatientsListComponent implements OnInit {
             }
             if (doctorRoleOnly) {
                 this.loadPatientsByCompanyAndDoctor();
+                this.loadReferrals();
             } else {
                 this.loadPatients();
+                this.loadReferrals();
             }
         }
     }
@@ -81,6 +87,19 @@ export class PatientsListComponent implements OnInit {
                 // this.datasource = patients.reverse();
                 // this.totalRecords = this.datasource.length;
                 // this.patients = this.datasource.slice(0, 10);
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+    loadReferrals() {
+        this._progressBarService.show();
+        this._referralStore.getReferralsByReferredToDoctorId()
+            .subscribe((referrals: Referral[]) => {
+                this.referrals = referrals.reverse();
             },
             (error) => {
                 this._progressBarService.hide();

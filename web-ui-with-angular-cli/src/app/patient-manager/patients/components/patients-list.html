@@ -57,3 +57,25 @@
         </ng-template>
     </p-column>
     </p-dataTable>
+    <br>
+
+<div class="input-group">
+    <h3 class="with-border">Referrals
+    </h3>
+</div>
+<div class="ui-widget-header row">
+    <div class="col-lg-4 input-group">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        <input #gbReferrals type="text" class="form-control" style="float:left" placeholder="Search Patient">
+    </div>
+</div>
+<p-dataTable [value]="referrals" [(selection)]="selectedReferrals" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
+    [globalFilter]="gbReferrals" [responsive]="true" [stacked]="stacked">
+    <header>Referrals List</header>
+    <p-column selectionMode="multiple"></p-column>
+    <p-column field="case.patient.user.displayName" header="Patient name" [sortable]="true"></p-column>
+    <p-column field="case.caseName" header="Case name" [sortable]="true"></p-column>
+    <p-column field="referringDoctor.user.displayName" header="Referred Name" [sortable]="true"></p-column>
+    <p-column field="referringCompany.name" header="Referred Name" [sortable]="true"></p-column>
+    <p-column  header="Document" [sortable]="true"></p-column>
+</p-dataTable>

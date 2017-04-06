@@ -23,6 +23,8 @@ import { RoomsStore } from '../../../medical-provider/rooms/stores/rooms-store';
 import { SpecialityStore } from '../../../account-setup/stores/speciality-store';
 import { Speciality } from '../../../account-setup/models/speciality';
 import { PatientsStore } from '../../patients/stores/patients-store';
+import { AddConsentStore } from '../../cases/stores/add-consent-form-store';
+import { AddConsent } from '../../cases/models/add-consent-form';
 import { Patient } from '../../patients/models/patient';
 
 @Component({
@@ -34,10 +36,12 @@ export class AddReferralComponent implements OnInit {
     referralForm: FormGroup;
     referralFormControls;
     searchMode: string = '1';
+    referrals: Referral[];
     tests: Tests[];
     rooms: Room[];
     selectedRoom: Room;
     locations: LocationDetails[];
+    doctor: Doctor;
     doctors: Doctor[];
     selectedDoctor: Doctor;
     specialities: Speciality[];
@@ -46,6 +50,7 @@ export class AddReferralComponent implements OnInit {
     patient: Patient;
     patientName: string;
     patients: Patient[];
+    consent: AddConsent[];
     patientsWithoutCase: Patient[];
 
     constructor(
@@ -59,11 +64,25 @@ export class AddReferralComponent implements OnInit {
         private _specialityStore: SpecialityStore,
         private _doctorsStore: DoctorsStore,
         private _roomsStore: RoomsStore,
+        private _consentStore: AddConsentStore,
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
+            this._progressBarService.show();
+            this._consentStore.getDocumentsForCaseId(this.caseId)
+                .subscribe((consent: AddConsent[]) => {
+                    this.consent = consent;
+                    this._doctorsStore.fetchDoctorById(consent[0].doctorId)
+                        .subscribe((doctor: Doctor) => this.doctor = doctor);
+                },
+                (error) => {
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
         });
         this.referralForm = this.fb.group({
             speciality: [''],
@@ -73,10 +92,24 @@ export class AddReferralComponent implements OnInit {
 
         this.referralFormControls = this.referralForm.controls;
     }
+    loadReferrals() {
+        this._progressBarService.show();
+        this._referralStore.getReferralsByCaseId(this.caseId)
+            .subscribe((referrals: Referral[]) => {
+                this.referrals = referrals;
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
 
     ngOnInit() {
         this.loadSpecialities();
         this.loadTests();
+        this.loadReferrals();
     }
     loadSpecialities() {
         this._progressBarService.show();
@@ -114,7 +147,14 @@ export class AddReferralComponent implements OnInit {
         this._progressBarService.show();
         this._doctorsStore.getDoctorsBySpecialityInAllApp(specialityId)
             .subscribe((doctors) => {
-                this.doctors = doctors;
+                // this.doctors = doctors;
+                let referredToDoctorIds: number[] = _.map(this.referrals, (currentReferral: Referral) => {
+                    return currentReferral.referredToDoctorId;
+                });
+                let doctorDetails = _.filter(doctors, (currentDoctor: Doctor) => {
+                    return _.indexOf(referredToDoctorIds, currentDoctor.id) < 0 ? true : false;
+                });
+                this.doctors = doctorDetails;
             },
             (error) => {
                 this._progressBarService.hide();
@@ -131,7 +171,14 @@ export class AddReferralComponent implements OnInit {
         this._progressBarService.show();
         this._roomsStore.getRoomsByTestInAllApp(testId)
             .subscribe((rooms: Room[]) => {
-                this.rooms = rooms;
+                // this.rooms = rooms;
+                let referredToRoomIds: number[] = _.map(this.referrals, (currentReferral: Referral) => {
+                    return currentReferral.referredToRoomId;
+                });
+                let roomDetails = _.filter(rooms, (currentRoom: Room) => {
+                    return _.indexOf(referredToRoomIds, currentRoom.id) < 0 ? true : false;
+                });
+                this.rooms = roomDetails;
             },
             (error) => {
                 this._progressBarService.hide();
@@ -143,52 +190,64 @@ export class AddReferralComponent implements OnInit {
 
     save() {
         this.isSaveProgress = true;
-        let referralFormValues = this.referralForm.value;
-        // let result;
-        let referralDetail = new Referral({
-            caseId: this.caseId,
-            referringCompanyId: this._sessionStore.session.currentCompany.id,
-            referringLocationId: null,
-            referringDoctorId: this._sessionStore.session.user.id,
-            referredToCompanyId: null,
-            referredToLocationId: null,
-            referredToDoctorId: this.selectedDoctor ? this.selectedDoctor.id : null,
-            referredToRoomId: this.selectedRoom ? this.selectedRoom.id : null,
-            note: referralFormValues.note,
-            referredByEmail: this._sessionStore.session.user.userName,
-            referredToEmail: this.selectedDoctor ? this.selectedDoctor.user.userName : null,
-            referralAccepted: 0
-        });
-
         this._progressBarService.show();
-        let result = this._referralStore.addReferral(referralDetail);
-        result.subscribe(
-            (response) => {
-                let notification = new Notification({
-                    'title': 'Referral added successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                this._router.navigate(['../'], { relativeTo: this._route });
-            },
-            (error) => {
-                let errString = 'Unable to add Referral.';
-                let notification = new Notification({
-                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this.isSaveProgress = false;
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
-            },
-            () => {
-                this.isSaveProgress = false;
-                this._progressBarService.hide();
+        let referralFormValues = this.referralForm.value;
+        let referralDetail;
+        if (this.consent) {
+            referralDetail = new Referral({
+                caseId: this.caseId,
+                referringCompanyId: this._sessionStore.session.currentCompany.id,
+                referringLocationId: null,
+                referringDoctorId: this.consent[0].doctorId,
+                referredToCompanyId: null,
+                referredToLocationId: null,
+                referredToDoctorId: this.selectedDoctor ? this.selectedDoctor.id : null,
+                referredToRoomId: this.selectedRoom ? this.selectedRoom.id : null,
+                note: referralFormValues.note,
+                // referredByEmail: this._sessionStore.session.user.userName,
+                referredByEmail: this.doctor.user.userName,
+                referredToEmail: this.selectedDoctor ? this.selectedDoctor.user.userName : null,
+                referralAccepted: 0
             });
 
+            let result = this._referralStore.addReferral(referralDetail);
+            result.subscribe(
+                (response) => {
+                    let notification = new Notification({
+                        'title': 'Referral added successfully!',
+                        'type': 'SUCCESS',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                },
+                (error) => {
+                    let errString = 'Unable to add Referral.';
+                    let notification = new Notification({
+                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    this.isSaveProgress = false;
+                    this._notificationsStore.addNotification(notification);
+                    this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this.isSaveProgress = false;
+                    this._progressBarService.hide();
+                });
+        } else {
+            let notification = new Notification({
+                'messages': 'Unable to add Referral, You dont have consent',
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this.isSaveProgress = false;
+            this._progressBarService.hide();
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'Unable to add Referral, You dont have consent');
+        }
     }
 
 }

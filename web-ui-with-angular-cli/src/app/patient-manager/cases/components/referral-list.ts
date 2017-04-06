@@ -1,3 +1,4 @@
+import { Doctor } from '../../../medical-provider/users/models/doctor';
 import { Speciality } from '../../../account-setup/models/speciality';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -11,6 +12,7 @@ import * as _ from 'underscore';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
+import { Room } from '../../../medical-provider/rooms/models/room';
 
 @Component({
     selector: 'referral-list',
@@ -20,6 +22,8 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 export class ReferralListComponent implements OnInit {
     selectedReferrals: Referral[] = [];
     referrals: Referral[];
+    referredDoctors: Doctor[];
+    refferedRooms: Room[];
     caseId: number;
     datasource: Referral[];
     totalRecords: number;
@@ -45,10 +49,22 @@ export class ReferralListComponent implements OnInit {
         this._progressBarService.show();
         this._referralStore.getReferralsByCaseId(this.caseId)
             .subscribe((referrals: Referral[]) => {
-                this.referrals = referrals.reverse();
-                // this.datasource = referrals.reverse();
-                // this.totalRecords = this.datasource.length;
-                // this.referrals = this.datasource.slice(0, 10);
+                // this.referrals = referrals.reverse();
+                let doctors: Doctor[] = _.map(referrals, (currentReferral: Referral) => {
+                    return currentReferral.referredToDoctor ? currentReferral.referredToDoctor : null;
+                });
+                let matchingDoctors = _.reject(doctors, (currentDoctor: Doctor) => {
+                    return currentDoctor == null;
+                });
+                this.referredDoctors = matchingDoctors.reverse();
+
+                let rooms: Room[] = _.map(referrals, (currentReferral: Referral) => {
+                    return currentReferral.room ? currentReferral.room : null;
+                });
+                let matchingRooms = _.reject(rooms, (currentRoom: Room) => {
+                    return currentRoom == null;
+                });
+                this.refferedRooms = matchingRooms.reverse();
             },
             (error) => {
                 this._progressBarService.hide();
@@ -67,8 +83,10 @@ export class ReferralListComponent implements OnInit {
     getCurrentDoctorSpeciality(currentReferral): string {
         let specialityString: string = null;
         let speciality: any = [];
-        _.forEach(currentReferral.referredToDoctor.doctorSpecialities, (currentDoctorSpeciality: any) => {
+        _.forEach(currentReferral.doctorSpecialities, (currentDoctorSpeciality: any) => {
             speciality.push(currentDoctorSpeciality.specialty.specialityCode);
+            // _.forEach(currentReferral.referredToDoctor.doctorSpecialities, (currentDoctorSpeciality: any) => {
+            //     speciality.push(currentDoctorSpeciality.specialty.specialityCode);
         });
         if (speciality.length > 0) {
             specialityString = speciality.join(', ');

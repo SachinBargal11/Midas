@@ -1,94 +1,97 @@
-<input type="radio" value="1" name="searchMode" [(ngModel)]="searchMode"> Search by Speciality
-<input type="radio" value="2" name="searchMode" [(ngModel)]="searchMode"> Search by Room
-
+<section>
+    <h6 class="with-border">
+        <div class="row">
+            <div class="col-md-2">
+                <input type="radio" value="1" name="searchMode" [(ngModel)]="searchMode"> Search Doctors
+            </div>
+            <div class="col-md-3">
+                <input type="radio" value="2" name="searchMode" [(ngModel)]="searchMode"> Search Rooms
+            </div>
+        </div>
+    </h6>
+</section>
 <form [formGroup]="referralForm" (ngSubmit)="save()">
-    <section class="card" *ngIf="searchMode == 1">
-        <div class="card-block">
-            <div class="row">
-                <div class="col-md-4">
-                    <label class="form-label"> Speciality <span class="color-red">*</span></label>
-                    <div class="form-group">
-                        <select formControlName="speciality" type="text" (change)="selectSpeciality($event)" class="form-control">
+    <section *ngIf="searchMode == 1">
+        <div class="ui-widget-header row">
+            <div class="col-lg-4 input-group">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                <input #gb type="text" class="form-control" style="float:left" placeholder="Search Doctor">
+            </div>
+            <div class="col-lg-3" style="text-align: right">
+                <label class="form-label">Search Doctors by Speciality </label>
+            </div>
+            <div class="col-lg-4">
+                <select formControlName="speciality" type="text" (change)="selectSpeciality($event)" class="form-control">
                             <option value="">-Select Speciality-</option>
                             <option *ngFor="let speciality of specialities" value="{{speciality.id}}">{{speciality.specialityCode}} - {{speciality.name}}</option>
                         </select>
-                    </div>
-                </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="ui-widget-header row">
-                        <div class="col-lg-4 input-group">
-                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                            <input #gb type="text" class="form-control" style="float:left" placeholder="Search Doctor">
-                        </div>
-                    </div>
-                    <p-dataTable [value]="doctors" [(selection)]="selectedDoctor" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
-                        [stacked]="stacked">
-                        <header>Doctors</header>
-                        <p-column selectionMode="single"></p-column>
-                        <p-column field="user.displayName" header="Doctor Name" [sortable]="true"></p-column>
-                        <p-column field="user.userName" header="Email" [sortable]="true"></p-column>
-                        <p-column field="" header="Company" [sortable]="true"></p-column>
-                        <p-column field="" header="Location" [sortable]="true"></p-column>
-                        <!--<p-column field="user.doctorSpecialities" header="Speciality" [sortable]="true">
+        </div>
+        <p-dataTable [value]="doctors" [(selection)]="selectedDoctor" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
+            [stacked]="stacked">
+            <header>Doctors</header>
+            <p-column selectionMode="single"></p-column>
+            <p-column field="user.displayName" header="Doctor Name" [sortable]="true"></p-column>
+            <p-column field="user.userName" header="Email" [sortable]="true"></p-column>
+            <p-column field="" header="Company" [sortable]="true"></p-column>
+            <p-column field="" header="Location" [sortable]="true"></p-column>
+            <!--<p-column field="user.doctorSpecialities" header="Speciality" [sortable]="true">
                             <ng-template let-currentReferral="rowData" pTemplate="body">
                                 {{getCurrentDoctorSpeciality(currentReferral)}}
                             </ng-template>
                         </p-column>-->
-                    </p-dataTable>
-                </div>
-            </div>
-        </div>
+        </p-dataTable>
     </section>
-    <section class="card" *ngIf="searchMode == 2">
-        <div class="card-block">
-            <div class="row">
-                <div class="col-md-4">
-                    <label class="form-label"> Test <span class="color-red">*</span></label>
-                    <div class="form-group">
-                        <select formControlName="tests" (change)="selectTest($event)" class="selectpicker form-control">
+    <section *ngIf="searchMode == 2">
+        <div class="ui-widget-header row">
+            <div class="col-lg-4 input-group">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                <input #gb type="text" class="form-control" style="float:left" placeholder="Search Room">
+            </div>
+            <div class="col-lg-3" style="text-align: right">
+                <label class="form-label">Search Rooms by Test</label>
+            </div>
+            <div class="col-lg-4">
+                <select formControlName="tests" (change)="selectTest($event)" class="selectpicker form-control">
                             <option value="">-Select Test-</option>
                             <option disabled>────────────────────</option>
                             <option *ngFor="let test of tests" value="{{test.id}}">{{test.name}}</option>
                         </select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="ui-widget-header row">
-                        <div class="col-lg-4 input-group">
-                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                            <input #gb type="text" class="form-control" style="float:left" placeholder="Search Room">
-                        </div>
-                    </div>
-                    <p-dataTable [value]="rooms" [(selection)]="selectedRoom" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
-                        [stacked]="stacked">
-                        <p-column selectionMode="single"></p-column>
-                        <p-column field="name" header="Name" [sortable]="true"></p-column>
-                        <p-column field="phone" header="Phone" [sortable]="true"></p-column>
-                        <p-column field="roomTest.name" header="Tests Provided" [sortable]="true"></p-column>
-                        <p-column field="location.name" header="Location" [sortable]="true"></p-column>
-                    </p-dataTable>
-                </div>
             </div>
         </div>
+        <p-dataTable [value]="rooms" [(selection)]="selectedRoom" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
+            [stacked]="stacked">
+            <p-column selectionMode="single"></p-column>
+            <p-column field="name" header="Name" [sortable]="true"></p-column>
+            <p-column field="phone" header="Phone" [sortable]="true"></p-column>
+            <p-column field="roomTest.name" header="Tests Provided" [sortable]="true"></p-column>
+            <p-column field="location.name" header="Location" [sortable]="true"></p-column>
+        </p-dataTable>
     </section>
-    <section class="card">
-        <div class="card-block">
-            <div class="row">
-                <div class="col-md-4">
-                    <label class="form-label">Notes
+    <br>
+    <section>
+        <div class="row">
+            <div class="col-md-4">
+                <label class="form-label">Notes <span class="color-red">*</span>
                             </label>
-                    <div class="form-group" [class.error]="referralFormControls.note.touched && !referralFormControls.note.valid">
-                        <textarea formControlName="note" class="form-control" rows="3" [class.error]="referralFormControls.note.touched && !referralFormControls.note.valid"></textarea>
-                        <div class='error-list' *ngIf="referralFormControls.note.touched && !referralFormControls.note.valid">
-                            <ul>
-                                <li *ngIf="referralFormControls.note.hasError('required')">Please enter Notes.</li>
-                            </ul>
-                        </div>
+                <div class="form-group" [class.error]="referralFormControls.note.touched && !referralFormControls.note.valid">
+                    <textarea formControlName="note" class="form-control" rows="3" [class.error]="referralFormControls.note.touched && !referralFormControls.note.valid"></textarea>
+                    <div class='error-list' *ngIf="referralFormControls.note.touched && !referralFormControls.note.valid">
+                        <ul>
+                            <li *ngIf="referralFormControls.note.hasError('required')">Please enter Notes.</li>
+                        </ul>
                     </div>
+                </div>
+            </div>
+            <div class="col-md-2 m-t-lg"></div>
+            <div class="col-md-4 m-t-lg">
+                <div class="row">
+                    <label class="form-label">
+                    <a class="btn-primary btn-sm" href="/ConsentForm.pdf">Generate Referral Document</a>                               
+                </label>
+                </div>
+                <div class="row">
+                    <a href="/ConsentForm.pdf"><u>Download Document</u></a>   
                 </div>
             </div>
         </div>

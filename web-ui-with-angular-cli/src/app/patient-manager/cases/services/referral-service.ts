@@ -34,10 +34,26 @@ export class ReferralService {
         });
         return <Observable<Referral[]>>Observable.fromPromise(promise);
     }
+    getReferralsByReferredToDoctorId(doctorId: Number): Observable<Referral[]> {
+        let promise: Promise<Referral[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/referral/getByReferredToDoctorId/' + doctorId)
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let referrals = (<Object[]>data).map((data: any) => {
+                        return ReferralAdapter.parseResponse(data);
+                    });
+                    resolve(referrals);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<Referral[]>>Observable.fromPromise(promise);
+    }
     addReferral(referral: Referral): Observable<Referral> {
         let promise: Promise<Referral> = new Promise((resolve, reject) => {
             let requestData: any = referral.toJS();
-            requestData = _.omit(requestData, 'case', 'referringDoctor', 'referringLocation', 'referringCompany', 'referredToDoctor', 'referredToLocation', 'referredToCompany');
+            requestData = _.omit(requestData, 'room', 'case', 'referringDoctor', 'referringLocation', 'referringCompany', 'referredToDoctor', 'referredToLocation', 'referredToCompany');
             return this._http.post(this._url + '/Referral/save', JSON.stringify(requestData), {
                 headers: this._headers
             })
