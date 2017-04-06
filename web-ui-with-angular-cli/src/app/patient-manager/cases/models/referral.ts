@@ -1,6 +1,7 @@
 import { Record } from 'immutable';
 import * as moment from 'moment';
 import { Case } from '../models/case';
+import { Room } from '../../../medical-provider/rooms/models/room';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
 import { LocationDetails } from '../../../medical-provider/users/models//location-details';
 import { Company } from '../../../account/models/company';
@@ -19,6 +20,7 @@ const ReferralRecord = Record({
     referredByEmail: '',
     referredToEmail: '',
     referralAccepted: 0,
+    room: null,
     case: null,
     referringDoctor: null,
     referringLocation: null,
@@ -48,6 +50,7 @@ export class Referral extends ReferralRecord {
     referredByEmail: string;
     referredToEmail: string;
     referralAccepted: number;
+    room: Room;
     case: Case;
     referringDoctor: Doctor;
     referringLocation: LocationDetails;
