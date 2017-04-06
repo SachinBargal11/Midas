@@ -118,7 +118,7 @@ export class AddDocConsentFormComponent implements OnInit {
         _.defer(() => {
             this._scannerService.getWebTwain(this.scannerContainerId)
                 .then((dwObject) => {
-                    debugger;
+
                     this._dwObject = dwObject;
                     if (this._dwObject) {
                         for (let i = 0; i < this._dwObject.SourceCount; i++) {

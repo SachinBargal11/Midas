@@ -118,8 +118,7 @@ export class AddConsentFormComponent implements OnInit {
     ngAfterViewInit() {
         _.defer(() => {
             this._scannerService.getWebTwain(this.scannerContainerId)
-                .then((dwObject) => {
-                    debugger;
+                .then((dwObject) => {                  
                     this._dwObject = dwObject;
                     if (this._dwObject) {
                         for (let i = 0; i < this._dwObject.SourceCount; i++) {

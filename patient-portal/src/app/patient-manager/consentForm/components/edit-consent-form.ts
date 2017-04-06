@@ -208,7 +208,7 @@ export class EditDocConsentFormComponent implements OnInit {
     }
 
     Save() {
-        debugger;
+       
         if (this.uploadedFiles.length == 0) {
             let errString = 'Please upload file.'
             let notification = new Notification({

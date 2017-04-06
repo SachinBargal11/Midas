@@ -44,7 +44,7 @@ export class ConsentListComponent implements OnInit {
     }
 
     loadConsentForm() {
-        debugger;
+      
         this._progressBarService.show();
         this._ListConsentStore.getConsetForm(this.caseId)
             .subscribe(ListConsent => {
