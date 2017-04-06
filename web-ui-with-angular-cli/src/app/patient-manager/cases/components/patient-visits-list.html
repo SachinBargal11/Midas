@@ -83,18 +83,11 @@
         </ng-template>
     </p-column>
 
-    <p-column field="room.name" header="Speciality" [sortable]="true">
-        <ng-template let-visit="rowData" pTemplate="body">
-            {{visit.room.name}}
-        </ng-template>
-    </p-column>
-
     <p-column field="visitStatusLabel" header="Status" [sortable]="true"></p-column>
     
 
     <p-column field="room.name" header="Billing Status" [sortable]="true">
-        <ng-template let-visit="rowData" pTemplate="body">
-          
+        <ng-template let-visit="rowData" pTemplate="body">        
         </ng-template>
     </p-column>
 

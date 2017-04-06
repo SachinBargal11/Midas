@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MIDAS.GBX.DataRepository.Model;
 using System.Data.Entity;
 using BO = MIDAS.GBX.BusinessObjects;
+using Docs.Pdf;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 {
@@ -485,6 +486,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                             .Include("Doctor1.DoctorSpecialities")
                                                             .Include("Doctor1.DoctorSpecialities.Specialty")
                                                             .Include("Case")
+                                                            .Include("Case.Patient2")
+                                                            .Include("Case.Patient2.User")
                                                             .Include("Room")
                                                             .Where(p => p.ReferredToDoctorId == id
                                                              && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -524,6 +527,58 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             return (object)res;
         }
         #endregion
+
+        public string GetTemplateDocument(string type)
+        {
+            type = "Referral";
+
+            String FileData = "<!DOCTYPE html>" +
+                                "<html>" +
+                                "<head>" +
+                                    "< title></title>" +
+                                    "< meta charset=\"utf -8\" />" +
+                                "</head>" +
+                                "< body>" +
+                                    "< p style=\"text -align:center\">Company name (citimedical)</p>" +
+                                    "< br />" +
+                                    "< p>Patient name: {{PatientName}}</p>" +
+                                    "< br />" +
+                                    "< p>Referal order date : {{CreateDate}}</p>" +
+                                    "< br />" +
+                                    "< p>Referral: {{ReferredToDoctor}}</p>" +
+                                    "< p>Address: </p>" +
+                                    "< br />" +
+                                    "< p>Insurance info:</p>" +
+                                    "< br />" +
+                                    "< p>Referral information: {{Note}}</p>" +
+                                    "< br />" +
+                                    "< p>Signature of ordering physician:</p>" +
+                                "</body>" +
+                                "</html>";
+            
+            return FileData;
+        }
+        
+        public override object GenerateReferralDocument(int id)
+        {
+            HtmlToPdf htmlPDF = new HtmlToPdf();
+
+            string st = "";
+
+           var acc = _context.Referrals.Include("Case")
+                                        .Include("Case.Patient2")
+                                        .Include("Case.Patient2.User")
+                                        .Include("Doctor")
+                                        .Where(p => p.Id == id).FirstOrDefault();
+
+            st = st.Replace("{{PatientName}}", acc.Case.Patient2.User.FirstName) + st.Replace("{{ReferredToDoctorId}}", (acc.ReferredToDoctorId).ToString()) + st.Replace("{{Note}}", acc.Note);
+            //st.Replace("{{ReferredToDoctor}}",acc.Doctor.User.FirstName);
+            htmlPDF.OpenHTML(st);
+            htmlPDF.SavePDF(st);
+            htmlPDF.ShowPDF(st);
+
+            return acc;
+        }
 
         public void Dispose()
         {

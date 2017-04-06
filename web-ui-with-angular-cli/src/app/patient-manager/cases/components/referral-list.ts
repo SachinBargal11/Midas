@@ -59,7 +59,7 @@ export class ReferralListComponent implements OnInit {
     }
     loadRefferalsLazy(event: LazyLoadEvent) {
         setTimeout(() => {
-            if(this.datasource) {
+            if (this.datasource) {
                 this.referrals = this.datasource.slice(event.first, (event.first + event.rows));
             }
         }, 250);

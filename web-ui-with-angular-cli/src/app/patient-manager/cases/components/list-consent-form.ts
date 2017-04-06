@@ -44,7 +44,7 @@ export class ConsentListComponent implements OnInit {
     }
 
     loadConsentForm() {
-       
+
         this._progressBarService.show();
         this._ListConsentStore.getConsetForm(this.caseId)
             .subscribe(ListConsent => {
@@ -69,7 +69,7 @@ export class ConsentListComponent implements OnInit {
     }
 
     deleteConsentForm() {
-         if (this.selectedConsentList.length > 0) {
+        if (this.selectedConsentList.length > 0) {
             this.selectedConsentList.forEach(currentCase => {
                 this._progressBarService.show();
                 this._ListConsentStore.deleteConsetForm(currentCase)
@@ -113,4 +113,23 @@ export class ConsentListComponent implements OnInit {
 
 
     }
+
+    DownloadPdf() {
+       
+
+        this._progressBarService.show();
+        this._ListConsentStore.DownloadConsentForm(this.caseId)
+            .subscribe(document => {
+                // this.document = document
+
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+
 }

@@ -26,8 +26,8 @@ export class DoctorLocationScheduleStore {
         this._doctorLocationSchedules.next(this._doctorLocationSchedules.getValue().clear());
     }
 
-    get doctorLocationSchedules() {
-        return this._doctorLocationSchedules.asObservable();
+    get doctorLocationSchedules(): BehaviorSubject<List<DoctorLocationSchedule>> {
+        return this._doctorLocationSchedules;
     }
 
     // getDoctorLocationSchedulesByDoctorId(doctorId: number): Observable<DoctorLocationSchedule[]> {

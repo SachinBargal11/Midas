@@ -18,7 +18,8 @@ using System.Web.Http.Cors;
 namespace MIDAS.GBX.WebAPI.Controllers
 {
     [RoutePrefix("midasapi/FileUpload")]
-    [EnableCors(origins: "*", headers: "Content-Type, Accept, x-requested-with", methods: "*")]
+    //[EnableCors(origins:"*",headers: "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With", methods: "GET,POST,PUT,DELETE,OPTIONS")]
+    //[EnableCors(origins: "*", headers: "*", methods: "*", exposedHeaders: "X-My-Header")] 
     public class FileUploadController : ApiController
     {
         internal string sourcePath = string.Empty;
@@ -95,6 +96,20 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Route("multiuploadtest/{id}/{type}")]
+        public async Task<HttpResponseMessage> UploadTest(int id, string type)
+        {
+            if (!Request.Content.IsMimeMultipartContent("form-data")) return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            var streamProvider = new MultipartMemoryStreamProvider();            
+            await Request.Content.ReadAsMultipartAsync(streamProvider);
+            List<HttpContent> streamContent = streamProvider.Contents.ToList();            
+            string contenttype = streamContent.ToList().Select(p => p.Headers.ContentType).FirstOrDefault().MediaType;
+            HttpResponseMessage resMessage = requestHandler.CreateGbDocObject(Request, id, type, streamContent, sourcePath);
+            
+            return resMessage;
+        }
+
+        [HttpPost]
         [Route("multiupload/{id}/{type}")]
         public async Task<HttpResponseMessage> Upload(int id, string type)
         {
@@ -124,10 +139,6 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
             string contenttype = streamContent.ToList().Select(p => p.Headers.ContentType).FirstOrDefault().MediaType;
             HttpResponseMessage resMessage = requestHandler.CreateGbDocObject(Request, id, type, streamContent, sourcePath);
-            resMessage.Content.Headers.Add("Access-Control-Allow-Origin", "*");
-            resMessage.Content.Headers.Add("Access-Control-Allow-Methods", "POST,PUT,GET,DELETE");
-            resMessage.Content.Headers.Add("Access-Control-Allow-Headers", "Accept, x-requested-with");
-            resMessage.Content.Headers.Add("Access-Control-Allow-Credentials", "true");
             return resMessage;
         }
         /*[HttpPost]
@@ -173,16 +184,24 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpGet]
         [Route("download/{caseId}/{documentid}")]
         [AllowAnonymous]
-        public void Download(int caseId, int documentid)
-        {
-            //Response           
+        public HttpResponse Download(int caseId, int documentid)
+        {            
             string filepath = requestHandler.Download(Request, caseId, documentid);
+            filepath = filepath.Replace(ConfigurationManager.AppSettings.Get("BLOB_PATH"), ConfigurationManager.AppSettings.Get("LOCAL_PATH"));
             FileInfo fileInfo = new System.IO.FileInfo(filepath);
+            System.IO.FileStream fs = null;
+            fs = System.IO.File.Open(filepath, FileMode.Open);
+            byte[] btFile = new byte[fs.Length];
+            fs.Read(btFile, 0, Convert.ToInt32(fs.Length));
+            fs.Close();
             HttpContext.Current.Response.ContentType = "application/octet-stream";
             HttpContext.Current.Response.AddHeader("Content-Disposition", String.Format("attachment;filename=\"{0}\"", fileInfo.Name));
-            //HttpContext.Current.Response.AddHeader("Content-Length", fileInfo.Length.ToString());
-            HttpContext.Current.Response.WriteFile(filepath);
-            HttpContext.Current.Response.End();
+            HttpContext.Current.Response.AddHeader("Content-Length", fileInfo.Length.ToString());
+            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
+            //HttpContext.Current.Response.WriteFile(filepath);   
+            HttpContext.Current.Response.BinaryWrite(btFile);
+            //HttpContext.Current.Response.End();
+            return HttpContext.Current.Response;
         }
 
         [HttpGet]

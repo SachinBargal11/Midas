@@ -40,6 +40,7 @@ export class LocationsService {
     }
 
     getLocations(): Observable<any[]> {
+        
         let requestData = {
             company: {
                 id: this._sessionStore.session.user.id

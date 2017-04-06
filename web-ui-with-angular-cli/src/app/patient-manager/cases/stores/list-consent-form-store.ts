@@ -58,4 +58,17 @@ export class ListConsentStore {
         return <Observable<ListConsent>>Observable.from(promise);
     }
 
+ DownloadConsentForm(CaseId: Number): Observable<ListConsent[]> {
+    
+        let promise = new Promise((resolve, reject) => {
+            this._listconsentFormService.DownloadConsentForm(CaseId).subscribe((consent: ListConsent[]) => {
+                this._ListConsent.next(List(consent));
+                resolve(consent);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<ListConsent[]>>Observable.fromPromise(promise);
+    }  
+
 }

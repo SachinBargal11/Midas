@@ -8,6 +8,7 @@ CREATE TABLE [dbo].[Company](
 	[TaxID] [nvarchar](10) NOT NULL,
 	[AddressId] [int] NOT NULL,
 	[ContactInfoID] [int] NOT NULL,
+	[BlobStorageTypeId] [int] NOT NULL DEFAULT (1),
 	[IsDeleted] [bit] NULL CONSTRAINT [DF_Company_IsDeleted]  DEFAULT ((0)),
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NOT NULL,
@@ -48,3 +49,10 @@ GO
 
 ALTER TABLE [dbo].[Company] CHECK CONSTRAINT [FK_Company_SubscriptionPlan]
 GO
+
+/*
+ALTER TABLE [dbo].[Company] ADD [BlobStorageTypeId] [int] NOT NULL DEFAULT (1)
+
+ALTER TABLE [dbo].[Company] ALTER COLUMN [BlobStorageTypeId] SET DEFAULT (1)
+GO
+*/

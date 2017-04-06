@@ -20,7 +20,8 @@ import { ValidateInActiveSession } from './commons/guards/validate-inactive-sess
 import { StatesStore } from './commons/stores/states-store';
 import { StateService } from './commons/services/state-service';
 import { PatientManagerModule } from './patient-manager/patient-manager-module';
-import { AddConsentFormComponent } from './patient-manager/consentForm/components/add-consent-form';
+import { AddDocConsentFormComponent } from './patient-manager/consentForm/components/add-consent-form';
+import { ScannerService } from './commons/services/scanner-service';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,7 @@ import { AddConsentFormComponent } from './patient-manager/consentForm/component
     NotificationsStore,
     StateService,
     StatesStore,
-    ProgressBarService
+    ProgressBarService,ScannerService
   ],
   bootstrap: [AppComponent]
 })

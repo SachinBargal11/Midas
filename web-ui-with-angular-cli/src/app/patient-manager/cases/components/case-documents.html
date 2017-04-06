@@ -1,7 +1,7 @@
 <input type="radio" value="1" name="documentMode" [(ngModel)]="documentMode"> Scan Documents
 <input type="radio" value="2" name="documentMode" [(ngModel)]="documentMode"> Upload Documents
 
-<section class="card" *ngIf="documentMode == 1">
+<section class="card" [hidden]="documentMode != 1">
     <header class="card-header card-header-lg">
         Scan Documents
     </header>
@@ -28,13 +28,12 @@
         </div>
     </div>
 </section>
-<section class="card" *ngIf="documentMode == 2">
+<section class="card" [hidden]="documentMode != 2">
     <header class="card-header card-header-lg">
         Upload Documents for Case
     </header>
     <div class="card-block">
-        <p-growl [value]="msgs"></p-growl>
-        <p-fileUpload name="demo[]" url={{url}} multiple="multiple" (onUpload)="onUpload($event)" maxFileSize="1000000">
+        <p-fileUpload name="demo[]" url={{url}} multiple="multiple" (onUpload)="onUpload($event)"  maxFileSize="1000000">
             <ng-template pTemplate type="content">
                 <ul *ngIf="uploadedFiles.length">
                     <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
@@ -77,9 +76,9 @@
     <p-column selectionMode="multiple"></p-column>  
     <p-column field="documentName" header="Document Name" [sortable]="true"></p-column>
     <p-column field="createDate" header="Created Date" [sortable]="true">  
-        <!--<ng-template let-document="rowData" pTemplate="body">
-        {{ createDate || dateFormat }}  
-        </ng-template> -->
+        <ng-template let-document="rowData" pTemplate="body">
+        {{ document.createDate | dateTimeFormat }}  
+        </ng-template> 
     </p-column> 
     
 </p-dataTable>

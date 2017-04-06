@@ -62,4 +62,28 @@ export class ListConsentFormService {
         });
          return <Observable<ListConsent>>Observable.from(promise);
     }
+
+     DownloadConsentForm(CaseId: Number): Observable<ListConsent[]> {//DoctorCaseConsentApproval/getByCaseId
+
+
+        let promise: Promise<ListConsent[]> = new Promise((resolve, reject) => {
+
+   
+            // return this._http.get(this._url + '/fileupload/get/' + CaseId  +'/case').map(res => res.json())
+            return this._http.get(this._url + '/fileupload/download/' + CaseId + '/' + 0).map(res => res.json())
+
+                .subscribe((data: Array<any>) => {
+                    let Consent = null;
+                    if (data.length) {
+                        Consent = ListConsentAdapter.parseResponse(data);
+                        resolve(data);
+                    } else {
+                        reject(new Error('NOT_FOUND'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<ListConsent[]>>Observable.fromPromise(promise);
+    }
 }

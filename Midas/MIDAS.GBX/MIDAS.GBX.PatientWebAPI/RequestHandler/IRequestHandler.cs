@@ -13,6 +13,7 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage RegenerateOTP(HttpRequestMessage request, T gbObject);
         HttpResponseMessage ValidateOTP(HttpRequestMessage request, T gbObject);
         HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage SaveDoctor(HttpRequestMessage request, T gbObject);
         HttpResponseMessage CreateGbDocObject(HttpRequestMessage request, int id, string type, List<HttpContent> streamContent,string uploadpath);
         HttpResponseMessage GetObject(HttpRequestMessage request, int id, string type);
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, T gbObject);
@@ -45,5 +46,6 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage GetByRoomId(HttpRequestMessage request, int RoomId);
         HttpResponseMessage GetByLocationAndSpecialty(HttpRequestMessage request, int locationId, int specialtyId);
         HttpResponseMessage DeleteFile(HttpRequestMessage request, int caseId, int id);
+        string Download(HttpRequestMessage request, int caseId, int documentid);
     }
 }

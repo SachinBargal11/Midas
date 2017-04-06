@@ -25,12 +25,12 @@ export class RoomsStore {
         });
     }
 
-    get rooms() {
-        return this._rooms.asObservable();
+    get rooms(): BehaviorSubject<List<Room>> {
+        return this._rooms;
     }
 
-    get tests() {
-        return this._tests.asObservable();
+    get tests(): BehaviorSubject<List<Tests>> {
+        return this._tests;
     }
 
     getRooms(locationId: number): Observable<Room[]> {

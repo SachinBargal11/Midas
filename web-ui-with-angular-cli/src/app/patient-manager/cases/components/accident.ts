@@ -57,7 +57,6 @@ export class AccidentInfoComponent implements OnInit {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
             this._progressBarService.show();
-            debugger;
             let result = this._accidentStore.getAccidents(this.caseId);
             result.subscribe(
                 (accidents: Accident[]) => {
@@ -129,7 +128,6 @@ export class AccidentInfoComponent implements OnInit {
         let currentDate = today.getDate();
         this.maxDate = new Date();
         this.maxDate.setDate(currentDate);
-        debugger;
         this._statesStore.getStates()
             .subscribe(states => this.states = states);
     }

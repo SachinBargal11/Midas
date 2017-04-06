@@ -1,3 +1,5 @@
+import { DoctorSpecialityAdapter } from './doctor-speciality-adapter';
+import { DoctorSpeciality } from '../../models/doctor-speciality';
 import * as moment from 'moment';
 import { Doctor } from '../../models/doctor';
 import { UserAdapter } from './user-adapter';
@@ -25,6 +27,12 @@ export class DoctorAdapter {
         let doctor = null;
 
         if (doctorData) {
+            let doctorSpecialities: DoctorSpeciality[] = [];
+            if (doctorData.doctorSpecialities) {
+                _.forEach(doctorData.doctorSpecialities, (currentDoctorSpeciality: any) => {
+                    doctorSpecialities.push(DoctorSpecialityAdapter.parseResponse(currentDoctorSpeciality));
+                });
+            }
             doctor = new Doctor({
                 id: doctorData.id,
                 licenseNumber: doctorData.licenseNumber,
@@ -34,8 +42,7 @@ export class DoctorAdapter {
                 taxType: doctorData.taxType,
                 title: doctorData.title,
                 user: UserAdapter.parseResponse(doctorData.user),
-                // doctorSpecialities: doctorData.user ? doctorData.user.doctorSpecialities : null,
-                doctorSpecialities: doctorData ? doctorData.doctorSpecialities : null,
+                doctorSpecialities: doctorSpecialities,
                 isDeleted: doctorData.isDeleted
             });
         }

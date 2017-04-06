@@ -1,3 +1,5 @@
+import { Failure } from 'codelyzer/walkerFactory/walkerFactory';
+import * as Debugger from '_debugger';
 import { Component, OnInit, Injectable } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PatientVisitsStore } from '../../patient-visit/stores/patient-visit-store';
@@ -16,6 +18,7 @@ import { CaseDocument } from '../models/case-document';
 import { CasesStore } from '../../cases/stores/case-store';
 import { CaseService } from '../../cases/services/cases-services';
 import { ScannerService } from '../../../commons/services/scanner-service';
+import { CaseDocumentAdapter } from '../services/adapters/case-document-adapters';
 
 
 
@@ -28,8 +31,7 @@ import { ScannerService } from '../../../commons/services/scanner-service';
 export class CaseDocumentsUploadComponent implements OnInit {
 
     private _url: string = `${environment.SERVICE_BASE_URL}`;
-    msgs: Message[];
-    selectedDocumentList= [];
+    selectedDocumentList = [];
     uploadedFiles: any[] = [];
     currentCaseId: number;
     documentMode: string = '1';
@@ -72,7 +74,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.downloadDocument();
+        this.getDocuments();
     }
 
     ngOnDestroy() {
@@ -127,53 +129,42 @@ export class CaseDocumentsUploadComponent implements OnInit {
     }
 
     onUpload(event) {
-        for (let file of event.files) {
-            this.uploadedFiles.push(file);
-        }
-        let notification = new Notification({
-                        'title': 'Document added successfully!',
-                        'type': 'SUCCESS',
+        // for (let file of event.files) {
+        //     this.uploadedFiles.push(file);
+        // }
+        // let notification = new Notification({
+        //                 'title': 'Document added successfully!',
+        //                 'type': 'SUCCESS',
+        //                 'createdAt': moment()
+        //             });
+        //             this._notificationsStore.addNotification(notification);
+        // let file = this.uploadedFiles;
+        // this._casesStore.uploadDocument(this.uploadedFiles,this.currentCaseId);
+        let responseDocuments: any = JSON.parse(event.xhr.responseText);
+          let documents = (<Object[]>responseDocuments).map((document: any) => {
+                        return CaseDocumentAdapter.parseResponse(document);
+                    });
+                       _.forEach(documents, (currentDocument: any) => {
+                       if( currentDocument.status == 'Failed') {
+                            let notification = new Notification({
+                        'title': currentDocument.message + '  ' + currentDocument.documentName,
+                         'type': 'ERROR',
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
-        // let file = this.uploadedFiles;
-        // this._casesStore.uploadDocument(this.uploadedFiles,this.currentCaseId);
+                       }
+                      });
+        this.getDocuments();
 
-        this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'File Uploaded', detail: '' });
-        this.downloadDocument();
-        
     };
 
-    // onError(event) {
-    //     for (let file of event.files) {
-    //         this.uploadedFiles.push(file);
-    //     }
-    //                 let errString = 'Document Already Exists';
-    //                 let notification = new Notification({
-    //                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-    //                     'type': 'ERROR',
-    //                     'createdAt': moment()
-    //                 });
-    //                 this.isSaveProgress = false;
-    //                 this._notificationsStore.addNotification(notification);
-    //                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-    //     // let file = this.uploadedFiles;
-    //     // this._casesStore.uploadDocument(this.uploadedFiles,this.currentCaseId);
-
-    //     this.msgs = [];
-    //     this.msgs.push({ severity: 'info', summary: 'File Uploaded', detail: '' });
-    //     this.downloadDocument();
-    // };
-
-
-
-    downloadDocument() {
+    getDocuments() {
         this._progressBarService.show();
         this._casesStore.getDocumentsForCaseId(this.currentCaseId)
             .subscribe(document => {
                 this.documents = document;
             },
+
             (error) => {
                 this._progressBarService.hide();
             },
@@ -183,7 +174,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
     }
 
     deleteDocument() {
-         if (this.selectedDocumentList.length > 0) {
+        if (this.selectedDocumentList.length > 0) {
             this.selectedDocumentList.forEach(currentCase => {
                 this._progressBarService.show();
                 this._casesStore.deleteDocument(currentCase)
@@ -195,7 +186,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
                             'createdAt': moment()
 
                         });
-                        this.downloadDocument();
+                        this.getDocuments();
                         this._notificationsStore.addNotification(notification);
                         this.selectedDocumentList = [];
                     },

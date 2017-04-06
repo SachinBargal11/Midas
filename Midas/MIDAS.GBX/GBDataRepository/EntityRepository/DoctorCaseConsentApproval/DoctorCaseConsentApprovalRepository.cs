@@ -34,6 +34,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             doctorCaseConsentApprovalBO.DoctorId = doctorCaseConsentApprovals.DoctorId;
             doctorCaseConsentApprovalBO.CaseId = doctorCaseConsentApprovals.CaseId;
             doctorCaseConsentApprovalBO.ConsentReceived = doctorCaseConsentApprovals.ConsentReceived;
+            doctorCaseConsentApprovalBO.Patientid = doctorCaseConsentApprovals.Patientid;
+            doctorCaseConsentApprovalBO.FileName = doctorCaseConsentApprovals.FileName;
             doctorCaseConsentApprovalBO.IsDeleted = doctorCaseConsentApprovals.IsDeleted;
             doctorCaseConsentApprovalBO.CreateByUserID = doctorCaseConsentApprovals.CreateByUserID;
             doctorCaseConsentApprovalBO.UpdateByUserID = doctorCaseConsentApprovals.UpdateByUserID;
@@ -115,6 +117,80 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 doctorCaseConsentApprovalDB.DoctorId = doctorCaseConsentApprovalBO.DoctorId;
                 doctorCaseConsentApprovalDB.CaseId = doctorCaseConsentApprovalBO.CaseId;
                 doctorCaseConsentApprovalDB.ConsentReceived = doctorCaseConsentApprovalBO.ConsentReceived;
+
+                if (Add_doctorCaseConsentApproval == true)
+                {
+                    doctorCaseConsentApprovalDB = _context.DoctorCaseConsentApprovals.Add(doctorCaseConsentApprovalDB);
+                }
+                _context.SaveChanges();
+
+            }
+
+            else
+            {
+                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid details.", ErrorLevel = ErrorLevel.Error };
+            }
+
+            _context.SaveChanges();
+
+            doctorCaseConsentApprovalDB = _context.DoctorCaseConsentApprovals.Where(p => p.Id == doctorCaseConsentApprovalDB.Id
+                                                                              && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                              .FirstOrDefault<DoctorCaseConsentApproval>();
+
+            var res = Convert<BO.DoctorCaseConsentApproval, DoctorCaseConsentApproval>(doctorCaseConsentApprovalDB);
+            return (object)res;
+        }
+        #endregion
+
+        #region SaveDoctor
+        public override object SaveDoctor<T>(T entity)
+        {
+            BO.DoctorCaseConsentApproval doctorCaseConsentApprovalBO = (BO.DoctorCaseConsentApproval)(object)entity;
+            DoctorCaseConsentApproval doctorCaseConsentApprovalDB = new DoctorCaseConsentApproval();
+
+            if (doctorCaseConsentApprovalBO != null)
+            {
+                doctorCaseConsentApprovalDB = _context.DoctorCaseConsentApprovals.Where(p => p.Id == doctorCaseConsentApprovalBO.ID
+                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                                 .FirstOrDefault();
+                bool Add_doctorCaseConsentApproval = false;
+
+                if (doctorCaseConsentApprovalBO.DoctorId <= 0 || doctorCaseConsentApprovalBO.Patientid <= 0)
+                {
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Doctor, Case and Consent data.", ErrorLevel = ErrorLevel.Error };
+                }
+
+                if (doctorCaseConsentApprovalDB == null && doctorCaseConsentApprovalBO.ID > 0)
+                {
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Doctor, Case and Consent data.", ErrorLevel = ErrorLevel.Error };
+                }
+                else if (doctorCaseConsentApprovalDB == null && doctorCaseConsentApprovalBO.ID <= 0)
+                {
+                    doctorCaseConsentApprovalDB = new DoctorCaseConsentApproval();
+                    Add_doctorCaseConsentApproval = true;
+                }
+
+                if (Add_doctorCaseConsentApproval == true)
+                {
+                    if (_context.DoctorCaseConsentApprovals.Any(p => p.DoctorId == doctorCaseConsentApprovalBO.DoctorId && p.Patientid == doctorCaseConsentApprovalBO.Patientid
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))))
+                    {
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Doctor, Case and Consent data already exists.", ErrorLevel = ErrorLevel.Error };
+                    }
+                }
+                else
+                {
+                    if (_context.DoctorCaseConsentApprovals.Any(p => p.DoctorId == doctorCaseConsentApprovalBO.DoctorId && p.Patientid == doctorCaseConsentApprovalBO.Patientid
+                                                                       && p.Id != doctorCaseConsentApprovalBO.ID
+                                                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))))
+                    {
+                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Doctor, Case and Consent data already exists.", ErrorLevel = ErrorLevel.Error };
+                    }
+                }
+
+                doctorCaseConsentApprovalDB.DoctorId = doctorCaseConsentApprovalBO.DoctorId;
+                doctorCaseConsentApprovalDB.Patientid = doctorCaseConsentApprovalBO.Patientid;
+                doctorCaseConsentApprovalDB.FileName = doctorCaseConsentApprovalBO.FileName;
 
                 if (Add_doctorCaseConsentApproval == true)
                 {

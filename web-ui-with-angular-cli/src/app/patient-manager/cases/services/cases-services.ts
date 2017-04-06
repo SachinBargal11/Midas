@@ -138,8 +138,9 @@ export class CaseService {
             dwObject.HttpFieldNameOfUploadedImage = 'demo[]';
             // dwObject.SaveAsPDF(`C:\\Users\\Mitali\\Downloads\\scanned_file_${currentCaseId}.pdf`);
             dwObject.HTTPUploadAllThroughPostAsPDF(
-                'midas.codearray.tk',
-                'midasapi/fileupload/multiupload/' + currentCaseId + '/case',
+                // 'midas.codearray.tk',
+                this._url,
+                'fileupload/multiupload/' + currentCaseId + '/case',
                 `scanned_file_${currentCaseId}.pdf`,
                 (response: any) => {
                     resolve(response);
@@ -148,7 +149,7 @@ export class CaseService {
                     reject(new Error(errorString));
                 });
         });
-        return <Observable<CaseDocument[]>>Observable.fromPromise(promise); 
+        return <Observable<CaseDocument[]>>Observable.fromPromise(promise);
 
 
         /*let promise: Promise<CaseDocument[]> = new Promise((resolve, reject) => {
@@ -174,7 +175,9 @@ export class CaseService {
         let promise: Promise<Case> = new Promise((resolve, reject) => {
             let caseRequestData = caseDetail.toJS();
             let caseCompanyMapping = [{
-                companyId: this._sessionStore.session.currentCompany.id
+                company: {
+                    id: this._sessionStore.session.currentCompany.id
+                }
             }];
             caseRequestData.caseCompanyMapping = caseCompanyMapping;
             return this._http.post(this._url + '/Case/Save', JSON.stringify(caseRequestData), {
@@ -197,7 +200,9 @@ export class CaseService {
         let promise = new Promise((resolve, reject) => {
             let caseRequestData = caseDetail.toJS();
             let caseCompanyMapping = [{
-                companyId: this._sessionStore.session.currentCompany.id
+                company: {
+                    id: this._sessionStore.session.currentCompany.id
+                }
             }];
             caseRequestData.caseCompanyMapping = caseCompanyMapping;
             return this._http.post(this._url + '/Case/Save', JSON.stringify(caseRequestData), {
@@ -232,7 +237,6 @@ export class CaseService {
         return <Observable<Case>>Observable.from(promise);
     }
     deleteDocument(caseDetail: CaseDocument): Observable<Case> {
-        debugger;
         let promise = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/fileupload/delete/' + caseDetail.id + '/' + caseDetail.documentId, {
                 headers: this._headers

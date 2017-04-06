@@ -63,15 +63,30 @@ import { AdjusterMasterService } from './patients/services/adjuster-service';
 // import { UsersModule } from '../medical-provider/users/users-module';
 
 import { ConsentShellRoutingModule } from './consentForm/consent-form-routes';
-import { AddConsentFormComponent } from './consentForm/components/add-consent-form';
-import { AddConsentStore } from './consentForm/stores/add-consent-form-store';
- import { AddConsentFormService } from './consentForm/services/consent-form-service';
-import { ConsentListComponent } from './consentForm/components/list-consent-form'
-
-import { ListConsentStore } from './consentForm/stores/list-consent-form-store';
-import { ListConsentFormService } from './consentForm/services/list-consent-form-service';
 
 
+import { AddDocConsentFormComponent } from './consentForm/components/add-consent-form';
+import { ConsentDocListComponent } from './consentForm/components/list-consent-form'
+
+
+
+
+import { AddDocConsentFormService } from './consentForm/services/consent-form-service';
+import { EditDocConsentFormComponent } from './consentForm/components/edit-consent-form'
+import { AddDocConsentStore } from './consentForm/stores/add-consent-form-store';
+import { ListDocConsentStore } from './consentForm/stores/list-consent-form-store';
+
+
+import { ListDocConsentFormService } from './consentForm/services/list-consent-form-service';
+
+import { ListConsentFormService } from './cases/services/list-consent-form-service';
+
+import { AddConsentFormService } from './cases/services/consent-form-service';
+import { AddConsentStore } from './cases/stores/add-consent-form-store';
+import { AddConsentFormComponent } from './cases/components/add-consent-form';
+import { ConsentListComponent } from './cases/components/list-consent-form'
+import { EditConsentFormComponent } from './cases/components/edit-consent-form';
+import { ListConsentStore } from './cases/stores/list-consent-form-store';
 
 
 @NgModule({
@@ -80,7 +95,7 @@ import { ListConsentFormService } from './consentForm/services/list-consent-form
         RouterModule,
         CommonsModule,
         PatientRoutingModule
-        ,ConsentShellRoutingModule
+        , ConsentShellRoutingModule
         // RoomsModule,
         // UsersModule
     ],
@@ -115,7 +130,9 @@ import { ListConsentFormService } from './consentForm/services/list-consent-form
         CaseBasicComponent,
         InsuranceMapComponent,
         CaseMappingComponent,
-        ViewAllComponent,AddConsentFormComponent,ConsentListComponent
+        ViewAllComponent, AddDocConsentFormComponent
+        , ConsentListComponent, AddConsentFormComponent
+        , EditConsentFormComponent, ConsentDocListComponent, EditDocConsentFormComponent
     ],
     providers: [
         PatientsService,
@@ -137,7 +154,8 @@ import { ListConsentFormService } from './consentForm/services/list-consent-form
         AccidentStore,
         InsuranceMappingStore,
         AdjusterMasterStore,
-        AdjusterMasterService,AddConsentStore,AddConsentFormService,ListConsentStore,ListConsentFormService
+        AdjusterMasterService, AddConsentStore, AddConsentFormService, ListConsentStore, ListConsentFormService
+        , ListDocConsentStore, AddDocConsentStore,ListDocConsentFormService,AddDocConsentFormService
         // PatientVisitsStore,
         // PatientVisitService
     ]

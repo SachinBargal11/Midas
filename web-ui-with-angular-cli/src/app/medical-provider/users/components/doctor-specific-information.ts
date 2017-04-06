@@ -1,3 +1,4 @@
+import { DoctorSpeciality } from '../models/doctor-speciality';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -64,7 +65,7 @@ export class DoctorSpecificInformationComponent implements OnInit {
                     let doctorDetail: Doctor = results[1];
 
                     this.doctor = doctorDetail;
-                    this.selectedSpecialities = _.map(doctorDetail.doctorSpecialities, (currentDoctorSpeciality: Speciality) => {
+                    this.selectedSpecialities = _.map(doctorDetail.doctorSpecialities, (currentDoctorSpeciality: DoctorSpeciality) => {
                         return currentDoctorSpeciality.id.toString();
                     });
 
