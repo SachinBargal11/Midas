@@ -13,7 +13,13 @@ namespace MIDAS.GBX.BusinessObjects
         public int DoctorId { get; set; }
 
         [JsonProperty("caseId")]
-        public int CaseId { get; set; }
+        public int? CaseId { get; set; }
+
+        [JsonProperty("patientid")]
+        public int? Patientid { get; set; }
+
+        [JsonProperty("fileName")]
+        public string FileName { get; set; }
 
         [JsonProperty("consentReceived")]
         public string ConsentReceived { get; set; }

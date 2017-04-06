@@ -73,5 +73,6 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByDoctorAndDates(HttpRequestMessage request, int DoctorId,  DateTime FromDate,DateTime ToDate);
         HttpResponseMessage GetByDoctorDatesAndName(HttpRequestMessage request, int DoctorId, DateTime FromDate, DateTime ToDate,string Name);       
         HttpResponseMessage GetByRoomId(HttpRequestMessage request, int RoomId);
+        HttpResponseMessage GenerateReferralDocument(HttpRequestMessage request, int id);
     }
 }

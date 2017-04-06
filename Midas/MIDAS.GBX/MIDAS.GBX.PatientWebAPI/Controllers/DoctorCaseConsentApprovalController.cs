@@ -52,6 +52,15 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             return requestHandler.CreateGbObject(Request, data);
         }
 
+        [HttpPost]
+        [Route("saveDoctor")]
+        [AllowAnonymous]
+        public HttpResponseMessage SaveDoctor([FromBody]DoctorCaseConsentApproval data)
+        {
+            return requestHandler.SaveDoctor(Request, data);
+        }
+
+
         [HttpGet]
         [Route("Delete/{id}")]
         [AllowAnonymous]
