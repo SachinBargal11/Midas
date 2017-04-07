@@ -14,6 +14,7 @@
 )
 GO
 
+/*
 INSERT INTO [dbo].[Templates]
            ([TemplateType]
            ,[FileData]
@@ -51,5 +52,6 @@ INSERT INTO [dbo].[Templates]
 </body>
 </html>
 ')
+*/
 GO
 
