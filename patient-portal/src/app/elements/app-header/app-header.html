@@ -7,8 +7,8 @@
 			<div class="site-header-content-in">
 				<div class="site-header-shown" *ngIf="sessionStore.session.user">
 					<div class="dropdown dropdown-notification notif">
-						<a (click)="showNotifications()" class="header-alarm" [class.active]="_notificationsStore.recentlyAdded" [class.swing]="_notificationsStore.highlightAddition"
-							[class.animated]="_notificationsStore.highlightAddition">
+						<a (click)="showNotifications()" class="header-alarm" [class.active]="notificationsStore.recentlyAdded" [class.swing]="notificationsStore.highlightAddition"
+							[class.animated]="notificationsStore.highlightAddition">
 							<i class="font-icon-alarm"></i>
 						</a>
 					</div>

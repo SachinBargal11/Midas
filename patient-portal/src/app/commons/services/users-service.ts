@@ -19,7 +19,7 @@ export class UsersService {
 
     constructor(
         private _http: Http,
-        private _sessionStore: SessionStore
+        public sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
     }
@@ -41,7 +41,7 @@ export class UsersService {
         let requestData = {
             userCompanies: [{
                 company: {
-                    id: this._sessionStore.session.user.id
+                    id: this.sessionStore.session.user.id
                 }
             }]
         };
@@ -89,7 +89,7 @@ export class UsersService {
             requestData = {
                 user: requestData,
                 company: {
-                    id: this._sessionStore.session.user.id
+                    id: this.sessionStore.session.user.id
                 },
                 role: requestData.roles
             };
@@ -123,7 +123,7 @@ export class UsersService {
             requestData = {
                 user: requestData,
                 company: {
-                    id: this._sessionStore.session.user.id
+                    id: this.sessionStore.session.user.id
                 },
                 role: requestData.roles
             };
@@ -223,7 +223,7 @@ export class UsersService {
             requestData = {
                 user: requestData,
                 company: {
-                    id: this._sessionStore.session.user.id
+                    id: this.sessionStore.session.user.id
                 },
                 role: requestData.roles
             };

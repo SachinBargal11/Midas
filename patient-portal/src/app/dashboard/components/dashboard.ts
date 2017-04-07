@@ -44,9 +44,9 @@ export class DashboardComponent {
         private fb: FormBuilder,
         private _router: Router,
         public _route: ActivatedRoute,
-        private _notificationsStore: NotificationsStore,
-        private _sessionStore: SessionStore,
-        private _progressBarService: ProgressBarService,
+       public notificationsStore: NotificationsStore,
+        public sessionStore: SessionStore,
+        public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _patientsStore: PatientsStore,
         private _familyMemberStore: FamilyMemberStore,
@@ -54,8 +54,8 @@ export class DashboardComponent {
         private _dateFormatPipe: DateFormatPipe,
         private _employerStore: EmployerStore
     ) {
-        this.patientId = this._sessionStore.session.user.id;
-        this._progressBarService.show();
+        this.patientId = this.sessionStore.session.user.id;
+        this.progressBarService.show();
         let result = this._patientsStore.getPatientById(this.patientId);
         result.subscribe(
             (patient: Patient) => {
@@ -68,10 +68,10 @@ export class DashboardComponent {
                     : null;
             },
             (error) => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
 
         let empResult = this._employerStore.getCurrentEmployer(this.patientId);
@@ -84,10 +84,10 @@ export class DashboardComponent {
                 }
             },
             (error) => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
 
         let familyResult = this._familyMemberStore.getFamilyMembers(this.patientId);
@@ -100,13 +100,13 @@ export class DashboardComponent {
                 }
             },
             (error) => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
 
-        this._progressBarService.show();
+        this.progressBarService.show();
         this._insuranceStore.getInsurances(this.patientId)
             .subscribe(insurances => {
                 if (insurances.length) {
@@ -116,10 +116,10 @@ export class DashboardComponent {
                 }
             },
             (error) => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
     }
 }

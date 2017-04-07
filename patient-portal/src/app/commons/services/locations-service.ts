@@ -19,7 +19,7 @@ export class LocationsService {
 
     constructor(
         private _http: Http,
-        private _sessionStore: SessionStore
+        public sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
     }
@@ -43,7 +43,7 @@ export class LocationsService {
         
         let requestData = {
             company: {
-                id: this._sessionStore.session.user.id
+                id: this.sessionStore.session.currentCompany.id
             }
         };
         let promise: Promise<any[]> = new Promise((resolve, reject) => {

@@ -25,9 +25,9 @@ export class PatientsListComponent implements OnInit {
     constructor(
         private _router: Router,
         private _patientsStore: PatientsStore,
-        private _notificationsStore: NotificationsStore,
-        public _sessionStore: SessionStore,
-        private _progressBarService: ProgressBarService,
+       public notificationsStore: NotificationsStore,
+        public sessionStore: SessionStore,
+        public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
     ) {
     }
@@ -37,7 +37,7 @@ export class PatientsListComponent implements OnInit {
     }
 
     loadPatients() {
-        // this._progressBarService.show();
+        // this.progressBarService.show();
         // this._patientsStore.getPatients()
         //     .subscribe(patients => {
         //         this.patients = patients.reverse();
@@ -46,10 +46,10 @@ export class PatientsListComponent implements OnInit {
         //         // this.patients = this.datasource.slice(0, 10);
         //     },
         //     (error) => {
-        //         this._progressBarService.hide();
+        //         this.progressBarService.hide();
         //     },
         //     () => {
-        //         this._progressBarService.hide();
+        //         this.progressBarService.hide();
         //     });
     }
 
@@ -63,7 +63,7 @@ export class PatientsListComponent implements OnInit {
     deletePatients() {
         if (this.selectedPatients.length > 0) {
             this.selectedPatients.forEach(currentPatient => {
-                this._progressBarService.show();
+                this.progressBarService.show();
                 let result;
                 result = this._patientsStore.deletePatient(currentPatient);
                 result.subscribe(
@@ -74,7 +74,7 @@ export class PatientsListComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this.loadPatients();
-                        this._notificationsStore.addNotification(notification);
+                        this.notificationsStore.addNotification(notification);
                         this.selectedPatients = [];
                     },
                     (error) => {
@@ -85,12 +85,12 @@ export class PatientsListComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this.selectedPatients = [];
-                        this._progressBarService.hide();
-                        this._notificationsStore.addNotification(notification);
+                        this.progressBarService.hide();
+                        this.notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
-                        this._progressBarService.hide();
+                        this.progressBarService.hide();
                     });
             });
         } else {
@@ -99,7 +99,7 @@ export class PatientsListComponent implements OnInit {
                 'type': 'ERROR',
                 'createdAt': moment()
             });
-            this._notificationsStore.addNotification(notification);
+            this.notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'select patients to delete');
         }
     }

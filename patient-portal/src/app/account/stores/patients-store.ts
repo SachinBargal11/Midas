@@ -16,10 +16,10 @@ export class PatientsStore {
 
     constructor(
         private _patientsService: PatientsService,
-        private _sessionStore: SessionStore
+        public sessionStore: SessionStore
     ) {
         // this.getPatients();
-        this._sessionStore.userLogoutEvent.subscribe(() => {
+        this.sessionStore.userLogoutEvent.subscribe(() => {
             this.resetStore();
         });
     }
