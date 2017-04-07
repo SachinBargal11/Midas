@@ -1288,12 +1288,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetByReferringDoctorId(int DoctorId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object GetByReferringUserId(int UserId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetByReferringDoctorId(DoctorId);
+                var gbdata = baseRepo.GetByReferringUserId(UserId);
 
                 return gbdata;
             }

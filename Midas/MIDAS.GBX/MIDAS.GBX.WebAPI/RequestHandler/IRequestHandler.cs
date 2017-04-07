@@ -56,7 +56,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByReferringLocationId(HttpRequestMessage request, int id);
         HttpResponseMessage GetByReferringToLocationId(HttpRequestMessage request, int id);
         HttpResponseMessage GetByDoctorId(HttpRequestMessage request, int id);
-        HttpResponseMessage GetByReferringDoctorId(HttpRequestMessage request, int id);
+        HttpResponseMessage GetByReferringUserId(HttpRequestMessage request, int id);
         HttpResponseMessage GetByReferredToDoctorId(HttpRequestMessage request, int id);
         HttpResponseMessage GetPatientAccidentInfoByPatientId(HttpRequestMessage request, int PatientId);
         HttpResponseMessage GetCurrentROByPatientId(HttpRequestMessage request, int PatientId);

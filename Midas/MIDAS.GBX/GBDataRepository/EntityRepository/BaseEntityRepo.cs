@@ -293,7 +293,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object GetByReferringDoctorId(int DoctorId)
+        public virtual Object GetByReferringUserId(int UserId)
         {
             throw new NotImplementedException();
         }

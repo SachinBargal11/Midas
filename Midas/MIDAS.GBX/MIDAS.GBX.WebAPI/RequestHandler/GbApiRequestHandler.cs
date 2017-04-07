@@ -751,9 +751,9 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage GetByReferringDoctorId(HttpRequestMessage request, int DoctorId)
+        public HttpResponseMessage GetByReferringUserId(HttpRequestMessage request, int UserId)
         {
-            var objResult = dataAccessManager.GetByReferringDoctorId(DoctorId);
+            var objResult = dataAccessManager.GetByReferringUserId(UserId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
