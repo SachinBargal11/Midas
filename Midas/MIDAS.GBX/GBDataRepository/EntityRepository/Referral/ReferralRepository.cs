@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using MIDAS.GBX.DataRepository.Model;
 using System.Data.Entity;
 using BO = MIDAS.GBX.BusinessObjects;
+using System.Configuration;
+using MIDAS.GBX.EN;
+using Docs.Pdf;
+using System.IO;
 //using Docs.Pdf;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository.Common
@@ -189,7 +193,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             }
             _context.SaveChanges();
 
-            referralDB =_context.Referrals.Include("Company")
+            ////METHOD TO GENERATE REFFERAL DOCUMENT AND SAVE IN MIDASDOCUMENTS/CASEDOCUMENTS TABLE
+            this.GenerateReferralDocument(referralDB.Id);
+
+            referralDB = _context.Referrals.Include("Company")
                                           .Include("Company1")
                                           .Include("Location")
                                           .Include("Location1")
@@ -510,59 +517,75 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        public string GetTemplateDocument(string type)
+        public string GetTemplateDocument(string templateType)
         {
-            type = "Referral";
+            TemplateTypeRepository templateTypeRepo = new TemplateTypeRepository(_context);
+            BO.Common.TemplateType templateData = (BO.Common.TemplateType)templateTypeRepo.Get(templateType);
 
-            String FileData = "<!DOCTYPE html>" +
-                                "<html>" +
-                                "<head>" +
-                                    "< title></title>" +
-                                    "< meta charset=\"utf -8\" />" +
-                                "</head>" +
-                                "< body>" +
-                                    "< p style=\"text -align:center\">Company name (citimedical)</p>" +
-                                    "< br />" +
-                                    "< p>Patient name: {{PatientName}}</p>" +
-                                    "< br />" +
-                                    "< p>Referal order date : {{CreateDate}}</p>" +
-                                    "< br />" +
-                                    "< p>Referral: {{ReferredToDoctor}}</p>" +
-                                    "< p>Address: </p>" +
-                                    "< br />" +
-                                    "< p>Insurance info:</p>" +
-                                    "< br />" +
-                                    "< p>Referral information: {{Note}}</p>" +
-                                    "< br />" +
-                                    "< p>Signature of ordering physician:</p>" +
-                                "</body>" +
-                                "</html>";
-            
-            return FileData;
+            return templateData.TemplateText;
         }
-        
+
         public override object GenerateReferralDocument(int id)
         {
-            //HtmlToPdf htmlPDF = new HtmlToPdf();
+            HtmlToPdf htmlPDF = new HtmlToPdf();
+            string path = string.Empty;
+            string pdfText = GetTemplateDocument(Constants.ReferralType);
+            var acc = _context.Referrals.Include("Case")
+                                             .Include("Case.Patient2")
+                                             .Include("Case.Patient2.User")
+                                             .Include("Doctor")
+                                             .Include("Doctor.User")
+                                             .Where(p => p.Id == id).FirstOrDefault();
+            if (acc != null)
+            {
+                using (var dbContextTransaction = _context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        pdfText = pdfText.Replace("{{PatientName}}", acc.Case.Patient2.User.FirstName + " " + acc.Case.Patient2.User.LastName)
+                                         .Replace("{{CreateDate}}", acc.CreateDate.ToShortDateString())
+                                         .Replace("{{ReferredToDoctor}}", acc.Doctor.User.FirstName + " " + acc.Doctor.User.LastName)
+                                         .Replace("{{Note}}", acc.Note);
 
-            string pdfText = GetTemplateDocument("Referral");
+                        path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\case_" + acc.Case.Id;
+                        htmlPDF.OpenHTML(pdfText);
+                        if (!Directory.Exists(path)) Directory.CreateDirectory(ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\case_" + acc.Case.Id);
+                        htmlPDF.SavePDF(@path + "\\referral.pdf");
 
-           var acc = _context.Referrals.Include("Case")
-                                        .Include("Case.Patient2")
-                                        .Include("Case.Patient2.User")
-                                        .Include("Doctor")
-                                        .Where(p => p.Id == id).FirstOrDefault();
+                        MidasDocument midasdoc = _context.MidasDocuments.Add(new MidasDocument()
+                        {
+                            ObjectType = Constants.ReferralType,
+                            ObjectId = id,
+                            DocumentName = "Referral.pdf",
+                            DocumentPath = ConfigurationManager.AppSettings.Get("BLOB_SERVER") + path.ToString(),
+                        });
+                        _context.Entry(midasdoc).State = System.Data.Entity.EntityState.Added;
+                        _context.SaveChanges();
 
-            pdfText = pdfText.Replace("{{PatientName}}", acc.Case.Patient2.User.FirstName + " " + acc.Case.Patient2.User.LastName)
-                             .Replace("{{CreateDate}}", acc.CreateDate.ToShortDateString())
-                             .Replace("{{ReferredToDoctor}}", acc.Doctor.User.FirstName + " " + acc.Doctor.User.LastName)
-                             .Replace("{{Note}}", acc.Note);
+                        ReferralDocument referralDoc = _context.ReferralDocuments.Add(new ReferralDocument()
+                        {
+                            MidasDocumentId = midasdoc.Id,
+                            ReferralId = id,
+                            DocumentName = "Referral.pdf"
+                        });
+                        _context.Entry(referralDoc).State = System.Data.Entity.EntityState.Added;
+                        _context.SaveChanges();
 
-            //htmlPDF.OpenHTML(pdfText);
-            //htmlPDF.SavePDF(@"D:\Publish\aaa.pdf");
+                        dbContextTransaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { ErrorMessage = "Error occurred in document upload/save.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    }
+                }
+            }
+            else
+                return new BO.ErrorObject { ErrorMessage = "No record found for referral id", errorObject = "", ErrorLevel = ErrorLevel.Error };
 
             return acc;
         }
+
 
         public void Dispose()
         {
