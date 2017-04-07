@@ -53,7 +53,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 BO.Company boCompany = new BO.Company();
                 using (CompanyRepository cmp = new CompanyRepository(_context))
                 {
-
                     boCompany = cmp.Convert<BO.Company, Company>(referral.Company);
                     referralBO.Company = boCompany;
                 }
@@ -63,7 +62,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 BO.Company boCompany1 = new BO.Company();
                 using (CompanyRepository cmp = new CompanyRepository(_context))
                 {
-
                     boCompany1 = cmp.Convert<BO.Company, Company>(referral.Company1);
                     referralBO.Company1 = boCompany1;
                 }
@@ -73,7 +71,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 BO.Location boLocation = new BO.Location();
                 using (LocationRepository cmp = new LocationRepository(_context))
                 {
-
                     boLocation = cmp.Convert<BO.Location, Location>(referral.Location);
                     referralBO.Location = boLocation;
                 }
@@ -83,7 +80,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 BO.Location boLocation1 = new BO.Location();
                 using (LocationRepository cmp = new LocationRepository(_context))
                 {
-
                     boLocation1 = cmp.Convert<BO.Location, Location>(referral.Location1);
                     referralBO.Location1 = boLocation1;
                 }
@@ -93,7 +89,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 BO.Doctor boDoctor = new BO.Doctor();
                 using (DoctorRepository cmp = new DoctorRepository(_context))
                 {
-
                     boDoctor = cmp.Convert<BO.Doctor, Doctor>(referral.Doctor);
                     referralBO.Doctor = boDoctor;
                 }
@@ -103,7 +98,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 BO.User boUser = new BO.User();
                 using (UserRepository cmp = new UserRepository(_context))
                 {
-
                     boUser = cmp.Convert<BO.User, User>(referral.User);
                     referralBO.User = boUser;
                 }
@@ -113,7 +107,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 BO.Case boCase = new BO.Case();
                 using (CaseRepository cmp = new CaseRepository(_context))
                 {
-
                     boCase = cmp.Convert<BO.Case, Case>(referral.Case);
                     referralBO.Case = boCase;
                 }
@@ -123,13 +116,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 BO.Room boRoom = new BO.Room();
                 using (RoomRepository cmp = new RoomRepository(_context))
                 {
-
                     boRoom = cmp.Convert<BO.Room, Room>(referral.Room);
                     referralBO.Room = boRoom;
                 }
             }
-
-
             return (T)(object)referralBO;
         }
         #endregion
@@ -238,6 +228,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                         .Include("Location")
                                         .Include("Location1")
                                         .Include("Doctor")
+                                        .Include("Doctor.User")
+                                        .Include("Doctor.DoctorSpecialities")
+                                         .Include("Doctor.DoctorSpecialities.Specialty")
                                         .Include("User")
                                         .Include("Case")
                                         .Include("Room")
