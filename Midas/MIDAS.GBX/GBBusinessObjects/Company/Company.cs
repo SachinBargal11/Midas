@@ -31,6 +31,9 @@ namespace MIDAS.GBX.BusinessObjects
         public AddressInfo AddressInfo { get; set; }
         public ContactInfo ContactInfo { get; set; }
 
+        [JsonProperty("location")]
+        public List<Location> Locations { get; set; }
+
         public override List<BusinessValidation> Validate<T>(T entity)
         {
 
