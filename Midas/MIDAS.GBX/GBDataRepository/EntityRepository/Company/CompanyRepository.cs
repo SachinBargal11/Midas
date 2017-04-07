@@ -321,6 +321,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get All Companies
         public override Object Get()
         {
             var acc_ = _context.Companies.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)).ToList<Company>();
@@ -335,7 +336,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             return lstCompanies;
         }
+        #endregion
 
+        #region Get All Company and their Location
         public override Object GetAllCompanyAndLocation()
         {
             var acc_ = _context.Companies.Include("Locations").Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)).ToList<Company>();
@@ -350,7 +353,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             return lstCompanies;
         }
-
+        #endregion
 
         public void Dispose()
         {

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AddressInfo">
           <Key>
             <PropertyRef Name="id" />
@@ -744,6 +744,20 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="ReferringUserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ReferralDocuments">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="ReferralId" Type="int" Nullable="false" />
+          <Property Name="MidasDocumentId" Type="int" Nullable="false" />
+          <Property Name="DocumentName" Type="varchar" MaxLength="500" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="CreateUserId" Type="int" />
+          <Property Name="UpdateUserId" Type="int" />
+          <Property Name="IsDeleted" Type="bit" />
         </EntityType>
         <EntityType Name="RefferingOffice">
           <Key>
@@ -2124,6 +2138,30 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ReferralDocuments_MidasDocuments_MidasDocumentId">
+          <End Role="MidasDocuments" Type="Self.MidasDocuments" Multiplicity="1" />
+          <End Role="ReferralDocuments" Type="Self.ReferralDocuments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MidasDocuments">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReferralDocuments">
+              <PropertyRef Name="MidasDocumentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReferralDocuments_Referral_ReferralId">
+          <End Role="Referral" Type="Self.Referral" Multiplicity="1" />
+          <End Role="ReferralDocuments" Type="Self.ReferralDocuments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Referral">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReferralDocuments">
+              <PropertyRef Name="ReferralId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_RefferingOffice_AddressInfo_AddressInfoId">
           <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="0..1" />
           <End Role="RefferingOffice" Type="Self.RefferingOffice" Multiplicity="*" />
@@ -2363,6 +2401,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="PatientVisitEvent" EntityType="Self.PatientVisitEvent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PolicyOwner" EntityType="Self.PolicyOwner" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Referral" EntityType="Self.Referral" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReferralDocuments" EntityType="Self.ReferralDocuments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RefferingOffice" EntityType="Self.RefferingOffice" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Relations" EntityType="Self.Relations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Room" EntityType="Self.Room" Schema="dbo" store:Type="Tables" />
@@ -2753,6 +2792,14 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="User" EntitySet="User" />
             <End Role="Referral" EntitySet="Referral" />
           </AssociationSet>
+          <AssociationSet Name="FK_ReferralDocuments_MidasDocuments_MidasDocumentId" Association="Self.FK_ReferralDocuments_MidasDocuments_MidasDocumentId">
+            <End Role="MidasDocuments" EntitySet="MidasDocuments" />
+            <End Role="ReferralDocuments" EntitySet="ReferralDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReferralDocuments_Referral_ReferralId" Association="Self.FK_ReferralDocuments_Referral_ReferralId">
+            <End Role="Referral" EntitySet="Referral" />
+            <End Role="ReferralDocuments" EntitySet="ReferralDocuments" />
+          </AssociationSet>
           <AssociationSet Name="FK_RefferingOffice_AddressInfo_AddressInfoId" Association="Self.FK_RefferingOffice_AddressInfo_AddressInfoId">
             <End Role="AddressInfo" EntitySet="AddressInfo" />
             <End Role="RefferingOffice" EntitySet="RefferingOffice" />
@@ -2818,8 +2865,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="UserCompanyRole" EntitySet="UserCompanyRole" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MIDASGBXModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3378,6 +3424,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateUserId" Type="Int32" />
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="CaseDocuments" Relationship="Self.FK_CaseDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="CaseDocuments" />
+          <NavigationProperty Name="ReferralDocuments" Relationship="MIDASGBXModel.FK_ReferralDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocument" ToRole="ReferralDocument" />
         </EntityType>
         <EntityType Name="Notification">
           <Key>
@@ -3737,6 +3784,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Location1" Relationship="Self.FK_Referral_Location_ReferringLocationId" FromRole="Referral" ToRole="Location" />
           <NavigationProperty Name="Room" Relationship="Self.FK_Referral_Room_ReferredToRoomId" FromRole="Referral" ToRole="Room" />
           <NavigationProperty Name="User" Relationship="Self.FK_Referral_User_ReferringUserId" FromRole="Referral" ToRole="User" />
+          <NavigationProperty Name="ReferralDocuments" Relationship="MIDASGBXModel.FK_ReferralDocuments_Referral_ReferralId" FromRole="Referral" ToRole="ReferralDocument" />
         </EntityType>
         <EntityType Name="RefferingOffice">
           <Key>
@@ -5847,7 +5895,56 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="User" EntitySet="Users" />
             <End Role="UserCompanyRole" EntitySet="UserCompanyRoles" />
           </AssociationSet>
+          <EntitySet Name="ReferralDocuments" EntityType="MIDASGBXModel.ReferralDocument" />
+          <AssociationSet Name="FK_ReferralDocuments_MidasDocuments_MidasDocumentId" Association="MIDASGBXModel.FK_ReferralDocuments_MidasDocuments_MidasDocumentId">
+            <End Role="MidasDocument" EntitySet="MidasDocuments" />
+            <End Role="ReferralDocument" EntitySet="ReferralDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReferralDocuments_Referral_ReferralId" Association="MIDASGBXModel.FK_ReferralDocuments_Referral_ReferralId">
+            <End Role="Referral" EntitySet="Referrals" />
+            <End Role="ReferralDocument" EntitySet="ReferralDocuments" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="ReferralDocument">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="ReferralId" Type="Int32" Nullable="false" />
+          <Property Name="MidasDocumentId" Type="Int32" Nullable="false" />
+          <Property Name="DocumentName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="7" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="CreateUserId" Type="Int32" />
+          <Property Name="UpdateUserId" Type="Int32" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="MidasDocument" Relationship="MIDASGBXModel.FK_ReferralDocuments_MidasDocuments_MidasDocumentId" FromRole="ReferralDocument" ToRole="MidasDocument" />
+          <NavigationProperty Name="Referral" Relationship="MIDASGBXModel.FK_ReferralDocuments_Referral_ReferralId" FromRole="ReferralDocument" ToRole="Referral" />
+        </EntityType>
+        <Association Name="FK_ReferralDocuments_MidasDocuments_MidasDocumentId">
+          <End Type="MIDASGBXModel.MidasDocument" Role="MidasDocument" Multiplicity="1" />
+          <End Type="MIDASGBXModel.ReferralDocument" Role="ReferralDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MidasDocument">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReferralDocument">
+              <PropertyRef Name="MidasDocumentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReferralDocuments_Referral_ReferralId">
+          <End Type="MIDASGBXModel.Referral" Role="Referral" Multiplicity="1" />
+          <End Type="MIDASGBXModel.ReferralDocument" Role="ReferralDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Referral">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReferralDocument">
+              <PropertyRef Name="ReferralId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -6912,6 +7009,21 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReferralDocuments">
+            <EntityTypeMapping TypeName="MIDASGBXModel.ReferralDocument">
+              <MappingFragment StoreEntitySet="ReferralDocuments">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="UpdateUserId" ColumnName="UpdateUserId" />
+                <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="DocumentName" ColumnName="DocumentName" />
+                <ScalarProperty Name="MidasDocumentId" ColumnName="MidasDocumentId" />
+                <ScalarProperty Name="ReferralId" ColumnName="ReferralId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

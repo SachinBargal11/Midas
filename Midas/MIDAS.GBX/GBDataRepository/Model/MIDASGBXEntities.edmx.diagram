@@ -178,6 +178,9 @@
         <AssociationConnector Association="MIDASGBXModel.FK_User_UserType" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompany_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompanyRole_User" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MIDASGBXModel.ReferralDocument" Width="1.5" PointX="30" PointY="34.125" />
+        <AssociationConnector Association="MIDASGBXModel.FK_ReferralDocuments_MidasDocuments_MidasDocumentId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_ReferralDocuments_Referral_ReferralId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -12,19 +12,11 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class MidasDocument
+    public partial class ReferralDocument
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public MidasDocument()
-        {
-            this.CaseDocuments = new HashSet<CaseDocument>();
-            this.ReferralDocuments = new HashSet<ReferralDocument>();
-        }
-    
         public int Id { get; set; }
-        public string ObjectType { get; set; }
-        public int ObjectId { get; set; }
-        public string DocumentPath { get; set; }
+        public int ReferralId { get; set; }
+        public int MidasDocumentId { get; set; }
         public string DocumentName { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
@@ -32,9 +24,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateUserId { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CaseDocument> CaseDocuments { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReferralDocument> ReferralDocuments { get; set; }
+        public virtual MidasDocument MidasDocument { get; set; }
+        public virtual Referral Referral { get; set; }
     }
 }
