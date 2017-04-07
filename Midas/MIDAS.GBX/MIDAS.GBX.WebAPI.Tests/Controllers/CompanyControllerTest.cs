@@ -142,7 +142,7 @@ namespace MIDAS.GBX.WebAPI.Tests.Controllers
            companyBO.ContactInfo.FaxNo = "9875421545";
            companyBO.ContactInfo.Name = "Virat";
            
-           controller.Get(companyBO);
+           //controller.Get(companyBO);
        }
 
        [TestMethod]

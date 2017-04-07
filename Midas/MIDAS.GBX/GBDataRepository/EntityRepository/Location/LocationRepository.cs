@@ -415,6 +415,23 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get All Locations and their Companies
+        public override Object Get()
+        {
+            var acc_ = _context.Locations.Include("Company").Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)).ToList<Location>();
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            List<BO.Location> lstLocations = new List<BO.Location>();
+            foreach (Location item in acc_)
+            {
+                lstLocations.Add(Convert<BO.Location, Location>(item));
+            }
+            return lstLocations;
+        }
+        #endregion
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
