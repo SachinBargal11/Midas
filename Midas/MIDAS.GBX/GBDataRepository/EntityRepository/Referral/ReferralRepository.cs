@@ -35,7 +35,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             referralBO.CaseId = referral.CaseId;
             referralBO.ReferringCompanyId = referral.ReferringCompanyId;
             referralBO.ReferringLocationId = referral.ReferringLocationId;
-            referralBO.ReferringDoctorId = referral.ReferringDoctorId;
+            //referralBO.ReferringDoctorId = referral.ReferringDoctorId;
             referralBO.ReferredToCompanyId = referral.ReferredToCompanyId;
             referralBO.ReferredToLocationId = referral.ReferredToLocationId;
             referralBO.ReferredToDoctorId = referral.ReferredToDoctorId;
@@ -98,16 +98,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     referralBO.Doctor = boDoctor;
                 }
             }
-            if (referral.Doctor1 != null)
-            {
-                BO.Doctor boDoctor1 = new BO.Doctor();
-                using (DoctorRepository cmp = new DoctorRepository(_context))
-                {
+            //if (referral.Doctor1 != null)
+            //{
+            //    BO.Doctor boDoctor1 = new BO.Doctor();
+            //    using (DoctorRepository cmp = new DoctorRepository(_context))
+            //    {
 
-                    boDoctor1 = cmp.Convert<BO.Doctor, Doctor>(referral.Doctor1);
-                    referralBO.Doctor1 = boDoctor1;
-                }
-            }
+            //        boDoctor1 = cmp.Convert<BO.Doctor, Doctor>(referral.Doctor1);
+            //        referralBO.Doctor1 = boDoctor1;
+            //    }
+            //}
             if (referral.Case != null)
             {
                 BO.Case boCase = new BO.Case();
@@ -168,7 +168,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 referralDB.ReferredToCompanyId = referralBO.ReferredToCompanyId;
                 referralDB.ReferringLocationId = referralBO.ReferringLocationId;
                 referralDB.ReferredToLocationId = referralBO.ReferredToLocationId;
-                referralDB.ReferringDoctorId = referralBO.ReferringDoctorId;
+                //referralDB.ReferringDoctorId = referralBO.ReferringDoctorId;
                 referralDB.ReferredToDoctorId = referralBO.ReferredToDoctorId;
                 referralDB.ReferredToRoomId = referralBO.ReferredToRoomId;
                 referralDB.Note = referralBO.Note;
@@ -209,7 +209,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 if (referralDB.ReferredToDoctorId != null && referralDB.ReferredToLocationId != null && referralDB.ReferredToCompanyId != null)
                 {
                     #region Send Email
-                    string Message = "Dear " + referralDB.Doctor.User.FirstName + " " + referralDB.Doctor.User.LastName + ",<br><br>Following Patient is being referred to you: " + " " + referralDB.Case.Patient2.User.FirstName + " " + referralDB.Case.Patient2.User.LastName + "<br><br>" + referralDB.Note + "<br><br>" + "By " + referralDB.Company.Name + " - " + referralDB.Location.Name + " - "  + referralDB.Doctor.User.FirstName + "<br><br>" + "You can log in with your MIDAS Account to view further detail." + "<br>" + "http://codearray.tk:85/#/account" + "<br><br>" + "Thanks," + "<br>" + referralDB.Doctor1.User.FirstName;
+                    string Message = "Dear " + referralDB.Doctor.User.FirstName + " " + referralDB.Doctor.User.LastName + ",<br><br>Following Patient is being referred to you: " + " " + referralDB.Case.Patient2.User.FirstName + " " + referralDB.Case.Patient2.User.LastName + "<br><br>" + referralDB.Note + "<br><br>" + "By " + referralDB.Company.Name + " - " + referralDB.Location.Name + " - " + referralDB.Doctor.User.FirstName + "<br><br>" + "You can log in with your MIDAS Account to view further detail." + "<br>" + "http://codearray.tk:85/#/account" + "<br><br>" + "Thanks," + "<br>"; /*referralDB.Doctor1.User.FirstName*/
                     BO.Email objEmail = new BO.Email { ToEmail = referralDB.ReferredToEmail, Subject = "Referral-Email", Body = Message };
                     objEmail.SendMail();
                     #endregion
@@ -217,7 +217,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 else if (referralDB.ReferredToDoctorId == null && referralDB.ReferredToLocationId == null && referralDB.ReferredToCompanyId == null)
                 {
                     #region Send Email
-                    string Message = "Dear " + referralDB.ReferredToEmail + ",<br><br>Following Patient is being referred to you: " + " " + referralDB.Case.Patient2.User.FirstName + " " + referralDB.Case.Patient2.User.LastName + "<br><br>" + referralDB.Note + "<br><br>" + "You will need to log in with your MIDAS account to view further detail. To register with MIDAS, Please register with http://codearray.tk:85/#/account/register-company" + "<br><br>" + "Thanks," + "<br>" + referralDB.Doctor1.User.FirstName;
+                    string Message = "Dear " + referralDB.ReferredToEmail + ",<br><br>Following Patient is being referred to you: " + " " + referralDB.Case.Patient2.User.FirstName + " " + referralDB.Case.Patient2.User.LastName + "<br><br>" + referralDB.Note + "<br><br>" + "You will need to log in with your MIDAS account to view further detail. To register with MIDAS, Please register with http://codearray.tk:85/#/account/register-company" + "<br><br>" + "Thanks," + "<br>";/* + referralDB.Doctor1.User.FirstName;*/
                     BO.Email objEmail = new BO.Email { ToEmail = referralDB.ReferredToEmail, Subject = "Referral-Email And Register", Body = Message };
                     objEmail.SendMail();
                     #endregion
@@ -436,38 +436,38 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #endregion
 
         #region GetByReferringDoctorId
-        public override object GetByReferringDoctorId(int id)
-        {
-            List<Referral> lstReferral = _context.Referrals.Include("Location")
-                                                            .Include("Location1")
-                                                            .Include("Company")
-                                                            .Include("Company1")
-                                                            .Include("Doctor")
-                                                            .Include("Doctor.User")
-                                                            .Include("Doctor.DoctorSpecialities")
-                                                            .Include("Doctor.DoctorSpecialities.Specialty")
-                                                            .Include("Doctor1")
-                                                            .Include("Doctor1.User")
-                                                            .Include("Doctor1.DoctorSpecialities")
-                                                            .Include("Doctor1.DoctorSpecialities.Specialty")
-                                                            .Include("Case")
-                                                            .Include("Room")
-                                                            .Where(p => p.ReferringDoctorId == id
-                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                            .ToList<Referral>();
+        //public override object GetByReferringDoctorId(int id)
+        //{
+        //    List<Referral> lstReferral = _context.Referrals.Include("Location")
+        //                                                    .Include("Location1")
+        //                                                    .Include("Company")
+        //                                                    .Include("Company1")
+        //                                                    .Include("Doctor")
+        //                                                    .Include("Doctor.User")
+        //                                                    .Include("Doctor.DoctorSpecialities")
+        //                                                    .Include("Doctor.DoctorSpecialities.Specialty")
+        //                                                    .Include("Doctor1")
+        //                                                    .Include("Doctor1.User")
+        //                                                    .Include("Doctor1.DoctorSpecialities")
+        //                                                    .Include("Doctor1.DoctorSpecialities.Specialty")
+        //                                                    .Include("Case")
+        //                                                    .Include("Room")
+        //                                                    .Where(p => p.ReferringDoctorId == id
+        //                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+        //                                                    .ToList<Referral>();
 
-            if (lstReferral == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "No Referral found for this Doctor ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
-            else
-            {
-                List<BO.Referral> lstBOReferral = new List<BO.Referral>();
-                lstReferral.ForEach(p => lstBOReferral.Add(Convert<BO.Referral, Referral>(p)));
+        //    if (lstReferral == null)
+        //    {
+        //        return new BO.ErrorObject { ErrorMessage = "No Referral found for this Doctor ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+        //    }
+        //    else
+        //    {
+        //        List<BO.Referral> lstBOReferral = new List<BO.Referral>();
+        //        lstReferral.ForEach(p => lstBOReferral.Add(Convert<BO.Referral, Referral>(p)));
 
-                return lstBOReferral;
-            }
-        }
+        //        return lstBOReferral;
+        //    }
+        //}
         #endregion
 
         #region GetByReferredToDoctorId
