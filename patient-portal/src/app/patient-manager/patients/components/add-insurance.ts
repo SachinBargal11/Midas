@@ -43,15 +43,15 @@ export class AddInsuranceComponent implements OnInit {
         private _router: Router,
         public _route: ActivatedRoute,
         private _statesStore: StatesStore,
-        private _notificationsStore: NotificationsStore,
-        private _progressBarService: ProgressBarService,
+       public notificationsStore: NotificationsStore,
+        public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _insuranceStore: InsuranceStore,
         private _patientsStore: PatientsStore,
         private _elRef: ElementRef
     ) {
-         this.patientId = this._sessionStore.session.user.id;
+         this.patientId = this.sessionStore.session.user.id;
         // this._route.parent.parent.params.subscribe((routeParams: any) => {
         //     this.patientId = parseInt(routeParams.patientId);
         // });
@@ -207,7 +207,7 @@ export class AddInsuranceComponent implements OnInit {
                 zipCode: insuranceformValues.zipCode
             })
         });
-        this._progressBarService.show();
+        this.progressBarService.show();
         result = this._insuranceStore.addInsurance(insurance);
         result.subscribe(
             (response) => {
@@ -216,7 +216,7 @@ export class AddInsuranceComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._router.navigate(['../'], { relativeTo: this._route });
             },
             (error) => {
@@ -227,13 +227,13 @@ export class AddInsuranceComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this.isSaveProgress = false;
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
                 this.isSaveProgress = false;
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
     }
 }

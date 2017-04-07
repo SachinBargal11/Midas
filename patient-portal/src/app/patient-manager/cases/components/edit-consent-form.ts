@@ -51,7 +51,7 @@ export class EditConsentFormComponent implements OnInit {
     companyId: number;
     document: AddConsent[] = [];
     doctorApprovalId: number;
-    documentMode: string = '1';
+    documentMode: string = 'one';
     scannerContainerId: string = `scanner_${moment().valueOf()}`;
     twainSources: TwainSource[] = [];
     selectedTwainSource: TwainSource = null;

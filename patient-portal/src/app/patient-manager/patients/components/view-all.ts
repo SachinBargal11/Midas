@@ -48,9 +48,9 @@ export class ViewAllComponent implements OnInit {
         private _router: Router,
         private _dateFormatPipe: DateFormatPipe,
         public _route: ActivatedRoute,
-        private _notificationsStore: NotificationsStore,
-        private _sessionStore: SessionStore,
-        private _progressBarService: ProgressBarService,
+       public notificationsStore: NotificationsStore,
+        public sessionStore: SessionStore,
+        public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _patientsStore: PatientsStore,
         private _familyMemberStore: FamilyMemberStore,
@@ -59,8 +59,8 @@ export class ViewAllComponent implements OnInit {
     ) {
         // this._route.parent.params.subscribe((params: any) => {
             // this.patientId = parseInt(params.patientId, 10);
-            this.patientId = this._sessionStore.session.user.id;
-            this._progressBarService.show();
+            this.patientId = this.sessionStore.session.user.id;
+            this.progressBarService.show();
             let result = this._patientsStore.getPatientById(this.patientId);
             result.subscribe(
                 (patient: Patient) => {
@@ -74,10 +74,10 @@ export class ViewAllComponent implements OnInit {
                         : null;
                 },
                 (error) => {
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 },
                 () => {
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 });
 
             //
@@ -93,10 +93,10 @@ export class ViewAllComponent implements OnInit {
 
                 },
                 (error) => {
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 },
                 () => {
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 });
 
             //
@@ -111,13 +111,13 @@ export class ViewAllComponent implements OnInit {
                     }
                 },
                 (error) => {
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 },
                 () => {
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 });
 
-            this._progressBarService.show();
+            this.progressBarService.show();
             this._insuranceStore.getInsurances(this.patientId)
                 .subscribe(insurances => {
                     if (insurances.length) {
@@ -127,10 +127,10 @@ export class ViewAllComponent implements OnInit {
                     }
                 },
                 (error) => {
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 },
                 () => {
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 });
 
         // });

@@ -30,8 +30,8 @@ export class ConsentListComponent implements OnInit {
         private _router: Router,
         public _route: ActivatedRoute,
         private _ListConsentStore: ListConsentStore,
-        private _notificationsStore: NotificationsStore,
-        private _progressBarService: ProgressBarService,
+       public notificationsStore: NotificationsStore,
+        public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
@@ -45,7 +45,7 @@ export class ConsentListComponent implements OnInit {
 
     loadConsentForm() {
       
-        this._progressBarService.show();
+        this.progressBarService.show();
         this._ListConsentStore.getConsetForm(this.caseId)
             .subscribe(ListConsent => {
                 this.ListConsent = ListConsent.reverse();
@@ -54,10 +54,10 @@ export class ConsentListComponent implements OnInit {
                 // this.referringOffices = this.datasource.slice(0, 10);
             },
             (error) => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
     }
     loadConsentFormLazy(event: LazyLoadEvent) {
@@ -71,7 +71,7 @@ export class ConsentListComponent implements OnInit {
     deleteConsentForm() {
         if (this.selectedConsentList.length > 0) {
             this.selectedConsentList.forEach(currentCase => {
-                this._progressBarService.show();
+                this.progressBarService.show();
                 this._ListConsentStore.deleteConsetForm(currentCase)
                     .subscribe(
                     (response) => {
@@ -82,7 +82,7 @@ export class ConsentListComponent implements OnInit {
 
                         });
                         this.loadConsentForm();
-                        this._notificationsStore.addNotification(notification);
+                        this.notificationsStore.addNotification(notification);
                         this.selectedConsentList = [];
                     },
                     (error) => {
@@ -93,12 +93,12 @@ export class ConsentListComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this.selectedConsentList = [];
-                        this._progressBarService.hide();
-                        this._notificationsStore.addNotification(notification);
+                        this.progressBarService.hide();
+                        this.notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
-                        this._progressBarService.hide();
+                        this.progressBarService.hide();
                     });
             });
         } else {
@@ -107,7 +107,7 @@ export class ConsentListComponent implements OnInit {
                 'type': 'ERROR',
                 'createdAt': moment()
             });
-            this._notificationsStore.addNotification(notification);
+            this.notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'select record to delete');
         }
 
@@ -115,16 +115,16 @@ export class ConsentListComponent implements OnInit {
     }
 
     DownloadPdf() {  
-        this._progressBarService.show();
+        this.progressBarService.show();
         this._ListConsentStore.DownloadConsentForm(this.caseId)
             .subscribe(document => {
                 // this.document = document
             },
             (error) => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
     }
 }

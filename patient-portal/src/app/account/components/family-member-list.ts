@@ -24,12 +24,12 @@ export class FamilyMemberListComponent implements OnInit {
         private _router: Router,
         public _route: ActivatedRoute,
         private _familyMemberStore: FamilyMemberStore,
-        private _notificationsStore: NotificationsStore,
-        private _progressBarService: ProgressBarService,
-        private _sessionStore: SessionStore,
+       public notificationsStore: NotificationsStore,
+        public progressBarService: ProgressBarService,
+        public sessionStore: SessionStore,
         private _notificationsService: NotificationsService
     ) {
-            this.patientId = this._sessionStore.session.user.id;
+            this.patientId = this.sessionStore.session.user.id;
     }
 
     ngOnInit() {
@@ -37,23 +37,23 @@ export class FamilyMemberListComponent implements OnInit {
     }
 
     loadFamilyMembers() {
-        this._progressBarService.show();
+        this.progressBarService.show();
         this._familyMemberStore.getFamilyMembers(this.patientId)
             .subscribe(familyMembers => {
                 this.familyMembers = familyMembers;
             },
             (error) => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
     }
 
     deleteFamilyMember() {
         if (this.selectedFamilyMembers.length > 0) {
             this.selectedFamilyMembers.forEach(currentFamilyMember => {
-                this._progressBarService.show();
+                this.progressBarService.show();
                 let result;
                 result = this._familyMemberStore.deleteFamilyMember(currentFamilyMember);
                 result.subscribe(
@@ -64,7 +64,7 @@ export class FamilyMemberListComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this.loadFamilyMembers();
-                        this._notificationsStore.addNotification(notification);
+                        this.notificationsStore.addNotification(notification);
                         this.selectedFamilyMembers = [];
                     },
                     (error) => {
@@ -75,12 +75,12 @@ export class FamilyMemberListComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this.selectedFamilyMembers = [];
-                        this._progressBarService.hide();
-                        this._notificationsStore.addNotification(notification);
+                        this.progressBarService.hide();
+                        this.notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
-                        this._progressBarService.hide();
+                        this.progressBarService.hide();
                     });
             });
         } else {
@@ -89,7 +89,7 @@ export class FamilyMemberListComponent implements OnInit {
                 'type': 'ERROR',
                 'createdAt': moment()
             });
-            this._notificationsStore.addNotification(notification);
+            this.notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'select Family Member to delete');
         }
     }

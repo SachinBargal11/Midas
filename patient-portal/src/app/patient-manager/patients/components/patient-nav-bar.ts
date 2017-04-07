@@ -11,9 +11,9 @@ export class PatientNavComponent {
     patientId: number;
     constructor(
         private _router: Router,
-        private _sessionStore: SessionStore
+        public sessionStore: SessionStore
         ) {
-            this.patientId = this._sessionStore.session.user.id;
+            this.patientId = this.sessionStore.session.user.id;
     }
     hideLeftMobileMenu() {
         document.getElementsByTagName('body')[0].classList.remove('menu-left-opened');

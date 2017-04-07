@@ -11,10 +11,10 @@ import {SessionStore} from '../stores/session-store';
 
 @Injectable()
 export class ValidateInActiveSession implements CanActivate {
-    constructor(private _sessionStore: SessionStore, private _router: Router) { }
+    constructor(public sessionStore: SessionStore, private _router: Router) { }
 
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        if (!this._sessionStore.session.isAuthenticated) {
+        if (!this.sessionStore.session.isAuthenticated) {
             return true;
         }
 
