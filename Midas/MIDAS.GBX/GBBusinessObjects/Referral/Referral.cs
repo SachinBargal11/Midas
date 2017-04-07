@@ -48,7 +48,7 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("referredToDoctor")]
         public Doctor Doctor { get; set; }
 
-        [JsonProperty("referringUserId")]
+        [JsonProperty("referringUser")]
         public User User { get; set; }
 
         [JsonProperty("referredToLocation")]
