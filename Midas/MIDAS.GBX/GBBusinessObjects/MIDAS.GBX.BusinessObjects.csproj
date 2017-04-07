@@ -61,6 +61,7 @@
     <Compile Include="Case\CaseCompanyMapping.cs" />
     <Compile Include="Case\CaseInsuranceMapping.cs" />
     <Compile Include="Common\CaseStatus.cs" />
+    <Compile Include="Common\TemplateType.cs" />
     <Compile Include="Common\CaseType.cs" />
     <Compile Include="Common\City.cs" />
     <Compile Include="Common\Gender.cs" />
