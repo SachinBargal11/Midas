@@ -40,6 +40,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("getAllLocationAndCompany")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetAllLocationAndCompany()
+        {
+            return requestHandler.GetObjects(Request);
+        }
+
+        [HttpGet]
         [Route("Get/{id}")]
         
         public HttpResponseMessage Get(int id)
