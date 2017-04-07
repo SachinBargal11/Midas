@@ -13,9 +13,8 @@
 )
 GO
 
-
-ALTER TABLE [dbo].[CompanyCaseConsentApproval]  WITH CHECK ADD CONSTRAINT [FK_CompanyCaseConsentApproval_Company_CompanyId] FOREIGN KEY([CompanyId])
-	REFERENCES [dbo].[Doctor] ([id])
+ALTER TABLE [dbo].[CompanyCaseConsentApproval]  WITH CHECK ADD  CONSTRAINT [FK_CompanyCaseConsentApproval_Company_CompanyId] FOREIGN KEY([CompanyId])
+REFERENCES [dbo].[Company] ([Id])
 GO
 
 ALTER TABLE [dbo].[CompanyCaseConsentApproval] CHECK CONSTRAINT [FK_CompanyCaseConsentApproval_Company_CompanyId]
