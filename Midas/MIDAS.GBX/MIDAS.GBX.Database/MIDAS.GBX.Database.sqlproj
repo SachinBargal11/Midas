@@ -115,7 +115,7 @@
     <Build Include="Tables\Latest Tables\Referral.sql" />
     <Build Include="Tables\Latest Tables\DoctorLocationSpecialty.sql" />
     <Build Include="Tables\Latest Tables\CaseCompanyMapping.sql" />
-    <Build Include="Tables\Latest Tables\DoctorCaseConsentApproval.sql" />
+    <Build Include="Tables\Latest Tables\CompanyCaseConsentApproval.sql" />
     <Build Include="Tables\MidasDocuments.sql" />
     <Build Include="Tables\CaseDocuments.sql" />
     <Build Include="Tables\Latest Tables\Notification.sql" />
