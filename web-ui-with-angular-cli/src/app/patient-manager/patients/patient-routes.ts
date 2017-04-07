@@ -9,6 +9,8 @@ import { BalancesComponent } from './components/balances';
 import { DocumentsComponent } from './components/documents';
 import { AppointmentsComponent } from './components/appointments';
 import { ValidateActiveSession } from '../../commons/guards/validate-active-session';
+import { ValidateDoctorSession } from '../../commons/guards/validate-doctor-session';
+import { ValidateInActiveDoctorSession } from '../../commons/guards/validate-inactivedoctor-session';
 import { ShellComponent } from '../../commons/shell-component';
 import { AddFamilyMemberComponent } from './components/add-family-member';
 import { FamilyMemberListComponent } from './components/family-member-list';
@@ -19,12 +21,37 @@ import { InsuranceListComponent } from './components/insurance-list';
 import { AddInsuranceComponent } from './components/add-insurance';
 import { EditInsuranceComponent } from './components/edit-insurance';
 import { ViewAllComponent } from './components/view-all';
+import { DoctorAppointmentComponent } from '../../doctor-manager/components/doctor-appointment';
 
 export const PatientsShellRoutes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'patients'
+        redirectTo: 'appointments',
+        canActivate: [ValidateDoctorSession]
+    },
+    {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'patients',
+        canActivate: [ValidateActiveSession]
+    },
+    {
+        path: 'appointments',
+        component: ShellComponent,
+        data: {
+            breadcrumb: 'Appointments'
+        },
+        children: [
+            {
+                path: '',
+                component: DoctorAppointmentComponent,
+                canActivate: [ValidateDoctorSession],
+                data: {
+                    breadcrumb: 'root'
+                }
+            }
+        ]
     },
     {
         path: 'patients',

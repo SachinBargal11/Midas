@@ -62,7 +62,7 @@ import { AdjusterMasterService } from './patients/services/adjuster-service';
 // import { RoomsModule } from '../medical-provider/rooms/rooms-module';
 // import { UsersModule } from '../medical-provider/users/users-module';
 
-import { ConsentShellRoutingModule } from './consentForm/consent-form-routes';
+//import { ConsentShellRoutingModule } from './consentForm/consent-form-routes';
 
 
 import { AddDocConsentFormComponent } from './consentForm/components/add-consent-form';
@@ -95,7 +95,7 @@ import { ListConsentStore } from './cases/stores/list-consent-form-store';
         RouterModule,
         CommonsModule,
         PatientRoutingModule
-        , ConsentShellRoutingModule
+       // , ConsentShellRoutingModule
         // RoomsModule,
         // UsersModule
     ],

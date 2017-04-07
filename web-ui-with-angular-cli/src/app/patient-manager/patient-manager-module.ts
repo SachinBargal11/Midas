@@ -94,6 +94,7 @@ import { EditConsentFormComponent } from './cases/components/edit-consent-form';
 
 import { AttorneyMasterService } from '../account-setup/services/attorney-service';
 import { AttorneyMasterStore } from '../account-setup/stores/attorney-store';
+import { DoctorManagerModule } from '../doctor-manager/doctor-manager-module';
 
 
 @NgModule({
@@ -103,7 +104,8 @@ import { AttorneyMasterStore } from '../account-setup/stores/attorney-store';
         CommonsModule,
         PatientRoutingModule,
         RoomsModule,
-        UsersModule
+        UsersModule,
+        DoctorManagerModule
     ],
     declarations: [
         AddPatientComponent,

@@ -72,6 +72,7 @@
     <Compile Include="EntityRepository\CaseInsuranceMapping\CaseInsuranceMappingRepository.cs" />
     <Compile Include="EntityRepository\Case\CaseRepository.cs" />
     <Compile Include="EntityRepository\Common\CaseStatusRepository.cs" />
+    <Compile Include="EntityRepository\Common\TemplateTypeRepository.cs" />
     <Compile Include="EntityRepository\Common\CaseTypeRepository.cs" />
     <Compile Include="EntityRepository\Common\CityRepository.cs" />
     <Compile Include="EntityRepository\Common\GenderRepository.cs" />

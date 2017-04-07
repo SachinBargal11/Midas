@@ -21,6 +21,8 @@ import { ConfirmationService } from 'primeng/primeng';
 
 import { ValidateActiveSession } from './commons/guards/validate-active-session';
 import { ValidateInActiveSession } from './commons/guards/validate-inactive-session';
+import { ValidateDoctorSession } from './commons/guards/validate-doctor-session';
+import { ValidateInActiveDoctorSession } from './commons/guards/validate-inactivedoctor-session';
 
 import { RegistrationService } from './account/services/registration-service';
 import { CompanyStore } from './account/stores/company-store';
@@ -96,7 +98,10 @@ import { DateFormatPipe } from './commons/pipes/date-format-pipe';
     NotificationsService,
     PhoneFormatPipe,
     FaxNoFormatPipe,
-    DateFormatPipe
+    DateFormatPipe,
+    ValidateDoctorSession,
+    ValidateInActiveDoctorSession
+    
   ],
   bootstrap: [AppComponent]
 })

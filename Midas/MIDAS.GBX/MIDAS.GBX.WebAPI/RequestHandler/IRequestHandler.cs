@@ -40,6 +40,7 @@ namespace MIDAS.GBX.WebAPI
 
         HttpResponseMessage GetViewStatus(HttpRequestMessage request, int id, bool status);
         HttpResponseMessage GetObjects(HttpRequestMessage request);
+        HttpResponseMessage GetAllCompanyAndLocation(HttpRequestMessage request);
         HttpResponseMessage GetObjects(HttpRequestMessage request, string param1);
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int id);
         HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int id);

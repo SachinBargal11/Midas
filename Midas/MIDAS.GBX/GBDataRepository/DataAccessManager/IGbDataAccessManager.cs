@@ -46,6 +46,7 @@ namespace MIDAS.GBX.DataAccessManager
 
 
         Object Get(int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetAllCompanyAndLocation(int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object Get(string param1, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object Update(T gbObject);
         Object Add(T gbObject);
