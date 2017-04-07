@@ -730,7 +730,6 @@
           <Property Name="CaseId" Type="int" Nullable="false" />
           <Property Name="ReferringCompanyId" Type="int" Nullable="false" />
           <Property Name="ReferringLocationId" Type="int" Nullable="false" />
-          <Property Name="ReferringDoctorId" Type="int" Nullable="false" />
           <Property Name="ReferredToCompanyId" Type="int" />
           <Property Name="ReferredToLocationId" Type="int" />
           <Property Name="ReferredToDoctorId" Type="int" />
@@ -744,6 +743,7 @@
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="ReferringUserId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="RefferingOffice">
           <Key>
@@ -2076,18 +2076,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Referral_Doctor_ReferringDoctorId">
-          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
-          <End Role="Referral" Type="Self.Referral" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Doctor">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Referral">
-              <PropertyRef Name="ReferringDoctorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Referral_Location_ReferredToLocationId">
           <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
           <End Role="Referral" Type="Self.Referral" Multiplicity="*" />
@@ -2121,6 +2109,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="Referral">
               <PropertyRef Name="ReferredToRoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Referral_User_ReferringUserId">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Referral" Type="Self.Referral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Referral">
+              <PropertyRef Name="ReferringUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2737,10 +2737,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Doctor" EntitySet="Doctor" />
             <End Role="Referral" EntitySet="Referral" />
           </AssociationSet>
-          <AssociationSet Name="FK_Referral_Doctor_ReferringDoctorId" Association="Self.FK_Referral_Doctor_ReferringDoctorId">
-            <End Role="Doctor" EntitySet="Doctor" />
-            <End Role="Referral" EntitySet="Referral" />
-          </AssociationSet>
           <AssociationSet Name="FK_Referral_Location_ReferredToLocationId" Association="Self.FK_Referral_Location_ReferredToLocationId">
             <End Role="Location" EntitySet="Location" />
             <End Role="Referral" EntitySet="Referral" />
@@ -2751,6 +2747,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </AssociationSet>
           <AssociationSet Name="FK_Referral_Room_ReferredToRoomId" Association="Self.FK_Referral_Room_ReferredToRoomId">
             <End Role="Room" EntitySet="Room" />
+            <End Role="Referral" EntitySet="Referral" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Referral_User_ReferringUserId" Association="Self.FK_Referral_User_ReferringUserId">
+            <End Role="User" EntitySet="User" />
             <End Role="Referral" EntitySet="Referral" />
           </AssociationSet>
           <AssociationSet Name="FK_RefferingOffice_AddressInfo_AddressInfoId" Association="Self.FK_RefferingOffice_AddressInfo_AddressInfoId">
@@ -3167,7 +3167,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="PatientVisit2" Relationship="Self.FK_PatientVisit2_Doctor_DoctorId" FromRole="Doctor" ToRole="PatientVisit2" />
           <NavigationProperty Name="PatientVisitEvents" Relationship="Self.FK_PatientVisitEvent_Doctor_ReadingDoctorId" FromRole="Doctor" ToRole="PatientVisitEvent" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_Doctor_ReferredToDoctorId" FromRole="Doctor" ToRole="Referral" />
-          <NavigationProperty Name="Referrals1" Relationship="Self.FK_Referral_Doctor_ReferringDoctorId" FromRole="Doctor" ToRole="Referral" />
         </EntityType>
         <EntityType Name="DoctorCaseConsentApproval">
           <Key>
@@ -3716,7 +3715,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CaseId" Type="Int32" Nullable="false" />
           <Property Name="ReferringCompanyId" Type="Int32" Nullable="false" />
           <Property Name="ReferringLocationId" Type="Int32" Nullable="false" />
-          <Property Name="ReferringDoctorId" Type="Int32" Nullable="false" />
           <Property Name="ReferredToCompanyId" Type="Int32" />
           <Property Name="ReferredToLocationId" Type="Int32" />
           <Property Name="ReferredToDoctorId" Type="Int32" />
@@ -3730,14 +3728,15 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="ReferringUserId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Case" Relationship="Self.FK_Referral_Case_CaseId" FromRole="Referral" ToRole="Case" />
           <NavigationProperty Name="Company" Relationship="Self.FK_Referral_Company_ReferredToCompanyId" FromRole="Referral" ToRole="Company" />
           <NavigationProperty Name="Company1" Relationship="Self.FK_Referral_Company_ReferringCompanyId" FromRole="Referral" ToRole="Company" />
           <NavigationProperty Name="Doctor" Relationship="Self.FK_Referral_Doctor_ReferredToDoctorId" FromRole="Referral" ToRole="Doctor" />
-          <NavigationProperty Name="Doctor1" Relationship="Self.FK_Referral_Doctor_ReferringDoctorId" FromRole="Referral" ToRole="Doctor" />
           <NavigationProperty Name="Location" Relationship="Self.FK_Referral_Location_ReferredToLocationId" FromRole="Referral" ToRole="Location" />
           <NavigationProperty Name="Location1" Relationship="Self.FK_Referral_Location_ReferringLocationId" FromRole="Referral" ToRole="Location" />
           <NavigationProperty Name="Room" Relationship="Self.FK_Referral_Room_ReferredToRoomId" FromRole="Referral" ToRole="Room" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Referral_User_ReferringUserId" FromRole="Referral" ToRole="User" />
         </EntityType>
         <EntityType Name="RefferingOffice">
           <Key>
@@ -3983,6 +3982,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Invitations" Relationship="Self.FK_Invitation_User_Invitation" FromRole="User" ToRole="Invitation" />
           <NavigationProperty Name="Patients" Relationship="Self.FK_Patient_User" FromRole="User" ToRole="Patient" />
           <NavigationProperty Name="Patient2" Relationship="Self.FK_Patient2_User_id" FromRole="User" ToRole="Patient2" />
+          <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_User_ReferringUserId" FromRole="User" ToRole="Referral" />
           <NavigationProperty Name="UserType1" Relationship="Self.FK_User_UserType" FromRole="User" ToRole="UserType" />
           <NavigationProperty Name="UserCompanies" Relationship="Self.FK_UserCompany_User" FromRole="User" ToRole="UserCompany" />
           <NavigationProperty Name="UserCompanyRoles" Relationship="Self.FK_UserCompanyRole_User" FromRole="User" ToRole="UserCompanyRole" />
@@ -4806,18 +4806,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Referral_Doctor_ReferringDoctorId">
-          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
-          <End Role="Referral" Type="Self.Referral" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Doctor">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Referral">
-              <PropertyRef Name="ReferringDoctorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_DoctorCaseConsentApproval_Patient2">
           <End Role="Patient2" Type="Self.Patient2" Multiplicity="0..1" />
           <End Role="DoctorCaseConsentApproval" Type="Self.DoctorCaseConsentApproval" Multiplicity="*" />
@@ -5235,6 +5223,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="Referral">
               <PropertyRef Name="ReferredToRoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Referral_User_ReferringUserId">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Referral" Type="Self.Referral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Referral">
+              <PropertyRef Name="ReferringUserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5667,10 +5667,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Doctor" EntitySet="Doctors" />
             <End Role="Referral" EntitySet="Referrals" />
           </AssociationSet>
-          <AssociationSet Name="FK_Referral_Doctor_ReferringDoctorId" Association="Self.FK_Referral_Doctor_ReferringDoctorId">
-            <End Role="Doctor" EntitySet="Doctors" />
-            <End Role="Referral" EntitySet="Referrals" />
-          </AssociationSet>
           <AssociationSet Name="FK_DoctorCaseConsentApproval_Patient2" Association="Self.FK_DoctorCaseConsentApproval_Patient2">
             <End Role="Patient2" EntitySet="Patient2" />
             <End Role="DoctorCaseConsentApproval" EntitySet="DoctorCaseConsentApprovals" />
@@ -5809,6 +5805,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </AssociationSet>
           <AssociationSet Name="FK_Referral_Room_ReferredToRoomId" Association="Self.FK_Referral_Room_ReferredToRoomId">
             <End Role="Room" EntitySet="Rooms" />
+            <End Role="Referral" EntitySet="Referrals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Referral_User_ReferringUserId" Association="Self.FK_Referral_User_ReferringUserId">
+            <End Role="User" EntitySet="Users" />
             <End Role="Referral" EntitySet="Referrals" />
           </AssociationSet>
           <AssociationSet Name="FK_Room_RoomTest" Association="Self.FK_Room_RoomTest">
@@ -6623,7 +6623,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CaseId" ColumnName="CaseId" />
                 <ScalarProperty Name="ReferringCompanyId" ColumnName="ReferringCompanyId" />
                 <ScalarProperty Name="ReferringLocationId" ColumnName="ReferringLocationId" />
-                <ScalarProperty Name="ReferringDoctorId" ColumnName="ReferringDoctorId" />
                 <ScalarProperty Name="ReferredToCompanyId" ColumnName="ReferredToCompanyId" />
                 <ScalarProperty Name="ReferredToLocationId" ColumnName="ReferredToLocationId" />
                 <ScalarProperty Name="ReferredToDoctorId" ColumnName="ReferredToDoctorId" />
@@ -6637,6 +6636,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="ReferringUserId" ColumnName="ReferringUserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
