@@ -148,9 +148,9 @@ export class PatientEmployerComponent implements OnInit {
                 faxNo: employerformValues.faxNo ? employerformValues.faxNo.replace(/\-|\s/g, '') : '',
                 homePhone: employerformValues.homePhone,
                 workPhone: employerformValues.workPhone,
-                //officeExtension: employerformValues.officeExtension,
-                //alternateEmail: employerformValues.alternateEmail,
-                //preferredcommunication: employerformValues.preferredcommunication,
+                officeExtension: employerformValues.officeExtension,
+                alternateEmail: employerformValues.alternateEmail,
+                preferredcommunication: employerformValues.preferredcommunication,
 
             }),
             address: new Address({

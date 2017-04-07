@@ -159,9 +159,9 @@ export class EditAdjusterComponent implements OnInit {
                 faxNo: adjusterformValues.adjusterFaxNo ? adjusterformValues.adjusterFaxNo.replace(/\-|\s/g, '') : null,
                 homePhone: adjusterformValues.adjusterHomePhone,
                 workPhone: adjusterformValues.adjusterWorkPhone,
-                //officeExtension: adjusterformValues.officeExtension,
-                //alternateEmail: adjusterformValues.alternateEmail,
-                //preferredcommunication: adjusterformValues.preferredcommunication,
+                officeExtension: adjusterformValues.adjusterofficeExtension,
+                alternateEmail: adjusterformValues.adjusteralternateEmail,
+                preferredcommunication: adjusterformValues.adjusterpreferredcommunication,
 
             }),
             adjusterAddress: new Address({
@@ -172,8 +172,7 @@ export class EditAdjusterComponent implements OnInit {
                 state: adjusterformValues.adjusterState,
                 zipCode: adjusterformValues.adjusterZipcode
             })
-          
-           
+
         });
          this._progressBarService.show();
         result = this._adjusterMasterStore.updateAdjuster(adjuster);

@@ -140,9 +140,9 @@ export class DemographicsComponent implements OnInit {
                     faxNo: demographicsFormValues.contact.faxNo ? demographicsFormValues.contact.faxNo.replace(/\-|\s/g, '') : '',
                     homePhone: demographicsFormValues.contact.homePhone,
                     workPhone: demographicsFormValues.contact.workPhone,
-                    //officeExtension: demographicsFormValues.contact.officeExtension,
-                    //alternateEmail: demographicsFormValues.contact.alternateEmail,
-                    //preferredcommunication: demographicsFormValues.contact.preferredcommunication,
+                    officeExtension: demographicsFormValues.contact.officeExtension,
+                    alternateEmail: demographicsFormValues.contact.alternateEmail,
+                    preferredcommunication: demographicsFormValues.contact.preferredcommunication,
                     updateByUserId: this._sessionStore.session.account.user.id
                 })),
                 address: new Address(_.extend(existingPatientJS.user.address, {

@@ -11,7 +11,7 @@ export class AttorneyAdapter {
                 id: data.id,
                 companyId: data.companyId,
                 user: UserAdapter.parseResponse(data.user),
-                
+
             });
         }
         return attorney;

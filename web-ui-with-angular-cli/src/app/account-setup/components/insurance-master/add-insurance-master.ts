@@ -86,9 +86,9 @@ export class AddInsuranceMasterComponent implements OnInit {
                     faxNo: addInsuranceMasterFormValues.faxNo ? addInsuranceMasterFormValues.faxNo.replace(/\-|\s/g, '') : null,
                     homePhone: addInsuranceMasterFormValues.homePhone,
                     workPhone: addInsuranceMasterFormValues.workPhone,
-                    //officeExtension: addInsuranceMasterFormValues.officeExtension,
-                   //alternateEmail: addInsuranceMasterFormValues.alternateEmail,
-                    //preferredcommunication: addInsuranceMasterFormValues.preferredcommunication,
+                    officeExtension: addInsuranceMasterFormValues.officeExtension,
+                    alternateEmail: addInsuranceMasterFormValues.alternateEmail,
+                    preferredcommunication: addInsuranceMasterFormValues.preferredcommunication,
                     createByUserId: this._sessionStore.session.account.user.id
                 }),
                 Address: new Address({

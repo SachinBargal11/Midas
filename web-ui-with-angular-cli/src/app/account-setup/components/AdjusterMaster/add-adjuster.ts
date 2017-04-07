@@ -30,7 +30,6 @@ export class AddAdjusterComponent implements OnInit {
     patientId: number;
     selectedCity = 0;
     isadjusterCitiesLoading = false;
-    
 
     adjusterform: FormGroup;
     adjusterformControls;
@@ -106,7 +105,6 @@ export class AddAdjusterComponent implements OnInit {
             this.isadjusterCitiesLoading = false;
         }
     }
-  
 
     save() {
         this.isSaveProgress = true;
@@ -124,9 +122,9 @@ export class AddAdjusterComponent implements OnInit {
                 faxNo: adjusterformValues.adjusterFaxNo ? adjusterformValues.adjusterFaxNo.replace(/\-|\s/g, '') : null,
                 homePhone: adjusterformValues.adjusterHomePhone,
                 workPhone: adjusterformValues.adjusterWorkPhone,
-                //officeExtension: adjusterformValues.officeExtension,
-                //alternateEmail: adjusterformValues.alternateEmail,
-                //preferredcommunication: adjusterformValues.preferredcommunication,
+                officeExtension: adjusterformValues.adjusterofficeExtension,
+                alternateEmail: adjusterformValues.adjusteralternateEmail,
+                preferredcommunication: adjusterformValues.adjusterpreferredcommunication,
 
             }),
             adjusterAddress: new Address({
@@ -137,8 +135,7 @@ export class AddAdjusterComponent implements OnInit {
                 state: adjusterformValues.adjusterState,
                 zipCode: adjusterformValues.adjusterZipcode
             })
-          
-           
+
         });
         this._progressBarService.show();
         result = this._adjusterMasterStore.addAdjuster(adjuster);

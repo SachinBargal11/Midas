@@ -265,9 +265,9 @@ export class EditInsuranceComponent implements OnInit {
                 faxNo: insuranceformValues.policyFaxNo ? insuranceformValues.policyFaxNo.replace(/\-|\s/g, '') : null,
                 homePhone: insuranceformValues.policyHomePhone,
                 workPhone: insuranceformValues.policyWorkPhone,
-                //officeExtension: insuranceformValues.officeExtension,
-                //alternateEmail: insuranceformValues.alternateEmail,
-                //preferredcommunication: insuranceformValues.preferredcommunication,
+                officeExtension: insuranceformValues.officeExtension,
+                alternateEmail: insuranceformValues.alternateEmail,
+                preferredcommunication: insuranceformValues.preferredcommunication,
 
             }),
             policyAddress: new Address({
@@ -284,9 +284,9 @@ export class EditInsuranceComponent implements OnInit {
                 faxNo: insuranceformValues.policyFaxNo ? insuranceformValues.policyFaxNo.replace(/\-|\s/g, '') : null,
                 homePhone: insuranceformValues.policyHomePhone,
                 workPhone: insuranceformValues.policyWorkPhone,
-                //officeExtension: insuranceformValues.officeExtension,
-                //alternateEmail: insuranceformValues.alternateEmail,
-                //preferredcommunication: insuranceformValues.preferredcommunication,
+                officeExtension: insuranceformValues.officeExtension,
+                alternateEmail: insuranceformValues.alternateEmail,
+                preferredcommunication: insuranceformValues.preferredcommunication,
             }),
             insuranceAddress: new Address({
                 // address1: insuranceformValues.address,

@@ -117,9 +117,9 @@ export class AddPatientComponent implements OnInit {
                     faxNo: patientFormValues.contact.faxNo ? patientFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
                     homePhone: patientFormValues.contact.homePhone,
                     workPhone: patientFormValues.contact.workPhone,
-                    //officeExtension: patientFormValues.contact.officeExtension,
-                   //alternateEmail: patientFormValues.contact.alternateEmail,
-                    //preferredcommunication: patientFormValues.contact.preferredcommunication,
+                    officeExtension: patientFormValues.contact.officeExtension,
+                    alternateEmail: patientFormValues.contact.alternateEmail,
+                    preferredcommunication: patientFormValues.contact.preferredcommunication,
                     createByUserId: this._sessionStore.session.account.user.id
                 }),
                 address: new Address({
