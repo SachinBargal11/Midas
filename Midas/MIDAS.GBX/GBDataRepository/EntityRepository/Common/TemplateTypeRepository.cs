@@ -42,11 +42,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                 boCaseTypes.Add(boCaseType);
             }
-
-           
-
             
-
             return (T)(object)boCaseTypes;
         }
         #endregion
@@ -54,20 +50,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Entity Conversion
         public override T ObjectConvert<T, U>(U entity)
         {
-            CaseType caseType = entity as CaseType;
+            Template templateType = entity as Template;
 
-            if (caseType == null)
-                return default(T);
+            if (templateType == null) return default(T);
+            BO.Common.TemplateType boTemplateType = new BO.Common.TemplateType();
+            boTemplateType.TemplateText = templateType.FileData;
 
-           
-                BO.Common.CaseType boCaseType = new BO.Common.CaseType();
-
-                boCaseType.CaseTypeText = caseType.CaseTypeText;
-
-                if (caseType.IsDeleted.HasValue)
-                    boCaseType.IsDeleted = caseType.IsDeleted.Value;
-
-            return (T)(object)boCaseType;
+            return (T)(object)boTemplateType;
         }
         #endregion
         
@@ -97,7 +86,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        #region Get By Id 
+        #region Get By Template Type 
         public override object Get(string type)
         {
             var acc = _context.Templates.Where(p => p.TemplateType.ToUpper() == type.ToUpper() && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
