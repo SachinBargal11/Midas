@@ -347,7 +347,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 #endregion
 
                 #region caseCompanymapping
-                if (lstCaseCompanyMapping != null)
+                if (lstCaseCompanyMapping == null || (lstCaseCompanyMapping != null && lstCaseCompanyMapping.Count <= 0))
+                {
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid case, company mapping.", ErrorLevel = ErrorLevel.Error };
+                }
+                else
                 {
                     foreach (BO.CaseCompanyMapping eachcaseCompanyMapping in lstCaseCompanyMapping)
                     {

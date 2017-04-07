@@ -181,24 +181,20 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         [HttpGet]
         [Route("download/{caseId}/{documentid}")]
         [AllowAnonymous]
-        public HttpResponse Download(int caseId, int documentid)
+        public void Download(int caseId, int documentid)
         {
             string filepath = requestHandler.Download(Request, caseId, documentid);
             filepath = filepath.Replace(ConfigurationManager.AppSettings.Get("BLOB_PATH"), ConfigurationManager.AppSettings.Get("LOCAL_PATH"));
+
             FileInfo fileInfo = new System.IO.FileInfo(filepath);
-            System.IO.FileStream fs = null;
-            fs = System.IO.File.Open(filepath, FileMode.Open);
-            byte[] btFile = new byte[fs.Length];
-            fs.Read(btFile, 0, Convert.ToInt32(fs.Length));
-            fs.Close();
-            HttpContext.Current.Response.ContentType = "application/octet-stream";
+
+            HttpContext.Current.Response.ContentType = "application/pdf";
             HttpContext.Current.Response.AddHeader("Content-Disposition", String.Format("attachment;filename=\"{0}\"", fileInfo.Name));
             HttpContext.Current.Response.AddHeader("Content-Length", fileInfo.Length.ToString());
             HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
-            //HttpContext.Current.Response.WriteFile(filepath);   
-            HttpContext.Current.Response.BinaryWrite(btFile);
-            //HttpContext.Current.Response.End();
-            return HttpContext.Current.Response;
+            HttpContext.Current.Response.WriteFile(filepath);
+            //HttpContext.Current.Response.BinaryWrite(btFile);
+            HttpContext.Current.Response.End();
         }
 
         [HttpGet]

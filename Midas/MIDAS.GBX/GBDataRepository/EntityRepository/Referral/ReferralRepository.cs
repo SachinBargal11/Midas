@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using MIDAS.GBX.DataRepository.Model;
 using System.Data.Entity;
 using BO = MIDAS.GBX.BusinessObjects;
-using Docs.Pdf;
+//using Docs.Pdf;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 {
@@ -561,7 +561,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         
         public override object GenerateReferralDocument(int id)
         {
-            HtmlToPdf htmlPDF = new HtmlToPdf();
+            //HtmlToPdf htmlPDF = new HtmlToPdf();
 
             string pdfText = GetTemplateDocument("Referral");
 
@@ -576,8 +576,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                              .Replace("{{ReferredToDoctor}}", acc.Doctor.User.FirstName + " " + acc.Doctor.User.LastName)
                              .Replace("{{Note}}", acc.Note);
 
-            htmlPDF.OpenHTML(pdfText);
-            htmlPDF.SavePDF(@"D:\Publish\aaa.pdf");
+            //htmlPDF.OpenHTML(pdfText);
+            //htmlPDF.SavePDF(@"D:\Publish\aaa.pdf");
 
             return acc;
         }

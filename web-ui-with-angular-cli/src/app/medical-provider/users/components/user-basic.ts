@@ -114,10 +114,10 @@ export class UserBasicComponent implements OnInit {
                         return currentRole.roleType.toString();
                     });
                     this.selectedDoctorSpecialities = _.map(doctorDetail.doctorSpecialities, (currentDoctorSpeciality: any) => {
-                        return currentDoctorSpeciality.specialty.id.toString();
+                        return currentDoctorSpeciality.speciality.id.toString();
                     });
                     this.selectedSpecialities = _.map(doctorDetail.doctorSpecialities, (currentDoctorSpeciality: any) => {
-                        return currentDoctorSpeciality.specialty.id.toString();
+                        return currentDoctorSpeciality.speciality.id.toString();
                     });
                     if (!this.user.address || !this.user.contact) {
                         this.user = new User({
