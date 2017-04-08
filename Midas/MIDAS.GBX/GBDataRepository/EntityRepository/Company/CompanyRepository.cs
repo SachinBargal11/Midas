@@ -69,14 +69,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 if (company.Locations != null)
                 {
-
-
                     List<BO.Location> lstLocation = new List<BO.Location>();
                     foreach (var item in company.Locations)
                     {
                         using (LocationRepository sr = new LocationRepository(_context))
                         {
-                            lstLocation.Add(sr.Convert<BO.Location, Location>(item));
+                            BO.Location location = sr.Convert<BO.Location, Location>(item);
+                            location.Company = null;
+                            lstLocation.Add(location);
                         }
                     }
 

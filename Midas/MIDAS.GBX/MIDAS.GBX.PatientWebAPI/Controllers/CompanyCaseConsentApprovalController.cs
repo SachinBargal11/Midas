@@ -6,6 +6,9 @@ using System.Net.Http;
 using System.Web.Http;
 using MIDAS.GBX.PatientWebAPI.RequestHandler;
 using MIDAS.GBX.BusinessObjects;
+using System.IO;
+using System.Configuration;
+using System.Web;
 
 namespace MIDAS.GBX.PatientWebAPI.Controllers
 {
@@ -69,6 +72,23 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             return requestHandler.Delete(Request, id);
         }
 
+        [HttpGet]
+        [Route("download/{caseid}/{companyid}")]
+        [AllowAnonymous]
+        public void DownloadConsent(int caseid, int companyid)
+        {
+            string filepath = requestHandler.Download(Request, caseid, companyid);
+            
+            FileInfo fileInfo = new System.IO.FileInfo(filepath);
 
+            HttpContext.Current.Response.ContentType = "application/octet-stream";
+            HttpContext.Current.Response.AddHeader("Content-Disposition", String.Format("attachment;filename=\"{0}\"", fileInfo.Name));
+            HttpContext.Current.Response.AddHeader("Content-Length", fileInfo.Length.ToString());
+            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
+            HttpContext.Current.Response.WriteFile(filepath);
+            //HttpContext.Current.Response.BinaryWrite(btFile);
+            HttpContext.Current.Response.End();
+            if (File.Exists(filepath)) File.Delete(filepath);
+        }
     }
 }

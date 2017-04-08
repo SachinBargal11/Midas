@@ -12,22 +12,21 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class DoctorCaseConsentApproval
+    public partial class CaseCompanyConsentDocument
     {
         public int Id { get; set; }
-        public int DoctorId { get; set; }
-        public Nullable<int> CaseId { get; set; }
-        public string ConsentReceived { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
-        public int CreateByUserID { get; set; }
-        public System.DateTime CreateDate { get; set; }
-        public Nullable<int> UpdateByUserID { get; set; }
+        public int CaseId { get; set; }
+        public int CompanyId { get; set; }
+        public int MidasDocumentId { get; set; }
+        public string DocumentName { get; set; }
+        public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-        public Nullable<int> Patientid { get; set; }
-        public string FileName { get; set; }
+        public Nullable<int> CreateUserId { get; set; }
+        public Nullable<int> UpdateUserId { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
     
         public virtual Case Case { get; set; }
-        public virtual Doctor Doctor { get; set; }
-        public virtual Patient2 Patient2 { get; set; }
+        public virtual Company Company { get; set; }
+        public virtual MidasDocument MidasDocument { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using MIDAS.GBX.DataRepository.Model;
 using System.Data.Entity;
 using BO = MIDAS.GBX.BusinessObjects;
+using MIDAS.GBX.DataRepository.EntityRepository.Common;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
 {
@@ -72,6 +73,33 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
             }
             caseBO.CaseCompanyMappings = boCaseCompanyMapping;
+
+            if (cases.CompanyCaseConsentApprovals != null)
+            {
+                List<BO.CompanyCaseConsentApproval> boCompanyCaseConsentApproval = new List<BO.CompanyCaseConsentApproval>();
+                foreach (var casemap in cases.CompanyCaseConsentApprovals)
+                {
+                    using (CompanyCaseConsentApprovalRepository cmp = new CompanyCaseConsentApprovalRepository(_context))
+                    {
+                        boCompanyCaseConsentApproval.Add(cmp.Convert<BO.CompanyCaseConsentApproval, CompanyCaseConsentApproval>(casemap));
+                    }
+                }
+                caseBO.CompanyCaseConsentApprovals = boCompanyCaseConsentApproval;
+            }
+
+            if (cases.Referrals != null)
+            {
+                List<BO.Referral> boReferral = new List<BO.Referral>();
+                foreach (var casemap in cases.Referrals)
+                {
+                    using (ReferralRepository cmp = new ReferralRepository(_context))
+                    {
+                        boReferral.Add(cmp.Convert<BO.Referral, Referral>(casemap));
+                    }
+                }
+                caseBO.Referrals = boReferral;
+            }
+
 
             return (T)(object)caseBO;
         }
@@ -194,6 +222,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("PatientEmpInfo.ContactInfo")
                                     .Include("CaseCompanyMappings")
                                     .Include("CaseCompanyMappings.Company")
+                                    .Include("CompanyCaseConsentApprovals")
+                                    .Include("Referrals")
                                     .Where(p => p.Id == id 
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .FirstOrDefault<Case>();
@@ -217,6 +247,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("PatientEmpInfo.ContactInfo")
                                     .Include("CaseCompanyMappings")
                                     .Include("CaseCompanyMappings.Company")
+                                    .Include("CompanyCaseConsentApprovals")
+                                    .Include("Referrals")
                                     .Where(p => p.PatientId == PatientId 
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .ToList<Case>();
@@ -371,6 +403,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                        .Include("PatientEmpInfo.ContactInfo")
                                        .Include("CaseCompanyMappings")
                                        .Include("CaseCompanyMappings.Company")
+                                       .Include("CompanyCaseConsentApprovals")
+                                       .Include("Referrals")
                                        .Where(p => p.Id == caseDB.Id).FirstOrDefault<Case>();
             }
 
@@ -511,7 +545,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Get(int CompanyId,int DoctorId)
         {
             var userInCompany = _context.UserCompanies.Where(p => p.CompanyID == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID);
-            var patientInCaseMapping = _context.DoctorCaseConsentApprovals.Where(p => p.DoctorId == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CaseId);
+            //var patientInCaseMapping = _context.DoctorCaseConsentApprovals.Where(p => p.DoctorId == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CaseId);
+            var patientInCaseMapping = _context.PatientVisit2.Where(p => p.DoctorId == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CaseId);
             var patientWithCase = _context.Cases.Where(p => patientInCaseMapping.Contains(p.Id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.PatientId);
 
             var acc = _context.Patient2.Include("User")

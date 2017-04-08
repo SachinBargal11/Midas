@@ -112,6 +112,21 @@
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="FileUploadPath" Type="nvarchar" MaxLength="250" />
         </EntityType>
+        <EntityType Name="CaseCompanyConsentDocuments">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="CaseId" Type="int" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="MidasDocumentId" Type="int" Nullable="false" />
+          <Property Name="DocumentName" Type="varchar" MaxLength="500" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="CreateUserId" Type="int" />
+          <Property Name="UpdateUserId" Type="int" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
         <EntityType Name="CaseCompanyMapping">
           <Key>
             <PropertyRef Name="Id" />
@@ -282,22 +297,6 @@
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-        </EntityType>
-        <EntityType Name="DoctorCaseConsentApproval">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="DoctorId" Type="int" Nullable="false" />
-          <Property Name="CaseId" Type="int" />
-          <Property Name="ConsentReceived" Type="nvarchar" MaxLength="50" />
-          <Property Name="IsDeleted" Type="bit" />
-          <Property Name="CreateByUserID" Type="int" Nullable="false" />
-          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="UpdateByUserID" Type="int" />
-          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
-          <Property Name="Patientid" Type="int" />
-          <Property Name="FileName" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="DoctorLocationSchedule">
           <Key>
@@ -1187,6 +1186,42 @@ warning 6035: The relationship 'FK_AddressInfo_State_StateCode' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CaseCompanyConsentDocuments_Case_CaseId">
+          <End Role="Case" Type="Self.Case" Multiplicity="1" />
+          <End Role="CaseCompanyConsentDocuments" Type="Self.CaseCompanyConsentDocuments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Case">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CaseCompanyConsentDocuments">
+              <PropertyRef Name="CaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CaseCompanyConsentDocuments_Company_CaseId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="CaseCompanyConsentDocuments" Type="Self.CaseCompanyConsentDocuments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CaseCompanyConsentDocuments">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId">
+          <End Role="MidasDocuments" Type="Self.MidasDocuments" Multiplicity="1" />
+          <End Role="CaseCompanyConsentDocuments" Type="Self.CaseCompanyConsentDocuments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MidasDocuments">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CaseCompanyConsentDocuments">
+              <PropertyRef Name="MidasDocumentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CaseCompanyMapping_Case_CaseId">
           <End Role="Case" Type="Self.Case" Multiplicity="1" />
           <End Role="CaseCompanyMapping" Type="Self.CaseCompanyMapping" Multiplicity="*" />
@@ -1379,42 +1414,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="Doctor">
               <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DoctorCaseConsentApproval_Case_CaseId">
-          <End Role="Case" Type="Self.Case" Multiplicity="0..1" />
-          <End Role="DoctorCaseConsentApproval" Type="Self.DoctorCaseConsentApproval" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Case">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DoctorCaseConsentApproval">
-              <PropertyRef Name="CaseId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DoctorCaseConsentApproval_Doctor_DoctorId">
-          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
-          <End Role="DoctorCaseConsentApproval" Type="Self.DoctorCaseConsentApproval" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Doctor">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DoctorCaseConsentApproval">
-              <PropertyRef Name="DoctorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DoctorCaseConsentApproval_Patient2">
-          <End Role="Patient2" Type="Self.Patient2" Multiplicity="0..1" />
-          <End Role="DoctorCaseConsentApproval" Type="Self.DoctorCaseConsentApproval" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Patient2">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DoctorCaseConsentApproval">
-              <PropertyRef Name="Patientid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2410,6 +2409,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="BlobStorageType" EntityType="Self.BlobStorageType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CalendarEvent" EntityType="Self.CalendarEvent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Case" EntityType="Self.Case" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CaseCompanyConsentDocuments" EntityType="Self.CaseCompanyConsentDocuments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CaseCompanyMapping" EntityType="Self.CaseCompanyMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CaseDocuments" EntityType="Self.CaseDocuments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CaseInsuranceMapping" EntityType="Self.CaseInsuranceMapping" Schema="dbo" store:Type="Tables" />
@@ -2422,7 +2422,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="CompanyType" EntityType="Self.CompanyType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContactInfo" EntityType="Self.ContactInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="DoctorCaseConsentApproval" EntityType="Self.DoctorCaseConsentApproval" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DoctorLocationSchedule" EntityType="Self.DoctorLocationSchedule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DoctorLocationSpecialty" EntityType="Self.DoctorLocationSpecialty" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DoctorSpecialities" EntityType="Self.DoctorSpecialities" Schema="dbo" store:Type="Tables" />
@@ -2524,6 +2523,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="PatientEmpInfo" EntitySet="PatientEmpInfo" />
             <End Role="Case" EntitySet="Case" />
           </AssociationSet>
+          <AssociationSet Name="FK_CaseCompanyConsentDocuments_Case_CaseId" Association="Self.FK_CaseCompanyConsentDocuments_Case_CaseId">
+            <End Role="Case" EntitySet="Case" />
+            <End Role="CaseCompanyConsentDocuments" EntitySet="CaseCompanyConsentDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CaseCompanyConsentDocuments_Company_CaseId" Association="Self.FK_CaseCompanyConsentDocuments_Company_CaseId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="CaseCompanyConsentDocuments" EntitySet="CaseCompanyConsentDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId" Association="Self.FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId">
+            <End Role="MidasDocuments" EntitySet="MidasDocuments" />
+            <End Role="CaseCompanyConsentDocuments" EntitySet="CaseCompanyConsentDocuments" />
+          </AssociationSet>
           <AssociationSet Name="FK_CaseCompanyMapping_Case_CaseId" Association="Self.FK_CaseCompanyMapping_Case_CaseId">
             <End Role="Case" EntitySet="Case" />
             <End Role="CaseCompanyMapping" EntitySet="CaseCompanyMapping" />
@@ -2587,18 +2598,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_Doctor_User" Association="Self.FK_Doctor_User">
             <End Role="User" EntitySet="User" />
             <End Role="Doctor" EntitySet="Doctor" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorCaseConsentApproval_Case_CaseId" Association="Self.FK_DoctorCaseConsentApproval_Case_CaseId">
-            <End Role="Case" EntitySet="Case" />
-            <End Role="DoctorCaseConsentApproval" EntitySet="DoctorCaseConsentApproval" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorCaseConsentApproval_Doctor_DoctorId" Association="Self.FK_DoctorCaseConsentApproval_Doctor_DoctorId">
-            <End Role="Doctor" EntitySet="Doctor" />
-            <End Role="DoctorCaseConsentApproval" EntitySet="DoctorCaseConsentApproval" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorCaseConsentApproval_Patient2" Association="Self.FK_DoctorCaseConsentApproval_Patient2">
-            <End Role="Patient2" EntitySet="Patient2" />
-            <End Role="DoctorCaseConsentApproval" EntitySet="DoctorCaseConsentApproval" />
           </AssociationSet>
           <AssociationSet Name="FK_DoctorLocationSchedule_Doctor" Association="Self.FK_DoctorLocationSchedule_Doctor">
             <End Role="Doctor" EntitySet="Doctor" />
@@ -3067,15 +3066,33 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Location" Relationship="Self.FK_Case_Location_LocationID" FromRole="Case" ToRole="Location" />
           <NavigationProperty Name="Patient2" Relationship="Self.FK_Case_Patient2_PatientId" FromRole="Case" ToRole="Patient2" />
           <NavigationProperty Name="PatientEmpInfo" Relationship="Self.FK_Case_PatientEmpInfo_PatientEmpInfoId" FromRole="Case" ToRole="PatientEmpInfo" />
+          <NavigationProperty Name="CaseCompanyConsentDocuments" Relationship="Self.FK_CaseCompanyConsentDocuments_Case_CaseId" FromRole="Case" ToRole="CaseCompanyConsentDocuments" />
           <NavigationProperty Name="CaseCompanyMappings" Relationship="Self.FK_CaseCompanyMapping_Case_CaseId" FromRole="Case" ToRole="CaseCompanyMapping" />
           <NavigationProperty Name="CaseInsuranceMappings" Relationship="Self.FK_CaseInsuranceMapping_Case_CaseId" FromRole="Case" ToRole="CaseInsuranceMapping" />
           <NavigationProperty Name="CompanyCaseConsentApprovals" Relationship="Self.FK_CompanyCaseConsentApproval_Case_CaseId" FromRole="Case" ToRole="CompanyCaseConsentApproval" />
-          <NavigationProperty Name="DoctorCaseConsentApprovals" Relationship="Self.FK_DoctorCaseConsentApproval_Case_CaseId" FromRole="Case" ToRole="DoctorCaseConsentApproval" />
           <NavigationProperty Name="PatientAccidentInfoes" Relationship="Self.FK_PatientAccidentInfo_Case_CaseId" FromRole="Case" ToRole="PatientAccidentInfo" />
           <NavigationProperty Name="PatientVisits" Relationship="Self.FK_PatientVisit_Case_CaseId" FromRole="Case" ToRole="PatientVisit" />
           <NavigationProperty Name="PatientVisit2" Relationship="Self.FK_PatientVisit2_Case_CaseId" FromRole="Case" ToRole="PatientVisit2" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_Case_CaseId" FromRole="Case" ToRole="Referral" />
           <NavigationProperty Name="RefferingOffices" Relationship="Self.FK_RefferingOffice_Case_CaseId" FromRole="Case" ToRole="RefferingOffice" />
+        </EntityType>
+        <EntityType Name="CaseCompanyConsentDocument">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CaseId" Type="Int32" Nullable="false" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="MidasDocumentId" Type="Int32" Nullable="false" />
+          <Property Name="DocumentName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="7" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="CreateUserId" Type="Int32" />
+          <Property Name="UpdateUserId" Type="Int32" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="Case" Relationship="Self.FK_CaseCompanyConsentDocuments_Case_CaseId" FromRole="CaseCompanyConsentDocuments" ToRole="Case" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_CaseCompanyConsentDocuments_Company_CaseId" FromRole="CaseCompanyConsentDocuments" ToRole="Company" />
+          <NavigationProperty Name="MidasDocument" Relationship="Self.FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId" FromRole="CaseCompanyConsentDocuments" ToRole="MidasDocuments" />
         </EntityType>
         <EntityType Name="CaseCompanyMapping">
           <Key>
@@ -3173,6 +3190,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="AdjusterMasters" Relationship="Self.FK_AdjusterMaster_Company_CompanyId" FromRole="Company" ToRole="AdjusterMaster" />
           <NavigationProperty Name="Attorneys" Relationship="Self.FK_Attorney_Company_CompanyId" FromRole="Company" ToRole="Attorney" />
           <NavigationProperty Name="BlobStorageType" Relationship="Self.FK_Company_BlobStorageType_BlobStorageTypeId" FromRole="Company" ToRole="BlobStorageType" />
+          <NavigationProperty Name="CaseCompanyConsentDocuments" Relationship="Self.FK_CaseCompanyConsentDocuments_Company_CaseId" FromRole="Company" ToRole="CaseCompanyConsentDocuments" />
           <NavigationProperty Name="CaseCompanyMappings" Relationship="Self.FK_CaseCompanyMapping_Company_CompanyId" FromRole="Company" ToRole="CaseCompanyMapping" />
           <NavigationProperty Name="CompanyType1" Relationship="Self.FK_Company_CompanyType" FromRole="Company" ToRole="CompanyType" />
           <NavigationProperty Name="ContactInfo" Relationship="Self.FK_Company_ContactInfo" FromRole="Company" ToRole="ContactInfo" />
@@ -3287,7 +3305,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="User" Relationship="Self.FK_Doctor_User" FromRole="Doctor" ToRole="User" />
-          <NavigationProperty Name="DoctorCaseConsentApprovals" Relationship="Self.FK_DoctorCaseConsentApproval_Doctor_DoctorId" FromRole="Doctor" ToRole="DoctorCaseConsentApproval" />
           <NavigationProperty Name="DoctorLocationSchedules" Relationship="Self.FK_DoctorLocationSchedule_Doctor" FromRole="Doctor" ToRole="DoctorLocationSchedule" />
           <NavigationProperty Name="DoctorLocationSpecialties" Relationship="Self.FK_DoctorLocationSpecialty_Doctor_DoctorId" FromRole="Doctor" ToRole="DoctorLocationSpecialty" />
           <NavigationProperty Name="DoctorSpecialities" Relationship="Self.FK_DoctorSpecialities_Doctor_DoctorID" FromRole="Doctor" ToRole="DoctorSpecialities" />
@@ -3295,25 +3312,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="PatientVisit2" Relationship="Self.FK_PatientVisit2_Doctor_DoctorId" FromRole="Doctor" ToRole="PatientVisit2" />
           <NavigationProperty Name="PatientVisitEvents" Relationship="Self.FK_PatientVisitEvent_Doctor_ReadingDoctorId" FromRole="Doctor" ToRole="PatientVisitEvent" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_Doctor_ReferredToDoctorId" FromRole="Doctor" ToRole="Referral" />
-        </EntityType>
-        <EntityType Name="DoctorCaseConsentApproval">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DoctorId" Type="Int32" Nullable="false" />
-          <Property Name="CaseId" Type="Int32" />
-          <Property Name="ConsentReceived" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="IsDeleted" Type="Boolean" />
-          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
-          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="UpdateByUserID" Type="Int32" />
-          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <Property Name="Patientid" Type="Int32" />
-          <Property Name="FileName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Case" Relationship="Self.FK_DoctorCaseConsentApproval_Case_CaseId" FromRole="DoctorCaseConsentApproval" ToRole="Case" />
-          <NavigationProperty Name="Doctor" Relationship="Self.FK_DoctorCaseConsentApproval_Doctor_DoctorId" FromRole="DoctorCaseConsentApproval" ToRole="Doctor" />
-          <NavigationProperty Name="Patient2" Relationship="Self.FK_DoctorCaseConsentApproval_Patient2" FromRole="DoctorCaseConsentApproval" ToRole="Patient2" />
         </EntityType>
         <EntityType Name="DoctorLocationSchedule">
           <Key>
@@ -3505,6 +3503,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateUserId" Type="Int32" />
           <Property Name="UpdateUserId" Type="Int32" />
           <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="CaseCompanyConsentDocuments" Relationship="Self.FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="CaseCompanyConsentDocuments" />
           <NavigationProperty Name="CaseDocuments" Relationship="Self.FK_CaseDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="CaseDocuments" />
           <NavigationProperty Name="ReferralDocuments" Relationship="Self.FK_ReferralDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="ReferralDocuments" />
         </EntityType>
@@ -3601,7 +3600,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Cases" Relationship="Self.FK_Case_Patient2_PatientId" FromRole="Patient2" ToRole="Case" />
-          <NavigationProperty Name="DoctorCaseConsentApprovals" Relationship="Self.FK_DoctorCaseConsentApproval_Patient2" FromRole="Patient2" ToRole="DoctorCaseConsentApproval" />
           <NavigationProperty Name="MaritalStatu" Relationship="Self.FK_Patient2_MaritalStatusId" FromRole="Patient2" ToRole="MaritalStatus" />
           <NavigationProperty Name="User" Relationship="Self.FK_Patient2_User_id" FromRole="Patient2" ToRole="User" />
           <NavigationProperty Name="PatientEmpInfoes" Relationship="Self.FK_PatientEmpInfo_Patient2_PatientId" FromRole="Patient2" ToRole="PatientEmpInfo" />
@@ -4493,6 +4491,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CaseCompanyConsentDocuments_Case_CaseId">
+          <End Role="Case" Type="Self.Case" Multiplicity="1" />
+          <End Role="CaseCompanyConsentDocuments" Type="Self.CaseCompanyConsentDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Case">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CaseCompanyConsentDocuments">
+              <PropertyRef Name="CaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CaseCompanyMapping_Case_CaseId">
           <End Role="Case" Type="Self.Case" Multiplicity="1" />
           <End Role="CaseCompanyMapping" Type="Self.CaseCompanyMapping" Multiplicity="*" />
@@ -4525,18 +4535,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="CompanyCaseConsentApproval">
-              <PropertyRef Name="CaseId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DoctorCaseConsentApproval_Case_CaseId">
-          <End Role="Case" Type="Self.Case" Multiplicity="0..1" />
-          <End Role="DoctorCaseConsentApproval" Type="Self.DoctorCaseConsentApproval" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Case">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DoctorCaseConsentApproval">
               <PropertyRef Name="CaseId" />
             </Dependent>
           </ReferentialConstraint>
@@ -4598,6 +4596,30 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="RefferingOffice">
               <PropertyRef Name="CaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CaseCompanyConsentDocuments_Company_CaseId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="CaseCompanyConsentDocuments" Type="Self.CaseCompanyConsentDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CaseCompanyConsentDocuments">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId">
+          <End Role="MidasDocuments" Type="Self.MidasDocument" Multiplicity="1" />
+          <End Role="CaseCompanyConsentDocuments" Type="Self.CaseCompanyConsentDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MidasDocuments">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CaseCompanyConsentDocuments">
+              <PropertyRef Name="MidasDocumentId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4889,18 +4911,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_DoctorCaseConsentApproval_Doctor_DoctorId">
-          <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
-          <End Role="DoctorCaseConsentApproval" Type="Self.DoctorCaseConsentApproval" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Doctor">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DoctorCaseConsentApproval">
-              <PropertyRef Name="DoctorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_DoctorLocationSchedule_Doctor">
           <End Role="Doctor" Type="Self.Doctor" Multiplicity="1" />
           <End Role="DoctorLocationSchedule" Type="Self.DoctorLocationSchedule" Multiplicity="*" />
@@ -4982,18 +4992,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="Referral">
               <PropertyRef Name="ReferredToDoctorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DoctorCaseConsentApproval_Patient2">
-          <End Role="Patient2" Type="Self.Patient2" Multiplicity="0..1" />
-          <End Role="DoctorCaseConsentApproval" Type="Self.DoctorCaseConsentApproval" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Patient2">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DoctorCaseConsentApproval">
-              <PropertyRef Name="Patientid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5557,6 +5555,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="BlobStorageTypes" EntityType="Self.BlobStorageType" />
           <EntitySet Name="CalendarEvents" EntityType="Self.CalendarEvent" />
           <EntitySet Name="Cases" EntityType="Self.Case" />
+          <EntitySet Name="CaseCompanyConsentDocuments" EntityType="Self.CaseCompanyConsentDocument" />
           <EntitySet Name="CaseCompanyMappings" EntityType="Self.CaseCompanyMapping" />
           <EntitySet Name="CaseDocuments" EntityType="Self.CaseDocument" />
           <EntitySet Name="CaseInsuranceMappings" EntityType="Self.CaseInsuranceMapping" />
@@ -5569,7 +5568,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="CompanyTypes" EntityType="Self.CompanyType" />
           <EntitySet Name="ContactInfoes" EntityType="Self.ContactInfo" />
           <EntitySet Name="Doctors" EntityType="Self.Doctor" />
-          <EntitySet Name="DoctorCaseConsentApprovals" EntityType="Self.DoctorCaseConsentApproval" />
           <EntitySet Name="DoctorLocationSchedules" EntityType="Self.DoctorLocationSchedule" />
           <EntitySet Name="DoctorLocationSpecialties" EntityType="Self.DoctorLocationSpecialty" />
           <EntitySet Name="DoctorSpecialities" EntityType="Self.DoctorSpeciality" />
@@ -5717,6 +5715,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="PatientEmpInfo" EntitySet="PatientEmpInfoes" />
             <End Role="Case" EntitySet="Cases" />
           </AssociationSet>
+          <AssociationSet Name="FK_CaseCompanyConsentDocuments_Case_CaseId" Association="Self.FK_CaseCompanyConsentDocuments_Case_CaseId">
+            <End Role="Case" EntitySet="Cases" />
+            <End Role="CaseCompanyConsentDocuments" EntitySet="CaseCompanyConsentDocuments" />
+          </AssociationSet>
           <AssociationSet Name="FK_CaseCompanyMapping_Case_CaseId" Association="Self.FK_CaseCompanyMapping_Case_CaseId">
             <End Role="Case" EntitySet="Cases" />
             <End Role="CaseCompanyMapping" EntitySet="CaseCompanyMappings" />
@@ -5728,10 +5730,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_CompanyCaseConsentApproval_Case_CaseId" Association="Self.FK_CompanyCaseConsentApproval_Case_CaseId">
             <End Role="Case" EntitySet="Cases" />
             <End Role="CompanyCaseConsentApproval" EntitySet="CompanyCaseConsentApprovals" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorCaseConsentApproval_Case_CaseId" Association="Self.FK_DoctorCaseConsentApproval_Case_CaseId">
-            <End Role="Case" EntitySet="Cases" />
-            <End Role="DoctorCaseConsentApproval" EntitySet="DoctorCaseConsentApprovals" />
           </AssociationSet>
           <AssociationSet Name="FK_PatientAccidentInfo_Case_CaseId" Association="Self.FK_PatientAccidentInfo_Case_CaseId">
             <End Role="Case" EntitySet="Cases" />
@@ -5752,6 +5750,14 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_RefferingOffice_Case_CaseId" Association="Self.FK_RefferingOffice_Case_CaseId">
             <End Role="Case" EntitySet="Cases" />
             <End Role="RefferingOffice" EntitySet="RefferingOffices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CaseCompanyConsentDocuments_Company_CaseId" Association="Self.FK_CaseCompanyConsentDocuments_Company_CaseId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="CaseCompanyConsentDocuments" EntitySet="CaseCompanyConsentDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId" Association="Self.FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId">
+            <End Role="MidasDocuments" EntitySet="MidasDocuments" />
+            <End Role="CaseCompanyConsentDocuments" EntitySet="CaseCompanyConsentDocuments" />
           </AssociationSet>
           <AssociationSet Name="FK_CaseCompanyMapping_Company_CompanyId" Association="Self.FK_CaseCompanyMapping_Company_CompanyId">
             <End Role="Company" EntitySet="Companies" />
@@ -5849,10 +5855,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="User" EntitySet="Users" />
             <End Role="Doctor" EntitySet="Doctors" />
           </AssociationSet>
-          <AssociationSet Name="FK_DoctorCaseConsentApproval_Doctor_DoctorId" Association="Self.FK_DoctorCaseConsentApproval_Doctor_DoctorId">
-            <End Role="Doctor" EntitySet="Doctors" />
-            <End Role="DoctorCaseConsentApproval" EntitySet="DoctorCaseConsentApprovals" />
-          </AssociationSet>
           <AssociationSet Name="FK_DoctorLocationSchedule_Doctor" Association="Self.FK_DoctorLocationSchedule_Doctor">
             <End Role="Doctor" EntitySet="Doctors" />
             <End Role="DoctorLocationSchedule" EntitySet="DoctorLocationSchedules" />
@@ -5880,10 +5882,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_Referral_Doctor_ReferredToDoctorId" Association="Self.FK_Referral_Doctor_ReferredToDoctorId">
             <End Role="Doctor" EntitySet="Doctors" />
             <End Role="Referral" EntitySet="Referrals" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DoctorCaseConsentApproval_Patient2" Association="Self.FK_DoctorCaseConsentApproval_Patient2">
-            <End Role="Patient2" EntitySet="Patient2" />
-            <End Role="DoctorCaseConsentApproval" EntitySet="DoctorCaseConsentApprovals" />
           </AssociationSet>
           <AssociationSet Name="FK_DoctorLocationSchedule_Location" Association="Self.FK_DoctorLocationSchedule_Location">
             <End Role="Location" EntitySet="Locations" />
@@ -6190,6 +6188,22 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="CaseCompanyConsentDocuments">
+            <EntityTypeMapping TypeName="MIDASGBXModel.CaseCompanyConsentDocument">
+              <MappingFragment StoreEntitySet="CaseCompanyConsentDocuments">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CaseId" ColumnName="CaseId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="MidasDocumentId" ColumnName="MidasDocumentId" />
+                <ScalarProperty Name="DocumentName" ColumnName="DocumentName" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
+                <ScalarProperty Name="UpdateUserId" ColumnName="UpdateUserId" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="CaseCompanyMappings">
             <EntityTypeMapping TypeName="MIDASGBXModel.CaseCompanyMapping">
               <MappingFragment StoreEntitySet="CaseCompanyMapping">
@@ -6370,23 +6384,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DoctorCaseConsentApprovals">
-            <EntityTypeMapping TypeName="MIDASGBXModel.DoctorCaseConsentApproval">
-              <MappingFragment StoreEntitySet="DoctorCaseConsentApproval">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="DoctorId" ColumnName="DoctorId" />
-                <ScalarProperty Name="CaseId" ColumnName="CaseId" />
-                <ScalarProperty Name="ConsentReceived" ColumnName="ConsentReceived" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
-                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
-                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
-                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
-                <ScalarProperty Name="Patientid" ColumnName="Patientid" />
-                <ScalarProperty Name="FileName" ColumnName="FileName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
