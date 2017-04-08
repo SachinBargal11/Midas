@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using MIDAS.GBX.DataRepository.Model;
 using System.Data.Entity;
 using BO = MIDAS.GBX.BusinessObjects;
+using Docs.Pdf;
+using MIDAS.GBX.EN;
+using System.Configuration;
+using System.IO;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 {
@@ -308,10 +312,49 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
+        #region DownlodConsent
+        public override string Download(int caseid, int companyid)
+        {            
+         return this.GenerateConsentDocument(caseid, companyid);
         }
+
+        public string GetTemplateDocument(string templateType)
+        {
+            TemplateTypeRepository templateTypeRepo = new TemplateTypeRepository(_context);
+            BO.Common.TemplateType templateData = (BO.Common.TemplateType)templateTypeRepo.Get(templateType);
+
+            return templateData.TemplateText;
+        }
+
+        public string GenerateConsentDocument(int caseid, int companyid)
+        {
+            HtmlToPdf htmlPDF = new HtmlToPdf();
+            string path = string.Empty;
+            string pdfText = GetTemplateDocument(Constants.ConsentType + "_" + companyid);
+            var acc = _context.CompanyCaseConsentApprovals.Include("Case")
+                                             .Include("Company")
+                                             .Where(p => p.CaseId == caseid).FirstOrDefault();
+            if (acc != null)
+            {
+                try
+                {
+                    pdfText = pdfText.Replace("{{CompanyName}}", acc.Company.Name);
+
+                    path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\company_" + companyid + "\\case_" + caseid;
+                    htmlPDF.OpenHTML(pdfText);
+                    if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+                    htmlPDF.SavePDF(@path + "\\consent.pdf");                    
+                }
+                catch (Exception) { return ""; }
+            }
+            else return "";
+
+            return path + "\\consent.pdf";
+        }
+
+        #endregion
+
+        public void Dispose() { GC.SuppressFinalize(this); }
     }
 
 }
