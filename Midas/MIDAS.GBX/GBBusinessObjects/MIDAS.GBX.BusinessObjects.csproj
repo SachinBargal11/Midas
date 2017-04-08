@@ -61,6 +61,7 @@
     <Compile Include="Case\CaseCompanyMapping.cs" />
     <Compile Include="Case\CaseInsuranceMapping.cs" />
     <Compile Include="Common\CaseStatus.cs" />
+    <Compile Include="Common\TemplateType.cs" />
     <Compile Include="Common\CaseType.cs" />
     <Compile Include="Common\City.cs" />
     <Compile Include="Common\Gender.cs" />
@@ -74,7 +75,7 @@
     <Compile Include="Company\Signup.cs" />
     <Compile Include="ContactInfo\ContactInfo.cs" />
     <Compile Include="Doctor\Doctor.cs" />
-    <Compile Include="Doctor\DoctorCaseConsentApproval.cs" />
+    <Compile Include="CompanyCaseConsentApproval\CompanyCaseConsentApproval.cs" />
     <Compile Include="Doctor\DoctorLocationSpeciality.cs" />
     <Compile Include="Doctor\DoctorLocation.cs" />
     <Compile Include="Doctor\DoctorSpeciality.cs" />

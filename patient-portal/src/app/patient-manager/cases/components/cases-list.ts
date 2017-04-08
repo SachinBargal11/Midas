@@ -31,17 +31,17 @@ export class CasesListComponent implements OnInit {
     constructor(
         public _route: ActivatedRoute,
         private _router: Router,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _casesStore: CasesStore,
         private _patientStore: PatientsStore,
-        private _progressBarService: ProgressBarService,
+        public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
-        private _notificationsStore: NotificationsStore,
+       public notificationsStore: NotificationsStore,
     ) {
         // this._route.parent.params.subscribe((routeParams: any) => {
         //     this.patientId = parseInt(routeParams.patientId, 10);
-        this.patientId = this._sessionStore.session.user.id;
-        this._progressBarService.show();
+        this.patientId = this.sessionStore.session.user.id;
+        this.progressBarService.show();
         this._patientStore.fetchPatientById(this.patientId)
             .subscribe(
             (patient: Patient) => {
@@ -50,10 +50,10 @@ export class CasesListComponent implements OnInit {
             },
             (error) => {
                 this._router.navigate(['../'], { relativeTo: this._route });
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
         // });
     }
@@ -62,7 +62,7 @@ export class CasesListComponent implements OnInit {
     }
 
     loadCases() {
-        this._progressBarService.show();
+        this.progressBarService.show();
         this._casesStore.getCases(this.patientId)
             .subscribe(cases => {
                 this.cases = cases.reverse();
@@ -71,10 +71,10 @@ export class CasesListComponent implements OnInit {
                 // this.cases = this.datasource.slice(0, 10);
             },
             (error) => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
     }
     loadCasesLazy(event: LazyLoadEvent) {
@@ -88,7 +88,7 @@ export class CasesListComponent implements OnInit {
     deleteCases() {
         if (this.selectedCases.length > 0) {
             this.selectedCases.forEach(currentCase => {
-                this._progressBarService.show();
+                this.progressBarService.show();
                 this._casesStore.deleteCase(currentCase)
                     .subscribe(
                     (response) => {
@@ -98,7 +98,7 @@ export class CasesListComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this.loadCases();
-                        this._notificationsStore.addNotification(notification);
+                        this.notificationsStore.addNotification(notification);
                         this.selectedCases = [];
                     },
                     (error) => {
@@ -109,12 +109,12 @@ export class CasesListComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this.selectedCases = [];
-                        this._progressBarService.hide();
-                        this._notificationsStore.addNotification(notification);
+                        this.progressBarService.hide();
+                        this.notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
-                        this._progressBarService.hide();
+                        this.progressBarService.hide();
                     });
             });
         } else {
@@ -123,7 +123,7 @@ export class CasesListComponent implements OnInit {
                 'type': 'ERROR',
                 'createdAt': moment()
             });
-            this._notificationsStore.addNotification(notification);
+            this.notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'select case to delete');
         }
     }

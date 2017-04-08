@@ -50,9 +50,9 @@ export class DemographicsComponent implements OnInit {
         private _router: Router,
         public _route: ActivatedRoute,
         private _statesStore: StatesStore,
-        private _notificationsStore: NotificationsStore,
-        private _progressBarService: ProgressBarService,
-        private _sessionStore: SessionStore,
+       public notificationsStore: NotificationsStore,
+        public progressBarService: ProgressBarService,
+        public sessionStore: SessionStore,
         private _patientsStore: PatientsStore,
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef,
@@ -61,8 +61,8 @@ export class DemographicsComponent implements OnInit {
     ) {
         // this._route.parent.params.subscribe((params: any) => {
         //     this.patientId = parseInt(params.patientId, 10);
-            this.patientId = this._sessionStore.session.user.id;
-            this._progressBarService.show();
+            this.patientId = this.sessionStore.session.user.id;
+            this.progressBarService.show();
             let result = this._patientsStore.getPatientById(this.patientId);
             result.subscribe(
                 (patient: Patient) => {
@@ -78,10 +78,10 @@ export class DemographicsComponent implements OnInit {
                 },
                 (error) => {
                     // this._router.navigate(['/patient-manager/profile/viewall']);
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 },
                 () => {
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 });
 
         // });
@@ -126,15 +126,15 @@ export class DemographicsComponent implements OnInit {
             weight: parseInt(demographicsFormValues.userInfo.weight, 10),
             height: parseInt(demographicsFormValues.userInfo.height, 10),
             dateOfFirstTreatment: demographicsFormValues.userInfo.dateOfFirstTreatment ? moment(demographicsFormValues.userInfo.dateOfFirstTreatment) : null,
-            updateByUserId: this._sessionStore.session.account.user.id,
+            updateByUserId: this.sessionStore.session.account.user.id,
             user: new User(_.extend(existingPatientJS.user, {
-                updateByUserId: this._sessionStore.session.account.user.id,
+                updateByUserId: this.sessionStore.session.account.user.id,
                 contact: new Contact(_.extend(existingPatientJS.user.contact, {
                     cellPhone: demographicsFormValues.contact.cellPhone ? demographicsFormValues.contact.cellPhone.replace(/\-/g, '') : null,
                     faxNo: demographicsFormValues.contact.faxNo ? demographicsFormValues.contact.faxNo.replace(/\-|\s/g, '') : '',
                     homePhone: demographicsFormValues.contact.homePhone,
                     workPhone: demographicsFormValues.contact.workPhone,
-                    updateByUserId: this._sessionStore.session.account.user.id
+                    updateByUserId: this.sessionStore.session.account.user.id
                 })),
                 address: new Address(_.extend(existingPatientJS.user.address, {
                     address1: demographicsFormValues.address.address1,
@@ -143,11 +143,11 @@ export class DemographicsComponent implements OnInit {
                     country: demographicsFormValues.address.country,
                     state: demographicsFormValues.address.state,
                     zipCode: demographicsFormValues.address.zipCode,
-                    updateByUserId: this._sessionStore.session.account.user.id
+                    updateByUserId: this.sessionStore.session.account.user.id
                 }))
             }))
         }));
-        this._progressBarService.show();
+        this.progressBarService.show();
         result = this._patientsStore.updatePatient(patient);
         result.subscribe(
             (response) => {
@@ -156,7 +156,7 @@ export class DemographicsComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._router.navigate(['/patient-manager/profile/viewall']);
             },
             (error) => {
@@ -167,13 +167,13 @@ export class DemographicsComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this.isSavePatientProgress = false;
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
                 this.isSavePatientProgress = false;
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
     }
 

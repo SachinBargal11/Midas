@@ -63,16 +63,17 @@ export class LoginComponent implements OnInit {
                 if (this.checkSecuredLogin(this.loginForm.value.email)) {
                     this._router.navigate(['/account/security-check']);
                 } else {
-                    session.user.roles.forEach(role => {
-                        if (role.roleType === 3) {
-                            this.doctorRole = true;
-                        }
-                    });
-                    if (this.doctorRole) {
-                        this._router.navigate(['/doctor-manager/doctor-appointment']);
-                    } else {
-                        this._router.navigate(['/dashboard']);
-                    }
+                    // session.user.roles.forEach(role => {
+                    //     if (role.roleType === 3) {
+                    //         this.doctorRole = true;
+                    //     }
+                    // });
+                    // if (this.doctorRole) {
+                        // this._router.navigate(['/doctor-manager/doctor-appointment']);
+                        this._router.navigate(['/patient-manager']);
+                    // } else {
+                    //     this._router.navigate(['/dashboard']);
+                    // }
                 }
             },
             (error: Error) => {

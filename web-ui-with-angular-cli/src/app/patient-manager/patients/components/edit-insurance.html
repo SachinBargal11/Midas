@@ -144,10 +144,10 @@
                         <select formControlName="preferredcommunication" [ngModel]="insurance.policyContact.preferredcommunication" type="text" class="form-control" placeholder="">
                                         <option value="">-Select -</option>
                                         <option disabled>────────────────────</option>
-                                        <option value="US">Cellphone</option>
-                                        <option value="US">Email</option>
-                                        <option value="US">Work Phone</option>
-                                        <option value="US">Post</option>
+                                        <option value="1">Cellphone</option>
+                                        <option value="2">Email</option>
+                                        <option value="3">Work Phone</option>
+                                        <option value="4">Post</option>
                         </select>
                     </div>
                 </div>
@@ -431,7 +431,7 @@
                     <div class="col-lg-4">
                         <div class="form-group">
                             <label class="form-label"> Fax No</label>
-                            <p-inputMask mask="9-999-999 9999" formControlName="faxNo" [ngModel]="insuranceFaxNo" placeholder="9-999-999 9999" styleClass="form-control"></p-inputMask>
+                            <p-inputMask mask="9-999-999 9999" formControlName="faxNo" [ngModel]="insurance.insuranceContact.faxNo" placeholder="9-999-999 9999" styleClass="form-control"></p-inputMask>
                         </div>
                     </div>
                 </div>
@@ -439,14 +439,14 @@
                <div class="col-lg-4">
                     <div class="form-group">
                         <label class="form-label"> Office Extension</label>
-                        <input formControlName="officeExtension" type="text" class="form-control" placeholder="" />
+                        <input formControlName="officeExtension" type="text" [ngModel]="insurance.insuranceContact.officeExtension" class="form-control" placeholder="" />
                     </div>
                 </div>
                 <div class="col-lg-4">
                      <div class="form-group">
                         <label class="form-label"> Alternate E-Mail </label>
                         <div class="form-group" [class.error]="insuranceformControls.alternateEmail.touched && !insuranceformControls.alternateEmail.valid">
-                        <input formControlName="alternateEmail" [class.error]="!insuranceformControls.alternateEmail.valid" class="form-control" type="text" placeholder="" />
+                        <input formControlName="alternateEmail" [ngModel]="insurance.insuranceContact.alternateEmail"  [class.error]="!insuranceformControls.alternateEmail.valid" class="form-control" type="text" placeholder="" />
                         <div class='error-list' *ngIf="insuranceformControls.alternateEmail.touched && !insuranceformControls.alternateEmail.valid">
                             <ul>
                                 <li *ngIf="insuranceformControls.alternateEmail.hasError('emailValidator')">Email is invalid.</li>
@@ -459,13 +459,13 @@
                     <div class="form-group">
                         <label class="form-label"> Preferred Communication
                                         </label>
-                        <select formControlName="preferredcommunication" type="text" class="form-control" placeholder="">
+                        <select formControlName="preferredcommunication" [ngModel]="insurance.insuranceContact.preferredcommunication" type="text" class="form-control" placeholder="">
                                         <option value="">-Select -</option>
                                         <option disabled>────────────────────</option>
-                                        <option value="US">Cellphone</option>
-                                        <option value="US">Email</option>
-                                        <option value="US">Work Phone</option>
-                                        <option value="US">Post</option>
+                                        <option value="1">Cellphone</option>
+                                        <option value="2">Email</option>
+                                        <option value="3">Work Phone</option>
+                                        <option value="4">Post</option>
                         </select>
                     </div>
                 </div>

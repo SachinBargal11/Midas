@@ -21,7 +21,7 @@ export class ScheduleService {
     constructor(
         private _http: Http,
         private _locationsStore: LocationsStore,
-        private _sessionStore: SessionStore
+        public sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
     }

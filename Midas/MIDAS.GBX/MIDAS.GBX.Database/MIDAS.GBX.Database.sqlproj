@@ -115,11 +115,14 @@
     <Build Include="Tables\Latest Tables\Referral.sql" />
     <Build Include="Tables\Latest Tables\DoctorLocationSpecialty.sql" />
     <Build Include="Tables\Latest Tables\CaseCompanyMapping.sql" />
-    <Build Include="Tables\Latest Tables\DoctorCaseConsentApproval.sql" />
+    <Build Include="Tables\Latest Tables\CompanyCaseConsentApproval.sql" />
     <Build Include="Tables\MidasDocuments.sql" />
     <Build Include="Tables\CaseDocuments.sql" />
     <Build Include="Tables\Latest Tables\Notification.sql" />
     <Build Include="Tables\Latest Tables\Templates.sql" />
+    <Build Include="Tables\Latest Tables\ReferralDocuments.sql" />
+    <Build Include="Tables\Latest Tables\BlobStorage.sql" />
+    <Build Include="Tables\Latest Tables\BlobStorageType.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />

@@ -9,6 +9,7 @@ import { PatientVisitsStore } from '../patient-manager/patient-visit/stores/pati
 import { PatientVisitService } from '../patient-manager/patient-visit/services/patient-visit-service';
 import { PatientsStore } from '../patient-manager/patients/stores/patients-store';
 import { PatientsService } from '../patient-manager/patients/services/patients-service';
+// import { PatientNavComponent } from '../patient-manager/patients/components/patient-nav-bar';
 
 @NgModule({
     imports: [

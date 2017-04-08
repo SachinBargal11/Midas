@@ -74,11 +74,11 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getByReferringDoctorId/{doctorId}")]
+        [Route("getByReferringUserId/{userId}")]
         [AllowAnonymous]
-        public HttpResponseMessage GetByReferringDoctorId(int doctorId)
+        public HttpResponseMessage GetByReferringUserId(int userId)
         {
-            return requestHandler.GetByReferringDoctorId(Request, doctorId);
+            return requestHandler.GetByReferringUserId(Request, userId);
         }
 
         [HttpGet]

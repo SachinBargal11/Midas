@@ -4,7 +4,8 @@
     [CaseId] INT NOT NULL, 
 	[ReferringCompanyId] INT NOT NULL, 
     [ReferringLocationId] INT NOT NULL, 
-    [ReferringDoctorId] INT NOT NULL, 
+	[ReferringUserId] INT NOT NULL,
+    --[ReferringDoctorId] INT NOT NULL, 
     [ReferredToCompanyId] INT NULL, 
     [ReferredToLocationId] INT NULL, 
     [ReferredToDoctorId] INT NULL, 
@@ -44,12 +45,12 @@ GO
 ALTER TABLE [dbo].[Referral] CHECK CONSTRAINT [FK_Referral_Location_ReferringLocationId]
 GO
 
-ALTER TABLE [dbo].[Referral]  WITH CHECK ADD  CONSTRAINT [FK_Referral_Doctor_ReferringDoctorId] FOREIGN KEY([ReferringDoctorId])
-	REFERENCES [dbo].[Doctor] ([Id])
-GO
+--ALTER TABLE [dbo].[Referral]  WITH CHECK ADD  CONSTRAINT [FK_Referral_Doctor_ReferringDoctorId] FOREIGN KEY([ReferringDoctorId])
+--	REFERENCES [dbo].[Doctor] ([Id])
+--GO
 
-ALTER TABLE [dbo].[Referral] CHECK CONSTRAINT [FK_Referral_Doctor_ReferringDoctorId]
-GO
+--ALTER TABLE [dbo].[Referral] CHECK CONSTRAINT [FK_Referral_Doctor_ReferringDoctorId]
+--GO
 
 ALTER TABLE [dbo].[Referral]  WITH CHECK ADD  CONSTRAINT [FK_Referral_Company_ReferredToCompanyId] FOREIGN KEY([ReferredToCompanyId])
 	REFERENCES [dbo].[Company] ([Id])
@@ -78,3 +79,27 @@ GO
 
 ALTER TABLE [dbo].[Referral] CHECK CONSTRAINT [FK_Referral_Room_ReferredToRoomId]
 GO
+
+/*
+ALTER TABLE [dbo].[Referral] ADD [ReferringUserId] INT NULL
+GO
+
+ALTER TABLE [dbo].[Referral]  WITH CHECK ADD  CONSTRAINT [FK_Referral_User_ReferringUserId] FOREIGN KEY([ReferringUserId])
+	REFERENCES [dbo].[User] ([Id])
+GO
+
+ALTER TABLE [dbo].[Referral] CHECK CONSTRAINT [FK_Referral_User_ReferringUserId]
+GO
+
+UPDATE [dbo].[Referral] SET [ReferringUserId] = [ReferringDoctorId]
+GO
+
+ALTER TABLE [dbo].[Referral] DROP CONSTRAINT [FK_Referral_Doctor_ReferringDoctorId]
+GO
+
+ALTER TABLE [dbo].[Referral] DROP COLUMN [ReferringDoctorId]
+GO
+
+ALTER TABLE [dbo].[Referral] ALTER COLUMN [ReferringUserId] INT NOT NULL
+GO
+*/

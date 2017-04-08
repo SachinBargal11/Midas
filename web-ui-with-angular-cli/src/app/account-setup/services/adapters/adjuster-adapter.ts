@@ -17,7 +17,7 @@ export class AdjusterAdapter {
                 lastName: data.lastName,
                 adjusterContact: ContactAdapter.parseResponse(data.contactInfo),
                 adjusterAddress: AddressAdapter.parseResponse(data.addressInfo),
-                
+
             });
         }
         return adjuster;

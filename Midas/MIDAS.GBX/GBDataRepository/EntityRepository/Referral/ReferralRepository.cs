@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using MIDAS.GBX.DataRepository.Model;
 using System.Data.Entity;
 using BO = MIDAS.GBX.BusinessObjects;
+using System.Configuration;
+using MIDAS.GBX.EN;
+using Docs.Pdf;
+using System.IO;
 //using Docs.Pdf;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository.Common
@@ -35,7 +39,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             referralBO.CaseId = referral.CaseId;
             referralBO.ReferringCompanyId = referral.ReferringCompanyId;
             referralBO.ReferringLocationId = referral.ReferringLocationId;
-            referralBO.ReferringDoctorId = referral.ReferringDoctorId;
+            referralBO.ReferringUserId = referral.ReferringUserId;
             referralBO.ReferredToCompanyId = referral.ReferredToCompanyId;
             referralBO.ReferredToLocationId = referral.ReferredToLocationId;
             referralBO.ReferredToDoctorId = referral.ReferredToDoctorId;
@@ -53,7 +57,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 BO.Company boCompany = new BO.Company();
                 using (CompanyRepository cmp = new CompanyRepository(_context))
                 {
-
                     boCompany = cmp.Convert<BO.Company, Company>(referral.Company);
                     referralBO.Company = boCompany;
                 }
@@ -63,7 +66,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 BO.Company boCompany1 = new BO.Company();
                 using (CompanyRepository cmp = new CompanyRepository(_context))
                 {
-
                     boCompany1 = cmp.Convert<BO.Company, Company>(referral.Company1);
                     referralBO.Company1 = boCompany1;
                 }
@@ -73,7 +75,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 BO.Location boLocation = new BO.Location();
                 using (LocationRepository cmp = new LocationRepository(_context))
                 {
-
                     boLocation = cmp.Convert<BO.Location, Location>(referral.Location);
                     referralBO.Location = boLocation;
                 }
@@ -83,7 +84,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 BO.Location boLocation1 = new BO.Location();
                 using (LocationRepository cmp = new LocationRepository(_context))
                 {
-
                     boLocation1 = cmp.Convert<BO.Location, Location>(referral.Location1);
                     referralBO.Location1 = boLocation1;
                 }
@@ -93,19 +93,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 BO.Doctor boDoctor = new BO.Doctor();
                 using (DoctorRepository cmp = new DoctorRepository(_context))
                 {
-
                     boDoctor = cmp.Convert<BO.Doctor, Doctor>(referral.Doctor);
                     referralBO.Doctor = boDoctor;
                 }
             }
-            if (referral.Doctor1 != null)
+            if (referral.User != null)
             {
-                BO.Doctor boDoctor1 = new BO.Doctor();
-                using (DoctorRepository cmp = new DoctorRepository(_context))
+                BO.User boUser = new BO.User();
+                using (UserRepository cmp = new UserRepository(_context))
                 {
-
-                    boDoctor1 = cmp.Convert<BO.Doctor, Doctor>(referral.Doctor1);
-                    referralBO.Doctor1 = boDoctor1;
+                    boUser = cmp.Convert<BO.User, User>(referral.User);
+                    referralBO.User = boUser;
                 }
             }
             if (referral.Case != null)
@@ -113,7 +111,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 BO.Case boCase = new BO.Case();
                 using (CaseRepository cmp = new CaseRepository(_context))
                 {
-
                     boCase = cmp.Convert<BO.Case, Case>(referral.Case);
                     referralBO.Case = boCase;
                 }
@@ -123,13 +120,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 BO.Room boRoom = new BO.Room();
                 using (RoomRepository cmp = new RoomRepository(_context))
                 {
-
                     boRoom = cmp.Convert<BO.Room, Room>(referral.Room);
                     referralBO.Room = boRoom;
                 }
             }
-
-
             return (T)(object)referralBO;
         }
         #endregion
@@ -168,7 +162,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 referralDB.ReferredToCompanyId = referralBO.ReferredToCompanyId;
                 referralDB.ReferringLocationId = referralBO.ReferringLocationId;
                 referralDB.ReferredToLocationId = referralBO.ReferredToLocationId;
-                referralDB.ReferringDoctorId = referralBO.ReferringDoctorId;
+                referralDB.ReferringUserId = referralBO.ReferringUserId;
                 referralDB.ReferredToDoctorId = referralBO.ReferredToDoctorId;
                 referralDB.ReferredToRoomId = referralBO.ReferredToRoomId;
                 referralDB.Note = referralBO.Note;
@@ -189,14 +183,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             }
             _context.SaveChanges();
 
-            referralDB =_context.Referrals.Include("Company")
+            ////METHOD TO GENERATE REFFERAL DOCUMENT AND SAVE IN MIDASDOCUMENTS/CASEDOCUMENTS TABLE
+            this.GenerateReferralDocument(referralDB.Id);
+
+            referralDB = _context.Referrals.Include("Company")
                                           .Include("Company1")
                                           .Include("Location")
                                           .Include("Location1")
                                           .Include("Doctor")
                                           .Include("Doctor.User")
-                                          .Include("Doctor1")
-                                          .Include("Doctor1.User")
+                                          .Include("User")
                                           .Include("Case")
                                           .Include("Case.Patient2.User")
                                           .Include("Room")
@@ -209,7 +205,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 if (referralDB.ReferredToDoctorId != null && referralDB.ReferredToLocationId != null && referralDB.ReferredToCompanyId != null)
                 {
                     #region Send Email
-                    string Message = "Dear " + referralDB.Doctor.User.FirstName + " " + referralDB.Doctor.User.LastName + ",<br><br>Following Patient is being referred to you: " + " " + referralDB.Case.Patient2.User.FirstName + " " + referralDB.Case.Patient2.User.LastName + "<br><br>" + referralDB.Note + "<br><br>" + "By " + referralDB.Company.Name + " - " + referralDB.Location.Name + " - "  + referralDB.Doctor.User.FirstName + "<br><br>" + "You can log in with your MIDAS Account to view further detail." + "<br>" + "http://codearray.tk:85/#/account" + "<br><br>" + "Thanks," + "<br>" + referralDB.Doctor1.User.FirstName;
+                    string Message = "Dear " + referralDB.Doctor.User.FirstName + " " + referralDB.Doctor.User.LastName + ",<br><br>Following Patient is being referred to you: " + " " + referralDB.Case.Patient2.User.FirstName + " " + referralDB.Case.Patient2.User.LastName + "<br><br>" + referralDB.Note + "<br><br>" + "By " + referralDB.Company.Name + " - " + referralDB.Location.Name + " - " + referralDB.Doctor.User.FirstName + "<br><br>" + "You can log in with your MIDAS Account to view further detail." + "<br>" + "http://codearray.tk:85/#/account" + "<br><br>" + "Thanks," + "<br>"; /*referralDB.Doctor1.User.FirstName*/
                     BO.Email objEmail = new BO.Email { ToEmail = referralDB.ReferredToEmail, Subject = "Referral-Email", Body = Message };
                     objEmail.SendMail();
                     #endregion
@@ -217,7 +213,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 else if (referralDB.ReferredToDoctorId == null && referralDB.ReferredToLocationId == null && referralDB.ReferredToCompanyId == null)
                 {
                     #region Send Email
-                    string Message = "Dear " + referralDB.ReferredToEmail + ",<br><br>Following Patient is being referred to you: " + " " + referralDB.Case.Patient2.User.FirstName + " " + referralDB.Case.Patient2.User.LastName + "<br><br>" + referralDB.Note + "<br><br>" + "You will need to log in with your MIDAS account to view further detail. To register with MIDAS, Please register with http://codearray.tk:85/#/account/register-company" + "<br><br>" + "Thanks," + "<br>" + referralDB.Doctor1.User.FirstName;
+                    string Message = "Dear " + referralDB.ReferredToEmail + ",<br><br>Following Patient is being referred to you: " + " " + referralDB.Case.Patient2.User.FirstName + " " + referralDB.Case.Patient2.User.LastName + "<br><br>" + referralDB.Note + "<br><br>" + "You will need to log in with your MIDAS account to view further detail. To register with MIDAS, Please register with http://codearray.tk:85/#/account/register-company" + "<br><br>" + "Thanks," + "<br>";/* + referralDB.Doctor1.User.FirstName;*/
                     BO.Email objEmail = new BO.Email { ToEmail = referralDB.ReferredToEmail, Subject = "Referral-Email And Register", Body = Message };
                     objEmail.SendMail();
                     #endregion
@@ -239,7 +235,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                         .Include("Location")
                                         .Include("Location1")
                                         .Include("Doctor")
-                                        .Include("Doctor1")
+                                        .Include("Doctor.User")
+                                        .Include("Doctor.DoctorSpecialities")
+                                         .Include("Doctor.DoctorSpecialities.Specialty")
+                                        .Include("User")
                                         .Include("Case")
                                         .Include("Room")
                                         .Where(p => p.Id == id
@@ -266,10 +265,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                         .Include("Doctor.User")
                                         .Include("Doctor.DoctorSpecialities")
                                         .Include("Doctor.DoctorSpecialities.Specialty")
-                                        .Include("Doctor1")
-                                        .Include("Doctor1.User")
-                                        .Include("Doctor1.DoctorSpecialities")
-                                        .Include("Doctor1.DoctorSpecialities.Specialty")
+                                        .Include("User")
                                         .Include("Case")
                                         .Include("Room")
                                         .Where(p => p.CaseId == CaseId
@@ -301,9 +297,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("Doctor")
                                                .Include("Doctor.User")
                                                .Include("Doctor.DoctorSpecialities")
-                                               .Include("Doctor1")
-                                               .Include("Doctor1.User")
-                                               .Include("Doctor1.DoctorSpecialities")
+                                               .Include("User")
                                                .Include("Case")
                                                .Include("Room")
                                                .Where(p => p.ReferringCompanyId == id
@@ -339,9 +333,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("Doctor")
                                                .Include("Doctor.User")
                                                .Include("Doctor.DoctorSpecialities")
-                                               .Include("Doctor1")
-                                               .Include("Doctor1.User")
-                                               .Include("Doctor1.DoctorSpecialities")
+                                               .Include("User")
                                                .Include("Case")
                                                .Include("Case.Patient2")
                                                .Include("Case.Patient2.User")
@@ -379,9 +371,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                            .Include("Doctor")
                                                            .Include("Doctor.User")
                                                            .Include("Doctor.DoctorSpecialities")
-                                                           .Include("Doctor1")
-                                                           .Include("Doctor1.User")
-                                                           .Include("Doctor1.DoctorSpecialities")
+                                                           .Include("User")
                                                            .Include("Case")
                                                            .Include("Room")
                                                            .Where(p => p.ReferringLocationId == id
@@ -412,9 +402,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                            .Include("Doctor")
                                                            .Include("Doctor.User")
                                                            .Include("Doctor.DoctorSpecialities")
-                                                           .Include("Doctor1")
-                                                           .Include("Doctor1.User")
-                                                           .Include("Doctor1.DoctorSpecialities")
+                                                           .Include("User")
                                                            .Include("Case")
                                                            .Include("Room")
                                                            .Where(p => p.ReferredToLocationId == id
@@ -435,8 +423,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        #region GetByReferringDoctorId
-        public override object GetByReferringDoctorId(int id)
+        #region GetByReferringUserId
+        public override object GetByReferringUserId(int id)
         {
             List<Referral> lstReferral = _context.Referrals.Include("Location")
                                                             .Include("Location1")
@@ -446,19 +434,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                             .Include("Doctor.User")
                                                             .Include("Doctor.DoctorSpecialities")
                                                             .Include("Doctor.DoctorSpecialities.Specialty")
-                                                            .Include("Doctor1")
-                                                            .Include("Doctor1.User")
-                                                            .Include("Doctor1.DoctorSpecialities")
-                                                            .Include("Doctor1.DoctorSpecialities.Specialty")
+                                                            .Include("User")
                                                             .Include("Case")
                                                             .Include("Room")
-                                                            .Where(p => p.ReferringDoctorId == id
+                                                            .Where(p => p.ReferringUserId == id
                                                              && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                             .ToList<Referral>();
 
             if (lstReferral == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No Referral found for this Doctor ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No Referral found for this User ID.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {
@@ -481,10 +466,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                             .Include("Doctor.User")
                                                             .Include("Doctor.DoctorSpecialities")
                                                             .Include("Doctor.DoctorSpecialities.Specialty")
-                                                            .Include("Doctor1")
-                                                            .Include("Doctor1.User")
-                                                            .Include("Doctor1.DoctorSpecialities")
-                                                            .Include("Doctor1.DoctorSpecialities.Specialty")
+                                                            .Include("User")
                                                             .Include("Case")
                                                             .Include("Case.Patient2")
                                                             .Include("Case.Patient2.User")
@@ -528,59 +510,75 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
-        public string GetTemplateDocument(string type)
+        public string GetTemplateDocument(string templateType)
         {
-            type = "Referral";
+            TemplateTypeRepository templateTypeRepo = new TemplateTypeRepository(_context);
+            BO.Common.TemplateType templateData = (BO.Common.TemplateType)templateTypeRepo.Get(templateType);
 
-            String FileData = "<!DOCTYPE html>" +
-                                "<html>" +
-                                "<head>" +
-                                    "< title></title>" +
-                                    "< meta charset=\"utf -8\" />" +
-                                "</head>" +
-                                "< body>" +
-                                    "< p style=\"text -align:center\">Company name (citimedical)</p>" +
-                                    "< br />" +
-                                    "< p>Patient name: {{PatientName}}</p>" +
-                                    "< br />" +
-                                    "< p>Referal order date : {{CreateDate}}</p>" +
-                                    "< br />" +
-                                    "< p>Referral: {{ReferredToDoctor}}</p>" +
-                                    "< p>Address: </p>" +
-                                    "< br />" +
-                                    "< p>Insurance info:</p>" +
-                                    "< br />" +
-                                    "< p>Referral information: {{Note}}</p>" +
-                                    "< br />" +
-                                    "< p>Signature of ordering physician:</p>" +
-                                "</body>" +
-                                "</html>";
-            
-            return FileData;
+            return templateData.TemplateText;
         }
-        
+
         public override object GenerateReferralDocument(int id)
         {
-            //HtmlToPdf htmlPDF = new HtmlToPdf();
+            HtmlToPdf htmlPDF = new HtmlToPdf();
+            string path = string.Empty;
+            string pdfText = GetTemplateDocument(Constants.ReferralType);
+            var acc = _context.Referrals.Include("Case")
+                                             .Include("Case.Patient2")
+                                             .Include("Case.Patient2.User")
+                                             .Include("Doctor")
+                                             .Include("Doctor.User")
+                                             .Where(p => p.Id == id).FirstOrDefault();
+            if (acc != null)
+            {
+                using (var dbContextTransaction = _context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        pdfText = pdfText.Replace("{{PatientName}}", acc.Case.Patient2.User.FirstName + " " + acc.Case.Patient2.User.LastName)
+                                         .Replace("{{CreateDate}}", acc.CreateDate.ToShortDateString())
+                                         .Replace("{{ReferredToDoctor}}", acc.Doctor.User.FirstName + " " + acc.Doctor.User.LastName)
+                                         .Replace("{{Note}}", acc.Note);
 
-            string pdfText = GetTemplateDocument("Referral");
+                        path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\case_" + acc.Case.Id;
+                        htmlPDF.OpenHTML(pdfText);
+                        if (!Directory.Exists(path)) Directory.CreateDirectory(ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\case_" + acc.Case.Id);
+                        htmlPDF.SavePDF(@path + "\\referral.pdf");
 
-           var acc = _context.Referrals.Include("Case")
-                                        .Include("Case.Patient2")
-                                        .Include("Case.Patient2.User")
-                                        .Include("Doctor")
-                                        .Where(p => p.Id == id).FirstOrDefault();
+                        MidasDocument midasdoc = _context.MidasDocuments.Add(new MidasDocument()
+                        {
+                            ObjectType = Constants.ReferralType,
+                            ObjectId = id,
+                            DocumentName = "Referral.pdf",
+                            DocumentPath = ConfigurationManager.AppSettings.Get("BLOB_SERVER") + path.ToString(),
+                        });
+                        _context.Entry(midasdoc).State = System.Data.Entity.EntityState.Added;
+                        _context.SaveChanges();
 
-            pdfText = pdfText.Replace("{{PatientName}}", acc.Case.Patient2.User.FirstName + " " + acc.Case.Patient2.User.LastName)
-                             .Replace("{{CreateDate}}", acc.CreateDate.ToShortDateString())
-                             .Replace("{{ReferredToDoctor}}", acc.Doctor.User.FirstName + " " + acc.Doctor.User.LastName)
-                             .Replace("{{Note}}", acc.Note);
+                        ReferralDocument referralDoc = _context.ReferralDocuments.Add(new ReferralDocument()
+                        {
+                            MidasDocumentId = midasdoc.Id,
+                            ReferralId = id,
+                            DocumentName = "Referral.pdf"
+                        });
+                        _context.Entry(referralDoc).State = System.Data.Entity.EntityState.Added;
+                        _context.SaveChanges();
 
-            //htmlPDF.OpenHTML(pdfText);
-            //htmlPDF.SavePDF(@"D:\Publish\aaa.pdf");
+                        dbContextTransaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { ErrorMessage = "Error occurred in document upload/save.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    }
+                }
+            }
+            else
+                return new BO.ErrorObject { ErrorMessage = "No record found for referral id", errorObject = "", ErrorLevel = ErrorLevel.Error };
 
             return acc;
         }
+
 
         public void Dispose()
         {

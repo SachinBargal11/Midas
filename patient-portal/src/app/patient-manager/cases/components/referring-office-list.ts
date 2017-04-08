@@ -26,8 +26,8 @@ export class ReferringOfficeListComponent implements OnInit {
         private _router: Router,
         public _route: ActivatedRoute,
         private _referringOfficeStore: ReferringOfficeStore,
-        private _notificationsStore: NotificationsStore,
-        private _progressBarService: ProgressBarService,
+       public notificationsStore: NotificationsStore,
+        public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
@@ -40,7 +40,7 @@ export class ReferringOfficeListComponent implements OnInit {
     }
 
     loadReferringOffices() {
-        this._progressBarService.show();
+        this.progressBarService.show();
         this._referringOfficeStore.getReferringOffices(this.caseId)
             .subscribe(referringOffices => {
                 this.referringOffices = referringOffices.reverse();
@@ -49,10 +49,10 @@ export class ReferringOfficeListComponent implements OnInit {
                 // this.referringOffices = this.datasource.slice(0, 10);
             },
             (error) => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
     }
     loadRefferingOfficesLazy(event: LazyLoadEvent) {
@@ -66,7 +66,7 @@ export class ReferringOfficeListComponent implements OnInit {
     deleteReferringOffice() {
         if (this.selectedReferringOffices.length > 0) {
             this.selectedReferringOffices.forEach(currentReferringOffice => {
-                this._progressBarService.show();
+                this.progressBarService.show();
                 let result;
                 result = this._referringOfficeStore.deleteReferringOffice(currentReferringOffice);
                 result.subscribe(
@@ -77,7 +77,7 @@ export class ReferringOfficeListComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this.loadReferringOffices();
-                        this._notificationsStore.addNotification(notification);
+                        this.notificationsStore.addNotification(notification);
                         this.selectedReferringOffices = [];
                     },
                     (error) => {
@@ -88,12 +88,12 @@ export class ReferringOfficeListComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this.selectedReferringOffices = [];
-                        this._progressBarService.hide();
-                        this._notificationsStore.addNotification(notification);
+                        this.progressBarService.hide();
+                        this.notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
-                        this._progressBarService.hide();
+                        this.progressBarService.hide();
                     });
             });
         } else {
@@ -102,7 +102,7 @@ export class ReferringOfficeListComponent implements OnInit {
                 'type': 'ERROR',
                 'createdAt': moment()
             });
-            this._notificationsStore.addNotification(notification);
+            this.notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'select Referring Office to delete');
         }
     }

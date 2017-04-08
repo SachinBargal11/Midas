@@ -37,10 +37,10 @@ export class AddPatientComponent implements OnInit {
         private _statesStore: StatesStore,
         private fb: FormBuilder,
         private _router: Router,
-        private _notificationsStore: NotificationsStore,
-        private _sessionStore: SessionStore,
+       public notificationsStore: NotificationsStore,
+        public sessionStore: SessionStore,
         private _patientsStore: PatientsStore,
-        private _progressBarService: ProgressBarService,
+        public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
@@ -96,8 +96,8 @@ export class AddPatientComponent implements OnInit {
             height: patientFormValues.userInfo.height,
             dateOfFirstTreatment: patientFormValues.userInfo.dateOfFirstTreatment ? moment(patientFormValues.userInfo.dateOfFirstTreatment) : null,
             maritalStatusId: patientFormValues.userInfo.maritalStatusId,
-            createByUserId: this._sessionStore.session.account.user.id,
-            // companyId: this._sessionStore.session.currentCompany.id,
+            createByUserId: this.sessionStore.session.account.user.id,
+            // companyId: this.sessionStore.session.currentCompany.id,
             user: new User({
                 dateOfBirth: patientFormValues.userInfo.dob ? moment(patientFormValues.userInfo.dob) : null,
                 firstName: patientFormValues.userInfo.firstname,
@@ -105,7 +105,7 @@ export class AddPatientComponent implements OnInit {
                 lastName: patientFormValues.userInfo.lastname,
                 userType: UserType.PATIENT,
                 userName: patientFormValues.contact.email,
-                createByUserId: this._sessionStore.session.account.user.id,
+                createByUserId: this.sessionStore.session.account.user.id,
                 gender: patientFormValues.userInfo.gender,
                 contact: new Contact({
                     cellPhone: patientFormValues.contact.cellPhone ? patientFormValues.contact.cellPhone.replace(/\-/g, '') : null,
@@ -113,7 +113,7 @@ export class AddPatientComponent implements OnInit {
                     faxNo: patientFormValues.contact.faxNo ? patientFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
                     homePhone: patientFormValues.contact.homePhone,
                     workPhone: patientFormValues.contact.workPhone,
-                    createByUserId: this._sessionStore.session.account.user.id
+                    createByUserId: this.sessionStore.session.account.user.id
                 }),
                 address: new Address({
                     address1: patientFormValues.address.address1,
@@ -122,11 +122,11 @@ export class AddPatientComponent implements OnInit {
                     country: patientFormValues.address.country,
                     state: patientFormValues.address.state,
                     zipCode: patientFormValues.address.zipCode,
-                    createByUserId: this._sessionStore.session.account.user.id
+                    createByUserId: this.sessionStore.session.account.user.id
                 })
             })
         });
-        this._progressBarService.show();
+        this.progressBarService.show();
         result = this._patientsStore.addPatient(patient);
         result.subscribe(
             (response) => {
@@ -135,7 +135,7 @@ export class AddPatientComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._router.navigate(['/patient-manager/profile/viewall']);
             },
             (error) => {
@@ -146,13 +146,13 @@ export class AddPatientComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this.isSavePatientProgress = false;
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
                 this.isSavePatientProgress = false;
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
 
     }

@@ -51,7 +51,7 @@ export class EditDocConsentFormComponent implements OnInit {
     companyId: number;  
     document: AddConsent[] = [];
     doctorApprovalId: number;
-  documentMode: string = '1';
+  documentMode: string = 'one';
     scannerContainerId: string = `scanner_${moment().valueOf()}`;
     twainSources: TwainSource[] = [];
     selectedTwainSource: TwainSource = null;
@@ -61,11 +61,11 @@ export class EditDocConsentFormComponent implements OnInit {
         private fb: FormBuilder,
         private service: AddDocConsentFormService,
         private _router: Router,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         public _route: ActivatedRoute,
         private _AddConsentStore: AddDocConsentStore,
-        private _notificationsStore: NotificationsStore,
-        private _progressBarService: ProgressBarService,
+       public notificationsStore: NotificationsStore,
+        public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private http: Http,
         private _scannerService: ScannerService,
@@ -74,8 +74,8 @@ export class EditDocConsentFormComponent implements OnInit {
 
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
-            // let companyId: number = this._sessionStore.session.currentCompany.id;
-            this.companyId = 0;//this._sessionStore.session.currentCompany.id;
+            // let companyId: number = this.sessionStore.session.currentCompany.id;
+            this.companyId = 0;//this.sessionStore.session.currentCompany.id;
             this.url = this._url + '/fileupload/multiupload/' + this.caseId + '/consent';
             this.consentForm = this.fb.group({
                 doctor: ['', Validators.required]
@@ -86,7 +86,7 @@ export class EditDocConsentFormComponent implements OnInit {
         })
         this._route.params.subscribe((routeParams: any) => {            
             this.doctorApprovalId = parseInt(routeParams.id);
-            this._progressBarService.show();
+            this.progressBarService.show();
             let resultD = this._AddConsentStore.editDoctorCaseConsentApproval(this.doctorApprovalId);           
             resultD.subscribe(
                 (consentDetail: AddConsent) => {
@@ -99,10 +99,10 @@ export class EditDocConsentFormComponent implements OnInit {
                 },
                 (error) => {
                     this._router.navigate(['../../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 },
                 () => {
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 });
         });
     }
@@ -185,7 +185,7 @@ export class EditDocConsentFormComponent implements OnInit {
             'type': 'SUCCESS',
             'createdAt': moment()
         });
-        this._notificationsStore.addNotification(notification);
+        this.notificationsStore.addNotification(notification);
 
         //  this.msgs.push({ severity: 'info', summary: 'File Uploaded', detail: this.UploadedFileName });
         // this.msgs.push({ UploadedFileName});
@@ -193,17 +193,17 @@ export class EditDocConsentFormComponent implements OnInit {
 
     }
     downloadDocument() {
-        this._progressBarService.show();
+        this.progressBarService.show();
         this._AddConsentStore.getDocumentsForCaseId(this.caseId)
             .subscribe(document => {
                 this.document = document
 
             },
             (error) => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
     }
 
@@ -217,10 +217,10 @@ export class EditDocConsentFormComponent implements OnInit {
                 'type': 'SUCCESS',
                 'createdAt': moment()
             });
-            this._notificationsStore.addNotification(notification);
+            this.notificationsStore.addNotification(notification);
             // this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(notification, notification));
             this._notificationsService.error('Oh No!', "Please upload file");
-            this._progressBarService.hide();
+            this.progressBarService.hide();
         }
         else {
 
@@ -235,7 +235,7 @@ export class EditDocConsentFormComponent implements OnInit {
                 consentReceived: this.UploadedFileName
             });
 
-            this._progressBarService.show();
+            this.progressBarService.show();
             result = this._AddConsentStore.Save(consentDetail);
             result.subscribe(
                 (response) => {
@@ -244,7 +244,7 @@ export class EditDocConsentFormComponent implements OnInit {
                         'type': 'SUCCESS',
                         'createdAt': moment()
                     });
-                    this._notificationsStore.addNotification(notification);
+                    this.notificationsStore.addNotification(notification);
                     this._router.navigate(['../../'], { relativeTo: this._route });
                 },
                 (error) => {
@@ -255,13 +255,13 @@ export class EditDocConsentFormComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this.isSaveProgress = false;
-                    this._notificationsStore.addNotification(notification);
+                    this.notificationsStore.addNotification(notification);
                     this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 },
                 () => {
                     this.isSaveProgress = false;
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 });
         }
     }

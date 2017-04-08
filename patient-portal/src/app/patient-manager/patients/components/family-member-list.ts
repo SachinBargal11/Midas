@@ -27,15 +27,15 @@ export class FamilyMemberListComponent implements OnInit {
         private _router: Router,
         public _route: ActivatedRoute,
         private _familyMemberStore: FamilyMemberStore,
-        private _sessionStore: SessionStore,
-        private _notificationsStore: NotificationsStore,
-        private _progressBarService: ProgressBarService,
+        public sessionStore: SessionStore,
+       public notificationsStore: NotificationsStore,
+        public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService
     ) {
         // this._route.parent.parent.params.subscribe((routeParams: any) => {
         //     this.patientId = parseInt(routeParams.patientId);
         // });
-        this.patientId = this._sessionStore.session.user.id;
+        this.patientId = this.sessionStore.session.user.id;
     }
 
     ngOnInit() {
@@ -43,7 +43,7 @@ export class FamilyMemberListComponent implements OnInit {
     }
 
     loadFamilyMembers() {
-        this._progressBarService.show();
+        this.progressBarService.show();
         this._familyMemberStore.getFamilyMembers(this.patientId)
             .subscribe(familyMembers => {
                 this.familyMembers = familyMembers.reverse();
@@ -52,10 +52,10 @@ export class FamilyMemberListComponent implements OnInit {
                 // this.familyMembers = this.datasource.slice(0, 10);
             },
             (error) => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
     }
     loadSpecialitiesLazy(event: LazyLoadEvent) {
@@ -69,7 +69,7 @@ export class FamilyMemberListComponent implements OnInit {
     deleteFamilyMember() {
         if (this.selectedFamilyMembers.length > 0) {
             this.selectedFamilyMembers.forEach(currentFamilyMember => {
-                this._progressBarService.show();
+                this.progressBarService.show();
                 let result;
                 result = this._familyMemberStore.deleteFamilyMember(currentFamilyMember);
                 result.subscribe(
@@ -80,7 +80,7 @@ export class FamilyMemberListComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this.loadFamilyMembers();
-                        this._notificationsStore.addNotification(notification);
+                        this.notificationsStore.addNotification(notification);
                         this.selectedFamilyMembers = [];
                     },
                     (error) => {
@@ -91,12 +91,12 @@ export class FamilyMemberListComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this.selectedFamilyMembers = [];
-                        this._progressBarService.hide();
-                        this._notificationsStore.addNotification(notification);
+                        this.progressBarService.hide();
+                        this.notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
-                        this._progressBarService.hide();
+                        this.progressBarService.hide();
                     });
             });
         } else {
@@ -105,7 +105,7 @@ export class FamilyMemberListComponent implements OnInit {
                 'type': 'ERROR',
                 'createdAt': moment()
             });
-            this._notificationsStore.addNotification(notification);
+            this.notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'select Family Member to delete');
         }
     }

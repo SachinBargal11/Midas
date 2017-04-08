@@ -66,6 +66,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 boCompany.Status = (BO.GBEnums.AccountStatus)company.Status;
                 boCompany.CompanyType = (BO.GBEnums.CompanyType)company.CompanyType;
                 boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;
+
+                if (company.Locations != null)
+                {
+
+
+                    List<BO.Location> lstLocation = new List<BO.Location>();
+                    foreach (var item in company.Locations)
+                    {
+                        using (LocationRepository sr = new LocationRepository(_context))
+                        {
+                            lstLocation.Add(sr.Convert<BO.Location, Location>(item));
+                        }
+                    }
+
+                    boCompany.Locations = lstLocation;
+                }
                 return (T)(object)boCompany;
             }
 
@@ -302,6 +318,40 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             BO.Company acc_ = Convert<BO.Company, Company>(_context.Companies.Where(p => p.id == id).FirstOrDefault<Company>());
             return acc_;
+        }
+        #endregion
+
+        #region Get All Companies
+        public override Object Get()
+        {
+            var acc_ = _context.Companies.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)).ToList<Company>();
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            List<BO.Company> lstCompanies = new List<BO.Company>();
+            foreach (Company item in acc_)
+            {
+                lstCompanies.Add(Convert<BO.Company, Company>(item));
+            }
+            return lstCompanies;
+        }
+        #endregion
+
+        #region Get All Company and their Location
+        public override Object GetAllCompanyAndLocation()
+        {
+            var acc_ = _context.Companies.Include("Locations").Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)).ToList<Company>();
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No records found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            List<BO.Company> lstCompanies = new List<BO.Company>();
+            foreach (Company item in acc_)
+            {
+                lstCompanies.Add(Convert<BO.Company, Company>(item));
+            }
+            return lstCompanies;
         }
         #endregion
 

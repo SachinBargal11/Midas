@@ -39,6 +39,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<CaseType> CaseTypes { get; set; }
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
+        public virtual DbSet<CompanyCaseConsentApproval> CompanyCaseConsentApprovals { get; set; }
         public virtual DbSet<CompanySpecialtyDetail> CompanySpecialtyDetails { get; set; }
         public virtual DbSet<CompanyType> CompanyTypes { get; set; }
         public virtual DbSet<ContactInfo> ContactInfoes { get; set; }
@@ -71,6 +72,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<PatientVisitEvent> PatientVisitEvents { get; set; }
         public virtual DbSet<PolicyOwner> PolicyOwners { get; set; }
         public virtual DbSet<Referral> Referrals { get; set; }
+        public virtual DbSet<ReferralDocument> ReferralDocuments { get; set; }
         public virtual DbSet<RefferingOffice> RefferingOffices { get; set; }
         public virtual DbSet<Relation> Relations { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }

@@ -32,9 +32,7 @@ export class AttorneyMasterService {
         });
         return <Observable<Attorney>>Observable.fromPromise(promise);
     }
-  
-    
-    
+
     getAllAttorneyMasterByCompany(companyId: Number): Observable<Attorney[]> {
         let promise: Promise<Attorney[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/AttorneyMaster/getByCompanyId/' + companyId)
@@ -51,7 +49,7 @@ export class AttorneyMasterService {
         });
         return <Observable<Attorney[]>>Observable.fromPromise(promise);
     }
-    
+
     addAttorney(attorney: Attorney): Observable<Attorney> {
         let promise: Promise<Attorney> = new Promise((resolve, reject) => {
             let requestData: any = attorney.toJS();

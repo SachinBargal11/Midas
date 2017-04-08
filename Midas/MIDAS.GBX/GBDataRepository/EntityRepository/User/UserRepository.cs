@@ -515,6 +515,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             //Check if the User even if valid is logging as invalid User Type
             BO.User acc_ = isPasswordCorrect && isUserTypeValid ? Convert<BO.User, User>(data_) : null;
 
+            bool UseOTP = true;
+            if (bool.TryParse(Utility.GetConfigValue("UseOTP"), out UseOTP))
+            {
+                userBO.forceLogin = UseOTP;
+            }
+       
             if (!userBO.forceLogin)
             {
                 if (acc_.C2FactAuthEmailEnabled)

@@ -515,6 +515,24 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage GetAllCompanyAndLocation(HttpRequestMessage request)
+        {
+            var objResult = dataAccessManager.GetAllCompanyAndLocation();
+            try
+            {
+                //var res = (GbObject)(object)objResult;
+                var res = (object)objResult;
+
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
         public HttpResponseMessage GetByRoomInAllApp(HttpRequestMessage request, int roomTestId)
         {
             var objResult = dataAccessManager.GetByRoomInAllApp(roomTestId);
@@ -751,9 +769,9 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage GetByReferringDoctorId(HttpRequestMessage request, int DoctorId)
+        public HttpResponseMessage GetByReferringUserId(HttpRequestMessage request, int UserId)
         {
-            var objResult = dataAccessManager.GetByReferringDoctorId(DoctorId);
+            var objResult = dataAccessManager.GetByReferringUserId(UserId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);
