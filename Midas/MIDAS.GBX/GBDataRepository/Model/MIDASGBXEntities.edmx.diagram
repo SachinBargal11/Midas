@@ -185,6 +185,10 @@
         <AssociationConnector Association="MIDASGBXModel.FK_User_UserType" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompany_User" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_UserCompanyRole_User" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MIDASGBXModel.CaseCompanyConsentDocument" Width="1.5" PointX="33" PointY="70.375" />
+        <AssociationConnector Association="MIDASGBXModel.FK_CaseCompanyConsentDocuments_Case_CaseId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_CaseCompanyConsentDocuments_Company_CaseId" />
+        <AssociationConnector Association="MIDASGBXModel.FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

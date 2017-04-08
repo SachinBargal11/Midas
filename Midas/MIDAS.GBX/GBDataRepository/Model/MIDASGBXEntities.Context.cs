@@ -92,5 +92,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<UserCompanyRole> UserCompanyRoles { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<DocumentNode> DocumentNodes { get; set; }
+        public virtual DbSet<CaseCompanyConsentDocument> CaseCompanyConsentDocuments { get; set; }
     }
 }

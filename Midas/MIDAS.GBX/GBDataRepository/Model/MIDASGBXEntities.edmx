@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="MIDASGBXModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AddressInfo">
           <Key>
             <PropertyRef Name="id" />
@@ -111,6 +111,21 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="FileUploadPath" Type="nvarchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="CaseCompanyConsentDocuments">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="CaseId" Type="int" Nullable="false" />
+          <Property Name="CompanyId" Type="int" Nullable="false" />
+          <Property Name="MidasDocumentId" Type="int" Nullable="false" />
+          <Property Name="DocumentName" Type="varchar" MaxLength="500" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="CreateUserId" Type="int" />
+          <Property Name="UpdateUserId" Type="int" />
+          <Property Name="IsDeleted" Type="bit" />
         </EntityType>
         <EntityType Name="CaseCompanyMapping">
           <Key>
@@ -1184,6 +1199,42 @@ warning 6035: The relationship 'FK_AddressInfo_State_StateCode' has columns that
             </Principal>
             <Dependent Role="Case">
               <PropertyRef Name="PatientEmpInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CaseCompanyConsentDocuments_Case_CaseId">
+          <End Role="Case" Type="Self.Case" Multiplicity="1" />
+          <End Role="CaseCompanyConsentDocuments" Type="Self.CaseCompanyConsentDocuments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Case">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CaseCompanyConsentDocuments">
+              <PropertyRef Name="CaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CaseCompanyConsentDocuments_Company_CaseId">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="CaseCompanyConsentDocuments" Type="Self.CaseCompanyConsentDocuments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CaseCompanyConsentDocuments">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId">
+          <End Role="MidasDocuments" Type="Self.MidasDocuments" Multiplicity="1" />
+          <End Role="CaseCompanyConsentDocuments" Type="Self.CaseCompanyConsentDocuments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MidasDocuments">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CaseCompanyConsentDocuments">
+              <PropertyRef Name="MidasDocumentId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2410,6 +2461,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="BlobStorageType" EntityType="Self.BlobStorageType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CalendarEvent" EntityType="Self.CalendarEvent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Case" EntityType="Self.Case" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CaseCompanyConsentDocuments" EntityType="Self.CaseCompanyConsentDocuments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CaseCompanyMapping" EntityType="Self.CaseCompanyMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CaseDocuments" EntityType="Self.CaseDocuments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CaseInsuranceMapping" EntityType="Self.CaseInsuranceMapping" Schema="dbo" store:Type="Tables" />
@@ -2523,6 +2575,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_Case_PatientEmpInfo_PatientEmpInfoId" Association="Self.FK_Case_PatientEmpInfo_PatientEmpInfoId">
             <End Role="PatientEmpInfo" EntitySet="PatientEmpInfo" />
             <End Role="Case" EntitySet="Case" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CaseCompanyConsentDocuments_Case_CaseId" Association="Self.FK_CaseCompanyConsentDocuments_Case_CaseId">
+            <End Role="Case" EntitySet="Case" />
+            <End Role="CaseCompanyConsentDocuments" EntitySet="CaseCompanyConsentDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CaseCompanyConsentDocuments_Company_CaseId" Association="Self.FK_CaseCompanyConsentDocuments_Company_CaseId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="CaseCompanyConsentDocuments" EntitySet="CaseCompanyConsentDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId" Association="Self.FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId">
+            <End Role="MidasDocuments" EntitySet="MidasDocuments" />
+            <End Role="CaseCompanyConsentDocuments" EntitySet="CaseCompanyConsentDocuments" />
           </AssociationSet>
           <AssociationSet Name="FK_CaseCompanyMapping_Case_CaseId" Association="Self.FK_CaseCompanyMapping_Case_CaseId">
             <End Role="Case" EntitySet="Case" />
@@ -2929,8 +2993,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="UserCompanyRole" EntitySet="UserCompanyRole" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MIDASGBXModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -3076,6 +3139,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="PatientVisit2" Relationship="Self.FK_PatientVisit2_Case_CaseId" FromRole="Case" ToRole="PatientVisit2" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_Case_CaseId" FromRole="Case" ToRole="Referral" />
           <NavigationProperty Name="RefferingOffices" Relationship="Self.FK_RefferingOffice_Case_CaseId" FromRole="Case" ToRole="RefferingOffice" />
+          <NavigationProperty Name="CaseCompanyConsentDocuments" Relationship="MIDASGBXModel.FK_CaseCompanyConsentDocuments_Case_CaseId" FromRole="Case" ToRole="CaseCompanyConsentDocument" />
         </EntityType>
         <EntityType Name="CaseCompanyMapping">
           <Key>
@@ -3187,6 +3251,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="Referrals1" Relationship="Self.FK_Referral_Company_ReferringCompanyId" FromRole="Company" ToRole="Referral" />
           <NavigationProperty Name="Schedules" Relationship="Self.FK_Schedule_Company_CompanyId" FromRole="Company" ToRole="Schedule" />
           <NavigationProperty Name="UserCompanies" Relationship="Self.FK_UserCompany_Company" FromRole="Company" ToRole="UserCompany" />
+          <NavigationProperty Name="CaseCompanyConsentDocuments" Relationship="MIDASGBXModel.FK_CaseCompanyConsentDocuments_Company_CaseId" FromRole="Company" ToRole="CaseCompanyConsentDocument" />
         </EntityType>
         <EntityType Name="CompanyCaseConsentApproval">
           <Key>
@@ -3507,6 +3572,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="CaseDocuments" Relationship="Self.FK_CaseDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="CaseDocuments" />
           <NavigationProperty Name="ReferralDocuments" Relationship="Self.FK_ReferralDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocuments" ToRole="ReferralDocuments" />
+          <NavigationProperty Name="CaseCompanyConsentDocuments" Relationship="MIDASGBXModel.FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId" FromRole="MidasDocument" ToRole="CaseCompanyConsentDocument" />
         </EntityType>
         <EntityType Name="Notification">
           <Key>
@@ -6069,7 +6135,74 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="User" EntitySet="Users" />
             <End Role="UserCompanyRole" EntitySet="UserCompanyRoles" />
           </AssociationSet>
+          <EntitySet Name="CaseCompanyConsentDocuments" EntityType="MIDASGBXModel.CaseCompanyConsentDocument" />
+          <AssociationSet Name="FK_CaseCompanyConsentDocuments_Case_CaseId" Association="MIDASGBXModel.FK_CaseCompanyConsentDocuments_Case_CaseId">
+            <End Role="Case" EntitySet="Cases" />
+            <End Role="CaseCompanyConsentDocument" EntitySet="CaseCompanyConsentDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CaseCompanyConsentDocuments_Company_CaseId" Association="MIDASGBXModel.FK_CaseCompanyConsentDocuments_Company_CaseId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="CaseCompanyConsentDocument" EntitySet="CaseCompanyConsentDocuments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId" Association="MIDASGBXModel.FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId">
+            <End Role="MidasDocument" EntitySet="MidasDocuments" />
+            <End Role="CaseCompanyConsentDocument" EntitySet="CaseCompanyConsentDocuments" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="CaseCompanyConsentDocument">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CaseId" Type="Int32" Nullable="false" />
+          <Property Name="CompanyId" Type="Int32" Nullable="false" />
+          <Property Name="MidasDocumentId" Type="Int32" Nullable="false" />
+          <Property Name="DocumentName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="7" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="CreateUserId" Type="Int32" />
+          <Property Name="UpdateUserId" Type="Int32" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="Case" Relationship="MIDASGBXModel.FK_CaseCompanyConsentDocuments_Case_CaseId" FromRole="CaseCompanyConsentDocument" ToRole="Case" />
+          <NavigationProperty Name="Company" Relationship="MIDASGBXModel.FK_CaseCompanyConsentDocuments_Company_CaseId" FromRole="CaseCompanyConsentDocument" ToRole="Company" />
+          <NavigationProperty Name="MidasDocument" Relationship="MIDASGBXModel.FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId" FromRole="CaseCompanyConsentDocument" ToRole="MidasDocument" />
+        </EntityType>
+        <Association Name="FK_CaseCompanyConsentDocuments_Case_CaseId">
+          <End Type="MIDASGBXModel.Case" Role="Case" Multiplicity="1" />
+          <End Type="MIDASGBXModel.CaseCompanyConsentDocument" Role="CaseCompanyConsentDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Case">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CaseCompanyConsentDocument">
+              <PropertyRef Name="CaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CaseCompanyConsentDocuments_Company_CaseId">
+          <End Type="MIDASGBXModel.Company" Role="Company" Multiplicity="1" />
+          <End Type="MIDASGBXModel.CaseCompanyConsentDocument" Role="CaseCompanyConsentDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="CaseCompanyConsentDocument">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CaseCompanyConsentDocuments_MidasDocuments_MidasDocumentId">
+          <End Type="MIDASGBXModel.MidasDocument" Role="MidasDocument" Multiplicity="1" />
+          <End Type="MIDASGBXModel.CaseCompanyConsentDocument" Role="CaseCompanyConsentDocument" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MidasDocument">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CaseCompanyConsentDocument">
+              <PropertyRef Name="MidasDocumentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -7172,6 +7305,22 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="ParentNode" ColumnName="ParentNode" />
                 <ScalarProperty Name="ChildNode" ColumnName="ChildNode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CaseCompanyConsentDocuments">
+            <EntityTypeMapping TypeName="MIDASGBXModel.CaseCompanyConsentDocument">
+              <MappingFragment StoreEntitySet="CaseCompanyConsentDocuments">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="UpdateUserId" ColumnName="UpdateUserId" />
+                <ScalarProperty Name="CreateUserId" ColumnName="CreateUserId" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="DocumentName" ColumnName="DocumentName" />
+                <ScalarProperty Name="MidasDocumentId" ColumnName="MidasDocumentId" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="CaseId" ColumnName="CaseId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
