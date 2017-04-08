@@ -19,6 +19,7 @@ namespace MIDAS.GBX.DataRepository.Model
         {
             this.AdjusterMasters = new HashSet<AdjusterMaster>();
             this.Attorneys = new HashSet<Attorney>();
+            this.CaseCompanyConsentDocuments = new HashSet<CaseCompanyConsentDocument>();
             this.CaseCompanyMappings = new HashSet<CaseCompanyMapping>();
             this.CompanyCaseConsentApprovals = new HashSet<CompanyCaseConsentApproval>();
             this.CompanySpecialtyDetails = new HashSet<CompanySpecialtyDetail>();
@@ -30,7 +31,6 @@ namespace MIDAS.GBX.DataRepository.Model
             this.Referrals1 = new HashSet<Referral>();
             this.Schedules = new HashSet<Schedule>();
             this.UserCompanies = new HashSet<UserCompany>();
-            this.CaseCompanyConsentDocuments = new HashSet<CaseCompanyConsentDocument>();
         }
     
         public int id { get; set; }
@@ -54,6 +54,8 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Attorney> Attorneys { get; set; }
         public virtual BlobStorageType BlobStorageType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CaseCompanyConsentDocument> CaseCompanyConsentDocuments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CaseCompanyMapping> CaseCompanyMappings { get; set; }
         public virtual CompanyType CompanyType1 { get; set; }
@@ -79,7 +81,5 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<Schedule> Schedules { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserCompany> UserCompanies { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CaseCompanyConsentDocument> CaseCompanyConsentDocuments { get; set; }
     }
 }

@@ -18,7 +18,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public Patient2()
         {
             this.Cases = new HashSet<Case>();
-            this.DoctorCaseConsentApprovals = new HashSet<DoctorCaseConsentApproval>();
             this.PatientEmpInfoes = new HashSet<PatientEmpInfo>();
             this.PatientFamilyMembers = new HashSet<PatientFamilyMember>();
             this.PatientInsuranceInfoes = new HashSet<PatientInsuranceInfo>();
@@ -39,8 +38,6 @@ namespace MIDAS.GBX.DataRepository.Model
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Case> Cases { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DoctorCaseConsentApproval> DoctorCaseConsentApprovals { get; set; }
         public virtual MaritalStatu MaritalStatu { get; set; }
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

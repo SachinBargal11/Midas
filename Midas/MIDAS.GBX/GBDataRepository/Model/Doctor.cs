@@ -17,7 +17,6 @@ namespace MIDAS.GBX.DataRepository.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Doctor()
         {
-            this.DoctorCaseConsentApprovals = new HashSet<DoctorCaseConsentApproval>();
             this.DoctorLocationSchedules = new HashSet<DoctorLocationSchedule>();
             this.DoctorLocationSpecialties = new HashSet<DoctorLocationSpecialty>();
             this.DoctorSpecialities = new HashSet<DoctorSpeciality>();
@@ -41,8 +40,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
         public virtual User User { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DoctorCaseConsentApproval> DoctorCaseConsentApprovals { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
