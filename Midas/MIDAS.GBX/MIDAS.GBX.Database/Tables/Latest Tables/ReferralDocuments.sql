@@ -1,4 +1,4 @@
-﻿/*USE [MIDASGBX]
+﻿USE [MIDASGBX]
 GO
 
 /****** Object:  Table [dbo].[ReferralDocuments]    Script Date: 4/7/2017 5:29:46 PM ******/
@@ -9,7 +9,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 SET ANSI_PADDING ON
-GO*/
+GO
 
 CREATE TABLE [dbo].[ReferralDocuments](
 	[Id] [int] NOT NULL,
@@ -29,7 +29,6 @@ PRIMARY KEY CLUSTERED
 
 GO
 
-/*
 SET ANSI_PADDING OFF
 GO
 
@@ -46,5 +45,5 @@ GO
 
 ALTER TABLE [dbo].[ReferralDocuments] CHECK CONSTRAINT [FK_ReferralDocuments_Referral_ReferralId]
 GO
-*/
+
 

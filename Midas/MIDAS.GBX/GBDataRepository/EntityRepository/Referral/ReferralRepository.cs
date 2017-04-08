@@ -528,8 +528,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                              .Include("Case.Patient2.User")
                                              .Include("Doctor")
                                              .Include("Doctor.User")
-                                             .Include("Company")
-                                             .Include("Company1")
                                              .Where(p => p.Id == id).FirstOrDefault();
             if (acc != null)
             {
@@ -537,15 +535,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 {
                     try
                     {
-                        pdfText = pdfText.Replace("{{CompanyName}}", acc.Company.Name)
-                                         .Replace("{{PatientName}}", acc.Case.Patient2.User.FirstName + " " + acc.Case.Patient2.User.LastName)
+                        pdfText = pdfText.Replace("{{PatientName}}", acc.Case.Patient2.User.FirstName + " " + acc.Case.Patient2.User.LastName)
                                          .Replace("{{CreateDate}}", acc.CreateDate.ToShortDateString())
                                          .Replace("{{ReferredToDoctor}}", acc.Doctor.User.FirstName + " " + acc.Doctor.User.LastName)
                                          .Replace("{{Note}}", acc.Note);
 
-                        path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\COMPANY_"+ acc.Company.id + "\\case_" + acc.Case.Id;
+                        path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\case_" + acc.Case.Id;
                         htmlPDF.OpenHTML(pdfText);
-                        if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+                        if (!Directory.Exists(path)) Directory.CreateDirectory(ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\case_" + acc.Case.Id);
                         htmlPDF.SavePDF(@path + "\\referral.pdf");
 
                         MidasDocument midasdoc = _context.MidasDocuments.Add(new MidasDocument()

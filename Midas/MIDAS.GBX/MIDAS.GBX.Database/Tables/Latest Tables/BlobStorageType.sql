@@ -1,4 +1,16 @@
-﻿
+﻿USE [MIDASGBX]
+GO
+
+/****** Object:  Table [dbo].[BlobStorageType]    Script Date: 4/7/2017 5:36:58 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
 CREATE TABLE [dbo].[BlobStorageType](
 	[Id] [int] NOT NULL,
 	[BlobStorageType] [varchar](50) NOT NULL,
@@ -10,6 +22,7 @@ PRIMARY KEY CLUSTERED
 
 GO
 
+SET ANSI_PADDING OFF
 GO
 
 
