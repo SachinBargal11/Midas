@@ -19,6 +19,7 @@ namespace MIDAS.GBX.DataRepository.Model
         {
             this.CaseCompanyMappings = new HashSet<CaseCompanyMapping>();
             this.CaseInsuranceMappings = new HashSet<CaseInsuranceMapping>();
+            this.CompanyCaseConsentApprovals = new HashSet<CompanyCaseConsentApproval>();
             this.DoctorCaseConsentApprovals = new HashSet<DoctorCaseConsentApproval>();
             this.PatientAccidentInfoes = new HashSet<PatientAccidentInfo>();
             this.PatientVisits = new HashSet<PatientVisit>();
@@ -53,6 +54,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<CaseCompanyMapping> CaseCompanyMappings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CaseInsuranceMapping> CaseInsuranceMappings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CompanyCaseConsentApproval> CompanyCaseConsentApprovals { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DoctorCaseConsentApproval> DoctorCaseConsentApprovals { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -9,15 +9,15 @@ using MIDAS.GBX.BusinessObjects;
 
 namespace MIDAS.GBX.PatientWebAPI.Controllers
 {
-    [RoutePrefix("midaspatientapi/DoctorCaseConsentApproval")]
+    [RoutePrefix("midaspatientapi/CompanyCaseConsentApproval")]
 
-    public class DoctorCaseConsentApprovalController : ApiController
+    public class CompanyCaseConsentApprovalController : ApiController
     {
-        private IRequestHandler<DoctorCaseConsentApproval> requestHandler;
+        private IRequestHandler<CompanyCaseConsentApproval> requestHandler;
 
-        public DoctorCaseConsentApprovalController()
+        public CompanyCaseConsentApprovalController()
         {
-            requestHandler = new GbApiRequestHandler<DoctorCaseConsentApproval>();
+            requestHandler = new GbApiRequestHandler<CompanyCaseConsentApproval>();
         }
 
         [HttpGet]
@@ -29,11 +29,11 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getByDoctorId/{id}")]
-        [AllowAnonymous]
-        public HttpResponseMessage GetByDoctorId(int id)
+        [Route("getByCompanyId/{id}")]
+
+        public HttpResponseMessage GetByCompanyId(int id)
         {
-            return requestHandler.GetByDoctorId(Request, id);
+            return requestHandler.GetGbObjects(Request, id);
         }
 
         [HttpGet]
@@ -47,7 +47,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         [HttpPost]
         [Route("Save")]
         [AllowAnonymous]
-        public HttpResponseMessage Post([FromBody]DoctorCaseConsentApproval data)
+        public HttpResponseMessage Post([FromBody]CompanyCaseConsentApproval data)
         {
             return requestHandler.CreateGbObject(Request, data);
         }
@@ -55,7 +55,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         [HttpPost]
         [Route("saveDoctor")]
         [AllowAnonymous]
-        public HttpResponseMessage SaveDoctor([FromBody]DoctorCaseConsentApproval data)
+        public HttpResponseMessage SaveDoctor([FromBody]CompanyCaseConsentApproval data)
         {
             return requestHandler.SaveDoctor(Request, data);
         }

@@ -225,9 +225,9 @@ namespace MIDAS.GBX
             {
                 repo = new CaseCompanyMappingRepository(context);
             }
-            else if (typeof(T) == typeof(BO.DoctorCaseConsentApproval))
+            else if (typeof(T) == typeof(BO.CompanyCaseConsentApproval))
             {
-                repo = new DoctorCaseConsentApprovalRepository(context);
+                repo = new CompanyCaseConsentApprovalRepository(context);
             }
             else if (typeof(T) == typeof(BO.Referral))
             {

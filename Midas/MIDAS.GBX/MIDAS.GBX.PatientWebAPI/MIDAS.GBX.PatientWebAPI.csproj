@@ -253,7 +253,7 @@
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CompanySpecialtyDetailsController.cs" />
-    <Compile Include="Controllers\DoctorCaseConsentApprovalController.cs" />
+    <Compile Include="Controllers\CompanyCaseConsentApprovalController.cs" />
     <Compile Include="Controllers\DoctorController.cs" />
     <Compile Include="Controllers\DoctorLocationSpecialityController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
