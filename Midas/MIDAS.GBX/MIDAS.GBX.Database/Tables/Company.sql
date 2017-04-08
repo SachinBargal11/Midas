@@ -50,6 +50,13 @@ GO
 ALTER TABLE [dbo].[Company] CHECK CONSTRAINT [FK_Company_SubscriptionPlan]
 GO
 
+ALTER TABLE [dbo].[Company]  WITH CHECK ADD CONSTRAINT [FK_Company_BlobStorageType_BlobStorageTypeId] FOREIGN KEY([BlobStorageTypeId])
+	REFERENCES [dbo].[BlobStorageType] ([Id])
+GO
+
+ALTER TABLE [dbo].[Company] CHECK CONSTRAINT [FK_Company_BlobStorageType_BlobStorageTypeId]
+GO
+
 /*
 ALTER TABLE [dbo].[Company] ADD [BlobStorageTypeId] [int] NOT NULL DEFAULT (1)
 

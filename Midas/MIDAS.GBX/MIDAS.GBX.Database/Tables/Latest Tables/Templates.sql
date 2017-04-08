@@ -51,7 +51,7 @@ INSERT INTO [dbo].[Templates]
     </div>
 </body>
 </html>
-')
+', NULL, 0, GETDATE(), NULL, NULL)
 */
 GO
 
