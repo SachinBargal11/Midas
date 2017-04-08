@@ -340,6 +340,17 @@
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="DocumentNodes">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="ChildNode" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="ParentNode" Type="nchar" MaxLength="10" />
+          <Property Name="ChildNode" Type="nchar" MaxLength="10" Nullable="false" />
+        </EntityType>
         <EntityType Name="Gender">
           <Key>
             <PropertyRef Name="Id" />
@@ -1104,18 +1115,6 @@ warning 6035: The relationship 'FK_AddressInfo_State_StateCode' has columns that
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_BlobStorage_Company_BlobStorageTypeId">
-          <End Role="BlobStorageType" Type="Self.BlobStorageType" Multiplicity="0..1" />
-          <End Role="Company" Type="Self.Company" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BlobStorageType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Company">
-              <PropertyRef Name="BlobStorageTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_BlobStorageType_BlobStorage_BlobStorageTypeId">
           <End Role="BlobStorageType" Type="Self.BlobStorageType" Multiplicity="1" />
           <End Role="BlobStorage" Type="Self.BlobStorage" Multiplicity="*" />
@@ -1272,6 +1271,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="Company">
               <PropertyRef Name="AddressId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Company_BlobStorageType_BlobStorageTypeId">
+          <End Role="BlobStorageType" Type="Self.BlobStorageType" Multiplicity="0..1" />
+          <End Role="Company" Type="Self.Company" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BlobStorageType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Company">
+              <PropertyRef Name="BlobStorageTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2458,6 +2469,13 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="UserCompany" EntityType="Self.UserCompany" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserCompanyRole" EntityType="Self.UserCompanyRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DocumentNodes" EntityType="Self.DocumentNodes" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [DocumentNodes].[id] AS [id], 
+    [DocumentNodes].[ParentNode] AS [ParentNode], 
+    [DocumentNodes].[ChildNode] AS [ChildNode]
+    FROM [dbo].[DocumentNodes] AS [DocumentNodes]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_AdjusterMaster_AddressInfo_AddressInfoId" Association="Self.FK_AdjusterMaster_AddressInfo_AddressInfoId">
             <End Role="AddressInfo" EntitySet="AddressInfo" />
             <End Role="AdjusterMaster" EntitySet="AdjusterMaster" />
@@ -2481,10 +2499,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_Attorney_User_id" Association="Self.FK_Attorney_User_id">
             <End Role="User" EntitySet="User" />
             <End Role="Attorney" EntitySet="Attorney" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BlobStorage_Company_BlobStorageTypeId" Association="Self.FK_BlobStorage_Company_BlobStorageTypeId">
-            <End Role="BlobStorageType" EntitySet="BlobStorageType" />
-            <End Role="Company" EntitySet="Company" />
           </AssociationSet>
           <AssociationSet Name="FK_BlobStorageType_BlobStorage_BlobStorageTypeId" Association="Self.FK_BlobStorageType_BlobStorage_BlobStorageTypeId">
             <End Role="BlobStorageType" EntitySet="BlobStorageType" />
@@ -2536,6 +2550,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </AssociationSet>
           <AssociationSet Name="FK_Company_AddressInfo" Association="Self.FK_Company_AddressInfo">
             <End Role="AddressInfo" EntitySet="AddressInfo" />
+            <End Role="Company" EntitySet="Company" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Company_BlobStorageType_BlobStorageTypeId" Association="Self.FK_Company_BlobStorageType_BlobStorageTypeId">
+            <End Role="BlobStorageType" EntitySet="BlobStorageType" />
             <End Role="Company" EntitySet="Company" />
           </AssociationSet>
           <AssociationSet Name="FK_Company_CompanyType" Association="Self.FK_Company_CompanyType">
@@ -3000,7 +3018,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="BlobStorageType1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="BlobStorages" Relationship="Self.FK_BlobStorageType_BlobStorage_BlobStorageTypeId" FromRole="BlobStorageType" ToRole="BlobStorage" />
-          <NavigationProperty Name="Companies" Relationship="Self.FK_BlobStorage_Company_BlobStorageTypeId" FromRole="BlobStorageType" ToRole="Company" />
+          <NavigationProperty Name="Companies" Relationship="Self.FK_Company_BlobStorageType_BlobStorageTypeId" FromRole="BlobStorageType" ToRole="Company" />
         </EntityType>
         <EntityType Name="CalendarEvent">
           <Key>
@@ -3154,7 +3172,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="AddressInfo" Relationship="Self.FK_Company_AddressInfo" FromRole="Company" ToRole="AddressInfo" />
           <NavigationProperty Name="AdjusterMasters" Relationship="Self.FK_AdjusterMaster_Company_CompanyId" FromRole="Company" ToRole="AdjusterMaster" />
           <NavigationProperty Name="Attorneys" Relationship="Self.FK_Attorney_Company_CompanyId" FromRole="Company" ToRole="Attorney" />
-          <NavigationProperty Name="BlobStorageType" Relationship="Self.FK_BlobStorage_Company_BlobStorageTypeId" FromRole="Company" ToRole="BlobStorageType" />
+          <NavigationProperty Name="BlobStorageType" Relationship="Self.FK_Company_BlobStorageType_BlobStorageTypeId" FromRole="Company" ToRole="BlobStorageType" />
           <NavigationProperty Name="CaseCompanyMappings" Relationship="Self.FK_CaseCompanyMapping_Company_CompanyId" FromRole="Company" ToRole="CaseCompanyMapping" />
           <NavigationProperty Name="CompanyType1" Relationship="Self.FK_Company_CompanyType" FromRole="Company" ToRole="CompanyType" />
           <NavigationProperty Name="ContactInfo" Relationship="Self.FK_Company_ContactInfo" FromRole="Company" ToRole="ContactInfo" />
@@ -4166,6 +4184,15 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Users" Relationship="Self.FK_User_UserType" FromRole="UserType" ToRole="User" />
         </EntityType>
+        <EntityType Name="DocumentNode">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="ChildNode" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="ParentNode" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="ChildNode" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+        </EntityType>
         <Association Name="FK_AdjusterMaster_AddressInfo_AddressInfoId">
           <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="0..1" />
           <End Role="AdjusterMaster" Type="Self.AdjusterMaster" Multiplicity="*" />
@@ -4382,7 +4409,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_BlobStorage_Company_BlobStorageTypeId">
+        <Association Name="FK_Company_BlobStorageType_BlobStorageTypeId">
           <End Role="BlobStorageType" Type="Self.BlobStorageType" Multiplicity="0..1" />
           <End Role="Company" Type="Self.Company" Multiplicity="*" />
           <ReferentialConstraint>
@@ -5589,6 +5616,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="UserCompanies" EntityType="Self.UserCompany" />
           <EntitySet Name="UserCompanyRoles" EntityType="Self.UserCompanyRole" />
           <EntitySet Name="UserTypes" EntityType="Self.UserType" />
+          <EntitySet Name="DocumentNodes" EntityType="Self.DocumentNode" />
           <AssociationSet Name="FK_AdjusterMaster_AddressInfo_AddressInfoId" Association="Self.FK_AdjusterMaster_AddressInfo_AddressInfoId">
             <End Role="AddressInfo" EntitySet="AddressInfoes" />
             <End Role="AdjusterMaster" EntitySet="AdjusterMasters" />
@@ -5661,7 +5689,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="BlobStorageType" EntitySet="BlobStorageTypes" />
             <End Role="BlobStorage" EntitySet="BlobStorages" />
           </AssociationSet>
-          <AssociationSet Name="FK_BlobStorage_Company_BlobStorageTypeId" Association="Self.FK_BlobStorage_Company_BlobStorageTypeId">
+          <AssociationSet Name="FK_Company_BlobStorageType_BlobStorageTypeId" Association="Self.FK_Company_BlobStorageType_BlobStorageTypeId">
             <End Role="BlobStorageType" EntitySet="BlobStorageTypes" />
             <End Role="Company" EntitySet="Companies" />
           </AssociationSet>
@@ -7135,6 +7163,15 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DocumentNodes">
+            <EntityTypeMapping TypeName="MIDASGBXModel.DocumentNode">
+              <MappingFragment StoreEntitySet="DocumentNodes">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ParentNode" ColumnName="ParentNode" />
+                <ScalarProperty Name="ChildNode" ColumnName="ChildNode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

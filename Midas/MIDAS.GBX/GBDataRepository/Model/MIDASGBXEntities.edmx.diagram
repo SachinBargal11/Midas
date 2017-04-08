@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="ee2d39e73e4d41448226ea4ab0c3547e" Name="Diagram1">
+      <Diagram DiagramId="ea6221324dd24052b1d890eb7e6e3c2c" Name="Diagram1">
         <EntityTypeShape EntityType="MIDASGBXModel.AddressInfo" Width="1.5" PointX="0.75" PointY="65.25" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.AdjusterMaster" Width="1.5" PointX="3" PointY="66" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.Attorney" Width="1.5" PointX="11.25" PointY="69.75" IsExpanded="true" />
@@ -71,6 +71,7 @@
         <EntityTypeShape EntityType="MIDASGBXModel.UserCompany" Width="1.5" PointX="17.25" PointY="66.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.UserCompanyRole" Width="1.5" PointX="11.25" PointY="75.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.UserType" Width="1.5" PointX="6.75" PointY="76.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.DocumentNode" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="MIDASGBXModel.FK_AdjusterMaster_AddressInfo_AddressInfoId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Company_AddressInfo" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_InsuranceMaster_AddressInfo_AddressInfoId" ManuallyRouted="false" />
@@ -89,7 +90,7 @@
         <AssociationConnector Association="MIDASGBXModel.FK_Attorney_Company_CompanyId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Attorney_User_id" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_BlobStorageType_BlobStorage_BlobStorageTypeId" ManuallyRouted="false" />
-        <AssociationConnector Association="MIDASGBXModel.FK_BlobStorage_Company_BlobStorageTypeId" ManuallyRouted="false" />
+        <AssociationConnector Association="MIDASGBXModel.FK_Company_BlobStorageType_BlobStorageTypeId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_PatientVisit2_CalendarEvent_CaseId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Case_CaseStatus_CaseStatusId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Case_CaseType_CaseTypeId" ManuallyRouted="false" />
