@@ -24,7 +24,7 @@ export class ListConsentStore {
   private _ListConsent: BehaviorSubject<List<ListConsent>> = new BehaviorSubject(List([]));
   
     constructor(private _http: Http,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _listconsentFormService:  ListConsentFormService
     ) {
         this._headers.append('Content-Type', 'application/json');

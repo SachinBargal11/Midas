@@ -55,23 +55,23 @@ export class EditInsuranceComponent implements OnInit {
         private _router: Router,
         public _route: ActivatedRoute,
         private _statesStore: StatesStore,
-        private _notificationsStore: NotificationsStore,
-        private _progressBarService: ProgressBarService,
+       public notificationsStore: NotificationsStore,
+        public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _insuranceStore: InsuranceStore,
         private _patientsStore: PatientsStore,
         private _phoneFormatPipe: PhoneFormatPipe,
         private _faxNoFormatPipe: FaxNoFormatPipe,
         private _elRef: ElementRef
     ) {
-        this.patientId = this._sessionStore.session.user.id;
+        this.patientId = this.sessionStore.session.user.id;
         // this._route.parent.parent.params.subscribe((routeParams: any) => {
         //     this.patientId = parseInt(routeParams.patientId);
         // });
         this._route.params.subscribe((routeParams: any) => {
             let insuranceId: number = parseInt(routeParams.id);
-            this._progressBarService.show();
+            this.progressBarService.show();
             let result = this._insuranceStore.fetchInsuranceById(insuranceId);
             result.subscribe(
                 (insurance: any) => {
@@ -89,10 +89,10 @@ export class EditInsuranceComponent implements OnInit {
                 },
                 (error) => {
                     this._router.navigate(['../../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 },
                 () => {
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 });
         });
         // this._insuranceStore.getInsurancesMaster()
@@ -281,7 +281,7 @@ export class EditInsuranceComponent implements OnInit {
                 // zipCode: insuranceformValues.zipcode
             })
         });
-        this._progressBarService.show();
+        this.progressBarService.show();
         result = this._insuranceStore.updateInsurance(insurance);
         result.subscribe(
             (response) => {
@@ -290,7 +290,7 @@ export class EditInsuranceComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
@@ -301,13 +301,13 @@ export class EditInsuranceComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this.isSaveProgress = false;
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
                 this.isSaveProgress = false;
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
     }
 }

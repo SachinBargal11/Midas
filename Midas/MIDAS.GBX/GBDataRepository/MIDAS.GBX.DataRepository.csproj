@@ -35,7 +35,7 @@
   <ItemGroup>
     <Reference Include="Docs.Pdf, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Docs.Pdf.dll</HintPath>
+      <HintPath>C:\Users\milind.k.CODEARRAY\Desktop\dll\Docs.Pdf\Docs.Pdf\Docs.Pdf\bin\Debug\Docs.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
@@ -87,7 +87,7 @@
     <Compile Include="EntityRepository\Common\RelationRepository.cs" />
     <Compile Include="EntityRepository\Common\StateRepository.cs" />
     <Compile Include="EntityRepository\Company\CompanyRepository.cs" />
-    <Compile Include="EntityRepository\DoctorCaseConsentApproval\DoctorCaseConsentApprovalRepository.cs" />
+    <Compile Include="EntityRepository\CompanyCaseConsentApproval\CompanyCaseConsentApprovalRepository.cs" />
     <Compile Include="EntityRepository\Doctor\DoctorLocationSpecialityRepository.cs" />
     <Compile Include="EntityRepository\Doctor\DoctorLocationScheduleRepository.cs" />
     <Compile Include="EntityRepository\Doctor\DoctorRepository.cs" />
@@ -164,6 +164,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Company.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\CompanyCaseConsentApproval.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\CompanySpecialtyDetail.cs">

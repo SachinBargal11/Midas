@@ -18,7 +18,7 @@ export class PatientsService {
 
     constructor(
         private _http: Http,
-        private _sessionStore: SessionStore
+        public sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
     }
@@ -43,7 +43,7 @@ export class PatientsService {
     }
 
     // getPatients(): Observable<Patient[]> {
-    //     // let companyId: number = this._sessionStore.session.currentCompany.id;
+    //     // let companyId: number = this.sessionStore.session.currentCompany.id;
     //     let promise: Promise<Patient[]> = new Promise((resolve, reject) => {
     //         // return this._http.get(this._url + '/Patient/getPatientsByCompanyId/' + companyId)
     //         return this._http.get(this._url + '/Patient/getPatientsByCompanyId/')

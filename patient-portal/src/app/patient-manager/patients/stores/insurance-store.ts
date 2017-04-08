@@ -16,9 +16,9 @@ export class InsuranceStore {
 
     constructor(
         private _insuranceService: InsuranceService,
-        private _sessionStore: SessionStore
+        public sessionStore: SessionStore
     ) {
-        this._sessionStore.userLogoutEvent.subscribe(() => {
+        this.sessionStore.userLogoutEvent.subscribe(() => {
             this.resetStore();
         });
     }

@@ -16,7 +16,7 @@ export class AccidentService {
     private _headers: Headers = new Headers();
 
     constructor(private _http: Http,
-        private _sessionStore: SessionStore
+        public sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
     }

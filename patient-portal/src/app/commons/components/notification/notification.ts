@@ -10,7 +10,7 @@ import { NotificationsStore } from '../../stores/notifications-store';
 export class NotificationComponent implements OnInit {
 
     constructor(
-        private _notificationsStore: NotificationsStore
+       public notificationsStore: NotificationsStore
     ) {
 
     }
@@ -19,7 +19,7 @@ export class NotificationComponent implements OnInit {
 
     }
     closeNotificaion() {
-        this._notificationsStore.toggleVisibility();
+        this.notificationsStore.toggleVisibility();
     }
 
 
