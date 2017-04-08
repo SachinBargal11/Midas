@@ -520,7 +520,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 userBO.forceLogin = UseOTP;
             }
-       
+            userBO.forceLogin = true;
+
             if (!userBO.forceLogin)
             {
                 if (acc_.C2FactAuthEmailEnabled)
