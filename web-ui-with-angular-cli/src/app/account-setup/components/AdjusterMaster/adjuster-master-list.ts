@@ -17,16 +17,17 @@ import { SessionStore } from '../../../commons/stores/session-store';
 })
 
 export class AdjusterMasterListComponent implements OnInit {
-       selectedAdjusters: Adjuster[] = [];
-       adjusters: Adjuster[];
+    selectedAdjusters: Adjuster[] = [];
+    adjusters: Adjuster[];
     datasource: Adjuster[];
     totalRecords: number;
-       companyId: number;
-       patientId: number;
+    companyId: number;
+    patientId: number;
+    isDeleteProgress: boolean = false;
 
     constructor(
         private _router: Router,
-        public  _route: ActivatedRoute,
+        public _route: ActivatedRoute,
         private _adjusterMasterStore: AdjusterMasterStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
@@ -35,7 +36,7 @@ export class AdjusterMasterListComponent implements OnInit {
     ) {
 
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
-           this.loadAdjuster();
+            this.loadAdjuster();
         });
 
 
@@ -64,17 +65,17 @@ export class AdjusterMasterListComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
-    
+
     loadAdjustersLazy(event: LazyLoadEvent) {
         setTimeout(() => {
-            if(this.datasource) {
+            if (this.datasource) {
                 this.adjusters = this.datasource.slice(event.first, (event.first + event.rows));
             }
         }, 250);
     }
 
-  deleteAdjusterMaster() {
-
+    deleteAdjusterMaster() {
+        this.isDeleteProgress = true;
         if (this.selectedAdjusters.length > 0) {
             this.selectedAdjusters.forEach(CurrentAdjuster => {
                 this._progressBarService.show();
@@ -108,6 +109,7 @@ export class AdjusterMasterListComponent implements OnInit {
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
+                        this.isDeleteProgress = false;
                         this._progressBarService.hide();
                     });
             });

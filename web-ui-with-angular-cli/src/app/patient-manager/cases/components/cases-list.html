@@ -18,8 +18,8 @@
     </div>
 </div>
 <!--<p-dataTable [value]="cases" [(selection)]="selectedCases" [lazy]="true" [rows]="10" [paginator]="true" 
-[totalRecords]="totalRecords" (onLazyLoad)="loadCasesLazy($event)" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">-->
-<p-dataTable [value]="cases" [(selection)]="selectedCases" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+[totalRecords]="totalRecords" (onLazyLoad)="loadCasesLazy($event)" [globalFilter]="gb" [responsive]="true">-->
+<p-dataTable [value]="cases" [(selection)]="selectedCases" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true">
     <header>Cases</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column header="Patient Name" [sortable]="true">

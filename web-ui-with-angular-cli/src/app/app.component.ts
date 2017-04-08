@@ -21,16 +21,16 @@ export class AppComponent implements OnInit {
 
   constructor(
     private _router: Router,
-    private _sessionStore: SessionStore,
-    private _notificationsStore: NotificationsStore,
+    public sessionStore: SessionStore,
+    public notificationsStore: NotificationsStore,
     private _notificationsService: NotificationsService,
-    private _progressBarService: ProgressBarService
+    public progressBarService: ProgressBarService
   ) {
   }
 
   ngOnInit() {
 
-    this._sessionStore.authenticate().subscribe(
+    this.sessionStore.authenticate().subscribe(
       (response) => {
 
       },

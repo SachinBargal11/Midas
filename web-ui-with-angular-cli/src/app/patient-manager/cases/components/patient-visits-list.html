@@ -17,7 +17,7 @@
 </div>
 
 <p-dataTable [value]="doctorsVisits" [(selection)]="selectedDoctorsVisits" [rows]="10" [paginator]="true" [pageLinks]="3"
-    [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbb" [responsive]="true" [stacked]="stacked">
+    [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbb" [responsive]="true">
     <header>Patient Doctors Visits List</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column field="eventStart" header="Visit Date" [sortable]="true">
@@ -66,7 +66,7 @@
 <!--<pre>{{visits | json}}</pre>-->
 
 <p-dataTable [value]="roomsVisits" [(selection)]="selectedRoomsVisits" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
-    [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+    [globalFilter]="gb" [responsive]="true">
     <header>Patient Rooms Visits List</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column field="eventStart" header="Visit Date" [sortable]="true">

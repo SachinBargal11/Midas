@@ -28,7 +28,7 @@
             </div>
         </div>
         <p-dataTable [value]="doctors" [(selection)]="selectedDoctor" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
-            [stacked]="stacked">
+           >
             <header>Doctors</header>
             <p-column selectionMode="single"></p-column>
             <p-column field="user.displayName" header="Doctor Name" [sortable]="true"></p-column>
@@ -60,7 +60,7 @@
             </div>
         </div>
         <p-dataTable [value]="rooms" [(selection)]="selectedRoom" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
-            [stacked]="stacked">
+           >
             <p-column selectionMode="single"></p-column>
             <p-column field="name" header="Name" [sortable]="true"></p-column>
             <p-column field="phone" header="Phone" [sortable]="true"></p-column>

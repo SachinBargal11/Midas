@@ -1,5 +1,4 @@
 import { Failure } from 'codelyzer/walkerFactory/walkerFactory';
-import * as Debugger from '_debugger';
 import { Component, OnInit, Injectable } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PatientVisitsStore } from '../../patient-visit/stores/patient-visit-store';
@@ -57,20 +56,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.currentCaseId = parseInt(routeParams.caseId, 10);
             this.url = this._url + '/fileupload/multiupload/' + this.currentCaseId + '/case';
-            // this._progressBarService.show();
-            // this._patientVisitStore.getDocumentsForVisitId(this.currentVisitId)
-            //     .subscribe(document => {
-            //         this.document = document
-
-            //     },
-            //     (error) => {
-            //         this._progressBarService.hide();
-            //     },
-            //     () => {
-            //         this._progressBarService.hide();
-            //     });
         });
-
     }
 
     ngOnInit() {
@@ -78,27 +64,36 @@ export class CaseDocumentsUploadComponent implements OnInit {
     }
 
     ngOnDestroy() {
+        this.unloadWebTwain();
+    }
+
+    unloadWebTwain() {
         this._scannerService.deleteWebTwain(this.scannerContainerId);
         this._scannerService.unloadAll();
     }
 
     ngAfterViewInit() {
         _.defer(() => {
-            this._scannerService.getWebTwain(this.scannerContainerId)
-                .then((dwObject) => {
-                    this._dwObject = dwObject;
-                    if (this._dwObject) {
-                        for (let i = 0; i < this._dwObject.SourceCount; i++) {
-                            this.twainSources.push({ idx: i, name: this._dwObject.GetSourceNameItems(i) });
-                        }
-
-                    }
-                }).catch(() => {
-                    // (<any>window).OnWebTwainNotFoundOnWindowsCallback();
-                    this._notificationsService.alert('', 'Not able to connect scanner. Please refresh the page again and download the software prompted.');
-                });
+            this.createDWObject();
         });
 
+    }
+
+    createDWObject() {
+        this._scannerService.getWebTwain(this.scannerContainerId)
+            .then((dwObject) => {
+                this._dwObject = dwObject;
+                this._dwObject.SetViewMode(1, -1);
+                if (this._dwObject) {
+                    for (let i = 0; i < this._dwObject.SourceCount; i++) {
+                        this.twainSources.push({ idx: i, name: this._dwObject.GetSourceNameItems(i) });
+                    }
+
+                }
+            }).catch(() => {
+                // (<any>window).OnWebTwainNotFoundOnWindowsCallback();
+                this._notificationsService.alert('', 'Not able to connect scanner. Please refresh the page again and download the software prompted.');
+            });
     }
 
     AcquireImage() {
@@ -118,42 +113,43 @@ export class CaseDocumentsUploadComponent implements OnInit {
         this._casesStore.uploadScannedDocuments(this._dwObject, this.currentCaseId)
             .subscribe(
             (documents: CaseDocument[]) => {
-                this.documents = documents;
+                _.forEach(documents, (currentDocument: any) => {
+                    if (currentDocument.status == 'Failed') {
+                        let notification = new Notification({
+                            'title': currentDocument.message + '  ' + currentDocument.documentName,
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._notificationsStore.addNotification(notification);
+                    }
+                });
+                this.getDocuments();
             },
             (error) => {
                 this._progressBarService.hide();
             },
             () => {
+                this.unloadWebTwain();
+                this.createDWObject();
                 this._progressBarService.hide();
             });
     }
 
     onUpload(event) {
-        // for (let file of event.files) {
-        //     this.uploadedFiles.push(file);
-        // }
-        // let notification = new Notification({
-        //                 'title': 'Document added successfully!',
-        //                 'type': 'SUCCESS',
-        //                 'createdAt': moment()
-        //             });
-        //             this._notificationsStore.addNotification(notification);
-        // let file = this.uploadedFiles;
-        // this._casesStore.uploadDocument(this.uploadedFiles,this.currentCaseId);
         let responseDocuments: any = JSON.parse(event.xhr.responseText);
-          let documents = (<Object[]>responseDocuments).map((document: any) => {
-                        return CaseDocumentAdapter.parseResponse(document);
-                    });
-                       _.forEach(documents, (currentDocument: any) => {
-                       if( currentDocument.status == 'Failed') {
-                            let notification = new Notification({
-                        'title': currentDocument.message + '  ' + currentDocument.documentName,
-                         'type': 'ERROR',
-                        'createdAt': moment()
-                    });
-                    this._notificationsStore.addNotification(notification);
-                       }
-                      });
+        let documents = (<Object[]>responseDocuments).map((document: any) => {
+            return CaseDocumentAdapter.parseResponse(document);
+        });
+        _.forEach(documents, (currentDocument: any) => {
+            if (currentDocument.status == 'Failed') {
+                let notification = new Notification({
+                    'title': currentDocument.message + '  ' + currentDocument.documentName,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+            }
+        });
         this.getDocuments();
 
     };

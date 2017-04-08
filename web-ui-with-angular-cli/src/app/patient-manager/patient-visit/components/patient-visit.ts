@@ -756,7 +756,6 @@ export class PatientVisitComponent implements OnInit {
                 // Change the recurrence rule of selected event to start with selected date from the form 
                 // but end on same date as selected Visit rule.
                 // new series should start from selected/clicked date
-                // debugger;
                 let occurrences: Date[] = this.selectedVisit.calendarEvent.recurrenceRule.all();
                 let until: Date = moment(occurrences[occurrences.length - 1]).set({ 'hour': updatedVisit.calendarEvent.eventStart.hour(), 'minute': updatedVisit.calendarEvent.eventStart.minute() }).toDate();
                 let eventStart: Date = this.selectedCalEvent.start.set({ 'hour': updatedVisit.calendarEvent.eventStart.hour(), 'minute': updatedVisit.calendarEvent.eventStart.minute() }).toDate();
