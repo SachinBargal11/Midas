@@ -238,12 +238,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                         .Include("Doctor.User")
                                         .Include("Doctor.DoctorSpecialities")
                                          .Include("Doctor.DoctorSpecialities.Specialty")
-                                        .Include("User")
-                                        .Include("Case")
-                                        .Include("Room")
-                                        .Where(p => p.Id == id
-                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                        .FirstOrDefault<Referral>();
+                                         .Include("User")
+                                         .Include("Case")
+                                         .Include("Case.Patient2")
+                                         .Include("Case.Patient2.User")
+                                         .Include("Room")
+                                         .Where(p => p.Id == id
+                                          && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                         .FirstOrDefault<Referral>();
 
             BO.Referral acc_ = Convert<BO.Referral, Referral>(acc);
             if (acc_ == null)
@@ -267,6 +269,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                         .Include("Doctor.DoctorSpecialities.Specialty")
                                         .Include("User")
                                         .Include("Case")
+                                        .Include("Case.Patient2")
+                                        .Include("Case.Patient2.User")
                                         .Include("Room")
                                         .Where(p => p.CaseId == CaseId
                                          && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -299,6 +303,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("Doctor.DoctorSpecialities")
                                                .Include("User")
                                                .Include("Case")
+                                               .Include("Case.Patient2")
+                                               .Include("Case.Patient2.User")
                                                .Include("Room")
                                                .Where(p => p.ReferringCompanyId == id
                                                 &&(p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -372,7 +378,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                            .Include("Doctor.User")
                                                            .Include("Doctor.DoctorSpecialities")
                                                            .Include("User")
-                                                           .Include("Case")
+                                                            .Include("Case")
+                                                            .Include("Case.Patient2")
+                                                            .Include("Case.Patient2.User")
                                                            .Include("Room")
                                                            .Where(p => p.ReferringLocationId == id
                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -404,6 +412,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                            .Include("Doctor.DoctorSpecialities")
                                                            .Include("User")
                                                            .Include("Case")
+                                                           .Include("Case.Patient2")
+                                                           .Include("Case.Patient2.User")
                                                            .Include("Room")
                                                            .Where(p => p.ReferredToLocationId == id
                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -436,6 +446,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                             .Include("Doctor.DoctorSpecialities.Specialty")
                                                             .Include("User")
                                                             .Include("Case")
+                                                            .Include("Case.Patient2")
+                                                            .Include("Case.Patient2.User")
                                                             .Include("Room")
                                                             .Where(p => p.ReferringUserId == id
                                                              && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
