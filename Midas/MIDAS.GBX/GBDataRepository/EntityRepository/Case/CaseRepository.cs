@@ -197,6 +197,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("PatientEmpInfo.ContactInfo")
                                     .Include("CaseCompanyMappings")
                                     .Include("CaseCompanyMappings.Company")
+                                    .Include("CompanyCaseConsentApprovals")
+                                    .Include("Referrals")
                                     .Where(p => p.Id == id 
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .FirstOrDefault<Case>();
