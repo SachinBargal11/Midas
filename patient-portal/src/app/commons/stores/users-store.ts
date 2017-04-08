@@ -16,9 +16,9 @@ export class UsersStore {
     private _selectedUsers: BehaviorSubject<List<User>> = new BehaviorSubject(List([]));
     constructor(
         private _usersService: UsersService,
-        private _sessionStore: SessionStore
+        public sessionStore: SessionStore
     ) {
-        this._sessionStore.userLogoutEvent.subscribe(() => {
+        this.sessionStore.userLogoutEvent.subscribe(() => {
             this.resetStore();
         });
     }

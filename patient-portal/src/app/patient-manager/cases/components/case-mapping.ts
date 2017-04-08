@@ -44,13 +44,13 @@ export class CaseMappingComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private _router: Router,
-        private _notificationsStore: NotificationsStore,
-        private _sessionStore: SessionStore,
+       public notificationsStore: NotificationsStore,
+        public sessionStore: SessionStore,
         private _insuranceMappingStore: InsuranceMappingStore,
         private _casesStore: CasesStore,
         private _insuranceStore: InsuranceStore,
         private _adjusterMasterStore: AdjusterMasterStore,
-        private _progressBarService: ProgressBarService,
+        public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _route: ActivatedRoute
     ) {
@@ -59,8 +59,8 @@ export class CaseMappingComponent implements OnInit {
         });
         // this._route.parent.parent.params.subscribe((routeParams: any) => {
         //     this.patientId = parseInt(routeParams.patientId);
-            this.patientId = this._sessionStore.session.user.id;
-            this._progressBarService.show();
+            this.patientId = this.sessionStore.session.user.id;
+            this.progressBarService.show();
 
             let fetchInsuranceMappings = this._insuranceMappingStore.getInsuranceMappings(this.caseId);
             let fetchInsurances = this._insuranceStore.getInsurances(this.patientId);
@@ -95,10 +95,10 @@ export class CaseMappingComponent implements OnInit {
                 },
                 (error) => {
                     this._router.navigate(['../../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 },
                 () => {
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 });
         // });
 
@@ -160,7 +160,7 @@ export class CaseMappingComponent implements OnInit {
             caseId: this.caseId,
             mappings: mappings
         });
-        this._progressBarService.show();
+        this.progressBarService.show();
         this.isSaveProgress = true;
         let result;
 
@@ -172,7 +172,7 @@ export class CaseMappingComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
@@ -183,13 +183,13 @@ export class CaseMappingComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this.isSaveProgress = false;
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
                 this.isSaveProgress = false;
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
 
     }

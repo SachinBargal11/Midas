@@ -52,7 +52,7 @@ import {
   ,GrowlModule
   
 } from 'primeng/primeng';
-import { DropdownModule } from 'ng2-bootstrap';
+//import { DropdownModule } from 'ng2-bootstrap';
 
 
 @NgModule({
@@ -75,7 +75,8 @@ import { DropdownModule } from 'ng2-bootstrap';
     SharedModule,
     ConfirmDialogModule,
     MultiSelectModule,
-    DropdownModule.forRoot(),FileUploadModule,GrowlModule
+   // DropdownModule.forRoot(),
+    FileUploadModule,GrowlModule
   ],
   declarations: [
     LimitPipe,
@@ -145,7 +146,7 @@ import { DropdownModule } from 'ng2-bootstrap';
     SharedModule,
     ConfirmDialogModule,
     MultiSelectModule,
-    DropdownModule,
+   // DropdownModule,
     ShellComponent,FileUploadModule,GrowlModule
   ]
 })

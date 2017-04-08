@@ -13,7 +13,7 @@ export class PatientsShellComponent implements OnInit {
     constructor(
         public _router: Router,
         private _patientsStore: PatientsStore,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
     ) {
 
     }

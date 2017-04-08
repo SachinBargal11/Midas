@@ -47,15 +47,15 @@ export class AccidentInfoComponent implements OnInit {
         public _route: ActivatedRoute,
         private _statesStore: StatesStore,
         private _accidentStore: AccidentStore,
-        private _notificationsStore: NotificationsStore,
-        private _progressBarService: ProgressBarService,
-        private _sessionStore: SessionStore,
+       public notificationsStore: NotificationsStore,
+        public progressBarService: ProgressBarService,
+        public sessionStore: SessionStore,
         private _elRef: ElementRef,
         private _notificationsService: NotificationsService,
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
-            this._progressBarService.show();
+            this.progressBarService.show();
             let result = this._accidentStore.getAccidents(this.caseId);
             result.subscribe(
                 (accidents: Accident[]) => {
@@ -87,10 +87,10 @@ export class AccidentInfoComponent implements OnInit {
                 },
                 (error) => {
                     this._router.navigate(['../../']);
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 },
                 () => {
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 });
         });
 
@@ -162,7 +162,7 @@ export class AccidentInfoComponent implements OnInit {
                 zipCode: accidentformValues.zipcode
             })
         });
-        this._progressBarService.show();
+        this.progressBarService.show();
         //
         if (this.currentAccident.id) {
             result = this._accidentStore.updateAccident(accident, this.currentAccident.id);
@@ -173,7 +173,7 @@ export class AccidentInfoComponent implements OnInit {
                         'type': 'SUCCESS',
                         'createdAt': moment()
                     });
-                    this._notificationsStore.addNotification(notification);
+                    this.notificationsStore.addNotification(notification);
                     this._router.navigate(['../../'], { relativeTo: this._route });
                 },
                 (error) => {
@@ -184,13 +184,13 @@ export class AccidentInfoComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this.isSaveAccidentProgress = false;
-                    this._notificationsStore.addNotification(notification);
+                    this.notificationsStore.addNotification(notification);
                     this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 },
                 () => {
                     this.isSaveAccidentProgress = false;
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 });
 
         }
@@ -205,7 +205,7 @@ export class AccidentInfoComponent implements OnInit {
                         'type': 'SUCCESS',
                         'createdAt': moment()
                     });
-                    this._notificationsStore.addNotification(notification);
+                    this.notificationsStore.addNotification(notification);
                     this._router.navigate(['/patient-manager/patients']);
                 },
                 (error) => {
@@ -216,13 +216,13 @@ export class AccidentInfoComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this.isSaveAccidentProgress = false;
-                    this._notificationsStore.addNotification(notification);
+                    this.notificationsStore.addNotification(notification);
                     this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 },
                 () => {
                     this.isSaveAccidentProgress = false;
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 });
         }
     }

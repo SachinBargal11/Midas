@@ -34,9 +34,9 @@ export class ChangePasswordComponent implements OnInit {
         public _route: ActivatedRoute,
         private _authenticationService: AuthenticationService,
         private _notificationsService: NotificationsService,
-        private _notificationsStore: NotificationsStore,
-        private _progressBarService: ProgressBarService,
-        private _sessionStore: SessionStore
+       public notificationsStore: NotificationsStore,
+        public progressBarService: ProgressBarService,
+        public sessionStore: SessionStore
     ) {
         this.changePassForm = this.fb.group({
             oldpassword: ['', Validators.required],
@@ -51,7 +51,7 @@ export class ChangePasswordComponent implements OnInit {
     }
 
     updatePassword() {
-        let userId: number = this._sessionStore.session.user.id;
+        let userId: number = this.sessionStore.session.user.id;
         let userDetail = ({
             user: {
                 id: userId,
@@ -59,9 +59,9 @@ export class ChangePasswordComponent implements OnInit {
             }
         });
 
-        this._progressBarService.show();
+        this.progressBarService.show();
         this.isPassChangeInProgress = true;
-        let userName = this._sessionStore.session.user.userName;
+        let userName = this.sessionStore.session.user.userName;
         let oldpassword = this.changePassForm.value.oldpassword;
 
         let result = this._authenticationService.authenticate(userName, oldpassword, true);
@@ -75,7 +75,7 @@ export class ChangePasswordComponent implements OnInit {
                             'type': 'SUCCESS',
                             'createdAt': moment()
                         });
-                        this._notificationsStore.addNotification(notification);
+                        this.notificationsStore.addNotification(notification);
                         this._router.navigate(['/dashboard']);
                     },
                     error => {
@@ -86,13 +86,13 @@ export class ChangePasswordComponent implements OnInit {
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
-                        this._notificationsStore.addNotification(notification);
+                        this.notificationsStore.addNotification(notification);
                         this._notificationsService.error('Error!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                        this._progressBarService.hide();
+                        this.progressBarService.hide();
                     },
                     () => {
                         this.isPassChangeInProgress = false;
-                        this._progressBarService.hide();
+                        this.progressBarService.hide();
                     });
             },
             error => {
@@ -103,13 +103,13 @@ export class ChangePasswordComponent implements OnInit {
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._notificationsService.error('Error!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
                 this.isPassChangeInProgress = false;
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
     }
 

@@ -43,10 +43,10 @@ export class EditReferringOfficeComponent implements OnInit {
         private _router: Router,
         public _route: ActivatedRoute,
         private _statesStore: StatesStore,
-        private _notificationsStore: NotificationsStore,
-        private _progressBarService: ProgressBarService,
+       public notificationsStore: NotificationsStore,
+        public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _referringOfficeStore: ReferringOfficeStore,
         private _patientsStore: PatientsStore,
         private _locationsStore: LocationsStore,
@@ -58,7 +58,7 @@ export class EditReferringOfficeComponent implements OnInit {
         });
         this._route.params.subscribe((routeParams: any) => {
             let referringOfficeId: number = parseInt(routeParams.id);
-            this._progressBarService.show();
+            this.progressBarService.show();
             let result = this._referringOfficeStore.fetchReferringOfficeById(referringOfficeId);
             result.subscribe(
                 (referringOffice: ReferringOffice) => {
@@ -67,10 +67,10 @@ export class EditReferringOfficeComponent implements OnInit {
                 },
                 (error) => {
                     this._router.navigate(['../../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 },
                 () => {
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 });
         });
         this.referringOfficeform = this.fb.group({
@@ -119,7 +119,7 @@ export class EditReferringOfficeComponent implements OnInit {
                 zipCode: referringOfficeformValues.zipcode
             })
         });
-        this._progressBarService.show();
+        this.progressBarService.show();
         result = this._referringOfficeStore.updateReferringOffice(referringOffice);
         result.subscribe(
             (response) => {
@@ -128,7 +128,7 @@ export class EditReferringOfficeComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
@@ -139,13 +139,13 @@ export class EditReferringOfficeComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this.isSaveProgress = false;
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
                 this.isSaveProgress = false;
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
     }
 }

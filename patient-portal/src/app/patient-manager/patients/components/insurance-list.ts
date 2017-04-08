@@ -27,15 +27,15 @@ export class InsuranceListComponent implements OnInit {
         private _router: Router,
         public _route: ActivatedRoute,
         private _insuranceStore: InsuranceStore,
-        private _sessionStore: SessionStore,
-        private _notificationsStore: NotificationsStore,
-        private _progressBarService: ProgressBarService,
+        public sessionStore: SessionStore,
+       public notificationsStore: NotificationsStore,
+        public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService
     ) {
         // this._route.parent.parent.params.subscribe((routeParams: any) => {
         //     this.patientId = parseInt(routeParams.patientId, 10);
         // });
-        this.patientId = this._sessionStore.session.user.id;
+        this.patientId = this.sessionStore.session.user.id;
     }
 
     ngOnInit() {
@@ -43,7 +43,7 @@ export class InsuranceListComponent implements OnInit {
     }
 
     loadInsurances() {
-        this._progressBarService.show();
+        this.progressBarService.show();
         this._insuranceStore.getInsurances(this.patientId)
             .subscribe(insurances => {
                 this.insurances = insurances.reverse();
@@ -52,10 +52,10 @@ export class InsuranceListComponent implements OnInit {
                 // this.insurances = this.datasource.slice(0, 10);
             },
             (error) => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
     }
 
@@ -70,7 +70,7 @@ export class InsuranceListComponent implements OnInit {
     deleteInsurance() {
         if (this.selectedInsurances.length > 0) {
             this.selectedInsurances.forEach(currentInsurance => {
-                this._progressBarService.show();
+                this.progressBarService.show();
                 let result;
                 result = this._insuranceStore.deleteInsurance(currentInsurance);
                 result.subscribe(
@@ -81,7 +81,7 @@ export class InsuranceListComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this.loadInsurances();
-                        this._notificationsStore.addNotification(notification);
+                        this.notificationsStore.addNotification(notification);
                         this.selectedInsurances = [];
                     },
                     (error) => {
@@ -92,12 +92,12 @@ export class InsuranceListComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this.selectedInsurances = [];
-                        this._progressBarService.hide();
-                        this._notificationsStore.addNotification(notification);
+                        this.progressBarService.hide();
+                        this.notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
-                        this._progressBarService.hide();
+                        this.progressBarService.hide();
                     });
             });
         } else {
@@ -106,7 +106,7 @@ export class InsuranceListComponent implements OnInit {
                 'type': 'ERROR',
                 'createdAt': moment()
             });
-            this._notificationsStore.addNotification(notification);
+            this.notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'select Insurance to delete');
         }
     }

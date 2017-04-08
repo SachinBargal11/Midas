@@ -15,9 +15,9 @@ export class AdjusterMasterStore {
 
     constructor(
         private _adjusterMasterService: AdjusterMasterService,
-        private _sessionStore: SessionStore
+        public sessionStore: SessionStore
     ) {
-        this._sessionStore.userLogoutEvent.subscribe(() => {
+        this.sessionStore.userLogoutEvent.subscribe(() => {
             this.resetStore();
         });
     }
@@ -26,7 +26,7 @@ export class AdjusterMasterStore {
         return this._adjusterMaster.asObservable();
     }
     // getAdjusterByCompanyAndInsuranceMasterId(insuranceMasterId: number): Observable<Adjuster[]> {
-    //     let companyId: number = this._sessionStore.session.currentCompany.id;
+    //     let companyId: number = this.sessionStore.session.currentCompany.id;
     //     let promise = new Promise((resolve, reject) => {
     //         this._adjusterMasterService.getAdjusterMastersByCompanyAndInsuranceMasterId(companyId, insuranceMasterId).subscribe((insurances: Adjuster[]) => {
     //             this._adjusterMaster.next(List(insurances));

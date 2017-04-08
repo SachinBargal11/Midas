@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
     };
     constructor(
         private fb: FormBuilder,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _notificationsService: NotificationsService,
         private _authenticationService: AuthenticationService,
         private _router: Router
@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
         if (this.checkSecuredLogin(this.loginForm.value.email)) {
             forceLogin = false;
         }
-        result = this._sessionStore.login(this.loginForm.value.email, this.loginForm.value.password, forceLogin);
+        result = this.sessionStore.login(this.loginForm.value.email, this.loginForm.value.password, forceLogin);
 
         result.subscribe(
             (session: Session) => {

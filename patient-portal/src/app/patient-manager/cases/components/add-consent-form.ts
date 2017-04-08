@@ -56,7 +56,7 @@ export class AddConsentFormComponent implements OnInit {
     document: AddConsent[] = [];
     selectedDoctoredit = 0;
     doctorApprovalId: 0;
-    documentMode: string = '1';
+    documentMode: string = "one";
     scannerContainerId: string = `scanner_${moment().valueOf()}`;
     twainSources: TwainSource[] = [];
     selectedTwainSource: TwainSource = null;

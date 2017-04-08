@@ -16,9 +16,9 @@ export class ScheduleStore {
 
     constructor(
         private _scheduleService: ScheduleService,
-        private _sessionStore: SessionStore
+        public sessionStore: SessionStore
     ) {
-        this._sessionStore.userLogoutEvent.subscribe(() => {
+        this.sessionStore.userLogoutEvent.subscribe(() => {
             this.resetStore();
         });
     }
@@ -40,7 +40,7 @@ export class ScheduleStore {
     }
 
        getSchedulesByCompanyId(): Observable<Schedule[]> {
-        let companyId:number = this._sessionStore.session.user.id;
+        let companyId:number = this.sessionStore.session.user.id;
         let promise = new Promise((resolve, reject) => {
             this._scheduleService.getSchedulesByCompanyId(companyId).subscribe((schedules: Schedule[]) => {
                 this._schedules.next(List(schedules));
@@ -75,7 +75,7 @@ export class ScheduleStore {
         return <Observable<Schedule>>Observable.fromPromise(promise);
     }
     addSchedule(scheduleDetail: Schedule): Observable<Schedule> {
-        let companyId: number = this._sessionStore.session.user.id;
+        let companyId: number = this.sessionStore.session.user.id;
         let promise = new Promise((resolve, reject) => {
             this._scheduleService.addSchedule(scheduleDetail, companyId).subscribe((schedule: Schedule) => {
                 this._schedules.next(this._schedules.getValue().push(schedule));
@@ -87,7 +87,7 @@ export class ScheduleStore {
         return <Observable<Schedule>>Observable.from(promise);
     }
     updateSchedule(scheduleDetail: Schedule): Observable<Schedule> {
-        let companyId: number = this._sessionStore.session.user.id;
+        let companyId: number = this.sessionStore.session.user.id;
         let promise = new Promise((resolve, reject) => {
             this._scheduleService.updateSchedule(scheduleDetail, companyId).subscribe((updatedScheduleDetail: Schedule) => {
                 let scheduleDetails: List<Schedule> = this._schedules.getValue();

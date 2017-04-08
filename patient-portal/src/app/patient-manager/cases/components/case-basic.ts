@@ -43,9 +43,9 @@ export class CaseBasicComponent implements OnInit {
         private _router: Router,
         public _route: ActivatedRoute,
         private _statesStore: StatesStore,
-        private _notificationsStore: NotificationsStore,
-        private _progressBarService: ProgressBarService,
-        private _sessionStore: SessionStore,
+       public notificationsStore: NotificationsStore,
+        public progressBarService: ProgressBarService,
+        public sessionStore: SessionStore,
         private _locationsStore: LocationsStore,
         private _employerStore: EmployerStore,
         private _patientStore: PatientsStore,
@@ -55,8 +55,8 @@ export class CaseBasicComponent implements OnInit {
     ) {
         // this._route.parent.parent.params.subscribe((routeParams: any) => {
         //     this.patientId = parseInt(routeParams.patientId, 10);
-        this.patientId = this._sessionStore.session.user.id;
-        this._progressBarService.show();
+        this.patientId = this.sessionStore.session.user.id;
+        this.progressBarService.show();
         this._patientStore.fetchPatientById(this.patientId)
             .subscribe(
             (patient: Patient) => {
@@ -65,10 +65,10 @@ export class CaseBasicComponent implements OnInit {
             },
             (error) => {
                 this._router.navigate(['../'], { relativeTo: this._route });
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
         // if(this.patientId){
         //  this._employerStore.getCurrentEmployer(this.patientId)
@@ -77,7 +77,7 @@ export class CaseBasicComponent implements OnInit {
         // });
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
-            this._progressBarService.show();
+            this.progressBarService.show();
             let result = this._casesStore.fetchCaseById(this.caseId);
             result.subscribe(
                 (caseDetail: Case) => {
@@ -90,10 +90,10 @@ export class CaseBasicComponent implements OnInit {
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 },
                 () => {
-                    this._progressBarService.hide();
+                    this.progressBarService.hide();
                 });
 
         });
@@ -137,11 +137,11 @@ export class CaseBasicComponent implements OnInit {
             attorneyId: caseFormValues.attorneyId,
             caseStatus: caseFormValues.caseStatusId,
             transportation: caseFormValues.transportation,
-            updateByUserID: this._sessionStore.session.account.user.id,
+            updateByUserID: this.sessionStore.session.account.user.id,
             updateDate: moment()
         }));
 
-        this._progressBarService.show();
+        this.progressBarService.show();
         result = this._casesStore.updateCase(caseDetail);
         result.subscribe(
             (response) => {
@@ -150,7 +150,7 @@ export class CaseBasicComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._router.navigate(['../../'], { relativeTo: this._route });
                 // this._router.navigate(['/patient-manager/cases']);
             },
@@ -162,13 +162,13 @@ export class CaseBasicComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this.isSaveProgress = false;
-                this._notificationsStore.addNotification(notification);
+                this.notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             },
             () => {
                 this.isSaveProgress = false;
-                this._progressBarService.hide();
+                this.progressBarService.hide();
             });
 
     }
