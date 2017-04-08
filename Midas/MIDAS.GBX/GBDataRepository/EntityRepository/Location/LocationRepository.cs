@@ -51,7 +51,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 BO.Company boCompany = new BO.Company();
                 boCompany.ID = location.Company.id;
-                locationBO.Company = boCompany;
+                boCompany.Name = location.Company.Name;
+                boCompany.TaxID = location.Company.TaxID;
+                boCompany.Status = (BO.GBEnums.AccountStatus)location.Company.Status;
+                boCompany.CompanyType = (BO.GBEnums.CompanyType)location.Company.CompanyType;
+                boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)location.Company.SubscriptionPlanType;
+
+                locationBO.Company = boCompany;               
             }
 
                 if (location.AddressInfo != null)
