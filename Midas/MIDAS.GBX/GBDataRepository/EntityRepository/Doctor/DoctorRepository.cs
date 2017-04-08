@@ -228,8 +228,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 if (doctorBO.DoctorSpecialities.Count > 0)
                 {
-                    //_dbSetDocSpecility.RemoveRange(_context.DoctorSpecialities.Where(c => c.DoctorID == doctorBO.user.ID));
-                    //_context.SaveChanges();
+                    _dbSetDocSpecility.RemoveRange(_context.DoctorSpecialities.Where(c => c.DoctorID == doctorBO.user.ID));
+                    _context.SaveChanges();
                     Specialty specilityDB = null;
                     DoctorSpeciality doctorSpecilityDB = null;
                     foreach (var item in doctorBO.DoctorSpecialities)
@@ -275,8 +275,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         doctorDB.UpdateDate = doctorBO.UpdateDate;
                         doctorDB.UpdateByUserID = doctorBO.UpdateByUserID;
                         #endregion
-                       // doctorDB = doctor;                                
-                       // _context.Entry(doctorDB).State = System.Data.Entity.EntityState.Modified;
+                        // doctorDB = doctor;                                
+                        // _context.Entry(doctorDB).State = System.Data.Entity.EntityState.Modified;
+                        _context.Doctors.Add(doctorDB);
                     }
                     else
                     {
