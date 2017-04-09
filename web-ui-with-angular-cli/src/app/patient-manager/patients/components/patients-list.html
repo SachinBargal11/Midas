@@ -69,7 +69,7 @@
         <input #gbReferrals type="text" class="form-control" style="float:left" placeholder="Search Patient">
     </div>
 </div>
-<p-dataTable [value]="referrals" [(selection)]="selectedReferrals" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
+<p-dataTable [value]="referrals" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
     [globalFilter]="gbReferrals" [responsive]="true">
     <header>Referrals List</header>
     <p-column selectionMode="multiple"></p-column>

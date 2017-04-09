@@ -23,10 +23,11 @@ export class CasesListComponent implements OnInit {
     cases: Case[];
     patientId: number;
     patientName: string;
-    patient:Patient;
+    patient: Patient;
     selectedCases: Case[] = [];
     datasource: Case[];
     totalRecords: number;
+    isDeleteProgress: boolean = false;
 
     constructor(
         public _route: ActivatedRoute,
@@ -40,12 +41,12 @@ export class CasesListComponent implements OnInit {
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
-                  this._progressBarService.show();
+            this._progressBarService.show();
             this._patientStore.fetchPatientById(this.patientId)
                 .subscribe(
                 (patient: Patient) => {
                     this.patient = patient;
-                    this.patientName = patient.user.firstName + ' ' + patient.user.lastName ;
+                    this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -78,24 +79,25 @@ export class CasesListComponent implements OnInit {
     }
     loadCasesLazy(event: LazyLoadEvent) {
         setTimeout(() => {
-            if(this.datasource) {
+            if (this.datasource) {
                 this.cases = this.datasource.slice(event.first, (event.first + event.rows));
             }
         }, 250);
     }
 
-         deleteCases() {
+    deleteCases() {
         if (this.selectedCases.length > 0) {
             this.selectedCases.forEach(currentCase => {
+                this.isDeleteProgress = true;
                 this._progressBarService.show();
-                this. _casesStore.deleteCase(currentCase)
-             .subscribe(
+                this._casesStore.deleteCase(currentCase)
+                    .subscribe(
                     (response) => {
                         let notification = new Notification({
                             'title': 'Case deleted successfully!',
                             'type': 'SUCCESS',
                             'createdAt': moment()
-                       
+
                         });
                         this.loadCases();
                         this._notificationsStore.addNotification(notification);
@@ -110,10 +112,12 @@ export class CasesListComponent implements OnInit {
                         });
                         this.selectedCases = [];
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                         this._notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
+                        this.isDeleteProgress = false;
                         this._progressBarService.hide();
                     });
             });
@@ -125,6 +129,6 @@ export class CasesListComponent implements OnInit {
             });
             this._notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'select case to delete');
-        }    
+        }
     }
 }

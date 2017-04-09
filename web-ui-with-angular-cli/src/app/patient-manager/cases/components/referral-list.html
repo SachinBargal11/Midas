@@ -47,7 +47,7 @@
         <input #gbRoom type="text" class="form-control" style="float:left" placeholder="Search Room">
     </div>
 </div>
-<p-dataTable [value]="refferedRooms" [(selection)]="selectedRoom" [rows]="10" [paginator]="true" [globalFilter]="gbRoom" [responsive]="true"
+<p-dataTable [value]="refferedRooms" [rows]="10" [paginator]="true" [globalFilter]="gbRoom" [responsive]="true"
    >
     <p-column selectionMode="multiple"></p-column>
     <p-column field="name" header="Name" [sortable]="true"></p-column>

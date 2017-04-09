@@ -25,7 +25,7 @@
         </div>
     </div>
 </section>
-<section class="card" [hidden]="documentMode != 1">
+<section class="card" [hidden]="documentMode != '1'">
     <header class="card-header card-header-lg">
         Scan Documents
     </header>
@@ -52,7 +52,7 @@
         </div>
     </div>
 </section>
-<section class="card" [hidden]="documentMode != 2">
+<section class="card" [hidden]="documentMode != '2'">
     <section class="card">
         <div class="form-group">
             <button type="submit" class="btn btn-success sign-up" (click)="GenerateConsentForm()">Generate Consent Form

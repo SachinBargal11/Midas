@@ -27,6 +27,7 @@ export class ReferralListComponent implements OnInit {
     caseId: number;
     datasource: Referral[];
     totalRecords: number;
+    isDeleteProgress: boolean = false;
 
     constructor(
         private _router: Router,
@@ -97,6 +98,7 @@ export class ReferralListComponent implements OnInit {
     deleteReferral() {
         if (this.selectedReferrals.length > 0) {
             this.selectedReferrals.forEach(currentReferral => {
+                this.isDeleteProgress = true;
                 this._progressBarService.show();
                 let result;
                 result = this._referralStore.deleteReferral(currentReferral);
@@ -120,10 +122,12 @@ export class ReferralListComponent implements OnInit {
                         });
                         this.selectedReferrals = [];
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                         this._notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
+                        this.isDeleteProgress = false;
                         this._progressBarService.hide();
                     });
             });

@@ -39,6 +39,7 @@ export class InsuranceMappingComponent implements OnInit {
     // selectedInsurances: string[] = [];
     selectedInsurance: string[] = [];
     adjusters: Adjuster[] = [];
+    isDeleteProgress: boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -122,6 +123,7 @@ export class InsuranceMappingComponent implements OnInit {
                     mappings: mappings
                 });
                 this._progressBarService.show();
+                this.isDeleteProgress = true;
                 let result;
                 result = this._insuranceMappingStore.deleteInsuranceMapping(insuranceMapping);
                 result.subscribe(
@@ -144,11 +146,13 @@ export class InsuranceMappingComponent implements OnInit {
                         });
                         this.selectedInsurances = [];
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                         this._notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                     });
             });
         } else {

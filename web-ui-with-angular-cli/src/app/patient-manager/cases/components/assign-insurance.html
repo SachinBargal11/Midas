@@ -3,7 +3,7 @@
     <div class="row">
     <!--<p-dataTable [value]="insurances" [(selection)]="selectedInsurances" [lazy]="true" [rows]="10" [paginator]="true" 
     [totalRecords]="totalRecords" (onLazyLoad)="loadInsurancesLazy($event)" [globalFilter]="gb" [responsive]="true">-->
-    <p-dataTable [value]="insurances" [(selection)]="selectedInsurances" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
+    <p-dataTable [value]="insurances" [(selection)]="selectedInsurances" [rows]="10" [paginator]="true" [responsive]="true">
     <header>Insurances</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column field="policyHoldersName" header="Policy Holder" [sortable]="true">

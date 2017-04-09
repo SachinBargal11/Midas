@@ -15,7 +15,7 @@
 </div>-->
 <!--<p-dataTable [value]="rooms" [(selection)]="selectedRooms" [lazy]="true" [rows]="10" [paginator]="true"
     [totalRecords]="totalRecords" (onLazyLoad)="loadRoomsLazy($event)" [globalFilter]="gb" [responsive]="true">-->
-<p-dataTable [value]="rooms" [(selection)]="selectedRooms" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
+<p-dataTable [value]="rooms" [(selection)]="selectedRooms" [rows]="10" [paginator]="true" [responsive]="true">
     <p-column selectionMode="multiple"></p-column>
     <p-column header="Name" [sortable]="true">
         <ng-template let-room="rowData" pTemplate="body">

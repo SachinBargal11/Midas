@@ -21,6 +21,7 @@ export class InsuranceListComponent implements OnInit {
     patientId: number;
     datasource: Insurance[];
     totalRecords: number;
+    isDeleteProgress: boolean = false;
 
     constructor(
         private _router: Router,
@@ -68,6 +69,7 @@ export class InsuranceListComponent implements OnInit {
         if (this.selectedInsurances.length > 0) {
             this.selectedInsurances.forEach(currentInsurance => {
                 this._progressBarService.show();
+                this.isDeleteProgress = true;
                 let result;
                 result = this._insuranceStore.deleteInsurance(currentInsurance);
                 result.subscribe(
@@ -90,11 +92,13 @@ export class InsuranceListComponent implements OnInit {
                         });
                         this.selectedInsurances = [];
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                         this._notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                     });
             });
         } else {

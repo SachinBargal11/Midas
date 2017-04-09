@@ -110,7 +110,7 @@ export class PatientVisitComponent implements OnInit {
         private _patientsStore: PatientsStore,
         private _roomsStore: RoomsStore,
         private _doctorsStore: DoctorsStore,
-        private _locationsStore: LocationsStore,
+        public locationsStore: LocationsStore,
         private _scheduleStore: ScheduleStore,
         private _roomScheduleStore: RoomScheduleStore,
         private _doctorLocationScheduleStore: DoctorLocationScheduleStore,
@@ -146,9 +146,9 @@ export class PatientVisitComponent implements OnInit {
         };
 
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
-            this._locationsStore.getLocations();
+            this.locationsStore.getLocations();
         });
-        this._locationsStore.getLocations();
+        this.locationsStore.getLocations();
         this._patientsStore.getPatientsWithOpenCases();
         this._roomsService.getTests()
             .subscribe(tests => { this.tests = tests; });

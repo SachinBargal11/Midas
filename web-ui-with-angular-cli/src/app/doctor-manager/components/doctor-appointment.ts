@@ -40,6 +40,8 @@ export class DoctorAppointmentComponent {
     patient: Patient;
     startDate: Date;
     endDate: Date;
+    isDeleteProgress: boolean = false;
+    isSearchInProgress: boolean = false;
 
     constructor(
         private _router: Router,
@@ -53,18 +55,19 @@ export class DoctorAppointmentComponent {
         private _doctorsStore: DoctorsStore,
         // private _roomsStore: RoomsStore,
     ) {
-            this.doctorId = this._sessionStore.session.user.id;
+        this.doctorId = this._sessionStore.session.user.id;
 
     }
 
     ngOnInit() {
-         this.startDate = moment().toDate();
-         this.endDate = moment().toDate();
+        this.startDate = moment().toDate();
+        this.endDate = moment().toDate();
         this.loadPatientVisits();
     }
 
     loadPatientVisits() {
         this._progressBarService.show();
+        this.isSearchInProgress = true;
         // this._patientVisitStore.getVisitsByDatesAndDoctorId(moment(this.startDate), moment(this.endDate), this.doctorId)
         this._patientVisitStore.getVisitsByDoctorAndDates(moment(this.startDate), moment(this.endDate), this.doctorId)
             .subscribe((visits: PatientVisit[]) => {
@@ -78,9 +81,11 @@ export class DoctorAppointmentComponent {
 
             },
             (error) => {
+                this.isSearchInProgress = false;
                 this._progressBarService.hide();
             },
             () => {
+                this.isSearchInProgress = false;
                 this._progressBarService.hide();
             });
     }
@@ -97,6 +102,7 @@ export class DoctorAppointmentComponent {
         this.selectedVisits = this.selectedDoctorsVisits;
         if (this.selectedVisits.length > 0) {
             this.selectedVisits.forEach(currentVisit => {
+                this.isDeleteProgress = true;
                 this._progressBarService.show();
                 let result;
                 result = this._patientVisitStore.deletePatientVisit(currentVisit);
@@ -125,6 +131,7 @@ export class DoctorAppointmentComponent {
                     },
                     () => {
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                     });
             });
         } else {

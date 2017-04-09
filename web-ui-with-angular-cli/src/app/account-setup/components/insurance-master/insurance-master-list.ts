@@ -22,6 +22,7 @@ export class InsuranceMasterListComponent implements OnInit {
     datasource: InsuranceMaster[];
     totalRecords: number;
     companyId: number;
+    isDeleteProgress: boolean = false;
 
     constructor(
         private _router: Router,
@@ -70,6 +71,7 @@ export class InsuranceMasterListComponent implements OnInit {
     deleteInsuranceMasters() {
         if (this.selectedInsuranceMasters.length > 0) {
             this.selectedInsuranceMasters.forEach(currentInsuranceMaster => {
+                this.isDeleteProgress = true;
                 this._progressBarService.show();
                 let result;
                 result = this._insuranceMasterStore.deleteInsuranceMaster(currentInsuranceMaster);
@@ -98,6 +100,7 @@ export class InsuranceMasterListComponent implements OnInit {
                     },
                     () => {
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                     });
             });
         } else {

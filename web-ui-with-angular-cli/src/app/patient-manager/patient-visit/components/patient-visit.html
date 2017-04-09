@@ -6,7 +6,7 @@
                 <div class="form-group">
                     <select [(ngModel)]="selectedLocationId" class="select2-arrow form-control" (change)="selectLocation()">
             <option value="0"> -- Select Location -- </option>
-            <option *ngFor="let location of _locationsStore.locations | async" [value]="location.location.id">{{location.location.name}}</option>                                       
+            <option *ngFor="let location of locationsStore.locations | async" [value]="location.location.id">{{location.location.name}}</option>                                       
         </select>
                 </div>
             </div>

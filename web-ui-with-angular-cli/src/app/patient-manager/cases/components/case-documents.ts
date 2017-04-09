@@ -37,6 +37,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
     documents: CaseDocument[] = [];
     url;
     isSaveProgress = false;
+    isDeleteProgress: boolean = false;
 
     scannerContainerId: string = `scanner_${moment().valueOf()}`;
     twainSources: TwainSource[] = [];
@@ -173,6 +174,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
         if (this.selectedDocumentList.length > 0) {
             this.selectedDocumentList.forEach(currentCase => {
                 this._progressBarService.show();
+                this.isDeleteProgress = true;
                 this._casesStore.deleteDocument(currentCase)
                     .subscribe(
                     (response) => {
@@ -195,11 +197,13 @@ export class CaseDocumentsUploadComponent implements OnInit {
                         });
                         this.selectedDocumentList = [];
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                         this._notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                     });
             });
         } else {

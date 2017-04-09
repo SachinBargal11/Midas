@@ -22,6 +22,8 @@ export class LocationComponent implements OnInit {
     locations: LocationDetails[];
     datasource: LocationDetails[];
     totalRecords: number;
+    isDeleteProgress: boolean = false;
+
     constructor(
         private _router: Router,
         private _notificationsStore: NotificationsStore,
@@ -63,13 +65,13 @@ export class LocationComponent implements OnInit {
                 this._progressBarService.hide();
             },
             () => {
-            this._progressBarService.hide();
+                this._progressBarService.hide();
             });
     }
-    
+
     loadLocationsLazy(event: LazyLoadEvent) {
         setTimeout(() => {
-            if(this.datasource) {
+            if (this.datasource) {
                 this.locations = this.datasource.slice(event.first, (event.first + event.rows));
             }
         }, 250);
@@ -78,6 +80,7 @@ export class LocationComponent implements OnInit {
     deleteLocations() {
         if (this.selectedLocations !== undefined) {
             this.selectedLocations.forEach(currentLocation => {
+                this.isDeleteProgress = true;
                 this._progressBarService.show();
                 let result;
                 result = this._locationsStore.deleteLocation(currentLocation);
@@ -100,12 +103,14 @@ export class LocationComponent implements OnInit {
                             'type': 'ERROR',
                             'createdAt': moment()
                         });
+                        this.isDeleteProgress = false;
                         this._progressBarService.hide();
                         this._notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
-                          this._progressBarService.hide();
+                        this.isDeleteProgress = false;
+                        this._progressBarService.hide();
                     });
             });
         }

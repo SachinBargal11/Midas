@@ -75,9 +75,9 @@ export class AdjusterMasterListComponent implements OnInit {
     }
 
     deleteAdjusterMaster() {
-        this.isDeleteProgress = true;
         if (this.selectedAdjusters.length > 0) {
             this.selectedAdjusters.forEach(CurrentAdjuster => {
+                this.isDeleteProgress = true;
                 this._progressBarService.show();
                 let result;
                 result = this._adjusterMasterStore.deleteAdjuster(CurrentAdjuster);

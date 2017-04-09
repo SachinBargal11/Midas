@@ -71,9 +71,9 @@ export class AttorneyMasterListComponent implements OnInit {
     }
 
     deleteAttorneys() {
-        this.isDeleteProgress = true;
         if (this.selectedAttorneys.length > 0) {
             this.selectedAttorneys.forEach(currentAttorney => {
+                this.isDeleteProgress = true;
                 this._progressBarService.show();
                 let result;
                 result = this._attorneyMasterStore.deleteAttorney(currentAttorney);
