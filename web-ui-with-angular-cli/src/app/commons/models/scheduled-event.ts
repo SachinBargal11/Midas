@@ -36,7 +36,7 @@ export class ScheduledEvent extends ScheduledEventRecord {
     recurrenceRule: RRule.RRule;
     recurrenceException: Array<moment.Moment>;
     isAllDay: boolean;
-    isCancelled:boolean;
+    isCancelled: boolean;
     isDeleted: boolean;
     createByUserId: number;
     updateByUserId: number;
@@ -53,6 +53,26 @@ export class ScheduledEvent extends ScheduledEventRecord {
 
     get eventEndAsDate(): Date {
         return this.eventEnd ? this.eventEnd.toDate() : null;
+    }
+
+    get isSeries(): boolean {
+        return this.recurrenceRule ? true : false;
+    }
+
+    get isChangedInstanceOfSeries(): boolean {
+        return !this.recurrenceRule && this.recurrenceId ? true : false;
+    }
+
+    get isSeriesOrInstanceOfSeries(): boolean {
+        return this.isSeries || this.isChangedInstanceOfSeries;
+    }
+
+    isSeriesStartedInBefore(thisDay: moment.Moment): boolean {
+        return moment(this.recurrenceRule.options.dtstart).isBefore(thisDay, 'day');
+    }
+
+    get isSeriesStartedInPast(): boolean {
+        return moment(this.recurrenceRule.options.dtstart).isBefore(moment());
     }
 
     getEventInstances(eventWrapper: IEventWrapper): ScheduledEventInstance[] {
