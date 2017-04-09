@@ -12,24 +12,14 @@
             </div>
             <div class="col-lg-3">
                 <div class="form-group">
-                    <select [(ngModel)]="selectedOption" class="select2-arrow form-control" (change)="selectOption()">
-            <option value="0">Select Visit</option>
-            <option value="1">With Doctor</option>
-            <option value="2">With Room</option>
-        </select>
-                </div>
-            </div>
-            <!--<div class="col-lg-3">
-                <div class="form-group">
-                <input type="radio" name="selectOption" [(ngModel)]="selectedOption" value="1" (change)="selectOption()">                Doctor
-                <input type="radio" name="selectOption" [(ngModel)]="selectedOption" value="2" (change)="selectOption()">                Room
-            </div>
-            </div>-->
-            <div class="col-lg-3" *ngIf="selectedOption == 1">
-                <div class="form-group">
-                    <select [(ngModel)]="selectedSpecialityId" class="select2-arrow form-control" (change)="selectSpeciality()">
-            <option value="0"> -- Select Speciality -- </option>
-            <option *ngFor="let speciality of specialities" [value]="speciality.id">{{speciality.name}}</option>                                       
+                    <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
+                        <option value="0"></option>
+             <optgroup label="Select Speciality">
+                    <option *ngFor="let speciality of specialities" data-option="1" [value]="speciality.id">{{speciality.name}}</option>                                       
+             </optgroup>
+             <optgroup label="Select Test">
+                    <option *ngFor="let test of tests" data-option="2" [value]="test.id">{{test.name}}</option> 
+             </optgroup>
         </select>
                 </div>
             </div>
@@ -38,14 +28,6 @@
                     <select [(ngModel)]="selectedDoctorId" class="select2-arrow form-control" (change)="selectDoctor()">
             <option value="0"> -- Select Doctor -- </option>
             <option *ngFor="let doctorLocationSchedule of doctorLocationSchedules" [value]="doctorLocationSchedule.doctor.id">{{doctorLocationSchedule.doctor.user.displayName}}</option>                                       
-        </select>
-                </div>
-            </div>
-            <div class="col-lg-3" *ngIf="selectedOption == 2">
-                <div class="form-group">
-                    <select [(ngModel)]="selectedTestId" class="select2-arrow form-control" (change)="selectTest()">
-            <option value="0"> -- Select Test -- </option>
-            <option *ngFor="let test of tests" [value]="test.id">{{test.name}}</option>                                       
         </select>
                 </div>
             </div>
@@ -131,7 +113,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4"  *ngIf="this.selectedVisit.id">
+                <div class="col-md-4" *ngIf="this.selectedVisit.id">
                     <a routerLink="../cases/{{this.selectedVisit.patientId}}/{{this.selectedVisit.caseId}}/patient-visit/{{this.selectedVisit.id}}/visit-document">Upload Documents</a>
                 </div>
             </div>

@@ -78,6 +78,7 @@ export class PatientVisitComponent implements OnInit {
     selectedRoomId: number = 0;
     selectedOption: number = 0;
     selectedTestId: number = 0;
+    selectedMode: number = 0;
     selectedSpecialityId: number = 0;
 
     isFormValidBoolean: boolean = false;
@@ -166,6 +167,7 @@ export class PatientVisitComponent implements OnInit {
 
     selectLocation() {
         if (this.selectedLocationId == 0) {
+            this.selectedMode = 0;
             this.selectedOption = 0;
             this.selectedDoctorId = 0;
             this.selectedRoomId = 0;
@@ -174,11 +176,8 @@ export class PatientVisitComponent implements OnInit {
             this.events = [];
         } else {
             this.loadLocationVisits();
-            if (this.selectedOption == 1) {
-                this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.selectedLocationId);
-            } else if (this.selectedOption == 2) {
-                this._roomsStore.getRooms(this.selectedLocationId);
-            }
+            this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.selectedLocationId);
+            this._roomsStore.getRooms(this.selectedLocationId);
         }
     }
 
@@ -272,16 +271,22 @@ export class PatientVisitComponent implements OnInit {
         });
     }
 
-
-    selectOption() {
-        if (this.selectedOption == 1) {
-            this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.selectedLocationId);
-            this.selectDoctor();
-        } else if (this.selectedOption == 2) {
-            this._roomsStore.getRooms(this.selectedLocationId);
-            this.selectRoom();
+    selectOption(event) {
+        this.selectedDoctorId = 0;
+        this.selectedRoomId = 0;
+        this.selectedOption = 0;
+        if (event.target.selectedOptions[0].getAttribute('data-option') == '1') {
+            this.selectedOption = 1;
+            this.selectedSpecialityId = event.target.value;
+            this.selectSpeciality();
+        } else if (event.target.selectedOptions[0].getAttribute('data-option') == '2') {
+            this.selectedOption = 2;
+            this.selectedTestId = event.target.value;
+            this.selectTest();
+        } else {
+            this.selectedMode = 0;
+            this.selectLocation();
         }
-
     }
 
     loadVisits() {
