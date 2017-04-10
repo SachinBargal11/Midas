@@ -1,6 +1,6 @@
 import { Record } from 'immutable';
 import { Tests } from './tests';
-import { Location } from '../../locations/models/location';
+import { LocationDetails } from '../../locations/models/location-details';
 import { Schedule } from './rooms-schedule';
 
 const RoomRecord = Record({
@@ -21,7 +21,7 @@ export class Room extends RoomRecord {
     contactPersonName: string;
     phone: string;
     roomTest: Tests;
-    location: Location;
+    location: LocationDetails;
     schedule: Schedule;
     isDeleted: boolean;
 

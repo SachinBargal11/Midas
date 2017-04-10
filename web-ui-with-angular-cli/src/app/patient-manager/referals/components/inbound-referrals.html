@@ -22,7 +22,7 @@
             <p-column header="Patient name" rowspan="2" styleClass="inbound-column"></p-column>
             <p-column header="Case Id" rowspan="2" styleClass="inbound-column"></p-column>
             <p-column header="Referred From" colspan="3" styleClass="inbound-column"></p-column>
-            <p-column header="Referred To" colspan="3" styleClass="inbound-column"></p-column>
+            <p-column header="Referred To" colspan="2" styleClass="inbound-column"></p-column>
             <p-column header="Consent Recieved" rowspan="2" styleClass="inbound-column"></p-column>
             <p-column header="Referred Document" rowspan="2"></p-column>
         </p-row>
@@ -30,7 +30,7 @@
             <p-column header="Company" styleClass="inbound-column"></p-column>
             <p-column header="Location" styleClass="inbound-column"></p-column>
             <p-column header="User Name" styleClass="inbound-column"></p-column>
-            <p-column header="Company" styleClass="inbound-column"></p-column>
+            <!--<p-column header="Company" styleClass="inbound-column"></p-column>-->
             <p-column header="Location" styleClass="inbound-column"></p-column>
             <p-column header="User Name" styleClass="inbound-column"></p-column>
         </p-row>
@@ -41,7 +41,7 @@
         <p-column field="referredToCompany.name"></p-column>
         <p-column field="referredToLocation.location.name"></p-column>
         <p-column field="referredToDoctor.user.displayName"></p-column>
-        <p-column field="referringCompany.name"></p-column>
+        <!--<p-column field="referringCompany.name"></p-column>-->
         <p-column field="referringLocation.location.name"></p-column>
         <p-column field="referringUser.displayName"></p-column>
 </p-dataTable>
@@ -51,20 +51,20 @@
     <p-headerColumnGroup>
         <p-row>
     <!--<p-column selectionMode="multiple" rowspan="2"></p-column>-->
-            <p-column header="Patient name" rowspan="2"></p-column>
-            <p-column header="Case Id" rowspan="2"></p-column>
-            <p-column header="Referred From" colspan="3"></p-column>
-            <p-column header="Referred To" colspan="3"></p-column>
-            <p-column header="Consent Recieved" rowspan="2"></p-column>
+            <p-column header="Patient name" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Case Id" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Referred From" colspan="3" styleClass="inbound-column"></p-column>
+            <p-column header="Referred To" colspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Consent Recieved" rowspan="2" styleClass="inbound-column"></p-column>
             <p-column header="Referred Document" rowspan="2"></p-column>
         </p-row>
         <p-row>
-            <p-column header="Company"></p-column>
-            <p-column header="Location"></p-column>
-            <p-column header="Testing Room"></p-column>
-            <p-column header="Company"></p-column>
-            <p-column header="Location"></p-column>
-            <p-column header="User Name"></p-column>
+            <p-column header="Company" styleClass="inbound-column"></p-column>
+            <p-column header="Location" styleClass="inbound-column"></p-column>
+            <p-column header="Testing Room" styleClass="inbound-column"></p-column>
+            <!--<p-column header="Company" styleClass="inbound-column"></p-column>-->
+            <p-column header="Location" styleClass="inbound-column"></p-column>
+            <p-column header="User Name" styleClass="inbound-column"></p-column>
         </p-row>
     </p-headerColumnGroup>
     <!--<p-column selectionMode="multiple"></p-column>-->
@@ -73,7 +73,7 @@
         <p-column field="referredToCompany.name"></p-column>
         <p-column field="referredToLocation.location.name"></p-column>
     <p-column field="room.name"></p-column>
-        <p-column field="referringCompany.name"></p-column>
+        <!--<p-column field="referringCompany.name"></p-column>-->
         <p-column field="referringLocation.location.name"></p-column>
         <p-column field="referringUser.displayName"></p-column>
 </p-dataTable>

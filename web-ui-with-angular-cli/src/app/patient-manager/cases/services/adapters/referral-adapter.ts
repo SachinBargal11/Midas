@@ -17,7 +17,7 @@ export class ReferralAdapter {
                 caseId: data.caseId,
                 referringCompanyId: data.referringCompanyId,
                 referringLocationId: data.referringLocationId,
-                referringDoctorId: data.referringDoctorId,
+                referringUserId: data.referringUserId,
                 referredToCompanyId: data.referredToCompanyId,
                 referredToLocationId: data.referredToLocationId,
                 referredToDoctorId: data.referredToDoctorId,

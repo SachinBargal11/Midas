@@ -12,7 +12,7 @@ const ReferralRecord = Record({
     caseId: 0,
     referringCompanyId: 0,
     referringLocationId: 0,
-    referringDoctorId: 0,
+    referringUserId: 0,
     referredToCompanyId: 0,
     referredToLocationId: 0,
     referredToDoctorId: 0,
@@ -42,7 +42,7 @@ export class Referral extends ReferralRecord {
     caseId: number;
     referringCompanyId: number;
     referringLocationId: number;
-    referringDoctorId: number;
+    referringUserId: number;
     referredToCompanyId: number;
     referredToLocationId: number;
     referredToDoctorId: number;

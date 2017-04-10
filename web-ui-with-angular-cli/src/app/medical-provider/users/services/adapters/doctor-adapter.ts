@@ -1,4 +1,6 @@
 import { DoctorSpecialityAdapter } from './doctor-speciality-adapter';
+import { DoctorLocationScheduleAdapter } from './doctor-location-schedule-adapter';
+import { DoctorLocationSchedule } from '../../models/doctor-location-schedule';
 import { DoctorSpeciality } from '../../models/doctor-speciality';
 import * as moment from 'moment';
 import { Doctor } from '../../models/doctor';
@@ -28,9 +30,15 @@ export class DoctorAdapter {
 
         if (doctorData) {
             let doctorSpecialities: DoctorSpeciality[] = [];
+            let doctorLocationSchedule: DoctorLocationSchedule[] = [];
             if (doctorData.doctorSpecialities) {
                 _.forEach(doctorData.doctorSpecialities, (currentDoctorSpeciality: any) => {
                     doctorSpecialities.push(DoctorSpecialityAdapter.parseResponse(currentDoctorSpeciality));
+                });
+            }
+            if (doctorData.doctorLocationSchedules) {
+                _.forEach(doctorData.doctorLocationSchedules, (currentDoctorLocationSchedule: any) => {
+                    doctorLocationSchedule.push(DoctorLocationScheduleAdapter.parseResponse(currentDoctorLocationSchedule));
                 });
             }
             doctor = new Doctor({
@@ -43,6 +51,7 @@ export class DoctorAdapter {
                 title: doctorData.title,
                 user: UserAdapter.parseResponse(doctorData.user),
                 doctorSpecialities: doctorSpecialities,
+                doctorLocationSchedules: doctorLocationSchedule,
                 isDeleted: doctorData.isDeleted
             });
         }

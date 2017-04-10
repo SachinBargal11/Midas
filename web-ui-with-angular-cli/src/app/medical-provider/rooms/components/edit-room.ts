@@ -101,7 +101,7 @@ export class EditRoomComponent implements OnInit {
                 id: editroomformValues.tests
             },
             location: {
-                id: this.room.location.id
+                id: this.room.location.location.id
             },
             schedule: {
                 id: this.room.schedule.id

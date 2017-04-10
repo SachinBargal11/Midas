@@ -28,7 +28,7 @@ export const PatientsShellRoutes: Routes = [
         path: '',
         pathMatch: 'full',
         redirectTo: 'appointments',
-        canActivate: [ValidateDoctorSession]
+        canActivate: [ValidateDoctorSession, ValidateActiveSession]
     },
     {
         path: '',
