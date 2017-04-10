@@ -51,7 +51,6 @@ export class VisitDocumentsUploadComponent implements OnInit {
             //         this._progressBarService.hide();
             //     });
         });
-    
     }
 
     ngOnInit() {

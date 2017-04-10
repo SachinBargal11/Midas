@@ -21,6 +21,7 @@ import * as moment from 'moment';
 import * as _ from 'underscore';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
+import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 
 @Component({
     selector: 'insurance-mapping',
@@ -52,7 +53,8 @@ export class InsuranceMappingComponent implements OnInit {
         private _adjusterMasterStore: AdjusterMasterStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
-        private _route: ActivatedRoute
+        private _route: ActivatedRoute,
+        private confirmationService: ConfirmationService,
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId);
@@ -105,6 +107,11 @@ export class InsuranceMappingComponent implements OnInit {
 
     deleteInsurance() {
         if (this.selectedInsurances !== undefined) {
+            this.confirmationService.confirm({
+            message: 'Do you want to delete this record?',
+            header: 'Delete Confirmation',
+            icon: 'fa fa-trash',
+            accept: () => {
             this.selectedInsurances.forEach(currentInsurance => {
                 let mappings = [];
                 let insurance: any[] = this.selectedInsurances;
@@ -154,6 +161,8 @@ export class InsuranceMappingComponent implements OnInit {
                         this._progressBarService.hide();
                         this.isDeleteProgress = false;
                     });
+            });
+            }
             });
         } else {
             let notification = new Notification({

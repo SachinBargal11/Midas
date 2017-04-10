@@ -120,7 +120,7 @@ export class PatientEmployerComponent implements OnInit {
             faxNo: [''],
             alternateEmail:  ['', [AppValidators.emailValidator]],
             officeExtension: [''],
-            preferredcommunication: ['']
+            preferredCommunication: ['']
         });
 
         this.employerformControls = this.employerform.controls;
@@ -150,7 +150,7 @@ export class PatientEmployerComponent implements OnInit {
                 workPhone: employerformValues.workPhone,
                 officeExtension: employerformValues.officeExtension,
                 alternateEmail: employerformValues.alternateEmail,
-                preferredcommunication: employerformValues.preferredcommunication,
+                preferredCommunication: employerformValues.preferredCommunication,
 
             }),
             address: new Address({

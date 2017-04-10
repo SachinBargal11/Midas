@@ -62,7 +62,7 @@ export class AddInsuranceMasterComponent implements OnInit {
             faxNo: [''],
             alternateEmail:  ['', [AppValidators.emailValidator]],
             officeExtension: [''],
-            preferredcommunication: ['']
+            preferredCommunication: ['']
         });
 
         this.addInsuranceMasterFormControls = this.addInsuranceMasterForm.controls;
@@ -88,7 +88,7 @@ export class AddInsuranceMasterComponent implements OnInit {
                     workPhone: addInsuranceMasterFormValues.workPhone,
                     officeExtension: addInsuranceMasterFormValues.officeExtension,
                     alternateEmail: addInsuranceMasterFormValues.alternateEmail,
-                    preferredcommunication: addInsuranceMasterFormValues.preferredcommunication,
+                    preferredCommunication: addInsuranceMasterFormValues.preferredCommunication,
                     createByUserId: this._sessionStore.session.account.user.id
                 }),
                 Address: new Address({

@@ -1,5 +1,6 @@
 <div class="input-group">
     <h3 class="with-border">Patients
+        <p-confirmDialog width="425"></p-confirmDialog>
         <a class="pull-right btn btn-danger btn-sm" (click)="deletePatients()">
             <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete selected Patients</span>
             <loader [visible]="isDeleteProgress"></loader>

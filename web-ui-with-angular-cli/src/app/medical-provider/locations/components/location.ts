@@ -11,6 +11,7 @@ import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
+import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 
 @Component({
     selector: 'location-list',
@@ -31,7 +32,9 @@ export class LocationComponent implements OnInit {
         private _locationsStore: LocationsStore,
         public _sessionStore: SessionStore,
         private _notificationsService: NotificationsService,
-        private _progressBarService: ProgressBarService
+        private _progressBarService: ProgressBarService,
+        private confirmationService: ConfirmationService,
+
     ) {
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadLocations();
@@ -79,6 +82,11 @@ export class LocationComponent implements OnInit {
 
     deleteLocations() {
         if (this.selectedLocations !== undefined) {
+            this.confirmationService.confirm({
+            message: 'Do you want to delete this record?',
+            header: 'Delete Confirmation',
+            icon: 'fa fa-trash',
+            accept: () => {
             this.selectedLocations.forEach(currentLocation => {
                 this.isDeleteProgress = true;
                 this._progressBarService.show();
@@ -112,6 +120,8 @@ export class LocationComponent implements OnInit {
                         this.isDeleteProgress = false;
                         this._progressBarService.hide();
                     });
+            });
+            }
             });
         }
         else {

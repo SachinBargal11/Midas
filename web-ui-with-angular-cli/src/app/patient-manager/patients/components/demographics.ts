@@ -90,8 +90,8 @@ export class DemographicsComponent implements OnInit {
                 weight: [''],
                 height: [''],
                 dateOfFirstTreatment: [''],
-                races: ['', Validators.required],
-                ethnicities: ['', Validators.required],
+                // races: ['', Validators.required],
+                // ethnicities: ['', Validators.required],
             }),
             contact: this.fb.group({
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
@@ -100,7 +100,7 @@ export class DemographicsComponent implements OnInit {
                 faxNo: [''],
                 alternateEmail:  ['', AppValidators.emailValidator],
                 officeExtension: [''],
-                preferredcommunication: ['']
+                preferredCommunication: ['']
             }),
             address: this.fb.group({
                 address1: [''],
@@ -142,7 +142,7 @@ export class DemographicsComponent implements OnInit {
                     workPhone: demographicsFormValues.contact.workPhone,
                     officeExtension: demographicsFormValues.contact.officeExtension,
                     alternateEmail: demographicsFormValues.contact.alternateEmail,
-                    preferredcommunication: demographicsFormValues.contact.preferredcommunication,
+                    preferredCommunication: demographicsFormValues.contact.preferredCommunication,
                     updateByUserId: this._sessionStore.session.account.user.id
                 })),
                 address: new Address(_.extend(existingPatientJS.user.address, {

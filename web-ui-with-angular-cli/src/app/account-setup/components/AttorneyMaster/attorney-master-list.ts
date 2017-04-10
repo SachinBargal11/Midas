@@ -10,6 +10,7 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { SessionStore } from '../../../commons/stores/session-store';
+import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 
 @Component({
     selector: 'attorney-master-list',
@@ -32,7 +33,8 @@ export class AttorneyMasterListComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
-        private _sessionStore: SessionStore
+        private _sessionStore: SessionStore,
+        private confirmationService: ConfirmationService,
     ) {
 
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
@@ -72,6 +74,12 @@ export class AttorneyMasterListComponent implements OnInit {
 
     deleteAttorneys() {
         if (this.selectedAttorneys.length > 0) {
+            this.confirmationService.confirm({
+            message: 'Do you want to delete this record?',
+            header: 'Delete Confirmation',
+            icon: 'fa fa-trash',
+            accept: () => {
+
             this.selectedAttorneys.forEach(currentAttorney => {
                 this.isDeleteProgress = true;
                 this._progressBarService.show();
@@ -104,6 +112,8 @@ export class AttorneyMasterListComponent implements OnInit {
                         this._progressBarService.hide();
                         this.isDeleteProgress = false;
                     });
+            });
+            }
             });
         } else {
             let notification = new Notification({

@@ -13,7 +13,6 @@ const AdjusterRecord = Record({
     lastName: '',
     adjusterAddress: null,
     adjusterContact: null,
-  
 });
 
 export class Adjuster extends AdjusterRecord {
@@ -26,7 +25,6 @@ export class Adjuster extends AdjusterRecord {
     lastName: string;
     adjusterAddress: Address;
     adjusterContact: Contact;
-    
 
     constructor(props) {
         super(props);
@@ -34,9 +32,5 @@ export class Adjuster extends AdjusterRecord {
 
 }
 
-  
-
-
-   
 
 

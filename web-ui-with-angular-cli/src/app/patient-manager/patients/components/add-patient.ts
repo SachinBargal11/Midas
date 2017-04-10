@@ -66,7 +66,7 @@ export class AddPatientComponent implements OnInit {
                 faxNo: [''],
                 alternateEmail:  ['', AppValidators.emailValidator],
                 officeExtension: [''],
-                preferredcommunication: ['']
+                preferredCommunication: ['']
             }),
             address: this.fb.group({
                 address1: [''],
@@ -119,7 +119,7 @@ export class AddPatientComponent implements OnInit {
                     workPhone: patientFormValues.contact.workPhone,
                     officeExtension: patientFormValues.contact.officeExtension,
                     alternateEmail: patientFormValues.contact.alternateEmail,
-                    preferredcommunication: patientFormValues.contact.preferredcommunication,
+                    preferredCommunication: patientFormValues.contact.preferredCommunication,
                     createByUserId: this._sessionStore.session.account.user.id
                 }),
                 address: new Address({

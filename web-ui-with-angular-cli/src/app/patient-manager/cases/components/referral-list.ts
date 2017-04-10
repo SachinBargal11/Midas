@@ -13,6 +13,7 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { Room } from '../../../medical-provider/rooms/models/room';
+import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 
 @Component({
     selector: 'referral-list',
@@ -35,7 +36,9 @@ export class ReferralListComponent implements OnInit {
         private _referralStore: ReferralStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
-        private _notificationsService: NotificationsService
+        private _notificationsService: NotificationsService,
+        private confirmationService: ConfirmationService,
+
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
@@ -97,6 +100,11 @@ export class ReferralListComponent implements OnInit {
 
     deleteReferral() {
         if (this.selectedReferrals.length > 0) {
+            this.confirmationService.confirm({
+            message: 'Do you want to delete this record?',
+            header: 'Delete Confirmation',
+            icon: 'fa fa-trash',
+            accept: () => {
             this.selectedReferrals.forEach(currentReferral => {
                 this.isDeleteProgress = true;
                 this._progressBarService.show();
@@ -130,6 +138,8 @@ export class ReferralListComponent implements OnInit {
                         this.isDeleteProgress = false;
                         this._progressBarService.hide();
                     });
+            });
+            }
             });
         } else {
             let notification = new Notification({

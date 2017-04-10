@@ -11,6 +11,7 @@ import * as _ from 'underscore';
 import { Notification } from '../../../commons/models/notification';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
+import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 
 
 @Component({
@@ -34,6 +35,7 @@ export class CompanyCasesComponent implements OnInit {
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private _notificationsStore: NotificationsStore,
+        private confirmationService: ConfirmationService,
 
     ) {
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
@@ -102,6 +104,11 @@ export class CompanyCasesComponent implements OnInit {
     }
     deleteCases() {
         if (this.selectedCases.length > 0) {
+            this.confirmationService.confirm({
+            message: 'Do you want to delete this record?',
+            header: 'Delete Confirmation',
+            icon: 'fa fa-trash',
+            accept: () => {
             this.selectedCases.forEach(currentCase => {
                 this.isDeleteProgress = true;
                 this._progressBarService.show();
@@ -135,6 +142,8 @@ export class CompanyCasesComponent implements OnInit {
                         this._progressBarService.hide();
                     });
             });
+            }
+             });
         } else {
             let notification = new Notification({
                 'title': 'select case to delete',

@@ -108,7 +108,7 @@ export class EditAttorneyComponent implements OnInit {
             attorneyFaxNo: [''],
             attorneyalternateEmail:  ['', [AppValidators.emailValidator]],
             attorneyofficeExtension: [''],
-            attorneypreferredcommunication: ['']
+            attorneypreferredCommunication: ['']
         });
 
 
@@ -179,7 +179,7 @@ export class EditAttorneyComponent implements OnInit {
                     workPhone: attorneyformValues.attorneyWorkPhone,
                     officeExtension: attorneyformValues.attorneyofficeExtension,
                     alternateEmail: attorneyformValues.attorneyalternateEmail,
-                    preferredcommunication: attorneyformValues.attorneypreferredcommunication,
+                    preferredCommunication: attorneyformValues.attorneypreferredCommunication,
                     createByUserId: this._sessionStore.session.account.user.id
                 }),
                 address: new Address({
