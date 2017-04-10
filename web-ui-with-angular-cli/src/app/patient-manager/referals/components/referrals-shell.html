@@ -1,0 +1,31 @@
+<section class="tabs-section">
+	<div class="tabs-section-nav">
+		<div class="tbl">
+			<ul class="nav" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link" routerLink="inbound-referrals" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Inbound
+						</span>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" routerLink="outbound-referrals" [routerLinkActive]="['active']" role="tab" data-toggle="tab">
+						<span class="nav-link-in">
+					Outbound
+						</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane fade in active">
+
+			<router-outlet></router-outlet>
+
+		</div>
+	</div>
+	<!--.tab-content-->
+</section>
+<!--.tabs-section-->

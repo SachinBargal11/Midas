@@ -37,6 +37,30 @@ export class ReferralStore {
         });
         return <Observable<Referral[]>>Observable.fromPromise(promise);
     }
+    getReferralsByReferringCompanyId(): Observable<Referral[]> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._referralService.getReferralsByReferringCompanyId(companyId).subscribe((referrals: Referral[]) => {
+                this._referrals.next(List(referrals));
+                resolve(referrals);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Referral[]>>Observable.fromPromise(promise);
+    }
+    getReferralsByReferredToCompanyId(): Observable<Referral[]> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._referralService.getReferralsByReferredToCompanyId(companyId).subscribe((referrals: Referral[]) => {
+                this._referrals.next(List(referrals));
+                resolve(referrals);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Referral[]>>Observable.fromPromise(promise);
+    }
     getReferralsByReferredToDoctorId(): Observable<Referral[]> {
         let doctorId: number = this._sessionStore.session.user.id;
         let promise = new Promise((resolve, reject) => {

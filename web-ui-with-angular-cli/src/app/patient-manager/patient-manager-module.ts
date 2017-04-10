@@ -68,6 +68,9 @@ import { AddReferralComponent } from './cases/components/add-referral';
 import { ReferralService } from './cases/services/referral-service';
 import { ReferralStore } from './cases/stores/referral-store';
 
+import { ReferralsShellComponent } from './referals/components/referrals-shell';
+import { InboundReferralsComponent } from './referals/components/inbound-referrals';
+import { OutboundReferralsComponent } from './referals/components/outbound-referrals';
 
 import { CaseService } from './cases/services/cases-services';
 import { AdjusterMasterStore } from '../account-setup/stores/adjuster-store';
@@ -153,7 +156,10 @@ import { DoctorManagerModule } from '../doctor-manager/doctor-manager-module';
         DocumentsUploadComponent,
         EditConsentFormComponent,
         ReferralListComponent,
-        AddReferralComponent
+        AddReferralComponent,
+        ReferralsShellComponent,
+        InboundReferralsComponent,
+        OutboundReferralsComponent
     ],
     providers: [
         PatientsService,

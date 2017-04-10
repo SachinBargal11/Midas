@@ -3,6 +3,7 @@ import * as moment from 'moment';
 import { Referral } from '../../models/referral';
 import { RoomsAdapter } from '../../../../medical-provider/rooms/services/adapters/rooms-adapter';
 import { DoctorAdapter } from '../../../../medical-provider/users/services/adapters/doctor-adapter';
+import { UserAdapter } from '../../../../medical-provider/users/services/adapters/user-adapter';
 import { LocationDetailAdapter } from '../../../../medical-provider/locations/services/adapters/location-detail-adapter';
 import { CompanyAdapter } from '../../../../account/services/adapters/company-adapter';
 
@@ -27,7 +28,7 @@ export class ReferralAdapter {
                 referralAccepted: data.referralAccepted,
                 room: RoomsAdapter.parseResponse(data.room),
                 case: CaseAdapter.parseResponse(data.case),
-                referringDoctor: DoctorAdapter.parseResponse(data.referringDoctor),
+                referringUser: UserAdapter.parseResponse(data.referringUser),
                 referringLocation: LocationDetailAdapter.parseResponse(data.referringLocation),
                 referringCompany: CompanyAdapter.parseResponse(data.referringCompany),
                 referredToDoctor: DoctorAdapter.parseResponse(data.referredToDoctor),
