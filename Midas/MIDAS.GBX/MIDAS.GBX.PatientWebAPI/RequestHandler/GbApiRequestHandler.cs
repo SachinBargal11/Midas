@@ -107,8 +107,25 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             catch (Exception ex)
             {
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }            
+        }
+
+        public HttpResponseMessage CreateGbDocObject1(HttpRequestMessage request, int caseid, int companyid, List<HttpContent> streamContent, string uploadpath)
+        {
+            var objResult = dataAccessManager.ConsentSave(caseid, companyid, streamContent, uploadpath);
+
+            try
+            {
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.OK, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
             }
-            return new HttpResponseMessage();
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
         }
 
         public HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject)

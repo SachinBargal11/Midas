@@ -377,6 +377,14 @@ namespace MIDAS.GBX.DataAccessManager
                 return gbdata;
             }
         }
+
+        public Object ConsentSave(int caseid, int companyid, List<HttpContent> streamContent, string uploadpath)
+        {
+            BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+
+            var gbdata = baseRepo.ConsentSave(caseid, companyid, streamContent, uploadpath);
+            return gbdata;
+        }
         #endregion
 
         #region Save
