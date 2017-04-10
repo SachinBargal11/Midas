@@ -444,10 +444,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region GetBySpecialty
         public override object GetBySpecialityInAllApp(int specialtyId)
         {
-
-            var acc_ = _context.Doctors.Include("User").Include("DoctorSpecialities.Specialty").Include("User.UserCompanies.Company").Include("DoctorLocationSchedules.Location").Where(p => p.DoctorSpecialities.Where(p2 => p2.IsDeleted == false).Any(p3 => p3.SpecialityID == specialtyId)
-                                              && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                              .ToList();
+            
+            var acc_ = _context.Doctors.Include("User").Include("DoctorSpecialities.Specialty").Include("DoctorLocationSchedules.Location").Include("DoctorLocationSchedules.Location.Company").Where(p => p.DoctorSpecialities.Where(p2 => p2.IsDeleted == false).Any(p3 => p3.SpecialityID == specialtyId)
+                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                             .ToList();
             if (acc_ == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Specialty.", errorObject = "", ErrorLevel = ErrorLevel.Error };
