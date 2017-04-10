@@ -243,9 +243,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object GetByCaseId(int CaseId)
         {
             var acc = _context.CompanyCaseConsentApprovals.Include("Case")
-                                                         .Include("Company")
-                                                         .Where(p => p.CaseId == CaseId
-                                                          && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                          .Include("Company")
+                                                          .Where(p => p.CaseId == CaseId
+                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                           .ToList<CompanyCaseConsentApproval>();
             if (acc == null)
             {
