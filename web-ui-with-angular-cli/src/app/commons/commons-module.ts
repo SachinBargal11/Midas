@@ -19,6 +19,8 @@ import { LoaderComponent } from './components/loader/loader';
 import { NotificationComponent } from './components/notification/notification';
 import { ShellComponent } from './shell-component';
 import { ScheduledEventEditorComponent } from '../medical-provider/calendar/components/scheduled-event-editor';
+import { DocumentUploadComponent } from '../commons/components/document-upload/document-upload.component';
+
 
 import {
   AccordionModule,
@@ -74,6 +76,7 @@ import {
     ReversePipe,
     PhoneFormatPipe,
     FaxNoFormatPipe,
+    DateTimeFormatPipe,    
     AppHeaderComponent,
     BreadcrumbComponent,
     MainNavComponent,
@@ -82,7 +85,7 @@ import {
     NotificationComponent,
     ShellComponent,
     ScheduledEventEditorComponent,
-    DateTimeFormatPipe
+    DocumentUploadComponent
   ],
   exports: [
     CommonModule,
@@ -120,6 +123,7 @@ import {
     // DropdownModule,
     ShellComponent,
     ScheduledEventEditorComponent,
+    DocumentUploadComponent,
     FileUploadModule,
     GrowlModule
 
