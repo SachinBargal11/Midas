@@ -75,7 +75,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     using (UserCompanyRepository sr = new UserCompanyRepository(_context))
                     {
-                        lstUserCompany.Add(sr.Convert<BO.UserCompany, UserCompany>(item));
+                        BO.UserCompany BOUserCompany = new BO.UserCompany();
+                        BOUserCompany = sr.Convert<BO.UserCompany, UserCompany>(item);
+                        BOUserCompany.User = null;
+                        lstUserCompany.Add(BOUserCompany);
                     }
 
 
@@ -87,16 +90,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     using (DoctorLocationScheduleRepository sr = new DoctorLocationScheduleRepository(_context))
                     {
-                        lstDoctorLocationSchedule.Add(sr.Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(item));
+                        BO.DoctorLocationSchedule BODoctorLocationSchedule = new BO.DoctorLocationSchedule();
+                        BODoctorLocationSchedule = sr.Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(item);
+                        BODoctorLocationSchedule.doctor = null;
+                        BODoctorLocationSchedule.schedule = null;
+                        lstDoctorLocationSchedule.Add(BODoctorLocationSchedule);
                     }
 
 
                 }
                 doctorBO.DoctorLocationSchedules = lstDoctorLocationSchedule;
-
-
-
-
+                
             }
 
             return (T)(object)doctorBO;
@@ -445,7 +449,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object GetBySpecialityInAllApp(int specialtyId)
         {
             
-            var acc_ = _context.Doctors.Include("User").Include("DoctorSpecialities.Specialty").Include("DoctorLocationSchedules.Location").Include("DoctorLocationSchedules.Location.Company").Where(p => p.DoctorSpecialities.Where(p2 => p2.IsDeleted == false).Any(p3 => p3.SpecialityID == specialtyId)
+            var acc_ = _context.Doctors.Include("User")
+                                       .Include("User.UserCompanies")
+                                       .Include("User.UserCompanies.Company")
+                                       .Include("DoctorSpecialities")
+                                       .Include("DoctorSpecialities.Specialty")
+                                       .Include("DoctorLocationSchedules")
+                                       .Include("DoctorLocationSchedules.Location")
+                                       .Include("DoctorLocationSchedules.Location.Company")
+                                       .Where(p => p.DoctorSpecialities.Where(p2 => p2.IsDeleted == false).Any(p3 => p3.SpecialityID == specialtyId)
                                              && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                              .ToList();
             if (acc_ == null)
