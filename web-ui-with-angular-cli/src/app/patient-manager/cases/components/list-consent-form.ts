@@ -119,9 +119,12 @@ export class ConsentListComponent implements OnInit {
     }
 
     DownloadPdf() {
-       
 
+        //window.open('http://midas.codearray.tk/midasapi/fileupload/download/86/0', '_blank', '');
+        // window.location.assign('http://midas.codearray.tk/midasapi/fileupload/download/86/0');
         this._progressBarService.show();
+        // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + 0);
+
         this._ListConsentStore.DownloadConsentForm(this.caseId)
             .subscribe(document => {
                 // this.document = document
@@ -134,6 +137,4 @@ export class ConsentListComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
-
-
 }
