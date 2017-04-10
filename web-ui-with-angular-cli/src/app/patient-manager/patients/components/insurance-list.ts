@@ -9,6 +9,8 @@ import * as moment from 'moment';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
+import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
+
 
 @Component({
     selector: 'insurance-list',
@@ -29,7 +31,8 @@ export class InsuranceListComponent implements OnInit {
         private _insuranceStore: InsuranceStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
-        private _notificationsService: NotificationsService
+        private _notificationsService: NotificationsService,
+        private confirmationService: ConfirmationService,
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
@@ -67,6 +70,11 @@ export class InsuranceListComponent implements OnInit {
 
     deleteInsurance() {
         if (this.selectedInsurances.length > 0) {
+            this.confirmationService.confirm({
+            message: 'Do you want to delete this record?',
+            header: 'Delete Confirmation',
+            icon: 'fa fa-trash',
+            accept: () => {
             this.selectedInsurances.forEach(currentInsurance => {
                 this._progressBarService.show();
                 this.isDeleteProgress = true;
@@ -100,6 +108,8 @@ export class InsuranceListComponent implements OnInit {
                         this._progressBarService.hide();
                         this.isDeleteProgress = false;
                     });
+            });
+            }
             });
         } else {
             let notification = new Notification({

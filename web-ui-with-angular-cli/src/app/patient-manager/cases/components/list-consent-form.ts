@@ -11,7 +11,7 @@ import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { ListConsentStore } from '../../cases/stores/list-consent-form-store';
 import { ListConsent } from '../../cases/models/list-consent-form';
-
+import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 
 
 @Component({
@@ -33,7 +33,8 @@ export class ConsentListComponent implements OnInit {
         private _ListConsentStore: ListConsentStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
-        private _notificationsService: NotificationsService
+        private _notificationsService: NotificationsService,
+        private confirmationService: ConfirmationService,
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
@@ -71,6 +72,11 @@ export class ConsentListComponent implements OnInit {
 
     deleteConsentForm() {
         if (this.selectedConsentList.length > 0) {
+            this.confirmationService.confirm({
+            message: 'Do you want to delete this record?',
+            header: 'Delete Confirmation',
+            icon: 'fa fa-trash',
+            accept: () => {
             this.selectedConsentList.forEach(currentCase => {
                 this.isDeleteProgress = true;
                 this._progressBarService.show();
@@ -104,6 +110,8 @@ export class ConsentListComponent implements OnInit {
                         this.isDeleteProgress = false;
                         this._progressBarService.hide();
                     });
+            });
+            }
             });
         } else {
             let notification = new Notification({

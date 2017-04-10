@@ -36,7 +36,7 @@ export class PatientVisitNotesComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
-       
+
     ) {
          this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
@@ -47,7 +47,6 @@ export class PatientVisitNotesComponent implements OnInit {
         this._patientVisitStore.fetchPatientVisitById(this.currentVisitId)
             .subscribe(currentVisit => {
                 this.currentVisit = currentVisit
-               
 
             },
             (error) => {
@@ -68,7 +67,7 @@ export class PatientVisitNotesComponent implements OnInit {
     }
 
     ngOnInit() {
-        
+
     }
 
     saveVisit() {
@@ -103,8 +102,5 @@ export class PatientVisitNotesComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
-        
     }
-
-
 }

@@ -54,7 +54,7 @@ export class AddFamilyMemberComponent implements OnInit {
                 workPhone: [''],
                 alternateEmail:  ['', [AppValidators.emailValidator]],
                 officeExtension: [''],
-                preferredcommunication: [''],
+                preferredCommunication: [''],
                 primaryContact: [1]
             });
 
@@ -88,7 +88,7 @@ export class AddFamilyMemberComponent implements OnInit {
             workPhone: familyMemberFormValues.workPhone,
             //officeExtension: familyMemberFormValues.officeExtension,
             //alternateEmail: familyMemberFormValues.alternateEmail,
-           //preferredcommunication: familyMemberFormValues.preferredcommunication,
+           //preferredCommunication: familyMemberFormValues.preferredCommunication,
             primaryContact: parseInt(familyMemberFormValues.primaryContact)
         });
         this._progressBarService.show();

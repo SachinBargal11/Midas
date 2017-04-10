@@ -98,7 +98,7 @@ export class AddInsuranceComponent implements OnInit {
             faxNo: [''],
             alternateEmail:  ['', [AppValidators.emailValidator]],
             officeExtension: [''],
-            preferredcommunication: ['']
+            preferredCommunication: ['']
         });
 
         this.insuranceformControls = this.insuranceform.controls;
@@ -131,12 +131,12 @@ export class AddInsuranceComponent implements OnInit {
     }
 
       onUpload(event) {
-          
+
         for(let file of event.files) {
             this.uploadedFiles.push(file);
         }
-    
-       //this.msgs = [];
+
+          //this.msgs = [];
         //this.msgs.push({severity: 'info', summary: 'File Uploaded', detail: ''});
     }
 
@@ -200,7 +200,7 @@ export class AddInsuranceComponent implements OnInit {
                 workPhone: insuranceformValues.policyWorkPhone,
                 officeExtension: insuranceformValues.officeExtension,
                 alternateEmail: insuranceformValues.alternateEmail,
-                preferredcommunication: insuranceformValues.preferredcommunication,
+                preferredCommunication: insuranceformValues.preferredCommunication,
 
             }),
             policyAddress: new Address({
@@ -219,7 +219,7 @@ export class AddInsuranceComponent implements OnInit {
                 workPhone: insuranceformValues.policyWorkPhone,
                 officeExtension: insuranceformValues.officeExtension,
                 alternateEmail: insuranceformValues.alternateEmail,
-                preferredcommunication: insuranceformValues.preferredcommunication,
+                preferredCommunication: insuranceformValues.preferredCommunication,
             }),
             insuranceAddress: new Address({
                 address1: insuranceformValues.address,

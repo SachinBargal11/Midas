@@ -18,7 +18,7 @@ import { CasesStore } from '../../cases/stores/case-store';
 import { CaseService } from '../../cases/services/cases-services';
 import { ScannerService } from '../../../commons/services/scanner-service';
 import { CaseDocumentAdapter } from '../services/adapters/case-document-adapters';
-
+import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 
 
 @Component({
@@ -52,7 +52,9 @@ export class CaseDocumentsUploadComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
-        private _scannerService: ScannerService
+        private _scannerService: ScannerService,
+        private confirmationService: ConfirmationService,
+
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.currentCaseId = parseInt(routeParams.caseId, 10);
@@ -172,6 +174,12 @@ export class CaseDocumentsUploadComponent implements OnInit {
 
     deleteDocument() {
         if (this.selectedDocumentList.length > 0) {
+            this.confirmationService.confirm({
+            message: 'Do you want to delete this record?',
+            header: 'Delete Confirmation',
+            icon: 'fa fa-trash',
+            accept: () => {
+
             this.selectedDocumentList.forEach(currentCase => {
                 this._progressBarService.show();
                 this.isDeleteProgress = true;
@@ -205,6 +213,8 @@ export class CaseDocumentsUploadComponent implements OnInit {
                         this._progressBarService.hide();
                         this.isDeleteProgress = false;
                     });
+            });
+            }
             });
         } else {
             let notification = new Notification({

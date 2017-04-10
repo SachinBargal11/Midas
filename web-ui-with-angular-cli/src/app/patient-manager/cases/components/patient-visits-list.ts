@@ -16,6 +16,7 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import * as _ from 'underscore';
+import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 
 @Component({
     selector: 'patient-visit-list',
@@ -53,6 +54,8 @@ export class PatientVisitListComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _doctorsStore: DoctorsStore,
         private _roomsStore: RoomsStore,
+        private confirmationService: ConfirmationService,
+
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
@@ -75,7 +78,7 @@ export class PatientVisitListComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         });
-     
+
     }
 
     ngOnInit() {
@@ -89,7 +92,7 @@ export class PatientVisitListComponent implements OnInit {
                 let matchingVisits: PatientVisit[] = _.filter(visits, (currentVisit: PatientVisit) => {
                     return currentVisit.eventStart != null && currentVisit.eventEnd != null;
                 });
-                
+
                 // this.visits = matchingVisits.reverse();
                 let matchingDoctorVisits: PatientVisit[] = _.filter(matchingVisits, (currentVisit: PatientVisit) => {
                     return currentVisit.doctor != null;
@@ -100,7 +103,6 @@ export class PatientVisitListComponent implements OnInit {
                     return currentVisit.room != null;
                 });
                 this.roomsVisits = matchingRoomVisits.reverse();
-                
 
             },
             (error) => {
@@ -143,6 +145,11 @@ export class PatientVisitListComponent implements OnInit {
     deletePatientVisits() {
         this.selectedVisits = _.union(this.selectedRoomsVisits, this.selectedDoctorsVisits);
         if (this.selectedVisits.length > 0) {
+            this.confirmationService.confirm({
+            message: 'Do you want to delete this record?',
+            header: 'Delete Confirmation',
+            icon: 'fa fa-trash',
+            accept: () => {
             this.selectedVisits.forEach(currentVisit => {
                 this.isDeleteProgress = true;
                 this._progressBarService.show();
@@ -176,6 +183,8 @@ export class PatientVisitListComponent implements OnInit {
                         this.isDeleteProgress = false;
                         this._progressBarService.hide();
                     });
+            });
+            }
             });
         } else {
             let notification = new Notification({

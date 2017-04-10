@@ -10,6 +10,7 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 import { SessionStore } from '../../../commons/stores/session-store';
 import { InsuranceMasterStore } from '../../stores/insurance-master-store';
 import { InsuranceMaster } from '../../../patient-manager/patients/models/insurance-master';
+import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 
 @Component({
     selector: 'insurance-master-list',
@@ -31,7 +32,9 @@ export class InsuranceMasterListComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
-        private _sessionStore: SessionStore
+        private _sessionStore: SessionStore,
+        private confirmationService: ConfirmationService,
+
     ) {
 
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
@@ -70,6 +73,11 @@ export class InsuranceMasterListComponent implements OnInit {
 
     deleteInsuranceMasters() {
         if (this.selectedInsuranceMasters.length > 0) {
+            this.confirmationService.confirm({
+            message: 'Do you want to delete this record?',
+            header: 'Delete Confirmation',
+            icon: 'fa fa-trash',
+            accept: () => {
             this.selectedInsuranceMasters.forEach(currentInsuranceMaster => {
                 this.isDeleteProgress = true;
                 this._progressBarService.show();
@@ -102,6 +110,8 @@ export class InsuranceMasterListComponent implements OnInit {
                         this._progressBarService.hide();
                         this.isDeleteProgress = false;
                     });
+            });
+            }
             });
         } else {
             let notification = new Notification({

@@ -75,7 +75,7 @@ export class EditFamilyMemberComponent implements OnInit {
                 primaryContact: [''],
                 alternateEmail:  ['', [AppValidators.emailValidator]],
                 officeExtension: [''],
-                preferredcommunication: ['']
+                preferredCommunication: ['']
         });
 
         this.familyMemberFormControls = this.familyMemberForm.controls;
@@ -102,7 +102,7 @@ export class EditFamilyMemberComponent implements OnInit {
             primaryContact: familyMemberFormValues.primaryContact,
             //officeExtension: familyMemberFormValues.officeExtension,
             //alternateEmail: familyMemberFormValues.alternateEmail,
-            //preferredcommunication: familyMemberFormValues.preferredcommunication,   
+            //preferredCommunication: familyMemberFormValues.preferredCommunication,   
 
         });
         this._progressBarService.show();

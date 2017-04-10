@@ -80,7 +80,7 @@ export class AccidentInfoComponent implements OnInit {
                             this.selectedAccidentCity = this.currentAccident.accidentAddress.city;
                         }
 
-                       
+
                     } else {
                         this.currentAccident = new Accident({
                             accidentAddress: new Address({}),
@@ -133,13 +133,13 @@ export class AccidentInfoComponent implements OnInit {
     }
 
     save() {
-      
+
         this.isSaveAccidentProgress = true;
         let accidentformValues = this.accidentform.value;
         let addResult;
         let result;
         let accident = new Accident({
-            
+
             caseId: this.caseId,
             isCurrentAccident: 1,
             plateNumber: accidentformValues.plateNumber,
@@ -158,7 +158,7 @@ export class AccidentInfoComponent implements OnInit {
                 country: accidentformValues.accidentCountry,
                 state: accidentformValues.accidentState,
                 zipCode: accidentformValues.accidentZipcode
-                 
+
             }),
             hospitalAddress: new Address({
                  id: this.currentAccident.hospitalAddress.id,
@@ -171,7 +171,7 @@ export class AccidentInfoComponent implements OnInit {
             })
         });
         this._progressBarService.show();
-        //
+
         if (this.currentAccident.id) {
             result = this._accidentStore.updateAccident(accident, this.currentAccident.id);
             result.subscribe(
@@ -202,7 +202,7 @@ export class AccidentInfoComponent implements OnInit {
                 });
 
         }
-        //
+
         else {
             addResult = this._accidentStore.addAccident(accident);
 

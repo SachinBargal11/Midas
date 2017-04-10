@@ -15,7 +15,7 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { NotificationsService } from 'angular2-notifications';
 import { DoctorLocationScheduleStore } from '../../users/stores/doctor-location-schedule-store';
 import { DoctorLocationSchedule } from '../../users/models/doctor-location-schedule';
-
+import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 
 @Component({
     selector: 'doctors-list',
@@ -39,7 +39,8 @@ export class DoctorsListComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _notificationsService: NotificationsService,
         private _progressBarService: ProgressBarService,
-        private _doctorLocationScheduleStore: DoctorLocationScheduleStore
+        private _doctorLocationScheduleStore: DoctorLocationScheduleStore,
+        private confirmationService: ConfirmationService,
     ) {
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadDoctors();
@@ -60,7 +61,7 @@ export class DoctorsListComponent implements OnInit {
                 // this.datasource = doctors.reverse();
                 // this.totalRecords = this.datasource.length;
                 // this.doctors = this.datasource.slice(0, 10);
-                
+
             },
             (error) => {
                 this._progressBarService.hide();
@@ -69,7 +70,7 @@ export class DoctorsListComponent implements OnInit {
             this._progressBarService.hide();
             });
     }
-    
+
     loadDoctorsLazy(event: LazyLoadEvent) {
         setTimeout(() => {
             if(this.datasource) {
@@ -80,6 +81,12 @@ export class DoctorsListComponent implements OnInit {
 
     deleteDoctors() {
         if (this.selectedDoctors !== undefined) {
+            this.confirmationService.confirm({
+            message: 'Do you want to delete this record?',
+            header: 'Delete Confirmation',
+            icon: 'fa fa-trash',
+            accept: () => {
+
             this.selectedDoctors.forEach(currentDoctor => {
                 this.isDeleteProgress = true;
                 this._progressBarService.show();
@@ -114,6 +121,8 @@ export class DoctorsListComponent implements OnInit {
                         this._progressBarService.hide();
                     });
             });
+            }
+            });
         }
         else {
             let notification = new Notification({
@@ -125,5 +134,4 @@ export class DoctorsListComponent implements OnInit {
             this._notificationsService.error('Oh No!', 'select doctor to delete');
         }
     }
-    
 }

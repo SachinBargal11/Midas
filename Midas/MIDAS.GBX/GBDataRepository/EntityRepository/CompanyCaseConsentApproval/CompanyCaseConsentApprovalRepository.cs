@@ -41,24 +41,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             companyCaseConsentApprovalBO.CreateByUserID = companyCaseConsentApproval.CreateByUserID;
             companyCaseConsentApprovalBO.UpdateByUserID = companyCaseConsentApproval.UpdateByUserID;
 
-            if (companyCaseConsentApproval.Case != null)
-            {
-                BO.Case boCase = new BO.Case();
-                using (CaseRepository cmp = new CaseRepository(_context))
-                {
-                    boCase = cmp.Convert<BO.Case, Case>(companyCaseConsentApproval.Case);
-                    companyCaseConsentApprovalBO.Case = boCase;
-                }
-            }
-            if (companyCaseConsentApproval.Company != null)
-            {
-                BO.Company boCompany = new BO.Company();
-                using (CompanyRepository cmp = new CompanyRepository(_context))
-                {
-                    boCompany = cmp.Convert<BO.Company, Company>(companyCaseConsentApproval.Company);
-                    companyCaseConsentApprovalBO.Company = boCompany;
-                }
-            }
+            //if (companyCaseConsentApproval.Case != null)
+            //{
+            //    BO.Case boCase = new BO.Case();
+            //    using (CaseRepository cmp = new CaseRepository(_context))
+            //    {
+            //        boCase = cmp.Convert<BO.Case, Case>(companyCaseConsentApproval.Case);
+            //        companyCaseConsentApprovalBO.Case = boCase;
+            //    }
+            //}
+            //if (companyCaseConsentApproval.Company != null)
+            //{
+            //    BO.Company boCompany = new BO.Company();
+            //    using (CompanyRepository cmp = new CompanyRepository(_context))
+            //    {
+            //        boCompany = cmp.Convert<BO.Company, Company>(companyCaseConsentApproval.Company);
+            //        companyCaseConsentApprovalBO.Company = boCompany;
+            //    }
+            //}
             return (T)(object)companyCaseConsentApprovalBO;
         }
         #endregion

@@ -136,7 +136,7 @@ export class EditInsuranceComponent implements OnInit {
             faxNo: [''],
             alternateEmail:  ['', [AppValidators.emailValidator]],
             officeExtension: [''],
-            preferredcommunication: ['']
+            preferredCommunication: ['']
         });
 
         this.insuranceformControls = this.insuranceform.controls;
@@ -147,7 +147,7 @@ export class EditInsuranceComponent implements OnInit {
 
         this._insuranceStore.getInsurancesMaster()
             .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
-            
+
             // this.loadInsuranceMasterAddress(this.insurance.insuranceMasterId);
 
     }
@@ -159,10 +159,9 @@ export class EditInsuranceComponent implements OnInit {
         } else {
             this.insuranceMastersAdress = null
         }
-        
     }
     onUpload(event) {
-          
+
         for(let file of event.files) {
             this.uploadedFiles.push(file);
         }
@@ -267,7 +266,7 @@ export class EditInsuranceComponent implements OnInit {
                 workPhone: insuranceformValues.policyWorkPhone,
                 officeExtension: insuranceformValues.officeExtension,
                 alternateEmail: insuranceformValues.alternateEmail,
-                preferredcommunication: insuranceformValues.preferredcommunication,
+                preferredCommunication: insuranceformValues.preferredCommunication,
 
             }),
             policyAddress: new Address({
@@ -286,7 +285,7 @@ export class EditInsuranceComponent implements OnInit {
                 workPhone: insuranceformValues.policyWorkPhone,
                 officeExtension: insuranceformValues.officeExtension,
                 alternateEmail: insuranceformValues.alternateEmail,
-                preferredcommunication: insuranceformValues.preferredcommunication,
+                preferredCommunication: insuranceformValues.preferredCommunication,
             }),
             insuranceAddress: new Address({
                 // address1: insuranceformValues.address,

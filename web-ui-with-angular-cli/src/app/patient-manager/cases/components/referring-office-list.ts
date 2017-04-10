@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
+import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 
 @Component({
     selector: 'referring-office-list',
@@ -29,7 +30,8 @@ export class ReferringOfficeListComponent implements OnInit {
         private _referringOfficeStore: ReferringOfficeStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
-        private _notificationsService: NotificationsService
+        private _notificationsService: NotificationsService,
+        private confirmationService: ConfirmationService,
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
@@ -66,6 +68,11 @@ export class ReferringOfficeListComponent implements OnInit {
 
     deleteReferringOffice() {
         if (this.selectedReferringOffices.length > 0) {
+             this.confirmationService.confirm({
+            message: 'Do you want to delete this record?',
+            header: 'Delete Confirmation',
+            icon: 'fa fa-trash',
+            accept: () => {
             this.selectedReferringOffices.forEach(currentReferringOffice => {
                 this.isDeleteProgress = true;
                 this._progressBarService.show();
@@ -100,6 +107,8 @@ export class ReferringOfficeListComponent implements OnInit {
                         this._progressBarService.hide();
                     });
             });
+            }
+             });
         } else {
             let notification = new Notification({
                 'title': 'select Referring Office to delete',

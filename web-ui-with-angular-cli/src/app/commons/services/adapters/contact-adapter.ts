@@ -20,7 +20,7 @@ export class ContactAdapter {
                 updateDate: moment(contactData.updateDate), // Moment
                 alternateEmail: contactData.alternateEmail,
                 officeExtension: contactData.officeExtension,
-                preferredcommunication: contactData.preferredcommunication,
+                preferredCommunication: contactData.preferredCommunication,
 
             });
         }

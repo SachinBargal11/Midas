@@ -126,7 +126,7 @@ export class AddDoctorLocationComponent implements OnInit {
 
     ngOnInit() {
     }
-    
+
     loadLocationsLazy(event: LazyLoadEvent) {
         setTimeout(() => {
             if(this.datasource) {

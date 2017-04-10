@@ -17,7 +17,7 @@ const ContactRecord = Record({
     updateDate: null, //Moment
     alternateEmail: '',
     officeExtension: '',
-    preferredcommunication: PreferredCommunication.CELLPHONE,
+    preferredCommunication: PreferredCommunication.CELLPHONE,
 
 });
 
@@ -37,7 +37,7 @@ export class Contact extends ContactRecord {
     updateDate: moment.Moment;
     alternateEmail: string;
     officeExtension: string;
-    preferredcommunication: PreferredCommunication;
+    preferredCommunication: PreferredCommunication;
 
     constructor(props) {
         super(props);

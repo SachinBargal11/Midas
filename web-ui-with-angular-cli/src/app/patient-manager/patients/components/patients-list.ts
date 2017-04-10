@@ -13,6 +13,8 @@ import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { ReferralStore } from '../../cases/stores/referral-store';
 import { Referral } from '../../cases/models/referral';
+import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
+
 
 @Component({
     selector: 'patients-list',
@@ -35,6 +37,8 @@ export class PatientsListComponent implements OnInit {
         private _referralStore: ReferralStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
+        private confirmationService: ConfirmationService,
+
     ) {
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadPatientsCheckingDoctor();
@@ -119,6 +123,11 @@ export class PatientsListComponent implements OnInit {
     }
     deletePatients() {
         if (this.selectedPatients.length > 0) {
+            this.confirmationService.confirm({
+            message: 'Do you want to delete this record?',
+            header: 'Delete Confirmation',
+            icon: 'fa fa-trash',
+            accept: () => {
             this.selectedPatients.forEach(currentPatient => {
                 this.isDeleteProgress = true;
                 this._progressBarService.show();
@@ -152,6 +161,8 @@ export class PatientsListComponent implements OnInit {
                         this._progressBarService.hide();
                         this.isDeleteProgress = false;
                     });
+            });
+            }
             });
         } else {
             let notification = new Notification({

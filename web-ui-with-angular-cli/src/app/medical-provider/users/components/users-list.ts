@@ -13,6 +13,7 @@ import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
+import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 
 @Component({
     selector: 'users-list',
@@ -35,7 +36,8 @@ export class UsersListComponent implements OnInit {
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
         private _notificationsService: NotificationsService,
-        private _progressBarService: ProgressBarService
+        private _progressBarService: ProgressBarService,
+        private confirmationService: ConfirmationService,
     ) {
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadUsers();
@@ -88,6 +90,12 @@ export class UsersListComponent implements OnInit {
     }
     deleteUser() {
         if (this.selectedUsers !== undefined) {
+            this.confirmationService.confirm({
+            message: 'Do you want to delete this record?',
+            header: 'Delete Confirmation',
+            icon: 'fa fa-trash',
+            accept: () => {
+
             this.selectedUsers.forEach(currentUser => {
                 this.isDeleteProgress = true;
                 this._progressBarService.show();
@@ -121,6 +129,8 @@ export class UsersListComponent implements OnInit {
                         this.isDeleteProgress = false;
                         this._progressBarService.hide();
                     });
+            });
+            }
             });
         }
         else {

@@ -82,7 +82,7 @@ export class EditInsuranceMasterComponent implements OnInit {
             faxNo: [''],
             alternateEmail:  ['', [AppValidators.emailValidator]],
             officeExtension: [''],
-            preferredcommunication: ['']
+            preferredCommunication: ['']
         });
 
         this.editInsuranceMasterFormControls = this.editInsuranceMasterForm.controls;
@@ -109,7 +109,7 @@ export class EditInsuranceMasterComponent implements OnInit {
                 workPhone: editInsuranceMasterFormValues.workPhone,
                 officeExtension: editInsuranceMasterFormValues.officeExtension,
                 alternateEmail: editInsuranceMasterFormValues.alternateEmail,
-                preferredcommunication: editInsuranceMasterFormValues.preferredcommunication,
+                preferredCommunication: editInsuranceMasterFormValues.preferredCommunication,
                 updateByUserId: this._sessionStore.session.account.user.id
             })),
             Address: new Address(_.extend(existingInsuranceMasterJS.Address, {
