@@ -63,6 +63,7 @@ export class AddReferralComponent implements OnInit {
         private _referralStore: ReferralStore,
         private _specialityStore: SpecialityStore,
         private _doctorsStore: DoctorsStore,
+        private _locationStore: LocationsStore,
         private _roomsStore: RoomsStore,
         private _consentStore: AddConsentStore,
         private _notificationsService: NotificationsService,
@@ -110,6 +111,21 @@ export class AddReferralComponent implements OnInit {
         this.loadSpecialities();
         this.loadTests();
         this.loadReferrals();
+        this.loadMedicalFacility();
+    }
+    loadMedicalFacility() {
+        this._progressBarService.show();
+        this._locationStore.getAllLocationAndTheirCompany()
+            .subscribe((locations) => {
+                this.locations = locations;
+            },
+            (error) => {
+                this._router.navigate(['../']);
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
     }
     loadSpecialities() {
         this._progressBarService.show();

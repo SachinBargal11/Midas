@@ -65,9 +65,9 @@ export class DoctorSpecificInformationComponent implements OnInit {
                     let doctorDetail: Doctor = results[1];
 
                     this.doctor = doctorDetail;
-                    this.selectedSpecialities = _.map(doctorDetail.doctorSpecialities, (currentDoctorSpeciality: DoctorSpeciality) => {
-                        return currentDoctorSpeciality.id.toString();
-                    });
+                    // this.selectedSpecialities = _.map(doctorDetail.doctorSpecialities, (currentDoctorSpeciality: DoctorSpeciality) => {
+                    //     return currentDoctorSpeciality.id.toString();
+                    // });
 
                     this.specialitiesArr = _.map(specialities, (currentSpeciality: Speciality) => {
                         return {

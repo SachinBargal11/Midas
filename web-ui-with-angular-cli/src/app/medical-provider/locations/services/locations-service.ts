@@ -6,7 +6,7 @@ import * as _ from 'underscore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import {environment} from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { LocationDetails } from '../models/location-details';
 import { LocationDetailAdapter } from './adapters/location-detail-adapter';
 
@@ -64,6 +64,27 @@ export class LocationsService {
         });
         return <Observable<any[]>>Observable.fromPromise(promise);
     }
+
+    getAllLocationAndTheirCompany(): Observable<any[]> {
+        let promise: Promise<any[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Location/getAllLocationAndCompany').map(res => res.json())
+                .subscribe((data: any) => {
+                    if (data.errorMessage) {
+                        reject(new Error(data.errorMessage));
+                    } else {
+                        let locations: any[] = (<Object[]>data).map((data: any) => {
+                            return LocationDetailAdapter.parseResponse(data);
+                        });
+                        resolve(locations);
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<any[]>>Observable.fromPromise(promise);
+    }
+
+
     addLocation(location: LocationDetails): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
 
