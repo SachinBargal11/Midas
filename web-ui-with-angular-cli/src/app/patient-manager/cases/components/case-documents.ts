@@ -31,20 +31,13 @@ export class CaseDocumentsUploadComponent implements OnInit {
 
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     selectedDocumentList = [];
-    // uploadedFiles: any[] = [];
     currentCaseId: number;
-    // documentMode: string = '1';
     documents: CaseDocument[] = [];
     url;
     isSaveProgress = false;
     isDeleteProgress: boolean = false;
     @ViewChild(DocumentUploadComponent)
     private _documentUploadComponent: DocumentUploadComponent;
-
-    // scannerContainerId: string = `scanner_${moment().valueOf()}`;
-    // twainSources: TwainSource[] = [];
-    // selectedTwainSource: TwainSource = null;
-    // _dwObject: any = null;
 
     constructor(
         private _router: Router,
@@ -68,54 +61,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
         this.getDocuments();
     }
 
-    // ngOnDestroy() {
-    //     this.unloadWebTwain();
-    // }
-
-    // unloadWebTwain() {
-    //     this._scannerService.deleteWebTwain(this.scannerContainerId);
-    //     this._scannerService.unloadAll();
-    // }
-
-    // ngAfterViewInit() {
-    //     _.defer(() => {
-    //         this.createDWObject();
-    //     });
-
-    // }
-
-    // createDWObject() {
-    //     this._scannerService.getWebTwain(this.scannerContainerId)
-    //         .then((dwObject) => {
-    //             this._dwObject = dwObject;
-    //             this._dwObject.SetViewMode(1, -1);
-    //             if (this._dwObject) {
-    //                 for (let i = 0; i < this._dwObject.SourceCount; i++) {
-    //                     this.twainSources.push({ idx: i, name: this._dwObject.GetSourceNameItems(i) });
-    //                 }
-
-    //             }
-    //         }).catch(() => {
-    //             // (<any>window).OnWebTwainNotFoundOnWindowsCallback();
-    //             this._notificationsService.alert('', 'Not able to connect scanner. Please refresh the page again and download the software prompted.');
-    //         });
-    // }
-
-    // AcquireImage() {
-    //     if (this._dwObject) {
-    //         this._dwObject.IfDisableSourceAfterAcquire = true;
-    //         if (this.selectedTwainSource) {
-    //             this._dwObject.SelectSourceByIndex(this.selectedTwainSource.idx);
-    //         } else {
-    //             this._dwObject.SelectSource();
-    //         }
-    //         this._dwObject.OpenSource();
-    //         this._dwObject.AcquireImage();
-    //     }
-    // }
-
     uploadDocuments(dwObject) {
-        debugger;
         this._casesStore.uploadScannedDocuments(dwObject, this.currentCaseId)
             .subscribe(
             (documents: CaseDocument[]) => {
@@ -142,7 +88,6 @@ export class CaseDocumentsUploadComponent implements OnInit {
     }
 
     onUpload(event) {
-        debugger;
         let responseDocuments: any = JSON.parse(event.xhr.responseText);
         let documents = (<Object[]>responseDocuments).map((document: any) => {
             return CaseDocumentAdapter.parseResponse(document);
