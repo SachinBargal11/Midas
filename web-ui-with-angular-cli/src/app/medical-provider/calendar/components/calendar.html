@@ -17,8 +17,7 @@
                     <div class="row">
 
                         <div class="col-md-4">
-                            <button [disabled]="!isFormValid() || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
-                <loader [visible]="isSaveProgress"></loader>
+                            <button [disabled]="!isFormValid()" type="submit" class="btn btn-success sign-up">Save
             </button>
                             <button type="button" class="btn btn-secondary" (click)="closeDialog()">Cancel</button>
                         </div>

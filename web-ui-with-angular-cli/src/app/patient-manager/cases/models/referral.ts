@@ -3,6 +3,7 @@ import * as moment from 'moment';
 import { Case } from '../models/case';
 import { Room } from '../../../medical-provider/rooms/models/room';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
+import { User } from '../../../commons/models/user';
 import { LocationDetails } from '../../../medical-provider/users/models//location-details';
 import { Company } from '../../../account/models/company';
 
@@ -22,7 +23,7 @@ const ReferralRecord = Record({
     referralAccepted: 0,
     room: null,
     case: null,
-    referringDoctor: null,
+    referringUser: null,
     referringLocation: null,
     referringCompany: null,
     referredToDoctor: null,
@@ -52,7 +53,7 @@ export class Referral extends ReferralRecord {
     referralAccepted: number;
     room: Room;
     case: Case;
-    referringDoctor: Doctor;
+    referringUser: User;
     referringLocation: LocationDetails;
     referringCompany: Company;
     referredToDoctor: Doctor;

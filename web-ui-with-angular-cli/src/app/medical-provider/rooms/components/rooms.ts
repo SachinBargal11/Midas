@@ -25,6 +25,7 @@ export class RoomsComponent implements OnInit {
     locationId: number;
     datasource: Room[];
     totalRecords: number;
+    isDeleteProgress: boolean = false;
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
@@ -80,6 +81,7 @@ export class RoomsComponent implements OnInit {
     deleteRooms() {
         if (this.selectedRooms !== undefined) {
             this.selectedRooms.forEach(currentRoom => {
+                this.isDeleteProgress = true;
                 this._progressBarService.show();
                 let result;
                 result = this._roomsStore.deleteRoom(currentRoom);
@@ -102,10 +104,12 @@ export class RoomsComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                         this._notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
+                        this.isDeleteProgress = false;
                         this._progressBarService.hide();
                     });
             });

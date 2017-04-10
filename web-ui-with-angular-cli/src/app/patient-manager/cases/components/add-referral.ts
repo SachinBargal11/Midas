@@ -70,19 +70,19 @@ export class AddReferralComponent implements OnInit {
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
-            this._progressBarService.show();
-            this._consentStore.getDocumentsForCaseId(this.caseId)
-                .subscribe((consent: AddConsent[]) => {
-                    this.consent = consent;
-                    this._doctorsStore.fetchDoctorById(consent[0].doctorId)
-                        .subscribe((doctor: Doctor) => this.doctor = doctor);
-                },
-                (error) => {
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
+            // this._progressBarService.show();
+            // this._consentStore.getDocumentsForCaseId(this.caseId)
+            //     .subscribe((consent: AddConsent[]) => {
+            //         this.consent = consent;
+            //         this._doctorsStore.fetchDoctorById(consent[0].doctorId)
+            //             .subscribe((doctor: Doctor) => this.doctor = doctor);
+            //     },
+            //     (error) => {
+            //         this._progressBarService.hide();
+            //     },
+            //     () => {
+            //         this._progressBarService.hide();
+            //     });
         });
         this.referralForm = this.fb.group({
             speciality: [''],

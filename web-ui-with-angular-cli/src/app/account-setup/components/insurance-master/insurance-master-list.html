@@ -16,8 +16,8 @@
     </div>
 </div>
 <!--<p-dataTable [value]="insuranceMasters" [(selection)]="selectedInsuranceMasters" [lazy]="true" [rows]="10" [paginator]="true"
-[totalRecords]="totalRecords" (onLazyLoad)="loadInsuranceMastersLazy($event)" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">-->
-<p-dataTable [value]="insuranceMasters" [(selection)]="selectedInsuranceMasters" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+[totalRecords]="totalRecords" (onLazyLoad)="loadInsuranceMastersLazy($event)" [globalFilter]="gb" [responsive]="true">-->
+<p-dataTable [value]="insuranceMasters" [(selection)]="selectedInsuranceMasters" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
     <header>InsuranceMasters List</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column field="companyName" header="Company Name" [sortable]="true">

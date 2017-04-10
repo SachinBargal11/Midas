@@ -352,11 +352,34 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             return path + "\\consent.pdf";
         }
 
+        public override object ConsentSave(int caseid, int companyid, List<System.Net.Http.HttpContent> streamContent, string uploadpath)
+        {
+            List<BO.Document> docInfo = new List<BO.Document>();
+            StringBuilder storagePath = new StringBuilder();
+            string SPECIALITY = "SPECIALITY_";
+            string COMPANY = "/COMPANY_";
+            string CASE = "/CASE_";
+            string VISIT = "/VISIT_";
+            FileUpload.FileUploadManager fileUploadManager = new FileUpload.FileUploadManager(_context);
+
+            storagePath.Append(COMPANY)
+                       .Append(_context.UserCompanies.Where(xc => xc.UserID == _context.Cases.FirstOrDefault(p => p.Id == caseid).PatientId).FirstOrDefault().CompanyID)
+                       .Append(CASE)
+                       .Append(caseid)
+                       .Append("/consent");
+
+            docInfo = (List<BO.Document>)fileUploadManager.Upload(streamContent, storagePath.ToString(), caseid, "consent_"+ _context.UserCompanies.Where(xc => xc.UserID == _context.Cases.FirstOrDefault(p => p.Id == caseid).PatientId).FirstOrDefault().CompanyID, uploadpath);
+
+            return docInfo;
+        }
         #endregion
 
         public void Dispose() { GC.SuppressFinalize(this); }
     }
 
+    public class HttpContent
+    {
+    }
 }
 
 

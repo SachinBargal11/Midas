@@ -25,6 +25,7 @@ export class ConsentListComponent implements OnInit {
     caseId: number;
     datasource: ListConsent[];
     totalRecords: number;
+    isDeleteProgress: boolean = false;
 
     constructor(
         private _router: Router,
@@ -71,6 +72,7 @@ export class ConsentListComponent implements OnInit {
     deleteConsentForm() {
         if (this.selectedConsentList.length > 0) {
             this.selectedConsentList.forEach(currentCase => {
+                this.isDeleteProgress = true;
                 this._progressBarService.show();
                 this._ListConsentStore.deleteConsetForm(currentCase)
                     .subscribe(
@@ -94,10 +96,12 @@ export class ConsentListComponent implements OnInit {
                         });
                         this.selectedConsentList = [];
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                         this._notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
+                        this.isDeleteProgress = false;
                         this._progressBarService.hide();
                     });
             });
@@ -115,9 +119,12 @@ export class ConsentListComponent implements OnInit {
     }
 
     DownloadPdf() {
-       
 
+        //window.open('http://midas.codearray.tk/midasapi/fileupload/download/86/0', '_blank', '');
+        // window.location.assign('http://midas.codearray.tk/midasapi/fileupload/download/86/0');
         this._progressBarService.show();
+        // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + 0);
+
         this._ListConsentStore.DownloadConsentForm(this.caseId)
             .subscribe(document => {
                 // this.document = document
@@ -130,6 +137,4 @@ export class ConsentListComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
-
-
 }

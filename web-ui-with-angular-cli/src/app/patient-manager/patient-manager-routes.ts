@@ -4,7 +4,7 @@ import { ValidateActiveSession } from '../commons/guards/validate-active-session
 import { PatientsManagerShellComponent } from './patients-manager-shell';
 import { PatientsShellRoutes } from './patients/patient-routes';
 import { CasesShellRoutes } from './cases/cases-routes';
-import { ReferalsShellRoutes } from './referals/referals-routes';
+import { ReferralsShellRoutes } from './referals/referals-routes';
 import { ConsentFormsShellRoutes } from './consent-forms/consent-forms-routes';
 import { PatientVisitRoutes } from './patient-visit/patient-visit-routes';
 
@@ -16,9 +16,9 @@ let PatientManagerRoutes: Routes = [
         children: [
             ...PatientsShellRoutes,
             ...CasesShellRoutes,
-            ...ReferalsShellRoutes,
             ...ConsentFormsShellRoutes,
-            ...PatientVisitRoutes
+            ...PatientVisitRoutes,
+            ...ReferralsShellRoutes
         ],
         data: {
             breadcrumb: 'Patient Manager'

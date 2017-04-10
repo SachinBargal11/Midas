@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 
@@ -16,10 +17,12 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
     public class CompanyCaseConsentApprovalController : ApiController
     {
+        internal string sourcePath = string.Empty;
         private IRequestHandler<CompanyCaseConsentApproval> requestHandler;
 
         public CompanyCaseConsentApprovalController()
         {
+            sourcePath = HttpContext.Current.Server.MapPath("~/App_Data/uploads").ToString();
             requestHandler = new GbApiRequestHandler<CompanyCaseConsentApproval>();
         }
 
@@ -61,6 +64,20 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public HttpResponseMessage Delete(int id)
         {
             return requestHandler.Delete(Request, id);
+        }
+
+        [HttpPost]
+        [Route("multiupload/{caseid}/{companyid}")]
+        public async Task<HttpResponseMessage> Upload(int caseid, int companyid)
+        {
+            if (!Request.Content.IsMimeMultipartContent("form-data"))
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            var streamProvider = new MultipartMemoryStreamProvider();
+            await Request.Content.ReadAsMultipartAsync(streamProvider);
+            List<HttpContent> streamContent = streamProvider.Contents.ToList();
+            string contenttype = streamContent.ToList().Select(p => p.Headers.ContentType).FirstOrDefault().MediaType;
+            HttpResponseMessage resMessage = requestHandler.CreateGbDocObject1(Request, caseid, companyid, streamContent, sourcePath);
+            return resMessage;
         }
 
         [HttpGet]

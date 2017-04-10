@@ -31,4 +31,8 @@ export class ScheduledEventInstance {
         this.owningEvent = props.owningEvent;
         this.eventWrapper = props.eventWrapper;
     }
+
+    get isInPast():boolean {
+        return this.start.isBefore(moment());
+    }
 }

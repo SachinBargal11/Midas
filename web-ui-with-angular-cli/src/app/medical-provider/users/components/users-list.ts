@@ -27,6 +27,8 @@ export class UsersListComponent implements OnInit {
     datasource: User[];
     totalRecords: number;
     role;
+    isDeleteProgress: boolean = false;
+
     constructor(
         private _router: Router,
         private _usersStore: UsersStore,
@@ -66,10 +68,10 @@ export class UsersListComponent implements OnInit {
         //event.sortField = Field name to sort with
         //event.sortOrder = Sort order as number, 1 for asc and -1 for dec
         //filters: FilterMetadata object having field as key and filter value, filter matchMode as value
-        
+
         //imitate db connection over a network
         setTimeout(() => {
-            if(this.datasource) {
+            if (this.datasource) {
                 this.users = this.datasource.slice(event.first, (event.first + event.rows));
             }
         }, 250);
@@ -87,6 +89,7 @@ export class UsersListComponent implements OnInit {
     deleteUser() {
         if (this.selectedUsers !== undefined) {
             this.selectedUsers.forEach(currentUser => {
+                this.isDeleteProgress = true;
                 this._progressBarService.show();
                 let result;
                 result = this._usersStore.deleteUser(currentUser);
@@ -110,10 +113,12 @@ export class UsersListComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                         this._notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
+                        this.isDeleteProgress = false;
                         this._progressBarService.hide();
                     });
             });

@@ -16,9 +16,9 @@
     </div>
 </div>
 <!--<p-dataTable [value]="patients" [(selection)]="selectedPatients" [lazy]="true" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
-    [totalRecords]="totalRecords" (onLazyLoad)="loadPatientsLazy($event)" [stacked]="stacked">-->
+    [totalRecords]="totalRecords" (onLazyLoad)="loadPatientsLazy($event)">-->
 <p-dataTable [value]="patients" [(selection)]="selectedPatients" [rows]="10" [rowsPerPageOptions]="[5,10,15,20]" [paginator]="true" [globalFilter]="gb" [responsive]="true"
-    [stacked]="stacked">
+   >
     <header>Patients</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column field="user.displayName" header="Name">
@@ -69,8 +69,8 @@
         <input #gbReferrals type="text" class="form-control" style="float:left" placeholder="Search Patient">
     </div>
 </div>
-<p-dataTable [value]="referrals" [(selection)]="selectedReferrals" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
-    [globalFilter]="gbReferrals" [responsive]="true" [stacked]="stacked">
+<p-dataTable [value]="referrals" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
+    [globalFilter]="gbReferrals" [responsive]="true">
     <header>Referrals List</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column field="case.patient.user.displayName" header="Patient name" [sortable]="true"></p-column>

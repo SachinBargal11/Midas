@@ -47,7 +47,7 @@ export class AddConsentFormService {
         let promise: Promise<AddConsent> = new Promise((resolve, reject) => {
             let caseRequestData = consentDetail.toJS();
 
-            return this._http.post(this._url + '/DoctorCaseConsentApproval/save', JSON.stringify(caseRequestData), {
+            return this._http.post(this._url + '/CompanyCaseConsentApproval/save', JSON.stringify(caseRequestData), {
                 headers: this._headers
             })
                 .map(res => res.json())
@@ -65,7 +65,7 @@ export class AddConsentFormService {
 
     getDocumentsForCaseId(caseId: number): Observable<AddConsent[]> {
         let promise: Promise<AddConsent[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/DoctorCaseConsentApproval/getByCaseId/' + caseId )
+            return this._http.get(this._url + '/CompanyCaseConsentApproval/getByCaseId/' + caseId )
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let document = (<Object[]>data).map((data: any) => {
@@ -83,7 +83,7 @@ export class AddConsentFormService {
 
     getDoctorCaseConsentApproval(Id: Number): Observable<AddConsent[]> {      
         let promise: Promise<AddConsent[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/DoctorCaseConsentApproval/get/' +Id)
+            return this._http.get(this._url + '/CompanyCaseConsentApproval/get/' +Id)
                 .map(res => res.json())
                 .subscribe((data) => {
                     let docData =  AddConsentAdapter.parseResponse(data);
@@ -92,6 +92,29 @@ export class AddConsentFormService {
                     reject(error);
                 });
 
+        });
+        return <Observable<AddConsent[]>>Observable.fromPromise(promise);
+    }
+
+
+    uploadScannedDocuments(dwObject: any, currentCaseId: number): Observable<AddConsent[]> {
+       
+        let promise: Promise<AddConsent[]> = new Promise((resolve, reject) => {
+            dwObject.IfSSL = false; // Set whether SSL is used
+            dwObject.HTTPPort = 80;
+            dwObject.HttpFieldNameOfUploadedImage = 'demo[]';
+            // dwObject.SaveAsPDF(`C:\\Users\\Mitali\\Downloads\\scanned_file_${currentCaseId}.pdf`);
+            dwObject.HTTPUploadAllThroughPostAsPDF(
+                // 'midas.codearray.tk',
+                this._url,
+                'fileupload/multiupload/' + currentCaseId + '/consent',
+                `scanned_file_${currentCaseId}.pdf`,
+                (response: any) => {
+                    resolve(response);
+                },
+                (errorCode: string, errorString: string, response: any) => {
+                    reject(new Error(errorString));
+                });
         });
         return <Observable<AddConsent[]>>Observable.fromPromise(promise);
     }

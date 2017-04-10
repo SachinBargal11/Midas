@@ -18,6 +18,7 @@ import { ElementRef, Input, ViewChild } from '@angular/core';
 import { Http } from '@angular/http';
 import * as _ from 'underscore';
 import { ScannerService } from '../../../commons/services/scanner-service';
+import { DialogModule } from 'primeng/primeng';
 
 @Component({
     selector: 'add-consent-form',
@@ -25,9 +26,9 @@ import { ScannerService } from '../../../commons/services/scanner-service';
     providers: [AddConsentFormService]
 })
 
-
 export class AddConsentFormComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
+    display: boolean = false;
     msgs: Message[];
     uploadedFiles: any[] = [];
     uploadedFile = "";
@@ -55,14 +56,14 @@ export class AddConsentFormComponent implements OnInit {
     fileUploaded: string;
     document: AddConsent[] = [];
     selectedDoctoredit = 0;
-    doctorApprovalId: 0;
-    documentMode: string = '1';
+    EditId: number = 0;
+    documentMode: string = '3';
     scannerContainerId: string = `scanner_${moment().valueOf()}`;
     twainSources: TwainSource[] = [];
     selectedTwainSource: TwainSource = null;
     _dwObject: any = null;
-
-
+    documents: AddConsent[] = [];
+   dialogVisible: boolean = false;
     constructor(
         private fb: FormBuilder,
         private service: AddConsentFormService,
@@ -81,26 +82,50 @@ export class AddConsentFormComponent implements OnInit {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
 
             this.caseId = parseInt(routeParams.caseId, 10);
-            // let companyId: number = this._sessionStore.session.currentCompany.id;
+            let companyId: number = this._sessionStore.session.currentCompany.id;
             this.companyId = this._sessionStore.session.currentCompany.id;
             this.url = this._url + '/fileupload/multiupload/' + this.caseId + '/consent';
             this.consentForm = this.fb.group({
-                doctor: ['', Validators.required]
+                // doctor: ['', Validators.required]
                 // ,uploadedFiles: ['', Validators.required]
             });
 
             this.consentformControls = this.consentForm.controls;
         })
 
+        // this._route.params.subscribe((routeParams: any) => {
+        //     this.EditId = parseInt(routeParams.id);
+        //     this._progressBarService.show();
+        //     let resultD = this._AddConsentStore.editDoctorCaseConsentApproval(this.EditId);
+        //     resultD.subscribe(
+        //         (consentDetail: AddConsent) => {
+        //             this.consentDetail = consentDetail;
+        //             this.selectedDoctor = consentDetail.doctorId;
+        //           //  this.file.name = consentDetail.consentReceived;
+        //           //  this.uploadedFiles.push(this.file);
+        //           //  this.UploadedFileName = this.file.name;
+        //             //this.selectedDoctoredit = consentDetail.doctorId.toString();
+        //         },
+        //         (error) => {
+        //             this._router.navigate(['../../'], { relativeTo: this._route });
+        //             this._progressBarService.hide();
+        //         },
+        //         () => {
+        //             this._progressBarService.hide();
+        //         });
+        // });
     }
 
     ngOnInit() {
+        // this.showDialog();
+         this.dialogVisible = true;
+
         let today = new Date();
         let currentDate = today.getDate();
         this.maxDate = new Date();
         this.maxDate.setDate(currentDate);
-        this._AddConsentStore.getdoctors(this.companyId)
-            .subscribe(doctor => this.doctors = doctor);
+        // this._AddConsentStore.getdoctors(this.companyId)
+        //     .subscribe(doctor => this.doctors = doctor);
         // this.downloadDocument();
     }
 
@@ -125,6 +150,7 @@ export class AddConsentFormComponent implements OnInit {
     }
 
     AcquireImage() {
+       
         if (this._dwObject) {
             this._dwObject.IfDisableSourceAfterAcquire = true;
             if (this.selectedTwainSource) {
@@ -139,15 +165,32 @@ export class AddConsentFormComponent implements OnInit {
 
 
 
-    selectDoctor(event) {
-        this.selectedDoctor = 0;
-        let currentDoctor = event.target.value;
+    // selectDoctor(event) {
+    //     this.selectedDoctor = 0;
+    //     let currentDoctor = event.target.value;
 
-    }
+    // }
+
     myfile = {
         "name": "Mubashshir",
         "image": ''
     }
+
+    uploadDocuments() {
+        this.uploadedFiles.length = 1;
+        this._AddConsentStore.uploadScannedDocuments(this._dwObject, this.caseId)
+            .subscribe(
+            (documents: AddConsent[]) => {
+                this.documents = documents;
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
 
     onUpload(event) {
         for (let file of event.files) {
@@ -187,6 +230,7 @@ export class AddConsentFormComponent implements OnInit {
     }
 
     Save() {
+       
         if (this.uploadedFiles.length == 0) {
             let errString = 'Please upload file.'
             let notification = new Notification({
@@ -209,7 +253,8 @@ export class AddConsentFormComponent implements OnInit {
                 caseId: this.caseId,
                 patientId: this.patientId,
                 doctorId: parseInt(consentFormValues.doctor),
-                consentReceived: this.UploadedFileName
+                consentReceived: this.UploadedFileName,
+                companyId: this.companyId
             });
 
             this._progressBarService.show();
@@ -243,6 +288,11 @@ export class AddConsentFormComponent implements OnInit {
         }
     }
 
+
+    DownloadTemplate() {
+        window.location.assign(this._url + '/CompanyCaseConsentApproval/download/' + '/' + this.companyId + '/' + this.caseId);
+    }
+
     //  deleteCase(caseDetail: Case): Observable<Case> {
     //         let promise = new Promise((resolve, reject) => {
     //             return this._http.get(this._url + '/Case/delete/' + caseDetail.id, {
@@ -259,9 +309,10 @@ export class AddConsentFormComponent implements OnInit {
     //         return <Observable<Case>>Observable.from(promise);
     //     }
 
-    GenerateConsentForm() {
 
-    }
+    // showDialog() {
+    //     this.display = true;
+    // }
 
 
 }

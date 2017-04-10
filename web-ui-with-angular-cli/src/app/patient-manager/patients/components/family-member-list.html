@@ -16,9 +16,9 @@
     </div>
 </div>
 <!--<p-dataTable [value]="familyMembers" [(selection)]="selectedFamilyMembers" [lazy]="true" [rows]="10" [paginator]="true" 
-            [totalRecords]="totalRecords" (onLazyLoad)="loadFamilyMembersLazy($event)" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">-->
+            [totalRecords]="totalRecords" (onLazyLoad)="loadFamilyMembersLazy($event)" [globalFilter]="gb" [responsive]="true">-->
 <p-dataTable [value]="familyMembers" [(selection)]="selectedFamilyMembers" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
-             [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+             [globalFilter]="gb" [responsive]="true">
     <header>Family Member List</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column field="displayName" header="Name" [sortable]="true">

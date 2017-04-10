@@ -1,14 +1,50 @@
-import { Routes } from '@angular/router';
-import { ReferalsComponent } from './components/referals';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 import { ValidateActiveSession } from '../../commons/guards/validate-active-session';
-
-export const ReferalsShellRoutes: Routes = [
+import { ShellComponent } from '../../commons/shell-component';
+import { ReferralsShellComponent } from './components/referrals-shell';
+import { InboundReferralsComponent } from './components/inbound-referrals';
+import { OutboundReferralsComponent } from './components/outbound-referrals';
+export const ReferralsShellRoutes: Routes = [
     {
-        path: 'referals',
-        component: ReferalsComponent,
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'referrals'
+    },
+    {
+        path: 'referrals',
+        component: ReferralsShellComponent,
         canActivate: [ValidateActiveSession],
         data: {
-            breadcrumb: 'Referals'
-        }
+            breadcrumb: 'Referrals'
+        },
+        children: [
+            {
+                path: '',
+                redirectTo: 'inbound-referrals',
+                pathMatch: 'full'
+            },
+            {
+                path: 'inbound-referrals',
+                component: InboundReferralsComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Inbound'
+                }
+            },
+            {
+                path: 'outbound-referrals',
+                component: OutboundReferralsComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Outbound'
+                }
+            }
+        ]
     }
 ];
+@NgModule({
+    imports: [RouterModule.forChild(ReferralsShellRoutes)],
+    exports: [RouterModule]
+})
+export class ReferralShellRoutingModule { }

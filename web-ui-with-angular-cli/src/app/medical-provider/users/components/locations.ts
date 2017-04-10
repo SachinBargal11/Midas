@@ -23,6 +23,8 @@ export class LocationsComponent implements OnInit {
     userId: number;
     datasource: DoctorLocationSchedule[];
     totalRecords: number;
+    isDeleteProgress:boolean = false;
+
     constructor(
         public _route: ActivatedRoute,
         private _router: Router,
@@ -80,6 +82,7 @@ export class LocationsComponent implements OnInit {
      deleteLocations() {
         if (this.selectedLocations !== undefined) {
             this.selectedLocations.forEach(currentLocation => {
+                this.isDeleteProgress = true;
                 this._progressBarService.show();
                 let result;
                 result = this._doctorLocationScheduleStore.deleteDoctorLocationSchedule(currentLocation);
@@ -103,11 +106,13 @@ export class LocationsComponent implements OnInit {
                             'createdAt': moment()
                         });
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                         this._notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                     });
             });
         }

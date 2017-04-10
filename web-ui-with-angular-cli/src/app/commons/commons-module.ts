@@ -39,7 +39,7 @@ import {
   GrowlModule
 
 } from 'primeng/primeng';
-import { DropdownModule } from 'ng2-bootstrap';
+// import { DropdownModule } from 'ng2-bootstrap';
 
 
 @NgModule({
@@ -62,9 +62,9 @@ import { DropdownModule } from 'ng2-bootstrap';
     CheckboxModule,
     SharedModule,
     ConfirmDialogModule,
-DropdownModule.forRoot(),
+    // DropdownModule.forRoot(),
     FileUploadModule,
-    GrowlModule    
+    GrowlModule
   ],
   declarations: [
     LimitPipe,
@@ -117,12 +117,12 @@ DropdownModule.forRoot(),
     CheckboxModule,
     SharedModule,
     ConfirmDialogModule,
-    DropdownModule,
+    // DropdownModule,
     ShellComponent,
-ScheduledEventEditorComponent,
+    ScheduledEventEditorComponent,
     FileUploadModule,
     GrowlModule
-    
+
   ]
 })
 export class CommonsModule { }

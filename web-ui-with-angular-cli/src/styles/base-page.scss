@@ -1,4 +1,5 @@
-input.disabled, select.disabled {
+input.disabled,
+select.disabled {
     cursor: not-allowed;
     background-color: #dbe4ea;
     opacity: .65;
@@ -68,6 +69,10 @@ body {
                     &.actions-cell {
                         width: 100px;
                     }
+                    &.inbound-column {
+                        border-right: 1px solid #c7c7c7 !important;
+                        // width: 38px;
+                    }
                     &.ui-selection-column {
                         width: 38px;
                     }
@@ -121,8 +126,7 @@ body {
 .ui-inputtext.ui-state-focus,
 .ui-widget-content .ui-inputtext.ui-state-focus,
 .ui-widget-header .ui-inputtext.ui-state-focus {
-    background: inherit;
-    // border: inherit;
+    background: inherit; // border: inherit;
     box-shadow: none;
 }
 
@@ -132,7 +136,9 @@ body {
 }
 
 .fc-content {
-    .fc-title, .fc-time, .fa {
+    .fc-title,
+    .fc-time,
+    .fa {
         color: white;
     }
 }

@@ -25,6 +25,7 @@ export class PatientsListComponent implements OnInit {
     referrals: Referral[];
     datasource: Patient[];
     totalRecords: number;
+    isDeleteProgress:boolean = false;
 
     constructor(
         private _router: Router,
@@ -119,6 +120,7 @@ export class PatientsListComponent implements OnInit {
     deletePatients() {
         if (this.selectedPatients.length > 0) {
             this.selectedPatients.forEach(currentPatient => {
+                this.isDeleteProgress = true;
                 this._progressBarService.show();
                 let result;
                 result = this._patientsStore.deletePatient(currentPatient);
@@ -142,11 +144,13 @@ export class PatientsListComponent implements OnInit {
                         });
                         this.selectedPatients = [];
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                         this._notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                     });
             });
         } else {

@@ -2,9 +2,8 @@
 <form [formGroup]="addlocationform" (ngSubmit)="save()">
     <div class="row">
         <!--<p-dataTable [value]="locations" [(selection)]="selectedLocations" [lazy]="true" [rows]="10" [paginator]="true"
-            [totalRecords]="totalRecords" (onLazyLoad)="loadLocationsLazy($event)"[globalFilter]="gb" [responsive]="true" [stacked]="stacked">-->
-        <p-dataTable [value]="locations" [(selection)]="selectedLocations" [rows]="10" [paginator]="true"
-        [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+            [totalRecords]="totalRecords" (onLazyLoad)="loadLocationsLazy($event)"[globalFilter]="gb" [responsive]="true">-->
+        <p-dataTable [value]="locations" [(selection)]="selectedLocations" [rows]="10" [paginator]="true" [responsive]="true">
             <header>Locations</header>
             <p-column selectionMode="multiple"></p-column>
             <p-column field="location.name" header="Location Name" [sortable]="true"></p-column>

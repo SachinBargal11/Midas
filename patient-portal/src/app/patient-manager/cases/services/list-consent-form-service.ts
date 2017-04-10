@@ -66,7 +66,6 @@ export class ListConsentFormService {
 
 
     DownloadConsentForm(CaseId: Number): Observable<ListConsent[]> {//DoctorCaseConsentApproval/getByCaseId
-
         let promise: Promise<ListConsent[]> = new Promise((resolve, reject) => {
             // return this._http.get(this._url + '/fileupload/get/' + CaseId  +'/case').map(res => res.json())
             return this._http.get(this._url + '/fileupload/download/' + CaseId + '/' + 0).map(res => res.json())
@@ -74,8 +73,10 @@ export class ListConsentFormService {
                 .subscribe((data: Array<any>) => {
                     let Consent = null;
                     if (data.length) {
-                        Consent = ListConsentAdapter.parseResponse(data);
-                        resolve(data);
+                        //   window.location.assign(this._url + '/fileupload/download/' + CaseId + '/' + 0);
+
+                        //Consent = ListConsentAdapter.parseResponse(data);
+                        //resolve(data);
                     } else {
                         reject(new Error('NOT_FOUND'));
                     }

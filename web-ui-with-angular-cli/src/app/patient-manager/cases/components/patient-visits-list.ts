@@ -41,6 +41,7 @@ export class PatientVisitListComponent implements OnInit {
     room: Room;
     patientName: string;
     patient:Patient;
+    isDeleteProgress:boolean = false;
 
     constructor(
         private _router: Router,
@@ -143,6 +144,7 @@ export class PatientVisitListComponent implements OnInit {
         this.selectedVisits = _.union(this.selectedRoomsVisits, this.selectedDoctorsVisits);
         if (this.selectedVisits.length > 0) {
             this.selectedVisits.forEach(currentVisit => {
+                this.isDeleteProgress = true;
                 this._progressBarService.show();
                 let result;
                 result = this._patientVisitStore.deletePatientVisit(currentVisit);
@@ -166,10 +168,12 @@ export class PatientVisitListComponent implements OnInit {
                         });
                         this.selectedVisits = [];
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                         this._notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
+                        this.isDeleteProgress = false;
                         this._progressBarService.hide();
                     });
             });

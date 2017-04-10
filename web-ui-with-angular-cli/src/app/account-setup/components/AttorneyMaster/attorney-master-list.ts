@@ -23,6 +23,7 @@ export class AttorneyMasterListComponent implements OnInit {
     totalRecords: number;
     companyId: number;
     patientId: number;
+    isDeleteProgress: boolean = false;
 
     constructor(
         private _router: Router,
@@ -34,8 +35,8 @@ export class AttorneyMasterListComponent implements OnInit {
         private _sessionStore: SessionStore
     ) {
 
-         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
-           this.loadAttorney();
+        this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+            this.loadAttorney();
         });
 
     }
@@ -60,10 +61,10 @@ export class AttorneyMasterListComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
-    
+
     loadAttorneysLazy(event: LazyLoadEvent) {
         setTimeout(() => {
-            if(this.datasource) {
+            if (this.datasource) {
                 this.attorneys = this.datasource.slice(event.first, (event.first + event.rows));
             }
         }, 250);
@@ -72,6 +73,7 @@ export class AttorneyMasterListComponent implements OnInit {
     deleteAttorneys() {
         if (this.selectedAttorneys.length > 0) {
             this.selectedAttorneys.forEach(currentAttorney => {
+                this.isDeleteProgress = true;
                 this._progressBarService.show();
                 let result;
                 result = this._attorneyMasterStore.deleteAttorney(currentAttorney);
@@ -100,6 +102,7 @@ export class AttorneyMasterListComponent implements OnInit {
                     },
                     () => {
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                     });
             });
         } else {

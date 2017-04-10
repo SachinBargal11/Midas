@@ -51,7 +51,7 @@ export class EditConsentFormComponent implements OnInit {
     companyId: number;
     document: AddConsent[] = [];
     doctorApprovalId: number;
-    documentMode: string = '1';
+    documentMode: string = '3';
     scannerContainerId: string = `scanner_${moment().valueOf()}`;
     twainSources: TwainSource[] = [];
     selectedTwainSource: TwainSource = null;
@@ -70,7 +70,6 @@ export class EditConsentFormComponent implements OnInit {
         private http: Http,
         private _scannerService: ScannerService,
 
-
     ) {
 
         this._route.parent.parent.params.subscribe((routeParams: any) => {
@@ -79,7 +78,7 @@ export class EditConsentFormComponent implements OnInit {
             this.companyId = this._sessionStore.session.currentCompany.id;
             this.url = this._url + '/fileupload/multiupload/' + this.caseId + '/consent';
             this.consentForm = this.fb.group({
-                doctor: ['', Validators.required]
+                //  doctor: ['', Validators.required]
                 //uploadedFile: ['', Validators.required]
             });
 
@@ -187,7 +186,7 @@ export class EditConsentFormComponent implements OnInit {
         // this.downloadDocument();
 
     }
-    
+
     downloadDocument() {
         this._progressBarService.show();
         this._AddConsentStore.getDocumentsForCaseId(this.caseId)
@@ -212,7 +211,8 @@ export class EditConsentFormComponent implements OnInit {
             caseId: this.caseId,
             patientId: this.patientId,
             doctorId: parseInt(consentFormValues.doctor),
-            consentReceived: this.UploadedFileName
+            //consentReceived: this.UploadedFileName,
+            companyId: this.companyId
         });
 
         this._progressBarService.show();
@@ -244,10 +244,11 @@ export class EditConsentFormComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
-    GenerateConsentForm() {
 
-
+    DownloadTemplate() {
+        window.location.assign(this._url + '/CompanyCaseConsentApproval/download/' + '/' + this.companyId + '/' + this.caseId);
     }
+
 }
 export interface TwainSource {
     idx: number;

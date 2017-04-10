@@ -50,7 +50,7 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        public HttpResponseMessage CreateGbDocObject(HttpRequestMessage request, int id, string type, List<HttpContent> streamContent,string uploadpath)
+        public HttpResponseMessage CreateGbDocObject(HttpRequestMessage request, int id, string type, List<HttpContent> streamContent, string uploadpath)
         {
             var objResult = dataAccessManager.Save(id, type, streamContent, uploadpath);
 
@@ -66,7 +66,24 @@ namespace MIDAS.GBX.WebAPI
             {
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
-            return new HttpResponseMessage();
+        }
+
+        public HttpResponseMessage CreateGbDocObject1(HttpRequestMessage request, int caseid, int companyid, List<HttpContent> streamContent, string uploadpath)
+        {
+            var objResult = dataAccessManager.ConsentSave(caseid, companyid, streamContent, uploadpath);
+
+            try
+            {
+                var res = (object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.OK, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
         }
 
         public HttpResponseMessage CreateGbObject1(HttpRequestMessage request, T gbObject)

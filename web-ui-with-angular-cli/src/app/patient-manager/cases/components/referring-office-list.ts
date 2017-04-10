@@ -21,6 +21,7 @@ export class ReferringOfficeListComponent implements OnInit {
     caseId: number;
     datasource: ReferringOffice[];
     totalRecords: number;
+    isDeleteProgress:boolean = false;
 
     constructor(
         private _router: Router,
@@ -66,6 +67,7 @@ export class ReferringOfficeListComponent implements OnInit {
     deleteReferringOffice() {
         if (this.selectedReferringOffices.length > 0) {
             this.selectedReferringOffices.forEach(currentReferringOffice => {
+                this.isDeleteProgress = true;
                 this._progressBarService.show();
                 let result;
                 result = this._referringOfficeStore.deleteReferringOffice(currentReferringOffice);
@@ -89,10 +91,12 @@ export class ReferringOfficeListComponent implements OnInit {
                         });
                         this.selectedReferringOffices = [];
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                         this._notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
+                        this.isDeleteProgress = false;
                         this._progressBarService.hide();
                     });
             });

@@ -146,29 +146,15 @@ export class CaseService {
                     resolve(response);
                 },
                 (errorCode: string, errorString: string, response: any) => {
-                    reject(new Error(errorString));
+                    let responseData: any = JSON.parse(response);
+                    let documents: any = (<Object[]>responseData).map((document: any) => {
+                        return CaseDocumentAdapter.parseResponse(document);
+                    });
+                    resolve(documents);
+                    // reject(new Error(errorString));
                 });
         });
         return <Observable<CaseDocument[]>>Observable.fromPromise(promise);
-
-
-        /*let promise: Promise<CaseDocument[]> = new Promise((resolve, reject) => {
-            debugger;
-            dwObject.IfSSL = true; // Set whether SSL is used
-            dwObject.HTTPPort = 80;
-            dwObject.HTTPUploadAllThroughPostAsPDF(
-                'www.dynamsoft.com',
-                'Demo/DWT/SaveToDB.aspx',
-                `scanned_file_${currentCaseId}.pdf`,
-                (response: any) => {
-                    resolve(response);
-                },
-                (errorCode: string, errorString: string, response: any) => {
-                    reject(new Error(errorString));
-                });
-        });
-        return <Observable<CaseDocument[]>>Observable.fromPromise(promise);*/
-
     }
 
     addCase(caseDetail: Case): Observable<Case> {

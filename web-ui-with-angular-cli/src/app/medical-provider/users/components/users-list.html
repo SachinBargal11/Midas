@@ -16,8 +16,8 @@
     </div>
 </div>
 <!--<p-dataTable [value]="users" [(selection)]="selectedUsers" [lazy]="true" [rows]="10" [paginator]="true" [globalFilter]="gb" 
-[totalRecords]="totalRecords" (onLazyLoad)="loadUsersLazy($event)" [responsive]="true" [stacked]="stacked">-->
-<p-dataTable [value]="users" [(selection)]="selectedUsers" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+[totalRecords]="totalRecords" (onLazyLoad)="loadUsersLazy($event)" [responsive]="true">-->
+<p-dataTable [value]="users" [(selection)]="selectedUsers" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
     <header>Users</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column field="displayName" header="User Name" [sortable]="true">

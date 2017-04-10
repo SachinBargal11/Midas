@@ -11,7 +11,7 @@
     </h6>
 </section>
 <form [formGroup]="referralForm" (ngSubmit)="save()">
-    <section *ngIf="searchMode == 1">
+    <section *ngIf="searchMode == '1'">
         <div class="ui-widget-header row">
             <div class="col-lg-4 input-group">
                 <span class="input-group-addon"><i class="fa fa-search"></i></span>
@@ -28,7 +28,7 @@
             </div>
         </div>
         <p-dataTable [value]="doctors" [(selection)]="selectedDoctor" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
-            [stacked]="stacked">
+           >
             <header>Doctors</header>
             <p-column selectionMode="single"></p-column>
             <p-column field="user.displayName" header="Doctor Name" [sortable]="true"></p-column>
@@ -42,7 +42,7 @@
                         </p-column>-->
         </p-dataTable>
     </section>
-    <section *ngIf="searchMode == 2">
+    <section *ngIf="searchMode == '2'">
         <div class="ui-widget-header row">
             <div class="col-lg-4 input-group">
                 <span class="input-group-addon"><i class="fa fa-search"></i></span>
@@ -60,7 +60,7 @@
             </div>
         </div>
         <p-dataTable [value]="rooms" [(selection)]="selectedRoom" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
-            [stacked]="stacked">
+           >
             <p-column selectionMode="single"></p-column>
             <p-column field="name" header="Name" [sortable]="true"></p-column>
             <p-column field="phone" header="Phone" [sortable]="true"></p-column>

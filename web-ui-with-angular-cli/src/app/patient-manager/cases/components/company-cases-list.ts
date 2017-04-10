@@ -24,6 +24,7 @@ export class CompanyCasesComponent implements OnInit {
     selectedCases: Case[] = [];
     datasource: Case[];
     totalRecords: number;
+    isDeleteProgress:boolean = false;
 
     constructor(
         public _route: ActivatedRoute,
@@ -102,6 +103,7 @@ export class CompanyCasesComponent implements OnInit {
     deleteCases() {
         if (this.selectedCases.length > 0) {
             this.selectedCases.forEach(currentCase => {
+                this.isDeleteProgress = true;
                 this._progressBarService.show();
                 this._casesStore.deleteCase(currentCase)
                     .subscribe(
@@ -124,10 +126,12 @@ export class CompanyCasesComponent implements OnInit {
                         });
                         this.selectedCases = [];
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                         this._notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
+                        this.isDeleteProgress = false;
                         this._progressBarService.hide();
                     });
             });

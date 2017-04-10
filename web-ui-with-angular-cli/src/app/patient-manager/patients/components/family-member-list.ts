@@ -21,6 +21,7 @@ export class FamilyMemberListComponent implements OnInit {
     patientId: number;
     datasource: FamilyMember[];
     totalRecords: number;
+    isDeleteProgress: boolean = false;
 
     constructor(
         private _router: Router,
@@ -66,6 +67,7 @@ export class FamilyMemberListComponent implements OnInit {
     deleteFamilyMember() {
         if (this.selectedFamilyMembers.length > 0) {
             this.selectedFamilyMembers.forEach(currentFamilyMember => {
+                this.isDeleteProgress = true;
                 this._progressBarService.show();
                 let result;
                 result = this._familyMemberStore.deleteFamilyMember(currentFamilyMember);
@@ -89,11 +91,13 @@ export class FamilyMemberListComponent implements OnInit {
                         });
                         this.selectedFamilyMembers = [];
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                         this._notificationsStore.addNotification(notification);
                         this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                     },
                     () => {
                         this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                     });
             });
         } else {

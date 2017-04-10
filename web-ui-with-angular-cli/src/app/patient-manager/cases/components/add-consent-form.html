@@ -1,31 +1,10 @@
 <h3 class="with-border">Add Consent Form</h3>
-
+<input type="radio" value="3" name="documentMode" [(ngModel)]="documentMode"> Download Template
 <input type="radio" value="1" name="documentMode" [(ngModel)]="documentMode"> Scan Documents
 <input type="radio" value="2" name="documentMode" [(ngModel)]="documentMode"> Upload Documents
 <br>
-<section class="card">
-    <div class="card-block">
-        <div class="col-lg-4">
-            <label class="form-label">Doctor Name
-                                <span class="color-red">*</span>
-                            </label>
 
-            <div [formGroup]="consentForm" class="form-group" [class.error]="consentformControls.doctor.touched && !consentformControls.doctor.valid">
-                <select formControlName="doctor" type="text" (change)="selectDoctor($event)" class="form-control" placeholder="" [class.error]="consentformControls.doctor.touched && !consentformControls.doctor.valid">
-                            <option value="">-Select Doctor-</option>
-                            <option *ngFor="let doctors of doctors" value="{{doctors.id}}">{{doctors.user.firstName}}</option>
-                            </select>
-                <div class='error-list' *ngIf="consentformControls.doctor.touched && !consentformControls.doctor.valid">
-                    <ul>
-                        <li *ngIf="consentformControls.doctor.hasError('required')">Doctor is required.</li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
-<section class="card" [hidden]="documentMode != 1">
+<section class="card" [hidden]="documentMode != '1'">
     <header class="card-header card-header-lg">
         Scan Documents
     </header>
@@ -51,41 +30,45 @@
             <p class="mb-0">There are no scanners found.</p>
         </div>
     </div>
-</section>
-<section class="card" [hidden]="documentMode != 2">
-    <section class="card">
-        <div class="form-group">
-            <button type="submit" class="btn btn-success sign-up" (click)="GenerateConsentForm()">Generate Consent Form
-        <!--<loader [visible]="isSaveProgress"></loader>-->
+    <div class="form-group">
+        <button [disabled]="!consentForm.valid || isSaveProgress" type="submit" (click)="Save()" class="btn btn-success sign-up">Submit
+        <loader [visible]="isSaveProgress"></loader>
     </button>
-            <label class="form-label" style="display: none">
-<a href="/ConsentForm.pdf">Download Consent Form</a>
+        <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
 
-</label>
-
-
-
-</div>
+    </div>
 </section>
-<div>
+<section class="card" [hidden]="documentMode != '2'">
+    <div>
 
-    <label class="form-label">Form Upload
+        <label class="form-label">Form Upload
                                 <span class="color-red">*</span>
                             </label>
+        <p-growl [value]="msgs"></p-growl>
+        <p-fileUpload name="demo[]" url={{url}} (onUpload)="onUpload($event)" maxFileSize="1000000">
+            <ng-template pTemplate type="content">
+                <ul *ngIf="uploadedFiles.length">
+                    <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                </ul>
+            </ng-template>
 
+        </p-fileUpload>
+    </div>
+    <div class="form-group">
+        <button [disabled]="!consentForm.valid || isSaveProgress" type="submit" (click)="Save()" class="btn btn-success sign-up">Submit
+        <loader [visible]="isSaveProgress"></loader>
+    </button>
+        <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
 
-    <p-growl [value]="msgs"></p-growl>
-    <p-fileUpload name="demo[]" url={{url}} (onUpload)="onUpload($event)" maxFileSize="1000000">
-        <ng-template pTemplate type="content">
-            <ul *ngIf="uploadedFiles.length">
-                <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
-            </ul>
-        </ng-template>
-
-    </p-fileUpload>
-</div>
+    </div>
 </section>
 
+<section class="card" [hidden]="documentMode != '3'">
+    <br>
+    <a style="color: blue" (click)="DownloadTemplate()">Download</a>
+
+
+</section>
 
 
 <br>

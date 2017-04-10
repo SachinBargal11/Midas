@@ -17,6 +17,7 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 export class UserStatisticsComponent {
     data: any;
     options: any;
+    usersLoading: boolean = false;
     // users: Account[];
     constructor(
         private _router: Router,

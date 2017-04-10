@@ -16,7 +16,7 @@
     </div>
 </div>
 <p-dataTable [value]="insurances" [(selection)]="selectedInsurances" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
-    [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+    [globalFilter]="gb" [responsive]="true">
     <p-column selectionMode="multiple"></p-column>
     <p-column field="policyHoldersName" header="Policy Holder" [sortable]="true"></p-column>
     <p-column field="insuranceTypeLabel" header="Insurance Type" [sortable]="true"></p-column>
