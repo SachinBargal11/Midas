@@ -17,20 +17,23 @@
 </div>
 <!--<p-dataTable [value]="cases" [(selection)]="selectedCases" [lazy]="true" [rows]="10" [paginator]="true" [globalFilter]="gb" 
 [totalRecords]="totalRecords" (onLazyLoad)="loadCasesLazy($event)" [responsive]="true">-->
-<p-dataTable [value]="cases" [(selection)]="selectedCases" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gb" [responsive]="true"
-   >
+<p-dataTable [value]="cases" [(selection)]="selectedCases" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]"
+    [globalFilter]="gb" [responsive]="true">
     <header>Cases</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column field="patient.user.displayName" header="Patient Name" [sortable]="true">
         <ng-template let-currentUser="rowData" pTemplate="body">
-            <a  title="Edit" routerLink="{{currentUser.patient.user.id}}">{{currentUser.patient.user.displayName}}
+            <a title="Edit" routerLink="{{currentUser.patient.user.id}}">{{currentUser.patient.user.displayName}}
             <!--<a routerLink="{{user.id}}">{{user.firstName}} {{user.lastName}}-->
             </a>
         </ng-template>
     </p-column>
+    <p-column field="id" header="Case Id" [sortable]="true"></p-column>
     <p-column field="caseStatusLabel" header="Case Status" [sortable]="true"></p-column>
     <p-column field="caseTypeLabel" header="Case Type" [sortable]="true"></p-column>
-     <p-column styleClass="actions-cell" header="Actions">
+    <p-column field="" header="Consent Received" [sortable]="true"></p-column>
+    <p-column field="" header="Referral History" [sortable]="true"></p-column>
+    <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-case="rowData" pTemplate="body">
             <!--<a><i class="glyphicon glyphicon-edit"></i></a>-->
             <a routerLink="{{case.patient.user.id}}/{{case.id}}/basic"><i class="glyphicon glyphicon-edit"></i></a>

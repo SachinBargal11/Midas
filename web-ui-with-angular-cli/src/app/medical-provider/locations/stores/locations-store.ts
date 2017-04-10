@@ -39,6 +39,18 @@ export class LocationsStore {
         return <Observable<LocationDetails[]>>Observable.fromPromise(promise);
     }
 
+       getAllLocationAndTheirCompany(): Observable<LocationDetails[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._locationsService.getAllLocationAndTheirCompany().subscribe((locations: LocationDetails[]) => {
+                this._locations.next(List(locations));
+                resolve(locations);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<LocationDetails[]>>Observable.fromPromise(promise);
+    }
+
     getLocationById(id: number): Observable<LocationDetails> {
         let promise = new Promise((resolve, reject) => {
             this._locationsService.getLocation(id).subscribe((location: LocationDetails) => {

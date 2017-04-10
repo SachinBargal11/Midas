@@ -2,16 +2,48 @@
     <h6 class="with-border">
         <div class="row">
             <div class="col-md-2">
-                <input type="radio" value="1" name="searchMode" [(ngModel)]="searchMode"> Search Doctors
+                <input type="radio" value="1" name="searchMode" [(ngModel)]="searchMode"> Medical Facility
+            </div>
+            <div class="col-md-2">
+                <input type="radio" value="2" name="searchMode" [(ngModel)]="searchMode"> Speciality
             </div>
             <div class="col-md-3">
-                <input type="radio" value="2" name="searchMode" [(ngModel)]="searchMode"> Search Rooms
+                <input type="radio" value="3" name="searchMode" [(ngModel)]="searchMode"> Testing Rooms
             </div>
         </div>
     </h6>
 </section>
 <form [formGroup]="referralForm" (ngSubmit)="save()">
     <section *ngIf="searchMode == '1'">
+        <div class="ui-widget-header row">
+            <div class="col-lg-4 input-group">
+                <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                <input #gb type="text" class="form-control" style="float:left" placeholder="Search Medical Facility">
+            </div>
+            <!--<div class="col-lg-3" style="text-align: right">
+                <label class="form-label">Search Doctors by Speciality </label>
+            </div>-->
+            <!--<div class="col-lg-4">
+                <select formControlName="speciality" type="text" (change)="selectSpeciality($event)" class="form-control">
+                            <option value="">-Select Speciality-</option>
+                            <option *ngFor="let speciality of specialities" value="{{speciality.id}}">{{speciality.specialityCode}} - {{speciality.name}}</option>
+                        </select>
+            </div>-->
+        </div>
+        <p-dataTable [value]="locations" [(selection)]="selectedLocation" [rows]="10" [rowsPerPageOptions]="[5,10,15,20]" [paginator]="true"
+            [globalFilter]="gb" [responsive]="true" [stacked]="stacked">
+            <header>Locations</header>
+            <p-column selectionMode="single"></p-column>
+            <p-column field="company.name" header="Company" [sortable]="true"></p-column>
+            <p-column field="location.name" header="Location" [sortable]="true"></p-column>
+            <!--<p-column field="user.doctorSpecialities" header="Speciality" [sortable]="true">
+                            <ng-template let-currentReferral="rowData" pTemplate="body">
+                                {{getCurrentDoctorSpeciality(currentReferral)}}
+                            </ng-template>
+                        </p-column>-->
+        </p-dataTable>
+    </section>
+    <section *ngIf="searchMode == '2'">
         <div class="ui-widget-header row">
             <div class="col-lg-4 input-group">
                 <span class="input-group-addon"><i class="fa fa-search"></i></span>
@@ -27,8 +59,7 @@
                         </select>
             </div>
         </div>
-        <p-dataTable [value]="doctors" [(selection)]="selectedDoctor" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
-           >
+        <p-dataTable [value]="doctors" [(selection)]="selectedDoctor" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
             <header>Doctors</header>
             <p-column selectionMode="single"></p-column>
             <p-column field="user.displayName" header="Doctor Name" [sortable]="true"></p-column>
@@ -42,7 +73,7 @@
                         </p-column>-->
         </p-dataTable>
     </section>
-    <section *ngIf="searchMode == '2'">
+    <section *ngIf="searchMode == '3'">
         <div class="ui-widget-header row">
             <div class="col-lg-4 input-group">
                 <span class="input-group-addon"><i class="fa fa-search"></i></span>
@@ -59,8 +90,7 @@
                         </select>
             </div>
         </div>
-        <p-dataTable [value]="rooms" [(selection)]="selectedRoom" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
-           >
+        <p-dataTable [value]="rooms" [(selection)]="selectedRoom" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
             <p-column selectionMode="single"></p-column>
             <p-column field="name" header="Name" [sortable]="true"></p-column>
             <p-column field="phone" header="Phone" [sortable]="true"></p-column>
@@ -83,7 +113,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-2 m-t-lg"></div>
+            <!--<div class="col-md-2 m-t-lg"></div>
             <div class="col-md-4 m-t-lg">
                 <div class="row">
                     <label class="form-label">
@@ -93,7 +123,7 @@
                 <div class="row">
                     <a href="/ConsentForm.pdf"><u>Download Document</u></a>   
                 </div>
-            </div>
+            </div>-->
         </div>
     </section>
     <button [disabled]="!referralForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save

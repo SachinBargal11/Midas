@@ -47,57 +47,89 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             caseBO.CreateByUserID = cases.CreateByUserID;
             caseBO.UpdateByUserID = cases.UpdateByUserID;
 
-            BO.PatientEmpInfo boPatientEmpInfo = new BO.PatientEmpInfo();
-            using (PatientEmpInfoRepository cmp = new PatientEmpInfoRepository(_context))
+            if (cases.PatientEmpInfo != null)
             {
-               
-                boPatientEmpInfo = cmp.Convert<BO.PatientEmpInfo, PatientEmpInfo>(cases.PatientEmpInfo);
-                caseBO.PatientEmpInfo = boPatientEmpInfo;
-            }
-
-            BO.Patient2 boPatient2 = new BO.Patient2();
-            using (Patient2Repository cmp = new Patient2Repository(_context))
-            {
-
-                boPatient2 = cmp.Convert<BO.Patient2, Patient2>(cases.Patient2);
-                caseBO.Patient2 = boPatient2;
-            }
-
-
-            List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
-            foreach (var casemap in cases.CaseCompanyMappings)
-            {
-                using (CaseCompanyMappingRepository cmp = new CaseCompanyMappingRepository(_context))
+                BO.PatientEmpInfo boPatientEmpInfo = new BO.PatientEmpInfo();
+                using (PatientEmpInfoRepository cmp = new PatientEmpInfoRepository(_context))
                 {
-                    boCaseCompanyMapping.Add(cmp.Convert<BO.CaseCompanyMapping, CaseCompanyMapping>(casemap));
+                    boPatientEmpInfo = cmp.Convert<BO.PatientEmpInfo, PatientEmpInfo>(cases.PatientEmpInfo);
+                    caseBO.PatientEmpInfo = boPatientEmpInfo;
                 }
             }
-            caseBO.CaseCompanyMappings = boCaseCompanyMapping;
+
+            if (cases.Patient2 != null)
+            {
+                BO.Patient2 boPatient2 = new BO.Patient2();
+                using (Patient2Repository cmp = new Patient2Repository(_context))
+                {                    
+                    boPatient2 = cmp.Convert<BO.Patient2, Patient2>(cases.Patient2);
+                    caseBO.Patient2 = boPatient2;                    
+                }
+            }
+                
+            if (cases.CaseCompanyMappings != null)
+            {
+                List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
+                foreach (var casemap in cases.CaseCompanyMappings)
+                {
+                    if (casemap != null)
+                    {
+                        using (CaseCompanyMappingRepository cmp = new CaseCompanyMappingRepository(_context))
+                        {
+                            boCaseCompanyMapping.Add(cmp.Convert<BO.CaseCompanyMapping, CaseCompanyMapping>(casemap));
+                        }
+                    }                    
+                }
+                caseBO.CaseCompanyMappings = boCaseCompanyMapping;
+            }            
 
             if (cases.CompanyCaseConsentApprovals != null)
             {
                 List<BO.CompanyCaseConsentApproval> boCompanyCaseConsentApproval = new List<BO.CompanyCaseConsentApproval>();
                 foreach (var casemap in cases.CompanyCaseConsentApprovals)
                 {
-                    using (CompanyCaseConsentApprovalRepository cmp = new CompanyCaseConsentApprovalRepository(_context))
+                    if (casemap != null)
                     {
-                        boCompanyCaseConsentApproval.Add(cmp.Convert<BO.CompanyCaseConsentApproval, CompanyCaseConsentApproval>(casemap));
-                    }
+                        using (CompanyCaseConsentApprovalRepository cmp = new CompanyCaseConsentApprovalRepository(_context))
+                        {
+                            boCompanyCaseConsentApproval.Add(cmp.Convert<BO.CompanyCaseConsentApproval, CompanyCaseConsentApproval>(casemap));
+                        }
+                    }                        
                 }
                 caseBO.CompanyCaseConsentApprovals = boCompanyCaseConsentApproval;
             }
 
             if (cases.Referrals != null)
             {
-                List<BO.Referral> boReferral = new List<BO.Referral>();
-                foreach (var casemap in cases.Referrals)
+                List<BO.Referral> BOListReferral = new List<BO.Referral>();
+                foreach (var eachRefrral in cases.Referrals)
                 {
-                    using (ReferralRepository cmp = new ReferralRepository(_context))
+                    if (eachRefrral != null)
                     {
-                        boReferral.Add(cmp.Convert<BO.Referral, Referral>(casemap));
-                    }
+                        BO.Referral referralBO = new BO.Referral();
+
+                        referralBO.ID = eachRefrral.Id;
+                        referralBO.CaseId = eachRefrral.CaseId;
+                        referralBO.ReferringCompanyId = eachRefrral.ReferringCompanyId;
+                        referralBO.ReferringLocationId = eachRefrral.ReferringLocationId;
+                        referralBO.ReferringUserId = eachRefrral.ReferringUserId;
+                        referralBO.ReferredToCompanyId = eachRefrral.ReferredToCompanyId;
+                        referralBO.ReferredToLocationId = eachRefrral.ReferredToLocationId;
+                        referralBO.ReferredToDoctorId = eachRefrral.ReferredToDoctorId;
+                        referralBO.ReferredToRoomId = eachRefrral.ReferredToRoomId;
+                        referralBO.Note = eachRefrral.Note;
+                        referralBO.ReferredByEmail = eachRefrral.ReferredByEmail;
+                        referralBO.ReferredToEmail = eachRefrral.ReferredToEmail;
+                        referralBO.ReferralAccepted = eachRefrral.ReferralAccepted;
+                        referralBO.IsDeleted = eachRefrral.IsDeleted;
+                        referralBO.CreateByUserID = eachRefrral.CreateByUserID;
+                        referralBO.UpdateByUserID = eachRefrral.UpdateByUserID;
+
+                        BOListReferral.Add(referralBO);
+                    }                        
                 }
-                caseBO.Referrals = boReferral;
+
+                caseBO.Referrals = BOListReferral;
             }
 
 
