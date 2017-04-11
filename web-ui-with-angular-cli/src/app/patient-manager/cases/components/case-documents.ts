@@ -1,5 +1,4 @@
-import { Failure } from 'codelyzer/walkerFactory/walkerFactory';
-import { Component, OnInit, Injectable } from '@angular/core';
+import { Component, OnInit, Injectable, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PatientVisitsStore } from '../../patient-visit/stores/patient-visit-store';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
@@ -18,7 +17,8 @@ import { CasesStore } from '../../cases/stores/case-store';
 import { CaseService } from '../../cases/services/cases-services';
 import { ScannerService } from '../../../commons/services/scanner-service';
 import { CaseDocumentAdapter } from '../services/adapters/case-document-adapters';
-import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
+import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+import { DocumentUploadComponent } from '../../../commons/components/document-upload/document-upload.component';
 
 
 @Component({
@@ -31,18 +31,13 @@ export class CaseDocumentsUploadComponent implements OnInit {
 
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     selectedDocumentList = [];
-    uploadedFiles: any[] = [];
     currentCaseId: number;
-    documentMode: string = '1';
     documents: CaseDocument[] = [];
     url;
     isSaveProgress = false;
     isDeleteProgress: boolean = false;
-
-    scannerContainerId: string = `scanner_${moment().valueOf()}`;
-    twainSources: TwainSource[] = [];
-    selectedTwainSource: TwainSource = null;
-    _dwObject: any = null;
+    @ViewChild(DocumentUploadComponent)
+    private _documentUploadComponent: DocumentUploadComponent;
 
     constructor(
         private _router: Router,
@@ -66,54 +61,8 @@ export class CaseDocumentsUploadComponent implements OnInit {
         this.getDocuments();
     }
 
-    ngOnDestroy() {
-        this.unloadWebTwain();
-    }
-
-    unloadWebTwain() {
-        this._scannerService.deleteWebTwain(this.scannerContainerId);
-        this._scannerService.unloadAll();
-    }
-
-    ngAfterViewInit() {
-        _.defer(() => {
-            this.createDWObject();
-        });
-
-    }
-
-    createDWObject() {
-        this._scannerService.getWebTwain(this.scannerContainerId)
-            .then((dwObject) => {
-                this._dwObject = dwObject;
-                this._dwObject.SetViewMode(1, -1);
-                if (this._dwObject) {
-                    for (let i = 0; i < this._dwObject.SourceCount; i++) {
-                        this.twainSources.push({ idx: i, name: this._dwObject.GetSourceNameItems(i) });
-                    }
-
-                }
-            }).catch(() => {
-                // (<any>window).OnWebTwainNotFoundOnWindowsCallback();
-                this._notificationsService.alert('', 'Not able to connect scanner. Please refresh the page again and download the software prompted.');
-            });
-    }
-
-    AcquireImage() {
-        if (this._dwObject) {
-            this._dwObject.IfDisableSourceAfterAcquire = true;
-            if (this.selectedTwainSource) {
-                this._dwObject.SelectSourceByIndex(this.selectedTwainSource.idx);
-            } else {
-                this._dwObject.SelectSource();
-            }
-            this._dwObject.OpenSource();
-            this._dwObject.AcquireImage();
-        }
-    }
-
-    uploadDocuments() {
-        this._casesStore.uploadScannedDocuments(this._dwObject, this.currentCaseId)
+    uploadDocuments(dwObject) {
+        this._casesStore.uploadScannedDocuments(dwObject, this.currentCaseId)
             .subscribe(
             (documents: CaseDocument[]) => {
                 _.forEach(documents, (currentDocument: any) => {
@@ -132,8 +81,8 @@ export class CaseDocumentsUploadComponent implements OnInit {
                 this._progressBarService.hide();
             },
             () => {
-                this.unloadWebTwain();
-                this.createDWObject();
+                this._documentUploadComponent.unloadWebTwain();
+                this._documentUploadComponent.createDWObject();
                 this._progressBarService.hide();
             });
     }
@@ -175,46 +124,46 @@ export class CaseDocumentsUploadComponent implements OnInit {
     deleteDocument() {
         if (this.selectedDocumentList.length > 0) {
             this.confirmationService.confirm({
-            message: 'Do you want to delete this record?',
-            header: 'Delete Confirmation',
-            icon: 'fa fa-trash',
-            accept: () => {
+                message: 'Do you want to delete this record?',
+                header: 'Delete Confirmation',
+                icon: 'fa fa-trash',
+                accept: () => {
 
-            this.selectedDocumentList.forEach(currentCase => {
-                this._progressBarService.show();
-                this.isDeleteProgress = true;
-                this._casesStore.deleteDocument(currentCase)
-                    .subscribe(
-                    (response) => {
-                        let notification = new Notification({
-                            'title': 'record deleted successfully!',
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
+                    this.selectedDocumentList.forEach(currentCase => {
+                        this._progressBarService.show();
+                        this.isDeleteProgress = true;
+                        this._casesStore.deleteDocument(currentCase)
+                            .subscribe(
+                            (response) => {
+                                let notification = new Notification({
+                                    'title': 'record deleted successfully!',
+                                    'type': 'SUCCESS',
+                                    'createdAt': moment()
 
-                        });
-                        this.getDocuments();
-                        this._notificationsStore.addNotification(notification);
-                        this.selectedDocumentList = [];
-                    },
-                    (error) => {
-                        let errString = 'Unable to delete record';
-                        let notification = new Notification({
-                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this.selectedDocumentList = [];
-                        this._progressBarService.hide();
-                        this.isDeleteProgress = false;
-                        this._notificationsStore.addNotification(notification);
-                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    },
-                    () => {
-                        this._progressBarService.hide();
-                        this.isDeleteProgress = false;
+                                });
+                                this.getDocuments();
+                                this._notificationsStore.addNotification(notification);
+                                this.selectedDocumentList = [];
+                            },
+                            (error) => {
+                                let errString = 'Unable to delete record';
+                                let notification = new Notification({
+                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                    'type': 'ERROR',
+                                    'createdAt': moment()
+                                });
+                                this.selectedDocumentList = [];
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                                this._notificationsStore.addNotification(notification);
+                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                            },
+                            () => {
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                            });
                     });
-            });
-            }
+                }
             });
         } else {
             let notification = new Notification({

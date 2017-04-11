@@ -1,4 +1,5 @@
 import {Room} from '../../models/room';
+import { LocationDetailAdapter } from '../../../locations/services/adapters/location-detail-adapter';
 
 
 export class RoomsAdapter {
@@ -12,7 +13,7 @@ export class RoomsAdapter {
                     contactPersonName: roomsData.contactersonName,
                     phone: roomsData.phone,
                     roomTest: roomsData.roomTest,
-                    location: roomsData.location,
+                    location: LocationDetailAdapter.parseResponse(roomsData.location),
                     schedule: roomsData.schedule,
                     isDeleted: roomsData.isDeleted
             });

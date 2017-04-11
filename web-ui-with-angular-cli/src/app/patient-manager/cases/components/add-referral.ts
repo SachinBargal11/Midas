@@ -52,6 +52,7 @@ export class AddReferralComponent implements OnInit {
     patients: Patient[];
     consent: AddConsent[];
     patientsWithoutCase: Patient[];
+    selectedLocation: LocationDetails;
 
     constructor(
         private fb: FormBuilder,
@@ -203,25 +204,28 @@ export class AddReferralComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
+    getCurrentDoctorCompanyName(currentDoctor: Doctor) {
+        return currentDoctor.doctorLocationSchedules[0].location.company.name;        
+    }
 
     save() {
         this.isSaveProgress = true;
         this._progressBarService.show();
         let referralFormValues = this.referralForm.value;
         let referralDetail;
-        if (this.consent) {
+        // if (this.consent) {
             referralDetail = new Referral({
                 caseId: this.caseId,
                 referringCompanyId: this._sessionStore.session.currentCompany.id,
                 referringLocationId: null,
-                referringDoctorId: this.consent[0].doctorId,
-                referredToCompanyId: null,
-                referredToLocationId: null,
+                referringUserId: this._sessionStore.session.user.id,
+                referredByEmail: this._sessionStore.session.user.userName,
+                referredToCompanyId: this.selectedDoctor ? this.selectedDoctor.doctorLocationSchedules[0].location.company.id : this.selectedLocation ? this.selectedLocation.company.id : this.selectedRoom ? this.selectedRoom.location.company.id : null,
+                referredToLocationId: this.selectedDoctor ? this.selectedDoctor.doctorLocationSchedules[0].location.location.id : this.selectedLocation ? this.selectedLocation.location.id : this.selectedRoom ? this.selectedRoom.location.location.id : null,
                 referredToDoctorId: this.selectedDoctor ? this.selectedDoctor.id : null,
                 referredToRoomId: this.selectedRoom ? this.selectedRoom.id : null,
                 note: referralFormValues.note,
-                // referredByEmail: this._sessionStore.session.user.userName,
-                referredByEmail: this.doctor.user.userName,
+                // referredByEmail: this.doctor.user.userName,
                 referredToEmail: this.selectedDoctor ? this.selectedDoctor.user.userName : null,
                 referralAccepted: 0
             });
@@ -253,17 +257,17 @@ export class AddReferralComponent implements OnInit {
                     this.isSaveProgress = false;
                     this._progressBarService.hide();
                 });
-        } else {
-            let notification = new Notification({
-                'messages': 'Unable to add Referral, You dont have consent',
-                'type': 'ERROR',
-                'createdAt': moment()
-            });
-            this.isSaveProgress = false;
-            this._progressBarService.hide();
-            this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Unable to add Referral, You dont have consent');
-        }
+        // } else {
+        //     let notification = new Notification({
+        //         'messages': 'Unable to add Referral, You dont have consent',
+        //         'type': 'ERROR',
+        //         'createdAt': moment()
+        //     });
+        //     this.isSaveProgress = false;
+        //     this._progressBarService.hide();
+        //     this._notificationsStore.addNotification(notification);
+        //     this._notificationsService.error('Oh No!', 'Unable to add Referral, You dont have consent');
+        // }
     }
 
 }

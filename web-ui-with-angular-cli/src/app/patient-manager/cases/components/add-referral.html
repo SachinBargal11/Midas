@@ -64,8 +64,8 @@
             <p-column selectionMode="single"></p-column>
             <p-column field="user.displayName" header="Doctor Name" [sortable]="true"></p-column>
             <p-column field="user.userName" header="Email" [sortable]="true"></p-column>
-            <p-column field="" header="Company" [sortable]="true"></p-column>
-            <p-column field="" header="Location" [sortable]="true"></p-column>
+            <p-column field="doctorLocationSchedules[0].location.company.name" header="Company" [sortable]="true"></p-column>
+            <p-column field="doctorLocationSchedules[0].location.location.name" header="Location" [sortable]="true"></p-column>
             <!--<p-column field="user.doctorSpecialities" header="Speciality" [sortable]="true">
                             <ng-template let-currentReferral="rowData" pTemplate="body">
                                 {{getCurrentDoctorSpeciality(currentReferral)}}
@@ -95,7 +95,8 @@
             <p-column field="name" header="Name" [sortable]="true"></p-column>
             <p-column field="phone" header="Phone" [sortable]="true"></p-column>
             <p-column field="roomTest.name" header="Tests Provided" [sortable]="true"></p-column>
-            <p-column field="location.name" header="Location" [sortable]="true"></p-column>
+            <p-column field="location.company.name" header="Company" [sortable]="true"></p-column>
+            <p-column field="location.location.name" header="Location" [sortable]="true"></p-column>
         </p-dataTable>
     </section>
     <br>

@@ -30,6 +30,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage ValidateOTP(HttpRequestMessage request, T gbObject);
         HttpResponseMessage RegenerateOTP(HttpRequestMessage request, T gbObject);
         HttpResponseMessage Delete(HttpRequestMessage request, int id);
+        HttpResponseMessage Delete(HttpRequestMessage request, int param1, int param2, int param3);        
         HttpResponseMessage DeleteFile(HttpRequestMessage request,int caseId, int id);
         string Download(HttpRequestMessage request, int caseId, int documentid);
         HttpResponseMessage GetDocumentList(HttpRequestMessage request, int id);

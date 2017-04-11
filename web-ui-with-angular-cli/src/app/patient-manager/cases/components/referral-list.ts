@@ -13,7 +13,6 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { Room } from '../../../medical-provider/rooms/models/room';
-import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 
 @Component({
     selector: 'referral-list',
@@ -21,8 +20,11 @@ import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 })
 
 export class ReferralListComponent implements OnInit {
+    searchMode: number = 1;
     selectedReferrals: Referral[] = [];
     referrals: Referral[];
+    referredUsers: Referral[];
+    referredRooms: Referral[];
     referredDoctors: Doctor[];
     refferedRooms: Room[];
     caseId: number;
@@ -36,9 +38,7 @@ export class ReferralListComponent implements OnInit {
         private _referralStore: ReferralStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
-        private _notificationsService: NotificationsService,
-        private confirmationService: ConfirmationService,
-
+        private _notificationsService: NotificationsService
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
@@ -54,21 +54,36 @@ export class ReferralListComponent implements OnInit {
         this._referralStore.getReferralsByCaseId(this.caseId)
             .subscribe((referrals: Referral[]) => {
                 // this.referrals = referrals.reverse();
-                let doctors: Doctor[] = _.map(referrals, (currentReferral: Referral) => {
-                    return currentReferral.referredToDoctor ? currentReferral.referredToDoctor : null;
-                });
-                let matchingDoctors = _.reject(doctors, (currentDoctor: Doctor) => {
-                    return currentDoctor == null;
-                });
-                this.referredDoctors = matchingDoctors.reverse();
+                // let doctors: Doctor[] = _.map(referrals, (currentReferral: Referral) => {
+                //     return currentReferral.referredToDoctor ? currentReferral.referredToDoctor : null;
+                // });
+                // let matchingDoctors = _.reject(doctors, (currentDoctor: Doctor) => {
+                //     return currentDoctor == null;
+                // });
+                // this.referredDoctors = matchingDoctors.reverse();
 
-                let rooms: Room[] = _.map(referrals, (currentReferral: Referral) => {
-                    return currentReferral.room ? currentReferral.room : null;
+                // let rooms: Room[] = _.map(referrals, (currentReferral: Referral) => {
+                //     return currentReferral.room ? currentReferral.room : null;
+                // });
+                // let matchingRooms = _.reject(rooms, (currentRoom: Room) => {
+                //     return currentRoom == null;
+                // });
+                // this.refferedRooms = matchingRooms.reverse();
+                let userReferrals: Referral[] = _.map(referrals, (currentReferral: Referral) => {
+                    return currentReferral.referredToDoctor ? currentReferral : null;
                 });
-                let matchingRooms = _.reject(rooms, (currentRoom: Room) => {
-                    return currentRoom == null;
+                let matchingUserReferrals = _.reject(userReferrals, (currentReferral: Referral) => {
+                    return currentReferral == null;
                 });
-                this.refferedRooms = matchingRooms.reverse();
+                this.referredUsers = matchingUserReferrals.reverse();
+
+                let roomReferrals: Referral[] = _.map(referrals, (currentReferral: Referral) => {
+                    return currentReferral.room ? currentReferral : null;
+                });
+                let matchingRoomReferrals = _.reject(roomReferrals, (currentReferral: Referral) => {
+                    return currentReferral == null;
+                });
+                this.referredRooms = matchingRoomReferrals.reverse();
             },
             (error) => {
                 this._progressBarService.hide();
@@ -76,6 +91,14 @@ export class ReferralListComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+    }
+    filter(event) {
+        let currentSearchId = parseInt(event.target.value);
+        if (currentSearchId === 1) {
+            this.searchMode = 1;
+        } else {
+            this.searchMode = 2;
+        }
     }
     loadRefferalsLazy(event: LazyLoadEvent) {
         setTimeout(() => {
@@ -100,11 +123,6 @@ export class ReferralListComponent implements OnInit {
 
     deleteReferral() {
         if (this.selectedReferrals.length > 0) {
-            this.confirmationService.confirm({
-            message: 'Do you want to delete this record?',
-            header: 'Delete Confirmation',
-            icon: 'fa fa-trash',
-            accept: () => {
             this.selectedReferrals.forEach(currentReferral => {
                 this.isDeleteProgress = true;
                 this._progressBarService.show();
@@ -138,8 +156,6 @@ export class ReferralListComponent implements OnInit {
                         this.isDeleteProgress = false;
                         this._progressBarService.hide();
                     });
-            });
-            }
             });
         } else {
             let notification = new Notification({

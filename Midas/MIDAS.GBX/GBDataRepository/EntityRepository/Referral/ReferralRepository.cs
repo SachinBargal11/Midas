@@ -124,6 +124,46 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     referralBO.Room = boRoom;
                 }
             }
+
+            if (referral.ReferralDocuments != null)
+            {
+                List<BO.ReferralDocument> boReferralDocument = new List<BO.ReferralDocument>();
+                
+                foreach (var eachReferralDocument in referral.ReferralDocuments)
+                {
+                    BO.ReferralDocument referralDocument = new BO.ReferralDocument();
+
+                    referralDocument.ID = eachReferralDocument.Id;
+                    referralDocument.ReferralId = eachReferralDocument.ReferralId;
+                    referralDocument.DocumentName = eachReferralDocument.DocumentName;
+                    referralDocument.MidasDocumentId = eachReferralDocument.MidasDocumentId;
+                    referralDocument.IsDeleted = eachReferralDocument.IsDeleted;
+                    referralDocument.UpdateByUserID = eachReferralDocument.UpdateUserId;
+                    referralDocument.CreateByUserID = (int)(eachReferralDocument.CreateUserId.HasValue == true ? eachReferralDocument.CreateUserId.Value : 0);
+
+                    if (eachReferralDocument.MidasDocument != null)
+                    {
+                        BO.MidasDocument boMidasDocument = new BO.MidasDocument();
+
+                        boMidasDocument.ID = eachReferralDocument.Id;
+                        boMidasDocument.ObjectType = eachReferralDocument.MidasDocument.ObjectType;
+                        boMidasDocument.ObjectId = eachReferralDocument.MidasDocument.ObjectId;
+                        boMidasDocument.DocumentPath = eachReferralDocument.MidasDocument.DocumentPath;
+                        boMidasDocument.DocumentName = eachReferralDocument.MidasDocument.DocumentName;
+                        boMidasDocument.IsDeleted = eachReferralDocument.MidasDocument.IsDeleted;
+                        boMidasDocument.UpdateByUserID = eachReferralDocument.MidasDocument.UpdateUserId;
+                        boMidasDocument.CreateByUserID = (int)(eachReferralDocument.MidasDocument.CreateUserId.HasValue == true ? eachReferralDocument.MidasDocument.CreateUserId.Value : 0);
+
+                        referralDocument.MidasDocument = boMidasDocument;
+                    }
+
+
+                    boReferralDocument.Add(referralDocument);
+                }
+
+                referralBO.ReferralDocument = boReferralDocument;                
+            }
+
             return (T)(object)referralBO;
         }
         #endregion
@@ -195,6 +235,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                           .Include("User")
                                           .Include("Case")
                                           .Include("Case.Patient2.User")
+                                          .Include("Case.CompanyCaseConsentApprovals")
+                                          .Include("ReferralDocuments")
+                                          .Include("ReferralDocuments.MidasDocument")
                                           .Include("Room")
                                           .Where(p => p.Id == referralDB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                               .FirstOrDefault<Referral>();
@@ -237,15 +280,18 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                         .Include("Doctor")
                                         .Include("Doctor.User")
                                         .Include("Doctor.DoctorSpecialities")
-                                         .Include("Doctor.DoctorSpecialities.Specialty")
-                                         .Include("User")
-                                         .Include("Case")
-                                         .Include("Case.Patient2")
-                                         .Include("Case.Patient2.User")
-                                         .Include("Room")
-                                         .Where(p => p.Id == id
-                                          && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                         .FirstOrDefault<Referral>();
+                                        .Include("Doctor.DoctorSpecialities.Specialty")
+                                        .Include("User")
+                                        .Include("Case")
+                                        .Include("Case.Patient2")
+                                        .Include("Case.Patient2.User")
+                                        .Include("Case.CompanyCaseConsentApprovals")
+                                        .Include("ReferralDocuments")
+                                        .Include("ReferralDocuments.MidasDocument")
+                                        .Include("Room")
+                                        .Where(p => p.Id == id
+                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                        .FirstOrDefault<Referral>();
 
             BO.Referral acc_ = Convert<BO.Referral, Referral>(acc);
             if (acc_ == null)
@@ -271,6 +317,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                         .Include("Case")
                                         .Include("Case.Patient2")
                                         .Include("Case.Patient2.User")
+                                        .Include("Case.CompanyCaseConsentApprovals")
+                                        .Include("ReferralDocuments")
+                                        .Include("ReferralDocuments.MidasDocument")
                                         .Include("Room")
                                         .Where(p => p.CaseId == CaseId
                                          && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -305,6 +354,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("Case")
                                                .Include("Case.Patient2")
                                                .Include("Case.Patient2.User")
+                                               .Include("Case.CompanyCaseConsentApprovals")
+                                               .Include("ReferralDocuments")
+                                               .Include("ReferralDocuments.MidasDocument")
                                                .Include("Room")
                                                .Where(p => p.ReferringCompanyId == id
                                                 &&(p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -343,6 +395,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("Case")
                                                .Include("Case.Patient2")
                                                .Include("Case.Patient2.User")
+                                               .Include("Case.CompanyCaseConsentApprovals")
+                                               .Include("ReferralDocuments")
+                                               .Include("ReferralDocuments.MidasDocument")
                                                .Include("Room")
                                                .Where(p => p.ReferredToCompanyId == id
                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -371,20 +426,23 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object GetByReferringLocationId(int id)
         {
             List<Referral> lstReferral = _context.Referrals.Include("Company")
-                                                           .Include("Company1")
-                                                           .Include("Location")
-                                                           .Include("Location1")
-                                                           .Include("Doctor")
-                                                           .Include("Doctor.User")
-                                                           .Include("Doctor.DoctorSpecialities")
-                                                           .Include("User")
+                                                            .Include("Company1")
+                                                            .Include("Location")
+                                                            .Include("Location1")
+                                                            .Include("Doctor")
+                                                            .Include("Doctor.User")
+                                                            .Include("Doctor.DoctorSpecialities")
+                                                            .Include("User")
                                                             .Include("Case")
                                                             .Include("Case.Patient2")
                                                             .Include("Case.Patient2.User")
-                                                           .Include("Room")
-                                                           .Where(p => p.ReferringLocationId == id
-                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                            .ToList<Referral>();
+                                                            .Include("Case.CompanyCaseConsentApprovals")
+                                                            .Include("ReferralDocuments")
+                                                            .Include("ReferralDocuments.MidasDocument")
+                                                            .Include("Room")
+                                                            .Where(p => p.ReferringLocationId == id
+                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                             .ToList<Referral>();
 
             if (lstReferral == null)
             {
@@ -414,6 +472,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                            .Include("Case")
                                                            .Include("Case.Patient2")
                                                            .Include("Case.Patient2.User")
+                                                           .Include("Case.CompanyCaseConsentApprovals")
+                                                           .Include("ReferralDocuments")
+                                                           .Include("ReferralDocuments.MidasDocument")
                                                            .Include("Room")
                                                            .Where(p => p.ReferredToLocationId == id
                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -448,6 +509,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                             .Include("Case")
                                                             .Include("Case.Patient2")
                                                             .Include("Case.Patient2.User")
+                                                            .Include("Case.CompanyCaseConsentApprovals")
+                                                            .Include("ReferralDocuments")
+                                                            .Include("ReferralDocuments.MidasDocument")
                                                             .Include("Room")
                                                             .Where(p => p.ReferringUserId == id
                                                              && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -482,6 +546,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                             .Include("Case")
                                                             .Include("Case.Patient2")
                                                             .Include("Case.Patient2.User")
+                                                            .Include("Case.CompanyCaseConsentApprovals")
+                                                            .Include("ReferralDocuments")
+                                                            .Include("ReferralDocuments.MidasDocument")
                                                             .Include("Room")
                                                             .Where(p => p.ReferredToDoctorId == id
                                                              && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))

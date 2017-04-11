@@ -189,6 +189,21 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage Delete(HttpRequestMessage request, int param1, int param2, int param3)
+        {
+            var res = dataAccessManager.Delete(param1, param2, param3);
+            if (param1 > 0)
+            {
+                return request.CreateResponse(HttpStatusCode.Accepted, res);
+            }
+            else
+            {
+                return request.CreateResponse(HttpStatusCode.NoContent, new ErrorObject { ErrorMessage = "Id can't be null", errorObject = "", ErrorLevel = ErrorLevel.Error });
+            }
+        }
+
+        
+
         public HttpResponseMessage DeleteFile(HttpRequestMessage request,int caseId, int id)
         {
             var res = dataAccessManager.DeleteFile(caseId,id);

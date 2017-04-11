@@ -292,9 +292,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #endregion
 
         #region Delete By ID
-        public override object Delete(int id)
-        {
-            var acc = _context.CompanyCaseConsentApprovals.Where(p => p.Id == id
+        public override object Delete(int CaseId,int DocumentId,int CompanyId)
+        {           
+            using (FileUpload.FileUploadRepository cmp = new FileUpload.FileUploadRepository(_context))
+            {
+                cmp.DeleteFile(CaseId, DocumentId);                
+            }
+
+            var acc = _context.CompanyCaseConsentApprovals.Where(p => p.CaseId == CaseId && p.CompanyId == CompanyId
                                                           && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                           .FirstOrDefault<CompanyCaseConsentApproval>();
             if (acc != null)
@@ -308,6 +313,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             }
 
             var res = Convert<BO.CompanyCaseConsentApproval, CompanyCaseConsentApproval>(acc);
+
             return (object)res;
         }
         #endregion
