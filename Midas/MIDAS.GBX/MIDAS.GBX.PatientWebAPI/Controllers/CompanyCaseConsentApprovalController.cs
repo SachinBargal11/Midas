@@ -65,14 +65,14 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         {
             return requestHandler.SaveDoctor(Request, data);
         }
-
+        
 
         [HttpGet]
-        [Route("Delete/{id}")]
+        [Route("Delete/{caseId}/{documentId}/{companyId}")]
         [AllowAnonymous]
-        public HttpResponseMessage Delete(int id)
+        public HttpResponseMessage Delete(int caseId, int documentId, int companyId)
         {
-            return requestHandler.Delete(Request, id);
+            return requestHandler.Delete(Request, caseId, documentId, companyId);
         }
 
         [HttpPost]
