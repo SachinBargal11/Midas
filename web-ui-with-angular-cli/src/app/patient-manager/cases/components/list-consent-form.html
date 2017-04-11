@@ -26,7 +26,7 @@
     <p-column field="documentName" header="File Name">
         <ng-template let-ListConsents="rowData" pTemplate="body">
             <u>
-                <a style="color: blue" (click)="DownloadPdf()">{{ListConsents.documentName}}</a>
+                <a style="color: blue" (click)="DownloadPdf(ListConsents.documentId)">{{ListConsents.documentName}}</a>
 </u>
 </ng-template>
 </p-column>
