@@ -1,6 +1,8 @@
 import { Record } from 'immutable';
 import * as moment from 'moment';
 import { Address } from '../../../commons/models/address';
+import { Case } from './case';
+import { Company } from '../../../account/models/company';
 
 
 const ConsentForm = Record({
@@ -11,7 +13,9 @@ const ConsentForm = Record({
     consentReceived: '',
     companyId:0,
     documentName: '',
-    documentId: ''
+    documentId: '',
+    case:null,
+    company:null,
 });
 
 export class AddConsent extends ConsentForm {
@@ -23,7 +27,9 @@ export class AddConsent extends ConsentForm {
     consentReceived: string;
     companyId:number;
     documentName: string;
-    documentId: number
+    documentId: number;
+    case:Case;
+    Company:Company;
 
     constructor(props) {
         super(props);

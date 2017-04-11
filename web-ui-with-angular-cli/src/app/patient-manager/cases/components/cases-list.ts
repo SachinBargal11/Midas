@@ -12,7 +12,10 @@ import * as moment from 'moment';
 import { Notification } from '../../../commons/models/notification';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
+import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+import { AddConsent } from '../models/add-consent-form';
+import { Company } from '../../../account/models/company';
+import * as _ from 'underscore';
 
 @Component({
     selector: 'caseslist',
@@ -29,6 +32,7 @@ export class CasesListComponent implements OnInit {
     datasource: Case[];
     totalRecords: number;
     isDeleteProgress: boolean = false;
+    consentRecived: string = '';
 
     constructor(
         public _route: ActivatedRoute,
@@ -79,6 +83,31 @@ export class CasesListComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
+    consentAvailable(case1: Case) {
+        // let matchingCases: Case[] = _.map(this.cases, (currentCase: Case) => {
+        //     return currentCase.companyCaseConsentApproval.length > 0 ? currentCase : null;
+        // });
+        if (case1.companyCaseConsentApproval.length > 0) {
+            let consentAvailable = _.find(case1.companyCaseConsentApproval, (currentConsent: AddConsent) => {
+                return currentConsent.companyId === this._sessionStore.session.currentCompany.id;
+                // if (currentConsent.companyId === this._sessionStore.session.currentCompany.id) {
+                //     return this.consentRecived = 'Yes';
+                // } else if (currentConsent.companyId !== this._sessionStore.session.currentCompany.id){
+                //     return this.consentRecived = 'No';
+                // }
+            });
+            if (consentAvailable) {
+                return this.consentRecived = 'Yes';
+            } else {
+                return this.consentRecived = 'No';
+            }
+        } else {
+            return this.consentRecived = 'No';
+        }
+
+
+    }
+
     loadCasesLazy(event: LazyLoadEvent) {
         setTimeout(() => {
             if (this.datasource) {
@@ -90,45 +119,45 @@ export class CasesListComponent implements OnInit {
     deleteCases() {
         if (this.selectedCases.length > 0) {
             this.confirmationService.confirm({
-            message: 'Do you want to delete this record?',
-            header: 'Delete Confirmation',
-            icon: 'fa fa-trash',
-            accept: () => { 
-            this.selectedCases.forEach(currentCase => {
-                this.isDeleteProgress = true;
-                this._progressBarService.show();
-                this._casesStore.deleteCase(currentCase)
-                    .subscribe(
-                    (response) => {
-                        let notification = new Notification({
-                            'title': 'Case deleted successfully!',
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
+                message: 'Do you want to delete this record?',
+                header: 'Delete Confirmation',
+                icon: 'fa fa-trash',
+                accept: () => {
+                    this.selectedCases.forEach(currentCase => {
+                        this.isDeleteProgress = true;
+                        this._progressBarService.show();
+                        this._casesStore.deleteCase(currentCase)
+                            .subscribe(
+                            (response) => {
+                                let notification = new Notification({
+                                    'title': 'Case deleted successfully!',
+                                    'type': 'SUCCESS',
+                                    'createdAt': moment()
 
-                        });
-                        this.loadCases();
-                        this._notificationsStore.addNotification(notification);
-                        this.selectedCases = [];
-                    },
-                    (error) => {
-                        let errString = 'Unable to delete case';
-                        let notification = new Notification({
-                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this.selectedCases = [];
-                        this._progressBarService.hide();
-                        this.isDeleteProgress = false;
-                        this._notificationsStore.addNotification(notification);
-                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    },
-                    () => {
-                        this.isDeleteProgress = false;
-                        this._progressBarService.hide();
+                                });
+                                this.loadCases();
+                                this._notificationsStore.addNotification(notification);
+                                this.selectedCases = [];
+                            },
+                            (error) => {
+                                let errString = 'Unable to delete case';
+                                let notification = new Notification({
+                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                    'type': 'ERROR',
+                                    'createdAt': moment()
+                                });
+                                this.selectedCases = [];
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                                this._notificationsStore.addNotification(notification);
+                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                            },
+                            () => {
+                                this.isDeleteProgress = false;
+                                this._progressBarService.hide();
+                            });
                     });
-            });
-            }
+                }
             });
         } else {
             let notification = new Notification({
