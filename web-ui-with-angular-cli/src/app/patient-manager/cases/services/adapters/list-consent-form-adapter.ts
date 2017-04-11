@@ -12,7 +12,9 @@ export class ListConsentAdapter {
                 caseId: data.caseId,
                 doctorId:data.doctorId,
                 consentReceived:'yes',
-                path:data.path
+                path:data.path,
+                documentName:data.documentName,
+                documentId:data.documentId 
                 //accidentAddress: AddressAdapter.parseResponse(data.accidentAddressInfo),
                
             });

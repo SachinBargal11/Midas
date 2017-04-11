@@ -12,7 +12,7 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 import { ListConsentStore } from '../../cases/stores/list-consent-form-store';
 import { ListConsent } from '../../cases/models/list-consent-form';
 import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
-
+import { SessionStore } from '../../../commons/stores/session-store';
 
 @Component({
     selector: 'list-consent-list',
@@ -26,7 +26,7 @@ export class ConsentListComponent implements OnInit {
     datasource: ListConsent[];
     totalRecords: number;
     isDeleteProgress: boolean = false;
-
+    companyId: number;
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
@@ -35,9 +35,11 @@ export class ConsentListComponent implements OnInit {
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private confirmationService: ConfirmationService,
+         private _sessionStore: SessionStore,
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
+            this.companyId = this._sessionStore.session.currentCompany.id;
         });
     }
 
@@ -48,7 +50,7 @@ export class ConsentListComponent implements OnInit {
     loadConsentForm() {
 
         this._progressBarService.show();
-        this._ListConsentStore.getConsetForm(this.caseId)
+        this._ListConsentStore.getConsetForm(this.caseId,this.companyId)
             .subscribe(ListConsent => {
                 this.ListConsent = ListConsent.reverse();
                 // this.datasource = referringOffices.reverse();

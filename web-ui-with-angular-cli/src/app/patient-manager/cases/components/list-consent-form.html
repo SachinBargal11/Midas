@@ -21,12 +21,12 @@
     [globalFilter]="gb" [responsive]="true">
     <header> List</header>
     <p-column selectionMode="multiple"></p-column>
-    <p-column field="doctor.user.firstName" header="Doctor Name" [sortable]="true"></p-column>
+  
     <!--<p-column field="consentReceived" header="File Name" [sortable]="true" onclick="Download()"></p-column>-->
-    <p-column field="consentReceived" header="File Name">
+    <p-column field="documentName" header="File Name">
         <ng-template let-ListConsents="rowData" pTemplate="body">
             <u>
-                <a style="color: blue" (click)="DownloadPdf()">{{ListConsents.consentReceived}}</a>
+                <a style="color: blue" (click)="DownloadPdf()">{{ListConsents.documentName}}</a>
 </u>
 </ng-template>
 </p-column>

@@ -76,7 +76,7 @@ export class EditConsentFormComponent implements OnInit {
             this.caseId = parseInt(routeParams.caseId, 10);
             // let companyId: number = this._sessionStore.session.currentCompany.id;
             this.companyId = this._sessionStore.session.currentCompany.id;
-            this.url = this._url + '/fileupload/multiupload/' + this.caseId + '/consent';
+            this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.companyId + '/' + this.caseId;
             this.consentForm = this.fb.group({
                 //  doctor: ['', Validators.required]
                 //uploadedFile: ['', Validators.required]

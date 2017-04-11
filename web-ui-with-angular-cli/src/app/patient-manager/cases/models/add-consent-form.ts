@@ -8,7 +8,10 @@ const ConsentForm = Record({
     caseId: 0,
     doctorId: 0,
     patientId: 0,
-    consentReceived: ''
+    consentReceived: '',
+    companyId:0,
+    documentName: '',
+    documentId: ''
 });
 
 export class AddConsent extends ConsentForm {
@@ -18,8 +21,9 @@ export class AddConsent extends ConsentForm {
     doctorId: number;
     patientId: number;
     consentReceived: string;
-
-    
+    companyId:number;
+    documentName: string;
+    documentId: number
 
     constructor(props) {
         super(props);
