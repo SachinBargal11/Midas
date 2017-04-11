@@ -133,7 +133,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By ID
         public override object Get(int id)
         {
-            var acc = _context.CaseCompanyMappings.Where(p => p.Id == id
+            var acc = _context.CaseCompanyMappings.Include("Company").Where(p => p.Id == id
                                                   && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                   .FirstOrDefault<CaseCompanyMapping>();
 
@@ -149,7 +149,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Case Id
         public override object GetByCaseId(int CaseId)
         {
-            var acc = _context.CaseCompanyMappings.Where(p => p.CaseId == CaseId
+            var acc = _context.CaseCompanyMappings.Include("Company").Where(p => p.CaseId == CaseId
                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                    .ToList<CaseCompanyMapping>();
             if (acc == null)
@@ -192,7 +192,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Company Id
         public override object GetByCompanyId(int CompanyId)
         {
-            var acc = _context.CaseCompanyMappings.Where(p => p.CompanyId == CompanyId
+            var acc = _context.CaseCompanyMappings.Include("Company").Where(p => p.CompanyId == CompanyId
                                                    && p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
                                                    .ToList<CaseCompanyMapping>();
             List<BO.CaseCompanyMapping> lstCaseWithUserAndPatient = new List<BO.CaseCompanyMapping>();
