@@ -34,6 +34,7 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage GetCurrentEmpByPatientId(HttpRequestMessage request, int PatientId);
         HttpResponseMessage GetCurrentROByPatientId(HttpRequestMessage request, int PatientId);
         HttpResponseMessage Delete(HttpRequestMessage request, int id);
+        HttpResponseMessage Delete(HttpRequestMessage request, int param1,int param2, int param3);
         HttpResponseMessage GetByDoctorId(HttpRequestMessage request, int id);
         HttpResponseMessage DeleteVisit(HttpRequestMessage request, int id);
         HttpResponseMessage DeleteCalendarEvent(HttpRequestMessage request, int id);
