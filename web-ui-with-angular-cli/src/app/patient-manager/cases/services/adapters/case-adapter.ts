@@ -3,16 +3,32 @@ import { Company } from '../../../../account/models/company';
 import { CompanyAdapter } from '../../../../account/services/adapters/company-adapter';
 import * as moment from 'moment';
 import { Case } from '../../models/case';
+import { AddConsent } from '../../models/add-consent-form';
+import { AddConsentAdapter } from './add-consent-form-adapter';
+import { Referral } from '../../models/referral';
+import { ReferralAdapter } from './referral-adapter';
 
 export class CaseAdapter {
     static parseResponse(data: any): Case {
 
         let patient_case = null;
         let companies: Company[] = [];
+        let companyCaseConsentApproval: AddConsent[] = [];
+        let referral: Referral[] = [];
         if (data) {
             if (data.caseCompanyMapping) {
                 for (let company of data.caseCompanyMapping) {
                     companies.push(CompanyAdapter.parseResponse(company.company));
+                }
+            }
+            if (data.companyCaseConsentApproval) {
+                for (let consent of data.companyCaseConsentApproval) {
+                    companyCaseConsentApproval.push(AddConsentAdapter.parseResponse(consent));
+                }
+            }
+            if (data.referral) {
+                for (let referral of data.referral) {
+                    referral.push(ReferralAdapter.parseResponse(referral));
                 }
             }
             patient_case = new Case({
@@ -22,6 +38,8 @@ export class CaseAdapter {
                 caseName: data.caseName,
                 caseTypeId: data.caseTypeId,
                 companies: companies,
+                companyCaseConsentApproval:companyCaseConsentApproval,
+                referral:referral,
                 locationId: data.locationId,
                 carrierCaseNo: data.carrierCaseNo,
                 transportation: data.transportation ? true : false,
