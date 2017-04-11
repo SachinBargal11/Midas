@@ -24,15 +24,15 @@ export class ListConsentFormService {
         private _sessionStore: SessionStore,
     ) {
         this._headers.append('Content-Type', 'application/json');
-        
+
     }
 
-    getConsetForm(CaseId: number,companyId:number): Observable<ListConsent[]> {//DoctorCaseConsentApproval/getByCaseId      
+    getConsetForm(CaseId: number, companyId: number): Observable<ListConsent[]> {//DoctorCaseConsentApproval/getByCaseId      
         let promise: Promise<ListConsent[]> = new Promise((resolve, reject) => {
             // return this._http.get(this._url + '/fileupload/get/' + CaseId  +'/case').map(res => res.json())
             // return this._http.get(this._url + '/CompanyCaseConsentApproval/getByCaseId/' + CaseId).map(res => res.json())
 
-            return this._http.get(this._url + '/fileupload/get/' + CaseId + '/consent' + '_'+companyId).map(res => res.json())
+            return this._http.get(this._url + '/fileupload/get/' + CaseId + '/consent' + '_' + companyId).map(res => res.json())
                 //fileupload/get/86/consent
                 .subscribe((data: Array<any>) => {
                     let Consent = null;
@@ -49,10 +49,10 @@ export class ListConsentFormService {
         return <Observable<ListConsent[]>>Observable.fromPromise(promise);
     }
 
-    deleteConsentform(caseDetail: ListConsent): Observable<ListConsent> {
+    deleteConsentform(caseDetail: ListConsent,companyId: number): Observable<ListConsent> {
         let promise = new Promise((resolve, reject) => {
             // return this._http.get(this._url + '/CompanyCaseConsentApproval/delete/' + caseDetail.id, {
-            return this._http.get(this._url + '/fileupload/delete/' + caseDetail.id + '/' + caseDetail.documentId, {
+            return this._http.get(this._url + '/CompanyCaseConsentApproval/delete/' + caseDetail.id + '/' + caseDetail.documentId + '/' + companyId, {
 
                 headers: this._headers
             }).map(res => res.json())

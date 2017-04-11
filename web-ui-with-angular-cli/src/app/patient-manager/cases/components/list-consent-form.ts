@@ -73,7 +73,7 @@ export class ConsentListComponent implements OnInit {
         }, 250);
     }
 
-    deleteConsentForm() {
+    deleteConsentForm() {       
         if (this.selectedConsentList.length > 0) {
             this.confirmationService.confirm({
                 message: 'Do you want to delete this record?',
@@ -83,7 +83,7 @@ export class ConsentListComponent implements OnInit {
                     this.selectedConsentList.forEach(currentCase => {
                         this.isDeleteProgress = true;
                         this._progressBarService.show();
-                        this._ListConsentStore.deleteConsetForm(currentCase)
+                        this._ListConsentStore.deleteConsetForm(currentCase,this.companyId)
                             .subscribe(
                             (response) => {
                                 let notification = new Notification({

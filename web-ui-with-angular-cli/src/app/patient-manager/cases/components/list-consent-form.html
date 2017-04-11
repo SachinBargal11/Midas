@@ -21,7 +21,7 @@
     [globalFilter]="gb" [responsive]="true">
     <header> List</header>
     <p-column selectionMode="multiple"></p-column>
-  
+
     <!--<p-column field="consentReceived" header="File Name" [sortable]="true" onclick="Download()"></p-column>-->
     <p-column field="documentName" header="File Name">
         <ng-template let-ListConsents="rowData" pTemplate="body">
@@ -32,9 +32,9 @@
 </p-column>
 
 <p-column field="" header="Signed/Unsigned" [sortable]="true"></p-column>
-<p-column styleClass="actions-cell" header="Actions">
+<!--<p-column styleClass="actions-cell" header="Actions">
     <ng-template let-ListConsents="rowData" pTemplate="body">
         <a routerLink="edit/{{ListConsents.id}}"><i class="glyphicon glyphicon-edit"></i></a>
     </ng-template>
-</p-column>
+</p-column>-->
 </p-dataTable>

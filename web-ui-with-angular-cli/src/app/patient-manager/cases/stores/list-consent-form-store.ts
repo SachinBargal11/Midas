@@ -44,13 +44,11 @@ export class ListConsentStore {
         return <Observable<ListConsent[]>>Observable.fromPromise(promise);
     }
 
-  
-
-    deleteConsetForm(caseDetail: ListConsent): Observable<ListConsent> {
+    deleteConsetForm(caseDetail: ListConsent,companyId: number): Observable<ListConsent> {
         let cases = this._ListConsent.getValue();
         let index = cases.findIndex((currentCase: ListConsent) => currentCase.id === caseDetail.id);
         let promise = new Promise((resolve, reject) => {
-            this._listconsentFormService.deleteConsentform(caseDetail).subscribe((caseDetail: ListConsent) => {
+            this._listconsentFormService.deleteConsentform(caseDetail,companyId).subscribe((caseDetail: ListConsent) => {
                 this._ListConsent.next(cases.delete(index));
                 resolve(caseDetail);
             }, error => {
