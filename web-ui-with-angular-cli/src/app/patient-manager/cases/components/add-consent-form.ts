@@ -179,6 +179,7 @@ export class AddConsentFormComponent implements OnInit {
     }
 
     uploadDocuments() {
+
         this.uploadedFiles.length = 1;
         this._AddConsentStore.uploadScannedDocuments(this._dwObject, this.caseId)
             .subscribe(
@@ -196,6 +197,7 @@ export class AddConsentFormComponent implements OnInit {
                 // this.getDocuments();
             },
             (error) => {
+                debugger;
                 this._progressBarService.hide();
             },
             () => {
@@ -216,33 +218,49 @@ export class AddConsentFormComponent implements OnInit {
         "image": ''
     }
 
-    onUpload(event) {
+    onUpload(event) {        
         let responseDocuments: any = JSON.parse(event.xhr.responseText);
-        let documents = (<Object[]>responseDocuments).map((document: any) => {
-            return AddConsentAdapter.parseResponse(document);
-        });
-        for (let file of event.files) {
-            this.uploadedFile = file.name;
-            this.uploadedFiles.push(file);
-            // this.UploadedFileName.push( this.uploadedFiles.push(file));
-            //  this.myfile.image = file.name; 
-            this.UploadedFileName = file.name;
-            // alert(file.name);   
+        // alert(responseDocuments.errorMessage);
+
+        if (responseDocuments.errorMessage != "undefined") {
+
+            // if (responseDocuments.errorMessage == "undefined")
+            //  { responseDocuments.errorMessage == "File Uploaded" }
+
+            let notification = new Notification({
+                'title': responseDocuments.errorMessage,
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
         }
-        this.msgs = [];
-
-        _.forEach(documents, (currentDocument: any) => {
-            if (currentDocument.status == 'Failed') {
-                this.uploadedFiles=[];
-
-                let notification = new Notification({
-                    'title': currentDocument.message + '  ' + currentDocument.documentName,
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
+        else {
+            let documents = (<Object[]>responseDocuments).map((document: any) => {
+                return AddConsentAdapter.parseResponse(document);
+            });
+            for (let file of event.files) {
+                this.uploadedFile = file.name;
+                this.uploadedFiles.push(file);
+                // this.UploadedFileName.push( this.uploadedFiles.push(file));
+                //  this.myfile.image = file.name; 
+                this.UploadedFileName = file.name;
+                // alert(file.name);   
             }
-        });
+            this.msgs = [];
+            _.forEach(documents, (currentDocument: any) => {
+                if (currentDocument.status == 'Failed') {
+                    this.uploadedFiles = [];
+
+                    let notification = new Notification({
+                        'title': currentDocument.message + '  ' + currentDocument.documentName,
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                }
+            });
+        }
+
 
         // let notification = new Notification({
 
@@ -254,8 +272,8 @@ export class AddConsentFormComponent implements OnInit {
         // this.msgs.push({ severity: 'info', summary: 'File Uploaded', detail: this.UploadedFileName });
         // this.msgs.push({ UploadedFileName});
         // this.downloadDocument();
-
     }
+
     downloadDocument() {
         this._progressBarService.show();
         this._AddConsentStore.getDocumentsForCaseId(this.caseId)
