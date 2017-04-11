@@ -9,6 +9,7 @@ import * as moment from 'moment';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
+import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 
 @Component({
     selector: 'family-member-list',
@@ -29,7 +30,9 @@ export class FamilyMemberListComponent implements OnInit {
         private _familyMemberStore: FamilyMemberStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
-        private _notificationsService: NotificationsService
+        private _notificationsService: NotificationsService,
+        private confirmationService: ConfirmationService,
+
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId);
@@ -66,6 +69,11 @@ export class FamilyMemberListComponent implements OnInit {
 
     deleteFamilyMember() {
         if (this.selectedFamilyMembers.length > 0) {
+             this.confirmationService.confirm({
+                message: 'Do you want to delete this record?',
+                header: 'Delete Confirmation',
+                icon: 'fa fa-trash',
+                accept: () => {
             this.selectedFamilyMembers.forEach(currentFamilyMember => {
                 this.isDeleteProgress = true;
                 this._progressBarService.show();
@@ -100,7 +108,9 @@ export class FamilyMemberListComponent implements OnInit {
                         this.isDeleteProgress = false;
                     });
             });
-        } else {
+        } 
+             });
+        }else {
             let notification = new Notification({
                 'title': 'select Family Member to delete',
                 'type': 'ERROR',
