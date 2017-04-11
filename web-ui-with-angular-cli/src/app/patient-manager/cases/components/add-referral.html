@@ -64,8 +64,16 @@
             <p-column selectionMode="single"></p-column>
             <p-column field="user.displayName" header="Doctor Name" [sortable]="true"></p-column>
             <p-column field="user.userName" header="Email" [sortable]="true"></p-column>
-            <p-column field="doctorLocationSchedules[0].location.company.name" header="Company" [sortable]="true"></p-column>
-            <p-column field="doctorLocationSchedules[0].location.location.name" header="Location" [sortable]="true"></p-column>
+            <p-column  header="Company" [sortable]="true">
+                <ng-template let-currentReferral="rowData" pTemplate="body">
+                                {{getCurrentDoctorCompanyName(currentReferral)}}
+                            </ng-template>
+            </p-column>
+            <p-column  header="Location" [sortable]="true">
+                <ng-template let-currentReferral="rowData" pTemplate="body">
+                                {{getCurrentDoctorLocationName(currentReferral)}}
+                            </ng-template>
+            </p-column>
             <!--<p-column field="user.doctorSpecialities" header="Speciality" [sortable]="true">
                             <ng-template let-currentReferral="rowData" pTemplate="body">
                                 {{getCurrentDoctorSpeciality(currentReferral)}}

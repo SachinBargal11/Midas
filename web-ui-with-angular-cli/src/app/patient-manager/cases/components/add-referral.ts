@@ -205,7 +205,14 @@ export class AddReferralComponent implements OnInit {
             });
     }
     getCurrentDoctorCompanyName(currentDoctor: Doctor) {
+        if (currentDoctor.doctorLocationSchedules.length > 0) {
         return currentDoctor.doctorLocationSchedules[0].location.company.name;        
+        }
+    }
+    getCurrentDoctorLocationName(currentDoctor: Doctor) {
+        if (currentDoctor.doctorLocationSchedules.length > 0) {
+        return currentDoctor.doctorLocationSchedules[0].location.location.name;        
+        }
     }
 
     save() {

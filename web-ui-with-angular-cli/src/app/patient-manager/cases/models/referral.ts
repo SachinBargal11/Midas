@@ -6,6 +6,7 @@ import { Doctor } from '../../../medical-provider/users/models/doctor';
 import { User } from '../../../commons/models/user';
 import { LocationDetails } from '../../../medical-provider/users/models//location-details';
 import { Company } from '../../../account/models/company';
+import { ReferralDocument } from './referral-document';
 
 const ReferralRecord = Record({
     id: 0,
@@ -29,6 +30,7 @@ const ReferralRecord = Record({
     referredToDoctor: null,
     referredToLocation: null,
     referredToCompany: null,
+    referralDocument: null,
     isDeleted: false,
     createByUserID: 0,
     createDate: null,
@@ -59,6 +61,7 @@ export class Referral extends ReferralRecord {
     referredToDoctor: Doctor;
     referredToLocation: LocationDetails;
     referredToCompany: Company;
+    referralDocument: ReferralDocument;
     isDeleted: boolean;
     createByUserID: number;
     createDate: moment.Moment;
