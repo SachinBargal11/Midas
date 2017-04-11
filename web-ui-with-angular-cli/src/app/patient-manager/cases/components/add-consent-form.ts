@@ -218,14 +218,11 @@ export class AddConsentFormComponent implements OnInit {
         "image": ''
     }
 
-    onUpload(event) {        
+    onUpload(event) {
         let responseDocuments: any = JSON.parse(event.xhr.responseText);
         // alert(responseDocuments.errorMessage);
 
-        if (responseDocuments.errorMessage != "undefined") {
-
-            // if (responseDocuments.errorMessage == "undefined")
-            //  { responseDocuments.errorMessage == "File Uploaded" }
+        if (typeof responseDocuments.errorMessage !== "undefined") {
 
             let notification = new Notification({
                 'title': responseDocuments.errorMessage,
@@ -258,7 +255,16 @@ export class AddConsentFormComponent implements OnInit {
                     });
                     this._notificationsStore.addNotification(notification);
                 }
+                else {
+                    let notification = new Notification({
+                        'title': 'Consent Uploaded Successfully!',
+                        'type': 'SUCCESS',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                }
             });
+
         }
 
 
