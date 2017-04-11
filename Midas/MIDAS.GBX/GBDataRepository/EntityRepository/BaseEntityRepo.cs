@@ -156,6 +156,12 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+
+        public virtual T Convert<T, U>(U entity, bool PrimaryLevel = true)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual T ObjectConvert<T, U>(U entity)
         {
             throw new NotImplementedException();
