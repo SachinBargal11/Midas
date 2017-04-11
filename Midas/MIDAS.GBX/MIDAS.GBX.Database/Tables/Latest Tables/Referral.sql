@@ -5,15 +5,16 @@
 	[ReferringCompanyId] INT NOT NULL, 
     [ReferringLocationId] INT NOT NULL, 
 	[ReferringUserId] INT NOT NULL,
-    --[ReferringDoctorId] INT NOT NULL, 
     [ReferredToCompanyId] INT NULL, 
     [ReferredToLocationId] INT NULL, 
     [ReferredToDoctorId] INT NULL, 
+	[ReferredToSpecialtyId] INT NULL,
     [ReferredToRoomId] INT NULL, 
+	[ReferredToRoomTestId] INT NULL,
     [Note] NVARCHAR(250) NULL, 
 	[ReferredByEmail] [NVARCHAR](50) NULL,
-	[ReferredToEmail] [NVARCHAR](50) NULL, -- This email should not be a active user in MIDAS, else give message the user exists in MIDAS
-	[ReferralAccepted] [BIT] NULL DEFAULT 0, -- When the user register with MIDAS this will se it as true, these referred patient will be displayed with limited data
+	[ReferredToEmail] [NVARCHAR](50) NULL,
+	[ReferralAccepted] [BIT] NULL DEFAULT 0,
 
 	[IsDeleted] [bit] NULL DEFAULT 0,
 	[CreateByUserID] [int] NOT NULL,
@@ -101,5 +102,13 @@ ALTER TABLE [dbo].[Referral] DROP COLUMN [ReferringDoctorId]
 GO
 
 ALTER TABLE [dbo].[Referral] ALTER COLUMN [ReferringUserId] INT NOT NULL
+GO
+*/
+
+/*
+ALTER TABLE [dbo].[Referral] ADD [ReferredToSpecialtyId] INT NULL
+GO
+
+ALTER TABLE [dbo].[Referral] ADD [ReferredToRoomTestId] INT NULL
 GO
 */

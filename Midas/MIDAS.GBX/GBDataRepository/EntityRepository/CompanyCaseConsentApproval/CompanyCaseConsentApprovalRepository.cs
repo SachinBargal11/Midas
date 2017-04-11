@@ -80,42 +80,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             if (companyCaseConsentApprovalBO != null)
             {
-                companyCaseConsentApprovalDB = _context.CompanyCaseConsentApprovals.Where(p => p.Id == companyCaseConsentApprovalBO.ID
-                                                                                   && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                                  .FirstOrDefault();
+                companyCaseConsentApprovalDB = _context.CompanyCaseConsentApprovals.Where(p => p.CaseId == companyCaseConsentApprovalBO.CaseId
+                                                                                            && p.CompanyId == companyCaseConsentApprovalBO.CompanyId
+                                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                                   .FirstOrDefault();
+
                 bool Add_companyCaseConsentApproval = false;
 
-                if (companyCaseConsentApprovalBO.CompanyId <= 0 || companyCaseConsentApprovalBO.CaseId <= 0)
+                if (companyCaseConsentApprovalDB == null)
                 {
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Company, Case and Consent data.", ErrorLevel = ErrorLevel.Error };
-                }
-
-                if (companyCaseConsentApprovalDB == null && companyCaseConsentApprovalBO.ID > 0)
-                {
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Company, Case and Consent data.", ErrorLevel = ErrorLevel.Error };
-                }
-                else if (companyCaseConsentApprovalDB == null && companyCaseConsentApprovalBO.ID <= 0)
-                {
-                    companyCaseConsentApprovalDB = new CompanyCaseConsentApproval();
                     Add_companyCaseConsentApproval = true;
-                }
-
-                if (Add_companyCaseConsentApproval == true)
-                {
-                    if (_context.CompanyCaseConsentApprovals.Any(p => p.CompanyId == companyCaseConsentApprovalBO.CompanyId && p.CaseId == companyCaseConsentApprovalBO.CaseId
-                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))))
-                    {
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Company, Case and Consent data already exists.", ErrorLevel = ErrorLevel.Error };
-                    }
+                    companyCaseConsentApprovalDB = new CompanyCaseConsentApproval();
                 }
                 else
                 {
-                    if (_context.CompanyCaseConsentApprovals.Any(p => p.CompanyId == companyCaseConsentApprovalBO.CompanyId && p.CaseId == companyCaseConsentApprovalBO.CaseId
-                                                                       && p.Id != companyCaseConsentApprovalBO.ID
-                                                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))))
-                    {
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Company, Case and Consent data already exists.", ErrorLevel = ErrorLevel.Error };
-                    }
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Company, Case and Consent data already exists.", ErrorLevel = ErrorLevel.Error };
                 }
 
                 companyCaseConsentApprovalDB.CompanyId = companyCaseConsentApprovalBO.CompanyId;
@@ -123,10 +102,65 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                 if (Add_companyCaseConsentApproval == true)
                 {
+                    companyCaseConsentApprovalDB.CreateByUserID = 0;
+                    companyCaseConsentApprovalDB.CreateDate = DateTime.UtcNow;
+
                     companyCaseConsentApprovalDB = _context.CompanyCaseConsentApprovals.Add(companyCaseConsentApprovalDB);
                 }
+                else
+                {
+                    companyCaseConsentApprovalDB.UpdateByUserID = 0;
+                    companyCaseConsentApprovalDB.UpdateDate = DateTime.UtcNow;
+                }
+
                 _context.SaveChanges();
 
+                //companyCaseConsentApprovalDB = _context.CompanyCaseConsentApprovals.Where(p => p.Id == companyCaseConsentApprovalBO.ID
+                //                                                                   && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                //                                                                  .FirstOrDefault();
+                
+
+                //if (companyCaseConsentApprovalBO.CompanyId <= 0 || companyCaseConsentApprovalBO.CaseId <= 0)
+                //{
+                //    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Company, Case and Consent data.", ErrorLevel = ErrorLevel.Error };
+                //}
+
+                //if (companyCaseConsentApprovalDB == null && companyCaseConsentApprovalBO.ID > 0)
+                //{
+                //    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Company, Case and Consent data.", ErrorLevel = ErrorLevel.Error };
+                //}
+                //else if (companyCaseConsentApprovalDB == null && companyCaseConsentApprovalBO.ID <= 0)
+                //{
+                //    companyCaseConsentApprovalDB = new CompanyCaseConsentApproval();
+                //    Add_companyCaseConsentApproval = true;
+                //}
+
+                //if (Add_companyCaseConsentApproval == true)
+                //{
+                //    if (_context.CompanyCaseConsentApprovals.Any(p => p.CompanyId == companyCaseConsentApprovalBO.CompanyId && p.CaseId == companyCaseConsentApprovalBO.CaseId
+                //                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))))
+                //    {
+                //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Company, Case and Consent data already exists.", ErrorLevel = ErrorLevel.Error };
+                //    }
+                //}
+                //else
+                //{
+                //    if (_context.CompanyCaseConsentApprovals.Any(p => p.CompanyId == companyCaseConsentApprovalBO.CompanyId && p.CaseId == companyCaseConsentApprovalBO.CaseId
+                //                                                       && p.Id != companyCaseConsentApprovalBO.ID
+                //                                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))))
+                //    {
+                //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Company, Case and Consent data already exists.", ErrorLevel = ErrorLevel.Error };
+                //    }
+                //}
+
+                //companyCaseConsentApprovalDB.CompanyId = companyCaseConsentApprovalBO.CompanyId;
+                //companyCaseConsentApprovalDB.CaseId = (int)companyCaseConsentApprovalBO.CaseId;
+
+                //if (Add_companyCaseConsentApproval == true)
+                //{
+                //    companyCaseConsentApprovalDB = _context.CompanyCaseConsentApprovals.Add(companyCaseConsentApprovalDB);
+                //}
+                //_context.SaveChanges();
             }
 
             else
@@ -134,12 +168,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid details.", ErrorLevel = ErrorLevel.Error };
             }
 
-            _context.SaveChanges();
-
             companyCaseConsentApprovalDB = _context.CompanyCaseConsentApprovals.Include("Case")
                                                                                .Include("Company")
                                                                                .Where(p => p.Id == companyCaseConsentApprovalDB.Id
-                                                                               && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                                .FirstOrDefault<CompanyCaseConsentApproval>();
 
             var res = Convert<BO.CompanyCaseConsentApproval, CompanyCaseConsentApproval>(companyCaseConsentApprovalDB);
