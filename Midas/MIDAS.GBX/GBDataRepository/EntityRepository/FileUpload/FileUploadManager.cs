@@ -1,4 +1,4 @@
-﻿using MIDAS.GBX.BusinessObjects;
+﻿using BO = MIDAS.GBX.BusinessObjects;
 using MIDAS.GBX.DataRepository.Model;
 using MIDAS.GBX.EntityRepository;
 using System;
@@ -25,7 +25,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
 
         public override Object Upload(List<HttpContent> streamContent, string path, int id,string type,string uploadpath)
         {            
-            List<Document> docInfo = new List<Document>();
+            List<BO.Document> docInfo = new List<BO.Document>();
             uploadpath = uploadpath + path;
             Directory.CreateDirectory(uploadpath.ToString());
             foreach (HttpContent content in streamContent)
@@ -65,7 +65,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                                 errMessage = "DuplicateFileName";
                                 dbContextTransaction.Rollback();
                             }
-                            else if (!Enum.IsDefined(typeof(GBEnums.FileTypes), content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty).Split('.')[1]))
+                            else if (!Enum.IsDefined(typeof(BO.GBEnums.FileTypes), content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty).Split('.')[1]))
                             {
                                 errMessage = "Invalid file extension";
                                 dbContextTransaction.Rollback();
@@ -85,7 +85,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                                 dbContextTransaction.Commit();
                             }
                         }
-                        docInfo.Add(new Document()
+                        docInfo.Add(new BO.Document()
                         {
                             Status = errMessage.Equals(string.Empty) ? "Success" : "Failed",
                             Message = errMessage,
@@ -98,7 +98,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                     }
                     catch (Exception err)
                     {
-                        docInfo.Add(new Document()
+                        docInfo.Add(new BO.Document()
                         {
                             Status = "Failed",
                             Message = err.Message.ToString(),
