@@ -95,7 +95,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
 
         public override string Download(int caseid, int documentid)
         {
-            var acc = _context.MidasDocuments.Where(p => p.ObjectType.ToUpper()=="CONSENT" && p.ObjectId == caseid
+            var acc = _context.MidasDocuments.Where(p => p.ObjectId == caseid && p.Id==documentid
                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                  .FirstOrDefault<MidasDocument>();
 
