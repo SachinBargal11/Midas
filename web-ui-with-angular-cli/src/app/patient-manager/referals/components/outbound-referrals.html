@@ -47,9 +47,10 @@
     <p-column field="referredToDoctor.user.displayName"></p-column>
     <p-column>
         <ng-template let-referral="rowData" pTemplate="body">
-            <!--<a routerLink="{{referral.id}}/consent-form">-->
+             <a routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent-form"><u>{{consentAvailable(referral)}}</u></a>
+            <!--<a routerLink="{{referral.id}}/consent-form">
                 <u>{{consentAvailable(referral)}}</u>
-            <!--</a>-->
+            </a>-->
         </ng-template>
     </p-column>
     <p-column>
@@ -94,9 +95,10 @@
     <p-column field="room.name"></p-column>
     <p-column>
         <ng-template let-referral="rowData" pTemplate="body">
-            <!--<a routerLink="{{referral.id}}/consent-form">-->
+             <a routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent-form"><u>{{consentAvailable(referral)}}</u></a>
+            <!--<a routerLink="{{referral.id}}/consent-form">
                 <u>{{consentAvailable(referral)}}</u>
-            <!--</a>-->
+            </a>-->
         </ng-template>
     </p-column>
     <p-column>
@@ -139,9 +141,10 @@
     <p-column field="referredToLocation.location.name"></p-column>
     <p-column>
         <ng-template let-referral="rowData" pTemplate="body">
-            <!--<a routerLink="{{referral.id}}/consent-form">-->
+             <a routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent-form"><u>{{consentAvailable(referral)}}</u></a>
+            <!--<a routerLink="{{referral.id}}/consent-form">
                 <u>{{consentAvailable(referral)}}</u>
-            <!--</a>-->
+            </a>-->
         </ng-template>
     </p-column>
     <p-column>
