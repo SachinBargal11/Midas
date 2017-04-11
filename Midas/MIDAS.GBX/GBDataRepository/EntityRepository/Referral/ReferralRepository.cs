@@ -629,7 +629,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                             ObjectType = Constants.ReferralType,
                             ObjectId = id,
                             DocumentName = "Referral.pdf",
-                            DocumentPath = ConfigurationManager.AppSettings.Get("BLOB_SERVER") + "\\app_data\\uploads\\case_" + acc.Case.Id,
+                            DocumentPath = ConfigurationManager.AppSettings.Get("BLOB_PATH") + "/app_data/uploads/case_" + acc.Case.Id,
                         });
                         _context.Entry(midasdoc).State = System.Data.Entity.EntityState.Added;
                         _context.SaveChanges();
