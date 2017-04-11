@@ -4,7 +4,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { ReferralStore } from '../stores/referral-store';
+import { SessionStore } from '../../../commons/stores/session-store';
 import { Referral } from '../models/referral';
+import { ReferralDocument } from '../models/referral-document';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
@@ -13,6 +15,9 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { Room } from '../../../medical-provider/rooms/models/room';
+import { environment } from '../../../../environments/environment';
+import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+import { AddConsent } from '../models/add-consent-form';
 
 @Component({
     selector: 'referral-list',
@@ -20,9 +25,12 @@ import { Room } from '../../../medical-provider/rooms/models/room';
 })
 
 export class ReferralListComponent implements OnInit {
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
+    consentRecived: string = '';
     searchMode: number = 1;
     selectedReferrals: Referral[] = [];
     referrals: Referral[];
+    referredMedicalOffices: Referral[];
     referredUsers: Referral[];
     referredRooms: Referral[];
     referredDoctors: Doctor[];
@@ -35,10 +43,12 @@ export class ReferralListComponent implements OnInit {
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
+        private _sessionStore: SessionStore,
         private _referralStore: ReferralStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
-        private _notificationsService: NotificationsService
+        private _notificationsService: NotificationsService,
+        private confirmationService: ConfirmationService
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
@@ -84,6 +94,15 @@ export class ReferralListComponent implements OnInit {
                     return currentReferral == null;
                 });
                 this.referredRooms = matchingRoomReferrals.reverse();
+
+                let userAndRoomReferral = _.union(matchingUserReferrals, matchingRoomReferrals);
+                let userAndRoomReferralIds: number[] = _.map(userAndRoomReferral, (currentUserAndRoomReferral: Referral) => {
+                    return currentUserAndRoomReferral.id;
+                });
+                let matchingMedicalOffices = _.filter(referrals, (currentReferral: Referral) => {
+                    return _.indexOf(userAndRoomReferralIds, currentReferral.id) < 0 ? true : false;
+                });
+                this.referredMedicalOffices = matchingMedicalOffices.reverse();
             },
             (error) => {
                 this._progressBarService.hide();
@@ -96,10 +115,16 @@ export class ReferralListComponent implements OnInit {
         let currentSearchId = parseInt(event.target.value);
         if (currentSearchId === 1) {
             this.searchMode = 1;
-        } else {
+        } else if (currentSearchId === 2) {
             this.searchMode = 2;
+        } else if (currentSearchId === 3) {
+            this.searchMode = 3;
         }
     }
+    // getReferralDocumentName(currentReferral: Referral) {
+    //     _.forEach(currentReferral.referralDocument, (currentDocument: ReferralDocument) =>{
+    //     })       
+    // }
     loadRefferalsLazy(event: LazyLoadEvent) {
         setTimeout(() => {
             if (this.datasource) {
@@ -120,42 +145,66 @@ export class ReferralListComponent implements OnInit {
         }
         return specialityString;
     }
+    DownloadPdf(document: ReferralDocument) {
+        window.location.assign(this._url + '/fileupload/download/' + document.referralId + '/' + document.midasDocumentId);
+    }
+    consentAvailable(referral: Referral) {
+        if (referral.case.companyCaseConsentApproval.length > 0) {
+            let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: AddConsent) => {
+                return currentConsent.companyId === this._sessionStore.session.currentCompany.id;
+            });
+            if (consentAvailable) {
+                return this.consentRecived = 'Yes';
+            } else {
+                return this.consentRecived = 'No';
+            }
+        } else {
+            return this.consentRecived = 'No';
+        }
+    }
 
     deleteReferral() {
         if (this.selectedReferrals.length > 0) {
-            this.selectedReferrals.forEach(currentReferral => {
-                this.isDeleteProgress = true;
-                this._progressBarService.show();
-                let result;
-                result = this._referralStore.deleteReferral(currentReferral);
-                result.subscribe(
-                    (response) => {
-                        let notification = new Notification({
-                            'title': 'Referral deleted successfully!',
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
-                        });
-                        this.loadReferrals();
-                        this._notificationsStore.addNotification(notification);
-                        this.selectedReferrals = [];
-                    },
-                    (error) => {
-                        let errString = 'Unable to delete Referral';
-                        let notification = new Notification({
-                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this.selectedReferrals = [];
-                        this._progressBarService.hide();
-                        this.isDeleteProgress = false;
-                        this._notificationsStore.addNotification(notification);
-                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    },
-                    () => {
-                        this.isDeleteProgress = false;
-                        this._progressBarService.hide();
+            this.confirmationService.confirm({
+                message: 'Do you want to delete this record?',
+                header: 'Delete Confirmation',
+                icon: 'fa fa-trash',
+                accept: () => {
+                    this.selectedReferrals.forEach(currentReferral => {
+                        this.isDeleteProgress = true;
+                        this._progressBarService.show();
+                        let result;
+                        result = this._referralStore.deleteReferral(currentReferral);
+                        result.subscribe(
+                            (response) => {
+                                let notification = new Notification({
+                                    'title': 'Referral deleted successfully!',
+                                    'type': 'SUCCESS',
+                                    'createdAt': moment()
+                                });
+                                this.loadReferrals();
+                                this._notificationsStore.addNotification(notification);
+                                this.selectedReferrals = [];
+                            },
+                            (error) => {
+                                let errString = 'Unable to delete Referral';
+                                let notification = new Notification({
+                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                    'type': 'ERROR',
+                                    'createdAt': moment()
+                                });
+                                this.selectedReferrals = [];
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                                this._notificationsStore.addNotification(notification);
+                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                            },
+                            () => {
+                                this.isDeleteProgress = false;
+                                this._progressBarService.hide();
+                            });
                     });
+                }
             });
         } else {
             let notification = new Notification({

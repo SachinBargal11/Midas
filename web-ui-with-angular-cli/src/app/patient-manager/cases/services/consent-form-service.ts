@@ -96,9 +96,7 @@ export class AddConsentFormService {
         return <Observable<AddConsent[]>>Observable.fromPromise(promise);
     }
 
-
-    uploadScannedDocuments(dwObject: any, currentCaseId: number): Observable<AddConsent[]> {
-       
+    uploadScannedDocuments(dwObject: any, currentCaseId: number): Observable<AddConsent[]> {     
         let promise: Promise<AddConsent[]> = new Promise((resolve, reject) => {
             dwObject.IfSSL = false; // Set whether SSL is used
             dwObject.HTTPPort = 80;
@@ -112,8 +110,13 @@ export class AddConsentFormService {
                 (response: any) => {
                     resolve(response);
                 },
-                (errorCode: string, errorString: string, response: any) => {
-                    reject(new Error(errorString));
+                 (errorCode: string, errorString: string, response: any) => {
+                    let responseData: any = JSON.parse(response);
+                    let documents: any = (<Object[]>responseData).map((document: any) => {
+                        return AddConsentAdapter.parseResponse(document);
+                    });
+                    resolve(documents);
+                    // reject(new Error(errorString));
                 });
         });
         return <Observable<AddConsent[]>>Observable.fromPromise(promise);

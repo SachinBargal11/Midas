@@ -1,6 +1,6 @@
+<p-confirmDialog width="425"></p-confirmDialog>
 <div class="input-group">
     <h3 class="with-border">Consent Forms
-        <p-confirmDialog width="425"></p-confirmDialog>
         <a class="pull-right btn btn-danger btn-sm" (click)="deleteConsentForm()">
             <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Selected Consent form</span>
             <loader [visible]="isDeleteProgress"></loader>
@@ -21,20 +21,20 @@
     [globalFilter]="gb" [responsive]="true">
     <header> List</header>
     <p-column selectionMode="multiple"></p-column>
-    <p-column field="doctor.user.firstName" header="Doctor Name" [sortable]="true"></p-column>
+
     <!--<p-column field="consentReceived" header="File Name" [sortable]="true" onclick="Download()"></p-column>-->
-    <p-column field="consentReceived" header="File Name">
+    <p-column field="documentName" header="File Name">
         <ng-template let-ListConsents="rowData" pTemplate="body">
             <u>
-                <a style="color: blue" (click)="DownloadPdf()">{{ListConsents.consentReceived}}</a>
+                <a style="color: blue" (click)="DownloadPdf(ListConsents.documentId)">{{ListConsents.documentName}}</a>
 </u>
 </ng-template>
 </p-column>
 
 <p-column field="" header="Signed/Unsigned" [sortable]="true"></p-column>
-<p-column styleClass="actions-cell" header="Actions">
+<!--<p-column styleClass="actions-cell" header="Actions">
     <ng-template let-ListConsents="rowData" pTemplate="body">
         <a routerLink="edit/{{ListConsents.id}}"><i class="glyphicon glyphicon-edit"></i></a>
     </ng-template>
-</p-column>
+</p-column>-->
 </p-dataTable>

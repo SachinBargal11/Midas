@@ -72,10 +72,3 @@
 
 
 <br>
-<div class="form-group">
-    <button [disabled]="!consentForm.valid || isSaveProgress" type="submit" (click)="Save()" class="btn btn-success sign-up">Submit
-        <loader [visible]="isSaveProgress"></loader>
-    </button>
-    <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
-
-</div>

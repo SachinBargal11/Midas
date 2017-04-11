@@ -118,7 +118,14 @@ export class AddReferralComponent implements OnInit {
         this._progressBarService.show();
         this._locationStore.getAllLocationAndTheirCompany()
             .subscribe((locations) => {
-                this.locations = locations;
+                // this.locations = locations;
+                let referredToCompanyIds: number[] = _.map(this.referrals, (currentReferral: Referral) => {
+                    return currentReferral.referredToCompanyId;
+                });
+                let locationDetails = _.filter(locations, (currentLocationDetail: LocationDetails) => {
+                    return _.indexOf(referredToCompanyIds, currentLocationDetail.company.id) < 0 ? true : false;
+                });
+                this.locations = locationDetails;
             },
             (error) => {
                 this._router.navigate(['../']);
@@ -205,7 +212,14 @@ export class AddReferralComponent implements OnInit {
             });
     }
     getCurrentDoctorCompanyName(currentDoctor: Doctor) {
+        if (currentDoctor.doctorLocationSchedules.length > 0) {
         return currentDoctor.doctorLocationSchedules[0].location.company.name;        
+        }
+    }
+    getCurrentDoctorLocationName(currentDoctor: Doctor) {
+        if (currentDoctor.doctorLocationSchedules.length > 0) {
+        return currentDoctor.doctorLocationSchedules[0].location.location.name;        
+        }
     }
 
     save() {

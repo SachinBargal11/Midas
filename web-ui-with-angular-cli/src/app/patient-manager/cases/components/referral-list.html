@@ -1,3 +1,4 @@
+<p-confirmDialog width="425"></p-confirmDialog> 
 <div class="input-group">
     <h3 class="with-border">Referrals
         <a class="pull-right btn btn-danger btn-sm" (click)="deleteReferral()">
@@ -9,36 +10,6 @@
     </a>
     </h3>
 </div>
-<!--<div class="ui-widget-header row">
-    <div class="col-lg-4 input-group">
-        <span class="input-group-addon"><i class="fa fa-search"></i></span>
-        <input #gb type="text" class="form-control" style="float:left" placeholder="Search Referral">
-    </div>
-</div>
-<p-dataTable [value]="referredDoctors" [(selection)]="selectedReferrals" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
-    [globalFilter]="gb" [responsive]="true">
-    <header>Referrals List</header>
-    <p-column selectionMode="multiple"></p-column>
-    <p-column field="user.displayName" header="Doctor Name" [sortable]="true"></p-column>
-    <p-column field="doctorSpecialities" header="Speciality" [sortable]="true">
-        <ng-template let-currentDoctor="rowData" pTemplate="body">
-            {{getCurrentDoctorSpeciality(currentDoctor)}}
-        </ng-template>
-    </p-column>
-</p-dataTable>
-<br>
-<div class="ui-widget-header row">
-    <div class="col-lg-4 input-group">
-        <span class="input-group-addon"><i class="fa fa-search"></i></span>
-        <input #gbRoom type="text" class="form-control" style="float:left" placeholder="Search Room">
-    </div>
-</div>
-<p-dataTable [value]="refferedRooms" [rows]="10" [paginator]="true" [globalFilter]="gbRoom" [responsive]="true"
-   >
-    <p-column selectionMode="multiple"></p-column>
-    <p-column field="name" header="Name" [sortable]="true"></p-column>
-    <p-column field="phone" header="Phone" [sortable]="true"></p-column>
-</p-dataTable>-->
 <div class="ui-widget-header row">
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
@@ -51,15 +22,16 @@
         <select type="text" [(ngModel)]="searchMode" (change)="filter($event)" class="form-control">
                 <option value="1">User Name</option>
                 <option value="2">Testing Room</option>
+                <option value="3">Medical Office</option>
         </select>
     </div>
 </div>
-<p-dataTable *ngIf="searchMode == 1" [value]="referredUsers" [(selection)]="selectedReferrals" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
-    [globalFilter]="gbReferrals" [responsive]="true" [stacked]="stacked">
+<p-dataTable *ngIf="searchMode == 1" [value]="referredUsers" [(selection)]="selectedReferrals" [rows]="10" [paginator]="true"
+    [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbReferrals" [responsive]="true" [stacked]="stacked">
     <header>Referrals List</header>
     <p-headerColumnGroup>
         <p-row>
-            <!--<p-column selectionMode="multiple" rowspan="2"></p-column>-->
+            <p-column selectionMode="multiple" rowspan="2"></p-column>
             <p-column header="Patient name" rowspan="2" styleClass="inbound-column"></p-column>
             <p-column header="Case Id" rowspan="2" styleClass="inbound-column"></p-column>
             <p-column header="Referred From" colspan="2" styleClass="inbound-column"></p-column>
@@ -76,7 +48,7 @@
             <p-column header="User Name" styleClass="inbound-column"></p-column>
         </p-row>
     </p-headerColumnGroup>
-    <!--<p-column selectionMode="multiple"></p-column>-->
+    <p-column selectionMode="multiple"></p-column>
     <p-column field="case.patient.user.displayName"></p-column>
     <p-column field="case.id"></p-column>
     <!--<p-column field="referringCompany.name"></p-column>-->
@@ -85,14 +57,26 @@
     <p-column field="referredToCompany.name"></p-column>
     <p-column field="referredToLocation.location.name"></p-column>
     <p-column field="referredToDoctor.user.displayName"></p-column>
+     <p-column>
+          <ng-template let-referral="rowData" pTemplate="body" >
+             <a routerLink="{{referral.id}}/consent-form"><u>{{consentAvailable(referral)}}</u></a>
+         </ng-template>
+    </p-column>
+    <p-column>
+        <ng-template let-currentReferral="rowData" pTemplate="body">
+            <span *ngFor="let document of currentReferral.referralDocument">
+                <a (click)="DownloadPdf(document)"><u>{{document.documentName}}</u></a>
+            </span>
+        </ng-template>
+    </p-column>
 </p-dataTable>
 
-<p-dataTable *ngIf="searchMode == 2" [value]="referredRooms" [(selection)]="selectedReferrals" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
-    [globalFilter]="gbReferrals" [responsive]="true" [stacked]="stacked">
+<p-dataTable *ngIf="searchMode == 2" [value]="referredRooms" [(selection)]="selectedReferrals" [rows]="10" [paginator]="true"
+    [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbReferrals" [responsive]="true" [stacked]="stacked">
     <header>Referrals List</header>
     <p-headerColumnGroup>
         <p-row>
-            <!--<p-column selectionMode="multiple" rowspan="2"></p-column>-->
+            <p-column selectionMode="multiple" rowspan="2"></p-column>
             <p-column header="Patient name" rowspan="2" styleClass="inbound-column"></p-column>
             <p-column header="Case Id" rowspan="2" styleClass="inbound-column"></p-column>
             <p-column header="Referred From" colspan="2" styleClass="inbound-column"></p-column>
@@ -109,7 +93,7 @@
             <p-column header="Testing Room" styleClass="inbound-column"></p-column>
         </p-row>
     </p-headerColumnGroup>
-    <!--<p-column selectionMode="multiple"></p-column>-->
+    <p-column selectionMode="multiple"></p-column>
     <p-column field="case.patient.user.displayName"></p-column>
     <p-column field="case.id"></p-column>
     <!--<p-column field="referringCompany.name"></p-column>-->
@@ -118,4 +102,59 @@
     <p-column field="referredToCompany.name"></p-column>
     <p-column field="referredToLocation.location.name"></p-column>
     <p-column field="room.name"></p-column>
+     <p-column>
+          <ng-template let-referral="rowData" pTemplate="body" >
+             <a routerLink="{{referral.id}}/consent-form"><u>{{consentAvailable(referral)}}</u></a>
+         </ng-template>
+    </p-column>
+    <p-column>
+        <ng-template let-currentReferral="rowData" pTemplate="body">
+            <span *ngFor="let document of currentReferral.referralDocument">
+                <a (click)="DownloadPdf(document)"><u>{{document.documentName}}</u></a>
+            </span>
+        </ng-template>
+    </p-column>
+</p-dataTable>
+
+<p-dataTable *ngIf="searchMode == 3" [value]="referredMedicalOffices" [(selection)]="selectedReferrals" [rows]="10" [paginator]="true"
+    [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbReferrals" [responsive]="true" [stacked]="stacked">
+    <header>Referrals List</header>
+    <p-headerColumnGroup>
+        <p-row>
+            <p-column selectionMode="multiple" rowspan="2"></p-column>
+            <p-column header="Patient name" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Case Id" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Referred From" colspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Referred To" colspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Consent Recieved" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Referred Document" rowspan="2"></p-column>
+        </p-row>
+        <p-row>
+            <!--<p-column header="Company"></p-column>-->
+            <p-column header="Location" styleClass="inbound-column"></p-column>
+            <p-column header="User Name" styleClass="inbound-column"></p-column>
+            <p-column header="Company" styleClass="inbound-column"></p-column>
+            <p-column header="Location" styleClass="inbound-column"></p-column>
+        </p-row>
+    </p-headerColumnGroup>
+    <p-column selectionMode="multiple"></p-column>
+    <p-column field="case.patient.user.displayName"></p-column>
+    <p-column field="case.id"></p-column>
+    <!--<p-column field="referringCompany.name"></p-column>-->
+    <p-column field="referringLocation.location.name"></p-column>
+    <p-column field="referringUser.displayName"></p-column>
+    <p-column field="referredToCompany.name"></p-column>
+    <p-column field="referredToLocation.location.name"></p-column>
+     <p-column>
+          <ng-template let-referral="rowData" pTemplate="body" >
+             <a routerLink="{{referral.id}}/consent-form"><u>{{consentAvailable(referral)}}</u></a>
+         </ng-template>
+    </p-column>
+    <p-column>
+        <ng-template let-currentReferral="rowData" pTemplate="body">
+            <span *ngFor="let document of currentReferral.referralDocument">
+                <a (click)="DownloadPdf(document)"><u>{{document.documentName}}</u></a>
+            </span>
+        </ng-template>
+    </p-column>
 </p-dataTable>

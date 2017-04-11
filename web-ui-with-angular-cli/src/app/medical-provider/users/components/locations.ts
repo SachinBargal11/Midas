@@ -10,6 +10,8 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { NotificationsService } from 'angular2-notifications';
 import { DoctorLocationSchedule } from '../../users/models/doctor-location-schedule';
 import { DoctorLocationScheduleStore } from '../../users/stores/doctor-location-schedule-store';
+import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+
 
 @Component({
     selector: 'locations',
@@ -32,7 +34,9 @@ export class LocationsComponent implements OnInit {
         private _doctorLocationScheduleStore: DoctorLocationScheduleStore,
         public _sessionStore: SessionStore,
         private _notificationsService: NotificationsService,
-        private _progressBarService: ProgressBarService
+        private _progressBarService: ProgressBarService,
+        private confirmationService: ConfirmationService,
+
     ) {
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadLocations();
@@ -81,6 +85,11 @@ export class LocationsComponent implements OnInit {
 
      deleteLocations() {
         if (this.selectedLocations !== undefined) {
+             this.confirmationService.confirm({
+                message: 'Do you want to delete this record?',
+                header: 'Delete Confirmation',
+                icon: 'fa fa-trash',
+                accept: () => {
             this.selectedLocations.forEach(currentLocation => {
                 this.isDeleteProgress = true;
                 this._progressBarService.show();
@@ -115,6 +124,8 @@ export class LocationsComponent implements OnInit {
                         this.isDeleteProgress = false;
                     });
             });
+        }
+             });
         }
         else {
             let notification = new Notification({

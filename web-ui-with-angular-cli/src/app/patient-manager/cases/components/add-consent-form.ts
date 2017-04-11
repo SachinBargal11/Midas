@@ -19,6 +19,7 @@ import { Http } from '@angular/http';
 import * as _ from 'underscore';
 import { ScannerService } from '../../../commons/services/scanner-service';
 import { DialogModule } from 'primeng/primeng';
+import { AddConsentAdapter } from '../services/adapters/add-consent-form-adapter';
 
 @Component({
     selector: 'add-consent-form',
@@ -63,7 +64,7 @@ export class AddConsentFormComponent implements OnInit {
     selectedTwainSource: TwainSource = null;
     _dwObject: any = null;
     documents: AddConsent[] = [];
-   dialogVisible: boolean = false;
+    dialogVisible: boolean = false;
     constructor(
         private fb: FormBuilder,
         private service: AddConsentFormService,
@@ -84,7 +85,7 @@ export class AddConsentFormComponent implements OnInit {
             this.caseId = parseInt(routeParams.caseId, 10);
             let companyId: number = this._sessionStore.session.currentCompany.id;
             this.companyId = this._sessionStore.session.currentCompany.id;
-            this.url = this._url + '/fileupload/multiupload/' + this.caseId + '/consent';
+            this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
             this.consentForm = this.fb.group({
                 // doctor: ['', Validators.required]
                 // ,uploadedFiles: ['', Validators.required]
@@ -118,7 +119,7 @@ export class AddConsentFormComponent implements OnInit {
 
     ngOnInit() {
         // this.showDialog();
-         this.dialogVisible = true;
+        this.dialogVisible = true;
 
         let today = new Date();
         let currentDate = today.getDate();
@@ -129,28 +130,42 @@ export class AddConsentFormComponent implements OnInit {
         // this.downloadDocument();
     }
 
+    ngOnDestroy() {
+        this.unloadWebTwain();
+    }
+
+    unloadWebTwain() {
+        this._scannerService.deleteWebTwain(this.scannerContainerId);
+        this._scannerService.unloadAll();
+    }
 
     ngAfterViewInit() {
         _.defer(() => {
-            this._scannerService.getWebTwain(this.scannerContainerId)
-                .then((dwObject) => {
-                    this._dwObject = dwObject;
-                    if (this._dwObject) {
-                        for (let i = 0; i < this._dwObject.SourceCount; i++) {
-                            this.twainSources.push({ idx: i, name: this._dwObject.GetSourceNameItems(i) });
-                        }
-
-                    }
-                }).catch(() => {
-                    // (<any>window).OnWebTwainNotFoundOnWindowsCallback();
-                    this._notificationsService.alert('', 'Not able to connect scanner. Please refresh the page again and download the software prompted.');
-                });
+            this.createDWObject();
         });
 
     }
 
+    createDWObject() {
+
+        this._scannerService.getWebTwain(this.scannerContainerId)
+            .then((dwObject) => {
+                this._dwObject = dwObject;
+                this._dwObject.SetViewMode(1, -1);
+                if (this._dwObject) {
+                    for (let i = 0; i < this._dwObject.SourceCount; i++) {
+
+                        this.twainSources.push({ idx: i, name: this._dwObject.GetSourceNameItems(i) });
+                    }
+
+                }
+            }).catch(() => {
+                // (<any>window).OnWebTwainNotFoundOnWindowsCallback();
+                this._notificationsService.alert('', 'Not able to connect scanner. Please refresh the page again and download the software prompted.');
+            });
+    }
+
     AcquireImage() {
-       
         if (this._dwObject) {
             this._dwObject.IfDisableSourceAfterAcquire = true;
             if (this.selectedTwainSource) {
@@ -163,7 +178,32 @@ export class AddConsentFormComponent implements OnInit {
         }
     }
 
-
+    uploadDocuments() {
+        this.uploadedFiles.length = 1;
+        this._AddConsentStore.uploadScannedDocuments(this._dwObject, this.caseId)
+            .subscribe(
+            (documents: AddConsent[]) => {
+                _.forEach(documents, (currentDocument: any) => {
+                    if (currentDocument.status == 'Failed') {
+                        let notification = new Notification({
+                            'title': currentDocument.message + '  ' + currentDocument.documentName,
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this._notificationsStore.addNotification(notification);
+                    }
+                });
+                // this.getDocuments();
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this.unloadWebTwain();
+                this.createDWObject();
+                this._progressBarService.hide();
+            });
+    }
 
     // selectDoctor(event) {
     //     this.selectedDoctor = 0;
@@ -176,23 +216,11 @@ export class AddConsentFormComponent implements OnInit {
         "image": ''
     }
 
-    uploadDocuments() {
-        this.uploadedFiles.length = 1;
-        this._AddConsentStore.uploadScannedDocuments(this._dwObject, this.caseId)
-            .subscribe(
-            (documents: AddConsent[]) => {
-                this.documents = documents;
-            },
-            (error) => {
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-    }
-
-
     onUpload(event) {
+        let responseDocuments: any = JSON.parse(event.xhr.responseText);
+        let documents = (<Object[]>responseDocuments).map((document: any) => {
+            return AddConsentAdapter.parseResponse(document);
+        });
         for (let file of event.files) {
             this.uploadedFile = file.name;
             this.uploadedFiles.push(file);
@@ -202,13 +230,27 @@ export class AddConsentFormComponent implements OnInit {
             // alert(file.name);   
         }
         this.msgs = [];
-        let notification = new Notification({
 
-            'title': 'File Uploaded!',
-            'type': 'SUCCESS',
-            'createdAt': moment()
+        _.forEach(documents, (currentDocument: any) => {
+            if (currentDocument.status == 'Failed') {
+                this.uploadedFiles=[];
+
+                let notification = new Notification({
+                    'title': currentDocument.message + '  ' + currentDocument.documentName,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+            }
         });
-        this._notificationsStore.addNotification(notification);
+
+        // let notification = new Notification({
+
+        //     'title': 'File Uploaded!',
+        //     'type': 'SUCCESS',
+        //     'createdAt': moment()
+        // });
+        // this._notificationsStore.addNotification(notification);
         // this.msgs.push({ severity: 'info', summary: 'File Uploaded', detail: this.UploadedFileName });
         // this.msgs.push({ UploadedFileName});
         // this.downloadDocument();
@@ -228,9 +270,7 @@ export class AddConsentFormComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
-
     Save() {
-       
         if (this.uploadedFiles.length == 0) {
             let errString = 'Please upload file.'
             let notification = new Notification({
@@ -290,7 +330,7 @@ export class AddConsentFormComponent implements OnInit {
 
 
     DownloadTemplate() {
-        window.location.assign(this._url + '/CompanyCaseConsentApproval/download/' + '/' + this.companyId + '/' + this.caseId);
+        window.location.assign(this._url + '/CompanyCaseConsentApproval/download/' + this.caseId + '/' + this.companyId);
     }
 
     //  deleteCase(caseDetail: Case): Observable<Case> {
