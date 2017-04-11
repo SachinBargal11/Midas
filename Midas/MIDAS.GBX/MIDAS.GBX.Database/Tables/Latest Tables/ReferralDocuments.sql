@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[ReferralDocuments](
-	[Id] [int] NOT NULL,
+	[Id] [int] NOT NULL IDENTITY,
 	[ReferralId] [int] NOT NULL,
 	[MidasDocumentId] [int] NOT NULL,
 	[DocumentName] [varchar](500) NULL,
