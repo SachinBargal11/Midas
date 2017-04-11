@@ -26,11 +26,11 @@ export class CaseAdapter {
                     companyCaseConsentApproval.push(AddConsentAdapter.parseResponse(consent));
                 }
             }
-            if (data.referral) {
-                for (let referral of data.referral) {
-                    referral.push(ReferralAdapter.parseResponse(referral));
-                }
-            }
+            // if (data.referral) {
+            //     for (let referral of data.referral) {
+            //         referral.push(ReferralAdapter.parseResponse(referral));
+            //     }
+            // }
             patient_case = new Case({
                 id: data.id,
                 patientId: data.patientId,
@@ -39,7 +39,7 @@ export class CaseAdapter {
                 caseTypeId: data.caseTypeId,
                 companies: companies,
                 companyCaseConsentApproval:companyCaseConsentApproval,
-                referral:referral,
+                // referral:referral,
                 locationId: data.locationId,
                 carrierCaseNo: data.carrierCaseNo,
                 transportation: data.transportation ? true : false,
