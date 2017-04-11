@@ -145,6 +145,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     {
                         BO.MidasDocument boMidasDocument = new BO.MidasDocument();
 
+                        boMidasDocument.ID = eachReferralDocument.Id;
                         boMidasDocument.ObjectType = eachReferralDocument.MidasDocument.ObjectType;
                         boMidasDocument.ObjectId = eachReferralDocument.MidasDocument.ObjectId;
                         boMidasDocument.DocumentPath = eachReferralDocument.MidasDocument.DocumentPath;
