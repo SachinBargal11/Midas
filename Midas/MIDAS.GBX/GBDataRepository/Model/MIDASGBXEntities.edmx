@@ -772,7 +772,7 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ReferralId" Type="int" Nullable="false" />
           <Property Name="MidasDocumentId" Type="int" Nullable="false" />
           <Property Name="DocumentName" Type="varchar" MaxLength="500" />
@@ -3870,7 +3870,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ReferralId" Type="Int32" Nullable="false" />
           <Property Name="MidasDocumentId" Type="Int32" Nullable="false" />
           <Property Name="DocumentName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
