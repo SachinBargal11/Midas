@@ -57,7 +57,11 @@
     <p-column field="referredToCompany.name"></p-column>
     <p-column field="referredToLocation.location.name"></p-column>
     <p-column field="referredToDoctor.user.displayName"></p-column>
-    <p-column></p-column>
+     <p-column>
+          <ng-template let-referral="rowData" pTemplate="body" >
+             <a routerLink="{{referral.id}}/consent-form"><u>{{consentAvailable(referral)}}</u></a>
+         </ng-template>
+    </p-column>
     <p-column>
         <ng-template let-currentReferral="rowData" pTemplate="body">
             <span *ngFor="let document of currentReferral.referralDocument">
@@ -98,7 +102,11 @@
     <p-column field="referredToCompany.name"></p-column>
     <p-column field="referredToLocation.location.name"></p-column>
     <p-column field="room.name"></p-column>
-    <p-column></p-column>
+     <p-column>
+          <ng-template let-referral="rowData" pTemplate="body" >
+             <a routerLink="{{referral.id}}/consent-form"><u>{{consentAvailable(referral)}}</u></a>
+         </ng-template>
+    </p-column>
     <p-column>
         <ng-template let-currentReferral="rowData" pTemplate="body">
             <span *ngFor="let document of currentReferral.referralDocument">
@@ -137,7 +145,11 @@
     <p-column field="referringUser.displayName"></p-column>
     <p-column field="referredToCompany.name"></p-column>
     <p-column field="referredToLocation.location.name"></p-column>
-    <p-column></p-column>
+     <p-column>
+          <ng-template let-referral="rowData" pTemplate="body" >
+             <a routerLink="{{referral.id}}/consent-form"><u>{{consentAvailable(referral)}}</u></a>
+         </ng-template>
+    </p-column>
     <p-column>
         <ng-template let-currentReferral="rowData" pTemplate="body">
             <span *ngFor="let document of currentReferral.referralDocument">
