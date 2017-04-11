@@ -616,7 +616,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     {
                         pdfText = pdfText.Replace("{{PatientName}}", acc.Case.Patient2.User.FirstName + " " + acc.Case.Patient2.User.LastName)
                                          .Replace("{{CreateDate}}", acc.CreateDate.ToShortDateString())
-                                         .Replace("{{ReferredToDoctor}}", acc.Doctor.User.FirstName + " " + acc.Doctor.User.LastName)
+                                         .Replace("{{ReferredToDoctor}}", acc.Doctor != null ? (acc.Doctor.User.FirstName + " " + acc.Doctor.User.LastName) : "")
                                          .Replace("{{Note}}", acc.Note);
 
                         path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\case_" + acc.Case.Id;

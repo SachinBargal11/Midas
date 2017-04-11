@@ -392,6 +392,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
         public override object ConsentSave(int caseid, int companyid, List<System.Net.Http.HttpContent> streamContent, string uploadpath)
         {
+            BO.CompanyCaseConsentApproval companyCaseConsentApprovalBO = new BO.CompanyCaseConsentApproval();
+            companyCaseConsentApprovalBO.CaseId = caseid;
+            companyCaseConsentApprovalBO.CompanyId = companyid;
+            var result = this.Save(companyCaseConsentApprovalBO);
+            if (result is BO.ErrorObject)
+            {
+                return result;
+            }
+
             List<BO.Document> docInfo = new List<BO.Document>();
             StringBuilder storagePath = new StringBuilder();
             string SPECIALITY = "SPECIALITY_";
