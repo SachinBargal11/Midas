@@ -334,6 +334,12 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+
+        public virtual object Delete(int param1,int param2,int param3)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual object GetDocumentList(int id)
         {
             throw new NotImplementedException();

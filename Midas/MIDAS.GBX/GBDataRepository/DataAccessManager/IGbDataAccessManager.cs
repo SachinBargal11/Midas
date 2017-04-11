@@ -18,6 +18,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object AssociateDoctorToLocations(T gbObject);
         int Delete(T entity);
         object Delete(int id);
+        object Delete(int param1, int param2, int param3);        
         object DeleteFile(int caseId, int id);
         string Download(int caseId, int documentid);
         object GetDocumentList(int id);
