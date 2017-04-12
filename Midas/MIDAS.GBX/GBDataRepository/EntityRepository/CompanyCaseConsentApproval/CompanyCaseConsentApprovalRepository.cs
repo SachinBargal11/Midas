@@ -80,6 +80,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             if (companyCaseConsentApprovalBO != null)
             {
+                int patient = _context.Cases.Where(p => p.Id == companyCaseConsentApprovalBO.CaseId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.PatientId).FirstOrDefault();
+                UserCompany userCompany = _context.UserCompanies.Where(p => p.UserID == patient && p.CompanyID == companyCaseConsentApprovalBO.CompanyId).FirstOrDefault();
+                if (userCompany == null)
+                {
+                    userCompany = new UserCompany();
+                    userCompany.CompanyID = companyCaseConsentApprovalBO.CompanyId;
+                    userCompany.UserID = patient;
+                    userCompany = _context.UserCompanies.Add(userCompany);
+                    _context.SaveChanges();
+                }
+
+                CaseCompanyMapping caseCompanyMapping = _context.CaseCompanyMappings.Where(p => p.CaseId == companyCaseConsentApprovalBO.CaseId && p.CompanyId == companyCaseConsentApprovalBO.CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                if (caseCompanyMapping == null)
+                {
+                    caseCompanyMapping = new CaseCompanyMapping();
+                    caseCompanyMapping.CompanyId = companyCaseConsentApprovalBO.CompanyId;
+                    caseCompanyMapping.CaseId = (int)companyCaseConsentApprovalBO.CaseId;
+                    caseCompanyMapping = _context.CaseCompanyMappings.Add(caseCompanyMapping);
+                    _context.SaveChanges();
+                }
+
                 companyCaseConsentApprovalDB = _context.CompanyCaseConsentApprovals.Where(p => p.CaseId == companyCaseConsentApprovalBO.CaseId
                                                                                             && p.CompanyId == companyCaseConsentApprovalBO.CompanyId
                                                                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -97,27 +118,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     return new BO.ErrorObject { errorObject = "", ErrorMessage = "Company, Case and Consent data already exists.", ErrorLevel = ErrorLevel.Error };
                 }
 
-                int patient = _context.Cases.Where(p => p.Id == companyCaseConsentApprovalBO.CaseId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.PatientId).FirstOrDefault();
-                UserCompany userCompany = _context.UserCompanies.Where(p => p.UserID == patient && p.CompanyID == companyCaseConsentApprovalBO.CompanyId).FirstOrDefault();
-                if (userCompany == null)
-                {
-                    userCompany = new UserCompany();
-                    userCompany.CompanyID = companyCaseConsentApprovalBO.CompanyId;
-                    userCompany.UserID = patient;
-                    userCompany = _context.UserCompanies.Add(userCompany);
-                    _context.SaveChanges();
-                }
-                CaseCompanyMapping caseCompanyMapping = _context.CaseCompanyMappings.Where(p => p.CaseId == companyCaseConsentApprovalBO.CaseId && p.CompanyId == companyCaseConsentApprovalBO.CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-                if (caseCompanyMapping == null)
-                {
-                    caseCompanyMapping = new CaseCompanyMapping();
-                    caseCompanyMapping.CompanyId = companyCaseConsentApprovalBO.CompanyId;
-                    caseCompanyMapping.CaseId = (int)companyCaseConsentApprovalBO.CaseId;
-                    caseCompanyMapping = _context.CaseCompanyMappings.Add(caseCompanyMapping);
-                    _context.SaveChanges();
-                }
-
-
                 companyCaseConsentApprovalDB.CompanyId = companyCaseConsentApprovalBO.CompanyId;
                 companyCaseConsentApprovalDB.CaseId = (int)companyCaseConsentApprovalBO.CaseId;
 
@@ -134,54 +134,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     companyCaseConsentApprovalDB.UpdateDate = DateTime.UtcNow;
                 }
 
-                _context.SaveChanges();
-
-                //companyCaseConsentApprovalDB = _context.CompanyCaseConsentApprovals.Where(p => p.Id == companyCaseConsentApprovalBO.ID
-                //                                                                   && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                //                                                                  .FirstOrDefault();
-                
-
-                //if (companyCaseConsentApprovalBO.CompanyId <= 0 || companyCaseConsentApprovalBO.CaseId <= 0)
-                //{
-                //    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Company, Case and Consent data.", ErrorLevel = ErrorLevel.Error };
-                //}
-
-                //if (companyCaseConsentApprovalDB == null && companyCaseConsentApprovalBO.ID > 0)
-                //{
-                //    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Company, Case and Consent data.", ErrorLevel = ErrorLevel.Error };
-                //}
-                //else if (companyCaseConsentApprovalDB == null && companyCaseConsentApprovalBO.ID <= 0)
-                //{
-                //    companyCaseConsentApprovalDB = new CompanyCaseConsentApproval();
-                //    Add_companyCaseConsentApproval = true;
-                //}
-
-                //if (Add_companyCaseConsentApproval == true)
-                //{
-                //    if (_context.CompanyCaseConsentApprovals.Any(p => p.CompanyId == companyCaseConsentApprovalBO.CompanyId && p.CaseId == companyCaseConsentApprovalBO.CaseId
-                //                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))))
-                //    {
-                //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Company, Case and Consent data already exists.", ErrorLevel = ErrorLevel.Error };
-                //    }
-                //}
-                //else
-                //{
-                //    if (_context.CompanyCaseConsentApprovals.Any(p => p.CompanyId == companyCaseConsentApprovalBO.CompanyId && p.CaseId == companyCaseConsentApprovalBO.CaseId
-                //                                                       && p.Id != companyCaseConsentApprovalBO.ID
-                //                                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))))
-                //    {
-                //        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Company, Case and Consent data already exists.", ErrorLevel = ErrorLevel.Error };
-                //    }
-                //}
-
-                //companyCaseConsentApprovalDB.CompanyId = companyCaseConsentApprovalBO.CompanyId;
-                //companyCaseConsentApprovalDB.CaseId = (int)companyCaseConsentApprovalBO.CaseId;
-
-                //if (Add_companyCaseConsentApproval == true)
-                //{
-                //    companyCaseConsentApprovalDB = _context.CompanyCaseConsentApprovals.Add(companyCaseConsentApprovalDB);
-                //}
-                //_context.SaveChanges();
+                _context.SaveChanges();                
             }
 
             else
@@ -443,11 +396,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #endregion
 
         public void Dispose() { GC.SuppressFinalize(this); }
-    }
-
-    public class HttpContent
-    {
-    }
+    }    
 }
 
 

@@ -34,7 +34,7 @@
     <p-column field="caseTypeLabel" header="Case Type" [sortable]="true"></p-column>
     <p-column header="Consent Received">
         <ng-template let-case="rowData" pTemplate="body">
-            <a routerLink="{{case.id}}/consent-form">
+            <a routerLink="{{case.id}}/consent">
                 <u>{{consentAvailable(case)}}</u>
             </a>
             <!--<div {{consentAvailable(case)}}>{{consentRecived}}</div>-->
