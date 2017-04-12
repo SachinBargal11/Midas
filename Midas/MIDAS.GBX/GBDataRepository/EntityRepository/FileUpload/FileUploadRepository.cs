@@ -112,6 +112,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                                                           && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                           .FirstOrDefault<CaseDocument>();
 
+                var casecompanyconsentdocument = _context.CaseCompanyConsentDocuments.Where(p => p.CaseId == caseId && p.MidasDocumentId == id
+                                                          && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                          .FirstOrDefault<CaseCompanyConsentDocument>();
+
+                var referraldocument = _context.ReferralDocuments.Where(p => p.ReferralId == caseId && p.MidasDocumentId == id
+                                                          && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                          .FirstOrDefault<ReferralDocument>();
+
                 var acc = _context.MidasDocuments.Where(p => p.Id == id
                                                  && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                  .FirstOrDefault<MidasDocument>();
@@ -124,9 +132,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                     casedocument.DocumentName = newFile;
                     _context.SaveChanges();
                 }
-                else if (casedocument == null)
+                if (casecompanyconsentdocument != null)
                 {
-                    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    casecompanyconsentdocument.IsDeleted = true;
+                    casecompanyconsentdocument.DocumentName = newFile;
+                    _context.SaveChanges();
+                }
+                if (referraldocument != null)
+                {
+                    referraldocument.IsDeleted = true;
+                    referraldocument.DocumentName = newFile;
+                    _context.SaveChanges();
                 }
 
                 if (acc != null)
