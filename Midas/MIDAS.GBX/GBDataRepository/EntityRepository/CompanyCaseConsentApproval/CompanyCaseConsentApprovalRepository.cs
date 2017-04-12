@@ -391,7 +391,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                        .Append(caseid)
                        .Append("/consent");
 
-            docInfo = (List<BO.Document>)fileUploadManager.Upload(streamContent, storagePath.ToString(), caseid, "consent_"+ _context.UserCompanies.Where(xc => xc.UserID == _context.Cases.FirstOrDefault(p => p.Id == caseid).PatientId).FirstOrDefault().CompanyID, uploadpath);
+            docInfo = (List<BO.Document>)fileUploadManager.Upload(streamContent, storagePath.ToString(), caseid, "consent_"+ companyid, uploadpath);
 
             return docInfo;
         }
