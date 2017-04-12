@@ -21,7 +21,7 @@ export class DocumentUploadService {
 
     }
 
-    uploadScanDocument(dwObject: any, url: string) {
+    uploadScanDocument(dwObject: any, url: string, fileName: string) {
         let promise: Promise<Document[]> = new Promise((resolve, reject) => {
             dwObject.IfSSL = false; // Set whether SSL is used
             dwObject.HTTPPort = 80;
@@ -29,7 +29,7 @@ export class DocumentUploadService {
             dwObject.HTTPUploadAllThroughPostAsPDF(
                 url,
                 '',
-                `scanned_file_${moment().valueOf()}.pdf`,
+                fileName ? `${fileName}.pdf` : `scanned_file_${moment().format('DD-MMM-YYYY hh:mm')}.pdf`,
                 (response: any) => {
                     resolve(response);
                 },

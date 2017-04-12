@@ -19,6 +19,7 @@ export class DocumentUploadComponent implements OnInit {
   twainSources: TwainSource[] = [];
   selectedTwainSource: TwainSource = null;
   dwObject: any = null;
+  scannedFileName: string = '';
 
   @Input() url: string;
   @Output() uploadComplete: EventEmitter<Document[]> = new EventEmitter();
@@ -56,7 +57,12 @@ export class DocumentUploadComponent implements OnInit {
   }
 
   uploadScannedDocuments() {
-    this._documentUploadService.uploadScanDocument(this.dwObject, this.url)
+    let fileName = this.scannedFileName.trim();
+    if (!fileName) {
+      this._notificationsService.error('File Name not present', 'Please provide name of file for scanned document.');
+      return;
+    }
+    this._documentUploadService.uploadScanDocument(this.dwObject, this.url, fileName)
       .then((documents: Document[]) => {
         this.uploadComplete.emit(documents);
         this.resetWebTwain();
@@ -84,6 +90,7 @@ export class DocumentUploadComponent implements OnInit {
   }
 
   private _createDWObject() {
+    this.scannedFileName = `scanned_file_${moment().format('DD-MMM-YYYY hh:mm')}`;
     this._scannerService.getWebTwain(this.scannerContainerId)
       .then((dwObject) => {
         this.dwObject = dwObject;
