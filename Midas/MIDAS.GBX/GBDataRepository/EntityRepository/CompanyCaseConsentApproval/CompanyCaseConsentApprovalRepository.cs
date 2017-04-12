@@ -97,6 +97,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     return new BO.ErrorObject { errorObject = "", ErrorMessage = "Company, Case and Consent data already exists.", ErrorLevel = ErrorLevel.Error };
                 }
 
+                int patient = _context.Cases.Where(p => p.Id == companyCaseConsentApprovalBO.CaseId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.PatientId).FirstOrDefault();
+                UserCompany userCompany = _context.UserCompanies.Where(p => p.UserID == patient && p.CompanyID == companyCaseConsentApprovalBO.CompanyId).FirstOrDefault();
+                if (userCompany == null)
+                {
+                    userCompany = new UserCompany();
+                    userCompany.CompanyID = companyCaseConsentApprovalBO.CompanyId;
+                    userCompany.UserID = patient;
+                    userCompany = _context.UserCompanies.Add(userCompany);
+                    _context.SaveChanges();
+                }
+                CaseCompanyMapping caseCompanyMapping = _context.CaseCompanyMappings.Where(p => p.CaseId == companyCaseConsentApprovalBO.CaseId && p.CompanyId == companyCaseConsentApprovalBO.CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                if (caseCompanyMapping == null)
+                {
+                    caseCompanyMapping = new CaseCompanyMapping();
+                    caseCompanyMapping.CompanyId = companyCaseConsentApprovalBO.CompanyId;
+                    caseCompanyMapping.CaseId = (int)companyCaseConsentApprovalBO.CaseId;
+                    caseCompanyMapping = _context.CaseCompanyMappings.Add(caseCompanyMapping);
+                    _context.SaveChanges();
+                }
+
+
                 companyCaseConsentApprovalDB.CompanyId = companyCaseConsentApprovalBO.CompanyId;
                 companyCaseConsentApprovalDB.CaseId = (int)companyCaseConsentApprovalBO.CaseId;
 
