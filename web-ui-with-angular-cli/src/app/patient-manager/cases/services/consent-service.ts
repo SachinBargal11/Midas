@@ -118,7 +118,8 @@ export class ConsentService {
     }
 
 
-    getConsetForm(CaseId: number, companyId: number): Observable<Consent[]> {//DoctorCaseConsentApproval/getByCaseId      
+    getConsetForm(CaseId: number, companyId: number): Observable<Consent[]> {
+        debugger;
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
             // return this._http.get(this._url + '/fileupload/get/' + CaseId  +'/case').map(res => res.json())
             // return this._http.get(this._url + '/CompanyCaseConsentApproval/getByCaseId/' + CaseId).map(res => res.json())
