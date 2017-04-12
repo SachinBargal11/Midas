@@ -54,7 +54,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.currentCaseId = parseInt(routeParams.caseId, 10);
-            this.url = this._url + '/fileupload/multiupload/' + this.currentCaseId + '/case';
+            this.url = `${this._url}/fileupload/multiupload/${this.currentCaseId}/case`;
         });
     }
 
@@ -77,52 +77,8 @@ export class CaseDocumentsUploadComponent implements OnInit {
     }
 
     documentUploadError(error: Error) {
-
+        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
     }
-
-    /*uploadDocuments(dwObject) {
-        this._casesStore.uploadScannedDocuments(dwObject, this.currentCaseId)
-            .subscribe(
-            (documents: CaseDocument[]) => {
-                _.forEach(documents, (currentDocument: any) => {
-                    if (currentDocument.status == 'Failed') {
-                        let notification = new Notification({
-                            'title': currentDocument.message + '  ' + currentDocument.documentName,
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this._notificationsStore.addNotification(notification);
-                    }
-                });
-                this.getDocuments();
-            },
-            (error) => {
-                this._progressBarService.hide();
-            },
-            () => {
-                this._documentUploadComponent.resetWebTwain();
-                this._progressBarService.hide();
-            });
-    }*/
-
-    /*onUpload(event) {
-        let responseDocuments: any = JSON.parse(event.xhr.responseText);
-        let documents = (<Object[]>responseDocuments).map((document: any) => {
-            return CaseDocumentAdapter.parseResponse(document);
-        });
-        _.forEach(documents, (currentDocument: any) => {
-            if (currentDocument.status == 'Failed') {
-                let notification = new Notification({
-                    'title': currentDocument.message + '  ' + currentDocument.documentName,
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-            }
-        });
-        this.getDocuments();
-
-    }*/
 
     getDocuments() {
         this._progressBarService.show();
