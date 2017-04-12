@@ -15,7 +15,7 @@ import { Room } from '../../../medical-provider/rooms/models/room';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
 import { Speciality } from '../../../account-setup/models/speciality';
 import { DoctorSpeciality } from '../../../medical-provider/users/models/doctor-speciality';
-import { AddConsent } from '../../cases/models/add-consent-form';
+import { Consent } from '../../cases/models/consent';
 import { ReferralDocument } from '../../cases/models/referral-document';
 import { environment } from '../../../../environments/environment';
 
@@ -107,7 +107,7 @@ export class OutboundReferralsComponent implements OnInit {
     }
     consentAvailable(referral: Referral) {
         if (referral.case.companyCaseConsentApproval.length > 0) {
-            let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: AddConsent) => {
+            let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: Consent) => {
                 return currentConsent.companyId === this._sessionStore.session.currentCompany.id;
             });
             if (consentAvailable) {

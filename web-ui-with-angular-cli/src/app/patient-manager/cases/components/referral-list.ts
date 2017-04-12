@@ -17,7 +17,7 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 import { Room } from '../../../medical-provider/rooms/models/room';
 import { environment } from '../../../../environments/environment';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
-import { AddConsent } from '../models/add-consent-form';
+import { Consent } from '../models/consent';
 
 @Component({
     selector: 'referral-list',
@@ -150,7 +150,7 @@ export class ReferralListComponent implements OnInit {
     }
     consentAvailable(referral: Referral) {
         if (referral.case.companyCaseConsentApproval.length > 0) {
-            let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: AddConsent) => {
+            let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: Consent) => {
                 return currentConsent.companyId === this._sessionStore.session.currentCompany.id;
             });
             if (consentAvailable) {
