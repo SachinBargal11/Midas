@@ -50,6 +50,8 @@ namespace MIDAS.GBX.EN
         #region TemplateType
         public const string ReferralType = "REFERRAL";
         public const string ConsentType = "CONSENT";
+        public const string CaseType = "CASE";
+        public const string VisitType = "VISIT";
         #endregion
 
         public const string SpecilityAlreadyExists = "Specialty already exists.";
