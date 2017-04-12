@@ -38,6 +38,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public int ReferringUserId { get; set; }
+        public Nullable<int> ReferredToSpecialtyId { get; set; }
+        public Nullable<int> ReferredToRoomTestId { get; set; }
     
         public virtual Case Case { get; set; }
         public virtual Company Company { get; set; }
@@ -46,6 +48,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual Location Location { get; set; }
         public virtual Location Location1 { get; set; }
         public virtual Room Room { get; set; }
+        public virtual RoomTest RoomTest { get; set; }
+        public virtual Specialty Specialty { get; set; }
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReferralDocument> ReferralDocuments { get; set; }

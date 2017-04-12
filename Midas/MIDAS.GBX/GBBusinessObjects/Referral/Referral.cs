@@ -63,11 +63,23 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("referringCompany")]
         public Company Company1 { get; set; }
 
+        [JsonProperty("referredToSpecialtyId")]
+        public int? ReferredToSpecialtyId { get; set; }
+
+        [JsonProperty("referredToRoomTestId")]
+        public int? ReferredToRoomTestId { get; set; }
+
         [JsonProperty("room")]
         public Room Room { get; set; }
 
         [JsonProperty("case")]
         public Case Case { get; set; }
+
+        [JsonProperty("roomTest")]
+        public RoomTest RoomTest { get; set; }
+
+        [JsonProperty("specialty")]
+        public Specialty Specialty { get; set; }
 
         [JsonProperty("referralDocument")]
         public List<ReferralDocument> ReferralDocument { get; set; }
