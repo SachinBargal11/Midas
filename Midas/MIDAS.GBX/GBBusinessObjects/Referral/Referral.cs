@@ -75,10 +75,10 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("case")]
         public Case Case { get; set; }
 
-        [JsonProperty("roomTest")]
+        [JsonProperty("referredToRoomTest")]
         public RoomTest RoomTest { get; set; }
 
-        [JsonProperty("specialty")]
+        [JsonProperty("referredToSpecialty")]
         public Specialty Specialty { get; set; }
 
         [JsonProperty("referralDocument")]
