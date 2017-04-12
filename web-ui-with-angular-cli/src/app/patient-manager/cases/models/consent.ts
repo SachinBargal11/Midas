@@ -1,11 +1,10 @@
 import { Record } from 'immutable';
 import * as moment from 'moment';
-import { Address } from '../../../commons/models/address';
 import { Case } from './case';
 import { Company } from '../../../account/models/company';
 
 
-const ConsentForm = Record({
+const AddConsent = Record({
     id: 0,
     caseId: 0,
     doctorId: 0,
@@ -23,11 +22,13 @@ const ConsentForm = Record({
     createByUserID: 0,
     createDate: null,
     updateByUserID: 0,
-    updateDate: null
+    updateDate: null,
+    Path: ''
+   
 
 });
 
-export class AddConsent extends ConsentForm {
+export class Consent extends AddConsent {
 
     id: number;
     caseId: number;
@@ -47,7 +48,7 @@ export class AddConsent extends ConsentForm {
     createDate: moment.Moment;
     updateByUserID: number;
     updateDate: moment.Moment;
-
+     Path: string;
 
     constructor(props) {
         super(props);

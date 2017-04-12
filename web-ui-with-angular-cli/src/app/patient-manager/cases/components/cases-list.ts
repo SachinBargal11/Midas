@@ -13,7 +13,7 @@ import { Notification } from '../../../commons/models/notification';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
-import { AddConsent } from '../models/add-consent-form';
+import { Consent } from '../models/consent';
 import { Company } from '../../../account/models/company';
 import * as _ from 'underscore';
 
@@ -88,7 +88,7 @@ export class CasesListComponent implements OnInit {
         //     return currentCase.companyCaseConsentApproval.length > 0 ? currentCase : null;
         // });
         if (case1.companyCaseConsentApproval.length > 0) {
-            let consentAvailable = _.find(case1.companyCaseConsentApproval, (currentConsent: AddConsent) => {
+            let consentAvailable = _.find(case1.companyCaseConsentApproval, (currentConsent: Consent) => {
                 return currentConsent.companyId === this._sessionStore.session.currentCompany.id;
                 // if (currentConsent.companyId === this._sessionStore.session.currentCompany.id) {
                 //     return this.consentRecived = 'Yes';

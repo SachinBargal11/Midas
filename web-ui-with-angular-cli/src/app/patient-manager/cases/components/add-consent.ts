@@ -10,24 +10,24 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 //import { FileUpload, FileUploadModule } from 'primeng/primeng';
-import { AddConsentStore } from '../stores/add-consent-form-store';
+import { ConsentStore } from '../stores/consent-store';
 import { SessionStore } from '../../../commons/stores/session-store';
-import { AddConsentFormService } from '../services/consent-form-service';
-import { AddConsent } from '../models/add-consent-form';
+import { ConsentService } from '../services/consent-service';
+import { Consent } from '../models/consent';
 import { ElementRef, Input, ViewChild } from '@angular/core';
 import { Http } from '@angular/http';
 import * as _ from 'underscore';
 import { ScannerService } from '../../../commons/services/scanner-service';
 import { DialogModule } from 'primeng/primeng';
-import { AddConsentAdapter } from '../services/adapters/add-consent-form-adapter';
+import { ConsentAdapter } from '../services/adapters/consent-adapter';
 
 @Component({
-    selector: 'add-consent-form',
-    templateUrl: './add-consent-form.html',
-    providers: [AddConsentFormService]
+    selector: 'add-consent',
+    templateUrl: './add-consent.html',
+    providers: [ConsentService]
 })
 
-export class AddConsentFormComponent implements OnInit {
+export class AddConsentComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     display: boolean = false;
     msgs: Message[];
@@ -41,7 +41,7 @@ export class AddConsentFormComponent implements OnInit {
     isdoctorsLoading = false;
     isSaveProgress = false;
     states: any[];
-    consentDetail: AddConsent;
+    consentDetail: Consent;
     consentForm: FormGroup;
     consentformControls;
 
@@ -55,7 +55,7 @@ export class AddConsentFormComponent implements OnInit {
     companyId: number;
     fileName: string;
     fileUploaded: string;
-    document: AddConsent[] = [];
+    document: Consent[] = [];
     selectedDoctoredit = 0;
     EditId: number = 0;
     documentMode: string = '3';
@@ -63,15 +63,15 @@ export class AddConsentFormComponent implements OnInit {
     twainSources: TwainSource[] = [];
     selectedTwainSource: TwainSource = null;
     _dwObject: any = null;
-    documents: AddConsent[] = [];
+    documents: Consent[] = [];
     dialogVisible: boolean = false;
     constructor(
         private fb: FormBuilder,
-        private service: AddConsentFormService,
+        private service: ConsentService,
         private _router: Router,
         private _sessionStore: SessionStore,
         public _route: ActivatedRoute,
-        private _AddConsentStore: AddConsentStore,
+        private _AddConsentStore: ConsentStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
@@ -93,28 +93,6 @@ export class AddConsentFormComponent implements OnInit {
 
             this.consentformControls = this.consentForm.controls;
         })
-
-        // this._route.params.subscribe((routeParams: any) => {
-        //     this.EditId = parseInt(routeParams.id);
-        //     this._progressBarService.show();
-        //     let resultD = this._AddConsentStore.editDoctorCaseConsentApproval(this.EditId);
-        //     resultD.subscribe(
-        //         (consentDetail: AddConsent) => {
-        //             this.consentDetail = consentDetail;
-        //             this.selectedDoctor = consentDetail.doctorId;
-        //           //  this.file.name = consentDetail.consentReceived;
-        //           //  this.uploadedFiles.push(this.file);
-        //           //  this.UploadedFileName = this.file.name;
-        //             //this.selectedDoctoredit = consentDetail.doctorId.toString();
-        //         },
-        //         (error) => {
-        //             this._router.navigate(['../../'], { relativeTo: this._route });
-        //             this._progressBarService.hide();
-        //         },
-        //         () => {
-        //             this._progressBarService.hide();
-        //         });
-        // });
     }
 
     ngOnInit() {
@@ -183,7 +161,7 @@ export class AddConsentFormComponent implements OnInit {
         this.uploadedFiles.length = 1;
         this._AddConsentStore.uploadScannedDocuments(this._dwObject, this.caseId)
             .subscribe(
-            (documents: AddConsent[]) => {
+            (documents: Consent[]) => {
                 _.forEach(documents, (currentDocument: any) => {
                     if (currentDocument.status == 'Failed') {
                         let notification = new Notification({
@@ -230,10 +208,11 @@ export class AddConsentFormComponent implements OnInit {
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
+            this._router.navigate(['../'], { relativeTo: this._route });
         }
         else {
             let documents = (<Object[]>responseDocuments).map((document: any) => {
-                return AddConsentAdapter.parseResponse(document);
+                return ConsentAdapter.parseResponse(document);
             });
             for (let file of event.files) {
                 this.uploadedFile = file.name;
@@ -262,6 +241,7 @@ export class AddConsentFormComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
+                    this._router.navigate(['../'], { relativeTo: this._route });
                 }
             });
 
@@ -312,7 +292,7 @@ export class AddConsentFormComponent implements OnInit {
             this.isSaveProgress = true;
             let consentFormValues = this.consentForm.value;
             let result;
-            let consentDetail = new AddConsent({
+            let consentDetail = new Consent({
 
                 caseId: this.caseId,
                 patientId: this.patientId,
@@ -356,28 +336,6 @@ export class AddConsentFormComponent implements OnInit {
     DownloadTemplate() {
         window.location.assign(this._url + '/CompanyCaseConsentApproval/download/' + this.caseId + '/' + this.companyId);
     }
-
-    //  deleteCase(caseDetail: Case): Observable<Case> {
-    //         let promise = new Promise((resolve, reject) => {
-    //             return this._http.get(this._url + '/Case/delete/' + caseDetail.id, {
-    //                 headers: this._headers
-    //             }).map(res => res.json())
-    //                 .subscribe((data: any) => {
-    //                     let parsedCase: Case = null;
-    //                     parsedCase = CaseAdapter.parseResponse(data);
-    //                     resolve(parsedCase);
-    //                 }, (error) => {
-    //                     reject(error);
-    //                 });
-    //         });
-    //         return <Observable<Case>>Observable.from(promise);
-    //     }
-
-
-    // showDialog() {
-    //     this.display = true;
-    // }
-
 
 }
 export interface TwainSource {

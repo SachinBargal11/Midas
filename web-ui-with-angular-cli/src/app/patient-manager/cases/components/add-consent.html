@@ -1,7 +1,7 @@
-<h3 class="with-border">Add Consent Form</h3>
-<input type="radio" value="3" name="documentMode" [(ngModel)]="documentMode"> Download Template
+<h3 class="with-border">Add Consent</h3>
 <input type="radio" value="1" name="documentMode" [(ngModel)]="documentMode"> Scan Documents
 <input type="radio" value="2" name="documentMode" [(ngModel)]="documentMode"> Upload Documents
+<a style="color: blue" (click)="DownloadTemplate()">Download Template</a>
 <br>
 
 <section class="card" [hidden]="documentMode != '1'">
@@ -62,13 +62,10 @@
 
     </div>-->
 </section>
-
-<section class="card" [hidden]="documentMode != '3'">
-    <br>
-    <a style="color: blue" (click)="DownloadTemplate()">Download</a>
-
-
-</section>
-
-
+<div class="form-group">
+    <!--   <button [disabled]="!consentForm.valid || isSaveProgress" type="submit" (click)="Save()" class="btn btn-success sign-up">Submit
+        <loader [visible]="isSaveProgress"></loader>
+    </button>-->
+    <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
+</div>
 <br>
