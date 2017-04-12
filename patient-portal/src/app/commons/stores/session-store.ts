@@ -131,7 +131,7 @@ export class SessionStore {
     }
 
     selectCurrentCompany(event, companyId) {
-
+        debugger;
         event.preventDefault();
         let company: Company = _.find(this.session.companies, { id: parseInt(companyId, 10) });
         this._session.currentCompany = company;

@@ -52,7 +52,7 @@ import {
   ,GrowlModule
   
 } from 'primeng/primeng';
-//import { DropdownModule } from 'ng2-bootstrap';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 
 @NgModule({
@@ -75,7 +75,7 @@ import {
     SharedModule,
     ConfirmDialogModule,
     MultiSelectModule,
-   // DropdownModule.forRoot(),
+    BsDropdownModule.forRoot(),
     FileUploadModule,GrowlModule
   ],
   declarations: [

@@ -11,9 +11,9 @@ import { EditReferringOfficeComponent } from './components/edit-referring-office
 import { AccidentInfoComponent } from './components/accident';
 import { InsuranceMapComponent } from './components/insurance-mapping';
 import { CaseMappingComponent } from './components/case-mapping';
-import { ConsentListComponent } from './components/list-consent-form';
-import { AddConsentFormComponent } from './components/add-consent-form';
-import { EditConsentFormComponent } from './components/edit-consent-form';
+import { ConsentListComponent } from './components/list-consent';
+import { AddConsentComponent } from './components/add-consent';
+
 export const CasesShellRoutes: Routes = [
     {
         path: '',
@@ -114,13 +114,12 @@ export const CasesShellRoutes: Routes = [
                             breadcrumb: 'Insurance Mapping'
                         }
                     },
-
                     {
-                        path: 'consent-form',
+                        path: 'consent',
                         component: ShellComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
-                            breadcrumb: 'Consent Form'
+                            breadcrumb: 'Consent'
                         },
                         children: [
                             {
@@ -132,22 +131,14 @@ export const CasesShellRoutes: Routes = [
                             },
                             {
                                 path: 'add',
-                                component: AddConsentFormComponent,
+                                component: AddConsentComponent,
                                 canActivate: [ValidateActiveSession],
                                 data: {
-                                    breadcrumb: 'Add Consent form'
+                                    breadcrumb: 'Add Consent'
                                 }
-                            },
-                            {
-                                path: 'edit/:id',
-                                component: EditConsentFormComponent,
-                                canActivate: [ValidateActiveSession],
-                                data: {
-                                    breadcrumb: 'Edit Consent form'
-                                }
-                            },
+                            }
                         ]
-                    },                    
+                    },
                 ]
             }
         ]
