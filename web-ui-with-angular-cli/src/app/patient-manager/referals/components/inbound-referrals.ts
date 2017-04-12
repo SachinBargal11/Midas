@@ -13,7 +13,7 @@ import { ReferralStore } from '../../cases/stores/referral-store';
 import { Referral } from '../../cases/models/referral';
 import { Room } from '../../../medical-provider/rooms/models/room';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
-import { AddConsent } from '../../cases/models/add-consent-form';
+import { Consent } from '../../cases/models/consent';
 import { ReferralDocument } from '../../cases/models/referral-document';
 import { environment } from '../../../../environments/environment';
 
@@ -32,6 +32,7 @@ export class InboundReferralsComponent implements OnInit {
     referredMedicalOffices: Referral[];
     referredRooms: Referral[];
     filters: SelectItem[];
+    doctorRoleOnly = null;
 
     constructor(
         private _router: Router,
@@ -42,12 +43,41 @@ export class InboundReferralsComponent implements OnInit {
         private _notificationsService: NotificationsService,
     ) {
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
-            this.loadReferrals();
+            this.loadReferralsCheckingDoctor();
         });
     }
 
     ngOnInit() {
-        this.loadReferrals();
+        let roles = this._sessionStore.session.user.roles;
+        if (roles) {
+            if (roles.length === 1) {
+                this.doctorRoleOnly = _.find(roles, (currentRole) => {
+                    return currentRole.roleType === 3;
+                });
+            }
+        }
+        this.loadReferralsCheckingDoctor();
+    }
+    loadReferralsCheckingDoctor() {
+        // let doctorRoleOnly = null;        
+            if (this.doctorRoleOnly) {
+                this.loadReferralsForDoctor();
+            } else {
+                this.loadReferrals();
+            }
+    }
+    loadReferralsForDoctor() {
+        this._progressBarService.show();
+        this._referralStore.getReferralsByReferredToDoctorId()
+            .subscribe((referrals: Referral[]) => {
+                this.referrals = referrals.reverse();
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });        
     }
     loadReferrals() {
         this._progressBarService.show();
@@ -101,7 +131,7 @@ export class InboundReferralsComponent implements OnInit {
     }
     consentAvailable(referral: Referral) {
         if (referral.case.companyCaseConsentApproval.length > 0) {
-            let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: AddConsent) => {
+            let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: Consent) => {
                 return currentConsent.companyId === this._sessionStore.session.currentCompany.id;
             });
             if (consentAvailable) {

@@ -1,15 +1,15 @@
 import * as moment from 'moment';
-import { AddConsent } from '../../models/add-consent-form';
+import { Consent } from '../../models/consent';
 import { AddressAdapter } from '../../../../commons/services/adapters/address-adapter';
 import { CompanyAdapter } from '../../../../account/services/adapters/company-adapter';
 import { CaseAdapter } from './case-adapter';
 
-export class AddConsentAdapter {
-    static parseResponse(data: any): AddConsent {
+export class ConsentAdapter {
+    static parseResponse(data: any): Consent {
 
         let addConsent = null;
         if (data) {
-            addConsent = new AddConsent({
+            addConsent = new Consent({
                 id: data.id,
                 caseId: data.caseId,
                 companyId: data.companyId,

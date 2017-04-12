@@ -36,8 +36,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("attorneyId")]
         public int? AttorneyId { get; set; }
 
-        [JsonProperty("fileUploadPath")]
-        public string FileUploadPath { get; set; }
+        //[JsonProperty("fileUploadPath")]
+        //public string FileUploadPath { get; set; }
 
         [JsonProperty("caseCompanyMapping")]
         public List<CaseCompanyMapping> CaseCompanyMappings { get; set; }
@@ -112,6 +112,17 @@ namespace MIDAS.GBX.BusinessObjects
         public int? AttorneyId { get; set; }        
 
         [JsonProperty("patientEmpInfo")]
-        public PatientEmpInfo PatientEmpInfo { get; set; }
+        public PatientEmpInfo PatientEmpInfo { get; set; }        
+        [JsonProperty("caseCompanyMapping")]
+        public List<CaseCompanyMapping> CaseCompanyMappings { get; set; }
+
+        [JsonProperty("companyCaseConsentApproval")]
+        public List<CompanyCaseConsentApproval> CompanyCaseConsentApprovals { get; set; }
+
+        [JsonProperty("referral")]
+        public List<Referral> Referrals { get; set; }
+
+        [JsonProperty("patientAccidentInfo")]
+        public List<PatientAccidentInfo> PatientAccidentInfoes { get; set; }
     }
 }

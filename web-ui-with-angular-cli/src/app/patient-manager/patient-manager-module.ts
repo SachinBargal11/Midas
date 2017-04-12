@@ -83,17 +83,15 @@ import { PatientVisitService } from './patient-visit/services/patient-visit-serv
 import { RoomsModule } from '../medical-provider/rooms/rooms-module';
 import { UsersModule } from '../medical-provider/users/users-module';
 
-import { ConsentListComponent } from './cases/components/list-consent-form';
+import { ConsentListComponent } from './cases/components/list-consent';
 
-import { AddConsentFormComponent } from './cases/components/add-consent-form';
+import { AddConsentComponent } from './cases/components/add-consent';
 import { DocumentsUploadComponent } from './cases/components/documents';
 
-import { AddConsentStore } from './cases/stores/add-consent-form-store';
-import { AddConsentFormService } from './cases/services/consent-form-service';
+import { ConsentStore } from './cases/stores/consent-store';
+import { ConsentService } from './cases/services/consent-service';
 
-import { ListConsentStore } from './cases/stores/list-consent-form-store';
-import { ListConsentFormService } from './cases/services/list-consent-form-service';
-import { EditConsentFormComponent } from './cases/components/edit-consent-form';
+import { EditConsentComponent } from './cases/components/edit-consent';
 
 import { AttorneyMasterService } from '../account-setup/services/attorney-service';
 import { AttorneyMasterStore } from '../account-setup/stores/attorney-store';
@@ -152,9 +150,9 @@ import { DoctorManagerModule } from '../doctor-manager/doctor-manager-module';
         PatientVisitListShellComponent,
         VisitDocumentsUploadComponent,
         ConsentListComponent,
-        AddConsentFormComponent,
+        AddConsentComponent,
         DocumentsUploadComponent,
-        EditConsentFormComponent,
+        EditConsentComponent,
         ReferralListComponent,
         AddReferralComponent,
         ReferralsShellComponent,
@@ -184,10 +182,8 @@ import { DoctorManagerModule } from '../doctor-manager/doctor-manager-module';
         AdjusterMasterService,
         PatientVisitsStore,
         PatientVisitService,
-        AddConsentStore,
-        AddConsentFormService,
-        ListConsentStore,
-        ListConsentFormService,
+        ConsentStore,
+        ConsentService,      
         ReferralService,
         ReferralStore,
         AttorneyMasterService,

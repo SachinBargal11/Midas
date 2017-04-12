@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
 {
     internal class FileUploadManager : BaseEntityRepo, IDisposable
-    {        
+    {
 
         internal DirectoryInfo directinfo;
         #region Constructor
@@ -23,11 +23,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
         { }
         #endregion    
 
-        public override Object Upload(List<HttpContent> streamContent, string path, int id,string type,string uploadpath)
-        {            
+        public override Object Upload(List<HttpContent> streamContent, string path, int id, string type, string uploadpath)
+        {
             List<BO.Document> docInfo = new List<BO.Document>();
             uploadpath = uploadpath + path;
             Directory.CreateDirectory(uploadpath.ToString());
+            int companyid=0;
             foreach (HttpContent content in streamContent)
             {
                 string errMessage = string.Empty;
@@ -42,20 +43,57 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                             ObjectId = id,
                             DocumentName = content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
                             DocumentPath = ConfigurationManager.AppSettings.Get("BLOB_SERVER") + path.ToString(),
-
+                            CreateDate = DateTime.UtcNow
                         });
                         _context.Entry(midasdoc).State = System.Data.Entity.EntityState.Added;
                         _context.SaveChanges();
 
-                        CaseDocument caseDoc = _context.CaseDocuments.Add(new CaseDocument()
+                        if (type.ToUpper().Contains(EN.Constants.ConsentType))
                         {
-                            MidasDocumentId = midasdoc.Id,
-                            CaseId = id,
-                            DocumentName = content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty)
-                        });
-                        _context.Entry(caseDoc).State = System.Data.Entity.EntityState.Added;
-                        _context.SaveChanges();
-                        filename = caseDoc.DocumentName;
+                            companyid = System.Convert.ToInt16(type.Split('_')[1]);
+                            type = EN.Constants.ConsentType;
+                        }
+                        switch (type)
+                        {
+                            case EN.Constants.ConsentType:
+                                CaseCompanyConsentDocument caseCompanyConsentDocument = _context.CaseCompanyConsentDocuments.Add(new CaseCompanyConsentDocument()
+                                {
+                                    MidasDocumentId = midasdoc.Id,
+                                    CaseId = id,
+                                    CompanyId= companyid,
+                                    DocumentName = content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
+                                    CreateDate = DateTime.UtcNow
+                                });
+                                _context.Entry(caseCompanyConsentDocument).State = System.Data.Entity.EntityState.Added;
+                                _context.SaveChanges();
+                                filename = caseCompanyConsentDocument.DocumentName;
+                                break;
+                            case EN.Constants.CaseType:
+                                CaseDocument caseDoc = _context.CaseDocuments.Add(new CaseDocument()
+                                {
+                                    MidasDocumentId = midasdoc.Id,
+                                    CaseId = id,
+                                    DocumentName = content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
+                                    CreateDate = DateTime.UtcNow
+                                });
+                                _context.Entry(caseDoc).State = System.Data.Entity.EntityState.Added;
+                                _context.SaveChanges();
+                                filename = caseDoc.DocumentName;
+                                break;
+                            case EN.Constants.VisitType:
+                                CaseDocument visitDoc = _context.CaseDocuments.Add(new CaseDocument()
+                                {
+                                    MidasDocumentId = midasdoc.Id,
+                                    CaseId = id,
+                                    DocumentName = content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
+                                    CreateDate = DateTime.UtcNow
+                                });
+                                _context.Entry(visitDoc).State = System.Data.Entity.EntityState.Added;
+                                _context.SaveChanges();
+                                filename = visitDoc.DocumentName;
+                                break;
+                        }
+
                         //docInfo.Type = type;
 
                         using (Stream stream = content.ReadAsStreamAsync().Result)
@@ -90,11 +128,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                             Status = errMessage.Equals(string.Empty) ? "Success" : "Failed",
                             Message = errMessage,
                             DocumentId = midasdoc.Id,
-                            DocumentPath = errMessage.Equals(string.Empty) ? midasdoc.DocumentPath + "/" + caseDoc.DocumentName : caseDoc.DocumentName,
-                            DocumentName = caseDoc.DocumentName,
+                            DocumentPath = errMessage.Equals(string.Empty) ? midasdoc.DocumentPath + "/" + midasdoc.DocumentName : midasdoc.DocumentName,
+                            DocumentName = midasdoc.DocumentName,
                             id = id
                         });
-                        
+
                     }
                     catch (Exception err)
                     {
@@ -104,7 +142,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                             Message = err.Message.ToString(),
                             DocumentId = 0,
                             DocumentPath = "",
-                            DocumentName= filename,
+                            DocumentName = filename,
                             id = id
                         });
                         dbContextTransaction.Rollback();

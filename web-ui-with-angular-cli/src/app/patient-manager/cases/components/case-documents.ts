@@ -81,8 +81,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
                 this._progressBarService.hide();
             },
             () => {
-                this._documentUploadComponent.unloadWebTwain();
-                this._documentUploadComponent.createDWObject();
+                this._documentUploadComponent.resetWebTwain();
                 this._progressBarService.hide();
             });
     }

@@ -13,9 +13,10 @@ import { Notification } from '../../../commons/models/notification';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
-import { AddConsent } from '../models/add-consent-form';
+import { Consent } from '../models/consent';
 import { Company } from '../../../account/models/company';
 import * as _ from 'underscore';
+import { Referral } from '../models/referral';
 
 @Component({
     selector: 'caseslist',
@@ -33,6 +34,7 @@ export class CasesListComponent implements OnInit {
     totalRecords: number;
     isDeleteProgress: boolean = false;
     consentRecived: string = '';
+    referralRecived: string = '';
 
     constructor(
         public _route: ActivatedRoute,
@@ -88,7 +90,7 @@ export class CasesListComponent implements OnInit {
         //     return currentCase.companyCaseConsentApproval.length > 0 ? currentCase : null;
         // });
         if (case1.companyCaseConsentApproval.length > 0) {
-            let consentAvailable = _.find(case1.companyCaseConsentApproval, (currentConsent: AddConsent) => {
+            let consentAvailable = _.find(case1.companyCaseConsentApproval, (currentConsent: Consent) => {
                 return currentConsent.companyId === this._sessionStore.session.currentCompany.id;
                 // if (currentConsent.companyId === this._sessionStore.session.currentCompany.id) {
                 //     return this.consentRecived = 'Yes';
@@ -104,9 +106,39 @@ export class CasesListComponent implements OnInit {
         } else {
             return this.consentRecived = 'No';
         }
+    }
+
+    referralAvailable(case1: any) {
+        let referralOutBound;
+        let referralInBound;
+        let referralInBoundOutBound;
+        if (case1.referral.length > 0) {
+
+            referralInBound = _.find(case1.referral, (currentReferral: Referral) => {
+                return currentReferral.referredToCompanyId === this._sessionStore.session.currentCompany.id;
+            });
+            referralOutBound = _.find(case1.referral, (currentReferral: Referral) => {
+                return currentReferral.referringCompanyId === this._sessionStore.session.currentCompany.id;
+            });
+            if (referralInBound && referralOutBound) {
+                return this.referralRecived = 'InBound/OutBound';
+            }
+            else if (referralInBound) {
+                return this.referralRecived = 'InBound';
+            }
+            else if (referralOutBound) {
+                return this.referralRecived = 'OutBound';
+            }
+            else {
+                return this.referralRecived = '';
+            }
+        } else {
+            return this.referralRecived = '';
+        }
 
 
     }
+
 
     loadCasesLazy(event: LazyLoadEvent) {
         setTimeout(() => {

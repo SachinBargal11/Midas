@@ -3,8 +3,8 @@ import { Company } from '../../../../account/models/company';
 import { CompanyAdapter } from '../../../../account/services/adapters/company-adapter';
 import * as moment from 'moment';
 import { Case } from '../../models/case';
-import { AddConsent } from '../../models/add-consent-form';
-import { AddConsentAdapter } from './add-consent-form-adapter';
+import { Consent } from '../../models/consent';
+import { ConsentAdapter } from './consent-adapter';
 import { Referral } from '../../models/referral';
 import { ReferralAdapter } from './referral-adapter';
 
@@ -13,7 +13,7 @@ export class CaseAdapter {
 
         let patient_case = null;
         let companies: Company[] = [];
-        let companyCaseConsentApproval: AddConsent[] = [];
+        let companyCaseConsentApproval: Consent[] = [];
         let referral: Referral[] = [];
         if (data) {
             if (data.caseCompanyMapping) {
@@ -23,7 +23,7 @@ export class CaseAdapter {
             }
             if (data.companyCaseConsentApproval) {
                 for (let consent of data.companyCaseConsentApproval) {
-                    companyCaseConsentApproval.push(AddConsentAdapter.parseResponse(consent));
+                    companyCaseConsentApproval.push(ConsentAdapter.parseResponse(consent));
                 }
             }
             // if (data.referral) {
@@ -40,6 +40,7 @@ export class CaseAdapter {
                 companies: companies,
                 companyCaseConsentApproval:companyCaseConsentApproval,
                 // referral:referral,
+                referral:data.referral,
                 locationId: data.locationId,
                 carrierCaseNo: data.carrierCaseNo,
                 transportation: data.transportation ? true : false,

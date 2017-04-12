@@ -3,7 +3,7 @@ import * as moment from 'moment';
 import { CaseType } from './enums/case-types';
 import { CaseStatus } from './enums/case-status';
 import { Company } from '../../../account/models/company';
-import { AddConsent } from './add-consent-form';
+import { Consent } from './consent';
 import { Referral } from './referral';
 import {Patient} from '../../patients/models/patient';
 
@@ -15,7 +15,7 @@ const CaseRecord = Record({
     caseTypeId: CaseType.NOFAULT,
     companies: null,
     companyCaseConsentApproval:null,
-    // referral:null,
+    referral:null,
     locationId: 0,
     patientEmpInfoId: null,
     carrierCaseNo: '',
@@ -37,8 +37,8 @@ export class Case extends CaseRecord {
     caseName: string;
     caseTypeId: CaseType;
     companies: Company[];
-    companyCaseConsentApproval: AddConsent[];
-    // referral: Referral[];
+    companyCaseConsentApproval: Consent[];
+    referral: Referral[];
     locationId: number;
     patientEmpInfoId: number;
     carrierCaseNo: string;

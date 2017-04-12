@@ -23,8 +23,8 @@ import { RoomsStore } from '../../../medical-provider/rooms/stores/rooms-store';
 import { SpecialityStore } from '../../../account-setup/stores/speciality-store';
 import { Speciality } from '../../../account-setup/models/speciality';
 import { PatientsStore } from '../../patients/stores/patients-store';
-import { AddConsentStore } from '../../cases/stores/add-consent-form-store';
-import { AddConsent } from '../../cases/models/add-consent-form';
+import { ConsentStore } from '../../cases/stores/consent-store';
+import { Consent } from '../../cases/models/consent';
 import { Patient } from '../../patients/models/patient';
 
 @Component({
@@ -50,7 +50,7 @@ export class AddReferralComponent implements OnInit {
     patient: Patient;
     patientName: string;
     patients: Patient[];
-    consent: AddConsent[];
+    consent: Consent[];
     patientsWithoutCase: Patient[];
     selectedLocation: LocationDetails;
 
@@ -66,7 +66,7 @@ export class AddReferralComponent implements OnInit {
         private _doctorsStore: DoctorsStore,
         private _locationStore: LocationsStore,
         private _roomsStore: RoomsStore,
-        private _consentStore: AddConsentStore,
+        private _consentStore: ConsentStore,
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {

@@ -26,7 +26,6 @@ export class DocumentUploadComponent implements OnInit {
     private _scannerService: ScannerService,
     private _notificationsService: NotificationsService
   ) {
-    debugger;
   }
 
   ngOnInit() {
@@ -51,11 +50,16 @@ export class DocumentUploadComponent implements OnInit {
 
   ngAfterViewInit() {
     _.defer(() => {
-      this.createDWObject();
+      this._createDWObject();
     });
   }
 
-  createDWObject() {
+  resetWebTwain() {
+    this.unloadWebTwain();
+    this._createDWObject();
+  }
+
+  private _createDWObject() {
     this._scannerService.getWebTwain(this.scannerContainerId)
       .then((dwObject) => {
         this._dwObject = dwObject;
