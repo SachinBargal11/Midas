@@ -25,12 +25,12 @@
                         <label class="form-label">Policy Holder Name
                                 <span class="color-red">*</span>
                             </label>
-                        <div class="form-group" [class.error]="insuranceformControls.policyHolderName.touched && !insuranceformControls.policyHolderName.valid">
-                            <input formControlName="policyHolderName" [ngModel]="insurance.policyHoldersName" [class.error]="!insuranceformControls.policyHolderName.valid"
+                        <div class="form-group" [class.error]="insuranceformControls.policyHoldersName.touched && !insuranceformControls.policyHoldersName.valid">
+                            <input formControlName="policyHoldersName" [ngModel]="insurance.policyHoldersName" [class.error]="!insuranceformControls.policyHoldersName.valid"
                                 class="form-control" type="text" placeholder="" />
-                            <div class='error-list' *ngIf="insuranceformControls.policyHolderName.touched && !insuranceformControls.policyHolderName.valid">
+                            <div class='error-list' *ngIf="insuranceformControls.policyHoldersName.touched && !insuranceformControls.policyHoldersName.valid">
                                 <ul>
-                                    <li *ngIf="insuranceformControls.policyHolderName.hasError('required')">Policy Holder Name is required.</li>
+                                    <li *ngIf="insuranceformControls.policyHoldersName.hasError('required')">Policy Holder Name is required.</li>
                                 </ul>
                             </div>
                         </div>
@@ -119,7 +119,7 @@
                     <div class="col-lg-4">
                     <div class="form-group">
                         <label class="form-label"> Office Extension</label>
-                        <input formControlName="officeExtension" [ngModel]="insurance.policyContact.officeExtension" type="text" class="form-control" placeholder="" />
+                        <input formControlName="policyOfficeExtension" [ngModel]="insurance.policyContact.officeExtension" type="text" class="form-control" placeholder="" />
                     </div>
                 </div>
             </div>
@@ -127,11 +127,11 @@
                 <div class="col-lg-4">
                     <div class="form-group">
                         <label class="form-label"> Alternate E-Mail </label>
-                        <div class="form-group" [class.error]="insuranceformControls.alternateEmail.touched && !insuranceformControls.alternateEmail.valid">
-                        <input formControlName="alternateEmail" [ngModel]="insurance.policyContact.alternateEmail" [class.error]="!insuranceformControls.alternateEmail.valid" class="form-control" type="text" placeholder="" />
-                        <div class='error-list' *ngIf="insuranceformControls.alternateEmail.touched && !insuranceformControls.alternateEmail.valid">
+                        <div class="form-group" [class.error]="insuranceformControls.policyAlternateEmail.touched && !insuranceformControls.policyAlternateEmail.valid">
+                        <input formControlName="policyAlternateEmail" [ngModel]="insurance.policyContact.alternateEmail" [class.error]="!insuranceformControls.policyAlternateEmail.valid" class="form-control" type="text" placeholder="" />
+                        <div class='error-list' *ngIf="insuranceformControls.policyAlternateEmail.touched && !insuranceformControls.policyAlternateEmail.valid">
                             <ul>
-                                <li *ngIf="insuranceformControls.alternateEmail.hasError('emailValidator')">Email is invalid.</li>
+                                <li *ngIf="insuranceformControls.policyAlternateEmail.hasError('emailValidator')">Email is invalid.</li>
                             </ul>
                         </div>
                     </div>
@@ -141,7 +141,7 @@
                  <div class="form-group">
                         <label class="form-label"> Preferred Communication
                                         </label>
-                        <select formControlName="preferredCommunication" [ngModel]="insurance.policyContact.preferredCommunication" type="text" class="form-control" placeholder="">
+                        <select formControlName="policyPreferredCommunication" [ngModel]="insurance.policyContact.preferredCommunication" type="text" class="form-control" placeholder="">
                                         <option value="">-Select -</option>
                                         <option disabled>────────────────────</option>
                                         <option value="1">Cellphone</option>
@@ -239,12 +239,12 @@
                         <label class="form-label"> Zip code
                                 <!--<span class="color-red">*</span>-->
                             </label>
-                        <div class="form-group" [class.error]="insuranceformControls.policyZipcode.touched && !insuranceformControls.policyZipcode.valid">
-                            <input formControlName="policyZipcode" [ngModel]="insurance.policyAddress.zipCode" type="text" class="form-control" placeholder=""
-                                [class.error]="!insuranceformControls.policyZipcode.valid">
-                            <div class='error-list' *ngIf="insuranceformControls.policyZipcode.touched && !insuranceformControls.policyZipcode.valid">
+                        <div class="form-group" [class.error]="insuranceformControls.policyZipCode.touched && !insuranceformControls.policyZipCode.valid">
+                            <input formControlName="policyZipCode" [ngModel]="insurance.policyAddress.zipCode" type="text" class="form-control" placeholder=""
+                                [class.error]="!insuranceformControls.policyZipCode.valid">
+                            <div class='error-list' *ngIf="insuranceformControls.policyZipCode.touched && !insuranceformControls.policyZipCode.valid">
                                 <ul>
-                                    <li *ngIf="insuranceformControls.policyZipcode.hasError('required')">Zipcode is required.</li>
+                                    <li *ngIf="insuranceformControls.policyZipCode.hasError('required')">Zipcode is required.</li>
                                 </ul>
                             </div>
                         </div>
@@ -256,7 +256,7 @@
                         <div class="form-group" [class.error]="insuranceformControls.policyCountry.touched && !insuranceformControls.policyCountry.valid">
                             <!--<input formControlName="policyCountry" [ngModel]="insurance.policyAddress.country" type="text" class="form-control" placeholder=""
                                 [class.error]="!insuranceformControls.policyCountry.valid">-->
-                            <select formControlName="country" type="text" [ngModel]="insurance.policyAddress.country" class="form-control" placeholder=""
+                            <select formControlName="policyCountry" type="text" [ngModel]="insurance.policyAddress.country" class="form-control" placeholder=""
                                 [class.error]="insurance.policyAddress.country.touched && !insurance.policyAddress.country.valid">
                                         <option value="">-Select -</option>
                                         <option disabled>────────────────────</option>
@@ -459,7 +459,7 @@
                     <div class="form-group">
                         <label class="form-label"> Preferred Communication
                                         </label>
-                        <select formControlName="preferredcommunication" [ngModel]="insurance.insuranceContact.preferredcommunication" type="text" class="form-control" placeholder="">
+                        <select formControlName="preferredCommunication" [ngModel]="insurance.insuranceContact.preferredCommunication" type="text" class="form-control" placeholder="">
                                         <option value="">-Select -</option>
                                         <option disabled>────────────────────</option>
                                         <option value="1">Cellphone</option>
