@@ -24,8 +24,9 @@
                 </select>
             </div>
             <div class="col-md-4">
-                <button class="btn btn-primary" (click)="AcquireImage()">Scan</button>
-                <button class="btn btn-secondary" [disabled]="isUploadInProgress" (click)="uploadScannedDocuments()">Upload <loader [visible]="isSaveProgress"></loader></button>
+                <button class="btn btn-primary" (click)="acquireImage()"><i class="fa fa-file-text-o"></i> Scan</button>
+                <button class="btn btn-primary" [disabled]="dwObject.HowManyImagesInBuffer === 0" (click)="uploadScannedDocuments()"><i class="fa fa-upload"></i> Upload<loader [visible]="isSaveProgress"></loader></button>
+                <button class="btn btn-primary" [disabled]="dwObject.HowManyImagesInBuffer === 0" (click)="resetWebTwain()"><i class="fa fa-close"></i> Cancel</button>
             </div>
         </div>
         <div id="{{scannerContainerId}}" style="width: 1000px;margin-top: 10px;margin-bottom: 10px;">
@@ -42,7 +43,8 @@
         Upload Documents for Case
     </header>
     <div class="card-block">
-        <p-fileUpload name="demo[]" url={{url}} multiple="multiple" (onUpload)="uploadDocuments($event)" maxFileSize="1000000">
+        <p-fileUpload name="demo[]" url={{url}} multiple="multiple" (onError)="onFilesUploadError($event)" (onUpload)="onFilesUploadComplete($event)"
+            maxFileSize="1000000">
             <ng-template pTemplate type="content">
                 <!--<ul *ngIf="uploadedFiles.length">
                     <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>

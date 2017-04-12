@@ -30,6 +30,7 @@ import { CompanyStore } from './account/stores/company-store';
 import { StatesStore } from './commons/stores/states-store';
 import { StateService } from './commons/services/state-service';
 import { ScannerService } from './commons/services/scanner-service';
+import { DocumentUploadService } from './commons/services/document-upload-service';
 
 import { DoctorsStore } from './medical-provider/users/stores/doctors-store';
 import { DoctorsService } from './medical-provider/users/services/doctors-service';
@@ -83,6 +84,7 @@ import { DateFormatPipe } from './commons/pipes/date-format-pipe';
     StateService,
     StatesStore,
     ScannerService,
+    DocumentUploadService,
     DoctorsStore,
     DoctorsService,
     ProgressBarService,

@@ -1,8 +1,11 @@
+import { DocumentAdapter } from '../../services/adapters/document-adapter';
+import { Document } from '../../models/document';
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import * as moment from 'moment';
 import * as _ from 'underscore';
 import { NotificationsService } from 'angular2-notifications';
 import { ScannerService } from '../../../commons/services/scanner-service';
+import { DocumentUploadService } from '../../../commons/services/document-upload-service';
 
 @Component({
   selector: 'app-document-upload',
@@ -11,21 +14,22 @@ import { ScannerService } from '../../../commons/services/scanner-service';
 })
 export class DocumentUploadComponent implements OnInit {
 
-  scannerContainerId: string = `scanner_${moment().valueOf()}`;
+  scannerContainerId: string;
   documentMode: string = '1';
   twainSources: TwainSource[] = [];
   selectedTwainSource: TwainSource = null;
-  _dwObject: any = null;
+  dwObject: any = null;
 
   @Input() url: string;
-  @Output() uploadDocumentEvent = new EventEmitter();
-  @Output() uploadScannedDocumentEvent = new EventEmitter();
-
+  @Output() uploadComplete: EventEmitter<Document[]> = new EventEmitter();
+  @Output() uploadError: EventEmitter<Error> = new EventEmitter();
 
   constructor(
     private _scannerService: ScannerService,
-    private _notificationsService: NotificationsService
+    private _notificationsService: NotificationsService,
+    private _documentUploadService: DocumentUploadService
   ) {
+    this._updateScannerContainerId();
   }
 
   ngOnInit() {
@@ -35,12 +39,31 @@ export class DocumentUploadComponent implements OnInit {
     this.unloadWebTwain();
   }
 
-  uploadDocuments(event) {
-    this.uploadDocumentEvent.emit(event);
+  private _updateScannerContainerId() {
+    this.scannerContainerId = `scanner_${moment().valueOf()}`;
+  }
+
+  onFilesUploadComplete(event) {
+    let responseDocuments: any = JSON.parse(event.xhr.responseText);
+    let documents: Document[] = (<Object[]>responseDocuments).map((document: any) => {
+      return DocumentAdapter.parseResponse(document);
+    });
+    this.uploadComplete.emit(documents);
+  }
+
+  onFilesUploadError(event) {
+    this.uploadError.emit(new Error('Unable to upload selected files.'));
   }
 
   uploadScannedDocuments() {
-    this.uploadScannedDocumentEvent.emit(this._dwObject);
+    this._documentUploadService.uploadScanDocument(this.dwObject, this.url)
+      .then((documents: Document[]) => {
+        this.uploadComplete.emit(documents);
+        this.resetWebTwain();
+      })
+      .catch((error) => {
+        this.uploadError.emit(error);
+      });
   }
 
   unloadWebTwain() {
@@ -56,34 +79,37 @@ export class DocumentUploadComponent implements OnInit {
 
   resetWebTwain() {
     this.unloadWebTwain();
+    this._updateScannerContainerId();
     this._createDWObject();
   }
 
   private _createDWObject() {
     this._scannerService.getWebTwain(this.scannerContainerId)
       .then((dwObject) => {
-        this._dwObject = dwObject;
-        this._dwObject.SetViewMode(1, -1);
-        if (this._dwObject) {
-          for (let i = 0; i < this._dwObject.SourceCount; i++) {
-            this.twainSources.push({ idx: i, name: this._dwObject.GetSourceNameItems(i) });
+        this.dwObject = dwObject;
+        this.dwObject.SetViewMode(1, -1);
+        if (this.dwObject) {
+          let twainSources: TwainSource[] = [];
+          for (let i = 0; i < this.dwObject.SourceCount; i++) {
+            twainSources.push({ idx: i, name: this.dwObject.GetSourceNameItems(i) });
           }
+          this.twainSources = twainSources;
         }
       }).catch(() => {
         this._notificationsService.alert('', 'Not able to connect scanner. Please refresh the page again and download the software prompted.');
       });
   }
 
-  AcquireImage() {
-    if (this._dwObject) {
-      this._dwObject.IfDisableSourceAfterAcquire = true;
+  acquireImage() {
+    if (this.dwObject) {
+      this.dwObject.IfDisableSourceAfterAcquire = true;
       if (this.selectedTwainSource) {
-        this._dwObject.SelectSourceByIndex(this.selectedTwainSource.idx);
+        this.dwObject.SelectSourceByIndex(this.selectedTwainSource.idx);
       } else {
-        this._dwObject.SelectSource();
+        this.dwObject.SelectSource();
       }
-      this._dwObject.OpenSource();
-      this._dwObject.AcquireImage();
+      this.dwObject.OpenSource();
+      this.dwObject.AcquireImage();
     }
   }
 

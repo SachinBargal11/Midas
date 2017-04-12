@@ -1,3 +1,4 @@
+import { Document } from '../../../commons/models/document';
 import { Component, OnInit, Injectable, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PatientVisitsStore } from '../../patient-visit/stores/patient-visit-store';
@@ -61,7 +62,25 @@ export class CaseDocumentsUploadComponent implements OnInit {
         this.getDocuments();
     }
 
-    uploadDocuments(dwObject) {
+    documentUploadComplete(documents: Document[]) {
+        _.forEach(documents, (currentDocument: Document) => {
+            if (currentDocument.status == 'Failed') {
+                let notification = new Notification({
+                    'title': currentDocument.message + '  ' + currentDocument.documentName,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+            }
+        });
+        this.getDocuments();
+    }
+
+    documentUploadError(error: Error) {
+
+    }
+
+    /*uploadDocuments(dwObject) {
         this._casesStore.uploadScannedDocuments(dwObject, this.currentCaseId)
             .subscribe(
             (documents: CaseDocument[]) => {
@@ -84,9 +103,9 @@ export class CaseDocumentsUploadComponent implements OnInit {
                 this._documentUploadComponent.resetWebTwain();
                 this._progressBarService.hide();
             });
-    }
+    }*/
 
-    onUpload(event) {
+    /*onUpload(event) {
         let responseDocuments: any = JSON.parse(event.xhr.responseText);
         let documents = (<Object[]>responseDocuments).map((document: any) => {
             return CaseDocumentAdapter.parseResponse(document);
@@ -103,7 +122,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
         });
         this.getDocuments();
 
-    };
+    }*/
 
     getDocuments() {
         this._progressBarService.show();

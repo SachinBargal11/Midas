@@ -33,6 +33,7 @@ export class LoginComponent implements OnInit {
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, AppValidators.emailValidator]],
             password: ['', Validators.required],
+            chkOTP: ['']
         });
         this.loginFormControls = this.loginForm.controls;
     }
@@ -54,6 +55,9 @@ export class LoginComponent implements OnInit {
         let forceLogin = true;
         if (this.checkSecuredLogin(this.loginForm.value.email)) {
             forceLogin = false;
+        }
+        if (this.loginForm.value.chkOTP) {
+            forceLogin = true;
         }
         result = this.sessionStore.login(this.loginForm.value.email, this.loginForm.value.password, forceLogin);
 
