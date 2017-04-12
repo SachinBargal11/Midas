@@ -171,7 +171,7 @@ export class UserBasicComponent implements OnInit {
                 faxNo: [''],
                 alternateEmail:  ['', [AppValidators.emailValidator]],
                 officeExtension: [''],
-                preferredcommunication: [''],
+                preferredCommunication: [''],
             }),
             address: this.fb.group({
                 address1: [''],
@@ -254,9 +254,10 @@ export class UserBasicComponent implements OnInit {
                     faxNo: userFormValues.contact.faxNo ? userFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
                     homePhone: userFormValues.contact.homePhone,
                     workPhone: userFormValues.contact.workPhone,
-                    //officeExtension: userFormValues.officeExtension,
-                    //alternateEmail: userFormValues.alternateEmail,
-                    //preferredcommunication: userFormValues.preferredcommunication,
+                    officeExtension: userFormValues.contact.officeExtension,
+                    alternateEmail: userFormValues.contact.alternateEmail,
+                    preferredCommunication: userFormValues.contact.preferredCommunication,
+                   
 
                 }),
                 address: new Address({
@@ -300,6 +301,9 @@ export class UserBasicComponent implements OnInit {
                         faxNo: userFormValues.contact.faxNo ? userFormValues.contact.faxNo.replace(/\-|\s/g, '') : null,
                         homePhone: userFormValues.contact.homePhone,
                         workPhone: userFormValues.contact.workPhone,
+                        officeExtension: userFormValues.contact.officeExtension,
+                        alternateEmail: userFormValues.contact.alternateEmail,
+                        preferredCommunication: userFormValues.contact.preferredCommunication,
                     }),
                     address: new Address({
                         id: this.user.address.id,
