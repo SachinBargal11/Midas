@@ -47,7 +47,6 @@ export class ConsentListComponent implements OnInit {
     }
 
     loadConsentForm() {
-        debugger;
         this._progressBarService.show();
         this._ConsentStore.getConsetForm(this.caseId, this.companyId)
             .subscribe(Consent => {
@@ -81,8 +80,8 @@ export class ConsentListComponent implements OnInit {
                     this.selectedConsentList.forEach(currentCase => {
                         this.isDeleteProgress = true;
                         this._progressBarService.show();
-                        this._ConsentStore.deleteConsetForm(currentCase, this.companyId)
-                            .subscribe(
+                        let result = this._ConsentStore.deleteConsetForm(currentCase, this.companyId)
+                            result.subscribe(
                             (response) => {
                                 let notification = new Notification({
                                     'title': 'record deleted successfully!',
@@ -93,7 +92,6 @@ export class ConsentListComponent implements OnInit {
                                 this.loadConsentForm();
                                 this._notificationsStore.addNotification(notification);
                                 this.selectedConsentList = [];
-
                             },
                             (error) => {
                                 let errString = 'Unable to delete record';

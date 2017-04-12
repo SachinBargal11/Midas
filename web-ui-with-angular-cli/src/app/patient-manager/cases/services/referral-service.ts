@@ -66,6 +66,22 @@ export class ReferralService {
         });
         return <Observable<Referral[]>>Observable.fromPromise(promise);
     }
+    getReferralsByReferringUserId(userId: Number): Observable<Referral[]> {
+        let promise: Promise<Referral[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/referral/getByReferringUserId/' + userId)
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let referrals = (<Object[]>data).map((data: any) => {
+                        return ReferralAdapter.parseResponse(data);
+                    });
+                    resolve(referrals);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<Referral[]>>Observable.fromPromise(promise);
+    }
     getReferralsByReferredToDoctorId(doctorId: Number): Observable<Referral[]> {
         let promise: Promise<Referral[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/referral/getByReferredToDoctorId/' + doctorId)

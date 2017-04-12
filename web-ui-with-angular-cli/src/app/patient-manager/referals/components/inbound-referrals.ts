@@ -32,6 +32,7 @@ export class InboundReferralsComponent implements OnInit {
     referredMedicalOffices: Referral[];
     referredRooms: Referral[];
     filters: SelectItem[];
+    doctorRoleOnly = null;
 
     constructor(
         private _router: Router,
@@ -42,12 +43,41 @@ export class InboundReferralsComponent implements OnInit {
         private _notificationsService: NotificationsService,
     ) {
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
-            this.loadReferrals();
+            this.loadReferralsCheckingDoctor();
         });
     }
 
     ngOnInit() {
-        this.loadReferrals();
+        let roles = this._sessionStore.session.user.roles;
+        if (roles) {
+            if (roles.length === 1) {
+                this.doctorRoleOnly = _.find(roles, (currentRole) => {
+                    return currentRole.roleType === 3;
+                });
+            }
+        }
+        this.loadReferralsCheckingDoctor();
+    }
+    loadReferralsCheckingDoctor() {
+        // let doctorRoleOnly = null;        
+            if (this.doctorRoleOnly) {
+                this.loadReferralsForDoctor();
+            } else {
+                this.loadReferrals();
+            }
+    }
+    loadReferralsForDoctor() {
+        this._progressBarService.show();
+        this._referralStore.getReferralsByReferredToDoctorId()
+            .subscribe((referrals: Referral[]) => {
+                this.referrals = referrals.reverse();
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });        
     }
     loadReferrals() {
         this._progressBarService.show();

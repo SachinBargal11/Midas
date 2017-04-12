@@ -60,10 +60,8 @@ export class PatientsListComponent implements OnInit {
             }
             if (doctorRoleOnly) {
                 this.loadPatientsByCompanyAndDoctor();
-                this.loadReferrals();
             } else {
                 this.loadPatients();
-                this.loadReferrals();
             }
         }
     }
@@ -92,19 +90,6 @@ export class PatientsListComponent implements OnInit {
                 // this.datasource = patients.reverse();
                 // this.totalRecords = this.datasource.length;
                 // this.patients = this.datasource.slice(0, 10);
-            },
-            (error) => {
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-    }
-    loadReferrals() {
-        this._progressBarService.show();
-        this._referralStore.getReferralsByReferredToDoctorId()
-            .subscribe((referrals: Referral[]) => {
-                this.referrals = referrals.reverse();
             },
             (error) => {
                 this._progressBarService.hide();

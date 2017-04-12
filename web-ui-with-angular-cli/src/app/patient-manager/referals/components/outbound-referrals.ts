@@ -36,6 +36,7 @@ export class OutboundReferralsComponent implements OnInit {
     referredDoctors: Doctor[];
     refferedRooms: Room[];
     filters: SelectItem[];
+    doctorRoleOnly = null;
 
     constructor(
         private _router: Router,
@@ -46,18 +47,72 @@ export class OutboundReferralsComponent implements OnInit {
         private _notificationsService: NotificationsService,
     ) {
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
-            this.loadReferrals();
+            this.loadReferralsCheckingDoctor();
         });
     }
 
     ngOnInit() {
-        this.loadReferrals();
+        let roles = this._sessionStore.session.user.roles;
+        if (roles) {
+            if (roles.length === 1) {
+                this.doctorRoleOnly = _.find(roles, (currentRole) => {
+                    return currentRole.roleType === 3;
+                });
+            }
+        }
+        this.loadReferralsCheckingDoctor();
+    }
+    loadReferralsCheckingDoctor() {
+        // let doctorRoleOnly = null;        
+            if (this.doctorRoleOnly) {
+                this.loadReferralsForDoctor();
+            } else {
+                this.loadReferrals();
+            }
     }
 
     loadReferrals() {
         this._progressBarService.show();
         // this._referralStore.getReferralsByCaseId(this.caseId)
         this._referralStore.getReferralsByReferringCompanyId()
+            .subscribe((referrals: Referral[]) => {
+                // this.referrals = referrals.reverse();
+                let userReferrals: Referral[] = _.map(referrals, (currentReferral: Referral) => {
+                    return currentReferral.referredToDoctor ? currentReferral : null;
+                });
+                let matchingUserReferrals = _.reject(userReferrals, (currentReferral: Referral) => {
+                    return currentReferral == null;
+                });
+                this.referredUsers = matchingUserReferrals.reverse();
+
+                let roomReferrals: Referral[] = _.map(referrals, (currentReferral: Referral) => {
+                    return currentReferral.room ? currentReferral : null;
+                });
+                let matchingRoomReferrals = _.reject(roomReferrals, (currentReferral: Referral) => {
+                    return currentReferral == null;
+                });
+                this.referredRooms = matchingRoomReferrals.reverse();
+
+                let userAndRoomReferral = _.union(matchingUserReferrals, matchingRoomReferrals);
+                let userAndRoomReferralIds: number[] = _.map(userAndRoomReferral, (currentUserAndRoomReferral: Referral) => {
+                    return currentUserAndRoomReferral.id;
+                });
+                let matchingMedicalOffices = _.filter(referrals, (currentReferral: Referral) => {
+                    return _.indexOf(userAndRoomReferralIds, currentReferral.id) < 0 ? true : false;
+                });
+                this.referredMedicalOffices = matchingMedicalOffices.reverse();
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+    loadReferralsForDoctor() {
+        this._progressBarService.show();
+        // this._referralStore.getReferralsByCaseId(this.caseId)
+        this._referralStore.getReferralsByReferringUserId()
             .subscribe((referrals: Referral[]) => {
                 // this.referrals = referrals.reverse();
                 let userReferrals: Referral[] = _.map(referrals, (currentReferral: Referral) => {

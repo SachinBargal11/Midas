@@ -73,6 +73,11 @@ body {
                         border-right: 1px solid #c7c7c7 !important;
                         // width: 38px;
                     }
+                    &.inbound-column-span {
+                        border-right: 1px solid #c7c7c7 !important;
+                        text-align: center;
+                        // width: 38px;
+                    }
                     &.ui-selection-column {
                         width: 38px;
                     }

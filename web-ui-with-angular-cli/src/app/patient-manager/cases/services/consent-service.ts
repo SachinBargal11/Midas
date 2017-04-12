@@ -119,7 +119,6 @@ export class ConsentService {
 
 
     getConsetForm(CaseId: number, companyId: number): Observable<Consent[]> {
-        debugger;
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
             // return this._http.get(this._url + '/fileupload/get/' + CaseId  +'/case').map(res => res.json())
             // return this._http.get(this._url + '/CompanyCaseConsentApproval/getByCaseId/' + CaseId).map(res => res.json())
@@ -127,13 +126,13 @@ export class ConsentService {
             return this._http.get(this._url + '/fileupload/get/' + CaseId + '/consent' + '_' + companyId).map(res => res.json())
                 //fileupload/get/86/consent
                 .subscribe((data: Array<any>) => {
-                    let Consent = null;
-                    if (data.length) {
-                        Consent = ConsentAdapter.parseResponse(data);
+                    let consent = null;
+                    // if (data.length) {
+                        consent = ConsentAdapter.parseResponse(data);
                         resolve(data);
-                    } else {
-                        reject(new Error('NOT_FOUND'));
-                    }
+                    // } else {
+                    //     reject(new Error('NOT_FOUND'));
+                    // }
                 }, (error) => {
                     reject(error);
                 });
