@@ -13,6 +13,9 @@ import { ReferralStore } from '../../cases/stores/referral-store';
 import { Referral } from '../../cases/models/referral';
 import { Room } from '../../../medical-provider/rooms/models/room';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
+import { AddConsent } from '../../cases/models/add-consent-form';
+import { ReferralDocument } from '../../cases/models/referral-document';
+import { environment } from '../../../../environments/environment';
 
 @Component({
     selector: 'inbound-referrals',
@@ -21,9 +24,12 @@ import { Doctor } from '../../../medical-provider/users/models/doctor';
 })
 
 export class InboundReferralsComponent implements OnInit {
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
+    consentRecived: string = '';
     searchMode: number = 1;
     referrals: Referral[];
     referredUsers: Referral[];
+    referredMedicalOffices: Referral[];
     referredRooms: Referral[];
     filters: SelectItem[];
 
@@ -63,6 +69,15 @@ export class InboundReferralsComponent implements OnInit {
                     return currentReferral == null;
                 });
                 this.referredRooms = matchingRoomReferrals.reverse();
+
+                let userAndRoomReferral = _.union(matchingUserReferrals, matchingRoomReferrals);
+                let userAndRoomReferralIds: number[] = _.map(userAndRoomReferral, (currentUserAndRoomReferral: Referral) => {
+                    return currentUserAndRoomReferral.id;
+                });
+                let matchingMedicalOffices = _.filter(referrals, (currentReferral: Referral) => {
+                    return _.indexOf(userAndRoomReferralIds, currentReferral.id) < 0 ? true : false;
+                });
+                this.referredMedicalOffices = matchingMedicalOffices.reverse();
             },
             (error) => {
                 this._progressBarService.hide();
@@ -75,8 +90,27 @@ export class InboundReferralsComponent implements OnInit {
         let currentSearchId = parseInt(event.target.value);
         if (currentSearchId === 1) {
             this.searchMode = 1;
-        } else {
+        } else if (currentSearchId === 2) {
             this.searchMode = 2;
+        } else if (currentSearchId === 3) {
+            this.searchMode = 3;
+        }
+    }
+    DownloadPdf(document: ReferralDocument) {
+        window.location.assign(this._url + '/fileupload/download/' + document.referralId + '/' + document.midasDocumentId);
+    }
+    consentAvailable(referral: Referral) {
+        if (referral.case.companyCaseConsentApproval.length > 0) {
+            let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: AddConsent) => {
+                return currentConsent.companyId === this._sessionStore.session.currentCompany.id;
+            });
+            if (consentAvailable) {
+                return this.consentRecived = 'Yes';
+            } else {
+                return this.consentRecived = 'No';
+            }
+        } else {
+            return this.consentRecived = 'No';
         }
     }
 }

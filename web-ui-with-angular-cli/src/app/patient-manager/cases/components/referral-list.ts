@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/primeng';
 import { ReferralStore } from '../stores/referral-store';
+import { SessionStore } from '../../../commons/stores/session-store';
 import { Referral } from '../models/referral';
 import { ReferralDocument } from '../models/referral-document';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
@@ -16,6 +17,7 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 import { Room } from '../../../medical-provider/rooms/models/room';
 import { environment } from '../../../../environments/environment';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+import { AddConsent } from '../models/add-consent-form';
 
 @Component({
     selector: 'referral-list',
@@ -24,6 +26,7 @@ import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 
 export class ReferralListComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
+    consentRecived: string = '';
     searchMode: number = 1;
     selectedReferrals: Referral[] = [];
     referrals: Referral[];
@@ -40,6 +43,7 @@ export class ReferralListComponent implements OnInit {
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
+        private _sessionStore: SessionStore,
         private _referralStore: ReferralStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
@@ -143,6 +147,20 @@ export class ReferralListComponent implements OnInit {
     }
     DownloadPdf(document: ReferralDocument) {
         window.location.assign(this._url + '/fileupload/download/' + document.referralId + '/' + document.midasDocumentId);
+    }
+    consentAvailable(referral: Referral) {
+        if (referral.case.companyCaseConsentApproval.length > 0) {
+            let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: AddConsent) => {
+                return currentConsent.companyId === this._sessionStore.session.currentCompany.id;
+            });
+            if (consentAvailable) {
+                return this.consentRecived = 'Yes';
+            } else {
+                return this.consentRecived = 'No';
+            }
+        } else {
+            return this.consentRecived = 'No';
+        }
     }
 
     deleteReferral() {

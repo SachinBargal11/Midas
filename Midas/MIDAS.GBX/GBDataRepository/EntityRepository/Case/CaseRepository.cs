@@ -41,7 +41,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             caseBO.Transportation = cases.Transportation;
             caseBO.CaseStatusId = cases.CaseStatusId;
             caseBO.AttorneyId = cases.AttorneyId;
-            caseBO.FileUploadPath = cases.FileUploadPath;
+            //caseBO.FileUploadPath = cases.FileUploadPath;
 
             caseBO.IsDeleted = cases.IsDeleted;
             caseBO.CreateByUserID = cases.CreateByUserID;
@@ -223,6 +223,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         //caseWithUserAndPatient.PatientEmpInfo = boPatientEmpInfo;
                         caseWithUserAndPatient.PatientEmpInfo = eachCase.PatientEmpInfo;
                     }
+
+                    List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
+                    foreach (var item in eachCase.CaseCompanyMappings)
+                    {
+                        boCaseCompanyMapping.Add(item);
+                    }
+                    caseWithUserAndPatient.CaseCompanyMappings = boCaseCompanyMapping;
+
+                    List<BO.CompanyCaseConsentApproval> boCompanyCaseConsentApproval = new List<BO.CompanyCaseConsentApproval>();
+                    foreach (var item in eachCase.CompanyCaseConsentApprovals)
+                    {
+                        boCompanyCaseConsentApproval.Add(item);
+                    }
+                    caseWithUserAndPatient.CompanyCaseConsentApprovals = boCompanyCaseConsentApproval;
+
+                    List<BO.Referral> boReferral = new List<BO.Referral>();
+                    foreach (var item in eachCase.Referrals)
+                    {
+                        boReferral.Add(item);
+                    }
+                    caseWithUserAndPatient.Referrals = boReferral;
+
+                    if (eachCase.PatientAccidentInfoes != null)
+                    {
+                        List<BO.PatientAccidentInfo> boPatientAccidentInfo = new List<BO.PatientAccidentInfo>();
+                        foreach (var item in eachCase.PatientAccidentInfoes)
+                        {
+                            boPatientAccidentInfo.Add(item);
+                        }
+                        caseWithUserAndPatient.PatientAccidentInfoes = boPatientAccidentInfo;
+
+                    }
+
 
                     //Common 
                     caseWithUserAndPatient.IsDeleted = eachCase.IsDeleted;
@@ -480,7 +513,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (acc != null)
             {
                 Document.Add("id", acc_.ID);
-                Document.Add("fileUploadPath", acc_.FileUploadPath);
+               // Document.Add("fileUploadPath", acc_.FileUploadPath);
             }
 
 
