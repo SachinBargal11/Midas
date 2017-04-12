@@ -58,6 +58,7 @@
     <Compile Include="BusinessValidationResult.cs" />
     <Compile Include="CalendarEvent\CalendarEvent.cs" />
     <Compile Include="Case\Case.cs" />
+    <Compile Include="Case\CaseCompanyConsentDocument.cs" />
     <Compile Include="Case\CaseCompanyMapping.cs" />
     <Compile Include="Case\CaseInsuranceMapping.cs" />
     <Compile Include="Common\CaseStatus.cs" />

@@ -111,4 +111,18 @@ GO
 
 ALTER TABLE [dbo].[Referral] ADD [ReferredToRoomTestId] INT NULL
 GO
+
+ALTER TABLE [dbo].[Referral]  WITH CHECK ADD  CONSTRAINT [FK_Referral_RoomTest_ReferredToRoomTestId] FOREIGN KEY([ReferredToRoomTestId])
+REFERENCES [dbo].[RoomTest] ([id])
+GO
+
+ALTER TABLE [dbo].[Referral] CHECK CONSTRAINT [FK_Referral_RoomTest_ReferredToRoomTestId]
+GO
+
+ALTER TABLE [dbo].[Referral]  WITH CHECK ADD  CONSTRAINT [FK_Referral_Specialty_ReferredToSpecialtyId] FOREIGN KEY([ReferredToSpecialtyId])
+REFERENCES [dbo].[Specialty] ([id])
+GO
+
+ALTER TABLE [dbo].[Referral] CHECK CONSTRAINT [FK_Referral_Specialty_ReferredToSpecialtyId]
+GO
 */
