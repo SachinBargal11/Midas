@@ -91,6 +91,7 @@ export class SessionStore {
     logout() {
         this._resetSession();
         window.localStorage.removeItem(this.__ACCOUNT_STORAGE_KEY__);
+        window.localStorage.removeItem(this.__CURRENT_COMPANY__);
     }
 
     authenticatePassword(userName, oldpassword) {

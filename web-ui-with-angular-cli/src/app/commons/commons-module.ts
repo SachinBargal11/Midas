@@ -41,7 +41,7 @@ import {
   GrowlModule
 
 } from 'primeng/primeng';
-// import { DropdownModule } from 'ng2-bootstrap';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 
 @NgModule({
@@ -64,7 +64,7 @@ import {
     CheckboxModule,
     SharedModule,
     ConfirmDialogModule,
-    // DropdownModule.forRoot(),
+    BsDropdownModule.forRoot(),
     FileUploadModule,
     GrowlModule
   ],
@@ -120,7 +120,7 @@ import {
     CheckboxModule,
     SharedModule,
     ConfirmDialogModule,
-    // DropdownModule,
+    BsDropdownModule,
     ShellComponent,
     ScheduledEventEditorComponent,
     DocumentUploadComponent,

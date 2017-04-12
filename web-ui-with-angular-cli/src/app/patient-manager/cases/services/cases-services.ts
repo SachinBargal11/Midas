@@ -136,7 +136,6 @@ export class CaseService {
             dwObject.IfSSL = false; // Set whether SSL is used
             dwObject.HTTPPort = 80;
             dwObject.HttpFieldNameOfUploadedImage = 'demo[]';
-            // dwObject.SaveAsPDF(`C:\\Users\\Mitali\\Downloads\\scanned_file_${currentCaseId}.pdf`);
             dwObject.HTTPUploadAllThroughPostAsPDF(
                 // 'midas.codearray.tk',
                 this._url,
@@ -147,7 +146,7 @@ export class CaseService {
                 },
                 (errorCode: string, errorString: string, response: any) => {
                     let responseData: any = JSON.parse(response);
-                    let documents: any = (<Object[]>responseData).map((document: any) => {
+                    let documents: CaseDocument[] = (<Object[]>responseData).map((document: any) => {
                         return CaseDocumentAdapter.parseResponse(document);
                     });
                     resolve(documents);
