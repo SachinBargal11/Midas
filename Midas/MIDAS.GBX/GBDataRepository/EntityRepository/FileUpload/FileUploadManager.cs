@@ -42,7 +42,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                             ObjectId = id,
                             DocumentName = content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
                             DocumentPath = ConfigurationManager.AppSettings.Get("BLOB_SERVER") + path.ToString(),
-
+                            CreateDate = DateTime.UtcNow
                         });
                         _context.Entry(midasdoc).State = System.Data.Entity.EntityState.Added;
                         _context.SaveChanges();
@@ -51,7 +51,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                         {
                             MidasDocumentId = midasdoc.Id,
                             CaseId = id,
-                            DocumentName = content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty)
+                            DocumentName = content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
+                            CreateDate = DateTime.UtcNow
                         });
                         _context.Entry(caseDoc).State = System.Data.Entity.EntityState.Added;
                         _context.SaveChanges();
