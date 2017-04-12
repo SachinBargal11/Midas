@@ -649,6 +649,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region GetConsentList
+        public override object GetConsentList(int id)
+        {
+            var acc = _context.Cases.Include("CompanyCaseConsentApprovals")
+                                    .Include("CaseCompanyConsentDocuments")
+                                    .Include("CaseCompanyConsentDocuments.MidasDocument")
+                                    .Where(p => p.Id == id
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                    .FirstOrDefault<Case>();
+
+            BO.Case acc_ = Convert<BO.Case, Case>(acc);
+
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            return (object)acc_;
+        }
+        #endregion
 
         #region Get By Company ID and DoctorId For
         public override object Get(int CompanyId,int DoctorId)

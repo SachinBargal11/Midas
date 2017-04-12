@@ -30,6 +30,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetObject(Request, id);
         }
 
+        [HttpGet]
+        [Route("getConsentList/{id}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetConsentList(int id)
+        {
+            return requestHandler.GetConsentList(Request, id);
+        }
 
         [HttpGet]
         [Route("getByPatientId/{PatientId}")]
