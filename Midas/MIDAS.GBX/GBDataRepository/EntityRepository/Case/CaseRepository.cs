@@ -326,6 +326,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("CaseCompanyMappings")
                                     .Include("CaseCompanyMappings.Company")
                                     .Include("CompanyCaseConsentApprovals")
+                                    .Include("CaseCompanyConsentDocuments")
+                                    .Include("CaseCompanyConsentDocuments.MidasDocument")
                                     .Include("Referrals")
                                     .Where(p => p.Id == id 
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -351,6 +353,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Include("CaseCompanyMappings")
                                     .Include("CaseCompanyMappings.Company")
                                     .Include("CompanyCaseConsentApprovals")
+                                    .Include("CaseCompanyConsentDocuments")
+                                    .Include("CaseCompanyConsentDocuments.MidasDocument")
                                     .Include("Referrals")
                                     .Where(p => p.PatientId == PatientId 
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
@@ -507,6 +511,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                        .Include("CaseCompanyMappings")
                                        .Include("CaseCompanyMappings.Company")
                                        .Include("CompanyCaseConsentApprovals")
+                                       .Include("CaseCompanyConsentDocuments")
+                                       .Include("CaseCompanyConsentDocuments.MidasDocument")
                                        .Include("Referrals")
                                        .Where(p => p.Id == caseDB.Id).FirstOrDefault<Case>();
             }
