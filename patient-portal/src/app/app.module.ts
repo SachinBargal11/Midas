@@ -22,7 +22,8 @@ import { StateService } from './commons/services/state-service';
 import { PatientManagerModule } from './patient-manager/patient-manager-module';
 import { AddDocConsentFormComponent } from './patient-manager/consentForm/components/add-consent-form';
 import { ScannerService } from './commons/services/scanner-service';
-
+import { ConfirmationService } from 'primeng/primeng'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';;
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,6 +31,7 @@ import { ScannerService } from './commons/services/scanner-service';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpModule,
     ReactiveFormsModule,
@@ -37,7 +39,7 @@ import { ScannerService } from './commons/services/scanner-service';
     AppRoutingModule,
     PatientManagerModule,
     DashboardModule,
-    SimpleNotificationsModule
+    SimpleNotificationsModule,
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
@@ -50,7 +52,7 @@ import { ScannerService } from './commons/services/scanner-service';
     NotificationsStore,
     StateService,
     StatesStore,
-    ProgressBarService,ScannerService
+    ProgressBarService, ScannerService, ConfirmationService
   ],
   bootstrap: [AppComponent]
 })

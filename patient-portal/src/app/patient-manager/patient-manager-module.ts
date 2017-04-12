@@ -49,8 +49,6 @@ import { CasesStore } from './cases/stores/case-store';
 import { InsuranceMappingStore } from './cases/stores/insurance-mapping-store';
 import { InsuranceMappingService } from './cases/services/insurance-mapping-service';
 import { ViewAllComponent } from './patients/components/view-all';
-
-
 import { CaseService } from './cases/services/cases-services';
 import { AdjusterMasterStore } from './patients/stores/adjuster-store';
 import { AdjusterMasterService } from './patients/services/adjuster-service';
@@ -67,26 +65,17 @@ import { AdjusterMasterService } from './patients/services/adjuster-service';
 
 import { AddDocConsentFormComponent } from './consentForm/components/add-consent-form';
 import { ConsentDocListComponent } from './consentForm/components/list-consent-form'
-
-
-
-
 import { AddDocConsentFormService } from './consentForm/services/consent-form-service';
 import { EditDocConsentFormComponent } from './consentForm/components/edit-consent-form'
 import { AddDocConsentStore } from './consentForm/stores/add-consent-form-store';
 import { ListDocConsentStore } from './consentForm/stores/list-consent-form-store';
-
-
 import { ListDocConsentFormService } from './consentForm/services/list-consent-form-service';
 
-import { ListConsentFormService } from './cases/services/list-consent-form-service';
+import { ConsentListComponent } from './cases/components/list-consent';
+import { AddConsentComponent } from './cases/components/add-consent';
+import { ConsentStore } from './cases/stores/consent-store';
+import { ConsentService } from './cases/services/consent-service';
 
-import { AddConsentFormService } from './cases/services/consent-form-service';
-import { AddConsentStore } from './cases/stores/add-consent-form-store';
-import { AddConsentFormComponent } from './cases/components/add-consent-form';
-import { ConsentListComponent } from './cases/components/list-consent-form'
-import { EditConsentFormComponent } from './cases/components/edit-consent-form';
-import { ListConsentStore } from './cases/stores/list-consent-form-store';
 
 
 @NgModule({
@@ -95,7 +84,7 @@ import { ListConsentStore } from './cases/stores/list-consent-form-store';
         RouterModule,
         CommonsModule,
         PatientRoutingModule
-       // , ConsentShellRoutingModule
+        // , ConsentShellRoutingModule
         // RoomsModule,
         // UsersModule
     ],
@@ -131,8 +120,8 @@ import { ListConsentStore } from './cases/stores/list-consent-form-store';
         InsuranceMapComponent,
         CaseMappingComponent,
         ViewAllComponent, AddDocConsentFormComponent
-        , ConsentListComponent, AddConsentFormComponent
-        , EditConsentFormComponent, ConsentDocListComponent, EditDocConsentFormComponent
+        , ConsentDocListComponent, EditDocConsentFormComponent
+        , ConsentListComponent, AddConsentComponent
     ],
     providers: [
         PatientsService,
@@ -154,8 +143,10 @@ import { ListConsentStore } from './cases/stores/list-consent-form-store';
         AccidentStore,
         InsuranceMappingStore,
         AdjusterMasterStore,
-        AdjusterMasterService, AddConsentStore, AddConsentFormService, ListConsentStore, ListConsentFormService
-        , ListDocConsentStore, AddDocConsentStore,ListDocConsentFormService,AddDocConsentFormService
+        AdjusterMasterService,
+        ListDocConsentStore, AddDocConsentStore, ListDocConsentFormService, AddDocConsentFormService
+        , ConsentStore,
+        ConsentService
         // PatientVisitsStore,
         // PatientVisitService
     ]
