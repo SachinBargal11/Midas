@@ -48,12 +48,12 @@
         <p-column field="referredToLocation.location.name"></p-column>
         <p-column>
             <ng-template let-referral="rowData" pTemplate="body">
-                <a routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent">
+                <!--<a routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent">
                     <u>{{consentAvailable(referral)}}</u>
-                </a>
-                <!--<a routerLink="{{referral.id}}/consent-form">
-                <u>{{consentAvailable(referral)}}</u>
-            </a>-->
+                </a>-->
+              {{consentAvailable(referral)}}
+             <a *ngIf="consentRecived" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent"><u>Yes</u></a>
+             <a *ngIf="consentNotRecived" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent"><u>No</u></a>
             </ng-template>
         </p-column>
         <p-column>
@@ -99,12 +99,9 @@
         <p-column field="referringUser.displayName"></p-column>
         <p-column>
             <ng-template let-referral="rowData" pTemplate="body">
-                <a routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent">
-                    <u>{{consentAvailable(referral)}}</u>
-                </a>
-                <!--<a routerLink="{{referral.id}}/consent-form">
-                <u>{{consentAvailable(referral)}}</u>
-            </a>-->
+              {{consentAvailable(referral)}}
+             <a *ngIf="consentRecived" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent"><u>Yes</u></a>
+             <a *ngIf="consentNotRecived" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent"><u>No</u></a>
             </ng-template>
         </p-column>
         <p-column>
@@ -148,12 +145,9 @@
         <p-column field="referringUser.displayName"></p-column>
         <p-column>
             <ng-template let-referral="rowData" pTemplate="body">
-                <a routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent">
-                    <u>{{consentAvailable(referral)}}</u>
-                </a>
-                <!--<a routerLink="{{referral.id}}/consent-form">
-                <u>{{consentAvailable(referral)}}</u>
-            </a>-->
+              {{consentAvailable(referral)}}
+             <a *ngIf="consentRecived" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent"><u>Yes</u></a>
+             <a *ngIf="consentNotRecived" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent"><u>No</u></a>
             </ng-template>
         </p-column>
         <p-column>
@@ -207,9 +201,9 @@
         <p-column field="referringUser.displayName"></p-column>
         <p-column>
             <ng-template let-referral="rowData" pTemplate="body">
-                <a routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent">
-                    <u>{{consentAvailable(referral)}}</u>
-                </a>
+              {{consentAvailable(referral)}}
+             <a *ngIf="consentRecived" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent"><u>Yes</u></a>
+             <a *ngIf="consentNotRecived" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent"><u>No</u></a>
             </ng-template>
         </p-column>
         <p-column>
