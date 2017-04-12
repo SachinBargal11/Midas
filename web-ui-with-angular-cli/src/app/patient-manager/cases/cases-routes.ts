@@ -18,11 +18,13 @@ import { CaseDocumentsUploadComponent } from './components/case-documents';
 import { InsuranceMappingComponent } from './components/insurance-mapping';
 import { AssignInsuranceComponent } from './components/assign-insurance';
 import { CompanyCasesComponent } from './components/company-cases-list';
-import { ConsentListComponent } from './components/list-consent-form';
-import { AddConsentFormComponent } from './components/add-consent-form';
-import { EditConsentFormComponent } from './components/edit-consent-form';
+import { ConsentListComponent } from './components/list-consent';
+import { AddConsentComponent } from './components/add-consent';
+import { EditConsentComponent } from './components/edit-consent';
 import { ReferralListComponent } from './components/referral-list';
 import { AddReferralComponent } from './components/add-referral';
+//import { PopupFileUpload } from '../../commons/components/PopupFileUpload';
+
 export const CasesShellRoutes: Routes = [
     {
         path: '',
@@ -50,6 +52,10 @@ export const CasesShellRoutes: Routes = [
                     breadcrumb: 'Add Case'
                 }
             },
+            {
+                path: 'upload-consent/:caseId',
+               // component: PopupFileUpload
+            }
         ]
     },
     {
@@ -204,7 +210,7 @@ export const CasesShellRoutes: Routes = [
                         component: InsuranceMappingComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
-                            breadcrumb: 'Insurance Mapping'
+                            breadcrumb: 'Insurance'
                         }
                     },
                     {
@@ -212,7 +218,7 @@ export const CasesShellRoutes: Routes = [
                         component: ShellComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
-                            breadcrumb: 'Insurance Mapping'
+                            breadcrumb: 'Insurance'
                         },
                         children: [
                             {
@@ -227,11 +233,11 @@ export const CasesShellRoutes: Routes = [
 
 
                     {
-                        path: 'consent-form',
+                        path: 'consent',
                         component: ShellComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
-                            breadcrumb: 'Consent Form'
+                            breadcrumb: 'Consent'
                         },
                         children: [
                             {
@@ -243,18 +249,18 @@ export const CasesShellRoutes: Routes = [
                             },
                             {
                                 path: 'add',
-                                component: AddConsentFormComponent,
+                                component: AddConsentComponent,
                                 canActivate: [ValidateActiveSession],
                                 data: {
-                                    breadcrumb: 'Add Consent form'
+                                    breadcrumb: 'Add Consent'
                                 }
                             },
                             {
                                 path: 'edit/:id',
-                                component: EditConsentFormComponent,
+                                component: EditConsentComponent,
                                 canActivate: [ValidateActiveSession],
                                 data: {
-                                    breadcrumb: 'Edit Consent form'
+                                    breadcrumb: 'Edit Consent'
                                 }
                             }
                         ]
