@@ -184,7 +184,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                 referralBO.ReferralDocument = boReferralDocument;                
             }
-
             return (T)(object)referralBO;
         }
         #endregion
@@ -259,6 +258,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                           .Include("Case")
                                           .Include("Case.Patient2.User")
                                           .Include("Case.CompanyCaseConsentApprovals")
+                                          .Include("Case.CaseCompanyConsentDocuments")
+                                          .Include("Case.CaseCompanyConsentDocuments.MidasDocument")
                                           .Include("ReferralDocuments")
                                           .Include("ReferralDocuments.MidasDocument")
                                           .Include("Room")
@@ -311,6 +312,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                         .Include("Case.Patient2")
                                         .Include("Case.Patient2.User")
                                         .Include("Case.CompanyCaseConsentApprovals")
+                                        .Include("Case.CaseCompanyConsentDocuments")
+                                        .Include("Case.CaseCompanyConsentDocuments.MidasDocument")
                                         .Include("ReferralDocuments")
                                         .Include("ReferralDocuments.MidasDocument")
                                         .Include("Room")
@@ -345,6 +348,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                         .Include("Case.Patient2")
                                         .Include("Case.Patient2.User")
                                         .Include("Case.CompanyCaseConsentApprovals")
+                                        .Include("Case.CaseCompanyConsentDocuments")
+                                        .Include("Case.CaseCompanyConsentDocuments.MidasDocument")
                                         .Include("ReferralDocuments")
                                         .Include("ReferralDocuments.MidasDocument")
                                         .Include("Room")
@@ -384,6 +389,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("Case.Patient2")
                                                .Include("Case.Patient2.User")
                                                .Include("Case.CompanyCaseConsentApprovals")
+                                               .Include("Case.CaseCompanyConsentDocuments")
+                                               .Include("Case.CaseCompanyConsentDocuments.MidasDocument")
                                                .Include("ReferralDocuments")
                                                .Include("ReferralDocuments.MidasDocument")
                                                .Include("Room")
@@ -427,6 +434,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                .Include("Case.Patient2")
                                                .Include("Case.Patient2.User")
                                                .Include("Case.CompanyCaseConsentApprovals")
+                                               .Include("Case.CaseCompanyConsentDocuments")
+                                               .Include("Case.CaseCompanyConsentDocuments.MidasDocument")
                                                .Include("ReferralDocuments")
                                                .Include("ReferralDocuments.MidasDocument")
                                                .Include("Room")
@@ -470,6 +479,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                             .Include("Case.Patient2")
                                                             .Include("Case.Patient2.User")
                                                             .Include("Case.CompanyCaseConsentApprovals")
+                                                            .Include("Case.CaseCompanyConsentDocuments")
+                                                            .Include("Case.CaseCompanyConsentDocuments.MidasDocument")
                                                             .Include("ReferralDocuments")
                                                             .Include("ReferralDocuments.MidasDocument")
                                                             .Include("Room")
@@ -508,6 +519,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                            .Include("Case.Patient2")
                                                            .Include("Case.Patient2.User")
                                                            .Include("Case.CompanyCaseConsentApprovals")
+                                                           .Include("Case.CaseCompanyConsentDocuments")
+                                                           .Include("Case.CaseCompanyConsentDocuments.MidasDocument")
                                                            .Include("ReferralDocuments")
                                                            .Include("ReferralDocuments.MidasDocument")
                                                            .Include("Room")
@@ -547,6 +560,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                             .Include("Case.Patient2")
                                                             .Include("Case.Patient2.User")
                                                             .Include("Case.CompanyCaseConsentApprovals")
+                                                            .Include("Case.CaseCompanyConsentDocuments")
+                                                            .Include("Case.CaseCompanyConsentDocuments.MidasDocument")
                                                             .Include("ReferralDocuments")
                                                             .Include("ReferralDocuments.MidasDocument")
                                                             .Include("Room")
@@ -586,6 +601,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                                             .Include("Case.Patient2")
                                                             .Include("Case.Patient2.User")
                                                             .Include("Case.CompanyCaseConsentApprovals")
+                                                            .Include("Case.CaseCompanyConsentDocuments")
+                                                            .Include("Case.CaseCompanyConsentDocuments.MidasDocument")
                                                             .Include("ReferralDocuments")
                                                             .Include("ReferralDocuments.MidasDocument")
                                                             .Include("Room")

@@ -99,6 +99,44 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 caseBO.CompanyCaseConsentApprovals = boCompanyCaseConsentApproval;
             }
 
+            if (cases.CaseCompanyConsentDocuments != null)
+            {
+                List<BO.CaseCompanyConsentDocument> boCaseCompanyConsentDocument = new List<BO.CaseCompanyConsentDocument>();
+
+                foreach (var eachcaseCompanyConsentDocument in cases.CaseCompanyConsentDocuments)
+                {
+                    BO.CaseCompanyConsentDocument caseCompanyConsentDocument = new BO.CaseCompanyConsentDocument();
+
+                    caseCompanyConsentDocument.ID = eachcaseCompanyConsentDocument.Id;
+                    caseCompanyConsentDocument.CaseId = eachcaseCompanyConsentDocument.CaseId;
+                    caseCompanyConsentDocument.CompanyId = eachcaseCompanyConsentDocument.CompanyId;
+                    caseCompanyConsentDocument.DocumentName = eachcaseCompanyConsentDocument.DocumentName;
+                    caseCompanyConsentDocument.MidasDocumentId = eachcaseCompanyConsentDocument.MidasDocumentId;
+                    caseCompanyConsentDocument.IsDeleted = eachcaseCompanyConsentDocument.IsDeleted;
+                    caseCompanyConsentDocument.UpdateByUserID = eachcaseCompanyConsentDocument.UpdateUserId;
+                    caseCompanyConsentDocument.CreateByUserID = (int)(eachcaseCompanyConsentDocument.CreateUserId.HasValue == true ? eachcaseCompanyConsentDocument.CreateUserId.Value : 0);
+
+                    if (eachcaseCompanyConsentDocument.MidasDocument != null)
+                    {
+                        BO.MidasDocument boMidasDocument = new BO.MidasDocument();
+
+                        boMidasDocument.ID = eachcaseCompanyConsentDocument.Id;
+                        boMidasDocument.ObjectType = eachcaseCompanyConsentDocument.MidasDocument.ObjectType;
+                        boMidasDocument.ObjectId = eachcaseCompanyConsentDocument.MidasDocument.ObjectId;
+                        boMidasDocument.DocumentPath = eachcaseCompanyConsentDocument.MidasDocument.DocumentPath;
+                        boMidasDocument.DocumentName = eachcaseCompanyConsentDocument.MidasDocument.DocumentName;
+                        boMidasDocument.IsDeleted = eachcaseCompanyConsentDocument.MidasDocument.IsDeleted;
+                        boMidasDocument.UpdateByUserID = eachcaseCompanyConsentDocument.MidasDocument.UpdateUserId;
+                        boMidasDocument.CreateByUserID = (int)(eachcaseCompanyConsentDocument.MidasDocument.CreateUserId.HasValue == true ? eachcaseCompanyConsentDocument.MidasDocument.CreateUserId.Value : 0);
+
+                        caseCompanyConsentDocument.MidasDocument = boMidasDocument;
+                    }
+                    boCaseCompanyConsentDocument.Add(caseCompanyConsentDocument);
+                }
+
+                caseBO.CaseCompanyConsentDocuments = boCaseCompanyConsentDocument;
+            }
+
             if (cases.Referrals != null)
             {
                 List<BO.Referral> BOListReferral = new List<BO.Referral>();
