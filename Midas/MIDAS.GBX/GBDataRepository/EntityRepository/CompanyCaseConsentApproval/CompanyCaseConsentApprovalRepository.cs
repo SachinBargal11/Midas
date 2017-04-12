@@ -346,14 +346,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             HtmlToPdf htmlPDF = new HtmlToPdf();
             string path = string.Empty;
             string pdfText = GetTemplateDocument(Constants.ConsentType + "_" + companyid);
-            var acc = _context.CompanyCaseConsentApprovals.Include("Case")
-                                             .Include("Company")
-                                             .Where(p => p.CaseId == caseid).FirstOrDefault();
+            var acc = _context.Companies.Where(p => p.id == companyid).FirstOrDefault();
+
             if (acc != null)
             {
                 try
                 {
-                    pdfText = pdfText.Replace("{{CompanyName}}", acc.Company.Name);
+                    pdfText = pdfText.Replace("{{CompanyName}}", acc.Name);
 
                     path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\company_" + companyid + "\\case_" + caseid;
                     htmlPDF.OpenHTML(pdfText);
