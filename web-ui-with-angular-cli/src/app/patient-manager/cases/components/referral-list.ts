@@ -27,6 +27,7 @@ import { Consent } from '../models/consent';
 export class ReferralListComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     consentRecived: string = '';
+    consentNotRecived: string = '';
     searchMode: number = 1;
     selectedReferrals: Referral[] = [];
     referrals: Referral[];
@@ -148,18 +149,32 @@ export class ReferralListComponent implements OnInit {
     DownloadPdf(document: ReferralDocument) {
         window.location.assign(this._url + '/fileupload/download/' + document.referralId + '/' + document.midasDocumentId);
     }
+    // consentAvailable(referral: Referral) {
+    //     if (referral.case.companyCaseConsentApproval.length > 0) {
+    //         let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: Consent) => {
+    //             return currentConsent.companyId === this._sessionStore.session.currentCompany.id;
+    //         });
+    //         if (consentAvailable) {
+    //             return this.consentRecived = 'Yes';
+    //         } else {
+    //             return this.consentRecived = 'No';
+    //         }
+    //     } else {
+    //         return this.consentRecived = 'No';
+    //     }
+    // }
     consentAvailable(referral: Referral) {
         if (referral.case.companyCaseConsentApproval.length > 0) {
             let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: Consent) => {
                 return currentConsent.companyId === this._sessionStore.session.currentCompany.id;
             });
             if (consentAvailable) {
-                return this.consentRecived = 'Yes';
+                this.consentRecived = 'Yes';
             } else {
-                return this.consentRecived = 'No';
+                this.consentNotRecived = 'No';
             }
         } else {
-            return this.consentRecived = 'No';
+            this.consentNotRecived = 'No';
         }
     }
 
