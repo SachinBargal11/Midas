@@ -15,7 +15,7 @@ const CaseRecord = Record({
     caseTypeId: CaseType.NOFAULT,
     companies: null,
     companyCaseConsentApproval:null,
-    // referral:null,
+    referral:null,
     locationId: 0,
     patientEmpInfoId: null,
     carrierCaseNo: '',
@@ -38,7 +38,7 @@ export class Case extends CaseRecord {
     caseTypeId: CaseType;
     companies: Company[];
     companyCaseConsentApproval: Consent[];
-    // referral: Referral[];
+    referral: Referral[];
     locationId: number;
     patientEmpInfoId: number;
     carrierCaseNo: string;

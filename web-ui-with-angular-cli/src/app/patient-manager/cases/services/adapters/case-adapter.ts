@@ -40,6 +40,7 @@ export class CaseAdapter {
                 companies: companies,
                 companyCaseConsentApproval:companyCaseConsentApproval,
                 // referral:referral,
+                referral:data.referral,
                 locationId: data.locationId,
                 carrierCaseNo: data.carrierCaseNo,
                 transportation: data.transportation ? true : false,

@@ -16,6 +16,7 @@ import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { Consent } from '../models/consent';
 import { Company } from '../../../account/models/company';
 import * as _ from 'underscore';
+import { Referral } from '../models/referral';
 
 @Component({
     selector: 'caseslist',
@@ -33,6 +34,7 @@ export class CasesListComponent implements OnInit {
     totalRecords: number;
     isDeleteProgress: boolean = false;
     consentRecived: string = '';
+    referralRecived: string = '';
 
     constructor(
         public _route: ActivatedRoute,
@@ -104,9 +106,39 @@ export class CasesListComponent implements OnInit {
         } else {
             return this.consentRecived = 'No';
         }
+    }
+
+    referralAvailable(case1: any) {
+        let referralOutBound;
+        let referralInBound;
+        let referralInBoundOutBound;
+        if (case1.referral.length > 0) {
+
+            referralInBound = _.find(case1.referral, (currentReferral: Referral) => {
+                return currentReferral.referredToCompanyId === this._sessionStore.session.currentCompany.id;
+            });
+            referralOutBound = _.find(case1.referral, (currentReferral: Referral) => {
+                return currentReferral.referringCompanyId === this._sessionStore.session.currentCompany.id;
+            });
+            if (referralInBound && referralOutBound) {
+                return this.referralRecived = 'InBound/OutBound';
+            }
+            else if (referralInBound) {
+                return this.referralRecived = 'InBound';
+            }
+            else if (referralOutBound) {
+                return this.referralRecived = 'OutBound';
+            }
+            else {
+                return this.referralRecived = '';
+            }
+        } else {
+            return this.referralRecived = '';
+        }
 
 
     }
+
 
     loadCasesLazy(event: LazyLoadEvent) {
         setTimeout(() => {
