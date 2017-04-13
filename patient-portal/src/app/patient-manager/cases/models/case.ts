@@ -2,8 +2,8 @@ import { Record } from 'immutable';
 import * as moment from 'moment';
 import { CaseType } from './enums/case-types';
 import { CaseStatus } from './enums/case-status';
-import {Patient} from '../../patients/models/patient';
-
+import { Patient } from '../../patients/models/patient';
+import { Consent } from './consent';
 const CaseRecord = Record({
     id: 0,
     patientId: 0,
@@ -41,7 +41,7 @@ export class Case extends CaseRecord {
     createDate: moment.Moment;
     updateByUserID: number;
     updateDate: moment.Moment;
-
+    companyCaseConsentApproval: Consent[];
     constructor(props) {
         super(props);
     }
