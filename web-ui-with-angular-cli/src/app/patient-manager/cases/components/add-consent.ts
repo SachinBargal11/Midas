@@ -208,7 +208,7 @@ export class AddConsentComponent implements OnInit {
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages('', 'Consent Data Already Exists'));
+            this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists');
             this._progressBarService.hide();
             // this._router.navigate(['../'], { relativeTo: this._route });
         }
@@ -235,6 +235,7 @@ export class AddConsentComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
+                    this._notificationsService.error('Oh No!','Company, Case and Consent data already exists');
                 }
                 else {
                     let notification = new Notification({
