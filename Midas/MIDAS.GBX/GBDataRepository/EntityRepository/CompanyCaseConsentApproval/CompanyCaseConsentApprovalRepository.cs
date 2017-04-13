@@ -301,11 +301,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #endregion
 
         #region Delete By ID
-        public override object Delete(int CaseId,int DocumentId,int CompanyId)
-        {           
+        public override object Delete(int CaseId, int DocumentId, int CompanyId)
+        {
             using (FileUpload.FileUploadRepository cmp = new FileUpload.FileUploadRepository(_context))
             {
-                cmp.DeleteFile(CaseId, DocumentId);                
+                cmp.DeleteFile(CaseId, DocumentId);
             }
 
             var acc = _context.CompanyCaseConsentApprovals.Where(p => p.CaseId == CaseId && p.CompanyId == CompanyId
@@ -329,8 +329,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
         #region DownlodConsent
         public override string Download(int caseid, int companyid)
-        {            
-         return this.GenerateConsentDocument(caseid, companyid);
+        {
+            return this.GenerateConsentDocument(caseid, companyid);
         }
 
         public string GetTemplateDocument(string templateType)
@@ -347,17 +347,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             string path = string.Empty;
             string pdfText = GetTemplateDocument(Constants.ConsentType + "_" + companyid);
             var acc = _context.Companies.Where(p => p.id == companyid).FirstOrDefault();
+            var cases = _context.Cases.Include("Patient2").Include("Patient2.User").Where(x => x.Id == caseid).FirstOrDefault();
 
             if (acc != null)
             {
                 try
                 {
                     pdfText = pdfText.Replace("{{CompanyName}}", acc.Name);
+                    if (cases != null)
+                        pdfText = pdfText.Replace("{{PatientName}}", cases.Patient2.User.FirstName + " " + cases.Patient2.User.LastName);
 
                     path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\company_" + companyid + "\\case_" + caseid;
                     htmlPDF.OpenHTML(pdfText);
                     if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-                    htmlPDF.SavePDF(@path + "\\consent.pdf");                    
+                    htmlPDF.SavePDF(@path + "\\consent.pdf");
                 }
                 catch (Exception) { return ""; }
             }
@@ -391,7 +394,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                        .Append(caseid)
                        .Append("/consent");
 
-            docInfo = (List<BO.Document>)fileUploadManager.Upload(streamContent, storagePath.ToString(), caseid, "consent_"+ companyid, uploadpath);
+            docInfo = (List<BO.Document>)fileUploadManager.Upload(streamContent, storagePath.ToString(), caseid, "consent_" + companyid, uploadpath);
 
             if (docInfo.ToList().FirstOrDefault<BO.Document>().Status.ToUpper().Equals("SUCCESS"))
             {
@@ -410,7 +413,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #endregion
 
         public void Dispose() { GC.SuppressFinalize(this); }
-    }    
+    }
 }
 
 
