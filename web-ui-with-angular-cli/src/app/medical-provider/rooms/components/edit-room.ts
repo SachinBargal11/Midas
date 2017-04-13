@@ -86,10 +86,6 @@ export class EditRoomComponent implements OnInit {
             .subscribe(tests => { this.tests = tests; });
     }
 
-    goBack(): void {
-        this.location.back();
-    }
-
     update() {
         let editroomformValues = this.editroomform.value;
         let roomDetail = new Room({
@@ -120,8 +116,7 @@ export class EditRoomComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                // this._router.navigate(['rooms']);
-                this.location.back();
+                this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
                 let errString = 'Unable to update room.';

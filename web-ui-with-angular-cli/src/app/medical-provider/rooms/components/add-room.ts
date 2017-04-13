@@ -80,10 +80,6 @@ export class AddRoomComponent implements OnInit {
             .subscribe(tests => { this.tests = tests; });
     }
 
-    goBack(): void {
-        this.location.back();
-    }
-
     save() {
         let addroomformValues = this.addroomform.value;
         let roomDetail = new Room({
@@ -113,8 +109,7 @@ export class AddRoomComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                // this._router.navigate(['/rooms']);
-                this.location.back();
+                this._router.navigate(['../'], { relativeTo: this._route });
             },
             (error) => {
                 let errString = 'Unable to add room.';
