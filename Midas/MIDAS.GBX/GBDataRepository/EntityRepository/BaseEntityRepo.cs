@@ -126,7 +126,12 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
-      
+        
+        public virtual Object GetCaseCompanies(int caseId)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object GetConsentList(int id)
         {
             throw new NotImplementedException();
@@ -158,6 +163,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
         public virtual T Convert<T, U>(U entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual T ConvertCompany<T, U>(U entity)
         {
             throw new NotImplementedException();
         }

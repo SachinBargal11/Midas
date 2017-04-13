@@ -21,7 +21,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             context.Configuration.ProxyCreationEnabled = false;
         }
 
-        #region Entity Conversion
+        #region Entity Conversion Convert
         public override T Convert<T, U>(U entity)
         {
             Case cases = entity as Case;
@@ -193,7 +193,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Entity Conversion
+        #region Entity Conversion ConvertWithPatient
         //public T ConvertWithPatient<T, U>(U entity)
         //{
         //    Patient2 patient2 = entity as Patient2;
@@ -204,7 +204,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         //    BO.Patient2 patientBO2 = new BO.Patient2();
 
         //    patientBO2.ID = patient2.Id;
-            
+
         //    BO.User boUser = new BO.User();
         //    using (UserRepository cmp = new UserRepository(_context))
         //    {
@@ -231,7 +231,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         //}
         #endregion
 
-        #region Entity Conversion
+        #region Entity Conversion ConvertToCaseWithUserAndPatient
         public T ConvertToCaseWithUserAndPatient<T, U>(U entity)
         {
             Patient2 patient2 = entity as Patient2;
@@ -342,6 +342,33 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (T)(object)lstCaseWithUserAndPatient;
         }
         #endregion
+
+        #region Entity Conversion GetCaseCompanies
+        public override T ConvertCompany<T, U>(U entity)
+        {
+            Company company = entity as Company;
+
+            if (company == null)
+                return default(T);
+
+            BO.Company boCompany = null;
+
+            if(company != null)
+            {
+                boCompany = new BO.Company();
+
+                boCompany.ID = company.id;
+                boCompany.Name = company.Name;
+                boCompany.TaxID = company.TaxID;
+                boCompany.Status = (BO.GBEnums.AccountStatus)company.Status;
+                boCompany.CompanyType = (BO.GBEnums.CompanyType)company.CompanyType;
+                boCompany.SubsCriptionType = (BO.GBEnums.SubsCriptionType)company.SubscriptionPlanType;
+            }
+
+            return (T)(object)boCompany;
+        }
+        #endregion
+
 
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
@@ -764,6 +791,33 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 return lstCaseWithUserAndPatient;
             }
+        }
+        #endregion
+
+        #region GetCaseCompanies
+        public override object GetCaseCompanies(int caseId)
+        {
+            var company1 = _context.CaseCompanyMappings.Where(p => p.CaseId == caseId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.Company).ToList();
+
+            var company2 = _context.Referrals.Where(p => p.CaseId == caseId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.Company).ToList();
+
+            if (company1 == null && company2 == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            List<BO.Company> lstcompany = new List<BO.Company>();
+
+            foreach (var item in company1.Union(company2).Distinct())
+            {
+                BO.Company boCompany = ConvertCompany<BO.Company, Company>(item);
+                if (boCompany != null)
+                {
+                    lstcompany.Add(ConvertCompany<BO.Company, Company>(item));
+                }
+            }            
+
+            return (object)lstcompany;
         }
         #endregion
 

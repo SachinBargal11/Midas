@@ -19,6 +19,7 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage GetObject(HttpRequestMessage request, int id, string type);
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetObject(HttpRequestMessage request, int id);
+        HttpResponseMessage GetCaseCompanies(HttpRequestMessage request, int caseId);
         HttpResponseMessage ValidatePassword(HttpRequestMessage request, T gbObject);
         HttpResponseMessage ValidateInvitation(HttpRequestMessage request, T gbObject);
         HttpResponseMessage UpdateGbObject(HttpRequestMessage request, T gbObject);
