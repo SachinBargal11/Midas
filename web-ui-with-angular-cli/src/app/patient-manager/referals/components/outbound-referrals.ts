@@ -43,18 +43,18 @@ export class OutboundReferralsComponent implements OnInit {
     constructor(
         private _router: Router,
         private _notificationsStore: NotificationsStore,
-        public _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _referralStore: ReferralStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
     ) {
-        this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+        this.sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadReferralsCheckingDoctor();
         });
     }
 
     ngOnInit() {
-        let roles = this._sessionStore.session.user.roles;
+        let roles = this.sessionStore.session.user.roles;
         if (roles) {
             if (roles.length === 1) {
                 this.doctorRoleOnly = _.find(roles, (currentRole) => {
@@ -170,7 +170,7 @@ export class OutboundReferralsComponent implements OnInit {
     // consentAvailable(referral: Referral) {
     //     if (referral.case.companyCaseConsentApproval.length > 0) {
     //         let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: Consent) => {
-    //             return currentConsent.companyId === this._sessionStore.session.currentCompany.id;
+    //             return currentConsent.companyId === this.sessionStore.session.currentCompany.id;
     //         });
     //         if (consentAvailable) {
     //             return this.consentRecived = 'Yes';
@@ -184,7 +184,7 @@ export class OutboundReferralsComponent implements OnInit {
     consentAvailable(referral: Referral) {
         if (referral.case.companyCaseConsentApproval.length > 0) {
             let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: Consent) => {
-                return currentConsent.companyId === this._sessionStore.session.currentCompany.id;
+                return currentConsent.companyId === this.sessionStore.session.currentCompany.id;
             });
             if (consentAvailable) {
                 this.consentRecived = 'Yes';

@@ -45,7 +45,7 @@ export class ReferralListComponent implements OnInit {
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
-        public _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _referralStore: ReferralStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
@@ -158,7 +158,7 @@ export class ReferralListComponent implements OnInit {
     // consentAvailable(referral: Referral) {
     //     if (referral.case.companyCaseConsentApproval.length > 0) {
     //         let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: Consent) => {
-    //             return currentConsent.companyId === this._sessionStore.session.currentCompany.id;
+    //             return currentConsent.companyId === this.sessionStore.session.currentCompany.id;
     //         });
     //         if (consentAvailable) {
     //             return this.consentRecived = 'Yes';
@@ -174,7 +174,7 @@ export class ReferralListComponent implements OnInit {
         let consentApproval = referral.case.companyCaseConsentApproval;
         // if (consentApproval.length > 0) {
         consentAvailable = _.find(consentApproval, (currentConsent: Consent) => {
-            return currentConsent.companyId === this._sessionStore.session.currentCompany.id;
+            return currentConsent.companyId === this.sessionStore.session.currentCompany.id;
         });
         // }
         if (consentAvailable) {
