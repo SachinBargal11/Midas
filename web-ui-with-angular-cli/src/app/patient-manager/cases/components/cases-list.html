@@ -13,8 +13,6 @@
 <div class="ui-widget-header row">
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
-        <!--<i class="fa fa-search" style="float:left;margin:4px 4px 0 0"></i>
-         <input #gb type="text" pInputText size="50" style="float:left" placeholder="Search Patients">-->
         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Cases">
     </div>
 </div>
@@ -24,19 +22,27 @@
     [globalFilter]="gb" [responsive]="true">
     <header>Cases</header>
     <p-column selectionMode="multiple"></p-column>
-    <!--<p-column header="Patient Name" [sortable]="true">
-           <ng-template pTemplate="body">
-            {{patientName}}
-         </ng-template>
-    </p-column>-->
     <p-column field="id" header="Case Id" [sortable]="true"></p-column>
     <p-column field="caseStatusLabel" header="Case Status" [sortable]="true"></p-column>
     <p-column field="caseTypeLabel" header="Case Type" [sortable]="true"></p-column>
     <p-column header="Consent Received">
         <ng-template let-case="rowData" pTemplate="body">
-            <a routerLink="{{case.id}}/consent">
-                <u>{{consentAvailable(case)}}</u>
+            <a *ngIf="case.companyCaseConsentApproval.length <= 0" routerLink="{{case.id}}/consent">
+                <u>No</u>
             </a>
+            <div *ngIf="case.companyCaseConsentApproval.length > 0">
+                <div *ngFor="let consent of case.companyCaseConsentApproval">
+                    <a *ngIf="consent.companyId === this._sessionStore.session.currentCompany.id" (click)="downloadConsent(case.caseCompanyConsentDocument)">
+                        <u>Yes</u>
+                    </a>
+                    <a *ngIf="consent.companyId !== this._sessionStore.session.currentCompany.id" routerLink="{{case.id}}/consent">
+                        <u>No</u>
+                    </a>
+                </div>
+            </div>
+            <!--<a routerLink="{{case.id}}/consent">
+                <u>{{consentAvailable(case)}}</u>
+            </a>-->
             <!--<div {{consentAvailable(case)}}>{{consentRecived}}</div>-->
             <!--<span *ngIf="consentNotRecived"><a routerLink="">{{consentNotRecived}}</a></span>-->
             <!--<span checkConsent(case)><a routerLink="">{{}}</a></span>-->
