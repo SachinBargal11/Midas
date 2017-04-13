@@ -58,22 +58,8 @@
     <p-column field="referredToLocation.location.name"></p-column>
     <p-column>
         <ng-template let-referral="rowData" pTemplate="body">
-            <a *ngIf="referral.case.companyCaseConsentApproval.length <= 0" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent">
-                <u>No</u>
-            </a>
-            <div *ngIf="referral.case.companyCaseConsentApproval.length > 0">
-                <div *ngFor="let consent of referral.case.companyCaseConsentApproval">
-                    <a *ngIf="consent.companyId === this._sessionStore.session.currentCompany.id" (click)="downloadConsent(referral.case.caseCompanyConsentDocument)">
-                        <u>Yes</u>
-                    </a>
-                    <a *ngIf="consent.companyId !== this._sessionStore.session.currentCompany.id" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent">
-                        <u>No</u>
-                    </a>
-                </div>
-            </div>
-            <!--{{consentAvailable(referral)}}
-             <a *ngIf="consentRecived" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent"><u>Yes</u></a>
-             <a *ngIf="consentNotRecived" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent"><u>No</u></a>-->
+             <a *ngIf="referral.case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="downloadConsent(referral.case.caseCompanyConsentDocument)"><u>Yes</u></a>
+             <a *ngIf="!referral.case.isConsentReceived(sessionStore.session.currentCompany.id)" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent"><u>No</u></a>
         </ng-template>
     </p-column>
     <p-column>
@@ -117,29 +103,9 @@
     <p-column field="referredToLocation.location.name"></p-column>
     <p-column field="referredToDoctor.user.displayName"></p-column>
     <p-column>
-        <!--<ng-template let-referral="rowData" pTemplate="body" >
-             <a routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent"><u>{{consentAvailable(referral)}}</u></a>-->
         <ng-template let-referral="rowData" pTemplate="body">
-            <a *ngIf="referral.case.companyCaseConsentApproval.length <= 0" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent">
-                <u>No</u>
-            </a>
-            <div *ngIf="referral.case.companyCaseConsentApproval.length > 0">
-                <div *ngFor="let consent of referral.case.companyCaseConsentApproval">
-                    <a *ngIf="consent.companyId === this._sessionStore.session.currentCompany.id" (click)="downloadConsent(referral.case.caseCompanyConsentDocument)">
-                        <u>Yes</u>
-                    </a>
-                    <a *ngIf="consent.companyId !== this._sessionStore.session.currentCompany.id" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent">
-                        <u>No</u>
-                    </a>
-                </div>
-            </div>
-            <!--{{consentAvailable(referral)}}
-            <a *ngIf="consentRecived" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent">
-                <u>Yes</u>
-            </a>
-            <a *ngIf="consentNotRecived" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent">
-                <u>No</u>
-            </a>-->
+             <a *ngIf="referral.case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="downloadConsent(referral.case.caseCompanyConsentDocument)"><u>Yes</u></a>
+             <a *ngIf="!referral.case.isConsentReceived(sessionStore.session.currentCompany.id)" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent"><u>No</u></a>
         </ng-template>
     </p-column>
     <p-column>
@@ -184,26 +150,8 @@
     <p-column field="room.name"></p-column>
     <p-column>
         <ng-template let-referral="rowData" pTemplate="body">
-            <a *ngIf="referral.case.companyCaseConsentApproval.length <= 0" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent">
-                <u>No</u>
-            </a>
-            <div *ngIf="referral.case.companyCaseConsentApproval.length > 0">
-                <div *ngFor="let consent of referral.case.companyCaseConsentApproval">
-                    <a *ngIf="consent.companyId === this._sessionStore.session.currentCompany.id" (click)="downloadConsent(referral.case.caseCompanyConsentDocument)">
-                        <u>Yes</u>
-                    </a>
-                    <a *ngIf="consent.companyId !== this._sessionStore.session.currentCompany.id" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent">
-                        <u>No</u>
-                    </a>
-                </div>
-            </div>
-            <!--{{consentAvailable(referral)}}
-            <a *ngIf="consentRecived" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent">
-                <u>Yes</u>
-            </a>
-            <a *ngIf="consentNotRecived" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent">
-                <u>No</u>
-            </a>-->
+             <a *ngIf="referral.case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="downloadConsent(referral.case.caseCompanyConsentDocument)"><u>Yes</u></a>
+             <a *ngIf="!referral.case.isConsentReceived(sessionStore.session.currentCompany.id)" routerLink="/patient-manager/cases/{{referral.case.patientId}}/{{referral.caseId}}/consent"><u>No</u></a>
         </ng-template>
     </p-column>
     <p-column>
