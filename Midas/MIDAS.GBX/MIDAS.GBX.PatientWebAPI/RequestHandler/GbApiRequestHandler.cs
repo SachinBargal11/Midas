@@ -638,5 +638,35 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+
+        public HttpResponseMessage GetOpenCaseForPatient(HttpRequestMessage request, int PatientId)
+        {
+            var objResult = dataAccessManager.GetOpenCaseForPatient(PatientId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetConsentList(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.GetConsentList(id);
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
     }
 }

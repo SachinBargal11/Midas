@@ -1,4 +1,3 @@
-import { Document } from '../../../commons/models/document';
 import { Component, OnInit, Injectable, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PatientVisitsStore } from '../../patient-visit/stores/patient-visit-store';
@@ -19,8 +18,7 @@ import { CaseService } from '../../cases/services/cases-services';
 import { ScannerService } from '../../../commons/services/scanner-service';
 import { CaseDocumentAdapter } from '../services/adapters/case-document-adapters';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
-import { DocumentUploadComponent } from '../../../commons/components/document-upload/document-upload.component';
-
+import { Document } from '../../../commons/models/document';
 
 @Component({
     selector: 'case-documents',
@@ -37,8 +35,6 @@ export class CaseDocumentsUploadComponent implements OnInit {
     url;
     isSaveProgress = false;
     isDeleteProgress: boolean = false;
-    @ViewChild(DocumentUploadComponent)
-    private _documentUploadComponent: DocumentUploadComponent;
 
     constructor(
         private _router: Router,

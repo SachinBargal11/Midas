@@ -50,15 +50,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             //        companyCaseConsentApprovalBO.Case = boCase;
             //    }
             //}
-            //if (companyCaseConsentApproval.Company != null)
-            //{
-            //    BO.Company boCompany = new BO.Company();
-            //    using (CompanyRepository cmp = new CompanyRepository(_context))
-            //    {
-            //        boCompany = cmp.Convert<BO.Company, Company>(companyCaseConsentApproval.Company);
-            //        companyCaseConsentApprovalBO.Company = boCompany;
-            //    }
-            //}
+            if (companyCaseConsentApproval.Company != null)
+            {
+                companyCaseConsentApprovalBO.Company = new BO.Company();
+                companyCaseConsentApprovalBO.Company.ID = (companyCaseConsentApproval.Company != null) ? companyCaseConsentApproval.Company.id : 0;
+                companyCaseConsentApprovalBO.Company.Name = (companyCaseConsentApproval.Company != null) ? companyCaseConsentApproval.Company.Name : "";
+            }
             return (T)(object)companyCaseConsentApprovalBO;
         }
         #endregion
@@ -360,13 +357,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\company_" + companyid + "\\case_" + caseid;
                     htmlPDF.OpenHTML(pdfText);
                     if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-                    htmlPDF.SavePDF(@path + "\\consent.pdf");
+                    htmlPDF.SavePDF(@path + "\\Consent_" + acc.Name + ".pdf");
                 }
                 catch (Exception) { return ""; }
             }
             else return "";
 
-            return path + "\\consent.pdf";
+            return path + "\\Consent_" + acc.Name + ".pdf";
         }
 
         public override object ConsentSave(int caseid, int companyid, List<System.Net.Http.HttpContent> streamContent, string uploadpath)

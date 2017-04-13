@@ -90,7 +90,7 @@ export class DocumentUploadComponent implements OnInit {
   }
 
   private _createDWObject() {
-    this.scannedFileName = `scanned_file_${moment().format('DD-MMM-YYYY hh:mm')}`;
+    // this.scannedFileName = `scanned_file_${moment().format('DD-MMM-YYYY hh-mm')}`;
     this._scannerService.getWebTwain(this.scannerContainerId)
       .then((dwObject) => {
         this.dwObject = dwObject;

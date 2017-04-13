@@ -5,13 +5,14 @@ import { PatientVisitsStore } from '../../patient-visit/stores/patient-visit-sto
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
+import * as _ from 'underscore';
 import { environment } from '../../../../environments/environment';
-import { Message } from 'primeng/primeng'
+import { FileUpload, FileUploadModule } from 'primeng/primeng';
 import { VisitDocument } from '../../patient-visit/models/visit-document';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-import { FileUpload, FileUploadModule } from 'primeng/primeng';
+import { Document } from '../../../commons/models/document';
 
 @Component({
     selector: 'visit-documents',
@@ -20,8 +21,6 @@ import { FileUpload, FileUploadModule } from 'primeng/primeng';
 
 export class VisitDocumentsUploadComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
-    msgs: Message[];
-    uploadedFiles: any[] = [];
     currentVisitId: number;
     document: VisitDocument[] = [];
     url;
@@ -37,52 +36,45 @@ export class VisitDocumentsUploadComponent implements OnInit {
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.currentVisitId = parseInt(routeParams.visitId, 10);
-            this.url = this._url + '/fileupload/multiupload/'+ this.currentVisitId +'/visit';
-            // this._progressBarService.show();
-            // this._patientVisitStore.getDocumentsForVisitId(this.currentVisitId)
-            //     .subscribe(document => {
-            //         this.document = document
-
-            //     },
-            //     (error) => {
-            //         this._progressBarService.hide();
-            //     },
-            //     () => {
-            //         this._progressBarService.hide();
-            //     });
+            this.url = this._url + '/fileupload/multiupload/' + this.currentVisitId + '/visit';
         });
     }
 
     ngOnInit() {
-    this.downloadDocument()
-    }
-
-    onUpload(event) {
-        for (let file of event.files) {
-            this.uploadedFiles.push(file);
-        }
-        let file = this.uploadedFiles[0];
-        this._patientVisitStore.uploadDocument(file,this.currentVisitId);
-
-        this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'File Uploaded', detail: '' });
         this.downloadDocument()
     }
 
+    documentUploadComplete(documents: Document[]) {
+        _.forEach(documents, (currentDocument: Document) => {
+            if (currentDocument.status == 'Failed') {
+                let notification = new Notification({
+                    'title': currentDocument.message + '  ' + currentDocument.documentName,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+            }
+        });
+        // this.getDocuments();
+    }
+
+    documentUploadError(error: Error) {
+        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+    }
 
     downloadDocument() {
-         this._progressBarService.show();
-            this._patientVisitStore.getDocumentsForVisitId(this.currentVisitId)
-                .subscribe(document => {
-                    this.document = document
+        this._progressBarService.show();
+        this._patientVisitStore.getDocumentsForVisitId(this.currentVisitId)
+            .subscribe(document => {
+                this.document = document
 
-                },
-                (error) => {
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
-        }
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
 
 }

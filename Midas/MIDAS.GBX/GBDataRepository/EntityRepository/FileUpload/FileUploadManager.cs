@@ -37,6 +37,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                 {
                     try
                     {
+                        if (type.ToUpper().Contains(EN.Constants.ConsentType))
+                        {
+                            companyid = System.Convert.ToInt16(type.Split('_')[1]);
+                            if (_context.MidasDocuments.Any(cc => cc.ObjectId == id && 
+                                                                  cc.ObjectType == EN.Constants.ConsentType + "_" + companyid &&
+                                                                  (cc.IsDeleted.HasValue == false || (cc.IsDeleted.HasValue == true && cc.IsDeleted.Value == false))))
+                                throw new Exception("Company, Case and Consent data already exists.");
+                        }
+
                         MidasDocument midasdoc = _context.MidasDocuments.Add(new MidasDocument()
                         {
                             ObjectType = type,
@@ -49,8 +58,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                         _context.SaveChanges();
 
                         if (type.ToUpper().Contains(EN.Constants.ConsentType))
-                        {
-                            companyid = System.Convert.ToInt16(type.Split('_')[1]);
+                        {                            
                             type = EN.Constants.ConsentType;
                         }
                         switch (type)

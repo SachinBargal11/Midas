@@ -410,6 +410,37 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get Open Cases By Patient Id
+        public override object GetOpenCaseForPatient(int PatientId)
+        {
+            var acc = _context.Cases.Include("PatientEmpInfo")
+                                    .Include("PatientEmpInfo.AddressInfo")
+                                    .Include("PatientEmpInfo.ContactInfo")
+                                    .Include("CaseCompanyMappings")
+                                    .Include("CaseCompanyMappings.Company")
+                                    .Include("CompanyCaseConsentApprovals")
+                                    .Include("CaseCompanyConsentDocuments")
+                                    .Include("CaseCompanyConsentDocuments.MidasDocument")
+                                    .Include("Referrals")
+                                    .Where(p => p.PatientId == PatientId && p.CaseStatusId==1
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                    .ToList<Case>();
+
+            if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            List<BO.Case> lstcase = new List<BO.Case>();
+            foreach (Case item in acc)
+            {
+                lstcase.Add(Convert<BO.Case, Case>(item));
+            }
+
+            return lstcase;
+        }
+        #endregion
+
         #region save
         public override object Save<T>(T entity)
         {
@@ -657,7 +688,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Company Id
         public override object GetByCompanyId(int CompanyId)
         {
-            var User = _context.UserCompanies.Where(p => p.CompanyID == CompanyId && p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+            var User = _context.UserCompanies.Where(p => p.CompanyID == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                         .Select(p => p.UserID)
                                         .Distinct<int>();
 
@@ -687,7 +718,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region GetConsentList
         public override object GetConsentList(int id)
         {
-            var acc = _context.Cases.Include("CompanyCaseConsentApprovals")
+            var acc = _context.Cases.Include("CaseCompanyMappings")
+                                    .Include("CaseCompanyMappings.Company")
+                                    .Include("CompanyCaseConsentApprovals")
                                     .Include("CaseCompanyConsentDocuments")
                                     .Include("CaseCompanyConsentDocuments.MidasDocument")
                                     .Where(p => p.Id == id

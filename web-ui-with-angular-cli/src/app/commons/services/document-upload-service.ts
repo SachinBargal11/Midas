@@ -29,7 +29,7 @@ export class DocumentUploadService {
             dwObject.HTTPUploadAllThroughPostAsPDF(
                 url,
                 '',
-                fileName ? `${fileName}.pdf` : `scanned_file_${moment().format('DD-MMM-YYYY hh:mm')}.pdf`,
+                fileName ? `${fileName}.pdf` : `scanned_file_${moment().format('DD-MMM-YYYY hh-mm')}.pdf`,
                 (response: any) => {
                     resolve(response);
                 },

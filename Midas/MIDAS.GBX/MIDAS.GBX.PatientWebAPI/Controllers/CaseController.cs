@@ -40,6 +40,22 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             return requestHandler.GetByPatientId(Request, PatientId);
         }
 
+        [HttpGet]
+        [Route("getOpenCaseForPatient/{PatientId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetOpenCaseForPatient(int PatientId)
+        {
+            return requestHandler.GetOpenCaseForPatient(Request, PatientId);
+        }
+
+        [HttpGet]
+        [Route("getConsentList/{id}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetConsentList(int id)
+        {
+            return requestHandler.GetConsentList(Request, id);
+        }
+
         [HttpPost]
         [Route("Save")]
         [AllowAnonymous]
