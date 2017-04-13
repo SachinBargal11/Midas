@@ -688,7 +688,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Company Id
         public override object GetByCompanyId(int CompanyId)
         {
-            var User = _context.UserCompanies.Where(p => p.CompanyID == CompanyId && p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+            var User = _context.UserCompanies.Where(p => p.CompanyID == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                         .Select(p => p.UserID)
                                         .Distinct<int>();
 
