@@ -12,6 +12,9 @@ import { Notification } from '../../../commons/models/notification';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
+import { Consent } from '../models/consent';
+import { Company } from '../../../account/models/company';
+import { Referral } from '../models/referral';
 
 
 @Component({
@@ -26,6 +29,8 @@ export class CompanyCasesComponent implements OnInit {
     datasource: Case[];
     totalRecords: number;
     isDeleteProgress:boolean = false;
+    consentRecived: string = '';
+    referralRecived: string = '';
 
     constructor(
         public _route: ActivatedRoute,
@@ -78,6 +83,58 @@ export class CompanyCasesComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
+
+
+       consentAvailable(case1: Case) {
+        if (case1.companyCaseConsentApproval.length > 0) {
+            let consentAvailable = _.find(case1.companyCaseConsentApproval, (currentConsent: Consent) => {
+                return currentConsent.companyId === this._sessionStore.session.currentCompany.id;
+            });
+            if (consentAvailable) {
+                return this.consentRecived = 'Yes';
+            } else {
+                return this.consentRecived = 'No';
+            }
+        } else {
+            return this.consentRecived = 'No';
+        }
+    }
+
+
+        referralAvailable(case1: any) {
+        let referralOutBound;
+        let referralInBound;
+        let referralInBoundOutBound;
+        if (case1.referral.length > 0) {
+
+            referralInBound = _.find(case1.referral, (currentReferral: Referral) => {
+                return currentReferral.referredToCompanyId === this._sessionStore.session.currentCompany.id;
+            });
+            referralOutBound = _.find(case1.referral, (currentReferral: Referral) => {
+                return currentReferral.referringCompanyId === this._sessionStore.session.currentCompany.id;
+            });
+            if (referralInBound && referralOutBound) {
+                return this.referralRecived = 'InBound/OutBound';
+            }
+            else if (referralInBound) {
+                return this.referralRecived = 'InBound';
+            }
+            else if (referralOutBound) {
+                return this.referralRecived = 'OutBound';
+            }
+            else {
+                return this.referralRecived = '';
+            }
+        } else {
+            return this.referralRecived = '';
+        }
+
+
+    }
+
+
+
+
     loadCasesByCompanyAndDoctorId() {
         this._progressBarService.show();
         this._casesStore.getCasesByCompanyAndDoctorId()

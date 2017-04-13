@@ -42,7 +42,7 @@
             <!--<span checkConsent(case)><a routerLink="">{{}}</a></span>-->
         </ng-template>
     </p-column>
-    <p-column field="" header="Referral History">
+    <p-column header="Referral History">
         <ng-template let-case="rowData" pTemplate="body">
             <a routerLink="/patient-manager/referrals/inbound-referrals">
                 <u>{{referralAvailable(case)}}</u>
