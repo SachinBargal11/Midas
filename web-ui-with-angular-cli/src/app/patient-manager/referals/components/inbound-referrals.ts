@@ -16,6 +16,7 @@ import { Doctor } from '../../../medical-provider/users/models/doctor';
 import { Consent } from '../../cases/models/consent';
 import { ReferralDocument } from '../../cases/models/referral-document';
 import { environment } from '../../../../environments/environment';
+import { CaseDocument } from '../../cases/models/case-document';
 
 @Component({
     selector: 'inbound-referrals',
@@ -129,6 +130,11 @@ export class InboundReferralsComponent implements OnInit {
     }
     DownloadPdf(document: ReferralDocument) {
         window.location.assign(this._url + '/fileupload/download/' + document.referralId + '/' + document.midasDocumentId);
+    }
+    downloadConsent(caseDocuments: CaseDocument[]) {
+        caseDocuments.forEach(caseDocument => {
+            window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+        });
     }
     // consentAvailable(referral: Referral) {
     //     if (referral.case.companyCaseConsentApproval.length > 0) {

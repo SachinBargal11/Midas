@@ -27,7 +27,7 @@ const AddConsent = Record({
    
 
 });
-
+ //testt
 export class Consent extends AddConsent {
 
     id: number;

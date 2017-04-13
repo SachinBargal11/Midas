@@ -6,6 +6,7 @@ import { Company } from '../../../account/models/company';
 import { Consent } from './consent';
 import { Referral } from './referral';
 import {Patient} from '../../patients/models/patient';
+import {CaseDocument} from './case-document';
 
 const CaseRecord = Record({
     id: 0,
@@ -14,6 +15,7 @@ const CaseRecord = Record({
     caseName: '',
     caseTypeId: CaseType.NOFAULT,
     companies: null,
+    caseCompanyConsentDocument:null,
     companyCaseConsentApproval:null,
     referral:null,
     locationId: 0,
@@ -37,6 +39,7 @@ export class Case extends CaseRecord {
     caseName: string;
     caseTypeId: CaseType;
     companies: Company[];
+    caseCompanyConsentDocument: CaseDocument[];
     companyCaseConsentApproval: Consent[];
     referral: Referral[];
     locationId: number;
