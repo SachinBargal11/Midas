@@ -4,6 +4,7 @@ import { CaseType } from './enums/case-types';
 import { CaseStatus } from './enums/case-status';
 import { Patient } from '../../patients/models/patient';
 import { Consent } from './consent';
+import { Company } from '../../../account/models/company';
 const CaseRecord = Record({
     id: 0,
     patientId: 0,
@@ -20,7 +21,9 @@ const CaseRecord = Record({
     createByUserID: 0,
     createDate: null,
     updateByUserID: 0,
-    updateDate: null
+    updateDate: null,
+    companies: null,
+    companyCaseConsentApproval: null,
 });
 
 export class Case extends CaseRecord {
@@ -41,7 +44,9 @@ export class Case extends CaseRecord {
     createDate: moment.Moment;
     updateByUserID: number;
     updateDate: moment.Moment;
+     companies: Company[];
     companyCaseConsentApproval: Consent[];
+
     constructor(props) {
         super(props);
     }

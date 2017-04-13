@@ -12,12 +12,12 @@ import * as moment from 'moment';
 import { Notification } from '../../../commons/models/notification';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-
+import { Consent } from '../models/consent';
+import * as _ from 'underscore';
 @Component({
     selector: 'caseslist',
     templateUrl: './cases-list.html'
 })
-
 
 export class CasesListComponent implements OnInit {
     cases: Case[];
@@ -27,7 +27,7 @@ export class CasesListComponent implements OnInit {
     selectedCases: Case[] = [];
     datasource: Case[];
     totalRecords: number;
-
+    consentRecived: string = '';
     constructor(
         public _route: ActivatedRoute,
         private _router: Router,
@@ -36,7 +36,7 @@ export class CasesListComponent implements OnInit {
         private _patientStore: PatientsStore,
         public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
-       public notificationsStore: NotificationsStore,
+        public notificationsStore: NotificationsStore,
     ) {
         // this._route.parent.params.subscribe((routeParams: any) => {
         //     this.patientId = parseInt(routeParams.patientId, 10);
@@ -83,6 +83,23 @@ export class CasesListComponent implements OnInit {
                 this.cases = this.datasource.slice(event.first, (event.first + event.rows));
             }
         }, 250);
+    }
+
+    consentAvailable(case1: Case) {
+        debugger;
+        if (case1.companyCaseConsentApproval.length > 0) {
+            let consentAvailable = _.find(case1.companyCaseConsentApproval, (currentConsent: Consent) => {
+                return currentConsent.companyId === currentConsent.companyId; //this._sessionStore.session.currentCompany.id;
+                
+            });
+            if (consentAvailable) {
+                return this.consentRecived = 'Yes';
+            } else {
+                return this.consentRecived = 'No';
+            }
+        } else {
+            return this.consentRecived = 'No';
+        }
     }
 
     deleteCases() {
