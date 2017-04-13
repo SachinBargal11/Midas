@@ -1,4 +1,4 @@
-import { Component, OnInit,Injectable } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PatientVisitsStore } from '../../patient-visit/stores/patient-visit-store';
 // import { PatientVisit } from '../../patient-visit/models/patient-visit';
@@ -63,7 +63,7 @@ export class VisitDocumentsUploadComponent implements OnInit {
     }
 
     ngOnInit() {
-    this.getDocuments()
+        this.getDocuments();
     }
 
     documentUploadComplete(documents: Document[]) {
@@ -80,11 +80,11 @@ export class VisitDocumentsUploadComponent implements OnInit {
         this.getDocuments();
     }
 
-     documentUploadError(error: Error) {
+    documentUploadError(error: Error) {
         this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
     }
 
-     getDocuments() {
+    getDocuments() {
         this._progressBarService.show();
         this._patientVisitStore.getDocumentsForVisitId(this.currentVisitId)
             .subscribe(document => {
@@ -99,7 +99,7 @@ export class VisitDocumentsUploadComponent implements OnInit {
             });
     }
 
- deleteDocument() {
+    deleteDocument() {
         if (this.selectedDocumentList.length > 0) {
             this.confirmationService.confirm({
                 message: 'Do you want to delete this record?',
@@ -154,4 +154,4 @@ export class VisitDocumentsUploadComponent implements OnInit {
         }
     }
 }
-  
+

@@ -38,7 +38,9 @@ import {
   SharedModule,
   ConfirmDialogModule,
   FileUploadModule,
-  GrowlModule
+  GrowlModule,
+  TabViewModule,
+  LightboxModule
 
 } from 'primeng/primeng';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -66,7 +68,9 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ConfirmDialogModule,
     BsDropdownModule.forRoot(),
     FileUploadModule,
-    GrowlModule
+    GrowlModule,
+    TabViewModule,
+    LightboxModule
   ],
   declarations: [
     LimitPipe,
@@ -125,8 +129,9 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ScheduledEventEditorComponent,
     DocumentUploadComponent,
     FileUploadModule,
-    GrowlModule
-
+    GrowlModule,
+    TabViewModule,
+    LightboxModule
   ]
 })
 export class CommonsModule { }
