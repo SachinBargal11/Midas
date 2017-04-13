@@ -687,7 +687,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region GetConsentList
         public override object GetConsentList(int id)
         {
-            var acc = _context.Cases.Include("CompanyCaseConsentApprovals")
+            var acc = _context.Cases.Include("CaseCompanyMappings")
+                                    .Include("CaseCompanyMappings.Company")
+                                    .Include("CompanyCaseConsentApprovals")
                                     .Include("CaseCompanyConsentDocuments")
                                     .Include("CaseCompanyConsentDocuments.MidasDocument")
                                     .Where(p => p.Id == id

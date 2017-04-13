@@ -50,15 +50,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             //        companyCaseConsentApprovalBO.Case = boCase;
             //    }
             //}
-            //if (companyCaseConsentApproval.Company != null)
-            //{
-            //    BO.Company boCompany = new BO.Company();
-            //    using (CompanyRepository cmp = new CompanyRepository(_context))
-            //    {
-            //        boCompany = cmp.Convert<BO.Company, Company>(companyCaseConsentApproval.Company);
-            //        companyCaseConsentApprovalBO.Company = boCompany;
-            //    }
-            //}
+            if (companyCaseConsentApproval.Company != null)
+            {
+                companyCaseConsentApprovalBO.Company = new BO.Company();
+                companyCaseConsentApprovalBO.Company.ID = (companyCaseConsentApproval.Company != null) ? companyCaseConsentApproval.Company.id : 0;
+                companyCaseConsentApprovalBO.Company.Name = (companyCaseConsentApproval.Company != null) ? companyCaseConsentApproval.Company.Name : "";
+            }
             return (T)(object)companyCaseConsentApprovalBO;
         }
         #endregion
