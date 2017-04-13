@@ -294,6 +294,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                     caseWithUserAndPatient.CompanyCaseConsentApprovals = boCompanyCaseConsentApproval;
 
+                    List<BO.CaseCompanyConsentDocument> boCaseCompanyConsentDocument = new List<BO.CaseCompanyConsentDocument>();
+                    foreach (var item in eachCase.CaseCompanyConsentDocuments)
+                    {
+                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                        {
+                            boCaseCompanyConsentDocument.Add(item);
+                        }
+                    }
+                    caseWithUserAndPatient.CaseCompanyConsentDocuments = boCaseCompanyConsentDocument;
+
+
                     List<BO.Referral> boReferral = new List<BO.Referral>();
                     foreach (var item in eachCase.Referrals)
                     {

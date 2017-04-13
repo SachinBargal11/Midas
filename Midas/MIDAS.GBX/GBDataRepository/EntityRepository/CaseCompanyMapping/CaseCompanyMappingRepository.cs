@@ -31,6 +31,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             caseCompanyMappingBO.CaseId = caseCompanyMappings.CaseId;
             caseCompanyMappingBO.Company = new BO.Company();
             caseCompanyMappingBO.Company.ID = (caseCompanyMappings.Company != null) ? caseCompanyMappings.Company.id : 0;
+            caseCompanyMappingBO.Company.Name = (caseCompanyMappings.Company != null) ? caseCompanyMappings.Company.Name : "";
             caseCompanyMappingBO.IsDeleted = caseCompanyMappings.IsDeleted;
             caseCompanyMappingBO.CreateByUserID = caseCompanyMappings.CreateByUserID;
             caseCompanyMappingBO.UpdateByUserID = caseCompanyMappings.UpdateByUserID;

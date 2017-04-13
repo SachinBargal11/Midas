@@ -4,7 +4,9 @@ import { CompanyAdapter } from '../../../../account/services/adapters/company-ad
 import * as moment from 'moment';
 import { Case } from '../../models/case';
 import { Consent } from '../../models/consent';
+import { CaseDocument } from '../../models/case-document';
 import { ConsentAdapter } from './consent-adapter';
+import { CaseDocumentAdapter } from './case-document-adapters';
 import { Referral } from '../../models/referral';
 import { ReferralAdapter } from './referral-adapter';
 
@@ -14,11 +16,17 @@ export class CaseAdapter {
         let patient_case = null;
         let companies: Company[] = [];
         let companyCaseConsentApproval: Consent[] = [];
+        let caseCompanyConsentDocument: CaseDocument[] = [];
         let referral: Referral[] = [];
         if (data) {
             if (data.caseCompanyMapping) {
                 for (let company of data.caseCompanyMapping) {
                     companies.push(CompanyAdapter.parseResponse(company.company));
+                }
+            }
+            if (data.caseCompanyConsentDocument) {
+                for (let consentDocument of data.caseCompanyConsentDocument) {
+                    caseCompanyConsentDocument.push(CaseDocumentAdapter.parseResponse(consentDocument));
                 }
             }
             if (data.companyCaseConsentApproval) {
@@ -38,6 +46,7 @@ export class CaseAdapter {
                 caseName: data.caseName,
                 caseTypeId: data.caseTypeId,
                 companies: companies,
+                caseCompanyConsentDocument: caseCompanyConsentDocument,
                 companyCaseConsentApproval:companyCaseConsentApproval,
                 // referral:referral,
                 referral:data.referral,
@@ -61,11 +70,17 @@ export class CaseAdapter {
         let patient_case = null;
         let companies: Company[] = [];
         let companyCaseConsentApproval: Consent[] = [];
-        let referral: Referral[] = []
+        let referral: Referral[] = [];
+        let caseCompanyConsentDocument: CaseDocument[] = [];
         if (data) {
             if (data.caseCompanyMapping) {
                 for (let company of data.caseCompanyMapping) {
                     companies.push(CompanyAdapter.parseResponse(company.company));
+                }
+            }
+            if (data.caseCompanyConsentDocument) {
+                for (let consentDocument of data.caseCompanyConsentDocument) {
+                    caseCompanyConsentDocument.push(CaseDocumentAdapter.parseResponse(consentDocument));
                 }
             }
             if (data.companyCaseConsentApproval) {
@@ -94,6 +109,7 @@ export class CaseAdapter {
                 caseStatusId: data.caseStatusId,
                 attorneyId: data.attorneyId,
                 patientEmpInfoId: data.patientEmpInfoId,
+                caseCompanyConsentDocument: caseCompanyConsentDocument,
                 companyCaseConsentApproval: companyCaseConsentApproval,
                 referral:data.referral,
                 isDeleted: data.isDeleted ? true : false,

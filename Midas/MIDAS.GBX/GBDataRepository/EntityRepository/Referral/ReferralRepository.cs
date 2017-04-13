@@ -56,93 +56,123 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             if (referral.Company != null)
             {
-                BO.Company boCompany = new BO.Company();
-                using (CompanyRepository cmp = new CompanyRepository(_context))
+                if (referral.Company.IsDeleted.HasValue == false || (referral.Company.IsDeleted.HasValue == true && referral.Company.IsDeleted.Value == false))
                 {
-                    boCompany = cmp.Convert<BO.Company, Company>(referral.Company);
-                    referralBO.Company = boCompany;
+                    BO.Company boCompany = new BO.Company();
+                    using (CompanyRepository cmp = new CompanyRepository(_context))
+                    {
+                        boCompany = cmp.Convert<BO.Company, Company>(referral.Company);
+                        referralBO.Company = boCompany;
+                    }
                 }
             }
             if (referral.Company1 != null)
             {
-                BO.Company boCompany1 = new BO.Company();
-                using (CompanyRepository cmp = new CompanyRepository(_context))
+                if (referral.Company1.IsDeleted.HasValue == false || (referral.Company1.IsDeleted.HasValue == true && referral.Company1.IsDeleted.Value == false))
                 {
-                    boCompany1 = cmp.Convert<BO.Company, Company>(referral.Company1);
-                    referralBO.Company1 = boCompany1;
+                    BO.Company boCompany1 = new BO.Company();
+                    using (CompanyRepository cmp = new CompanyRepository(_context))
+                    {
+                        boCompany1 = cmp.Convert<BO.Company, Company>(referral.Company1);
+                        referralBO.Company1 = boCompany1;
+                    }
                 }
             }
             if (referral.Location != null)
             {
-                BO.Location boLocation = new BO.Location();
-                using (LocationRepository cmp = new LocationRepository(_context))
+                if (referral.Location.IsDeleted.HasValue == false || (referral.Location.IsDeleted.HasValue == true && referral.Location.IsDeleted.Value == false))
                 {
-                    boLocation = cmp.Convert<BO.Location, Location>(referral.Location);
-                    referralBO.Location = boLocation;
+                    BO.Location boLocation = new BO.Location();
+                    using (LocationRepository cmp = new LocationRepository(_context))
+                    {
+                        boLocation = cmp.Convert<BO.Location, Location>(referral.Location);
+                        referralBO.Location = boLocation;
+                    }
                 }
             }
             if (referral.Location1 != null)
             {
-                BO.Location boLocation1 = new BO.Location();
-                using (LocationRepository cmp = new LocationRepository(_context))
+                if (referral.Location1.IsDeleted.HasValue == false || (referral.Location1.IsDeleted.HasValue == true && referral.Location1.IsDeleted.Value == false))
                 {
-                    boLocation1 = cmp.Convert<BO.Location, Location>(referral.Location1);
-                    referralBO.Location1 = boLocation1;
+                    BO.Location boLocation1 = new BO.Location();
+                    using (LocationRepository cmp = new LocationRepository(_context))
+                    {
+                        boLocation1 = cmp.Convert<BO.Location, Location>(referral.Location1);
+                        referralBO.Location1 = boLocation1;
+                    }
                 }
             }
             if (referral.Doctor != null)
             {
-                BO.Doctor boDoctor = new BO.Doctor();
-                using (DoctorRepository cmp = new DoctorRepository(_context))
+                if (referral.Doctor.IsDeleted.HasValue == false || (referral.Doctor.IsDeleted.HasValue == true && referral.Doctor.IsDeleted.Value == false))
                 {
-                    boDoctor = cmp.Convert<BO.Doctor, Doctor>(referral.Doctor);
-                    referralBO.Doctor = boDoctor;
+                    BO.Doctor boDoctor = new BO.Doctor();
+                    using (DoctorRepository cmp = new DoctorRepository(_context))
+                    {
+                        boDoctor = cmp.Convert<BO.Doctor, Doctor>(referral.Doctor);
+                        referralBO.Doctor = boDoctor;
+                    }
                 }
             }
             if (referral.User != null)
             {
-                BO.User boUser = new BO.User();
-                using (UserRepository cmp = new UserRepository(_context))
+                if (referral.User.IsDeleted.HasValue == false || (referral.User.IsDeleted.HasValue == true && referral.User.IsDeleted.Value == false))
                 {
-                    boUser = cmp.Convert<BO.User, User>(referral.User);
-                    referralBO.User = boUser;
+                    BO.User boUser = new BO.User();
+                    using (UserRepository cmp = new UserRepository(_context))
+                    {
+                        boUser = cmp.Convert<BO.User, User>(referral.User);
+                        referralBO.User = boUser;
+                    }
                 }
             }
             if (referral.Case != null)
             {
-                BO.Case boCase = new BO.Case();
-                using (CaseRepository cmp = new CaseRepository(_context))
+                if (referral.Case.IsDeleted.HasValue == false || (referral.Case.IsDeleted.HasValue == true && referral.Case.IsDeleted.Value == false))
                 {
-                    boCase = cmp.Convert<BO.Case, Case>(referral.Case);
-                    referralBO.Case = boCase;
+                    BO.Case boCase = new BO.Case();
+                    using (CaseRepository cmp = new CaseRepository(_context))
+                    {
+                        boCase = cmp.Convert<BO.Case, Case>(referral.Case);
+                        referralBO.Case = boCase;
+                    }
                 }
             }
             if (referral.Room != null)
             {
-                BO.Room boRoom = new BO.Room();
-                using (RoomRepository cmp = new RoomRepository(_context))
+                if (referral.Room.IsDeleted.HasValue == false || (referral.Room.IsDeleted.HasValue == true && referral.Room.IsDeleted.Value == false))
                 {
-                    boRoom = cmp.Convert<BO.Room, Room>(referral.Room);
-                    referralBO.Room = boRoom;
+                    BO.Room boRoom = new BO.Room();
+                    using (RoomRepository cmp = new RoomRepository(_context))
+                    {
+                        boRoom = cmp.Convert<BO.Room, Room>(referral.Room);
+                        referralBO.Room = boRoom;
+                    }
                 }
             }
 
             if (referral.RoomTest != null)
             {
-                BO.RoomTest boRoomTest = new BO.RoomTest();
-                using (RoomTestRepository cmp = new RoomTestRepository(_context))
+                if (referral.RoomTest.IsDeleted.HasValue == false || (referral.RoomTest.IsDeleted.HasValue == true && referral.RoomTest.IsDeleted.Value == false))
                 {
-                    boRoomTest = cmp.Convert<BO.RoomTest, RoomTest>(referral.RoomTest);
-                    referralBO.RoomTest = boRoomTest;
+                    BO.RoomTest boRoomTest = new BO.RoomTest();
+                    using (RoomTestRepository cmp = new RoomTestRepository(_context))
+                    {
+                        boRoomTest = cmp.Convert<BO.RoomTest, RoomTest>(referral.RoomTest);
+                        referralBO.RoomTest = boRoomTest;
+                    }
                 }
             }
             if (referral.Specialty != null)
             {
-                BO.Specialty boSpecialty = new BO.Specialty();
-                using (SpecialityRepository cmp = new SpecialityRepository(_context))
+                if (referral.Specialty.IsDeleted.HasValue == false || (referral.Specialty.IsDeleted.HasValue == true && referral.Specialty.IsDeleted.Value == false))
                 {
-                    boSpecialty = cmp.Convert<BO.Specialty, Specialty>(referral.Specialty);
-                    referralBO.Specialty = boSpecialty;
+                    BO.Specialty boSpecialty = new BO.Specialty();
+                    using (SpecialityRepository cmp = new SpecialityRepository(_context))
+                    {
+                        boSpecialty = cmp.Convert<BO.Specialty, Specialty>(referral.Specialty);
+                        referralBO.Specialty = boSpecialty;
+                    }
                 }
             }
 
@@ -152,34 +182,37 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 
                 foreach (var eachReferralDocument in referral.ReferralDocuments)
                 {
-                    BO.ReferralDocument referralDocument = new BO.ReferralDocument();
-
-                    referralDocument.ID = eachReferralDocument.Id;
-                    referralDocument.ReferralId = eachReferralDocument.ReferralId;
-                    referralDocument.DocumentName = eachReferralDocument.DocumentName;
-                    referralDocument.MidasDocumentId = eachReferralDocument.MidasDocumentId;
-                    referralDocument.IsDeleted = eachReferralDocument.IsDeleted;
-                    referralDocument.UpdateByUserID = eachReferralDocument.UpdateUserId;
-                    referralDocument.CreateByUserID = (int)(eachReferralDocument.CreateUserId.HasValue == true ? eachReferralDocument.CreateUserId.Value : 0);
-
-                    if (eachReferralDocument.MidasDocument != null)
+                    if (eachReferralDocument.IsDeleted.HasValue == false || (eachReferralDocument.IsDeleted.HasValue == true && eachReferralDocument.IsDeleted.Value == false))
                     {
-                        BO.MidasDocument boMidasDocument = new BO.MidasDocument();
+                        BO.ReferralDocument referralDocument = new BO.ReferralDocument();
 
-                        boMidasDocument.ID = eachReferralDocument.Id;
-                        boMidasDocument.ObjectType = eachReferralDocument.MidasDocument.ObjectType;
-                        boMidasDocument.ObjectId = eachReferralDocument.MidasDocument.ObjectId;
-                        boMidasDocument.DocumentPath = eachReferralDocument.MidasDocument.DocumentPath;
-                        boMidasDocument.DocumentName = eachReferralDocument.MidasDocument.DocumentName;
-                        boMidasDocument.IsDeleted = eachReferralDocument.MidasDocument.IsDeleted;
-                        boMidasDocument.UpdateByUserID = eachReferralDocument.MidasDocument.UpdateUserId;
-                        boMidasDocument.CreateByUserID = (int)(eachReferralDocument.MidasDocument.CreateUserId.HasValue == true ? eachReferralDocument.MidasDocument.CreateUserId.Value : 0);
+                        referralDocument.ID = eachReferralDocument.Id;
+                        referralDocument.ReferralId = eachReferralDocument.ReferralId;
+                        referralDocument.DocumentName = eachReferralDocument.DocumentName;
+                        referralDocument.MidasDocumentId = eachReferralDocument.MidasDocumentId;
+                        referralDocument.IsDeleted = eachReferralDocument.IsDeleted;
+                        referralDocument.UpdateByUserID = eachReferralDocument.UpdateUserId;
+                        referralDocument.CreateByUserID = (int)(eachReferralDocument.CreateUserId.HasValue == true ? eachReferralDocument.CreateUserId.Value : 0);
 
-                        referralDocument.MidasDocument = boMidasDocument;
+                        if (eachReferralDocument.MidasDocument != null)
+                        {
+                            BO.MidasDocument boMidasDocument = new BO.MidasDocument();
+
+                            boMidasDocument.ID = eachReferralDocument.Id;
+                            boMidasDocument.ObjectType = eachReferralDocument.MidasDocument.ObjectType;
+                            boMidasDocument.ObjectId = eachReferralDocument.MidasDocument.ObjectId;
+                            boMidasDocument.DocumentPath = eachReferralDocument.MidasDocument.DocumentPath;
+                            boMidasDocument.DocumentName = eachReferralDocument.MidasDocument.DocumentName;
+                            boMidasDocument.IsDeleted = eachReferralDocument.MidasDocument.IsDeleted;
+                            boMidasDocument.UpdateByUserID = eachReferralDocument.MidasDocument.UpdateUserId;
+                            boMidasDocument.CreateByUserID = (int)(eachReferralDocument.MidasDocument.CreateUserId.HasValue == true ? eachReferralDocument.MidasDocument.CreateUserId.Value : 0);
+
+                            referralDocument.MidasDocument = boMidasDocument;
+                        }
+
+
+                        boReferralDocument.Add(referralDocument);
                     }
-
-
-                    boReferralDocument.Add(referralDocument);
                 }
 
                 referralBO.ReferralDocument = boReferralDocument;                

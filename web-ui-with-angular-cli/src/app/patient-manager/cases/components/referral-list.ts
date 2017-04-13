@@ -7,6 +7,7 @@ import { ReferralStore } from '../stores/referral-store';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { Referral } from '../models/referral';
 import { ReferralDocument } from '../models/referral-document';
+import { CaseDocument } from '../models/case-document';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
@@ -44,7 +45,7 @@ export class ReferralListComponent implements OnInit {
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
-        private _sessionStore: SessionStore,
+        public _sessionStore: SessionStore,
         private _referralStore: ReferralStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
@@ -149,6 +150,11 @@ export class ReferralListComponent implements OnInit {
     DownloadPdf(document: ReferralDocument) {
         window.location.assign(this._url + '/fileupload/download/' + document.referralId + '/' + document.midasDocumentId);
     }
+    downloadConsent(caseDocuments: CaseDocument[]) {
+        caseDocuments.forEach(caseDocument => {
+            window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+        });
+    }
     // consentAvailable(referral: Referral) {
     //     if (referral.case.companyCaseConsentApproval.length > 0) {
     //         let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: Consent) => {
@@ -164,15 +170,17 @@ export class ReferralListComponent implements OnInit {
     //     }
     // }
     consentAvailable(referral: Referral) {
-        if (referral.case.companyCaseConsentApproval.length > 0) {
-            let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: Consent) => {
-                return currentConsent.companyId === this._sessionStore.session.currentCompany.id;
-            });
-            if (consentAvailable) {
-                this.consentRecived = 'Yes';
-            } else {
-                this.consentNotRecived = 'No';
-            }
+        let consentAvailable = null;
+        let consentApproval = referral.case.companyCaseConsentApproval;
+        // if (consentApproval.length > 0) {
+        consentAvailable = _.find(consentApproval, (currentConsent: Consent) => {
+            return currentConsent.companyId === this._sessionStore.session.currentCompany.id;
+        });
+        // }
+        if (consentAvailable) {
+            this.consentRecived = 'Yes';
+        } else if (consentApproval.length < 0) {
+            this.consentNotRecived = 'No';
         } else {
             this.consentNotRecived = 'No';
         }
