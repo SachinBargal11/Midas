@@ -17,6 +17,8 @@ import { Consent } from '../models/consent';
 import { Company } from '../../../account/models/company';
 import * as _ from 'underscore';
 import { Referral } from '../models/referral';
+import { environment } from '../../../../environments/environment';
+import { CaseDocument } from '../../cases/models/case-document';
 
 @Component({
     selector: 'caseslist',
@@ -25,6 +27,7 @@ import { Referral } from '../models/referral';
 
 
 export class CasesListComponent implements OnInit {
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
     cases: Case[];
     patientId: number;
     patientName: string;
@@ -39,7 +42,7 @@ export class CasesListComponent implements OnInit {
     constructor(
         public _route: ActivatedRoute,
         private _router: Router,
-        private _sessionStore: SessionStore,
+        public _sessionStore: SessionStore,
         private _casesStore: CasesStore,
         private _patientStore: PatientsStore,
         private _progressBarService: ProgressBarService,
@@ -84,6 +87,11 @@ export class CasesListComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+    }
+    downloadConsent(caseDocuments: CaseDocument[]) {
+        caseDocuments.forEach(caseDocument => {
+            window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+        });
     }
     consentAvailable(case1: Case) {
         // let matchingCases: Case[] = _.map(this.cases, (currentCase: Case) => {

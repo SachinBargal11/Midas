@@ -357,13 +357,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\company_" + companyid + "\\case_" + caseid;
                     htmlPDF.OpenHTML(pdfText);
                     if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-                    htmlPDF.SavePDF(@path + "\\consent.pdf");
+                    htmlPDF.SavePDF(@path + "\\Consent_" + acc.Name + ".pdf");
                 }
                 catch (Exception) { return ""; }
             }
             else return "";
 
-            return path + "\\consent.pdf";
+            return path + "\\Consent_" + acc.Name + ".pdf";
         }
 
         public override object ConsentSave(int caseid, int companyid, List<System.Net.Http.HttpContent> streamContent, string uploadpath)

@@ -15,6 +15,8 @@ import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 import { Consent } from '../models/consent';
 import { Company } from '../../../account/models/company';
 import { Referral } from '../models/referral';
+import { environment } from '../../../../environments/environment';
+import { CaseDocument } from '../../cases/models/case-document';
 
 
 @Component({
@@ -24,6 +26,7 @@ import { Referral } from '../models/referral';
 
 
 export class CompanyCasesComponent implements OnInit {
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
     cases: any[];
     selectedCases: Case[] = [];
     datasource: Case[];
@@ -35,7 +38,7 @@ export class CompanyCasesComponent implements OnInit {
     constructor(
         public _route: ActivatedRoute,
         private _router: Router,
-        private _sessionStore: SessionStore,
+        public _sessionStore: SessionStore,
         private _casesStore: CasesStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
@@ -82,6 +85,11 @@ export class CompanyCasesComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
+    }
+    downloadConsent(caseDocuments: CaseDocument[]) {
+        caseDocuments.forEach(caseDocument => {
+            window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+        });
     }
 
 
