@@ -208,7 +208,9 @@ export class AddConsentComponent implements OnInit {
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._router.navigate(['../'], { relativeTo: this._route });
+            this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages('', 'Consent Data Already Exists'));
+            this._progressBarService.hide();
+            // this._router.navigate(['../'], { relativeTo: this._route });
         }
         else {
             let documents = (<Object[]>responseDocuments).map((document: any) => {

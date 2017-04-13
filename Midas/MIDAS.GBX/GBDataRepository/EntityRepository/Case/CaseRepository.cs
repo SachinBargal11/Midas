@@ -156,10 +156,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 List<BO.Referral> BOListReferral = new List<BO.Referral>();
                 foreach (var eachRefrral in cases.Referrals)
-                {
-                    if (eachRefrral.IsDeleted.HasValue == false || (eachRefrral.IsDeleted.HasValue == true && eachRefrral.IsDeleted.Value == false))
+                {                    
+                    if (eachRefrral != null)
                     {
-                        if (eachRefrral != null)
+                        if (eachRefrral.IsDeleted.HasValue == false || (eachRefrral.IsDeleted.HasValue == true && eachRefrral.IsDeleted.Value == false))
                         {
                             BO.Referral referralBO = new BO.Referral();
 
@@ -181,8 +181,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             referralBO.UpdateByUserID = eachRefrral.UpdateByUserID;
 
                             BOListReferral.Add(referralBO);
-                        }
-                    }                     
+                        }                                
+                    }                                      
                 }
 
                 caseBO.Referrals = BOListReferral;

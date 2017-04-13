@@ -1,12 +1,27 @@
 import { PatientAdapter } from '../../../patients/services/adapters/patient-adapter';
 import * as moment from 'moment';
 import { Case } from '../../models/case';
+import { Consent } from '../../models/consent';
+import { ConsentAdapter } from './consent-adapter';
+import { Company } from '../../../../account/models/company';
+import { CompanyAdapter } from '../../../../account/services/adapters/company-adapter';
 
 export class CaseAdapter {
     static parseResponse(data: any): Case {
-
         let patient_case = null;
+        let companyCaseConsentApproval: Consent[] = [];
+        let companies: Company[] = [];
         if (data) {
+            if (data.caseCompanyMapping) {
+                for (let company of data.caseCompanyMapping) {
+                    companies.push(CompanyAdapter.parseResponse(company.company));
+                }
+            }
+            if (data.companyCaseConsentApproval) {
+                for (let consent of data.companyCaseConsentApproval) {
+                    companyCaseConsentApproval.push(ConsentAdapter.parseResponse(consent));
+                }
+            }
             patient_case = new Case({
                 id: data.id,
                 patientId: data.patientId,
@@ -22,7 +37,9 @@ export class CaseAdapter {
                 createByUserID: data.createbyuserID,
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
                 updateByUserID: data.updateByUserID,
-                updateDate: data.updateDate ? moment.utc(data.updateDate) : null
+                updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
+                companies: companies,
+                companyCaseConsentApproval: companyCaseConsentApproval,
             });
         }
         return patient_case;
@@ -30,7 +47,20 @@ export class CaseAdapter {
 
     static parseCaseComapnyResponse(data: any): Case {
         let patient_case = null;
+        let companies: Company[] = [];
+        let companyCaseConsentApproval: Consent[] = [];
         if (data) {
+
+            if (data.caseCompanyMapping) {
+                for (let company of data.caseCompanyMapping) {
+                    companies.push(CompanyAdapter.parseResponse(company.company));
+                }
+            }
+            if (data.companyCaseConsentApproval) {
+                for (let consent of data.companyCaseConsentApproval) {
+                    companyCaseConsentApproval.push(ConsentAdapter.parseResponse(consent));
+                }
+            }
             patient_case = new Case({
                 id: data.caseId,
                 patient: PatientAdapter.parseResponse({
@@ -55,7 +85,9 @@ export class CaseAdapter {
                 createByUserID: data.createbyuserID,
                 createDate: data.createDate ? moment.utc(data.createDate) : null,
                 updateByUserID: data.updateByUserID,
-                updateDate: data.updateDate ? moment.utc(data.updateDate) : null
+                updateDate: data.updateDate ? moment.utc(data.updateDate) : null,
+                companies: companies,
+                companyCaseConsentApproval: companyCaseConsentApproval,
             });
         }
         return patient_case;
