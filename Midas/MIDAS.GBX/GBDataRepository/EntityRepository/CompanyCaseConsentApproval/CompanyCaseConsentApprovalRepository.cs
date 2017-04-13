@@ -368,14 +368,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
         public override object ConsentSave(int caseid, int companyid, List<System.Net.Http.HttpContent> streamContent, string uploadpath)
         {
-            BO.CompanyCaseConsentApproval companyCaseConsentApprovalBO = new BO.CompanyCaseConsentApproval();
-            companyCaseConsentApprovalBO.CaseId = caseid;
-            companyCaseConsentApprovalBO.CompanyId = companyid;
-            var result = this.Save(companyCaseConsentApprovalBO);
-            if (result is BO.ErrorObject)
-            {
-                return result;
-            }
+            //BO.CompanyCaseConsentApproval companyCaseConsentApprovalBO = new BO.CompanyCaseConsentApproval();
+            //companyCaseConsentApprovalBO.CaseId = caseid;
+            //companyCaseConsentApprovalBO.CompanyId = companyid;
+            //var result = this.Save(companyCaseConsentApprovalBO);
+            //if (result is BO.ErrorObject)
+            //{
+            //    return result;
+            //}
 
             List<BO.Document> docInfo = new List<BO.Document>();
             StringBuilder storagePath = new StringBuilder();
@@ -391,7 +391,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                        .Append(caseid)
                        .Append("/consent");
 
-            docInfo = (List<BO.Document>)fileUploadManager.Upload(streamContent, storagePath.ToString(), caseid, "consent_"+ _context.UserCompanies.Where(xc => xc.UserID == _context.Cases.FirstOrDefault(p => p.Id == caseid).PatientId).FirstOrDefault().CompanyID, uploadpath);
+            docInfo = (List<BO.Document>)fileUploadManager.Upload(streamContent, storagePath.ToString(), caseid, "consent_"+ companyid, uploadpath);
+
+            if (docInfo.ToList().FirstOrDefault<BO.Document>().Status.ToUpper().Equals("SUCCESS"))
+            {
+                BO.CompanyCaseConsentApproval companyCaseConsentApprovalBO = new BO.CompanyCaseConsentApproval();
+                companyCaseConsentApprovalBO.CaseId = caseid;
+                companyCaseConsentApprovalBO.CompanyId = companyid;
+                var result = this.Save(companyCaseConsentApprovalBO);
+                if (result is BO.ErrorObject)
+                {
+                    return result;
+                }
+            }
 
             return docInfo;
         }

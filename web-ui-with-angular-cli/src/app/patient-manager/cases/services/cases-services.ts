@@ -9,6 +9,7 @@ import { CaseDocument } from '../models/case-document';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { CaseAdapter } from './adapters/case-adapter';
 import { CaseDocumentAdapter } from './adapters/case-document-adapters';
+import { Document } from '../../../commons/models/document';
 import * as _ from 'underscore';
 
 @Injectable()
@@ -131,7 +132,7 @@ export class CaseService {
         return <Observable<CaseDocument[]>>Observable.fromPromise(promise);
     }
 
-    uploadScannedDocuments(dwObject: any, currentCaseId: number): Observable<CaseDocument[]> {
+    /*uploadScannedDocuments(dwObject: any, currentCaseId: number): Observable<CaseDocument[]> {
         let promise: Promise<CaseDocument[]> = new Promise((resolve, reject) => {
             dwObject.IfSSL = false; // Set whether SSL is used
             dwObject.HTTPPort = 80;
@@ -154,7 +155,7 @@ export class CaseService {
                 });
         });
         return <Observable<CaseDocument[]>>Observable.fromPromise(promise);
-    }
+    }*/
 
     addCase(caseDetail: Case): Observable<Case> {
         let promise: Promise<Case> = new Promise((resolve, reject) => {
@@ -221,9 +222,9 @@ export class CaseService {
         });
         return <Observable<Case>>Observable.from(promise);
     }
-    deleteDocument(caseDetail: CaseDocument): Observable<Case> {
+    deleteDocument(caseDocument: CaseDocument): Observable<Case> {
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/fileupload/delete/' + caseDetail.id + '/' + caseDetail.documentId, {
+            return this._http.get(this._url + '/fileupload/delete/' + caseDocument.caseId + '/' + caseDocument.document.documentId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {

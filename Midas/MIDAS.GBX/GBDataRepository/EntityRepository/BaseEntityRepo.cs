@@ -126,6 +126,11 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+      
+        public virtual Object GetConsentList(int id)
+        {
+            throw new NotImplementedException();
+        }
 
         public virtual Object GenerateReferralDocument(int id)
         {

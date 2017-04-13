@@ -1,6 +1,6 @@
-<p-confirmDialog width="425"></p-confirmDialog>  
+<p-confirmDialog width="425"></p-confirmDialog>
 <div class="input-group">
-    <h3 class="with-border">Cases             
+    <h3 class="with-border">Cases
         <a class="pull-right btn btn-danger btn-sm" (click)="deleteCases()">
             <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete selected Cases</span>
             <loader [visible]="isDeleteProgress"></loader>
@@ -32,8 +32,20 @@
     <p-column field="id" header="Case Id" [sortable]="true"></p-column>
     <p-column field="caseStatusLabel" header="Case Status" [sortable]="true"></p-column>
     <p-column field="caseTypeLabel" header="Case Type" [sortable]="true"></p-column>
-    <p-column field="" header="Consent Received" [sortable]="true"></p-column>
-    <p-column field="" header="Referral History" [sortable]="true"></p-column>
+    <p-column header="Consent Received">
+        <ng-template let-case="rowData" pTemplate="body">
+            <a routerLink="{{case.patient.user.id}}/{{case.id}}/consent">
+                <u>{{consentAvailable(case)}}</u>
+            </a>
+        </ng-template>
+    </p-column>
+    <p-column  header="Referral History">
+        <ng-template let-case="rowData" pTemplate="body">
+            <a routerLink="/patient-manager/referrals/inbound-referrals">
+                <u>{{referralAvailable(case)}}</u>
+            </a>
+        </ng-template>
+    </p-column>
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-case="rowData" pTemplate="body">
             <!--<a><i class="glyphicon glyphicon-edit"></i></a>-->

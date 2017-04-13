@@ -8,6 +8,8 @@ import { List } from 'immutable';
 import { BehaviorSubject } from 'rxjs/Rx';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { CaseDocument } from '../models/case-document';
+import { Document } from '../../../commons/models/document';
+
 
 @Injectable()
 export class CasesStore {
@@ -91,16 +93,16 @@ export class CasesStore {
         return <Observable<CaseDocument[]>>Observable.from(promise);
     }
 
-    uploadScannedDocuments(dwObject: any, currentCaseId: number): Observable<CaseDocument[]> {
-        let promise = new Promise((resolve, reject) => {
-            this._casesService.uploadScannedDocuments(dwObject, currentCaseId).subscribe((DocumentsDetail: CaseDocument[]) => {
-                resolve(DocumentsDetail);
-            }, error => {
-                reject(error);
-            });
-        });
-        return <Observable<CaseDocument[]>>Observable.from(promise);
-    }
+    // uploadScannedDocuments(dwObject: any, currentCaseId: number): Observable<CaseDocument[]> {
+    //     let promise = new Promise((resolve, reject) => {
+    //         this._casesService.uploadScannedDocuments(dwObject, currentCaseId).subscribe((DocumentsDetail: CaseDocument[]) => {
+    //             resolve(DocumentsDetail);
+    //         }, error => {
+    //             reject(error);
+    //         });
+    //     });
+    //     return <Observable<CaseDocument[]>>Observable.from(promise);
+    // }
 
 
 
@@ -169,11 +171,11 @@ export class CasesStore {
         return <Observable<Case>>Observable.from(promise);
     }
 
-    deleteDocument(caseDetail: CaseDocument): Observable<Case> {
+    deleteDocument(caseDocument: CaseDocument): Observable<Case> {
         let cases = this._cases.getValue();
-        let index = cases.findIndex((currentCase: Case) => currentCase.id === caseDetail.id);
+        let index = cases.findIndex((currentCase: Case) => currentCase.id === caseDocument.caseId);
         let promise = new Promise((resolve, reject) => {
-            this._casesService.deleteDocument(caseDetail).subscribe((caseDetail: Case) => {
+            this._casesService.deleteDocument(caseDocument).subscribe((caseDetail: Case) => {
                 this._cases.next(cases.delete(index));
                 resolve(caseDetail);
             }, error => {
