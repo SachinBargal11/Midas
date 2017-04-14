@@ -50,20 +50,23 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             if (refferingOffice.AddressInfo != null)
             {
-                BO.AddressInfo boAddress = new BO.AddressInfo();
-                boAddress.Name = refferingOffice.AddressInfo.Name;
-                boAddress.Address1 = refferingOffice.AddressInfo.Address1;
-                boAddress.Address2 = refferingOffice.AddressInfo.Address2;
-                boAddress.City = refferingOffice.AddressInfo.City;
-                boAddress.State = refferingOffice.AddressInfo.State;
-                boAddress.ZipCode = refferingOffice.AddressInfo.ZipCode;
-                boAddress.Country = refferingOffice.AddressInfo.Country;
-                //[STATECODE-CHANGE]
-                //boAddress.StateCode = refferingOffice.AddressInfo.StateCode;
-                //[STATECODE-CHANGE]
-                boAddress.CreateByUserID = refferingOffice.AddressInfo.CreateByUserID;
-                boAddress.ID = refferingOffice.AddressInfo.id;
-                refferenceOfficeBO2.AddressInfo = boAddress;
+                if (refferingOffice.AddressInfo.IsDeleted.HasValue == false || (refferingOffice.AddressInfo.IsDeleted.HasValue == true && refferingOffice.AddressInfo.IsDeleted.Value == false))
+                {
+                    BO.AddressInfo boAddress = new BO.AddressInfo();
+                    boAddress.Name = refferingOffice.AddressInfo.Name;
+                    boAddress.Address1 = refferingOffice.AddressInfo.Address1;
+                    boAddress.Address2 = refferingOffice.AddressInfo.Address2;
+                    boAddress.City = refferingOffice.AddressInfo.City;
+                    boAddress.State = refferingOffice.AddressInfo.State;
+                    boAddress.ZipCode = refferingOffice.AddressInfo.ZipCode;
+                    boAddress.Country = refferingOffice.AddressInfo.Country;
+                    //[STATECODE-CHANGE]
+                    //boAddress.StateCode = refferingOffice.AddressInfo.StateCode;
+                    //[STATECODE-CHANGE]
+                    boAddress.CreateByUserID = refferingOffice.AddressInfo.CreateByUserID;
+                    boAddress.ID = refferingOffice.AddressInfo.id;
+                    refferenceOfficeBO2.AddressInfo = boAddress;
+                }
             }
 
             refferenceOfficeBO2.IsDeleted = refferingOffice.IsDeleted;
