@@ -813,7 +813,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 BO.Company boCompany = ConvertCompany<BO.Company, Company>(item);
                 if (boCompany != null)
                 {
-                    lstcompany.Add(ConvertCompany<BO.Company, Company>(item));
+                    lstcompany.Add(boCompany);
                 }
             }            
 
