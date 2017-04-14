@@ -206,6 +206,23 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+        
+        public HttpResponseMessage GetCaseCompanies(HttpRequestMessage request, int caseId)
+        {
+            var objResult = dataAccessManager.GetCaseCompanies(caseId);
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
 
         public HttpResponseMessage GetgbObjects(HttpRequestMessage request, int id)
         {

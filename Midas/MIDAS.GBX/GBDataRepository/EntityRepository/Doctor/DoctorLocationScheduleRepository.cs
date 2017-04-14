@@ -42,34 +42,43 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (doctorlocationschedule.UpdateByUserID.HasValue)
                 doctorlocationscheduleBO.UpdateByUserID = doctorlocationschedule.UpdateByUserID.Value;
 
-            BO.Doctor boDoctor = new BO.Doctor();
-            using (DoctorRepository cmp = new DoctorRepository(_context))
+            if (doctorlocationschedule.Doctor.IsDeleted.HasValue == false || (doctorlocationschedule.Doctor.IsDeleted.HasValue == true && doctorlocationschedule.Doctor.IsDeleted.Value == false))
             {
-                boDoctor = cmp.ObjectConvert<BO.Doctor, Doctor>(doctorlocationschedule.Doctor);
-
-                if (boDoctor != null && doctorlocationschedule.Doctor != null && doctorlocationschedule.Doctor.User != null)
+                BO.Doctor boDoctor = new BO.Doctor();
+                using (DoctorRepository cmp = new DoctorRepository(_context))
                 {
-                    using (UserRepository userRep = new UserRepository(_context))
+                    boDoctor = cmp.ObjectConvert<BO.Doctor, Doctor>(doctorlocationschedule.Doctor);
+
+                    if (boDoctor != null && doctorlocationschedule.Doctor != null && doctorlocationschedule.Doctor.User != null)
                     {
-                        boDoctor.user = userRep.Convert<BO.User, User>(doctorlocationschedule.Doctor.User);
+                        using (UserRepository userRep = new UserRepository(_context))
+                        {
+                            boDoctor.user = userRep.Convert<BO.User, User>(doctorlocationschedule.Doctor.User);
+                        }
                     }
+
+                    doctorlocationscheduleBO.doctor = boDoctor;
                 }
-
-                doctorlocationscheduleBO.doctor = boDoctor;
             }
 
-            BO.Location boLocation = new BO.Location();
-            using (LocationRepository cmp = new LocationRepository(_context))
+            if (doctorlocationschedule.Location.IsDeleted.HasValue == false || (doctorlocationschedule.Location.IsDeleted.HasValue == true && doctorlocationschedule.Location.IsDeleted.Value == false))
             {
-                boLocation = cmp.Convert<BO.Location, Location>(doctorlocationschedule.Location);
-                doctorlocationscheduleBO.location = boLocation;
+                BO.Location boLocation = new BO.Location();
+                using (LocationRepository cmp = new LocationRepository(_context))
+                {
+                    boLocation = cmp.Convert<BO.Location, Location>(doctorlocationschedule.Location);
+                    doctorlocationscheduleBO.location = boLocation;
+                }
             }
 
-            BO.Schedule boSchedule = new BO.Schedule();
-            using (ScheduleRepository cmp = new ScheduleRepository(_context))
+            if (doctorlocationschedule.Schedule.IsDeleted.HasValue == false || (doctorlocationschedule.Schedule.IsDeleted.HasValue == true && doctorlocationschedule.Schedule.IsDeleted.Value == false))
             {
-                boSchedule = cmp.Convert<BO.Schedule, Schedule>(doctorlocationschedule.Schedule);
-                doctorlocationscheduleBO.schedule = boSchedule;
+                BO.Schedule boSchedule = new BO.Schedule();
+                using (ScheduleRepository cmp = new ScheduleRepository(_context))
+                {
+                    boSchedule = cmp.Convert<BO.Schedule, Schedule>(doctorlocationschedule.Schedule);
+                    doctorlocationscheduleBO.schedule = boSchedule;
+                }
             }
 
             return (T)(object)doctorlocationscheduleBO;

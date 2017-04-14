@@ -329,6 +329,19 @@ export class PatientVisitsStore {
         });
         return <Observable<PatientVisit>>Observable.from(promise);
     }
+     deleteDocument(caseDocument: VisitDocument): Observable<PatientVisit> {
+        let cases = this._patientVisits.getValue();
+        let index = cases.findIndex((currentCase: PatientVisit) => currentCase.id === caseDocument.visitId);
+        let promise = new Promise((resolve, reject) => {
+            this._patientVisitsService.deleteDocument(caseDocument).subscribe((caseDetail: PatientVisit) => {
+                this._patientVisits.next(cases.delete(index));
+                resolve(caseDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<PatientVisit>>Observable.from(promise);
+    }
 
 }
 

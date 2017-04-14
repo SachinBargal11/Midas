@@ -5,8 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { List } from 'immutable';
 import * as moment from 'moment';
 import * as _ from 'underscore';
-
-import { ConfirmationService } from 'primeng/primeng';
+import { environment } from '../../../../environments/environment';
 import { NotificationsService } from 'angular2-notifications';
 import { DoctorSpeciality } from '../../../medical-provider/users/models/doctor-speciality';
 import { DoctorLocationSchedule } from '../../../medical-provider/users/models/doctor-location-schedule';
@@ -34,9 +33,10 @@ import { SpecialityService } from '../../../account-setup/services/speciality-se
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { Notification } from '../../../commons/models/notification';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
-
+import { Document } from '../../../commons/models/document';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
-
+import { VisitDocument } from '../../patient-visit/models/visit-document';
+import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import * as RRule from 'rrule';
 
 @Component({
@@ -90,6 +90,14 @@ export class PatientVisitComponent implements OnInit {
     views: any;
     businessHours: any[];
     hiddenDays: any = [];
+    visitUploadDocumentUrl: string;
+    private _url: string = `${environment.SERVICE_BASE_URL}`;
+
+    documents: VisitDocument[] = [];
+    selectedDocumentList = [];
+    isDeleteProgress: boolean = false;
+
+
     eventRenderer: Function = (event, element) => {
         if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
             element.find('.fc-content').prepend('<i class="fa fa-exclamation-circle"></i>&nbsp;');
@@ -119,7 +127,8 @@ export class PatientVisitComponent implements OnInit {
         private _confirmationService: ConfirmationService,
         private _notificationsService: NotificationsService,
         private _roomsService: RoomsService,
-        private _specialityService: SpecialityService
+        private _specialityService: SpecialityService,
+        private confirmationService: ConfirmationService
     ) {
         this.patientScheduleForm = this._fb.group({
             patientId: ['', Validators.required]
@@ -131,8 +140,6 @@ export class PatientVisitComponent implements OnInit {
             visitStatusId: ['']
         });
         this.patientVisitFormControls = this.patientVisitForm.controls;
-
-
     }
     ngOnInit() {
         this.header = {
@@ -429,11 +436,11 @@ export class PatientVisitComponent implements OnInit {
         let canScheduleAppointement: boolean = true;
         if (!this.selectedOption) {
             canScheduleAppointement = false;
-            this._notificationsService.alert('', 'Please select visit type!');
+            this._notificationsService.alert('Oh No!', 'Please select speciality or medical test!');
         } else if (this.selectedOption == 1) {
             if (!this.selectedDoctorId) {
                 canScheduleAppointement = false;
-                this._notificationsService.alert('', 'Please select Doctor!');
+                this._notificationsService.alert('Oh No!', 'Please select Doctor!');
             } else {
                 if (this.doctorSchedule) {
                     let scheduleDetails: ScheduleDetail[] = this.doctorSchedule.scheduleDetails;
@@ -442,14 +449,14 @@ export class PatientVisitComponent implements OnInit {
                     });
                     if (!matchingScheduleDetail) {
                         canScheduleAppointement = false;
-                        this._notificationsService.alert('', 'You cannot schedule an appointment on this day!');
+                        this._notificationsService.alert('Oh No!', 'You cannot schedule an appointment on this day!');
                     }
                 }
             }
         } else if (this.selectedOption == 2) {
             if (!this.selectedRoomId) {
                 canScheduleAppointement = false;
-                this._notificationsService.alert('', 'Please select Room!');
+                this._notificationsService.alert('Oh No!', 'Please select Room!');
             } else {
                 if (this.roomSchedule) {
                     let scheduleDetails: ScheduleDetail[] = this.roomSchedule.scheduleDetails;
@@ -458,7 +465,7 @@ export class PatientVisitComponent implements OnInit {
                     });
                     if (!matchingScheduleDetail) {
                         canScheduleAppointement = false;
-                        this._notificationsService.alert('', 'You cannot schedule an appointment on this day!');
+                        this._notificationsService.alert('Oh No!', 'You cannot schedule an appointment on this day!');
                     }
                 }
             }
@@ -534,8 +541,13 @@ export class PatientVisitComponent implements OnInit {
         this.selectedCalEvent = clickedEventInstance;
 
         this.selectedVisit = this._getVisitToBeEditedForEventInstance(clickedEventInstance);
-
+        Object.keys(this.patientScheduleForm.controls).forEach(key => {
+            this.patientScheduleForm.controls[key].setValidators(null);
+            this.patientScheduleForm.controls[key].updateValueAndValidity();
+        });
         if (clickedEventInstance.isInPast) {
+            this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
+            this.getDocuments();
             this.visitDialogVisible = true;
         } else {
             if (scheduledEventForInstance.isSeriesOrInstanceOfSeries) {
@@ -870,5 +882,93 @@ export class PatientVisitComponent implements OnInit {
             }
         }
         this.eventDialogVisible = false;
+    }
+
+    getDocuments() {
+        this._progressBarService.show();
+        this._patientVisitsStore.getDocumentsForVisitId(this.selectedVisit.id)
+            .subscribe(document => {
+                this.documents = document;
+            },
+
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+    documentUploadComplete(documents: Document[]) {
+        _.forEach(documents, (currentDocument: Document) => {
+            if (currentDocument.status == 'Failed') {
+                let notification = new Notification({
+                    'title': currentDocument.message + '  ' + currentDocument.documentName,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+            }
+        });
+        this.getDocuments();
+    }
+
+    documentUploadError(error: Error) {
+        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+    }
+
+    deleteDocument() {
+        if (this.selectedDocumentList.length > 0) {
+            // this.confirmationService.confirm({
+            //     message: 'Do you want to delete this record?',
+            //     header: 'Delete Confirmation',
+            //     icon: 'fa fa-trash',
+            //     accept: () => {
+
+                    this.selectedDocumentList.forEach(currentCase => {
+                        this._progressBarService.show();
+                        this.isDeleteProgress = true;
+                        this._patientVisitsStore.deleteDocument(currentCase)
+                            .subscribe(
+                            (response) => {
+                                let notification = new Notification({
+                                    'title': 'record deleted successfully!',
+                                    'type': 'SUCCESS',
+                                    'createdAt': moment()
+
+                                });
+                                this.getDocuments();
+                                this._notificationsStore.addNotification(notification);
+                                this.selectedDocumentList = [];
+                            },
+                            (error) => {
+                                let errString = 'Unable to delete record';
+                                let notification = new Notification({
+                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                    'type': 'ERROR',
+                                    'createdAt': moment()
+                                });
+                                this.selectedDocumentList = [];
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                                this._notificationsStore.addNotification(notification);
+                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                            },
+                            () => {
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                            });
+                    });
+            //     }
+            // });
+        } else {
+            let notification = new Notification({
+                'title': 'select record to delete',
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'select record to delete');
+        }
     }
 }

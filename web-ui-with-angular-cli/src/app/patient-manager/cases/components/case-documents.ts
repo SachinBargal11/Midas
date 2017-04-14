@@ -67,6 +67,7 @@ export class CaseDocumentsUploadComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'DuplicateFileName');
             }
         });
         this.getDocuments();

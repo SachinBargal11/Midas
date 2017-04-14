@@ -40,37 +40,43 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             if (PatientEmpInfo.AddressInfo != null)
             {
-                BO.AddressInfo boAddress = new BO.AddressInfo();
-                boAddress.Name = PatientEmpInfo.AddressInfo.Name;
-                boAddress.Address1 = PatientEmpInfo.AddressInfo.Address1;
-                boAddress.Address2 = PatientEmpInfo.AddressInfo.Address2;
-                boAddress.City = PatientEmpInfo.AddressInfo.City;
-                boAddress.State = PatientEmpInfo.AddressInfo.State;
-                boAddress.ZipCode = PatientEmpInfo.AddressInfo.ZipCode;
-                boAddress.Country = PatientEmpInfo.AddressInfo.Country;
-                //[STATECODE-CHANGE]
-                //boAddress.StateCode = PatientEmpInfo.AddressInfo.StateCode;
-                //[STATECODE-CHANGE]
-                boAddress.CreateByUserID = PatientEmpInfo.AddressInfo.CreateByUserID;
-                boAddress.ID = PatientEmpInfo.AddressInfo.id;
-                PatientEmpInfoBO.addressInfo = boAddress;
+                if (PatientEmpInfo.AddressInfo.IsDeleted.HasValue == false || (PatientEmpInfo.AddressInfo.IsDeleted.HasValue == true && PatientEmpInfo.AddressInfo.IsDeleted.Value == false))
+                {
+                    BO.AddressInfo boAddress = new BO.AddressInfo();
+                    boAddress.Name = PatientEmpInfo.AddressInfo.Name;
+                    boAddress.Address1 = PatientEmpInfo.AddressInfo.Address1;
+                    boAddress.Address2 = PatientEmpInfo.AddressInfo.Address2;
+                    boAddress.City = PatientEmpInfo.AddressInfo.City;
+                    boAddress.State = PatientEmpInfo.AddressInfo.State;
+                    boAddress.ZipCode = PatientEmpInfo.AddressInfo.ZipCode;
+                    boAddress.Country = PatientEmpInfo.AddressInfo.Country;
+                    //[STATECODE-CHANGE]
+                    //boAddress.StateCode = PatientEmpInfo.AddressInfo.StateCode;
+                    //[STATECODE-CHANGE]
+                    boAddress.CreateByUserID = PatientEmpInfo.AddressInfo.CreateByUserID;
+                    boAddress.ID = PatientEmpInfo.AddressInfo.id;
+                    PatientEmpInfoBO.addressInfo = boAddress;
+                }
             }
 
             if (PatientEmpInfo.ContactInfo != null)
             {
-                BO.ContactInfo boContactInfo = new BO.ContactInfo();
-                boContactInfo.Name = PatientEmpInfo.ContactInfo.Name;
-                boContactInfo.CellPhone = PatientEmpInfo.ContactInfo.CellPhone;
-                boContactInfo.EmailAddress = PatientEmpInfo.ContactInfo.EmailAddress;
-                boContactInfo.HomePhone = PatientEmpInfo.ContactInfo.HomePhone;
-                boContactInfo.WorkPhone = PatientEmpInfo.ContactInfo.WorkPhone;
-                boContactInfo.FaxNo = PatientEmpInfo.ContactInfo.FaxNo;
-                boContactInfo.OfficeExtension = PatientEmpInfo.ContactInfo.OfficeExtension;
-                boContactInfo.AlternateEmail = PatientEmpInfo.ContactInfo.AlternateEmail;
-                boContactInfo.PreferredCommunication = PatientEmpInfo.ContactInfo.PreferredCommunication;
-                boContactInfo.CreateByUserID = PatientEmpInfo.ContactInfo.CreateByUserID;
-                boContactInfo.ID = PatientEmpInfo.ContactInfo.id;
-                PatientEmpInfoBO.contactInfo = boContactInfo;
+                if (PatientEmpInfo.ContactInfo.IsDeleted.HasValue == false || (PatientEmpInfo.ContactInfo.IsDeleted.HasValue == true && PatientEmpInfo.ContactInfo.IsDeleted.Value == false))
+                {
+                    BO.ContactInfo boContactInfo = new BO.ContactInfo();
+                    boContactInfo.Name = PatientEmpInfo.ContactInfo.Name;
+                    boContactInfo.CellPhone = PatientEmpInfo.ContactInfo.CellPhone;
+                    boContactInfo.EmailAddress = PatientEmpInfo.ContactInfo.EmailAddress;
+                    boContactInfo.HomePhone = PatientEmpInfo.ContactInfo.HomePhone;
+                    boContactInfo.WorkPhone = PatientEmpInfo.ContactInfo.WorkPhone;
+                    boContactInfo.FaxNo = PatientEmpInfo.ContactInfo.FaxNo;
+                    boContactInfo.OfficeExtension = PatientEmpInfo.ContactInfo.OfficeExtension;
+                    boContactInfo.AlternateEmail = PatientEmpInfo.ContactInfo.AlternateEmail;
+                    boContactInfo.PreferredCommunication = PatientEmpInfo.ContactInfo.PreferredCommunication;
+                    boContactInfo.CreateByUserID = PatientEmpInfo.ContactInfo.CreateByUserID;
+                    boContactInfo.ID = PatientEmpInfo.ContactInfo.id;
+                    PatientEmpInfoBO.contactInfo = boContactInfo;
+                }
             }
 
             //Common 

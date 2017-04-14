@@ -48,16 +48,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (usercompany.UpdateByUserID.HasValue)
                     usercompanyBO.UpdateByUserID = usercompany.UpdateByUserID.Value;
 
-                using (UserRepository sr = new UserRepository(_context))
+                if (usercompany.User.IsDeleted.HasValue == false || (usercompany.User.IsDeleted.HasValue == true && usercompany.User.IsDeleted.Value == false))
                 {
-                    BO.User boUser = sr.Convert<BO.User, User>(usercompany.User);
-                    usercompanyBO.User = boUser;
+                    using (UserRepository sr = new UserRepository(_context))
+                    {
+                        BO.User boUser = sr.Convert<BO.User, User>(usercompany.User);
+                        usercompanyBO.User = boUser;
+                    }
                 }
 
-                using (CompanyRepository sr = new CompanyRepository(_context))
+                if (usercompany.Company.IsDeleted.HasValue == false || (usercompany.Company.IsDeleted.HasValue == true && usercompany.Company.IsDeleted.Value == false))
                 {
-                    BO.Company boCompany = sr.Convert<BO.Company, Company>(usercompany.Company);
-                    usercompanyBO.Company = boCompany;
+                    using (CompanyRepository sr = new CompanyRepository(_context))
+                    {
+                        BO.Company boCompany = sr.Convert<BO.Company, Company>(usercompany.Company);
+                        usercompanyBO.Company = boCompany;
+                    }
                 }
 
                 return (T)(object)usercompanyBO;
@@ -66,9 +72,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 User userDB = entity as User;
                 BO.User boUser = new BO.User();
-                using (UserRepository sr = new UserRepository(_context))
+
+                if (userDB.IsDeleted.HasValue == false || (userDB.IsDeleted.HasValue == true && userDB.IsDeleted.Value == false))
                 {
-                    boUser = sr.Convert<BO.User, User>(userDB);
+                    using (UserRepository sr = new UserRepository(_context))
+                    {
+                        boUser = sr.Convert<BO.User, User>(userDB);
+                    }
                 }
 
                 if (boUser.UserCompanies == null && userDB.UserCompanies != null)
@@ -77,17 +87,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     foreach (var eachUserCompany in userDB.UserCompanies)
                     {
-                        BO.UserCompany usercompanyBO = new BO.UserCompany();
+                        if (eachUserCompany.IsDeleted.HasValue == false || (eachUserCompany.IsDeleted.HasValue == true && eachUserCompany.IsDeleted.Value == false))
+                        {
+                            BO.UserCompany usercompanyBO = new BO.UserCompany();
 
-                        usercompanyBO.ID = eachUserCompany.id;
-                        usercompanyBO.UserId = eachUserCompany.UserID;
-                        usercompanyBO.CompanyId = eachUserCompany.CompanyID;                        
+                            usercompanyBO.ID = eachUserCompany.id;
+                            usercompanyBO.UserId = eachUserCompany.UserID;
+                            usercompanyBO.CompanyId = eachUserCompany.CompanyID;
 
-                        usercompanyBO.IsDeleted = eachUserCompany.IsDeleted;
-                        usercompanyBO.CreateByUserID = eachUserCompany.CreateByUserID;
-                        usercompanyBO.UpdateByUserID = eachUserCompany.UpdateByUserID;
+                            usercompanyBO.IsDeleted = eachUserCompany.IsDeleted;
+                            usercompanyBO.CreateByUserID = eachUserCompany.CreateByUserID;
+                            usercompanyBO.UpdateByUserID = eachUserCompany.UpdateByUserID;
 
-                        boUser.UserCompanies.Add(usercompanyBO);
+                            boUser.UserCompanies.Add(usercompanyBO);
+                        }
                     }
                 }
 

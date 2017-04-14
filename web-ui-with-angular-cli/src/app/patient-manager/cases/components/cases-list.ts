@@ -42,7 +42,7 @@ export class CasesListComponent implements OnInit {
     constructor(
         public _route: ActivatedRoute,
         private _router: Router,
-        public _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _casesStore: CasesStore,
         private _patientStore: PatientsStore,
         private _progressBarService: ProgressBarService,
@@ -99,10 +99,10 @@ export class CasesListComponent implements OnInit {
         // });
         if (case1.companyCaseConsentApproval.length > 0) {
             let consentAvailable = _.find(case1.companyCaseConsentApproval, (currentConsent: Consent) => {
-                return currentConsent.companyId === this._sessionStore.session.currentCompany.id;
-                // if (currentConsent.companyId === this._sessionStore.session.currentCompany.id) {
+                return currentConsent.companyId === this.sessionStore.session.currentCompany.id;
+                // if (currentConsent.companyId === this.sessionStore.session.currentCompany.id) {
                 //     return this.consentRecived = 'Yes';
-                // } else if (currentConsent.companyId !== this._sessionStore.session.currentCompany.id){
+                // } else if (currentConsent.companyId !== this.sessionStore.session.currentCompany.id){
                 //     return this.consentRecived = 'No';
                 // }
             });
@@ -123,10 +123,10 @@ export class CasesListComponent implements OnInit {
         if (case1.referral.length > 0) {
 
             referralInBound = _.find(case1.referral, (currentReferral: Referral) => {
-                return currentReferral.referredToCompanyId === this._sessionStore.session.currentCompany.id;
+                return currentReferral.referredToCompanyId === this.sessionStore.session.currentCompany.id;
             });
             referralOutBound = _.find(case1.referral, (currentReferral: Referral) => {
-                return currentReferral.referringCompanyId === this._sessionStore.session.currentCompany.id;
+                return currentReferral.referringCompanyId === this.sessionStore.session.currentCompany.id;
             });
             if (referralInBound && referralOutBound) {
                 return this.referralRecived = 'InBound/OutBound';
