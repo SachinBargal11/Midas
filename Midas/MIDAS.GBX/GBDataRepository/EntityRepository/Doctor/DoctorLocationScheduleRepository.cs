@@ -42,7 +42,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (doctorlocationschedule.UpdateByUserID.HasValue)
                 doctorlocationscheduleBO.UpdateByUserID = doctorlocationschedule.UpdateByUserID.Value;
 
-            if (doctorlocationschedule.Doctor.IsDeleted.HasValue == false || (doctorlocationschedule.Doctor.IsDeleted.HasValue == true && doctorlocationschedule.Doctor.IsDeleted.Value == false))
+            if (doctorlocationschedule.Doctor != null && (doctorlocationschedule.Doctor.IsDeleted.HasValue == false || (doctorlocationschedule.Doctor.IsDeleted.HasValue == true && doctorlocationschedule.Doctor.IsDeleted.Value == false)))
             {
                 BO.Doctor boDoctor = new BO.Doctor();
                 using (DoctorRepository cmp = new DoctorRepository(_context))
@@ -61,7 +61,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
             }
 
-            if (doctorlocationschedule.Location.IsDeleted.HasValue == false || (doctorlocationschedule.Location.IsDeleted.HasValue == true && doctorlocationschedule.Location.IsDeleted.Value == false))
+            if (doctorlocationschedule.Location != null && (doctorlocationschedule.Location.IsDeleted.HasValue == false || (doctorlocationschedule.Location.IsDeleted.HasValue == true && doctorlocationschedule.Location.IsDeleted.Value == false)))
             {
                 BO.Location boLocation = new BO.Location();
                 using (LocationRepository cmp = new LocationRepository(_context))
@@ -71,7 +71,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 }
             }
 
-            if (doctorlocationschedule.Schedule.IsDeleted.HasValue == false || (doctorlocationschedule.Schedule.IsDeleted.HasValue == true && doctorlocationschedule.Schedule.IsDeleted.Value == false))
+            if (doctorlocationschedule.Schedule != null && (doctorlocationschedule.Schedule.IsDeleted.HasValue == false || (doctorlocationschedule.Schedule.IsDeleted.HasValue == true && doctorlocationschedule.Schedule.IsDeleted.Value == false)))
             {
                 BO.Schedule boSchedule = new BO.Schedule();
                 using (ScheduleRepository cmp = new ScheduleRepository(_context))

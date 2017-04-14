@@ -72,7 +72,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (doctorspecilityBO.UpdateByUserID.HasValue)
                 doctorspecilityBO.UpdateByUserID = doctorspecility.UpdateByUserID.Value;
 
-            if (doctorspecility.Specialty.IsDeleted.HasValue == false || (doctorspecility.Specialty.IsDeleted.HasValue == true && doctorspecility.Specialty.IsDeleted.Value == false))
+            if (doctorspecility.Specialty != null && (doctorspecility.Specialty.IsDeleted.HasValue == false || (doctorspecility.Specialty.IsDeleted.HasValue == true && doctorspecility.Specialty.IsDeleted.Value == false)))
             {
                 BO.Specialty boSpecliality = new BO.Specialty();
                 using (SpecialityRepository sr = new SpecialityRepository(_context))

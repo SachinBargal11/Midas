@@ -62,57 +62,65 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         doctorBO.user = boUser;
                     }
 
-
-                    List<BO.DoctorSpeciality> lstDoctorSpecility = new List<BO.DoctorSpeciality>();
-                    foreach (var item in doctor.DoctorSpecialities)
+                    if (doctor.DoctorSpecialities != null)
                     {
-
-                        if (item.IsDeleted == false)
+                        List<BO.DoctorSpeciality> lstDoctorSpecility = new List<BO.DoctorSpeciality>();
+                        foreach (var item in doctor.DoctorSpecialities)
                         {
-                            using (DoctorSpecialityRepository sr = new DoctorSpecialityRepository(_context))
+
+                            if (item.IsDeleted == false)
                             {
-                                lstDoctorSpecility.Add(sr.ObjectConvert<BO.DoctorSpeciality, DoctorSpeciality>(item));
+                                using (DoctorSpecialityRepository sr = new DoctorSpecialityRepository(_context))
+                                {
+                                    lstDoctorSpecility.Add(sr.ObjectConvert<BO.DoctorSpeciality, DoctorSpeciality>(item));
+                                }
                             }
                         }
+                        doctorBO.DoctorSpecialities = lstDoctorSpecility;
                     }
-                    doctorBO.DoctorSpecialities = lstDoctorSpecility;
-
-                    List<BO.UserCompany> lstUserCompany = new List<BO.UserCompany>();
-                    foreach (var item in doctor.User.UserCompanies)
+                    
+                    if (doctor.User.UserCompanies != null)
                     {
-                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                        List<BO.UserCompany> lstUserCompany = new List<BO.UserCompany>();
+                        foreach (var item in doctor.User.UserCompanies)
                         {
-                            using (UserCompanyRepository sr = new UserCompanyRepository(_context))
+                            if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
                             {
-                                BO.UserCompany BOUserCompany = new BO.UserCompany();
-                                BOUserCompany = sr.Convert<BO.UserCompany, UserCompany>(item);
-                                BOUserCompany.User = null;
-                                lstUserCompany.Add(BOUserCompany);
+                                using (UserCompanyRepository sr = new UserCompanyRepository(_context))
+                                {
+                                    BO.UserCompany BOUserCompany = new BO.UserCompany();
+                                    BOUserCompany = sr.Convert<BO.UserCompany, UserCompany>(item);
+                                    BOUserCompany.User = null;
+                                    lstUserCompany.Add(BOUserCompany);
+                                }
                             }
+
+
                         }
-
-
+                        doctorBO.user.UserCompanies = lstUserCompany;
                     }
-                    doctorBO.user.UserCompanies = lstUserCompany;
-
-                    List<BO.DoctorLocationSchedule> lstDoctorLocationSchedule = new List<BO.DoctorLocationSchedule>();
-                    foreach (var item in doctor.DoctorLocationSchedules)
+                    
+                    if (doctor.DoctorLocationSchedules != null)
                     {
-                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                        List<BO.DoctorLocationSchedule> lstDoctorLocationSchedule = new List<BO.DoctorLocationSchedule>();
+                        foreach (var item in doctor.DoctorLocationSchedules)
                         {
-                            using (DoctorLocationScheduleRepository sr = new DoctorLocationScheduleRepository(_context))
+                            if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
                             {
-                                BO.DoctorLocationSchedule BODoctorLocationSchedule = new BO.DoctorLocationSchedule();
-                                BODoctorLocationSchedule = sr.Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(item);
-                                BODoctorLocationSchedule.doctor = null;
-                                BODoctorLocationSchedule.schedule = null;
-                                lstDoctorLocationSchedule.Add(BODoctorLocationSchedule);
+                                using (DoctorLocationScheduleRepository sr = new DoctorLocationScheduleRepository(_context))
+                                {
+                                    BO.DoctorLocationSchedule BODoctorLocationSchedule = new BO.DoctorLocationSchedule();
+                                    BODoctorLocationSchedule = sr.Convert<BO.DoctorLocationSchedule, DoctorLocationSchedule>(item);
+                                    BODoctorLocationSchedule.doctor = null;
+                                    BODoctorLocationSchedule.schedule = null;
+                                    lstDoctorLocationSchedule.Add(BODoctorLocationSchedule);
+                                }
                             }
+
+
                         }
-
-
-                    }
-                    doctorBO.DoctorLocationSchedules = lstDoctorLocationSchedule;
+                        doctorBO.DoctorLocationSchedules = lstDoctorLocationSchedule;
+                    }                    
                 }
                 
             }
