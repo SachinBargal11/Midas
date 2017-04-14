@@ -48,7 +48,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (usercompany.UpdateByUserID.HasValue)
                     usercompanyBO.UpdateByUserID = usercompany.UpdateByUserID.Value;
 
-                if (usercompany.User.IsDeleted.HasValue == false || (usercompany.User.IsDeleted.HasValue == true && usercompany.User.IsDeleted.Value == false))
+                if (usercompany.User != null && (usercompany.User.IsDeleted.HasValue == false || (usercompany.User.IsDeleted.HasValue == true && usercompany.User.IsDeleted.Value == false)))
                 {
                     using (UserRepository sr = new UserRepository(_context))
                     {
@@ -57,7 +57,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
 
-                if (usercompany.Company.IsDeleted.HasValue == false || (usercompany.Company.IsDeleted.HasValue == true && usercompany.Company.IsDeleted.Value == false))
+                if (usercompany.Company != null && (usercompany.Company.IsDeleted.HasValue == false || (usercompany.Company.IsDeleted.HasValue == true && usercompany.Company.IsDeleted.Value == false)))
                 {
                     using (CompanyRepository sr = new CompanyRepository(_context))
                     {
