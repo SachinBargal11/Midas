@@ -238,8 +238,9 @@ export class AddReferralComponent implements OnInit {
                 referredToLocationId: this.selectedDoctor ? this.selectedDoctor.doctorLocationSchedules[0].location.location.id : this.selectedLocation ? this.selectedLocation.location.id : this.selectedRoom ? this.selectedRoom.location.location.id : null,
                 referredToDoctorId: this.selectedDoctor ? this.selectedDoctor.id : null,
                 referredToRoomId: this.selectedRoom ? this.selectedRoom.id : null,
+                referredToSpecialtyId: this.selectedDoctor ?  parseInt(referralFormValues.speciality) : null,
+                referredToRoomTestId: this.selectedRoom ? parseInt(referralFormValues.tests) : null,
                 note: referralFormValues.note,
-                // referredByEmail: this.doctor.user.userName,
                 referredToEmail: this.selectedDoctor ? this.selectedDoctor.user.userName : null,
                 referralAccepted: 0
             });
