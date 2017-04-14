@@ -101,7 +101,8 @@ export class ReferralService {
     addReferral(referral: Referral): Observable<Referral> {
         let promise: Promise<Referral> = new Promise((resolve, reject) => {
             let requestData: any = referral.toJS();
-            requestData = _.omit(requestData, 'room', 'case', 'referringUser', 'referringLocation', 'referringCompany', 'referredToDoctor', 'referredToLocation', 'referredToCompany', 'referralDocument');
+            requestData = _.omit(requestData, 'room', 'case', 'referringUser', 'referringLocation', 'referringCompany', 'referredToDoctor', 
+                                'referredToLocation', 'referredToCompany', 'referralDocument', 'referredToSpecialty', 'referredToRoomTest');
             return this._http.post(this._url + '/Referral/save', JSON.stringify(requestData), {
                 headers: this._headers
             })

@@ -7,6 +7,8 @@ import { User } from '../../../commons/models/user';
 import { LocationDetails } from '../../../medical-provider/users/models//location-details';
 import { Company } from '../../../account/models/company';
 import { ReferralDocument } from './referral-document';
+import { Speciality } from '../../../account-setup/models/speciality';
+import { Tests } from '../../../medical-provider/rooms/models/tests';
 
 const ReferralRecord = Record({
     id: 0,
@@ -18,6 +20,8 @@ const ReferralRecord = Record({
     referredToLocationId: 0,
     referredToDoctorId: 0,
     referredToRoomId: 0,
+    referredToSpecialtyId: 0,
+    referredToRoomTestId: 0,
     note: '',
     referredByEmail: '',
     referredToEmail: '',
@@ -31,6 +35,8 @@ const ReferralRecord = Record({
     referredToLocation: null,
     referredToCompany: null,
     referralDocument: null,
+    referredToSpecialty: null,
+    referredToRoomTest: null,
     isDeleted: false,
     createByUserID: 0,
     createDate: null,
@@ -49,6 +55,8 @@ export class Referral extends ReferralRecord {
     referredToLocationId: number;
     referredToDoctorId: number;
     referredToRoomId: number;
+    referredToSpecialtyId: number;
+    referredToRoomTestId: number;
     note: string;
     referredByEmail: string;
     referredToEmail: string;
@@ -62,6 +70,8 @@ export class Referral extends ReferralRecord {
     referredToLocation: LocationDetails;
     referredToCompany: Company;
     referralDocument: ReferralDocument;
+    referredToSpecialty: Speciality;
+    referredToRoomTest: Tests;
     isDeleted: boolean;
     createByUserID: number;
     createDate: moment.Moment;
