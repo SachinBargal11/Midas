@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LimitPipe } from './pipes/limit-array-pipe';
+import { DateFormatPipe } from './pipes/date-format-pipe';
 import { MapToJSPipe } from './pipes/map-to-js';
 import { TimeAgoPipe } from './pipes/time-ago-pipe';
 import { ReversePipe } from './pipes/reverse-array-pipe';
+import { DateTimeFormatPipe } from './pipes/date-time-format-pipe';
 import { PhoneFormatPipe } from './pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from './pipes/faxno-format-pipe';
-import { DateFormatPipe } from './pipes/date-format-pipe';
 
 import { AppHeaderComponent } from '../elements/app-header/app-header';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb';
@@ -17,21 +18,9 @@ import { ProgressBarComponent } from './components/progress-bar/progress-bar';
 import { LoaderComponent } from './components/loader/loader';
 import { NotificationComponent } from './components/notification/notification';
 import { ShellComponent } from './shell-component';
+import { ScheduledEventEditorComponent } from '../medical-provider/calendar/components/scheduled-event-editor';
+import { DocumentUploadComponent } from '../commons/components/document-upload/document-upload.component';
 
-import { EmployerService } from '../account/services/employer-service';
-import { FamilyMemberService } from '../account/services/family-member-service';
-import { PatientsService } from '../account/services/patients-service';
-import { InsuranceService } from '../account/services/insurance-service';
-import { EmployerStore } from '../account/stores/employer-store';
-import { FamilyMemberStore } from '../account/stores/family-member-store';
-import { PatientsStore } from '../account/stores/patients-store';
-import { InsuranceStore } from '../account/stores/insurance-store';
-import { LocationsService } from './services/locations-service';
-import { ScheduleService } from './services/schedule-service';
-import { LocationsStore } from './stores/locations-store';
-import { ScheduleStore } from './stores/schedule-store';
-import { UsersService } from './services/users-service';
-import { UsersStore } from './stores/users-store';
 
 import {
   AccordionModule,
@@ -48,9 +37,11 @@ import {
   CheckboxModule,
   SharedModule,
   ConfirmDialogModule,
-  FileUploadModule
-  ,GrowlModule
-  
+  FileUploadModule,
+  GrowlModule,
+  TabViewModule,
+  LightboxModule
+
 } from 'primeng/primeng';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
@@ -61,6 +52,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    AccordionModule,
     InputTextModule,
     ChartModule,
     DataTableModule,
@@ -74,57 +66,43 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     CheckboxModule,
     SharedModule,
     ConfirmDialogModule,
-    MultiSelectModule,
     BsDropdownModule.forRoot(),
-    FileUploadModule,GrowlModule
+    FileUploadModule,
+    GrowlModule,
+    TabViewModule,
+    LightboxModule
   ],
   declarations: [
     LimitPipe,
     MapToJSPipe,
+    DateFormatPipe,
     TimeAgoPipe,
     ReversePipe,
     PhoneFormatPipe,
     FaxNoFormatPipe,
-    DateFormatPipe,
+    DateTimeFormatPipe,    
     AppHeaderComponent,
     BreadcrumbComponent,
     MainNavComponent,
     ProgressBarComponent,
     LoaderComponent,
     NotificationComponent,
-    ShellComponent
-    
-  ],
-  providers: [
-    PhoneFormatPipe,
-    FaxNoFormatPipe,
-    DateFormatPipe,
-    EmployerService,
-    FamilyMemberService,
-    PatientsService,
-    InsuranceService,
-    EmployerStore,
-    FamilyMemberStore,
-    PatientsStore,
-    InsuranceStore,
-    LocationsService,
-    ScheduleService,
-    LocationsStore,
-    ScheduleStore,
-    UsersService,
-    UsersStore
+    ShellComponent,
+    ScheduledEventEditorComponent,
+    DocumentUploadComponent
   ],
   exports: [
     CommonModule,
     FormsModule,
     RouterModule,
     LimitPipe,
+    DateFormatPipe,
     MapToJSPipe,
     TimeAgoPipe,
     ReversePipe,
     PhoneFormatPipe,
+    DateTimeFormatPipe,
     FaxNoFormatPipe,
-    DateFormatPipe,
     AppHeaderComponent,
     BreadcrumbComponent,
     MainNavComponent,
@@ -132,6 +110,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     LoaderComponent,
     NotificationComponent,
     ReactiveFormsModule,
+    AccordionModule,
     InputTextModule,
     ChartModule,
     DataTableModule,
@@ -145,9 +124,14 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     CheckboxModule,
     SharedModule,
     ConfirmDialogModule,
-    MultiSelectModule,
-   // DropdownModule,
-    ShellComponent,FileUploadModule,GrowlModule
+    BsDropdownModule,
+    ShellComponent,
+    ScheduledEventEditorComponent,
+    DocumentUploadComponent,
+    FileUploadModule,
+    GrowlModule,
+    TabViewModule,
+    LightboxModule
   ]
 })
 export class CommonsModule { }

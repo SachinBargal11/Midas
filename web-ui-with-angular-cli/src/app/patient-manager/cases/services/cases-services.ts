@@ -111,7 +111,21 @@ export class CaseService {
         });
         return <Observable<CaseDocument[]>>Observable.fromPromise(promise);
     }
+    getDocumentForCaseId(caseId: number): Observable<Case> {
+        let promise: Promise<Case> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/case/GetConsentList/' + caseId)
+                .map(res => res.json())
+                .subscribe((data: any) => {
+                    let document: Case = null
+                    document = CaseAdapter.parseResponse(data);
+                    resolve(document);
+                }, (error) => {
+                    reject(error);
+                });
 
+        });
+        return <Observable<Case>>Observable.fromPromise(promise);
+    }
 
     uploadDocumentsForCase(CaseDocument: CaseDocument[], currentCaseId: number): Observable<CaseDocument[]> {
         let promise: Promise<CaseDocument[]> = new Promise((resolve, reject) => {

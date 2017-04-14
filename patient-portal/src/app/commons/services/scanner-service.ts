@@ -12,7 +12,6 @@ export class ScannerService {
     }
 
     getWebTwain(containerId: string): Promise<any> {
-       
         return new Promise((resolve, reject) => {
             let timeout = setTimeout(function () {
                 reject(new Error('Connection to Scanner Failed'));

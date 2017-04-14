@@ -1,20 +1,240 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ValidateActiveSession } from '../../commons/guards/validate-active-session';
+import { AddCaseComponent } from './components/add-case';
 import { CasesListComponent } from './components/cases-list';
 import { ShellComponent } from '../../commons/shell-component';
 import { CaseShellComponent } from './components/cases-shell';
 import { CaseBasicComponent } from './components/case-basic';
-import { ReferringOfficeListComponent } from './components/referring-office-list';
-import { AddReferringOfficeComponent } from './components/add-referring-office';
+import { PatientVisitListComponent } from './components/patient-visits-list';
+import { PatientVisitListShellComponent } from './components/patient-visit-list-shell';
+import { VisitDocumentsUploadComponent } from './components/visit-document';
+import { PatientVisitNotesComponent } from './components/patient-visit-notes';
 import { EditReferringOfficeComponent } from './components/edit-referring-office';
 import { AccidentInfoComponent } from './components/accident';
-import { InsuranceMapComponent } from './components/insurance-mapping';
-import { CaseMappingComponent } from './components/case-mapping';
+import { CaseDocumentsUploadComponent } from './components/case-documents';
+import { InsuranceMappingComponent } from './components/insurance-mapping';
+import { AssignInsuranceComponent } from './components/assign-insurance';
+import { CompanyCasesComponent } from './components/company-cases-list';
 import { ConsentListComponent } from './components/list-consent';
 import { AddConsentComponent } from './components/add-consent';
+import { EditConsentComponent } from './components/edit-consent';
+//import { PopupFileUpload } from '../../commons/components/PopupFileUpload';
 
 export const CasesShellRoutes: Routes = [
+    //     {
+    //         path: '',
+    //         pathMatch: 'full',
+    //         redirectTo: 'cases'
+    //     },
+    //     {
+    //         path: 'cases',
+    //         component: CasesListComponent,
+    //         data: {
+    //             breadcrumb: 'Cases'
+    //         }
+    //     },
+    //     {
+    //         path: 'cases',
+    //         component: ShellComponent,
+    //         data: {
+    //             breadcrumb: 'Cases'
+    //         },
+    //         children: [
+    //             {
+    //                 path: 'add',
+    //                 component: AddCaseComponent,
+    //                 data: {
+    //                     breadcrumb: 'Add Case'
+    //                 }
+    //             }
+    //             // },
+    //             // {
+    //             //     path: 'upload-consent/:caseId',
+    //             //    // component: PopupFileUpload
+    //             // }
+    //         ]
+    //     },
+    //     {
+    //         path: 'cases/:patientId',
+    //         component: ShellComponent,
+    //         data: {
+    //             breadcrumb: 'Cases'
+    //         },
+    //         children: [
+    //             {
+    //                 path: '',
+    //                 component: CasesListComponent,
+    //                 data: {
+    //                     breadcrumb: 'root'
+    //                 }
+    //             },
+    //             {
+    //                 path: 'add',
+    //                 component: AddCaseComponent,
+    //                 data: {
+    //                     breadcrumb: 'Add Case'
+    //                 }
+    //             },
+    //             {
+    //                 path: ':caseId',
+    //                 component: CaseShellComponent,
+    //                 data: {
+    //                     breadcrumb: 'root'
+    //                 },
+    //                 children: [
+    //                     {
+    //                         path: '',
+    //                         redirectTo: 'basic',
+    //                         pathMatch: 'full'
+    //                     },
+    //                     {
+    //                         path: 'basic',
+    //                         component: CaseBasicComponent,
+    //                         canActivate: [ValidateActiveSession],
+    //                         data: {
+    //                             breadcrumb: 'Basic'
+    //                         }
+    //                     },                    
+    //                     {
+    //                         path: 'patient-visit',
+    //                         component: ShellComponent,
+    //                         canActivate: [ValidateActiveSession],
+    //                         data: {
+    //                             breadcrumb: 'Visits'
+    //                         },
+    //                         children: [
+    //                             {
+    //                                 path: '',
+    //                                 component: PatientVisitListComponent,
+    //                                 canActivate: [ValidateActiveSession],
+    //                                 data: {
+    //                                     breadcrumb: 'root'
+    //                                 }
+    //                             },
+    //                             {
+    //                                 path: ':visitId',
+    //                                 component: PatientVisitListShellComponent,
+    //                                 data: {
+    //                                     breadcrumb: 'root'
+    //                                 },
+    //                                 children: [
+    //                                     {
+    //                                         path: '',
+    //                                         redirectTo: 'visit-note',
+    //                                         pathMatch: 'full'
+    //                                     },
+    //                                     {
+    //                                         path: 'visit-note',
+    //                                         component: PatientVisitNotesComponent,
+    //                                         canActivate: [ValidateActiveSession],
+    //                                         data: {
+    //                                             breadcrumb: 'Visit Notes'
+    //                                         }
+    //                                     },
+    //                                     {
+    //                                         path: 'visit-document',
+    //                                         component: VisitDocumentsUploadComponent,
+    //                                         canActivate: [ValidateActiveSession],
+    //                                         data: {
+    //                                             breadcrumb: 'Documents Upload'
+    //                                         }
+    //                                     }
+    //                                 ]
+    //                             }
+    //                             // {
+    //                             //     path: 'edit/:id',
+    //                             //     component: PatientVisitNotesComponent,
+    //                             //     canActivate: [ValidateActiveSession],
+    //                             //     data: {
+    //                             //         breadcrumb: 'Visit Notes'
+    //                             //     }
+    //                             // }
+    //                         ]
+    //                     },
+    //                     {
+    //                         path: 'accident',
+    //                         component: AccidentInfoComponent,
+    //                         canActivate: [ValidateActiveSession],
+    //                         data: {
+    //                             breadcrumb: 'Accident'
+    //                         }
+    //                     },
+    //                     {
+    //                         path: 'documents',
+    //                         component: CaseDocumentsUploadComponent,
+    //                         canActivate: [ValidateActiveSession],
+    //                         data: {
+    //                             breadcrumb: 'Documents'
+    //                         }
+    //                     },
+    //                     {
+    //                         path: 'insurance-mapping',
+    //                         component: InsuranceMappingComponent,
+    //                         canActivate: [ValidateActiveSession],
+    //                         data: {
+    //                             breadcrumb: 'Insurance'
+    //                         }
+    //                     },
+    //                     {
+    //                         path: 'insurance-mapping',
+    //                         component: ShellComponent,
+    //                         canActivate: [ValidateActiveSession],
+    //                         data: {
+    //                             breadcrumb: 'Insurance'
+    //                         },
+    //                         children: [
+    //                             {
+    //                                 path: 'assign',
+    //                                 component: AssignInsuranceComponent,
+    //                                 data: {
+    //                                     breadcrumb: 'Assign Insurance'
+    //                                 }
+    //                             },
+    //                         ]
+    //                     },
+
+
+    //                     {
+    //                         path: 'consent',
+    //                         component: ShellComponent,
+    //                         canActivate: [ValidateActiveSession],
+    //                         data: {
+    //                             breadcrumb: 'Consent'
+    //                         },
+    //                         children: [
+    //                             {
+    //                                 path: '',
+    //                                 component: ConsentListComponent,
+    //                                 data: {
+    //                                     breadcrumb: 'root'
+    //                                 }
+    //                             },
+    //                             {
+    //                                 path: 'add',
+    //                                 component: AddConsentComponent,
+    //                                 canActivate: [ValidateActiveSession],
+    //                                 data: {
+    //                                     breadcrumb: 'Add Consent'
+    //                                 }
+    //                             },
+    //                             {
+    //                                 path: 'edit/:id',
+    //                                 component: EditConsentComponent,
+    //                                 canActivate: [ValidateActiveSession],
+    //                                 data: {
+    //                                     breadcrumb: 'Edit Consent'
+    //                                 }
+    //                             }
+    //                         ]
+    //                     }
+
+    //                 ]
+    //             }
+    //         ]
+    //     }
+    // ];
+
     {
         path: '',
         pathMatch: 'full',
@@ -57,36 +277,50 @@ export const CasesShellRoutes: Routes = [
                         }
                     },
                     {
-                        path: 'referring-offices',
+                        path: 'patient-visit',
                         component: ShellComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
-                            breadcrumb: 'Referring Officies'
+                            breadcrumb: 'Visits'
                         },
                         children: [
                             {
                                 path: '',
-                                component: ReferringOfficeListComponent,
+                                component: PatientVisitListComponent,
                                 canActivate: [ValidateActiveSession],
                                 data: {
                                     breadcrumb: 'root'
                                 }
                             },
                             {
-                                path: 'add',
-                                component: AddReferringOfficeComponent,
-                                canActivate: [ValidateActiveSession],
+                                path: ':visitId',
+                                component: PatientVisitListShellComponent,
                                 data: {
-                                    breadcrumb: 'Add Referring Office'
-                                }
-                            },
-                            {
-                                path: 'edit/:id',
-                                component: EditReferringOfficeComponent,
-                                canActivate: [ValidateActiveSession],
-                                data: {
-                                    breadcrumb: 'Edit Referring Office'
-                                }
+                                    breadcrumb: 'root'
+                                },
+                                children: [
+                                    {
+                                        path: '',
+                                        redirectTo: 'visit-note',
+                                        pathMatch: 'full'
+                                    },
+                                    {
+                                        path: 'visit-note',
+                                        component: PatientVisitNotesComponent,
+                                        canActivate: [ValidateActiveSession],
+                                        data: {
+                                            breadcrumb: 'Visit Notes'
+                                        }
+                                    },
+                                    {
+                                        path: 'visit-document',
+                                        component: VisitDocumentsUploadComponent,
+                                        canActivate: [ValidateActiveSession],
+                                        data: {
+                                            breadcrumb: 'Documents Upload'
+                                        }
+                                    }
+                                ]
                             }
                         ]
                     },
@@ -99,19 +333,11 @@ export const CasesShellRoutes: Routes = [
                         }
                     },
                     {
-                        path: 'cases-mapping',
-                        component: CaseMappingComponent,
-                        canActivate: [ValidateActiveSession],
-                        data: {
-                            breadcrumb: 'Case Mapping'
-                        }
-                    },
-                    {
                         path: 'insurance-mapping',
-                        component: InsuranceMapComponent,
+                        component: InsuranceMappingComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
-                            breadcrumb: 'Insurance Mapping'
+                            breadcrumb: 'Insurance'
                         }
                     },
                     {

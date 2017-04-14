@@ -1,0 +1,439 @@
+<div class="container-fluid" *ngIf="specialityDetail">
+    <h3 class="with-border">{{title}}</h3>
+    <form [formGroup]="specialityDetailForm" (ngSubmit)="saveSpecialityDetail()">
+        <div class="row">
+            <div class="col-lg-4">
+                <label class="form-label"> Speciality
+                            <span class="color-red">*</span>
+                        </label>
+                <div class="form-group">
+                    <input type="text" class="form-control" [ngModel]="associatedSpeciality" formControlName="speciality">
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <label class="form-label"> Is Initial Evaluation?
+                            <span class="color-red">*</span> </label>
+                <div class="form-group">
+                    <p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="1" label="Yes" [ngModel]="specialityDetail.isInitialEvaluation"></p-radioButton>
+                    <p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="0" label="No" [ngModel]="specialityDetail.isInitialEvaluation"></p-radioButton>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <label class="form-label"> Allow Multiple Visits? 
+                            <span class="color-red">*</span>
+                        </label>
+                <div class="form-group">
+                    <p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="1" label="Yes" [ngModel]="specialityDetail.allowmultipleVisit"></p-radioButton>
+                    <p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="0" label="No" [ngModel]="specialityDetail.allowmultipleVisit"></p-radioButton>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <label class="form-label"> Include 1500? 
+                            <span class="color-red">*</span>
+                        </label>
+                <div class="form-group">
+                    <p-radioButton formControlName="include1500" name="include1500" value="1" label="Yes" [ngModel]="specialityDetail.include1500"></p-radioButton>
+                    <p-radioButton formControlName="include1500" name="include1500" value="0" label="No" [ngModel]="specialityDetail.include1500"></p-radioButton>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <label class="form-label"> Max Reval 
+                            <span class="color-red">*</span>
+                        </label>
+                <div class="form-group" [class.error]="specialityDetailFormControls.maxReval.touched && !specialityDetailFormControls.maxReval.valid">
+                    <input formControlName="maxReval" [ngModel]="specialityDetail.maxReval" [class.error]="!specialityDetailFormControls.maxReval.valid"
+                        class="form-control" />
+                    <div class='error-list' *ngIf="specialityDetailFormControls.maxReval.touched && !specialityDetailFormControls.maxReval.valid">
+                        <ul>
+                            <li *ngIf="specialityDetailFormControls.maxReval.hasError('required')">Max Reval is required.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-lg-6">
+                <section class="card">
+                    <header class="card-header">
+                        Initial
+                    </header>
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label class="form-label"> Initial Code(s):
+                        </label>
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="form-group" [class.error]="specialityDetailFormControls.initialCodes.touched && !specialityDetailFormControls.initialCodes.valid">
+                                    <textarea rows="2" formControlName="initialCodes" [ngModel]="specialityDetail.InitialCode" [class.error]="!specialityDetailFormControls.initialCodes.valid"
+                                        class="form-control"></textarea>
+                                        <div class='error-list' *ngIf="specialityDetailFormControls.initialCodes.touched && !specialityDetailFormControls.initialCodes.valid">
+                                            <ul>
+                                                <li *ngIf="specialityDetailFormControls.initialCodes.hasError('required')">Initial Codes is required.</li>
+                                            </ul>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label class="form-label"> Alert After
+                        </label>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group" [class.error]="specialityDetailFormControls.initialDays.touched && !specialityDetailFormControls.initialDays.valid">
+                                    <input formControlName="initialDays" [ngModel]="specialityDetail.initialDays" [class.error]="!specialityDetailFormControls.initialDays.valid"
+                                        class="form-control" />
+                                    <div class='error-list' *ngIf="specialityDetailFormControls.initialDays.touched && !specialityDetailFormControls.initialDays.valid">
+                                        <ul>
+                                            <li *ngIf="specialityDetailFormControls.initialDays.hasError('required')">Initial days is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <label class="form-label"> Days following initial
+                        </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label class="form-label"> Alert After
+                        </label>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group" [class.error]="specialityDetailFormControls.initialVisits.touched && !specialityDetailFormControls.initialVisits.valid">
+                                    <input formControlName="initialVisits" [ngModel]="specialityDetail.initialvisitCount" [class.error]="!specialityDetailFormControls.initialVisits.valid"
+                                        class="form-control" />
+                                    <div class='error-list' *ngIf="specialityDetailFormControls.initialVisits.touched && !specialityDetailFormControls.initialVisits.valid">
+                                        <ul>
+                                            <li *ngIf="specialityDetailFormControls.initialVisits.hasError('required')">Initial Visits is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <label class="form-label"> Visits following initial
+                        </label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-6 col-lg-6">
+                <section class="card">
+                    <header class="card-header">
+                        Re-evaluation
+                    </header>
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label class="form-label"> Re-eval Code(s):
+                        </label>
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="form-group" [class.error]="specialityDetailFormControls.reevalCodes.touched && !specialityDetailFormControls.reevalCodes.valid">
+                                    <textarea rows="2" formControlName="reevalCodes" [ngModel]="specialityDetail.ReEvalCode" [class.error]="!specialityDetailFormControls.reevalCodes.valid"
+                                        class="form-control"></textarea>
+                                        <div class='error-list' *ngIf="specialityDetailFormControls.reevalCodes.touched && !specialityDetailFormControls.reevalCodes.valid">
+                                            <ul>
+                                                <li *ngIf="specialityDetailFormControls.reevalCodes.hasError('required')">Reeval Codes is required.</li>
+                                            </ul>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label class="form-label"> Alert After
+                        </label>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group" [class.error]="specialityDetailFormControls.ReevalDays.touched && !specialityDetailFormControls.ReevalDays.valid">
+                                    <input formControlName="ReevalDays" [ngModel]="specialityDetail.ReevalDays" [class.error]="!specialityDetailFormControls.ReevalDays.valid"
+                                        class="form-control" />
+                                    <div class='error-list' *ngIf="specialityDetailFormControls.ReevalDays.touched && !specialityDetailFormControls.ReevalDays.valid">
+                                        <ul>
+                                            <li *ngIf="specialityDetailFormControls.ReevalDays.hasError('required')">Reeval days is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <label class="form-label"> Days following Re-eval
+                        </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label class="form-label"> Alert After
+                        </label>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group" [class.error]="specialityDetailFormControls.ReevalVisits.touched && !specialityDetailFormControls.ReevalVisits.valid">
+                                    <input formControlName="ReevalVisits" [ngModel]="specialityDetail.reevalvisitCount" [class.error]="!specialityDetailFormControls.ReevalVisits.valid"
+                                        class="form-control" />
+                                    <div class='error-list' *ngIf="specialityDetailFormControls.ReevalVisits.touched && !specialityDetailFormControls.ReevalVisits.valid">
+                                        <ul>
+                                            <li *ngIf="specialityDetailFormControls.ReevalVisits.hasError('required')">Reeval Visits is required.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <label class="form-label"> Visits following Re-eval
+                        </label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!--<div class="row">
+                    <div class="col-lg-6">
+                        <h4> Initial
+                        </h4>
+                    </div>
+                    <div class="col-lg-6">
+                        <h4> Re-evaluation
+                        </h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <label class="form-label"> Initial Code(s):
+                        </label>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group" [class.error]="specialityDetailFormControls.initialCodes.touched && !specialityDetailFormControls.initialCodes.valid">
+                            <textarea rows="4" formControlName="initialCodes" [ngModel]="specialityDetail.initialCodes" [class.error]="!specialityDetailFormControls.initialCodes.valid"
+                                class="form-control"></textarea>
+                            <div class='error-list' *ngIf="specialityDetailFormControls.initialCodes.touched && !specialityDetailFormControls.initialCodes.valid">
+                                <ul>
+                                    <li *ngIf="specialityDetailFormControls.initialCodes.hasError('required')">Initial Codes is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-label"> Re-eval Code(s):
+                        </label>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group" [class.error]="specialityDetailFormControls.reevalCodes.touched && !specialityDetailFormControls.reevalCodes.valid">
+                            <textarea rows="4" formControlName="reevalCodes" [ngModel]="specialityDetail.reevalvisitCount" [class.error]="!specialityDetailFormControls.reevalCodes.valid"
+                                class="form-control" ></textarea>
+                            <div class='error-list' *ngIf="specialityDetailFormControls.reevalCodes.touched && !specialityDetailFormControls.reevalCodes.valid">
+                                <ul>
+                                    <li *ngIf="specialityDetailFormControls.reevalCodes.hasError('required')">Reeval Codes is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <label class="form-label"> Alert After
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group" [class.error]="specialityDetailFormControls.ReevalDays.touched && !specialityDetailFormControls.ReevalDays.valid">
+                            <input formControlName="ReevalDays" [ngModel]="specialityDetail.ReevalDays" type="number" [class.error]="!specialityDetailFormControls.ReevalDays.valid"
+                                class="form-control" />
+                            <div class='error-list' *ngIf="specialityDetailFormControls.ReevalDays.touched && !specialityDetailFormControls.ReevalDays.valid">
+                                <ul>
+                                    <li *ngIf="specialityDetailFormControls.ReevalDays.hasError('required')">Reeval days is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-label"> Days following initial
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-label"> Alert After
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group" [class.error]="specialityDetailFormControls.ReevalDays.touched && !specialityDetailFormControls.ReevalDays.valid">
+                            <input formControlName="ReevalDays" [ngModel]="specialityDetail.ReevalDays" type="number" [class.error]="!specialityDetailFormControls.ReevalDays.valid"
+                                class="form-control" />
+                            <div class='error-list' *ngIf="specialityDetailFormControls.ReevalDays.touched && !specialityDetailFormControls.ReevalDays.valid">
+                                <ul>
+                                    <li *ngIf="specialityDetailFormControls.ReevalDays.hasError('required')">Reeval days is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-label"> Visits following initial
+                        </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <label class="form-label"> Alert After
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group" [class.error]="specialityDetailFormControls.ReevalDays.touched && !specialityDetailFormControls.ReevalDays.valid">
+                            <input formControlName="ReevalDays" [ngModel]="specialityDetail.ReevalDays" type="number" [class.error]="!specialityDetailFormControls.ReevalDays.valid"
+                                class="form-control" />
+                            <div class='error-list' *ngIf="specialityDetailFormControls.ReevalDays.touched && !specialityDetailFormControls.ReevalDays.valid">
+                                <ul>
+                                    <li *ngIf="specialityDetailFormControls.ReevalDays.hasError('required')">Reeval days is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-label"> Days following Re-eval
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-label"> Alert After
+                        </label>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group" [class.error]="specialityDetailFormControls.ReevalDays.touched && !specialityDetailFormControls.ReevalDays.valid">
+                            <input formControlName="ReevalDays" [ngModel]="specialityDetail.ReevalDays" type="number" [class.error]="!specialityDetailFormControls.ReevalDays.valid"
+                                class="form-control" />
+                            <div class='error-list' *ngIf="specialityDetailFormControls.ReevalDays.touched && !specialityDetailFormControls.ReevalDays.valid">
+                                <ul>
+                                    <li *ngIf="specialityDetailFormControls.ReevalDays.hasError('required')">Reeval days is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-label"> Visits following Re-eval
+                        </label>
+                    </div>
+                </div>-->
+        <button [disabled]="!specialityDetailForm.valid || isSpecialityDetailSaveInProgress" type="submit" class="btn btn-success sign-up">Save
+                    <loader [visible]="isSpecialityDetailSaveInProgress"></loader>
+                </button>
+        <a [routerLink]="['/account-setup/specialities']" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+<!--<div class="container-fluid" *ngIf="specialityDetail">
+    <h3 class="with-border">{{title}}</h3>
+    <form [formGroup]="specialityDetailForm" (ngSubmit)="saveSpecialityDetail()">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label"> Speciality
+                            <span class="color-red">*</span>
+                        </label>
+                        <div class="form-group">
+                            <input type="text" class="form-control" [ngModel]="associatedSpeciality" formControlName="speciality" >
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Is Initial Evaluation?
+                            <span class="color-red">*</span> </label>
+                        <div class="form-group">
+                            <p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="1" label="Yes" [ngModel]="specialityDetail.isInitialEvaluation"></p-radioButton>
+                            <p-radioButton formControlName="isInitialEvaluation" name="isInitialEvaluation" value="0" label="No" [ngModel]="specialityDetail.isInitialEvaluation"></p-radioButton>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Allow Multiple Visits? 
+                            <span class="color-red">*</span>
+                        </label>
+                        <div class="form-group">
+                            <p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="1" label="Yes" [ngModel]="specialityDetail.allowmultipleVisit"></p-radioButton>
+                            <p-radioButton formControlName="allowMultipleVisit" name="allowMultipleVisit" value="0" label="No" [ngModel]="specialityDetail.allowmultipleVisit"></p-radioButton>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Include 1500? 
+                            <span class="color-red">*</span>
+                        </label>
+                        <div class="form-group">
+                            <p-radioButton formControlName="include1500" name="include1500" value="1" label="Yes" [ngModel]="specialityDetail.include1500"></p-radioButton>
+                            <p-radioButton formControlName="include1500" name="include1500" value="0" label="No" [ngModel]="specialityDetail.include1500"></p-radioButton>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label"> Reeval Days
+                            <span class="color-red">*</span>
+                        </label>
+                        <div class="form-group" [class.error]="specialityDetailFormControls.ReevalDays.touched && !specialityDetailFormControls.ReevalDays.valid">
+                            <input formControlName="ReevalDays" [ngModel]="specialityDetail.ReevalDays" type="number" [class.error]="!specialityDetailFormControls.ReevalDays.valid"
+                                class="form-control" />
+                            <div class='error-list' *ngIf="specialityDetailFormControls.ReevalDays.touched && !specialityDetailFormControls.ReevalDays.valid">
+                                <ul>
+                                    <li *ngIf="specialityDetailFormControls.ReevalDays.hasError('required')">Reeval days is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Reeval visit Count
+                            <span class="color-red">*</span>
+                        </label>
+                        <div class="form-group" [class.error]="specialityDetailFormControls.reevalvisitCount.touched && !specialityDetailFormControls.reevalvisitCount.valid">
+                            <input formControlName="reevalvisitCount" [ngModel]="specialityDetail.reevalvisitCount" type="number" [class.error]="!specialityDetailFormControls.reevalvisitCount.valid"
+                                class="form-control" />
+                            <div class='error-list' *ngIf="specialityDetailFormControls.reevalvisitCount.touched && !specialityDetailFormControls.reevalvisitCount.valid">
+                                <ul>
+                                    <li *ngIf="specialityDetailFormControls.reevalvisitCount.hasError('required')">ReevalvisitCount is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label">Initial Days
+                            <span class="color-red">*</span>
+                        </label>
+                        <div class="form-group" [class.error]="specialityDetailFormControls.initialDays.touched && !specialityDetailFormControls.initialDays.valid">
+                            <input formControlName="initialDays" [ngModel]="specialityDetail.initialDays" type="number" [class.error]="!specialityDetailFormControls.initialDays.valid"
+                                class="form-control" />
+                            <div class='error-list' *ngIf="specialityDetailFormControls.initialDays.touched && !specialityDetailFormControls.initialDays.valid">
+                                <ul>
+                                    <li *ngIf="specialityDetailFormControls.initialDays.hasError('required')">Initial days is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label">InitialvisitCount
+                            <span class="color-red">*</span>
+                        </label>
+                        <div class="form-group" [class.error]="specialityDetailFormControls.initialvisitCount.touched && !specialityDetailFormControls.initialvisitCount.valid">
+                            <input formControlName="initialvisitCount" [ngModel]="specialityDetail.initialvisitCount" type="number" [class.error]="!specialityDetailFormControls.initialvisitCount.valid"
+                                class="form-control" />
+                            <div class='error-list' *ngIf="specialityDetailFormControls.initialvisitCount.touched && !specialityDetailFormControls.initialvisitCount.valid">
+                                <ul>
+                                    <li *ngIf="specialityDetailFormControls.initialvisitCount.hasError('required')">InitialvisitCount is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label">Max Reval
+                            <span class="color-red">*</span>
+                        </label>
+                        <div class="form-group" [class.error]="specialityDetailFormControls.maxReval.touched && !specialityDetailFormControls.maxReval.valid">
+                            <input formControlName="maxReval" [ngModel]="specialityDetail.maxReval" type="number" [class.error]="!specialityDetailFormControls.maxReval.valid"
+                                class="form-control" />
+                            <div class='error-list' *ngIf="specialityDetailFormControls.maxReval.touched && !specialityDetailFormControls.maxReval.valid">
+                                <ul>
+                                    <li *ngIf="specialityDetailFormControls.maxReval.hasError('required')">MaxReval is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button [disabled]="!specialityDetailForm.valid || isSpecialityDetailSaveInProgress" type="submit" class="btn btn-success sign-up">Save
+                    <loader [visible]="isSpecialityDetailSaveInProgress"></loader>
+                </button>
+                <a [routerLink]="['/account-setup/specialities']" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>-->

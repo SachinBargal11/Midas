@@ -3,7 +3,6 @@ import * as moment from 'moment';
 
 export class ContactAdapter {
     static parseResponse(contactData: any): Contact {
-
         let contact = null;
         if (contactData) {
             contact = new Contact({
@@ -18,7 +17,11 @@ export class ContactAdapter {
                 createByUserId: contactData.createByUserId,
                 updateByUserId: contactData.updateByUserId,
                 createDate: moment(contactData.createDate), // Moment
-                updateDate: moment(contactData.updateDate) // Moment
+                updateDate: moment(contactData.updateDate), // Moment
+                alternateEmail: contactData.alternateEmail,
+                officeExtension: contactData.officeExtension,
+                preferredCommunication: contactData.preferredCommunication,
+
             });
         }
         return contact;
