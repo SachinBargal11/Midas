@@ -14,7 +14,7 @@ import { SessionStore } from '../../../commons/stores/session-store';
 import { environment } from '../../../../environments/environment';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Case } from '../models/case';
-
+import { CaseDocument } from '../models/case-document';
 @Component({
     selector: 'list-consent',
     templateUrl: './list-consent.html'
@@ -30,6 +30,7 @@ export class ConsentListComponent implements OnInit {
     totalRecords: number;
     isDeleteProgress: boolean = false;
     companyId: number;
+    caseConsentDocuments: CaseDocument[];
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
@@ -40,7 +41,7 @@ export class ConsentListComponent implements OnInit {
         private confirmationService: ConfirmationService,
         public sessionStore: SessionStore,
         private _casesStore: CasesStore,
-        
+
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
@@ -56,7 +57,7 @@ export class ConsentListComponent implements OnInit {
         this._progressBarService.show();
         this._casesStore.getDocumentForCaseId(this.caseId)
             .subscribe((caseDocument: Case) => {
-                this.Case = caseDocument;
+                this.caseConsentDocuments = caseDocument.caseCompanyConsentDocument;
             },
             (error) => {
                 this._progressBarService.hide();
@@ -129,23 +130,9 @@ export class ConsentListComponent implements OnInit {
 
     }
 
-    DownloadPdf(document) {
-
-        //window.open('http://midas.codearray.tk/midasapi/fileupload/download/86/0', '_blank', '');
-        // window.location.assign('http://midas.codearray.tk/midasapi/fileupload/download/86/0');
+    DownloadPdf(documentId) {
         this._progressBarService.show();
-        window.location.assign(this._url + '/fileupload/download/' + document.originalResponse.caseId + '/' + document.originalResponse.caseCompanyConsentDocument.midasDocumentId);
+        window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
         this._progressBarService.hide();
-        // this._ConsentStore.DownloadConsentForm(this.caseId)
-        //     .subscribe(document => {
-        //         // this.document = document
-
-        //     },
-        //     (error) => {
-        //         this._progressBarService.hide();
-        //     },
-        //     () => {
-        //         this._progressBarService.hide();
-        //     });
     }
 }

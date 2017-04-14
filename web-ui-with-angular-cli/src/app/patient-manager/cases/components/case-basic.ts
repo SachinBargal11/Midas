@@ -111,7 +111,7 @@ export class CaseBasicComponent implements OnInit {
 
     ngOnInit() {
         this._locationsStore.getLocations()
-            .subscribe(locations => this.locations = locations);
+            .subscribe(locations => this.locations = locations);debugger;
         this._employerStore.getCurrentEmployer(this.patientId)
             .subscribe(employer => this.employer = employer);
         this._attorneyMasterStore.getAttorneyMasters()
