@@ -50,11 +50,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             if (patient2.User != null)
             {
-                BO.User boUser = new BO.User();
-                using (UserRepository cmp = new UserRepository(_context))
+                if (patient2.User.IsDeleted.HasValue == false || (patient2.User.IsDeleted.HasValue == true && patient2.User.IsDeleted.Value == false))
                 {
-                    boUser = cmp.Convert<BO.User, User>(patient2.User);
-                    patientBO2.User = boUser;
+                    BO.User boUser = new BO.User();
+                    using (UserRepository cmp = new UserRepository(_context))
+                    {
+                        boUser = cmp.Convert<BO.User, User>(patient2.User);
+                        patientBO2.User = boUser;
+                    }
                 }
             }                
 

@@ -26,8 +26,8 @@ import { CaseDocument } from '../../cases/models/case-document';
 
 export class InboundReferralsComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
-    consentRecived: string = '';
-    consentNotRecived: string = '';
+    consentRecived: boolean = false;
+    consentNotRecived: boolean = false;
     searchMode: number = 1;
     referrals: Referral[];
     referredUsers: Referral[];
@@ -35,22 +35,23 @@ export class InboundReferralsComponent implements OnInit {
     referredRooms: Referral[];
     filters: SelectItem[];
     doctorRoleOnly = null;
+    display: boolean = false; 
 
     constructor(
         private _router: Router,
         private _notificationsStore: NotificationsStore,
-        public _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _referralStore: ReferralStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
     ) {
-        this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+        this.sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadReferralsCheckingDoctor();
         });
     }
 
     ngOnInit() {
-        let roles = this._sessionStore.session.user.roles;
+        let roles = this.sessionStore.session.user.roles;
         if (roles) {
             if (roles.length === 1) {
                 this.doctorRoleOnly = _.find(roles, (currentRole) => {
@@ -92,7 +93,7 @@ export class InboundReferralsComponent implements OnInit {
                 let matchingUserReferrals = _.reject(userReferrals, (currentReferral: Referral) => {
                     return currentReferral == null;
                 });
-                this.referredUsers = matchingUserReferrals.reverse();
+                this.referredUsers = matchingUserReferrals;
 
                 let roomReferrals: Referral[] = _.map(referrals, (currentReferral: Referral) => {
                     return currentReferral.room ? currentReferral : null;
@@ -100,7 +101,7 @@ export class InboundReferralsComponent implements OnInit {
                 let matchingRoomReferrals = _.reject(roomReferrals, (currentReferral: Referral) => {
                     return currentReferral == null;
                 });
-                this.referredRooms = matchingRoomReferrals.reverse();
+                this.referredRooms = matchingRoomReferrals;
 
                 let userAndRoomReferral = _.union(matchingUserReferrals, matchingRoomReferrals);
                 let userAndRoomReferralIds: number[] = _.map(userAndRoomReferral, (currentUserAndRoomReferral: Referral) => {
@@ -109,7 +110,7 @@ export class InboundReferralsComponent implements OnInit {
                 let matchingMedicalOffices = _.filter(referrals, (currentReferral: Referral) => {
                     return _.indexOf(userAndRoomReferralIds, currentReferral.id) < 0 ? true : false;
                 });
-                this.referredMedicalOffices = matchingMedicalOffices.reverse();
+                this.referredMedicalOffices = matchingMedicalOffices;
             },
             (error) => {
                 this._progressBarService.hide();
@@ -151,17 +152,33 @@ export class InboundReferralsComponent implements OnInit {
     //     }
     // }
     consentAvailable(referral: Referral) {
+                this.consentNotRecived = false;
+                this.consentRecived = false;
+                let consentAvailable = null;
         if (referral.case.companyCaseConsentApproval.length > 0) {
-            let consentAvailable = _.find(referral.case.companyCaseConsentApproval, (currentConsent: Consent) => {
-                return currentConsent.companyId === this._sessionStore.session.currentCompany.id;
+            _.forEach(referral.case.companyCaseConsentApproval, (currentConsent: Consent) => {
+                if (currentConsent.companyId === this.sessionStore.session.currentCompany.id) {this.consentRecived = true 
+                } else  this.consentRecived = false;
             });
-            if (consentAvailable) {
-                this.consentRecived = 'Yes';
-            } else {
-                this.consentNotRecived = 'No';
-            }
+            // referral.case.companyCaseConsentApproval.forEach(currentConsent => {
+            //     if(currentConsent.companyId === this._sessionStore.session.currentCompany.id) {
+            //          this.consentRecived = true;
+            //          return;
+            //     } else {
+            //         this.consentNotRecived = true;
+            //         return;                    
+            //     }               
+            // });
+            // if (consentAvailable) {
+            //     this.consentRecived = true;
+            //     return;
+            // } else {
+            //     this.consentNotRecived = true;
+            //     return;
+            // }
         } else {
-            this.consentNotRecived = 'No';
+            this.consentNotRecived = true;
+            return;
         }
     }
 }

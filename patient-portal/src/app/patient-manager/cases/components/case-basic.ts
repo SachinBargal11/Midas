@@ -4,8 +4,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import { StatesStore } from '../../../commons/stores/states-store';
-import { LocationDetails } from '../../../commons/models/location-details';
-import { LocationsStore } from '../../../commons/stores/locations-store';
+import { LocationDetails } from '../../../medical-provider/locations/models/location-details';
+import { LocationsStore } from '../../../medical-provider/locations/stores/locations-store';
 import { Employer } from '../../patients/models/employer';
 import { Patient } from '../../patients/models/patient';
 import { PatientsStore } from '../../patients/stores/patients-store';
@@ -19,6 +19,8 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import { NotificationsService } from 'angular2-notifications';
+import { Attorney } from '../../../account-setup/models/attorney';
+import { AttorneyMasterStore } from '../../../account-setup/stores/attorney-store';
 
 @Component({
     selector: 'case-basic',
@@ -30,7 +32,7 @@ export class CaseBasicComponent implements OnInit {
     caseform: FormGroup;
     caseformControls;
     locations: LocationDetails[];
-    locationDetail: LocationDetails;
+    attorneys: Attorney[];
     employer: Employer;
     patient: Patient;
     isSaveProgress = false;
@@ -43,18 +45,17 @@ export class CaseBasicComponent implements OnInit {
         private _router: Router,
         public _route: ActivatedRoute,
         private _statesStore: StatesStore,
-       public notificationsStore: NotificationsStore,
+        private _notificationsStore: NotificationsStore,
         public progressBarService: ProgressBarService,
         public sessionStore: SessionStore,
         private _locationsStore: LocationsStore,
         private _employerStore: EmployerStore,
         private _patientStore: PatientsStore,
+        private _attorneyMasterStore: AttorneyMasterStore,
         private _casesStore: CasesStore,
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
-        // this._route.parent.parent.params.subscribe((routeParams: any) => {
-        //     this.patientId = parseInt(routeParams.patientId, 10);
         this.patientId = this.sessionStore.session.user.id;
         this.progressBarService.show();
         this._patientStore.fetchPatientById(this.patientId)
@@ -70,11 +71,6 @@ export class CaseBasicComponent implements OnInit {
             () => {
                 this.progressBarService.hide();
             });
-        // if(this.patientId){
-        //  this._employerStore.getCurrentEmployer(this.patientId)
-        // .subscribe(employer => this.employer = employer);
-        // }
-        // });
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
             this.progressBarService.show();
@@ -114,9 +110,11 @@ export class CaseBasicComponent implements OnInit {
 
     ngOnInit() {
         this._locationsStore.getLocations()
-            .subscribe(locations => this.locations = locations);
+            .subscribe(locations => this.locations = locations); debugger;
         this._employerStore.getCurrentEmployer(this.patientId)
             .subscribe(employer => this.employer = employer);
+        this._attorneyMasterStore.getAttorneyMasters()
+            .subscribe(attorneys => this.attorneys = attorneys);
     }
 
     saveCase() {
@@ -125,7 +123,6 @@ export class CaseBasicComponent implements OnInit {
         let result;
         let caseDetailJS = this.caseDetail.toJS();
         let caseDetail: Case = new Case(_.extend(caseDetailJS, {
-
             // caseName: caseFormValues.caseName,
             id: this.caseId,
             patientId: this.patientId,
@@ -150,7 +147,7 @@ export class CaseBasicComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this.notificationsStore.addNotification(notification);
+                this._notificationsStore.addNotification(notification);
                 this._router.navigate(['../../'], { relativeTo: this._route });
                 // this._router.navigate(['/patient-manager/cases']);
             },
@@ -162,7 +159,7 @@ export class CaseBasicComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this.isSaveProgress = false;
-                this.notificationsStore.addNotification(notification);
+                this._notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
                 this.progressBarService.hide();
             },

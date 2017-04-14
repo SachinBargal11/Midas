@@ -15,9 +15,10 @@ export class AccidentStore {
 
     constructor(
         private _accidentService:  AccidentService,
-        public sessionStore: SessionStore
+        private _sessionStore: SessionStore
     ) {
-        this.sessionStore.userLogoutEvent.subscribe(() => {
+        
+        this._sessionStore.userLogoutEvent.subscribe(() => {
             this.resetStore();
         });
     }

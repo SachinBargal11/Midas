@@ -309,6 +309,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             if (acc != null)
             {
                 acc.IsDeleted = true;
+                acc.UpdateDate = DateTime.UtcNow;
                 _context.SaveChanges();
             }
             else if (acc == null)

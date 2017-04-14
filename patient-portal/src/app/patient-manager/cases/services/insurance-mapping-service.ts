@@ -40,11 +40,10 @@ export class InsuranceMappingService {
         let promise: Promise<InsuranceMapping> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/CaseInsuranceMapping/getByCaseId/' + caseId)
                 .map(res => res.json())
-                .subscribe((data: Array<Object>) => {
-                    // let insuranceMappings = (<Object[]>data).map((data: any) => {
-                    //     return InsuranceMappingAdapter.parseResponse(data);
-                    // });
-                    resolve(data);
+                .subscribe((data: any) => {
+                    let parsedData: InsuranceMapping = null;
+                    parsedData = InsuranceMappingAdapter.parseResponse(data);
+                    resolve(parsedData);
                 }, (error) => {
                     reject(error);
                 });

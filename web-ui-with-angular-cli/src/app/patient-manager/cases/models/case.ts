@@ -1,12 +1,13 @@
 import { Record } from 'immutable';
 import * as moment from 'moment';
+import * as _ from 'underscore';
 import { CaseType } from './enums/case-types';
 import { CaseStatus } from './enums/case-status';
 import { Company } from '../../../account/models/company';
 import { Consent } from './consent';
 import { Referral } from './referral';
-import {Patient} from '../../patients/models/patient';
-import {CaseDocument} from './case-document';
+import { Patient } from '../../patients/models/patient';
+import { CaseDocument } from './case-document';
 
 const CaseRecord = Record({
     id: 0,
@@ -15,9 +16,9 @@ const CaseRecord = Record({
     caseName: '',
     caseTypeId: CaseType.NOFAULT,
     companies: null,
-    caseCompanyConsentDocument:null,
-    companyCaseConsentApproval:null,
-    referral:null,
+    caseCompanyConsentDocument: null,
+    companyCaseConsentApproval: null,
+    referral: null,
     locationId: 0,
     patientEmpInfoId: null,
     carrierCaseNo: '',
@@ -88,6 +89,15 @@ export class Case extends CaseRecord {
                 return 'Close';
 
         }
+    }
+    isConsentReceived(companyId): boolean {
+        let isConsentReceived: boolean = false;
+        _.forEach(this.companyCaseConsentApproval, (currentConsent: Consent) => {
+            if (currentConsent.companyId === companyId) {
+                isConsentReceived = true;
+            }
+        });
+        return isConsentReceived;
     }
 
 }

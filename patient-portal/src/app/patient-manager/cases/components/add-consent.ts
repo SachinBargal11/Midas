@@ -37,7 +37,7 @@ export class AddConsentComponent implements OnInit {
     UploadedFileName: string;
     //document: VisitDocument;
     url;
-    doctors: any[];
+    compnies: any[];
     isdoctorsLoading = false;
     isSaveProgress = false;
     states: any[];
@@ -50,7 +50,7 @@ export class AddConsentComponent implements OnInit {
     patientId: number;
     caseId: number;
     doctroId: number;
-    selectedDoctor = 0;
+    selectedcompany = 0;
     isPassChangeInProgress;
     companyId: number;
     fileName: string;
@@ -65,6 +65,7 @@ export class AddConsentComponent implements OnInit {
     _dwObject: any = null;
     documents: Consent[] = [];
     dialogVisible: boolean = false;
+
     constructor(
         private fb: FormBuilder,
         private service: ConsentService,
@@ -79,7 +80,6 @@ export class AddConsentComponent implements OnInit {
         private _scannerService: ScannerService
 
     ) {
-
         this._route.parent.parent.params.subscribe((routeParams: any) => {
 
             this.caseId = parseInt(routeParams.caseId, 10);
@@ -87,7 +87,7 @@ export class AddConsentComponent implements OnInit {
             this.companyId = this._sessionStore.session.currentCompany.id;
             this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
             this.consentForm = this.fb.group({
-                // doctor: ['', Validators.required]
+                 company: ['', Validators.required]
                 // ,uploadedFiles: ['', Validators.required]
             });
 
@@ -96,100 +96,22 @@ export class AddConsentComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.showDialog();
-        this.dialogVisible = true;
 
         let today = new Date();
         let currentDate = today.getDate();
         this.maxDate = new Date();
         this.maxDate.setDate(currentDate);
-        // this._AddConsentStore.getdoctors(this.companyId)
-        //     .subscribe(doctor => this.doctors = doctor);
-        // this.downloadDocument();
+        debugger;
+        this._AddConsentStore.getCompney(this.caseId)
+            .subscribe(compney => this.compnies = compney);
+        this.downloadDocument();
+    }  
+
+
+    selectcompany(event) {
+        this.selectedcompany = 0;
+        let currentCompney = event.target.value;
     }
-
-    ngOnDestroy() {
-        this.unloadWebTwain();
-    }
-
-    unloadWebTwain() {
-        this._scannerService.deleteWebTwain(this.scannerContainerId);
-        this._scannerService.unloadAll();
-    }
-
-    ngAfterViewInit() {
-        _.defer(() => {
-            this.createDWObject();
-        });
-
-    }
-
-    createDWObject() {
-
-        this._scannerService.getWebTwain(this.scannerContainerId)
-            .then((dwObject) => {
-                this._dwObject = dwObject;
-                this._dwObject.SetViewMode(1, -1);
-                if (this._dwObject) {
-                    for (let i = 0; i < this._dwObject.SourceCount; i++) {
-
-                        this.twainSources.push({ idx: i, name: this._dwObject.GetSourceNameItems(i) });
-                    }
-
-                }
-            }).catch(() => {
-                // (<any>window).OnWebTwainNotFoundOnWindowsCallback();
-                this._notificationsService.alert('', 'Not able to connect scanner. Please refresh the page again and download the software prompted.');
-            });
-    }
-
-    AcquireImage() {
-        if (this._dwObject) {
-            this._dwObject.IfDisableSourceAfterAcquire = true;
-            if (this.selectedTwainSource) {
-                this._dwObject.SelectSourceByIndex(this.selectedTwainSource.idx);
-            } else {
-                this._dwObject.SelectSource();
-            }
-            this._dwObject.OpenSource();
-            this._dwObject.AcquireImage();
-        }
-    }
-
-    uploadDocuments() {
-
-        this.uploadedFiles.length = 1;
-        this._AddConsentStore.uploadScannedDocuments(this._dwObject, this.caseId)
-            .subscribe(
-            (documents: Consent[]) => {
-                _.forEach(documents, (currentDocument: any) => {
-                    if (currentDocument.status == 'Failed') {
-                        let notification = new Notification({
-                            'title': currentDocument.message + '  ' + currentDocument.documentName,
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this._notificationsStore.addNotification(notification);
-                    }
-                });
-                // this.getDocuments();
-            },
-            (error) => {
-                debugger;
-                this._progressBarService.hide();
-            },
-            () => {
-                this.unloadWebTwain();
-                this.createDWObject();
-                this._progressBarService.hide();
-            });
-    }
-
-    // selectDoctor(event) {
-    //     this.selectedDoctor = 0;
-    //     let currentDoctor = event.target.value;
-
-    // }
 
     myfile = {
         "name": "Mubashshir",
@@ -208,7 +130,9 @@ export class AddConsentComponent implements OnInit {
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._router.navigate(['../'], { relativeTo: this._route });
+            this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists');
+            this._progressBarService.hide();
+            // this._router.navigate(['../'], { relativeTo: this._route });
         }
         else {
             let documents = (<Object[]>responseDocuments).map((document: any) => {
@@ -233,6 +157,7 @@ export class AddConsentComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
+                    this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists');
                 }
                 else {
                     let notification = new Notification({

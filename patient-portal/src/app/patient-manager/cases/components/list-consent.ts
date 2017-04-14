@@ -12,6 +12,9 @@ import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormat
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { environment } from '../../../../environments/environment';
+import { CasesStore } from '../../cases/stores/case-store';
+import { Case } from '../models/case';
+
 @Component({
     selector: 'list-consent',
     templateUrl: './list-consent.html'
@@ -21,6 +24,7 @@ export class ConsentListComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     selectedConsentList: Consent[] = [];
     Consent: Consent[];
+    Case: Case;
     caseId: number;
     datasource: Consent[];
     totalRecords: number;
@@ -34,11 +38,13 @@ export class ConsentListComponent implements OnInit {
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private confirmationService: ConfirmationService,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
+        private _casesStore: CasesStore,
+        
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
-            this.companyId = this._sessionStore.session.currentCompany.id;
+            this.companyId = this.sessionStore.session.currentCompany.id;
         });
     }
 
@@ -47,14 +53,10 @@ export class ConsentListComponent implements OnInit {
     }
 
     loadConsentForm() {
-        debugger;
         this._progressBarService.show();
-        this._ConsentStore.getConsetForm(this.caseId, this.companyId)
-            .subscribe(Consent => {
-                this.Consent = Consent.reverse();
-                // this.datasource = referringOffices.reverse();
-                // this.totalRecords = this.datasource.length;
-                // this.referringOffices = this.datasource.slice(0, 10);
+        this._casesStore.getDocumentForCaseId(this.caseId)
+            .subscribe((caseDocument: Case) => {
+                this.Case = caseDocument;
             },
             (error) => {
                 this._progressBarService.hide();
@@ -81,8 +83,8 @@ export class ConsentListComponent implements OnInit {
                     this.selectedConsentList.forEach(currentCase => {
                         this.isDeleteProgress = true;
                         this._progressBarService.show();
-                        this._ConsentStore.deleteConsetForm(currentCase, this.companyId)
-                            .subscribe(
+                        let result = this._ConsentStore.deleteConsetForm(currentCase, this.companyId)
+                        result.subscribe(
                             (response) => {
                                 let notification = new Notification({
                                     'title': 'record deleted successfully!',
@@ -93,7 +95,6 @@ export class ConsentListComponent implements OnInit {
                                 this.loadConsentForm();
                                 this._notificationsStore.addNotification(notification);
                                 this.selectedConsentList = [];
-
                             },
                             (error) => {
                                 let errString = 'Unable to delete record';
@@ -128,12 +129,12 @@ export class ConsentListComponent implements OnInit {
 
     }
 
-    DownloadPdf(documentId) {
+    DownloadPdf(document) {
 
         //window.open('http://midas.codearray.tk/midasapi/fileupload/download/86/0', '_blank', '');
         // window.location.assign('http://midas.codearray.tk/midasapi/fileupload/download/86/0');
         this._progressBarService.show();
-        window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+        window.location.assign(this._url + '/fileupload/download/' + document.originalResponse.caseId + '/' + document.originalResponse.caseCompanyConsentDocument.midasDocumentId);
         this._progressBarService.hide();
         // this._ConsentStore.DownloadConsentForm(this.caseId)
         //     .subscribe(document => {
