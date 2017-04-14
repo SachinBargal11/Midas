@@ -20,7 +20,7 @@ import { ValidateInActiveSession } from './commons/guards/validate-inactive-sess
 import { StatesStore } from './commons/stores/states-store';
 import { StateService } from './commons/services/state-service';
 import { PatientManagerModule } from './patient-manager/patient-manager-module';
-import { AddDocConsentFormComponent } from './patient-manager/consentForm/components/add-consent-form';
+import { AddCompneyConsentComponent} from './patient-manager/consentForm/components/compney-add-consent';
 import { ScannerService } from './commons/services/scanner-service';
 import { ConfirmationService } from 'primeng/primeng';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -29,6 +29,8 @@ import { PhoneFormatPipe } from './commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from './commons/pipes/faxno-format-pipe';
 import { DoctorsStore } from './medical-provider/users/stores/doctors-store';
 import { DoctorsService } from './medical-provider/users/services/doctors-service';
+import { DocumentUploadService } from './commons/services/document-upload-service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,14 +59,14 @@ import { DoctorsService } from './medical-provider/users/services/doctors-servic
     NotificationsStore,
     StateService,
     StatesStore,
-    ProgressBarService, 
-    ScannerService, 
-    ConfirmationService,  
+    ProgressBarService,
+    ScannerService,
+    ConfirmationService,
     DateFormatPipe,
     PhoneFormatPipe,
     FaxNoFormatPipe,
-     DoctorsStore,
-    DoctorsService,
+    DoctorsStore,
+    DoctorsService, DocumentUploadService
   ],
   bootstrap: [AppComponent]
 })

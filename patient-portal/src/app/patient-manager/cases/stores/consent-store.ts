@@ -156,9 +156,9 @@ export class ConsentStore {
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
 
-getCompney(CaseId: Number): Observable<Consent[]> {
+getCompany(CaseId: Number): Observable<Consent[]> {
         let promise = new Promise((resolve, reject) => {
-            this._ConsentFormService.getcompney(CaseId).subscribe((doctors: Consent[]) => {
+            this._ConsentFormService.getcompany(CaseId).subscribe((doctors: Consent[]) => {
                 this._Consent.next(List(doctors));
                 resolve(doctors);
             }, error => {

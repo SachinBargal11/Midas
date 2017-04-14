@@ -113,25 +113,34 @@ export class CaseService {
     }
 
 
+ //this is for compney consent list.
+    getDocumentForCompneyCaseId(patientId: number): Observable<Case[]> {
+        let promise: Promise<Case[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Case/getOpenCaseForPatient/' + patientId)
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let document = (<Object[]>data).map((data: any) => {
+                    return CaseAdapter.parseResponse(data);
+                    });
+                    resolve(document);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Case[]>>Observable.fromPromise(promise);
+    }
 
-    getDocumentForCaseId(caseId: number): Observable<Case> {
+     getDocumentForCaseId(caseId: number): Observable<Case> {
         let promise: Promise<Case> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/case/GetConsentList/' + caseId)
                 .map(res => res.json())
                 .subscribe((data: any) => {
-                    // let caseDocument = null;
-                    // if (data) {
-                        let caseDocument: Case = null;
-                        caseDocument = CaseAdapter.parseResponse(data);
-                        resolve(caseDocument);
-                    // } else {
-                    //     reject(new Error('NOT_FOUND'));
-                    // }
-
+                    let document: Case = null
+                    document = CaseAdapter.parseResponse(data);
+                    resolve(document);
                 }, (error) => {
                     reject(error);
                 });
-
 
         });
         return <Observable<Case>>Observable.fromPromise(promise);

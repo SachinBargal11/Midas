@@ -70,7 +70,7 @@ export class CasesStore {
         return <Observable<Case[]>>Observable.fromPromise(promise);
     }
 
-
+    //this is for case consent list.
     getDocumentsForCaseId(caseId: number): Observable<CaseDocument[]> {
         let promise = new Promise((resolve, reject) => {
             this._casesService.getDocumentsForCaseId(caseId).subscribe((documents: CaseDocument[]) => {
@@ -81,8 +81,8 @@ export class CasesStore {
         });
         return <Observable<CaseDocument[]>>Observable.fromPromise(promise);
     }
-
- getDocumentForCaseId(caseId: number): Observable<Case> {
+    //this is for case consent list.
+    getDocumentForCaseId(caseId: number): Observable<Case> {
         let promise = new Promise((resolve, reject) => {
             this._casesService.getDocumentForCaseId(caseId).subscribe((document: Case) => {
                 resolve(document);
@@ -91,6 +91,18 @@ export class CasesStore {
             });
         });
         return <Observable<Case>>Observable.fromPromise(promise);
+    }
+
+    //this is for compney consent list.
+    getDocumentForCompneyCaseId(patientId: number): Observable<Case[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._casesService.getDocumentForCompneyCaseId(patientId).subscribe((document: Case[]) => {
+                resolve(document);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Case[]>>Observable.fromPromise(promise);
     }
 
     uploadDocument(DocumentsDetail: CaseDocument[], currentCaseId: number): Observable<CaseDocument[]> {
