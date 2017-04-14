@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/primeng'
 import { ConsentStore } from '../stores/consent-store';
+import { CasesStore } from '../stores/case-store';
 import { Consent } from '../models/consent';
+import { Case } from '../models/case';
+import { CaseDocument } from '../models/case-document';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
@@ -19,8 +22,9 @@ import { environment } from '../../../../environments/environment';
 
 export class ConsentListComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
-    selectedConsentList: Consent[] = [];
+    selectedConsentList: CaseDocument[] = [];
     Consent: Consent[];
+    caseConsentDocuments: CaseDocument[];
     caseId: number;
     datasource: Consent[];
     totalRecords: number;
@@ -30,6 +34,7 @@ export class ConsentListComponent implements OnInit {
         private _router: Router,
         public _route: ActivatedRoute,
         private _ConsentStore: ConsentStore,
+        private _casesStore: CasesStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
@@ -45,15 +50,11 @@ export class ConsentListComponent implements OnInit {
     ngOnInit() {
         this.loadConsentForm();
     }
-
     loadConsentForm() {
         this._progressBarService.show();
-        this._ConsentStore.getConsetForm(this.caseId, this.companyId)
-            .subscribe(Consent => {
-                this.Consent = Consent.reverse();
-                // this.datasource = referringOffices.reverse();
-                // this.totalRecords = this.datasource.length;
-                // this.referringOffices = this.datasource.slice(0, 10);
+        this._casesStore.getDocumentForCaseId(this.caseId)
+            .subscribe((caseDocument: Case) => {
+                this.caseConsentDocuments = caseDocument.caseCompanyConsentDocument;
             },
             (error) => {
                 this._progressBarService.hide();
@@ -62,6 +63,23 @@ export class ConsentListComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
+
+    // loadConsentForm() {
+    //     this._progressBarService.show();
+    //     this._ConsentStore.getConsetForm(this.caseId, this.companyId)
+    //         .subscribe(Consent => {
+    //             this.Consent = Consent.reverse();
+    //             // this.datasource = referringOffices.reverse();
+    //             // this.totalRecords = this.datasource.length;
+    //             // this.referringOffices = this.datasource.slice(0, 10);
+    //         },
+    //         (error) => {
+    //             this._progressBarService.hide();
+    //         },
+    //         () => {
+    //             this._progressBarService.hide();
+    //         });
+    // }
     loadConsentFormLazy(event: LazyLoadEvent) {
         setTimeout(() => {
             if (this.datasource) {
@@ -77,11 +95,12 @@ export class ConsentListComponent implements OnInit {
                 header: 'Delete Confirmation',
                 icon: 'fa fa-trash',
                 accept: () => {
-                    this.selectedConsentList.forEach(currentCase => {
+                    this.selectedConsentList.forEach(currentCaseDocument => {
                         this.isDeleteProgress = true;
                         this._progressBarService.show();
-                        let result = this._ConsentStore.deleteConsetForm(currentCase, this.companyId)
-                            result.subscribe(
+                        let result = this._ConsentStore.deleteConsent(currentCaseDocument, this.companyId)
+                        // let result = this._casesStore.deleteDocument(currentCaseDocument)
+                        result.subscribe(
                             (response) => {
                                 let notification = new Notification({
                                     'title': 'record deleted successfully!',
@@ -122,27 +141,11 @@ export class ConsentListComponent implements OnInit {
             this._notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'select record to delete');
         }
-
-
     }
 
     DownloadPdf(documentId) {
-
-        //window.open('http://midas.codearray.tk/midasapi/fileupload/download/86/0', '_blank', '');
-        // window.location.assign('http://midas.codearray.tk/midasapi/fileupload/download/86/0');
         this._progressBarService.show();
         window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
         this._progressBarService.hide();
-        // this._ConsentStore.DownloadConsentForm(this.caseId)
-        //     .subscribe(document => {
-        //         // this.document = document
-
-        //     },
-        //     (error) => {
-        //         this._progressBarService.hide();
-        //     },
-        //     () => {
-        //         this._progressBarService.hide();
-        //     });
     }
 }
