@@ -123,6 +123,7 @@
     <Build Include="Tables\Latest Tables\ReferralDocuments.sql" />
     <Build Include="Tables\Latest Tables\BlobStorage.sql" />
     <Build Include="Tables\Latest Tables\BlobStorageType.sql" />
+    <Build Include="Tables\Latest Tables\ConsentGivenType.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />

@@ -31,7 +31,6 @@ export class ConsentStore {
     }
 
     getdoctors(patientId: Number): Observable<Consent[]> {
-
         let promise = new Promise((resolve, reject) => {
             this._ConsentFormService.getdoctors(patientId).subscribe((doctors: Consent[]) => {
                 this._Consent.next(List(doctors));
@@ -103,18 +102,18 @@ export class ConsentStore {
     }
 
 
-  getConsetForm(CaseId: number,companyId: number): Observable<Consent[]> {
+//   getConsetForm(CaseId: number,companyId: number): Observable<Consent[]> {
 
-        let promise = new Promise((resolve, reject) => {
-            this._ConsentFormService.getConsetForm(CaseId,companyId).subscribe((consent: Consent[]) => {
-                this._Consent.next(List(consent));
-                resolve(consent);
-            }, error => {
-                reject(error);
-            });
-        });
-        return <Observable<Consent[]>>Observable.fromPromise(promise);
-    }
+//         let promise = new Promise((resolve, reject) => {
+//             this._ConsentFormService.getConsetForm(CaseId,companyId).subscribe((consent: Consent[]) => {
+//                 this._Consent.next(List(consent));
+//                 resolve(consent);
+//             }, error => {
+//                 reject(error);
+//             });
+//         });
+//         return <Observable<Consent[]>>Observable.fromPromise(promise);
+//     }
 
     deleteConsetForm(caseDetail: Consent,companyId: number): Observable<Consent> {
         let cases = this._Consent.getValue();
@@ -156,5 +155,18 @@ export class ConsentStore {
         });
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
+
+getCompney(CaseId: Number): Observable<Consent[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._ConsentFormService.getcompney(CaseId).subscribe((doctors: Consent[]) => {
+                this._Consent.next(List(doctors));
+                resolve(doctors);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Consent[]>>Observable.fromPromise(promise);
+    }
+
 
 }

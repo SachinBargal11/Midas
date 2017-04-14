@@ -1,14 +1,18 @@
 import { Record } from 'immutable';
 import * as moment from 'moment';
+import * as _ from 'underscore';
 import { Address } from './address';
 import { Contact } from './contact';
+import { UserRole } from './user-role';
 import { UserType } from './enums/user-type';
 import { Gender } from './enums/Gender';
+import { RoleType } from './enums/roles';
 
 const UserRecord = Record({
     id: 0,
-    name: '',
-    userType: UserType.PATIENT,
+    // name: '',
+    userType: UserType.STAFF,
+    roles: null,
     accountId: 0,
     userName: '',
     firstName: '',
@@ -18,7 +22,7 @@ const UserRecord = Record({
     imageLink: '',
     address: null, //Address
     contact: null, //Contact
-    dateOfBirth: moment(), //Moment
+    dateOfBirth: moment(),
     isDeleted: false,
     createByUserId: 0,
     updateByUserId: 0,
@@ -29,8 +33,9 @@ const UserRecord = Record({
 export class User extends UserRecord {
 
     id: number;
-    name: string;
+    // name: string;
     userType: UserType;
+    roles: UserRole[];
     accountId: number;
     userName: string;
     firstName: string;
@@ -68,10 +73,22 @@ export class User extends UserRecord {
         }
     }
 
+    get userRole(): string {
+        let roleString: string = null;
+        let userRoles: any = [];
+        _.forEach(this.roles, (currentRole: UserRole) => {
+            userRoles.push(currentRole.name);
+        });
+        if (userRoles.length > 0) {
+            roleString = userRoles.join(', ');
+        }
+        return roleString;
+    }
+
     get genderLabel(): string {
         return User.getGender(this.gender);
     }
-    // tslint:disable-next-line:member-ordering
+
     static getGender(genderStatus: Gender): string {
         switch (genderStatus) {
             case Gender.MALE:
@@ -80,6 +97,7 @@ export class User extends UserRecord {
                 return 'Female';
             case Gender.OTHERS:
                 return 'Others';
+
         }
     }
 

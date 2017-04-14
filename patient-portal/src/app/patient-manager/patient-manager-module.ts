@@ -20,8 +20,6 @@ import { AccidentInfoComponent } from './cases/components/accident';
 // import { AttorneyComponent } from './patients/components/attorney';
 import { PatientEmployerComponent } from './patients/components/employer';
 import { CaseShellComponent } from './cases/components/cases-shell';
-import { ReferringOfficeListComponent } from './cases/components/referring-office-list';
-import { AddReferringOfficeComponent } from './cases/components/add-referring-office';
 import { EditReferringOfficeComponent } from './cases/components/edit-referring-office';
 import { InsuranceListComponent } from './patients/components/insurance-list';
 import { AddInsuranceComponent } from './patients/components/add-insurance';
@@ -43,8 +41,8 @@ import { ReferringOfficeStore } from './cases/stores/referring-office-store';
 import { PatientRoutingModule } from './patient-manager-routes';
 import { CaseBasicComponent } from './cases/components/case-basic';
 import { CasesListComponent } from './cases/components/cases-list';
-import { InsuranceMapComponent } from './cases/components/insurance-mapping';
-import { CaseMappingComponent } from './cases/components/case-mapping';
+//import { InsuranceMapComponent } from './cases/components/insurance-mapping';
+//import { CaseMappingComponent } from './cases/components/case-mapping';
 import { CasesStore } from './cases/stores/case-store';
 import { InsuranceMappingStore } from './cases/stores/insurance-mapping-store';
 import { InsuranceMappingService } from './cases/services/insurance-mapping-service';
@@ -76,17 +74,38 @@ import { AddConsentComponent } from './cases/components/add-consent';
 import { ConsentStore } from './cases/stores/consent-store';
 import { ConsentService } from './cases/services/consent-service';
 
+import { CompanyCasesComponent } from './cases/components/company-cases-list';
+import { AddCaseComponent } from './cases/components/add-case';
+import { PatientVisitListComponent } from './cases/components/patient-visits-list';
+import { PatientVisitNotesComponent } from './cases/components/patient-visit-notes';
+import { PatientVisitListShellComponent } from './cases/components/patient-visit-list-shell';
+import { VisitDocumentsUploadComponent } from './cases/components/visit-document';
+import { CaseDocumentsUploadComponent } from './cases/components/case-documents';
+import { InsuranceMappingComponent } from './cases/components/insurance-mapping';
+import { AssignInsuranceComponent } from './cases/components/assign-insurance';
+import { EditConsentComponent } from './cases/components/edit-consent';
+import { LocationsStore } from '../medical-provider/locations/stores/locations-store';
+import { LocationsService } from '../medical-provider/locations/services/locations-service';
+import { AttorneyMasterStore } from '../account-setup/stores/attorney-store';
+import { AttorneyMasterService } from '../account-setup/services/attorney-service';
 
+import { PatientVisitComponent } from './patient-visit/components/patient-visit';
+import { PatientVisitsStore } from './patient-visit/stores/patient-visit-store';
+import { PatientVisitService } from './patient-visit/services/patient-visit-service';
+
+import { RoomsModule } from '../medical-provider/rooms/rooms-module';
+import { UsersModule } from '../medical-provider/users/users-module';
+import { DocumentsUploadComponent } from './cases/components/documents';
 
 @NgModule({
     imports: [
         CommonModule,
         RouterModule,
         CommonsModule,
-        PatientRoutingModule
+        PatientRoutingModule,
         // , ConsentShellRoutingModule
-        // RoomsModule,
-        // UsersModule
+        RoomsModule,
+        UsersModule
     ],
     declarations: [
         AddPatientComponent,
@@ -107,8 +126,6 @@ import { ConsentService } from './cases/services/consent-service';
         PatientEmployerComponent,
         AddInsuranceComponent,
         CaseShellComponent,
-        ReferringOfficeListComponent,
-        AddReferringOfficeComponent,
         EditReferringOfficeComponent,
         InsuranceListComponent,
         EditInsuranceComponent,
@@ -117,11 +134,17 @@ import { ConsentService } from './cases/services/consent-service';
         CasesListComponent,
         // PatientVisitComponent,
         CaseBasicComponent,
-        InsuranceMapComponent,
-        CaseMappingComponent,
+        // InsuranceMapComponent,
+        // CaseMappingComponent,
         ViewAllComponent, AddDocConsentFormComponent
         , ConsentDocListComponent, EditDocConsentFormComponent
         , ConsentListComponent, AddConsentComponent
+        , CompanyCasesComponent, AddCaseComponent, PatientVisitListComponent,
+        PatientVisitNotesComponent,
+        CaseDocumentsUploadComponent,
+        PatientVisitListShellComponent,
+        VisitDocumentsUploadComponent, InsuranceMappingComponent, AssignInsuranceComponent, EditConsentComponent, PatientVisitComponent
+        ,DocumentsUploadComponent
     ],
     providers: [
         PatientsService,
@@ -149,6 +172,9 @@ import { ConsentService } from './cases/services/consent-service';
         ConsentService
         // PatientVisitsStore,
         // PatientVisitService
+        , LocationsStore, LocationsService, AttorneyMasterStore, AttorneyMasterService,
+        PatientVisitsStore,
+        PatientVisitService
     ]
 })
 export class PatientManagerModule { }

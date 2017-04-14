@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { Consent } from '../models/consent';
+import { Case } from '../models/case';
 import { ConsentAdapter } from './adapters/consent-adapter';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 
@@ -75,7 +76,6 @@ export class ConsentService {
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
 
-
     getDoctorCaseConsentApproval(Id: Number): Observable<Consent[]> {
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/CompanyCaseConsentApproval/get/' + Id)
@@ -118,27 +118,29 @@ export class ConsentService {
     }
 
 
-    getConsetForm(CaseId: number, companyId: number): Observable<Consent[]> {
-        debugger;
-        let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
+    getConsetForm(CaseId: number, companyId: number): Observable<Case> {
+        let promise: Promise<Case> = new Promise((resolve, reject) => {
             // return this._http.get(this._url + '/fileupload/get/' + CaseId  +'/case').map(res => res.json())
             // return this._http.get(this._url + '/CompanyCaseConsentApproval/getByCaseId/' + CaseId).map(res => res.json())
 
-            return this._http.get(this._url + '/fileupload/get/' + CaseId + '/consent' + '_' + companyId).map(res => res.json())
-                //fileupload/get/86/consent
-                .subscribe((data: Array<any>) => {
-                    let Consent = null;
-                    if (data.length) {
-                        Consent = ConsentAdapter.parseResponse(data);
-                        resolve(data);
-                    } else {
-                        reject(new Error('NOT_FOUND'));
-                    }
+            //changed on 11-4-2017
+            // return this._http.get(this._url + '/fileupload/get/' + CaseId + '/consent' + '_' + companyId).map(res => res.json())
+            //fileupload/get/86/consent
+
+            //changedapi on 13-4-2017 at 1pm
+            return this._http.get(this._url + '/case/GetConsentList/' + CaseId).map(res => res.json())
+                .subscribe((data: any) => {
+                    let consent = null;
+                    // consent = ConsentAdapter.parseResponse(data);
+                    // resolve(data);
+                    consent = ConsentAdapter.parseResponse(data);
+                    resolve(consent);
+
                 }, (error) => {
                     reject(error);
                 });
         });
-        return <Observable<Consent[]>>Observable.fromPromise(promise);
+        return <Observable<Case>>Observable.fromPromise(promise);
     }
 
     deleteConsentform(caseDetail: Consent, companyId: number): Observable<Consent> {
@@ -156,7 +158,7 @@ export class ConsentService {
                 }, (error) => {
                     reject(error);
                 });
-        }); 
+        });
         return <Observable<Consent>>Observable.from(promise);
     }
 
@@ -196,6 +198,21 @@ export class ConsentService {
         });
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
+    getcompney(CaseId: Number): Observable<ConsentAdapter> {
+        let promise: Promise<ConsentAdapter> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Case/getCaseCompanies/' + CaseId).map(res => res.json())
+                .subscribe((data: Array<any>) => {
+                    if (data.length) {
+                        resolve(data);
+                    } else {
+                        reject(new Error('NOT_FOUND'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
 
+        });
+        return <Observable<ConsentAdapter>>Observable.fromPromise(promise);
+    }
 
 }

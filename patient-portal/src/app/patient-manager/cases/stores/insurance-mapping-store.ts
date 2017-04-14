@@ -15,9 +15,9 @@ export class InsuranceMappingStore {
 
     constructor(
         private _insuranceMappingService: InsuranceMappingService,
-        public sessionStore: SessionStore
+        private _sessionStore: SessionStore
     ) {
-        this.sessionStore.userLogoutEvent.subscribe(() => {
+        this._sessionStore.userLogoutEvent.subscribe(() => {
             this.resetStore();
         });
     }

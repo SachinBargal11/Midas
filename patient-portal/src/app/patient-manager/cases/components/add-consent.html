@@ -1,8 +1,35 @@
-<h3 class="with-border">Add Consent</h3>
+<h3 class="with-border">
+    Add Consent</h3>
+<section class="card">
+    <div class="card-block">
+        <div class="col-lg-4">
+            <label class="form-label">Compney name
+                                <span class="color-red">*</span>
+                            </label>
+
+            <div [formGroup]="consentForm" class="form-group" [class.error]="consentformControls.compney.touched && !consentformControls.compney.valid">
+                <select formControlName="compney" type="text" (change)="selectcompany($event)" class="form-control" placeholder="" [class.error]="consentformControls.compney.touched && !consentformControls.compney.valid">
+                            <!--<option value="">-Select companyId-</option>-->
+                            <option *ngFor="let currentCompney of compnies" value="{{currentCompney.id}}">{{currentCompney.name}}</option>
+                            </select>
+                <div class='error-list' *ngIf="consentformControls.compney.touched && !consentformControls.compney.valid">
+                    <ul>
+                        <li *ngIf="consentformControls.compney.hasError('required')">companyId is required.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<br>
+
 <input type="radio" value="1" name="documentMode" [(ngModel)]="documentMode"> Scan Documents
 <input type="radio" value="2" name="documentMode" [(ngModel)]="documentMode"> Upload Documents
 <a style="color: blue" (click)="DownloadTemplate()">Download Template</a>
 <br>
+
+
 
 <section class="card" [hidden]="documentMode != '1'">
     <header class="card-header card-header-lg">
@@ -68,4 +95,3 @@
     </button>-->
     <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
 </div>
-<br>
