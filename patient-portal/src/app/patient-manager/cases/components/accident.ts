@@ -40,22 +40,23 @@ export class AccidentInfoComponent implements OnInit {
     accidentformControls;
     isSaveProgress = false;
     isSaveAccidentProgress = false;
-
+    accAddId: number;
+    hospAddId :number;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
         public _route: ActivatedRoute,
         private _statesStore: StatesStore,
         private _accidentStore: AccidentStore,
-       public notificationsStore: NotificationsStore,
-        public progressBarService: ProgressBarService,
-        public sessionStore: SessionStore,
+        private _notificationsStore: NotificationsStore,
+        private _progressBarService: ProgressBarService,
+        private _sessionStore: SessionStore,
         private _elRef: ElementRef,
         private _notificationsService: NotificationsService,
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
-            this.progressBarService.show();
+            this._progressBarService.show();
             let result = this._accidentStore.getAccidents(this.caseId);
             result.subscribe(
                 (accidents: Accident[]) => {
@@ -78,6 +79,8 @@ export class AccidentInfoComponent implements OnInit {
                             this.selectedCity = this.currentAccident.hospitalAddress.city;
                             this.selectedAccidentCity = this.currentAccident.accidentAddress.city;
                         }
+
+
                     } else {
                         this.currentAccident = new Accident({
                             accidentAddress: new Address({}),
@@ -87,10 +90,10 @@ export class AccidentInfoComponent implements OnInit {
                 },
                 (error) => {
                     this._router.navigate(['../../']);
-                    this.progressBarService.hide();
+                    this._progressBarService.hide();
                 },
                 () => {
-                    this.progressBarService.hide();
+                    this._progressBarService.hide();
                 });
         });
 
@@ -130,11 +133,13 @@ export class AccidentInfoComponent implements OnInit {
     }
 
     save() {
+
         this.isSaveAccidentProgress = true;
         let accidentformValues = this.accidentform.value;
         let addResult;
         let result;
         let accident = new Accident({
+
             caseId: this.caseId,
             isCurrentAccident: 1,
             plateNumber: accidentformValues.plateNumber,
@@ -146,14 +151,17 @@ export class AccidentInfoComponent implements OnInit {
             additionalPatients: accidentformValues.additionalPatient,
             accidentDate: accidentformValues.doa ? moment(accidentformValues.doa) : null,
             accidentAddress: new Address({
+                id: this.currentAccident.accidentAddress.id,
                 address1: accidentformValues.accidentAddress,
                 address2: accidentformValues.accidentAddress2,
                 city: accidentformValues.accidentCity,
                 country: accidentformValues.accidentCountry,
                 state: accidentformValues.accidentState,
                 zipCode: accidentformValues.accidentZipcode
+
             }),
             hospitalAddress: new Address({
+                 id: this.currentAccident.hospitalAddress.id,
                 address1: accidentformValues.address,
                 address2: accidentformValues.address2,
                 city: accidentformValues.city,
@@ -162,8 +170,8 @@ export class AccidentInfoComponent implements OnInit {
                 zipCode: accidentformValues.zipcode
             })
         });
-        this.progressBarService.show();
-        //
+        this._progressBarService.show();
+
         if (this.currentAccident.id) {
             result = this._accidentStore.updateAccident(accident, this.currentAccident.id);
             result.subscribe(
@@ -173,7 +181,7 @@ export class AccidentInfoComponent implements OnInit {
                         'type': 'SUCCESS',
                         'createdAt': moment()
                     });
-                    this.notificationsStore.addNotification(notification);
+                    this._notificationsStore.addNotification(notification);
                     this._router.navigate(['../../'], { relativeTo: this._route });
                 },
                 (error) => {
@@ -184,17 +192,17 @@ export class AccidentInfoComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this.isSaveAccidentProgress = false;
-                    this.notificationsStore.addNotification(notification);
+                    this._notificationsStore.addNotification(notification);
                     this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    this.progressBarService.hide();
+                    this._progressBarService.hide();
                 },
                 () => {
                     this.isSaveAccidentProgress = false;
-                    this.progressBarService.hide();
+                    this._progressBarService.hide();
                 });
 
         }
-        //
+
         else {
             addResult = this._accidentStore.addAccident(accident);
 
@@ -205,7 +213,7 @@ export class AccidentInfoComponent implements OnInit {
                         'type': 'SUCCESS',
                         'createdAt': moment()
                     });
-                    this.notificationsStore.addNotification(notification);
+                    this._notificationsStore.addNotification(notification);
                     this._router.navigate(['/patient-manager/patients']);
                 },
                 (error) => {
@@ -216,13 +224,13 @@ export class AccidentInfoComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this.isSaveAccidentProgress = false;
-                    this.notificationsStore.addNotification(notification);
+                    this._notificationsStore.addNotification(notification);
                     this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    this.progressBarService.hide();
+                    this._progressBarService.hide();
                 },
                 () => {
                     this.isSaveAccidentProgress = false;
-                    this.progressBarService.hide();
+                    this._progressBarService.hide();
                 });
         }
     }

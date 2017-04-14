@@ -1,18 +1,18 @@
 import { Record } from 'immutable';
+import * as moment from 'moment';
 import { RoleType } from './enums/roles';
 
 const UserRoleRecord = Record({
+    id: 0,
     name: null,
-    roleType: null,
-    status: null
+    roleType: RoleType.REGULAR_STAFF,
 });
 
 export class UserRole extends UserRoleRecord {
 
     id: number;
     name: string;
-    roleType: string;
-    status: string;
+    roleType: RoleType;
 
     constructor(props) {
         super(props);
@@ -32,5 +32,4 @@ export class UserRole extends UserRoleRecord {
                 return 'Nurse';
         }
     }
-
 }

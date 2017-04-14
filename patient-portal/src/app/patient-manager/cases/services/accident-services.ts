@@ -16,7 +16,7 @@ export class AccidentService {
     private _headers: Headers = new Headers();
 
     constructor(private _http: Http,
-        public sessionStore: SessionStore
+        private _sessionStore: SessionStore
     ) {
         this._headers.append('Content-Type', 'application/json');
     }
@@ -38,14 +38,17 @@ export class AccidentService {
     }
 
     getAccidents(caseId: Number): Observable<Accident[]> {
+
         let promise: Promise<Accident[]> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/PatientAccidentInfo/getByCaseId/' + caseId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let accidents = (<Object[]>data).map((data: any) => {
+                       
                         return AccidentAdapter.parseResponse(data);
                     });
                     resolve(accidents);
+
                 }, (error) => {
                     reject(error);
                 });
@@ -60,6 +63,7 @@ export class AccidentService {
             requestData.dateOfAdmission = requestData.dateOfAdmission ? requestData.dateOfAdmission.format('YYYY-MM-DD') : null;
             requestData.accidentAddressInfo = requestData.accidentAddress;
             requestData.hospitalAddressInfo = requestData.hospitalAddress;
+
             requestData = _.omit(requestData, 'accidentAdress', 'hospitalAddress');
             return this._http.post(this._url + '/PatientAccidentInfo/Save', JSON.stringify(requestData), {
                 headers: this._headers
@@ -80,10 +84,10 @@ export class AccidentService {
             let requestData: any = accident.toJS();
             requestData.accidentDate = requestData.accidentDate ? requestData.accidentDate.format('YYYY-MM-DD') : null;
             requestData.dateOfAdmission = requestData.dateOfAdmission ? requestData.dateOfAdmission.format('YYYY-MM-DD') : null;
-            requestData.id = accidentId;
+            requestData.id = accidentId;         
             requestData.accidentAddressInfo = requestData.accidentAddress;
-            requestData.hospitalAddressInfo = requestData.hospitalAddress;
-            requestData = _.omit(requestData, 'accidentAdress', 'hospitalAddress');
+            requestData.hospitalAddressInfo = requestData.hospitalAddress;  
+            requestData = _.omit(requestData, 'accidentAddress', 'hospitalAddress');           
             return this._http.post(this._url + '/PatientAccidentInfo/Save', JSON.stringify(requestData), {
                 headers: this._headers
             })

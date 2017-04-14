@@ -14,10 +14,10 @@ import { Address } from '../../../commons/models/address';
 import { ReferringOffice } from '../models/referring-office';
 import { ReferringOfficeStore } from '../stores/referring-office-store';
 import { PatientsStore } from '../../patients/stores/patients-store';
-import { LocationDetails } from '../../../commons/models/location-details';
-import { LocationsStore } from '../../../commons/stores/locations-store';
+import { LocationDetails } from '../../../medical-provider/locations/models/location-details';
+import { LocationsStore } from '../../../medical-provider/locations/stores/locations-store';
 import { User } from '../../../commons/models/user';
-import { UsersStore } from '../../../commons/stores/users-store';
+import { UsersStore } from '../../../medical-provider/users/stores/users-store';
 
 @Component({
     selector: 'edit-referring-office',
@@ -43,10 +43,10 @@ export class EditReferringOfficeComponent implements OnInit {
         private _router: Router,
         public _route: ActivatedRoute,
         private _statesStore: StatesStore,
-       public notificationsStore: NotificationsStore,
-        public progressBarService: ProgressBarService,
+        private _notificationsStore: NotificationsStore,
+        private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
-        public sessionStore: SessionStore,
+        private _sessionStore: SessionStore,
         private _referringOfficeStore: ReferringOfficeStore,
         private _patientsStore: PatientsStore,
         private _locationsStore: LocationsStore,
@@ -58,7 +58,7 @@ export class EditReferringOfficeComponent implements OnInit {
         });
         this._route.params.subscribe((routeParams: any) => {
             let referringOfficeId: number = parseInt(routeParams.id);
-            this.progressBarService.show();
+            this._progressBarService.show();
             let result = this._referringOfficeStore.fetchReferringOfficeById(referringOfficeId);
             result.subscribe(
                 (referringOffice: ReferringOffice) => {
@@ -67,10 +67,10 @@ export class EditReferringOfficeComponent implements OnInit {
                 },
                 (error) => {
                     this._router.navigate(['../../'], { relativeTo: this._route });
-                    this.progressBarService.hide();
+                    this._progressBarService.hide();
                 },
                 () => {
-                    this.progressBarService.hide();
+                    this._progressBarService.hide();
                 });
         });
         this.referringOfficeform = this.fb.group({
@@ -119,7 +119,7 @@ export class EditReferringOfficeComponent implements OnInit {
                 zipCode: referringOfficeformValues.zipcode
             })
         });
-        this.progressBarService.show();
+        this._progressBarService.show();
         result = this._referringOfficeStore.updateReferringOffice(referringOffice);
         result.subscribe(
             (response) => {
@@ -128,7 +128,7 @@ export class EditReferringOfficeComponent implements OnInit {
                     'type': 'SUCCESS',
                     'createdAt': moment()
                 });
-                this.notificationsStore.addNotification(notification);
+                this._notificationsStore.addNotification(notification);
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {
@@ -139,13 +139,13 @@ export class EditReferringOfficeComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this.isSaveProgress = false;
-                this.notificationsStore.addNotification(notification);
+                this._notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                this.progressBarService.hide();
+                this._progressBarService.hide();
             },
             () => {
                 this.isSaveProgress = false;
-                this.progressBarService.hide();
+                this._progressBarService.hide();
             });
     }
 }
