@@ -106,16 +106,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Company ID For Patient 
         public override object GetByCompanyId(int CompanyId)
         {
-                      var patientList1 = _context.Patient2.Include("User")
-                                                          .Include("User.UserCompanies")
-                                                          .Include("User.AddressInfo")
-                                                          .Include("User.ContactInfo")
-                                                          .Where(p => p.User.UserCompanies.Where(p2 =>p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
-                                                          .Any(p3=> p3.CompanyID== CompanyId)                                                                        
-                                                           &&(p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                          .ToList<Patient2>();
+            var patientList1 = _context.Patient2.Include("User")
+                                                .Include("User.UserCompanies")
+                                                .Include("User.AddressInfo")
+                                                .Include("User.ContactInfo")
+                                                .Where(p => p.User.UserCompanies.Where(p2 =>p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
+                                                .Any(p3=> p3.CompanyID== CompanyId)                                                                        
+                                                &&(p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                .ToList<Patient2>();
 
-            var patientList2 = _context.Referrals.Include("Case")
+            var referralList = _context.Referrals.Include("Case")
                                                  .Include("Case.CompanyCaseConsentApprovals")
                                                  .Include("Case.Patient2.User")
                                                  .Include("Case.Patient2.User.UserCompanies")
@@ -123,8 +123,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                  .Include("Case.Patient2.User.ContactInfo")
                                                  .Where(p => p.ReferredToCompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)) 
                                                   && p.Case.CompanyCaseConsentApprovals.Any(p2 => p2.CompanyId == CompanyId 
-                                                  && (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false)))).Select(p3 => p3.Case.Patient2)
-                                                  .ToList();
+                                                  && (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))))                                                  
+                                                  .ToList<Referral>();
+            var patientList2 = referralList.Select(p => p.Case.Patient2).ToList();
 
             if (patientList1 == null && patientList2 == null)
             {
