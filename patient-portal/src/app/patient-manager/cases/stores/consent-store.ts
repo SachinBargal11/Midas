@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
 import { Consent } from '../models/consent';
+import { Case } from '../models/case';
 import { ConsentService } from '../services/consent-service';
 import { List } from 'immutable';
 import { BehaviorSubject } from 'rxjs/Rx';
@@ -115,11 +116,11 @@ export class ConsentStore {
 //         return <Observable<Consent[]>>Observable.fromPromise(promise);
 //     }
 
-    deleteConsetForm(caseDetail: Consent,companyId: number): Observable<Consent> {
+    deleteConsetForm(caseDetail: Consent, companyId: number): Observable<Consent> {
         let cases = this._Consent.getValue();
         let index = cases.findIndex((currentCase: Consent) => currentCase.id === caseDetail.id);
         let promise = new Promise((resolve, reject) => {
-            this._ConsentFormService.deleteConsentform(caseDetail,companyId).subscribe((caseDetail: Consent) => {
+            this._ConsentFormService.deleteConsent(caseDetail, companyId).subscribe((caseDetail: Consent) => {
                 this._Consent.next(cases.delete(index));
                 resolve(caseDetail);
             }, error => {
@@ -127,6 +128,16 @@ export class ConsentStore {
             });
         });
         return <Observable<Consent>>Observable.from(promise);
+    }
+    deleteCompanyConsent(caseDetail: Case, companyId: number): Observable<Case> {
+        let promise = new Promise((resolve, reject) => {
+            this._ConsentFormService.deleteCompanyConsent(caseDetail, companyId).subscribe((caseDetail: Case) => {
+                resolve(caseDetail);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Case>>Observable.from(promise);
     }
 
 

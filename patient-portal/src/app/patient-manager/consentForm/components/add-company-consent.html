@@ -1,6 +1,6 @@
 <h3 class="with-border">
     Add Consent</h3>
-<section class="card">
+<!--<section class="card">
     <div class="card-block">
         <div class="col-lg-4">
             <label class="form-label">Company Name
@@ -9,7 +9,6 @@
 
             <div [formGroup]="consentForm" class="form-group" [class.error]="consentformControls.company.touched && !consentformControls.company.valid">
                 <select formControlName="company" type="text" (change)="selectcompany($event)" class="form-control" placeholder="" [class.error]="consentformControls.company.touched && !consentformControls.company.valid">
-                            <!--<option value="">-Select companyId-</option>-->
                             <option *ngFor="let currentCompany of companies" value="{{currentCompany.id}}">{{currentCompany.name}}</option>
                             </select>
                 <div class='error-list' *ngIf="consentformControls.company.touched && !consentformControls.company.valid">
@@ -22,6 +21,6 @@
         </div>
     </div>
 </section>
-<br>
+<br>-->
 <a style="color: blue" (click)="DownloadTemplate()">Download Template</a><!---->
 <app-document-upload [url]="url" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>

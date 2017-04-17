@@ -5,34 +5,30 @@ import { NotificationsStore } from '../../../commons/stores/notifications-store'
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
 import { environment } from '../../../../environments/environment';
-import { Message } from 'primeng/primeng'
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-//import { FileUpload, FileUploadModule } from 'primeng/primeng';
 import { ConsentStore } from '../../cases/stores/consent-store';
 import { SessionStore } from '../../../commons/stores/session-store';
-import { ConsentService } from '../../cases/services/consent-service';
-import { AddConsent } from '../models/add-consent-form';
 import { ElementRef, Input, ViewChild } from '@angular/core';
 import { Http } from '@angular/http';
 import * as _ from 'underscore';
 import { ScannerService } from '../../../commons/services/scanner-service';
 import { Document } from '../../../commons/models/document';
 
+import { Patient } from '../../patients/models/patient';
+import { PatientsStore } from '../../patients/stores/patients-store';
 import { CaseDocument } from '../../cases/models/case-document';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Consent } from '../../cases/models/consent';
 
 @Component({
-    selector: 'compney-add-consent',
-    templateUrl: './compney-add-consent.html',
-    providers: [ConsentService]
+    selector: 'add-company-consent',
+    templateUrl: './add-company-consent.html'
 })
 
-export class AddCompneyConsentComponent implements OnInit {
+export class AddCompanyConsentComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
-    msgs: Message[];
     uploadedFiles: any[] = [];
     uploadedFile = "";
     currentId: number;
@@ -57,21 +53,23 @@ export class AddCompneyConsentComponent implements OnInit {
     companyId: number;
     fileName: string;
     fileUploaded: string;
-    document: AddConsent[] = [];
+    document: Consent[] = [];
     documentMode: string = 'one';
     selectedcompany = 0;
     documents: CaseDocument[] = [];
     consentDetail: Consent;
+    patient: Patient;
+
     constructor(
         private fb: FormBuilder,
-        private service: ConsentService,
         private _router: Router,
         public sessionStore: SessionStore,
         public _route: ActivatedRoute,
-        private _AddConsentStore: ConsentStore,
+        private _consentStore: ConsentStore,
         public notificationsStore: NotificationsStore,
         public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
+        private _patientsStore: PatientsStore,
         private http: Http,
         private _scannerService: ScannerService,
         private _notificationsStore: NotificationsStore,
@@ -79,19 +77,31 @@ export class AddCompneyConsentComponent implements OnInit {
 
     ) {
 
-        this._route.parent.parent.params.subscribe((routeParams: any) => {
-
+        this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
-            // let companyId: number = this.sessionStore.session.currentCompany.id;
-            this.companyId = this.sessionStore.session.currentCompany.id;
-            this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
-            this.consentForm = this.fb.group({
-                company: ['', Validators.required]
-                // ,uploadedFiles: ['', Validators.required]
-            });
+            this.patientId = this.sessionStore.session.user.id;
+            this.progressBarService.show();
+            this._patientsStore.fetchPatientById(this.patientId)
+                .subscribe((patient: Patient) => {
+                    this.patient = patient;
+                    this.companyId = patient.companyId;
+                    this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
 
-            this.consentformControls = this.consentForm.controls;
-        })
+                },
+                (error) => {
+                    this.progressBarService.hide();
+                },
+                () => {
+
+                    this.progressBarService.hide();
+                });
+        });
+        this.consentForm = this.fb.group({
+            company: ['', Validators.required]
+            // ,uploadedFiles: ['', Validators.required]
+        });
+
+        this.consentformControls = this.consentForm.controls;
 
     }
 
@@ -100,9 +110,9 @@ export class AddCompneyConsentComponent implements OnInit {
         let currentDate = today.getDate();
         this.maxDate = new Date();
         this.maxDate.setDate(currentDate);
-        this._AddConsentStore.getCompany(this.caseId)
-            .subscribe(company => this.companies = company);
-        this.getDocuments();
+        // this._consentStore.getCompany(this.caseId)
+        //     .subscribe(company => this.companies = company);
+        // this.getDocuments();
     }
 
     selectcompany(event) {
@@ -148,62 +158,63 @@ export class AddCompneyConsentComponent implements OnInit {
         window.location.assign(this._url + '/CompanyCaseConsentApproval/download/' + this.caseId + '/' + this.companyId);
     }
 
-    // Save() {
-    //     if (this.uploadedFiles.length == 0) {
-    //         let errString = 'Please upload file.'
-    //         let notification = new Notification({
+    Save() {
+        if (this.uploadedFiles.length == 0) {
+            let errString = 'Please upload file.'
+            let notification = new Notification({
 
-    //             'title': 'Please upload file!',
-    //             'type': 'SUCCESS',
-    //             'createdAt': moment()
-    //         });
-    //         this.notificationsStore.addNotification(notification);
-    //         // this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(notification, notification));
-    //         this._notificationsService.error('Oh No!', "Please upload file");
-    //         this.progressBarService.hide();
-    //     }
-    //     else {
-    //         this.isSaveProgress = true;
-    //         let consentFormValues = this.consentForm.value;
-    //         let result;
-    //         let consentDetail = new AddConsent({
+                'title': 'Please upload file!',
+                'type': 'SUCCESS',
+                'createdAt': moment()
+            });
+            this.notificationsStore.addNotification(notification);
+            // this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(notification, notification));
+            this._notificationsService.error('Oh No!', "Please upload file");
+            this.progressBarService.hide();
+        }
+        else {
+            this.isSaveProgress = true;
+            let consentFormValues = this.consentForm.value;
+            let result;
+            let consentDetail = new Consent({
 
-    //             caseId: this.caseId,
-    //             patientId: this.patientId,
-    //             doctorId: parseInt(consentFormValues.doctor),
-    //             consentReceived: this.UploadedFileName
-    //         });
+                companyId: this.companyId,
+                caseId: this.caseId,
+                patientId: this.patientId,
+                doctorId: parseInt(consentFormValues.doctor),
+                consentReceived: this.UploadedFileName
+            });
 
-    //         this.progressBarService.show();
-    //         result = this._AddConsentStore.Save(consentDetail);
-    //         result.subscribe(
-    //             (response) => {
-    //                 let notification = new Notification({
-    //                     'title': 'Consent form added successfully!',
-    //                     'type': 'SUCCESS',
-    //                     'createdAt': moment()
-    //                 });
-    //                 this.notificationsStore.addNotification(notification);
-    //                 this._router.navigate(['../'], { relativeTo: this._route });
-    //             },
-    //             (error) => {
-    //                 let errString = 'Unable to add Consent form.';
-    //                 let notification = new Notification({
-    //                     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-    //                     'type': 'ERROR',
-    //                     'createdAt': moment()
-    //                 });
-    //                 this.isSaveProgress = false;
-    //                 this.notificationsStore.addNotification(notification);
-    //                 this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-    //                 this.progressBarService.hide();
-    //             },
-    //             () => {
-    //                 this.isSaveProgress = false;
-    //                 this.progressBarService.hide();
-    //             });
-    //     }
-    // }
+            this.progressBarService.show();
+            result = this._consentStore.Save(consentDetail);
+            result.subscribe(
+                (response) => {
+                    let notification = new Notification({
+                        'title': 'Consent form added successfully!',
+                        'type': 'SUCCESS',
+                        'createdAt': moment()
+                    });
+                    this.notificationsStore.addNotification(notification);
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                },
+                (error) => {
+                    let errString = 'Unable to add Consent form.';
+                    let notification = new Notification({
+                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    this.isSaveProgress = false;
+                    this.notificationsStore.addNotification(notification);
+                    this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                    this.progressBarService.hide();
+                },
+                () => {
+                    this.isSaveProgress = false;
+                    this.progressBarService.hide();
+                });
+        }
+    }
 
 
 }
