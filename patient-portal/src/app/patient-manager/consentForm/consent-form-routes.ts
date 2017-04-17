@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ValidateActiveSession } from '../../commons/guards/validate-active-session';
 
-import { AddDocConsentFormComponent } from './components/add-consent-form'
-import { ConsentDocListComponent } from './components/list-consent-form'
+import { AddCompneyConsentComponent } from '../consentForm/components/compney-add-consent';
+
+import { ListCompneyConsentComponent } from './components/list-compney-consent'
 import { ShellComponent } from '../../commons/shell-component';
 import { SessionStore } from '../../commons/stores/session-store';
 
@@ -24,7 +25,7 @@ export const ConsentShellRoutes: Routes = [
         children: [
             {
                 path: '',
-                component: ConsentDocListComponent,
+                component: ListCompneyConsentComponent,
                 data: {
                     breadcrumb: 'root'
                 }
@@ -32,7 +33,7 @@ export const ConsentShellRoutes: Routes = [
 
             {
                 path: 'add',
-                component: AddDocConsentFormComponent,
+                component: AddCompneyConsentComponent,
                 canActivate: [ValidateActiveSession],
                 data: {
                     breadcrumb: 'Add Consent form'

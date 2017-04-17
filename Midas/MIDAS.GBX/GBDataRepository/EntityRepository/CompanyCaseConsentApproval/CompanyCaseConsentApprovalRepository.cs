@@ -37,6 +37,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             companyCaseConsentApprovalBO.ID = companyCaseConsentApproval.Id;
             companyCaseConsentApprovalBO.CompanyId = companyCaseConsentApproval.CompanyId;
             companyCaseConsentApprovalBO.CaseId = companyCaseConsentApproval.CaseId;
+            companyCaseConsentApprovalBO.ConsentGivenTypeId = companyCaseConsentApproval.ConsentGivenTypeId;
             companyCaseConsentApprovalBO.IsDeleted = companyCaseConsentApproval.IsDeleted;
             companyCaseConsentApprovalBO.CreateByUserID = companyCaseConsentApproval.CreateByUserID;
             companyCaseConsentApprovalBO.UpdateByUserID = companyCaseConsentApproval.UpdateByUserID;
@@ -117,6 +118,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                     companyCaseConsentApprovalDB.CompanyId = companyCaseConsentApprovalBO.CompanyId;
                     companyCaseConsentApprovalDB.CaseId = (int)companyCaseConsentApprovalBO.CaseId;
+                    companyCaseConsentApprovalDB.ConsentGivenTypeId = companyCaseConsentApprovalBO.ConsentGivenTypeId;
 
                     if (Add_companyCaseConsentApproval == true)
                     {

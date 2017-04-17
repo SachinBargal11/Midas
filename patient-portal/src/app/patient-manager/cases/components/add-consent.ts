@@ -20,6 +20,9 @@ import * as _ from 'underscore';
 import { ScannerService } from '../../../commons/services/scanner-service';
 import { DialogModule } from 'primeng/primeng';
 import { ConsentAdapter } from '../services/adapters/consent-adapter';
+import { CaseDocument } from '../models/case-document';
+import { CasesStore } from '../../cases/stores/case-store';
+import { Document } from '../../../commons/models/document';
 
 @Component({
     selector: 'add-consent',
@@ -37,7 +40,7 @@ export class AddConsentComponent implements OnInit {
     UploadedFileName: string;
     //document: VisitDocument;
     url;
-    compnies: any[];
+    companies: any[];
     isdoctorsLoading = false;
     isSaveProgress = false;
     states: any[];
@@ -59,13 +62,12 @@ export class AddConsentComponent implements OnInit {
     selectedDoctoredit = 0;
     EditId: number = 0;
     documentMode: string = '3';
-    scannerContainerId: string = `scanner_${moment().valueOf()}`;
-    twainSources: TwainSource[] = [];
-    selectedTwainSource: TwainSource = null;
     _dwObject: any = null;
-    documents: Consent[] = [];
+    //documents: Consent[] = [];
     dialogVisible: boolean = false;
-
+    currentCaseId: number;
+    documents: CaseDocument[] = [];
+currentCompany :number;
     constructor(
         private fb: FormBuilder,
         private service: ConsentService,
@@ -77,7 +79,8 @@ export class AddConsentComponent implements OnInit {
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private http: Http,
-        private _scannerService: ScannerService
+        private _scannerService: ScannerService,
+        private _casesStore: CasesStore,
 
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
@@ -102,96 +105,45 @@ export class AddConsentComponent implements OnInit {
         this.maxDate = new Date();
         this.maxDate.setDate(currentDate);
         debugger;
-        this._AddConsentStore.getCompney(this.caseId)
-            .subscribe(compney => this.compnies = compney);
-        this.downloadDocument();
+        this._AddConsentStore.getCompany(this.caseId)
+            .subscribe(company => this.companies = company);
+        this.getDocuments();
+        
     }  
-
 
     selectcompany(event) {
         this.selectedcompany = 0;
-        let currentCompney = event.target.value;
+        this.currentCompany = event.target.value;
     }
 
-    myfile = {
-        "name": "Mubashshir",
-        "image": ''
-    }
+           
 
-    onUpload(event) {
-        let responseDocuments: any = JSON.parse(event.xhr.responseText);
-        // alert(responseDocuments.errorMessage);
-
-        if (typeof responseDocuments.errorMessage !== "undefined") {
-
-            let notification = new Notification({
-                'title': responseDocuments.errorMessage,
-                'type': 'ERROR',
-                'createdAt': moment()
-            });
-            this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists');
-            this._progressBarService.hide();
-            // this._router.navigate(['../'], { relativeTo: this._route });
-        }
-        else {
-            let documents = (<Object[]>responseDocuments).map((document: any) => {
-                return ConsentAdapter.parseResponse(document);
-            });
-            for (let file of event.files) {
-                this.uploadedFile = file.name;
-                this.uploadedFiles.push(file);
-                // this.UploadedFileName.push( this.uploadedFiles.push(file));
-                //  this.myfile.image = file.name; 
-                this.UploadedFileName = file.name;
-                // alert(file.name);   
+     documentUploadComplete(documents: Document[]) {
+        _.forEach(documents, (currentDocument: Document) => {
+            if (currentDocument.status == 'Failed') {
+                let notification = new Notification({
+                    'title': currentDocument.message + '  ' + currentDocument.documentName,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists');
             }
-            this.msgs = [];
-            _.forEach(documents, (currentDocument: any) => {
-                if (currentDocument.status == 'Failed') {
-                    this.uploadedFiles = [];
-
-                    let notification = new Notification({
-                        'title': currentDocument.message + '  ' + currentDocument.documentName,
-                        'type': 'ERROR',
-                        'createdAt': moment()
-                    });
-                    this._notificationsStore.addNotification(notification);
-                    this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists');
-                }
-                else {
-                    let notification = new Notification({
-                        'title': 'Consent Uploaded Successfully!',
-                        'type': 'SUCCESS',
-                        'createdAt': moment()
-                    });
-                    this._notificationsStore.addNotification(notification);
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                }
-            });
-
-        }
-
-
-        // let notification = new Notification({
-
-        //     'title': 'File Uploaded!',
-        //     'type': 'SUCCESS',
-        //     'createdAt': moment()
-        // });
-        // this._notificationsStore.addNotification(notification);
-        // this.msgs.push({ severity: 'info', summary: 'File Uploaded', detail: this.UploadedFileName });
-        // this.msgs.push({ UploadedFileName});
-        // this.downloadDocument();
+        });
+        this.getDocuments();
     }
 
-    downloadDocument() {
-        this._progressBarService.show();
-        this._AddConsentStore.getDocumentsForCaseId(this.caseId)
-            .subscribe(document => {
-                this.document = document
+    documentUploadError(error: Error) {
+        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+    }
 
+    getDocuments() {
+        this._progressBarService.show();
+        this._casesStore.getDocumentsForCaseId(this.currentCaseId)
+            .subscribe(document => {
+                this.documents = document;
             },
+
             (error) => {
                 this._progressBarService.hide();
             },
@@ -199,6 +151,7 @@ export class AddConsentComponent implements OnInit {
                 this._progressBarService.hide();
             });
     }
+
     Save() {
         if (this.uploadedFiles.length == 0) {
             let errString = 'Please upload file.'
@@ -223,7 +176,7 @@ export class AddConsentComponent implements OnInit {
                 patientId: this.patientId,
                 doctorId: parseInt(consentFormValues.doctor),
                 consentReceived: this.UploadedFileName,
-                companyId: this.companyId
+                companyId: this.currentCompany
             });
 
             this._progressBarService.show();
@@ -262,8 +215,4 @@ export class AddConsentComponent implements OnInit {
         window.location.assign(this._url + '/CompanyCaseConsentApproval/download/' + this.caseId + '/' + this.companyId);
     }
 
-}
-export interface TwainSource {
-    idx: number;
-    name: string;
 }

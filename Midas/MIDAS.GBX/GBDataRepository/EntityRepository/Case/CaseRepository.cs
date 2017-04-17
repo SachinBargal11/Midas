@@ -406,10 +406,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region Get By Patient Id
-        public override object GetByPatientId(int PatientId)
+        #region Get By Patient Id and CompanyId
+        public override object Get2(int PatientId,int CompanyId)
         {
-            var acc = _context.Cases.Include("PatientEmpInfo")
+            var caseList1 = _context.Cases.Include("PatientEmpInfo")
                                     .Include("PatientEmpInfo.AddressInfo")
                                     .Include("PatientEmpInfo.ContactInfo")
                                     .Include("CaseCompanyMappings")
@@ -422,13 +422,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .ToList<Case>();
 
-            if (acc == null)
+            var referralList = _context.Referrals.Include("Case")
+                                                .Include("Case.CompanyCaseConsentApprovals")
+                                                .Include("Case.CaseCompanyMappings")
+                                                .Include("Case.Patient2.User")                                               
+                                                .Include("Case.Patient2.User.UserCompanies")
+                                                .Include("Case.Patient2.User.AddressInfo")
+                                                .Include("Case.Patient2.User.ContactInfo")
+                                                .Where(p => p.ReferredToCompanyId == CompanyId && p.Case.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                 && p.Case.CompanyCaseConsentApprovals.Any(p2 => p2.CompanyId == CompanyId
+                                                 && (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))))
+                                                 .ToList<Referral>();
+
+            var caseList2 = referralList.Select(p => p.Case).ToList();
+
+            if (caseList1 == null && caseList2==null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
             List<BO.Case> lstcase = new List<BO.Case>();
-            foreach (Case item in acc)
+            foreach (Case item in caseList1.Union(caseList2))
             {
                 lstcase.Add(Convert<BO.Case, Case>(item));
             }
@@ -813,7 +827,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 BO.Company boCompany = ConvertCompany<BO.Company, Company>(item);
                 if (boCompany != null)
                 {
-                    lstcompany.Add(ConvertCompany<BO.Company, Company>(item));
+                    lstcompany.Add(boCompany);
                 }
             }            
 

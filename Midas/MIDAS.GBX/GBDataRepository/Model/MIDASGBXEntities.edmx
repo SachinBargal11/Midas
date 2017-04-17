@@ -224,6 +224,7 @@
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="ConsentGivenTypeId" Type="tinyint" Nullable="false" />
         </EntityType>
         <EntityType Name="CompanySpecialtyDetails">
           <Key>
@@ -260,6 +261,14 @@
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="ConsentGivenType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" Nullable="false" />
+          <Property Name="TypeText" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TypeDescription" Type="nvarchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="ContactInfo">
           <Key>
@@ -347,8 +356,8 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
             <PropertyRef Name="ChildNode" />
           </Key>
           <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="ParentNode" Type="nchar" MaxLength="10" />
-          <Property Name="ChildNode" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="ParentNode" Type="nvarchar" MaxLength="10" />
+          <Property Name="ChildNode" Type="nvarchar" MaxLength="10" Nullable="false" />
         </EntityType>
         <EntityType Name="Gender">
           <Key>
@@ -1380,6 +1389,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="CompanyCaseConsentApproval">
               <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyCaseConsentApproval_ConsentGivenType_ConsentGivenTypeId">
+          <End Role="ConsentGivenType" Type="Self.ConsentGivenType" Multiplicity="1" />
+          <End Role="CompanyCaseConsentApproval" Type="Self.CompanyCaseConsentApproval" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConsentGivenType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompanyCaseConsentApproval">
+              <PropertyRef Name="ConsentGivenTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2446,6 +2467,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="CompanyCaseConsentApproval" EntityType="Self.CompanyCaseConsentApproval" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompanySpecialtyDetails" EntityType="Self.CompanySpecialtyDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompanyType" EntityType="Self.CompanyType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ConsentGivenType" EntityType="Self.ConsentGivenType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContactInfo" EntityType="Self.ContactInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DoctorLocationSchedule" EntityType="Self.DoctorLocationSchedule" Schema="dbo" store:Type="Tables" />
@@ -2611,6 +2633,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </AssociationSet>
           <AssociationSet Name="FK_CompanyCaseConsentApproval_Company_CompanyId" Association="Self.FK_CompanyCaseConsentApproval_Company_CompanyId">
             <End Role="Company" EntitySet="Company" />
+            <End Role="CompanyCaseConsentApproval" EntitySet="CompanyCaseConsentApproval" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyCaseConsentApproval_ConsentGivenType_ConsentGivenTypeId" Association="Self.FK_CompanyCaseConsentApproval_ConsentGivenType_ConsentGivenTypeId">
+            <End Role="ConsentGivenType" EntitySet="ConsentGivenType" />
             <End Role="CompanyCaseConsentApproval" EntitySet="CompanyCaseConsentApproval" />
           </AssociationSet>
           <AssociationSet Name="FK_CompanySpecialtyDetails_Company" Association="Self.FK_CompanySpecialtyDetails_Company">
@@ -3252,8 +3278,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="ConsentGivenTypeId" Type="Byte" Nullable="false" />
           <NavigationProperty Name="Case" Relationship="Self.FK_CompanyCaseConsentApproval_Case_CaseId" FromRole="CompanyCaseConsentApproval" ToRole="Case" />
           <NavigationProperty Name="Company" Relationship="Self.FK_CompanyCaseConsentApproval_Company_CompanyId" FromRole="CompanyCaseConsentApproval" ToRole="Company" />
+          <NavigationProperty Name="ConsentGivenType" Relationship="Self.FK_CompanyCaseConsentApproval_ConsentGivenType_ConsentGivenTypeId" FromRole="CompanyCaseConsentApproval" ToRole="ConsentGivenType" />
         </EntityType>
         <EntityType Name="CompanySpecialtyDetail">
           <Key>
@@ -3293,6 +3321,15 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Companies" Relationship="Self.FK_Company_CompanyType" FromRole="CompanyType" ToRole="Company" />
+        </EntityType>
+        <EntityType Name="ConsentGivenType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" />
+          <Property Name="TypeText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TypeDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CompanyCaseConsentApprovals" Relationship="Self.FK_CompanyCaseConsentApproval_ConsentGivenType_ConsentGivenTypeId" FromRole="ConsentGivenType" ToRole="CompanyCaseConsentApproval" />
         </EntityType>
         <EntityType Name="ContactInfo">
           <Key>
@@ -4228,8 +4265,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <PropertyRef Name="ChildNode" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="ParentNode" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="ChildNode" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ParentNode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ChildNode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
         <Association Name="FK_AdjusterMaster_AddressInfo_AddressInfoId">
           <End Role="AddressInfo" Type="Self.AddressInfo" Multiplicity="0..1" />
@@ -4852,6 +4889,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="UserCompany">
               <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyCaseConsentApproval_ConsentGivenType_ConsentGivenTypeId">
+          <End Role="ConsentGivenType" Type="Self.ConsentGivenType" Multiplicity="1" />
+          <End Role="CompanyCaseConsentApproval" Type="Self.CompanyCaseConsentApproval" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConsentGivenType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompanyCaseConsentApproval">
+              <PropertyRef Name="ConsentGivenTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5630,6 +5679,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="CompanyCaseConsentApprovals" EntityType="Self.CompanyCaseConsentApproval" />
           <EntitySet Name="CompanySpecialtyDetails" EntityType="Self.CompanySpecialtyDetail" />
           <EntitySet Name="CompanyTypes" EntityType="Self.CompanyType" />
+          <EntitySet Name="ConsentGivenTypes" EntityType="Self.ConsentGivenType" />
           <EntitySet Name="ContactInfoes" EntityType="Self.ContactInfo" />
           <EntitySet Name="Doctors" EntityType="Self.Doctor" />
           <EntitySet Name="DoctorLocationSchedules" EntityType="Self.DoctorLocationSchedule" />
@@ -5886,6 +5936,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_UserCompany_Company" Association="Self.FK_UserCompany_Company">
             <End Role="Company" EntitySet="Companies" />
             <End Role="UserCompany" EntitySet="UserCompanies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyCaseConsentApproval_ConsentGivenType_ConsentGivenTypeId" Association="Self.FK_CompanyCaseConsentApproval_ConsentGivenType_ConsentGivenTypeId">
+            <End Role="ConsentGivenType" EntitySet="ConsentGivenTypes" />
+            <End Role="CompanyCaseConsentApproval" EntitySet="CompanyCaseConsentApprovals" />
           </AssociationSet>
           <AssociationSet Name="FK_CompanySpecialtyDetails_Specialty" Association="Self.FK_CompanySpecialtyDetails_Specialty">
             <End Role="Specialty" EntitySet="Specialties" />
@@ -6379,6 +6433,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="ConsentGivenTypeId" ColumnName="ConsentGivenTypeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6417,6 +6472,15 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ConsentGivenTypes">
+            <EntityTypeMapping TypeName="MIDASGBXModel.ConsentGivenType">
+              <MappingFragment StoreEntitySet="ConsentGivenType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TypeText" ColumnName="TypeText" />
+                <ScalarProperty Name="TypeDescription" ColumnName="TypeDescription" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

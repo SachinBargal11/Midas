@@ -198,7 +198,7 @@ export class ConsentService {
         });
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
-    getcompney(CaseId: Number): Observable<ConsentAdapter> {
+    getcompany(CaseId: Number): Observable<ConsentAdapter> {
         let promise: Promise<ConsentAdapter> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/Case/getCaseCompanies/' + CaseId).map(res => res.json())
                 .subscribe((data: Array<any>) => {

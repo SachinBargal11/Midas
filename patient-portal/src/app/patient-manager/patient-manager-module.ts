@@ -61,8 +61,9 @@ import { AdjusterMasterService } from './patients/services/adjuster-service';
 //import { ConsentShellRoutingModule } from './consentForm/consent-form-routes';
 
 
-import { AddDocConsentFormComponent } from './consentForm/components/add-consent-form';
-import { ConsentDocListComponent } from './consentForm/components/list-consent-form'
+import { AddCompneyConsentComponent} from './consentForm/components/compney-add-consent';
+
+import { ListCompneyConsentComponent } from './consentForm/components/list-compney-consent'
 import { AddDocConsentFormService } from './consentForm/services/consent-form-service';
 import { EditDocConsentFormComponent } from './consentForm/components/edit-consent-form'
 import { AddDocConsentStore } from './consentForm/stores/add-consent-form-store';
@@ -136,8 +137,8 @@ import { DocumentsUploadComponent } from './cases/components/documents';
         CaseBasicComponent,
         // InsuranceMapComponent,
         // CaseMappingComponent,
-        ViewAllComponent, AddDocConsentFormComponent
-        , ConsentDocListComponent, EditDocConsentFormComponent
+        ViewAllComponent, AddCompneyConsentComponent
+        , ListCompneyConsentComponent, EditDocConsentFormComponent
         , ConsentListComponent, AddConsentComponent
         , CompanyCasesComponent, AddCaseComponent, PatientVisitListComponent,
         PatientVisitNotesComponent,

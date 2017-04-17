@@ -38,11 +38,14 @@
              <a *ngIf="!case.isConsentReceived(sessionStore.session.currentCompany.id)" routerLink="{{case.patient.id}}/{{case.id}}/consent"><u>No</u></a>
         </ng-template>
     </p-column>
-    <p-column  header="Referral History">
+    <p-column  header="Referral Status">
         <ng-template let-case="rowData" pTemplate="body">
-            <a routerLink="/patient-manager/referrals/inbound-referrals">
+            <a *ngIf="case.getInboundReferral(sessionStore.session.currentCompany.id)" routerLink="/patient-manager/referrals/inbound-referrals"><u>Inbound</u></a>
+            <a *ngIf="case.getOutboundReferral(sessionStore.session.currentCompany.id) && !case.getInboundReferral(sessionStore.session.currentCompany.id)" routerLink="/patient-manager/referrals/outbound-referrals"><u>Outbound</u></a>
+            <a *ngIf="!case.getInboundReferral(sessionStore.session.currentCompany.id)"><u></u></a>
+            <!--<a routerLink="/patient-manager/referrals/inbound-referrals">
                 <u>{{referralAvailable(case)}}</u>
-            </a>
+            </a>-->
         </ng-template>
     </p-column>
     <p-column styleClass="actions-cell" header="Actions">

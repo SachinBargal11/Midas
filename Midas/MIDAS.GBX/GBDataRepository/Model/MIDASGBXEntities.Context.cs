@@ -43,6 +43,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<CompanyCaseConsentApproval> CompanyCaseConsentApprovals { get; set; }
         public virtual DbSet<CompanySpecialtyDetail> CompanySpecialtyDetails { get; set; }
         public virtual DbSet<CompanyType> CompanyTypes { get; set; }
+        public virtual DbSet<ConsentGivenType> ConsentGivenTypes { get; set; }
         public virtual DbSet<ContactInfo> ContactInfoes { get; set; }
         public virtual DbSet<Doctor> Doctors { get; set; }
         public virtual DbSet<DoctorLocationSchedule> DoctorLocationSchedules { get; set; }

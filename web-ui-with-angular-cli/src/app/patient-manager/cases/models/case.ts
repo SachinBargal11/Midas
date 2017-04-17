@@ -98,6 +98,25 @@ export class Case extends CaseRecord {
             }
         });
         return isConsentReceived;
+    }    
+    
+    getInboundReferral(companyId): boolean {
+        let isInboundReferral: boolean = false;
+        _.forEach(this.referral, (currentReferral: Referral) => {
+            if (currentReferral.referredToCompanyId === companyId) {
+                isInboundReferral = true;
+            } 
+        });
+        return isInboundReferral;
+    }
+    getOutboundReferral(companyId): boolean {
+        let isOutboundReferral: boolean = false;
+        _.forEach(this.referral, (currentReferral: Referral) => {
+            if (currentReferral.referringCompanyId === companyId) {
+                isOutboundReferral = true;
+            }
+        });
+        return isOutboundReferral;
     }
 
 }
