@@ -96,7 +96,8 @@ export class ScheduledEvent extends ScheduledEventRecord {
                     start: moment(occurrence).local(),
                     end: moment(occurrence).add(duration).local(),
                     owningEvent: this,
-                    eventWrapper: eventWrapper
+                    eventWrapper: eventWrapper,
+                    eventColor: '#378006'
                 });
             }).value();
         } else {
@@ -107,7 +108,8 @@ export class ScheduledEvent extends ScheduledEventRecord {
                     start: this.eventStart ? this.eventStart.clone().local() : null,
                     end: this.eventEnd ? this.eventEnd.clone().local() : null,
                     owningEvent: this,
-                    eventWrapper: eventWrapper
+                    eventWrapper: eventWrapper,
+                    eventColor: '#378006'
                 })
             ];
         }

@@ -1,3 +1,4 @@
+import { CaseAdapter } from '../../../cases/services/adapters/case-adapter';
 import * as moment from 'moment';
 import { PatientVisit } from '../../models/patient-visit';
 import { RoomsAdapter } from '../../../../medical-provider/rooms/services/adapters/rooms-adapter';
@@ -13,15 +14,14 @@ export class PatientVisitAdapter {
         patientVisit = new PatientVisit({
             id: data.id,
             calendarEventId: data.calendarEventId,
+            case: CaseAdapter.parseResponse(data.case),
             caseId: data.caseId,
             patientId: data.patientId,
             patient: PatientAdapter.parseResponse(data.patient2),
             locationId: data.locationId,
             roomId: data.roomId,
-            // room: data.room ? RoomsAdapter.parseResponse(data.room):null,
-            room: RoomsAdapter.parseResponse(data.room),
-            // doctor:data.doctor ? DoctorAdapter.parseResponse(data.doctor):null,
-            doctor: DoctorAdapter.parseResponse(data.doctor),
+            room: data.room ? RoomsAdapter.parseResponse(data.room) : null,
+            doctor: data.doctor ? DoctorAdapter.parseResponse(data.doctor) : null,
             doctorId: data.doctorId,
             specialtyId: data.specialtyId,
             eventStart: data.eventStart ? moment.utc(data.eventStart) : null,
