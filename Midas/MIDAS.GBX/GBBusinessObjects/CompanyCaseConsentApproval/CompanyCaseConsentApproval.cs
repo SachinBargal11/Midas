@@ -15,6 +15,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("caseId")]
         public int? CaseId { get; set; }
 
+        [JsonProperty("consentGivenTypeId")]
+        public byte ConsentGivenTypeId { get; set; }
+
         [JsonProperty("case")]
         public Case Case { get; set; }
 
