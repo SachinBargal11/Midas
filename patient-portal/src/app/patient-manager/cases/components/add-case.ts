@@ -48,7 +48,7 @@ export class AddCaseComponent implements OnInit {
         private _statesStore: StatesStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _locationsStore: LocationsStore,
         private _employerStore: EmployerStore,
         private _casesStore: CasesStore,
@@ -57,8 +57,10 @@ export class AddCaseComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
+
+
         this._route.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId, 10);
+            this.patientId = this.sessionStore.session.user.id;
             if (this.patientId) {
                 this._progressBarService.show();
                 this._patientStore.fetchPatientById(this.patientId)
@@ -166,7 +168,7 @@ export class AddCaseComponent implements OnInit {
             attorneyId: caseFormValues.attorneyId,
             // caseStatus: caseFormValues.caseStatus,
             transportation: caseFormValues.transportation,
-            createByUserID: this._sessionStore.session.account.user.id,
+            createByUserID: this.sessionStore.session.account.user.id,
             createDate: moment()
         });
 

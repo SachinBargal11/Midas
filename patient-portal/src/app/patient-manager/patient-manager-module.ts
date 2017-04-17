@@ -48,8 +48,9 @@ import { InsuranceMappingStore } from './cases/stores/insurance-mapping-store';
 import { InsuranceMappingService } from './cases/services/insurance-mapping-service';
 import { ViewAllComponent } from './patients/components/view-all';
 import { CaseService } from './cases/services/cases-services';
-import { AdjusterMasterStore } from './patients/stores/adjuster-store';
-import { AdjusterMasterService } from './patients/services/adjuster-service';
+import { AdjusterMasterStore } from '../account-setup/stores/adjuster-store';
+import { AdjusterMasterService } from '../account-setup/services/adjuster-service';
+
 
 // import { PatientVisitComponent } from './patient-visit/components/patient-visit';
 // import { PatientVisitsStore } from './patient-visit/stores/patient-visit-store';
@@ -93,6 +94,10 @@ import { PatientVisitService } from './patient-visit/services/patient-visit-serv
 import { RoomsModule } from '../medical-provider/rooms/rooms-module';
 import { UsersModule } from '../medical-provider/users/users-module';
 import { DocumentsUploadComponent } from './cases/components/documents';
+
+
+
+
 
 @NgModule({
     imports: [
