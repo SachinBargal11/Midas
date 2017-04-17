@@ -28,6 +28,10 @@ import { PatientsStore } from './stores/patients-store';
 import { InsuranceStore } from './stores/insurance-store';
 
 import { AccountRoutingModule } from './account-routes';
+import { AdjusterMasterStore } from '../account-setup/stores/adjuster-store';
+import { AdjusterMasterService } from '../account-setup/services/adjuster-service';
+
+
 
 @NgModule({
       imports: [
@@ -60,7 +64,7 @@ import { AccountRoutingModule } from './account-routes';
             EmployerStore,
             FamilyMemberStore,
             PatientsStore,
-            InsuranceStore
+            InsuranceStore,AdjusterMasterStore,AdjusterMasterService
       ]
 })
 export class AccountModule { }

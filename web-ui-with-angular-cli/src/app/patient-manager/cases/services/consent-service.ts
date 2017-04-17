@@ -146,6 +146,7 @@ export class ConsentService {
         let promise = new Promise((resolve, reject) => {
             // return this._http.get(this._url + '/CompanyCaseConsentApproval/delete/' + caseDetail.id, {
             return this._http.get(this._url + '/CompanyCaseConsentApproval/delete/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId + '/' + companyId, {
+                //  return this._http.get(this._url + '/CompanyCaseConsentApproval/delete/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId + '/' + caseDocument.document.originalResponse.companyId, {
 
                 headers: this._headers
             }).map(res => res.json())

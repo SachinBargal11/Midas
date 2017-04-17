@@ -207,4 +207,6 @@ export class CasesStore {
         });
         return <Observable<Case>>Observable.from(promise);
     }
+
+    
 }

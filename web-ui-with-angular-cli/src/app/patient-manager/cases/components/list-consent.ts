@@ -54,7 +54,9 @@ export class ConsentListComponent implements OnInit {
         this._progressBarService.show();
         this._casesStore.getDocumentForCaseId(this.caseId)
             .subscribe((caseDocument: Case) => {
+              
                 this.caseConsentDocuments = caseDocument.caseCompanyConsentDocument;
+                
             },
             (error) => {
                 this._progressBarService.hide();
