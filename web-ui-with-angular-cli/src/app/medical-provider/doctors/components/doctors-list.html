@@ -23,7 +23,7 @@
     <p-column selectionMode="multiple"></p-column>
     <p-column field="doctor.user.displayName" header="Doctor Name" [sortable]="true">
        <ng-template let-doctor="rowData" pTemplate="body">
-            <a routerLink="{{doctor.id}}">{{doctor.doctor.user.firstName}}
+            <a routerLink="{{doctor.id}}">{{doctor.doctor.user.firstName}} {{doctor.doctor.user.lastName}}
             <!--<a routerLink="{{doctor.id}}">{{doctor.doctor.user.firstName}} {{doctor.doctor.user.lastName}}-->
             </a>
         </ng-template>
