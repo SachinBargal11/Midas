@@ -6,12 +6,15 @@ import { AddConsent } from '../models/add-consent-form';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
+import * as _ from 'underscore';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { ListDocConsentStore } from '../../consentForm/stores/list-consent-form-store';
 import { ListConsent } from '../../consentForm/models/list-consent-form';
 
+import { Patient } from '../../patients/models/patient';
+import { PatientsStore } from '../../patients/stores/patients-store';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Case } from '../../cases/models/case';
 import { CaseDocument } from '../../cases/models/case-document';
@@ -26,7 +29,7 @@ import { SessionStore } from '../../../commons/stores/session-store';
 
 export class ListCompneyConsentComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
-   
+
     selectedConsentList: ListConsent[] = [];
     ListConsent: ListConsent[];
     caseId: number;
@@ -35,7 +38,8 @@ export class ListCompneyConsentComponent implements OnInit {
     isDeleteProgress: boolean = false;
     companyId: number;
     caseConsentDocuments: Case[];
-    patientId:number;
+    patientId: number;
+    patient: Patient;
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
@@ -43,13 +47,27 @@ export class ListCompneyConsentComponent implements OnInit {
         public notificationsStore: NotificationsStore,
         public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
-         private _casesStore: CasesStore,
-          public sessionStore: SessionStore,
-       
+        private _casesStore: CasesStore,
+        private _patientsStore: PatientsStore,
+        public sessionStore: SessionStore,
+
     ) {
         this.patientId = this.sessionStore.session.user.id;
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
+            this.progressBarService.show();
+            this._patientsStore.fetchPatientById(this.patientId)
+                .subscribe((patient: Patient) => {
+                    this.patient = patient;
+                    // _.forEach(patient.companyId)
+                },
+                (error) => {
+                    this.progressBarService.hide();
+                },
+                () => {
+
+                    this.progressBarService.hide();
+                });
         });
     }
 
@@ -127,11 +145,11 @@ export class ListCompneyConsentComponent implements OnInit {
 
     }
 
-   DownloadPdf(documentId) {
+    DownloadPdf(documentId) {
         this.progressBarService.show();
         window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
         this.progressBarService.hide();
     }
 
-   
+
 }
