@@ -144,6 +144,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
 
+                if (patientVisit2.Location != null)
+                {
+                    BO.Location boLocation = new BO.Location();
+                    using (LocationRepository cmp = new LocationRepository(_context))
+                    {
+                        boLocation = cmp.Convert<BO.Location, Location>(patientVisit2.Location);
+                        patientVisit2BO.Location = boLocation;
+                    }
+                }
+
                 if (patientVisit2.CalendarEvent != null)
                 {
                     patientVisit2BO.CalendarEvent = new BO.CalendarEvent();
@@ -186,6 +196,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                          .Include("Doctor")
                                                                          .Include("Doctor.User")
                                                                          .Include("Room")
+                                                                         .Include("Location")
                                                                         .Where(p => p.LocationId == id
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                         .ToList<PatientVisit2>();
@@ -214,6 +225,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                          .Include("Doctor")
                                                                          .Include("Doctor.User")
                                                                          .Include("Room")
+                                                                         .Include("Location")
                                                                         .Where(p => p.LocationId == LocationId && p.RoomId == RoomId
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                         .ToList<PatientVisit2>();
@@ -242,6 +254,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                          .Include("Doctor")
                                                                          .Include("Doctor.User")
                                                                          .Include("Room")
+                                                                         .Include("Location")
                                                                         .Where(p => p.LocationId == LocationId && p.DoctorId == DoctorId
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                         .ToList<PatientVisit2>();

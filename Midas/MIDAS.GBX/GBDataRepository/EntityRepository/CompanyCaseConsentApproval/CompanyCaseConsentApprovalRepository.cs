@@ -118,7 +118,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                     companyCaseConsentApprovalDB.CompanyId = companyCaseConsentApprovalBO.CompanyId;
                     companyCaseConsentApprovalDB.CaseId = (int)companyCaseConsentApprovalBO.CaseId;
-                    companyCaseConsentApprovalDB.ConsentGivenTypeId = companyCaseConsentApprovalBO.ConsentGivenTypeId;
+                    companyCaseConsentApprovalDB.ConsentGivenTypeId = 1;// companyCaseConsentApprovalBO.ConsentGivenTypeId;
 
                     if (Add_companyCaseConsentApproval == true)
                     {
