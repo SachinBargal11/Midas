@@ -95,6 +95,9 @@ import { RoomsModule } from '../medical-provider/rooms/rooms-module';
 import { UsersModule } from '../medical-provider/users/users-module';
 import { DocumentsUploadComponent } from './cases/components/documents';
 
+import { ReferralService } from './cases/services/referral-service';
+import { ReferralStore } from './cases/stores/referral-store';
+
 
 
 
@@ -187,7 +190,9 @@ import { DocumentsUploadComponent } from './cases/components/documents';
         AttorneyMasterStore, 
         AttorneyMasterService,
         PatientVisitsStore,
-        PatientVisitService
+        PatientVisitService,
+        ReferralService,
+        ReferralStore
     ]
 })
 export class PatientManagerModule { }

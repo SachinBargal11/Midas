@@ -18,6 +18,9 @@ import { Case } from '../../cases/models/case';
 import { CaseDocument } from '../../cases/models/case-document';
 import { environment } from '../../../../environments/environment';
 import { SessionStore } from '../../../commons/stores/session-store';
+import { ReferralStore } from '../../cases/stores/referral-store';
+import { Referral } from '../../cases/models/referral';
+import { Company } from '../../../account/models/company';
 
 
 @Component({
@@ -39,6 +42,9 @@ export class ListCompanyConsentComponent implements OnInit {
     cases: Case[];
     patientId: number;
     patient: Patient;
+    referrals: Referral[];
+    companies: Company[];
+    companyCaseConsentApproval: Consent[];
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
@@ -48,23 +54,24 @@ export class ListCompanyConsentComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _casesStore: CasesStore,
         private _patientsStore: PatientsStore,
+        private _referralStore: ReferralStore,
         public sessionStore: SessionStore,
 
     ) {
         this.patientId = this.sessionStore.session.user.id;
-            this.progressBarService.show();
-            this._patientsStore.fetchPatientById(this.patientId)
-                .subscribe((patient: Patient) => {
-                    this.patient = patient;
-                    this.companyId = patient.companyId;
-                },
-                (error) => {
-                    this.progressBarService.hide();
-                },
-                () => {
+        this.progressBarService.show();
+        this._patientsStore.fetchPatientById(this.patientId)
+            .subscribe((patient: Patient) => {
+                this.patient = patient;
+                this.companyId = patient.companyId;
+            },
+            (error) => {
+                this.progressBarService.hide();
+            },
+            () => {
 
-                    this.progressBarService.hide();
-                });
+                this.progressBarService.hide();
+            });
     }
 
     ngOnInit() {
@@ -77,11 +84,21 @@ export class ListCompanyConsentComponent implements OnInit {
             .subscribe((cases: Case[]) => {
                 this.cases = cases;
                 this.caseId = cases[0].id;
-                _.forEach(cases, (currentCase: Case) => {
-                    this.caseConsentDocuments = _.map(currentCase.caseCompanyConsentDocument, (currentConsent: CaseDocument) => {
-                        return currentConsent
+                this.companyCaseConsentApproval = cases[0].companyCaseConsentApproval;
+                this._casesStore.getCaseCompanies(this.caseId)
+                    .subscribe((companies: Company[]) => {
+                        this.companies = companies;
                     })
-                })
+                // this._referralStore.getReferralsByCaseId(cases[0].id)
+                //     .subscribe((referrals: Referral[]) => {
+                //         this.referrals = referrals;
+                //         this.cases[0].referral = referrals;
+                //     });
+                // _.forEach(cases, (currentCase: Case) => {
+                //     this.caseConsentDocuments = _.map(currentCase.caseCompanyConsentDocument, (currentConsent: CaseDocument) => {
+                //         return currentConsent
+                //     })
+                // })
             },
             (error) => {
                 this.progressBarService.hide();
@@ -99,6 +116,14 @@ export class ListCompanyConsentComponent implements OnInit {
                 this.ListConsent = this.datasource.slice(event.first, (event.first + event.rows));
             }
         }, 250);
+    }
+    
+    downloadConsent(caseDocuments: CaseDocument[], companyId: number) {
+        caseDocuments.forEach(caseDocument => {
+            if(caseDocument.document.originalResponse.companyId === companyId) {
+            window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+            }
+        });
     }
 
     deleteConsentForm() {
