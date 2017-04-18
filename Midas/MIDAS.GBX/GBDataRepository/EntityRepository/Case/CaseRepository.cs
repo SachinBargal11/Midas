@@ -760,30 +760,38 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Get By Company Id
         public override object GetByCompanyId(int CompanyId)
         {
-            var User = _context.UserCompanies.Where(p => p.CompanyID == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                        .Select(p => p.UserID)
-                                        .Distinct<int>();
+            var UserList1 = _context.UserCompanies.Where(p => p.CompanyID == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                  .Select(p => p.UserID)
+                                                  .Distinct<int>();
 
-            var acc = _context.Patient2.Include("User")
-                                       .Where(p =>  (User.Contains(p.Id))
-                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                    .ToList<Patient2>();
+            var AccList = _context.Patient2.Include("User")
+                                           .Where(p => (UserList1.Contains(p.Id))
+                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                           .ToList<Patient2>();
 
+            var ReferralList = _context.Referrals.Include("Case")
+                                                 .Include("Case.CompanyCaseConsentApprovals")
+                                                 .Include("Case.Patient2.User")
+                                                 .Where(p => p.ReferredToCompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                  && p.Case.CompanyCaseConsentApprovals.Any(p2 => p2.CompanyId == CompanyId
+                                                  && (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))) == false)
+                                                 .ToList<Referral>();
 
-            if (acc == null)
+            var UserList2 = ReferralList.Select(p => p.Case.Patient2).ToList();
+
+            if (AccList == null && UserList2 == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Case.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {
                 List<BO.CaseWithUserAndPatient> lstCaseWithUserAndPatient = new List<BO.CaseWithUserAndPatient>();
-                foreach (Patient2 eachPatient in acc)
+                foreach (Patient2 eachPatient in AccList.Union(UserList2).Distinct())
                 {
                     lstCaseWithUserAndPatient.AddRange(ConvertToCaseWithUserAndPatient<List<BO.CaseWithUserAndPatient>, Patient2>(eachPatient));
                 }
-
                 return lstCaseWithUserAndPatient;
-            }            
+            }
         }
         #endregion
 
