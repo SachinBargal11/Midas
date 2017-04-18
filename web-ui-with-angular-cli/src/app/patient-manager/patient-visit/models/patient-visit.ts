@@ -106,12 +106,19 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
         if (this.patientId && this.caseId) {
             visitInfo = `${visitInfo} - ${this.patient.user.displayName} - Case(${this.caseId})`;
         }
-        if(this.doctorId && this.doctor) {
+        if (this.doctorId && this.doctor) {
             visitInfo = `${visitInfo} - Doctor(${this.doctor.user.displayName})`;
         }
-        if(this.roomId && this.room) {
+        if (this.roomId && this.room) {
             visitInfo = `${visitInfo} - Room(${this.room.name})`;
         }
         return visitInfo;
+    }
+
+    get eventColor(): string {
+        let colorCodes: any = ['#7A3DB8', '#7AB83D', '#CC6666', '#7AFF7A', '#FF8000'];
+        let color: any = _.sample(colorCodes);
+        debugger;
+        return color;
     }
 }
