@@ -30,7 +30,7 @@ export const ConsentShellRoutes: Routes = [
                 }
             },
             {
-                path: ':caseId',
+                path: ':caseId/:companyId',
                 component: ShellComponent,
                 canActivate: [ValidateActiveSession],
                 data: {

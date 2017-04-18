@@ -79,22 +79,23 @@ export class AddCompanyConsentComponent implements OnInit {
 
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
+            this.companyId = parseInt(routeParams.companyId, 10);
             this.patientId = this.sessionStore.session.user.id;
-            this.progressBarService.show();
-            this._patientsStore.fetchPatientById(this.patientId)
-                .subscribe((patient: Patient) => {
-                    this.patient = patient;
-                    this.companyId = patient.companyId;
+            // this.progressBarService.show();
+            // this._patientsStore.fetchPatientById(this.patientId)
+            //     .subscribe((patient: Patient) => {
+            //         this.patient = patient;
+            //         this.companyId = patient.companyId;
                     this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
 
-                },
-                (error) => {
-                    this.progressBarService.hide();
-                },
-                () => {
+                // },
+                // (error) => {
+                //     this.progressBarService.hide();
+                // },
+                // () => {
 
-                    this.progressBarService.hide();
-                });
+                //     this.progressBarService.hide();
+                // });
         });
         this.consentForm = this.fb.group({
             company: ['', Validators.required]
