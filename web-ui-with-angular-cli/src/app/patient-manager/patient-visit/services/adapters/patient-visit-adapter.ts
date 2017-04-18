@@ -1,3 +1,4 @@
+import { SpecialityAdapter } from '../../../../account-setup/services/adapters/speciality-adapter';
 import { CaseAdapter } from '../../../cases/services/adapters/case-adapter';
 import * as moment from 'moment';
 import { PatientVisit } from '../../models/patient-visit';
@@ -23,6 +24,7 @@ export class PatientVisitAdapter {
             room: data.room ? RoomsAdapter.parseResponse(data.room) : null,
             doctor: data.doctor ? DoctorAdapter.parseResponse(data.doctor) : null,
             doctorId: data.doctorId,
+            specialty: data.specialty ? SpecialityAdapter.parseResponse(data.specialty) : null,
             specialtyId: data.specialtyId,
             eventStart: data.eventStart ? moment.utc(data.eventStart) : null,
             eventEnd: data.eventEnd ? moment.utc(data.eventEnd) : null,

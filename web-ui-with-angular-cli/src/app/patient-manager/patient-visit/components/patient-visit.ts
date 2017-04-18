@@ -44,7 +44,8 @@ import * as RRule from 'rrule';
 
 @Component({
     selector: 'patient-visit',
-    templateUrl: './patient-visit.html'
+    templateUrl: './patient-visit.html',
+    styleUrls: ['./patient-visit.scss']
 })
 
 export class PatientVisitComponent implements OnInit {
@@ -196,12 +197,10 @@ export class PatientVisitComponent implements OnInit {
             this._roomsService.getTestsByLocationId(this.selectedLocationId)
                 .subscribe(tests => {
                     this.tests = tests;
-                    debugger;
                 });
             this._specialityService.getSpecialitiesByLocationId(this.selectedLocationId)
                 .subscribe(specialities => {
                     this.specialities = specialities;
-                    debugger;
                 });
             this.loadLocationVisits();
             this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.selectedLocationId);

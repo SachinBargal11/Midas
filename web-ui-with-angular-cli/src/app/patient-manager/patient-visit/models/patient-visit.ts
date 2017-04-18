@@ -1,3 +1,4 @@
+import { Speciality } from '../../../account-setup/models/speciality';
 import { Case } from '../../cases/models/case';
 import { IEventWrapper } from '../../../commons/models/i-event-wrapper';
 import { ScheduledEventInstance } from '../../../commons/models/scheduled-event-instance';
@@ -23,6 +24,7 @@ const PatientVisitRecord = Record({
     roomId: null,
     doctor: null,
     doctorId: null,
+    specialty: null,
     specialtyId: null,
     eventStart: null,
     eventEnd: null,
@@ -52,6 +54,7 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     doctor: Doctor;
     doctorId: number;
     specialtyId: number;
+    specialty: Speciality;
     eventStart: moment.Moment;
     eventEnd: moment.Moment;
     notes: string;
@@ -102,23 +105,29 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     }
 
     get visitDisplayString(): string {
-        let visitInfo: string = `Visit`;
+        let visitInfo: string = ``;
         if (this.patientId && this.caseId) {
-            visitInfo = `${visitInfo} - ${this.patient.user.displayName} - Case(${this.caseId})`;
+            visitInfo = `${visitInfo}Patient Name: ${this.patient.user.displayName} - Case Id: ${this.caseId} - `;
         }
         if (this.doctorId && this.doctor) {
-            visitInfo = `${visitInfo} - Doctor(${this.doctor.user.displayName})`;
+            visitInfo = `${visitInfo}Doctor Name: ${this.doctor.user.displayName}`;
+            if (this.specialtyId && this.specialty) {
+                visitInfo = `${visitInfo} - Speciality: ${this.specialty.name}`;
+            }
         }
         if (this.roomId && this.room) {
-            visitInfo = `${visitInfo} - Room(${this.room.name})`;
+            visitInfo = `${visitInfo}Room Name: ${this.room.name}`;
+            if (this.room.roomTest) {
+                visitInfo = `${visitInfo} - Test: ${this.room.roomTest.name}`;
+            }
         }
+
         return visitInfo;
     }
 
     get eventColor(): string {
         let colorCodes: any = ['#7A3DB8', '#7AB83D', '#CC6666', '#7AFF7A', '#FF8000'];
         let color: any = _.sample(colorCodes);
-        debugger;
         return color;
     }
 }
