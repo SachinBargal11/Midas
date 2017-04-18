@@ -68,6 +68,7 @@ export class AddConsentComponent implements OnInit {
     currentCaseId: number;
     documents: CaseDocument[] = [];
     currentCompany: number;
+    selectedCompany:number;
     constructor(
         private fb: FormBuilder,
         private service: ConsentService,
@@ -86,7 +87,7 @@ export class AddConsentComponent implements OnInit {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
 
             this.caseId = parseInt(routeParams.caseId, 10);
-            // this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.currentCompany;
+           // this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.currentCompany;
             this.consentForm = this.fb.group({
                 company: ['', Validators.required]
                 // ,uploadedFiles: ['', Validators.required]
@@ -97,25 +98,27 @@ export class AddConsentComponent implements OnInit {
     }
 
     ngOnInit() {
+        
         let today = new Date();
         let currentDate = today.getDate();
         this.maxDate = new Date();
         this.maxDate.setDate(currentDate);
         this._AddConsentStore.getCompany(this.caseId)
-            .subscribe(company => this.companies = company);
-        this.getDocuments();
+            .subscribe((company) =>{
+                 this.companies = company,
+                this.selectedCompany=this.companies[0].id,                
+        this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.selectedCompany;
+            }); 
+       // this.getDocuments();
 
     }
 
-    selectcompany(event) {
-        debugger;
-        this.selectedcompany = 0;
+    selectcompany(event) {       
+        // this.selectedcompany = 0;
         this.currentCompany = event.target.value;
-        this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.currentCompany;
+        this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.selectedCompany;
 
     }
-
-
 
     documentUploadComplete(documents: Document[]) {
         _.forEach(documents, (currentDocument: Document) => {
