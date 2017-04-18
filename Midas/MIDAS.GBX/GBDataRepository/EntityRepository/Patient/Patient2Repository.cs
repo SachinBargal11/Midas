@@ -121,10 +121,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                  .Include("Case.Patient2.User.UserCompanies")
                                                  .Include("Case.Patient2.User.AddressInfo")
                                                  .Include("Case.Patient2.User.ContactInfo")
-                                                 .Where(p => p.ReferredToCompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
-                                                  && p.Case.CompanyCaseConsentApprovals.Any(p2 => p2.CompanyId == CompanyId
-                                                  && (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))) == false)
-                                                  .ToList<Referral>();
+                                                 .Where(p => p.ReferredToCompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                 .ToList<Referral>();
             var patientList2 = referralList.Select(p => p.Case.Patient2).ToList();
 
             if (patientList1 == null && patientList2 == null)
