@@ -1,27 +1,35 @@
 <h3 class="with-border">
     Add Consent</h3>
-<section class="card">
-    <div class="card-block">
-        <div class="col-lg-4">
-            <label class="form-label">Company Name
+<div >
+    <section class="card">
+        <div class="card-block">
+            <div class="col-lg-4">
+                <label class="form-label">Company Name
                                 <span class="color-red">*</span>
                             </label>
 
-            <div [formGroup]="consentForm" class="form-group" [class.error]="consentformControls.company.touched && !consentformControls.company.valid">
-                <select formControlName="company" type="text" (change)="selectcompany($event)" class="form-control" placeholder="" [class.error]="consentformControls.company.touched && !consentformControls.company.valid">
-                            <!--<option value="">-Select companyId-</option>-->
-                            <option *ngFor="let currentCompany of companies" value="{{currentCompany.id}}">{{currentCompany.name}}</option>
+                <div [formGroup]="consentForm" class="form-group" [class.error]="consentformControls.company.touched && !consentformControls.company.valid">
+                    <select  [(ngModel)]="selectedCompany"  formControlName="company" type="text" (change)="selectcompany($event)" class="form-control"
+                        placeholder="" [class.error]="consentformControls.company.touched && !consentformControls.company.valid">
+                            <!--<option value="1">-Select company--</option>-->
+                            <!--<option selected="selected" *ngFor="let currentCompany of companies"  value="{{currentCompany.id}}">{{currentCompany.name}}</option>-->
+                            <option selected="selected" *ngFor="let currentCompany of companies" [ngValue]="currentCompany" value="{{currentCompany.id}}">{{currentCompany.name}}</option>
                             </select>
-                <div class='error-list' *ngIf="consentformControls.company.touched && !consentformControls.company.valid">
-                    <ul>
-                        <li *ngIf="consentformControls.company.hasError('required')">companyId is required.</li>
-                    </ul>
+                    <div class='error-list' *ngIf="consentformControls.company.touched && !consentformControls.company.valid">
+                        <ul>
+                            <li *ngIf="consentformControls.company.hasError('required')">companyId is required.</li>
+                        </ul>
+                    </div>
                 </div>
+                <!--<div *ngIf="car != null">
+            <select [(ngModel)]="car.colour">
+                <option *ngFor="let x of colours" [ngValue]="x" >{{x.name}}</option>
+            </select>
+        </div>-->
             </div>
-
         </div>
-    </div>
-</section>
+    </section>
+</div>
 <br>
 <a style="color: blue" (click)="DownloadTemplate()">Download Template</a>
 <!---->
