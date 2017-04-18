@@ -28,7 +28,7 @@ export class AccidentInfoComponent implements OnInit {
     maxDate: Date;
     cities: any[];
     accidents: Accident[];
-    currentAccident: Accident;
+    currentAccident: Accident = null;
     accidentCities: any[];
     patientId: number;
     caseId: number;
@@ -42,6 +42,8 @@ export class AccidentInfoComponent implements OnInit {
     isSaveAccidentProgress = false;
     accAddId: number;
     hospAddId :number;
+    patientTypeId: number = 1;
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
