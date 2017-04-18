@@ -1,4 +1,5 @@
 import * as moment from 'moment';
+import * as _ from 'underscore';
 import { Record } from 'immutable';
 import { User } from '../../../commons/models/user';
 import { Company } from '../../../account/models/company';
@@ -13,7 +14,7 @@ const PatientRecord = Record({
     height: 0,
     maritalStatusId: MaritalStatus.SINGLE,
     dateOfFirstTreatment: moment(),
-    companies: null,
+    companies: [],
     isDeleted: false,
     createByUserID: 0,
     createDate: null,
@@ -52,5 +53,14 @@ export class Patient extends PatientRecord {
             case MaritalStatus.MARRIED:
                 return 'Married';
         }
+    }
+    isSessionCompany(companyId): boolean {
+        let isSessionCompany: boolean = false;
+        _.forEach(this.companies, (currentCompany: any) => {
+            if (currentCompany.companyId === companyId) {
+                isSessionCompany = true;
+            }
+        });
+        return isSessionCompany;
     }
 }

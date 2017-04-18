@@ -14,16 +14,16 @@
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Patient">
-    </div>
+</div>
 </div>
 <!--<p-dataTable [value]="patients" [(selection)]="selectedPatients" [lazy]="true" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true"
     [totalRecords]="totalRecords" (onLazyLoad)="loadPatientsLazy($event)">-->
-<p-dataTable [value]="patients" [(selection)]="selectedPatients" [rows]="10" [rowsPerPageOptions]="[5,10,15,20]" [paginator]="true" [globalFilter]="gb" [responsive]="true"
-   >
+<p-dataTable [value]="patients" [(selection)]="selectedPatients" [rows]="10" [rowsPerPageOptions]="[5,10,15,20]" [paginator]="true"
+    [globalFilter]="gb" [responsive]="true">
     <header>Patients</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column field="user.displayName" header="Name">
-    <!--<p-column field="user.displayName" header="Name" [filter]="true" filterPlaceholder="Search Patient Name" >-->
+        <!--<p-column field="user.displayName" header="Name" [filter]="true" filterPlaceholder="Search Patient Name" >-->
 
         <ng-template let-currentPatient="rowData" pTemplate="body">
             <!--{{currentPatient.user.displayName}}-->
@@ -40,9 +40,9 @@
     <!--<p-column field="user.address.address1" header="Address" [sortable]="true"></p-column>-->
     <p-column field="user.contact.cellPhone" header="Phone" [sortable]="true">
         <ng-template let-currentPatient="rowData" pTemplate="body">
-            
-                {{currentPatient.user.contact.cellPhone | phoneFormat}}
-            
+
+            {{currentPatient.user.contact.cellPhone | phoneFormat}}
+
         </ng-template>
     </p-column>
     <p-column field="user.contact.emailAddress" header="Email" [sortable]="true"></p-column>
@@ -53,12 +53,18 @@
     <p-column field="user.contact.validInsurance" header="Valid Insurance" [sortable]="true"></p-column>
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-patient="rowData" pTemplate="body">
-            <a title="Edit" routerLink="{{patient.user.id}}/viewall"><i class="glyphicon glyphicon-edit"></i></a>
-            <a title="View Cases" [routerLink]="['/patient-manager/cases/', patient.user.id]"><i class="glyphicon glyphicon-list"></i></a>
+            <div *ngIf="patient.isSessionCompany(sessionStore.session.currentCompany.id)">
+                <a title="Edit" routerLink="{{patient.user.id}}/viewall"><i class="glyphicon glyphicon-edit"></i></a>
+                <a title="View Cases" [routerLink]="['/patient-manager/cases/', patient.user.id]"><i class="glyphicon glyphicon-list"></i></a>
+            </div>
+            <div *ngIf="!patient.isSessionCompany(sessionStore.session.currentCompany.id)">
+                <a title="Edit" (click)="showMsg()"><i class="glyphicon glyphicon-edit"></i></a>
+                <a title="View Cases" (click)="showMsg()"><i class="glyphicon glyphicon-list"></i></a>
+            </div>
         </ng-template>
     </p-column>
-    </p-dataTable>
-    <br>
+</p-dataTable>
+<br>
 
 <!--<div class="input-group">
     <h3 class="with-border">Referrals

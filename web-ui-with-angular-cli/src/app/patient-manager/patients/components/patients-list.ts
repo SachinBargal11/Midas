@@ -33,14 +33,14 @@ export class PatientsListComponent implements OnInit {
         private _router: Router,
         private _patientsStore: PatientsStore,
         private _notificationsStore: NotificationsStore,
-        public _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _referralStore: ReferralStore,
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private confirmationService: ConfirmationService,
 
     ) {
-        this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+        this.sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadPatientsCheckingDoctor();
             this._router.navigate(['/patient-manager/patients']);
         });
@@ -51,7 +51,7 @@ export class PatientsListComponent implements OnInit {
     }
     loadPatientsCheckingDoctor() {
         let doctorRoleOnly = null;
-        let roles = this._sessionStore.session.user.roles;
+        let roles = this.sessionStore.session.user.roles;
         if (roles) {
             if (roles.length === 1) {
                 doctorRoleOnly = _.find(roles, (currentRole) => {
@@ -158,6 +158,9 @@ export class PatientsListComponent implements OnInit {
             this._notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'select patients to delete');
         }
+    }
+    showMsg() {
+            this._notificationsService.error('Oh No!', 'There is no consent for this case');
     }
 
 }
