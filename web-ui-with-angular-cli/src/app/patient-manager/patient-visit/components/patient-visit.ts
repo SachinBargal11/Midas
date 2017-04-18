@@ -1,3 +1,6 @@
+import { User } from '../../../commons/models/user';
+import { Case } from '../../cases/models/case';
+import { Doctor } from '../../../medical-provider/users/models/doctor';
 import { Observable } from 'rxjs/Observable';
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
@@ -53,11 +56,11 @@ export class PatientVisitComponent implements OnInit {
     private _confirmationDialog: any;
 
     /* Data Lists */
-    patients: Patient[];
-    specialities: Speciality[];
-    tests: Tests[];
-    rooms: Room[];
-    doctorLocationSchedules: DoctorLocationSchedule[];
+    patients: Patient[] = [];
+    specialities: Speciality[] = [];
+    tests: Tests[] = [];
+    rooms: Room[] = [];
+    doctorLocationSchedules: DoctorLocationSchedule[] = [];
     roomSchedule: Schedule;
     doctorSchedule: Schedule;
 
@@ -97,13 +100,23 @@ export class PatientVisitComponent implements OnInit {
     selectedDocumentList = [];
     isDeleteProgress: boolean = false;
 
+    visitInfo: string = '';
+
 
     eventRenderer: Function = (event, element) => {
+        // if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
+        //     element.find('.fc-content').prepend('<i class="fa fa-exclamation-circle"></i>&nbsp;');
+        // } else if (event.owningEvent.recurrenceRule) {
+        //     element.find('.fc-content').prepend('<i class="fa fa-refresh"></i>&nbsp;');
+        // }
+        let content: string = '';
         if (event.owningEvent.isUpdatedInstanceOfRecurringSeries) {
-            element.find('.fc-content').prepend('<i class="fa fa-exclamation-circle"></i>&nbsp;');
+            content = `<i class="fa fa-exclamation-circle"></i>`;
         } else if (event.owningEvent.recurrenceRule) {
-            element.find('.fc-content').prepend('<i class="fa fa-refresh"></i>&nbsp;');
+            content = `<i class="fa fa-refresh"></i>`;
         }
+        content = `${content}<span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.patient.user.displayName}</span>`;
+        element.find('.fc-content').html(content);
     }
 
     isSaveProgress: boolean = false;
@@ -157,10 +170,6 @@ export class PatientVisitComponent implements OnInit {
         });
         this.locationsStore.getLocations();
         this._patientsStore.getPatientsWithOpenCases();
-        this._roomsService.getTests()
-            .subscribe(tests => { this.tests = tests; });
-        this._specialityService.getSpecialities()
-            .subscribe(specialities => { this.specialities = specialities; });
     }
 
     isFormValid() {
@@ -180,7 +189,13 @@ export class PatientVisitComponent implements OnInit {
             this.selectedSpecialityId = 0;
             this.selectedTestId = 0;
             this.events = [];
+            this.specialities = [];
+            this.tests = [];
         } else {
+            this._roomsService.getTestsByLocationId(this.selectedLocationId)
+                .subscribe(tests => { this.tests = tests; });
+            this._specialityService.getSpecialitiesByLocationId(this.selectedLocationId)
+                .subscribe(specialities => { this.specialities = specialities; });
             this.loadLocationVisits();
             this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.selectedLocationId);
             this._roomsStore.getRooms(this.selectedLocationId);
@@ -434,38 +449,43 @@ export class PatientVisitComponent implements OnInit {
         }
 
         let canScheduleAppointement: boolean = true;
-        if (!this.selectedOption) {
+        if (!this.selectedLocationId) {
             canScheduleAppointement = false;
-            this._notificationsService.alert('Oh No!', 'Please select speciality or medical test!');
-        } else if (this.selectedOption == 1) {
-            if (!this.selectedDoctorId) {
+            this._notificationsService.alert('Oh No!', 'Please Select Location!');
+        } else {
+            if (!this.selectedOption) {
                 canScheduleAppointement = false;
-                this._notificationsService.alert('Oh No!', 'Please select Doctor!');
-            } else {
-                if (this.doctorSchedule) {
-                    let scheduleDetails: ScheduleDetail[] = this.doctorSchedule.scheduleDetails;
-                    let matchingScheduleDetail: ScheduleDetail = _.find(scheduleDetails, (currentScheduleDetail: ScheduleDetail) => {
-                        return currentScheduleDetail.isInAllowedSlot(event.date, considerTime);
-                    });
-                    if (!matchingScheduleDetail) {
-                        canScheduleAppointement = false;
-                        this._notificationsService.alert('Oh No!', 'You cannot schedule an appointment on this day!');
+                this._notificationsService.alert('Oh No!', 'Please Select Speciality Or Medical Test!');
+            } else if (this.selectedOption == 1) {
+                if (!this.selectedDoctorId) {
+                    canScheduleAppointement = false;
+                    this._notificationsService.alert('Oh No!', 'Please Select Doctor!');
+                } else {
+                    if (this.doctorSchedule) {
+                        let scheduleDetails: ScheduleDetail[] = this.doctorSchedule.scheduleDetails;
+                        let matchingScheduleDetail: ScheduleDetail = _.find(scheduleDetails, (currentScheduleDetail: ScheduleDetail) => {
+                            return currentScheduleDetail.isInAllowedSlot(event.date, considerTime);
+                        });
+                        if (!matchingScheduleDetail) {
+                            canScheduleAppointement = false;
+                            this._notificationsService.alert('Oh No!', 'You cannot schedule an appointment on this day!');
+                        }
                     }
                 }
-            }
-        } else if (this.selectedOption == 2) {
-            if (!this.selectedRoomId) {
-                canScheduleAppointement = false;
-                this._notificationsService.alert('Oh No!', 'Please select Room!');
-            } else {
-                if (this.roomSchedule) {
-                    let scheduleDetails: ScheduleDetail[] = this.roomSchedule.scheduleDetails;
-                    let matchingScheduleDetail: ScheduleDetail = _.find(scheduleDetails, (currentScheduleDetail: ScheduleDetail) => {
-                        return currentScheduleDetail.isInAllowedSlot(event.date, considerTime);
-                    });
-                    if (!matchingScheduleDetail) {
-                        canScheduleAppointement = false;
-                        this._notificationsService.alert('Oh No!', 'You cannot schedule an appointment on this day!');
+            } else if (this.selectedOption == 2) {
+                if (!this.selectedRoomId) {
+                    canScheduleAppointement = false;
+                    this._notificationsService.alert('Oh No!', 'Please select Room!');
+                } else {
+                    if (this.roomSchedule) {
+                        let scheduleDetails: ScheduleDetail[] = this.roomSchedule.scheduleDetails;
+                        let matchingScheduleDetail: ScheduleDetail = _.find(scheduleDetails, (currentScheduleDetail: ScheduleDetail) => {
+                            return currentScheduleDetail.isInAllowedSlot(event.date, considerTime);
+                        });
+                        if (!matchingScheduleDetail) {
+                            canScheduleAppointement = false;
+                            this._notificationsService.alert('Oh No!', 'You cannot schedule an appointment on this day!');
+                        }
                     }
                 }
             }
@@ -480,10 +500,28 @@ export class PatientVisitComponent implements OnInit {
         if (canScheduleAppointement) {
 
             // Potential Refactoring for creating visit
+            let selectedDoctor: Doctor = null;
+            let selectedRoom: Room = null;
+            if (this.selectedOption === 1) {
+                _.each(this.doctorLocationSchedules, (currentSchedule: DoctorLocationSchedule) => {
+                    if (currentSchedule.doctor.id == this.selectedDoctorId) {
+                        selectedDoctor = currentSchedule.doctor;
+                    }
+                });
+            } else {
+                _.each(this.rooms, (currentRoom: Room) => {
+                    if (currentRoom.id == this.selectedRoomId) {
+                        selectedRoom = currentRoom;
+                    }
+                });
+            }
+
             this.selectedVisit = new PatientVisit({
                 locationId: this.selectedLocationId,
                 doctorId: this.selectedOption == 1 ? this.selectedDoctorId : null,
+                doctor: selectedDoctor,
                 roomId: this.selectedOption == 2 ? this.selectedRoomId : null,
+                room: selectedRoom,
                 calendarEvent: new ScheduledEvent({
                     name: '',
                     eventStart: event.date.clone().local(),
@@ -492,6 +530,7 @@ export class PatientVisitComponent implements OnInit {
                     isAllDay: false
                 })
             });
+            this.visitInfo = this.selectedVisit.visitDisplayString;
             this.eventDialogVisible = true;
             this._cd.detectChanges();
         }
@@ -500,12 +539,19 @@ export class PatientVisitComponent implements OnInit {
     private _getVisitToBeEditedForEventInstance(eventInstance: ScheduledEventInstance): PatientVisit {
         let scheduledEventForInstance: ScheduledEvent = eventInstance.owningEvent;
         let patientVisit: PatientVisit = <PatientVisit>(eventInstance.eventWrapper);
-
         if (eventInstance.isInPast) {
             if (scheduledEventForInstance.isChangedInstanceOfSeries) {
                 // Edit Existing Single Occurance of Visit
                 patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
-                    calendarEvent: scheduledEventForInstance
+                    calendarEvent: scheduledEventForInstance,
+                    case: patientVisit.case ? new Case(_.extend(patientVisit.case.toJS())) : null,
+                    doctor: patientVisit.doctor ? new Doctor(_.extend(patientVisit.doctor.toJS(), {
+                        user: new User(_.extend(patientVisit.doctor.user.toJS()))
+                    })) : null,
+                    room: patientVisit.room ? new Room(_.extend(patientVisit.room.toJS())) : null,
+                    patient: patientVisit.patient ? new Patient(_.extend(patientVisit.patient.toJS(), {
+                        user: new User(_.extend(patientVisit.patient.user.toJS()))
+                    })) : null
                 }));
             } else {
                 // Create Visit Instance 
@@ -513,21 +559,45 @@ export class PatientVisitComponent implements OnInit {
                     patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
                         eventStart: moment.utc(eventInstance.start),
                         eventEnd: moment.utc(eventInstance.end),
-                        calendarEvent: scheduledEventForInstance
+                        calendarEvent: scheduledEventForInstance,
+                        case: patientVisit.case ? new Case(_.extend(patientVisit.case.toJS())) : null,
+                        doctor: patientVisit.doctor ? new Doctor(_.extend(patientVisit.doctor.toJS(), {
+                            user: new User(_.extend(patientVisit.doctor.user.toJS()))
+                        })) : null,
+                        room: patientVisit.room ? new Room(_.extend(patientVisit.room.toJS())) : null,
+                        patient: patientVisit.patient ? new Patient(_.extend(patientVisit.patient.toJS(), {
+                            user: new User(_.extend(patientVisit.patient.user.toJS()))
+                        })) : null
                     }));
                 } else {
                     patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
                         id: 0,
                         eventStart: moment.utc(eventInstance.start),
                         eventEnd: moment.utc(eventInstance.end),
-                        calendarEvent: scheduledEventForInstance
+                        calendarEvent: scheduledEventForInstance,
+                        case: patientVisit.case ? new Case(_.extend(patientVisit.case.toJS())) : null,
+                        doctor: patientVisit.doctor ? new Doctor(_.extend(patientVisit.doctor.toJS(), {
+                            user: new User(_.extend(patientVisit.doctor.user.toJS()))
+                        })) : null,
+                        room: patientVisit.room ? new Room(_.extend(patientVisit.room.toJS())) : null,
+                        patient: patientVisit.patient ? new Patient(_.extend(patientVisit.patient.toJS(), {
+                            user: new User(_.extend(patientVisit.patient.user.toJS()))
+                        })) : null
                     }));
                 }
             }
 
         } else {
             patientVisit = new PatientVisit(_.extend(patientVisit.toJS(), {
-                calendarEvent: scheduledEventForInstance
+                calendarEvent: scheduledEventForInstance,
+                case: patientVisit.case ? new Case(_.extend(patientVisit.case.toJS())) : null,
+                doctor: patientVisit.doctor ? new Doctor(_.extend(patientVisit.doctor.toJS(), {
+                    user: new User(_.extend(patientVisit.doctor.user.toJS()))
+                })) : null,
+                room: patientVisit.room ? new Room(_.extend(patientVisit.room.toJS())) : null,
+                patient: patientVisit.patient ? new Patient(_.extend(patientVisit.patient.toJS(), {
+                    user: new User(_.extend(patientVisit.patient.user.toJS()))
+                })) : null
             }));
         }
 
@@ -545,6 +615,7 @@ export class PatientVisitComponent implements OnInit {
             this.patientScheduleForm.controls[key].setValidators(null);
             this.patientScheduleForm.controls[key].updateValueAndValidity();
         });
+        this.visitInfo = this.selectedVisit.visitDisplayString;
         if (clickedEventInstance.isInPast) {
             this.visitUploadDocumentUrl = this._url + '/fileupload/multiupload/' + this.selectedVisit.id + '/visit';
             this.getDocuments();
@@ -925,40 +996,40 @@ export class PatientVisitComponent implements OnInit {
             //     icon: 'fa fa-trash',
             //     accept: () => {
 
-                    this.selectedDocumentList.forEach(currentCase => {
-                        this._progressBarService.show();
-                        this.isDeleteProgress = true;
-                        this._patientVisitsStore.deleteDocument(currentCase)
-                            .subscribe(
-                            (response) => {
-                                let notification = new Notification({
-                                    'title': 'record deleted successfully!',
-                                    'type': 'SUCCESS',
-                                    'createdAt': moment()
+            this.selectedDocumentList.forEach(currentCase => {
+                this._progressBarService.show();
+                this.isDeleteProgress = true;
+                this._patientVisitsStore.deleteDocument(currentCase)
+                    .subscribe(
+                    (response) => {
+                        let notification = new Notification({
+                            'title': 'record deleted successfully!',
+                            'type': 'SUCCESS',
+                            'createdAt': moment()
 
-                                });
-                                this.getDocuments();
-                                this._notificationsStore.addNotification(notification);
-                                this.selectedDocumentList = [];
-                            },
-                            (error) => {
-                                let errString = 'Unable to delete record';
-                                let notification = new Notification({
-                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                                    'type': 'ERROR',
-                                    'createdAt': moment()
-                                });
-                                this.selectedDocumentList = [];
-                                this._progressBarService.hide();
-                                this.isDeleteProgress = false;
-                                this._notificationsStore.addNotification(notification);
-                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                            },
-                            () => {
-                                this._progressBarService.hide();
-                                this.isDeleteProgress = false;
-                            });
+                        });
+                        this.getDocuments();
+                        this._notificationsStore.addNotification(notification);
+                        this.selectedDocumentList = [];
+                    },
+                    (error) => {
+                        let errString = 'Unable to delete record';
+                        let notification = new Notification({
+                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        this.selectedDocumentList = [];
+                        this._progressBarService.hide();
+                        this.isDeleteProgress = false;
+                        this._notificationsStore.addNotification(notification);
+                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                    },
+                    () => {
+                        this._progressBarService.hide();
+                        this.isDeleteProgress = false;
                     });
+            });
             //     }
             // });
         } else {

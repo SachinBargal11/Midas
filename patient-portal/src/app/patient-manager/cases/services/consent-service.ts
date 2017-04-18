@@ -1,3 +1,4 @@
+import { CaseAdapter } from './adapters/case-adapter';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
@@ -143,7 +144,7 @@ export class ConsentService {
         return <Observable<Case>>Observable.fromPromise(promise);
     }
 
-    deleteConsentform(caseDetail: Consent, companyId: number): Observable<Consent> {
+    deleteConsent(caseDetail: Consent, companyId: number): Observable<Consent> {
         let promise = new Promise((resolve, reject) => {
             // return this._http.get(this._url + '/CompanyCaseConsentApproval/delete/' + caseDetail.id, {
             return this._http.get(this._url + '/CompanyCaseConsentApproval/delete/' + caseDetail.id + '/' + caseDetail.documentId + '/' + companyId, {
@@ -160,6 +161,31 @@ export class ConsentService {
                 });
         });
         return <Observable<Consent>>Observable.from(promise);
+    }
+    deleteCompanyConsent(caseDetail: Case, companyId: number): Observable<Case> {
+        let promise = new Promise((resolve, reject) => {
+            let requestData = caseDetail.toJS();
+            let caseId = requestData.id;
+            let documentId: number = 0; 
+            let companyId: number = 0; 
+            requestData.caseCompanyConsentDocument.forEach(element => {
+                documentId = element.document.originalResponse.midasDocumentId;                
+                companyId = element.document.originalResponse.companyId;                
+            });
+             requestData.caseCompanyConsentDocument
+            return this._http.get(this._url + '/CompanyCaseConsentApproval/delete/' + caseId + '/' + documentId + '/' + companyId, {
+
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((data: any) => {
+                    let parsedCase: Case = null;
+                    parsedCase = CaseAdapter.parseResponse(data);
+                    resolve(parsedCase);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Case>>Observable.from(promise);
     }
 
     deleteUploadConsentform(caseDetail: Consent): Observable<Consent> {

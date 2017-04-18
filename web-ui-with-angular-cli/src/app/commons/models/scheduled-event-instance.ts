@@ -12,6 +12,7 @@ export class ScheduledEventInstance {
     allDay: boolean;
     owningEvent: ScheduledEvent;
     eventWrapper: IEventWrapper;
+    eventColor: string;
 
     constructor(props: {
         title: string;
@@ -22,6 +23,7 @@ export class ScheduledEventInstance {
         allDay: boolean;
         owningEvent: ScheduledEvent;
         eventWrapper: IEventWrapper;
+        eventColor: string;
     }) {
         this.title = props.title;
         this.start = props.start;
@@ -30,6 +32,7 @@ export class ScheduledEventInstance {
         this.allDay = props.allDay;
         this.owningEvent = props.owningEvent;
         this.eventWrapper = props.eventWrapper;
+        this.eventColor = props.eventColor;
     }
 
     get isInPast():boolean {

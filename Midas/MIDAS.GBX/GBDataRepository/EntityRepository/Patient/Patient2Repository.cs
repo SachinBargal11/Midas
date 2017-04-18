@@ -121,9 +121,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                  .Include("Case.Patient2.User.UserCompanies")
                                                  .Include("Case.Patient2.User.AddressInfo")
                                                  .Include("Case.Patient2.User.ContactInfo")
-                                                 .Where(p => p.ReferredToCompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)) 
-                                                  && p.Case.CompanyCaseConsentApprovals.Any(p2 => p2.CompanyId == CompanyId 
-                                                  && (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))))                                                  
+                                                 .Where(p => p.ReferredToCompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                  && p.Case.CompanyCaseConsentApprovals.Any(p2 => p2.CompanyId == CompanyId
+                                                  && (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))) == false)
                                                   .ToList<Referral>();
             var patientList2 = referralList.Select(p => p.Case.Patient2).ToList();
 
@@ -134,7 +134,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             else
             {
                 List<BO.Patient2> lstpatients = new List<BO.Patient2>();
-                foreach (Patient2 item in patientList1.Union(patientList2))
+                foreach (Patient2 item in patientList1.Union(patientList2).Distinct())
                 {
                     lstpatients.Add(Convert<BO.Patient2, Patient2>(item));
                 }

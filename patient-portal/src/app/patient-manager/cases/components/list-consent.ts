@@ -31,6 +31,7 @@ export class ConsentListComponent implements OnInit {
     isDeleteProgress: boolean = false;
     companyId: number;
     caseConsentDocuments: CaseDocument[];
+    
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
@@ -45,7 +46,6 @@ export class ConsentListComponent implements OnInit {
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
-            this.companyId = this.sessionStore.session.currentCompany.id;
         });
     }
 
@@ -55,9 +55,12 @@ export class ConsentListComponent implements OnInit {
 
     loadConsentForm() {
         this._progressBarService.show();
+       
         this._casesStore.getDocumentForCaseId(this.caseId)
+
             .subscribe((caseDocument: Case) => {
                 this.caseConsentDocuments = caseDocument.caseCompanyConsentDocument;
+
             },
             (error) => {
                 this._progressBarService.hide();
@@ -81,10 +84,11 @@ export class ConsentListComponent implements OnInit {
                 header: 'Delete Confirmation',
                 icon: 'fa fa-trash',
                 accept: () => {
-                    this.selectedConsentList.forEach(currentCase => {
+                    this.selectedConsentList.forEach(currentCaseDocument => {
                         this.isDeleteProgress = true;
                         this._progressBarService.show();
-                        let result = this._ConsentStore.deleteConsetForm(currentCase, this.companyId)
+                        let result = this._ConsentStore.deleteConsetForm(currentCaseDocument, this.companyId)
+                        // let result = this._casesStore.deleteDocument(currentCaseDocument)
                         result.subscribe(
                             (response) => {
                                 let notification = new Notification({
@@ -126,9 +130,8 @@ export class ConsentListComponent implements OnInit {
             this._notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'select record to delete');
         }
-
-
     }
+
 
     DownloadPdf(documentId) {
         this._progressBarService.show();

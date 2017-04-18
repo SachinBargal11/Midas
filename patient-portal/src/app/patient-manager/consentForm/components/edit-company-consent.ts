@@ -10,22 +10,20 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 //import { FileUpload, FileUploadModule } from 'primeng/primeng';
-import { AddDocConsentStore } from '../stores/add-consent-form-store';
+import { ConsentStore } from '../../cases/stores/consent-store';
 import { SessionStore } from '../../../commons/stores/session-store';
-import { AddDocConsentFormService } from '../services/consent-form-service';
-import { AddConsent } from '../models/add-consent-form';
+import { Consent } from '../../cases/models/consent';
 import { ElementRef, Input, ViewChild } from '@angular/core';
 import { Http } from '@angular/http';
 import * as _ from 'underscore';
 import { ScannerService } from '../../../commons/services/scanner-service';
 
 @Component({
-    selector: 'edit-consent-form',
-    templateUrl: './edit-consent-form.html',
-    providers: [AddDocConsentFormService]
+    selector: 'edit-company-consent',
+    templateUrl: './edit-company-consent.html'
 })
 
-export class EditDocConsentFormComponent implements OnInit {
+export class EditCompanyConsentComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     msgs: Message[];
     uploadedFiles: any[] = [];
@@ -38,7 +36,7 @@ export class EditDocConsentFormComponent implements OnInit {
     isdoctorsLoading = false;
     isSaveProgress = false;
     states: any[];
-    consentDetail: AddConsent;
+    consentDetail: Consent;
     consentForm: FormGroup;
     consentformControls;
 
@@ -49,7 +47,7 @@ export class EditDocConsentFormComponent implements OnInit {
     doctroId: number;
     selectedDoctor = 0;  
     companyId: number;  
-    document: AddConsent[] = [];
+    document: Consent[] = [];
     doctorApprovalId: number;
   documentMode: string = 'one';
     scannerContainerId: string = `scanner_${moment().valueOf()}`;
@@ -59,11 +57,10 @@ export class EditDocConsentFormComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
-        private service: AddDocConsentFormService,
         private _router: Router,
         public sessionStore: SessionStore,
         public _route: ActivatedRoute,
-        private _AddConsentStore: AddDocConsentStore,
+        private _consentStore: ConsentStore,
        public notificationsStore: NotificationsStore,
         public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
@@ -87,9 +84,9 @@ export class EditDocConsentFormComponent implements OnInit {
         this._route.params.subscribe((routeParams: any) => {            
             this.doctorApprovalId = parseInt(routeParams.id);
             this.progressBarService.show();
-            let resultD = this._AddConsentStore.editDoctorCaseConsentApproval(this.doctorApprovalId);           
+            let resultD = this._consentStore.editDoctorCaseConsentApproval(this.doctorApprovalId);           
             resultD.subscribe(
-                (consentDetail: AddConsent) => {
+                (consentDetail: Consent) => {
                     this.consentDetail = consentDetail;
                     this.selectedDoctor = consentDetail.doctorId;
                     this.file.name = consentDetail.consentReceived;
@@ -119,7 +116,7 @@ export class EditDocConsentFormComponent implements OnInit {
         let currentDate = today.getDate();
         this.maxDate = new Date();
         this.maxDate.setDate(currentDate);
-        this._AddConsentStore.getdoctors(this.companyId)
+        this._consentStore.getdoctors(this.companyId)
             .subscribe(doctor => this.doctors = doctor);
         // this.downloadDocument();
     }
@@ -194,7 +191,7 @@ export class EditDocConsentFormComponent implements OnInit {
     }
     downloadDocument() {
         this.progressBarService.show();
-        this._AddConsentStore.getDocumentsForCaseId(this.caseId)
+        this._consentStore.getDocumentsForCaseId(this.caseId)
             .subscribe(document => {
                 this.document = document
 
@@ -227,7 +224,7 @@ export class EditDocConsentFormComponent implements OnInit {
             this.isSaveProgress = true;
             let consentFormValues = this.consentForm.value;
             let result;
-            let consentDetail = new AddConsent({
+            let consentDetail = new Consent({
                 id: this.doctorApprovalId,
                 caseId: this.caseId,
                 patientId: this.patientId,
@@ -236,7 +233,7 @@ export class EditDocConsentFormComponent implements OnInit {
             });
 
             this.progressBarService.show();
-            result = this._AddConsentStore.Save(consentDetail);
+            result = this._consentStore.Save(consentDetail);
             result.subscribe(
                 (response) => {
                     let notification = new Notification({

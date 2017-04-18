@@ -4,7 +4,7 @@ import * as _ from 'underscore';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import {environment} from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { Room } from '../models/room';
 import { Schedule } from '../models/rooms-schedule';
 import { Tests } from '../models/tests';
@@ -91,6 +91,22 @@ export class RoomsService {
         });
         return <Observable<Tests[]>>Observable.fromPromise(promise);
     }
+    getTestsByLocationId(locationId: number): Observable<Tests[]> {
+        let promise: Promise<Tests[]> = new Promise((resolve, reject) => {
+            return this._http.get(`${this._url}/room/getByLocationId/${locationId}`, {
+                headers: this._headers
+            }).map(res => res.json())
+                .subscribe((testsData: Array<Object>) => {
+                    let tests: any[] = (<Object[]>testsData).map((testsData: any) => {
+                        return TestsAdapter.parseResponse(testsData);
+                    });
+                    resolve(tests);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Tests[]>>Observable.fromPromise(promise);
+    }
     addRoom(roomDetail: Room): Observable<any> {
         let promise: Promise<any> = new Promise((resolve, reject) => {
             let requestData: any = roomDetail.toJS();
@@ -137,9 +153,9 @@ export class RoomsService {
             return this._http.post(this._url + '/Room/Add', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json()).subscribe((data: any) => {
-                    let parsedRoom: Room = null;
-                    parsedRoom = RoomsAdapter.parseResponse(data);
-                    resolve(parsedRoom);
+                let parsedRoom: Room = null;
+                parsedRoom = RoomsAdapter.parseResponse(data);
+                resolve(parsedRoom);
             }, (error) => {
                 reject(error);
             });

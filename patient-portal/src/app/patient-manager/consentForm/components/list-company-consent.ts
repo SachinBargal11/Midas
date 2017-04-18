@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LazyLoadEvent } from 'primeng/primeng'
-import { AddDocConsentStore } from '../stores/add-consent-form-store';
-import { AddConsent } from '../models/add-consent-form';
+import { ConsentStore } from '../../cases/stores/consent-store';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
@@ -10,8 +9,7 @@ import * as _ from 'underscore';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
-import { ListDocConsentStore } from '../../consentForm/stores/list-consent-form-store';
-import { ListConsent } from '../../consentForm/models/list-consent-form';
+import { Consent } from '../../cases/models/consent';
 
 import { Patient } from '../../patients/models/patient';
 import { PatientsStore } from '../../patients/stores/patients-store';
@@ -23,27 +21,28 @@ import { SessionStore } from '../../../commons/stores/session-store';
 
 
 @Component({
-    selector: 'list-compney-consent',
-    templateUrl: './list-compney-consent.html'
+    selector: 'list-company-consent',
+    templateUrl: './list-company-consent.html'
 })
 
-export class ListCompneyConsentComponent implements OnInit {
+export class ListCompanyConsentComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
 
-    selectedConsentList: ListConsent[] = [];
-    ListConsent: ListConsent[];
+    selectedConsentList: Case[] = [];
+    ListConsent: Consent[];
     caseId: number;
-    datasource: ListConsent[];
+    datasource: Consent[];
     totalRecords: number;
     isDeleteProgress: boolean = false;
     companyId: number;
-    caseConsentDocuments: Case[];
+    caseConsentDocuments: CaseDocument[];
+    cases: Case[];
     patientId: number;
     patient: Patient;
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
-        private _ListConsentStore: ListDocConsentStore,
+        private _consentStore: ConsentStore,
         public notificationsStore: NotificationsStore,
         public progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
@@ -53,13 +52,11 @@ export class ListCompneyConsentComponent implements OnInit {
 
     ) {
         this.patientId = this.sessionStore.session.user.id;
-        this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.caseId = parseInt(routeParams.caseId, 10);
             this.progressBarService.show();
             this._patientsStore.fetchPatientById(this.patientId)
                 .subscribe((patient: Patient) => {
                     this.patient = patient;
-                    // _.forEach(patient.companyId)
+                    this.companyId = patient.companyId;
                 },
                 (error) => {
                     this.progressBarService.hide();
@@ -68,7 +65,6 @@ export class ListCompneyConsentComponent implements OnInit {
 
                     this.progressBarService.hide();
                 });
-        });
     }
 
     ngOnInit() {
@@ -78,8 +74,14 @@ export class ListCompneyConsentComponent implements OnInit {
     loadConsentForm() {
         this.progressBarService.show();
         this._casesStore.getDocumentForCompneyCaseId(this.patientId)
-            .subscribe((caseDocument: Case[]) => {
-                this.caseConsentDocuments = caseDocument;
+            .subscribe((cases: Case[]) => {
+                this.cases = cases;
+                this.caseId = cases[0].id;
+                _.forEach(cases, (currentCase: Case) => {
+                    this.caseConsentDocuments = _.map(currentCase.caseCompanyConsentDocument, (currentConsent: CaseDocument) => {
+                        return currentConsent
+                    })
+                })
             },
             (error) => {
                 this.progressBarService.hide();
@@ -103,7 +105,7 @@ export class ListCompneyConsentComponent implements OnInit {
         if (this.selectedConsentList.length > 0) {
             this.selectedConsentList.forEach(currentCase => {
                 this.progressBarService.show();
-                this._ListConsentStore.deleteConsetForm(currentCase)
+                this._consentStore.deleteCompanyConsent(currentCase, this.companyId)
                     .subscribe(
                     (response) => {
                         let notification = new Notification({

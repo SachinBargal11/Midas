@@ -39,7 +39,7 @@ export class LocationsService {
         return <Observable<LocationDetails>>Observable.fromPromise(promise);
     }
 
-    getLocations(): Observable<any[]> {
+    getLocations(): Observable<any[]> {     
         let requestData = {
             company: {
                 id: this._sessionStore.session.currentCompany.id

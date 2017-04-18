@@ -1,3 +1,4 @@
+import { Case } from '../../cases/models/case';
 import { IEventWrapper } from '../../../commons/models/i-event-wrapper';
 import { ScheduledEventInstance } from '../../../commons/models/scheduled-event-instance';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
@@ -13,12 +14,13 @@ import { Patient } from '../../../patient-manager/patients/models/patient';
 const PatientVisitRecord = Record({
     id: 0,
     calendarEventId: 0,
-    caseId: 0,
-    patientId: 0,
-    patient: null,
     locationId: null,
-    roomId: null,
+    case: null,
+    caseId: 0,
+    patient: null,
+    patientId: 0,
     room: null,
+    roomId: null,
     doctor: null,
     doctorId: null,
     specialtyId: null,
@@ -40,13 +42,14 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
 
     id: number;
     calendarEventId: number;
-    caseId: number;
-    room: Room;
-    doctor: Doctor;
-    patientId: number;
-    patient: Patient;
     locationId: number;
+    case: Case;
+    caseId: number;
+    patient: Patient;
+    patientId: number;
+    room: Room;
     roomId: number;
+    doctor: Doctor;
     doctorId: number;
     specialtyId: number;
     eventStart: moment.Moment;
@@ -95,7 +98,20 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
                 return 'Rescheduled';
             case VisitStatus.NOSHOW:
                 return 'Noshow';
+        }
+    }
 
-      }
+    get visitDisplayString(): string {
+        let visitInfo: string = `Visit`;
+        if (this.patientId && this.caseId) {
+            visitInfo = `${visitInfo} - ${this.patient.user.displayName} - Case(${this.caseId})`;
+        }
+        if(this.doctorId && this.doctor) {
+            visitInfo = `${visitInfo} - Doctor(${this.doctor.user.displayName})`;
+        }
+        if(this.roomId && this.room) {
+            visitInfo = `${visitInfo} - Room(${this.room.name})`;
+        }
+        return visitInfo;
     }
 }

@@ -10,7 +10,7 @@
         </select>
                 </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-3" *ngIf="specialities.length > 0 || tests.length > 0">
                 <div class="form-group">
                     <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
                         <option value="0"></option>
@@ -60,7 +60,7 @@
         <button type="button" pButton icon="" label="Edit Current Occurrence" (click)="cd.accept()"></button>
     </p-footer>
 </p-confirmDialog>
-<p-dialog [minWidth]="300" [width]="900" (onAfterHide)="handleEventDialogHide()" header="Visit" [(visible)]="eventDialogVisible"
+<p-dialog [minWidth]="300" [width]="900" (onAfterHide)="handleEventDialogHide()" header="{{visitInfo}}" [(visible)]="eventDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
     <form [formGroup]="patientScheduleForm" (ngSubmit)="saveEvent()">
         <div *ngIf="selectedVisit">
@@ -96,11 +96,11 @@
     </form>
 </p-dialog>
 
-<p-dialog [minWidth]="300" [width]="900" (onAfterHide)="handleVisitDialogHide()" header="Visit" [(visible)]="visitDialogVisible"
+<p-dialog [minWidth]="300" [width]="900" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
     [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
     <div *ngIf="selectedVisit">
         <p-tabView>
-            <p-tabPanel header="Header 1" [selected]="true">
+            <p-tabPanel header="Status" [selected]="true">
                 <form [formGroup]="patientVisitForm" (ngSubmit)="saveVisit()">
 
                     <div class="row">
@@ -145,7 +145,7 @@
                 </form>
             </p-tabPanel>
 
-            <p-tabPanel header="Header 2" *ngIf="selectedVisit.id">
+            <p-tabPanel header="Documents" *ngIf="selectedVisit.id">
 
                 <app-document-upload [url]="visitUploadDocumentUrl" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
                 <p-confirmDialog width="425"></p-confirmDialog>

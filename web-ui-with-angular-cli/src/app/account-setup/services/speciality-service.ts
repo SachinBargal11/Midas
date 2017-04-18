@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {Http, Headers} from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http, Headers } from '@angular/http';
 import * as _ from 'underscore';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/map';
-import {environment} from '../../../environments/environment';
-import {Speciality} from '../models/speciality';
-import {SpecialityAdapter} from './adapters/speciality-adapter';
+import { environment } from '../../../environments/environment';
+import { Speciality } from '../models/speciality';
+import { SpecialityAdapter } from './adapters/speciality-adapter';
 
 @Injectable()
 export class SpecialityService {
@@ -35,10 +35,28 @@ export class SpecialityService {
     }
 
     getSpecialities(): Observable<Speciality[]> {
-              let promise: Promise<Speciality[]> = new Promise((resolve, reject) => {
-             return this._http.post(this._url + '/Specialty/getall', JSON.stringify({}), {
+        let promise: Promise<Speciality[]> = new Promise((resolve, reject) => {
+            return this._http.post(this._url + '/Specialty/getall', JSON.stringify({}), {
                 headers: this._headers
-              })
+            })
+                .map(res => res.json())
+                .subscribe((specialityData: Array<Object>) => {
+                    let specialties = (<Object[]>specialityData).map((specialityData: any) => {
+                        return SpecialityAdapter.parseResponse(specialityData);
+                    });
+                    resolve(specialties);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Speciality[]>>Observable.fromPromise(promise);
+    }
+
+    getSpecialitiesByLocationId(locationId: number): Observable<Speciality[]> {
+        let promise: Promise<Speciality[]> = new Promise((resolve, reject) => {
+            return this._http.get(`${this._url}/Specialty/getByLocationId/${locationId}`, {
+                headers: this._headers
+            })
                 .map(res => res.json())
                 .subscribe((specialityData: Array<Object>) => {
                     let specialties = (<Object[]>specialityData).map((specialityData: any) => {

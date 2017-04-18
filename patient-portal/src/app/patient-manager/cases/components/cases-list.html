@@ -14,10 +14,8 @@
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Cases">
-    </div>
 </div>
-<!--<p-dataTable [value]="cases" [(selection)]="selectedCases" [lazy]="true" [rows]="10" [paginator]="true" 
-[totalRecords]="totalRecords" (onLazyLoad)="loadCasesLazy($event)" [globalFilter]="gb" [responsive]="true">-->
+</div>
 <p-dataTable [value]="cases" [(selection)]="selectedCases" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]"
     [globalFilter]="gb" [responsive]="true">
     <header>Cases</header>
@@ -27,11 +25,17 @@
     <p-column field="caseTypeLabel" header="Case Type" [sortable]="true"></p-column>
     <p-column header="Consent Received">
         <ng-template let-case="rowData" pTemplate="body">
-             <a *ngIf="case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="downloadConsent(case.caseCompanyConsentDocument)"><u>Yes</u></a>
-             <a *ngIf="!case.isConsentReceived(sessionStore.session.currentCompany.id)" routerLink="{{case.id}}/consent"><u>No</u></a>
+            <a *ngIf="case.isConsentReceived(CompanyId)" (click)="downloadConsent(case.caseCompanyConsentDocument)">
+                <u>Yes</u>
+            </a>
+            <a *ngIf="!case.isConsentReceived(CompanyId)" routerLink="{{case.id}}/consent">
+                <u>No</u>
+            </a>
+
+
         </ng-template>
     </p-column>
-  
+
     <p-column styleClass="actions-cell" header="Actions">
         <ng-template let-case="rowData" pTemplate="body">
             <!--<a><i class="glyphicon glyphicon-edit"></i></a>-->

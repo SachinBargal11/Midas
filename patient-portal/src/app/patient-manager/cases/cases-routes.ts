@@ -22,219 +22,6 @@ import { EditConsentComponent } from './components/edit-consent';
 //import { PopupFileUpload } from '../../commons/components/PopupFileUpload';
 
 export const CasesShellRoutes: Routes = [
-    //     {
-    //         path: '',
-    //         pathMatch: 'full',
-    //         redirectTo: 'cases'
-    //     },
-    //     {
-    //         path: 'cases',
-    //         component: CasesListComponent,
-    //         data: {
-    //             breadcrumb: 'Cases'
-    //         }
-    //     },
-    //     {
-    //         path: 'cases',
-    //         component: ShellComponent,
-    //         data: {
-    //             breadcrumb: 'Cases'
-    //         },
-    //         children: [
-    //             {
-    //                 path: 'add',
-    //                 component: AddCaseComponent,
-    //                 data: {
-    //                     breadcrumb: 'Add Case'
-    //                 }
-    //             }
-    //             // },
-    //             // {
-    //             //     path: 'upload-consent/:caseId',
-    //             //    // component: PopupFileUpload
-    //             // }
-    //         ]
-    //     },
-    //     {
-    //         path: 'cases/:patientId',
-    //         component: ShellComponent,
-    //         data: {
-    //             breadcrumb: 'Cases'
-    //         },
-    //         children: [
-    //             {
-    //                 path: '',
-    //                 component: CasesListComponent,
-    //                 data: {
-    //                     breadcrumb: 'root'
-    //                 }
-    //             },
-    //             {
-    //                 path: 'add',
-    //                 component: AddCaseComponent,
-    //                 data: {
-    //                     breadcrumb: 'Add Case'
-    //                 }
-    //             },
-    //             {
-    //                 path: ':caseId',
-    //                 component: CaseShellComponent,
-    //                 data: {
-    //                     breadcrumb: 'root'
-    //                 },
-    //                 children: [
-    //                     {
-    //                         path: '',
-    //                         redirectTo: 'basic',
-    //                         pathMatch: 'full'
-    //                     },
-    //                     {
-    //                         path: 'basic',
-    //                         component: CaseBasicComponent,
-    //                         canActivate: [ValidateActiveSession],
-    //                         data: {
-    //                             breadcrumb: 'Basic'
-    //                         }
-    //                     },                    
-    //                     {
-    //                         path: 'patient-visit',
-    //                         component: ShellComponent,
-    //                         canActivate: [ValidateActiveSession],
-    //                         data: {
-    //                             breadcrumb: 'Visits'
-    //                         },
-    //                         children: [
-    //                             {
-    //                                 path: '',
-    //                                 component: PatientVisitListComponent,
-    //                                 canActivate: [ValidateActiveSession],
-    //                                 data: {
-    //                                     breadcrumb: 'root'
-    //                                 }
-    //                             },
-    //                             {
-    //                                 path: ':visitId',
-    //                                 component: PatientVisitListShellComponent,
-    //                                 data: {
-    //                                     breadcrumb: 'root'
-    //                                 },
-    //                                 children: [
-    //                                     {
-    //                                         path: '',
-    //                                         redirectTo: 'visit-note',
-    //                                         pathMatch: 'full'
-    //                                     },
-    //                                     {
-    //                                         path: 'visit-note',
-    //                                         component: PatientVisitNotesComponent,
-    //                                         canActivate: [ValidateActiveSession],
-    //                                         data: {
-    //                                             breadcrumb: 'Visit Notes'
-    //                                         }
-    //                                     },
-    //                                     {
-    //                                         path: 'visit-document',
-    //                                         component: VisitDocumentsUploadComponent,
-    //                                         canActivate: [ValidateActiveSession],
-    //                                         data: {
-    //                                             breadcrumb: 'Documents Upload'
-    //                                         }
-    //                                     }
-    //                                 ]
-    //                             }
-    //                             // {
-    //                             //     path: 'edit/:id',
-    //                             //     component: PatientVisitNotesComponent,
-    //                             //     canActivate: [ValidateActiveSession],
-    //                             //     data: {
-    //                             //         breadcrumb: 'Visit Notes'
-    //                             //     }
-    //                             // }
-    //                         ]
-    //                     },
-    //                     {
-    //                         path: 'accident',
-    //                         component: AccidentInfoComponent,
-    //                         canActivate: [ValidateActiveSession],
-    //                         data: {
-    //                             breadcrumb: 'Accident'
-    //                         }
-    //                     },
-    //                     {
-    //                         path: 'documents',
-    //                         component: CaseDocumentsUploadComponent,
-    //                         canActivate: [ValidateActiveSession],
-    //                         data: {
-    //                             breadcrumb: 'Documents'
-    //                         }
-    //                     },
-    //                     {
-    //                         path: 'insurance-mapping',
-    //                         component: InsuranceMappingComponent,
-    //                         canActivate: [ValidateActiveSession],
-    //                         data: {
-    //                             breadcrumb: 'Insurance'
-    //                         }
-    //                     },
-    //                     {
-    //                         path: 'insurance-mapping',
-    //                         component: ShellComponent,
-    //                         canActivate: [ValidateActiveSession],
-    //                         data: {
-    //                             breadcrumb: 'Insurance'
-    //                         },
-    //                         children: [
-    //                             {
-    //                                 path: 'assign',
-    //                                 component: AssignInsuranceComponent,
-    //                                 data: {
-    //                                     breadcrumb: 'Assign Insurance'
-    //                                 }
-    //                             },
-    //                         ]
-    //                     },
-
-
-    //                     {
-    //                         path: 'consent',
-    //                         component: ShellComponent,
-    //                         canActivate: [ValidateActiveSession],
-    //                         data: {
-    //                             breadcrumb: 'Consent'
-    //                         },
-    //                         children: [
-    //                             {
-    //                                 path: '',
-    //                                 component: ConsentListComponent,
-    //                                 data: {
-    //                                     breadcrumb: 'root'
-    //                                 }
-    //                             },
-    //                             {
-    //                                 path: 'add',
-    //                                 component: AddConsentComponent,
-    //                                 canActivate: [ValidateActiveSession],
-    //                                 data: {
-    //                                     breadcrumb: 'Add Consent'
-    //                                 }
-    //                             },
-    //                             {
-    //                                 path: 'edit/:id',
-    //                                 component: EditConsentComponent,
-    //                                 canActivate: [ValidateActiveSession],
-    //                                 data: {
-    //                                     breadcrumb: 'Edit Consent'
-    //                                 }
-    //                             }
-    //                         ]
-    //                     }
-
-    //                 ]
-    //             }
-    //         ]
-    //     }
-    // ];
-
     {
         path: '',
         pathMatch: 'full',
@@ -334,10 +121,36 @@ export const CasesShellRoutes: Routes = [
                     },
                     {
                         path: 'insurance-mapping',
-                        component: InsuranceMappingComponent,
+                        component: ShellComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Insurance'
+                        },
+
+                        children: [
+                            {
+                                path: '',
+                                component: InsuranceMappingComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'root'
+                                },
+                            },
+                            {
+                                path: 'assign',
+                                component: AssignInsuranceComponent,
+                                data: {
+                                    breadcrumb: 'Assign Insurance'
+                                }
+                            },
+                        ]
+                    },
+                    {
+                        path: 'documents',
+                        component: CaseDocumentsUploadComponent,
+                        canActivate: [ValidateActiveSession],
+                        data: {
+                            breadcrumb: 'Documents'
                         }
                     },
                     {

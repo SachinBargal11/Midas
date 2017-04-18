@@ -67,7 +67,7 @@ export class AddConsentComponent implements OnInit {
     dialogVisible: boolean = false;
     currentCaseId: number;
     documents: CaseDocument[] = [];
-currentCompany :number;
+    currentCompany: number;
     constructor(
         private fb: FormBuilder,
         private service: ConsentService,
@@ -86,11 +86,9 @@ currentCompany :number;
         this._route.parent.parent.params.subscribe((routeParams: any) => {
 
             this.caseId = parseInt(routeParams.caseId, 10);
-            let companyId: number = this._sessionStore.session.currentCompany.id;
-            this.companyId = this._sessionStore.session.currentCompany.id;
-            this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
+            // this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.currentCompany;
             this.consentForm = this.fb.group({
-                 company: ['', Validators.required]
+                company: ['', Validators.required]
                 // ,uploadedFiles: ['', Validators.required]
             });
 
@@ -99,26 +97,27 @@ currentCompany :number;
     }
 
     ngOnInit() {
-
         let today = new Date();
         let currentDate = today.getDate();
         this.maxDate = new Date();
         this.maxDate.setDate(currentDate);
-        debugger;
         this._AddConsentStore.getCompany(this.caseId)
             .subscribe(company => this.companies = company);
         this.getDocuments();
-        
-    }  
 
-    selectcompany(event) {
-        this.selectedcompany = 0;
-        this.currentCompany = event.target.value;
     }
 
-           
+    selectcompany(event) {
+        debugger;
+        this.selectedcompany = 0;
+        this.currentCompany = event.target.value;
+        this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.currentCompany;
 
-     documentUploadComplete(documents: Document[]) {
+    }
+
+
+
+    documentUploadComplete(documents: Document[]) {
         _.forEach(documents, (currentDocument: Document) => {
             if (currentDocument.status == 'Failed') {
                 let notification = new Notification({

@@ -45,7 +45,7 @@ export class AssignInsuranceComponent implements OnInit {
         private fb: FormBuilder,
         private _router: Router,
         private _notificationsStore: NotificationsStore,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _insuranceMappingStore: InsuranceMappingStore,
         private _casesStore: CasesStore,
         private _insuranceStore: InsuranceStore,
@@ -58,7 +58,7 @@ export class AssignInsuranceComponent implements OnInit {
             this.caseId = parseInt(routeParams.caseId);
         });
         this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
-            this.patientId = parseInt(routeParams.patientId);
+            this.patientId =this.sessionStore.session.user.id;
             this._progressBarService.show();
 
             let fetchInsurances = this._insuranceStore.getInsurances(this.patientId);

@@ -20,7 +20,6 @@ import { ValidateInActiveSession } from './commons/guards/validate-inactive-sess
 import { StatesStore } from './commons/stores/states-store';
 import { StateService } from './commons/services/state-service';
 import { PatientManagerModule } from './patient-manager/patient-manager-module';
-import { AddCompneyConsentComponent} from './patient-manager/consentForm/components/compney-add-consent';
 import { ScannerService } from './commons/services/scanner-service';
 import { ConfirmationService } from 'primeng/primeng';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

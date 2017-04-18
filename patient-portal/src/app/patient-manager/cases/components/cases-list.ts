@@ -25,7 +25,6 @@ import { CaseDocument } from '../../cases/models/case-document';
     templateUrl: './cases-list.html'
 })
 
-
 export class CasesListComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     cases: Case[];
@@ -38,7 +37,7 @@ export class CasesListComponent implements OnInit {
     isDeleteProgress: boolean = false;
     consentRecived: string = '';
     referralRecived: string = '';
-
+    CompanyId: number = 0;
     constructor(
         public _route: ActivatedRoute,
         private _router: Router,
@@ -52,13 +51,16 @@ export class CasesListComponent implements OnInit {
     ) {
         // this._route.parent.params.subscribe((routeParams: any) => {
         //     this.patientId = parseInt(routeParams.patientId, 10);
+
         this.patientId = this.sessionStore.session.user.id;
         this.progressBarService.show();
+
         this._patientStore.fetchPatientById(this.patientId)
             .subscribe(
             (patient: Patient) => {
                 this.patient = patient;
                 this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
+                this.CompanyId = patient.companyId;
             },
             (error) => {
                 this._router.navigate(['../'], { relativeTo: this._route });
@@ -67,16 +69,14 @@ export class CasesListComponent implements OnInit {
             () => {
                 this.progressBarService.hide();
             });
-        // });
+
     }
 
     ngOnInit() {
-        debugger;
         this.loadCases();
     }
 
     loadCases() {
-        debugger;
         this.progressBarService.show();
         this._casesStore.getCases(this.patientId)
             .subscribe(cases => {

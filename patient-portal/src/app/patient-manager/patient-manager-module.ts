@@ -48,8 +48,9 @@ import { InsuranceMappingStore } from './cases/stores/insurance-mapping-store';
 import { InsuranceMappingService } from './cases/services/insurance-mapping-service';
 import { ViewAllComponent } from './patients/components/view-all';
 import { CaseService } from './cases/services/cases-services';
-import { AdjusterMasterStore } from './patients/stores/adjuster-store';
-import { AdjusterMasterService } from './patients/services/adjuster-service';
+import { AdjusterMasterStore } from '../account-setup/stores/adjuster-store';
+import { AdjusterMasterService } from '../account-setup/services/adjuster-service';
+
 
 // import { PatientVisitComponent } from './patient-visit/components/patient-visit';
 // import { PatientVisitsStore } from './patient-visit/stores/patient-visit-store';
@@ -61,14 +62,10 @@ import { AdjusterMasterService } from './patients/services/adjuster-service';
 //import { ConsentShellRoutingModule } from './consentForm/consent-form-routes';
 
 
-import { AddCompneyConsentComponent} from './consentForm/components/compney-add-consent';
+import { AddCompanyConsentComponent } from './consentForm/components/add-company-consent';
 
-import { ListCompneyConsentComponent } from './consentForm/components/list-compney-consent'
-import { AddDocConsentFormService } from './consentForm/services/consent-form-service';
-import { EditDocConsentFormComponent } from './consentForm/components/edit-consent-form'
-import { AddDocConsentStore } from './consentForm/stores/add-consent-form-store';
-import { ListDocConsentStore } from './consentForm/stores/list-consent-form-store';
-import { ListDocConsentFormService } from './consentForm/services/list-consent-form-service';
+import { ListCompanyConsentComponent } from './consentForm/components/list-company-consent'
+import { EditCompanyConsentComponent } from './consentForm/components/edit-company-consent'
 
 import { ConsentListComponent } from './cases/components/list-consent';
 import { AddConsentComponent } from './cases/components/add-consent';
@@ -97,6 +94,10 @@ import { PatientVisitService } from './patient-visit/services/patient-visit-serv
 import { RoomsModule } from '../medical-provider/rooms/rooms-module';
 import { UsersModule } from '../medical-provider/users/users-module';
 import { DocumentsUploadComponent } from './cases/components/documents';
+
+
+
+
 
 @NgModule({
     imports: [
@@ -137,15 +138,24 @@ import { DocumentsUploadComponent } from './cases/components/documents';
         CaseBasicComponent,
         // InsuranceMapComponent,
         // CaseMappingComponent,
-        ViewAllComponent, AddCompneyConsentComponent
-        , ListCompneyConsentComponent, EditDocConsentFormComponent
-        , ConsentListComponent, AddConsentComponent
-        , CompanyCasesComponent, AddCaseComponent, PatientVisitListComponent,
+        ViewAllComponent, 
+        AddCompanyConsentComponent, 
+        ListCompanyConsentComponent, 
+        EditCompanyConsentComponent, 
+        ConsentListComponent, 
+        AddConsentComponent, 
+        CompanyCasesComponent, 
+        AddCaseComponent, 
+        PatientVisitListComponent,
         PatientVisitNotesComponent,
         CaseDocumentsUploadComponent,
         PatientVisitListShellComponent,
-        VisitDocumentsUploadComponent, InsuranceMappingComponent, AssignInsuranceComponent, EditConsentComponent, PatientVisitComponent
-        ,DocumentsUploadComponent
+        VisitDocumentsUploadComponent, 
+        InsuranceMappingComponent, 
+        AssignInsuranceComponent, 
+        EditConsentComponent, 
+        PatientVisitComponent, 
+        DocumentsUploadComponent
     ],
     providers: [
         PatientsService,
@@ -168,12 +178,14 @@ import { DocumentsUploadComponent } from './cases/components/documents';
         InsuranceMappingStore,
         AdjusterMasterStore,
         AdjusterMasterService,
-        ListDocConsentStore, AddDocConsentStore, ListDocConsentFormService, AddDocConsentFormService
-        , ConsentStore,
-        ConsentService
+        ConsentStore,
+        ConsentService,
         // PatientVisitsStore,
-        // PatientVisitService
-        , LocationsStore, LocationsService, AttorneyMasterStore, AttorneyMasterService,
+        // PatientVisitService, 
+        LocationsStore,
+        LocationsService,
+        AttorneyMasterStore, 
+        AttorneyMasterService,
         PatientVisitsStore,
         PatientVisitService
     ]
