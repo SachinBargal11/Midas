@@ -245,6 +245,19 @@ namespace MIDAS.GBX
             {
                 repo = new Patient2Repository(context);
             }
+            else if (typeof(T) == typeof(BO.DiagnosisType))
+            {
+                repo = new DiagnosisTypeRepository(context);
+            }
+            else if (typeof(T) == typeof(BO.DiagnosisCode))
+            {
+                repo = new DiagnosisCodeRepository(context);
+            }
+            else if (typeof(T) == typeof(BO.ProcedureCode))
+            {
+                repo = new ProcedureCodeRepository(context);
+            }
+            
             return repo;
         }
     }

@@ -428,9 +428,17 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        
-
         public virtual Object GetByRoomId(int RoomId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByRoomTestId(int RoomTestId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetBySpecialityId(int specialityId)
         {
             throw new NotImplementedException();
         }

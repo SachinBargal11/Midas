@@ -1056,10 +1056,36 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
-        
+
         public HttpResponseMessage GetByRoomId(HttpRequestMessage request, int RoomId)
         {
             var objResult = dataAccessManager.GetByRoomId(RoomId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByRoomTestId(HttpRequestMessage request, int RoomTestId)
+        {
+            var objResult = dataAccessManager.GetByRoomTestId(RoomTestId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetBySpecialityId(HttpRequestMessage request, int specialityId)
+        {
+            var objResult = dataAccessManager.GetBySpecialityId(specialityId);
             try
             {
                 return request.CreateResponse(HttpStatusCode.Created, objResult);

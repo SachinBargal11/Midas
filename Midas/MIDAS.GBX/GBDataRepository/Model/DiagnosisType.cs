@@ -12,29 +12,25 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class RoomTest
+    public partial class DiagnosisType
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public RoomTest()
+        public DiagnosisType()
         {
-            this.ProcedureCodes = new HashSet<ProcedureCode>();
-            this.Referrals = new HashSet<Referral>();
-            this.Rooms = new HashSet<Room>();
+            this.DiagnosisCodes = new HashSet<DiagnosisCode>();
         }
     
-        public int id { get; set; }
-        public string Name { get; set; }
+        public int Id { get; set; }
+        public string DiagnosisTypeText { get; set; }
+        public Nullable<int> CompanyId { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
         public int CreateByUserID { get; set; }
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
+        public virtual Company Company { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProcedureCode> ProcedureCodes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Referral> Referrals { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Room> Rooms { get; set; }
+        public virtual ICollection<DiagnosisCode> DiagnosisCodes { get; set; }
     }
 }

@@ -362,7 +362,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             }
             else
             {
-                if (_context.Users.Any(o => o.UserName == userBO.UserName)) return new BO.ErrorObject { ErrorMessage = "User already exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
+                if (_context.Users.Any(o => o.UserName == userBO.UserName && (o.IsDeleted.HasValue == false || (o.IsDeleted.HasValue == true && o.IsDeleted.Value == false)))) return new BO.ErrorObject { ErrorMessage = "User already exists.", errorObject = "", ErrorLevel = ErrorLevel.Information };
 
                 userDB.CreateDate = DateTime.UtcNow;
                 userDB.CreateByUserID = userBO.CreateByUserID;

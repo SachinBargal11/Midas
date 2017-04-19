@@ -290,6 +290,34 @@
           <Property Name="AlternateEmail" Type="nvarchar" MaxLength="100" />
           <Property Name="PreferredCommunication" Type="tinyint" />
         </EntityType>
+        <EntityType Name="DiagnosisCode">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DiagnosisTypeId" Type="int" Nullable="false" />
+          <Property Name="DiagnosisCodeText" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DiagnosisCodeDesc" Type="nvarchar" MaxLength="250" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="DiagnosisType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DiagnosisTypeText" Type="nvarchar" MaxLength="50" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+        </EntityType>
         <EntityType Name="Doctor">
           <Key>
             <PropertyRef Name="Id" />
@@ -753,6 +781,24 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="Id" Type="tinyint" Nullable="false" />
           <Property Name="DisplayText" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="ProcedureCode">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProcedureCodeText" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ProcedureCodeDesc" Type="nvarchar" MaxLength="250" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="Amount" Type="money" />
+          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="CreateByUserID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdateByUserID" Type="int" />
+          <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="SpecialityId" Type="int" />
+          <Property Name="RoomId" Type="int" />
+          <Property Name="RoomTestId" Type="int" />
         </EntityType>
         <EntityType Name="Referral">
           <Key>
@@ -1425,6 +1471,42 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="CompanySpecialtyDetails">
               <PropertyRef Name="SpecialtyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DiagnosisCode_Company_CompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="DiagnosisCode" Type="Self.DiagnosisCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DiagnosisCode">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DiagnosisCode_DiagnosisType_DiagnosisTypeId">
+          <End Role="DiagnosisType" Type="Self.DiagnosisType" Multiplicity="1" />
+          <End Role="DiagnosisCode" Type="Self.DiagnosisCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DiagnosisType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DiagnosisCode">
+              <PropertyRef Name="DiagnosisTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DiagnosisType_Company_CompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="DiagnosisType" Type="Self.DiagnosisType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DiagnosisType">
+              <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2112,6 +2194,54 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ProcedureCode_Company_CompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="ProcedureCode" Type="Self.ProcedureCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ProcedureCode">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProcedureCode_Room_SpecialityId">
+          <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
+          <End Role="ProcedureCode" Type="Self.ProcedureCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ProcedureCode">
+              <PropertyRef Name="RoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProcedureCode_RoomTest_RoomTestId">
+          <End Role="RoomTest" Type="Self.RoomTest" Multiplicity="0..1" />
+          <End Role="ProcedureCode" Type="Self.ProcedureCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoomTest">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ProcedureCode">
+              <PropertyRef Name="RoomTestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProcedureCode_Speciality_SpecialityId">
+          <End Role="Specialty" Type="Self.Specialty" Multiplicity="0..1" />
+          <End Role="ProcedureCode" Type="Self.ProcedureCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Specialty">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ProcedureCode">
+              <PropertyRef Name="SpecialityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Referral_Case_CaseId">
           <End Role="Case" Type="Self.Case" Multiplicity="1" />
           <End Role="Referral" Type="Self.Referral" Multiplicity="*" />
@@ -2469,6 +2599,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="CompanyType" EntityType="Self.CompanyType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ConsentGivenType" EntityType="Self.ConsentGivenType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContactInfo" EntityType="Self.ContactInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DiagnosisCode" EntityType="Self.DiagnosisCode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DiagnosisType" EntityType="Self.DiagnosisType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Doctor" EntityType="Self.Doctor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DoctorLocationSchedule" EntityType="Self.DoctorLocationSchedule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DoctorLocationSpecialty" EntityType="Self.DoctorLocationSpecialty" Schema="dbo" store:Type="Tables" />
@@ -2496,6 +2628,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="PatientVisit2" EntityType="Self.PatientVisit2" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PatientVisitEvent" EntityType="Self.PatientVisitEvent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PolicyOwner" EntityType="Self.PolicyOwner" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProcedureCode" EntityType="Self.ProcedureCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Referral" EntityType="Self.Referral" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReferralDocuments" EntityType="Self.ReferralDocuments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RefferingOffice" EntityType="Self.RefferingOffice" Schema="dbo" store:Type="Tables" />
@@ -2646,6 +2779,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_CompanySpecialtyDetails_Specialty" Association="Self.FK_CompanySpecialtyDetails_Specialty">
             <End Role="Specialty" EntitySet="Specialty" />
             <End Role="CompanySpecialtyDetails" EntitySet="CompanySpecialtyDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DiagnosisCode_Company_CompanyId" Association="Self.FK_DiagnosisCode_Company_CompanyId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="DiagnosisCode" EntitySet="DiagnosisCode" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DiagnosisCode_DiagnosisType_DiagnosisTypeId" Association="Self.FK_DiagnosisCode_DiagnosisType_DiagnosisTypeId">
+            <End Role="DiagnosisType" EntitySet="DiagnosisType" />
+            <End Role="DiagnosisCode" EntitySet="DiagnosisCode" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DiagnosisType_Company_CompanyId" Association="Self.FK_DiagnosisType_Company_CompanyId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="DiagnosisType" EntitySet="DiagnosisType" />
           </AssociationSet>
           <AssociationSet Name="FK_Doctor_User" Association="Self.FK_Doctor_User">
             <End Role="User" EntitySet="User" />
@@ -2874,6 +3019,22 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_PatientVisitEvent_Specialty_SpecialtyId" Association="Self.FK_PatientVisitEvent_Specialty_SpecialtyId">
             <End Role="Specialty" EntitySet="Specialty" />
             <End Role="PatientVisitEvent" EntitySet="PatientVisitEvent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProcedureCode_Company_CompanyId" Association="Self.FK_ProcedureCode_Company_CompanyId">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="ProcedureCode" EntitySet="ProcedureCode" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProcedureCode_Room_SpecialityId" Association="Self.FK_ProcedureCode_Room_SpecialityId">
+            <End Role="Room" EntitySet="Room" />
+            <End Role="ProcedureCode" EntitySet="ProcedureCode" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProcedureCode_RoomTest_RoomTestId" Association="Self.FK_ProcedureCode_RoomTest_RoomTestId">
+            <End Role="RoomTest" EntitySet="RoomTest" />
+            <End Role="ProcedureCode" EntitySet="ProcedureCode" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProcedureCode_Speciality_SpecialityId" Association="Self.FK_ProcedureCode_Speciality_SpecialityId">
+            <End Role="Specialty" EntitySet="Specialty" />
+            <End Role="ProcedureCode" EntitySet="ProcedureCode" />
           </AssociationSet>
           <AssociationSet Name="FK_Referral_Case_CaseId" Association="Self.FK_Referral_Case_CaseId">
             <End Role="Case" EntitySet="Case" />
@@ -3257,10 +3418,13 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="SubscriptionPlan" Relationship="Self.FK_Company_SubscriptionPlan" FromRole="Company" ToRole="SubscriptionPlan" />
           <NavigationProperty Name="CompanyCaseConsentApprovals" Relationship="Self.FK_CompanyCaseConsentApproval_Company_CompanyId" FromRole="Company" ToRole="CompanyCaseConsentApproval" />
           <NavigationProperty Name="CompanySpecialtyDetails" Relationship="Self.FK_CompanySpecialtyDetails_Company" FromRole="Company" ToRole="CompanySpecialtyDetails" />
+          <NavigationProperty Name="DiagnosisCodes" Relationship="Self.FK_DiagnosisCode_Company_CompanyId" FromRole="Company" ToRole="DiagnosisCode" />
+          <NavigationProperty Name="DiagnosisTypes" Relationship="Self.FK_DiagnosisType_Company_CompanyId" FromRole="Company" ToRole="DiagnosisType" />
           <NavigationProperty Name="Invitations" Relationship="Self.FK_Invitation_Company" FromRole="Company" ToRole="Invitation" />
           <NavigationProperty Name="Locations" Relationship="Self.FK_Location_Company" FromRole="Company" ToRole="Location" />
           <NavigationProperty Name="Notifications" Relationship="Self.FK_Notification_Company_CompanyId" FromRole="Company" ToRole="Notification" />
           <NavigationProperty Name="Patients" Relationship="Self.FK_Patient_Company" FromRole="Company" ToRole="Patient" />
+          <NavigationProperty Name="ProcedureCodes" Relationship="Self.FK_ProcedureCode_Company_CompanyId" FromRole="Company" ToRole="ProcedureCode" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_Company_ReferredToCompanyId" FromRole="Company" ToRole="Referral" />
           <NavigationProperty Name="Referrals1" Relationship="Self.FK_Referral_Company_ReferringCompanyId" FromRole="Company" ToRole="Referral" />
           <NavigationProperty Name="Schedules" Relationship="Self.FK_Schedule_Company_CompanyId" FromRole="Company" ToRole="Schedule" />
@@ -3358,6 +3522,38 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="PatientInsuranceInfoes" Relationship="Self.FK_PatientInsuranceInfo_ContactInfo_InsuranceCompanyContactInfoId" FromRole="ContactInfo" ToRole="PatientInsuranceInfo" />
           <NavigationProperty Name="PatientInsuranceInfoes1" Relationship="Self.FK_PatientInsuranceInfo_ContactInfo_PolicyHolderContactInfoId" FromRole="ContactInfo" ToRole="PatientInsuranceInfo" />
           <NavigationProperty Name="Users" Relationship="Self.FK_User_ContactInfo" FromRole="ContactInfo" ToRole="User" />
+        </EntityType>
+        <EntityType Name="DiagnosisCode">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DiagnosisTypeId" Type="Int32" Nullable="false" />
+          <Property Name="DiagnosisCodeText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DiagnosisCodeDesc" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_DiagnosisCode_Company_CompanyId" FromRole="DiagnosisCode" ToRole="Company" />
+          <NavigationProperty Name="DiagnosisType" Relationship="Self.FK_DiagnosisCode_DiagnosisType_DiagnosisTypeId" FromRole="DiagnosisCode" ToRole="DiagnosisType" />
+        </EntityType>
+        <EntityType Name="DiagnosisType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DiagnosisTypeText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_DiagnosisType_Company_CompanyId" FromRole="DiagnosisType" ToRole="Company" />
+          <NavigationProperty Name="DiagnosisCodes" Relationship="Self.FK_DiagnosisCode_DiagnosisType_DiagnosisTypeId" FromRole="DiagnosisType" ToRole="DiagnosisCode" />
         </EntityType>
         <EntityType Name="Doctor">
           <Key>
@@ -3905,6 +4101,28 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="PatientInsuranceInfoes" Relationship="Self.FK_PatientInsuranceInfo_PolicyOwner_PolicyOwnerId" FromRole="PolicyOwner" ToRole="PatientInsuranceInfo" />
         </EntityType>
+        <EntityType Name="ProcedureCode">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProcedureCodeText" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProcedureCodeDesc" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdateByUserID" Type="Int32" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="SpecialityId" Type="Int32" />
+          <Property Name="RoomId" Type="Int32" />
+          <Property Name="RoomTestId" Type="Int32" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_ProcedureCode_Company_CompanyId" FromRole="ProcedureCode" ToRole="Company" />
+          <NavigationProperty Name="Room" Relationship="Self.FK_ProcedureCode_Room_SpecialityId" FromRole="ProcedureCode" ToRole="Room" />
+          <NavigationProperty Name="RoomTest" Relationship="Self.FK_ProcedureCode_RoomTest_RoomTestId" FromRole="ProcedureCode" ToRole="RoomTest" />
+          <NavigationProperty Name="Specialty" Relationship="Self.FK_ProcedureCode_Speciality_SpecialityId" FromRole="ProcedureCode" ToRole="Specialty" />
+        </EntityType>
         <EntityType Name="Referral">
           <Key>
             <PropertyRef Name="Id" />
@@ -4002,6 +4220,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Location" Relationship="Self.FK_Room_Location" FromRole="Room" ToRole="Location" />
           <NavigationProperty Name="PatientVisit2" Relationship="Self.FK_PatientVisit2_Room_RoomId" FromRole="Room" ToRole="PatientVisit2" />
+          <NavigationProperty Name="ProcedureCodes" Relationship="Self.FK_ProcedureCode_Room_SpecialityId" FromRole="Room" ToRole="ProcedureCode" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_Room_ReferredToRoomId" FromRole="Room" ToRole="Referral" />
           <NavigationProperty Name="RoomTest" Relationship="Self.FK_Room_RoomTest" FromRole="Room" ToRole="RoomTest" />
           <NavigationProperty Name="Schedule" Relationship="Self.FK_Room_Schedule" FromRole="Room" ToRole="Schedule" />
@@ -4017,6 +4236,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="ProcedureCodes" Relationship="Self.FK_ProcedureCode_RoomTest_RoomTestId" FromRole="RoomTest" ToRole="ProcedureCode" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_RoomTest_ReferredToRoomTestId" FromRole="RoomTest" ToRole="Referral" />
           <NavigationProperty Name="Rooms" Relationship="Self.FK_Room_RoomTest" FromRole="RoomTest" ToRole="Room" />
         </EntityType>
@@ -4099,6 +4319,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <NavigationProperty Name="PatientVisits" Relationship="Self.FK_PatientVisit_Specialty_SpecialtyId" FromRole="Specialty" ToRole="PatientVisit" />
           <NavigationProperty Name="PatientVisit2" Relationship="Self.FK_PatientVisit2_Specialty_SpecialtyId" FromRole="Specialty" ToRole="PatientVisit2" />
           <NavigationProperty Name="PatientVisitEvents" Relationship="Self.FK_PatientVisitEvent_Specialty_SpecialtyId" FromRole="Specialty" ToRole="PatientVisitEvent" />
+          <NavigationProperty Name="ProcedureCodes" Relationship="Self.FK_ProcedureCode_Speciality_SpecialityId" FromRole="Specialty" ToRole="ProcedureCode" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_Specialty_ReferredToSpecialtyId" FromRole="Specialty" ToRole="Referral" />
           <NavigationProperty Name="SpecialityDetails" Relationship="Self.FK_SpecialityDetails_Specialty" FromRole="Specialty" ToRole="SpecialityDetails" />
           <NavigationProperty Name="Specialty1" Relationship="Self.FK_Specialty_Specialty" FromRole="Specialty" ToRole="Specialty1" />
@@ -4796,6 +5017,30 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DiagnosisCode_Company_CompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="DiagnosisCode" Type="Self.DiagnosisCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DiagnosisCode">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DiagnosisType_Company_CompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="DiagnosisType" Type="Self.DiagnosisType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DiagnosisType">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Invitation_Company">
           <End Role="Company" Type="Self.Company" Multiplicity="1" />
           <End Role="Invitation" Type="Self.Invitation" Multiplicity="*" />
@@ -4841,6 +5086,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="Patient">
               <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProcedureCode_Company_CompanyId">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="ProcedureCode" Type="Self.ProcedureCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ProcedureCode">
+              <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4985,6 +5242,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="User">
               <PropertyRef Name="ContactInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DiagnosisCode_DiagnosisType_DiagnosisTypeId">
+          <End Role="DiagnosisType" Type="Self.DiagnosisType" Multiplicity="1" />
+          <End Role="DiagnosisCode" Type="Self.DiagnosisCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DiagnosisType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DiagnosisCode">
+              <PropertyRef Name="DiagnosisTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -5492,6 +5761,42 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ProcedureCode_Room_SpecialityId">
+          <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
+          <End Role="ProcedureCode" Type="Self.ProcedureCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ProcedureCode">
+              <PropertyRef Name="RoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProcedureCode_RoomTest_RoomTestId">
+          <End Role="RoomTest" Type="Self.RoomTest" Multiplicity="0..1" />
+          <End Role="ProcedureCode" Type="Self.ProcedureCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoomTest">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ProcedureCode">
+              <PropertyRef Name="RoomTestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProcedureCode_Speciality_SpecialityId">
+          <End Role="Specialty" Type="Self.Specialty" Multiplicity="0..1" />
+          <End Role="ProcedureCode" Type="Self.ProcedureCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Specialty">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ProcedureCode">
+              <PropertyRef Name="SpecialityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Referral_Room_ReferredToRoomId">
           <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
           <End Role="Referral" Type="Self.Referral" Multiplicity="*" />
@@ -5681,6 +5986,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="CompanyTypes" EntityType="Self.CompanyType" />
           <EntitySet Name="ConsentGivenTypes" EntityType="Self.ConsentGivenType" />
           <EntitySet Name="ContactInfoes" EntityType="Self.ContactInfo" />
+          <EntitySet Name="DiagnosisCodes" EntityType="Self.DiagnosisCode" />
+          <EntitySet Name="DiagnosisTypes" EntityType="Self.DiagnosisType" />
           <EntitySet Name="Doctors" EntityType="Self.Doctor" />
           <EntitySet Name="DoctorLocationSchedules" EntityType="Self.DoctorLocationSchedule" />
           <EntitySet Name="DoctorLocationSpecialties" EntityType="Self.DoctorLocationSpecialty" />
@@ -5708,6 +6015,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="PatientVisit2" EntityType="Self.PatientVisit2" />
           <EntitySet Name="PatientVisitEvents" EntityType="Self.PatientVisitEvent" />
           <EntitySet Name="PolicyOwners" EntityType="Self.PolicyOwner" />
+          <EntitySet Name="ProcedureCodes" EntityType="Self.ProcedureCode" />
           <EntitySet Name="Referrals" EntityType="Self.Referral" />
           <EntitySet Name="ReferralDocuments" EntityType="Self.ReferralDocument" />
           <EntitySet Name="RefferingOffices" EntityType="Self.RefferingOffice" />
@@ -5905,6 +6213,14 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Company" EntitySet="Companies" />
             <End Role="CompanySpecialtyDetails" EntitySet="CompanySpecialtyDetails" />
           </AssociationSet>
+          <AssociationSet Name="FK_DiagnosisCode_Company_CompanyId" Association="Self.FK_DiagnosisCode_Company_CompanyId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="DiagnosisCode" EntitySet="DiagnosisCodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DiagnosisType_Company_CompanyId" Association="Self.FK_DiagnosisType_Company_CompanyId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="DiagnosisType" EntitySet="DiagnosisTypes" />
+          </AssociationSet>
           <AssociationSet Name="FK_Invitation_Company" Association="Self.FK_Invitation_Company">
             <End Role="Company" EntitySet="Companies" />
             <End Role="Invitation" EntitySet="Invitations" />
@@ -5920,6 +6236,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_Patient_Company" Association="Self.FK_Patient_Company">
             <End Role="Company" EntitySet="Companies" />
             <End Role="Patient" EntitySet="Patients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProcedureCode_Company_CompanyId" Association="Self.FK_ProcedureCode_Company_CompanyId">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="ProcedureCode" EntitySet="ProcedureCodes" />
           </AssociationSet>
           <AssociationSet Name="FK_Referral_Company_ReferredToCompanyId" Association="Self.FK_Referral_Company_ReferredToCompanyId">
             <End Role="Company" EntitySet="Companies" />
@@ -5968,6 +6288,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_User_ContactInfo" Association="Self.FK_User_ContactInfo">
             <End Role="ContactInfo" EntitySet="ContactInfoes" />
             <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DiagnosisCode_DiagnosisType_DiagnosisTypeId" Association="Self.FK_DiagnosisCode_DiagnosisType_DiagnosisTypeId">
+            <End Role="DiagnosisType" EntitySet="DiagnosisTypes" />
+            <End Role="DiagnosisCode" EntitySet="DiagnosisCodes" />
           </AssociationSet>
           <AssociationSet Name="FK_Doctor_User" Association="Self.FK_Doctor_User">
             <End Role="User" EntitySet="Users" />
@@ -6136,6 +6460,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_PatientVisitEvent_Specialty_SpecialtyId" Association="Self.FK_PatientVisitEvent_Specialty_SpecialtyId">
             <End Role="Specialty" EntitySet="Specialties" />
             <End Role="PatientVisitEvent" EntitySet="PatientVisitEvents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProcedureCode_Room_SpecialityId" Association="Self.FK_ProcedureCode_Room_SpecialityId">
+            <End Role="Room" EntitySet="Rooms" />
+            <End Role="ProcedureCode" EntitySet="ProcedureCodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProcedureCode_RoomTest_RoomTestId" Association="Self.FK_ProcedureCode_RoomTest_RoomTestId">
+            <End Role="RoomTest" EntitySet="RoomTests" />
+            <End Role="ProcedureCode" EntitySet="ProcedureCodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProcedureCode_Speciality_SpecialityId" Association="Self.FK_ProcedureCode_Speciality_SpecialityId">
+            <End Role="Specialty" EntitySet="Specialties" />
+            <End Role="ProcedureCode" EntitySet="ProcedureCodes" />
           </AssociationSet>
           <AssociationSet Name="FK_Referral_Room_ReferredToRoomId" Association="Self.FK_Referral_Room_ReferredToRoomId">
             <End Role="Room" EntitySet="Rooms" />
@@ -6502,6 +6838,36 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="OfficeExtension" ColumnName="OfficeExtension" />
                 <ScalarProperty Name="AlternateEmail" ColumnName="AlternateEmail" />
                 <ScalarProperty Name="PreferredCommunication" ColumnName="PreferredCommunication" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DiagnosisCodes">
+            <EntityTypeMapping TypeName="MIDASGBXModel.DiagnosisCode">
+              <MappingFragment StoreEntitySet="DiagnosisCode">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DiagnosisTypeId" ColumnName="DiagnosisTypeId" />
+                <ScalarProperty Name="DiagnosisCodeText" ColumnName="DiagnosisCodeText" />
+                <ScalarProperty Name="DiagnosisCodeDesc" ColumnName="DiagnosisCodeDesc" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DiagnosisTypes">
+            <EntityTypeMapping TypeName="MIDASGBXModel.DiagnosisType">
+              <MappingFragment StoreEntitySet="DiagnosisType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DiagnosisTypeText" ColumnName="DiagnosisTypeText" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -6982,6 +7348,25 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="DisplayText" ColumnName="DisplayText" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProcedureCodes">
+            <EntityTypeMapping TypeName="MIDASGBXModel.ProcedureCode">
+              <MappingFragment StoreEntitySet="ProcedureCode">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ProcedureCodeText" ColumnName="ProcedureCodeText" />
+                <ScalarProperty Name="ProcedureCodeDesc" ColumnName="ProcedureCodeDesc" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="SpecialityId" ColumnName="SpecialityId" />
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+                <ScalarProperty Name="RoomTestId" ColumnName="RoomTestId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -118,5 +118,13 @@ export class Case extends CaseRecord {
         });
         return isOutboundReferral;
     }
-
+     isSessionCompany(companyId): boolean {
+        let isSessionCompany: boolean = false;
+        _.forEach(this.companies, (currentCompany: any) => {
+            if (currentCompany.id === companyId) {
+                isSessionCompany = true;
+            }
+        });
+        return isSessionCompany;
+    }
 }
