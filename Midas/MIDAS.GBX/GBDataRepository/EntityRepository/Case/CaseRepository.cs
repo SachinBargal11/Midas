@@ -232,7 +232,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Entity Conversion ConvertToCaseWithUserAndPatient
-        public T ConvertToCaseWithUserAndPatient<T, U>(U entity)
+        public T ConvertToCaseWithUserAndPatient<T, U>(U entity, int CompanyId)
         {
             Patient2 patient2 = entity as Patient2;
 
@@ -246,96 +246,99 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 //foreach (var eachCase in patient2.Cases)
                 foreach (var eachCase in GetByPatientId(patient2.Id) as List<BO.Case>)
                 {
-                    BO.CaseWithUserAndPatient caseWithUserAndPatient = new BO.CaseWithUserAndPatient();
-
-                    caseWithUserAndPatient.ID = patient2.Id;
-
-                    caseWithUserAndPatient.UserId = patient2.User.id;
-                    caseWithUserAndPatient.UserName = patient2.User.UserName;
-                    caseWithUserAndPatient.FirstName = patient2.User.FirstName;
-                    caseWithUserAndPatient.MiddleName = patient2.User.MiddleName;
-                    caseWithUserAndPatient.LastName = patient2.User.LastName;
-
-                    caseWithUserAndPatient.CaseId = eachCase.ID;
-                    caseWithUserAndPatient.PatientId = eachCase.PatientId;
-                    caseWithUserAndPatient.CaseName = eachCase.CaseName;
-                    caseWithUserAndPatient.CaseTypeId = eachCase.CaseTypeId;
-                    caseWithUserAndPatient.LocationId = eachCase.LocationId;
-                    caseWithUserAndPatient.PatientEmpInfoId = eachCase.PatientEmpInfoId;
-                    caseWithUserAndPatient.CarrierCaseNo = eachCase.CarrierCaseNo;
-                    caseWithUserAndPatient.Transportation = eachCase.Transportation;
-                    caseWithUserAndPatient.CaseStatusId = eachCase.CaseStatusId;
-                    caseWithUserAndPatient.AttorneyId = eachCase.AttorneyId;
-
-                    caseWithUserAndPatient.IsDeleted = eachCase.IsDeleted;
-                    caseWithUserAndPatient.CreateByUserID = eachCase.CreateByUserID;
-                    caseWithUserAndPatient.UpdateByUserID = eachCase.UpdateByUserID;
-                    
-                    caseWithUserAndPatient.PatientEmpInfo = eachCase.PatientEmpInfo;
-                   
-
-                    List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
-                    foreach (var item in eachCase.CaseCompanyMappings)
+                    if (eachCase.CaseCompanyMappings.Any(p => p.Company != null && p.Company.ID == CompanyId) == true 
+                        || (eachCase.Referrals != null && eachCase.Referrals.Any(p => p.ReferredToCompanyId == CompanyId) == true))
                     {
-                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
-                        {
-                            boCaseCompanyMapping.Add(item);
-                        }
-                    }
-                    caseWithUserAndPatient.CaseCompanyMappings = boCaseCompanyMapping;
+                        BO.CaseWithUserAndPatient caseWithUserAndPatient = new BO.CaseWithUserAndPatient();
 
-                    List<BO.CompanyCaseConsentApproval> boCompanyCaseConsentApproval = new List<BO.CompanyCaseConsentApproval>();
-                    foreach (var item in eachCase.CompanyCaseConsentApprovals)
-                    {
-                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
-                        {
-                            boCompanyCaseConsentApproval.Add(item);
-                        }
-                    }
-                    caseWithUserAndPatient.CompanyCaseConsentApprovals = boCompanyCaseConsentApproval;
+                        caseWithUserAndPatient.ID = patient2.Id;
 
-                    List<BO.CaseCompanyConsentDocument> boCaseCompanyConsentDocument = new List<BO.CaseCompanyConsentDocument>();
-                    foreach (var item in eachCase.CaseCompanyConsentDocuments)
-                    {
-                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
-                        {
-                            boCaseCompanyConsentDocument.Add(item);
-                        }
-                    }
-                    caseWithUserAndPatient.CaseCompanyConsentDocuments = boCaseCompanyConsentDocument;
+                        caseWithUserAndPatient.UserId = patient2.User.id;
+                        caseWithUserAndPatient.UserName = patient2.User.UserName;
+                        caseWithUserAndPatient.FirstName = patient2.User.FirstName;
+                        caseWithUserAndPatient.MiddleName = patient2.User.MiddleName;
+                        caseWithUserAndPatient.LastName = patient2.User.LastName;
+
+                        caseWithUserAndPatient.CaseId = eachCase.ID;
+                        caseWithUserAndPatient.PatientId = eachCase.PatientId;
+                        caseWithUserAndPatient.CaseName = eachCase.CaseName;
+                        caseWithUserAndPatient.CaseTypeId = eachCase.CaseTypeId;
+                        caseWithUserAndPatient.LocationId = eachCase.LocationId;
+                        caseWithUserAndPatient.PatientEmpInfoId = eachCase.PatientEmpInfoId;
+                        caseWithUserAndPatient.CarrierCaseNo = eachCase.CarrierCaseNo;
+                        caseWithUserAndPatient.Transportation = eachCase.Transportation;
+                        caseWithUserAndPatient.CaseStatusId = eachCase.CaseStatusId;
+                        caseWithUserAndPatient.AttorneyId = eachCase.AttorneyId;
+
+                        caseWithUserAndPatient.IsDeleted = eachCase.IsDeleted;
+                        caseWithUserAndPatient.CreateByUserID = eachCase.CreateByUserID;
+                        caseWithUserAndPatient.UpdateByUserID = eachCase.UpdateByUserID;
+
+                        caseWithUserAndPatient.PatientEmpInfo = eachCase.PatientEmpInfo;
 
 
-                    List<BO.Referral> boReferral = new List<BO.Referral>();
-                    foreach (var item in eachCase.Referrals)
-                    {
-                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
-                        {
-                            boReferral.Add(item);
-                        }
-                    }
-                    caseWithUserAndPatient.Referrals = boReferral;
-
-                    if (eachCase.PatientAccidentInfoes != null)
-                    {
-                        List<BO.PatientAccidentInfo> boPatientAccidentInfo = new List<BO.PatientAccidentInfo>();
-                        foreach (var item in eachCase.PatientAccidentInfoes)
+                        List<BO.CaseCompanyMapping> boCaseCompanyMapping = new List<BO.CaseCompanyMapping>();
+                        foreach (var item in eachCase.CaseCompanyMappings)
                         {
                             if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
                             {
-                                boPatientAccidentInfo.Add(item);
+                                boCaseCompanyMapping.Add(item);
                             }
                         }
-                        caseWithUserAndPatient.PatientAccidentInfoes = boPatientAccidentInfo;
+                        caseWithUserAndPatient.CaseCompanyMappings = boCaseCompanyMapping;
 
+                        List<BO.CompanyCaseConsentApproval> boCompanyCaseConsentApproval = new List<BO.CompanyCaseConsentApproval>();
+                        foreach (var item in eachCase.CompanyCaseConsentApprovals)
+                        {
+                            if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                            {
+                                boCompanyCaseConsentApproval.Add(item);
+                            }
+                        }
+                        caseWithUserAndPatient.CompanyCaseConsentApprovals = boCompanyCaseConsentApproval;
+
+                        List<BO.CaseCompanyConsentDocument> boCaseCompanyConsentDocument = new List<BO.CaseCompanyConsentDocument>();
+                        foreach (var item in eachCase.CaseCompanyConsentDocuments)
+                        {
+                            if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                            {
+                                boCaseCompanyConsentDocument.Add(item);
+                            }
+                        }
+                        caseWithUserAndPatient.CaseCompanyConsentDocuments = boCaseCompanyConsentDocument;
+
+
+                        List<BO.Referral> boReferral = new List<BO.Referral>();
+                        foreach (var item in eachCase.Referrals)
+                        {
+                            if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                            {
+                                boReferral.Add(item);
+                            }
+                        }
+                        caseWithUserAndPatient.Referrals = boReferral;
+
+                        if (eachCase.PatientAccidentInfoes != null)
+                        {
+                            List<BO.PatientAccidentInfo> boPatientAccidentInfo = new List<BO.PatientAccidentInfo>();
+                            foreach (var item in eachCase.PatientAccidentInfoes)
+                            {
+                                if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                                {
+                                    boPatientAccidentInfo.Add(item);
+                                }
+                            }
+                            caseWithUserAndPatient.PatientAccidentInfoes = boPatientAccidentInfo;
+
+                        }
+
+                        //Common 
+                        caseWithUserAndPatient.IsDeleted = eachCase.IsDeleted;
+                        caseWithUserAndPatient.CreateByUserID = eachCase.CreateByUserID;
+                        caseWithUserAndPatient.UpdateByUserID = eachCase.UpdateByUserID;
+
+                        lstCaseWithUserAndPatient.Add(caseWithUserAndPatient);
                     }
-
-
-                    //Common 
-                    caseWithUserAndPatient.IsDeleted = eachCase.IsDeleted;
-                    caseWithUserAndPatient.CreateByUserID = eachCase.CreateByUserID;
-                    caseWithUserAndPatient.UpdateByUserID = eachCase.UpdateByUserID;
-
-                    lstCaseWithUserAndPatient.Add(caseWithUserAndPatient);
                 }                
             }            
 
@@ -785,7 +788,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 List<BO.CaseWithUserAndPatient> lstCaseWithUserAndPatient = new List<BO.CaseWithUserAndPatient>();
                 foreach (Patient2 eachPatient in AccList.Union(UserList2).Distinct())
                 {
-                    lstCaseWithUserAndPatient.AddRange(ConvertToCaseWithUserAndPatient<List<BO.CaseWithUserAndPatient>, Patient2>(eachPatient));
+                    lstCaseWithUserAndPatient.AddRange(ConvertToCaseWithUserAndPatient<List<BO.CaseWithUserAndPatient>, Patient2>(eachPatient, CompanyId));
                 }
                 return lstCaseWithUserAndPatient;
             }
@@ -816,14 +819,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get By Company ID and DoctorId For
-        public override object Get(int CompanyId,int DoctorId)
+        public override object Get(int CompanyId, int DoctorId)
         {
             var userInCompany = _context.UserCompanies.Where(p => p.CompanyID == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.UserID);
             //var patientInCaseMapping = _context.DoctorCaseConsentApprovals.Where(p => p.DoctorId == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CaseId);
             var patientInCaseMapping = _context.PatientVisit2.Where(p => p.DoctorId == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CaseId);
             var patientWithCase = _context.Cases.Where(p => patientInCaseMapping.Contains(p.Id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.PatientId);
 
-            var acc = _context.Patient2.Include("User")
+            var acc = _context.Patient2.Include("User").Include("Case")
                                        .Where(p => userInCompany.Contains(p.Id) && patientWithCase.Contains(p.Id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Patient2>();
 
 
@@ -836,7 +839,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 List<BO.CaseWithUserAndPatient> lstCaseWithUserAndPatient = new List<BO.CaseWithUserAndPatient>();
                 foreach (Patient2 eachPatient in acc)
                 {
-                    lstCaseWithUserAndPatient.AddRange(ConvertToCaseWithUserAndPatient<List<BO.CaseWithUserAndPatient>, Patient2>(eachPatient));
+                    lstCaseWithUserAndPatient.AddRange(ConvertToCaseWithUserAndPatient<List<BO.CaseWithUserAndPatient>, Patient2>(eachPatient, CompanyId));
                 }
 
                 return lstCaseWithUserAndPatient;
