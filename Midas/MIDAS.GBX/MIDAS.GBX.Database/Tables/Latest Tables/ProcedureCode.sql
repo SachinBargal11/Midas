@@ -47,11 +47,11 @@ GO
 ALTER TABLE [dbo].[ProcedureCode] CHECK CONSTRAINT [FK_ProcedureCode_Room_SpecialityId]
 GO
 
-ALTER TABLE [dbo].[ProcedureCode]  WITH CHECK ADD  CONSTRAINT [FK_ProcedureCode_RoomTest_RoomTestId] FOREIGN KEY([RoomTestId])
-	REFERENCES [dbo].[RoomTest] ([id])
+ALTER TABLE [dbo].[ProcedureCode]  WITH CHECK ADD  CONSTRAINT [FK_ProcedureCode_Roomt_RoomId] FOREIGN KEY([RoomId])
+ REFERENCES [dbo].[Room] ([id])
 GO
 
-ALTER TABLE [dbo].[ProcedureCode] CHECK CONSTRAINT [FK_ProcedureCode_RoomTest_RoomTestId]
+ALTER TABLE [dbo].[ProcedureCode] CHECK CONSTRAINT [FK_ProcedureCode_Roomt_RoomId]
 GO
 
 ALTER TABLE [dbo].[ProcedureCode]  WITH CHECK ADD  CONSTRAINT [FK_ProcedureCode_RoomTest_RoomTestId] FOREIGN KEY([RoomTestId])
