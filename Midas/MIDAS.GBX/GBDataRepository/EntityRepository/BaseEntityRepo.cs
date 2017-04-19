@@ -177,6 +177,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual T ConvertToPatient<T, U>(U entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual T Convert<T, U>(U entity, bool PrimaryLevel = true)
         {
             throw new NotImplementedException();

@@ -24,11 +24,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
     {
         //private IRequestHandler<Patient> requestHandler;
         private IRequestHandler<Patient2> requestHandlerPatient2;
+        private IRequestHandler<AddPatient> requestHandlerAddPatient;
 
         public PatientController()
         {
             //requestHandler = new GbApiRequestHandler<Patient>();
             requestHandlerPatient2 = new GbApiRequestHandler<Patient2>();
+            requestHandlerAddPatient = new GbApiRequestHandler<AddPatient>();
         }
 
         //[HttpGet]

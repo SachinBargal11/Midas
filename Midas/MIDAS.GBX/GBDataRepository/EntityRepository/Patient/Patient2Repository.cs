@@ -707,14 +707,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 try
                 {
-                    BO.AddPatient addpatient = (BO.AddPatient)(object)entity; ;
+                    BO.AddPatient addpatient = (BO.AddPatient)(object)entity;
                     User userDB = new User();
                     Case caseDB = new Case();
                     Patient2 patientDB = new Patient2();
                     ContactInfo addContact = new ContactInfo();
                     AddressInfo addressDB = new AddressInfo();
+                    UserCompany userCompanyDB = new UserCompany();
+                    CaseCompanyMapping casecompanymappingDB = new CaseCompanyMapping();
 
-                    if (_context.Users.Select(usr => usr.UserName == addpatient.UserName).Count() == 0)
+                    if (_context.Users.Where(usr => usr.UserName == addpatient.UserName).FirstOrDefault<User>() == null)
                     {
                         addContact.CellPhone = addpatient.CellPhone;
                         _context.Entry(addContact).State = System.Data.Entity.EntityState.Added;
@@ -740,6 +742,33 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         caseDB.PatientId = patientDB.Id;
                         caseDB.LocationId = 0;
                         _context.Entry(caseDB).State = System.Data.Entity.EntityState.Added;
+                        _context.SaveChanges();
+
+                        if (addpatient.CompanyId > 0)
+                        {
+                            Company company = _context.Companies.Where(p => p.id == addpatient.CompanyId).FirstOrDefault<Company>();
+                            if (company != null)
+                            {
+                                userCompanyDB.User = userDB;
+                                userCompanyDB.Company = company;                                
+                                _context.Entry(userCompanyDB).State = System.Data.Entity.EntityState.Added;
+                                _context.SaveChanges();
+                            }
+                            else
+                            {
+                                dbContextTransaction.Rollback();
+                                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid company details.", ErrorLevel = ErrorLevel.Error };
+                            }
+                        }
+                        else
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid company details.", ErrorLevel = ErrorLevel.Error };
+                        }
+
+                        casecompanymappingDB.CompanyId = (int)addpatient.CompanyId;
+                        casecompanymappingDB.CaseId = caseDB.Id;
+                        _context.Entry(casecompanymappingDB).State = System.Data.Entity.EntityState.Added;
                         _context.SaveChanges();
 
                         var res = ConvertToPatient<BO.Patient2, Patient2>(patientDB);
