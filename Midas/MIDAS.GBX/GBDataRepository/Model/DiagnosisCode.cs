@@ -26,5 +26,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
         public virtual Company Company { get; set; }
+        public virtual DiagnosisType DiagnosisType { get; set; }
     }
 }

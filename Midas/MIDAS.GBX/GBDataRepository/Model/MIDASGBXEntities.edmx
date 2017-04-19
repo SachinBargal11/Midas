@@ -1486,6 +1486,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DiagnosisCode_DiagnosisType_DiagnosisTypeId">
+          <End Role="DiagnosisType" Type="Self.DiagnosisType" Multiplicity="1" />
+          <End Role="DiagnosisCode" Type="Self.DiagnosisCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DiagnosisType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DiagnosisCode">
+              <PropertyRef Name="DiagnosisTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_DiagnosisType_Company_CompanyId">
           <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
           <End Role="DiagnosisType" Type="Self.DiagnosisType" Multiplicity="*" />
@@ -2772,6 +2784,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="Company" EntitySet="Company" />
             <End Role="DiagnosisCode" EntitySet="DiagnosisCode" />
           </AssociationSet>
+          <AssociationSet Name="FK_DiagnosisCode_DiagnosisType_DiagnosisTypeId" Association="Self.FK_DiagnosisCode_DiagnosisType_DiagnosisTypeId">
+            <End Role="DiagnosisType" EntitySet="DiagnosisType" />
+            <End Role="DiagnosisCode" EntitySet="DiagnosisCode" />
+          </AssociationSet>
           <AssociationSet Name="FK_DiagnosisType_Company_CompanyId" Association="Self.FK_DiagnosisType_Company_CompanyId">
             <End Role="Company" EntitySet="Company" />
             <End Role="DiagnosisType" EntitySet="DiagnosisType" />
@@ -3522,6 +3538,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Company" Relationship="Self.FK_DiagnosisCode_Company_CompanyId" FromRole="DiagnosisCode" ToRole="Company" />
+          <NavigationProperty Name="DiagnosisType" Relationship="Self.FK_DiagnosisCode_DiagnosisType_DiagnosisTypeId" FromRole="DiagnosisCode" ToRole="DiagnosisType" />
         </EntityType>
         <EntityType Name="DiagnosisType">
           <Key>
@@ -3536,6 +3553,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Company" Relationship="Self.FK_DiagnosisType_Company_CompanyId" FromRole="DiagnosisType" ToRole="Company" />
+          <NavigationProperty Name="DiagnosisCodes" Relationship="Self.FK_DiagnosisCode_DiagnosisType_DiagnosisTypeId" FromRole="DiagnosisType" ToRole="DiagnosisCode" />
         </EntityType>
         <EntityType Name="Doctor">
           <Key>
@@ -5227,6 +5245,18 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_DiagnosisCode_DiagnosisType_DiagnosisTypeId">
+          <End Role="DiagnosisType" Type="Self.DiagnosisType" Multiplicity="1" />
+          <End Role="DiagnosisCode" Type="Self.DiagnosisCode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DiagnosisType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DiagnosisCode">
+              <PropertyRef Name="DiagnosisTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Doctor_User">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Doctor" Type="Self.Doctor" Multiplicity="0..1" />
@@ -6258,6 +6288,10 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <AssociationSet Name="FK_User_ContactInfo" Association="Self.FK_User_ContactInfo">
             <End Role="ContactInfo" EntitySet="ContactInfoes" />
             <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DiagnosisCode_DiagnosisType_DiagnosisTypeId" Association="Self.FK_DiagnosisCode_DiagnosisType_DiagnosisTypeId">
+            <End Role="DiagnosisType" EntitySet="DiagnosisTypes" />
+            <End Role="DiagnosisCode" EntitySet="DiagnosisCodes" />
           </AssociationSet>
           <AssociationSet Name="FK_Doctor_User" Association="Self.FK_Doctor_User">
             <End Role="User" EntitySet="Users" />
