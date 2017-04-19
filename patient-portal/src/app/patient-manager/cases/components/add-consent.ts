@@ -44,8 +44,7 @@ export class AddConsentComponent implements OnInit {
     uploadedFiles: any[] = [];
     uploadedFile = "";
     currentId: number;
-    UploadedFileName: string;
-    //document: VisitDocument;
+    UploadedFileName: string;   
     url;
     companies: any[];
     isdoctorsLoading = false;
@@ -66,17 +65,10 @@ export class AddConsentComponent implements OnInit {
     fileName: string;
     fileUploaded: string;
     document: Consent[] = [];
-    selectedDoctoredit = 0;
-    EditId: number = 0;
-    documentMode: string = '3';
-    _dwObject: any = null;
-    //documents: Consent[] = [];
-    dialogVisible: boolean = false;
     currentCaseId: number;
     documents: CaseDocument[] = [];
     currentCompany: number;
     selectedCompany: number;
-
     selectedConsentList: Consent[] = [];
     Consent: Consent[];
     Case: Case;   
@@ -112,7 +104,6 @@ export class AddConsentComponent implements OnInit {
     }
 
     ngOnInit() {
-
         let today = new Date();
         let currentDate = today.getDate();
         this.maxDate = new Date();
@@ -179,70 +170,11 @@ export class AddConsentComponent implements OnInit {
 
     documentUploadError(error: Error) {
         this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
-    }
-    
-
-    Save() {
-        if (this.uploadedFiles.length == 0) {
-            let errString = 'Please upload file.'
-            let notification = new Notification({
-
-                'title': 'Please upload file!',
-                'type': 'SUCCESS',
-                'createdAt': moment()
-            });
-            this._notificationsStore.addNotification(notification);
-            // this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(notification, notification));
-            this._notificationsService.error('Oh No!', "Please upload file");
-            this._progressBarService.hide();
-        }
-        else {
-            this.isSaveProgress = true;
-            let consentFormValues = this.consentForm.value;
-            let result;
-            let consentDetail = new Consent({
-
-                caseId: this.caseId,
-                patientId: this.patientId,
-                doctorId: parseInt(consentFormValues.doctor),
-                consentReceived: this.UploadedFileName,
-                companyId: this.currentCompany
-            });
-
-            this._progressBarService.show();
-            result = this._AddConsentStore.Save(consentDetail);
-            result.subscribe(
-                (response) => {
-                    let notification = new Notification({
-                        'title': 'Consent form added successfully!',
-                        'type': 'SUCCESS',
-                        'createdAt': moment()
-                    });
-                    this._notificationsStore.addNotification(notification);
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                },
-                (error) => {
-                    let errString = 'Unable to add Consent form.';
-                    let notification = new Notification({
-                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                        'type': 'ERROR',
-                        'createdAt': moment()
-                    });
-                    this.isSaveProgress = false;
-                    this._notificationsStore.addNotification(notification);
-                    this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this.isSaveProgress = false;
-                    this._progressBarService.hide();
-                });
-        }
-    }
-
-
+    }    
+ 
     DownloadTemplate() {
         window.location.assign(this._url + '/CompanyCaseConsentApproval/download/' + this.caseId + '/' + this.companyId);
     }
+
 
 }
