@@ -54,7 +54,7 @@ export const CasesShellRoutes: Routes = [
             },
             {
                 path: 'upload-consent/:caseId',
-               // component: PopupFileUpload
+                // component: PopupFileUpload
             }
         ]
     },
@@ -242,25 +242,9 @@ export const CasesShellRoutes: Routes = [
                         children: [
                             {
                                 path: '',
-                                component: ConsentListComponent,
+                                component: AddConsentComponent,
                                 data: {
                                     breadcrumb: 'root'
-                                }
-                            },
-                            {
-                                path: 'add',
-                                component: AddConsentComponent,
-                                canActivate: [ValidateActiveSession],
-                                data: {
-                                    breadcrumb: 'Add Consent'
-                                }
-                            },
-                            {
-                                path: 'edit/:id',
-                                component: EditConsentComponent,
-                                canActivate: [ValidateActiveSession],
-                                data: {
-                                    breadcrumb: 'Edit Consent'
                                 }
                             }
                         ]

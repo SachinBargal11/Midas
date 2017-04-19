@@ -23,8 +23,8 @@ import { ConsentAdapter } from '../services/adapters/consent-adapter';
 import { CaseDocument } from '../models/case-document';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Document } from '../../../commons/models/document';
-
-
+import { Case } from '../models/case';
+import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 @Component({
     selector: 'add-consent',
     templateUrl: './add-consent.html',
@@ -60,18 +60,15 @@ export class AddConsentComponent implements OnInit {
     fileName: string;
     fileUploaded: string;
     document: Consent[] = [];
-    selectedDoctoredit = 0;
-    EditId: number = 0;
-    documentMode: string = '3';
-    scannerContainerId: string = `scanner_${moment().valueOf()}`;
-    twainSources: TwainSource[] = [];
-    selectedTwainSource: TwainSource = null;
-    _dwObject: any = null;
-    //documents: Consent[] = [];
     dialogVisible: boolean = false;
     currentCaseId: number;
     documents: CaseDocument[] = [];
-
+    Consent: Consent[];
+    caseConsentDocuments: CaseDocument[];
+    datasource: Consent[];
+    totalRecords: number;
+    isDeleteProgress: boolean = false;
+    selectedConsentList: CaseDocument[] = [];
     constructor(
         private fb: FormBuilder,
         private service: ConsentService,
@@ -85,6 +82,8 @@ export class AddConsentComponent implements OnInit {
         private http: Http,
         private _scannerService: ScannerService,
         private _casesStore: CasesStore,
+        private confirmationService: ConfirmationService,
+
 
     ) {
 
@@ -98,26 +97,34 @@ export class AddConsentComponent implements OnInit {
                 // doctor: ['', Validators.required]
                 // ,uploadedFiles: ['', Validators.required]
             });
-
             this.consentformControls = this.consentForm.controls;
         })
     }
 
     ngOnInit() {
-        // this.showDialog();
         this.dialogVisible = true;
-
         let today = new Date();
         let currentDate = today.getDate();
         this.maxDate = new Date();
         this.maxDate.setDate(currentDate);
-        // this._AddConsentStore.getdoctors(this.companyId)
-        //     .subscribe(doctor => this.doctors = doctor);
-        // this.downloadDocument();
-          this.getDocuments();
+        this.loadConsentForm();
     }
 
-      documentUploadComplete(documents: Document[]) {
+    loadConsentForm() {
+        this._progressBarService.show();
+        this._casesStore.getDocumentForCaseId(this.caseId)
+            .subscribe((caseDocument: Case) => {
+                this.caseConsentDocuments = caseDocument.caseCompanyConsentDocument;
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+    documentUploadComplete(documents: Document[]) {
         _.forEach(documents, (currentDocument: Document) => {
             if (currentDocument.status == 'Failed') {
                 let notification = new Notification({
@@ -128,103 +135,111 @@ export class AddConsentComponent implements OnInit {
                 this._notificationsStore.addNotification(notification);
                 this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists');
             }
-         else {
-                     let notification = new Notification({
-                         'title': 'Consent Uploaded Successfully!',
-                     'type': 'SUCCESS',
-                         'createdAt': moment()
-                     });
-                     this._notificationsStore.addNotification(notification);
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                 }
-        this.getDocuments();
-         });
+            else {
+                let notification = new Notification({
+                    'title': 'Consent Uploaded Successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._router.navigate(['../'], { relativeTo: this._route });
+            }
+            this.loadConsentForm();
+        });
     }
 
     documentUploadError(error: Error) {
         this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
     }
 
-    getDocuments() {
-        this._progressBarService.show();
-        this._casesStore.getDocumentsForCaseId(this.currentCaseId)
-            .subscribe(document => {
-                this.documents = document;
-            },
-
-            (error) => {
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-    }
-
-    Save() {
-        if (this.uploadedFiles.length == 0) {
-            let errString = 'Please upload file.'
-            let notification = new Notification({
-
-                'title': 'Please upload file!',
-                'type': 'SUCCESS',
-                'createdAt': moment()
-            });
-            this._notificationsStore.addNotification(notification);
-            // this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(notification, notification));
-            this._notificationsService.error('Oh No!', "Please upload file");
-            this._progressBarService.hide();
-        }
-        else {
-            this.isSaveProgress = true;
-            let consentFormValues = this.consentForm.value;
-            let result;
-            let consentDetail = new Consent({
-
-                caseId: this.caseId,
-                patientId: this.patientId,
-                doctorId: parseInt(consentFormValues.doctor),
-                consentReceived: this.UploadedFileName,
-                companyId: this.companyId
-            });
-
-            this._progressBarService.show();
-            result = this._AddConsentStore.Save(consentDetail);
-            result.subscribe(
-                (response) => {
-                    let notification = new Notification({
-                        'title': 'Consent form added successfully!',
-                        'type': 'SUCCESS',
-                        'createdAt': moment()
-                    });
-                    this._notificationsStore.addNotification(notification);
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                },
-                (error) => {
-                    let errString = 'Unable to add Consent form.';
-                    let notification = new Notification({
-                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                        'type': 'ERROR',
-                        'createdAt': moment()
-                    });
-                    this.isSaveProgress = false;
-                    this._notificationsStore.addNotification(notification);
-                    this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this.isSaveProgress = false;
-                    this._progressBarService.hide();
-                });
-        }
-    }
-
-
     DownloadTemplate() {
         window.location.assign(this._url + '/CompanyCaseConsentApproval/download/' + this.caseId + '/' + this.companyId);
     }
 
-}
-export interface TwainSource {
-    idx: number;
-    name: string;
+    deleteConsentForm() {
+        if (this.selectedConsentList.length > 0) {
+            this.confirmationService.confirm({
+                message: 'Do you want to delete this record?',
+                header: 'Delete Confirmation',
+                icon: 'fa fa-trash',
+                accept: () => {
+                    this.selectedConsentList.forEach(currentCaseDocument => {
+                        this.isDeleteProgress = true;
+                        this._progressBarService.show();
+                        let result = this._AddConsentStore.deleteConsent(currentCaseDocument, this.companyId)
+                        // let result = this._casesStore.deleteDocument(currentCaseDocument)
+                        result.subscribe(
+                            (response) => {
+                                let notification = new Notification({
+                                    'title': 'record deleted successfully!',
+                                    'type': 'SUCCESS',
+                                    'createdAt': moment()
+
+                                });
+                                this.loadConsentForm();
+                                this._notificationsStore.addNotification(notification);
+                                this.selectedConsentList = [];
+                            },
+                            (error) => {
+                                let errString = 'Unable to delete record';
+                                let notification = new Notification({
+                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                    'type': 'ERROR',
+                                    'createdAt': moment()
+                                });
+                                this.selectedConsentList = [];
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                                this._notificationsStore.addNotification(notification);
+                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                            },
+                            () => {
+                                this.isDeleteProgress = false;
+                                this._progressBarService.hide();
+                            });
+                    });
+                }
+            });
+        } else {
+            let notification = new Notification({
+                'title': 'select record to delete',
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'select record to delete');
+        }
+    }
+
+    DownloadPdf(documentId) {
+        this._progressBarService.show();
+        window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+        this._progressBarService.show();
+        // this._AddConsentStore.DownloadConsentForm(this.caseId, documentId)
+        //     .subscribe(
+        //     (response) => {
+        //         // this.document = document
+        //         window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+
+        //     },
+        //     (error) => {
+        //         let errString = 'Unable to download';
+        //         // let notification = new Notification({
+        //         //     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+        //         //     'type': 'ERROR',
+        //         //     'createdAt': moment()
+        //         // });
+
+        //         this._progressBarService.hide();
+        //         // this._notificationsStore.addNotification("Unable to download");
+        //         this._notificationsService.error('Oh No!', 'Unable to download');
+        //     },
+        //     () => {
+        //         this._progressBarService.hide();
+        //     });
+        this._progressBarService.hide();
+
+    }
+
+
 }

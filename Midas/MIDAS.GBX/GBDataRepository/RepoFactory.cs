@@ -241,6 +241,10 @@ namespace MIDAS.GBX
             {
                 repo = new NotificationRepository(context);
             }
+            else if (typeof(T) == typeof(BO.AddPatient))
+            {
+                repo = new Patient2Repository(context);
+            }
             else if (typeof(T) == typeof(BO.DiagnosisType))
             {
                 repo = new DiagnosisTypeRepository(context);

@@ -11,7 +11,13 @@
 <p-dataTable [value]="companies" [(selection)]="selectedConsentList" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
     [globalFilter]="gb" [responsive]="true">
     <header> List</header>
-    <p-column selectionMode="multiple"></p-column>
+    <!--<p-column selectionMode="multiple"></p-column>-->
+    <p-column field="name" header="Company Name"></p-column>
+    <p-column header="Case Id">
+        <ng-template pTemplate="body">
+            {{caseId}}
+        </ng-template>
+    </p-column>
     <p-column header="Consent Received">
         <ng-template let-company="rowData" pTemplate="body">
             <div *ngFor="let case of cases">
@@ -23,13 +29,6 @@
                 </a>
             </div>
         </ng-template>
-    </p-column>
-    <p-column header="Case Id">
-        <ng-template pTemplate="body">
-            {{caseId}}
-        </ng-template>
-    </p-column>
-    <p-column field="name" header="Company Name">
     </p-column>
     <p-column field="" header="Signed/Unsigned" [sortable]="true"></p-column>
 </p-dataTable>

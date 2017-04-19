@@ -14,7 +14,7 @@ const AccountRecord = Record({
 });
 
 export class Account extends AccountRecord {
-     companies: Company[];
+    companies: Company[];
     user: User;
     role: UserRole;
     accountStatus: AccountStatus;

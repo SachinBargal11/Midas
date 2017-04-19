@@ -124,6 +124,24 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public HttpResponseMessage CreateGbObject2(HttpRequestMessage request, T gbObject)
+        {
+            var objResult = dataAccessManager.AddQuickPatient(gbObject);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         private static string GetCurrentUserFromContext(HttpRequestMessage request)
         {
             //use the usertoken to determine the  user

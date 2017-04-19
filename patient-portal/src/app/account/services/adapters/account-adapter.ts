@@ -19,7 +19,8 @@ export class AccountAdapter {
             }
 
             account = new Account({
-                user: UserAdapter.parseUserResponse(accountData.user)
+                user: UserAdapter.parseUserResponse(accountData.user),
+                companies: companies
             });
         }
         return account;
@@ -37,6 +38,7 @@ export class AccountAdapter {
 
             account = new Account({
                 user: UserAdapter.parseUserResponse(accountData.user),
+                companies: companies
             });
         }
         return account;

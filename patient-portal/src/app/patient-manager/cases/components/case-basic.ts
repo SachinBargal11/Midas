@@ -133,7 +133,7 @@ export class CaseBasicComponent implements OnInit {
             caseStatusId: caseFormValues.caseStatusId,
             attorneyId: caseFormValues.attorneyId,
             caseStatus: caseFormValues.caseStatusId,
-            transportation: caseFormValues.transportation,
+            transportation: parseInt(caseFormValues.transportation) ? true : false,
             updateByUserID: this.sessionStore.session.account.user.id,
             updateDate: moment()
         }));
