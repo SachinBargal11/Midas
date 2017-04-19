@@ -126,6 +126,7 @@
     <Build Include="Tables\Latest Tables\ConsentGivenType.sql" />
     <Build Include="Tables\Latest Tables\DiagnosisType.sql" />
     <Build Include="Tables\Latest Tables\DiagnosisCode.sql" />
+    <Build Include="Tables\Latest Tables\ProcedureCode.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />
