@@ -58,8 +58,8 @@
                 <a title="View Cases" [routerLink]="['/patient-manager/cases/', patient.user.id]"><i class="glyphicon glyphicon-list"></i></a>
             </div>
             <div *ngIf="!patient.isSessionCompany(sessionStore.session.currentCompany.id)">
-                <a title="Edit" (click)="showMsg()"><i class="glyphicon glyphicon-edit"></i></a>
-                <a title="View Cases" (click)="showMsg()"><i class="glyphicon glyphicon-list"></i></a>
+                <a (click)="showMsg()"><i class="glyphicon glyphicon-edit"></i></a>
+                <a (click)="showMsg()"><i class="glyphicon glyphicon-list"></i></a>
             </div>
         </ng-template>
     </p-column>
