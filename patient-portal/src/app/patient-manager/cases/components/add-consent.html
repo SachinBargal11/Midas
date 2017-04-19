@@ -44,7 +44,15 @@
     [globalFilter]="gb" [responsive]="true">
     <header> List</header>
     <p-column selectionMode="multiple"></p-column>
-    <!--<p-column field="consentReceived" header="File Name" [sortable]="true" onclick="Download()"></p-column>-->
+    <p-column header="Company name">
+        <ng-template let-document="rowData" pTemplate="body">
+            <div *ngFor="let company of companies">
+                <div *ngIf="document.document.originalResponse.companyId === company.id">
+                    {{company.name}}
+                </div>
+            </div>
+        </ng-template>
+    </p-column>
     <p-column header="File Name">
         <ng-template let-document="rowData" pTemplate="body">
             <u>
@@ -52,6 +60,7 @@
 </u>
 </ng-template>
 </p-column>
+
 <p-column field="" header="Signed/Unsigned" [sortable]="true"></p-column>
 <!--<p-column styleClass="actions-cell" header="Actions">
     <ng-template let-ListConsents="rowData" pTemplate="body">
