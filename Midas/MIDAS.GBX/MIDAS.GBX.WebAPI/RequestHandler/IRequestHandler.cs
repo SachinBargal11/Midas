@@ -14,6 +14,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetObject(HttpRequestMessage request, int id, string type);
         HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage CreateGbObject1(HttpRequestMessage request, T gbObject);
+        HttpResponseMessage CreateGbObject2(HttpRequestMessage request, T gbObject);
         HttpResponseMessage CreateGbDocObject(HttpRequestMessage request, int id, string type, List<HttpContent> streamContent,string uploadpath);
         HttpResponseMessage CreateGbDocObject1(HttpRequestMessage request, int caseid, int companyid, List<HttpContent> streamContent, string uploadpath);
         HttpResponseMessage CreateGb(HttpRequestMessage request, T gbObject);

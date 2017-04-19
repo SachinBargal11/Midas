@@ -43,6 +43,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object AddQuickPatient<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object ConsentSave(int caseid, int companyid, List<HttpContent> streamContent, string uploadpath)
         {
             throw new NotImplementedException();

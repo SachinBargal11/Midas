@@ -67,6 +67,40 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             return (T)(object)patientBO2;
         }
+
+        public override T ConvertToPatient<T, U>(U entity)
+        {
+            Patient2 patient2 = entity as Patient2;
+
+            if (patient2 == null)
+                return default(T);
+
+            BO.Patient2 patientBO2 = new BO.Patient2();
+            patientBO2.ID = patient2.Id;
+            if (patient2.User != null)
+            {
+                BO.User boUser = new BO.User();
+                using (UserRepository cmp = new UserRepository(_context))
+                {
+                    boUser = cmp.Convert<BO.User, User>(patient2.User);
+                    patientBO2.User = boUser;
+                }
+            }
+
+            if (patient2.Cases != null)
+            {
+                List<BO.Case> cases = new List<BO.Case>();
+                cases.Add(new BO.Case { ID = patient2.Cases.Select(x => x.Id).FirstOrDefault(), PatientId = patient2.Id });
+                patientBO2.Cases = cases;
+            }
+
+            patientBO2.IsDeleted = patient2.IsDeleted;
+            patientBO2.CreateByUserID = patient2.CreateByUserID;
+            patientBO2.UpdateByUserID = patient2.UpdateByUserID;
+
+            return (T)(object)patientBO2;
+        }
+
         #endregion
 
         #region Validate Entities
@@ -665,6 +699,68 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (object)res;
         }
         #endregion
+
+        #region AddQuickPatient
+        public override object AddQuickPatient<T>(T entity)
+        {
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    BO.AddPatient addpatient = (BO.AddPatient)(object)entity; ;
+                    User userDB = new User();
+                    Case caseDB = new Case();
+                    Patient2 patientDB = new Patient2();
+                    ContactInfo addContact = new ContactInfo();
+                    AddressInfo addressDB = new AddressInfo();
+
+                    if (_context.Users.Select(usr => usr.UserName == addpatient.UserName).Count() == 0)
+                    {
+                        addContact.CellPhone = addpatient.CellPhone;
+                        _context.Entry(addContact).State = System.Data.Entity.EntityState.Added;
+                        _context.SaveChanges();
+
+                        _context.Entry(addressDB).State = System.Data.Entity.EntityState.Added;
+                        _context.SaveChanges();
+
+                        userDB.UserName = addpatient.UserName;
+                        userDB.FirstName = addpatient.FirstName;
+                        userDB.LastName = addpatient.LastName;
+                        userDB.ContactInfoId = addContact.id;
+                        userDB.AddressId = addressDB.id;
+                        userDB.UserType = 1;
+                        _context.Entry(userDB).State = System.Data.Entity.EntityState.Added;
+                        _context.SaveChanges();
+
+                        patientDB.Id = userDB.id;
+                        patientDB.SSN = "N/A";
+                        _context.Entry(patientDB).State = System.Data.Entity.EntityState.Added;
+                        _context.SaveChanges();
+
+                        caseDB.PatientId = patientDB.Id;
+                        caseDB.LocationId = 0;
+                        _context.Entry(caseDB).State = System.Data.Entity.EntityState.Added;
+                        _context.SaveChanges();
+
+                        var res = ConvertToPatient<BO.Patient2, Patient2>(patientDB);
+                        dbContextTransaction.Commit();
+                        return (object)res;
+                    }
+                    else
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { ErrorMessage = "User already exists", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    }
+                }
+                catch (Exception er)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "An error occurred.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+            }
+        }
+        #endregion
+
 
         #region Delete By ID
         public override object Delete(int id)
