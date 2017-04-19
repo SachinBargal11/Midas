@@ -77,6 +77,7 @@ export class LoginComponent implements OnInit {
             },
             () => {
                 this.isLoginInProgress = false;
+                this._router.navigate(['/patient-manager/profile/viewall']);
             });
     }
 }

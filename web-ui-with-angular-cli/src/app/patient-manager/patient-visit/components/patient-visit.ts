@@ -44,7 +44,8 @@ import * as RRule from 'rrule';
 
 @Component({
     selector: 'patient-visit',
-    templateUrl: './patient-visit.html'
+    templateUrl: './patient-visit.html',
+    styleUrls: ['./patient-visit.scss']
 })
 
 export class PatientVisitComponent implements OnInit {
@@ -93,6 +94,7 @@ export class PatientVisitComponent implements OnInit {
     views: any;
     businessHours: any[];
     hiddenDays: any = [];
+    defaultView: string = 'agendaDay';
     visitUploadDocumentUrl: string;
     private _url: string = `${environment.SERVICE_BASE_URL}`;
 
@@ -193,9 +195,13 @@ export class PatientVisitComponent implements OnInit {
             this.tests = [];
         } else {
             this._roomsService.getTestsByLocationId(this.selectedLocationId)
-                .subscribe(tests => { this.tests = tests; });
+                .subscribe(tests => {
+                    this.tests = tests;
+                });
             this._specialityService.getSpecialitiesByLocationId(this.selectedLocationId)
-                .subscribe(specialities => { this.specialities = specialities; });
+                .subscribe(specialities => {
+                    this.specialities = specialities;
+                });
             this.loadLocationVisits();
             this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.selectedLocationId);
             this._roomsStore.getRooms(this.selectedLocationId);
@@ -791,6 +797,7 @@ export class PatientVisitComponent implements OnInit {
         let updatedEvent: ScheduledEvent = this._scheduledEventEditorComponent.getEditedEvent();
         let updatedVisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             patientId: patientScheduleFormValues.patientId,
+            specialtyId: this.selectedOption == 1 ? this.selectedSpecialityId : 0,
             calendarEvent: updatedEvent
         }));
         if (updatedVisit.id) {

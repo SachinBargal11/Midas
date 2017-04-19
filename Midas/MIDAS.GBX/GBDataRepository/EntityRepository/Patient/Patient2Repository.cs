@@ -67,6 +67,40 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             return (T)(object)patientBO2;
         }
+
+        public override T ConvertToPatient<T, U>(U entity)
+        {
+            Patient2 patient2 = entity as Patient2;
+
+            if (patient2 == null)
+                return default(T);
+
+            BO.Patient2 patientBO2 = new BO.Patient2();
+            patientBO2.ID = patient2.Id;
+            if (patient2.User != null)
+            {
+                BO.User boUser = new BO.User();
+                using (UserRepository cmp = new UserRepository(_context))
+                {
+                    boUser = cmp.Convert<BO.User, User>(patient2.User);
+                    patientBO2.User = boUser;
+                }
+            }
+
+            if (patient2.Cases != null)
+            {
+                List<BO.Case> cases = new List<BO.Case>();
+                cases.Add(new BO.Case { ID = patient2.Cases.Select(x => x.Id).FirstOrDefault(), PatientId = patient2.Id });
+                patientBO2.Cases = cases;
+            }
+
+            patientBO2.IsDeleted = patient2.IsDeleted;
+            patientBO2.CreateByUserID = patient2.CreateByUserID;
+            patientBO2.UpdateByUserID = patient2.UpdateByUserID;
+
+            return (T)(object)patientBO2;
+        }
+
         #endregion
 
         #region Validate Entities
@@ -121,10 +155,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                  .Include("Case.Patient2.User.UserCompanies")
                                                  .Include("Case.Patient2.User.AddressInfo")
                                                  .Include("Case.Patient2.User.ContactInfo")
-                                                 .Where(p => p.ReferredToCompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
-                                                  && p.Case.CompanyCaseConsentApprovals.Any(p2 => p2.CompanyId == CompanyId
-                                                  && (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))) == false)
-                                                  .ToList<Referral>();
+                                                 .Where(p => p.ReferredToCompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                 .ToList<Referral>();
             var patientList2 = referralList.Select(p => p.Case.Patient2).ToList();
 
             if (patientList1 == null && patientList2 == null)
@@ -153,13 +185,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var patientInCaseMapping = _context.PatientVisit2.Where(p => p.DoctorId == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.CaseId);
             var patientWithCase = _context.Cases.Where(p => patientInCaseMapping.Contains(p.Id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p2 => p2.PatientId);
 
-            var acc = _context.Patient2.Include("User")
+            var patientList1 = _context.Patient2.Include("User")
                                        .Include("User.UserCompanies")
                                        .Include("User.AddressInfo")
                                        .Include("User.ContactInfo")
                                        .Where(p => userInCompany.Contains(p.Id) && patientWithCase.Contains(p.Id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Patient2>();
 
-            if (acc == null)
+            var referralList = _context.Referrals.Include("Case")
+                                               .Include("Case.CompanyCaseConsentApprovals")
+                                               .Include("Case.Patient2.User")
+                                               .Include("Case.Patient2.User.UserCompanies")
+                                               .Include("Case.Patient2.User.AddressInfo")
+                                               .Include("Case.Patient2.User.ContactInfo")
+                                               .Where(p => p.ReferredToCompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                               .ToList<Referral>();
+
+            var patientList2 = referralList.Select(p => p.Case.Patient2).ToList();
+
+            if (patientList1 == null && patientList2 == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Patient.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
@@ -167,7 +210,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             {
                 List<BO.Patient2> lstpatients = new List<BO.Patient2>();
                 //acc.ForEach(p => lstpatients.Add(Convert<BO.Patient2, Patient2>(p)));
-                foreach (Patient2 item in acc)
+                foreach (Patient2 item in patientList1.Union(patientList2).Distinct())
                 {
                     lstpatients.Add(Convert<BO.Patient2, Patient2>(item));
                 }
@@ -656,6 +699,97 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (object)res;
         }
         #endregion
+
+        #region AddQuickPatient
+        public override object AddQuickPatient<T>(T entity)
+        {
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    BO.AddPatient addpatient = (BO.AddPatient)(object)entity;
+                    User userDB = new User();
+                    Case caseDB = new Case();
+                    Patient2 patientDB = new Patient2();
+                    ContactInfo addContact = new ContactInfo();
+                    AddressInfo addressDB = new AddressInfo();
+                    UserCompany userCompanyDB = new UserCompany();
+                    CaseCompanyMapping casecompanymappingDB = new CaseCompanyMapping();
+
+                    if (_context.Users.Where(usr => usr.UserName == addpatient.UserName).FirstOrDefault<User>() == null)
+                    {
+                        addContact.CellPhone = addpatient.CellPhone;
+                        _context.Entry(addContact).State = System.Data.Entity.EntityState.Added;
+                        _context.SaveChanges();
+
+                        _context.Entry(addressDB).State = System.Data.Entity.EntityState.Added;
+                        _context.SaveChanges();
+
+                        userDB.UserName = addpatient.UserName;
+                        userDB.FirstName = addpatient.FirstName;
+                        userDB.LastName = addpatient.LastName;
+                        userDB.ContactInfoId = addContact.id;
+                        userDB.AddressId = addressDB.id;
+                        userDB.UserType = 1;
+                        _context.Entry(userDB).State = System.Data.Entity.EntityState.Added;
+                        _context.SaveChanges();
+
+                        patientDB.Id = userDB.id;
+                        patientDB.SSN = "N/A";
+                        _context.Entry(patientDB).State = System.Data.Entity.EntityState.Added;
+                        _context.SaveChanges();
+
+                        caseDB.PatientId = patientDB.Id;
+                        caseDB.LocationId = 0;
+                        _context.Entry(caseDB).State = System.Data.Entity.EntityState.Added;
+                        _context.SaveChanges();
+
+                        if (addpatient.CompanyId > 0)
+                        {
+                            Company company = _context.Companies.Where(p => p.id == addpatient.CompanyId).FirstOrDefault<Company>();
+                            if (company != null)
+                            {
+                                userCompanyDB.User = userDB;
+                                userCompanyDB.Company = company;                                
+                                _context.Entry(userCompanyDB).State = System.Data.Entity.EntityState.Added;
+                                _context.SaveChanges();
+                            }
+                            else
+                            {
+                                dbContextTransaction.Rollback();
+                                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid company details.", ErrorLevel = ErrorLevel.Error };
+                            }
+                        }
+                        else
+                        {
+                            dbContextTransaction.Rollback();
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid company details.", ErrorLevel = ErrorLevel.Error };
+                        }
+
+                        casecompanymappingDB.CompanyId = (int)addpatient.CompanyId;
+                        casecompanymappingDB.CaseId = caseDB.Id;
+                        _context.Entry(casecompanymappingDB).State = System.Data.Entity.EntityState.Added;
+                        _context.SaveChanges();
+
+                        var res = ConvertToPatient<BO.Patient2, Patient2>(patientDB);
+                        dbContextTransaction.Commit();
+                        return (object)res;
+                    }
+                    else
+                    {
+                        dbContextTransaction.Rollback();
+                        return new BO.ErrorObject { ErrorMessage = "User already exists", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                    }
+                }
+                catch (Exception er)
+                {
+                    dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { ErrorMessage = "An error occurred.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                }
+            }
+        }
+        #endregion
+
 
         #region Delete By ID
         public override object Delete(int id)

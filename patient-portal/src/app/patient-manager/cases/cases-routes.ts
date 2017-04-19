@@ -163,19 +163,19 @@ export const CasesShellRoutes: Routes = [
                         children: [
                             {
                                 path: '',
-                                component: ConsentListComponent,
+                                component: AddConsentComponent,
                                 data: {
                                     breadcrumb: 'root'
                                 }
-                            },
-                            {
-                                path: 'add',
-                                component: AddConsentComponent,
-                                canActivate: [ValidateActiveSession],
-                                data: {
-                                    breadcrumb: 'Add Consent'
-                                }
                             }
+                            // {
+                            //     path: 'add',
+                            //     component: AddConsentComponent,
+                            //     canActivate: [ValidateActiveSession],
+                            //     data: {
+                            //         breadcrumb: 'Add Consent'
+                            //     }
+                            // }
                         ]
                     },
                 ]

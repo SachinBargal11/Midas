@@ -190,23 +190,7 @@ export class PatientsService {
 
     deletePatient(patient: Patient): Observable<Patient> {
         let promise: Promise<Patient> = new Promise((resolve, reject) => {
-            let requestData: any = patient.toJS();
-            requestData.isDeleted = 1;
-            requestData.user.contactInfo = requestData.user.contact;
-            requestData.user.addressInfo = requestData.user.address;
-            requestData.user = _.omit(requestData.user, 'contact', 'address');
-            requestData = _.extend(requestData, {
-                attorneyname: 'simon',
-                attorneyAddressInfo: {
-                    name: 'mumbai----'
-                },
-                attorneyContactInfo: {
-                    name: 'sergi----'
-                }
-            });
-            return this._http.post(this._url + '/patient/savePatient', JSON.stringify(requestData), {
-                headers: this._headers
-            })
+            return this._http.get(this._url + '/patient/delete/' + patient.id)
                 .map(res => res.json())
                 .subscribe((patientData: any) => {
                     let parsedPatient: Patient = null;

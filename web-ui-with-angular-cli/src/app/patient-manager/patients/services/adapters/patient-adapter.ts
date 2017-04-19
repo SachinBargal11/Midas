@@ -12,7 +12,8 @@ export class PatientAdapter {
         if (data) {
             if (data.user.userCompanies) {
                 for (let company of data.user.userCompanies) {
-                    companies.push(CompanyAdapter.parseResponse(company.company));
+                    // companies.push(CompanyAdapter.parseResponse(company));
+                    companies.push(company);
                 }
             }
             patient = new Patient({

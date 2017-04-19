@@ -14,7 +14,7 @@ const AccidentRecord = Record({
     hospitalName: '',
     describeInjury: '',
     dateOfAdmission: moment(),
-    patientTypeId: PatientType.BICYCLIST,
+    patientTypeId: '1',
     additionalPatients: '',
     isCurrentAccident: true,
     createByUserID: 0,

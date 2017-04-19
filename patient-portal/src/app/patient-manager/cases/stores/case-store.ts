@@ -1,3 +1,4 @@
+import { Company } from '../../../account/models/company';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/share';
@@ -91,6 +92,16 @@ export class CasesStore {
             });
         });
         return <Observable<Case>>Observable.fromPromise(promise);
+    }
+    getCaseCompanies(caseId: number): Observable<Company[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._casesService.getCaseCompanies(caseId).subscribe((company: Company[]) => {
+                resolve(company);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Company[]>>Observable.fromPromise(promise);
     }
 
     //this is for compney consent list.

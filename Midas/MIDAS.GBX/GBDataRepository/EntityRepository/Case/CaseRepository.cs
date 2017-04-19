@@ -460,10 +460,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                 .Include("Case.Patient2.User.UserCompanies")
                                                 .Include("Case.Patient2.User.AddressInfo")
                                                 .Include("Case.Patient2.User.ContactInfo")
-                                                .Where(p => p.ReferredToCompanyId == CompanyId && p.Case.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
-                                                 && p.Case.CompanyCaseConsentApprovals.Any(p2 => p2.CompanyId == CompanyId
-                                                 && (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))))
-                                                 .ToList<Referral>();
+                                                .Where(p => p.ReferredToCompanyId == CompanyId && p.Case.PatientId == PatientId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))                                                 )
+                                                .ToList<Referral>();
 
             var caseList2 = referralList.Select(p => p.Case).ToList();
 
@@ -772,10 +770,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var ReferralList = _context.Referrals.Include("Case")
                                                  .Include("Case.CompanyCaseConsentApprovals")
                                                  .Include("Case.Patient2.User")
-                                                 .Where(p => p.ReferredToCompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
-                                                  && p.Case.CompanyCaseConsentApprovals.Any(p2 => p2.CompanyId == CompanyId
-                                                  && (p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))) == false)
+                                                 .Where(p => p.ReferredToCompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                  .ToList<Referral>();
+            //ReferralList.RemoveAll(referral => referral.Case.CaseStatusId == 2);
 
             var UserList2 = ReferralList.Select(p => p.Case.Patient2).ToList();
 

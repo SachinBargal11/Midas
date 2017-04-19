@@ -51,7 +51,8 @@ export class SecurityCheckComponent implements OnInit {
         let result = this.sessionStore.verifyLoginDevice(securityCheckFormControlsValues.code);
         result.subscribe(
             (response) => {
-                this._router.navigate(['/dashboard']);
+                // this._router.navigate(['/dashboard']);
+                this._router.navigate(['/patient-manager/profile/viewall']);
             },
             (error) => {
                 this.isSecurityCheckInProgress = false;
