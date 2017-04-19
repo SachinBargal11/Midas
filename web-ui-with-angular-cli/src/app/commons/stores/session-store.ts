@@ -35,6 +35,7 @@ export class SessionStore {
             let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
 
             if (storedAccount) {
+                debugger;
                 let storedAccountData: any = JSON.parse(storedAccount);
                 let account: Account = AccountAdapter.parseStoredData(storedAccountData);
                 this._populateSession(account);
@@ -116,6 +117,7 @@ export class SessionStore {
     }
 
     private _populateSession(account: Account) {
+        debugger;
         this._session.account = account;
         let storedCompany: any = JSON.parse(window.localStorage.getItem(this.__CURRENT_COMPANY__));
         let company: Company = CompanyAdapter.parseResponse(storedCompany);

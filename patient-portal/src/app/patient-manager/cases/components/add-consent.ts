@@ -23,13 +23,20 @@ import { ConsentAdapter } from '../services/adapters/consent-adapter';
 import { CaseDocument } from '../models/case-document';
 import { CasesStore } from '../../cases/stores/case-store';
 import { Document } from '../../../commons/models/document';
-
+import { Case } from '../models/case';
+import { LazyLoadEvent } from 'primeng/primeng';
 @Component({
     selector: 'add-consent',
     templateUrl: './add-consent.html',
     providers: [ConsentService]
 })
+// constructor(private renderer:Renderer) {}
 
+// @ViewChild('one') d1:ElementRef;
+
+// ngAfterViewInit() {
+//   this.renderer.invokeElementMethod(this.d1.nativeElement', 'insertAdjacentHTML' ['beforeend', '<div class="two">two</div>']);
+// }
 export class AddConsentComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     display: boolean = false;
@@ -68,7 +75,14 @@ export class AddConsentComponent implements OnInit {
     currentCaseId: number;
     documents: CaseDocument[] = [];
     currentCompany: number;
-    selectedCompany:number;
+    selectedCompany: number;
+
+    selectedConsentList: Consent[] = [];
+    Consent: Consent[];
+    Case: Case;   
+    datasource: Consent[];
+    totalRecords: number;  
+
     constructor(
         private fb: FormBuilder,
         private service: ConsentService,
@@ -87,7 +101,7 @@ export class AddConsentComponent implements OnInit {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
 
             this.caseId = parseInt(routeParams.caseId, 10);
-           // this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.currentCompany;
+            // this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.currentCompany;
             this.consentForm = this.fb.group({
                 company: ['', Validators.required]
                 // ,uploadedFiles: ['', Validators.required]
@@ -98,26 +112,54 @@ export class AddConsentComponent implements OnInit {
     }
 
     ngOnInit() {
-        
+
         let today = new Date();
         let currentDate = today.getDate();
         this.maxDate = new Date();
         this.maxDate.setDate(currentDate);
         this._AddConsentStore.getCompany(this.caseId)
-            .subscribe((company) =>{
-                 this.companies = company,
-                this.selectedCompany=this.companies[0].id,                
-        this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.selectedCompany;
-            }); 
-       // this.getDocuments();
+            .subscribe((company) => {
+                this.companies = company,
+                    this.selectedCompany = this.companies[0].id,
+                    this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.selectedCompany;
+            });        
+        this.loadConsentForm();
 
     }
 
-    selectcompany(event) {       
+    selectcompany(event) {
         // this.selectedcompany = 0;
         this.currentCompany = event.target.value;
         this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.selectedCompany;
 
+    }
+
+    loadConsentForm() {
+        this._progressBarService.show();
+        this._casesStore.getDocumentForCaseId(this.caseId)
+            .subscribe((caseDocument: Case) => {
+                this.documents = caseDocument.caseCompanyConsentDocument;
+
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    } 
+     loadConsentFormLazy(event: LazyLoadEvent) {
+        setTimeout(() => {
+            if (this.datasource) {
+                this.Consent = this.datasource.slice(event.first, (event.first + event.rows));
+            }
+        }, 250);
+    }
+
+    DownloadPdf(documentId) {
+        this._progressBarService.show();
+        window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+        this._progressBarService.hide();
     }
 
     documentUploadComplete(documents: Document[]) {
@@ -132,27 +174,13 @@ export class AddConsentComponent implements OnInit {
                 this._notificationsService.error('Oh No!', 'Company, Case and Consent data already exists');
             }
         });
-        this.getDocuments();
+        this.loadConsentForm();
     }
 
     documentUploadError(error: Error) {
         this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
     }
-
-    getDocuments() {
-        this._progressBarService.show();
-        this._casesStore.getDocumentsForCaseId(this.currentCaseId)
-            .subscribe(document => {
-                this.documents = document;
-            },
-
-            (error) => {
-                this._progressBarService.hide();
-            },
-            () => {
-                this._progressBarService.hide();
-            });
-    }
+    
 
     Save() {
         if (this.uploadedFiles.length == 0) {

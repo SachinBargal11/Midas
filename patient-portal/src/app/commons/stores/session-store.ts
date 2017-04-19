@@ -29,9 +29,7 @@ export class SessionStore {
     }
 
     authenticate() {
-
         let promise = new Promise((resolve, reject) => {
-
             let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
 
             if (storedAccount) {
@@ -91,6 +89,7 @@ export class SessionStore {
     logout() {
         this._resetSession();
         window.localStorage.removeItem(this.__ACCOUNT_STORAGE_KEY__);
+        window.localStorage.removeItem(this.__CURRENT_COMPANY__);
     }
 
     authenticatePassword(userName, oldpassword) {
@@ -115,14 +114,12 @@ export class SessionStore {
     }
 
     private _populateSession(account: Account) {
-
         this._session.account = account;
-        window.localStorage.setItem(this.__ACCOUNT_STORAGE_KEY__, JSON.stringify(account.toJS()));
-
         let storedCompany: any = JSON.parse(window.localStorage.getItem(this.__CURRENT_COMPANY__));
         let company: Company = CompanyAdapter.parseResponse(storedCompany);
         this._session.currentCompany = company ? company : account.companies[0];
         window.localStorage.setItem(this.__CURRENT_COMPANY__, JSON.stringify(this._session.currentCompany));
+        window.localStorage.setItem(this.__ACCOUNT_STORAGE_KEY__, JSON.stringify(account.toJS()));
     }
 
     private _resetSession() {
@@ -131,7 +128,6 @@ export class SessionStore {
     }
 
     selectCurrentCompany(event, companyId) {
-        debugger;
         event.preventDefault();
         let company: Company = _.find(this.session.companies, { id: parseInt(companyId, 10) });
         this._session.currentCompany = company;
