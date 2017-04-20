@@ -30,13 +30,7 @@ import { LazyLoadEvent } from 'primeng/primeng';
     templateUrl: './add-consent.html',
     providers: [ConsentService]
 })
-// constructor(private renderer:Renderer) {}
 
-// @ViewChild('one') d1:ElementRef;
-
-// ngAfterViewInit() {
-//   this.renderer.invokeElementMethod(this.d1.nativeElement', 'insertAdjacentHTML' ['beforeend', '<div class="two">two</div>']);
-// }
 export class AddConsentComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     display: boolean = false;
@@ -91,14 +85,12 @@ export class AddConsentComponent implements OnInit {
 
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
-
             this.caseId = parseInt(routeParams.caseId, 10);
             // this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.currentCompany;
             this.consentForm = this.fb.group({
                 company: ['', Validators.required]
                 // ,uploadedFiles: ['', Validators.required]
             });
-
             this.consentformControls = this.consentForm.controls;
         })
     }
@@ -115,7 +107,6 @@ export class AddConsentComponent implements OnInit {
                     this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.selectedCompany;
             });        
         this.loadConsentForm();
-
     }
 
     selectcompany(event) {
@@ -130,7 +121,6 @@ export class AddConsentComponent implements OnInit {
         this._casesStore.getDocumentForCaseId(this.caseId)
             .subscribe((caseDocument: Case) => {
                 this.documents = caseDocument.caseCompanyConsentDocument;
-
             },
             (error) => {
                 this._progressBarService.hide();
@@ -173,8 +163,6 @@ export class AddConsentComponent implements OnInit {
     }    
  
     DownloadTemplate() {
-        window.location.assign(this._url + '/CompanyCaseConsentApproval/download/' + this.caseId + '/' + this.companyId);
+        window.location.assign(this._url + '/CompanyCaseConsentApproval/download/' + this.caseId + '/' +this.selectedCompany);
     }
-
-
 }
