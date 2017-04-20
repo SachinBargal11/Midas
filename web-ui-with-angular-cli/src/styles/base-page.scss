@@ -75,7 +75,7 @@ body {
                     }
                     &.inbound-column-span {
                         border-right: 1px solid #c7c7c7 !important;
-                        text-align: center;
+                        text-align: center; 
                         // width: 38px;
                     }
                     &.ui-selection-column {
@@ -108,6 +108,9 @@ body {
             border-top: 1px solid #c7c7c7;
             margin-bottom: 0;
         }
+    }
+    .list-control {
+        width: 100%;
     }
 }
 
