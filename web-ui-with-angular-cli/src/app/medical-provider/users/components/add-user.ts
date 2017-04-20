@@ -51,7 +51,7 @@ export class AddUserComponent implements OnInit {
     constructor(
         private _statesStore: StatesStore,
         private _userService: UsersService,
-        private fb: FormBuilder,
+        private _fb: FormBuilder,
         private _router: Router,
         private _notificationsStore: NotificationsStore,
         private _sessionStore: SessionStore,
@@ -83,14 +83,14 @@ export class AddUserComponent implements OnInit {
             });
 
 
-        this.userform = this.fb.group({
-            userInfo: this.fb.group({
+        this.userform = this._fb.group({
+            userInfo: this._fb.group({
                 firstname: ['', Validators.required],
                 lastname: ['', Validators.required],
                 role: ['', [Validators.required]]
             }),
-            doctor: this.fb.group(this.initDoctorModel()),
-            contact: this.fb.group({
+            doctor: this._fb.group(this.initDoctorModel()),
+            contact: this._fb.group({
                 email: ['', [Validators.required, AppValidators.emailValidator]],
                 cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
                 homePhone: [''],
@@ -100,7 +100,7 @@ export class AddUserComponent implements OnInit {
                 officeExtension: [''],
                 preferredCommunication: [''],
             }),
-            address: this.fb.group({
+            address: this._fb.group({
                 address1: [''],
                 address2: [''],
                 city: [''],
