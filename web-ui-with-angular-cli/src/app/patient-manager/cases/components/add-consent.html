@@ -22,7 +22,7 @@
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
         <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
-</div>
+    </div>
 </div>
 
 <p-dataTable [value]="caseConsentDocuments" [(selection)]="selectedConsentList" [rows]="10" [paginator]="true" [pageLinks]="3"
@@ -32,14 +32,14 @@
     <!--<p-column field="consentReceived" header="File Name" [sortable]="true" onclick="Download()"></p-column>-->
     <p-column header="File Name">
         <ng-template let-document="rowData" pTemplate="body">
-            <u>
-                <a style="color: blue" (click)="DownloadPdf(document.document.originalResponse.midasDocumentId)">{{document.document.originalResponse.documentName}}</a>
-</u>
-</ng-template>
-</p-column>
+            <a class="hyperlink-color" (click)="DownloadPdf(document.document.originalResponse.midasDocumentId)">
+                <u>{{document.document.originalResponse.documentName}}</u>
+            </a>
+        </ng-template>
+    </p-column>
 
-<p-column field="" header="Signed/Unsigned" [sortable]="true"></p-column>
-<!--<p-column styleClass="actions-cell" header="Actions">
+    <p-column field="" header="Signed/Unsigned" [sortable]="true"></p-column>
+    <!--<p-column styleClass="actions-cell" header="Actions">
     <ng-template let-ListConsents="rowData" pTemplate="body">
         <a routerLink="edit/{{ListConsents.id}}"><i class="glyphicon glyphicon-edit"></i></a>
     </ng-template>
