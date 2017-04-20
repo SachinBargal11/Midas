@@ -8,6 +8,7 @@ import { ProgressBarService } from '../../services/progress-bar-service';
 import { DiagnosisCode } from '../../models/diagnosis-code';
 import { DiagnosisType } from '../../models/diagnosis-type';
 import { DiagnosisStore } from '../../stores/diagnosis-store';
+import { PatientVisit } from '../../../patient-manager/patient-visit/models/patient-visit';
 
 @Component({
   selector: 'app-dignosis',
@@ -18,9 +19,9 @@ export class DignosisComponent implements OnInit {
   dignosisForm: FormGroup;
   diagnosisTypes: DiagnosisType[];
   // diagnosisCodes: DiagnosisCode[];
-    diagnosisCodes: SelectItem[] = [];
+  diagnosisCodes: SelectItem[] = [];
 
-  @Input() url: string;
+  @Input() selectedVisit: PatientVisit;
   @Output() uploadComplete: EventEmitter<Document[]> = new EventEmitter();
   @Output() uploadError: EventEmitter<Error> = new EventEmitter();
 
@@ -53,11 +54,11 @@ export class DignosisComponent implements OnInit {
         this._progressBarService.hide();
       });
   }
-  
-    searchDiagnosis(event) {
-        let currentDiagnosisTypeId = event.target.value;
-        this.loadAllDiagnosisCodesForType(currentDiagnosisTypeId);
-    }
+
+  searchDiagnosis(event) {
+    let currentDiagnosisTypeId = event.target.value;
+    this.loadAllDiagnosisCodesForType(currentDiagnosisTypeId);
+  }
 
   loadAllDiagnosisCodesForType(diagnosisTypeId: number) {
     this._progressBarService.show();
@@ -66,11 +67,11 @@ export class DignosisComponent implements OnInit {
       (diagnosisCodes: DiagnosisCode[]) => {
         // this.diagnosisCodes = diagnosisCodes;
         this.diagnosisCodes = _.map(diagnosisCodes, (currentDiagnosisCode: DiagnosisCode) => {
-                    return {
-                        label: `${currentDiagnosisCode.diagnosisCodeText} - ${currentDiagnosisCode.diagnosisCodeDesc}`,
-                        value: currentDiagnosisCode.id.toString()
-                    };
-                });
+          return {
+            label: `${currentDiagnosisCode.diagnosisCodeText} - ${currentDiagnosisCode.diagnosisCodeDesc}`,
+            value: currentDiagnosisCode.id.toString()
+          };
+        });
       },
       (error) => {
         this._progressBarService.hide();
