@@ -320,7 +320,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (CalendarEventBO != null)
                 {
                     bool Add_CalendarEventDB = false;
-                    CalendarEventDB = _context.CalendarEvents.Where(p => p.Id == CalendarEventBO.ID).FirstOrDefault();
+                    CalendarEventDB = _context.CalendarEvents.Where(p => p.Id == CalendarEventBO.ID
+                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                             .FirstOrDefault();
 
                     if (CalendarEventDB == null && CalendarEventBO.ID <= 0)
                     {
@@ -379,7 +381,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (PatientVisit2BO != null && ((PatientVisit2BO.ID <= 0 && PatientVisit2BO.PatientId.HasValue == true && PatientVisit2BO.LocationId.HasValue == true) || (PatientVisit2BO.ID > 0)))
                 {
                     bool Add_PatientVisit2DB = false;
-                    PatientVisit2DB = _context.PatientVisit2.Where(p => p.Id == PatientVisit2BO.ID).FirstOrDefault();
+                    PatientVisit2DB = _context.PatientVisit2.Where(p => p.Id == PatientVisit2BO.ID
+                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                            .FirstOrDefault();
 
                     if (PatientVisit2DB == null && PatientVisit2BO.ID <= 0)
                     {
@@ -397,7 +401,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     if (IsEditMode == false && PatientVisit2BO.CaseId.HasValue == false)
                     {
-                        int CaseId = _context.Cases.Where(p => p.PatientId == PatientVisit2BO.PatientId.Value && p.CaseStatusId == 1).Select(p => p.Id).FirstOrDefault<int>();
+                        int CaseId = _context.Cases.Where(p => p.PatientId == PatientVisit2BO.PatientId.Value && p.CaseStatusId == 1
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                   .Select(p => p.Id)
+                                                   .FirstOrDefault<int>();
+
                         PatientVisit2DB.CaseId = CaseId;
                     }
                     else
@@ -407,7 +415,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     if (IsEditMode == false)
                     {
-                        int CaseId = _context.Cases.Where(p => p.PatientId == PatientVisit2BO.PatientId.Value && p.CaseStatusId == 1).Select(p => p.Id).FirstOrDefault<int>();
+                        int CaseId = _context.Cases.Where(p => p.PatientId == PatientVisit2BO.PatientId.Value && p.CaseStatusId == 1
+                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                   .Select(p => p.Id)
+                                                   .FirstOrDefault<int>();
 
                         if (CaseId == 0)
                         {
