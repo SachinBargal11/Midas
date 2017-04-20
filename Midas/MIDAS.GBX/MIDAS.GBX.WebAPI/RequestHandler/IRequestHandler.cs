@@ -10,6 +10,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage ValidateInvitation(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetObject(HttpRequestMessage request, int id);
+        HttpResponseMessage GetDiagnosisType(HttpRequestMessage request, int id);
         HttpResponseMessage GetConsentList(HttpRequestMessage request, int id);
         HttpResponseMessage GetObject(HttpRequestMessage request, int id, string type);
         HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject);

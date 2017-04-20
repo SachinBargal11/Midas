@@ -177,7 +177,20 @@ namespace MIDAS.GBX.WebAPI
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
-        
+
+        public HttpResponseMessage GetDiagnosisType(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.GetDiagnosisType(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage GetConsentList(HttpRequestMessage request, int id)
         {
             var objResult = dataAccessManager.GetConsentList(id);
