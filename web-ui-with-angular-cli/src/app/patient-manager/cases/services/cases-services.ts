@@ -46,8 +46,10 @@ export class CaseService {
     }
 
     getCases(patientId: number): Observable<Case[]> {
+        let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<Case[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/Case/getByPatientId/' + patientId)
+            // return this._http.get(this._url + '/Case/getByPatientId/' + patientId)
+            return this._http.get(this._url + '/Case/getByPatientIdAndCompanyId/' + patientId + '/' + companyId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let cases = (<Object[]>data).map((data: any) => {

@@ -32,7 +32,7 @@
     <!--<p-column field="consentReceived" header="File Name" [sortable]="true" onclick="Download()"></p-column>-->
     <p-column header="File Name">
         <ng-template let-document="rowData" pTemplate="body">
-            <a class="hyperlink-color" (click)="DownloadPdf(document.document.originalResponse.midasDocumentId)">
+            <a (click)="DownloadPdf(document.document.originalResponse.midasDocumentId)">
                 <u>{{document.document.originalResponse.documentName}}</u>
             </a>
         </ng-template>

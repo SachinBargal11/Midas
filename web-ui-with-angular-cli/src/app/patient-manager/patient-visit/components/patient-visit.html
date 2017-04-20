@@ -61,8 +61,8 @@
         <button type="button" pButton icon="" label="Edit Current Occurrence" (click)="cd.accept()"></button>
     </p-footer>
 </p-confirmDialog>
-<p-dialog [minWidth]="300" [width]="900" (onAfterHide)="handleEventDialogHide()" header="{{visitInfo}}" [(visible)]="eventDialogVisible"
-    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
+<p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleEventDialogHide()" header="{{visitInfo}}" [(visible)]="eventDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
     <form [formGroup]="addNewPatientForm" (ngSubmit)="saveNewPatient()">
         <section class="card" *ngIf="isAddNewPatient">
             <header class="card-header card-header-lg">
@@ -190,8 +190,8 @@
                 <form [formGroup]="patientVisitForm" (ngSubmit)="saveVisit()">
 
                     <div class="row">
-                        <div class="col-md-2"><label class="form-label">Notes<span class="color-red">*</span></label></div>
-                        <div class="col-md-4">
+                        <div class="col-md-1"><label class="form-label">Notes<span class="color-red">*</span></label></div>
+                        <div class="col-md-6">
                             <div class="form-group" [class.error]="patientVisitFormControls.notes && patientVisitFormControls.notes.touched && !patientVisitFormControls.notes.valid">
                                 <textarea [ngModel]="selectedVisit.notes" formControlName="notes" class="form-control" rows="3"></textarea>
                                 <div class='error-list' *ngIf="patientVisitFormControls.notes && patientVisitFormControls.notes.touched && !patientVisitFormControls.notes.valid">
@@ -201,13 +201,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4" *ngIf="this.selectedVisit.id">
-                            <a routerLink="../cases/{{this.selectedVisit.patientId}}/{{this.selectedVisit.caseId}}/patient-visit/{{this.selectedVisit.id}}/visit-document">Upload Documents</a>
-                        </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-2"><label class="form-label">Status<span class="color-red">*</span></label></div>
-                        <div class="col-md-4">
+                        <div class="col-md-1"><label class="form-label">Status<span class="color-red">*</span></label></div>
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <select formControlName="visitStatusId" [ngModel]="selectedVisit.visitStatusId" class="select2-arrow form-control">
                         <option value="2">Complete</option>
@@ -263,7 +260,7 @@
                 </p-dataTable>
             </p-tabPanel>
 
-            <p-tabPanel header="Dignosis" *ngIf="selectedVisit.id">
+            <p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id">
                 <app-dignosis></app-dignosis>
             </p-tabPanel>
 
