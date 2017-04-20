@@ -20,7 +20,7 @@ import { NotificationComponent } from './components/notification/notification';
 import { ShellComponent } from './shell-component';
 import { ScheduledEventEditorComponent } from '../medical-provider/calendar/components/scheduled-event-editor';
 import { DocumentUploadComponent } from '../commons/components/document-upload/document-upload.component';
-import { DignosisComponent } from '../commons/components/dignosis/dignosis.component';
+import { DignosisComponent } from './components/dignosis/dignosis.component';
 
 
 import {

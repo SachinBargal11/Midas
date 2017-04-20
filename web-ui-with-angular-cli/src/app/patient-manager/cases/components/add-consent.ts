@@ -73,7 +73,7 @@ export class AddConsentComponent implements OnInit {
         private fb: FormBuilder,
         private service: ConsentService,
         private _router: Router,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         public _route: ActivatedRoute,
         private _AddConsentStore: ConsentStore,
         private _notificationsStore: NotificationsStore,
@@ -90,8 +90,8 @@ export class AddConsentComponent implements OnInit {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
 
             this.caseId = parseInt(routeParams.caseId, 10);
-            let companyId: number = this._sessionStore.session.currentCompany.id;
-            this.companyId = this._sessionStore.session.currentCompany.id;
+            // let companyId: number = this.sessionStore.session.currentCompany.id;
+            this.companyId = this.sessionStore.session.currentCompany.id;
             this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
             this.consentForm = this.fb.group({
                 // doctor: ['', Validators.required]
@@ -114,7 +114,17 @@ export class AddConsentComponent implements OnInit {
         this._progressBarService.show();
         this._casesStore.getDocumentForCaseId(this.caseId)
             .subscribe((caseDocument: Case) => {
-                this.caseConsentDocuments = caseDocument.caseCompanyConsentDocument;
+                    this.caseConsentDocuments = _.filter(caseDocument.caseCompanyConsentDocument, (currentCaseCompanyConsentDocument: CaseDocument) => {
+                    return currentCaseCompanyConsentDocument.document.originalResponse.companyId === this.companyId;
+                });
+
+                // _.forEach(caseDocument.caseCompanyConsentDocument, (currentCaseCompanyConsentDocument: CaseDocument) => {
+                //     if (currentCaseCompanyConsentDocument.document.originalResponse.companyId === this.companyId) {
+                //         this.caseConsentDocuments = caseDocument.caseCompanyConsentDocument;
+                //         this.caseConsentDocuments.push(currentCaseCompanyConsentDocument);
+                //     }
+                // });
+
             },
             (error) => {
                 this._progressBarService.hide();
