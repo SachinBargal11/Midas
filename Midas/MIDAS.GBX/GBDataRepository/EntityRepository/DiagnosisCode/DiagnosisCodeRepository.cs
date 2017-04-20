@@ -60,19 +60,27 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region GetByDiagnosisTypeId
-        public override object Get(int id)
+        public override object GetDiagnosisType(int id)
         {
-            var acc = _context.DiagnosisCodes.Where(p => p.DiagnosisTypeId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                             .FirstOrDefault<DiagnosisCode>();
-            if (acc == null)
+            var boDiagnosisCodeDB = _context.DiagnosisCodes.Where(p => p.DiagnosisTypeId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                           .ToList<DiagnosisCode>();
+
+            List<BO.DiagnosisCode> boDiagnosisCode = new List<BO.DiagnosisCode>();
+
+            if (boDiagnosisCodeDB == null)
             {
-                return new BO.ErrorObject { ErrorMessage = "No record found for this Diagnosis Type.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Diagnosis Code.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
+
             else
             {
-                BO.DiagnosisCode acc_ = Convert<BO.DiagnosisCode, DiagnosisCode>(acc);
-                return (object)acc_;
+                foreach (var boDiagnosisCodeDBList in boDiagnosisCodeDB)
+                {
+                    boDiagnosisCode.Add(Convert<BO.DiagnosisCode, DiagnosisCode>(boDiagnosisCodeDBList));
+                }
             }
+
+            return (object)boDiagnosisCode;
         }
         #endregion
 
