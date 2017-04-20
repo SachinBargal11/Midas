@@ -219,5 +219,7 @@ export class CompanyCasesComponent implements OnInit {
             this._notificationsService.error('Oh No!', 'select case to delete');
         }
     }
-
+  showMsg(){
+          this._notificationsService.error('Oh No!', 'There is no consent for this case');
+    }
 }

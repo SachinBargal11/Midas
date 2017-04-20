@@ -1,4 +1,12 @@
-<a style="color: blue" (click)="DownloadTemplate()">Download Template</a>
+<div class="input-group">
+    <h3 class="with-border">
+        Add Consent Forms
+        <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="DownloadTemplate()">
+            <i class="fa fa-download" aria-hidden="true"></i>
+            <span class="hidden-md-down">Download Consent Form</span>
+        </a>
+    </h3>
+</div>
 <app-document-upload [url]="url" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
 <p-confirmDialog width="425"></p-confirmDialog>
 <div class="input-group">
