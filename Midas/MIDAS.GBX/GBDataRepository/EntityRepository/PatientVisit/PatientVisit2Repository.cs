@@ -197,6 +197,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                          .Include("Doctor.User")
                                                                          .Include("Room")
                                                                          .Include("Location")
+                                                                         .Include("Specialty")
                                                                         .Where(p => p.LocationId == id
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                         .ToList<PatientVisit2>();
@@ -226,6 +227,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                          .Include("Doctor.User")
                                                                          .Include("Room")
                                                                          .Include("Location")
+                                                                         .Include("Specialty")
                                                                         .Where(p => p.LocationId == LocationId && p.RoomId == RoomId
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                         .ToList<PatientVisit2>();
@@ -255,6 +257,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                          .Include("Doctor.User")
                                                                          .Include("Room")
                                                                          .Include("Location")
+                                                                         .Include("Specialty")
                                                                         .Where(p => p.LocationId == LocationId && p.DoctorId == DoctorId
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                         .ToList<PatientVisit2>();
