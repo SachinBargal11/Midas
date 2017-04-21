@@ -176,6 +176,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             referralBO.ReferredByEmail = eachRefrral.ReferredByEmail;
                             referralBO.ReferredToEmail = eachRefrral.ReferredToEmail;
                             referralBO.ReferralAccepted = eachRefrral.ReferralAccepted;
+                            referralBO.FirstName = eachRefrral.FirstName;
+                            referralBO.LastName = eachRefrral.LastName;
+                            referralBO.CellPhone = eachRefrral.CellPhone;
                             referralBO.IsDeleted = eachRefrral.IsDeleted;
                             referralBO.CreateByUserID = eachRefrral.CreateByUserID;
                             referralBO.UpdateByUserID = eachRefrral.UpdateByUserID;
