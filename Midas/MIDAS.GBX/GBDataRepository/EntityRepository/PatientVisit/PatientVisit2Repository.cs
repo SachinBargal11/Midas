@@ -357,7 +357,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.PatientVisit2 PatientVisit2BO = (BO.PatientVisit2)(object)entity;
             BO.CalendarEvent CalendarEventBO = PatientVisit2BO.CalendarEvent;
             List<BO.PatientVisitDiagnosisCode> PatientVisitDiagnosisCodeBOList = PatientVisit2BO.PatientVisitDiagnosisCodes;
-            BO.PatientVisitDiagnosisCode PatientVisitDiagnosisCodeBO = new BO.PatientVisitDiagnosisCode();
+            List<BO.PatientVisitProcedureCode> PatientVisitProcedureCodeBOList = PatientVisit2BO.PatientVisitProcedureCodes;
 
             PatientVisit2 PatientVisit2DB = new PatientVisit2();
 
@@ -536,7 +536,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _context.SaveChanges();
                 #endregion
 
-                #region patientVisitDiagnosisCode
+                #region PatientVisitDiagnosisCode
                 if (PatientVisitDiagnosisCodeBOList == null || (PatientVisitDiagnosisCodeBOList != null && PatientVisitDiagnosisCodeBOList.Count <= 0))
                 {
                     //return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient Visit Diagnosis Code.", ErrorLevel = ErrorLevel.Error };
@@ -578,7 +578,50 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     _context.SaveChanges();
                 }
                 #endregion
-                
+
+                #region PatientVisitProcedureCode
+                if (PatientVisitProcedureCodeBOList == null || (PatientVisitProcedureCodeBOList != null && PatientVisitProcedureCodeBOList.Count <= 0))
+                {
+                    //return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient Visit Procedure Code.", ErrorLevel = ErrorLevel.Error };
+                }
+                else
+                {
+                    int PatientVisitId = PatientVisit2DB.Id;
+                    List<int> NewProcedureCodeIds = PatientVisitProcedureCodeBOList.Select(p => p.ProcedureCodeId).ToList();
+
+                    List<PatientVisitProcedureCode> ReomveProcedureCodeDB = new List<PatientVisitProcedureCode>();
+                    ReomveProcedureCodeDB = _context.PatientVisitProcedureCodes.Where(p => p.PatientVisitId == PatientVisitId
+                                                                                    && NewProcedureCodeIds.Contains(p.ProcedureCodeId) == false
+                                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                               .ToList();
+
+                    ReomveProcedureCodeDB.ForEach(p => { p.IsDeleted = true; p.UpdateByUserID = 0; p.UpdateDate = DateTime.UtcNow; });
+
+                    _context.SaveChanges();
+
+                    foreach (BO.PatientVisitProcedureCode eachPatientVisitProcedureCode in PatientVisitProcedureCodeBOList)
+                    {
+                        PatientVisitProcedureCode AddProcedureCodeDB = new PatientVisitProcedureCode();
+                        AddProcedureCodeDB = _context.PatientVisitProcedureCodes.Where(p => p.PatientVisitId == PatientVisitId
+                                                                                    && p.ProcedureCodeId == eachPatientVisitProcedureCode.ProcedureCodeId
+                                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                               .FirstOrDefault();
+
+                        if (AddProcedureCodeDB == null)
+                        {
+                            AddProcedureCodeDB = new PatientVisitProcedureCode();
+
+                            AddProcedureCodeDB.PatientVisitId = PatientVisitId;
+                            AddProcedureCodeDB.ProcedureCodeId = eachPatientVisitProcedureCode.ProcedureCodeId;
+
+                            _context.PatientVisitProcedureCodes.Add(AddProcedureCodeDB);
+                        }
+                    }
+
+                    _context.SaveChanges();
+                }
+                #endregion
+
                 dbContextTransaction.Commit();
 
                 if (PatientVisit2DB != null)
