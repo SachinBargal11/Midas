@@ -39,6 +39,19 @@ export class AttorneyMasterStore {
         return <Observable<Attorney[]>>Observable.fromPromise(promise);
     }
 
+     getAllAttorney(): Observable<Attorney[]> {
+        let companyId: number = this._sessionStore.session.currentCompany.id;
+        let promise = new Promise((resolve, reject) => {
+            this._attorneyMasterService.getAllAttorney(companyId).subscribe((allattorney: Attorney[]) => {
+                this._attorneyMaster.next(List(allattorney));
+                resolve(allattorney);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Attorney[]>>Observable.fromPromise(promise);
+    }
+
     findAttorneyById(id: number): Attorney {
         let attorney = this._attorneyMaster.getValue();
         let index = attorney.findIndex((currentAttorney: Attorney) => currentAttorney.id === id);

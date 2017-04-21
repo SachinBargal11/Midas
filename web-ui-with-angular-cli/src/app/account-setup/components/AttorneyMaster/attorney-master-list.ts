@@ -20,6 +20,7 @@ import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
 export class AttorneyMasterListComponent implements OnInit {
     selectedAttorneys: Attorney[] = [];
     attorneys: Attorney[];
+    allattorneys: Attorney[];
     datasource: Attorney[];
     totalRecords: number;
     companyId: number;
@@ -45,6 +46,7 @@ export class AttorneyMasterListComponent implements OnInit {
 
     ngOnInit() {
         this.loadAttorney();
+        this.loadAllAttorney();
     }
 
     loadAttorney() {
@@ -52,6 +54,23 @@ export class AttorneyMasterListComponent implements OnInit {
         this._attorneyMasterStore.getAttorneyMasters()
             .subscribe(attorneys => {
                 this.attorneys = attorneys.reverse();
+                // this.datasource = attorneys.reverse();
+                // this.totalRecords = this.datasource.length;
+                // this.attorneys = this.datasource.slice(0, 10);
+            },
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+    loadAllAttorney() {
+        this._progressBarService.show();
+        this._attorneyMasterStore.getAllAttorney()
+            .subscribe(allattorney => {
+                this.allattorneys = allattorney;
                 // this.datasource = attorneys.reverse();
                 // this.totalRecords = this.datasource.length;
                 // this.attorneys = this.datasource.slice(0, 10);
