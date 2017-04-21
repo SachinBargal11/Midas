@@ -137,6 +137,18 @@ export class PatientsStore {
         return <Observable<Patient>>Observable.from(promise);
     }
 
+    addQuickPatient(patient: any): Observable<Patient> {
+        let promise = new Promise((resolve, reject) => {
+            this._patientsService.addQuickPatient(patient).subscribe((patient: Patient) => {
+                this._patients.next(this._patients.getValue().push(patient));
+                resolve(patient);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Patient>>Observable.from(promise);
+    }
+
     updatePatient(patient: Patient): Observable<Patient> {
         let promise = new Promise((resolve, reject) => {
             this._patientsService.updatePatient(patient).subscribe((updatedPatient: Patient) => {

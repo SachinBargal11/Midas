@@ -441,7 +441,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get By Patient Id and CompanyId
-        public override object Get2(int PatientId,int CompanyId)
+        public override object Get2(int PatientId, int CompanyId)
         {
             var caseList1 = _context.Cases.Include("PatientEmpInfo")
                                     .Include("PatientEmpInfo.AddressInfo")
@@ -455,6 +455,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .Where(p => p.PatientId == PatientId 
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .ToList<Case>();
+
+            caseList1 = caseList1.Where(p => p.CaseCompanyMappings.Any(p2 => p2.CompanyId == CompanyId) == true).ToList();
 
             var referralList = _context.Referrals.Include("Case")
                                                 .Include("Case.CompanyCaseConsentApprovals")

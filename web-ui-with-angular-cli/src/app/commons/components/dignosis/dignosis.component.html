@@ -1,21 +1,13 @@
 <p-confirmDialog width="425"></p-confirmDialog>
+<br>
 <div class="col-lg-6">
-  <div class="col-lg-4">
-    <label class="form-label">Dignosis Type </label>
-  </div>
-  <div class="col-lg-6">
-    <select type="text" [(ngModel)]="searchMode" (change)="filter($event)" class="form-control">
-        <option value="1">Medical Office</option>
-        <option value="2">User Name</option>
-        <option value="3">Testing Room</option>
-    </select>
-  </div> <br><br>
-  <p-listbox [options]="cities" [(ngModel)]="selectedDignosisCode" multiple="multiple" styleClass="list-control" checkbox="checkbox"
+  <select class="form-control select-list" (change)="searchDiagnosis($event)">
+      <option value="">-Select Diagnosis Type-</option>
+      <option *ngFor="let diagnosisType of diagnosisTypes" value="{{diagnosisType.id}}">{{diagnosisType.diagnosisTypeText}}</option>
+  </select>
+  <br>
+  <p-listbox [options]="diagnosisCodes" [(ngModel)]="selectedDignosisCodes" multiple="multiple" styleClass="list-control" checkbox="checkbox"
     filter="filter"></p-listbox>
-    <br>
-    <button [disabled]="isSaveProgress" type="submit" class="btn btn-success sign-up">Submit
-        <loader [visible]="isSaveProgress"></loader>
-    </button>
 </div>
 
 
@@ -28,16 +20,20 @@
     </div>
     <div class="col-lg-6">
       <a class="pull-right btn btn-danger btn-sm" (click)="deleteDocument()">
-        <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Dignosis </span>
+        <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Diagnosis </span>
         <loader [visible]="isDeleteProgress"></loader>
       </a>
     </div>
   </div>
   <p-dataTable [value]="users" [(selection)]="selectedUsers" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
-    <header>Users</header>
+    <header>Diagnosis codes</header>
     <p-column selectionMode="multiple"></p-column>
-    <p-column field="displayName" header="Dignosis Code" [sortable]="true"></p-column>
-    <p-column field="userRole" header="Discription" [sortable]="true"></p-column>
+    <p-column field="displayName" header="Diagnosis Code" [sortable]="true"></p-column>
+    <p-column field="userRole" header="Description" [sortable]="true"></p-column>
   </p-dataTable>
+  <br>
+  <button class="btn btn-success sign-up" (click)="saveDiagnosis()">Save
+        <loader [visible]="isSaveProgress"></loader>
+    </button>
 
 </div>

@@ -159,6 +159,25 @@ export class PatientsService {
 
     }
 
+    addQuickPatient(patient: any): Observable<Patient> {
+        let promise: Promise<Patient> = new Promise((resolve, reject) => {
+            patient.companyid = this._sessionStore.session.currentCompany.id;
+            return this._http.post(this._url + '/patient/addPatient', JSON.stringify(patient), {
+                headers: this._headers
+            })
+                .map(res => res.json())
+                .subscribe((patientData: any) => {
+                    let parsedPatient: Patient = null;
+                    parsedPatient = PatientAdapter.parseResponse(patientData);
+                    resolve(parsedPatient);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Patient>>Observable.fromPromise(promise);
+
+    }
+
     updatePatient(patient: Patient): Observable<Patient> {
         let promise: Promise<Patient> = new Promise((resolve, reject) => {
             let requestData: any = patient.toJS();
