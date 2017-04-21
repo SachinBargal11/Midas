@@ -10,9 +10,9 @@
             <div class="col-md-3">
                 <input type="radio" value="3" name="searchMode" [(ngModel)]="searchMode"> Testing Rooms
             </div>
-            <div class="col-md-3">
+            <!--<div class="col-md-3">
                 <input type="radio" value="4" name="searchMode" [(ngModel)]="searchMode"> Referral's Outside Midas
-            </div>
+            </div>-->
         </div>
     </h6>
 </section>
@@ -110,9 +110,8 @@
             <p-column field="location.location.name" header="Location" [sortable]="true"></p-column>
         </p-dataTable>
     </section>
-    <section *ngIf="searchMode == '4'">
+    <!--<section *ngIf="searchMode == '4'">
         <section class="card">
-            <!--<section class="card" *ngIf="isAddNewReferral">-->
             <header class="card-header card-header-lg">
                 Referral's Information
             </header>
@@ -177,20 +176,9 @@
                         </div>
                     </div>
                 </div>
-                <!--<div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <button [disabled]="!referralFormControls.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">
-                        Save
-                        <loader [visible]="isSaveProgress"></loader>
-                    </button>
-                                <button type="button" class="btn btn-secondary" (click)="cancelAddingNewPatient()">Cancel</button>
-                            </div>
-                        </div>
-                    </div>-->
             </div>
         </section>
-    </section>
+    </section>-->
     <br>
     <section>
         <div class="row">

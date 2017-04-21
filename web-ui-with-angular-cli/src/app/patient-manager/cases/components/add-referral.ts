@@ -90,10 +90,10 @@ export class AddReferralComponent implements OnInit {
         this.referralForm = this.fb.group({
             speciality: [''],
             tests: [''],
-            firstName: ['', Validators.required],
-            lastName: ['', Validators.required],
-            email: ['', [Validators.required, AppValidators.emailValidator]],
-            cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            // firstName: ['', Validators.required],
+            // lastName: ['', Validators.required],
+            // email: ['', [Validators.required, AppValidators.emailValidator]],
+            // cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
             note: ['', Validators.required]
         });
 
