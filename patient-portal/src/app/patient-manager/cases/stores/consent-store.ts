@@ -103,18 +103,18 @@ export class ConsentStore {
     }
 
 
-//   getConsetForm(CaseId: number,companyId: number): Observable<Consent[]> {
+    //   getConsetForm(CaseId: number,companyId: number): Observable<Consent[]> {
 
-//         let promise = new Promise((resolve, reject) => {
-//             this._ConsentFormService.getConsetForm(CaseId,companyId).subscribe((consent: Consent[]) => {
-//                 this._Consent.next(List(consent));
-//                 resolve(consent);
-//             }, error => {
-//                 reject(error);
-//             });
-//         });
-//         return <Observable<Consent[]>>Observable.fromPromise(promise);
-//     }
+    //         let promise = new Promise((resolve, reject) => {
+    //             this._ConsentFormService.getConsetForm(CaseId,companyId).subscribe((consent: Consent[]) => {
+    //                 this._Consent.next(List(consent));
+    //                 resolve(consent);
+    //             }, error => {
+    //                 reject(error);
+    //             });
+    //         });
+    //         return <Observable<Consent[]>>Observable.fromPromise(promise);
+    //     }
 
     deleteConsetForm(caseDetail: Consent, companyId: number): Observable<Consent> {
         let cases = this._Consent.getValue();
@@ -155,19 +155,19 @@ export class ConsentStore {
         return <Observable<Consent>>Observable.from(promise);
     }
 
-    DownloadConsentForm(CaseId: Number): Observable<Consent[]> {
-        let promise = new Promise((resolve, reject) => {
-            this._ConsentFormService.DownloadConsentForm(CaseId).subscribe((consent: Consent[]) => {
-                this._Consent.next(List(consent));
-                resolve(consent);
-            }, error => {
-                reject(error);
-            });
-        });
-        return <Observable<Consent[]>>Observable.fromPromise(promise);
-    }
+    // DownloadConsentForm(CaseId: Number): Observable<Consent[]> {
+    //     let promise = new Promise((resolve, reject) => {
+    //         this._ConsentFormService.DownloadConsentForm(CaseId).subscribe((consent: Consent[]) => {
+    //             this._Consent.next(List(consent));
+    //             resolve(consent);
+    //         }, error => {
+    //             reject(error);
+    //         });
+    //     });
+    //     return <Observable<Consent[]>>Observable.fromPromise(promise);
+    // }
 
-getCompany(CaseId: Number): Observable<Consent[]> {
+    getCompany(CaseId: Number): Observable<Consent[]> {
         let promise = new Promise((resolve, reject) => {
             this._ConsentFormService.getcompany(CaseId).subscribe((doctors: Consent[]) => {
                 this._Consent.next(List(doctors));
@@ -180,4 +180,28 @@ getCompany(CaseId: Number): Observable<Consent[]> {
     }
 
 
+    downloadConsentForm(CaseId: Number, documentId: Number): Observable<Consent[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._ConsentFormService.downloadConsentForm(CaseId, documentId).subscribe((consent: Consent[]) => {
+                this._Consent.next(List(consent));
+                resolve(consent);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Consent[]>>Observable.fromPromise(promise);
+    }
+
+
+    downloadTemplate(CaseId: Number, CompanyId: Number): Observable<Consent[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._ConsentFormService.downloadTemplate(CaseId, CompanyId).subscribe((consent: Consent[]) => {
+                this._Consent.next(List(consent));
+                resolve(consent);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Consent[]>>Observable.fromPromise(promise);
+    }
 }

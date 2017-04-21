@@ -156,51 +156,57 @@ export class AddConsentComponent implements OnInit {
         this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
     }
 
-    DownloadPdf(documentId) {
-        this._progressBarService.show();
-        this.DownloadConsent(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
-        this._progressBarService.hide();
-    }
-
-    DownloadTemplate() {
-        this._progressBarService.show();
-        this.DownloadConsent(this._url + '/CompanyCaseConsentApproval/download/' + this.caseId + '/' + this.selectedCompany);
-        this._progressBarService.hide();
-    }
-
-    DownloadConsent(url) {
-        this._progressBarService.show();
-        this.http
-            .get(url)
-            .map(res => {
-                // If request fails,
-                if (res.status < 200 || res.status >= 500 || res.status == 404) {
-                    throw new Error('This request has failed ' + res.status);
-                }
-                // If everything went fine,
-                else {
-                    window.location.assign(url);
-                }
-            })
-            .subscribe((data: any) => {
-                window.location.assign(url);
-                // this.data = data 
+    downloadPdf(documentId) {      
+        this._progressBarService.show();       
+        this._AddConsentStore.downloadConsentForm(this.caseId, documentId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                //  window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
             },
             (error) => {
+                let errString = 'Unable to download';
                 let notification = new Notification({
-                    'title': 'Unable to download ,' + error.statusText,
+                    'messages': 'Unable to download',
                     'type': 'ERROR',
                     'createdAt': moment()
                 });
-                this._notificationsStore.addNotification(notification);
-
-                let errString = 'Unable to download';
+                //this._notificationsStore.addNotification(notification);
                 this._progressBarService.hide();
-                this._notificationsService.error('Oh No!', 'Unable to download , ' + error.statusText);
+                this._notificationsService.error('Oh No!', 'Unable to download');
+
             },
             () => {
                 this._progressBarService.hide();
             });
         this._progressBarService.hide();
     }
+
+    downloadTemplate() {
+        this._progressBarService.show();       
+        this._AddConsentStore.downloadTemplate(this.caseId, this.selectedCompany)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                //  window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                //this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+                this._notificationsService.error('Oh No!', 'Unable to download');
+
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._progressBarService.hide();
+    }
+
+   
 }

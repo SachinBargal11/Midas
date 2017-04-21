@@ -1,7 +1,7 @@
 <div class="input-group">
     <h3 class="with-border">
         Add Consent Form
-        <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="DownloadTemplate()">
+        <a class="pull-right btn-inline btn btn-primary btn-sm" (click)="downloadTemplate()">
             <i class="fa fa-download" aria-hidden="true"></i>
             <span class="hidden-md-down">Download Consent Template</span>
         </a>
@@ -61,7 +61,7 @@
     <p-column header="File Name">
         <ng-template let-document="rowData" pTemplate="body">
             <u>
-                <a style="color: blue" (click)="DownloadPdf(document.document.originalResponse.midasDocumentId)">{{document.document.originalResponse.documentName}}</a>
+                <a style="color: blue" (click)="downloadPdf(document.document.originalResponse.midasDocumentId)">{{document.document.originalResponse.documentName}}</a>
 </u>
 </ng-template>
 </p-column>
