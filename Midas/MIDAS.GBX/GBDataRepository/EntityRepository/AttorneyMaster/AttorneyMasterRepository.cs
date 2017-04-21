@@ -72,7 +72,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             return lstattornies;
         }
         #endregion
-
+    
         #region Get By Id 
         public override object Get(int id)
         {
@@ -98,6 +98,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                         .Include("User.AddressInfo")
                                         .Include("User.ContactInfo")
                                         .Where(p => p.CompanyId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                        .ToList<Attorney>();
+
+            List<BO.AttorneyMaster> lstattornies = new List<BO.AttorneyMaster>();
+            if (acc == null) return new BO.ErrorObject { ErrorMessage = "No record found for this Company Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            else
+            {
+                acc.ForEach(item => lstattornies.Add(Convert<BO.AttorneyMaster, Attorney>(item)));
+            }
+
+            return lstattornies;
+        }
+        #endregion
+
+        #region Get All Excluding CompanyId
+        public override object GetAllExcludeCompany(int CompanyId)
+        {
+            var acc = _context.Attorneys.Include("User")
+                                        .Include("User.AddressInfo")
+                                        .Include("User.ContactInfo")
+                                        .Where(p => p.CompanyId != CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                         .ToList<Attorney>();
 
             List<BO.AttorneyMaster> lstattornies = new List<BO.AttorneyMaster>();
