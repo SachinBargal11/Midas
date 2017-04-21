@@ -537,29 +537,48 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 #endregion
 
                 #region patientVisitDiagnosisCode
-                PatientVisitDiagnosisCode patientVisitDiagnosisCodeDB = new PatientVisitDiagnosisCode();
-
                 if (PatientVisitDiagnosisCodeBOList == null || (PatientVisitDiagnosisCodeBOList != null && PatientVisitDiagnosisCodeBOList.Count <= 0))
                 {
                     //return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient Visit Diagnosis Code.", ErrorLevel = ErrorLevel.Error };
                 }
                 else
                 {
+                    int PatientVisitId = PatientVisit2DB.Id;
+                    List<int> NewDiagnosisCodeIds = PatientVisitDiagnosisCodeBOList.Select(p => p.DiagnosisCodeId).ToList();
+
+                    List<PatientVisitDiagnosisCode> ReomveDiagnosisCodeDB = new List<PatientVisitDiagnosisCode>();
+                    ReomveDiagnosisCodeDB = _context.PatientVisitDiagnosisCodes.Where(p => p.PatientVisitId == PatientVisitId
+                                                                                    && NewDiagnosisCodeIds.Contains(p.DiagnosisCodeId) == false
+                                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                               .ToList();
+
+                    ReomveDiagnosisCodeDB.ForEach(p => { p.IsDeleted = true; p.UpdateByUserID = 0; p.UpdateDate = DateTime.UtcNow; });
+
+                    _context.SaveChanges();
+
                     foreach (BO.PatientVisitDiagnosisCode eachPatientVisitDiagnosisCode in PatientVisitDiagnosisCodeBOList)
                     {
+                        PatientVisitDiagnosisCode AddDiagnosisCodeDB = new PatientVisitDiagnosisCode();
+                        AddDiagnosisCodeDB = _context.PatientVisitDiagnosisCodes.Where(p => p.PatientVisitId == PatientVisitId
+                                                                                    && p.DiagnosisCodeId == eachPatientVisitDiagnosisCode.DiagnosisCodeId
+                                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                               .FirstOrDefault();
 
+                        if (AddDiagnosisCodeDB == null)
+                        {
+                            AddDiagnosisCodeDB = new PatientVisitDiagnosisCode();
 
-                            patientVisitDiagnosisCodeDB = _context.PatientVisitDiagnosisCodes.Where(p => p.PatientVisitId == PatientVisit2DB.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-                            
-                            eachPatientVisitDiagnosisCode.PatientVisitId = PatientVisit2BO.ID;
-                            eachPatientVisitDiagnosisCode.DiagnosisCodeId = PatientVisitDiagnosisCodeBO.DiagnosisCodeId;
+                            AddDiagnosisCodeDB.PatientVisitId = PatientVisitId;
+                            AddDiagnosisCodeDB.DiagnosisCodeId = eachPatientVisitDiagnosisCode.DiagnosisCodeId;
 
-                            patientVisitDiagnosisCodeDB = _context.PatientVisitDiagnosisCodes.Add(patientVisitDiagnosisCodeDB);
-                             _context.SaveChanges();
+                            _context.PatientVisitDiagnosisCodes.Add(AddDiagnosisCodeDB);
+                        }
                     }
+
+                    _context.SaveChanges();
                 }
                 #endregion
-
+                
                 dbContextTransaction.Commit();
 
                 if (PatientVisit2DB != null)
