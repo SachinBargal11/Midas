@@ -28,6 +28,15 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             return requestHandler.GetGbObjects(Request, data);
         }
 
+        [HttpGet]
+        [Route("getAllLocationAndCompany")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetAllLocationAndCompany()
+        {
+            return requestHandler.GetObjects(Request);
+        }
+
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

@@ -1,3 +1,4 @@
+import { LocationAdapter } from '../../../../medical-provider/users/services/adapters/location-adapter';
 import { SpecialityAdapter } from '../../../../account-setup/services/adapters/speciality-adapter';
 import { CaseAdapter } from '../../../cases/services/adapters/case-adapter';
 import * as moment from 'moment';
@@ -11,7 +12,7 @@ export class PatientVisitAdapter {
     static parseResponse(data: any): PatientVisit {
 
         let patientVisit = null;
-
+        
         patientVisit = new PatientVisit({
             id: data.id,
             calendarEventId: data.calendarEventId,
@@ -20,6 +21,7 @@ export class PatientVisitAdapter {
             patientId: data.patientId,
             patient: PatientAdapter.parseResponse(data.patient2),
             locationId: data.locationId,
+            location: data.location ? LocationAdapter.parseResponse(data.location) : null,
             roomId: data.roomId,
             room: data.room ? RoomsAdapter.parseResponse(data.room) : null,
             doctor: data.doctor ? DoctorAdapter.parseResponse(data.doctor) : null,

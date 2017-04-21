@@ -148,9 +148,9 @@ export class ConsentStore {
         return <Observable<Consent>>Observable.from(promise);
     }
 
-    DownloadConsentForm(CaseId: Number): Observable<Consent[]> {
+    downloadConsentForm(CaseId: Number, documentId: Number): Observable<Consent[]> {
         let promise = new Promise((resolve, reject) => {
-            this._consentFormService.DownloadConsentForm(CaseId).subscribe((consent: Consent[]) => {
+            this._consentFormService.downloadConsentForm(CaseId, documentId).subscribe((consent: Consent[]) => {
                 this._consent.next(List(consent));
                 resolve(consent);
             }, error => {
@@ -160,4 +160,15 @@ export class ConsentStore {
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
 
+    downloadTemplate(CaseId: Number, CompanyId: Number): Observable<Consent[]> {
+        let promise = new Promise((resolve, reject) => {
+            this._consentFormService.downloadTemplate(CaseId, CompanyId).subscribe((consent: Consent[]) => {
+                this._consent.next(List(consent));
+                resolve(consent);
+            }, error => {
+                reject(error);
+            });
+        });
+        return <Observable<Consent[]>>Observable.fromPromise(promise);
+    }
 }

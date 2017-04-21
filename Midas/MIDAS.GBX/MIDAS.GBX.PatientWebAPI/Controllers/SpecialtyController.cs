@@ -9,6 +9,7 @@ using MIDAS.GBX.PatientWebAPI.RequestHandler;
 
 namespace MIDAS.GBX.PatientWebAPI.Controllers
 {
+    [RoutePrefix("midaspatientapi/Specialty")]  
     public class SpecialtyController : ApiController
     {
         private IRequestHandler<Specialty> requestHandler;

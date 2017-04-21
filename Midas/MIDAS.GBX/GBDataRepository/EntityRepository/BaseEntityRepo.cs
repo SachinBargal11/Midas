@@ -272,6 +272,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetAllExcludeCompany(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+        
         public virtual Object GetByReferringCompanyId(int CompanyId)
         {
             throw new NotImplementedException();

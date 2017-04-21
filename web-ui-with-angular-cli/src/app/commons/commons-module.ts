@@ -21,6 +21,7 @@ import { ShellComponent } from './shell-component';
 import { ScheduledEventEditorComponent } from '../medical-provider/calendar/components/scheduled-event-editor';
 import { DocumentUploadComponent } from '../commons/components/document-upload/document-upload.component';
 import { DignosisComponent } from './components/dignosis/dignosis.component';
+import { ProcedureComponent } from './components/procedure/procedure.component';
 
 
 import {
@@ -93,7 +94,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ShellComponent,
     ScheduledEventEditorComponent,
     DocumentUploadComponent,
-    DignosisComponent
+    DignosisComponent,
+    ProcedureComponent
   ],
   exports: [
     CommonModule,
@@ -133,6 +135,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ScheduledEventEditorComponent,
     DocumentUploadComponent,
     DignosisComponent,
+    ProcedureComponent,
     FileUploadModule,
     GrowlModule,
     TabViewModule,

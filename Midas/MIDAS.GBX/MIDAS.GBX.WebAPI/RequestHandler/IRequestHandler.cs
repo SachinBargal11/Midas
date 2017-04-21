@@ -83,5 +83,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByRoomTestId(HttpRequestMessage request, int RoomTestId);
         HttpResponseMessage GetBySpecialityId(HttpRequestMessage request, int specialityId);
         HttpResponseMessage GenerateReferralDocument(HttpRequestMessage request, int id);
+        HttpResponseMessage GetAllExcludeCompany(HttpRequestMessage request, int CompanyId);
+        
     }
 }

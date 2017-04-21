@@ -18,6 +18,14 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             requestHandler = new GbApiRequestHandler<Room>();
         }
 
+
+        [HttpPost]
+        [Route("GetAll")]
+        public HttpResponseMessage Get([FromBody]Room data)
+        {
+            return requestHandler.GetGbObjects(Request, data);
+        }
+
         [HttpGet]
         [Route("getByLocationId/{locationId}")]
         public HttpResponseMessage GetByLocationId(int LocationId)

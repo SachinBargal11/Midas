@@ -176,6 +176,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             referralBO.ReferredByEmail = eachRefrral.ReferredByEmail;
                             referralBO.ReferredToEmail = eachRefrral.ReferredToEmail;
                             referralBO.ReferralAccepted = eachRefrral.ReferralAccepted;
+                            referralBO.FirstName = eachRefrral.FirstName;
+                            referralBO.LastName = eachRefrral.LastName;
+                            referralBO.CellPhone = eachRefrral.CellPhone;
                             referralBO.IsDeleted = eachRefrral.IsDeleted;
                             referralBO.CreateByUserID = eachRefrral.CreateByUserID;
                             referralBO.UpdateByUserID = eachRefrral.UpdateByUserID;
@@ -717,35 +720,89 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var acc = _context.Cases.Include("PatientEmpInfo")
                                     .Include("PatientEmpInfo.AddressInfo")
                                     .Include("PatientEmpInfo.ContactInfo")
+                                    .Include("PatientVisit2")
+                                    .Include("CaseCompanyMappings")
+                                    .Include("CaseInsuranceMappings")
+                                    .Include("CompanyCaseConsentApprovals")
+                                    .Include("CaseCompanyConsentDocuments")
+                                    .Include("PatientAccidentInfoes")
                                     .Where(p => p.Id == id
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .FirstOrDefault<Case>();
             if (acc != null)
             {
-                //if (acc.PatientEmpInfo != null)
-                //{
-                //    acc.PatientEmpInfo.IsDeleted = true;
-                //}
-                //else
-                //{
-                //    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                //}
-                //if (acc.PatientEmpInfo.AddressInfo != null)
-                //{
-                //    acc.PatientEmpInfo.AddressInfo.IsDeleted = true;
-                //}
-                //else
-                //{
-                //    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                //}
-                //if (acc.PatientEmpInfo.ContactInfo != null)
-                //{
-                //    acc.PatientEmpInfo.ContactInfo.IsDeleted = true;
-                //}
-                //else
-                //{
-                //    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                //}
+                if(acc.PatientVisit2 != null)
+                {
+                    foreach (var item in acc.PatientVisit2)
+                    {
+                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                        {
+                            using (PatientVisit2Repository sr = new PatientVisit2Repository(_context))
+                            {
+                                sr.DeleteVisit(item.Id);
+                            }
+                        }
+                    }
+                }
+
+                if (acc.CaseInsuranceMappings != null)
+                {
+                    foreach (var item in acc.CaseInsuranceMappings)
+                    {
+                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                        {
+                            using (CaseInsuranceMappingRepository sr = new CaseInsuranceMappingRepository(_context))
+                            {
+                                sr.Delete(item.Id);
+                            }
+                        }
+                    }
+                }
+
+                if (acc.CaseCompanyMappings != null)
+                {
+                    foreach (var item in acc.CaseCompanyMappings)
+                    {
+                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                        {
+                            using (CaseCompanyMappingRepository sr = new CaseCompanyMappingRepository(_context))
+                            {
+                                sr.Delete(item.Id);
+                            }
+                        }
+                    }
+                }                
+
+                if (acc.CompanyCaseConsentApprovals != null)
+                {
+                    foreach (var item in acc.CompanyCaseConsentApprovals)
+                    {
+                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                        {
+                            using (CompanyCaseConsentApprovalRepository sr = new CompanyCaseConsentApprovalRepository(_context))
+                            {
+                                int DocumentId = _context.CaseCompanyConsentDocuments.Where(p => p.CaseId == item.CaseId && p.CompanyId == item.CompanyId)
+                                                         .Select(p => p.MidasDocumentId)
+                                                         .FirstOrDefault();
+                                sr.Delete(item.CaseId, DocumentId, item.CompanyId);                              
+                            }
+                        }
+                    }
+                }
+
+                if (acc.PatientAccidentInfoes != null)
+                {
+                    foreach (var item in acc.PatientAccidentInfoes)
+                    {
+                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                        {
+                            using (PatientAccidentInfoRepository sr = new PatientAccidentInfoRepository(_context))
+                            {
+                                sr.Delete(item.Id);
+                            }
+                        }
+                    }
+                }
 
                 acc.IsDeleted = true;
                 _context.SaveChanges();

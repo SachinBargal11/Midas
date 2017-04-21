@@ -182,8 +182,8 @@
     </form>
 </p-dialog>
 
-<p-dialog [minWidth]="300" [width]="900" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
-    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
+<p-dialog [minWidth]="500" [width]="1200" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
     <div *ngIf="selectedVisit">
         <p-tabView>
             <p-tabPanel header="Visit Details" [selected]="true">
@@ -261,7 +261,10 @@
             </p-tabPanel>
 
             <p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id">
-                <app-dignosis></app-dignosis>
+                <app-dignosis [selectedVisit]="selectedVisit"></app-dignosis>
+            </p-tabPanel>
+            <p-tabPanel header="Procedures" *ngIf="selectedVisit.id">
+                <app-procedure [selectedVisit]="selectedVisit"></app-procedure>
             </p-tabPanel>
 
         </p-tabView>

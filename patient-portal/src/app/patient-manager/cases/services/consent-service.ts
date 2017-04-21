@@ -166,13 +166,13 @@ export class ConsentService {
         let promise = new Promise((resolve, reject) => {
             let requestData = caseDetail.toJS();
             let caseId = requestData.id;
-            let documentId: number = 0; 
-            let companyId: number = 0; 
+            let documentId: number = 0;
+            let companyId: number = 0;
             requestData.caseCompanyConsentDocument.forEach(element => {
-                documentId = element.document.originalResponse.midasDocumentId;                
-                companyId = element.document.originalResponse.companyId;                
+                documentId = element.document.originalResponse.midasDocumentId;
+                companyId = element.document.originalResponse.companyId;
             });
-             requestData.caseCompanyConsentDocument
+            requestData.caseCompanyConsentDocument
             return this._http.get(this._url + '/CompanyCaseConsentApproval/delete/' + caseId + '/' + documentId + '/' + companyId, {
 
                 headers: this._headers
@@ -203,27 +203,8 @@ export class ConsentService {
                 });
         });
         return <Observable<Consent>>Observable.from(promise);
-    }
+    }   
 
-    DownloadConsentForm(CaseId: Number): Observable<Consent[]> {//DoctorCaseConsentApproval/getByCaseId
-        let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
-            // return this._http.get(this._url + '/fileupload/get/' + CaseId  +'/case').map(res => res.json())
-            return this._http.get(this._url + '/fileupload/download/' + CaseId + '/' + 0).map(res => res.json())
-
-                .subscribe((data: Array<any>) => {
-                    let Consent = null;
-                    if (data.length) {
-                        Consent = ConsentAdapter.parseResponse(data);
-                        resolve(data);
-                    } else {
-                        reject(new Error('NOT_FOUND'));
-                    }
-                }, (error) => {
-                    reject(error);
-                });
-        });
-        return <Observable<Consent[]>>Observable.fromPromise(promise);
-    }
     getcompany(CaseId: Number): Observable<ConsentAdapter> {
         let promise: Promise<ConsentAdapter> = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/Case/getCaseCompanies/' + CaseId).map(res => res.json())
@@ -241,4 +222,60 @@ export class ConsentService {
         return <Observable<ConsentAdapter>>Observable.fromPromise(promise);
     }
 
+    downloadConsentForm(CaseId: Number, documentId: Number): Observable<Consent[]> {
+        let thefile = {};
+        let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
+            this._http
+                .get(this._url + '/fileupload/download/' + CaseId + '/' + documentId)
+                .map(res => {
+                    // If request fails, throw an Error that will be caught
+                    if (res.status < 200 || res.status == 500 || res.status == 404) {
+                        throw new Error('This request has failed ' + res.status);
+                    }
+                    // If everything went fine, return the response
+                    else {
+
+                        window.location.assign(this._url + '/fileupload/download/' + CaseId + '/' + documentId);
+                        // return res.arrayBuffer();
+                    }
+                })
+                .subscribe(data => thefile = new Blob([data], { type: "application/octet-stream" }),
+                (error) => {
+                    reject(error);
+                    console.log("Error downloading the file.")
+
+                },
+                () => console.log('Completed file download.'));
+            //window.location.assign(this._url + '/fileupload/download/' + CaseId + '/' + documentId);
+        });
+        return <Observable<Consent[]>>Observable.fromPromise(promise);
+    }
+
+    downloadTemplate(CaseId: Number, CompanyId: Number): Observable<Consent[]> {
+        let thefile = {};
+        let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
+            this._http
+                .get(this._url + '/CompanyCaseConsentApproval/download/' + CaseId + '/' + CompanyId)
+                .map(res => {
+                    // If request fails, throw an Error that will be caught
+                    if (res.status < 200 || res.status == 500 || res.status == 404) {
+                        throw new Error('This request has failed ' + res.status);
+                    }
+                    // If everything went fine, return the response
+                    else {
+
+                        window.location.assign(this._url + '/CompanyCaseConsentApproval/download/' + CaseId + '/' + CompanyId);
+                        // return res.arrayBuffer();
+                    }
+                })
+                .subscribe(data => thefile = new Blob([data], { type: "application/octet-stream" }),
+                (error) => {
+                    reject(error);
+                    console.log("Error downloading the file.")
+
+                },
+                () => console.log('Completed file download.'));
+        });
+        return <Observable<Consent[]>>Observable.fromPromise(promise);
+    }
 }

@@ -33,6 +33,8 @@ import { ScannerService } from './commons/services/scanner-service';
 import { DocumentUploadService } from './commons/services/document-upload-service';
 import { DiagnosisService } from './commons/services/diagnosis-service';
 import { DiagnosisStore } from './commons/stores/diagnosis-store';
+import { ProcedureStore } from './commons/stores/procedure-store';
+import { ProcedureService } from './commons/services/procedure-service';
 
 import { DoctorsStore } from './medical-provider/users/stores/doctors-store';
 import { DoctorsService } from './medical-provider/users/services/doctors-service';
@@ -106,7 +108,9 @@ import { DateFormatPipe } from './commons/pipes/date-format-pipe';
     ValidateDoctorSession,
     ValidateInActiveDoctorSession,
     DiagnosisService,
-    DiagnosisStore
+    DiagnosisStore,
+    ProcedureService,
+    ProcedureStore
     
   ],
   bootstrap: [AppComponent]

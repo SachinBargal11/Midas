@@ -14,6 +14,11 @@
     [Note] NVARCHAR(250) NULL, 
 	[ReferredByEmail] [NVARCHAR](50) NULL,
 	[ReferredToEmail] [NVARCHAR](50) NULL,
+	
+	[FirstName] [NVARCHAR](50) NULL,
+	[LastName] [NVARCHAR](50) NULL,
+	[CellPhone] [NVARCHAR](50) NULL,
+
 	[ReferralAccepted] [BIT] NULL DEFAULT 0,
 
 	[IsDeleted] [bit] NULL DEFAULT 0,
@@ -124,5 +129,16 @@ REFERENCES [dbo].[Specialty] ([id])
 GO
 
 ALTER TABLE [dbo].[Referral] CHECK CONSTRAINT [FK_Referral_Specialty_ReferredToSpecialtyId]
+GO
+*/
+
+/*
+ALTER TABLE [dbo].[Referral] ADD [FirstName] [NVARCHAR](50) NULL
+GO
+
+ALTER TABLE [dbo].[Referral] ADD [LastName] [NVARCHAR](50) NULL
+GO
+
+ALTER TABLE [dbo].[Referral] ADD [CellPhone] [NVARCHAR](50) NULL
 GO
 */

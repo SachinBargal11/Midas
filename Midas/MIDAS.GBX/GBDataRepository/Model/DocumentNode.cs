@@ -17,5 +17,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public int id { get; set; }
         public string ParentNode { get; set; }
         public string ChildNode { get; set; }
+        public string NodeAbbr { get; set; }
     }
 }

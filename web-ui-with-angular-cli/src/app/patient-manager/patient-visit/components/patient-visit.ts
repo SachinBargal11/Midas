@@ -320,6 +320,7 @@ export class PatientVisitComponent implements OnInit {
         this.selectedDoctorId = 0;
         this.selectedRoomId = 0;
         this.selectedOption = 0;
+        this.events = [];
         if (event.target.selectedOptions[0].getAttribute('data-option') == '1') {
             this.selectedOption = 1;
             this.selectedSpecialityId = event.target.value;
@@ -453,11 +454,14 @@ export class PatientVisitComponent implements OnInit {
     closeEventDialog() {
         this.eventDialogVisible = false;
         this.handleEventDialogHide();
+        this.addNewPatientForm.reset();
+        this.patientScheduleForm.reset();
     }
 
     closePatientVisitDialog() {
         this.visitDialogVisible = false;
         this.handleVisitDialogHide();
+        this.patientVisitForm.reset();
     }
 
     handleEventDialogHide() {
@@ -1086,6 +1090,7 @@ export class PatientVisitComponent implements OnInit {
 
     cancelAddingNewPatient() {
         this.isAddNewPatient = false;
+        this.addNewPatientForm.reset();
     }
 
     saveNewPatient() {

@@ -114,7 +114,7 @@ export class AddConsentComponent implements OnInit {
         this._progressBarService.show();
         this._casesStore.getDocumentForCaseId(this.caseId)
             .subscribe((caseDocument: Case) => {
-                    this.caseConsentDocuments = _.filter(caseDocument.caseCompanyConsentDocument, (currentCaseCompanyConsentDocument: CaseDocument) => {
+                this.caseConsentDocuments = _.filter(caseDocument.caseCompanyConsentDocument, (currentCaseCompanyConsentDocument: CaseDocument) => {
                     return currentCaseCompanyConsentDocument.document.originalResponse.companyId === this.companyId;
                 });
 
@@ -162,9 +162,6 @@ export class AddConsentComponent implements OnInit {
         this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
     }
 
-    DownloadTemplate() {
-        window.location.assign(this._url + '/CompanyCaseConsentApproval/download/' + this.caseId + '/' + this.companyId);
-    }
 
     deleteConsentForm() {
         if (this.selectedConsentList.length > 0) {
@@ -221,35 +218,54 @@ export class AddConsentComponent implements OnInit {
         }
     }
 
-    DownloadPdf(documentId) {
+    downloadPdf(documentId) {
         this._progressBarService.show();
-        window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
-        this._progressBarService.show();
-        // this._AddConsentStore.DownloadConsentForm(this.caseId, documentId)
-        //     .subscribe(
-        //     (response) => {
-        //         // this.document = document
-        //         window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
-
-        //     },
-        //     (error) => {
-        //         let errString = 'Unable to download';
-        //         // let notification = new Notification({
-        //         //     'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-        //         //     'type': 'ERROR',
-        //         //     'createdAt': moment()
-        //         // });
-
-        //         this._progressBarService.hide();
-        //         // this._notificationsStore.addNotification("Unable to download");
-        //         this._notificationsService.error('Oh No!', 'Unable to download');
-        //     },
-        //     () => {
-        //         this._progressBarService.hide();
-        //     });
+        this._AddConsentStore.downloadConsentForm(this.caseId, documentId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                // window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                //  this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'Unable to download');
+            },
+            () => {
+                this._progressBarService.hide();
+            });
         this._progressBarService.hide();
-
     }
+    downloadTemplate() {
+        this._progressBarService.show();
+        this._AddConsentStore.downloadTemplate(this.caseId, this.companyId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                //  window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                //this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+                this._notificationsService.error('Oh No!', 'Unable to download');
 
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._progressBarService.hide();
+    }
 
 }
