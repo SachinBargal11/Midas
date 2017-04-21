@@ -48,7 +48,7 @@
 <p-dataTable [value]="documents" [(selection)]="selectedConsentList" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
     [globalFilter]="gb" [responsive]="true">
     <header> List</header>
-    <p-column selectionMode="multiple"></p-column>
+    <!--<p-column selectionMode="multiple"></p-column>-->
     <p-column header="Company name">
         <ng-template let-document="rowData" pTemplate="body">
             <div *ngFor="let company of companies">
