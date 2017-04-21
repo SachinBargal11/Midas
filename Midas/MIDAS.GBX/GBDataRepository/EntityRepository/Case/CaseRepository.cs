@@ -717,6 +717,12 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var acc = _context.Cases.Include("PatientEmpInfo")
                                     .Include("PatientEmpInfo.AddressInfo")
                                     .Include("PatientEmpInfo.ContactInfo")
+                                    .Include("PatientVisit2")
+                                    .Include("CaseCompanyMappings")
+                                    .Include("CaseInsuranceMappings")
+                                    .Include("CompanyCaseConsentApprovals")
+                                    .Include("CaseCompanyConsentDocuments")
+                                    .Include("PatientAccidentInfoes")
                                     .Where(p => p.Id == id
                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                     .FirstOrDefault<Case>();
@@ -746,6 +752,91 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 //{
                 //    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                 //}
+                if(acc.PatientVisit2!=null)
+                {
+                    foreach (var item in acc.PatientVisit2)
+                    {
+                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                        {
+                            using (PatientVisit2Repository sr = new PatientVisit2Repository(_context))
+                            {
+                                sr.DeleteVisit(item.Id);
+                            }
+                        }
+                    }
+                }
+
+                if(acc.CaseCompanyMappings!=null)
+                {
+                    foreach (var item in acc.CaseCompanyMappings)
+                    {
+                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                        {
+                            using (CaseCompanyMappingRepository sr = new CaseCompanyMappingRepository(_context))
+                            {
+                                sr.Delete(item.Id);
+                            }
+                        }
+                    }
+                }
+
+                if (acc.CaseInsuranceMappings != null)
+                {
+                    foreach (var item in acc.CaseInsuranceMappings)
+                    {
+                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                        {
+                            using (CaseInsuranceMappingRepository sr = new CaseInsuranceMappingRepository(_context))
+                            {
+                                sr.Delete(item.Id);
+                            }
+                        }
+                    }
+                }
+
+                if (acc.CompanyCaseConsentApprovals != null)
+                {
+                    foreach (var item in acc.CompanyCaseConsentApprovals)
+                    {
+                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                        {
+                            using (CompanyCaseConsentApprovalRepository sr = new CompanyCaseConsentApprovalRepository(_context))
+                            {
+                                sr.Delete(item.Id);                              
+                            }
+                        }
+                    }
+                }
+
+                if (acc.CaseCompanyConsentDocuments != null)
+                {
+                    
+                    var acc2 = _context.CaseCompanyConsentDocuments.Include("MidasDocument").Where(p => p.Id == id
+                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                   .FirstOrDefault<CaseCompanyConsentDocument>();
+                    if(acc2!=null)
+                    {
+                       if(acc2.MidasDocument!=null)
+                        {
+                            acc2.MidasDocument.IsDeleted = true;
+                        }  
+
+                        acc2.IsDeleted = true;
+                                           
+                    }
+                }
+
+                if (acc.PatientAccidentInfoes != null)
+                {
+
+                    var acc2 = _context.PatientAccidentInfoes.Where(p => p.Id == id
+                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                   .FirstOrDefault<PatientAccidentInfo>();
+                    if (acc2 != null)
+                    {
+                        acc2.IsDeleted = true;                       
+                    }
+                }
 
                 acc.IsDeleted = true;
                 _context.SaveChanges();

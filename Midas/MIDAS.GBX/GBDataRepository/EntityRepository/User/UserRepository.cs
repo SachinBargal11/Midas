@@ -155,6 +155,41 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Delete
+        public override Object Delete(int id)
+        {
+            var acc = _context.Users.Include("UserCompanies").Where(p => p.id == id
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                    .FirstOrDefault<User>();
+            if (acc != null)
+            {
+               if(acc.UserCompanies!=null)
+                {
+                    foreach (var item in acc.UserCompanies)
+                    {
+                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                        {
+                            using (UserCompanyRepository sr = new UserCompanyRepository(_context))
+                            {
+                                sr.Delete(item.id);
+                            }
+                        }
+                    }
+                }
+
+                acc.IsDeleted = true;
+                _context.SaveChanges();
+            }
+            else if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var res = Convert<BO.User, User>(acc);
+            return (object)res;         
+        }
+        #endregion
+
         #region Validate Entities
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
