@@ -240,97 +240,25 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region save
-        //public override object Save<T>(T entity)
-        //{
-        //    BO.CaseInsuranceMapping caseInsuranceMappingBO = (BO.CaseInsuranceMapping)(object)entity;
-        //    int CaseId = 0;
+        #region Delete By ID
+        public override object Delete(int id)
+        {
+            var acc = _context.CaseInsuranceMappings.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                    .FirstOrDefault<CaseInsuranceMapping>();
+            if (acc != null)
+            {
+                acc.IsDeleted = true;
+                _context.SaveChanges();
+            }
+            else if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
 
-        //    List<CaseInsuranceMapping> listCaseInsuranceMappingDB = new List<CaseInsuranceMapping>();
-
-        //    using (var dbContextTransaction = _context.Database.BeginTransaction())
-        //    {
-        //        if (caseInsuranceMappingBO != null)
-        //        {
-        //            CaseId = caseInsuranceMappingBO.CaseId;
-        //            List<int> PatientInsuranceInfoIds_New = caseInsuranceMappingBO.PatientInsuranceInfos.Select(p => p.ID).ToList<int>();
-
-        //            //Call for removing data
-        //            List<CaseInsuranceMapping> listCaseInsuranceMappingDB_Remove = new List<CaseInsuranceMapping>();
-
-        //            listCaseInsuranceMappingDB_Remove = _context.CaseInsuranceMappings.Where(p => p.CaseId == CaseId
-        //                                                                && !PatientInsuranceInfoIds_New.Contains(p.PatientInsuranceInfoId)
-        //                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-        //                                                        .ToList<CaseInsuranceMapping>();
-
-        //            listCaseInsuranceMappingDB_Remove.ForEach(p => p.IsDeleted = true);
-        //            _context.SaveChanges();
-
-        //            //List<int> PatientInsuranceInfoIds_Old = listCaseInsuranceMappingDB_Remove.Select(p => p.PatientInsuranceInfoId).ToList<int>();
-        //            List<int> PatientInsuranceInfoIds_Existing = _context.CaseInsuranceMappings.Where(p => p.CaseId == CaseId
-        //                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-        //                                                                .Select(p => p.PatientInsuranceInfoId).ToList<int>();
-
-        //            //Call for insert data
-        //            List<CaseInsuranceMapping> listCaseInsuranceMappingDB_Insert = new List<CaseInsuranceMapping>();
-
-        //            listCaseInsuranceMappingDB_Insert = PatientInsuranceInfoIds_New.Where(p => !PatientInsuranceInfoIds_Existing.Contains(p))
-        //                                                                .Select(p => new CaseInsuranceMapping()
-        //                                                                {
-        //                                                                    CaseId = CaseId,
-        //                                                                    PatientInsuranceInfoId = p
-        //                                                                })
-        //                                                                .ToList<CaseInsuranceMapping>();
-
-        //            if (listCaseInsuranceMappingDB_Insert != null && listCaseInsuranceMappingDB_Insert.Count > 0)
-        //            {
-        //                listCaseInsuranceMappingDB_Insert.ForEach(p => _context.CaseInsuranceMappings.Add(p));
-        //            }
-
-        //            _context.SaveChanges();
-        //        }
-
-        //        dbContextTransaction.Commit();
-
-        //        listCaseInsuranceMappingDB = _context.CaseInsuranceMappings.Include("PatientInsuranceInfo")
-        //                                                                       .Where(p => p.CaseId == CaseId
-        //                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-        //                                                                       .ToList<CaseInsuranceMapping>();
-        //    }
-
-        //    var res = Convert<BO.CaseInsuranceMapping, List<CaseInsuranceMapping>>(listCaseInsuranceMappingDB);
-        //    return (object)res;
-        //}
+            var res = Convert<BO.CaseInsuranceMapping, CaseInsuranceMapping>(acc);
+            return (object)res;
+        }
         #endregion
-
-        //#region Delete By ID
-        //public override object Delete(int id)
-        //{
-        //    var acc = _context.CaseInsuranceMappings.Include("PatientInsuranceInfo")
-        //                                            .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-        //                                            .FirstOrDefault<CaseInsuranceMapping>();
-        //    if (acc != null)
-        //    {
-        //        if (acc.PatientInsuranceInfo != null)
-        //        {
-        //            acc.PatientInsuranceInfo.IsDeleted = true;
-        //        }
-        //        else
-        //        {
-        //            return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-        //        }
-        //         acc.IsDeleted = true;
-        //        _context.SaveChanges();
-        //    }
-        //    else if (acc == null)
-        //    {
-        //        return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-        //    }
-
-        //    var res = Convert<BO.CaseInsuranceMapping,CaseInsuranceMapping>(acc);
-        //    return (object)res;
-        //}
-        //#endregion
 
         public void Dispose()
         {

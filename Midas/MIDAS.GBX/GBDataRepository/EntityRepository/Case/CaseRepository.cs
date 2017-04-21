@@ -728,31 +728,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                     .FirstOrDefault<Case>();
             if (acc != null)
             {
-                //if (acc.PatientEmpInfo != null)
-                //{
-                //    acc.PatientEmpInfo.IsDeleted = true;
-                //}
-                //else
-                //{
-                //    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                //}
-                //if (acc.PatientEmpInfo.AddressInfo != null)
-                //{
-                //    acc.PatientEmpInfo.AddressInfo.IsDeleted = true;
-                //}
-                //else
-                //{
-                //    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                //}
-                //if (acc.PatientEmpInfo.ContactInfo != null)
-                //{
-                //    acc.PatientEmpInfo.ContactInfo.IsDeleted = true;
-                //}
-                //else
-                //{
-                //    return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                //}
-                if(acc.PatientVisit2!=null)
+                if(acc.PatientVisit2 != null)
                 {
                     foreach (var item in acc.PatientVisit2)
                     {
@@ -761,20 +737,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             using (PatientVisit2Repository sr = new PatientVisit2Repository(_context))
                             {
                                 sr.DeleteVisit(item.Id);
-                            }
-                        }
-                    }
-                }
-
-                if(acc.CaseCompanyMappings!=null)
-                {
-                    foreach (var item in acc.CaseCompanyMappings)
-                    {
-                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
-                        {
-                            using (CaseCompanyMappingRepository sr = new CaseCompanyMappingRepository(_context))
-                            {
-                                sr.Delete(item.Id);
                             }
                         }
                     }
@@ -794,6 +756,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
 
+                if (acc.CaseCompanyMappings != null)
+                {
+                    foreach (var item in acc.CaseCompanyMappings)
+                    {
+                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                        {
+                            using (CaseCompanyMappingRepository sr = new CaseCompanyMappingRepository(_context))
+                            {
+                                sr.Delete(item.Id);
+                            }
+                        }
+                    }
+                }                
+
                 if (acc.CompanyCaseConsentApprovals != null)
                 {
                     foreach (var item in acc.CompanyCaseConsentApprovals)
@@ -802,39 +778,26 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         {
                             using (CompanyCaseConsentApprovalRepository sr = new CompanyCaseConsentApprovalRepository(_context))
                             {
-                                sr.Delete(item.Id);                              
+                                int DocumentId = _context.CaseCompanyConsentDocuments.Where(p => p.CaseId == item.CaseId && p.CompanyId == item.CompanyId)
+                                                         .Select(p => p.MidasDocumentId)
+                                                         .FirstOrDefault();
+                                sr.Delete(item.CaseId, DocumentId, item.CompanyId);                              
                             }
                         }
                     }
                 }
 
-                if (acc.CaseCompanyConsentDocuments != null)
-                {
-                    
-                    var acc2 = _context.CaseCompanyConsentDocuments.Include("MidasDocument").Where(p => p.Id == id
-                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                   .FirstOrDefault<CaseCompanyConsentDocument>();
-                    if(acc2!=null)
-                    {
-                       if(acc2.MidasDocument!=null)
-                        {
-                            acc2.MidasDocument.IsDeleted = true;
-                        }  
-
-                        acc2.IsDeleted = true;
-                                           
-                    }
-                }
-
                 if (acc.PatientAccidentInfoes != null)
                 {
-
-                    var acc2 = _context.PatientAccidentInfoes.Where(p => p.Id == id
-                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                   .FirstOrDefault<PatientAccidentInfo>();
-                    if (acc2 != null)
+                    foreach (var item in acc.PatientAccidentInfoes)
                     {
-                        acc2.IsDeleted = true;                       
+                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                        {
+                            using (PatientAccidentInfoRepository sr = new PatientAccidentInfoRepository(_context))
+                            {
+                                sr.Delete(item.Id);
+                            }
+                        }
                     }
                 }
 

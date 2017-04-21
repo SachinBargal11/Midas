@@ -653,7 +653,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var acc = _context.PatientVisit2.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<PatientVisit2>();
             if (acc != null)
             {
+                if (acc.CalendarEvent != null)
+                {
+                    acc.CalendarEvent.IsDeleted = true;
+                    acc.CalendarEvent.UpdateByUserID = 0;
+                    acc.CalendarEvent.UpdateDate = DateTime.UtcNow;
+                }
+
                 acc.IsDeleted = true;
+                acc.UpdateByUserID = 0;
+                acc.UpdateDate = DateTime.UtcNow;
+
                 _context.SaveChanges();
             }
             else if (acc == null)

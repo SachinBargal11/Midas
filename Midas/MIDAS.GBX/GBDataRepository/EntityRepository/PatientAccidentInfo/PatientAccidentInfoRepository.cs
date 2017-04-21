@@ -493,8 +493,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 else
                 {
                     return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-                }
-               
+                }               
 
                 acc.IsDeleted = true;
                 _context.SaveChanges();
