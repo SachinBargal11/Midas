@@ -797,11 +797,85 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             Patient2 patient2 = new Patient2();
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
-                patient2 = _context.Patient2.Include("User").Where(p => p.Id == id && (p.IsDeleted == false || p.IsDeleted == null))
+                patient2 = _context.Patient2.Include("User")
+                                            .Include("Cases")
+                                            .Include("PatientEmpInfoes")
+                                            .Include("PatientFamilyMembers")
+                                            .Include("PatientInsuranceInfoes")
+                                            .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                             .FirstOrDefault();
 
                 if (patient2 != null)
                 {
+
+                    if (patient2.Cases != null)
+                    {
+                        foreach (var item in patient2.Cases)
+                        {
+                            if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                            {
+                                using (CaseRepository sr = new CaseRepository(_context))
+                                {
+                                    sr.Delete(item.Id);
+                                }
+                            }
+                        }
+                    }
+                    if (patient2.PatientEmpInfoes != null)
+                    {
+                        foreach (var item in patient2.PatientEmpInfoes)
+                        {
+                            if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                            {
+                                using (PatientEmpInfoRepository sr = new PatientEmpInfoRepository(_context))
+                                {
+                                    sr.Delete(item.Id);
+                                }
+                            }
+                        }
+                    }
+               
+                    if (patient2.PatientFamilyMembers != null)
+                    {
+                        foreach (var item in patient2.PatientFamilyMembers)
+                        {
+                            if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                            {
+                                using (Common.PatientFamilyMemberRepository sr = new Common.PatientFamilyMemberRepository(_context))
+                                {
+                                    sr.Delete(item.Id);
+                                }
+                            }
+                        }
+                    }
+
+                    if (patient2.PatientInsuranceInfoes != null)
+                    {
+                        foreach (var item in patient2.PatientInsuranceInfoes)
+                        {
+                            if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                            {
+                                using (PatientInsuranceInfoRepository sr = new PatientInsuranceInfoRepository(_context))
+                                {
+                                    sr.Delete(item.Id);
+                                }
+                            }
+                        }
+                    }
+
+                    if (patient2.User != null)
+                    {
+
+                        if (patient2.User.IsDeleted.HasValue == false || (patient2.User.IsDeleted.HasValue == true && patient2.User.IsDeleted.Value == false))
+                        {
+                            using (UserRepository sr = new UserRepository(_context))
+                            {
+                                sr.Delete(patient2.User.id);
+                            }
+                        }
+                    }
+
+
                     patient2.IsDeleted = true;
                     _context.SaveChanges();
                 }
