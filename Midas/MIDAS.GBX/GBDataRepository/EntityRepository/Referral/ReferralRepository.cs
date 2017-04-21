@@ -310,18 +310,34 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             try
             {
-                if (referralDB.ReferredToDoctorId != null && referralDB.ReferredToLocationId != null && referralDB.ReferredToCompanyId != null)
+                if (referralDB.ReferredToCompanyId != null && referralDB.ReferredToDoctorId == null && referralDB.ReferredToRoomId == null)
                 {
                     #region Send Email
-                    string Message = "Dear " + referralDB.Doctor.User.FirstName + " " + referralDB.Doctor.User.LastName + ",<br><br>Following Patient is being referred to you: " + " " + referralDB.Case.Patient2.User.FirstName + " " + referralDB.Case.Patient2.User.LastName + "<br><br>" + referralDB.Note + "<br><br>" + "By " + referralDB.Company.Name + " - " + referralDB.Location.Name + " - " + referralDB.Doctor.User.FirstName + "<br><br>" + "You can log in with your MIDAS Account to view further detail." + "<br>" + "http://codearray.tk:85/#/account" + "<br><br>" + "Thanks," + "<br>"; /*referralDB.Doctor1.User.FirstName*/
+                    string Message = "Dear " + "" + " " + "" + ",<br><br>Following Patient is being referred to you: " + " " + referralDB.Case.Patient2.User.FirstName + " " + referralDB.Case.Patient2.User.LastName + "<br><br>" + referralDB.Note + "<br><br>" + "By " + referralDB.Company.Name + " - " + ((referralDB.Location != null) ? referralDB.Location.Name : "") + " - " + "" + "<br><br>" + "You can log in with your MIDAS Account to view further detail." + "<br>" + "http://codearray.tk:85/#/account" + "<br><br>" + "Thanks," + "<br>";
                     BO.Email objEmail = new BO.Email { ToEmail = referralDB.ReferredToEmail, Subject = "Referral-Email", Body = Message };
                     objEmail.SendMail();
                     #endregion
                 }
-                else if (referralDB.ReferredToDoctorId == null && referralDB.ReferredToLocationId == null && referralDB.ReferredToCompanyId == null)
+                else if (referralDB.ReferredToCompanyId != null && referralDB.ReferredToDoctorId != null)
                 {
                     #region Send Email
-                    string Message = "Dear " + referralDB.ReferredToEmail + ",<br><br>Following Patient is being referred to you: " + " " + referralDB.Case.Patient2.User.FirstName + " " + referralDB.Case.Patient2.User.LastName + "<br><br>" + referralDB.Note + "<br><br>" + "You will need to log in with your MIDAS account to view further detail. To register with MIDAS, Please register with http://codearray.tk:85/#/account/register-company" + "<br><br>" + "Thanks," + "<br>";/* + referralDB.Doctor1.User.FirstName;*/
+                    string Message = "Dear " + referralDB.Doctor.User.FirstName + " " + referralDB.Doctor.User.LastName + ",<br><br>Following Patient is being referred to you: " + " " + referralDB.Case.Patient2.User.FirstName + " " + referralDB.Case.Patient2.User.LastName + "<br><br>" + referralDB.Note + "<br><br>" + "By " + referralDB.Company.Name + " - " + ((referralDB.Location != null) ? referralDB.Location.Name : "") + " - " + referralDB.Doctor.User.FirstName + "<br><br>" + "You can log in with your MIDAS Account to view further detail." + "<br>" + "http://codearray.tk:85/#/account" + "<br><br>" + "Thanks," + "<br>";
+                    BO.Email objEmail = new BO.Email { ToEmail = referralDB.ReferredToEmail, Subject = "Referral-Email", Body = Message };
+                    objEmail.SendMail();
+                    #endregion
+                }
+                else if (referralDB.ReferredToCompanyId != null &&  referralDB.ReferredToRoomId != null)
+                {
+                    #region Send Email
+                    string Message = "Dear " + "" + " " + "" + ",<br><br>Following Patient is being referred to you: " + " " + referralDB.Case.Patient2.User.FirstName + " " + referralDB.Case.Patient2.User.LastName + "<br><br>" + referralDB.Note + "<br><br>" + "By " + referralDB.Company.Name + " - " + ((referralDB.Location != null) ? referralDB.Location.Name : "") + " - " + "" + "<br><br>" + "You can log in with your MIDAS Account to view further detail." + "<br>" + "http://codearray.tk:85/#/account" + "<br><br>" + "Thanks," + "<br>";
+                    BO.Email objEmail = new BO.Email { ToEmail = referralDB.ReferredToEmail, Subject = "Referral-Email", Body = Message };
+                    objEmail.SendMail();
+                    #endregion
+                }
+                else if (referralDB.ReferredToCompanyId == null && referralDB.ReferredToDoctorId == null && referralDB.ReferredToRoomId == null)
+                {
+                    #region Send Email
+                    string Message = "Dear " + referralDB.FirstName + " " + referralDB.LastName + ",<br><br>Following Patient is being referred to you: " + " " + referralDB.Case.Patient2.User.FirstName + " " + referralDB.Case.Patient2.User.LastName + "<br><br>" + referralDB.Note + "<br><br>" + "You will need to log in with your MIDAS account to view further detail. To register with MIDAS, Please register with http://codearray.tk:85/#/account/register-company?type=refer&UserName=" + referralDB.ReferredToEmail + "" + "<br><br>" + "Thanks," + "<br>";
                     BO.Email objEmail = new BO.Email { ToEmail = referralDB.ReferredToEmail, Subject = "Referral-Email And Register", Body = Message };
                     objEmail.SendMail();
                     #endregion
