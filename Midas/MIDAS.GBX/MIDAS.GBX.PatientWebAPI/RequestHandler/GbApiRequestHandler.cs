@@ -146,6 +146,19 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             }
         }
 
+        public HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.GetByCompanyWithOpenCases(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage SaveDoctor(HttpRequestMessage request, T gbObject)
         {
             var objResult = dataAccessManager.SaveDoctor(gbObject);
