@@ -40,6 +40,9 @@ namespace MIDAS.GBX.DataRepository.Model
         public int ReferringUserId { get; set; }
         public Nullable<int> ReferredToSpecialtyId { get; set; }
         public Nullable<int> ReferredToRoomTestId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string CellPhone { get; set; }
     
         public virtual Case Case { get; set; }
         public virtual Company Company { get; set; }

@@ -50,6 +50,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             referralBO.ReferredByEmail = referral.ReferredByEmail;
             referralBO.ReferredToEmail = referral.ReferredToEmail;
             referralBO.ReferralAccepted = referral.ReferralAccepted;
+            referralBO.FirstName = referral.FirstName;
+            referralBO.LastName = referral.LastName;
+            referralBO.CellPhone = referral.CellPhone;
             referralBO.IsDeleted = referral.IsDeleted;
             referralBO.CreateByUserID = referral.CreateByUserID;
             referralBO.UpdateByUserID = referral.UpdateByUserID;
@@ -264,6 +267,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 referralDB.ReferredByEmail = referralBO.ReferredByEmail;
                 referralDB.ReferredToEmail = referralBO.ReferredToEmail;
                 referralDB.ReferralAccepted = referralBO.ReferralAccepted;
+                referralDB.FirstName = referralBO.FirstName;
+                referralDB.LastName = referralBO.LastName;
+                referralDB.CellPhone = referralBO.CellPhone;
 
                 if (add_referral == true)
                 {

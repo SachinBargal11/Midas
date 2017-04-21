@@ -851,6 +851,9 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="ReferringUserId" Type="int" Nullable="false" />
           <Property Name="ReferredToSpecialtyId" Type="int" />
           <Property Name="ReferredToRoomTestId" Type="int" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CellPhone" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="ReferralDocuments">
           <Key>
@@ -4275,6 +4278,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="ReferringUserId" Type="Int32" Nullable="false" />
           <Property Name="ReferredToSpecialtyId" Type="Int32" />
           <Property Name="ReferredToRoomTestId" Type="Int32" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CellPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Case" Relationship="Self.FK_Referral_Case_CaseId" FromRole="Referral" ToRole="Case" />
           <NavigationProperty Name="Company" Relationship="Self.FK_Referral_Company_ReferredToCompanyId" FromRole="Referral" ToRole="Company" />
           <NavigationProperty Name="Company1" Relationship="Self.FK_Referral_Company_ReferringCompanyId" FromRole="Referral" ToRole="Company" />
@@ -7616,6 +7622,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="ReferringUserId" ColumnName="ReferringUserId" />
                 <ScalarProperty Name="ReferredToSpecialtyId" ColumnName="ReferredToSpecialtyId" />
                 <ScalarProperty Name="ReferredToRoomTestId" ColumnName="ReferredToRoomTestId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="CellPhone" ColumnName="CellPhone" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
