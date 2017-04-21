@@ -541,7 +541,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 if (PatientVisitDiagnosisCodeBOList == null || (PatientVisitDiagnosisCodeBOList != null && PatientVisitDiagnosisCodeBOList.Count <= 0))
                 {
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient Visit Diagnosis Code.", ErrorLevel = ErrorLevel.Error };
+                    //return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient Visit Diagnosis Code.", ErrorLevel = ErrorLevel.Error };
                 }
                 else
                 {
