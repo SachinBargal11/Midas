@@ -14,6 +14,12 @@ namespace MIDAS.GBX.DataRepository.Model
     
     public partial class ProcedureCode
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ProcedureCode()
+        {
+            this.PatientVisitProcedureCodes = new HashSet<PatientVisitProcedureCode>();
+        }
+    
         public int Id { get; set; }
         public string ProcedureCodeText { get; set; }
         public string ProcedureCodeDesc { get; set; }
@@ -29,6 +35,8 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> RoomTestId { get; set; }
     
         public virtual Company Company { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientVisitProcedureCode> PatientVisitProcedureCodes { get; set; }
         public virtual Room Room { get; set; }
         public virtual RoomTest RoomTest { get; set; }
         public virtual Specialty Specialty { get; set; }
