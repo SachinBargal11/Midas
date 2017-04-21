@@ -18,6 +18,7 @@ export class ProcedureComponent implements OnInit {
   procedureForm: FormGroup;
   procedures: Procedure[];
   selectedProcedures: Procedure[];
+  selectedProceduresToDelete: Procedure[];
 
   @Input() selectedVisit: PatientVisit;
   @Output() uploadComplete: EventEmitter<Document[]> = new EventEmitter();
@@ -73,6 +74,17 @@ export class ProcedureComponent implements OnInit {
   }
 
   saveProcedures() {
+  }
+
+  deleteProcedureCode() {
+      let procedureCodeIds: number[] = _.map(this.selectedProceduresToDelete, (currentProcedure: Procedure) => {
+        return currentProcedure.id;
+      });
+      let procedureCodeDetails = _.filter(this.selectedProcedures, (currentProcedure: Procedure) => {
+        return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
+      });
+
+      this.selectedProcedures = procedureCodeDetails;
   }
 
 }

@@ -3,7 +3,9 @@ import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import * as moment from 'moment';
 import * as _ from 'underscore';
 import { NotificationsService } from 'angular2-notifications';
-import { SelectItem } from 'primeng/primeng';
+import { SelectItem, ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+import { Notification } from '../../models/notification';
+import { NotificationsStore } from '../../stores/notifications-store';
 import { ProgressBarService } from '../../services/progress-bar-service';
 import { DiagnosisCode } from '../../models/diagnosis-code';
 import { DiagnosisType } from '../../models/diagnosis-type';
@@ -18,8 +20,11 @@ import { PatientVisit } from '../../../patient-manager/patient-visit/models/pati
 export class DignosisComponent implements OnInit {
   dignosisForm: FormGroup;
   diagnosisTypes: DiagnosisType[];
-  // diagnosisCodes: DiagnosisCode[];
+  selectedDiagnosisType: DiagnosisType;
+  diagCodes: DiagnosisCode[];
   diagnosisCodes: SelectItem[] = [];
+  selectedDiagnosisCodes: DiagnosisCode[];
+  selectedDiagnosisToDelete: DiagnosisCode[];
 
   @Input() selectedVisit: PatientVisit;
   @Output() uploadComplete: EventEmitter<Document[]> = new EventEmitter();
@@ -28,8 +33,10 @@ export class DignosisComponent implements OnInit {
   constructor(
     private _notificationsService: NotificationsService,
     private fb: FormBuilder,
+    private _notificationsStore: NotificationsStore,
     private _progressBarService: ProgressBarService,
     private _diagnosisStore: DiagnosisStore,
+    private _confirmationService: ConfirmationService
   ) {
     // this.dignosisForm = this.fb.group({
     //   dignosisCode: ['', Validators.required]
@@ -57,7 +64,11 @@ export class DignosisComponent implements OnInit {
 
   searchDiagnosis(event) {
     let currentDiagnosisTypeId = event.target.value;
-    this.loadAllDiagnosisCodesForType(currentDiagnosisTypeId);
+    if (currentDiagnosisTypeId !== '') {
+      this.loadAllDiagnosisCodesForType(currentDiagnosisTypeId);
+    } else {
+      this.diagnosisCodes = [];
+    }
   }
 
   loadAllDiagnosisCodesForType(diagnosisTypeId: number) {
@@ -65,11 +76,18 @@ export class DignosisComponent implements OnInit {
     let result = this._diagnosisStore.getDiagnosisCodesByDiagnosisType(diagnosisTypeId);
     result.subscribe(
       (diagnosisCodes: DiagnosisCode[]) => {
-        // this.diagnosisCodes = diagnosisCodes;
-        this.diagnosisCodes = _.map(diagnosisCodes, (currentDiagnosisCode: DiagnosisCode) => {
+        this.diagCodes = diagnosisCodes;
+        let diagnosisCodeIds: number[] = _.map(this.selectedDiagnosisCodes, (currentDiagnosisCode: DiagnosisCode) => {
+          return currentDiagnosisCode.id;
+        });
+        let diagnosisCodeDetails = _.filter(diagnosisCodes, (currentDiagnosisCode: DiagnosisCode) => {
+          return _.indexOf(diagnosisCodeIds, currentDiagnosisCode.id) < 0 ? true : false;
+        });
+        this.diagnosisCodes = _.map(diagnosisCodeDetails, (currentDiagnosisCode: DiagnosisCode) => {
           return {
             label: `${currentDiagnosisCode.diagnosisCodeText} - ${currentDiagnosisCode.diagnosisCodeDesc}`,
-            value: currentDiagnosisCode.id.toString()
+            // value: currentDiagnosisCode.id.toString()
+            value: currentDiagnosisCode
           };
         });
       },
@@ -83,6 +101,17 @@ export class DignosisComponent implements OnInit {
 
 
   saveDiagnosis() {
+  }
+
+  deleteDiagnosis() {
+      let diagnosisCodeIds: number[] = _.map(this.selectedDiagnosisToDelete, (currentDiagnosisCode: DiagnosisCode) => {
+        return currentDiagnosisCode.id;
+      });
+      let diagnosisCodeDetails = _.filter(this.selectedDiagnosisCodes, (currentDiagnosisCode: DiagnosisCode) => {
+        return _.indexOf(diagnosisCodeIds, currentDiagnosisCode.id) < 0 ? true : false;
+      });
+
+      this.selectedDiagnosisCodes = diagnosisCodeDetails;
   }
 
 }

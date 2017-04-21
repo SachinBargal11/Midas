@@ -53,6 +53,7 @@ export class AddReferralComponent implements OnInit {
     consent: Consent[];
     patientsWithoutCase: Patient[];
     selectedLocation: LocationDetails;
+    visitDialogVisible: boolean = false;
 
     constructor(
         private fb: FormBuilder,
@@ -258,7 +259,8 @@ export class AddReferralComponent implements OnInit {
                         'createdAt': moment()
                     });
                     this._notificationsStore.addNotification(notification);
-                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this.visitDialogVisible = true;
+                    // this._router.navigate(['../'], { relativeTo: this._route });
                 },
                 (error) => {
                     let errString = 'Unable to add Referral.';
