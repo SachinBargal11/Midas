@@ -6,9 +6,7 @@ import { PatientsShellRoutes } from './patients/patient-routes';
 import { CasesShellRoutes } from './cases/cases-routes';
 // import { ReferalsShellRoutes } from './referals/referals-routes';
 // import { ConsentFormsShellRoutes } from './consent-forms/consent-forms-routes';
-// import { PatientVisitRoutes } from './patient-visit/patient-visit-routes';
-
-
+import { PatientVisitRoutes } from './patient-visit/patient-visit-routes';
 import { PatientsListComponent } from './patients/components/patients-list';
 import { AddPatientComponent } from './patients/components/add-patient';
 import { PatientsShellComponent } from './patients/components/patients-shell';
@@ -157,7 +155,8 @@ let PatientManagerRoutes: Routes = [
             },
             // ...PatientsShellRoutes,
             ...CasesShellRoutes
-             ,...ConsentShellRoutes
+            , ...ConsentShellRoutes
+            , ...PatientVisitRoutes
         ],
         data: {
             breadcrumb: 'Patient Manager'
