@@ -90,7 +90,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (patient2.Cases != null)
             {
                 List<BO.Case> cases = new List<BO.Case>();
-                cases.Add(new BO.Case { ID = patient2.Cases.Select(x => x.Id).FirstOrDefault(), PatientId = patient2.Id });
+                cases.Add(new BO.Case
+                {
+                    ID = patient2.Cases.Select(x => x.Id).FirstOrDefault(),
+                    PatientId = patient2.Id,
+                    CaseTypeId = 1,
+                    CaseStatusId = 1
+                });
                 patientBO2.Cases = cases;
             }
 
@@ -715,6 +721,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     AddressInfo addressDB = new AddressInfo();
                     UserCompany userCompanyDB = new UserCompany();
                     CaseCompanyMapping casecompanymappingDB = new CaseCompanyMapping();
+                    Invitation invitationDB = new Invitation();
 
                     if (_context.Users.Where(usr => usr.UserName == addpatient.UserName).FirstOrDefault<User>() == null)
                     {
@@ -733,7 +740,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         userDB.UserType = 1;
                         _context.Entry(userDB).State = System.Data.Entity.EntityState.Added;
                         _context.SaveChanges();
-
+                                                
                         patientDB.Id = userDB.id;
                         patientDB.SSN = "N/A";
                         _context.Entry(patientDB).State = System.Data.Entity.EntityState.Added;
@@ -741,6 +748,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                         caseDB.PatientId = patientDB.Id;
                         caseDB.LocationId = 0;
+                        caseDB.CaseStatusId = 1;
+                        caseDB.CaseTypeId = 1;                        
                         _context.Entry(caseDB).State = System.Data.Entity.EntityState.Added;
                         _context.SaveChanges();
 
@@ -750,7 +759,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             if (company != null)
                             {
                                 userCompanyDB.User = userDB;
-                                userCompanyDB.Company = company;                                
+                                userCompanyDB.Company = company;
+                                invitationDB.Company = company;
                                 _context.Entry(userCompanyDB).State = System.Data.Entity.EntityState.Added;
                                 _context.SaveChanges();
                             }
@@ -766,12 +776,32 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid company details.", ErrorLevel = ErrorLevel.Error };
                         }
 
+
+                        #region Insert Invitation
+                        invitationDB.User = userDB;
+                        invitationDB.UniqueID = Guid.NewGuid();
+                        invitationDB.CreateDate = DateTime.UtcNow;
+                        invitationDB.CreateByUserID = 0;
+                        _context.Entry(invitationDB).State = System.Data.Entity.EntityState.Added;
+                        _context.SaveChanges();
+                        #endregion
+
                         casecompanymappingDB.CompanyId = (int)addpatient.CompanyId;
                         casecompanymappingDB.CaseId = caseDB.Id;
                         _context.Entry(casecompanymappingDB).State = System.Data.Entity.EntityState.Added;
                         _context.SaveChanges();
 
                         var res = ConvertToPatient<BO.Patient2, Patient2>(patientDB);
+                        try
+                        {
+                            #region Send Email
+                            string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB.UniqueID + "</a>";
+                            string Message = "Dear " + addpatient.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + addpatient.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                            BO.Email objEmail = new BO.Email { ToEmail = addpatient.UserName, Subject = "User registered", Body = Message };
+                            objEmail.SendMail();
+                            #endregion
+                        }
+                        catch (Exception ex) { dbContextTransaction.Rollback(); return new BO.ErrorObject { errorObject = "", ErrorMessage = "Error occured while sending mail.", ErrorLevel = ErrorLevel.Error }; }
                         dbContextTransaction.Commit();
                         return (object)res;
                     }

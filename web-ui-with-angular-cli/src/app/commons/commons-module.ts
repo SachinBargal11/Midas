@@ -20,6 +20,8 @@ import { NotificationComponent } from './components/notification/notification';
 import { ShellComponent } from './shell-component';
 import { ScheduledEventEditorComponent } from '../medical-provider/calendar/components/scheduled-event-editor';
 import { DocumentUploadComponent } from '../commons/components/document-upload/document-upload.component';
+import { DignosisComponent } from './components/dignosis/dignosis.component';
+import { ProcedureComponent } from './components/procedure/procedure.component';
 
 
 import {
@@ -40,7 +42,8 @@ import {
   FileUploadModule,
   GrowlModule,
   TabViewModule,
-  LightboxModule
+  LightboxModule,
+  ListboxModule
 
 } from 'primeng/primeng';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -70,7 +73,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     FileUploadModule,
     GrowlModule,
     TabViewModule,
-    LightboxModule
+    LightboxModule,
+    ListboxModule
   ],
   declarations: [
     LimitPipe,
@@ -89,7 +93,9 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     NotificationComponent,
     ShellComponent,
     ScheduledEventEditorComponent,
-    DocumentUploadComponent
+    DocumentUploadComponent,
+    DignosisComponent,
+    ProcedureComponent
   ],
   exports: [
     CommonModule,
@@ -128,10 +134,13 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ShellComponent,
     ScheduledEventEditorComponent,
     DocumentUploadComponent,
+    DignosisComponent,
+    ProcedureComponent,
     FileUploadModule,
     GrowlModule,
     TabViewModule,
-    LightboxModule
+    LightboxModule,
+    ListboxModule
   ]
 })
 export class CommonsModule { }

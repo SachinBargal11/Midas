@@ -30,13 +30,7 @@ import { LazyLoadEvent } from 'primeng/primeng';
     templateUrl: './add-consent.html',
     providers: [ConsentService]
 })
-// constructor(private renderer:Renderer) {}
 
-// @ViewChild('one') d1:ElementRef;
-
-// ngAfterViewInit() {
-//   this.renderer.invokeElementMethod(this.d1.nativeElement', 'insertAdjacentHTML' ['beforeend', '<div class="two">two</div>']);
-// }
 export class AddConsentComponent implements OnInit {
     private _url: string = `${environment.SERVICE_BASE_URL}`;
     display: boolean = false;
@@ -44,7 +38,7 @@ export class AddConsentComponent implements OnInit {
     uploadedFiles: any[] = [];
     uploadedFile = "";
     currentId: number;
-    UploadedFileName: string;   
+    UploadedFileName: string;
     url;
     companies: any[];
     isdoctorsLoading = false;
@@ -71,9 +65,9 @@ export class AddConsentComponent implements OnInit {
     selectedCompany: number;
     selectedConsentList: Consent[] = [];
     Consent: Consent[];
-    Case: Case;   
+    Case: Case;
     datasource: Consent[];
-    totalRecords: number;  
+    totalRecords: number;
 
     constructor(
         private fb: FormBuilder,
@@ -91,14 +85,12 @@ export class AddConsentComponent implements OnInit {
 
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
-
             this.caseId = parseInt(routeParams.caseId, 10);
             // this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.currentCompany;
             this.consentForm = this.fb.group({
                 company: ['', Validators.required]
                 // ,uploadedFiles: ['', Validators.required]
             });
-
             this.consentformControls = this.consentForm.controls;
         })
     }
@@ -113,9 +105,8 @@ export class AddConsentComponent implements OnInit {
                 this.companies = company,
                     this.selectedCompany = this.companies[0].id,
                     this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.selectedCompany;
-            });        
+            });
         this.loadConsentForm();
-
     }
 
     selectcompany(event) {
@@ -130,7 +121,6 @@ export class AddConsentComponent implements OnInit {
         this._casesStore.getDocumentForCaseId(this.caseId)
             .subscribe((caseDocument: Case) => {
                 this.documents = caseDocument.caseCompanyConsentDocument;
-
             },
             (error) => {
                 this._progressBarService.hide();
@@ -138,19 +128,13 @@ export class AddConsentComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
-    } 
-     loadConsentFormLazy(event: LazyLoadEvent) {
+    }
+    loadConsentFormLazy(event: LazyLoadEvent) {
         setTimeout(() => {
             if (this.datasource) {
                 this.Consent = this.datasource.slice(event.first, (event.first + event.rows));
             }
         }, 250);
-    }
-
-    DownloadPdf(documentId) {
-        this._progressBarService.show();
-        window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
-        this._progressBarService.hide();
     }
 
     documentUploadComplete(documents: Document[]) {
@@ -170,11 +154,53 @@ export class AddConsentComponent implements OnInit {
 
     documentUploadError(error: Error) {
         this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
-    }    
- 
-    DownloadTemplate() {
-        window.location.assign(this._url + '/CompanyCaseConsentApproval/download/' + this.caseId + '/' + this.companyId);
     }
 
+    DownloadPdf(documentId) {
+        this._progressBarService.show();
+        this.DownloadConsent(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+        this._progressBarService.hide();
+    }
 
+    DownloadTemplate() {
+        this._progressBarService.show();
+        this.DownloadConsent(this._url + '/CompanyCaseConsentApproval/download/' + this.caseId + '/' + this.selectedCompany);
+        this._progressBarService.hide();
+    }
+
+    DownloadConsent(url) {
+        this._progressBarService.show();
+        this.http
+            .get(url)
+            .map(res => {
+                // If request fails,
+                if (res.status < 200 || res.status >= 500 || res.status == 404) {
+                    throw new Error('This request has failed ' + res.status);
+                }
+                // If everything went fine,
+                else {
+                    window.location.assign(url);
+                }
+            })
+            .subscribe((data: any) => {
+                window.location.assign(url);
+                // this.data = data 
+            },
+            (error) => {
+                let notification = new Notification({
+                    'title': 'Unable to download ,' + error.statusText,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+
+                let errString = 'Unable to download';
+                this._progressBarService.hide();
+                this._notificationsService.error('Oh No!', 'Unable to download , ' + error.statusText);
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._progressBarService.hide();
+    }
 }

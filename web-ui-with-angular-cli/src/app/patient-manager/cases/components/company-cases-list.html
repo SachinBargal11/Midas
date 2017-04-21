@@ -24,9 +24,13 @@
     <p-column selectionMode="multiple"></p-column>
     <p-column field="patient.user.displayName" header="Patient Name" [sortable]="true">
         <ng-template let-currentUser="rowData" pTemplate="body">
+            <div *ngIf="currentUser.isSessionCompany(sessionStore.session.currentCompany.id)">
             <a title="Edit" routerLink="{{currentUser.patient.user.id}}">{{currentUser.patient.user.displayName}}
-            <!--<a routerLink="{{user.id}}">{{user.firstName}} {{user.lastName}}-->
-            </a>
+            <!--<a routerLink="{{user.id}}">{{user.firstName}} {{user.lastName}}--></a>
+             </div>
+             <div *ngIf="!currentUser.isSessionCompany(sessionStore.session.currentCompany.id)">
+             <a (click)="showMsg()">{{currentUser.patient.user.displayName}}</a>
+             </div>    
         </ng-template>
     </p-column>
     <p-column field="id" header="Case Id" [sortable]="true"></p-column>

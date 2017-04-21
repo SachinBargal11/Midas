@@ -73,6 +73,11 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("location")]
         public Location Location { get; set; }
-      
+
+        [JsonProperty("patientVisitDiagnosisCode")]
+        public List<PatientVisitDiagnosisCode> PatientVisitDiagnosisCodes { get; set; }
+
+        [JsonProperty("patientVisitProcedureCode")]
+        public List<PatientVisitProcedureCode> PatientVisitProcedureCodes { get; set; }
     }
 }

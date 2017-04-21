@@ -8,6 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { List } from 'immutable';
 import * as moment from 'moment';
 import * as _ from 'underscore';
+import { AppValidators } from '../../../commons/utils/AppValidators';
 import { environment } from '../../../../environments/environment';
 import { NotificationsService } from 'angular2-notifications';
 import { DoctorSpeciality } from '../../../medical-provider/users/models/doctor-speciality';
@@ -85,6 +86,8 @@ export class PatientVisitComponent implements OnInit {
     isFormValidBoolean: boolean = false;
     patientScheduleForm: FormGroup;
     patientScheduleFormControls;
+    addNewPatientForm: FormGroup;
+    addNewPatientFormControls;
     patientVisitForm: FormGroup;
     patientVisitFormControls;
 
@@ -103,6 +106,7 @@ export class PatientVisitComponent implements OnInit {
     isDeleteProgress: boolean = false;
 
     visitInfo: string = '';
+    isAddNewPatient: boolean = false;
 
 
     eventRenderer: Function = (event, element) => {
@@ -146,9 +150,14 @@ export class PatientVisitComponent implements OnInit {
         private confirmationService: ConfirmationService
     ) {
         this.patientScheduleForm = this._fb.group({
-            patientId: ['', Validators.required]
+            patientId: ['', Validators.required],
+            isAddNewPatient: ['']
         });
         this.patientScheduleFormControls = this.patientScheduleForm.controls;
+
+        this.addNewPatientForm = this._fb.group(this.patientFormControlModel());
+
+        this.addNewPatientFormControls = this.addNewPatientForm.controls;
 
         this.patientVisitForm = this._fb.group({
             notes: ['', Validators.required],
@@ -156,6 +165,17 @@ export class PatientVisitComponent implements OnInit {
         });
         this.patientVisitFormControls = this.patientVisitForm.controls;
     }
+
+    patientFormControlModel() {
+        const model = {
+            firstName: ['', Validators.required],
+            lastName: ['', Validators.required],
+            email: ['', [Validators.required, AppValidators.emailValidator]],
+            cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]]
+        };
+        return model;
+    }
+
     ngOnInit() {
         this.header = {
             left: 'prev,next today',
@@ -300,6 +320,7 @@ export class PatientVisitComponent implements OnInit {
         this.selectedDoctorId = 0;
         this.selectedRoomId = 0;
         this.selectedOption = 0;
+        this.events = [];
         if (event.target.selectedOptions[0].getAttribute('data-option') == '1') {
             this.selectedOption = 1;
             this.selectedSpecialityId = event.target.value;
@@ -433,11 +454,14 @@ export class PatientVisitComponent implements OnInit {
     closeEventDialog() {
         this.eventDialogVisible = false;
         this.handleEventDialogHide();
+        this.addNewPatientForm.reset();
+        this.patientScheduleForm.reset();
     }
 
     closePatientVisitDialog() {
         this.visitDialogVisible = false;
         this.handleVisitDialogHide();
+        this.patientVisitForm.reset();
     }
 
     handleEventDialogHide() {
@@ -1048,5 +1072,65 @@ export class PatientVisitComponent implements OnInit {
             this._notificationsStore.addNotification(notification);
             this._notificationsService.error('Oh No!', 'select record to delete');
         }
+    }
+
+    addNewPatient() {
+        if (!this.isAddNewPatient) {
+            Object.keys(this.addNewPatientFormControls).forEach(key => {
+                this.addNewPatientFormControls[key].setValidators(null);
+                this.addNewPatientFormControls[key].updateValueAndValidity();
+            });
+        } else {
+            Object.keys(this.addNewPatientFormControls).forEach(key => {
+                this.addNewPatientFormControls[key].setValidators(this.patientFormControlModel()[key][1]);
+                this.addNewPatientFormControls[key].updateValueAndValidity();
+            });
+        }
+    }
+
+    cancelAddingNewPatient() {
+        this.isAddNewPatient = false;
+        this.addNewPatientForm.reset();
+    }
+
+    saveNewPatient() {
+        this.isSaveProgress = true;
+        let addNewPatientFormValues = this.addNewPatientForm.value;
+        let result;
+        let patient: any = {
+            firstName: addNewPatientFormValues.firstName,
+            lastName: addNewPatientFormValues.lastName,
+            username: addNewPatientFormValues.email,
+            cellPhone: addNewPatientFormValues.cellPhone
+        };
+        this._progressBarService.show();
+        result = this._patientsStore.addQuickPatient(patient);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Patient added successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this.isAddNewPatient = false;
+                this._patientsStore.getPatientsWithOpenCases();
+            },
+            (error) => {
+                let errString = 'Unable to add patient.';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this.isSaveProgress = false;
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                this._progressBarService.hide();
+            },
+            () => {
+                this.isSaveProgress = false;
+                this._progressBarService.hide();
+            });
     }
 }

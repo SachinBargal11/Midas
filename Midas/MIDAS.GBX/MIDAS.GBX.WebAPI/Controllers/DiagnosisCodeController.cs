@@ -24,9 +24,9 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpGet]
         [Route("getByDiagnosisTypeId/{id}")]
         [AllowAnonymous]
-        public HttpResponseMessage Get(int id)
+        public HttpResponseMessage GetDiagnosisType(int id)
         {
-            return requestHandler.GetObject(Request, id);
+            return requestHandler.GetDiagnosisType(Request, id);
         }
 
        protected override void Dispose(bool disposing)

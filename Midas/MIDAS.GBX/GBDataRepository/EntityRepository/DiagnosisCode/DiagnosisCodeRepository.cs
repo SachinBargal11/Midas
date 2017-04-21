@@ -60,7 +60,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region GetByDiagnosisTypeId
-        public override object Get(int id)
+        public override object GetDiagnosisType(int id)
         {
             var boDiagnosisCodeDB = _context.DiagnosisCodes.Where(p => p.DiagnosisTypeId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                            .ToList<DiagnosisCode>();

@@ -27,8 +27,12 @@
 
         <ng-template let-currentPatient="rowData" pTemplate="body">
             <!--{{currentPatient.user.displayName}}-->
-
+            <div *ngIf="currentPatient.isSessionCompany(sessionStore.session.currentCompany.id)">
             <a title="Edit" routerLink="{{currentPatient.user.id}}/viewall">{{currentPatient.user.displayName}}</a>
+            </div>
+             <div *ngIf="!currentPatient.isSessionCompany(sessionStore.session.currentCompany.id)">
+            <a (click)="showMsg()">{{currentPatient.user.displayName}}</a>
+             </div>
         </ng-template>
     </p-column>
 

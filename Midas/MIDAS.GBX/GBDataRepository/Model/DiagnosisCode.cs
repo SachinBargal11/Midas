@@ -14,6 +14,12 @@ namespace MIDAS.GBX.DataRepository.Model
     
     public partial class DiagnosisCode
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public DiagnosisCode()
+        {
+            this.PatientVisitDiagnosisCodes = new HashSet<PatientVisitDiagnosisCode>();
+        }
+    
         public int Id { get; set; }
         public int DiagnosisTypeId { get; set; }
         public string DiagnosisCodeText { get; set; }
@@ -27,5 +33,7 @@ namespace MIDAS.GBX.DataRepository.Model
     
         public virtual Company Company { get; set; }
         public virtual DiagnosisType DiagnosisType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PatientVisitDiagnosisCode> PatientVisitDiagnosisCodes { get; set; }
     }
 }
