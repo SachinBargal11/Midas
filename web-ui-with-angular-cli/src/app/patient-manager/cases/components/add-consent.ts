@@ -1,5 +1,5 @@
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
@@ -14,7 +14,6 @@ import { ConsentStore } from '../stores/consent-store';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { ConsentService } from '../services/consent-service';
 import { Consent } from '../models/consent';
-import { ElementRef, Input, ViewChild } from '@angular/core';
 import { Http } from '@angular/http';
 import * as _ from 'underscore';
 import { ScannerService } from '../../../commons/services/scanner-service';
@@ -25,6 +24,7 @@ import { CasesStore } from '../../cases/stores/case-store';
 import { Document } from '../../../commons/models/document';
 import { Case } from '../models/case';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+
 @Component({
     selector: 'add-consent',
     templateUrl: './add-consent.html',
@@ -69,8 +69,9 @@ export class AddConsentComponent implements OnInit {
     totalRecords: number;
     isDeleteProgress: boolean = false;
     selectedConsentList: CaseDocument[] = [];
+
     constructor(
-        private fb: FormBuilder,
+        private _fb: FormBuilder,
         private service: ConsentService,
         private _router: Router,
         public sessionStore: SessionStore,
@@ -82,23 +83,19 @@ export class AddConsentComponent implements OnInit {
         private http: Http,
         private _scannerService: ScannerService,
         private _casesStore: CasesStore,
-        private confirmationService: ConfirmationService,
-
-
+        private confirmationService: ConfirmationService
     ) {
 
         this._route.parent.parent.params.subscribe((routeParams: any) => {
 
             this.caseId = parseInt(routeParams.caseId, 10);
-            // let companyId: number = this.sessionStore.session.currentCompany.id;
             this.companyId = this.sessionStore.session.currentCompany.id;
             this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
-            this.consentForm = this.fb.group({
-                // doctor: ['', Validators.required]
-                // ,uploadedFiles: ['', Validators.required]
+            this.consentForm = this._fb.group({
             });
             this.consentformControls = this.consentForm.controls;
-        })
+        });
+        
     }
 
     ngOnInit() {
@@ -109,6 +106,8 @@ export class AddConsentComponent implements OnInit {
         this.maxDate.setDate(currentDate);
         this.loadConsentForm();
     }
+
+    
 
     loadConsentForm() {
         this._progressBarService.show();
@@ -160,6 +159,14 @@ export class AddConsentComponent implements OnInit {
 
     documentUploadError(error: Error) {
         this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+    }
+
+    signedDocumentUploadComplete() {
+        
+    }
+
+    signedDocumentUploadError() {
+        this._notificationsService.error('Oh No!', 'Not able to upload signed document(s).');
     }
 
 
