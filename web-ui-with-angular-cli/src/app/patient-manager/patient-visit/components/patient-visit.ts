@@ -62,7 +62,10 @@ export class PatientVisitComponent implements OnInit {
     specialities: Speciality[] = [];
     tests: Tests[] = [];
     rooms: Room[] = [];
-    doctorLocationSchedules: DoctorLocationSchedule[] = [];
+    doctorLocationSchedules: {
+        doctorLocationSchedule: DoctorLocationSchedule,
+        speciality: DoctorSpeciality
+    }[] = [];
     roomSchedule: Schedule;
     doctorSchedule: Schedule;
 
@@ -214,58 +217,41 @@ export class PatientVisitComponent implements OnInit {
             this.specialities = [];
             this.tests = [];
         } else {
-            this._roomsService.getTestsByLocationId(this.selectedLocationId)
-                .subscribe(tests => {
-                    this.tests = tests;
-                });
-            this._specialityService.getSpecialitiesByLocationId(this.selectedLocationId)
-                .subscribe(specialities => {
-                    this.specialities = specialities;
-                });
+            // this._roomsService.getTestsByLocationId(this.selectedLocationId)
+            //     .subscribe(tests => {
+            //         this.tests = tests;
+            //     });
+            // this._specialityService.getSpecialitiesByLocationId(this.selectedLocationId)
+            //     .subscribe(specialities => {
+            //         this.specialities = specialities;
+            //     });
             this.loadLocationVisits();
-            this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.selectedLocationId);
-            this._roomsStore.getRooms(this.selectedLocationId);
-        }
-    }
+            this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.selectedLocationId)
+                .subscribe((doctorLocationSchedules: DoctorLocationSchedule[]) => {
+                    let mappedDoctorLocationSchedules: {
+                        doctorLocationSchedule: DoctorLocationSchedule,
+                        speciality: DoctorSpeciality
+                    }[] = [];
+                    _.forEach(doctorLocationSchedules, (currentDoctorLocationSchedule: DoctorLocationSchedule) => {
+                        _.forEach(currentDoctorLocationSchedule.doctor.doctorSpecialities, (currentSpeciality: DoctorSpeciality) => {
+                            mappedDoctorLocationSchedules.push({
+                                doctorLocationSchedule: currentDoctorLocationSchedule,
+                                speciality: currentSpeciality
+                            });
+                        });
+                    });
+                    this.doctorLocationSchedules = mappedDoctorLocationSchedules;
+                    console.log(this.doctorLocationSchedules);
 
-    selectRoom() {
-        this.selectedSpecialityId = 0;
-        this.selectedDoctorId = 0;
-        this.events = [];
-        if (this.selectedRoomId != 0) {
-            this.loadLocationRoomVisits();
-            this.fetchRoomSchedule();
-        }
-    }
-
-    selectDoctor() {
-        this.selectedRoomId = 0;
-        this.selectedTestId = 0;
-        this.events = [];
-        if (this.selectedDoctorId != 0) {
-            this.loadLocationDoctorVisits();
-            this.fetchDoctorSchedule();
-        }
-    }
-
-    selectTest() {
-        if (this.selectedTestId) {
-            let rooms: Room[] = this._roomsStore.rooms.getValue().toArray();
-            this.rooms = _.filter(rooms, (currentRoom: Room) => {
-                return currentRoom.roomTest.id == this.selectedTestId;
-            });
-        }
-    }
-
-    selectSpeciality() {
-        if (this.selectedSpecialityId) {
-            let doctorLocationSchedules: DoctorLocationSchedule[] = this._doctorLocationScheduleStore.doctorLocationSchedules.getValue().toArray();
-            this.doctorLocationSchedules = _.filter(doctorLocationSchedules, (currentDoctorLocationSchedule: DoctorLocationSchedule) => {
-                let matchedSpeciality: DoctorSpeciality = _.find(currentDoctorLocationSchedule.doctor.doctorSpecialities, (currentSpeciality: DoctorSpeciality) => {
-                    return currentSpeciality.speciality.id == this.selectedSpecialityId;
+                }, error => {
+                    this.doctorLocationSchedules = [];
                 });
-                return matchedSpeciality ? true : false;
-            });
+            this._roomsStore.getRooms(this.selectedLocationId)
+                .subscribe((rooms: Room[]) => {
+                    this.rooms = rooms;
+                }, error => {
+                    this.rooms = [];
+                });
         }
     }
 
@@ -321,14 +307,18 @@ export class PatientVisitComponent implements OnInit {
         this.selectedRoomId = 0;
         this.selectedOption = 0;
         this.events = [];
-        if (event.target.selectedOptions[0].getAttribute('data-option') == '1') {
+        if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
             this.selectedOption = 1;
-            this.selectedSpecialityId = event.target.value;
-            this.selectSpeciality();
-        } else if (event.target.selectedOptions[0].getAttribute('data-option') == '2') {
+            this.selectedDoctorId = event.target.value;
+            this.selectedSpecialityId = event.target.selectedOptions[0].getAttribute('data-specialityId');
+            this.loadLocationDoctorVisits();
+            this.fetchDoctorSchedule();
+        } else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
             this.selectedOption = 2;
-            this.selectedTestId = event.target.value;
-            this.selectTest();
+            this.selectedRoomId = event.target.value;
+            this.selectedTestId = event.target.selectedOptions[0].getAttribute('data-testId');
+            this.loadLocationRoomVisits();
+            this.fetchRoomSchedule();
         } else {
             this.selectedMode = 0;
             this.selectLocation();
@@ -533,9 +523,12 @@ export class PatientVisitComponent implements OnInit {
             let selectedDoctor: Doctor = null;
             let selectedRoom: Room = null;
             if (this.selectedOption === 1) {
-                _.each(this.doctorLocationSchedules, (currentSchedule: DoctorLocationSchedule) => {
-                    if (currentSchedule.doctor.id == this.selectedDoctorId) {
-                        selectedDoctor = currentSchedule.doctor;
+                _.each(this.doctorLocationSchedules, (currentSchedule: {
+                    doctorLocationSchedule: DoctorLocationSchedule,
+                    speciality: DoctorSpeciality
+                }) => {
+                    if (currentSchedule.doctorLocationSchedule.doctor.id == this.selectedDoctorId) {
+                        selectedDoctor = currentSchedule.doctorLocationSchedule.doctor;
                     }
                 });
             } else {
