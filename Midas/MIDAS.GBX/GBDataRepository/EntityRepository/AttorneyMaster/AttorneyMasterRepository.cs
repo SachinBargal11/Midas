@@ -67,7 +67,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get All attornies
         public override object Get()
         {
-            var acc_ = _context.Attorneys.Include("User").Include("User.AddressInfo").Include("User.ContactInfo").Where(p => p.IsDeleted.HasValue == false || p.IsDeleted == false).ToList<Attorney>();
+            var acc_ = _context.Attorneys.Include("User").Include("User.AddressInfo").Include("User.ContactInfo").Include("User.UserCompanies").Where(p => p.IsDeleted.HasValue == false || p.IsDeleted == false).ToList<Attorney>();
             if (acc_ == null) return new BO.ErrorObject { ErrorMessage = "No records found for Attorney.", errorObject = "", ErrorLevel = ErrorLevel.Error };
 
             List<BO.AttorneyMaster> lstattornies = new List<BO.AttorneyMaster>();
@@ -83,6 +83,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             var acc = _context.Attorneys.Include("User")
                                         .Include("User.AddressInfo")
                                         .Include("User.ContactInfo")
+                                        .Include("User.UserCompanies")
                                         .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                         .FirstOrDefault<Attorney>();
 
@@ -96,43 +97,48 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #endregion
 
         #region Get By Company Id 
-        //public override object GetByCompanyId(int id)
-        //{
-        //    var acc = _context.Attorneys.Include("User")
-        //                                .Include("User.AddressInfo")
-        //                                .Include("User.ContactInfo")
-        //                                .Where(p => p.CompanyId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-        //                                .ToList<Attorney>();
+        public override object GetByCompanyId(int id)
+        {
+            var acc = _context.Attorneys.Include("User")
+                                        .Include("User.AddressInfo")
+                                        .Include("User.ContactInfo")
+                                        .Include("User.UserCompanies")
+                                        .Where(p => (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                  && p.User.UserCompanies.Where(p2 => p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
+                                                                         .Any(p2 => p2.CompanyID == id) == true)
+                                        .ToList<Attorney>();
 
-        //    List<BO.AttorneyMaster> lstattornies = new List<BO.AttorneyMaster>();
-        //    if (acc == null) return new BO.ErrorObject { ErrorMessage = "No record found for this Company Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-        //    else
-        //    {
-        //        acc.ForEach(item => lstattornies.Add(Convert<BO.AttorneyMaster, Attorney>(item)));
-        //    }
+            List<BO.AttorneyMaster> lstattornies = new List<BO.AttorneyMaster>();
+            if (acc == null) return new BO.ErrorObject { ErrorMessage = "No record found for this Company Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            else
+            {
+                acc.ForEach(item => lstattornies.Add(Convert<BO.AttorneyMaster, Attorney>(item)));
+            }
 
-        //    return lstattornies;
-        //}
+            return lstattornies;
+        }
         #endregion
 
         #region Get All Excluding CompanyId
-        //public override object GetAllExcludeCompany(int CompanyId)
-        //{
-        //    var acc = _context.Attorneys.Include("User")
-        //                                .Include("User.AddressInfo")
-        //                                .Include("User.ContactInfo")
-        //                                .Where(p => p.CompanyId != CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-        //                                .ToList<Attorney>();
+        public override object GetAllExcludeCompany(int CompanyId)
+        {
+            var acc = _context.Attorneys.Include("User")
+                                        .Include("User.AddressInfo")
+                                        .Include("User.ContactInfo")
+                                        .Where(p => (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                  && p.User.UserCompanies.Where(p2 => p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
+                                                                         .Any(p2 => p2.CompanyID != CompanyId) == true)
+                                        .ToList<Attorney>();
 
-        //    List<BO.AttorneyMaster> lstattornies = new List<BO.AttorneyMaster>();
-        //    if (acc == null) return new BO.ErrorObject { ErrorMessage = "No record found for this Company Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-        //    else
-        //    {
-        //        acc.ForEach(item => lstattornies.Add(Convert<BO.AttorneyMaster, Attorney>(item)));
-        //    }
+            List<BO.AttorneyMaster> lstattornies = new List<BO.AttorneyMaster>();
+            if (acc == null) return new BO.ErrorObject { ErrorMessage = "No record found for this Company Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            else
+            {
+                acc.ForEach(item => lstattornies.Add(Convert<BO.AttorneyMaster, Attorney>(item)));
+            }
 
-        //    return lstattornies;
-        //}
+            return lstattornies;
+        }
         #endregion
 
         #region Save Data
@@ -427,8 +433,6 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region AssociateAttorneyWithCompany
         public override object AssociateAttorneyWithCompany(int AttorneyId , int CompanyId)
         {
-            BO.AttorneyMaster attorneyMasterBO = new BO.AttorneyMaster();
-            Attorney _attny = new Attorney();
             bool add_UserCompany = false;
 
             var company = _context.Companies.Where(p => p.id == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
@@ -438,9 +442,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
 
-            var user = _context.Attorneys.Where( p => p.Id == AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+            var attorneys = _context.Attorneys.Where( p => p.Id == AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
-            if (user == null)
+            if (attorneys == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No record found for this Attorney.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
@@ -453,21 +457,22 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 add_UserCompany = true;
             }
 
-            userCompany.CompanyID = company.id;
-            userCompany.UserID = user.Id;
+            userCompany.CompanyID = CompanyId;
+            userCompany.UserID = AttorneyId;
 
             if (add_UserCompany)
             {
                 _context.UserCompanies.Add(userCompany);
             }
+
             _context.SaveChanges();
 
-            _attny = _context.Attorneys.Include("User")
-                                           .Include("User.AddressInfo")
-                                           .Include("User.ContactInfo")
-                                           .Include("User.UserCompanies")
-                                           .Where(p => p.Id == _attny.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                           .FirstOrDefault<Attorney>();
+            var _attny = _context.Attorneys.Include("User")
+                                       .Include("User.AddressInfo")
+                                       .Include("User.ContactInfo")
+                                       .Include("User.UserCompanies")
+                                       .Where(p => p.Id == AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                       .FirstOrDefault<Attorney>();
 
             var res = Convert<BO.AttorneyMaster, Attorney>(_attny);
             return (object)res;

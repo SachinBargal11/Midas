@@ -13,3 +13,8 @@
 ) ON [PRIMARY]
 
 GO
+
+/*
+ALTER TABLE [dbo].[RoomTest] ADD [ColorCode] [NVARCHAR](20) NULL
+GO
+*/

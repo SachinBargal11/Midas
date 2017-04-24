@@ -37,6 +37,10 @@ namespace MIDAS.GBX.BusinessObjects
             }
         }
 
+        [Required]
+        [JsonProperty("colorCode")]
+        public string ColorCode { get; set; }
+
         public override List<BusinessValidation> Validate<T>(T entity)
         {
             List<BusinessValidation> validations = new List<BusinessValidation>();
