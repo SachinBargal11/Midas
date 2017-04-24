@@ -620,33 +620,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     foreach (var userCompany in patient2BO.User.UserCompanies)
                     {
                         userCompany.UserId = userDB.id;
-                        //UserCompanyDB = _context.UserCompanies.Where(p => p.id == userCompany.ID
-                        //                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                        //                                       .FirstOrDefault<UserCompany>();
                         UserCompanyDB = _context.UserCompanies.Where(p => p.UserID == userDB.id && p.CompanyID == userCompany.Company.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                .FirstOrDefault<UserCompany>();
-
 
                         if (UserCompanyDB == null)
                         {
                             UserCompanyDB = new UserCompany();
                             add_UserCompany = true;
                         }
-                        //else if (UserCompanyDB == null && userCompany.ID > 0)
-                        //{
-                        //    dbContextTransaction.Rollback();
-                        //    return new BO.ErrorObject { errorObject = "", ErrorMessage = "UserCompany details dosent exists.", ErrorLevel = ErrorLevel.Error };
-                        //}
-
-                        //var acc = _context.UserCompanies.Where(p => p.UserID == patient2DB.Id && p.CompanyID == userCompany.CompanyId
-                        //                                 &&(p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                        //                                .FirstOrDefault<UserCompany>();
-                        //if (acc != null)
-                        //{
-                        //    dbContextTransaction.Rollback();
-                        //    return new BO.ErrorObject { errorObject = "", ErrorMessage = "User is already associated with given company.", ErrorLevel = ErrorLevel.Error };
-                        //}
-
+                        
                         UserCompanyDB.CompanyID = userCompany.Company.ID;
                         UserCompanyDB.UserID = userCompany.UserId;
 

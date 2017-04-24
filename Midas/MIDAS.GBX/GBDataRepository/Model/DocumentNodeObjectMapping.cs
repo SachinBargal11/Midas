@@ -12,15 +12,10 @@ namespace MIDAS.GBX.DataRepository.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Attorney
+    public partial class DocumentNodeObjectMapping
     {
-        public int Id { get; set; }
-        public Nullable<bool> IsDeleted { get; set; }
-        public int CreateByUserID { get; set; }
-        public System.DateTime CreateDate { get; set; }
-        public Nullable<int> UpdateByUserID { get; set; }
-        public Nullable<System.DateTime> UpdateDate { get; set; }
-    
-        public virtual User User { get; set; }
+        public int id { get; set; }
+        public string ObjectType { get; set; }
+        public string ChildNode { get; set; }
     }
 }
