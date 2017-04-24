@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="e6416206b1334927ae45f6b55646f99c" Name="Diagram1">
+      <Diagram DiagramId="6ff06c95a5224f018aa0653437f4ddad" Name="Diagram1">
         <EntityTypeShape EntityType="MIDASGBXModel.AddressInfo" Width="1.5" PointX="0.75" PointY="70.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.AdjusterMaster" Width="1.5" PointX="3" PointY="71.375" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.Attorney" Width="1.5" PointX="11.25" PointY="75.25" IsExpanded="true" />
@@ -66,7 +66,7 @@
         <EntityTypeShape EntityType="MIDASGBXModel.Schedule" Width="1.5" PointX="8.25" PointY="110.5" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.ScheduleDetail" Width="1.5" PointX="10.5" PointY="110.5" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.SpecialityDetail" Width="1.5" PointX="14.25" PointY="58" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.Specialty" Width="1.5" PointX="12" PointY="60.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.Specialty" Width="1.5" PointX="12" PointY="60" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.SpecialtyDetail" Width="1.5" PointX="14.25" PointY="52" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.State" Width="1.5" PointX="4.75" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.SubscriptionPlan" Width="1.5" PointX="3.75" PointY="86.25" IsExpanded="true" />
@@ -77,7 +77,8 @@
         <EntityTypeShape EntityType="MIDASGBXModel.UserCompany" Width="1.5" PointX="17.25" PointY="68.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.UserCompanyRole" Width="1.5" PointX="11.25" PointY="80.25" IsExpanded="true" />
         <EntityTypeShape EntityType="MIDASGBXModel.UserType" Width="1.5" PointX="6.75" PointY="82.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="MIDASGBXModel.DocumentNode" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.DocumentNodeObjectMapping" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MIDASGBXModel.DocumentNode" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
         <AssociationConnector Association="MIDASGBXModel.FK_AdjusterMaster_AddressInfo_AddressInfoId" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_Company_AddressInfo" ManuallyRouted="false" />
         <AssociationConnector Association="MIDASGBXModel.FK_InsuranceMaster_AddressInfo_AddressInfoId" ManuallyRouted="false" />

@@ -377,6 +377,17 @@
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodeObjectMapping' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="DocumentNodeObjectMapping">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="ChildNode" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ObjectType" Type="nvarchar" MaxLength="10" />
+          <Property Name="ChildNode" Type="nvarchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="DocumentNodes">
           <Key>
@@ -988,6 +999,7 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="CreateDate" Type="datetime2" Precision="7" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="ColorCode" Type="nvarchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="SpecialtyDetails">
           <Key>
@@ -2729,6 +2741,13 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="UserCompany" EntityType="Self.UserCompany" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserCompanyRole" EntityType="Self.UserCompanyRole" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DocumentNodeObjectMapping" EntityType="Self.DocumentNodeObjectMapping" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [DocumentNodeObjectMapping].[id] AS [id], 
+    [DocumentNodeObjectMapping].[ObjectType] AS [ObjectType], 
+    [DocumentNodeObjectMapping].[ChildNode] AS [ChildNode]
+    FROM [dbo].[DocumentNodeObjectMapping] AS [DocumentNodeObjectMapping]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="DocumentNodes" EntityType="Self.DocumentNodes" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [DocumentNodes].[id] AS [id], 
@@ -4447,6 +4466,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="ColorCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CompanySpecialtyDetails" Relationship="Self.FK_CompanySpecialtyDetails_Specialty" FromRole="Specialty" ToRole="CompanySpecialtyDetails" />
           <NavigationProperty Name="DoctorLocationSpecialties" Relationship="Self.FK_DoctorLocationSpecialty_SpecialtyId" FromRole="Specialty" ToRole="DoctorLocationSpecialty" />
           <NavigationProperty Name="DoctorSpecialities" Relationship="Self.FK_DoctorSpecialities_Specialty" FromRole="Specialty" ToRole="DoctorSpecialities" />
@@ -4613,6 +4633,15 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="Users" Relationship="Self.FK_User_UserType" FromRole="UserType" ToRole="User" />
+        </EntityType>
+        <EntityType Name="DocumentNodeObjectMapping">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="ChildNode" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ObjectType" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ChildNode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="DocumentNode">
           <Key>
@@ -6221,6 +6250,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <EntitySet Name="UserCompanies" EntityType="Self.UserCompany" />
           <EntitySet Name="UserCompanyRoles" EntityType="Self.UserCompanyRole" />
           <EntitySet Name="UserTypes" EntityType="Self.UserType" />
+          <EntitySet Name="DocumentNodeObjectMappings" EntityType="Self.DocumentNodeObjectMapping" />
           <EntitySet Name="DocumentNodes" EntityType="Self.DocumentNode" />
           <AssociationSet Name="FK_AdjusterMaster_AddressInfo_AddressInfoId" Association="Self.FK_AdjusterMaster_AddressInfo_AddressInfoId">
             <End Role="AddressInfo" EntitySet="AddressInfoes" />
@@ -7768,6 +7798,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="ColorCode" ColumnName="ColorCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7915,6 +7946,15 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DocumentNodeObjectMappings">
+            <EntityTypeMapping TypeName="MIDASGBXModel.DocumentNodeObjectMapping">
+              <MappingFragment StoreEntitySet="DocumentNodeObjectMapping">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="ObjectType" ColumnName="ObjectType" />
+                <ScalarProperty Name="ChildNode" ColumnName="ChildNode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

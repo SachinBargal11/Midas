@@ -35,6 +35,13 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             return requestHandler.GetByLocationId(Request, locationId);
         }
 
+        [HttpGet]
+        [Route("getByLocationAndDoctorId/{locationId}/{doctorId}")]
+        public HttpResponseMessage GetByLocationAndDoctorId(int locationId, int doctorId)
+        {
+            return requestHandler.GetGbObjects2(Request, locationId, doctorId);
+        }
+
         [HttpPost]
         [Route("Save")]
         [AllowAnonymous]

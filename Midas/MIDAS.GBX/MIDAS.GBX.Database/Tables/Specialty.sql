@@ -15,3 +15,5 @@ PRIMARY KEY CLUSTERED
 ) ON [PRIMARY]
 
 GO
+
+-- alter table [dbo].[Specialty] add ColorCode [nvarchar](10) NULL
