@@ -36,6 +36,7 @@ export class AddUserComponent implements OnInit {
     states: any[];
     cities: any[];
     selectedRole: any[] = ['1'];
+    isCalendarPublic: boolean = false;
     // selectedRole: any[] = [];
     selectedCity = 0;
     specialitiesArr: SelectItem[] = [];
@@ -142,7 +143,8 @@ export class AddUserComponent implements OnInit {
             npi: ['', Validators.required],
             taxType: ['', [Validators.required, AppValidators.selectedValueValidator]],
             title: ['', Validators.required],
-            speciality: ['2', Validators.required]
+            speciality: ['2', Validators.required],
+            isCalendarPublic: ['']
         };
         return model;
     }
@@ -208,7 +210,7 @@ export class AddUserComponent implements OnInit {
                 // title: 'Dr',
                 title: userFormValues.doctor.title,
                 doctorSpecialities: doctorSpecialities,
-
+                isCalendarPublic: userFormValues.doctor.isCalendarPublic,
                 user: new User({
                     firstName: userFormValues.userInfo.firstname,
                     lastName: userFormValues.userInfo.lastname,

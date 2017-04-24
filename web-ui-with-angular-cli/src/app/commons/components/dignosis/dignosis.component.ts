@@ -45,6 +45,7 @@ export class DignosisComponent implements OnInit {
 
   ngOnInit() {
     this.loadAllDiagnosisTypes();
+    this.selectedDiagnosisCodes = this.selectedVisit.patientVisitDiagnosisCodes;
   }
 
   loadAllDiagnosisTypes() {

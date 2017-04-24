@@ -22,10 +22,10 @@ export class PatientVisitAdapter {
             let procedureCodes: Procedure[] = [];
             
             _.forEach(data.patientVisitDiagnosisCodes, (currentDiagnosisCode: any) => {
-                diagnosisCodes.push(DiagnosisCodeAdapter.parseResponse(currentDiagnosisCode));
+                diagnosisCodes.push(DiagnosisCodeAdapter.parseResponse(currentDiagnosisCode.diagnosisCode));
             });
             _.forEach(data.patientVisitProcedureCodes, (currentProcedureCode: any) => {
-                procedureCodes.push(ProcedureAdapter.parseResponse(currentProcedureCode));
+                procedureCodes.push(ProcedureAdapter.parseResponse(currentProcedureCode.procedureCode));
             });
             patientVisit = new PatientVisit({
                 id: data.id,
