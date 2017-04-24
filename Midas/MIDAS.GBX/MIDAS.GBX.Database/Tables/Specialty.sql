@@ -3,6 +3,7 @@
 	[Name] [nvarchar](50) NOT NULL,
 	[SpecialityCode] [nvarchar](50) NOT NULL,
 	[IsUnitApply] [bit] NULL,
+	[ColorCode] [NVARCHAR](20) NULL,
 	[IsDeleted] [bit] NULL,
 	[CreateByUserID] [int] NOT NULL,
 	[CreateDate] [datetime2](7) NULL,
@@ -16,4 +17,4 @@ PRIMARY KEY CLUSTERED
 
 GO
 
--- alter table [dbo].[Specialty] add ColorCode [nvarchar](10) NULL
+-- ALTER TABLE [DBO].[SPECIALTY] ADD [ColorCode] [NVARCHAR](20) NULL
