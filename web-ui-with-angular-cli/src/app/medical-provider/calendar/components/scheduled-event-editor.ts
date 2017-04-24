@@ -61,6 +61,7 @@ export class ScheduledEventEditorComponent implements OnChanges {
 
     @Input() set selectedEvent(value: ScheduledEvent) {
         if (value) {
+            debugger;
             this._selectedEvent = value;
             this.eventStartAsDate = this._selectedEvent.eventStartAsDate;
             this.eventEndAsDate = this._selectedEvent.eventEndAsDate;

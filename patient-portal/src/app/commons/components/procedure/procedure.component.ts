@@ -41,7 +41,6 @@ export class ProcedureComponent implements OnInit {
     } else if (this.selectedVisit.roomId) {
       this.loadProceduresForRoomTest(this.selectedVisit.roomId);
     }
-    this.selectedProcedures = this.selectedVisit.patientVisitProcedureCodes;
   }
 
   loadProceduresForSpeciality(specialityId: number) {

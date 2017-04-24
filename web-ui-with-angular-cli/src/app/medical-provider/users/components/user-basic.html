@@ -161,11 +161,11 @@
                     </div>
                 </div>
                 <div class="col-lg-4 m-t-lg">
-                    <div class="form-group" [class.error]="!userformControls.doctor.controls.publishSchedule.valid">
-                        <p-checkbox name="publishSchedule" label="Publish Schedule" formControlName="publishSchedule" [(ngModel)]="selectedPublishSchedule" value="1"></p-checkbox>
-                        <div class='error-list' *ngIf="!userformControls.doctor.controls.publishSchedule.valid">
+                    <div class="form-group" [class.error]="!userformControls.doctor.controls.isCalendarPublic.valid">
+                        <p-checkbox name="isCalendarPublic" label="Publish Schedule" formControlName="isCalendarPublic" [(ngModel)]="isCalendarPublic" binary="true"></p-checkbox>
+                        <div class='error-list' *ngIf="!userformControls.doctor.controls.isCalendarPublic.valid">
                             <ul>
-                                <li *ngIf="userformControls.doctor.controls.publishSchedule.hasError('required')">You must Publish schedule</li>
+                                <li *ngIf="userformControls.doctor.controls.isCalendarPublic.hasError('required')">You must Publish schedule</li>
                             </ul>
                         </div>
                     </div>
