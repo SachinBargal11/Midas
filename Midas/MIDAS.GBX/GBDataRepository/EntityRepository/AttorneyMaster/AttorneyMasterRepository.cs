@@ -42,16 +42,20 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             if (entity == null) return default(T);
 
             BO.AttorneyMaster attorneyBO = new BO.AttorneyMaster();
-            attorneyBO.companyId = attorney.CompanyId;
             attorneyBO.ID = attorney.Id;
 
-            BO.User boUser = new BO.User();
-            using (UserRepository cmp = new UserRepository(_context))
+            if (attorney.User != null)
             {
-                boUser = cmp.Convert<BO.User, User>(attorney.User);
-                attorneyBO.User = boUser;
+                if (attorney.User.IsDeleted.HasValue == false || (attorney.User.IsDeleted.HasValue == true && attorney.User.IsDeleted.Value == false))
+                {
+                    BO.User boUser = new BO.User();
+                    using (UserRepository cmp = new UserRepository(_context))
+                    {
+                        boUser = cmp.Convert<BO.User, User>(attorney.User);
+                        attorneyBO.User = boUser;
+                    }
+                }
             }
-
             attorneyBO.IsDeleted = attorney.IsDeleted;
             attorneyBO.CreateByUserID = attorney.CreateByUserID;
             attorneyBO.UpdateByUserID = attorney.UpdateByUserID;
@@ -63,7 +67,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region Get All attornies
         public override object Get()
         {
-            var acc_ = _context.Attorneys.Include("User").Include("User.AddressInfo").Include("User.ContactInfo").Where(p => p.IsDeleted.HasValue == false || p.IsDeleted == false).ToList<Attorney>();
+            var acc_ = _context.Attorneys.Include("User").Include("User.AddressInfo").Include("User.ContactInfo").Include("User.UserCompanies").Where(p => p.IsDeleted.HasValue == false || p.IsDeleted == false).ToList<Attorney>();
             if (acc_ == null) return new BO.ErrorObject { ErrorMessage = "No records found for Attorney.", errorObject = "", ErrorLevel = ErrorLevel.Error };
 
             List<BO.AttorneyMaster> lstattornies = new List<BO.AttorneyMaster>();
@@ -79,6 +83,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             var acc = _context.Attorneys.Include("User")
                                         .Include("User.AddressInfo")
                                         .Include("User.ContactInfo")
+                                        .Include("User.UserCompanies")
                                         .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                         .FirstOrDefault<Attorney>();
 
@@ -97,7 +102,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             var acc = _context.Attorneys.Include("User")
                                         .Include("User.AddressInfo")
                                         .Include("User.ContactInfo")
-                                        .Where(p => p.CompanyId == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                        .Include("User.UserCompanies")
+                                        .Where(p => (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                  && p.User.UserCompanies.Where(p2 => p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
+                                                                         .Any(p2 => p2.CompanyID == id) == true)
                                         .ToList<Attorney>();
 
             List<BO.AttorneyMaster> lstattornies = new List<BO.AttorneyMaster>();
@@ -117,7 +125,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             var acc = _context.Attorneys.Include("User")
                                         .Include("User.AddressInfo")
                                         .Include("User.ContactInfo")
-                                        .Where(p => p.CompanyId != CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                        .Where(p => (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                  && p.User.UserCompanies.Where(p2 => p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
+                                                                         .Any(p2 => p2.CompanyID != CompanyId) == true)
                                         .ToList<Attorney>();
 
             List<BO.AttorneyMaster> lstattornies = new List<BO.AttorneyMaster>();
@@ -150,6 +160,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 IsEditMode = (addAttorneyBO != null && addAttorneyBO.ID > 0) ? true : false;
 
                 Company CompanyDB = new Company();
+                UserCompany UserCompanyDB = new UserCompany();
                 AddressInfo addressUserDB = new AddressInfo();
                 ContactInfo contactinfoDB = new ContactInfo();
                 User userDB = new User();
@@ -324,20 +335,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     }
 
                     _attny.Id = IsEditMode == false ? userDB.id : addAttorneyBO.ID;
-                    _attny.CompanyId = addAttorneyBO.companyId == null ? _attny.CompanyId : addAttorneyBO.companyId;
                     _attny.IsDeleted = addAttorneyBO.IsDeleted.HasValue ? addAttorneyBO.IsDeleted : false;
-
-                    CompanyDB = _context.Companies.Where(p => addAttorneyBO.companyId.HasValue == true && p.id == addAttorneyBO.companyId).FirstOrDefault();
-                    if (CompanyDB != null) _attny.CompanyId = addAttorneyBO.companyId;
-
-                    else
-                    {
-                        if (IsEditMode == false)
-                        {
-                            dbContextTransaction.Rollback();
-                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid User Company Id.", ErrorLevel = ErrorLevel.Error };
-                        }
-                    }
 
                     if (Add_attorneyDB == true) _attny = _context.Attorneys.Add(_attny);
                     _context.SaveChanges();
@@ -355,6 +353,38 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 _context.SaveChanges();
                 #endregion
 
+                #region User Companies
+                if (addAttorneyBO.User.UserCompanies != null)
+                {
+                    bool add_UserCompany = false;
+
+                    Company companyDB = new Company();
+
+                    foreach (var userCompany in addAttorneyBO.User.UserCompanies)
+                    {
+                        userCompany.UserId = userDB.id;
+                        UserCompanyDB = _context.UserCompanies.Where(p => p.UserID == userDB.id && p.CompanyID == userCompany.Company.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                               .FirstOrDefault<UserCompany>();
+
+                        if (UserCompanyDB == null)
+                        {
+                            UserCompanyDB = new UserCompany();
+                            add_UserCompany = true;
+                        }
+
+                        UserCompanyDB.CompanyID = userCompany.Company.ID;
+                        UserCompanyDB.UserID = userCompany.UserId;
+
+                        if (add_UserCompany)
+                        {
+                            _context.UserCompanies.Add(UserCompanyDB);
+                        }
+                        _context.SaveChanges();
+                    }
+
+                }
+                #endregion
+
                 #region Insert Invitation
                 if (sendEmail == true)
                 {
@@ -363,7 +393,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                     invitationDB_UniqueID = Guid.NewGuid();
                     invitationDB.UniqueID = invitationDB_UniqueID;
-                    invitationDB.CompanyID = _attny.CompanyId.HasValue == true ? _attny.CompanyId.Value : 0;
+                    invitationDB.CompanyID = UserCompanyDB.CompanyID != 0 ? UserCompanyDB.CompanyID : 0;
                     invitationDB.CreateDate = DateTime.UtcNow;
                     invitationDB.CreateByUserID = userDB.id;
                     _context.Invitations.Add(invitationDB);
@@ -376,6 +406,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 _attny = _context.Attorneys.Include("User")
                                            .Include("User.AddressInfo")
                                            .Include("User.ContactInfo")
+                                           .Include("User.UserCompanies")
                                            .Where(p => p.Id == _attny.Id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                            .FirstOrDefault<Attorney>();
                 #region Send Email
@@ -396,6 +427,56 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 BO.AttorneyMaster res = Convert<BO.AttorneyMaster, Attorney>(_attny);
                 return (object)res;
             }
+        }
+        #endregion
+
+        #region AssociateAttorneyWithCompany
+        public override object AssociateAttorneyWithCompany(int AttorneyId , int CompanyId)
+        {
+            bool add_UserCompany = false;
+
+            var company = _context.Companies.Where(p => p.id == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (company == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var attorneys = _context.Attorneys.Where( p => p.Id == AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (attorneys == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Attorney.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var userCompany = _context.UserCompanies.Where( p => p.UserID == AttorneyId && p.CompanyID == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (userCompany == null)
+            {
+                userCompany = new UserCompany();
+                add_UserCompany = true;
+            }
+
+            userCompany.CompanyID = CompanyId;
+            userCompany.UserID = AttorneyId;
+
+            if (add_UserCompany)
+            {
+                _context.UserCompanies.Add(userCompany);
+            }
+
+            _context.SaveChanges();
+
+            var _attny = _context.Attorneys.Include("User")
+                                       .Include("User.AddressInfo")
+                                       .Include("User.ContactInfo")
+                                       .Include("User.UserCompanies")
+                                       .Where(p => p.Id == AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                       .FirstOrDefault<Attorney>();
+
+            var res = Convert<BO.AttorneyMaster, Attorney>(_attny);
+            return (object)res;
+
         }
         #endregion
 

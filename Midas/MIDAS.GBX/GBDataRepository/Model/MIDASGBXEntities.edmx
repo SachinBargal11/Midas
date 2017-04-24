@@ -47,7 +47,6 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="CompanyId" Type="int" />
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="CreateByUserID" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
@@ -334,6 +333,7 @@
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="IsCalendarPublic" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="DoctorLocationSchedule">
           <Key>
@@ -932,6 +932,7 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="ColorCode" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="Schedule">
           <Key>
@@ -1186,18 +1187,6 @@ warning 6035: The relationship 'FK_AddressInfo_State_StateCode' has columns that
             </Principal>
             <Dependent Role="AdjusterMaster">
               <PropertyRef Name="InsuranceMasterId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Attorney_Company_CompanyId">
-          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
-          <End Role="Attorney" Type="Self.Attorney" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Company">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Attorney">
-              <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2772,10 +2761,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="InsuranceMaster" EntitySet="InsuranceMaster" />
             <End Role="AdjusterMaster" EntitySet="AdjusterMaster" />
           </AssociationSet>
-          <AssociationSet Name="FK_Attorney_Company_CompanyId" Association="Self.FK_Attorney_Company_CompanyId">
-            <End Role="Company" EntitySet="Company" />
-            <End Role="Attorney" EntitySet="Attorney" />
-          </AssociationSet>
           <AssociationSet Name="FK_Attorney_User_id" Association="Self.FK_Attorney_User_id">
             <End Role="User" EntitySet="User" />
             <End Role="Attorney" EntitySet="Attorney" />
@@ -3328,13 +3313,11 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="CompanyId" Type="Int32" />
           <Property Name="IsDeleted" Type="Boolean" />
           <Property Name="CreateByUserID" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
-          <NavigationProperty Name="Company" Relationship="Self.FK_Attorney_Company_CompanyId" FromRole="Attorney" ToRole="Company" />
           <NavigationProperty Name="User" Relationship="Self.FK_Attorney_User_id" FromRole="Attorney" ToRole="User" />
         </EntityType>
         <EntityType Name="BlobStorage">
@@ -3525,7 +3508,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="BlobStorageTypeId" Type="Int32" />
           <NavigationProperty Name="AddressInfo" Relationship="Self.FK_Company_AddressInfo" FromRole="Company" ToRole="AddressInfo" />
           <NavigationProperty Name="AdjusterMasters" Relationship="Self.FK_AdjusterMaster_Company_CompanyId" FromRole="Company" ToRole="AdjusterMaster" />
-          <NavigationProperty Name="Attorneys" Relationship="Self.FK_Attorney_Company_CompanyId" FromRole="Company" ToRole="Attorney" />
           <NavigationProperty Name="BlobStorageType" Relationship="Self.FK_Company_BlobStorageType_BlobStorageTypeId" FromRole="Company" ToRole="BlobStorageType" />
           <NavigationProperty Name="CaseCompanyConsentDocuments" Relationship="Self.FK_CaseCompanyConsentDocuments_Company_CaseId" FromRole="Company" ToRole="CaseCompanyConsentDocuments" />
           <NavigationProperty Name="CaseCompanyMappings" Relationship="Self.FK_CaseCompanyMapping_Company_CompanyId" FromRole="Company" ToRole="CaseCompanyMapping" />
@@ -3688,6 +3670,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="IsCalendarPublic" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="User" Relationship="Self.FK_Doctor_User" FromRole="Doctor" ToRole="User" />
           <NavigationProperty Name="DoctorLocationSchedules" Relationship="Self.FK_DoctorLocationSchedule_Doctor" FromRole="Doctor" ToRole="DoctorLocationSchedule" />
           <NavigationProperty Name="DoctorLocationSpecialties" Relationship="Self.FK_DoctorLocationSpecialty_Doctor_DoctorId" FromRole="Doctor" ToRole="DoctorLocationSpecialty" />
@@ -4389,6 +4372,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="ColorCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ProcedureCodes" Relationship="Self.FK_ProcedureCode_RoomTest_RoomTestId" FromRole="RoomTest" ToRole="ProcedureCode" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_RoomTest_ReferredToRoomTestId" FromRole="RoomTest" ToRole="Referral" />
           <NavigationProperty Name="Rooms" Relationship="Self.FK_Room_RoomTest" FromRole="RoomTest" ToRole="Room" />
@@ -4830,18 +4814,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             </Principal>
             <Dependent Role="CaseInsuranceMapping">
               <PropertyRef Name="AdjusterMasterId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Attorney_Company_CompanyId">
-          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
-          <End Role="Attorney" Type="Self.Attorney" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Company">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Attorney">
-              <PropertyRef Name="CompanyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -6312,10 +6284,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <End Role="AdjusterMaster" EntitySet="AdjusterMasters" />
             <End Role="CaseInsuranceMapping" EntitySet="CaseInsuranceMappings" />
           </AssociationSet>
-          <AssociationSet Name="FK_Attorney_Company_CompanyId" Association="Self.FK_Attorney_Company_CompanyId">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="Attorney" EntitySet="Attorneys" />
-          </AssociationSet>
           <AssociationSet Name="FK_Attorney_User_id" Association="Self.FK_Attorney_User_id">
             <End Role="User" EntitySet="Users" />
             <End Role="Attorney" EntitySet="Attorneys" />
@@ -6810,7 +6778,6 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
             <EntityTypeMapping TypeName="MIDASGBXModel.Attorney">
               <MappingFragment StoreEntitySet="Attorney">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="CreateByUserID" ColumnName="CreateByUserID" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
@@ -7117,6 +7084,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="IsCalendarPublic" ColumnName="IsCalendarPublic" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7727,6 +7695,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="ColorCode" ColumnName="ColorCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

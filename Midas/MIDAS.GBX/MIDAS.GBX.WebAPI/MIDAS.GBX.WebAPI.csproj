@@ -46,9 +46,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Docs.Pdf">
-      <HintPath>C:\Users\milind.k.CODEARRAY\Desktop\dll\Docs.Pdf\Docs.Pdf\Docs.Pdf\bin\Debug\Docs.Pdf.dll</HintPath>
-    </Reference>
     <Reference Include="log4net">
       <HintPath>C:\Users\codearray\Downloads\DemoProject\DemoProject\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>

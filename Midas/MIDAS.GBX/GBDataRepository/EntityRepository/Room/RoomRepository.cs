@@ -50,6 +50,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 BO.RoomTest roomtestBO = new BO.RoomTest();
                 roomtestBO.name = room.RoomTest.Name;
                 roomtestBO.ID = room.RoomTest.id;
+                roomtestBO.ColorCode = room.RoomTest.ColorCode;
 
                 if (room.RoomTest.IsDeleted.HasValue)
                     roomtestBO.IsDeleted = room.RoomTest.IsDeleted.Value;

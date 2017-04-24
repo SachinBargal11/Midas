@@ -182,6 +182,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                 patientVisitDiagnosisCodeBO.CreateByUserID = eachVisitDiagnosis.CreateByUserID;
                                 patientVisitDiagnosisCodeBO.UpdateByUserID = eachVisitDiagnosis.UpdateByUserID;
 
+                                if (eachVisitDiagnosis.DiagnosisCode != null)
+                                {
+                                    using (DiagnosisCodeRepository repoDiagnosisCode = new DiagnosisCodeRepository(_context))
+                                    {
+                                        BO.DiagnosisCode diagCode = repoDiagnosisCode.Convert<BO.DiagnosisCode, DiagnosisCode>(eachVisitDiagnosis.DiagnosisCode);
+
+                                        patientVisitDiagnosisCodeBO.DiagnosisCode = diagCode;
+                                    }
+                                }
+
                                 BOpatientVisitDiagnosisCode.Add(patientVisitDiagnosisCodeBO);
                             }
                         }
@@ -207,6 +217,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                 patientVisitProcedureCodeBO.IsDeleted = eachVisitProcedure.IsDeleted;
                                 patientVisitProcedureCodeBO.CreateByUserID = eachVisitProcedure.CreateByUserID;
                                 patientVisitProcedureCodeBO.UpdateByUserID = eachVisitProcedure.UpdateByUserID;
+
+                                if (eachVisitProcedure.ProcedureCode != null)
+                                {
+                                    using (ProcedureCodeRepository repoProcedureCode = new ProcedureCodeRepository(_context))
+                                    {
+                                        BO.ProcedureCode procCode = repoProcedureCode.Convert<BO.ProcedureCode, ProcedureCode>(eachVisitProcedure.ProcedureCode);
+
+                                        patientVisitProcedureCodeBO.ProcedureCode = procCode;
+                                    }
+                                }
 
                                 BOpatientVisitProcedureCode.Add(patientVisitProcedureCodeBO);
                             }
@@ -248,7 +268,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                         .Include("Case")
                                                                         .Include("Doctor")
                                                                         .Include("Doctor.User")
-                                                                        .Include("Room")
+                                                                        .Include("Room").Include("Room.RoomTest")
                                                                         .Include("Location")
                                                                         .Include("Specialty")
                                                                         .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
@@ -280,7 +300,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                         .Include("Case")
                                                                         .Include("Doctor")
                                                                         .Include("Doctor.User")
-                                                                        .Include("Room")
+                                                                        .Include("Room").Include("Room.RoomTest")
                                                                         .Include("Location")
                                                                         .Include("Specialty")
                                                                         .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
@@ -312,7 +332,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                                         .Include("Case")
                                                                         .Include("Doctor")
                                                                         .Include("Doctor.User")
-                                                                        .Include("Room")
+                                                                        .Include("Room").Include("Room.RoomTest")
                                                                         .Include("Location")
                                                                         .Include("Specialty")
                                                                         .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
@@ -744,7 +764,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             var acc = _context.PatientVisit2.Include("Doctor")
                                             .Include("Doctor.User")
-                                            .Include("Room")
+                                            .Include("Room").Include("Room.RoomTest")
                                             .Include("Specialty")
                                             .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
                                             .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
@@ -897,7 +917,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             var acc = _context.PatientVisit2.Include("Doctor")
                                             .Include("Doctor.User")
-                                            .Include("Room")
+                                            .Include("Room").Include("Room.RoomTest")
                                             .Include("Specialty")
                                             .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
                                             .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
