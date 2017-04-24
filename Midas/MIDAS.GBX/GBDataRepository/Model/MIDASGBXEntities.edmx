@@ -333,6 +333,7 @@
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="IsCalendarPublic" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="DoctorLocationSchedule">
           <Key>
@@ -931,6 +932,7 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="CreateDate" Type="datetime2" Precision="7" Nullable="false" />
           <Property Name="UpdateByUserID" Type="int" />
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
+          <Property Name="ColorCode" Type="nvarchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="Schedule">
           <Key>
@@ -3668,6 +3670,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="IsCalendarPublic" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="User" Relationship="Self.FK_Doctor_User" FromRole="Doctor" ToRole="User" />
           <NavigationProperty Name="DoctorLocationSchedules" Relationship="Self.FK_DoctorLocationSchedule_Doctor" FromRole="Doctor" ToRole="DoctorLocationSchedule" />
           <NavigationProperty Name="DoctorLocationSpecialties" Relationship="Self.FK_DoctorLocationSpecialty_Doctor_DoctorId" FromRole="Doctor" ToRole="DoctorLocationSpecialty" />
@@ -4369,6 +4372,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="UpdateByUserID" Type="Int32" />
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
+          <Property Name="ColorCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ProcedureCodes" Relationship="Self.FK_ProcedureCode_RoomTest_RoomTestId" FromRole="RoomTest" ToRole="ProcedureCode" />
           <NavigationProperty Name="Referrals" Relationship="Self.FK_Referral_RoomTest_ReferredToRoomTestId" FromRole="RoomTest" ToRole="Referral" />
           <NavigationProperty Name="Rooms" Relationship="Self.FK_Room_RoomTest" FromRole="RoomTest" ToRole="Room" />
@@ -7080,6 +7084,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="IsCalendarPublic" ColumnName="IsCalendarPublic" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -7690,6 +7695,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="UpdateByUserID" ColumnName="UpdateByUserID" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="ColorCode" ColumnName="ColorCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

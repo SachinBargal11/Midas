@@ -51,6 +51,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (doctor.UpdateByUserID.HasValue)
                 doctorBO.UpdateByUserID = doctor.UpdateByUserID.Value;
 
+            doctorBO.IsCalendarPublic = doctor.IsCalendarPublic;
+
             if (doctor.User != null)
             {
                 if (doctor.User.IsDeleted.HasValue == false || (doctor.User.IsDeleted.HasValue == true && doctor.User.IsDeleted.Value == false))
@@ -150,6 +152,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 doctorBO.IsDeleted = doctor.IsDeleted.Value;
             if (doctor.UpdateByUserID.HasValue)
                 doctorBO.UpdateByUserID = doctor.UpdateByUserID.Value;
+
+            doctorBO.IsCalendarPublic = doctor.IsCalendarPublic;
 
             if (doctor.DoctorSpecialities != null)
             {
@@ -304,6 +308,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         doctorDB.IsDeleted = doctorBO.IsDeleted.HasValue ? doctorBO.IsDeleted : (doctorBO.IsDeleted.HasValue ? doctor.IsDeleted : false);
                         doctorDB.UpdateDate = doctorBO.UpdateDate;
                         doctorDB.UpdateByUserID = doctorBO.UpdateByUserID;
+                        doctorDB.IsCalendarPublic = doctorBO.IsCalendarPublic;
                         #endregion
                         // doctorDB = doctor;                                
                         // _context.Entry(doctorDB).State = System.Data.Entity.EntityState.Modified;
@@ -328,6 +333,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     doctorDB.UpdateByUserID = doctorBO.UpdateByUserID;
                     doctorDB.CreateDate = doctorBO.CreateDate;
                     doctorDB.CreateByUserID = doctorBO.CreateByUserID;
+                    doctorDB.IsCalendarPublic = doctorBO.IsCalendarPublic;
 
                     _dbSet.Add(doctorDB);
                 }
