@@ -37,6 +37,7 @@ export class UserBasicComponent implements OnInit {
     doctorFlag: boolean = false;
     cellPhone: string;
     selectedRole: any[] = [];
+    selectedPublishSchedule: any[] = [];
     faxNo: string;
     userType: any;
     states: any[];
@@ -220,7 +221,8 @@ export class UserBasicComponent implements OnInit {
             npi: ['', Validators.required],
             taxType: ['', [Validators.required, AppValidators.selectedValueValidator]],
             title: ['', Validators.required],
-            speciality: ['2', Validators.required]
+            speciality: ['2', Validators.required],
+            publishSchedule: ['']
         };
         return model;
     }

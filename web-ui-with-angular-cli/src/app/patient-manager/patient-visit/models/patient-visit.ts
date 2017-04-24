@@ -12,6 +12,8 @@ import { Room } from '../../../medical-provider/rooms/models/room';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
 import { Location } from '../../../medical-provider/locations/models/location';
 import { Patient } from '../../../patient-manager/patients/models/patient';
+import { DiagnosisCode } from '../../../commons/models/diagnosis-code';
+import { Procedure } from '../../../commons/models/procedure';
 
 const PatientVisitRecord = Record({
     id: 0,
@@ -34,6 +36,8 @@ const PatientVisitRecord = Record({
     visitStatusId: VisitStatus.SCHEDULED,
     visitType: 0,
     calendarEvent: null,
+    patientVisitDiagnosisCodes: [],
+    patientVisitProcedureCodes: [],
     isDeleted: false,
     createByUserId: 0,
     updateByUserId: 0,
@@ -64,6 +68,8 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     visitStatusId: VisitStatus;
     visitType: number;
     calendarEvent: ScheduledEvent;
+    patientVisitDiagnosisCodes: DiagnosisCode[];
+    patientVisitProcedureCodes: Procedure[];
     isDeleted: boolean;
     createByUserId: number;
     updateByUserId: number;

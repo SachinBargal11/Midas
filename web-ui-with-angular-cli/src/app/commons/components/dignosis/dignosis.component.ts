@@ -24,10 +24,10 @@ export class DignosisComponent implements OnInit {
   diagCodes: DiagnosisCode[];
   diagnosisCodes: SelectItem[] = [];
   selectedDiagnosisCodes: DiagnosisCode[];
-  selectedDiagnosisToDelete: DiagnosisCode[];
+  selectedDiagnosis: DiagnosisCode[];
 
   @Input() selectedVisit: PatientVisit;
-  @Output() uploadComplete: EventEmitter<Document[]> = new EventEmitter();
+  @Output() save: EventEmitter<DiagnosisCode[]> = new EventEmitter();
   @Output() uploadError: EventEmitter<Error> = new EventEmitter();
 
   constructor(
@@ -100,18 +100,24 @@ export class DignosisComponent implements OnInit {
   }
 
 
-  saveDiagnosis() {
+  saveDiagnosisCodes() {
+    // let diagnosisCodes = [];
+    // this.selectedDiagnosisCodes.forEach(currentDiagnosisCode => {
+    //   diagnosisCodes.push({ 'diagnosisCodeId': currentDiagnosisCode.id });
+    // });
+    // this.saveComplete.emit(diagnosisCodes);
+    this.save.emit(this.selectedDiagnosisCodes);
   }
 
   deleteDiagnosis() {
-      let diagnosisCodeIds: number[] = _.map(this.selectedDiagnosisToDelete, (currentDiagnosisCode: DiagnosisCode) => {
-        return currentDiagnosisCode.id;
-      });
-      let diagnosisCodeDetails = _.filter(this.selectedDiagnosisCodes, (currentDiagnosisCode: DiagnosisCode) => {
-        return _.indexOf(diagnosisCodeIds, currentDiagnosisCode.id) < 0 ? true : false;
-      });
+    let diagnosisCodeIds: number[] = _.map(this.selectedDiagnosis, (currentDiagnosisCode: DiagnosisCode) => {
+      return currentDiagnosisCode.id;
+    });
+    let diagnosisCodeDetails = _.filter(this.selectedDiagnosisCodes, (currentDiagnosisCode: DiagnosisCode) => {
+      return _.indexOf(diagnosisCodeIds, currentDiagnosisCode.id) < 0 ? true : false;
+    });
 
-      this.selectedDiagnosisCodes = diagnosisCodeDetails;
+    this.selectedDiagnosisCodes = diagnosisCodeDetails;
   }
 
 }
