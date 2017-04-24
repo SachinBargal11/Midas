@@ -23,6 +23,8 @@ import { DocumentUploadComponent } from '../commons/components/document-upload/d
 import { DignosisComponent } from './components/dignosis/dignosis.component';
 import { ProcedureComponent } from './components/procedure/procedure.component';
 
+import { SignaturePadModule } from 'angular2-signaturepad';
+import { SignatureFieldComponent } from '../commons/components/signature-field/signature-field.component';
 
 import {
   AccordionModule,
@@ -74,7 +76,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     GrowlModule,
     TabViewModule,
     LightboxModule,
-    ListboxModule
+    ListboxModule,
+    SignaturePadModule
   ],
   declarations: [
     LimitPipe,
@@ -94,6 +97,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ShellComponent,
     ScheduledEventEditorComponent,
     DocumentUploadComponent,
+    SignatureFieldComponent,
     DignosisComponent,
     ProcedureComponent
   ],
@@ -134,6 +138,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ShellComponent,
     ScheduledEventEditorComponent,
     DocumentUploadComponent,
+    SignatureFieldComponent,
     DignosisComponent,
     ProcedureComponent,
     FileUploadModule,

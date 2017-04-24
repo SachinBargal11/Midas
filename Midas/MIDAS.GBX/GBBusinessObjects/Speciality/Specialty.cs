@@ -24,6 +24,10 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("isunitApply")]
         public bool IsUnitApply { get; set; }
 
+        [Required]
+        [JsonProperty("colorCode")]
+        public string ColorCode { get; set; }
+
         public List<Company> CompanySpecialtyDetails { get; set; }
         public List<Company> SpecialtyDetails { get; set; }
     }

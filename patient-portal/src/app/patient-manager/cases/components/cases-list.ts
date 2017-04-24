@@ -19,6 +19,7 @@ import * as _ from 'underscore';
 import { Referral } from '../models/referral';
 import { environment } from '../../../../environments/environment';
 import { CaseDocument } from '../../cases/models/case-document';
+import { ConsentStore } from '../stores/consent-store';
 
 @Component({
     selector: 'cases',
@@ -48,6 +49,8 @@ export class CasesListComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _notificationsStore: NotificationsStore,
         private confirmationService: ConfirmationService,
+        private _AddConsentStore: ConsentStore,
+
     ) {
         // this._route.parent.params.subscribe((routeParams: any) => {
         //     this.patientId = parseInt(routeParams.patientId, 10);
@@ -94,7 +97,32 @@ export class CasesListComponent implements OnInit {
     }
     downloadConsent(caseDocuments: CaseDocument[]) {
         caseDocuments.forEach(caseDocument => {
-            window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+            // window.location.assign(this._url + '/fileupload/download/' + caseDocument.document.originalResponse.caseId + '/' + caseDocument.document.originalResponse.midasDocumentId);
+            if (caseDocument.document.originalResponse.companyId == this.CompanyId) {
+                this.progressBarService.show();
+                this._AddConsentStore.downloadConsentForm(caseDocument.document.originalResponse.caseId, caseDocument.document.originalResponse.midasDocumentId)
+                    .subscribe(
+                    (response) => {
+                        // this.document = document
+                        //  window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+                    },
+                    (error) => {
+                        let errString = 'Unable to download';
+                        let notification = new Notification({
+                            'messages': 'Unable to download',
+                            'type': 'ERROR',
+                            'createdAt': moment()
+                        });
+                        //this._notificationsStore.addNotification(notification);
+                        this.progressBarService.hide();
+                        this._notificationsService.error('Oh No!', 'Unable to download');
+
+                    },
+                    () => {
+                        this.progressBarService.hide();
+                    });
+                this.progressBarService.hide();
+            }
         });
     }
     consentAvailable(case1: Case) {
@@ -150,7 +178,6 @@ export class CasesListComponent implements OnInit {
 
 
     }
-
 
     loadCasesLazy(event: LazyLoadEvent) {
         setTimeout(() => {
@@ -213,4 +240,6 @@ export class CasesListComponent implements OnInit {
             this._notificationsService.error('Oh No!', 'select case to delete');
         }
     }
+
+
 }

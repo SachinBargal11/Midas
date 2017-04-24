@@ -1,12 +1,17 @@
 <div class="form-group">
     <div class="form-check form-check-inline">
         <label class="form-check-label">
-            <input type="radio" value="1" name="documentMode" [(ngModel)]="documentMode"> Scan Documents
+            <input type="radio" value="1" name="documentMode" [(ngModel)]="documentMode" (ngModelChange)="onDocumentModelChange($event)"> Scan Documents
         </label>
     </div>
     <div class="form-check  form-check-inline">
         <label class="form-check-label">
-            <input type="radio" value="2" name="documentMode" [(ngModel)]="documentMode"> Upload Documents
+            <input type="radio" value="2" name="documentMode" [(ngModel)]="documentMode" (ngModelChange)="onDocumentModelChange($event)"> Upload Documents
+        </label>
+    </div>
+    <div class="form-check  form-check-inline" *ngIf="isElectronicSignatureOn">
+        <label class="form-check-label">
+            <input type="radio" value="3" name="documentMode" [(ngModel)]="documentMode" (ngModelChange)="onDocumentModelChange($event)"> Electronic Signature Form
         </label>
     </div>
 </div>
@@ -32,7 +37,7 @@
             <div class="row m-t">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <input type="text" class="form-control" [(ngModel)]="scannedFileName" placeholder="File Name"/>
+                        <input type="text" class="form-control" [(ngModel)]="scannedFileName" placeholder="File Name" />
                     </div>
 
                 </div>
@@ -65,4 +70,28 @@
         </p-fileUpload>
     </div>
     <br>
+</section>
+<section class="card" [hidden]="documentMode != '3'" *ngIf="isElectronicSignatureOn">
+    <header class="card-header card-header-lg">
+
+    </header>
+    <div class="card-block">
+        <form [formGroup]="digitalForm" (submit)="saveDigitalForm()" (window:resize)="beResponsive()">
+            <embed src="./Consent_iCare Clinic.pdf" width="500px" height="500px" />
+            <div class="sig-container" #sigContainer1>
+                <div class="row">
+                    <div class="col-md-6" style="width:400px;height:300px;border:1px solid #000;">
+                        <signature-field formControlName="signatureField1"></signature-field>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" (click)="sigs.first.clear()" [disabled]="!digitalForm.controls.signatureField1.valid">Clear Sig 1</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <!--<button class="btn btn-primary" type="button" (click)="clear()" [disabled]="!digitalForm.controls.signatureField1.valid && !digitalForm.controls.signatureField2.valid">Clear</button>-->
+                <button class="btn btn-primary" type="submit" [disabled]="!digitalForm.valid">Submit</button>
+            </div>
+        </form>
+    </div>
 </section>

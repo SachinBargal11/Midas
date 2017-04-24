@@ -45,6 +45,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 specialtyBO.IsDeleted = specialty.IsDeleted.Value;
             if (specialty.UpdateByUserID.HasValue)
                 specialtyBO.UpdateByUserID = specialty.UpdateByUserID.Value;
+            
+            specialtyBO.ColorCode = specialty.ColorCode;
+
             return (T)(object)specialtyBO;
         }
         #endregion
@@ -71,6 +74,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             speclityDB.SpecialityCode = specialtyBO.SpecialityCode;
             speclityDB.IsUnitApply = specialtyBO.IsUnitApply;
             speclityDB.IsDeleted = specialtyBO.IsDeleted.HasValue ? specialtyBO.IsDeleted.Value : false;
+            speclityDB.ColorCode = specialtyBO.ColorCode;
             #endregion
 
 
@@ -89,6 +93,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     specialty.SpecialityCode = specialtyBO.SpecialityCode != null ? specialtyBO.SpecialityCode : specialty.SpecialityCode;
                     specialty.IsDeleted = specialtyBO.IsDeleted != null ? specialtyBO.IsDeleted : specialty.IsDeleted;
                     specialty.UpdateByUserID = specialtyBO.UpdateByUserID;
+                    specialty.ColorCode = specialtyBO.ColorCode != null ? specialtyBO.ColorCode : specialty.ColorCode;
                     #endregion
 
                     _context.Entry(specialty).State = System.Data.Entity.EntityState.Modified;

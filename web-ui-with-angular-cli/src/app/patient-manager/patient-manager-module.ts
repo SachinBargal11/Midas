@@ -97,6 +97,10 @@ import { AttorneyMasterService } from '../account-setup/services/attorney-servic
 import { AttorneyMasterStore } from '../account-setup/stores/attorney-store';
 import { DoctorManagerModule } from '../doctor-manager/doctor-manager-module';
 
+import { VisitShellComponent } from './cases/components/visit-shell';
+import { PatientVisitListDoctorComponent } from './cases/components/doctor-visit';
+import { PatientVisitListTreatingRoomComponent } from './cases/components/treatingroom-visit';
+
 
 @NgModule({
     imports: [
@@ -157,7 +161,13 @@ import { DoctorManagerModule } from '../doctor-manager/doctor-manager-module';
         AddReferralComponent,
         ReferralsShellComponent,
         InboundReferralsComponent,
-        OutboundReferralsComponent
+        OutboundReferralsComponent,
+        VisitShellComponent,
+        PatientVisitListDoctorComponent,
+        PatientVisitListTreatingRoomComponent
+        
+
+        
     ],
     providers: [
         PatientsService,

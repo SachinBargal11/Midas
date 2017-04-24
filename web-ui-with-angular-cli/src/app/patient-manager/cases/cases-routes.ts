@@ -23,6 +23,9 @@ import { AddConsentComponent } from './components/add-consent';
 import { EditConsentComponent } from './components/edit-consent';
 import { ReferralListComponent } from './components/referral-list';
 import { AddReferralComponent } from './components/add-referral';
+import { VisitShellComponent } from './components/visit-shell';
+import { PatientVisitListDoctorComponent } from './components/doctor-visit';
+import { PatientVisitListTreatingRoomComponent } from './components/treatingroom-visit';
 //import { PopupFileUpload } from '../../commons/components/PopupFileUpload';
 
 export const CasesShellRoutes: Routes = [
@@ -135,7 +138,7 @@ export const CasesShellRoutes: Routes = [
                     },
                     {
                         path: 'patient-visit',
-                        component: ShellComponent,
+                        component: VisitShellComponent,
                         canActivate: [ValidateActiveSession],
                         data: {
                             breadcrumb: 'Visits'
@@ -143,11 +146,105 @@ export const CasesShellRoutes: Routes = [
                         children: [
                             {
                                 path: '',
-                                component: PatientVisitListComponent,
+                                redirectTo: 'doctor-visit',
+                                pathMatch: 'full'
+                            },
+                            {
+                                path: 'doctor-visit',
+                                component: ShellComponent,
                                 canActivate: [ValidateActiveSession],
                                 data: {
-                                    breadcrumb: 'root'
-                                }
+                                    breadcrumb: 'Doctor Visits'
+                                },
+                                children: [
+                                    {
+                                        path: '',
+                                        component: PatientVisitListDoctorComponent,
+                                        canActivate: [ValidateActiveSession],
+                                        data: {
+                                            breadcrumb: 'root'
+                                        }
+                                    },
+                                    {
+                                        path: ':visitId',
+                                        component: PatientVisitListShellComponent,
+                                        data: {
+                                            breadcrumb: 'root'
+                                        },
+                                        children: [
+                                            {
+                                                path: '',
+                                                redirectTo: 'visit-note',
+                                                pathMatch: 'full'
+                                            },
+                                            {
+                                                path: 'visit-note',
+                                                component: PatientVisitNotesComponent,
+                                                canActivate: [ValidateActiveSession],
+                                                data: {
+                                                    breadcrumb: 'Visit Notes'
+                                                }
+                                            },
+                                            {
+                                                path: 'visit-document',
+                                                component: VisitDocumentsUploadComponent,
+                                                canActivate: [ValidateActiveSession],
+                                                data: {
+                                                    breadcrumb: 'Documents Upload'
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                path: 'treatingroom-visit',
+                                component: ShellComponent,
+                                canActivate: [ValidateActiveSession],
+                                data: {
+                                    breadcrumb: 'Treating Room Visits'
+                                },
+                                children: [
+                                    {
+                                        path: '',
+                                        component: PatientVisitListTreatingRoomComponent,
+                                        data: {
+                                            breadcrumb: 'root'
+                                        },
+
+
+                                    },
+                                    {
+                                        path: ':visitId',
+                                        component: PatientVisitListShellComponent,
+                                        data: {
+                                            breadcrumb: 'root'
+                                        },
+                                        children: [
+                                            {
+                                                path: '',
+                                                redirectTo: 'visit-note',
+                                                pathMatch: 'full'
+                                            },
+                                            {
+                                                path: 'visit-note',
+                                                component: PatientVisitNotesComponent,
+                                                canActivate: [ValidateActiveSession],
+                                                data: {
+                                                    breadcrumb: 'Visit Notes'
+                                                }
+                                            },
+                                            {
+                                                path: 'visit-document',
+                                                component: VisitDocumentsUploadComponent,
+                                                canActivate: [ValidateActiveSession],
+                                                data: {
+                                                    breadcrumb: 'Documents Upload'
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ]
                             },
                             {
                                 path: ':visitId',

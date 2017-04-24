@@ -10,34 +10,19 @@
         </select>
                 </div>
             </div>
-            <div class="col-lg-3" *ngIf="specialities.length > 0 || tests.length > 0">
+            <div class="col-lg-3">
                 <div class="form-group">
                     <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
                         <option value="0"></option>
-             <optgroup label="Select Speciality">
-                    <option *ngFor="let speciality of specialities" data-option="1" [value]="speciality.id">{{speciality.name}}</option>                                       
+             <optgroup label="Select Doctor">
+                    <!--<option *ngFor="let speciality of specialities" data-option="1" [value]="speciality.id">{{speciality.name}}</option>                                       -->
+                    <option data-type="1" data-specialityId="currentDoctorLocationSchedule.speciality.speciality.id" *ngFor="let currentDoctorLocationSchedule of doctorLocationSchedules" [value]="currentDoctorLocationSchedule.doctorLocationSchedule.doctor.id">{{currentDoctorLocationSchedule.speciality.speciality.name}} - {{currentDoctorLocationSchedule.doctorLocationSchedule.doctor.user.displayName}}</option>                                       
              </optgroup>
-             <optgroup label="Select Test">
-                    <option *ngFor="let test of tests" data-option="2" [value]="test.id">{{test.name}}</option> 
+             <optgroup label="Select Room">
+                    <!--<option *ngFor="let test of tests" data-option="2" [value]="test.id">{{test.name}}</option> -->
+                    <option data-type="2" data-testId="currentRoom.roomTest.id" *ngFor="let currentRoom of rooms" [value]="currentRoom.id">{{currentRoom.roomTest.name}} - {{currentRoom.name}}</option>                                       
              </optgroup>
         </select>
-                </div>
-            </div>
-            <div class="col-lg-3" *ngIf="selectedOption == 1">
-                <div class="form-group">
-                    <select [(ngModel)]="selectedDoctorId" class="select2-arrow form-control" (change)="selectDoctor()">
-            <option value="0"> -- Select Doctor -- </option>
-            <option *ngFor="let doctorLocationSchedule of doctorLocationSchedules" [value]="doctorLocationSchedule.doctor.id">{{doctorLocationSchedule.doctor.user.displayName}}</option>                                       
-        </select>
-                </div>
-            </div>
-            <div class="col-lg-3" *ngIf="selectedOption == 2">
-                <div class="form-group">
-                    <select [(ngModel)]="selectedRoomId" class="select2-arrow form-control" (change)="selectRoom()">
-            <option value="0"> -- Select Room -- </option>
-            <option *ngFor="let room of rooms" [value]="room.id">{{room.name}}</option>                                       
-        </select>
-                    <!--<span *ngIf="roomSchedule">{{roomSchedule.name}}</span>-->
                 </div>
             </div>
         </div>
@@ -162,7 +147,7 @@
                 </div>
                 <div class="col-md-4">
                     <!--<a class="btn btn-rounded btn-inline btn-primary-outline" (click)="addNewPatient()">Add New Patient</a>-->
-                    <input type="checkbox" formControlName="isAddNewPatient" (change)="addNewPatient()" [(ngModel)]="isAddNewPatient" > <label>Add New Patient</label>
+                    <input type="checkbox" formControlName="isAddNewPatient" (change)="addNewPatient()" [(ngModel)]="isAddNewPatient">                    <label>Add New Patient</label>
                 </div>
             </div>
 

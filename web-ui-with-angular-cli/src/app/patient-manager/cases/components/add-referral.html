@@ -10,6 +10,9 @@
             <div class="col-md-3">
                 <input type="radio" value="3" name="searchMode" [(ngModel)]="searchMode"> Testing Rooms
             </div>
+            <!--<div class="col-md-3">
+                <input type="radio" value="4" name="searchMode" [(ngModel)]="searchMode"> Referral's Outside Midas
+            </div>-->
         </div>
     </h6>
 </section>
@@ -64,15 +67,15 @@
             <p-column selectionMode="single"></p-column>
             <p-column field="user.displayName" header="Doctor Name" [sortable]="true"></p-column>
             <p-column field="user.userName" header="Email" [sortable]="true"></p-column>
-            <p-column  header="Company" [sortable]="true">
+            <p-column header="Company" [sortable]="true">
                 <ng-template let-currentReferral="rowData" pTemplate="body">
-                                {{getCurrentDoctorCompanyName(currentReferral)}}
-                            </ng-template>
+                    {{getCurrentDoctorCompanyName(currentReferral)}}
+                </ng-template>
             </p-column>
-            <p-column  header="Location" [sortable]="true">
+            <p-column header="Location" [sortable]="true">
                 <ng-template let-currentReferral="rowData" pTemplate="body">
-                                {{getCurrentDoctorLocationName(currentReferral)}}
-                            </ng-template>
+                    {{getCurrentDoctorLocationName(currentReferral)}}
+                </ng-template>
             </p-column>
             <!--<p-column field="user.doctorSpecialities" header="Speciality" [sortable]="true">
                             <ng-template let-currentReferral="rowData" pTemplate="body">
@@ -107,6 +110,75 @@
             <p-column field="location.location.name" header="Location" [sortable]="true"></p-column>
         </p-dataTable>
     </section>
+    <!--<section *ngIf="searchMode == '4'">
+        <section class="card">
+            <header class="card-header card-header-lg">
+                Referral's Information
+            </header>
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="form-label"> First Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="referralFormControls.firstName.touched && !referralFormControls.firstName.valid">
+                            <input formControlName="firstName" type="text" class="form-control" placeholder="" [class.error]="!referralFormControls.firstName.valid">
+                            <div class='error-list' *ngIf="referralFormControls.firstName.touched && !referralFormControls.firstName.valid">
+                                <ul>
+                                    <li *ngIf="referralFormControls.firstName.hasError('required')">First Name is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label"> Last Name
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="referralFormControls.lastName.touched && !referralFormControls.lastName.valid">
+                            <input formControlName="lastName" type="text" class="form-control" placeholder="" [class.error]="!referralFormControls.lastName.valid">
+                            <div class='error-list' *ngIf="referralFormControls.lastName.touched && !referralFormControls.lastName.valid">
+                                <ul>
+                                    <li *ngIf="referralFormControls.lastName.hasError('required')">Last Name is required.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class="form-label"> E-Mail
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="referralFormControls.email.touched && !referralFormControls.email.valid">
+                            <input type="email" formControlName="email" [class.error]="!referralFormControls.email.valid" class="form-control" type="text"
+                                placeholder="" />
+                            <div class='error-list' *ngIf="referralFormControls.email.touched && !referralFormControls.email.valid">
+                                <ul>
+                                    <li *ngIf="referralFormControls.email.hasError('required')">Email is required.</li>
+                                    <li *ngIf="referralFormControls.email.hasError('emailValidator')">Email is invalid.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label"> Cellphone
+                                            <span class="color-red">*</span>
+                                        </label>
+                        <div class="form-group" [class.error]="referralFormControls.cellPhone.touched && !referralFormControls.cellPhone.valid">
+                            <p-inputMask mask="999-999-9999" formControlName="cellPhone" [class.error]="referralFormControls.cellPhone.touched && !referralFormControls.cellPhone.valid"
+                                placeholder="999-999-9999" styleClass="form-control"></p-inputMask>
+                            <div class='error-list' *ngIf="referralFormControls.cellPhone.touched && !referralFormControls.cellPhone.valid">
+                                <ul>
+                                    <li *ngIf="referralFormControls.cellPhone.hasError('required')">Cellphone number is required.</li>
+                                    <li *ngIf="referralFormControls.cellPhone.hasError('mobileNoValidator')">Cellphone number is invalid.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>-->
     <br>
     <section>
         <div class="row">
@@ -122,17 +194,6 @@
                     </div>
                 </div>
             </div>
-            <!--<div class="col-md-2 m-t-lg"></div>
-            <div class="col-md-4 m-t-lg">
-                <div class="row">
-                    <label class="form-label">
-                    <a class="btn-primary btn-sm" href="/ConsentForm.pdf">Generate Referral Document</a>                               
-                </label>
-                </div>
-                <div class="row">
-                    <a href="/ConsentForm.pdf"><u>Download Document</u></a>   
-                </div>
-            </div>-->
         </div>
     </section>
     <button [disabled]="!referralForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
@@ -140,3 +201,8 @@
     </button>
     <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
 </form>
+
+<p-dialog [minWidth]="500" [width]="1200" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+<patient-visit></patient-visit>
+</p-dialog>
