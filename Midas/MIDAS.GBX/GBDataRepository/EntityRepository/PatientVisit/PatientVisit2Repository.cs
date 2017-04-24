@@ -245,12 +245,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("CalendarEvent")
                                                                         .Include("Patient2")
                                                                         .Include("Patient2.User")
-                                                                         .Include("Case")
-                                                                         .Include("Doctor")
-                                                                         .Include("Doctor.User")
-                                                                         .Include("Room")
-                                                                         .Include("Location")
-                                                                         .Include("Specialty")
+                                                                        .Include("Case")
+                                                                        .Include("Doctor")
+                                                                        .Include("Doctor.User")
+                                                                        .Include("Room")
+                                                                        .Include("Location")
+                                                                        .Include("Specialty")
+                                                                        .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
+                                                                        .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
                                                                         .Where(p => p.LocationId == id
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                         .ToList<PatientVisit2>();
@@ -275,12 +277,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("CalendarEvent")
                                                                         .Include("Patient2")
                                                                         .Include("Patient2.User")
-                                                                         .Include("Case")
-                                                                         .Include("Doctor")
-                                                                         .Include("Doctor.User")
-                                                                         .Include("Room")
-                                                                         .Include("Location")
-                                                                         .Include("Specialty")
+                                                                        .Include("Case")
+                                                                        .Include("Doctor")
+                                                                        .Include("Doctor.User")
+                                                                        .Include("Room")
+                                                                        .Include("Location")
+                                                                        .Include("Specialty")
+                                                                        .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
+                                                                        .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
                                                                         .Where(p => p.LocationId == LocationId && p.RoomId == RoomId
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                         .ToList<PatientVisit2>();
@@ -305,12 +309,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("CalendarEvent")
                                                                         .Include("Patient2")
                                                                         .Include("Patient2.User")
-                                                                         .Include("Case")
-                                                                         .Include("Doctor")
-                                                                         .Include("Doctor.User")
-                                                                         .Include("Room")
-                                                                         .Include("Location")
-                                                                         .Include("Specialty")
+                                                                        .Include("Case")
+                                                                        .Include("Doctor")
+                                                                        .Include("Doctor.User")
+                                                                        .Include("Room")
+                                                                        .Include("Location")
+                                                                        .Include("Specialty")
+                                                                        .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
+                                                                        .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
                                                                         .Where(p => p.LocationId == LocationId && p.DoctorId == DoctorId
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                         .ToList<PatientVisit2>();
@@ -627,8 +633,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (PatientVisit2DB != null)
                 {
                     PatientVisit2DB = _context.PatientVisit2.Include("CalendarEvent")
-                                                            .Include("PatientVisitDiagnosisCodes")
-                                                            .Include("PatientVisitProcedureCodes")
+                                                            .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
+                                                            .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
                                                             .Where(p => p.Id == PatientVisit2DB.Id
                                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                             .FirstOrDefault<PatientVisit2>();
@@ -740,6 +746,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                             .Include("Doctor.User")
                                             .Include("Room")
                                             .Include("Specialty")
+                                            .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
+                                            .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
                                             .Where(p => p.CaseId == CaseId
                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                             .ToList<PatientVisit2>();
@@ -888,8 +896,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Get(int id)
         {
             var acc = _context.PatientVisit2.Include("Doctor")
+                                            .Include("Doctor.User")
                                             .Include("Room")
                                             .Include("Specialty")
+                                            .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
+                                            .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
                                             .Where(p => p.Id == id
                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                             .FirstOrDefault<PatientVisit2>();
