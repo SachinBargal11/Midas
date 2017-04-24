@@ -125,6 +125,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             var acc = _context.Attorneys.Include("User")
                                         .Include("User.AddressInfo")
                                         .Include("User.ContactInfo")
+                                        .Include("User.UserCompanies")
                                         .Where(p => (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
                                                   && p.User.UserCompanies.Where(p2 => p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
                                                                          .Any(p2 => p2.CompanyID != CompanyId) == true)

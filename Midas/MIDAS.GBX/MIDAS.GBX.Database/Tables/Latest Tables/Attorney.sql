@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[Attorney]
 (
 	[Id] [INT] NOT NULL,
-	[CompanyId] [INT] NULL,
+	--[CompanyId] [INT] NULL,
 
 	[IsDeleted] [BIT] NULL,
 	[CreateByUserID] [INT] NOT NULL,
@@ -26,3 +26,10 @@ GO
 
 ALTER TABLE [dbo].[Attorney] CHECK CONSTRAINT [FK_Attorney_Company_CompanyId]
 GO
+/*
+ALTER TABLE [dbo].[Attorney] DROP CONSTRAINT [FK_Attorney_Company_CompanyId]
+GO
+
+ALTER TABLE [dbo].[Attorney] DROP COLUMN [CompanyId]
+GO
+*/
