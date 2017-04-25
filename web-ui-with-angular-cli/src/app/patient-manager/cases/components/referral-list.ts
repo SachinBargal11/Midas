@@ -19,6 +19,8 @@ import { Room } from '../../../medical-provider/rooms/models/room';
 import { environment } from '../../../../environments/environment';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { Consent } from '../models/consent';
+import { CasesStore } from '../../cases/stores/case-store';
+import { Case } from '../models/case';
 
 @Component({
     selector: 'referral-list',
@@ -35,17 +37,20 @@ export class ReferralListComponent implements OnInit {
     referredMedicalOffices: Referral[];
     referredUsers: Referral[];
     referredRooms: Referral[];
+    referralsOutsideMidas: Referral[];
     referredDoctors: Doctor[];
     refferedRooms: Room[];
     caseId: number;
     datasource: Referral[];
     totalRecords: number;
+    caseStatusId: number;
     isDeleteProgress: boolean = false;
 
     constructor(
         private _router: Router,
         public _route: ActivatedRoute,
         public sessionStore: SessionStore,
+        private _casesStore: CasesStore,
         private _referralStore: ReferralStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
@@ -54,6 +59,18 @@ export class ReferralListComponent implements OnInit {
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
+            let result = this._casesStore.fetchCaseById(this.caseId);
+            result.subscribe(
+                (caseDetail: Case) => {
+                    this.caseStatusId = caseDetail.caseStatusId;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
         });
     }
 
@@ -65,22 +82,6 @@ export class ReferralListComponent implements OnInit {
         this._progressBarService.show();
         this._referralStore.getReferralsByCaseId(this.caseId)
             .subscribe((referrals: Referral[]) => {
-                // this.referrals = referrals.reverse();
-                // let doctors: Doctor[] = _.map(referrals, (currentReferral: Referral) => {
-                //     return currentReferral.referredToDoctor ? currentReferral.referredToDoctor : null;
-                // });
-                // let matchingDoctors = _.reject(doctors, (currentDoctor: Doctor) => {
-                //     return currentDoctor == null;
-                // });
-                // this.referredDoctors = matchingDoctors.reverse();
-
-                // let rooms: Room[] = _.map(referrals, (currentReferral: Referral) => {
-                //     return currentReferral.room ? currentReferral.room : null;
-                // });
-                // let matchingRooms = _.reject(rooms, (currentRoom: Room) => {
-                //     return currentRoom == null;
-                // });
-                // this.refferedRooms = matchingRooms.reverse();
                 let userReferrals: Referral[] = _.map(referrals, (currentReferral: Referral) => {
                     return currentReferral.referredToDoctor ? currentReferral : null;
                 });
@@ -97,7 +98,15 @@ export class ReferralListComponent implements OnInit {
                 });
                 this.referredRooms = matchingRoomReferrals.reverse();
 
-                let userAndRoomReferral = _.union(matchingUserReferrals, matchingRoomReferrals);
+                let referralsOutsideMidas: Referral[] = _.map(referrals, (currentReferral: Referral) => {
+                    return currentReferral.firstName && currentReferral.lastName ? currentReferral : null;
+                });
+                let matchingReferralsOutsideMidas = _.reject(referralsOutsideMidas, (currentReferral: Referral) => {
+                    return currentReferral == null;
+                });
+                this.referralsOutsideMidas = matchingReferralsOutsideMidas.reverse();
+
+                let userAndRoomReferral = _.union(matchingUserReferrals, matchingRoomReferrals, matchingReferralsOutsideMidas);
                 let userAndRoomReferralIds: number[] = _.map(userAndRoomReferral, (currentUserAndRoomReferral: Referral) => {
                     return currentUserAndRoomReferral.id;
                 });
@@ -121,6 +130,8 @@ export class ReferralListComponent implements OnInit {
             this.searchMode = 2;
         } else if (currentSearchId === 3) {
             this.searchMode = 3;
+        } else if (currentSearchId === 4) {
+            this.searchMode = 4;
         }
     }
     // getReferralDocumentName(currentReferral: Referral) {

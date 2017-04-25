@@ -5,7 +5,7 @@ import { User } from '../../commons/models/user';
 
 const AttorneyRecord = Record({
     id: 0,
-    companyId: 0,
+    // companyId: 0,
     user: null
 });
 
@@ -13,7 +13,7 @@ export class Attorney extends AttorneyRecord {
 
     id: number;
     user: User;
-    companyId: number;
+    // companyId: number;
  
     
 
