@@ -5,6 +5,7 @@ import { DiagnosisType } from './diagnosis-type';
 
 const DiagnosisCodeRecord = Record({
     id: 0,
+    diagnosisCodeId: 0,
     diagnosisTypeId: 0,
     companyId: 0,
     company: null,
@@ -21,6 +22,7 @@ const DiagnosisCodeRecord = Record({
 export class DiagnosisCode extends DiagnosisCodeRecord {
 
     id: number;
+    diagnosisCodeId: number;
     diagnosisTypeId: number;
     companyId: number;
     company: Company;

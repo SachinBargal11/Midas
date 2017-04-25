@@ -7,6 +7,7 @@ import { Company } from '../../account/models/company';
 
 const ProcedureRecord = Record({
     id: 0,
+    procedureCodeId: 0,
     specialityId: 0,
     roomId: 0,
     roomTestId: 0,
@@ -28,6 +29,7 @@ const ProcedureRecord = Record({
 export class Procedure extends ProcedureRecord {
 
     id: number;
+    procedureCodeId: number;
     specialityId: number;
     roomId: number;
     roomTestId: number;

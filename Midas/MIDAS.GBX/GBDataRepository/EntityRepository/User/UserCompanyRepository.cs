@@ -42,6 +42,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 BO.UserCompany usercompanyBO = new BO.UserCompany();
 
                 usercompanyBO.ID = usercompany.id;
+                usercompanyBO.UserId = usercompany.UserID;
+                usercompanyBO.CompanyId = usercompany.CompanyID;
 
                 if (usercompany.IsDeleted.HasValue)
                     usercompanyBO.IsDeleted = usercompany.IsDeleted.Value;
