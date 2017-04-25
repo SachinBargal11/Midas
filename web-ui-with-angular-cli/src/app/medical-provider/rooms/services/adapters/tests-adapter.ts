@@ -9,7 +9,7 @@ export class TestsAdapter {
             tests = new Tests({
                 id: testsData.id,
                 name: testsData.name,
-                color: testsData.color
+                color: testsData.colorCode
             });
         }
         return tests;

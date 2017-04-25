@@ -134,7 +134,7 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
             }
         }
 
-        if(this.eventStart) {
+        if (this.eventStart) {
             visitInfo = `${visitInfo} - Visit Start: ${this.eventStart.local().format('MMMM Do YYYY,h:mm:ss a')}`;
         }
 
@@ -142,13 +142,21 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     }
 
     get eventColor(): string {
-        let colorCodes: any = ['#7A3DB8', '#7AB83D', '#CC6666', '#7AFF7A', '#FF8000'];
-        // let color: any = _.sample(colorCodes);
-        if (this.doctorId) {
-            return '#7A3DB8';
+        if (this.room && this.roomId) {
+            debugger;
+            return this.room.roomTest.color;
+        } else if (this.doctor && this.doctorId) {
+            return this.specialty ? this.specialty.color : '';
         } else {
-            return '#CC6666';
+            return '';
         }
+        // let colorCodes: any = ['#7A3DB8', '#7AB83D', '#CC6666', '#7AFF7A', '#FF8000'];
+        // // let color: any = _.sample(colorCodes);
+        // if (this.doctorId) {
+        //     return '#7A3DB8';
+        // } else {
+        //     return '#CC6666';
+        // }
         // return color;
     }
 }

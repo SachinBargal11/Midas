@@ -61,8 +61,6 @@ export class PatientVisitComponent implements OnInit {
 
     /* Data Lists */
     patients: Patient[] = [];
-    specialities: Speciality[] = [];
-    tests: Tests[] = [];
     rooms: Room[] = [];
     doctorLocationSchedules: {
         doctorLocationSchedule: DoctorLocationSchedule,
@@ -216,17 +214,7 @@ export class PatientVisitComponent implements OnInit {
             this.selectedSpecialityId = 0;
             this.selectedTestId = 0;
             this.events = [];
-            this.specialities = [];
-            this.tests = [];
         } else {
-            // this._roomsService.getTestsByLocationId(this.selectedLocationId)
-            //     .subscribe(tests => {
-            //         this.tests = tests;
-            //     });
-            // this._specialityService.getSpecialitiesByLocationId(this.selectedLocationId)
-            //     .subscribe(specialities => {
-            //         this.specialities = specialities;
-            //     });
             this.loadLocationVisits();
             this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.selectedLocationId)
                 .subscribe((doctorLocationSchedules: DoctorLocationSchedule[]) => {
@@ -890,7 +878,7 @@ export class PatientVisitComponent implements OnInit {
         let updatedEvent: ScheduledEvent = this._scheduledEventEditorComponent.getEditedEvent();
         let updatedVisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             patientId: patientScheduleFormValues.patientId,
-            specialtyId: this.selectedOption == 1 ? this.selectedSpecialityId : 0,
+            specialtyId: this.selectedOption == 1 ? this.selectedSpecialityId : null,
             calendarEvent: updatedEvent
         }));
         if (updatedVisit.id) {

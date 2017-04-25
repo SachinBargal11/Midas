@@ -11,7 +11,7 @@ export class SpecialityAdapter {
                 name: specialityData.name,
                 specialityCode: specialityData.specialityCode,
                 isunitApply: specialityData.isunitApply,
-                color: specialityData.color
+                color: specialityData.colorCode
             });
         }
         return speciality;
