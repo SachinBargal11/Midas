@@ -28,9 +28,12 @@
   <p-column field="procedureCodeText" header="Procedure Code"></p-column>
   <p-column field="procedureCodeDesc" header="Description"></p-column>
   <p-column field="amount" header="Amount"></p-column>
-  <p-column field="userRole" header="Unit"></p-column>
-  <p-column field="userRole" header="Total charge per day"></p-column>
-  <!--<p-column field="userRole" header="Modifier" [sortable]="true"></p-column>-->
+  <p-column header="Unit">
+    <ng-template let-procedure="rowData" pTemplate="body">
+        <input type="number" class="form-control"/>
+    </ng-template>
+  </p-column>
+  <p-column field="" header="Total charge per day"></p-column>
 </p-dataTable>
 <br>
 <button class="btn btn-success sign-up" (click)="saveProcedures()">Save
