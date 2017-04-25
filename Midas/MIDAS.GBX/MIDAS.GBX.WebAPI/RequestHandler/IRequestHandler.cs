@@ -84,8 +84,8 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetBySpecialityId(HttpRequestMessage request, int specialityId);
         HttpResponseMessage GenerateReferralDocument(HttpRequestMessage request, int id);
         HttpResponseMessage GetAllExcludeCompany(HttpRequestMessage request, int CompanyId);
-        HttpResponseMessage AssociateAttorneyWithCompany(HttpRequestMessage request, int CompanyId,int AttorneyId);
-        
+        HttpResponseMessage AssociateAttorneyWithCompany(HttpRequestMessage request, int AttorneyId, int CompanyId);
+        HttpResponseMessage AssociateDoctorWithCompany(HttpRequestMessage request, int DoctorId, int CompanyId);
 
     }
 }

@@ -473,6 +473,12 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+
+        public virtual Object AssociateDoctorWithCompany(int DoctorId, int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

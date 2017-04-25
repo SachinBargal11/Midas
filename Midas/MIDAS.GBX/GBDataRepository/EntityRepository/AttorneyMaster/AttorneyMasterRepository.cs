@@ -435,6 +435,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         public override object AssociateAttorneyWithCompany(int AttorneyId , int CompanyId)
         {
             bool add_UserCompany = false;
+            bool sendEmail = false;
+            Guid invitationDB_UniqueID = Guid.NewGuid();
+            BO.AttorneyMaster addAttorneyBO = new BO.AttorneyMaster();
+            BO.User userBO = addAttorneyBO.User;
+
 
             var company = _context.Companies.Where(p => p.id == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 
@@ -456,6 +461,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             {
                 userCompany = new UserCompany();
                 add_UserCompany = true;
+                sendEmail = true;
             }
 
             userCompany.CompanyID = CompanyId;
@@ -474,6 +480,21 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                                        .Include("User.UserCompanies")
                                        .Where(p => p.Id == AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                        .FirstOrDefault<Attorney>();
+
+            #region Send Email
+            if (sendEmail == true)
+            {
+                try
+                {
+                    string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                    string Message = "Dear " + _attny.User.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + _attny.User.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                    BO.Email objEmail = new BO.Email { ToEmail = _attny.User.UserName, Subject = "User registered", Body = Message };
+                    objEmail.SendMail();
+
+                }
+                catch (Exception ex) { }
+            }
+            #endregion
 
             var res = Convert<BO.AttorneyMaster, Attorney>(_attny);
             return (object)res;
