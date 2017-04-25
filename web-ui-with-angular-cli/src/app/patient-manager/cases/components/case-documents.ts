@@ -19,6 +19,7 @@ import { ScannerService } from '../../../commons/services/scanner-service';
 import { CaseDocumentAdapter } from '../services/adapters/case-document-adapters';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import { Document } from '../../../commons/models/document';
+import { Case } from '../models/case';
 
 @Component({
     selector: 'case-documents',
@@ -35,6 +36,9 @@ export class CaseDocumentsUploadComponent implements OnInit {
     url;
     isSaveProgress = false;
     isDeleteProgress: boolean = false;
+    caseId: number;
+    caseDetail: Case;
+    caseStatusId: number;
 
     constructor(
         private _router: Router,
@@ -52,8 +56,23 @@ export class CaseDocumentsUploadComponent implements OnInit {
             this.currentCaseId = parseInt(routeParams.caseId, 10);
             this.url = `${this._url}/fileupload/multiupload/${this.currentCaseId}/case`;
         });
-    }
-
+         this._route.parent.params.subscribe((routeParams: any) => {
+            this.caseId = parseInt(routeParams.caseId, 10);
+            let result = this._casesStore.fetchCaseById(this.caseId);
+            result.subscribe(
+                (caseDetail: Case) => {
+                   this.caseStatusId = caseDetail.caseStatusId;
+                    },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
+        });
+    }               
+            
     ngOnInit() {
         this.getDocuments();
     }
