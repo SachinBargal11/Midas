@@ -1925,12 +1925,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object DiassociateAttorneyWithCompany(int AttorneyId, int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object DisassociateAttorneyWithCompany(int AttorneyId, int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.DiassociateAttorneyWithCompany(AttorneyId, CompanyId);
+                var gbdata = baseRepo.DisassociateAttorneyWithCompany(AttorneyId, CompanyId);
 
                 return gbdata;
             }
@@ -1965,12 +1965,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object DiassociateDoctorWithCompany(int DoctorId, int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object DisassociateDoctorWithCompany(int DoctorId, int CompanyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.DiassociateDoctorWithCompany(DoctorId, CompanyId);
+                var gbdata = baseRepo.DisassociateDoctorWithCompany(DoctorId, CompanyId);
 
                 return gbdata;
             }

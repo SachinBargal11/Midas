@@ -56,11 +56,11 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("diassociateAttorneyWithCompany/{attorneyId}/{CompanyId}")]
+        [Route("disassociateAttorneyWithCompany/{attorneyId}/{CompanyId}")]
         [AllowAnonymous]
-        public HttpResponseMessage DiassociateAttorneyWithCompany(int AttorneyId, int CompanyId)
+        public HttpResponseMessage DisassociateAttorneyWithCompany(int AttorneyId, int CompanyId)
         {
-            return requestHandler.DiassociateAttorneyWithCompany(Request, AttorneyId, CompanyId);
+            return requestHandler.DisassociateAttorneyWithCompany(Request, AttorneyId, CompanyId);
         }
 
         // GET: api/getAttornyByCompanyId/

@@ -601,8 +601,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region DiassociateDoctorWithCompany
-        public override object DiassociateDoctorWithCompany(int DoctorId, int CompanyId)
+        #region DisassociateDoctorWithCompany
+        public override object DisassociateDoctorWithCompany(int DoctorId, int CompanyId)
         {
             var company = _context.Companies.Where(p => p.id == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
 

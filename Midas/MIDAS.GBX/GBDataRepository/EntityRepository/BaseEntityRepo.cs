@@ -474,7 +474,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object DiassociateAttorneyWithCompany(int AttorneyId, int CompanyId)
+        public virtual Object DisassociateAttorneyWithCompany(int AttorneyId, int CompanyId)
         {
             throw new NotImplementedException();
         }
@@ -484,7 +484,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object DiassociateDoctorWithCompany(int DoctorId, int CompanyId)
+        public virtual Object DisassociateDoctorWithCompany(int DoctorId, int CompanyId)
         {
             throw new NotImplementedException();
         }
