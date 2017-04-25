@@ -41,10 +41,6 @@ import { UsersStore } from './medical-provider/users/stores/users-store';
 import { LocationsStore } from './medical-provider/locations/stores/locations-store';
 import { LocationsService } from './medical-provider/locations/services/locations-service';
 
-import { DiagnosisService } from './commons/services/diagnosis-service';
-import { DiagnosisStore } from './commons/stores/diagnosis-store';
-import { ProcedureStore } from './commons/stores/procedure-store';
-import { ProcedureService } from './commons/services/procedure-service';
 
 
 @NgModule({
@@ -88,10 +84,7 @@ import { ProcedureService } from './commons/services/procedure-service';
     UsersService,
     UsersStore,
     LocationsStore,
-    LocationsService,DiagnosisService,
-    DiagnosisStore,
-    ProcedureService,
-    ProcedureStore
+    LocationsService
   ],
   bootstrap: [AppComponent]
 })

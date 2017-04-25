@@ -26713,22 +26713,7 @@ p.line-with-icon a:hover {
 .fc-unthemed .jspVerticalBar {
   z-index: 5;
 }
-.fc-toolbar {
-  margin: 0;
-  padding: 10px 15px 5px 80px;
-}
-.fc-toolbar h1,
-.fc-toolbar h2,
-.fc-toolbar h3,
-.fc-toolbar h4,
-.fc-toolbar h5,
-.fc-toolbar h6 {
-  font-weight: 600;
-  font-size: 1rem;
-  padding: .375rem .5rem;
-  position: relative;
-  top: 3px;
-}
+
 .fc-state-default {
   background: none;
   border: none;

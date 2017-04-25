@@ -20,8 +20,6 @@ import { NotificationComponent } from './components/notification/notification';
 import { ShellComponent } from './shell-component';
 import { ScheduledEventEditorComponent } from '../medical-provider/calendar/components/scheduled-event-editor';
 import { DocumentUploadComponent } from '../commons/components/document-upload/document-upload.component';
-import {DignosisComponent} from '../commons/components/dignosis/dignosis.component';
-import {ProcedureComponent} from '../commons/components/procedure/procedure.component';
 
 
 import {
@@ -92,7 +90,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     NotificationComponent,
     ShellComponent,
     ScheduledEventEditorComponent,
-    DocumentUploadComponent,DignosisComponent,ProcedureComponent
+    DocumentUploadComponent
   ],
   exports: [
     CommonModule,
@@ -134,7 +132,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     FileUploadModule,
     GrowlModule,
     TabViewModule,
-    LightboxModule,DignosisComponent,ProcedureComponent,ListboxModule
+    LightboxModule,ListboxModule
   ]
 })
 export class CommonsModule { }
