@@ -20,12 +20,12 @@ GO
 ALTER TABLE [dbo].[Attorney] CHECK CONSTRAINT [FK_Attorney_User_id]
 GO
 
-ALTER TABLE [dbo].[Attorney]  WITH CHECK ADD  CONSTRAINT [FK_Attorney_Company_CompanyId] FOREIGN KEY([CompanyId])
-	REFERENCES [dbo].[Company] ([Id])
-GO
+--ALTER TABLE [dbo].[Attorney]  WITH CHECK ADD  CONSTRAINT [FK_Attorney_Company_CompanyId] FOREIGN KEY([CompanyId])
+--	REFERENCES [dbo].[Company] ([Id])
+--GO
 
-ALTER TABLE [dbo].[Attorney] CHECK CONSTRAINT [FK_Attorney_Company_CompanyId]
-GO
+--ALTER TABLE [dbo].[Attorney] CHECK CONSTRAINT [FK_Attorney_Company_CompanyId]
+--GO
 /*
 ALTER TABLE [dbo].[Attorney] DROP CONSTRAINT [FK_Attorney_Company_CompanyId]
 GO
