@@ -365,7 +365,7 @@
             </div>
         </section>
         <div class="row">
-            <div class="col-lg-1" *ngIf="caseDetail.caseStatusId === 1">     
+            <div class="col-lg-1" *ngIf="caseStatusId === 1">     
                 <button [disabled]="!accidentform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveProgress"></loader>
                 </button>

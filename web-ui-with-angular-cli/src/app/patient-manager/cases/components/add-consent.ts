@@ -89,21 +89,6 @@ export class AddConsentComponent implements OnInit {
 
 
     ) {
-        this._route.parent.parent.params.subscribe((routeParams: any) => {
-            this.caseId = parseInt(routeParams.caseId, 10);
-            let result = this._casesStore.fetchCaseById(this.caseId);
-            result.subscribe(
-                (caseDetail: Case) => {
-                    this.caseStatusId = caseDetail.caseStatusId;
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
-        });
             this.consentForm = this.fb.group({
                 // doctor: ['', Validators.required]
                 // ,uploadedFiles: ['', Validators.required]
@@ -123,6 +108,7 @@ export class AddConsentComponent implements OnInit {
             result.subscribe(
                 (caseDetail: Case) => {
                     this.caseDetail = caseDetail;
+                    this.caseStatusId = caseDetail.caseStatusId;
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
