@@ -502,6 +502,45 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         }
         #endregion
 
+        #region DisassociateAttorneyWithCompany
+        public override object DisassociateAttorneyWithCompany(int AttorneyId, int CompanyId)
+        {
+            var company = _context.Companies.Where(p => p.id == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (company == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var attorneys = _context.Attorneys.Where(p => p.Id == AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (attorneys == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Attorney.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var userCompany = _context.UserCompanies.Where(p => (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (userCompany != null)
+            {
+                userCompany.IsDeleted = true;
+            }
+
+            _context.SaveChanges();
+
+            var _attny = _context.Attorneys.Include("User")
+                                       .Include("User.AddressInfo")
+                                       .Include("User.ContactInfo")
+                                       .Include("User.UserCompanies")
+                                       .Where(p => p.Id == AttorneyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                       .FirstOrDefault<Attorney>();
+
+            var res = Convert<BO.AttorneyMaster, Attorney>(_attny);
+            return (object)res;
+
+        }
+        #endregion
+
         #region Delete By ID
         public override object Delete(int id)
         {
