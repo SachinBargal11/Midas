@@ -81,6 +81,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         doctorBO.DoctorSpecialities = lstDoctorSpecility;
                     }
                     
+                    //if (doctor.User.UserCompanies != null && doctorBO.user.UserCompanies != null && doctorBO.user.UserCompanies.Count <= 0)
                     if (doctor.User.UserCompanies != null)
                     {
                         List<BO.UserCompany> lstUserCompany = new List<BO.UserCompany>();
