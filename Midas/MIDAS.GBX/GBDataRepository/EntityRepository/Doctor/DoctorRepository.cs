@@ -130,6 +130,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (T)(object)doctorBO;
         }
         #endregion
+
         #region Entity Conversion
         public override T ObjectConvert<T, U>(U entity)
         {
@@ -599,6 +600,46 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region DiassociateDoctorWithCompany
+        public override object DiassociateDoctorWithCompany(int DoctorId, int CompanyId)
+        {
+            var company = _context.Companies.Where(p => p.id == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (company == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var Doctor = _context.Doctors.Where(p => p.Id == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (Doctor == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Doctor.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var userCompany = _context.UserCompanies.Where(p => (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (userCompany != null)
+            {
+                userCompany.IsDeleted = true;
+            }
+
+            _context.SaveChanges();
+
+            var doctorDB = _context.Doctors.Include("User")
+                                              .Include("User.AddressInfo")
+                                              .Include("User.ContactInfo")
+                                              .Include("DoctorSpecialities")
+                                              .Include("DoctorSpecialities.Specialty")
+                                              .Include("User.UserCompanyRoles")
+                                              .Include("User.UserCompanies")
+                                              .Where(p => p.Id == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<Doctor>();
+
+            var res = Convert<BO.Doctor, Doctor>(doctorDB);
+            return (object)res;
+
+        }
+        #endregion
 
         public void Dispose()
         {

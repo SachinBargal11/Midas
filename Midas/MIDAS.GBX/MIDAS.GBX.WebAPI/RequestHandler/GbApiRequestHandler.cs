@@ -1157,10 +1157,45 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
-        
+        public HttpResponseMessage DiassociateAttorneyWithCompany(HttpRequestMessage request, int AttorneyId, int CompanyId)
+        {
+            var objResult = dataAccessManager.DiassociateAttorneyWithCompany(AttorneyId, CompanyId);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
         public HttpResponseMessage AssociateDoctorWithCompany(HttpRequestMessage request, int DoctorId, int CompanyId)
         {
             var objResult = dataAccessManager.AssociateDoctorWithCompany(DoctorId, CompanyId);
+
+            try
+            {
+                var res = (GbObject)(object)objResult;
+                if (res != null)
+                    return request.CreateResponse(HttpStatusCode.Created, res);
+                else
+                    return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage DiassociateDoctorWithCompany(HttpRequestMessage request, int DoctorId, int CompanyId)
+        {
+            var objResult = dataAccessManager.DiassociateDoctorWithCompany(DoctorId, CompanyId);
 
             try
             {
