@@ -143,7 +143,6 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
 
     get eventColor(): string {
         if (this.room && this.roomId) {
-            debugger;
             return this.room.roomTest.color;
         } else if (this.doctor && this.doctorId) {
             return this.specialty ? this.specialty.color : '';
