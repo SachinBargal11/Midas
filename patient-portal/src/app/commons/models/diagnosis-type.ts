@@ -1,17 +1,14 @@
 import {Record} from 'immutable';
 import * as moment from 'moment';
 import { Company } from '../../account/models/company';
-import { DiagnosisType } from './diagnosis-type';
+import { DiagnosisCode } from './diagnosis-code';
 
-const DiagnosisCodeRecord = Record({
+const DiagnosisTypeRecord = Record({
     id: 0,
-    diagnosisCodeId: 0,
-    diagnosisTypeId: 0,
     companyId: 0,
     company: null,
-    diagnosisCodeText: '',
-    diagnosisCodeDesc: '',
-    diagnosisType: null,
+    diagnosisTypeText: '',
+    diagnosisCodes: null,
     isDeleted: false,
     createByUserId: 0,
     updateByUserId: 0,
@@ -19,16 +16,13 @@ const DiagnosisCodeRecord = Record({
     updateDate: null // Moment
 });
 
-export class DiagnosisCode extends DiagnosisCodeRecord {
+export class DiagnosisType extends DiagnosisTypeRecord {
 
     id: number;
-    diagnosisCodeId: number;
-    diagnosisTypeId: number;
     companyId: number;
     company: Company;
-    diagnosisCodeText: string;
-    diagnosisCodeDesc: string;
-    diagnosisType: DiagnosisType;
+    diagnosisTypeText: string;
+    diagnosisCodes: DiagnosisCode[];
     isDeleted: boolean;
     createByUserId: number;
     updateByUserId: number;

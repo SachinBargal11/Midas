@@ -17,6 +17,8 @@ import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import * as _ from 'underscore';
 import {ConfirmDialogModule,ConfirmationService} from 'primeng/primeng';
+import { CasesStore } from '../../cases/stores/case-store';
+import { Case } from '../models/case';
 
 @Component({
     selector: 'patient-visit-doctor-list',
@@ -43,6 +45,7 @@ export class PatientVisitListDoctorComponent implements OnInit {
     patientName: string;
     patient:Patient;
     isDeleteProgress:boolean = false;
+    caseStatusId: number;
 
     constructor(
         private _router: Router,
@@ -55,10 +58,23 @@ export class PatientVisitListDoctorComponent implements OnInit {
         private _doctorsStore: DoctorsStore,
         private _roomsStore: RoomsStore,
         private confirmationService: ConfirmationService,
+         private _casesStore: CasesStore,
 
     ) {
         this._route.parent.parent.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
+            let result = this._casesStore.fetchCaseById(this.caseId);
+            result.subscribe(
+                (caseDetail: Case) => {
+                    this.caseStatusId = caseDetail.caseStatusId;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
         });
 
           this._route.parent.parent.parent.parent.params.subscribe((routeParams: any) => {

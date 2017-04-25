@@ -41,6 +41,7 @@ export class InsuranceMappingComponent implements OnInit {
     selectedInsurance: string[] = [];
     adjusters: Adjuster[] = [];
     isDeleteProgress: boolean = false;
+    caseStatusId: number;
 
     constructor(
         private fb: FormBuilder,
@@ -58,6 +59,19 @@ export class InsuranceMappingComponent implements OnInit {
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId);
+            let result = this._casesStore.fetchCaseById(this.caseId);
+            result.subscribe(
+                (caseDetail: Case) => {
+                    this.caseStatusId = caseDetail.caseStatusId;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                  () => {
+                    this._progressBarService.hide();
+                });
+            
         });
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId);

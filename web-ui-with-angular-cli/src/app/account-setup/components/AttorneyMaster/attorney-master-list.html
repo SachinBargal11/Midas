@@ -3,23 +3,22 @@
         Search Attorney In Midas
     </header>
     <div class="card-block">
-        <!--<form [formGroup]="attorneyform">-->
         <div class="row">
             <div class="col-lg-4">
                 <label class="form-label">Attorney-List
                                 <span class="color-red">*</span>
                             </label>
                 <div class="form-group">
-                    <select type="text" class="form-control" placeholder="" (change)="selectAttorney($event)">
+                    <select type="text" [(ngModel)]="currentAttorneyId" class="form-control" placeholder="" (change)="selectAttorney($event)">
+                            <option value="0">-Select Attorney-</option>
                             <option *ngFor="let attorney of allattorneys" value="{{attorney.id}}">{{attorney.user.firstName}}{{attorney.user.lastName}}</option>
                         </select>
                 </div>
             </div>
+            <div class="col-lg-4 m-t-lg">
+                <button type="submit" (click)="assignAttorneyToCompany()" class="btn btn-success sign-up">Assign Attorney To Company</button>
+            </div>
         </div>
-        <!--<button [disabled]="!referralForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
-        <loader [visible]="isSaveProgress"></loader>
-    </button>-->
-        <!--</form>-->
     </div>
 </section><br>
 <section class="card">

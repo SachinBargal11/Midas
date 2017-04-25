@@ -1,3 +1,5 @@
+import { Procedure } from '../../../commons/models/procedure';
+import { DiagnosisCode } from '../../../commons/models/diagnosis-code';
 import { User } from '../../../commons/models/user';
 import { Case } from '../../cases/models/case';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
@@ -59,8 +61,6 @@ export class PatientVisitComponent implements OnInit {
 
     /* Data Lists */
     patients: Patient[] = [];
-    specialities: Speciality[] = [];
-    tests: Tests[] = [];
     rooms: Room[] = [];
     doctorLocationSchedules: {
         doctorLocationSchedule: DoctorLocationSchedule,
@@ -214,17 +214,7 @@ export class PatientVisitComponent implements OnInit {
             this.selectedSpecialityId = 0;
             this.selectedTestId = 0;
             this.events = [];
-            this.specialities = [];
-            this.tests = [];
         } else {
-            // this._roomsService.getTestsByLocationId(this.selectedLocationId)
-            //     .subscribe(tests => {
-            //         this.tests = tests;
-            //     });
-            // this._specialityService.getSpecialitiesByLocationId(this.selectedLocationId)
-            //     .subscribe(specialities => {
-            //         this.specialities = specialities;
-            //     });
             this.loadLocationVisits();
             this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.selectedLocationId)
                 .subscribe((doctorLocationSchedules: DoctorLocationSchedule[]) => {
@@ -720,6 +710,80 @@ export class PatientVisitComponent implements OnInit {
             });
         this.visitDialogVisible = false;
     }
+    saveDiagnosisCodesForVisit(inputDiagnosisCodes: DiagnosisCode[]) {
+        let patientVisitFormValues = this.patientVisitForm.value;
+        let updatedVisit: PatientVisit;
+        let diagnosisCodes = [];
+        inputDiagnosisCodes.forEach(currentDiagnosisCode => {
+            diagnosisCodes.push({ 'diagnosisCodeId': currentDiagnosisCode.id });
+        });
+
+        updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
+            patientVisitDiagnosisCodes: diagnosisCodes
+        }));
+        let result = this._patientVisitsStore.updatePatientVisitDetail(updatedVisit);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Diagnosis codes saved successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this.loadVisits();
+                this._notificationsStore.addNotification(notification);
+            },
+            (error) => {
+                let errString = 'Unable to save diagnosis codes!';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                this._notificationsStore.addNotification(notification);
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this.visitDialogVisible = false;
+    }
+    saveProcedureCodesForVisit(inputProcedureCodes: Procedure[]) {
+        let patientVisitFormValues = this.patientVisitForm.value;
+        let updatedVisit: PatientVisit;
+        let procedureCodes = [];
+        inputProcedureCodes.forEach(currentProcedureCode => {
+            procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
+        });
+        
+        updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
+            patientVisitProcedureCodes: procedureCodes
+        }));
+        let result = this._patientVisitsStore.updatePatientVisitDetail(updatedVisit);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Procedure codes saved successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this.loadVisits();
+                this._notificationsStore.addNotification(notification);
+            },
+            (error) => {
+                let errString = 'Unable to save procedure codes!';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                this._notificationsStore.addNotification(notification);
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this.visitDialogVisible = false;
+    }
 
     cancelCurrentOccurrence() {
         if (this.selectedVisit.calendarEvent.isSeries) {
@@ -814,7 +878,7 @@ export class PatientVisitComponent implements OnInit {
         let updatedEvent: ScheduledEvent = this._scheduledEventEditorComponent.getEditedEvent();
         let updatedVisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             patientId: patientScheduleFormValues.patientId,
-            specialtyId: this.selectedOption == 1 ? this.selectedSpecialityId : 0,
+            specialtyId: this.selectedOption == 1 ? this.selectedSpecialityId : null,
             calendarEvent: updatedEvent
         }));
         if (updatedVisit.id) {

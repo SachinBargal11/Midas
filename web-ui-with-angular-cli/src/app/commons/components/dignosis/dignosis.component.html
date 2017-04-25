@@ -25,14 +25,14 @@
       </a>
     </div>
   </div>
-  <p-dataTable [value]="selectedDiagnosisCodes" [(selection)]="selectedDiagnosisToDelete" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
+  <p-dataTable [value]="selectedDiagnosisCodes" [(selection)]="selectedDiagnosis" [rows]="10" [paginator]="true" [globalFilter]="gb" [responsive]="true">
     <header>Diagnosis codes</header>
     <p-column selectionMode="multiple"></p-column>
     <p-column field="diagnosisCodeText" header="Diagnosis Code" [sortable]="true"></p-column>
     <p-column field="diagnosisCodeDesc" header="Description" [sortable]="true"></p-column>
   </p-dataTable>
   <br>
-  <button class="btn btn-success sign-up" (click)="saveDiagnosis()">Save
+  <button class="btn btn-success sign-up" (click)="saveDiagnosisCodes()">Save
         <loader [visible]="isSaveProgress"></loader>
     </button>
 

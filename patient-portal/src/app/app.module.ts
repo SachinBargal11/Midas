@@ -41,6 +41,8 @@ import { UsersStore } from './medical-provider/users/stores/users-store';
 import { LocationsStore } from './medical-provider/locations/stores/locations-store';
 import { LocationsService } from './medical-provider/locations/services/locations-service';
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -82,7 +84,7 @@ import { LocationsService } from './medical-provider/locations/services/location
     UsersService,
     UsersStore,
     LocationsStore,
-    LocationsService,
+    LocationsService
   ],
   bootstrap: [AppComponent]
 })

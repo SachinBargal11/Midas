@@ -21,7 +21,7 @@ export class ProcedureComponent implements OnInit {
   selectedProceduresToDelete: Procedure[];
 
   @Input() selectedVisit: PatientVisit;
-  @Output() uploadComplete: EventEmitter<Document[]> = new EventEmitter();
+  @Output() save: EventEmitter<Procedure[]> = new EventEmitter();
   @Output() uploadError: EventEmitter<Error> = new EventEmitter();
 
   constructor(
@@ -41,6 +41,7 @@ export class ProcedureComponent implements OnInit {
     } else if (this.selectedVisit.roomId) {
       this.loadProceduresForRoomTest(this.selectedVisit.roomId);
     }
+    this.selectedProcedures = this.selectedVisit.patientVisitProcedureCodes;
   }
 
   loadProceduresForSpeciality(specialityId: number) {
@@ -74,6 +75,7 @@ export class ProcedureComponent implements OnInit {
   }
 
   saveProcedures() {
+    this.save.emit(this.selectedProcedures);
   }
 
   deleteProcedureCode() {

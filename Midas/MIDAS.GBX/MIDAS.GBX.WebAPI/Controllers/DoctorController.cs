@@ -54,6 +54,22 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("associateDoctorWithCompany/{doctorId}/{CompanyId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage AssociateDoctorWithCompany(int DoctorId, int CompanyId)
+        {
+            return requestHandler.AssociateDoctorWithCompany(Request, DoctorId, CompanyId);
+        }
+
+        [HttpGet]
+        [Route("diassociateDoctorWithCompany/{doctorId}/{CompanyId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage DisassociateDoctorWithCompany(int DoctorId, int CompanyId)
+        {
+            return requestHandler.DisassociateDoctorWithCompany(Request, DoctorId, CompanyId);
+        }
+
+        [HttpGet]
         [Route("getByLocationAndSpecialty/{locationId}/{SpecialtyId}")]
         public HttpResponseMessage GetByLocationAndSpecialty(int locationId, int specialtyId)
         {

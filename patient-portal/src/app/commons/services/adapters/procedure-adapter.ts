@@ -12,7 +12,6 @@ export class ProcedureAdapter {
         if (data) {
             procedure = new Procedure({
                 id: data.id,
-                procedureCodeId: data.id,
                 specialityId: data.specialityId,
                 roomId: data.roomId,
                 roomTestId: data.roomTestId,
