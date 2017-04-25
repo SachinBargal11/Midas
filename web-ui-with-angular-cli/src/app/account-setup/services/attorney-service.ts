@@ -15,7 +15,10 @@ export class AttorneyMasterService {
     // private _url: string = 'http://localhost:3004/insurance';
     private _headers: Headers = new Headers();
 
-    constructor(private _http: Http) {
+    constructor(
+        private _http: Http,
+        private _sessionStore: SessionStore
+        ) {
         this._headers.append('Content-Type', 'application/json');
     }
     getAttorneyMaster(attorneyId: Number): Observable<Attorney> {
@@ -70,6 +73,12 @@ export class AttorneyMasterService {
     addAttorney(attorney: Attorney): Observable<Attorney> {
         let promise: Promise<Attorney> = new Promise((resolve, reject) => {
             let requestData: any = attorney.toJS();
+            let UserCompanies = [{
+                company: {
+                    id: this._sessionStore.session.currentCompany.id
+                }
+            }];
+            requestData.user.UserCompanies = UserCompanies;
             requestData.user.contactInfo = requestData.user.contact;
             requestData.user.addressInfo = requestData.user.address;
             requestData.user = _.omit(requestData.user, 'contact', 'address');
@@ -90,6 +99,12 @@ export class AttorneyMasterService {
     updateAttorney(attorney: Attorney): Observable<Attorney> {
        let promise: Promise<Attorney> = new Promise((resolve, reject) => {
             let requestData: any = attorney.toJS();
+            let UserCompanies = [{
+                company: {
+                    id: this._sessionStore.session.currentCompany.id
+                }
+            }];
+            requestData.UserCompanies = UserCompanies;
             requestData.user.contactInfo = requestData.user.contact;
             requestData.user.addressInfo = requestData.user.address;
             requestData.user = _.omit(requestData.user, 'contact', 'address');
