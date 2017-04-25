@@ -70,6 +70,22 @@ export class AttorneyMasterService {
         return <Observable<Attorney[]>>Observable.fromPromise(promise);
     }
 
+      assignAttorney(currentAttorneyId: Number,companyId: Number): Observable<Attorney> {
+        let promise: Promise<Attorney> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/AttorneyMaster/associateAttorneyWithCompany/' + currentAttorneyId + '/' + companyId)
+                .subscribe((data: any) => {
+                    let attorney = null;
+                        attorney = AttorneyAdapter.parseResponse(data);
+                        resolve(attorney);
+                }, (error) => {
+                    reject(error);
+                });
+
+        });
+        return <Observable<Attorney>>Observable.fromPromise(promise);
+    }
+    
+
     addAttorney(attorney: Attorney): Observable<Attorney> {
         let promise: Promise<Attorney> = new Promise((resolve, reject) => {
             let requestData: any = attorney.toJS();
