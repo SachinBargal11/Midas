@@ -503,7 +503,10 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
-        
+        public virtual object DownloadSignedConsent<T>(T entity)
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
     }

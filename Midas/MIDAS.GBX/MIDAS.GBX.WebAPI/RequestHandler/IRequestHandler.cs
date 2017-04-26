@@ -36,6 +36,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage Delete(HttpRequestMessage request, int param1, int param2, int param3);        
         HttpResponseMessage DeleteFile(HttpRequestMessage request,int caseId, int id);
         string Download(HttpRequestMessage request, int caseId, int documentid);
+        object DownloadSignedConsent(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetDocumentList(HttpRequestMessage request, int id);
         HttpResponseMessage GeneratePasswordLink(HttpRequestMessage request, T gbObject);
         HttpResponseMessage ValidatePassword(HttpRequestMessage request, T gbObject);

@@ -214,3 +214,10 @@ ModelManifest.xml
 *.jfm
 /Midas/MIDAS.GBX/GBBusinessObjects/AttorneyInfo/AttorneyInfo.cs
 /Midas/MIDAS.GBX/GBDataRepository/EntityRepository/AttorneyInfo/AttorneyInfoRepository.cs
+/Midas/MIDAS.GBX/MIDAS.GBX.WebAPI/App_Data/uploads
+/Midas/MIDAS.GBX/MIDAS.GBX.PatientWebAPI/App_Data/uploads/COMPANY_1/CASE_86/consent
+/Midas/MIDAS.GBX/Docs.Pdf.rar
+/Midas/MIDAS.GBX/MIDAS.GBX.PatientWebAPI/App_Data/uploads/COMPANY_20/CASE_8/VISIT_12
+/Midas/MIDAS.GBX/GBDataRepository/Model
+/Midas/MIDAS.GBX/MIDAS.GBX.WebAPI
+/Midas/MIDAS.GBX/MIDAS.GBX.PatientWebAPI/App_Data/uploads
