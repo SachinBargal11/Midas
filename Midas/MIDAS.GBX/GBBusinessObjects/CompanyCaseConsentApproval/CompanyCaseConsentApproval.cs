@@ -24,6 +24,9 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("company")]
         public Company Company { get; set; }
 
+        [JsonProperty("consentGivenType")]
+        public ConsentGivenType ConsentGivenType { get; set; }
+
     }
 
 }

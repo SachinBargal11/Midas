@@ -51,6 +51,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             //        companyCaseConsentApprovalBO.Case = boCase;
             //    }
             //}
+
+            BO.ConsentGivenType boConsentGivenType = new BO.ConsentGivenType();
+            if (companyCaseConsentApproval.ConsentGivenType != null)
+            {
+                boConsentGivenType.TypeText = companyCaseConsentApproval.ConsentGivenType.TypeText;
+                boConsentGivenType.TypeDescription = companyCaseConsentApproval.ConsentGivenType.TypeDescription;
+                                  
+                companyCaseConsentApprovalBO.ConsentGivenType = boConsentGivenType;                
+            }
+
             companyCaseConsentApprovalBO.Company = new BO.Company();
             companyCaseConsentApprovalBO.Company.ID = (companyCaseConsentApproval.Company != null) ? companyCaseConsentApproval.Company.id : 0;
             companyCaseConsentApprovalBO.Company.Name = (companyCaseConsentApproval.Company != null) ? companyCaseConsentApproval.Company.Name : "";
@@ -118,9 +128,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                     companyCaseConsentApprovalDB.CompanyId = companyCaseConsentApprovalBO.CompanyId;
                     companyCaseConsentApprovalDB.CaseId = (int)companyCaseConsentApprovalBO.CaseId;
-                    if (companyCaseConsentApprovalDB.ConsentGivenTypeId <= 0)
+                    if (companyCaseConsentApprovalBO.ConsentGivenTypeId <= 0)
                     {
                         companyCaseConsentApprovalDB.ConsentGivenTypeId = 1;
+                    }
+                    else
+                    {
+                        companyCaseConsentApprovalDB.ConsentGivenTypeId = companyCaseConsentApprovalBO.ConsentGivenTypeId;
                     }
 
                     if (Add_companyCaseConsentApproval == true)
@@ -147,6 +161,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 dbContextTransaction.Commit();
                 companyCaseConsentApprovalDB = _context.CompanyCaseConsentApprovals.Include("Case")
                                                                                    .Include("Company")
+                                                                                   .Include("ConsentGivenType")
                                                                                    .Where(p => p.Id == companyCaseConsentApprovalDB.Id
                                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                                    .FirstOrDefault<CompanyCaseConsentApproval>();
@@ -235,6 +250,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             var acc = _context.CompanyCaseConsentApprovals.Include("Case")
                                                           .Include("Company")
+                                                          .Include("ConsentGivenType")
                                                           .Where(p => p.Id == id
                                                           && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                           .FirstOrDefault<CompanyCaseConsentApproval>();
@@ -253,6 +269,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             var acc = _context.CompanyCaseConsentApprovals.Include("Case")
                                                           .Include("Company")
+                                                          .Include("ConsentGivenType")
                                                           .Where(p => p.CaseId == CaseId
                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                           .ToList<CompanyCaseConsentApproval>();
@@ -277,6 +294,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             var acc = _context.CompanyCaseConsentApprovals.Include("Case")
                                                           .Include("Company")
+                                                          .Include("ConsentGivenType")
                                                           .Where(p => p.CompanyId == id
                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                           .ToList<CompanyCaseConsentApproval>();

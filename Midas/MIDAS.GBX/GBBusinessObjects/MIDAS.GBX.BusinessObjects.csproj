@@ -74,6 +74,7 @@
     <Compile Include="Common\State.cs" />
     <Compile Include="Company\Company.cs" />
     <Compile Include="Company\Signup.cs" />
+    <Compile Include="ConsentGivenType\ConsentGivenType.cs" />
     <Compile Include="ContactInfo\ContactInfo.cs" />
     <Compile Include="DiagnosisCode\DiagnosisCode.cs" />
     <Compile Include="DiagnosisType\DiagnosisType.cs" />
