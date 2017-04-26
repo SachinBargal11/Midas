@@ -414,7 +414,7 @@ export class PatientVisitComponent implements OnInit {
 
     loadLocationDoctorVisits() {
         this._progressBarService.show();
-        this._patientVisitsStore.getPatientVisitsByLocationAndDoctorId(this.selectedLocationId, this.selectedDoctorId)
+        this._patientVisitsStore.getPatientVisitsByLocationAndDoctorId(this.selectedLocationId, this.selectedDoctorId, this.patientId)
             .subscribe(
             (visits: PatientVisit[]) => {
                 this.events = this.getVisitOccurrences(visits);
@@ -456,9 +456,9 @@ export class PatientVisitComponent implements OnInit {
             });
     }
 
-    loadLocationVisits() {
+    loadLocationVisits() {       
         this._progressBarService.show();
-        this._patientVisitsStore.getPatientVisitsByLocationId(this.selectedLocationId)
+        this._patientVisitsStore.getPatientVisitsByLocationId(this.selectedLocationId, this.patientId)
             .subscribe(
             (visits: PatientVisit[]) => {
                 this.events = this.getVisitOccurrences(visits);
@@ -1104,5 +1104,5 @@ export class PatientVisitComponent implements OnInit {
             this._notificationsService.error('Oh No!', 'select record to delete');
         }
     }
-   
+
 }
