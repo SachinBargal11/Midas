@@ -53,6 +53,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientVisit2BO.Notes = patientVisit2.Notes;
                 patientVisit2BO.VisitStatusId = patientVisit2.VisitStatusId;
                 patientVisit2BO.VisitType = patientVisit2.VisitType;
+                patientVisit2BO.IsOutOfOffice = patientVisit2.IsOutOfOffice;
+                patientVisit2BO.LeaveStartDate = patientVisit2.LeaveStartDate;
+                patientVisit2BO.LeaveEndDate = patientVisit2.LeaveEndDate;
 
                 patientVisit2BO.IsCancelled = patientVisit2.IsCancelled;
                 patientVisit2BO.IsDeleted = patientVisit2.IsDeleted;
@@ -312,6 +315,38 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (lstPatientVisit == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No visit found for this Location Id and Room Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PatientVisit2> lstBOPatientVisit = new List<BO.PatientVisit2>();
+                lstPatientVisit.ForEach(p => lstBOPatientVisit.Add(Convert<BO.PatientVisit2, PatientVisit2>(p)));
+
+                return lstBOPatientVisit;
+            }
+        }
+        #endregion
+
+        #region Get By Location Id, Patient Id And Room Id
+        public override object GetByLocationRoomAndPatient(int locationId, int roomId, int patientId)
+        {
+            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("CalendarEvent")
+                                                                        .Include("Patient2")
+                                                                        .Include("Patient2.User")
+                                                                        .Include("Case")
+                                                                        .Include("Doctor")
+                                                                        .Include("Doctor.User")
+                                                                        .Include("Room").Include("Room.RoomTest")
+                                                                        .Include("Location")
+                                                                        .Include("Specialty")
+                                                                        .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
+                                                                        .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
+                                                                        .Where(p => p.LocationId == locationId && p.RoomId == roomId && p.PatientId == patientId
+                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                        .ToList<PatientVisit2>();
+
+            if (lstPatientVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No visit found for this Location Id, Room Id And Patient Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {
@@ -595,6 +630,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     PatientVisit2DB.Notes = PatientVisit2BO.Notes;
                     PatientVisit2DB.VisitStatusId = PatientVisit2BO.VisitStatusId;
                     PatientVisit2DB.VisitType = PatientVisit2BO.VisitType;
+                    PatientVisit2DB.IsOutOfOffice = PatientVisit2BO.IsOutOfOffice;
+                    PatientVisit2DB.LeaveStartDate = PatientVisit2BO.LeaveStartDate;
+                    PatientVisit2DB.LeaveEndDate = PatientVisit2BO.LeaveEndDate;
 
                     if (IsEditMode == false)
                     {

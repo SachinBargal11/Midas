@@ -760,6 +760,9 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           <Property Name="UpdateDate" Type="datetime2" Precision="7" />
           <Property Name="IsCancelled" Type="bit" />
           <Property Name="FileUploadPath" Type="nvarchar" MaxLength="250" />
+          <Property Name="IsOutOfOffice" Type="bit" />
+          <Property Name="LeaveStartDate" Type="datetime2" Precision="7" />
+          <Property Name="LeaveEndDate" Type="datetime2" Precision="7" />
         </EntityType>
         <EntityType Name="PatientVisitDiagnosisCodes">
           <Key>
@@ -4156,6 +4159,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           <Property Name="UpdateDate" Type="DateTime" Precision="7" />
           <Property Name="IsCancelled" Type="Boolean" />
           <Property Name="FileUploadPath" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="IsOutOfOffice" Type="Boolean" />
+          <Property Name="LeaveStartDate" Type="DateTime" Precision="7" />
+          <Property Name="LeaveEndDate" Type="DateTime" Precision="7" />
           <NavigationProperty Name="CalendarEvent" Relationship="Self.FK_PatientVisit2_CalendarEvent_CaseId" FromRole="PatientVisit2" ToRole="CalendarEvent" />
           <NavigationProperty Name="Case" Relationship="Self.FK_PatientVisit2_Case_CaseId" FromRole="PatientVisit2" ToRole="Case" />
           <NavigationProperty Name="Doctor" Relationship="Self.FK_PatientVisit2_Doctor_DoctorId" FromRole="PatientVisit2" ToRole="Doctor" />
@@ -7512,6 +7518,9 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
                 <ScalarProperty Name="IsCancelled" ColumnName="IsCancelled" />
                 <ScalarProperty Name="FileUploadPath" ColumnName="FileUploadPath" />
+                <ScalarProperty Name="IsOutOfOffice" ColumnName="IsOutOfOffice" />
+                <ScalarProperty Name="LeaveStartDate" ColumnName="LeaveStartDate" />
+                <ScalarProperty Name="LeaveEndDate" ColumnName="LeaveEndDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

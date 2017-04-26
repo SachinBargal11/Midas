@@ -57,8 +57,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             {
                 boConsentGivenType.TypeText = companyCaseConsentApproval.ConsentGivenType.TypeText;
                 boConsentGivenType.TypeDescription = companyCaseConsentApproval.ConsentGivenType.TypeDescription;
-                                  
-                companyCaseConsentApprovalBO.ConsentGivenType = boConsentGivenType;                
+
+                companyCaseConsentApprovalBO.ConsentGivenType = boConsentGivenType;
             }
 
             companyCaseConsentApprovalBO.Company = new BO.Company();
@@ -84,88 +84,84 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             BO.CompanyCaseConsentApproval companyCaseConsentApprovalBO = (BO.CompanyCaseConsentApproval)(object)entity;
             CompanyCaseConsentApproval companyCaseConsentApprovalDB = new CompanyCaseConsentApproval();
 
-            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            //using (var dbContextTransaction = _context.Database.BeginTransaction())
+            //{
+            if (companyCaseConsentApprovalBO != null)
             {
-                if (companyCaseConsentApprovalBO != null)
+                int patient = _context.Cases.Where(p => p.Id == companyCaseConsentApprovalBO.CaseId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.PatientId).FirstOrDefault();
+                UserCompany userCompany = _context.UserCompanies.Where(p => p.UserID == patient && p.CompanyID == companyCaseConsentApprovalBO.CompanyId).FirstOrDefault();
+                if (userCompany == null)
                 {
-                    int patient = _context.Cases.Where(p => p.Id == companyCaseConsentApprovalBO.CaseId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).Select(p => p.PatientId).FirstOrDefault();
-                    UserCompany userCompany = _context.UserCompanies.Where(p => p.UserID == patient && p.CompanyID == companyCaseConsentApprovalBO.CompanyId).FirstOrDefault();
-                    if (userCompany == null)
-                    {
-                        userCompany = new UserCompany();
-                        userCompany.CompanyID = companyCaseConsentApprovalBO.CompanyId;
-                        userCompany.UserID = patient;
-                        userCompany = _context.UserCompanies.Add(userCompany);
-                        _context.SaveChanges();
-                    }
-
-                    CaseCompanyMapping caseCompanyMapping = _context.CaseCompanyMappings.Where(p => p.CaseId == companyCaseConsentApprovalBO.CaseId && p.CompanyId == companyCaseConsentApprovalBO.CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
-                    if (caseCompanyMapping == null)
-                    {
-                        caseCompanyMapping = new CaseCompanyMapping();
-                        caseCompanyMapping.CompanyId = companyCaseConsentApprovalBO.CompanyId;
-                        caseCompanyMapping.CaseId = (int)companyCaseConsentApprovalBO.CaseId;
-                        caseCompanyMapping = _context.CaseCompanyMappings.Add(caseCompanyMapping);
-                        _context.SaveChanges();
-                    }
-
-                    companyCaseConsentApprovalDB = _context.CompanyCaseConsentApprovals.Where(p => p.CaseId == companyCaseConsentApprovalBO.CaseId
-                                                                                                && p.CompanyId == companyCaseConsentApprovalBO.CompanyId
-                                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                                       .FirstOrDefault();
-
-                    bool Add_companyCaseConsentApproval = false;
-
-                    if (companyCaseConsentApprovalDB == null)
-                    {
-                        Add_companyCaseConsentApproval = true;
-                        companyCaseConsentApprovalDB = new CompanyCaseConsentApproval();
-                    }
-                    else
-                    {
-                        return new BO.ErrorObject { errorObject = "", ErrorMessage = "Company, Case and Consent data already exists.", ErrorLevel = ErrorLevel.Error };
-                    }
-
-                    companyCaseConsentApprovalDB.CompanyId = companyCaseConsentApprovalBO.CompanyId;
-                    companyCaseConsentApprovalDB.CaseId = (int)companyCaseConsentApprovalBO.CaseId;
-                    if (companyCaseConsentApprovalBO.ConsentGivenTypeId <= 0)
-                    {
-                        companyCaseConsentApprovalDB.ConsentGivenTypeId = 1;
-                    }
-                    else
-                    {
-                        companyCaseConsentApprovalDB.ConsentGivenTypeId = companyCaseConsentApprovalBO.ConsentGivenTypeId;
-                    }
-
-                    if (Add_companyCaseConsentApproval == true)
-                    {
-                        companyCaseConsentApprovalDB.CreateByUserID = 0;
-                        companyCaseConsentApprovalDB.CreateDate = DateTime.UtcNow;
-
-                        companyCaseConsentApprovalDB = _context.CompanyCaseConsentApprovals.Add(companyCaseConsentApprovalDB);
-                    }
-                    else
-                    {
-                        companyCaseConsentApprovalDB.UpdateByUserID = 0;
-                        companyCaseConsentApprovalDB.UpdateDate = DateTime.UtcNow;
-                    }
-
+                    userCompany = new UserCompany();
+                    userCompany.CompanyID = companyCaseConsentApprovalBO.CompanyId;
+                    userCompany.UserID = patient;
+                    userCompany = _context.UserCompanies.Add(userCompany);
                     _context.SaveChanges();
                 }
 
-                else
+                CaseCompanyMapping caseCompanyMapping = _context.CaseCompanyMappings.Where(p => p.CaseId == companyCaseConsentApprovalBO.CaseId && p.CompanyId == companyCaseConsentApprovalBO.CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+                if (caseCompanyMapping == null)
                 {
-                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid details.", ErrorLevel = ErrorLevel.Error };
+                    caseCompanyMapping = new CaseCompanyMapping();
+                    caseCompanyMapping.CompanyId = companyCaseConsentApprovalBO.CompanyId;
+                    caseCompanyMapping.CaseId = (int)companyCaseConsentApprovalBO.CaseId;
+                    caseCompanyMapping = _context.CaseCompanyMappings.Add(caseCompanyMapping);
+                    _context.SaveChanges();
                 }
 
-                dbContextTransaction.Commit();
-                companyCaseConsentApprovalDB = _context.CompanyCaseConsentApprovals.Include("Case")
-                                                                                   .Include("Company")
-                                                                                   .Include("ConsentGivenType")
-                                                                                   .Where(p => p.Id == companyCaseConsentApprovalDB.Id
-                                                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                                                   .FirstOrDefault<CompanyCaseConsentApproval>();
+                companyCaseConsentApprovalDB = _context.CompanyCaseConsentApprovals.Where(p => p.CaseId == companyCaseConsentApprovalBO.CaseId
+                                                                                            && p.CompanyId == companyCaseConsentApprovalBO.CompanyId
+                                                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                                   .FirstOrDefault();
+
+                bool Add_companyCaseConsentApproval = false;
+
+                if (companyCaseConsentApprovalDB == null)
+                {
+                    Add_companyCaseConsentApproval = true;
+                    companyCaseConsentApprovalDB = new CompanyCaseConsentApproval();
+                }
+                else
+                {
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Company, Case and Consent data already exists.", ErrorLevel = ErrorLevel.Error };
+                }
+
+                companyCaseConsentApprovalDB.CompanyId = companyCaseConsentApprovalBO.CompanyId;
+                companyCaseConsentApprovalDB.CaseId = (int)companyCaseConsentApprovalBO.CaseId;
+                if (companyCaseConsentApprovalDB.ConsentGivenTypeId <= 0)
+                {
+                    companyCaseConsentApprovalDB.ConsentGivenTypeId = 1;
+                }
+
+                if (Add_companyCaseConsentApproval == true)
+                {
+                    companyCaseConsentApprovalDB.CreateByUserID = 0;
+                    companyCaseConsentApprovalDB.CreateDate = DateTime.UtcNow;
+
+                    companyCaseConsentApprovalDB = _context.CompanyCaseConsentApprovals.Add(companyCaseConsentApprovalDB);
+                }
+                else
+                {
+                    companyCaseConsentApprovalDB.UpdateByUserID = 0;
+                    companyCaseConsentApprovalDB.UpdateDate = DateTime.UtcNow;
+                }
+
+                _context.SaveChanges();
             }
+
+            else
+            {
+                return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid details.", ErrorLevel = ErrorLevel.Error };
+            }
+
+            //dbContextTransaction.Commit();
+            companyCaseConsentApprovalDB = _context.CompanyCaseConsentApprovals.Include("Case")
+                                                                               .Include("Company")
+                                                                               .Include("ConsentGivenType")
+                                                                               .Where(p => p.Id == companyCaseConsentApprovalDB.Id
+                                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                               .FirstOrDefault<CompanyCaseConsentApproval>();
+            //}
             var res = Convert<BO.CompanyCaseConsentApproval, CompanyCaseConsentApproval>(companyCaseConsentApprovalDB);
             return (object)res;
         }
@@ -349,7 +345,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region DownlodConsent
         public override string Download(int caseid, int companyid)
         {
-            return this.GenerateConsentDocument(caseid, companyid,"",false);
+            return this.GenerateConsentDocument(caseid, companyid, "", false);
         }
 
         public string GetTemplateDocument(string templateType)
@@ -360,7 +356,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             return templateData.TemplateText;
         }
 
-        public string GenerateConsentDocument(int caseid, int companyid,string uploadpath,bool signed)
+        public string GenerateConsentDocument(int caseid, int companyid, string uploadpath, bool signed)
         {
             HtmlToPdf htmlPDF = new HtmlToPdf();
             string path = string.Empty;
@@ -376,7 +372,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     if (cases != null)
                         pdfText = pdfText.Replace("{{PatientName}}", cases.Patient2.User.FirstName + " " + cases.Patient2.User.LastName);
 
-                    if (!signed) pdfText = pdfText.Replace("{{Signature}}", ConfigurationManager.AppSettings.Get("LOCAL_PATH")+ "\\app_data\\uploads\\" + "blank.png");
+                    if (!signed) pdfText = pdfText.Replace("{{Signature}}", ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\" + "blank.png");
                     else pdfText = pdfText.Replace("{{Signature}}", uploadpath);
 
                     path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\company_" + companyid + "\\case_" + caseid;
@@ -391,7 +387,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             return path + "\\Consent_" + acc.Name + ".pdf";
         }
 
-        public override object ConsentSave(int caseid, int companyid, List<System.Net.Http.HttpContent> streamContent, string uploadpath,bool signed)
+        public override object ConsentSave(int caseid, int companyid, List<System.Net.Http.HttpContent> streamContent, string uploadpath, bool signed)
         {
             List<BO.Document> docInfo = new List<BO.Document>();
             StringBuilder storagePath = new StringBuilder();
@@ -408,7 +404,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             if (signed)
             {
-                string consentPdf = GenerateConsentDocument(caseid,companyid,uploadpath, true);
+                string consentPdf = GenerateConsentDocument(caseid, companyid, uploadpath, true);
                 FileUpload.FileUploadManager fileUploadManager = new FileUpload.FileUploadManager(_context);
                 docInfo = (List<BO.Document>)fileUploadManager.UploadSignedConsent(caseid, "consent_" + companyid, consentPdf);
 
@@ -430,7 +426,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             else
             {
                 FileUpload.FileUploadManager fileUploadManager = new FileUpload.FileUploadManager(_context);
-                
+
                 docInfo = (List<BO.Document>)fileUploadManager.Upload(streamContent, storagePath.ToString(), caseid, "consent_" + companyid, uploadpath);
 
                 if (docInfo.ToList().FirstOrDefault<BO.Document>().Status.ToUpper().Equals("SUCCESS"))
@@ -449,6 +445,31 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 return docInfo;
             }
         }
+
+        public override object DownloadSignedConsent<T>(T entity)
+        {
+            Object docInfo = null;
+            try
+            {
+                BO.CompanyCaseConsentBase64 CompanyCaseConsentBase64BO = (BO.CompanyCaseConsentBase64)(object)entity;
+                string filepath = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "app_data/uploads/sign.jpeg";
+                byte[] bytes = System.Convert.FromBase64String(CompanyCaseConsentBase64BO.Base64Data.Replace("data:image/jpeg;base64,", string.Empty));
+                using (var imageFile = new FileStream(filepath, FileMode.Create))
+                {
+                    imageFile.Write(bytes, 0, bytes.Length);
+                    imageFile.Flush();
+                    imageFile.Close();
+                }
+
+                string consentPdf = GenerateConsentDocument(CompanyCaseConsentBase64BO.CaseId, CompanyCaseConsentBase64BO.CompanyId, filepath, true);
+                FileUpload.FileUploadManager fileUploadManager = new FileUpload.FileUploadManager(_context);
+                docInfo = (Object)fileUploadManager.UploadSignedConsent(CompanyCaseConsentBase64BO.CaseId, "consent_" + CompanyCaseConsentBase64BO.CompanyId, consentPdf);
+            }
+            catch (Exception) { return new BO.ErrorObject { errorObject = "", ErrorMessage = "System Error", ErrorLevel = ErrorLevel.Error }; }
+
+            return (object)docInfo;
+        }
+
         #endregion
 
         public void Dispose() { GC.SuppressFinalize(this); }

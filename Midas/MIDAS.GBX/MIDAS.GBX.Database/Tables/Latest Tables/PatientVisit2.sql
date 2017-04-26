@@ -89,10 +89,10 @@ GO
 --ALTER TABLE [dbo].[PatientVisit2] ADD [IsCancelled] [bit] NULL DEFAULT 0
 --GO
 --ALTER TABLE [dbo].[PatientVisit2] ADD [FileUploadPath] [NVARCHAR](250) NULL
-
+/*
 ALTER TABLE [dbo].[PatientVisit2] ADD [IsOutOfOffice] [bit] NULL DEFAULT 0
 GO
 ALTER TABLE [dbo].[PatientVisit2] ADD [LeaveStartDate] [DATETIME2] NULL
 GO
 ALTER TABLE [dbo].[PatientVisit2] ADD [LeaveEndDate] [DATETIME2] NULL
-GO
+GO*/

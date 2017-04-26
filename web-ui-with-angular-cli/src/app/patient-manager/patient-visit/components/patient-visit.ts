@@ -34,6 +34,7 @@ import { RoomsService } from '../../../medical-provider/rooms/services/rooms-ser
 import { Tests } from '../../../medical-provider/rooms/models/tests';
 import { Speciality } from '../../../account-setup/models/speciality';
 import { ScheduledEventEditorComponent } from '../../../medical-provider/calendar/components/scheduled-event-editor';
+import { LeaveEventEditorComponent } from '../../../medical-provider/calendar/components/leave-event-editor';
 import { ScheduledEventInstance } from '../../../commons/models/scheduled-event-instance';
 import { SpecialityService } from '../../../account-setup/services/speciality-service';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
@@ -53,8 +54,9 @@ import * as RRule from 'rrule';
 
 export class PatientVisitComponent implements OnInit {
 
-    @ViewChild(ScheduledEventEditorComponent)
+    @ViewChild(ScheduledEventEditorComponent, LeaveEventEditorComponent)
     private _scheduledEventEditorComponent: ScheduledEventEditorComponent;
+    private _leaveEventEditorComponent: LeaveEventEditorComponent;
 
     @ViewChild('cd')
     private _confirmationDialog: any;
@@ -86,6 +88,7 @@ export class PatientVisitComponent implements OnInit {
 
     /* Form Controls */
     private scheduledEventEditorValid: boolean = false;
+    private leaveEventEditorValid: boolean = false;
     isFormValidBoolean: boolean = false;
     patientScheduleForm: FormGroup;
     patientScheduleFormControls;
@@ -110,6 +113,7 @@ export class PatientVisitComponent implements OnInit {
 
     visitInfo: string = '';
     isAddNewPatient: boolean = false;
+    isGoingOutOffice: boolean = false;
 
 
     eventRenderer: Function = (event, element) => {
@@ -154,7 +158,8 @@ export class PatientVisitComponent implements OnInit {
     ) {
         this.patientScheduleForm = this._fb.group({
             patientId: ['', Validators.required],
-            isAddNewPatient: ['']
+            isAddNewPatient: [''],
+            isGoingOutOffice: ['']
         });
         this.patientScheduleFormControls = this.patientScheduleForm.controls;
 
@@ -198,7 +203,9 @@ export class PatientVisitComponent implements OnInit {
     }
 
     isFormValid() {
-        if (this.scheduledEventEditorValid && this.patientScheduleForm.valid) {
+        if (this.scheduledEventEditorValid && this.patientScheduleForm.valid && !this.isGoingOutOffice) {
+            return true;
+        } else if ( this.isGoingOutOffice && this.leaveEventEditorValid ) {
             return true;
         } else {
             return false;
@@ -876,6 +883,7 @@ export class PatientVisitComponent implements OnInit {
     saveEvent() {
         let patientScheduleFormValues = this.patientScheduleForm.value;
         let updatedEvent: ScheduledEvent = this._scheduledEventEditorComponent.getEditedEvent();
+        // let updatedEvent: ScheduledEvent = this._leaveEventEditorComponent.getEditedEvent();
         let updatedVisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             patientId: patientScheduleFormValues.patientId,
             specialtyId: this.selectedOption == 1 ? this.selectedSpecialityId : null,

@@ -19,11 +19,13 @@ namespace MIDAS.GBX.WebAPI.Controllers
     {
         internal string sourcePath = string.Empty;
         private IRequestHandler<CompanyCaseConsentApproval> requestHandler;
+        private IRequestHandler<CompanyCaseConsentBase64> requestHandler1;
 
         public CompanyCaseConsentApprovalController()
         {
             sourcePath = HttpContext.Current.Server.MapPath("~/App_Data/uploads").ToString();
             requestHandler = new GbApiRequestHandler<CompanyCaseConsentApproval>();
+            requestHandler1 = new GbApiRequestHandler<CompanyCaseConsentBase64>();
         }
 
         [HttpGet]
@@ -100,47 +102,54 @@ namespace MIDAS.GBX.WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("uploadsignedconsent/{caseid}/{companyid}")]
+        [Route("uploadsignedconsent")]
         [AllowAnonymous]
-        public async Task<HttpResponseMessage> UploadElectronicSignedConsent(int caseid, int companyid)
+        public HttpResponseMessage GetElectronicSignedConsent([FromBody]CompanyCaseConsentBase64 data)
         {
+            #region comment
+            /*if (!Request.Content.IsMimeMultipartContent("form-data"))
+                return new HttpResponseMessage(HttpStatusCode.BadRequest);
+            var streamProvider = new MultipartMemoryStreamProvider();
+            await Request.Content.ReadAsMultipartAsync(streamProvider);
+            List<HttpContent> streamContent = streamProvider.Contents.ToList();
+            string filename = "";
 
-            Document docinfo = new Document();
-            try
+            foreach (HttpContent content in streamContent)
             {
-                if (!Request.Content.IsMimeMultipartContent("form-data"))
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
-                var streamProvider = new MultipartMemoryStreamProvider();
-                await Request.Content.ReadAsMultipartAsync(streamProvider);
-                List<HttpContent> streamContent = streamProvider.Contents.ToList();
-                string filename = "";
-
-
-
-                foreach (HttpContent content in streamContent)
+                using (Stream stream = content.ReadAsStreamAsync().Result)
                 {
-                    using (Stream stream = content.ReadAsStreamAsync().Result)
-                    {
-                        filename = sourcePath + "/" + content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
-                        stream.Seek(0, SeekOrigin.Begin);
-                        FileStream filestream = File.Create(sourcePath + "/" + content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty));
-                        stream.CopyTo(filestream);
-                        stream.Close();
-                        filestream.Close();
-                        //docinfo.DocumentName = content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
-                        //docinfo.DocumentPath = sourcePath;
-                    }
+                    filename = sourcePath + "/" + content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
+                    stream.Seek(0, SeekOrigin.Begin);
+                    FileStream filestream = File.Create(sourcePath + "/" + content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty));
+                    stream.CopyTo(filestream);
+                    stream.Close();
+                    filestream.Close();
                 }
-                HttpResponseMessage resMessage = requestHandler.CreateGbDocObject1(Request, caseid, companyid, streamContent, filename, true);
+            }*/
+            #endregion
 
-
-                return resMessage;
-            }
-            catch (Exception err)
+            object response = requestHandler1.DownloadSignedConsent(Request, data);
+            if (!(typeof(BusinessObjects.ErrorObject) == response.GetType()))
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, docinfo);
+                if (response != null)
+                {
+                    FileInfo fileInfo = new System.IO.FileInfo(response.ToString());
+
+                    HttpContext.Current.Response.ContentType = "application/octet-stream";
+                    HttpContext.Current.Response.AddHeader("Content-Disposition", String.Format("attachment;filename=\"{0}\"", fileInfo.Name));
+                    HttpContext.Current.Response.AddHeader("Content-Length", fileInfo.Length.ToString());
+                    HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
+                    HttpContext.Current.Response.WriteFile(response.ToString());
+                    //HttpContext.Current.Response.BinaryWrite(btFile);
+                    HttpContext.Current.Response.End();
+
+                    return Request.CreateResponse(HttpStatusCode.OK, "");
+                }
+                else
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, response);
             }
-            
+            else
+                return Request.CreateResponse(HttpStatusCode.BadRequest, response);
         }
 
     }

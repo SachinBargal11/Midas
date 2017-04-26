@@ -135,25 +135,10 @@
         <div *ngIf="selectedVisit">
             <div class="row" *ngIf="!selectedVisit.id">
                 <div class="col-md-2"><label class="form-label">Patient</label></div>
-                <div class="col-md-4">
-                    <!--<div class="form-group" [class.error]="patientScheduleFormControls.patientId && patientScheduleFormControls.patientId.touched && !patientScheduleFormControls.patientId.valid">
-                        <select formControlName="patientId" [ngModel]="selectedVisit.patientId" class="select2-arrow form-control">
-                        <option value=""> -- Select Patient -- </option>
-                        <option *ngFor="let patient of _patientsStore.patientsWithOpenCases | async" [value]="patient.id">{{patient.user.displayName}}</option>                                       
-                    </select>
-                        <div class='error-list' *ngIf="patientScheduleFormControls.patientId && patientScheduleFormControls.patientId.touched && !patientScheduleFormControls.patientId.valid">
-                            <ul>
-                                <li *ngIf="patientScheduleFormControls.patientId.hasError('required')">Please select any Patient.</li>
-                            </ul>
-                        </div>
-                    </div>-->
+                <div class="col-md-4">                   
                     <div class="form-group">
                         {{patientName}} </div>
-                </div>
-                <div class="col-md-4">
-                    <!--<a class="btn btn-rounded btn-inline btn-primary-outline" (click)="addNewPatient()">Add New Patient</a>-->
-                    <!--<input type="checkbox" formControlName="isAddNewPatient" (change)="addNewPatient()" [(ngModel)]="isAddNewPatient">                    <label>Add New Patient</label>-->
-                </div>
+                </div>               
             </div>
 
             <scheduled-event-editor [selectedEvent]="selectedVisit.calendarEvent" (isValid)="scheduledEventEditorValid = $event"></scheduled-event-editor>
@@ -178,7 +163,6 @@
         <p-tabView>
             <p-tabPanel header="Visit Details" [selected]="true">
                 <form [formGroup]="patientVisitForm" (ngSubmit)="saveVisit()">
-
                     <div class="row">
                         <div class="col-md-1"><label class="form-label">Notes<span class="color-red">*</span></label></div>
                         <div class="col-md-6">
@@ -205,9 +189,7 @@
                     </div>
 
 
-
                     <div class="row">
-
                         <div class="col-md-4">
                             <button [disabled]="!patientVisitForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                 <loader [visible]="isSaveProgress"></loader>
@@ -219,15 +201,10 @@
             </p-tabPanel>
 
             <p-tabPanel header="Documents" *ngIf="selectedVisit.id">
-
                 <app-document-upload [url]="visitUploadDocumentUrl" (uploadComplete)="documentUploadComplete($event)" (uploadError)="documentUploadError($event)"></app-document-upload>
                 <p-confirmDialog width="425"></p-confirmDialog>
                 <div class="input-group">
-                    <h3 class="with-border">Uploaded Documents
-                        <a class="pull-right btn btn-danger btn-sm" (click)="deleteDocument()">
-                            <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Document </span>
-                            <loader [visible]="isDeleteProgress"></loader>
-                        </a>
+                    <h3 class="with-border">Uploaded Documents                        
                     </h3>
                 </div>
                 <div class="ui-widget-header row">
@@ -239,7 +216,6 @@
 <p-dataTable [value]="documents" [(selection)]="selectedDocumentList" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
     [globalFilter]="gb" [responsive]="true">
     <header> List</header>
-    <p-column selectionMode="multiple"></p-column>
     <p-column field="document.documentName" header="Document Name" [sortable]="true"></p-column>
     <p-column field="createDate" header="Created Date" [sortable]="true">
         <ng-template let-document="rowData.document" pTemplate="body">
@@ -250,12 +226,6 @@
 </p-dataTable>
 </p-tabPanel>
 
-<!--<p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id">
-    <app-dignosis [selectedVisit]="selectedVisit"></app-dignosis>
-</p-tabPanel>
-<p-tabPanel header="Procedures" *ngIf="selectedVisit.id">
-    <app-procedure [selectedVisit]="selectedVisit"></app-procedure>
-</p-tabPanel>-->
 
 </p-tabView>
 </div>

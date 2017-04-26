@@ -257,7 +257,11 @@ namespace MIDAS.GBX
             {
                 repo = new ProcedureCodeRepository(context);
             }
-            
+            else if (typeof(T) == typeof(BO.CompanyCaseConsentBase64))
+            {
+                repo = new CompanyCaseConsentApprovalRepository(context);
+            }
+
             return repo;
         }
     }

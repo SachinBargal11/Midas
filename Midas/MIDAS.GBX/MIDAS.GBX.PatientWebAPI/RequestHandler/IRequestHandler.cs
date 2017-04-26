@@ -52,10 +52,11 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage GetByLocationAndSpecialty(HttpRequestMessage request, int locationId, int specialtyId);
         HttpResponseMessage DeleteFile(HttpRequestMessage request, int caseId, int id);
         string Download(HttpRequestMessage request, int caseId, int documentid);
+        object DownloadSignedConsent(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetOpenCaseForPatient(HttpRequestMessage request, int PatientId);
         HttpResponseMessage GetConsentList(HttpRequestMessage request, int id);
         HttpResponseMessage GetByLocationAndPatientId(HttpRequestMessage request, int LocationId, int PatientId);
         HttpResponseMessage GetByLocationDoctorAndPatientId(HttpRequestMessage request, int locationId, int doctorId, int patientId);
-        
+        HttpResponseMessage GetByLocationRoomAndPatient(HttpRequestMessage request, int locationId, int roomId, int patientId);
     }
 }

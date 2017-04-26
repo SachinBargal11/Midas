@@ -31,6 +31,11 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             }
         }
 
+        public object DownloadSignedConsent(HttpRequestMessage request, T gbObject)
+        {
+            object path = dataAccessManager.DownloadSignedConsent(gbObject);
+            return path;
+        }
         public HttpResponseMessage Login(HttpRequestMessage request, T gbObject)
         {
             User userBO = (User)(object)gbObject;
@@ -739,5 +744,19 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             }
         }
         
+        public HttpResponseMessage GetByLocationRoomAndPatient(HttpRequestMessage request, int locationId, int roomId, int patientId)
+        {
+            var objResult = dataAccessManager.GetByLocationRoomAndPatient(locationId, roomId, patientId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+
     }
 }
