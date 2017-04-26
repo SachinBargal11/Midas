@@ -29,4 +29,16 @@ namespace MIDAS.GBX.BusinessObjects
 
     }
 
+    public class CompanyCaseConsentBase64 : GbObject
+    {
+        [JsonProperty("companyId")]
+        public int CompanyId { get; set; }
+
+        [JsonProperty("caseId")]
+        public int CaseId { get; set; }
+
+        [JsonProperty("base64Data")]
+        public string Base64Data { get; set; }      
+    }
+
 }

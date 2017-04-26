@@ -32,6 +32,12 @@ namespace MIDAS.GBX.WebAPI
             }
         }
 
+        public object DownloadSignedConsent(HttpRequestMessage request, T gbObject)
+        {
+            object path = dataAccessManager.DownloadSignedConsent(gbObject);
+            return path;
+        }
+
         public HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject)
         {
             var objResult = dataAccessManager.Save(gbObject);

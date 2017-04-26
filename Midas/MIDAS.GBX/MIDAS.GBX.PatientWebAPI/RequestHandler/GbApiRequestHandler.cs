@@ -31,6 +31,11 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             }
         }
 
+        public object DownloadSignedConsent(HttpRequestMessage request, T gbObject)
+        {
+            object path = dataAccessManager.DownloadSignedConsent(gbObject);
+            return path;
+        }
         public HttpResponseMessage Login(HttpRequestMessage request, T gbObject)
         {
             User userBO = (User)(object)gbObject;

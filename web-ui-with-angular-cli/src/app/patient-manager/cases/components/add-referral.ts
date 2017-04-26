@@ -252,27 +252,6 @@ export class AddReferralComponent implements OnInit {
         let referralFormValues = this.referralForm.value;
         let referralDetail;
         // if (this.consent) {
-        if (this.searchMode == '4') {
-            referralDetail = new Referral({
-                caseId: this.caseId,
-                referringCompanyId: this._sessionStore.session.currentCompany.id,
-                referringLocationId: null,
-                referringUserId: this._sessionStore.session.user.id,
-                referredByEmail: this._sessionStore.session.user.userName,
-                referredToCompanyId: null,
-                referredToLocationId: null,
-                referredToDoctorId: null,
-                referredToRoomId: null,
-                referredToSpecialtyId: null,
-                referredToRoomTestId: null,
-                note: referralFormValues.note,
-                referredToEmail: referralFormValues.outsideMidas.email,
-                firstName: referralFormValues.outsideMidas.firstName,
-                lastName: referralFormValues.outsideMidas.lastName,
-                cellPhone: referralFormValues.outsideMidas.cellPhone,
-                referralAccepted: 0
-            });
-        } else {
             referralDetail = new Referral({
                 caseId: this.caseId,
                 referringCompanyId: this._sessionStore.session.currentCompany.id,
@@ -292,7 +271,6 @@ export class AddReferralComponent implements OnInit {
                 cellPhone: null,
                 referralAccepted: 0
             });
-        }
 
         let result = this._referralStore.addReferral(referralDetail);
         result.subscribe(
@@ -333,6 +311,60 @@ export class AddReferralComponent implements OnInit {
         //     this._notificationsStore.addNotification(notification);
         //     this._notificationsService.error('Oh No!', 'Unable to add Referral, You dont have consent');
         // }
+    }
+    saveOutOfMidasReferral() {
+        this.isSaveProgress = true;
+        this._progressBarService.show();
+        let referralOutOfMidasFormValues = this.referralOutOfMidasForm.value;
+        let referralDetail;
+            referralDetail = new Referral({
+                caseId: this.caseId,
+                referringCompanyId: this._sessionStore.session.currentCompany.id,
+                referringLocationId: null,
+                referringUserId: this._sessionStore.session.user.id,
+                referredByEmail: this._sessionStore.session.user.userName,
+                referredToCompanyId: null,
+                referredToLocationId: null,
+                referredToDoctorId: null,
+                referredToRoomId: null,
+                referredToSpecialtyId: null,
+                referredToRoomTestId: null,
+                note: referralOutOfMidasFormValues.referralOutsideMidasNote,
+                referredToEmail: referralOutOfMidasFormValues.email,
+                firstName: referralOutOfMidasFormValues.firstName,
+                lastName: referralOutOfMidasFormValues.lastName,
+                cellPhone: referralOutOfMidasFormValues.cellPhone,
+                referralAccepted: 0
+            });
+
+        let result = this._referralStore.addReferral(referralDetail);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Referral added successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this.visitDialogVisible = true;
+                this._router.navigate(['../'], { relativeTo: this._route });
+            },
+            (error) => {
+                let errString = 'Unable to add Referral.';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this.isSaveProgress = false;
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                this._progressBarService.hide();
+            },
+            () => {
+                this.isSaveProgress = false;
+                this._progressBarService.hide();
+            });
     }
 
 }

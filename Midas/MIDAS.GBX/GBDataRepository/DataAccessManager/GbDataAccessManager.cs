@@ -102,7 +102,27 @@ namespace MIDAS.GBX.DataAccessManager
                 throw;
             }
         }
-       
+
+        public object DownloadSignedConsent(T data)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+
+                object path = baseRepo.DownloadSignedConsent(data);
+
+                return path;
+            }
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity))
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
 
         public string Download(int caseId, int documentid)
         {

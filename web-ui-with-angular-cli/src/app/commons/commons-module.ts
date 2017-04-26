@@ -19,6 +19,7 @@ import { LoaderComponent } from './components/loader/loader';
 import { NotificationComponent } from './components/notification/notification';
 import { ShellComponent } from './shell-component';
 import { ScheduledEventEditorComponent } from '../medical-provider/calendar/components/scheduled-event-editor';
+import { LeaveEventEditorComponent } from '../medical-provider/calendar/components/leave-event-editor';
 import { DocumentUploadComponent } from '../commons/components/document-upload/document-upload.component';
 import { DignosisComponent } from './components/dignosis/dignosis.component';
 import { ProcedureComponent } from './components/procedure/procedure.component';
@@ -96,6 +97,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     NotificationComponent,
     ShellComponent,
     ScheduledEventEditorComponent,
+    LeaveEventEditorComponent,
     DocumentUploadComponent,
     SignatureFieldComponent,
     DignosisComponent,
@@ -137,6 +139,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     BsDropdownModule,
     ShellComponent,
     ScheduledEventEditorComponent,
+    LeaveEventEditorComponent,
     DocumentUploadComponent,
     SignatureFieldComponent,
     DignosisComponent,
