@@ -15,7 +15,7 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage SaveDoctor(HttpRequestMessage request, T gbObject);
         HttpResponseMessage CreateGbDocObject(HttpRequestMessage request, int id, string type, List<HttpContent> streamContent,string uploadpath);
-        HttpResponseMessage CreateGbDocObject1(HttpRequestMessage request, int caseid, int companyid, List<HttpContent> streamContent, string uploadpath);
+        HttpResponseMessage CreateGbDocObject1(HttpRequestMessage request, int caseid, int companyid, List<HttpContent> streamContent, string uploadpath, bool signed);
         HttpResponseMessage GetObject(HttpRequestMessage request, int id, string type);
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetObject(HttpRequestMessage request, int id);
