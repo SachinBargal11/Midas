@@ -14,7 +14,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object SaveDoctor(T gbObject);
         Object Save(int id, string type, List<HttpContent> streamContent,string uploadpath);
         Object AddQuickPatient(T gbObject);
-        Object ConsentSave(int caseid, int companyid, List<HttpContent> streamContent, string uploadpath);
+        Object ConsentSave(int caseid, int companyid, List<HttpContent> streamContent, string uploadpath,bool signed);
         Object AssociateLocationToDoctors(T gbObject);
         Object AssociateDoctorToLocations(T gbObject);
         int Delete(T entity);

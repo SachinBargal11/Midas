@@ -160,6 +160,84 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
             return docInfo;
         }
 
+        public override Object UploadSignedConsent(int id, string type, string uploadpath)
+        {
+            List<BO.Document> docInfo = new List<BO.Document>();            
+            int companyid = 0;
+
+            string errMessage = string.Empty;
+            string filename = string.Empty;
+            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    if (type.ToUpper().Contains(EN.Constants.ConsentType))
+                    {
+                        companyid = System.Convert.ToInt16(type.Split('_')[1]);
+                        if (_context.MidasDocuments.Any(cc => cc.ObjectId == id &&
+                                                              cc.ObjectType == EN.Constants.ConsentType + "_" + companyid &&
+                                                              (cc.IsDeleted.HasValue == false || (cc.IsDeleted.HasValue == true && cc.IsDeleted.Value == false))))
+                            throw new Exception("Company, Case and Consent data already exists.");
+                    }
+
+                    MidasDocument midasdoc = _context.MidasDocuments.Add(new MidasDocument()
+                    {
+                        ObjectType = type,
+                        ObjectId = id,
+                        DocumentName = Path.GetFileName(uploadpath),
+                        DocumentPath = ConfigurationManager.AppSettings.Get("BLOB_SERVER") + Path.GetFileName(uploadpath),
+                        CreateDate = DateTime.UtcNow
+                    });
+                    _context.Entry(midasdoc).State = System.Data.Entity.EntityState.Added;
+                    _context.SaveChanges();
+
+                    if (type.ToUpper().Contains(EN.Constants.ConsentType))
+                    {
+                        type = EN.Constants.ConsentType;
+                    }
+
+                    CaseCompanyConsentDocument caseCompanyConsentDocument = _context.CaseCompanyConsentDocuments.Add(new CaseCompanyConsentDocument()
+                    {
+                        MidasDocumentId = midasdoc.Id,
+                        CaseId = id,
+                        CompanyId = companyid,
+                        DocumentName = Path.GetFileName(uploadpath),
+                        CreateDate = DateTime.UtcNow
+                    });
+                    _context.Entry(caseCompanyConsentDocument).State = System.Data.Entity.EntityState.Added;
+                    _context.SaveChanges();
+                    filename = caseCompanyConsentDocument.DocumentName;
+
+                    docInfo.Add(new BO.Document()
+                    {
+                        Status = errMessage.Equals(string.Empty) ? "Success" : "Failed",
+                        Message = errMessage,
+                        DocumentId = midasdoc.Id,
+                        DocumentPath = errMessage.Equals(string.Empty) ? midasdoc.DocumentPath : midasdoc.DocumentName,
+                        DocumentName = midasdoc.DocumentName,
+                        id = id
+                    });
+
+                }
+                catch (Exception err)
+                {
+                    docInfo.Add(new BO.Document()
+                    {
+                        Status = "Failed",
+                        Message = err.Message.ToString(),
+                        DocumentId = 0,
+                        DocumentPath = "",
+                        DocumentName = filename,
+                        id = id
+                    });
+                    dbContextTransaction.Rollback();
+                }
+            }
+            
+            return docInfo;
+        }
+
+
         public void Dispose() { GC.SuppressFinalize(this); }
     }
 }
