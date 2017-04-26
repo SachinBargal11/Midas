@@ -276,6 +276,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                        .Include("User.UserCompanies")
                                        .Include("User.AddressInfo")
                                        .Include("User.ContactInfo")
+                                       .Include("Cases")
+                                       .Include("Cases.Referrals")
                                        .Where(p => userInCompany.Contains(p.Id) && patientWithCase.Contains(p.Id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Patient2>();
 
             var referralList = _context.Referrals.Include("Case")
@@ -284,6 +286,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                .Include("Case.Patient2.User.UserCompanies")
                                                .Include("Case.Patient2.User.AddressInfo")
                                                .Include("Case.Patient2.User.ContactInfo")
+                                               .Include("Case.Patient2.Cases")
+                                               .Include("Case.Patient2.Cases.Referrals")
                                                .Where(p => p.ReferredToCompanyId == CompanyId && p.ReferredToDoctorId == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                .ToList<Referral>();
 
@@ -383,6 +387,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
         }
         #endregion
+
         #region GetByLocationWithOpenCases For Patient 
         public override object GetByLocationWithOpenCases(int LocationId)
         {
@@ -424,6 +429,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                        .Include("User.UserCompanies")
                                        .Include("User.AddressInfo")
                                        .Include("User.ContactInfo")
+                                       .Include("Cases")
+                                       .Include("Cases.Referrals")
                                        .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
                                        .FirstOrDefault<Patient2>();
 
