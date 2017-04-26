@@ -110,9 +110,10 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             }            
         }
 
-        public HttpResponseMessage CreateGbDocObject1(HttpRequestMessage request, int caseid, int companyid, List<HttpContent> streamContent, string uploadpath)
+        public HttpResponseMessage CreateGbDocObject1(HttpRequestMessage request, int caseid, int companyid, List<HttpContent> streamContent, string uploadpath, bool signed)
         {
-            var objResult = dataAccessManager.ConsentSave(caseid, companyid, streamContent, uploadpath);
+            var objResult = new object();
+            objResult = dataAccessManager.ConsentSave(caseid, companyid, streamContent, uploadpath, signed);
 
             try
             {

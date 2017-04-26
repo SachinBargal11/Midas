@@ -400,11 +400,11 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object ConsentSave(int caseid, int companyid, List<HttpContent> streamContent, string uploadpath)
+        public Object ConsentSave(int caseid, int companyid, List<HttpContent> streamContent, string uploadpath,bool signed)
         {
             BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
 
-            var gbdata = baseRepo.ConsentSave(caseid, companyid, streamContent, uploadpath);
+            var gbdata = baseRepo.ConsentSave(caseid, companyid, streamContent, uploadpath, signed);
             return gbdata;
         }
         #endregion

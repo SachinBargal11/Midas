@@ -48,7 +48,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object ConsentSave(int caseid, int companyid, List<HttpContent> streamContent, string uploadpath)
+        public virtual Object ConsentSave(int caseid, int companyid, List<HttpContent> streamContent, string uploadpath,bool signed)
         {
             throw new NotImplementedException();
         }
@@ -64,6 +64,11 @@ namespace MIDAS.GBX.EntityRepository
         }
 
         public virtual Object Upload(List<HttpContent> streamContent, string path, int id, string type,string sourcePath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object UploadSignedConsent(int id, string type, string sourcePath)
         {
             throw new NotImplementedException();
         }

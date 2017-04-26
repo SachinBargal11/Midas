@@ -85,7 +85,7 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             await Request.Content.ReadAsMultipartAsync(streamProvider);
             List<HttpContent> streamContent = streamProvider.Contents.ToList();
             string contenttype = streamContent.ToList().Select(p => p.Headers.ContentType).FirstOrDefault().MediaType;
-            HttpResponseMessage resMessage = requestHandler.CreateGbDocObject1(Request, caseid, companyid, streamContent, sourcePath);
+            HttpResponseMessage resMessage = requestHandler.CreateGbDocObject1(Request, caseid, companyid, streamContent, sourcePath,false);
             return resMessage;
         }
 
@@ -106,6 +106,51 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             //HttpContext.Current.Response.BinaryWrite(btFile);
             HttpContext.Current.Response.End();
             if (File.Exists(filepath)) File.Delete(filepath);
+        }
+
+
+        [HttpPost]
+        [Route("uploadsignedconsent/{caseid}/{companyid}")]
+        [AllowAnonymous]
+        public async Task<HttpResponseMessage> UploadElectronicSignedConsent(int caseid, int companyid)
+        {
+
+            Document docinfo = new Document();
+            try
+            {
+                if (!Request.Content.IsMimeMultipartContent("form-data"))
+                    return new HttpResponseMessage(HttpStatusCode.BadRequest);
+                var streamProvider = new MultipartMemoryStreamProvider();
+                await Request.Content.ReadAsMultipartAsync(streamProvider);
+                List<HttpContent> streamContent = streamProvider.Contents.ToList();
+                string filename = "";
+
+
+
+                foreach (HttpContent content in streamContent)
+                {
+                    using (Stream stream = content.ReadAsStreamAsync().Result)
+                    {
+                        filename = sourcePath + "/" + content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
+                        stream.Seek(0, SeekOrigin.Begin);
+                        FileStream filestream = File.Create(sourcePath + "/" + content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty));
+                        stream.CopyTo(filestream);
+                        stream.Close();
+                        filestream.Close();
+                        //docinfo.DocumentName = content.Headers.ContentDisposition.FileName.Replace("\"", string.Empty);
+                        //docinfo.DocumentPath = sourcePath;
+                    }
+                }
+                requestHandler.CreateGbDocObject1(Request, caseid, companyid, streamContent, filename, true);
+
+
+                return Request.CreateResponse(HttpStatusCode.OK, docinfo);
+            }
+            catch (Exception)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, docinfo);
+            }
+
         }
     }
 }
