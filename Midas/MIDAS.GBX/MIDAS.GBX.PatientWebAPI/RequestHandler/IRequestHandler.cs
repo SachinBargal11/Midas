@@ -56,6 +56,6 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage GetConsentList(HttpRequestMessage request, int id);
         HttpResponseMessage GetByLocationAndPatientId(HttpRequestMessage request, int LocationId, int PatientId);
         HttpResponseMessage GetByLocationDoctorAndPatientId(HttpRequestMessage request, int locationId, int doctorId, int patientId);
-        
+        HttpResponseMessage GetByLocationRoomAndPatient(HttpRequestMessage request, int locationId, int roomId, int patientId);
     }
 }

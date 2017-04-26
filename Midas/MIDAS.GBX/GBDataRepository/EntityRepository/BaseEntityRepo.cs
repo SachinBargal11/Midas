@@ -504,6 +504,10 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
         
+        public virtual Object GetByLocationRoomAndPatient(int locationId, int roomId, int patientId)
+        {
+            throw new NotImplementedException();
+        }
 
         #endregion
     }

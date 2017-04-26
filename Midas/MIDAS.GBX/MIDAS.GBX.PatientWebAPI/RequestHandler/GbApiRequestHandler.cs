@@ -739,5 +739,19 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             }
         }
         
+        public HttpResponseMessage GetByLocationRoomAndPatient(HttpRequestMessage request, int locationId, int roomId, int patientId)
+        {
+            var objResult = dataAccessManager.GetByLocationRoomAndPatient(locationId, roomId, patientId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+
     }
 }
