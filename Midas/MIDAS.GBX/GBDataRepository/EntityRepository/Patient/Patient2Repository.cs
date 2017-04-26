@@ -66,16 +66,70 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 List<BO.Case> boCase = new List<BO.Case>();
                 foreach (var casemap in patient2.Cases)
                 {
-                    if (casemap.IsDeleted.HasValue == false || (casemap.IsDeleted.HasValue == true && casemap.IsDeleted.Value == false))
+                    if (casemap != null)
                     {
-                        if (casemap != null)
+                        if (casemap.IsDeleted.HasValue == false || (casemap.IsDeleted.HasValue == true && casemap.IsDeleted.Value == false))
                         {
-                            using (CaseRepository cmp = new CaseRepository(_context))
+                            BO.Case caseBO = new BO.Case();
+
+                            caseBO.ID = casemap.Id;
+                            caseBO.PatientId = casemap.PatientId;
+                            caseBO.CaseName = casemap.CaseName;
+                            caseBO.CaseTypeId = casemap.CaseTypeId;
+                            caseBO.LocationId = casemap.LocationId;
+                            caseBO.PatientEmpInfoId = casemap.PatientEmpInfoId;
+                            caseBO.CarrierCaseNo = casemap.CarrierCaseNo;
+                            caseBO.Transportation = casemap.Transportation;
+                            caseBO.CaseStatusId = casemap.CaseStatusId;
+                            caseBO.AttorneyId = casemap.AttorneyId;
+
+                            caseBO.IsDeleted = casemap.IsDeleted;
+                            caseBO.CreateByUserID = casemap.CreateByUserID;
+                            caseBO.UpdateByUserID = casemap.UpdateByUserID;
+
+                            if (casemap.Referrals != null)
                             {
-                                boCase.Add(cmp.Convert<BO.Case, Case>(casemap));
+                                List<BO.Referral> BOListReferral = new List<BO.Referral>();
+                                foreach (var eachRefrral in casemap.Referrals)
+                                {
+                                    if (eachRefrral != null)
+                                    {
+                                        if (eachRefrral.IsDeleted.HasValue == false || (eachRefrral.IsDeleted.HasValue == true && eachRefrral.IsDeleted.Value == false))
+                                        {
+                                            BO.Referral referralBO = new BO.Referral();
+
+                                            referralBO.ID = eachRefrral.Id;
+                                            referralBO.CaseId = eachRefrral.CaseId;
+                                            referralBO.ReferringCompanyId = eachRefrral.ReferringCompanyId;
+                                            referralBO.ReferringLocationId = eachRefrral.ReferringLocationId;
+                                            referralBO.ReferringUserId = eachRefrral.ReferringUserId;
+                                            referralBO.ReferredToCompanyId = eachRefrral.ReferredToCompanyId;
+                                            referralBO.ReferredToLocationId = eachRefrral.ReferredToLocationId;
+                                            referralBO.ReferredToDoctorId = eachRefrral.ReferredToDoctorId;
+                                            referralBO.ReferredToRoomId = eachRefrral.ReferredToRoomId;
+                                            referralBO.Note = eachRefrral.Note;
+                                            referralBO.ReferredByEmail = eachRefrral.ReferredByEmail;
+                                            referralBO.ReferredToEmail = eachRefrral.ReferredToEmail;
+                                            referralBO.ReferralAccepted = eachRefrral.ReferralAccepted;
+                                            referralBO.FirstName = eachRefrral.FirstName;
+                                            referralBO.LastName = eachRefrral.LastName;
+                                            referralBO.CellPhone = eachRefrral.CellPhone;
+                                            referralBO.IsDeleted = eachRefrral.IsDeleted;
+                                            referralBO.CreateByUserID = eachRefrral.CreateByUserID;
+                                            referralBO.UpdateByUserID = eachRefrral.UpdateByUserID;
+
+                                            BOListReferral.Add(referralBO);
+                                        }
+                                    }
+                                }
+
+                                caseBO.Referrals = BOListReferral;
                             }
+
+                            boCase.Add(caseBO);
                         }
                     }
+                        
                 }
                 patientBO2.Cases = boCase;
             }
@@ -190,7 +244,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                         && (p.Case.Patient2.IsDeleted.HasValue == false || (p.Case.Patient2.IsDeleted.HasValue == true && p.Case.Patient2.IsDeleted.Value == false)))
                                                  .ToList<Referral>();
 
-            var patientList2 = referralList.Select(p => p.Case.Patient2).ToList();
+            var patientList2 = referralList.Select(p => p.Case.Patient2);
 
             if (patientList1 == null && patientList2 == null)
             {
