@@ -53,6 +53,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientVisit2BO.Notes = patientVisit2.Notes;
                 patientVisit2BO.VisitStatusId = patientVisit2.VisitStatusId;
                 patientVisit2BO.VisitType = patientVisit2.VisitType;
+                patientVisit2BO.IsOutOfOffice = patientVisit2.IsOutOfOffice;
+                patientVisit2BO.LeaveStartDate = patientVisit2.LeaveStartDate;
+                patientVisit2BO.LeaveEndDate = patientVisit2.LeaveEndDate;
 
                 patientVisit2BO.IsCancelled = patientVisit2.IsCancelled;
                 patientVisit2BO.IsDeleted = patientVisit2.IsDeleted;
@@ -595,6 +598,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     PatientVisit2DB.Notes = PatientVisit2BO.Notes;
                     PatientVisit2DB.VisitStatusId = PatientVisit2BO.VisitStatusId;
                     PatientVisit2DB.VisitType = PatientVisit2BO.VisitType;
+                    PatientVisit2DB.IsOutOfOffice = PatientVisit2BO.IsOutOfOffice;
+                    PatientVisit2DB.LeaveStartDate = PatientVisit2BO.LeaveStartDate;
+                    PatientVisit2DB.LeaveEndDate = PatientVisit2BO.LeaveEndDate;
 
                     if (IsEditMode == false)
                     {
