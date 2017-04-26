@@ -164,6 +164,79 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     }
                 }
 
+                if (patientVisit2.PatientVisitDiagnosisCodes != null)
+                {
+                    List<BO.PatientVisitDiagnosisCode> BOpatientVisitDiagnosisCode = new List<BO.PatientVisitDiagnosisCode>();
+                    foreach (var eachVisitDiagnosis in patientVisit2.PatientVisitDiagnosisCodes)
+                    {
+                        if (eachVisitDiagnosis != null)
+                        {
+                            if (eachVisitDiagnosis.IsDeleted.HasValue == false || (eachVisitDiagnosis.IsDeleted.HasValue == true && eachVisitDiagnosis.IsDeleted.Value == false))
+                            {
+                                BO.PatientVisitDiagnosisCode patientVisitDiagnosisCodeBO = new BO.PatientVisitDiagnosisCode();
+
+                                patientVisitDiagnosisCodeBO.ID = eachVisitDiagnosis.Id;
+                                patientVisitDiagnosisCodeBO.DiagnosisCodeId = eachVisitDiagnosis.DiagnosisCodeId;
+                                patientVisitDiagnosisCodeBO.PatientVisitId = eachVisitDiagnosis.PatientVisitId;
+                                patientVisitDiagnosisCodeBO.IsDeleted = eachVisitDiagnosis.IsDeleted;
+                                patientVisitDiagnosisCodeBO.CreateByUserID = eachVisitDiagnosis.CreateByUserID;
+                                patientVisitDiagnosisCodeBO.UpdateByUserID = eachVisitDiagnosis.UpdateByUserID;
+
+                                if (eachVisitDiagnosis.DiagnosisCode != null)
+                                {
+                                    using (DiagnosisCodeRepository repoDiagnosisCode = new DiagnosisCodeRepository(_context))
+                                    {
+                                        BO.DiagnosisCode diagCode = repoDiagnosisCode.Convert<BO.DiagnosisCode, DiagnosisCode>(eachVisitDiagnosis.DiagnosisCode);
+
+                                        patientVisitDiagnosisCodeBO.DiagnosisCode = diagCode;
+                                    }
+                                }
+
+                                BOpatientVisitDiagnosisCode.Add(patientVisitDiagnosisCodeBO);
+                            }
+                        }
+                    }
+
+                    patientVisit2BO.PatientVisitDiagnosisCodes = BOpatientVisitDiagnosisCode;
+                }
+
+                if (patientVisit2.PatientVisitProcedureCodes != null)
+                {
+                    List<BO.PatientVisitProcedureCode> BOpatientVisitProcedureCode = new List<BO.PatientVisitProcedureCode>();
+                    foreach (var eachVisitProcedure in patientVisit2.PatientVisitProcedureCodes)
+                    {
+                        if (eachVisitProcedure != null)
+                        {
+                            if (eachVisitProcedure.IsDeleted.HasValue == false || (eachVisitProcedure.IsDeleted.HasValue == true && eachVisitProcedure.IsDeleted.Value == false))
+                            {
+                                BO.PatientVisitProcedureCode patientVisitProcedureCodeBO = new BO.PatientVisitProcedureCode();
+
+                                patientVisitProcedureCodeBO.ID = eachVisitProcedure.Id;
+                                patientVisitProcedureCodeBO.ProcedureCodeId = eachVisitProcedure.ProcedureCodeId;
+                                patientVisitProcedureCodeBO.PatientVisitId = eachVisitProcedure.PatientVisitId;
+                                patientVisitProcedureCodeBO.IsDeleted = eachVisitProcedure.IsDeleted;
+                                patientVisitProcedureCodeBO.CreateByUserID = eachVisitProcedure.CreateByUserID;
+                                patientVisitProcedureCodeBO.UpdateByUserID = eachVisitProcedure.UpdateByUserID;
+
+                                if (eachVisitProcedure.ProcedureCode != null)
+                                {
+                                    using (ProcedureCodeRepository repoProcedureCode = new ProcedureCodeRepository(_context))
+                                    {
+                                        BO.ProcedureCode procCode = repoProcedureCode.Convert<BO.ProcedureCode, ProcedureCode>(eachVisitProcedure.ProcedureCode);
+
+                                        patientVisitProcedureCodeBO.ProcedureCode = procCode;
+                                    }
+                                }
+
+                                BOpatientVisitProcedureCode.Add(patientVisitProcedureCodeBO);
+                            }
+                        }
+                    }
+
+                    patientVisit2BO.PatientVisitProcedureCodes = BOpatientVisitProcedureCode;
+                }
+
+
                 return (T)(object)patientVisit2BO;
             }
             else if (entity is CalendarEvent)
@@ -192,11 +265,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("CalendarEvent")
                                                                         .Include("Patient2")
                                                                         .Include("Patient2.User")
-                                                                         .Include("Case")
-                                                                         .Include("Doctor")
-                                                                         .Include("Doctor.User")
-                                                                         .Include("Room")
-                                                                         .Include("Location")
+                                                                        .Include("Case")
+                                                                        .Include("Doctor")
+                                                                        .Include("Doctor.User")
+                                                                        .Include("Room").Include("Room.RoomTest")
+                                                                        .Include("Location")
+                                                                        .Include("Specialty")
+                                                                        .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
+                                                                        .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
                                                                         .Where(p => p.LocationId == id
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                         .ToList<PatientVisit2>();
@@ -221,11 +297,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("CalendarEvent")
                                                                         .Include("Patient2")
                                                                         .Include("Patient2.User")
-                                                                         .Include("Case")
-                                                                         .Include("Doctor")
-                                                                         .Include("Doctor.User")
-                                                                         .Include("Room")
-                                                                         .Include("Location")
+                                                                        .Include("Case")
+                                                                        .Include("Doctor")
+                                                                        .Include("Doctor.User")
+                                                                        .Include("Room").Include("Room.RoomTest")
+                                                                        .Include("Location")
+                                                                        .Include("Specialty")
+                                                                        .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
+                                                                        .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
                                                                         .Where(p => p.LocationId == LocationId && p.RoomId == RoomId
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                         .ToList<PatientVisit2>();
@@ -250,11 +329,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("CalendarEvent")
                                                                         .Include("Patient2")
                                                                         .Include("Patient2.User")
-                                                                         .Include("Case")
-                                                                         .Include("Doctor")
-                                                                         .Include("Doctor.User")
-                                                                         .Include("Room")
-                                                                         .Include("Location")
+                                                                        .Include("Case")
+                                                                        .Include("Doctor")
+                                                                        .Include("Doctor.User")
+                                                                        .Include("Room").Include("Room.RoomTest")
+                                                                        .Include("Location")
+                                                                        .Include("Specialty")
+                                                                        .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
+                                                                        .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
                                                                         .Where(p => p.LocationId == LocationId && p.DoctorId == DoctorId
                                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                         .ToList<PatientVisit2>();
@@ -262,6 +344,70 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (lstPatientVisit == null)
             {
                 return new BO.ErrorObject { ErrorMessage = "No visit found for this Location Id and Doctor Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PatientVisit2> lstBOPatientVisit = new List<BO.PatientVisit2>();
+                lstPatientVisit.ForEach(p => lstBOPatientVisit.Add(Convert<BO.PatientVisit2, PatientVisit2>(p)));
+
+                return lstBOPatientVisit;
+            }
+        }
+        #endregion
+
+        #region Get By Location Id And Patient Id
+        public override object GetByLocationAndPatientId(int LocationId, int PatientId)
+        {
+            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("CalendarEvent")
+                                                                        .Include("Patient2")
+                                                                        .Include("Patient2.User")
+                                                                        .Include("Case")
+                                                                        .Include("Doctor")
+                                                                        .Include("Doctor.User")
+                                                                        .Include("Room").Include("Room.RoomTest")
+                                                                        .Include("Location")
+                                                                        .Include("Specialty")
+                                                                        .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
+                                                                        .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
+                                                                        .Where(p => p.LocationId == LocationId && p.Case.PatientId == PatientId
+                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                        .ToList<PatientVisit2>();
+
+            if (lstPatientVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No visit found for this Location Id and Patient Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            else
+            {
+                List<BO.PatientVisit2> lstBOPatientVisit = new List<BO.PatientVisit2>();
+                lstPatientVisit.ForEach(p => lstBOPatientVisit.Add(Convert<BO.PatientVisit2, PatientVisit2>(p)));
+
+                return lstBOPatientVisit;
+            }
+        }
+        #endregion
+
+        #region Get By Location Id, Doctor Id And Patient Id
+        public override object GetByLocationDoctorAndPatientId(int locationId, int doctorId, int patientId)
+        {
+            List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("CalendarEvent")
+                                                                        .Include("Patient2")
+                                                                        .Include("Patient2.User")
+                                                                        .Include("Case")
+                                                                        .Include("Doctor")
+                                                                        .Include("Doctor.User")
+                                                                        .Include("Room").Include("Room.RoomTest")
+                                                                        .Include("Location")
+                                                                        .Include("Specialty")
+                                                                        .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
+                                                                        .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
+                                                                        .Where(p => p.LocationId == locationId && p.DoctorId == doctorId && p.Case.PatientId == patientId
+                                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                        .ToList<PatientVisit2>();
+
+            if (lstPatientVisit == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No visit found for this Location Id, Doctor Id and Patient Id.", errorObject = "", ErrorLevel = ErrorLevel.Error };
             }
             else
             {
@@ -300,6 +446,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             BO.PatientVisit2 PatientVisit2BO = (BO.PatientVisit2)(object)entity;
             BO.CalendarEvent CalendarEventBO = PatientVisit2BO.CalendarEvent;
+            List<BO.PatientVisitDiagnosisCode> PatientVisitDiagnosisCodeBOList = PatientVisit2BO.PatientVisitDiagnosisCodes;
+            List<BO.PatientVisitProcedureCode> PatientVisitProcedureCodeBOList = PatientVisit2BO.PatientVisitProcedureCodes;
 
             PatientVisit2 PatientVisit2DB = new PatientVisit2();
 
@@ -338,15 +486,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     CalendarEventDB.Name = IsEditMode == true && CalendarEventBO.Name == null ? CalendarEventDB.Name : CalendarEventBO.Name;
                     CalendarEventDB.EventStart = IsEditMode == true && CalendarEventBO.EventStart.HasValue == false ? CalendarEventDB.EventStart : CalendarEventBO.EventStart.Value;
                     CalendarEventDB.EventEnd = IsEditMode == true && CalendarEventBO.EventEnd.HasValue == false ? CalendarEventDB.EventEnd : CalendarEventBO.EventEnd.Value;
-                    //CalendarEventDB.TimeZone = IsEditMode == true && CalendarEventBO.TimeZone == null ? CalendarEventDB.TimeZone : CalendarEventBO.TimeZone;
                     CalendarEventDB.TimeZone = CalendarEventBO.TimeZone;
-                    //CalendarEventDB.Description = IsEditMode == true && CalendarEventBO.Description == null ? CalendarEventDB.Description : CalendarEventBO.Description;
                     CalendarEventDB.Description = CalendarEventBO.Description;
-                    //CalendarEventDB.RecurrenceId = IsEditMode == true && CalendarEventBO.RecurrenceId.HasValue == false ? CalendarEventDB.RecurrenceId : CalendarEventBO.RecurrenceId;
                     CalendarEventDB.RecurrenceId = CalendarEventBO.RecurrenceId;
                     CalendarEventDB.RecurrenceRule = IsEditMode == true && CalendarEventBO.RecurrenceRule == null ? CalendarEventDB.RecurrenceRule : CalendarEventBO.RecurrenceRule;
                     CalendarEventDB.RecurrenceException = IsEditMode == true && CalendarEventBO.RecurrenceException == null ? CalendarEventDB.RecurrenceException : CalendarEventBO.RecurrenceException;
-                    //CalendarEventDB.IsAllDay = IsEditMode == true && CalendarEventBO.IsAllDay.HasValue == false ? CalendarEventDB.IsAllDay : CalendarEventBO.IsAllDay;
                     CalendarEventDB.IsAllDay = CalendarEventBO.IsAllDay;
 
                     if (IsEditMode == false)
@@ -441,21 +585,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                     PatientVisit2DB.PatientId = IsEditMode == true && PatientVisit2BO.PatientId.HasValue == false ? PatientVisit2DB.PatientId : PatientVisit2BO.PatientId.Value;
                     PatientVisit2DB.LocationId = IsEditMode == true && PatientVisit2BO.LocationId.HasValue == false ? PatientVisit2DB.LocationId : PatientVisit2BO.LocationId.Value;
-                    //PatientVisit2DB.RoomId = IsEditMode == true && PatientVisit2BO.RoomId.HasValue == false ? PatientVisit2DB.RoomId : PatientVisit2BO.RoomId;
                     PatientVisit2DB.RoomId = PatientVisit2BO.RoomId;
-                    //PatientVisit2DB.DoctorId = IsEditMode == true && PatientVisit2BO.DoctorId.HasValue == false ? PatientVisit2DB.DoctorId : PatientVisit2BO.DoctorId;
                     PatientVisit2DB.DoctorId = PatientVisit2BO.DoctorId;
-                    //PatientVisit2DB.SpecialtyId = IsEditMode == true && PatientVisit2BO.SpecialtyId.HasValue == false ? PatientVisit2DB.SpecialtyId : PatientVisit2BO.SpecialtyId;
                     PatientVisit2DB.SpecialtyId = PatientVisit2BO.SpecialtyId;
 
                     PatientVisit2DB.EventStart = PatientVisit2BO.EventStart;
                     PatientVisit2DB.EventEnd = PatientVisit2BO.EventEnd;
 
-                    //PatientVisit2DB.Notes = IsEditMode == true && PatientVisit2BO.Notes == null ? PatientVisit2DB.Notes : PatientVisit2BO.Notes;
                     PatientVisit2DB.Notes = PatientVisit2BO.Notes;
-                    //PatientVisit2DB.VisitStatusId = IsEditMode == true && PatientVisit2BO.VisitStatusId.HasValue == false ? PatientVisit2DB.VisitStatusId : PatientVisit2BO.VisitStatusId;
                     PatientVisit2DB.VisitStatusId = PatientVisit2BO.VisitStatusId;
-                    //PatientVisit2DB.VisitType = IsEditMode == true && PatientVisit2BO.VisitType.HasValue == false ? PatientVisit2DB.VisitType : PatientVisit2BO.VisitType;
                     PatientVisit2DB.VisitType = PatientVisit2BO.VisitType;
 
                     if (IsEditMode == false)
@@ -488,11 +626,99 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _context.SaveChanges();
                 #endregion
 
+                #region PatientVisitDiagnosisCode
+                if (PatientVisitDiagnosisCodeBOList == null || (PatientVisitDiagnosisCodeBOList != null && PatientVisitDiagnosisCodeBOList.Count <= 0))
+                {
+                    //return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient Visit Diagnosis Code.", ErrorLevel = ErrorLevel.Error };
+                }
+                else
+                {
+                    int PatientVisitId = PatientVisit2DB.Id;
+                    List<int> NewDiagnosisCodeIds = PatientVisitDiagnosisCodeBOList.Select(p => p.DiagnosisCodeId).ToList();
+
+                    List<PatientVisitDiagnosisCode> ReomveDiagnosisCodeDB = new List<PatientVisitDiagnosisCode>();
+                    ReomveDiagnosisCodeDB = _context.PatientVisitDiagnosisCodes.Where(p => p.PatientVisitId == PatientVisitId
+                                                                                    && NewDiagnosisCodeIds.Contains(p.DiagnosisCodeId) == false
+                                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                               .ToList();
+
+                    ReomveDiagnosisCodeDB.ForEach(p => { p.IsDeleted = true; p.UpdateByUserID = 0; p.UpdateDate = DateTime.UtcNow; });
+
+                    _context.SaveChanges();
+
+                    foreach (BO.PatientVisitDiagnosisCode eachPatientVisitDiagnosisCode in PatientVisitDiagnosisCodeBOList)
+                    {
+                        PatientVisitDiagnosisCode AddDiagnosisCodeDB = new PatientVisitDiagnosisCode();
+                        AddDiagnosisCodeDB = _context.PatientVisitDiagnosisCodes.Where(p => p.PatientVisitId == PatientVisitId
+                                                                                    && p.DiagnosisCodeId == eachPatientVisitDiagnosisCode.DiagnosisCodeId
+                                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                               .FirstOrDefault();
+
+                        if (AddDiagnosisCodeDB == null)
+                        {
+                            AddDiagnosisCodeDB = new PatientVisitDiagnosisCode();
+
+                            AddDiagnosisCodeDB.PatientVisitId = PatientVisitId;
+                            AddDiagnosisCodeDB.DiagnosisCodeId = eachPatientVisitDiagnosisCode.DiagnosisCodeId;
+
+                            _context.PatientVisitDiagnosisCodes.Add(AddDiagnosisCodeDB);
+                        }
+                    }
+
+                    _context.SaveChanges();
+                }
+                #endregion
+
+                #region PatientVisitProcedureCode
+                if (PatientVisitProcedureCodeBOList == null || (PatientVisitProcedureCodeBOList != null && PatientVisitProcedureCodeBOList.Count <= 0))
+                {
+                    //return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass valid Patient Visit Procedure Code.", ErrorLevel = ErrorLevel.Error };
+                }
+                else
+                {
+                    int PatientVisitId = PatientVisit2DB.Id;
+                    List<int> NewProcedureCodeIds = PatientVisitProcedureCodeBOList.Select(p => p.ProcedureCodeId).ToList();
+
+                    List<PatientVisitProcedureCode> ReomveProcedureCodeDB = new List<PatientVisitProcedureCode>();
+                    ReomveProcedureCodeDB = _context.PatientVisitProcedureCodes.Where(p => p.PatientVisitId == PatientVisitId
+                                                                                    && NewProcedureCodeIds.Contains(p.ProcedureCodeId) == false
+                                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                               .ToList();
+
+                    ReomveProcedureCodeDB.ForEach(p => { p.IsDeleted = true; p.UpdateByUserID = 0; p.UpdateDate = DateTime.UtcNow; });
+
+                    _context.SaveChanges();
+
+                    foreach (BO.PatientVisitProcedureCode eachPatientVisitProcedureCode in PatientVisitProcedureCodeBOList)
+                    {
+                        PatientVisitProcedureCode AddProcedureCodeDB = new PatientVisitProcedureCode();
+                        AddProcedureCodeDB = _context.PatientVisitProcedureCodes.Where(p => p.PatientVisitId == PatientVisitId
+                                                                                    && p.ProcedureCodeId == eachPatientVisitProcedureCode.ProcedureCodeId
+                                                                                    && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                                               .FirstOrDefault();
+
+                        if (AddProcedureCodeDB == null)
+                        {
+                            AddProcedureCodeDB = new PatientVisitProcedureCode();
+
+                            AddProcedureCodeDB.PatientVisitId = PatientVisitId;
+                            AddProcedureCodeDB.ProcedureCodeId = eachPatientVisitProcedureCode.ProcedureCodeId;
+
+                            _context.PatientVisitProcedureCodes.Add(AddProcedureCodeDB);
+                        }
+                    }
+
+                    _context.SaveChanges();
+                }
+                #endregion
+
                 dbContextTransaction.Commit();
 
                 if (PatientVisit2DB != null)
                 {
                     PatientVisit2DB = _context.PatientVisit2.Include("CalendarEvent")
+                                                            .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
+                                                            .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
                                                             .Where(p => p.Id == PatientVisit2DB.Id
                                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                             .FirstOrDefault<PatientVisit2>();
@@ -517,7 +743,17 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             var acc = _context.PatientVisit2.Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<PatientVisit2>();
             if (acc != null)
             {
+                if (acc.CalendarEvent != null)
+                {
+                    acc.CalendarEvent.IsDeleted = true;
+                    acc.CalendarEvent.UpdateByUserID = 0;
+                    acc.CalendarEvent.UpdateDate = DateTime.UtcNow;
+                }
+
                 acc.IsDeleted = true;
+                acc.UpdateByUserID = 0;
+                acc.UpdateDate = DateTime.UtcNow;
+
                 _context.SaveChanges();
             }
             else if (acc == null)
@@ -592,8 +828,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         {
             var acc = _context.PatientVisit2.Include("Doctor")
                                             .Include("Doctor.User")
-                                            .Include("Room")
+                                            .Include("Room").Include("Room.RoomTest")
                                             .Include("Specialty")
+                                            .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
+                                            .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
                                             .Where(p => p.CaseId == CaseId
                                                     && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                             .ToList<PatientVisit2>();
@@ -742,8 +980,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override object Get(int id)
         {
             var acc = _context.PatientVisit2.Include("Doctor")
-                                            .Include("Room")
+                                            .Include("Doctor.User")
+                                            .Include("Room").Include("Room.RoomTest")
                                             .Include("Specialty")
+                                            .Include("PatientVisitDiagnosisCodes").Include("PatientVisitDiagnosisCodes.DiagnosisCode")
+                                            .Include("PatientVisitProcedureCodes").Include("PatientVisitProcedureCodes.ProcedureCode")
                                             .Where(p => p.Id == id
                                             && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                             .FirstOrDefault<PatientVisit2>();

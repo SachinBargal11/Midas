@@ -37,6 +37,7 @@ export class UserBasicComponent implements OnInit {
     doctorFlag: boolean = false;
     cellPhone: string;
     selectedRole: any[] = [];
+    isCalendarPublic: boolean = false;
     faxNo: string;
     userType: any;
     states: any[];
@@ -107,6 +108,7 @@ export class UserBasicComponent implements OnInit {
                 (doctorDetail: Doctor) => {
                     this.doctorDetail = doctorDetail;
                     this.doctor = doctorDetail;
+                    this.isCalendarPublic = doctorDetail.isCalendarPublic;
                     this.user = doctorDetail.user;
                     this.cellPhone = this._phoneFormatPipe.transform(this.user.contact.cellPhone);
                     this.faxNo = this._faxNoFormatPipe.transform(this.user.contact.faxNo);
@@ -220,7 +222,8 @@ export class UserBasicComponent implements OnInit {
             npi: ['', Validators.required],
             taxType: ['', [Validators.required, AppValidators.selectedValueValidator]],
             title: ['', Validators.required],
-            speciality: ['2', Validators.required]
+            speciality: ['2', Validators.required],
+            isCalendarPublic: ['']
         };
         return model;
     }
@@ -287,6 +290,7 @@ export class UserBasicComponent implements OnInit {
                 taxType: userFormValues.doctor.taxType,
                 title: userFormValues.doctor.title,
                 doctorSpecialities: doctorSpecialities,
+                isCalendarPublic: userFormValues.doctor.isCalendarPublic,
                 user: new User({
                     id: this.user.id,
                     firstName: userFormValues.userInfo.firstName,

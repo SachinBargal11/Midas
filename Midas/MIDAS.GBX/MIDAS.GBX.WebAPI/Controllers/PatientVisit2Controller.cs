@@ -125,6 +125,20 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.GetObject(Request, id);
         }
 
+        [HttpGet]
+        [Route("getByLocationAndPatientId/{locationId}/{patientId}")]
+        public HttpResponseMessage GetByLocationAndPatientId(int locationId, int patientId)
+        {
+            return requestHandler.GetByLocationAndPatientId(Request, locationId, patientId);
+        }
+
+        [HttpGet]
+        [Route("getByLocationDoctorAndPatientId/{locationId}/{doctorId}/{patientId}")]
+        public HttpResponseMessage GetByLocationDoctorAndPatientId(int locationId, int doctorId, int patientId)
+        {
+            return requestHandler.GetByLocationDoctorAndPatientId(Request, locationId, doctorId, patientId);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

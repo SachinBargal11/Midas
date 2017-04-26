@@ -35,6 +35,10 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("title")]
         public string Title { get; set; }
 
+        [Required]
+        [JsonProperty("isCalendarPublic")]
+        public bool IsCalendarPublic { get; set; }
+
         public User user { get; set; }
 
         public List<DoctorSpeciality> DoctorSpecialities { get; set; }

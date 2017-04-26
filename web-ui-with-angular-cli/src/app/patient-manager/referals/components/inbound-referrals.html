@@ -88,12 +88,13 @@
         <!--<p-column selectionMode="multiple"></p-column>-->
         <p-column field="case.patient.user.displayName"></p-column>
         <p-column field="case.id"></p-column>
-        <p-column field="referredToCompany.name"></p-column>
-        <p-column field="referredToLocation.location.name"></p-column>
-        <p-column field="referredToDoctor.user.displayName"></p-column>
-        <!--<p-column field="referringCompany.name"></p-column>-->
+        <!--<p-column field="referredToCompany.name"></p-column>-->
+        <p-column field="referringCompany.name"></p-column>
         <p-column field="referringLocation.location.name"></p-column>
         <p-column field="referringUser.displayName"></p-column>
+        <p-column field="referredToLocation.location.name"></p-column>
+        <p-column field="referredToDoctor.user.displayName"></p-column>
+        
         <p-column>
             <ng-template let-referral="rowData" pTemplate="body">
              <a *ngIf="referral.case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="downloadConsent(referral.case.caseCompanyConsentDocument)"><u>Yes</u></a>
@@ -188,12 +189,12 @@
         <!--<p-column selectionMode="multiple"></p-column>-->
         <p-column field="case.patient.user.displayName"></p-column>
         <p-column field="case.id"></p-column>
-        <p-column field="referredToCompany.name"></p-column>
-        <p-column field="referredToLocation.location.name"></p-column>
-        <p-column field="referredToDoctor.user.displayName"></p-column>
-        <!--<p-column field="referringCompany.name"></p-column>-->
+        <p-column field="referringCompany.name"></p-column>
         <p-column field="referringLocation.location.name"></p-column>
         <p-column field="referringUser.displayName"></p-column>
+        <!--<p-column field="referredToCompany.name"></p-column>-->
+        <p-column field="referredToLocation.location.name"></p-column>
+        <p-column field="referredToDoctor.user.displayName"></p-column>
         <p-column>
             <ng-template let-referral="rowData" pTemplate="body">
              <a *ngIf="referral.case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="downloadConsent(referral.case.caseCompanyConsentDocument)"><u>Yes</u></a>

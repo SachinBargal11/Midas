@@ -38,7 +38,7 @@ export class AddConsentComponent implements OnInit {
     uploadedFiles: any[] = [];
     uploadedFile = "";
     currentId: number;
-    UploadedFileName: string;   
+    UploadedFileName: string;
     url;
     companies: any[];
     isdoctorsLoading = false;
@@ -65,9 +65,9 @@ export class AddConsentComponent implements OnInit {
     selectedCompany: number;
     selectedConsentList: Consent[] = [];
     Consent: Consent[];
-    Case: Case;   
+    Case: Case;
     datasource: Consent[];
-    totalRecords: number;  
+    totalRecords: number;
 
     constructor(
         private fb: FormBuilder,
@@ -105,7 +105,7 @@ export class AddConsentComponent implements OnInit {
                 this.companies = company,
                     this.selectedCompany = this.companies[0].id,
                     this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.selectedCompany;
-            });        
+            });
         this.loadConsentForm();
     }
 
@@ -128,19 +128,13 @@ export class AddConsentComponent implements OnInit {
             () => {
                 this._progressBarService.hide();
             });
-    } 
-     loadConsentFormLazy(event: LazyLoadEvent) {
+    }
+    loadConsentFormLazy(event: LazyLoadEvent) {
         setTimeout(() => {
             if (this.datasource) {
                 this.Consent = this.datasource.slice(event.first, (event.first + event.rows));
             }
         }, 250);
-    }
-
-    DownloadPdf(documentId) {
-        this._progressBarService.show();
-        window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
-        this._progressBarService.hide();
     }
 
     documentUploadComplete(documents: Document[]) {
@@ -160,9 +154,59 @@ export class AddConsentComponent implements OnInit {
 
     documentUploadError(error: Error) {
         this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
-    }    
- 
-    DownloadTemplate() {
-        window.location.assign(this._url + '/CompanyCaseConsentApproval/download/' + this.caseId + '/' +this.selectedCompany);
     }
+
+    downloadPdf(documentId) {      
+        this._progressBarService.show();       
+        this._AddConsentStore.downloadConsentForm(this.caseId, documentId)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                //  window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                //this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+                this._notificationsService.error('Oh No!', 'Unable to download');
+
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._progressBarService.hide();
+    }
+
+    downloadTemplate() {
+        this._progressBarService.show();       
+        this._AddConsentStore.downloadTemplate(this.caseId, this.selectedCompany)
+            .subscribe(
+            (response) => {
+                // this.document = document
+                //  window.location.assign(this._url + '/fileupload/download/' + this.caseId + '/' + documentId);
+            },
+            (error) => {
+                let errString = 'Unable to download';
+                let notification = new Notification({
+                    'messages': 'Unable to download',
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                //this._notificationsStore.addNotification(notification);
+                this._progressBarService.hide();
+                this._notificationsService.error('Oh No!', 'Unable to download');
+
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this._progressBarService.hide();
+    }
+
+   
 }

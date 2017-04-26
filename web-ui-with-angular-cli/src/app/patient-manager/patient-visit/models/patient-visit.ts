@@ -10,12 +10,16 @@ import * as RRule from 'rrule';
 import { VisitStatus } from './enums/visit-status';
 import { Room } from '../../../medical-provider/rooms/models/room';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
+import { Location } from '../../../medical-provider/locations/models/location';
 import { Patient } from '../../../patient-manager/patients/models/patient';
+import { DiagnosisCode } from '../../../commons/models/diagnosis-code';
+import { Procedure } from '../../../commons/models/procedure';
 
 const PatientVisitRecord = Record({
     id: 0,
     calendarEventId: 0,
-    locationId: null,
+    location: null,
+    locationId: 0,
     case: null,
     caseId: 0,
     patient: null,
@@ -32,6 +36,8 @@ const PatientVisitRecord = Record({
     visitStatusId: VisitStatus.SCHEDULED,
     visitType: 0,
     calendarEvent: null,
+    patientVisitDiagnosisCodes: [],
+    patientVisitProcedureCodes: [],
     isDeleted: false,
     createByUserId: 0,
     updateByUserId: 0,
@@ -44,6 +50,7 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
 
     id: number;
     calendarEventId: number;
+    location: Location;
     locationId: number;
     case: Case;
     caseId: number;
@@ -61,6 +68,8 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     visitStatusId: VisitStatus;
     visitType: number;
     calendarEvent: ScheduledEvent;
+    patientVisitDiagnosisCodes: DiagnosisCode[];
+    patientVisitProcedureCodes: Procedure[];
     isDeleted: boolean;
     createByUserId: number;
     updateByUserId: number;
@@ -106,6 +115,9 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
 
     get visitDisplayString(): string {
         let visitInfo: string = ``;
+        if (this.locationId && this.location) {
+            visitInfo = `${visitInfo}Location Name: ${this.location.name} - `;
+        }
         if (this.patientId && this.caseId) {
             visitInfo = `${visitInfo}Patient Name: ${this.patient.user.displayName} - Case Id: ${this.caseId} - `;
         }
@@ -122,12 +134,28 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
             }
         }
 
+        if (this.eventStart) {
+            visitInfo = `${visitInfo} - Visit Start: ${this.eventStart.local().format('MMMM Do YYYY,h:mm:ss a')}`;
+        }
+
         return visitInfo;
     }
 
     get eventColor(): string {
-        let colorCodes: any = ['#7A3DB8', '#7AB83D', '#CC6666', '#7AFF7A', '#FF8000'];
-        let color: any = _.sample(colorCodes);
-        return color;
+        if (this.room && this.roomId) {
+            return this.room.roomTest.color;
+        } else if (this.doctor && this.doctorId) {
+            return this.specialty ? this.specialty.color : '';
+        } else {
+            return '';
+        }
+        // let colorCodes: any = ['#7A3DB8', '#7AB83D', '#CC6666', '#7AFF7A', '#FF8000'];
+        // // let color: any = _.sample(colorCodes);
+        // if (this.doctorId) {
+        //     return '#7A3DB8';
+        // } else {
+        //     return '#CC6666';
+        // }
+        // return color;
     }
 }

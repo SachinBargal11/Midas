@@ -27,6 +27,21 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
             return requestHandler.GetByDoctorId(Request, doctorId);
         }
 
+        [HttpGet]
+        [Route("getByLocationId/{locationId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetByLocationId(int locationId)
+        {
+            return requestHandler.GetByLocationId(Request, locationId);
+        }
+
+        [HttpGet]
+        [Route("getByLocationAndDoctorId/{locationId}/{doctorId}")]
+        public HttpResponseMessage GetByLocationAndDoctorId(int locationId, int doctorId)
+        {
+            return requestHandler.GetGbObjects2(Request, locationId, doctorId);
+        }
+
         [HttpPost]
         [Route("Save")]
         [AllowAnonymous]
@@ -97,6 +112,20 @@ namespace MIDAS.GBX.PatientWebAPI.Controllers
         public HttpResponseMessage Get(int id)
         {
             return requestHandler.GetObject(Request, id);
+        }
+
+        [HttpGet]
+        [Route("getByLocationAndPatientId/{locationId}/{patientId}")]
+        public HttpResponseMessage GetByLocationAndPatientId(int locationId, int patientId)
+        {
+            return requestHandler.GetByLocationAndPatientId(Request, locationId, patientId);
+        }
+
+        [HttpGet]
+        [Route("getByLocationDoctorAndPatientId/{locationId}/{doctorId}/{patientId}")]
+        public HttpResponseMessage GetByLocationDoctorAndPatientId(int locationId, int doctorId, int patientId)
+        {
+            return requestHandler.GetByLocationDoctorAndPatientId(Request, locationId, doctorId, patientId);
         }
 
         protected override void Dispose(bool disposing)

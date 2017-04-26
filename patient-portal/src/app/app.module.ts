@@ -29,6 +29,19 @@ import { FaxNoFormatPipe } from './commons/pipes/faxno-format-pipe';
 import { DoctorsStore } from './medical-provider/users/stores/doctors-store';
 import { DoctorsService } from './medical-provider/users/services/doctors-service';
 import { DocumentUploadService } from './commons/services/document-upload-service';
+import { ScheduleStore } from './medical-provider/locations/stores/schedule-store';
+import { ScheduleService } from './medical-provider/locations/services/schedule-service';
+
+import { SpecialityStore } from './account-setup/stores/speciality-store';
+import { SpecialityService } from './account-setup/services/speciality-service';
+
+import { UsersService } from './medical-provider/users/services/users-service';
+import { UsersStore } from './medical-provider/users/stores/users-store';
+
+import { LocationsStore } from './medical-provider/locations/stores/locations-store';
+import { LocationsService } from './medical-provider/locations/services/locations-service';
+
+
 
 @NgModule({
   declarations: [
@@ -65,7 +78,13 @@ import { DocumentUploadService } from './commons/services/document-upload-servic
     PhoneFormatPipe,
     FaxNoFormatPipe,
     DoctorsStore,
-    DoctorsService, DocumentUploadService
+    DoctorsService, DocumentUploadService, ScheduleService,
+    ScheduleStore, SpecialityStore,
+    SpecialityService,
+    UsersService,
+    UsersStore,
+    LocationsStore,
+    LocationsService
   ],
   bootstrap: [AppComponent]
 })

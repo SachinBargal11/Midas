@@ -40,11 +40,10 @@
                             </label>
                         <div class="form-group" [class.error]="!userformControls.userInfo.controls.role.valid">
                         <p-checkbox name="role" label="Regular Staff" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)" value="1"></p-checkbox>
-                        <p-checkbox name="role" label="Office Manager" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)" value="2"></p-checkbox>
+                        <!--<p-checkbox name="role" label="Office Manager" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)" value="2"></p-checkbox>-->
                         <p-checkbox id="doctorRole" name="role" label="Doctor" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)" value="3"></p-checkbox>
-                        <!--<p-checkbox id="doctorRole" name="role" label="Doctor" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)" value="3" (click)="showDoctor()"></p-checkbox>-->
-                        <p-checkbox name="role" label="Billing Staff" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)" value="4"></p-checkbox>
-                        <p-checkbox name="role" label="Nurse" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)" value="5"></p-checkbox>
+                        <!--<p-checkbox name="role" label="Billing Staff" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)" value="4"></p-checkbox>
+                        <p-checkbox name="role" label="Nurse" formControlName="role" [(ngModel)]="selectedRole" (ngModelChange)="onSelectedRoleChange($event)" value="5"></p-checkbox>-->
                             <div class='error-list' *ngIf="!userformControls.userInfo.controls.role.valid">
                                 <ul>
                                     <li *ngIf="userformControls.userInfo.controls.role.hasError('required')">Minimum 1 role must be selected.</li>
@@ -157,6 +156,16 @@
                         <div class='error-list' *ngIf="userformControls.doctor.controls.speciality.touched && !userformControls.doctor.controls.speciality.valid">
                             <ul>
                                 <li *ngIf="userformControls.doctor.controls.speciality.hasError('selectedValueValidator')">Speciality is required.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 m-t-lg">
+                    <div class="form-group" [class.error]="!userformControls.doctor.controls.isCalendarPublic.valid">
+                        <p-checkbox name="isCalendarPublic" label="Publish Schedule" formControlName="isCalendarPublic" [(ngModel)]="isCalendarPublic" binary="true"></p-checkbox>
+                        <div class='error-list' *ngIf="!userformControls.doctor.controls.isCalendarPublic.valid">
+                            <ul>
+                                <li *ngIf="userformControls.doctor.controls.isCalendarPublic.hasError('required')">You must Publish schedule</li>
                             </ul>
                         </div>
                     </div>

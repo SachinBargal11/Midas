@@ -132,7 +132,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 List<BO.Role> roles = new List<BO.Role>();
                 //user.UserCompanyRoles.ToList().ForEach(p => roles.Add(new BO.Role() { RoleType = (BO.GBEnums.RoleType)p.RoleID, Name = Enum.GetName(typeof(BO.GBEnums.RoleType), p.RoleID) }));
                 user.UserCompanyRoles.Where(p => p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
-                                     .ToList().ForEach(p => roles.Add(new BO.Role() { RoleType = (BO.GBEnums.RoleType)p.RoleID, Name = Enum.GetName(typeof(BO.GBEnums.RoleType), p.RoleID) }));
+                                     .ToList().ForEach(p => roles.Add(new BO.Role() { ID = p.id, RoleType = (BO.GBEnums.RoleType)p.RoleID, Name = Enum.GetName(typeof(BO.GBEnums.RoleType),p.RoleID) }));
                 boUser.Roles = roles;
             }
 
@@ -152,6 +152,41 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             var res = (BO.GbObject)(object)entity;
             return userDB;
+        }
+        #endregion
+
+        #region Delete
+        public override Object Delete(int id)
+        {
+            var acc = _context.Users.Include("UserCompanies").Where(p => p.id == id
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                    .FirstOrDefault<User>();
+            if (acc != null)
+            {
+               if(acc.UserCompanies!=null)
+                {
+                    foreach (var item in acc.UserCompanies)
+                    {
+                        if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                        {
+                            using (UserCompanyRepository sr = new UserCompanyRepository(_context))
+                            {
+                                sr.Delete(item.id);
+                            }
+                        }
+                    }
+                }
+
+                acc.IsDeleted = true;
+                _context.SaveChanges();
+            }
+            else if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var res = Convert<BO.User, User>(acc);
+            return (object)res;         
         }
         #endregion
 
@@ -635,7 +670,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             }
                             return lstUsers;
                         default:
-                            var data1 = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Include("UserCompanyRoles").Where(p => (p.IsDeleted == false || p.IsDeleted == null) && p.UserCompanies.Any(d => d.CompanyID == CompID)).ToList<User>();
+                            var data1 = _context.Users.Include("AddressInfo").Include("ContactInfo").Include("UserCompanies").Include("UserCompanyRoles").Where(p => p.UserType != 1 && (p.IsDeleted == false || p.IsDeleted == null) && p.UserCompanies.Any(d => d.CompanyID == CompID)).ToList<User>();
                             if (data1 == null || data1.Count == 0)
                                 return new BO.ErrorObject { ErrorMessage = "No records found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
                             foreach (User item in data1)

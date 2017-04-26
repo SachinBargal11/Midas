@@ -59,7 +59,80 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         patientBO2.User = boUser;
                     }
                 }
-            }                
+            }
+
+            if (patient2.Cases != null)
+            {
+                List<BO.Case> boCase = new List<BO.Case>();
+                foreach (var casemap in patient2.Cases)
+                {
+                    if (casemap != null)
+                    {
+                        if (casemap.IsDeleted.HasValue == false || (casemap.IsDeleted.HasValue == true && casemap.IsDeleted.Value == false))
+                        {
+                            BO.Case caseBO = new BO.Case();
+
+                            caseBO.ID = casemap.Id;
+                            caseBO.PatientId = casemap.PatientId;
+                            caseBO.CaseName = casemap.CaseName;
+                            caseBO.CaseTypeId = casemap.CaseTypeId;
+                            caseBO.LocationId = casemap.LocationId;
+                            caseBO.PatientEmpInfoId = casemap.PatientEmpInfoId;
+                            caseBO.CarrierCaseNo = casemap.CarrierCaseNo;
+                            caseBO.Transportation = casemap.Transportation;
+                            caseBO.CaseStatusId = casemap.CaseStatusId;
+                            caseBO.AttorneyId = casemap.AttorneyId;
+
+                            caseBO.IsDeleted = casemap.IsDeleted;
+                            caseBO.CreateByUserID = casemap.CreateByUserID;
+                            caseBO.UpdateByUserID = casemap.UpdateByUserID;
+
+                            if (casemap.Referrals != null)
+                            {
+                                List<BO.Referral> BOListReferral = new List<BO.Referral>();
+                                foreach (var eachRefrral in casemap.Referrals)
+                                {
+                                    if (eachRefrral != null)
+                                    {
+                                        if (eachRefrral.IsDeleted.HasValue == false || (eachRefrral.IsDeleted.HasValue == true && eachRefrral.IsDeleted.Value == false))
+                                        {
+                                            BO.Referral referralBO = new BO.Referral();
+
+                                            referralBO.ID = eachRefrral.Id;
+                                            referralBO.CaseId = eachRefrral.CaseId;
+                                            referralBO.ReferringCompanyId = eachRefrral.ReferringCompanyId;
+                                            referralBO.ReferringLocationId = eachRefrral.ReferringLocationId;
+                                            referralBO.ReferringUserId = eachRefrral.ReferringUserId;
+                                            referralBO.ReferredToCompanyId = eachRefrral.ReferredToCompanyId;
+                                            referralBO.ReferredToLocationId = eachRefrral.ReferredToLocationId;
+                                            referralBO.ReferredToDoctorId = eachRefrral.ReferredToDoctorId;
+                                            referralBO.ReferredToRoomId = eachRefrral.ReferredToRoomId;
+                                            referralBO.Note = eachRefrral.Note;
+                                            referralBO.ReferredByEmail = eachRefrral.ReferredByEmail;
+                                            referralBO.ReferredToEmail = eachRefrral.ReferredToEmail;
+                                            referralBO.ReferralAccepted = eachRefrral.ReferralAccepted;
+                                            referralBO.FirstName = eachRefrral.FirstName;
+                                            referralBO.LastName = eachRefrral.LastName;
+                                            referralBO.CellPhone = eachRefrral.CellPhone;
+                                            referralBO.IsDeleted = eachRefrral.IsDeleted;
+                                            referralBO.CreateByUserID = eachRefrral.CreateByUserID;
+                                            referralBO.UpdateByUserID = eachRefrral.UpdateByUserID;
+
+                                            BOListReferral.Add(referralBO);
+                                        }
+                                    }
+                                }
+
+                                caseBO.Referrals = BOListReferral;
+                            }
+
+                            boCase.Add(caseBO);
+                        }
+                    }
+                        
+                }
+                patientBO2.Cases = boCase;
+            }
 
             patientBO2.IsDeleted = patient2.IsDeleted;
             patientBO2.CreateByUserID = patient2.CreateByUserID;
@@ -150,7 +223,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                 .Include("User.UserCompanies")
                                                 .Include("User.AddressInfo")
                                                 .Include("User.ContactInfo")
-                                                .Where(p => p.User.UserCompanies.Where(p2 =>p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
+                                                .Include("Cases")
+                                                .Include("Cases.Referrals")
+                                                .Where(p => p.User.UserCompanies.Where(p2 => p2.IsDeleted.HasValue == false || (p2.IsDeleted.HasValue == true && p2.IsDeleted.Value == false))
                                                 .Any(p3=> p3.CompanyID== CompanyId)                                                                        
                                                 &&(p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                 .ToList<Patient2>();
@@ -161,9 +236,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                  .Include("Case.Patient2.User.UserCompanies")
                                                  .Include("Case.Patient2.User.AddressInfo")
                                                  .Include("Case.Patient2.User.ContactInfo")
-                                                 .Where(p => p.ReferredToCompanyId == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                                 .Include("Case.Patient2.Cases")
+                                                 .Include("Case.Patient2.Cases.Referrals")
+                                                 .Where(p => p.ReferredToCompanyId == CompanyId 
+                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))
+                                                        && (p.Case.IsDeleted.HasValue == false || (p.Case.IsDeleted.HasValue == true && p.Case.IsDeleted.Value == false))
+                                                        && (p.Case.Patient2.IsDeleted.HasValue == false || (p.Case.Patient2.IsDeleted.HasValue == true && p.Case.Patient2.IsDeleted.Value == false)))
                                                  .ToList<Referral>();
-            var patientList2 = referralList.Select(p => p.Case.Patient2).ToList();
+
+            var patientList2 = referralList.Select(p => p.Case.Patient2);
 
             if (patientList1 == null && patientList2 == null)
             {
@@ -195,6 +276,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                        .Include("User.UserCompanies")
                                        .Include("User.AddressInfo")
                                        .Include("User.ContactInfo")
+                                       .Include("Cases")
+                                       .Include("Cases.Referrals")
                                        .Where(p => userInCompany.Contains(p.Id) && patientWithCase.Contains(p.Id) && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).ToList<Patient2>();
 
             var referralList = _context.Referrals.Include("Case")
@@ -203,6 +286,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                                .Include("Case.Patient2.User.UserCompanies")
                                                .Include("Case.Patient2.User.AddressInfo")
                                                .Include("Case.Patient2.User.ContactInfo")
+                                               .Include("Case.Patient2.Cases")
+                                               .Include("Case.Patient2.Cases.Referrals")
                                                .Where(p => p.ReferredToCompanyId == CompanyId && p.ReferredToDoctorId == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                .ToList<Referral>();
 
@@ -302,6 +387,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
         }
         #endregion
+
         #region GetByLocationWithOpenCases For Patient 
         public override object GetByLocationWithOpenCases(int LocationId)
         {
@@ -343,6 +429,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                                        .Include("User.UserCompanies")
                                        .Include("User.AddressInfo")
                                        .Include("User.ContactInfo")
+                                       .Include("Cases")
+                                       .Include("Cases.Referrals")
                                        .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || p.IsDeleted == false))
                                        .FirstOrDefault<Patient2>();
 
@@ -616,33 +704,15 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     foreach (var userCompany in patient2BO.User.UserCompanies)
                     {
                         userCompany.UserId = userDB.id;
-                        //UserCompanyDB = _context.UserCompanies.Where(p => p.id == userCompany.ID
-                        //                                       && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                        //                                       .FirstOrDefault<UserCompany>();
                         UserCompanyDB = _context.UserCompanies.Where(p => p.UserID == userDB.id && p.CompanyID == userCompany.Company.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                .FirstOrDefault<UserCompany>();
-
 
                         if (UserCompanyDB == null)
                         {
                             UserCompanyDB = new UserCompany();
                             add_UserCompany = true;
                         }
-                        //else if (UserCompanyDB == null && userCompany.ID > 0)
-                        //{
-                        //    dbContextTransaction.Rollback();
-                        //    return new BO.ErrorObject { errorObject = "", ErrorMessage = "UserCompany details dosent exists.", ErrorLevel = ErrorLevel.Error };
-                        //}
-
-                        //var acc = _context.UserCompanies.Where(p => p.UserID == patient2DB.Id && p.CompanyID == userCompany.CompanyId
-                        //                                 &&(p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                        //                                .FirstOrDefault<UserCompany>();
-                        //if (acc != null)
-                        //{
-                        //    dbContextTransaction.Rollback();
-                        //    return new BO.ErrorObject { errorObject = "", ErrorMessage = "User is already associated with given company.", ErrorLevel = ErrorLevel.Error };
-                        //}
-
+                        
                         UserCompanyDB.CompanyID = userCompany.Company.ID;
                         UserCompanyDB.UserID = userCompany.UserId;
 
@@ -827,11 +897,85 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             Patient2 patient2 = new Patient2();
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
-                patient2 = _context.Patient2.Include("User").Where(p => p.Id == id && (p.IsDeleted == false || p.IsDeleted == null))
+                patient2 = _context.Patient2.Include("User")
+                                            .Include("Cases")
+                                            .Include("PatientEmpInfoes")
+                                            .Include("PatientFamilyMembers")
+                                            .Include("PatientInsuranceInfoes")
+                                            .Where(p => p.Id == id && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                             .FirstOrDefault();
 
                 if (patient2 != null)
                 {
+
+                    if (patient2.Cases != null)
+                    {
+                        foreach (var item in patient2.Cases)
+                        {
+                            if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                            {
+                                using (CaseRepository sr = new CaseRepository(_context))
+                                {
+                                    sr.Delete(item.Id);
+                                }
+                            }
+                        }
+                    }
+                    if (patient2.PatientEmpInfoes != null)
+                    {
+                        foreach (var item in patient2.PatientEmpInfoes)
+                        {
+                            if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                            {
+                                using (PatientEmpInfoRepository sr = new PatientEmpInfoRepository(_context))
+                                {
+                                    sr.Delete(item.Id);
+                                }
+                            }
+                        }
+                    }
+               
+                    if (patient2.PatientFamilyMembers != null)
+                    {
+                        foreach (var item in patient2.PatientFamilyMembers)
+                        {
+                            if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                            {
+                                using (Common.PatientFamilyMemberRepository sr = new Common.PatientFamilyMemberRepository(_context))
+                                {
+                                    sr.Delete(item.Id);
+                                }
+                            }
+                        }
+                    }
+
+                    if (patient2.PatientInsuranceInfoes != null)
+                    {
+                        foreach (var item in patient2.PatientInsuranceInfoes)
+                        {
+                            if (item.IsDeleted.HasValue == false || (item.IsDeleted.HasValue == true && item.IsDeleted.Value == false))
+                            {
+                                using (PatientInsuranceInfoRepository sr = new PatientInsuranceInfoRepository(_context))
+                                {
+                                    sr.Delete(item.Id);
+                                }
+                            }
+                        }
+                    }
+
+                    if (patient2.User != null)
+                    {
+
+                        if (patient2.User.IsDeleted.HasValue == false || (patient2.User.IsDeleted.HasValue == true && patient2.User.IsDeleted.Value == false))
+                        {
+                            using (UserRepository sr = new UserRepository(_context))
+                            {
+                                sr.Delete(patient2.User.id);
+                            }
+                        }
+                    }
+
+
                     patient2.IsDeleted = true;
                     _context.SaveChanges();
                 }

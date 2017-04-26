@@ -34,6 +34,7 @@ export class OutboundReferralsComponent implements OnInit {
     referredUsers: Referral[];
     referredMedicalOffices: Referral[];
     referredRooms: Referral[];
+    referralsOutsideMidas: Referral[];
     selectedReferrals: Referral[] = [];
     referredDoctors: Doctor[];
     refferedRooms: Room[];
@@ -66,11 +67,11 @@ export class OutboundReferralsComponent implements OnInit {
     }
     loadReferralsCheckingDoctor() {
         // let doctorRoleOnly = null;        
-            if (this.doctorRoleOnly) {
-                this.loadReferralsForDoctor();
-            } else {
-                this.loadReferrals();
-            }
+        if (this.doctorRoleOnly) {
+            this.loadReferralsForDoctor();
+        } else {
+            this.loadReferrals();
+        }
     }
 
     loadReferrals() {
@@ -95,7 +96,15 @@ export class OutboundReferralsComponent implements OnInit {
                 });
                 this.referredRooms = matchingRoomReferrals.reverse();
 
-                let userAndRoomReferral = _.union(matchingUserReferrals, matchingRoomReferrals);
+                let referralsOutsideMidas: Referral[] = _.map(referrals, (currentReferral: Referral) => {
+                    return currentReferral.firstName && currentReferral.lastName ? currentReferral : null;
+                });
+                let matchingReferralsOutsideMidas = _.reject(referralsOutsideMidas, (currentReferral: Referral) => {
+                    return currentReferral == null;
+                });
+                this.referralsOutsideMidas = matchingReferralsOutsideMidas.reverse();
+
+                let userAndRoomReferral = _.union(matchingUserReferrals, matchingRoomReferrals, matchingReferralsOutsideMidas);
                 let userAndRoomReferralIds: number[] = _.map(userAndRoomReferral, (currentUserAndRoomReferral: Referral) => {
                     return currentUserAndRoomReferral.id;
                 });
@@ -157,6 +166,8 @@ export class OutboundReferralsComponent implements OnInit {
             this.searchMode = 2;
         } else if (currentSearchId === 3) {
             this.searchMode = 3;
+        } else if (currentSearchId === 4) {
+            this.searchMode = 4;
         }
     }
     DownloadPdf(document: ReferralDocument) {

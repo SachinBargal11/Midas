@@ -45,6 +45,20 @@ export class DocumentUploadService {
         return promise;
     }
 
+    uploadSignedDocument(url: string, signatureData: string): Promise<any> {
+        let promise: Promise<any[]> = new Promise((resolve, reject) => {
+            return this._http.post(url, { signatureData: signatureData })
+                .map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+
+                    resolve(data);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return promise;
+    }
+
 
 
 }

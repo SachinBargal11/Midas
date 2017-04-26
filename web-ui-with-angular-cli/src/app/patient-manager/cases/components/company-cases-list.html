@@ -29,7 +29,7 @@
             <!--<a routerLink="{{user.id}}">{{user.firstName}} {{user.lastName}}--></a>
              </div>
              <div *ngIf="!currentUser.isSessionCompany(sessionStore.session.currentCompany.id)">
-             <a (click)="showMsg()">{{currentUser.patient.user.displayName}}</a>
+             <a (click)="showDialog(case.id)">{{currentUser.patient.user.displayName}}</a>
              </div>    
         </ng-template>
     </p-column>
@@ -41,8 +41,8 @@
             <a *ngIf="case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="downloadConsent(case.caseCompanyConsentDocument)">
                 <u>Yes</u>
             </a>
-            <a *ngIf="!case.isConsentReceived(sessionStore.session.currentCompany.id)" routerLink="{{case.patient.id}}/{{case.id}}/consent">
-                <u>No</u>
+            <a *ngIf="!case.isConsentReceived(sessionStore.session.currentCompany.id)" (click)="showDialog(case.id)">
+                <u>Upload Consent Form</u>
             </a>
         </ng-template>
     </p-column>
@@ -68,7 +68,7 @@
             <!--<a><i class="glyphicon glyphicon-edit"></i></a>-->
             <!--<div *ngIf="case.isSessionCompany(sessionStore.session.currentCompany.id)">-->
             <div *ngIf="!case.isConsentReceived(sessionStore.session.currentCompany.id) && case.getInboundReferral(sessionStore.session.currentCompany.id)">
-                <a (click)="showMsg()"><i class="glyphicon glyphicon-edit"></i></a>
+                <a (click)="showDialog(case.id)"><i class="glyphicon glyphicon-edit"></i></a>
             </div>
             <!--</div>-->
             <!--<div *ngIf="case.isConsentReceived(sessionStore.session.currentCompany.id) || !case.isConsentReceived(sessionStore.session.currentCompany.id)">-->
@@ -78,4 +78,12 @@
         </ng-template>
     </p-column>
 </p-dataTable>
+
+<p-dialog *ngIf="selectedCaseId" [minWidth]="600" [width]="1200" (onAfterHide)="handleEventDialogHide()" [(visible)]="eventDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
+  <!--<add-consent [inputCaseId]="case.id"></add-consent>-->
+  <div *ngIf="selectedCaseId">
+  <add-consent [inputCaseId]="selectedCaseId"></add-consent>
+  </div>
+</p-dialog>
 <router-outlet></router-outlet>

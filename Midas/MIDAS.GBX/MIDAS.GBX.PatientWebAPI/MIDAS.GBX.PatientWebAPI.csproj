@@ -255,6 +255,7 @@
     <Compile Include="Controllers\CompanySpecialtyDetailsController.cs" />
     <Compile Include="Controllers\CompanyCaseConsentApprovalController.cs" />
     <Compile Include="Controllers\DoctorController.cs" />
+    <Compile Include="Controllers\DoctorLocationScheduleController.cs" />
     <Compile Include="Controllers\DoctorLocationSpecialityController.cs" />
     <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -274,6 +275,7 @@
     <Compile Include="Controllers\RefferingOfficeController.cs" />
     <Compile Include="Controllers\RoomController.cs" />
     <Compile Include="Controllers\RoomTestController.cs" />
+    <Compile Include="Controllers\ScheduleController.cs" />
     <Compile Include="Controllers\SpecialtyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />

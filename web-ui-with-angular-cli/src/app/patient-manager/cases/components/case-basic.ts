@@ -37,6 +37,7 @@ export class CaseBasicComponent implements OnInit {
     patient: Patient;
     isSaveProgress = false;
     caseId: number;
+    caseStatusId: number;
     patientId: number;
     patientName: string;
 
@@ -47,7 +48,7 @@ export class CaseBasicComponent implements OnInit {
         private _statesStore: StatesStore,
         private _notificationsStore: NotificationsStore,
         private _progressBarService: ProgressBarService,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _locationsStore: LocationsStore,
         private _employerStore: EmployerStore,
         private _patientStore: PatientsStore,
@@ -84,6 +85,7 @@ export class CaseBasicComponent implements OnInit {
             result.subscribe(
                 (caseDetail: Case) => {
                     this.caseDetail = caseDetail;
+                    
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -135,7 +137,7 @@ export class CaseBasicComponent implements OnInit {
             attorneyId: caseFormValues.attorneyId,
             caseStatus: caseFormValues.caseStatusId,
             transportation: caseFormValues.transportation,
-            updateByUserID: this._sessionStore.session.account.user.id,
+            updateByUserID: this.sessionStore.session.account.user.id,
             updateDate: moment()
         }));
 

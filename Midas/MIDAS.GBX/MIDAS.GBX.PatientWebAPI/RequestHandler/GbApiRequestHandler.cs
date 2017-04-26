@@ -110,9 +110,10 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
             }            
         }
 
-        public HttpResponseMessage CreateGbDocObject1(HttpRequestMessage request, int caseid, int companyid, List<HttpContent> streamContent, string uploadpath)
+        public HttpResponseMessage CreateGbDocObject1(HttpRequestMessage request, int caseid, int companyid, List<HttpContent> streamContent, string uploadpath, bool signed)
         {
-            var objResult = dataAccessManager.ConsentSave(caseid, companyid, streamContent, uploadpath);
+            var objResult = new object();
+            objResult = dataAccessManager.ConsentSave(caseid, companyid, streamContent, uploadpath, signed);
 
             try
             {
@@ -139,6 +140,32 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
                     return request.CreateResponse(HttpStatusCode.Created, res);
                 else
                     return request.CreateResponse(HttpStatusCode.NotFound, res);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int id)
+        {
+            var objResult = dataAccessManager.GetByCompanyWithOpenCases(id);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int param1, int param2)
+        {
+            var objResult = dataAccessManager.Get2(param1, param2);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
             }
             catch (Exception ex)
             {
@@ -685,5 +712,32 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
                 return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
             }
         }
+
+        public HttpResponseMessage GetByLocationAndPatientId(HttpRequestMessage request, int LocationId, int PatientId)
+        {
+            var objResult = dataAccessManager.GetByLocationAndPatientId(LocationId, PatientId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+
+        public HttpResponseMessage GetByLocationDoctorAndPatientId(HttpRequestMessage request, int locationId, int doctorId, int patientId)
+        {
+            var objResult = dataAccessManager.GetByLocationDoctorAndPatientId(locationId, doctorId, patientId);
+            try
+            {
+                return request.CreateResponse(HttpStatusCode.Created, objResult);
+            }
+            catch (Exception ex)
+            {
+                return request.CreateResponse(HttpStatusCode.BadRequest, objResult);
+            }
+        }
+        
     }
 }

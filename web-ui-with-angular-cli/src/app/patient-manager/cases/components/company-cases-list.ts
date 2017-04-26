@@ -17,7 +17,8 @@ import { Company } from '../../../account/models/company';
 import { Referral } from '../models/referral';
 import { environment } from '../../../../environments/environment';
 import { CaseDocument } from '../../cases/models/case-document';
-
+import { Document } from '../../../commons/models/document';
+import { FileUpload, FileUploadModule } from 'primeng/primeng';
 
 @Component({
     selector: 'company-cases',
@@ -34,6 +35,14 @@ export class CompanyCasesComponent implements OnInit {
     isDeleteProgress:boolean = false;
     consentRecived: string = '';
     referralRecived: string = '';
+    eventDialogVisible: boolean = false;
+    selectedDocumentList = [];
+    currentCaseId: number;
+    documents: CaseDocument[] = [];
+    url;
+    caseId: number;
+    companyId: number;
+    selectedCaseId: number;
 
     constructor(
         public _route: ActivatedRoute,
@@ -46,8 +55,12 @@ export class CompanyCasesComponent implements OnInit {
         private confirmationService: ConfirmationService,
 
     ) {
+        
+        this.companyId = this.sessionStore.session.currentCompany.id;
+        this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
         this.sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadCasesCheckingDoctor();
+
         });
     }
     ngOnInit() {
@@ -140,9 +153,6 @@ export class CompanyCasesComponent implements OnInit {
 
     }
 
-
-
-
     loadCasesByCompanyAndDoctorId() {
         this._progressBarService.show();
         this._casesStore.getCasesByCompanyAndDoctorId()
@@ -219,7 +229,97 @@ export class CompanyCasesComponent implements OnInit {
             this._notificationsService.error('Oh No!', 'select case to delete');
         }
     }
-  showMsg(){
-          this._notificationsService.error('Oh No!', 'There is no consent for this case');
+  showDialog(currentCaseId: number){
+          this.eventDialogVisible = true;
+          this.selectedCaseId = currentCaseId;
+    }
+    
+    documentUploadComplete(documents: Document[]) {
+        _.forEach(documents, (currentDocument: Document) => {
+            if (currentDocument.status == 'Failed') {
+                let notification = new Notification({
+                    'title': currentDocument.message + '  ' + currentDocument.documentName,
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._notificationsStore.addNotification(notification);
+                this._notificationsService.error('Oh No!', 'DuplicateFileName');
+            }
+        });
+        this.getDocuments();
+    }
+
+    documentUploadError(error: Error) {
+        this._notificationsService.error('Oh No!', 'Not able to upload document(s).');
+    }
+
+    getDocuments() {
+        this._progressBarService.show();
+        this._casesStore.getDocumentsForCaseId(this.currentCaseId)
+            .subscribe(document => {
+                this.documents = document;
+            },
+
+            (error) => {
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+    }
+
+    deleteDocument() {
+        if (this.selectedDocumentList.length > 0) {
+            this.confirmationService.confirm({
+                message: 'Do you want to delete this record?',
+                header: 'Delete Confirmation',
+                icon: 'fa fa-trash',
+                accept: () => {
+
+                    this.selectedDocumentList.forEach(currentCase => {
+                        this._progressBarService.show();
+                        this.isDeleteProgress = true;
+                        this._casesStore.deleteDocument(currentCase)
+                            .subscribe(
+                            (response) => {
+                                let notification = new Notification({
+                                    'title': 'record deleted successfully!',
+                                    'type': 'SUCCESS',
+                                    'createdAt': moment()
+
+                                });
+                                this.getDocuments();
+                                this._notificationsStore.addNotification(notification);
+                                this.selectedDocumentList = [];
+                            },
+                            (error) => {
+                                let errString = 'Unable to delete record';
+                                let notification = new Notification({
+                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                    'type': 'ERROR',
+                                    'createdAt': moment()
+                                });
+                                this.selectedDocumentList = [];
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                                this._notificationsStore.addNotification(notification);
+                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                            },
+                            () => {
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                            });
+                    });
+                }
+            });
+        } else {
+            let notification = new Notification({
+                'title': 'select record to delete',
+                'type': 'ERROR',
+                'createdAt': moment()
+            });
+            this._notificationsStore.addNotification(notification);
+            this._notificationsService.error('Oh No!', 'select record to delete');
+        }
     }
 }

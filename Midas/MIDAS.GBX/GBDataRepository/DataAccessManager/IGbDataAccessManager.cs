@@ -14,7 +14,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object SaveDoctor(T gbObject);
         Object Save(int id, string type, List<HttpContent> streamContent,string uploadpath);
         Object AddQuickPatient(T gbObject);
-        Object ConsentSave(int caseid, int companyid, List<HttpContent> streamContent, string uploadpath);
+        Object ConsentSave(int caseid, int companyid, List<HttpContent> streamContent, string uploadpath,bool signed);
         Object AssociateLocationToDoctors(T gbObject);
         Object AssociateDoctorToLocations(T gbObject);
         int Delete(T entity);
@@ -55,7 +55,8 @@ namespace MIDAS.GBX.DataAccessManager
         Object Get(string param1, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object Update(T gbObject);
         Object Add(T gbObject);
-        Object GetByCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);       
+        Object GetAllExcludeCompany(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetConsentList(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByReferringCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByReferredToCompanyId(int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
@@ -88,11 +89,17 @@ namespace MIDAS.GBX.DataAccessManager
         
         Object Get(int param1, int param2, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object Get2(int param1, int param2, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByLocationAndPatientId(int LocationId, int PatientId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object AssociateUserToCompany(string UserName, int CompanyId, bool sendEmail, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByRoomId(int RoomId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByRoomTestId(int RoomTestId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetBySpecialityId(int specialityId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GenerateReferralDocument(int id, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
-
+        Object AssociateAttorneyWithCompany(int AttorneyId,int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object DisassociateAttorneyWithCompany(int AttorneyId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object AssociateDoctorWithCompany(int DoctorId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object DisassociateDoctorWithCompany(int DoctorId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        Object GetByLocationDoctorAndPatientId(int locationId, int doctorId, int patientId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        
     }
 }

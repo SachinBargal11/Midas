@@ -118,7 +118,7 @@ export class AddAttorneyComponent implements OnInit {
         let attorneyformValues = this.attorneyform.value;
         let result;
         let attorney = new Attorney({
-            companyId: this._sessionStore.session.currentCompany.id,
+            // companyId: this._sessionStore.session.currentCompany.id,
             user: new User({
                 dateOfBirth: attorneyformValues.dob ? moment(attorneyformValues.dob) : null,
                 firstName: attorneyformValues.firstname,

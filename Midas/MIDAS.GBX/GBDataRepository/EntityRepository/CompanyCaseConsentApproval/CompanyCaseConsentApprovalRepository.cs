@@ -51,6 +51,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             //        companyCaseConsentApprovalBO.Case = boCase;
             //    }
             //}
+
+            BO.ConsentGivenType boConsentGivenType = new BO.ConsentGivenType();
+            if (companyCaseConsentApproval.ConsentGivenType != null)
+            {
+                boConsentGivenType.TypeText = companyCaseConsentApproval.ConsentGivenType.TypeText;
+                boConsentGivenType.TypeDescription = companyCaseConsentApproval.ConsentGivenType.TypeDescription;
+                                  
+                companyCaseConsentApprovalBO.ConsentGivenType = boConsentGivenType;                
+            }
+
             companyCaseConsentApprovalBO.Company = new BO.Company();
             companyCaseConsentApprovalBO.Company.ID = (companyCaseConsentApproval.Company != null) ? companyCaseConsentApproval.Company.id : 0;
             companyCaseConsentApprovalBO.Company.Name = (companyCaseConsentApproval.Company != null) ? companyCaseConsentApproval.Company.Name : "";
@@ -118,7 +128,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                     companyCaseConsentApprovalDB.CompanyId = companyCaseConsentApprovalBO.CompanyId;
                     companyCaseConsentApprovalDB.CaseId = (int)companyCaseConsentApprovalBO.CaseId;
-                    companyCaseConsentApprovalDB.ConsentGivenTypeId = 1;// companyCaseConsentApprovalBO.ConsentGivenTypeId;
+                    if (companyCaseConsentApprovalBO.ConsentGivenTypeId <= 0)
+                    {
+                        companyCaseConsentApprovalDB.ConsentGivenTypeId = 1;
+                    }
+                    else
+                    {
+                        companyCaseConsentApprovalDB.ConsentGivenTypeId = companyCaseConsentApprovalBO.ConsentGivenTypeId;
+                    }
 
                     if (Add_companyCaseConsentApproval == true)
                     {
@@ -144,6 +161,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                 dbContextTransaction.Commit();
                 companyCaseConsentApprovalDB = _context.CompanyCaseConsentApprovals.Include("Case")
                                                                                    .Include("Company")
+                                                                                   .Include("ConsentGivenType")
                                                                                    .Where(p => p.Id == companyCaseConsentApprovalDB.Id
                                                                                         && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                                                    .FirstOrDefault<CompanyCaseConsentApproval>();
@@ -232,6 +250,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             var acc = _context.CompanyCaseConsentApprovals.Include("Case")
                                                           .Include("Company")
+                                                          .Include("ConsentGivenType")
                                                           .Where(p => p.Id == id
                                                           && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                           .FirstOrDefault<CompanyCaseConsentApproval>();
@@ -250,6 +269,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             var acc = _context.CompanyCaseConsentApprovals.Include("Case")
                                                           .Include("Company")
+                                                          .Include("ConsentGivenType")
                                                           .Where(p => p.CaseId == CaseId
                                                                 && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                           .ToList<CompanyCaseConsentApproval>();
@@ -274,6 +294,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         {
             var acc = _context.CompanyCaseConsentApprovals.Include("Case")
                                                           .Include("Company")
+                                                          .Include("ConsentGivenType")
                                                           .Where(p => p.CompanyId == id
                                                            && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
                                                           .ToList<CompanyCaseConsentApproval>();
@@ -328,7 +349,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
         #region DownlodConsent
         public override string Download(int caseid, int companyid)
         {
-            return this.GenerateConsentDocument(caseid, companyid);
+            return this.GenerateConsentDocument(caseid, companyid,"",false);
         }
 
         public string GetTemplateDocument(string templateType)
@@ -339,7 +360,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             return templateData.TemplateText;
         }
 
-        public string GenerateConsentDocument(int caseid, int companyid)
+        public string GenerateConsentDocument(int caseid, int companyid,string uploadpath,bool signed)
         {
             HtmlToPdf htmlPDF = new HtmlToPdf();
             string path = string.Empty;
@@ -355,6 +376,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     if (cases != null)
                         pdfText = pdfText.Replace("{{PatientName}}", cases.Patient2.User.FirstName + " " + cases.Patient2.User.LastName);
 
+                    if (!signed) pdfText = pdfText.Replace("{{Signature}}", ConfigurationManager.AppSettings.Get("LOCAL_PATH")+ "\\app_data\\uploads\\" + "blank.png");
+                    else pdfText = pdfText.Replace("{{Signature}}", uploadpath);
+
                     path = ConfigurationManager.AppSettings.Get("LOCAL_PATH") + "\\app_data\\uploads\\company_" + companyid + "\\case_" + caseid;
                     htmlPDF.OpenHTML(pdfText);
                     if (!Directory.Exists(path)) Directory.CreateDirectory(path);
@@ -367,46 +391,63 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             return path + "\\Consent_" + acc.Name + ".pdf";
         }
 
-        public override object ConsentSave(int caseid, int companyid, List<System.Net.Http.HttpContent> streamContent, string uploadpath)
+        public override object ConsentSave(int caseid, int companyid, List<System.Net.Http.HttpContent> streamContent, string uploadpath,bool signed)
         {
-            //BO.CompanyCaseConsentApproval companyCaseConsentApprovalBO = new BO.CompanyCaseConsentApproval();
-            //companyCaseConsentApprovalBO.CaseId = caseid;
-            //companyCaseConsentApprovalBO.CompanyId = companyid;
-            //var result = this.Save(companyCaseConsentApprovalBO);
-            //if (result is BO.ErrorObject)
-            //{
-            //    return result;
-            //}
-
             List<BO.Document> docInfo = new List<BO.Document>();
             StringBuilder storagePath = new StringBuilder();
             string SPECIALITY = "SPECIALITY_";
             string COMPANY = "/COMPANY_";
             string CASE = "/CASE_";
             string VISIT = "/VISIT_";
-            FileUpload.FileUploadManager fileUploadManager = new FileUpload.FileUploadManager(_context);
 
             storagePath.Append(COMPANY)
-                       .Append(_context.UserCompanies.Where(xc => xc.UserID == _context.Cases.FirstOrDefault(p => p.Id == caseid).PatientId).FirstOrDefault().CompanyID)
-                       .Append(CASE)
-                       .Append(caseid)
-                       .Append("/consent");
+                           .Append(companyid)
+                           .Append(CASE)
+                           .Append(caseid)
+                           .Append("/consent");
 
-            docInfo = (List<BO.Document>)fileUploadManager.Upload(streamContent, storagePath.ToString(), caseid, "consent_" + companyid, uploadpath);
-
-            if (docInfo.ToList().FirstOrDefault<BO.Document>().Status.ToUpper().Equals("SUCCESS"))
+            if (signed)
             {
-                BO.CompanyCaseConsentApproval companyCaseConsentApprovalBO = new BO.CompanyCaseConsentApproval();
-                companyCaseConsentApprovalBO.CaseId = caseid;
-                companyCaseConsentApprovalBO.CompanyId = companyid;
-                var result = this.Save(companyCaseConsentApprovalBO);
-                if (result is BO.ErrorObject)
-                {
-                    return result;
-                }
-            }
+                string consentPdf = GenerateConsentDocument(caseid,companyid,uploadpath, true);
+                FileUpload.FileUploadManager fileUploadManager = new FileUpload.FileUploadManager(_context);
+                docInfo = (List<BO.Document>)fileUploadManager.UploadSignedConsent(caseid, "consent_" + companyid, consentPdf);
 
-            return docInfo;
+                if (docInfo.ToList().FirstOrDefault<BO.Document>().Status.ToUpper().Equals("SUCCESS"))
+                {
+                    BO.CompanyCaseConsentApproval companyCaseConsentApprovalBO = new BO.CompanyCaseConsentApproval();
+                    companyCaseConsentApprovalBO.CaseId = caseid;
+                    companyCaseConsentApprovalBO.CompanyId = companyid;
+                    companyCaseConsentApprovalBO.ConsentGivenTypeId = 3;
+                    var result = this.Save(companyCaseConsentApprovalBO);
+                    if (result is BO.ErrorObject)
+                    {
+                        return result;
+                    }
+                }
+
+                return docInfo;
+            }
+            else
+            {
+                FileUpload.FileUploadManager fileUploadManager = new FileUpload.FileUploadManager(_context);
+                
+                docInfo = (List<BO.Document>)fileUploadManager.Upload(streamContent, storagePath.ToString(), caseid, "consent_" + companyid, uploadpath);
+
+                if (docInfo.ToList().FirstOrDefault<BO.Document>().Status.ToUpper().Equals("SUCCESS"))
+                {
+                    BO.CompanyCaseConsentApproval companyCaseConsentApprovalBO = new BO.CompanyCaseConsentApproval();
+                    companyCaseConsentApprovalBO.CaseId = caseid;
+                    companyCaseConsentApprovalBO.CompanyId = companyid;
+                    companyCaseConsentApprovalBO.ConsentGivenTypeId = 1;
+                    var result = this.Save(companyCaseConsentApprovalBO);
+                    if (result is BO.ErrorObject)
+                    {
+                        return result;
+                    }
+                }
+
+                return docInfo;
+            }
         }
         #endregion
 

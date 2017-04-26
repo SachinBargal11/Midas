@@ -52,6 +52,7 @@ export class DoctorAdapter {
                 user: UserAdapter.parseResponse(doctorData.user),
                 doctorSpecialities: doctorSpecialities,
                 doctorLocationSchedules: doctorLocationSchedule,
+                isCalendarPublic: doctorData.isCalendarPublic,
                 isDeleted: doctorData.isDeleted
             });
         }

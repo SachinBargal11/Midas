@@ -74,6 +74,7 @@
     <Compile Include="Common\State.cs" />
     <Compile Include="Company\Company.cs" />
     <Compile Include="Company\Signup.cs" />
+    <Compile Include="ConsentGivenType\ConsentGivenType.cs" />
     <Compile Include="ContactInfo\ContactInfo.cs" />
     <Compile Include="DiagnosisCode\DiagnosisCode.cs" />
     <Compile Include="DiagnosisType\DiagnosisType.cs" />
@@ -100,7 +101,9 @@
     <Compile Include="Location\SaveLocation.cs" />
     <Compile Include="Log\Log.cs" />
     <Compile Include="PatientEmpInfo\PatientEmpInfo.cs" />
+    <Compile Include="PatientVisitDiagnosisCode\PatientVisitDiagnosisCode.cs" />
     <Compile Include="PatientVisitEvent\PatientVisitEvent.cs" />
+    <Compile Include="PatientVisitProcedureCode\PatientVisitProcedureCode.cs" />
     <Compile Include="PatientVisit\PatientVisit.cs" />
     <Compile Include="PatientVisit\PatientVisit2.cs" />
     <Compile Include="Patient\Patient.cs" />

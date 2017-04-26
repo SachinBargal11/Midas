@@ -1,3 +1,5 @@
+import { Procedure } from '../../../commons/models/procedure';
+import { DiagnosisCode } from '../../../commons/models/diagnosis-code';
 import { User } from '../../../commons/models/user';
 import { Case } from '../../cases/models/case';
 import { Doctor } from '../../../medical-provider/users/models/doctor';
@@ -59,10 +61,11 @@ export class PatientVisitComponent implements OnInit {
 
     /* Data Lists */
     patients: Patient[] = [];
-    specialities: Speciality[] = [];
-    tests: Tests[] = [];
     rooms: Room[] = [];
-    doctorLocationSchedules: DoctorLocationSchedule[] = [];
+    doctorLocationSchedules: {
+        doctorLocationSchedule: DoctorLocationSchedule,
+        speciality: DoctorSpeciality
+    }[] = [];
     roomSchedule: Schedule;
     doctorSchedule: Schedule;
 
@@ -121,7 +124,7 @@ export class PatientVisitComponent implements OnInit {
         } else if (event.owningEvent.recurrenceRule) {
             content = `<i class="fa fa-refresh"></i>`;
         }
-        content = `${content}<span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.patient.user.displayName}</span>`;
+        content = `${content} <span class="fc-time">${event.start.format('hh:mm A')}</span> <span class="fc-title">${event.eventWrapper.patient.user.displayName}</span>`;
         element.find('.fc-content').html(content);
     }
 
@@ -211,61 +214,34 @@ export class PatientVisitComponent implements OnInit {
             this.selectedSpecialityId = 0;
             this.selectedTestId = 0;
             this.events = [];
-            this.specialities = [];
-            this.tests = [];
         } else {
-            this._roomsService.getTestsByLocationId(this.selectedLocationId)
-                .subscribe(tests => {
-                    this.tests = tests;
-                });
-            this._specialityService.getSpecialitiesByLocationId(this.selectedLocationId)
-                .subscribe(specialities => {
-                    this.specialities = specialities;
-                });
             this.loadLocationVisits();
-            this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.selectedLocationId);
-            this._roomsStore.getRooms(this.selectedLocationId);
-        }
-    }
+            this._doctorLocationScheduleStore.getDoctorLocationSchedulesByLocationId(this.selectedLocationId)
+                .subscribe((doctorLocationSchedules: DoctorLocationSchedule[]) => {
+                    let mappedDoctorLocationSchedules: {
+                        doctorLocationSchedule: DoctorLocationSchedule,
+                        speciality: DoctorSpeciality
+                    }[] = [];
+                    _.forEach(doctorLocationSchedules, (currentDoctorLocationSchedule: DoctorLocationSchedule) => {
+                        _.forEach(currentDoctorLocationSchedule.doctor.doctorSpecialities, (currentSpeciality: DoctorSpeciality) => {
+                            mappedDoctorLocationSchedules.push({
+                                doctorLocationSchedule: currentDoctorLocationSchedule,
+                                speciality: currentSpeciality
+                            });
+                        });
+                    });
+                    this.doctorLocationSchedules = mappedDoctorLocationSchedules;
+                    console.log(this.doctorLocationSchedules);
 
-    selectRoom() {
-        this.selectedSpecialityId = 0;
-        this.selectedDoctorId = 0;
-        this.events = [];
-        if (this.selectedRoomId != 0) {
-            this.loadLocationRoomVisits();
-            this.fetchRoomSchedule();
-        }
-    }
-
-    selectDoctor() {
-        this.selectedRoomId = 0;
-        this.selectedTestId = 0;
-        this.events = [];
-        if (this.selectedDoctorId != 0) {
-            this.loadLocationDoctorVisits();
-            this.fetchDoctorSchedule();
-        }
-    }
-
-    selectTest() {
-        if (this.selectedTestId) {
-            let rooms: Room[] = this._roomsStore.rooms.getValue().toArray();
-            this.rooms = _.filter(rooms, (currentRoom: Room) => {
-                return currentRoom.roomTest.id == this.selectedTestId;
-            });
-        }
-    }
-
-    selectSpeciality() {
-        if (this.selectedSpecialityId) {
-            let doctorLocationSchedules: DoctorLocationSchedule[] = this._doctorLocationScheduleStore.doctorLocationSchedules.getValue().toArray();
-            this.doctorLocationSchedules = _.filter(doctorLocationSchedules, (currentDoctorLocationSchedule: DoctorLocationSchedule) => {
-                let matchedSpeciality: DoctorSpeciality = _.find(currentDoctorLocationSchedule.doctor.doctorSpecialities, (currentSpeciality: DoctorSpeciality) => {
-                    return currentSpeciality.speciality.id == this.selectedSpecialityId;
+                }, error => {
+                    this.doctorLocationSchedules = [];
                 });
-                return matchedSpeciality ? true : false;
-            });
+            this._roomsStore.getRooms(this.selectedLocationId)
+                .subscribe((rooms: Room[]) => {
+                    this.rooms = rooms;
+                }, error => {
+                    this.rooms = [];
+                });
         }
     }
 
@@ -320,14 +296,19 @@ export class PatientVisitComponent implements OnInit {
         this.selectedDoctorId = 0;
         this.selectedRoomId = 0;
         this.selectedOption = 0;
-        if (event.target.selectedOptions[0].getAttribute('data-option') == '1') {
+        this.events = [];
+        if (event.target.selectedOptions[0].getAttribute('data-type') == '1') {
             this.selectedOption = 1;
-            this.selectedSpecialityId = event.target.value;
-            this.selectSpeciality();
-        } else if (event.target.selectedOptions[0].getAttribute('data-option') == '2') {
+            this.selectedDoctorId = event.target.value;
+            this.selectedSpecialityId = event.target.selectedOptions[0].getAttribute('data-specialityId');
+            this.loadLocationDoctorVisits();
+            this.fetchDoctorSchedule();
+        } else if (event.target.selectedOptions[0].getAttribute('data-type') == '2') {
             this.selectedOption = 2;
-            this.selectedTestId = event.target.value;
-            this.selectTest();
+            this.selectedRoomId = event.target.value;
+            this.selectedTestId = event.target.selectedOptions[0].getAttribute('data-testId');
+            this.loadLocationRoomVisits();
+            this.fetchRoomSchedule();
         } else {
             this.selectedMode = 0;
             this.selectLocation();
@@ -453,11 +434,14 @@ export class PatientVisitComponent implements OnInit {
     closeEventDialog() {
         this.eventDialogVisible = false;
         this.handleEventDialogHide();
+        this.addNewPatientForm.reset();
+        this.patientScheduleForm.reset();
     }
 
     closePatientVisitDialog() {
         this.visitDialogVisible = false;
         this.handleVisitDialogHide();
+        this.patientVisitForm.reset();
     }
 
     handleEventDialogHide() {
@@ -529,9 +513,12 @@ export class PatientVisitComponent implements OnInit {
             let selectedDoctor: Doctor = null;
             let selectedRoom: Room = null;
             if (this.selectedOption === 1) {
-                _.each(this.doctorLocationSchedules, (currentSchedule: DoctorLocationSchedule) => {
-                    if (currentSchedule.doctor.id == this.selectedDoctorId) {
-                        selectedDoctor = currentSchedule.doctor;
+                _.each(this.doctorLocationSchedules, (currentSchedule: {
+                    doctorLocationSchedule: DoctorLocationSchedule,
+                    speciality: DoctorSpeciality
+                }) => {
+                    if (currentSchedule.doctorLocationSchedule.doctor.id == this.selectedDoctorId) {
+                        selectedDoctor = currentSchedule.doctorLocationSchedule.doctor;
                     }
                 });
             } else {
@@ -723,6 +710,80 @@ export class PatientVisitComponent implements OnInit {
             });
         this.visitDialogVisible = false;
     }
+    saveDiagnosisCodesForVisit(inputDiagnosisCodes: DiagnosisCode[]) {
+        let patientVisitFormValues = this.patientVisitForm.value;
+        let updatedVisit: PatientVisit;
+        let diagnosisCodes = [];
+        inputDiagnosisCodes.forEach(currentDiagnosisCode => {
+            diagnosisCodes.push({ 'diagnosisCodeId': currentDiagnosisCode.id });
+        });
+
+        updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
+            patientVisitDiagnosisCodes: diagnosisCodes
+        }));
+        let result = this._patientVisitsStore.updatePatientVisitDetail(updatedVisit);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Diagnosis codes saved successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this.loadVisits();
+                this._notificationsStore.addNotification(notification);
+            },
+            (error) => {
+                let errString = 'Unable to save diagnosis codes!';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                this._notificationsStore.addNotification(notification);
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this.visitDialogVisible = false;
+    }
+    saveProcedureCodesForVisit(inputProcedureCodes: Procedure[]) {
+        let patientVisitFormValues = this.patientVisitForm.value;
+        let updatedVisit: PatientVisit;
+        let procedureCodes = [];
+        inputProcedureCodes.forEach(currentProcedureCode => {
+            procedureCodes.push({ 'procedureCodeId': currentProcedureCode.id });
+        });
+        
+        updatedVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
+            patientVisitProcedureCodes: procedureCodes
+        }));
+        let result = this._patientVisitsStore.updatePatientVisitDetail(updatedVisit);
+        result.subscribe(
+            (response) => {
+                let notification = new Notification({
+                    'title': 'Procedure codes saved successfully!',
+                    'type': 'SUCCESS',
+                    'createdAt': moment()
+                });
+                this.loadVisits();
+                this._notificationsStore.addNotification(notification);
+            },
+            (error) => {
+                let errString = 'Unable to save procedure codes!';
+                let notification = new Notification({
+                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                    'type': 'ERROR',
+                    'createdAt': moment()
+                });
+                this._progressBarService.hide();
+                this._notificationsStore.addNotification(notification);
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+        this.visitDialogVisible = false;
+    }
 
     cancelCurrentOccurrence() {
         if (this.selectedVisit.calendarEvent.isSeries) {
@@ -817,7 +878,7 @@ export class PatientVisitComponent implements OnInit {
         let updatedEvent: ScheduledEvent = this._scheduledEventEditorComponent.getEditedEvent();
         let updatedVisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             patientId: patientScheduleFormValues.patientId,
-            specialtyId: this.selectedOption == 1 ? this.selectedSpecialityId : 0,
+            specialtyId: this.selectedOption == 1 ? this.selectedSpecialityId : null,
             calendarEvent: updatedEvent
         }));
         if (updatedVisit.id) {
@@ -1086,6 +1147,7 @@ export class PatientVisitComponent implements OnInit {
 
     cancelAddingNewPatient() {
         this.isAddNewPatient = false;
+        this.addNewPatientForm.reset();
     }
 
     saveNewPatient() {

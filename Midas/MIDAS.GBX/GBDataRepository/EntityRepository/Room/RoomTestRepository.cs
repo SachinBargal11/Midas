@@ -37,6 +37,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             BO.RoomTest roomtestBO = new BO.RoomTest();
             roomtestBO.name = roomtest.Name;
             roomtestBO.ID = roomtest.id;
+            roomtestBO.ColorCode = roomtest.ColorCode;
 
             if (roomtest.IsDeleted.HasValue)
                 roomtestBO.IsDeleted = roomtest.IsDeleted.Value;
@@ -76,6 +77,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             #region RoomTest
             roomtestDB.id = roomtestBO.ID;
             roomtestDB.Name = roomtestBO.name;
+            roomtestDB.ColorCode = roomtestBO.ColorCode;
             roomtestDB.IsDeleted = roomtestBO.IsDeleted.HasValue ? roomtestBO.IsDeleted : false;
             #endregion
             if (roomtestDB.id > 0)
@@ -90,6 +92,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     #region Location
                     roomtest.id = roomtestBO.ID;
                     roomtest.Name = roomtestBO.name == null ? roomtest.Name : roomtestBO.name;
+                    roomtest.ColorCode = roomtestBO.ColorCode;
                     roomtest.IsDeleted = roomtestBO.IsDeleted == null ? roomtestBO.IsDeleted : roomtest.IsDeleted;
                     roomtest.UpdateDate = roomtestBO.UpdateDate;
                     roomtest.UpdateByUserID = roomtestBO.UpdateByUserID;

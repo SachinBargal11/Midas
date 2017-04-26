@@ -15,6 +15,8 @@ import { Address } from '../../../commons/models/address';
 import { AccidentStore } from '../stores/accident-store';
 import { PatientsStore } from '../../patients/stores/patients-store';
 import * as _ from 'underscore';
+import { CasesStore } from '../../cases/stores/case-store';
+import { Case } from '../models/case';
 
 @Component({
     selector: 'accident',
@@ -42,6 +44,9 @@ export class AccidentInfoComponent implements OnInit {
     isSaveAccidentProgress = false;
     accAddId: number;
     hospAddId :number;
+    caseDetail: Case;
+    caseStatusId: number;
+
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -53,6 +58,7 @@ export class AccidentInfoComponent implements OnInit {
         private _sessionStore: SessionStore,
         private _elRef: ElementRef,
         private _notificationsService: NotificationsService,
+        private _casesStore: CasesStore,
     ) {
         this._route.parent.params.subscribe((routeParams: any) => {
             this.caseId = parseInt(routeParams.caseId, 10);
@@ -96,7 +102,24 @@ export class AccidentInfoComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         });
+        
+        this._route.parent.params.subscribe((routeParams: any) => {
+            this.caseId = parseInt(routeParams.caseId, 10);
+            this._progressBarService.show();
+            let result = this._casesStore.fetchCaseById(this.caseId);
+            result.subscribe(
+                (caseDetail: Case) => {
+                    this.caseStatusId = caseDetail.caseStatusId;
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
 
+        });
 
         this.accidentform = this.fb.group({
             doa: ['', Validators.required],

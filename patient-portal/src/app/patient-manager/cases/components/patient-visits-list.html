@@ -1,26 +1,19 @@
-<p-confirmDialog width="425"></p-confirmDialog>  
+<p-confirmDialog width="425"></p-confirmDialog>
 <div class="input-group">
     <h3 class="with-border">{{patientName}} Visits
-        <a class="pull-right btn btn-danger btn-sm" (click)="deletePatientVisits()">
-            <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Selected Visits</span>
-            <loader [visible]="isDeleteProgress"></loader>
-        </a>
-        <!--<a class="pull-right btn-inline btn btn-primary btn-sm" [routerLink]="['add']"><i class="fa fa-plus" aria-hidden="true"></i>
-      <span class="hidden-md-down">Add Visit</span>
-    </a>-->
     </h3>
 </div>
 <div class="ui-widget-header row">
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
         <input #gbb type="text" class="form-control" style="float:left" placeholder="Search Doctors Visits">
-    </div>
+</div>
 </div>
 
 <p-dataTable [value]="doctorsVisits" [(selection)]="selectedDoctorsVisits" [rows]="10" [paginator]="true" [pageLinks]="3"
     [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbb" [responsive]="true">
     <header>Patient Doctors Visits List</header>
-    <p-column selectionMode="multiple"></p-column>
+    <!--<p-column selectionMode="multiple"></p-column>-->
     <p-column field="eventStart" header="Visit Date" [sortable]="true">
         <ng-template let-visit="rowData" pTemplate="body">
 
@@ -37,15 +30,15 @@
 
     <p-column field="doctor.user.displayName" header="Speciality" [sortable]="true">
         <ng-template let-visit="rowData" pTemplate="body">
-            
+
         </ng-template>
     </p-column>
 
-     <p-column field="visitStatusLabel" header="Status" [sortable]="true"></p-column>
+    <p-column field="visitStatusLabel" header="Status" [sortable]="true"></p-column>
 
-       <p-column field="" header="Billing Status" [sortable]="true">
+    <p-column field="" header="Billing Status" [sortable]="true">
         <ng-template let-visit="rowData" pTemplate="body">
-           
+
         </ng-template>
     </p-column>
 
@@ -62,14 +55,14 @@
     <div class="col-lg-4 input-group">
         <span class="input-group-addon"><i class="fa fa-search"></i></span>
         <input #gb type="text" class="form-control" style="float:left" placeholder="Search Rooms Visits">
-    </div>
+</div>
 </div>
 <!--<pre>{{visits | json}}</pre>-->
 
 <p-dataTable [value]="roomsVisits" [(selection)]="selectedRoomsVisits" [rows]="10" [paginator]="true" [pageLinks]="3" [rowsPerPageOptions]="[5,10,15,20]"
     [globalFilter]="gb" [responsive]="true">
     <header>Patient Rooms Visits List</header>
-    <p-column selectionMode="multiple"></p-column>
+    <!--<p-column selectionMode="multiple"></p-column>-->
     <p-column field="eventStart" header="Visit Date" [sortable]="true">
         <ng-template let-visit="rowData" pTemplate="body">
 
@@ -85,10 +78,10 @@
     </p-column>
 
     <p-column field="visitStatusLabel" header="Status" [sortable]="true"></p-column>
-    
+
 
     <p-column field="room.name" header="Billing Status" [sortable]="true">
-        <ng-template let-visit="rowData" pTemplate="body">        
+        <ng-template let-visit="rowData" pTemplate="body">
         </ng-template>
     </p-column>
 

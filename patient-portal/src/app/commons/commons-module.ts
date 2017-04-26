@@ -40,7 +40,8 @@ import {
   FileUploadModule,
   GrowlModule,
   TabViewModule,
-  LightboxModule
+  LightboxModule,
+  ListboxModule
 
 } from 'primeng/primeng';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -70,7 +71,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     FileUploadModule,
     GrowlModule,
     TabViewModule,
-    LightboxModule
+    LightboxModule,ListboxModule
   ],
   declarations: [
     LimitPipe,
@@ -131,7 +132,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     FileUploadModule,
     GrowlModule,
     TabViewModule,
-    LightboxModule
+    LightboxModule,ListboxModule
   ]
 })
 export class CommonsModule { }

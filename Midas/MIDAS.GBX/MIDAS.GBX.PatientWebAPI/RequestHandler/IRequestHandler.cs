@@ -15,7 +15,7 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage CreateGbObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage SaveDoctor(HttpRequestMessage request, T gbObject);
         HttpResponseMessage CreateGbDocObject(HttpRequestMessage request, int id, string type, List<HttpContent> streamContent,string uploadpath);
-        HttpResponseMessage CreateGbDocObject1(HttpRequestMessage request, int caseid, int companyid, List<HttpContent> streamContent, string uploadpath);
+        HttpResponseMessage CreateGbDocObject1(HttpRequestMessage request, int caseid, int companyid, List<HttpContent> streamContent, string uploadpath, bool signed);
         HttpResponseMessage GetObject(HttpRequestMessage request, int id, string type);
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetObject(HttpRequestMessage request, int id);
@@ -28,6 +28,8 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         HttpResponseMessage GetObjects(HttpRequestMessage request, string param1);
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int id);
         HttpResponseMessage GetgbObjects(HttpRequestMessage request, int id);
+        HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int id);
+        HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int param1,int param2);
         HttpResponseMessage ResetPassword(HttpRequestMessage request, T gbObject);
         HttpResponseMessage GetByPatientId(HttpRequestMessage request, int PatientId);
         HttpResponseMessage DeleteById(HttpRequestMessage request, int id);
@@ -52,5 +54,8 @@ namespace MIDAS.GBX.PatientWebAPI.RequestHandler
         string Download(HttpRequestMessage request, int caseId, int documentid);
         HttpResponseMessage GetOpenCaseForPatient(HttpRequestMessage request, int PatientId);
         HttpResponseMessage GetConsentList(HttpRequestMessage request, int id);
+        HttpResponseMessage GetByLocationAndPatientId(HttpRequestMessage request, int LocationId, int PatientId);
+        HttpResponseMessage GetByLocationDoctorAndPatientId(HttpRequestMessage request, int locationId, int doctorId, int patientId);
+        
     }
 }

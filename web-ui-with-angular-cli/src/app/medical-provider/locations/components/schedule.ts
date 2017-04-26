@@ -41,7 +41,6 @@ export class ScheduleComponent implements OnInit {
     hightlightChange: boolean = false;
     isDefaultSchedule: boolean = false;
 
-
     constructor(
         private fb: FormBuilder,
         private _router: Router,

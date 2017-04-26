@@ -42,6 +42,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 BO.UserCompany usercompanyBO = new BO.UserCompany();
 
                 usercompanyBO.ID = usercompany.id;
+                usercompanyBO.UserId = usercompany.UserID;
+                usercompanyBO.CompanyId = usercompany.CompanyID;
 
                 if (usercompany.IsDeleted.HasValue)
                     usercompanyBO.IsDeleted = usercompany.IsDeleted.Value;
@@ -121,6 +123,28 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             var res = (BO.GbObject)(object)entity;
             return usercompanyDB;
+        }
+        #endregion
+
+        #region Delete
+        public override Object Delete(int id)
+        {
+            var acc = _context.UserCompanies.Where(p => p.id == id
+                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+                                    .FirstOrDefault<UserCompany>();
+            if (acc != null)
+            {
+               
+                acc.IsDeleted = true;
+                _context.SaveChanges();
+            }
+            else if (acc == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var res = Convert<BO.UserCompany, UserCompany>(acc);
+            return (object)res;
         }
         #endregion
 

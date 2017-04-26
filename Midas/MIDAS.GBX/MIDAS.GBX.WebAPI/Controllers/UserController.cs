@@ -75,6 +75,15 @@ namespace MIDAS.GBX.WebAPI.Controllers
             return requestHandler.DeleteGbObject(Request, User);
         }
 
+        [HttpDelete]
+        [Route("Delete/{id}")]
+
+        public HttpResponseMessage Delete(int id)
+        {
+            return requestHandler.Delete(Request, id);
+        }
+
+
         [AllowAnonymous]
         [HttpPost]
         [Route("Signin")]

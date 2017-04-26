@@ -35,7 +35,7 @@
   <ItemGroup>
     <Reference Include="Docs.Pdf, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\milind.k.CODEARRAY\Desktop\dll\Docs.Pdf\Docs.Pdf\Docs.Pdf\bin\Debug\Docs.Pdf.dll</HintPath>
+      <HintPath>C:\Users\Vipul.K\Desktop\Docs.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
@@ -208,6 +208,9 @@
     <Compile Include="Model\DocumentNode.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\DocumentNodeObjectMapping.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Gender.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
@@ -286,7 +289,13 @@
     <Compile Include="Model\PatientVisit2.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\PatientVisitDiagnosisCode.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\PatientVisitEvent.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PatientVisitProcedureCode.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\PolicyOwner.cs">

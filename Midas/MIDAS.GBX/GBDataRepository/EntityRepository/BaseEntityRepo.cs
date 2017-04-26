@@ -48,7 +48,7 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
-        public virtual Object ConsentSave(int caseid, int companyid, List<HttpContent> streamContent, string uploadpath)
+        public virtual Object ConsentSave(int caseid, int companyid, List<HttpContent> streamContent, string uploadpath,bool signed)
         {
             throw new NotImplementedException();
         }
@@ -68,6 +68,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object UploadSignedConsent(int id, string type, string sourcePath)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object AddUploadedFileData(int id, string FileUploadPath)
         {
             throw new NotImplementedException();
@@ -77,6 +82,7 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+
 
         public virtual Object AssociateLocationToDoctors<T>(T entity)
         {
@@ -272,6 +278,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetAllExcludeCompany(int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+        
         public virtual Object GetByReferringCompanyId(int CompanyId)
         {
             throw new NotImplementedException();
@@ -423,6 +434,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object GetByLocationAndPatientId(int LocationId, int PatientId)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object GetByDoctorAndDates(int DoctorId, DateTime FromDate, DateTime ToDate)
         {
             throw new NotImplementedException();
@@ -462,6 +478,33 @@ namespace MIDAS.GBX.EntityRepository
         {
             throw new NotImplementedException();
         }
+
+        public virtual Object AssociateAttorneyWithCompany(int AttorneyId, int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object DisassociateAttorneyWithCompany(int AttorneyId, int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object AssociateDoctorWithCompany(int DoctorId, int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object DisassociateDoctorWithCompany(int DoctorId, int CompanyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetByLocationDoctorAndPatientId(int locationId, int doctorId, int patientId)
+        {
+            throw new NotImplementedException();
+        }
+        
+
         #endregion
     }
 }

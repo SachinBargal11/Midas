@@ -40,6 +40,29 @@ namespace MIDAS.GBX.WebAPI.Controllers
         public HttpResponseMessage GetByCompanyId(int CompanyId)
         { return requestHandler.GetGbObjects(Request, CompanyId); }
 
+        
+        [HttpGet]
+        [Route("getAllExcludeCompany/{CompanyId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetAllExcludeCompany(int CompanyId)
+        { return requestHandler.GetAllExcludeCompany(Request, CompanyId); }
+
+        [HttpGet]
+        [Route("associateAttorneyWithCompany/{attorneyId}/{CompanyId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage AssociateAttorneyWithCompany(int AttorneyId, int CompanyId)
+        {
+            return requestHandler.AssociateAttorneyWithCompany(Request,AttorneyId,CompanyId);
+        }
+
+        [HttpGet]
+        [Route("disassociateAttorneyWithCompany/{attorneyId}/{CompanyId}")]
+        [AllowAnonymous]
+        public HttpResponseMessage DisassociateAttorneyWithCompany(int AttorneyId, int CompanyId)
+        {
+            return requestHandler.DisassociateAttorneyWithCompany(Request, AttorneyId, CompanyId);
+        }
+
         // GET: api/getAttornyByCompanyId/
         [HttpPost]
         [Route("save")]

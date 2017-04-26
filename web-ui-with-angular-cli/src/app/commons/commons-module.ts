@@ -20,8 +20,11 @@ import { NotificationComponent } from './components/notification/notification';
 import { ShellComponent } from './shell-component';
 import { ScheduledEventEditorComponent } from '../medical-provider/calendar/components/scheduled-event-editor';
 import { DocumentUploadComponent } from '../commons/components/document-upload/document-upload.component';
-import { DignosisComponent } from '../commons/components/dignosis/dignosis.component';
+import { DignosisComponent } from './components/dignosis/dignosis.component';
+import { ProcedureComponent } from './components/procedure/procedure.component';
 
+import { SignaturePadModule } from 'angular2-signaturepad';
+import { SignatureFieldComponent } from '../commons/components/signature-field/signature-field.component';
 
 import {
   AccordionModule,
@@ -73,7 +76,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     GrowlModule,
     TabViewModule,
     LightboxModule,
-    ListboxModule
+    ListboxModule,
+    SignaturePadModule
   ],
   declarations: [
     LimitPipe,
@@ -93,7 +97,9 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ShellComponent,
     ScheduledEventEditorComponent,
     DocumentUploadComponent,
-    DignosisComponent
+    SignatureFieldComponent,
+    DignosisComponent,
+    ProcedureComponent
   ],
   exports: [
     CommonModule,
@@ -132,7 +138,9 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     ShellComponent,
     ScheduledEventEditorComponent,
     DocumentUploadComponent,
+    SignatureFieldComponent,
     DignosisComponent,
+    ProcedureComponent,
     FileUploadModule,
     GrowlModule,
     TabViewModule,

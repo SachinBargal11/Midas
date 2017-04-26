@@ -17,7 +17,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage CreateGbObject1(HttpRequestMessage request, T gbObject);
         HttpResponseMessage CreateGbObject2(HttpRequestMessage request, T gbObject);
         HttpResponseMessage CreateGbDocObject(HttpRequestMessage request, int id, string type, List<HttpContent> streamContent,string uploadpath);
-        HttpResponseMessage CreateGbDocObject1(HttpRequestMessage request, int caseid, int companyid, List<HttpContent> streamContent, string uploadpath);
+        HttpResponseMessage CreateGbDocObject1(HttpRequestMessage request, int caseid, int companyid, List<HttpContent> streamContent, string uploadpath, bool signed);
         HttpResponseMessage CreateGb(HttpRequestMessage request, T gbObject);
         HttpResponseMessage UpdateGbObject(HttpRequestMessage request, T gbObject);
         HttpResponseMessage DeleteGbObject(HttpRequestMessage request, T gbObject);
@@ -76,6 +76,7 @@ namespace MIDAS.GBX.WebAPI
 
         HttpResponseMessage GetGbObjects(HttpRequestMessage request, int param1, int param2);
         HttpResponseMessage GetGbObjects2(HttpRequestMessage request, int param1, int param2);
+        HttpResponseMessage GetByLocationAndPatientId(HttpRequestMessage request, int LocationId, int PatientId);
         HttpResponseMessage AssociateUserToCompany(HttpRequestMessage request, string UserName, int CompanyId, bool sendEmail);
         HttpResponseMessage GetByDoctorAndDates(HttpRequestMessage request, int DoctorId,  DateTime FromDate,DateTime ToDate);
         HttpResponseMessage GetByDoctorDatesAndName(HttpRequestMessage request, int DoctorId, DateTime FromDate, DateTime ToDate,string Name);
@@ -83,5 +84,11 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage GetByRoomTestId(HttpRequestMessage request, int RoomTestId);
         HttpResponseMessage GetBySpecialityId(HttpRequestMessage request, int specialityId);
         HttpResponseMessage GenerateReferralDocument(HttpRequestMessage request, int id);
+        HttpResponseMessage GetAllExcludeCompany(HttpRequestMessage request, int CompanyId);
+        HttpResponseMessage AssociateAttorneyWithCompany(HttpRequestMessage request, int AttorneyId, int CompanyId);
+        HttpResponseMessage DisassociateAttorneyWithCompany(HttpRequestMessage request, int AttorneyId, int CompanyId);
+        HttpResponseMessage AssociateDoctorWithCompany(HttpRequestMessage request, int DoctorId, int CompanyId);
+        HttpResponseMessage DisassociateDoctorWithCompany(HttpRequestMessage request, int DoctorId, int CompanyId);
+        HttpResponseMessage GetByLocationDoctorAndPatientId(HttpRequestMessage request, int locationId, int doctorId, int patientId);
     }
 }

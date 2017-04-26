@@ -19,7 +19,7 @@
 <p-dataTable [value]="cases" [(selection)]="selectedCases" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10,15,20]"
     [globalFilter]="gb" [responsive]="true">
     <header>Cases</header>
-    <p-column selectionMode="multiple"></p-column>
+    <!--<p-column selectionMode="multiple"></p-column>-->
     <p-column field="id" header="Case Id" [sortable]="true"></p-column>
     <p-column field="caseStatusLabel" header="Case Status" [sortable]="true"></p-column>
     <p-column field="caseTypeLabel" header="Case Type" [sortable]="true"></p-column>

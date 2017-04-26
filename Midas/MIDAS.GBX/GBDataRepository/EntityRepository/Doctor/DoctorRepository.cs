@@ -51,6 +51,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (doctor.UpdateByUserID.HasValue)
                 doctorBO.UpdateByUserID = doctor.UpdateByUserID.Value;
 
+            doctorBO.IsCalendarPublic = doctor.IsCalendarPublic;
+
             if (doctor.User != null)
             {
                 if (doctor.User.IsDeleted.HasValue == false || (doctor.User.IsDeleted.HasValue == true && doctor.User.IsDeleted.Value == false))
@@ -79,6 +81,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         doctorBO.DoctorSpecialities = lstDoctorSpecility;
                     }
                     
+                    //if (doctor.User.UserCompanies != null && doctorBO.user.UserCompanies != null && doctorBO.user.UserCompanies.Count <= 0)
                     if (doctor.User.UserCompanies != null)
                     {
                         List<BO.UserCompany> lstUserCompany = new List<BO.UserCompany>();
@@ -128,6 +131,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             return (T)(object)doctorBO;
         }
         #endregion
+
         #region Entity Conversion
         public override T ObjectConvert<T, U>(U entity)
         {
@@ -150,6 +154,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 doctorBO.IsDeleted = doctor.IsDeleted.Value;
             if (doctor.UpdateByUserID.HasValue)
                 doctorBO.UpdateByUserID = doctor.UpdateByUserID.Value;
+
+            doctorBO.IsCalendarPublic = doctor.IsCalendarPublic;
 
             if (doctor.DoctorSpecialities != null)
             {
@@ -304,6 +310,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         doctorDB.IsDeleted = doctorBO.IsDeleted.HasValue ? doctorBO.IsDeleted : (doctorBO.IsDeleted.HasValue ? doctor.IsDeleted : false);
                         doctorDB.UpdateDate = doctorBO.UpdateDate;
                         doctorDB.UpdateByUserID = doctorBO.UpdateByUserID;
+                        doctorDB.IsCalendarPublic = doctorBO.IsCalendarPublic;
                         #endregion
                         // doctorDB = doctor;                                
                         // _context.Entry(doctorDB).State = System.Data.Entity.EntityState.Modified;
@@ -328,6 +335,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     doctorDB.UpdateByUserID = doctorBO.UpdateByUserID;
                     doctorDB.CreateDate = doctorBO.CreateDate;
                     doctorDB.CreateByUserID = doctorBO.CreateByUserID;
+                    doctorDB.IsCalendarPublic = doctorBO.IsCalendarPublic;
 
                     _dbSet.Add(doctorDB);
                 }
@@ -520,6 +528,119 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region AssociateDoctorWithCompany
+        public override object AssociateDoctorWithCompany(int DoctorId, int CompanyId)
+        {
+            bool add_UserCompany = false;
+            bool sendEmail = false;
+            Guid invitationDB_UniqueID = Guid.NewGuid();
+            BO.AttorneyMaster addAttorneyBO = new BO.AttorneyMaster();
+            BO.User userBO = addAttorneyBO.User;
+
+
+            var company = _context.Companies.Where(p => p.id == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (company == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var Doctor = _context.Doctors.Where(p => p.Id == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (Doctor == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Doctor.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var userCompany = _context.UserCompanies.Where(p => p.UserID == DoctorId && p.CompanyID == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (userCompany == null)
+            {
+                userCompany = new UserCompany();
+                add_UserCompany = true;
+                sendEmail = true;
+            }
+
+            userCompany.CompanyID = CompanyId;
+            userCompany.UserID = DoctorId;
+
+            if (add_UserCompany)
+            {
+                _context.UserCompanies.Add(userCompany);
+            }
+
+            _context.SaveChanges();
+
+            var doctorDB = _context.Doctors.Include("User")
+                                              .Include("User.AddressInfo")
+                                              .Include("User.ContactInfo")
+                                              .Include("DoctorSpecialities")
+                                              .Include("DoctorSpecialities.Specialty")
+                                              .Include("User.UserCompanyRoles")
+                                              .Include("User.UserCompanies")
+                                              .Where(p => p.Id == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<Doctor>();
+
+            #region Send Email
+            if (sendEmail == true)
+            {
+                try
+                {
+                    string VerificationLink = "<a href='" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "' target='_blank'>" + Utility.GetConfigValue("VerificationLink") + "/" + invitationDB_UniqueID + "</a>";
+                    string Message = "Dear " + doctorDB.User.FirstName + ",<br><br>Thanks for registering with us.<br><br> Your user name is:- " + doctorDB.User.UserName + "<br><br> Please confirm your account by clicking below link in order to use.<br><br><b>" + VerificationLink + "</b><br><br>Thanks";
+                    BO.Email objEmail = new BO.Email { ToEmail = doctorDB.User.UserName, Subject = "User registered", Body = Message };
+                    objEmail.SendMail();
+
+                }
+                catch (Exception ex) { }
+            }
+            #endregion
+
+            var res = Convert<BO.Doctor, Doctor>(doctorDB);
+            return (object)res;
+
+        }
+        #endregion
+
+        #region DisassociateDoctorWithCompany
+        public override object DisassociateDoctorWithCompany(int DoctorId, int CompanyId)
+        {
+            var company = _context.Companies.Where(p => p.id == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (company == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Company.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var Doctor = _context.Doctors.Where(p => p.Id == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (Doctor == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Doctor.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+
+            var userCompany = _context.UserCompanies.Where(p => p.UserID == DoctorId && p.CompanyID == CompanyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            if (userCompany != null)
+            {
+                userCompany.IsDeleted = true;
+            }
+
+            _context.SaveChanges();
+
+            var doctorDB = _context.Doctors.Include("User")
+                                              .Include("User.AddressInfo")
+                                              .Include("User.ContactInfo")
+                                              .Include("DoctorSpecialities")
+                                              .Include("DoctorSpecialities.Specialty")
+                                              .Include("User.UserCompanyRoles")
+                                              .Include("User.UserCompanies")
+                                              .Where(p => p.Id == DoctorId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault<Doctor>();
+
+            var res = Convert<BO.Doctor, Doctor>(doctorDB);
+            return (object)res;
+
+        }
+        #endregion
 
         public void Dispose()
         {

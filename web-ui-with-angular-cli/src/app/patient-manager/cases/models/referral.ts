@@ -37,6 +37,10 @@ const ReferralRecord = Record({
     referralDocument: null,
     referredToSpecialty: null,
     referredToRoomTest: null,
+    firstName: '',
+    lastName: '',
+    cellPhone: '',
+    // user:null,
     isDeleted: false,
     createByUserID: 0,
     createDate: null,
@@ -72,6 +76,10 @@ export class Referral extends ReferralRecord {
     referralDocument: ReferralDocument;
     referredToSpecialty: Speciality;
     referredToRoomTest: Tests;
+    firstName: string;
+    lastName: string;
+    cellPhone: string;
+    // user:User;
     isDeleted: boolean;
     createByUserID: number;
     createDate: moment.Moment;

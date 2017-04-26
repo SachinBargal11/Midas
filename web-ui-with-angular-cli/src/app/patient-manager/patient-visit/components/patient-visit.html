@@ -10,34 +10,19 @@
         </select>
                 </div>
             </div>
-            <div class="col-lg-3" *ngIf="specialities.length > 0 || tests.length > 0">
+            <div class="col-lg-3">
                 <div class="form-group">
                     <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
                         <option value="0"></option>
-             <optgroup label="Select Speciality">
-                    <option *ngFor="let speciality of specialities" data-option="1" [value]="speciality.id">{{speciality.name}}</option>                                       
+             <optgroup label="Select Doctor">
+                    <!--<option *ngFor="let speciality of specialities" data-option="1" [value]="speciality.id">{{speciality.name}}</option>                                       -->
+                    <option data-type="1" data-specialityId="currentDoctorLocationSchedule.speciality.speciality.id" *ngFor="let currentDoctorLocationSchedule of doctorLocationSchedules" [value]="currentDoctorLocationSchedule.doctorLocationSchedule.doctor.id">{{currentDoctorLocationSchedule.speciality.speciality.name}} - {{currentDoctorLocationSchedule.doctorLocationSchedule.doctor.user.displayName}}</option>                                       
              </optgroup>
-             <optgroup label="Select Test">
-                    <option *ngFor="let test of tests" data-option="2" [value]="test.id">{{test.name}}</option> 
+             <optgroup label="Select Room">
+                    <!--<option *ngFor="let test of tests" data-option="2" [value]="test.id">{{test.name}}</option> -->
+                    <option data-type="2" data-testId="currentRoom.roomTest.id" *ngFor="let currentRoom of rooms" [value]="currentRoom.id">{{currentRoom.roomTest.name}} - {{currentRoom.name}}</option>                                       
              </optgroup>
         </select>
-                </div>
-            </div>
-            <div class="col-lg-3" *ngIf="selectedOption == 1">
-                <div class="form-group">
-                    <select [(ngModel)]="selectedDoctorId" class="select2-arrow form-control" (change)="selectDoctor()">
-            <option value="0"> -- Select Doctor -- </option>
-            <option *ngFor="let doctorLocationSchedule of doctorLocationSchedules" [value]="doctorLocationSchedule.doctor.id">{{doctorLocationSchedule.doctor.user.displayName}}</option>                                       
-        </select>
-                </div>
-            </div>
-            <div class="col-lg-3" *ngIf="selectedOption == 2">
-                <div class="form-group">
-                    <select [(ngModel)]="selectedRoomId" class="select2-arrow form-control" (change)="selectRoom()">
-            <option value="0"> -- Select Room -- </option>
-            <option *ngFor="let room of rooms" [value]="room.id">{{room.name}}</option>                                       
-        </select>
-                    <!--<span *ngIf="roomSchedule">{{roomSchedule.name}}</span>-->
                 </div>
             </div>
         </div>
@@ -61,8 +46,8 @@
         <button type="button" pButton icon="" label="Edit Current Occurrence" (click)="cd.accept()"></button>
     </p-footer>
 </p-confirmDialog>
-<p-dialog [minWidth]="300" [width]="900" (onAfterHide)="handleEventDialogHide()" header="{{visitInfo}}" [(visible)]="eventDialogVisible"
-    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
+<p-dialog [minWidth]="600" [width]="1200" (onAfterHide)="handleEventDialogHide()" header="{{visitInfo}}" [(visible)]="eventDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
     <form [formGroup]="addNewPatientForm" (ngSubmit)="saveNewPatient()">
         <section class="card" *ngIf="isAddNewPatient">
             <header class="card-header card-header-lg">
@@ -162,7 +147,7 @@
                 </div>
                 <div class="col-md-4">
                     <!--<a class="btn btn-rounded btn-inline btn-primary-outline" (click)="addNewPatient()">Add New Patient</a>-->
-                    <input type="checkbox" formControlName="isAddNewPatient" (change)="addNewPatient()" [(ngModel)]="isAddNewPatient" > <label>Add New Patient</label>
+                    <input type="checkbox" formControlName="isAddNewPatient" (change)="addNewPatient()" [(ngModel)]="isAddNewPatient">                    <label>Add New Patient</label>
                 </div>
             </div>
 
@@ -182,16 +167,16 @@
     </form>
 </p-dialog>
 
-<p-dialog [minWidth]="300" [width]="900" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
-    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'400px'}">
+<p-dialog [minWidth]="500" [width]="1200" (onAfterHide)="handleVisitDialogHide()" header="{{visitInfo}}" [(visible)]="visitDialogVisible"
+    [responsive]="true" showEffect="fade" [modal]="false" [style]="{'overflow':'visible'}" [contentStyle]="{'overflow':'auto', 'max-height':'500px'}">
     <div *ngIf="selectedVisit">
         <p-tabView>
             <p-tabPanel header="Visit Details" [selected]="true">
                 <form [formGroup]="patientVisitForm" (ngSubmit)="saveVisit()">
 
                     <div class="row">
-                        <div class="col-md-2"><label class="form-label">Notes<span class="color-red">*</span></label></div>
-                        <div class="col-md-4">
+                        <div class="col-md-1"><label class="form-label">Notes<span class="color-red">*</span></label></div>
+                        <div class="col-md-6">
                             <div class="form-group" [class.error]="patientVisitFormControls.notes && patientVisitFormControls.notes.touched && !patientVisitFormControls.notes.valid">
                                 <textarea [ngModel]="selectedVisit.notes" formControlName="notes" class="form-control" rows="3"></textarea>
                                 <div class='error-list' *ngIf="patientVisitFormControls.notes && patientVisitFormControls.notes.touched && !patientVisitFormControls.notes.valid">
@@ -201,13 +186,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4" *ngIf="this.selectedVisit.id">
-                            <a routerLink="../cases/{{this.selectedVisit.patientId}}/{{this.selectedVisit.caseId}}/patient-visit/{{this.selectedVisit.id}}/visit-document">Upload Documents</a>
-                        </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-2"><label class="form-label">Status<span class="color-red">*</span></label></div>
-                        <div class="col-md-4">
+                        <div class="col-md-1"><label class="form-label">Status<span class="color-red">*</span></label></div>
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <select formControlName="visitStatusId" [ngModel]="selectedVisit.visitStatusId" class="select2-arrow form-control">
                         <option value="2">Complete</option>
@@ -263,8 +245,11 @@
                 </p-dataTable>
             </p-tabPanel>
 
-            <p-tabPanel header="Dignosis" *ngIf="selectedVisit.id">
-                <app-dignosis></app-dignosis>
+            <p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id">
+                <app-dignosis [selectedVisit]="selectedVisit" (save)="saveDiagnosisCodesForVisit($event)"></app-dignosis>
+            </p-tabPanel>
+            <p-tabPanel header="Procedures" *ngIf="selectedVisit.id">
+                <app-procedure [selectedVisit]="selectedVisit" (save)="saveProcedureCodesForVisit($event)"></app-procedure>
             </p-tabPanel>
 
         </p-tabView>

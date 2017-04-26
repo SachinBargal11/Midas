@@ -69,6 +69,15 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("referredToRoomTestId")]
         public int? ReferredToRoomTestId { get; set; }
 
+        [JsonProperty("firstName")]
+        public string FirstName { get; set; }
+
+        [JsonProperty("lastName")]
+        public string LastName { get; set; }
+
+        [JsonProperty("cellPhone")]
+        public string CellPhone { get; set; }
+
         [JsonProperty("room")]
         public Room Room { get; set; }
 
