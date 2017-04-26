@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using MIDAS.GBX.DataRepository.EntityRepository.Common;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
 {
@@ -162,7 +163,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
 
         public override Object UploadSignedConsent(int id, string type, string uploadpath)
         {
-            List<BO.Document> docInfo = new List<BO.Document>();            
+            BO.Document docInfo = new BO.Document();            
             int companyid = 0;
 
             string errMessage = string.Empty;
@@ -185,7 +186,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                         ObjectType = type,
                         ObjectId = id,
                         DocumentName = Path.GetFileName(uploadpath),
-                        DocumentPath = ConfigurationManager.AppSettings.Get("BLOB_SERVER") + Path.GetFileName(uploadpath),
+                        DocumentPath = uploadpath.Replace(ConfigurationManager.AppSettings.Get("LOCAL_UPLOAD_PATH"), ConfigurationManager.AppSettings.Get("BLOB_SERVER")),
                         CreateDate = DateTime.UtcNow
                     });
                     _context.Entry(midasdoc).State = System.Data.Entity.EntityState.Added;
@@ -208,33 +209,39 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                     _context.SaveChanges();
                     filename = caseCompanyConsentDocument.DocumentName;
 
-                    docInfo.Add(new BO.Document()
-                    {
-                        Status = errMessage.Equals(string.Empty) ? "Success" : "Failed",
-                        Message = errMessage,
-                        DocumentId = midasdoc.Id,
-                        DocumentPath = errMessage.Equals(string.Empty) ? midasdoc.DocumentPath : midasdoc.DocumentName,
-                        DocumentName = midasdoc.DocumentName,
-                        id = id
-                    });
+                    docInfo.Status = errMessage.Equals(string.Empty) ? "Success" : "Failed";
+                    docInfo.Message = errMessage;
+                    docInfo.DocumentId = midasdoc.Id;
+                    docInfo.DocumentPath = errMessage.Equals(string.Empty) ? uploadpath : midasdoc.DocumentName;
+                    docInfo.DocumentName = midasdoc.DocumentName;
+                    docInfo.id = id;
 
+
+                    if (docInfo.Status.ToUpper().Equals("SUCCESS"))
+                    {
+                        CompanyCaseConsentApprovalRepository CompanyCaseConsentApprovalRepository = new CompanyCaseConsentApprovalRepository(_context);
+                        BO.CompanyCaseConsentApproval companyCaseConsentApprovalBO = new BO.CompanyCaseConsentApproval();
+                        companyCaseConsentApprovalBO.CaseId = id;
+                        companyCaseConsentApprovalBO.CompanyId = companyid;
+                        companyCaseConsentApprovalBO.ConsentGivenTypeId = 3;
+                        var result = CompanyCaseConsentApprovalRepository.Save(companyCaseConsentApprovalBO);
+                        if (result is BO.ErrorObject)
+                        {
+                            return new BO.ErrorObject { errorObject = "", ErrorMessage = "Company, Case and Consent data already exists.", ErrorLevel = ErrorLevel.Error };
+                        }
+                    }
+
+
+                    dbContextTransaction.Commit();
                 }
                 catch (Exception err)
                 {
-                    docInfo.Add(new BO.Document()
-                    {
-                        Status = "Failed",
-                        Message = err.Message.ToString(),
-                        DocumentId = 0,
-                        DocumentPath = "",
-                        DocumentName = filename,
-                        id = id
-                    });
                     dbContextTransaction.Rollback();
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "System Error", ErrorLevel = ErrorLevel.Error };                    
                 }
             }
             
-            return docInfo;
+            return (object)docInfo.DocumentPath;
         }
 
 
