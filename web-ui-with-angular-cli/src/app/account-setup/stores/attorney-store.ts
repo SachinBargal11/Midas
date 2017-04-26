@@ -43,7 +43,6 @@ export class AttorneyMasterStore {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
             this._attorneyMasterService.getAllAttorney(companyId).subscribe((allattorney: Attorney[]) => {
-                this._attorneyMaster.next(List(allattorney));
                 resolve(allattorney);
             }, error => {
                 reject(error);
