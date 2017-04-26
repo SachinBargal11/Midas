@@ -47,9 +47,9 @@ export class PatientVisitService {
         return <Observable<PatientVisit>>Observable.fromPromise(promise);
     }
 
-    getPatientVisitsByLocationId(locationId: number): Observable<PatientVisit[]> {
+    getPatientVisitsByLocationId(locationId: number, patientId: number): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientVisit/getByLocationId/' + locationId)
+            return this._http.get(this._url + '/PatientVisit/getByLocationAndPatientid/' + locationId + '/' + patientId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patientVisits = (<Object[]>data).map((data: any) => {
@@ -208,9 +208,9 @@ export class PatientVisitService {
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
 
-    getPatientVisitsByLocationAndDoctorId(locationId: number, doctorId: number): Observable<PatientVisit[]> {
+    getPatientVisitsByLocationAndDoctorId(locationId: number, doctorId: number, patientId: number): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientVisit/getByLocationAndDoctorId/' + locationId + '/' + doctorId)
+            return this._http.get(this._url + '/PatientVisit/getByLocationDoctorAndPatientId/' + locationId + '/' + doctorId + '/' + patientId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patientVisits = (<Object[]>data).map((data: any) => {
@@ -358,7 +358,7 @@ export class PatientVisitService {
         return <Observable<PatientVisit>>Observable.fromPromise(promise);
     }
 
-     deleteDocument(caseDocument: VisitDocument): Observable<PatientVisit> {
+    deleteDocument(caseDocument: VisitDocument): Observable<PatientVisit> {
         let promise = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/fileupload/delete/' + caseDocument.visitId + '/' + caseDocument.document.documentId, {
                 headers: this._headers
