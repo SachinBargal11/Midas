@@ -118,7 +118,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
                     companyCaseConsentApprovalDB.CompanyId = companyCaseConsentApprovalBO.CompanyId;
                     companyCaseConsentApprovalDB.CaseId = (int)companyCaseConsentApprovalBO.CaseId;
-                    companyCaseConsentApprovalDB.ConsentGivenTypeId = 1;// companyCaseConsentApprovalBO.ConsentGivenTypeId;
+                    if (companyCaseConsentApprovalDB.ConsentGivenTypeId <= 0)
+                    {
+                        companyCaseConsentApprovalDB.ConsentGivenTypeId = 1;
+                    }
 
                     if (Add_companyCaseConsentApproval == true)
                     {
@@ -396,7 +399,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     BO.CompanyCaseConsentApproval companyCaseConsentApprovalBO = new BO.CompanyCaseConsentApproval();
                     companyCaseConsentApprovalBO.CaseId = caseid;
                     companyCaseConsentApprovalBO.CompanyId = companyid;
-                    companyCaseConsentApprovalBO.ConsentGivenTypeId = 1;
+                    companyCaseConsentApprovalBO.ConsentGivenTypeId = 3;
                     var result = this.Save(companyCaseConsentApprovalBO);
                     if (result is BO.ErrorObject)
                     {
@@ -417,6 +420,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
                     BO.CompanyCaseConsentApproval companyCaseConsentApprovalBO = new BO.CompanyCaseConsentApproval();
                     companyCaseConsentApprovalBO.CaseId = caseid;
                     companyCaseConsentApprovalBO.CompanyId = companyid;
+                    companyCaseConsentApprovalBO.ConsentGivenTypeId = 1;
                     var result = this.Save(companyCaseConsentApprovalBO);
                     if (result is BO.ErrorObject)
                     {
