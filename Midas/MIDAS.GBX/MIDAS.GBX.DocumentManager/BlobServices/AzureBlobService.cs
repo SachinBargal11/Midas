@@ -38,7 +38,7 @@ namespace MIDAS.GBX.DocumentManager
         public override Object Upload(UploadInfo uploadObject, List<HttpContent> content)
         {
             //container.SetPermissions(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
-            util.BlobContainer.SetPermissions(new BlobContainerPermissions { PublicAccess=  });
+            //util.BlobContainer.SetPermissions(new BlobContainerPermissions { PublicAccess=  });
             
             util.ContainerName = "company-" + uploadObject.CompanyId;
             string documentPath = util.getDocumentPath(uploadObject.DocumentType, uploadObject.ObjectType,uploadObject.ObjectId, _context);
