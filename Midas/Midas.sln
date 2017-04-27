@@ -12,6 +12,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIDAS.GBX.DataRepository", "MIDAS.GBX\GBDataRepository\MIDAS.GBX.DataRepository.csproj", "{52C99831-9CA0-4024-811C-2A311BFA182D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIDAS.GBX.WebAPI", "MIDAS.GBX\MIDAS.GBX.WebAPI\MIDAS.GBX.WebAPI.csproj", "{0ACE9418-1612-4497-8587-8D04F546AC95}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E434376D-1BC6-4705-9D80-605950314ED7} = {E434376D-1BC6-4705-9D80-605950314ED7}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIDAS.GBX.WebAPI.Tests", "MIDAS.GBX\MIDAS.GBX.WebAPI.Tests\MIDAS.GBX.WebAPI.Tests.csproj", "{40A62E3E-BA8E-4645-B82C-C35A213EDD35}"
 EndProject
@@ -20,6 +23,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIDAS.GBX.PatientWebAPI", "MIDAS.GBX\MIDAS.GBX.PatientWebAPI\MIDAS.GBX.PatientWebAPI.csproj", "{7A97FDD8-0B11-4FDA-A4AE-7ACE5E798748}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MIDAS.GBX.DocumentManager", "MIDAS.GBX\MIDAS.GBX.DocumentManager\MIDAS.GBX.DocumentManager.csproj", "{E434376D-1BC6-4705-9D80-605950314ED7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{52C99831-9CA0-4024-811C-2A311BFA182D} = {52C99831-9CA0-4024-811C-2A311BFA182D}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
