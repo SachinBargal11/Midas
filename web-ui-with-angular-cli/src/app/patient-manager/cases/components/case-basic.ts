@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Rx';
 import { SessionStore } from '../../../commons/stores/session-store';
 import { AppValidators } from '../../../commons/utils/AppValidators';
 import { StatesStore } from '../../../commons/stores/states-store';
@@ -40,6 +41,7 @@ export class CaseBasicComponent implements OnInit {
     caseStatusId: number;
     patientId: number;
     patientName: string;
+    transportation: any;
 
     constructor(
         private fb: FormBuilder,
@@ -57,14 +59,27 @@ export class CaseBasicComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef
     ) {
+        this._route.parent.params.subscribe((routeParams: any) => {
+            this.caseId = parseInt(routeParams.caseId, 10);
+        });
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId, 10);
             this._progressBarService.show();
-            this._patientStore.fetchPatientById(this.patientId)
+            let fetchPatient = this._patientStore.fetchPatientById(this.patientId);
+            let fetchlocations = this._locationsStore.getLocations();
+            let fetchEmployer = this._employerStore.getCurrentEmployer(this.patientId);
+            let fetchAttorneys = this._attorneyMasterStore.getAttorneyMasters();
+            let fetchCaseDetail = this._casesStore.fetchCaseById(this.caseId);
+            Observable.forkJoin([fetchPatient, fetchlocations, fetchEmployer, fetchAttorneys, fetchCaseDetail])
                 .subscribe(
-                (patient: Patient) => {
-                    this.patient = patient;
-                    this.patientName = patient.user.firstName + ' ' + patient.user.lastName;
+                (results) => {
+                    this.patient = results[0];
+                    this.patientName = this.patient.user.firstName + ' ' + this.patient.user.lastName;
+                    this.locations = results[1];
+                    this.employer = results[2];
+                    this.attorneys = results[3];
+                    this.caseDetail = results[4];
+                    // this.transportation = this.caseDetail.transportation == true ? '1' : this.caseDetail.transportation == false ? '0': '';
                 },
                 (error) => {
                     this._router.navigate(['../'], { relativeTo: this._route });
@@ -73,28 +88,6 @@ export class CaseBasicComponent implements OnInit {
                 () => {
                     this._progressBarService.hide();
                 });
-            // if(this.patientId){
-            //  this._employerStore.getCurrentEmployer(this.patientId)
-            // .subscribe(employer => this.employer = employer);
-            // }
-        });
-        this._route.parent.params.subscribe((routeParams: any) => {
-            this.caseId = parseInt(routeParams.caseId, 10);
-            this._progressBarService.show();
-            let result = this._casesStore.fetchCaseById(this.caseId);
-            result.subscribe(
-                (caseDetail: Case) => {
-                    this.caseDetail = caseDetail;
-                    
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
-
         });
         this.caseform = this.fb.group({
             // caseName: [''],
@@ -112,12 +105,6 @@ export class CaseBasicComponent implements OnInit {
     }
 
     ngOnInit() {
-        this._locationsStore.getLocations()
-            .subscribe(locations => this.locations = locations);
-        this._employerStore.getCurrentEmployer(this.patientId)
-            .subscribe(employer => this.employer = employer);
-        this._attorneyMasterStore.getAttorneyMasters()
-            .subscribe(attorneys => this.attorneys = attorneys);
     }
 
     saveCase() {
@@ -136,7 +123,7 @@ export class CaseBasicComponent implements OnInit {
             caseStatusId: caseFormValues.caseStatusId,
             attorneyId: caseFormValues.attorneyId,
             caseStatus: caseFormValues.caseStatusId,
-            transportation: caseFormValues.transportation,
+            transportation: caseFormValues.transportation ? caseFormValues.transportation == '1' : true ? caseFormValues.transportation == '0' : false,
             updateByUserID: this.sessionStore.session.account.user.id,
             updateDate: moment()
         }));

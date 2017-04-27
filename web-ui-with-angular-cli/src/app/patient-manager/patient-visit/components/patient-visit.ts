@@ -42,6 +42,7 @@ import { Notification } from '../../../commons/models/notification';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Document } from '../../../commons/models/document';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
+import { LeaveEvent } from '../../../commons/models/leave-event';
 import { VisitDocument } from '../../patient-visit/models/visit-document';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 import * as RRule from 'rrule';
@@ -54,8 +55,10 @@ import * as RRule from 'rrule';
 
 export class PatientVisitComponent implements OnInit {
 
-    @ViewChild(ScheduledEventEditorComponent, LeaveEventEditorComponent)
+    @ViewChild(ScheduledEventEditorComponent)
     private _scheduledEventEditorComponent: ScheduledEventEditorComponent;
+
+    @ViewChild(LeaveEventEditorComponent)
     private _leaveEventEditorComponent: LeaveEventEditorComponent;
 
     @ViewChild('cd')
@@ -882,12 +885,20 @@ export class PatientVisitComponent implements OnInit {
 
     saveEvent() {
         let patientScheduleFormValues = this.patientScheduleForm.value;
-        let updatedEvent: ScheduledEvent = this._scheduledEventEditorComponent.getEditedEvent();
-        // let updatedEvent: ScheduledEvent = this._leaveEventEditorComponent.getEditedEvent();
+        let updatedEvent: ScheduledEvent;
+        let leaveEvent: LeaveEvent;
+        if (!this.isGoingOutOffice) {
+            updatedEvent = this._scheduledEventEditorComponent.getEditedEvent();
+        } else {
+            leaveEvent = this._leaveEventEditorComponent.getEditedEvent();
+        }
         let updatedVisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             patientId: patientScheduleFormValues.patientId,
             specialtyId: this.selectedOption == 1 ? this.selectedSpecialityId : null,
-            calendarEvent: updatedEvent
+            calendarEvent: updatedEvent ? updatedEvent : this.selectedVisit.calendarEvent,
+            isOutOfOffice: this.isGoingOutOffice,
+            leaveStartDate: leaveEvent ? leaveEvent.eventStart : null,
+            leaveEndDate: leaveEvent ? leaveEvent.eventEnd : null
         }));
         if (updatedVisit.id) {
             if (this.selectedVisit.calendarEvent.isSeriesStartedInBefore(this.selectedCalEvent.start)) {

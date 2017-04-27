@@ -241,7 +241,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
                 }
             }
             
-            return (object)docInfo.DocumentPath;
+            return (object)docInfo;
         }
 
 

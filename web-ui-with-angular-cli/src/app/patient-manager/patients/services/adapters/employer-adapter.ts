@@ -13,7 +13,7 @@ export class EmployerAdapter {
                 patientId: data.patientId,
                 jobTitle: data.jobTitle,
                 empName: data.empName,
-                isCurrentEmp: data.isCurrentEmp ? 1 : 0,
+                isCurrentEmp: data.isCurrentEmp == true ? '1' : data.transportation == false ? '0' : null,
                 createByUserID: data.createByUserID,
                 createDate: moment(data.createDate),
                 contact: ContactAdapter.parseResponse(data.contactInfo),

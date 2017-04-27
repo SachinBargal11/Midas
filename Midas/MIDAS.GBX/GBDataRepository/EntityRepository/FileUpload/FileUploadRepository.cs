@@ -100,9 +100,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
             {
                 case EN.Constants.CaseType:
                     CaseDocumentRepository CaseDocumentRepository = new CaseDocumentRepository(_context);
-                    CaseDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath);
+                    docInfo = (BO.Document)CaseDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath);
                     break;
                 case EN.Constants.VisitType:
+                    VisitDocumentRepository VisitDocumentRepository = new VisitDocumentRepository(_context);
+                    docInfo = (BO.Document)VisitDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath);                    
                     break;
             }
             //docInfo = (BO.Document)fileUploadManager.SaveBlob(streamContent, ObjectId, DocumentObject, uploadpath);

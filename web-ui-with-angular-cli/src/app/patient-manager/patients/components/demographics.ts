@@ -19,6 +19,9 @@ import { Notification } from '../../../commons/models/notification';
 import { StatesStore } from '../../../commons/stores/states-store';
 import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
+import { Case } from '../../cases/models/case';
+import { CasesStore } from '../../cases/stores/case-store';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     selector: 'demographics',
@@ -26,6 +29,8 @@ import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 })
 
 export class DemographicsComponent implements OnInit {
+    caseDetail: Case[];
+    referredToMe: boolean = false;
     cellPhone: string;
     faxNo: string;
     patientId: number;
@@ -57,32 +62,43 @@ export class DemographicsComponent implements OnInit {
         private _notificationsService: NotificationsService,
         private _elRef: ElementRef,
         private _phoneFormatPipe: PhoneFormatPipe,
-        private _faxNoFormatPipe: FaxNoFormatPipe
+        private _faxNoFormatPipe: FaxNoFormatPipe,
+        private _casesStore: CasesStore
     ) {
         this._route.parent.params.subscribe((params: any) => {
             this.patientId = parseInt(params.patientId, 10);
             this._progressBarService.show();
+            let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
             let result = this._patientsStore.fetchPatientById(this.patientId);
-            result.subscribe(
-                (patient: Patient) => {
-                    this.patientInfo = patient;
+            Observable.forkJoin([caseResult, result])
+                .subscribe(
+                (results) => {
+                    this.caseDetail = results[0];
+                    if (this.caseDetail.length > 0) {
+                        this.caseDetail[0].referral.forEach(element => {
+                            if (element.referredToCompanyId == _sessionStore.session.currentCompany.id) {
+                                this.referredToMe = true;
+                            } else {
+                                this.referredToMe = false;
+                            }
+                        })
+                    } else {
+                        this.referredToMe = false;
+                    }
+                    this.patientInfo = results[1];
                     this.cellPhone = this._phoneFormatPipe.transform(this.patientInfo.user.contact.cellPhone);
                     this.faxNo = this._faxNoFormatPipe.transform(this.patientInfo.user.contact.faxNo);
                     this.dateOfFirstTreatment = this.patientInfo.dateOfFirstTreatment
                         ? this.patientInfo.dateOfFirstTreatment.toDate()
                         : null;
-                    // if (this.patientInfo.user.address.state) {
-                    //     this.loadCities(this.patientInfo.user.address.state);
-                    // }
                 },
                 (error) => {
-                    this._router.navigate(['/patient-manager/patients']);
+                    this._router.navigate(['../'], { relativeTo: this._route });
                     this._progressBarService.hide();
                 },
                 () => {
                     this._progressBarService.hide();
                 });
-
         });
         this.demographicsform = this.fb.group({
             userInfo: this.fb.group({
@@ -98,7 +114,7 @@ export class DemographicsComponent implements OnInit {
                 homePhone: [''],
                 workPhone: [''],
                 faxNo: [''],
-                alternateEmail:  ['', AppValidators.emailValidator],
+                alternateEmail: ['', AppValidators.emailValidator],
                 officeExtension: [''],
                 preferredCommunication: ['']
             }),

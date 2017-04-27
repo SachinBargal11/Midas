@@ -156,8 +156,14 @@
          <div class="col-lg-4">
             <div class="form-group">
                 <label class="form-label"> Primary Contact</label>
-                <p-radioButton formControlName="primaryContact" name="primaryContact" value="1" label="Yes"></p-radioButton>
-                <p-radioButton formControlName="primaryContact" name="primaryContact" value="0" label="No"></p-radioButton>
+                    <label class="form-check-label">
+                        <input type="radio" value="1" name="primaryContact" formControlName="primaryContact"> Yes
+                    </label>
+                    <label class="form-check-label">
+                        <input type="radio" value="0" name="primaryContact" formControlName="primaryContact"> No
+                    </label>
+                <!--<p-radioButton formControlName="primaryContact" name="primaryContact" value="1" label="Yes"></p-radioButton>
+                <p-radioButton formControlName="primaryContact" name="primaryContact" value="0" label="No"></p-radioButton>-->
             </div>
         </div>
      </div>

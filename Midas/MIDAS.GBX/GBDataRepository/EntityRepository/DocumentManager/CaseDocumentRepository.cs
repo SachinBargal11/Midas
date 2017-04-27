@@ -1,4 +1,5 @@
 ﻿using MIDAS.GBX.Common;
+using MIDAS.GBX.DataRepository.EntityRepository.Common;
 using MIDAS.GBX.DataRepository.Model;
 using MIDAS.GBX.EN;
 using MIDAS.GBX.EntityRepository;
@@ -31,7 +32,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
             MidasDocument midasdoc = _context.MidasDocuments.Add(new MidasDocument()
             {
-                ObjectType = objectType,
+                ObjectType = documentType.ToUpper().Equals(EN.Constants.ConsentType) ? string.Concat(EN.Constants.ConsentType, "_" + companyId) : objectType,
                 ObjectId = objectId,
                 DocumentName = Path.GetFileName(uploadpath),//streamContent.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
                 DocumentPath = uploadpath,
@@ -58,6 +59,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 {
                     MidasDocumentId = midasdoc.Id,
                     CaseId = objectId,
+                    CompanyId = companyId,
                     DocumentName = Path.GetFileName(uploadpath),//streamContent.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
                     CreateDate = DateTime.UtcNow
                 });
@@ -65,9 +67,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 _context.SaveChanges();
 
                 BO.CompanyCaseConsentApproval companyCaseConsentApprovalBO = new BO.CompanyCaseConsentApproval();
+                CompanyCaseConsentApprovalRepository CompanyCaseConsentApprovalRepository = new CompanyCaseConsentApprovalRepository(_context);
                 companyCaseConsentApprovalBO.CaseId = objectId;
                 companyCaseConsentApprovalBO.CompanyId = companyId;
-                var result = this.Save(companyCaseConsentApprovalBO);
+                var result = CompanyCaseConsentApprovalRepository.Save(companyCaseConsentApprovalBO);
                 if (result is BO.ErrorObject)
                 {
                     return result;
