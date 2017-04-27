@@ -19,6 +19,8 @@ import { PatientsStore } from '../stores/patients-store';
 import * as _ from 'underscore';
 import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
+import { Case } from '../../cases/models/case';
+import { CasesStore } from '../../cases/stores/case-store';
 
 @Component({
     selector: 'employer',
@@ -34,7 +36,10 @@ export class PatientEmployerComponent implements OnInit {
     patientId: number;
     employer: Employer;
     currentEmployer: Employer;
+    isCurrentEmp: any;
     selectedCity = '';
+    caseDetail: Case[];
+    referredToMe: boolean = false;
     isCitiesLoading = false;
     options = {
         timeOut: 3000,
@@ -59,6 +64,7 @@ export class PatientEmployerComponent implements OnInit {
         private _progressBarService: ProgressBarService,
         private _sessionStore: SessionStore,
         private _elRef: ElementRef,
+        private _casesStore: CasesStore,
         private _notificationsService: NotificationsService,
         private _phoneFormatPipe: PhoneFormatPipe,
         private _faxNoFormatPipe: FaxNoFormatPipe
@@ -72,6 +78,7 @@ export class PatientEmployerComponent implements OnInit {
                 (employer: Employer) => {
                     this.employer = employer;
                     this.currentEmployer = this.employer;
+                    this.isCurrentEmp = this.employer.id ? this.employer.isCurrentEmp : '1';
                     this.title = this.currentEmployer.id? 'Edit Employer' : 'Add Employer';
                     if (this.currentEmployer.id) {
                     this.cellPhone = this._phoneFormatPipe.transform(this.currentEmployer.contact.cellPhone);
@@ -103,10 +110,34 @@ export class PatientEmployerComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         });
+        let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
+            caseResult.subscribe(
+                (cases: Case[]) => {
+                    this.caseDetail = cases;
+                    if (this.caseDetail.length > 0) {
+                        this.caseDetail[0].referral.forEach(element => {
+                            if (element.referredToCompanyId == _sessionStore.session.currentCompany.id) {
+                                this.referredToMe = true;
+                            } else {
+                                this.referredToMe = false;
+                            }
+                        })
+                    } else {
+                        this.referredToMe = false;
+                    }
+
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
         this.employerform = this.fb.group({
             jobTitle: ['', Validators.required],
             employerName: ['', Validators.required],
-            isCurrentEmployer: ['', Validators.required],
+            isCurrentEmployer: ['1', Validators.required],
             address: [''],
             address2: [''],
             state: [''],
@@ -141,7 +172,8 @@ export class PatientEmployerComponent implements OnInit {
             patientId: this.patientId,
             jobTitle: employerformValues.jobTitle,
             empName: employerformValues.employerName,
-            isCurrentEmp: parseInt(employerformValues.isCurrentEmployer),
+            // isCurrentEmp: parseInt(employerformValues.isCurrentEmployer),
+            isCurrentEmp: employerformValues.isCurrentEmployer == '1' ? true : false,
             contact: new Contact({
                 cellPhone: employerformValues.cellPhone ? employerformValues.cellPhone.replace(/\-/g, '') : null,
                 emailAddress: employerformValues.email,
