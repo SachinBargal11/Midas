@@ -1,5 +1,5 @@
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
-import { Component, OnInit, Output, EventEmitter, ElementRef, Input, ViewChild  } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ElementRef, Input, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
@@ -67,11 +67,11 @@ export class AddConsentComponent implements OnInit {
     datasource: Consent[];
     totalRecords: number;
     isDeleteProgress: boolean = false;
-    selectedConsentList: CaseDocument[] = [];   
+    selectedConsentList: CaseDocument[] = [];
     caseDetail: Case;
     @Input() inputCaseId: number;
     caseStatusId: number;
-    
+
     constructor(
         private fb: FormBuilder,
         private service: ConsentService,
@@ -89,50 +89,57 @@ export class AddConsentComponent implements OnInit {
 
 
     ) {
-            this.consentForm = this.fb.group({
-                // doctor: ['', Validators.required]
-                // ,uploadedFiles: ['', Validators.required]
-            });
-            this.consentformControls = this.consentForm.controls;
+        this.consentForm = this.fb.group({
+            // doctor: ['', Validators.required]
+            // ,uploadedFiles: ['', Validators.required]
+        });
+        this.consentformControls = this.consentForm.controls;
     }
 
     ngOnInit() {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             if (routeParams.caseId) {
-            this.caseId = parseInt(routeParams.caseId, 10);
+                this.caseId = parseInt(routeParams.caseId, 10);
             } else {
                 this.caseId = this.inputCaseId;
-            }            
-            this._progressBarService.show();
-            let result = this._casesStore.fetchCaseById(this.caseId);
-            result.subscribe(
-                (caseDetail: Case) => {
-                    this.caseDetail = caseDetail;
-                    this.caseStatusId = caseDetail.caseStatusId;
-                },
-                (error) => {
-                    this._router.navigate(['../'], { relativeTo: this._route });
-                    this._progressBarService.hide();
-                },
-                () => {
-                    this._progressBarService.hide();
-                });
-                
+            }
             // let companyId: number = this.sessionStore.session.currentCompany.id;
             this.companyId = this.sessionStore.session.currentCompany.id;
             this.url = this._url + '/CompanyCaseConsentApproval/multiupload/' + this.caseId + '/' + this.companyId;
+
         })
+
         this.dialogVisible = true;
         let today = new Date();
         let currentDate = today.getDate();
         this.maxDate = new Date();
         this.maxDate.setDate(currentDate);
         if (!this.inputCaseId) {
-        this.loadConsentForm();
+            this.loadConsentForm();
+            this.getOpenClosed();
         }
     }
 
+    getOpenClosed() {
+        this._progressBarService.show();
+        let result = this._casesStore.fetchCaseById(this.caseId);
+        result.subscribe(
+            (caseDetail: Case) => {
+                this.caseDetail = caseDetail;
+                this.caseStatusId = caseDetail.caseStatusId;
+            },
+            (error) => {
+                this._router.navigate(['../'], { relativeTo: this._route });
+                this._progressBarService.hide();
+            },
+            () => {
+                this._progressBarService.hide();
+            });
+
+    }
+
     loadConsentForm() {
+
         this._progressBarService.show();
         this._casesStore.getDocumentForCaseId(this.caseId)
             .subscribe((caseDocument: Case) => {
