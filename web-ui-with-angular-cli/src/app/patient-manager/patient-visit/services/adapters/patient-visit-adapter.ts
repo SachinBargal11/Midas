@@ -20,7 +20,7 @@ export class PatientVisitAdapter {
         if (data) {
             let diagnosisCodes: DiagnosisCode[] = [];
             let procedureCodes: Procedure[] = [];
-            
+
             _.forEach(data.patientVisitDiagnosisCodes, (currentDiagnosisCode: any) => {
                 diagnosisCodes.push(DiagnosisCodeAdapter.parseResponse(currentDiagnosisCode.diagnosisCode));
             });
@@ -50,6 +50,9 @@ export class PatientVisitAdapter {
                 calendarEvent: data.calendarEvent ? ScheduledEventAdapter.parseResponse(data.calendarEvent) : null,
                 patientVisitDiagnosisCodes: diagnosisCodes,
                 patientVisitProcedureCodes: procedureCodes,
+                isOutOfOffice: data.isOutOfOffice ? true : false,
+                leaveStartDate: data.leaveStartDate,
+                leaveEndDate: data.leaveEndDate,
                 isDeleted: data.isDeleted ? true : false,
                 createByUserID: data.createbyuserID,
                 createDate: data.createDate ? moment.utc(data.createDate) : null,

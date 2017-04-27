@@ -144,9 +144,17 @@
                         <span class="color-red">*</span>
                     </label>
                 <div class="form-group">
-                    <p-radioButton [ngModel]="caseDetail.transportation" formControlName="transportation" name="transportation" value="1" label="Yes"></p-radioButton>
-                    <p-radioButton [ngModel]="caseDetail.transportation" formControlName="transportation" name="transportation" value="0" label="No"></p-radioButton>
+                    <label class="form-check-label">
+                        <input type="radio" value="1" name="transportation" formControlName="transportation" [ngModel]="caseDetail.transportation"> Yes
+                    </label>
+                    <label class="form-check-label">
+                        <input type="radio" value="0" name="transportation" formControlName="transportation" [ngModel]="caseDetail.transportation"> No
+                    </label>
                 </div>
+                <!--<div class="form-group">
+                    <p-radioButton [ngModel]="transportation" formControlName="transportation" name="transportation" value="1" label="Yes"></p-radioButton>
+                    <p-radioButton [ngModel]="transportation" formControlName="transportation" name="transportation" value="0" label="No"></p-radioButton>
+                </div>-->
             </div>
 
         </div>

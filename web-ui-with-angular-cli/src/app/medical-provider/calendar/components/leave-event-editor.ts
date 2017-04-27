@@ -1,5 +1,6 @@
 import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 import { ScheduledEvent } from '../../../commons/models/scheduled-event';
+import { LeaveEvent } from '../../../commons/models/leave-event';
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import * as moment from 'moment';
 import * as _ from 'underscore';
@@ -57,12 +58,19 @@ export class LeaveEventEditorComponent implements OnChanges {
     ngOnChanges() {
     }
 
-    getEditedEvent(): ScheduledEvent {
+    // getEditedEvent(): ScheduledEvent {
+    //     let leaveEventEditorFormValues = this.leaveEventEditorForm.value;
+    //     return new ScheduledEvent(_.extend(this.selectedEvent.toJS(), {
+    //         eventStart: leaveEventEditorFormValues.isAllDay ? moment.utc(this.eventStartAsDate).startOf('day') : moment(this.eventStartAsDate),
+    //         eventEnd: leaveEventEditorFormValues.isAllDay ? moment.utc(this.eventEndAsDate).endOf('day') : moment(this.eventEndAsDate)
+    //     }));
+    // }
+    getEditedEvent(): LeaveEvent {
         let leaveEventEditorFormValues = this.leaveEventEditorForm.value;
-        return new ScheduledEvent(_.extend(this.selectedEvent.toJS(), {
+        return new LeaveEvent({
             eventStart: leaveEventEditorFormValues.isAllDay ? moment.utc(this.eventStartAsDate).startOf('day') : moment(this.eventStartAsDate),
             eventEnd: leaveEventEditorFormValues.isAllDay ? moment.utc(this.eventEndAsDate).endOf('day') : moment(this.eventEndAsDate)
-        }));
+        });
     }
 
 }

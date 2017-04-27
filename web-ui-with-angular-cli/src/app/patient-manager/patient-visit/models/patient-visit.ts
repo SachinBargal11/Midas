@@ -38,6 +38,9 @@ const PatientVisitRecord = Record({
     calendarEvent: null,
     patientVisitDiagnosisCodes: [],
     patientVisitProcedureCodes: [],
+    isOutOfOffice: false,
+    leaveStartDate: null,
+    leaveEndDate: null,
     isDeleted: false,
     createByUserId: 0,
     updateByUserId: 0,
@@ -70,6 +73,9 @@ export class PatientVisit extends PatientVisitRecord implements IEventWrapper {
     calendarEvent: ScheduledEvent;
     patientVisitDiagnosisCodes: DiagnosisCode[];
     patientVisitProcedureCodes: Procedure[];
+    isOutOfOffice: boolean;
+    leaveStartDate: moment.Moment;
+    leaveEndDate: moment.Moment;
     isDeleted: boolean;
     createByUserId: number;
     updateByUserId: number;
