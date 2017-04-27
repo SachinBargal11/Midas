@@ -742,8 +742,8 @@ warning 6002: The table/view 'MIDASGBX.dbo.DocumentNodes' does not have a primar
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CalendarEventId" Type="int" Nullable="false" />
-          <Property Name="CaseId" Type="int" Nullable="false" />
-          <Property Name="PatientId" Type="int" Nullable="false" />
+          <Property Name="CaseId" Type="int" />
+          <Property Name="PatientId" Type="int" />
           <Property Name="LocationId" Type="int" Nullable="false" />
           <Property Name="RoomId" Type="int" />
           <Property Name="DoctorId" Type="int" />
@@ -2121,7 +2121,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PatientVisit2_Case_CaseId">
-          <End Role="Case" Type="Self.Case" Multiplicity="1" />
+          <End Role="Case" Type="Self.Case" Multiplicity="0..1" />
           <End Role="PatientVisit2" Type="Self.PatientVisit2" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Case">
@@ -2157,7 +2157,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PatientVisit2_Patient2_PatientId">
-          <End Role="Patient2" Type="Self.Patient2" Multiplicity="1" />
+          <End Role="Patient2" Type="Self.Patient2" Multiplicity="0..1" />
           <End Role="PatientVisit2" Type="Self.PatientVisit2" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Patient2">
@@ -4141,8 +4141,8 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CalendarEventId" Type="Int32" Nullable="false" />
-          <Property Name="CaseId" Type="Int32" Nullable="false" />
-          <Property Name="PatientId" Type="Int32" Nullable="false" />
+          <Property Name="CaseId" Type="Int32" />
+          <Property Name="PatientId" Type="Int32" />
           <Property Name="LocationId" Type="Int32" Nullable="false" />
           <Property Name="RoomId" Type="Int32" />
           <Property Name="DoctorId" Type="Int32" />
@@ -5004,7 +5004,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PatientVisit2_Case_CaseId">
-          <End Role="Case" Type="Self.Case" Multiplicity="1" />
+          <End Role="Case" Type="Self.Case" Multiplicity="0..1" />
           <End Role="PatientVisit2" Type="Self.PatientVisit2" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Case">
@@ -5808,7 +5808,7 @@ warning 6035: The relationship 'FK_City_StateCode' has columns that are not part
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PatientVisit2_Patient2_PatientId">
-          <End Role="Patient2" Type="Self.Patient2" Multiplicity="1" />
+          <End Role="Patient2" Type="Self.Patient2" Multiplicity="0..1" />
           <End Role="PatientVisit2" Type="Self.PatientVisit2" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Patient2">

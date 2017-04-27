@@ -2065,12 +2065,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetByLocationRoomAndPatient(int locationId, int roomId, int patientId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object GetByLocationRoomAndPatientId(int locationId, int roomId, int patientId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetByLocationRoomAndPatient(locationId, roomId, patientId);
+                var gbdata = baseRepo.GetByLocationRoomAndPatientId(locationId, roomId, patientId);
 
                 return gbdata;
             }
