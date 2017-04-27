@@ -70,9 +70,9 @@ export class PatientVisitsStore {
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
 
-    getPatientVisitsByLocationAndRoomId(locationId: number, roomId: number): Observable<PatientVisit[]> {
+    getPatientVisitsByLocationAndRoomId(locationId: number, roomId: number,patientId:number): Observable<PatientVisit[]> {
         let promise = new Promise((resolve, reject) => {
-            this._patientVisitsService.getPatientVisitsByLocationAndRoomId(locationId, roomId).subscribe((patientVisits: PatientVisit[]) => {
+            this._patientVisitsService.getPatientVisitsByLocationAndRoomId(locationId, roomId,patientId).subscribe((patientVisits: PatientVisit[]) => {
                 this._patientVisits.next(List(patientVisits));
                 resolve(patientVisits);
             }, error => {
