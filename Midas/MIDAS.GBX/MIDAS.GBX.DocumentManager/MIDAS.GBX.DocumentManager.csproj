@@ -245,9 +245,9 @@
     <Compile Include="BlobRequestHandler\BlobServiceHandler.cs" />
     <Compile Include="BlobRequestHandler\IBlobService.cs" />
     <Compile Include="BlobServiceManager\BlobServiceProvider.cs" />
+    <Compile Include="BlobServiceManager\BlobStorageFactory.cs" />
     <Compile Include="BlobServices\AmazonS3BlobService.cs" />
     <Compile Include="BlobServices\AzureBlobService.cs" />
-    <Compile Include="BlobStorageFactory.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using MIDAS.GBX.DataRepository.Model;
-using MIDAS.GBX.DocumentManager;
 using System.Net.Http;
+using MIDAS.GBX.DocumentManager;
 
 namespace MIDAS.GBX
 {
@@ -23,6 +23,9 @@ namespace MIDAS.GBX
             {
                 case "AZURE":
                     serviceprovider = new AzureBlobService(_context);
+                    break;
+                case "AMAZONS3":
+                    serviceprovider = new AmazonS3BlobService(_context);
                     break;
                 default: throw new Exception("No BLOB storage provider found for this company.");
             }

@@ -14,15 +14,21 @@ namespace MIDAS.GBX.DocumentManager
     {
         private IGbDataAccessManager<AzureBlobService> dataAccessManager;
         private BlobServiceProvider serviceProvider;
+        internal MIDASGBXEntities _context;
+        IDBContextProvider dbContextProvider = new DBContextProvider();
 
-        public BlobServiceHandler() { dataAccessManager = new GbDataAccessManager<AzureBlobService>(); }
+        public BlobServiceHandler()
+        {
+            dataAccessManager = new GbDataAccessManager<AzureBlobService>();
+            _context = dbContextProvider.GetGbDBContext();
+        }
 
         public HttpResponseMessage UploadToBlob(HttpRequestMessage request, List<HttpContent> content, UploadInfo uploadObject)
         {
             var objResult = new object();
             try
             {
-                serviceProvider = (BlobServiceProvider)dataAccessManager.GetBlobServiceProvider(uploadObject.CompanyId);
+                serviceProvider = (BlobServiceProvider)BlobStorageFactory.GetBlobServiceProviders(uploadObject.CompanyId, _context);
                 objResult = (object)serviceProvider.Upload(uploadObject, content);
                 if (objResult != null)
                     return request.CreateResponse(HttpStatusCode.Created, objResult);
