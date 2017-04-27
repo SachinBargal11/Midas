@@ -43,6 +43,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object SaveAsBlob(int id, int CompanyId, string objecttype, string documenttype, string uploadpath)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object AddQuickPatient<T>(T entity)
         {
             throw new NotImplementedException();

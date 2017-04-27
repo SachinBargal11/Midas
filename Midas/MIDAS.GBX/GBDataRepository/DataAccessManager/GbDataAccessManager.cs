@@ -13,6 +13,7 @@ using MIDAS.GBX.BusinessObjects;
 using MIDAS.GBX.EntityRepository;
 using System.Data.Entity.Infrastructure;
 using System.Net.Http;
+using MIDAS.GBX.DocumentManager;
 
 namespace MIDAS.GBX.DataAccessManager
 {
@@ -418,6 +419,21 @@ namespace MIDAS.GBX.DataAccessManager
                 var gbdata = baseRepo.Save(id, type, streamContent, uploadpath);
                 return gbdata;
             }
+        }
+
+        public Object SaveAsBlob(int ObjectId, int CompanyId, string ObjectType, string DocumentType, string uploadpath)
+        {
+            BaseEntityRepo baseRepo = RepoFactory.GetRepo<Document>(dbContextProvider.GetGbDBContext());
+            /*List<MIDAS.GBX.BusinessObjects.BusinessValidation> validationResults = baseRepo.Validate(ObjectId, DocumentType, streamContent);
+            if (validationResults.Count > 0)
+            {
+                return new ErrorObject { ErrorMessage = "Please check error object for more details", errorObject = validationResults, ErrorLevel = ErrorLevel.Validation };
+            }
+            else
+            {*/
+            var gbdata = baseRepo.SaveAsBlob(ObjectId, CompanyId, ObjectType, DocumentType, uploadpath);
+            return gbdata;
+            //}
         }
 
         public Object ConsentSave(int caseid, int companyid, List<HttpContent> streamContent, string uploadpath,bool signed)
@@ -2071,7 +2087,18 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        
+        public Object GetBlobServiceProvider(int companyId)
+        {
+            try
+            {
+                BlobServiceProvider serviceprovider = BlobStorageFactory.GetBlobServiceProviders(companyId, dbContextProvider.GetGbDBContext());
+                return (Object)serviceprovider;
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+        }
 
 
     }

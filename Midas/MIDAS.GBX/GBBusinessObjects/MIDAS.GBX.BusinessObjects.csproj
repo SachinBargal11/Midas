@@ -72,6 +72,7 @@
     <Compile Include="Common\PolicyOwner.cs" />
     <Compile Include="Common\Relation.cs" />
     <Compile Include="Common\State.cs" />
+    <Compile Include="Common\UploadInfo.cs" />
     <Compile Include="Company\Company.cs" />
     <Compile Include="Company\Signup.cs" />
     <Compile Include="ConsentGivenType\ConsentGivenType.cs" />

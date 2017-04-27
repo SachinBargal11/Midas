@@ -13,6 +13,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object Save(T gbObject);
         Object SaveDoctor(T gbObject);
         Object Save(int id, string type, List<HttpContent> streamContent,string uploadpath);
+        Object SaveAsBlob(int id, int CompanyId, string objectType, string docType, string uploadpath);
         Object AddQuickPatient(T gbObject);
         Object ConsentSave(int caseid, int companyid, List<HttpContent> streamContent, string uploadpath,bool signed);
         Object AssociateLocationToDoctors(T gbObject);
@@ -102,7 +103,7 @@ namespace MIDAS.GBX.DataAccessManager
         Object DisassociateDoctorWithCompany(int DoctorId, int CompanyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByLocationDoctorAndPatientId(int locationId, int doctorId, int patientId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByLocationRoomAndPatient(int locationId, int roomId, int patientId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
-        
+        Object GetBlobServiceProvider(int companyid);
 
     }
 }
