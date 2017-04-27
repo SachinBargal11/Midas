@@ -381,15 +381,9 @@
                 </div>
             </div>
         </section>
-        <div class="row">
-            <div class="col-lg-1" *ngIf="caseStatusId === 1">
-                <button [disabled]="!accidentform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
+        <button *ngIf="caseStatusId === 1" [disabled]="!accidentform.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSaveProgress"></loader>
                 </button>
-            </div>
-            <div class="col-lg-1">
-                <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
-            </div>
-        </div>
+        <a [routerLink]="['../']" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
