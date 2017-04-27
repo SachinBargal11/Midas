@@ -13,7 +13,7 @@ using MIDAS.GBX.BusinessObjects;
 using MIDAS.GBX.EntityRepository;
 using System.Data.Entity.Infrastructure;
 using System.Net.Http;
-using MIDAS.GBX.DocumentManager;
+//using MIDAS.GBX.DocumentManager;
 
 namespace MIDAS.GBX.DataAccessManager
 {
@@ -2091,15 +2091,14 @@ namespace MIDAS.GBX.DataAccessManager
         {
             try
             {
-                BlobServiceProvider serviceprovider = BlobStorageFactory.GetBlobServiceProviders(companyId, dbContextProvider.GetGbDBContext());
-                return (Object)serviceprovider;
+                /*BlobServiceProvider serviceprovider = BlobStorageFactory.GetBlobServiceProviders(companyId, dbContextProvider.GetGbDBContext());
+                return (Object)serviceprovider;*/
+                return new Object();
             }
             catch (GbException gbe)
             {
                 return gbe;
             }
         }
-
-
     }
 }
