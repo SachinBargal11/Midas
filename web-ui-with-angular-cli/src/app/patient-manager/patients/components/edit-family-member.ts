@@ -13,6 +13,8 @@ import { FamilyMember } from '../models/family-member';
 import { FamilyMemberStore } from '../stores/family-member-store';
 import { PatientsStore } from '../stores/patients-store';
 import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
+import { Case } from '../../cases/models/case';
+import { CasesStore } from '../../cases/stores/case-store';
 
 @Component({
     selector: 'edit-family-member',
@@ -21,6 +23,8 @@ import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 
 
 export class EditFamilyMemberComponent implements OnInit {
+    caseDetail: Case[];
+    referredToMe: boolean = false;
     cellPhone: string;
     patientId: number;
     familyMemberForm: FormGroup;
@@ -39,22 +43,46 @@ export class EditFamilyMemberComponent implements OnInit {
         private _familyMemberStore: FamilyMemberStore,
         private _patientsStore: PatientsStore,
         private _phoneFormatPipe: PhoneFormatPipe,
-        private _elRef: ElementRef
+        private _elRef: ElementRef,
+        private _casesStore: CasesStore
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId);
-        });
-        this._route.params.subscribe((routeParams: any) => {
-            let familyMemberId: number = parseInt(routeParams.id);
             this._progressBarService.show();
-            let result = this._familyMemberStore.fetchFamilyMemberById(familyMemberId);
-            result.subscribe(
-                (familyMember: any) => {
-                    this.familyMember = familyMember.toJS();
-                    this.cellPhone = this._phoneFormatPipe.transform(this.familyMember.cellPhone);
+            let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
+            caseResult.subscribe(
+                (cases: Case[]) => {
+                    this.caseDetail = cases;
+                    if (this.caseDetail.length > 0) {
+                        this.caseDetail[0].referral.forEach(element => {
+                            if (element.referredToCompanyId == _sessionStore.session.currentCompany.id) {
+                                this.referredToMe = true;
+                            } else {
+                                this.referredToMe = false;
+                            }
+                        })
+                    } else {
+                        this.referredToMe = false;
+                    }
+
+                    this._route.params.subscribe((routeParams: any) => {
+                        let familyMemberId: number = parseInt(routeParams.id);
+                        let result = this._familyMemberStore.fetchFamilyMemberById(familyMemberId);
+                        result.subscribe(
+                            (familyMember: any) => {
+                                this.familyMember = familyMember.toJS();
+                                this.cellPhone = this._phoneFormatPipe.transform(this.familyMember.cellPhone);
+                            },
+                            (error) => {
+                                this._router.navigate(['../../'], { relativeTo: this._route });
+                            },
+                            () => {
+                            });
+                    });
+
                 },
                 (error) => {
-                    this._router.navigate(['../../'], { relativeTo: this._route });
+                    this._router.navigate(['../'], { relativeTo: this._route });
                     this._progressBarService.hide();
                 },
                 () => {
@@ -62,20 +90,20 @@ export class EditFamilyMemberComponent implements OnInit {
                 });
         });
         this.familyMemberForm = this.fb.group({
-                relationId: ['', Validators.required],
-                firstName: ['', Validators.required],
-                middleName: [''],
-                lastName: ['', Validators.required],
-                age: ['', Validators.required],
-                races: ['', Validators.required],
-                ethnicities: ['', Validators.required],
-                gender: ['', Validators.required],
-                cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
-                workPhone: [''],
-                primaryContact: [''],
-                alternateEmail:  ['', [AppValidators.emailValidator]],
-                officeExtension: [''],
-                preferredCommunication: ['']
+            relationId: ['', Validators.required],
+            firstName: ['', Validators.required],
+            middleName: [''],
+            lastName: ['', Validators.required],
+            age: ['', Validators.required],
+            races: ['', Validators.required],
+            ethnicities: ['', Validators.required],
+            gender: ['', Validators.required],
+            cellPhone: ['', [Validators.required, AppValidators.mobileNoValidator]],
+            workPhone: [''],
+            primaryContact: [''],
+            alternateEmail: ['', [AppValidators.emailValidator]],
+            officeExtension: [''],
+            preferredCommunication: ['']
         });
 
         this.familyMemberFormControls = this.familyMemberForm.controls;

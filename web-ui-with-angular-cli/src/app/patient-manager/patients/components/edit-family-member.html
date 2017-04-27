@@ -214,7 +214,7 @@
                     <p-radioButton formControlName="primaryContact" [ngModel]="familyMember.primaryContact" name="primaryContact" value="0" label="No"></p-radioButton>
                 </div>
             </div>-->
-        <button [disabled]="!familyMemberForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Update
+        <button *ngIf="!referredToMe" [disabled]="!familyMemberForm.valid || isSaveProgress" type="submit" class="btn btn-success sign-up">Update
         <loader [visible]="isSaveProgress"></loader>
     </button>
         <a [routerLink]="['../../']" class="btn btn-secondary">Cancel</a>

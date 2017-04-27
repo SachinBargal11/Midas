@@ -95,7 +95,7 @@
             </div>
             
         </div>
-        <button [disabled]="!basicform.valid || isSavePatientProgress" type="submit" class="btn btn-success sign-up">Save
+        <button *ngIf="!referredToMe" [disabled]="!basicform.valid || isSavePatientProgress" type="submit" class="btn btn-success sign-up">Save
                     <loader [visible]="isSavePatientProgress"></loader>
                 </button>
         <a [routerLink]="['/patient-manager/patients']" class="btn btn-secondary">Cancel</a>

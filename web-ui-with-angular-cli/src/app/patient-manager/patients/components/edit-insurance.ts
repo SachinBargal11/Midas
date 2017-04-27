@@ -18,6 +18,8 @@ import { InsuranceStore } from '../stores/insurance-store';
 import { PatientsStore } from '../stores/patients-store';
 import { PhoneFormatPipe } from '../../../commons/pipes/phone-format-pipe';
 import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
+import { Case } from '../../cases/models/case';
+import { CasesStore } from '../../cases/stores/case-store';
 
 @Component({
     selector: 'edit-insurance',
@@ -26,6 +28,8 @@ import { FaxNoFormatPipe } from '../../../commons/pipes/faxno-format-pipe';
 
 
 export class EditInsuranceComponent implements OnInit {
+    caseDetail: Case[];
+    referredToMe: boolean = false;
     insuranceMasters: InsuranceMaster[];
     insuranceMastersAdress: Address;
     insuranceMaster: InsuranceMaster;
@@ -43,7 +47,7 @@ export class EditInsuranceComponent implements OnInit {
     policyContact = new Contact({});
     insuranceAddress = new Address({});
     insuranceContact = new Contact({});
-    patientId;
+    patientId: number;
     isPolicyCitiesLoading = false;
     isInsuranceCitiesLoading = false;
     uploadedFiles: any[] = [];
@@ -64,10 +68,36 @@ export class EditInsuranceComponent implements OnInit {
         private _patientsStore: PatientsStore,
         private _phoneFormatPipe: PhoneFormatPipe,
         private _faxNoFormatPipe: FaxNoFormatPipe,
-        private _elRef: ElementRef
+        private _elRef: ElementRef,
+        private _casesStore: CasesStore
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId);
+            this._progressBarService.show();
+            let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
+            caseResult.subscribe(
+                (cases: Case[]) => {
+                    this.caseDetail = cases;
+                    if (this.caseDetail.length > 0) {
+                        this.caseDetail[0].referral.forEach(element => {
+                            if (element.referredToCompanyId == _sessionStore.session.currentCompany.id) {
+                                this.referredToMe = true;
+                            } else {
+                                this.referredToMe = false;
+                            }
+                        })
+                    } else {
+                        this.referredToMe = false;
+                    }
+
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
         });
         this._route.params.subscribe((routeParams: any) => {
             let insuranceId: number = parseInt(routeParams.id);
@@ -77,15 +107,12 @@ export class EditInsuranceComponent implements OnInit {
                 (insurance: any) => {
                     this.insurance = insurance.toJS();
 
-            this.loadInsuranceMasterAddress(this.insurance.insuranceMasterId);
+                    this.loadInsuranceMasterAddress(this.insurance.insuranceMasterId);
                     this.policyCellPhone = this._phoneFormatPipe.transform(this.insurance.policyContact.cellPhone);
                     this.policyFaxNo = this._faxNoFormatPipe.transform(this.insurance.policyContact.faxNo);
                     this.insuranceCellPhone = this._phoneFormatPipe.transform(this.insurance.insuranceContact.cellPhone);
                     this.insuranceFaxNo = this._faxNoFormatPipe.transform(this.insurance.insuranceContact.faxNo);
-                    // this.selectedInsuranceCity = insurance.insuranceAddress.city;
-                    // this.selectedPolicyCity = insurance.policyAddress.city;
-                    // this.loadInsuranceCities(insurance.insuranceAddress.state);
-                    // this.loadPolicyCities(insurance.policyAddress.state);
+
                 },
                 (error) => {
                     this._router.navigate(['../../'], { relativeTo: this._route });
@@ -95,14 +122,6 @@ export class EditInsuranceComponent implements OnInit {
                     this._progressBarService.hide();
                 });
         });
-        // this._insuranceStore.getInsurancesMaster()
-        //     .subscribe(
-        //     (insuranceMasters) => {
-        //         this.insuranceMasters = insuranceMasters;
-        //         this.insuranceMasters.forEach(element => {
-        //             this.insuranceMastersAdress = element.Address
-        //         });
-        //     });
 
         this.insuranceform = this.fb.group({
             policyNo: ['', Validators.required],
@@ -123,9 +142,9 @@ export class EditInsuranceComponent implements OnInit {
             policyHomePhone: [''],
             policyWorkPhone: [''],
             policyFaxNo: [''],
-            policyOfficeExtension:[''],
-            policyAlternateEmail:['', [ AppValidators.emailValidator]],
-            policyPreferredCommunication:[''],
+            policyOfficeExtension: [''],
+            policyAlternateEmail: ['', [AppValidators.emailValidator]],
+            policyPreferredCommunication: [''],
             address: [],
             address2: [],
             state: [],
@@ -137,7 +156,7 @@ export class EditInsuranceComponent implements OnInit {
             homePhone: [''],
             workPhone: [''],
             faxNo: [''],
-            alternateEmail:  ['', [AppValidators.emailValidator]],
+            alternateEmail: ['', [AppValidators.emailValidator]],
             officeExtension: [''],
             preferredCommunication: ['']
         });
@@ -151,21 +170,19 @@ export class EditInsuranceComponent implements OnInit {
         this._insuranceStore.getInsurancesMaster()
             .subscribe(insuranceMasters => this.insuranceMasters = insuranceMasters);
 
-            // this.loadInsuranceMasterAddress(this.insurance.insuranceMasterId);
-
     }
 
     selectInsurance(event) {
         let currentInsurance: number = parseInt(event.target.value);
-        if ( currentInsurance !== 0) {
-        this.loadInsuranceMasterAddress(currentInsurance);
+        if (currentInsurance !== 0) {
+            this.loadInsuranceMasterAddress(currentInsurance);
         } else {
             this.insuranceMastersAdress = null
         }
     }
     onUpload(event) {
 
-        for(let file of event.files) {
+        for (let file of event.files) {
             this.uploadedFiles.push(file);
         }
     }
@@ -178,75 +195,6 @@ export class EditInsuranceComponent implements OnInit {
                 this.insuranceMastersAdress = insuranceMaster.Address
             });
     }
-    //     selectAdjusterState(event) {
-    //      let currentState = event.target.value;
-    //     if (currentState === this.adjuster.adjusterAddress.state) {
-    //         this.loadCities(currentState);
-    //         this.selectedCity = this.adjuster.adjusterAddress.city;
-    //     } else {
-    //     this.loadCities(currentState);
-    //     this.selectedCity = '';
-    //     }
-    // }
-
-    // loadCities(stateName) {
-    //     this.isadjusterCitiesLoading = true;
-    //     if (stateName !== '') {
-    //         this._statesStore.getCitiesByStates(stateName)
-    //             .subscribe((cities) => { this.adjusterCities = cities; },
-    //             null,
-    //             () => { this.isadjusterCitiesLoading = false; });
-    //     } else {
-    //         this.adjusterCities = [];
-    //         this.isadjusterCitiesLoading = false;
-    //     }
-    // }
-
-    // selectPolicyState(event) {
-    //     let currentState = event.target.value;
-    //     if (currentState === this.insurance.policyAddress.state) {
-    //         this.loadPolicyCities(currentState);
-    //         this.selectedPolicyCity = this.insurance.policyAddress.city;
-    //     } else {
-    //     this.loadPolicyCities(currentState);
-    //     this.selectedPolicyCity = '';
-    //     }
-    // }
-    // loadPolicyCities(stateName) {
-    //     this.isPolicyCitiesLoading = true;
-    //     if ( stateName !== '') {
-    //     this._statesStore.getCitiesByStates(stateName)
-    //             .subscribe((cities) => { this.policyCities = cities; },
-    //             null,
-    //             () => { this.isPolicyCitiesLoading = false; });
-    //     } else {
-    //         this.policyCities = [];
-    //         this.isPolicyCitiesLoading = false;
-    //     }
-    // }
-    // selectInsuranceState(event) {
-    //     let currentState = event.target.value;
-    //     if (currentState === this.insurance.insuranceAddress.state) {
-    //         this.loadInsuranceCities(currentState);
-    //         this.selectedInsuranceCity = this.insurance.insuranceAddress.city;
-    //     } else {
-    //     this.loadInsuranceCities(currentState);
-    //     this.selectedInsuranceCity = '';
-    //     }
-    // }
-    // loadInsuranceCities(stateName) {
-    //     this.isInsuranceCitiesLoading = true;
-    //     if ( stateName !== '') {
-    //     this._statesStore.getCitiesByStates(stateName)
-    //             .subscribe((cities) => { this.insuranceCities = cities; },
-    //             null,
-    //             () => { this.isInsuranceCitiesLoading = false; });
-    //     } else {
-    //         this.insuranceCities = [];
-    //         this.isInsuranceCitiesLoading = false;
-    //     }
-    // }
-
     save() {
         this.isSaveProgress = true;
         let insuranceformValues = this.insuranceform.value;
@@ -291,12 +239,6 @@ export class EditInsuranceComponent implements OnInit {
                 preferredCommunication: insuranceformValues.preferredCommunication,
             }),
             insuranceAddress: new Address({
-                // address1: insuranceformValues.address,
-                // address2: insuranceformValues.address2,
-                // city: insuranceformValues.city,
-                // country: insuranceformValues.country,
-                // state: insuranceformValues.state,
-                // zipCode: insuranceformValues.zipcode
             })
         });
         this._progressBarService.show();
@@ -309,7 +251,6 @@ export class EditInsuranceComponent implements OnInit {
                     'createdAt': moment()
                 });
                 this._notificationsStore.addNotification(notification);
-                // this._router.navigate(['/patient-manager/patients/' + this.patientId + '/insurances']);
                 this._router.navigate(['../../'], { relativeTo: this._route });
             },
             (error) => {

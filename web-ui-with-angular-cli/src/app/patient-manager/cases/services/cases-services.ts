@@ -45,6 +45,23 @@ export class CaseService {
         return <Observable<Case>>Observable.fromPromise(promise);
     }
 
+    getOpenCaseForPatient(patientId: Number): Observable<Case[]> {
+        let promise: Promise<Case[]> = new Promise((resolve, reject) => {
+            return this._http.get(this._url + '/Case/getOpenCaseForPatient/' + patientId).map(res => res.json())
+                .subscribe((data: Array<Object>) => {
+                    let cases = (<Object[]>data).map((data: any) => {
+                        return CaseAdapter.parseResponse(data);
+                    });
+                    resolve(cases);
+                }, (error) => {
+                    reject(error);
+                });
+        });
+        return <Observable<Case[]>>Observable.fromPromise(promise);
+    }
+
+
+
     getCases(patientId: number): Observable<Case[]> {
         let companyId = this._sessionStore.session.currentCompany.id;
         let promise: Promise<Case[]> = new Promise((resolve, reject) => {
