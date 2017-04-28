@@ -32,4 +32,23 @@ namespace MIDAS.GBX.BusinessObjects
 
     }
 
+    public class mCaseCompanyConsentDocument : GbObject
+    {
+        [JsonProperty("caseId")]
+        public int CaseId { get; set; }
+
+        [JsonProperty("companyId")]
+        public int CompanyId { get; set; }
+
+        [JsonProperty("midasDocumentId")]
+        public int MidasDocumentId { get; set; }
+
+        [JsonProperty("documentName")]
+        public string DocumentName { get; set; }
+
+        [JsonProperty("midasDocument")]
+        public MidasDocument MidasDocument { get; set; }
+
+    }
+
 }

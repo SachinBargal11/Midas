@@ -29,6 +29,28 @@ namespace MIDAS.GBX.BusinessObjects
 
     }
 
+    public class mCompanyCaseConsentApproval : GbObject
+    {
+        [JsonProperty("companyId")]
+        public int CompanyId { get; set; }
+
+        [JsonProperty("caseId")]
+        public int? CaseId { get; set; }
+
+        [JsonProperty("consentGivenTypeId")]
+        public byte ConsentGivenTypeId { get; set; }
+
+        [JsonProperty("mcase")]
+        public mCase mCase { get; set; }
+
+        [JsonProperty("company")]
+        public Company Company { get; set; }
+
+        [JsonProperty("mconsentGivenType")]
+        public mConsentGivenType mConsentGivenType { get; set; }
+
+    }
+
     public class CompanyCaseConsentBase64 : GbObject
     {
         [JsonProperty("companyId")]
@@ -39,6 +61,18 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("base64Data")]
         public string Base64Data { get; set; }      
+    }
+
+    public class mCompanyCaseConsentBase64 : GbObject
+    {
+        [JsonProperty("companyId")]
+        public int CompanyId { get; set; }
+
+        [JsonProperty("caseId")]
+        public int CaseId { get; set; }
+
+        [JsonProperty("base64Data")]
+        public string Base64Data { get; set; }
     }
 
 }

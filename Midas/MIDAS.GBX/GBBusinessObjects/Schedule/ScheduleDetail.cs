@@ -97,4 +97,87 @@ namespace MIDAS.GBX.BusinessObjects
             return validations;
         }
     }
+
+    public class mScheduleDetail : GbObject
+    {
+        private string _name;
+        public string Name
+        {
+            get
+            {
+                return this._name;
+            }
+            set
+            {
+                _name = value;
+            }
+        }
+
+        private int _dayofWeek = 0;
+        public int dayofWeek
+        {
+            get
+            {
+                return this._dayofWeek;
+            }
+            set
+            {
+                _dayofWeek = value;
+            }
+        }
+        private TimeSpan _slotStart;
+        public TimeSpan slotStart
+        {
+            get
+            {
+                return this._slotStart;
+            }
+            set
+            {
+                _slotStart = value;
+            }
+        }
+
+        private TimeSpan _slotEnd;
+        public TimeSpan slotEnd
+        {
+            get
+            {
+                return this._slotEnd;
+            }
+            set
+            {
+                _slotEnd = value;
+            }
+        }
+
+        private DateTime? _slotDate;
+        public DateTime? slotDate
+        {
+            get
+            {
+                return this._slotDate;
+            }
+            set
+            {
+                _slotDate = value;
+            }
+        }
+
+        private GBEnums.ScheduleStatus _schedulestatus;
+        public GBEnums.ScheduleStatus scheduleStatus
+        {
+            get
+            {
+                return this._schedulestatus;
+            }
+            set
+            {
+                _schedulestatus = value;
+            }
+        }
+
+        public mSchedule mSchedule { get; set; }
+
+    }
 }

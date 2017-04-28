@@ -24,5 +24,21 @@ namespace MIDAS.GBX.BusinessObjects
         public PatientVisit2 PatientVisit2 { get; set; }
 
     }
+
+    public class mPatientVisitProcedureCode : GbObject
+    {
+        [JsonProperty("patientVisitId")]
+        public int PatientVisitId { get; set; }
+
+        [JsonProperty("procedureCodeId")]
+        public int ProcedureCodeId { get; set; }
+
+        [JsonProperty("procedureCode")]
+        public mProcedureCode mProcedureCode { get; set; }
+
+        [JsonProperty("mPatientVisit")]
+        public mPatientVisit mPatientVisit { get; set; }
+
+    }
 }
 

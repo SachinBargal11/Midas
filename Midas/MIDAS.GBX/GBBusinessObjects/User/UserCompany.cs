@@ -17,9 +17,15 @@ namespace MIDAS.GBX.BusinessObjects
         {
             List<BusinessValidation> validations = new List<BusinessValidation>();
             BusinessValidation validation = new BusinessValidation();
-            //Implement logic for validation
-
             return validations;
         }
+    }
+
+    public class mUserCompany : GbObject
+    {
+        public int UserId { get; set; }
+        public int CompanyId { get; set; }
+        public mUser User { get; set; }
+        public Company Company { get; set; }
     }
 }
