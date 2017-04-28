@@ -41,7 +41,7 @@ namespace MIDAS.GBX.DocumentManager
         public HttpResponseMessage DownloadFromBlob(HttpRequestMessage request, int companyid, int documentid)
         {
             var objResult = new Object();
-            serviceProvider = (BlobServiceProvider)dataAccessManager.GetBlobServiceProvider(companyid);
+            serviceProvider = (BlobServiceProvider)BlobStorageFactory.GetBlobServiceProviders(companyid, _context);
             serviceProvider.Download(companyid, documentid);
             try { return request.CreateResponse(HttpStatusCode.Created, objResult); }
             catch (Exception ex) { return request.CreateResponse(HttpStatusCode.BadRequest, objResult); }

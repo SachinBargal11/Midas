@@ -267,6 +267,7 @@
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\CompanySpecialtyDetailsController.cs" />
     <Compile Include="Controllers\CompanyCaseConsentApprovalController.cs" />
+    <Compile Include="Controllers\DocumentNodeObjectMappingController.cs" />
     <Compile Include="Controllers\DiagnosisCodeController.cs" />
     <Compile Include="Controllers\DiagnosisTypeController.cs" />
     <Compile Include="Controllers\DoctorController.cs" />
