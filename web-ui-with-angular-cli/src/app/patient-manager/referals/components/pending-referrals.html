@@ -1,0 +1,60 @@
+<div *ngIf="!doctorRoleOnly">
+<div class="ui-widget-header row">
+    <div class="col-lg-4 input-group">
+        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+        <input #gbReferrals type="text" class="form-control" style="float:left" placeholder="Search Referral">
+    </div>
+</div>
+<p-dataTable [value]="referralsOutsideMidas" [(selection)]="selectedReferrals" [rows]="10" [paginator]="true" [pageLinks]="3"
+    [rowsPerPageOptions]="[5,10,15,20]" [globalFilter]="gbReferrals" [responsive]="true" [stacked]="stacked">
+    <header>Referrals List</header>
+    <p-headerColumnGroup>
+        <p-row>
+            <p-column selectionMode="multiple" rowspan="2"></p-column>
+            <p-column header="Patient name" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Case Id" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Speciality" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Procedure" rowspan="2" styleClass="inbound-column"></p-column>
+            <p-column header="Referred From" colspan="2" styleClass="inbound-column-span"></p-column>
+            <p-column header="Referred To" colspan="2" styleClass="inbound-column-span"></p-column>
+        </p-row>
+        <p-row>
+            <p-column header="Location" styleClass="inbound-column"></p-column>
+            <p-column header="User Name" styleClass="inbound-column"></p-column>
+            <p-column header="Company" styleClass="inbound-column"></p-column>
+            <p-column header="Referred To Email" styleClass="inbound-column"></p-column>
+        </p-row>
+    </p-headerColumnGroup>
+    <p-column selectionMode="multiple"></p-column>
+    <p-column field="case.patient.user.displayName"></p-column>
+    <p-column field="case.id"></p-column>
+    <p-column field=""></p-column>
+    <p-column field=""></p-column>
+    <p-column field="referringLocation.location.name"></p-column>
+    <p-column field="referringUser.displayName"></p-column>
+    <p-column field="referredToCompany.name"></p-column>
+    <p-column field="referredToEmail"></p-column>
+</p-dataTable><br>
+<div class="row">
+    <div class="col-lg-4">
+        <label class="form-label">Medical-Office-List
+            <span class="color-red">*</span>
+        </label>
+        <div class="form-group">
+            <!--<select type="text" [(ngModel)]="currentAttorneyId" class="form-control" placeholder="" (change)="selectAttorney($event)">-->
+            <select type="text" class="form-control" placeholder="">
+        <option value="0">-Select Medical Office-</option>
+        <!--<option *ngFor="let attorney of allattorneys" value="{{attorney.id}}">{{attorney.user.firstName}}{{attorney.user.lastName}}</option>-->
+        </select>
+        </div>
+    </div>
+    <div class="col-lg-4 m-t-lg">
+        <a class="btn btn-success btn-sm" (click)="assign()"><i class="fa fa-plus" aria-hidden="true"></i>
+      <span class="hidden-md-down">Assign To Medical Office</span>
+       </a>
+        <a class="btn btn-danger btn-sm" (click)="dismiss()">
+            <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Dismiss Referral's</span>
+        </a>
+    </div>
+</div>
+</div>
