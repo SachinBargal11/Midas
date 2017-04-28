@@ -104,6 +104,8 @@ namespace MIDAS.GBX.DataAccessManager
         Object GetByLocationDoctorAndPatientId(int locationId, int doctorId, int patientId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetByLocationRoomAndPatientId(int locationId, int roomId, int patientId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
         Object GetBlobServiceProvider(int companyid);
+        Object GetBySpecialtyAndCompanyId(int specialtyId, int companyId, int? nestingLevels = null, bool includeAllVersions = false, bool applySecurity = false);
+        
 
     }
 }

@@ -65,18 +65,23 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             if (companyspecialtydetail.UpdateByUserID.HasValue)
                 companyspecialtyDetailBO.UpdateByUserID = companyspecialtydetail.UpdateByUserID.Value;
 
-            BO.Specialty boSpecialty = new BO.Specialty();
-            using (SpecialityRepository sr = new SpecialityRepository(_context))
+            if (companyspecialtydetail.Specialty != null)
             {
-                boSpecialty = sr.Convert<BO.Specialty, Specialty>(companyspecialtydetail.Specialty);
-                companyspecialtyDetailBO.Specialty = boSpecialty;
+                BO.Specialty boSpecialty = new BO.Specialty();
+                using (SpecialityRepository sr = new SpecialityRepository(_context))
+                {
+                    boSpecialty = sr.Convert<BO.Specialty, Specialty>(companyspecialtydetail.Specialty);
+                    companyspecialtyDetailBO.Specialty = boSpecialty;
+                }
             }
-
-            BO.Company boCompany = new BO.Company();
-            using (CompanyRepository cmp = new CompanyRepository(_context))
+            if (companyspecialtydetail.Company != null)
             {
-                boCompany = cmp.Convert<BO.Company, Company>(companyspecialtydetail.Company);
-                companyspecialtyDetailBO.Company = boCompany;
+                BO.Company boCompany = new BO.Company();
+                using (CompanyRepository cmp = new CompanyRepository(_context))
+                {
+                    boCompany = cmp.Convert<BO.Company, Company>(companyspecialtydetail.Company);
+                    companyspecialtyDetailBO.Company = boCompany;
+                }
             }
             return (T)(object)companyspecialtyDetailBO;
         }
@@ -229,6 +234,19 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        #region Get By ID
+        public override object GetBySpecialtyAndCompanyId(int specialtyId, int companyId)
+        {
+            var acc = _context.CompanySpecialtyDetails.Include("Company").Include("Specialty").Where(p => p.SpecialtyId == specialtyId && p.CompanyID == companyId && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
+
+            BO.CompanySpecialtyDetails acc_ = Convert<BO.CompanySpecialtyDetails, CompanySpecialtyDetail>(acc);
+            if (acc_ == null)
+            {
+                return new BO.ErrorObject { ErrorMessage = "No record found for this Specialty and Company detail.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+            }
+            return (object)acc_;
+        }
+        #endregion
 
         #region Get By Filter
         public override object Get<T>(T entity)
