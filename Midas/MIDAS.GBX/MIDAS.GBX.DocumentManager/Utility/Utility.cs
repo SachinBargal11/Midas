@@ -4,6 +4,7 @@ using MIDAS.GBX.DataRepository.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web;
 
@@ -18,10 +19,10 @@ namespace MIDAS.GBX.DocumentManager
 
         public string getBlob(int documentId, MIDASGBXEntities context)
         {
-            string filename = string.Empty;
-            filename = context.MidasDocuments.Where(doc => doc.Id == documentId).FirstOrDefault().DocumentPath;
+            string blobPath = string.Empty;
+            blobPath = new Uri(context.MidasDocuments.Where(doc => doc.Id == documentId).FirstOrDefault().DocumentPath).AbsolutePath;
 
-            return filename;
+            return blobPath.Remove(0, blobPath.IndexOf('/', blobPath.IndexOf('/') + 1)).TrimStart('/');
         }
 
         public string getDocumentPath(string documentNode,string objectType,int objectId, MIDASGBXEntities context)
