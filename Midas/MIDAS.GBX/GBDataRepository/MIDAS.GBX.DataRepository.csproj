@@ -97,6 +97,7 @@
     <Compile Include="EntityRepository\Company\InvitationRepository.cs" />
     <Compile Include="EntityRepository\DocumentManager\CaseDocumentRepository.cs" />
     <Compile Include="EntityRepository\DocumentManager\VisitDocumentRepository.cs" />
+    <Compile Include="EntityRepository\DocumentNodeObjectMapping\DocumentNodeObjectMappingRepository.cs" />
     <Compile Include="EntityRepository\FileUpload\FileUploadManager.cs" />
     <Compile Include="EntityRepository\FileUpload\FileUploadRepository.cs" />
     <Compile Include="EntityRepository\InsuranceMaster\InsuranceMasterRepository.cs" />

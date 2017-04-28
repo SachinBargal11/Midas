@@ -261,6 +261,10 @@ namespace MIDAS.GBX
             {
                 repo = new CompanyCaseConsentApprovalRepository(context);
             }
+            else if (typeof(T) == typeof(BO.DocumentNodeObjectMapping))
+            {
+                repo = new DocumentNodeObjectMappingRepository(context);
+            }
 
             return repo;
         }
