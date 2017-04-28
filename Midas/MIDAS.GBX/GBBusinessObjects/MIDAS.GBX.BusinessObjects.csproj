@@ -72,6 +72,7 @@
     <Compile Include="Common\PolicyOwner.cs" />
     <Compile Include="Common\Relation.cs" />
     <Compile Include="Common\State.cs" />
+    <Compile Include="Common\UploadInfo.cs" />
     <Compile Include="Company\Company.cs" />
     <Compile Include="Company\Signup.cs" />
     <Compile Include="ConsentGivenType\ConsentGivenType.cs" />
@@ -80,10 +81,10 @@
     <Compile Include="DiagnosisType\DiagnosisType.cs" />
     <Compile Include="Doctor\Doctor.cs" />
     <Compile Include="CompanyCaseConsentApproval\CompanyCaseConsentApproval.cs" />
-    <Compile Include="Doctor\DoctorLocationSpeciality.cs" />
     <Compile Include="Doctor\DoctorLocation.cs" />
     <Compile Include="Doctor\DoctorSpeciality.cs" />
     <Compile Include="DocumentInfo\Document.cs" />
+    <Compile Include="DocumentNodeObjectMapping\DocumentNodeObjectMapping.cs" />
     <Compile Include="Email.cs" />
     <Compile Include="ErrorObject.cs" />
     <Compile Include="ErrorHandler.cs" />
@@ -137,9 +138,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Schedule\Room\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

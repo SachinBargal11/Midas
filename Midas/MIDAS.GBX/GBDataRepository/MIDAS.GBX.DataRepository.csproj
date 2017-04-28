@@ -33,9 +33,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Docs.Pdf, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\Vipul.K\Desktop\Docs.Pdf.dll</HintPath>
+    <Reference Include="Docs.Pdf">
+      <HintPath>..\MIDAS.GBX.WebAPI\bin\Docs.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
@@ -90,11 +89,13 @@
     <Compile Include="EntityRepository\CompanyCaseConsentApproval\CompanyCaseConsentApprovalRepository.cs" />
     <Compile Include="EntityRepository\DiagnosisCode\DiagnosisCodeRepository.cs" />
     <Compile Include="EntityRepository\DiagnosisType\DiagnosisTypeRepository.cs" />
-    <Compile Include="EntityRepository\Doctor\DoctorLocationSpecialityRepository.cs" />
     <Compile Include="EntityRepository\Doctor\DoctorLocationScheduleRepository.cs" />
     <Compile Include="EntityRepository\Doctor\DoctorRepository.cs" />
     <Compile Include="EntityRepository\Doctor\DoctorSpecialityRepository.cs" />
     <Compile Include="EntityRepository\Company\InvitationRepository.cs" />
+    <Compile Include="EntityRepository\DocumentManager\CaseDocumentRepository.cs" />
+    <Compile Include="EntityRepository\DocumentManager\VisitDocumentRepository.cs" />
+    <Compile Include="EntityRepository\DocumentNodeObjectMapping\DocumentNodeObjectMappingRepository.cs" />
     <Compile Include="EntityRepository\FileUpload\FileUploadManager.cs" />
     <Compile Include="EntityRepository\FileUpload\FileUploadRepository.cs" />
     <Compile Include="EntityRepository\InsuranceMaster\InsuranceMasterRepository.cs" />
@@ -197,9 +198,6 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\DoctorLocationSchedule.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\DoctorLocationSpecialty.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\DoctorSpeciality.cs">
@@ -362,6 +360,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\UserType.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\VisitDocument.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

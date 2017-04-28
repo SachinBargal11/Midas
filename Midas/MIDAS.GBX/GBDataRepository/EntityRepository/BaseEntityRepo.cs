@@ -43,6 +43,11 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
 
+        public virtual Object SaveAsBlob(int id, int CompanyId, string objecttype, string documenttype, string uploadpath)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual Object AddQuickPatient<T>(T entity)
         {
             throw new NotImplementedException();
@@ -508,7 +513,12 @@ namespace MIDAS.GBX.EntityRepository
             throw new NotImplementedException();
         }
         
-        public virtual Object GetByLocationRoomAndPatient(int locationId, int roomId, int patientId)
+        public virtual Object GetByLocationRoomAndPatientId(int locationId, int roomId, int patientId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual Object GetBySpecialtyAndCompanyId(int specialtyId, int companyId)
         {
             throw new NotImplementedException();
         }

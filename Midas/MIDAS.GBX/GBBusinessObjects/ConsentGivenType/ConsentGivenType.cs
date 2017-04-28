@@ -17,4 +17,14 @@ namespace MIDAS.GBX.BusinessObjects
 
     }
 
+    public class mConsentGivenType : GbObject
+    {
+        [JsonProperty("typeText")]
+        public string TypeText { get; set; }
+
+        [JsonProperty("typeDescription")]
+        public string TypeDescription { get; set; }
+
+    }
+
 }

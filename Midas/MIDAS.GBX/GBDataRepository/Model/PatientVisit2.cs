@@ -23,8 +23,8 @@ namespace MIDAS.GBX.DataRepository.Model
     
         public int Id { get; set; }
         public int CalendarEventId { get; set; }
-        public int CaseId { get; set; }
-        public int PatientId { get; set; }
+        public Nullable<int> CaseId { get; set; }
+        public Nullable<int> PatientId { get; set; }
         public int LocationId { get; set; }
         public Nullable<int> RoomId { get; set; }
         public Nullable<int> DoctorId { get; set; }
@@ -40,10 +40,11 @@ namespace MIDAS.GBX.DataRepository.Model
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
         public Nullable<bool> IsCancelled { get; set; }
-        public string FileUploadPath { get; set; }
         public Nullable<bool> IsOutOfOffice { get; set; }
         public Nullable<System.DateTime> LeaveStartDate { get; set; }
         public Nullable<System.DateTime> LeaveEndDate { get; set; }
+        public bool IsTransportationRequired { get; set; }
+        public Nullable<int> TransportProviderId { get; set; }
     
         public virtual CalendarEvent CalendarEvent { get; set; }
         public virtual Case Case { get; set; }

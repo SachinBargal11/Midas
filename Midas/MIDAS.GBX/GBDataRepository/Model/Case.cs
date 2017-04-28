@@ -35,7 +35,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public int LocationId { get; set; }
         public Nullable<int> PatientEmpInfoId { get; set; }
         public string CarrierCaseNo { get; set; }
-        public bool Transportation { get; set; }
         public Nullable<byte> CaseStatusId { get; set; }
         public Nullable<int> AttorneyId { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
@@ -43,7 +42,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public System.DateTime CreateDate { get; set; }
         public Nullable<int> UpdateByUserID { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
-        public string FileUploadPath { get; set; }
     
         public virtual CaseStatu CaseStatu { get; set; }
         public virtual CaseType CaseType { get; set; }

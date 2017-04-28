@@ -1,4 +1,5 @@
 ﻿using MIDAS.GBX.BusinessObjects;
+using MIDAS.GBX.BusinessObjects.Common;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
@@ -75,6 +76,15 @@ namespace MIDAS.GBX.Common
             string strHostName = System.Net.Dns.GetHostName();
             string macname = strHostName;
             return macname;
+        }
+
+        public static object GetJSONObject(string data)
+        {
+            UploadInfo uploadData = new UploadInfo();
+            JavaScriptSerializer ser = new JavaScriptSerializer();
+            uploadData = ser.Deserialize<UploadInfo>(data);
+
+            return uploadData;
         }
 
     }

@@ -13,6 +13,7 @@ using MIDAS.GBX.BusinessObjects;
 using MIDAS.GBX.EntityRepository;
 using System.Data.Entity.Infrastructure;
 using System.Net.Http;
+//using MIDAS.GBX.DocumentManager;
 
 namespace MIDAS.GBX.DataAccessManager
 {
@@ -418,6 +419,21 @@ namespace MIDAS.GBX.DataAccessManager
                 var gbdata = baseRepo.Save(id, type, streamContent, uploadpath);
                 return gbdata;
             }
+        }
+
+        public Object SaveAsBlob(int ObjectId, int CompanyId, string ObjectType, string DocumentType, string uploadpath)
+        {
+            BaseEntityRepo baseRepo = RepoFactory.GetRepo<Document>(dbContextProvider.GetGbDBContext());
+            /*List<MIDAS.GBX.BusinessObjects.BusinessValidation> validationResults = baseRepo.Validate(ObjectId, DocumentType, streamContent);
+            if (validationResults.Count > 0)
+            {
+                return new ErrorObject { ErrorMessage = "Please check error object for more details", errorObject = validationResults, ErrorLevel = ErrorLevel.Validation };
+            }
+            else
+            {*/
+            var gbdata = baseRepo.SaveAsBlob(ObjectId, CompanyId, ObjectType, DocumentType, uploadpath);
+            return gbdata;
+            //}
         }
 
         public Object ConsentSave(int caseid, int companyid, List<HttpContent> streamContent, string uploadpath,bool signed)
@@ -2049,12 +2065,12 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        public Object GetByLocationRoomAndPatient(int locationId, int roomId, int patientId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        public Object GetByLocationRoomAndPatientId(int locationId, int roomId, int patientId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
         {
             try
             {
                 BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
-                var gbdata = baseRepo.GetByLocationRoomAndPatient(locationId, roomId, patientId);
+                var gbdata = baseRepo.GetByLocationRoomAndPatientId(locationId, roomId, patientId);
 
                 return gbdata;
             }
@@ -2071,8 +2087,40 @@ namespace MIDAS.GBX.DataAccessManager
             }
         }
 
-        
+        public Object GetBlobServiceProvider(int companyId)
+        {
+            try
+            {
+                /*BlobServiceProvider serviceprovider = BlobStorageFactory.GetBlobServiceProviders(companyId, dbContextProvider.GetGbDBContext());
+                return (Object)serviceprovider;*/
+                return new Object();
+            }
+            catch (GbException gbe)
+            {
+                return gbe;
+            }
+        }
 
+        public Object GetBySpecialtyAndCompanyId(int specialtyId, int companyId, int? nestingLevels, bool includeAllVersions, bool applySecurity)
+        {
+            try
+            {
+                BaseEntityRepo baseRepo = RepoFactory.GetRepo<T>(dbContextProvider.GetGbDBContext());
+                var gbdata = baseRepo.GetBySpecialtyAndCompanyId(specialtyId, companyId);
 
+                return gbdata;
+            }
+
+            catch (GbException gbe)
+            {
+                //LogManager.LogErrorMessage(gbe.Message, 0, (GbObject)(object)(entity));
+                return gbe;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.LogErrorMessage(ex.Message, 0, (MaestroObject)(object)(entity));
+                return ex;
+            }
+        }
     }
 }

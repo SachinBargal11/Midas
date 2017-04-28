@@ -63,7 +63,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
         [HttpGet]
         [Route("Delete/{caseId}/{documentId}/{companyId}")]
         [AllowAnonymous]
-        public HttpResponseMessage Delete(int caseId, int documentId,int companyId)
+        public HttpResponseMessage Delete(int caseId, int documentId, int companyId)
         {
             return requestHandler.Delete(Request, caseId, documentId, companyId);
         }
@@ -78,14 +78,14 @@ namespace MIDAS.GBX.WebAPI.Controllers
             await Request.Content.ReadAsMultipartAsync(streamProvider);
             List<HttpContent> streamContent = streamProvider.Contents.ToList();
             string contenttype = streamContent.ToList().Select(p => p.Headers.ContentType).FirstOrDefault().MediaType;
-            HttpResponseMessage resMessage = requestHandler.CreateGbDocObject1(Request, caseid, companyid, streamContent, sourcePath,false);
+            HttpResponseMessage resMessage = requestHandler.CreateGbDocObject1(Request, caseid, companyid, streamContent, sourcePath, false);
             return resMessage;
         }
 
         [HttpGet]
         [Route("download/{caseid}/{companyid}")]
         [AllowAnonymous]
-        public void DownloadConsent(int caseid,int companyid)
+        public void DownloadConsent(int caseid, int companyid)
         {
             string filepath = requestHandler.Download(Request, caseid, companyid);
 
@@ -131,27 +131,25 @@ namespace MIDAS.GBX.WebAPI.Controllers
             object response = requestHandler1.DownloadSignedConsent(Request, data);
             if (!(typeof(BusinessObjects.ErrorObject) == response.GetType()))
             {
-                if (response != null)
-                {
-                    FileInfo fileInfo = new System.IO.FileInfo(response.ToString());
+                //if (response != null)
+                //{
+                //    FileInfo fileInfo = new System.IO.FileInfo(response.ToString());
 
-                    HttpContext.Current.Response.ContentType = "application/octet-stream";
-                    HttpContext.Current.Response.AddHeader("Content-Disposition", String.Format("attachment;filename=\"{0}\"", fileInfo.Name));
-                    HttpContext.Current.Response.AddHeader("Content-Length", fileInfo.Length.ToString());
-                    HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
-                    HttpContext.Current.Response.WriteFile(response.ToString());
-                    //HttpContext.Current.Response.BinaryWrite(btFile);
-                    HttpContext.Current.Response.End();
+                //    HttpContext.Current.Response.ContentType = "application/octet-stream";
+                //    HttpContext.Current.Response.AddHeader("Content-Disposition", String.Format("attachment;filename=\"{0}\"", fileInfo.Name));
+                //    HttpContext.Current.Response.AddHeader("Content-Length", fileInfo.Length.ToString());
+                //    HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
+                //    HttpContext.Current.Response.WriteFile(response.ToString());
+                //    //HttpContext.Current.Response.BinaryWrite(btFile);
+                //    HttpContext.Current.Response.End();
 
-                    return Request.CreateResponse(HttpStatusCode.OK, "");
-                }
-                else
-                    return Request.CreateResponse(HttpStatusCode.BadRequest, response);
+                return Request.CreateResponse(HttpStatusCode.OK, response);
+                //}
+                //else
+                //    return Request.CreateResponse(HttpStatusCode.BadRequest, response);
             }
             else
                 return Request.CreateResponse(HttpStatusCode.BadRequest, response);
         }
-
     }
-
 }

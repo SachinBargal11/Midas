@@ -5,6 +5,7 @@ import { ShellComponent } from '../../commons/shell-component';
 import { ReferralsShellComponent } from './components/referrals-shell';
 import { InboundReferralsComponent } from './components/inbound-referrals';
 import { OutboundReferralsComponent } from './components/outbound-referrals';
+import { PendingReferralsComponent } from './components/pending-referrals';
 export const ReferralsShellRoutes: Routes = [
     {
         path: '',
@@ -21,7 +22,7 @@ export const ReferralsShellRoutes: Routes = [
         children: [
             {
                 path: '',
-                redirectTo: 'inbound-referrals',
+                redirectTo: 'pending-referrals',
                 pathMatch: 'full'
             },
             {
@@ -39,7 +40,16 @@ export const ReferralsShellRoutes: Routes = [
                 data: {
                     breadcrumb: 'Outbound'
                 }
+            },
+            {
+                path: 'pending-referrals',
+                component: PendingReferralsComponent,
+                canActivate: [ValidateActiveSession],
+                data: {
+                    breadcrumb: 'Pending Referrals'
+                }
             }
+
         ]
     }
 ];

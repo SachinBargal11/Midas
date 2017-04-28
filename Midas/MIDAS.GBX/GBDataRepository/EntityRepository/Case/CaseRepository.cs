@@ -37,8 +37,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             caseBO.CaseTypeId = cases.CaseTypeId;
             caseBO.LocationId = cases.LocationId;
             caseBO.PatientEmpInfoId = cases.PatientEmpInfoId;
-            caseBO.CarrierCaseNo = cases.CarrierCaseNo;
-            caseBO.Transportation = cases.Transportation;
+            caseBO.CarrierCaseNo = cases.CarrierCaseNo;            
             caseBO.CaseStatusId = cases.CaseStatusId;
             caseBO.AttorneyId = cases.AttorneyId;
             //caseBO.FileUploadPath = cases.FileUploadPath;
@@ -268,8 +267,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                         caseWithUserAndPatient.CaseTypeId = eachCase.CaseTypeId;
                         caseWithUserAndPatient.LocationId = eachCase.LocationId;
                         caseWithUserAndPatient.PatientEmpInfoId = eachCase.PatientEmpInfoId;
-                        caseWithUserAndPatient.CarrierCaseNo = eachCase.CarrierCaseNo;
-                        caseWithUserAndPatient.Transportation = eachCase.Transportation;
+                        caseWithUserAndPatient.CarrierCaseNo = eachCase.CarrierCaseNo;                        
                         caseWithUserAndPatient.CaseStatusId = eachCase.CaseStatusId;
                         caseWithUserAndPatient.AttorneyId = eachCase.AttorneyId;
 
@@ -602,8 +600,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     caseDB.CaseTypeId = IsEditMode == true && caseBO.CaseTypeId == null ? caseDB.CaseTypeId : caseBO.CaseTypeId;
                     caseDB.LocationId = IsEditMode == true && caseBO.LocationId.HasValue==false ? caseDB.LocationId : caseBO.LocationId.Value;
                     caseDB.PatientEmpInfoId = IsEditMode == true && caseBO.PatientEmpInfoId.HasValue == false ? caseDB.PatientEmpInfoId : caseBO.PatientEmpInfoId;
-                    caseDB.CarrierCaseNo = IsEditMode == true && caseBO.CarrierCaseNo == null ? caseDB.CarrierCaseNo : caseBO.CarrierCaseNo;
-                    caseDB.Transportation = IsEditMode == true && caseBO.Transportation.HasValue == false ? caseDB.Transportation : caseBO.Transportation.Value;
+                    caseDB.CarrierCaseNo = IsEditMode == true && caseBO.CarrierCaseNo == null ? caseDB.CarrierCaseNo : caseBO.CarrierCaseNo;                   
                     caseDB.CaseStatusId = IsEditMode == true && caseBO.CaseStatusId.HasValue == false ? caseDB.CaseStatusId : caseBO.CaseStatusId.Value;
                     caseDB.AttorneyId = IsEditMode == true && caseBO.AttorneyId.HasValue == false ? caseDB.AttorneyId : caseBO.AttorneyId.Value;
 
@@ -666,28 +663,24 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
-        #region AddUploadedFileData
-        public override object AddUploadedFileData(int id, string FileUploadPath)
-        {
-            BO.Case caseBO = new BusinessObjects.Case();
+        //#region AddUploadedFileData
+        //public override object AddUploadedFileData(int id, string FileUploadPath)
+        //{
+        //    BO.Case caseBO = new BusinessObjects.Case();
 
-            Case caseDB = new Case();
+        //    Case caseDB = new Case();
+        //    caseDB = _context.Cases.Include("PatientEmpInfo")
+        //                              .Include("PatientEmpInfo.AddressInfo")
+        //                              .Include("PatientEmpInfo.ContactInfo")
+        //                              .Where(p => p.Id == id).FirstOrDefault<Case>();
 
-            caseDB = _context.Cases.Include("PatientEmpInfo")
-                                      .Include("PatientEmpInfo.AddressInfo")
-                                      .Include("PatientEmpInfo.ContactInfo")
-                                      .Where(p => p.Id == id).FirstOrDefault<Case>();
-
-            caseDB.FileUploadPath = FileUploadPath;
-
-            _context.Entry(caseDB).State = System.Data.Entity.EntityState.Modified;
-            _context.SaveChanges();
-
-            var res = Convert<BO.Case, Case>(caseDB);
-            return (object)res;
-        }
-        #endregion
-
+        //    caseDB.FileUploadPath = FileUploadPath;
+        //    _context.Entry(caseDB).State = System.Data.Entity.EntityState.Modified;
+        //    _context.SaveChanges();
+        //    var res = Convert<BO.Case, Case>(caseDB);
+        //    return (object)res;
+        //}
+        //#endregion
         #region Get DocumentList By ID
         public override object GetDocumentList(int id)
         {

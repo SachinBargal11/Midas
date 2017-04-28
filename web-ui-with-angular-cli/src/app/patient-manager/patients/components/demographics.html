@@ -292,7 +292,7 @@
         </section>
 
 
-        <button [disabled]="!demographicsform.valid || isSavePatientProgress" type="submit" class="btn btn-success sign-up">Save
+        <button *ngIf="!referredToMe" [disabled]="!demographicsform.valid || isSavePatientProgress" type="submit" class="btn btn-success sign-up">Save
             <loader [visible]="isSavePatientProgress"></loader>
         </button>
         <a [routerLink]="['/patient-manager/patients']" class="btn btn-secondary">Cancel</a>

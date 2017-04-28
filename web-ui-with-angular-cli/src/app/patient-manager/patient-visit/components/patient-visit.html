@@ -132,9 +132,13 @@
         <div *ngIf="selectedVisit">
             <div class="row" *ngIf="!selectedVisit.id">
                 <div class="col-md-2"></div>
-                <div class="col-md-4">
+                <div *ngIf="selectedOption == 1" class="col-md-4">
                     <p-checkbox formControlName="isGoingOutOffice" [(ngModel)]="isGoingOutOffice" binary="true"
                         label="Going out office"></p-checkbox>
+                </div>
+                <div *ngIf="selectedOption == 2" class="col-md-4">
+                    <p-checkbox formControlName="isGoingOutOffice" [(ngModel)]="isGoingOutOffice" binary="true"
+                        label="Room out of service"></p-checkbox>
                 </div>
             </div> <br>
             <div class="row" *ngIf="!selectedVisit.id && !isGoingOutOffice">

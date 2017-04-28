@@ -89,10 +89,10 @@ export class AddCaseComponent implements OnInit {
             carrierCaseNo: [''],
             locationId: ['', Validators.required],
             // patientEmpInfoId: ['', Validators.required],
-            caseStatusId: ['', Validators.required],
+            caseStatusId: ['1', Validators.required],
             attorneyId: [''],
             // caseStatus: [''],
-            transportation: [1, Validators.required],
+            transportation: ['0'],
         });
 
         this.caseformControls = this.caseform.controls;
@@ -165,7 +165,8 @@ export class AddCaseComponent implements OnInit {
             caseStatusId: caseFormValues.caseStatusId,
             attorneyId: caseFormValues.attorneyId,
             // caseStatus: caseFormValues.caseStatus,
-            transportation: caseFormValues.transportation,
+            // transportation: caseFormValues.transportation,
+            transportation: caseFormValues.transportation ? caseFormValues.transportation == '1' : true ? caseFormValues.transportation == '0' : false,
             createByUserID: this._sessionStore.session.account.user.id,
             createDate: moment()
         });

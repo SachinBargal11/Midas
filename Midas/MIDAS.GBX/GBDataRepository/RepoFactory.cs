@@ -212,15 +212,7 @@ namespace MIDAS.GBX
             else if (typeof(T) == typeof(BO.CalendarEvent))
             {
                 repo = new CalendarEventRepository(context);
-            }
-            else if (typeof(T) == typeof(List<BO.DoctorLocationSpeciality>))
-            {
-                repo = new DoctorLocationSpecialityRepository(context);
-            }
-            else if (typeof(T) == typeof(BO.DoctorLocationSpeciality))
-            {
-                repo = new DoctorLocationSpecialityRepository(context);
-            }
+            }            
             else if (typeof(T) == typeof(BO.CaseCompanyMapping))
             {
                 repo = new CaseCompanyMappingRepository(context);
@@ -260,6 +252,10 @@ namespace MIDAS.GBX
             else if (typeof(T) == typeof(BO.CompanyCaseConsentBase64))
             {
                 repo = new CompanyCaseConsentApprovalRepository(context);
+            }
+            else if (typeof(T) == typeof(BO.DocumentNodeObjectMapping))
+            {
+                repo = new DocumentNodeObjectMappingRepository(context);
             }
 
             return repo;

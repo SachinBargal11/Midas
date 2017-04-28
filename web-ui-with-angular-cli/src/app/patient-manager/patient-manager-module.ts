@@ -100,6 +100,7 @@ import { DoctorManagerModule } from '../doctor-manager/doctor-manager-module';
 import { VisitShellComponent } from './cases/components/visit-shell';
 import { PatientVisitListDoctorComponent } from './cases/components/doctor-visit';
 import { PatientVisitListTreatingRoomComponent } from './cases/components/treatingroom-visit';
+import { PendingReferralsComponent } from './referals/components/pending-referrals';
 
 
 @NgModule({
@@ -164,7 +165,8 @@ import { PatientVisitListTreatingRoomComponent } from './cases/components/treati
         OutboundReferralsComponent,
         VisitShellComponent,
         PatientVisitListDoctorComponent,
-        PatientVisitListTreatingRoomComponent
+        PatientVisitListTreatingRoomComponent,
+        PendingReferralsComponent
         
 
         

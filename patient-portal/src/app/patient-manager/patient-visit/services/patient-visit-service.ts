@@ -191,9 +191,9 @@ export class PatientVisitService {
         return <Observable<PatientVisit[]>>Observable.fromPromise(promise);
     }
 
-    getPatientVisitsByLocationAndRoomId(locationId: number, roomId: number): Observable<PatientVisit[]> {
+    getPatientVisitsByLocationAndRoomId(locationId: number, roomId: number, patientId: number): Observable<PatientVisit[]> {
         let promise: Promise<PatientVisit[]> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/PatientVisit/getByLocationAndRoomId/' + locationId + '/' + roomId)
+            return this._http.get(this._url + '/PatientVisit/GetByLocationRoomAndPatient/' + locationId + '/' + roomId + '/' + patientId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
                     let patientVisits = (<Object[]>data).map((data: any) => {

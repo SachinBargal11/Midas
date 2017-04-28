@@ -436,7 +436,7 @@ export class PatientVisitComponent implements OnInit {
 
     loadLocationRoomVisits() {
         this._progressBarService.show();
-        this._patientVisitsStore.getPatientVisitsByLocationAndRoomId(this.selectedLocationId, this.selectedRoomId)
+        this._patientVisitsStore.getPatientVisitsByLocationAndRoomId(this.selectedLocationId, this.selectedRoomId,this.patientId)
             .subscribe(
             (visits: PatientVisit[]) => {
                 this.events = this.getVisitOccurrences(visits);
@@ -852,7 +852,7 @@ export class PatientVisitComponent implements OnInit {
         let updatedEvent: ScheduledEvent = this._scheduledEventEditorComponent.getEditedEvent();
         let updatedVisit: PatientVisit = new PatientVisit(_.extend(this.selectedVisit.toJS(), {
             patientId: this.patientId,
-            specialtyId: this.selectedOption == 1 ? this.selectedSpecialityId : 0,
+            specialtyId: this.selectedOption == 1 ? this.selectedSpecialityId : null,
             calendarEvent: updatedEvent
         }));
         if (updatedVisit.id) {

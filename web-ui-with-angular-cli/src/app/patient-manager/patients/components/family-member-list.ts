@@ -10,6 +10,9 @@ import { ProgressBarService } from '../../../commons/services/progress-bar-servi
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
 import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
+import { SessionStore } from '../../../commons/stores/session-store';
+import { Case } from '../../cases/models/case';
+import { CasesStore } from '../../cases/stores/case-store';
 
 @Component({
     selector: 'family-member-list',
@@ -17,6 +20,8 @@ import { ConfirmDialogModule, ConfirmationService } from 'primeng/primeng';
 })
 
 export class FamilyMemberListComponent implements OnInit {
+    caseDetail: Case[];
+    referredToMe: boolean = false;
     selectedFamilyMembers: FamilyMember[] = [];
     familyMembers: FamilyMember[];
     patientId: number;
@@ -32,10 +37,37 @@ export class FamilyMemberListComponent implements OnInit {
         private _progressBarService: ProgressBarService,
         private _notificationsService: NotificationsService,
         private confirmationService: ConfirmationService,
+        private _casesStore: CasesStore,
+        private _sessionStore: SessionStore
 
     ) {
         this._route.parent.parent.params.subscribe((routeParams: any) => {
             this.patientId = parseInt(routeParams.patientId);
+            this._progressBarService.show();
+            let caseResult = this._casesStore.getOpenCaseForPatient(this.patientId);
+            caseResult.subscribe(
+                (cases: Case[]) => {
+                    this.caseDetail = cases;
+                    if (this.caseDetail.length > 0) {
+                        this.caseDetail[0].referral.forEach(element => {
+                            if (element.referredToCompanyId == _sessionStore.session.currentCompany.id) {
+                                this.referredToMe = true;
+                            } else {
+                                this.referredToMe = false;
+                            }
+                        })
+                    } else {
+                        this.referredToMe = false;
+                    }
+
+                },
+                (error) => {
+                    this._router.navigate(['../'], { relativeTo: this._route });
+                    this._progressBarService.hide();
+                },
+                () => {
+                    this._progressBarService.hide();
+                });
         });
     }
 
@@ -61,7 +93,7 @@ export class FamilyMemberListComponent implements OnInit {
     }
     loadSpecialitiesLazy(event: LazyLoadEvent) {
         setTimeout(() => {
-            if(this.datasource) {
+            if (this.datasource) {
                 this.familyMembers = this.datasource.slice(event.first, (event.first + event.rows));
             }
         }, 250);
@@ -69,48 +101,48 @@ export class FamilyMemberListComponent implements OnInit {
 
     deleteFamilyMember() {
         if (this.selectedFamilyMembers.length > 0) {
-             this.confirmationService.confirm({
+            this.confirmationService.confirm({
                 message: 'Do you want to delete this record?',
                 header: 'Delete Confirmation',
                 icon: 'fa fa-trash',
                 accept: () => {
-            this.selectedFamilyMembers.forEach(currentFamilyMember => {
-                this.isDeleteProgress = true;
-                this._progressBarService.show();
-                let result;
-                result = this._familyMemberStore.deleteFamilyMember(currentFamilyMember);
-                result.subscribe(
-                    (response) => {
-                        let notification = new Notification({
-                            'title': 'Family Member deleted successfully!',
-                            'type': 'SUCCESS',
-                            'createdAt': moment()
-                        });
-                        this.loadFamilyMembers();
-                        this._notificationsStore.addNotification(notification);
-                        this.selectedFamilyMembers = [];
-                    },
-                    (error) => {
-                        let errString = 'Unable to delete Family Member';
-                        let notification = new Notification({
-                            'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                            'type': 'ERROR',
-                            'createdAt': moment()
-                        });
-                        this.selectedFamilyMembers = [];
-                        this._progressBarService.hide();
-                        this.isDeleteProgress = false;
-                        this._notificationsStore.addNotification(notification);
-                        this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-                    },
-                    () => {
-                        this._progressBarService.hide();
-                        this.isDeleteProgress = false;
+                    this.selectedFamilyMembers.forEach(currentFamilyMember => {
+                        this.isDeleteProgress = true;
+                        this._progressBarService.show();
+                        let result;
+                        result = this._familyMemberStore.deleteFamilyMember(currentFamilyMember);
+                        result.subscribe(
+                            (response) => {
+                                let notification = new Notification({
+                                    'title': 'Family Member deleted successfully!',
+                                    'type': 'SUCCESS',
+                                    'createdAt': moment()
+                                });
+                                this.loadFamilyMembers();
+                                this._notificationsStore.addNotification(notification);
+                                this.selectedFamilyMembers = [];
+                            },
+                            (error) => {
+                                let errString = 'Unable to delete Family Member';
+                                let notification = new Notification({
+                                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                                    'type': 'ERROR',
+                                    'createdAt': moment()
+                                });
+                                this.selectedFamilyMembers = [];
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                                this._notificationsStore.addNotification(notification);
+                                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                            },
+                            () => {
+                                this._progressBarService.hide();
+                                this.isDeleteProgress = false;
+                            });
                     });
+                }
             });
-        } 
-             });
-        }else {
+        } else {
             let notification = new Notification({
                 'title': 'select Family Member to delete',
                 'type': 'ERROR',

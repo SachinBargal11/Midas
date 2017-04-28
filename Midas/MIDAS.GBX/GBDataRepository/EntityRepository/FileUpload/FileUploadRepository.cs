@@ -92,6 +92,25 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.FileUpload
         }
         #endregion
 
+        public override object SaveAsBlob(int ObjectId, int CompanyId, string DocumentObject, string DocumentType, string uploadpath)
+        {
+            BO.Document docInfo = new BO.Document();
+
+            switch (DocumentObject.ToUpper())
+            {
+                case EN.Constants.CaseType:
+                    CaseDocumentRepository CaseDocumentRepository = new CaseDocumentRepository(_context);
+                    docInfo = (BO.Document)CaseDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath);
+                    break;
+                case EN.Constants.VisitType:
+                    VisitDocumentRepository VisitDocumentRepository = new VisitDocumentRepository(_context);
+                    docInfo = (BO.Document)VisitDocumentRepository.SaveAsBlob(ObjectId, CompanyId, DocumentObject, DocumentType, uploadpath);                    
+                    break;
+            }
+            //docInfo = (BO.Document)fileUploadManager.SaveBlob(streamContent, ObjectId, DocumentObject, uploadpath);
+
+            return docInfo;
+        }
 
         public override string Download(int caseid, int documentid)
         {
