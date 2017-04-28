@@ -55,6 +55,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
             BO.ConsentGivenType boConsentGivenType = new BO.ConsentGivenType();
             if (companyCaseConsentApproval.ConsentGivenType != null)
             {
+                boConsentGivenType.ID = companyCaseConsentApproval.ConsentGivenType.Id;
                 boConsentGivenType.TypeText = companyCaseConsentApproval.ConsentGivenType.TypeText;
                 boConsentGivenType.TypeDescription = companyCaseConsentApproval.ConsentGivenType.TypeDescription;
 
