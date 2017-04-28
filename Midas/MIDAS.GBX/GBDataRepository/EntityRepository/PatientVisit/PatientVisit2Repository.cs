@@ -56,12 +56,13 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 patientVisit2BO.IsOutOfOffice = patientVisit2.IsOutOfOffice;
                 patientVisit2BO.LeaveStartDate = patientVisit2.LeaveStartDate;
                 patientVisit2BO.LeaveEndDate = patientVisit2.LeaveEndDate;
+                patientVisit2BO.IsTransportationRequired = patientVisit2.IsTransportationRequired;
+                patientVisit2BO.TransportProviderId = patientVisit2.TransportProviderId;
 
                 patientVisit2BO.IsCancelled = patientVisit2.IsCancelled;
                 patientVisit2BO.IsDeleted = patientVisit2.IsDeleted;
                 patientVisit2BO.CreateByUserID = patientVisit2.CreateByUserID;
-                patientVisit2BO.UpdateByUserID = patientVisit2.UpdateByUserID;
-                patientVisit2BO.FileUploadPath = patientVisit2.FileUploadPath;
+                patientVisit2BO.UpdateByUserID = patientVisit2.UpdateByUserID;               
 
                 if (patientVisit2.Patient2 != null)
                 {
@@ -638,6 +639,8 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                     PatientVisit2DB.IsOutOfOffice = PatientVisit2BO.IsOutOfOffice;
                     PatientVisit2DB.LeaveStartDate = PatientVisit2BO.LeaveStartDate;
                     PatientVisit2DB.LeaveEndDate = PatientVisit2BO.LeaveEndDate;
+                    PatientVisit2DB.IsTransportationRequired = PatientVisit2BO.IsTransportationRequired;
+                    PatientVisit2DB.TransportProviderId = PatientVisit2BO.TransportProviderId;
 
                     if (IsEditMode == false)
                     {
@@ -968,56 +971,54 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         }
         #endregion
 
+        //#region AddUploadedFileData
+        //public override object AddUploadedFileData(int id, string FileUploadPath)
+        //{
 
+        //    PatientVisit2 patientVisitDB = new PatientVisit2();
 
-        #region AddUploadedFileData
-        public override object AddUploadedFileData(int id, string FileUploadPath)
-        {
+        //    patientVisitDB = _context.PatientVisit2.Where(p => p.Id == id
+        //                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+        //                                           .FirstOrDefault<PatientVisit2>();
+        //    if (patientVisitDB != null)
+        //    {
+        //        patientVisitDB.FileUploadPath = FileUploadPath;
+        //    }
+        //    else
+        //    {
+        //        return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+        //    }
 
-            PatientVisit2 patientVisitDB = new PatientVisit2();
+        //    _context.Entry(patientVisitDB).State = System.Data.Entity.EntityState.Modified;
+        //    _context.SaveChanges();
 
-            patientVisitDB = _context.PatientVisit2.Where(p => p.Id == id
-                                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                                   .FirstOrDefault<PatientVisit2>();
-            if (patientVisitDB != null)
-            {
-                patientVisitDB.FileUploadPath = FileUploadPath;
-            }
-            else
-            {
-                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
+        //    var res = Convert<BO.PatientVisit2, PatientVisit2>(patientVisitDB);
+        //    return (object)res;
+        //}
+        //#endregion
 
-            _context.Entry(patientVisitDB).State = System.Data.Entity.EntityState.Modified;
-            _context.SaveChanges();
+        //#region Get By GetDocumentList
+        //public override object GetDocumentList(int id)
+        //{
+        //    var acc = _context.PatientVisit2.Where(p => p.Id == id
+        //                                                && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
+        //                                    .FirstOrDefault<PatientVisit2>();
+        //    BO.PatientVisit2 acc_ = Convert<BO.PatientVisit2, PatientVisit2>(acc);
 
-            var res = Convert<BO.PatientVisit2, PatientVisit2>(patientVisitDB);
-            return (object)res;
-        }
-        #endregion
+        //    Dictionary<string, object> Document = new Dictionary<string, object>();
+        //    if (acc_ != null)
+        //    {
+        //        Document.Add("id", acc_.ID);
+        //        Document.Add("fileUploadPath", acc_.FileUploadPath);
+        //    }
+        //    if (acc_ == null)
+        //    {
+        //        return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
+        //    }
 
-        #region Get By GetDocumentList
-        public override object GetDocumentList(int id)
-        {
-            var acc = _context.PatientVisit2.Where(p => p.Id == id
-                                                        && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false)))
-                                            .FirstOrDefault<PatientVisit2>();
-            BO.PatientVisit2 acc_ = Convert<BO.PatientVisit2, PatientVisit2>(acc);
-
-            Dictionary<string, object> Document = new Dictionary<string, object>();
-            if (acc_ != null)
-            {
-                Document.Add("id", acc_.ID);
-                Document.Add("fileUploadPath", acc_.FileUploadPath);
-            }
-            if (acc_ == null)
-            {
-                return new BO.ErrorObject { ErrorMessage = "No record found.", errorObject = "", ErrorLevel = ErrorLevel.Error };
-            }
-
-            return (object)Document;
-        }
-        #endregion
+        //    return (object)Document;
+        //}
+        //#endregion
 
         #region Get By ID
         public override object Get(int id)

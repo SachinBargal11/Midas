@@ -78,8 +78,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                             caseBO.CaseTypeId = casemap.CaseTypeId;
                             caseBO.LocationId = casemap.LocationId;
                             caseBO.PatientEmpInfoId = casemap.PatientEmpInfoId;
-                            caseBO.CarrierCaseNo = casemap.CarrierCaseNo;
-                            caseBO.Transportation = casemap.Transportation;
+                            caseBO.CarrierCaseNo = casemap.CarrierCaseNo;                          
                             caseBO.CaseStatusId = casemap.CaseStatusId;
                             caseBO.AttorneyId = casemap.AttorneyId;
 

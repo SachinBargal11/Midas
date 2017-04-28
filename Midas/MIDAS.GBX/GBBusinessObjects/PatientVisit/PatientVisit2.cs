@@ -51,13 +51,16 @@ namespace MIDAS.GBX.BusinessObjects
         public CalendarEvent CalendarEvent { get; set; }
 
         [JsonProperty("isCancelled")]
-        public bool? IsCancelled { get; set; }
-
-        [JsonProperty("fileUploadPath")]
-        public string FileUploadPath { get; set; }
+        public bool? IsCancelled { get; set; }       
 
         [JsonProperty("isOutOfOffice")]
         public bool? IsOutOfOffice { get; set; }
+
+        [JsonProperty("isTransportationRequired")]
+        public bool IsTransportationRequired { get; set; }
+
+        [JsonProperty("transportProviderId ")]
+        public int? TransportProviderId { get; set; }
 
         [JsonProperty("leaveStartDate")]
         public DateTime? LeaveStartDate { get; set; }
@@ -81,7 +84,7 @@ namespace MIDAS.GBX.BusinessObjects
         public Specialty Specialty { get; set; }
 
         [JsonProperty("location")]
-        public Location Location { get; set; }
+        public Location Location { get; set; }     
 
         [JsonProperty("patientVisitDiagnosisCodes")]
         public List<PatientVisitDiagnosisCode> PatientVisitDiagnosisCodes { get; set; }

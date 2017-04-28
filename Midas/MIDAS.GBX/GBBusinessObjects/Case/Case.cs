@@ -26,18 +26,12 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("carrierCaseNo")]
         public string CarrierCaseNo { get; set; }
-
-        [JsonProperty("transportation")]
-        public bool? Transportation { get; set; }
-
+       
         [JsonProperty("caseStatusId")]
         public byte? CaseStatusId { get; set; }
 
         [JsonProperty("attorneyId")]
-        public int? AttorneyId { get; set; }
-
-        //[JsonProperty("fileUploadPath")]
-        //public string FileUploadPath { get; set; }
+        public int? AttorneyId { get; set; }        
 
         [JsonProperty("caseCompanyMapping")]
         public List<CaseCompanyMapping> CaseCompanyMappings { get; set; }
@@ -142,10 +136,7 @@ namespace MIDAS.GBX.BusinessObjects
         public int? PatientEmpInfoId { get; set; }
 
         [JsonProperty("carrierCaseNo")]
-        public string CarrierCaseNo { get; set; }
-
-        [JsonProperty("transportation")]
-        public bool? Transportation { get; set; }
+        public string CarrierCaseNo { get; set; }       
 
         [JsonProperty("caseStatusId")]
         public byte? CaseStatusId { get; set; }
