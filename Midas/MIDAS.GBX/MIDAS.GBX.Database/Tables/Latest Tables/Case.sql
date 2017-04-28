@@ -6,10 +6,10 @@
 	[LocationId] [int] NOT NULL, -- Will drop this column, since the mapping data will be in [CaseCompanyDoctorMapping]
 	[PatientEmpInfoId] [int] NULL,
 	[CarrierCaseNo] [nvarchar](50) NULL,
-	[Transportation] [bit] NOT NULL DEFAULT 0,
+	--[Transportation] [bit] NOT NULL DEFAULT 0,
 	[CaseStatusId] [TINYINT] NULL,
 	[AttorneyId] [int] NULL,
-	[FileUploadPath] [NVARCHAR](250) NULL,
+	--[FileUploadPath] [NVARCHAR](250) NULL,
 
 	[IsDeleted] [bit] NULL,
 	[CreateByUserID] [int] NOT NULL,
@@ -57,3 +57,12 @@ GO
 
 --ALTER TABLE [dbo].[Case] DROP [LocationId]
 --ALTER TABLE [dbo].[Case] ADD [FileUploadPath] [NVARCHAR](250) NULL
+
+/*
+ALTER TABLE [dbo].[Case] DROP CONSTRAINT [DF__Case__Transporta__1387E197]
+GO
+ALTER TABLE [dbo].[Case] DROP COLUMN [Transportation]
+GO
+ALTER TABLE [dbo].[Case] DROP COLUMN [FileUploadPath]
+GO
+*/
