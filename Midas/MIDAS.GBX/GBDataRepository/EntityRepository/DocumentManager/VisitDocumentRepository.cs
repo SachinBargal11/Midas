@@ -40,14 +40,14 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             _context.Entry(midasdoc).State = System.Data.Entity.EntityState.Added;
             _context.SaveChanges();
 
-            CaseDocument caseDoc = _context.CaseDocuments.Add(new CaseDocument()
+            VisitDocument visitDoc = _context.VisitDocuments.Add(new VisitDocument()
             {
                 MidasDocumentId = midasdoc.Id,
-                CaseId = objectId,
+                PatientVisitId = objectId,
                 DocumentName = Path.GetFileName(uploadpath),//streamContent.Headers.ContentDisposition.FileName.Replace("\"", string.Empty),
                 CreateDate = DateTime.UtcNow
             });
-            _context.Entry(caseDoc).State = System.Data.Entity.EntityState.Added;
+            _context.Entry(visitDoc).State = System.Data.Entity.EntityState.Added;
             _context.SaveChanges();
 
             docInfo.Status = errMessage.Equals(string.Empty) ? "Success" : "Failed";

@@ -99,5 +99,6 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<DocumentNodeObjectMapping> DocumentNodeObjectMappings { get; set; }
         public virtual DbSet<DocumentNode> DocumentNodes { get; set; }
+        public virtual DbSet<VisitDocument> VisitDocuments { get; set; }
     }
 }

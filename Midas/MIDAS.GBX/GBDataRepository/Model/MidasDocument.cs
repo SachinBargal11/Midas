@@ -20,6 +20,7 @@ namespace MIDAS.GBX.DataRepository.Model
             this.CaseCompanyConsentDocuments = new HashSet<CaseCompanyConsentDocument>();
             this.CaseDocuments = new HashSet<CaseDocument>();
             this.ReferralDocuments = new HashSet<ReferralDocument>();
+            this.VisitDocuments = new HashSet<VisitDocument>();
         }
     
         public int Id { get; set; }
@@ -39,5 +40,7 @@ namespace MIDAS.GBX.DataRepository.Model
         public virtual ICollection<CaseDocument> CaseDocuments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReferralDocument> ReferralDocuments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VisitDocument> VisitDocuments { get; set; }
     }
 }

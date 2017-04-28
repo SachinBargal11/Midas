@@ -19,7 +19,7 @@ namespace MIDAS.GBX.DocumentManager
         public string getBlob(int documentId, MIDASGBXEntities context)
         {
             string filename = string.Empty;
-            filename = context.MidasDocuments.Where(doc => doc.Id == documentId).FirstOrDefault().DocumentName;
+            filename = context.MidasDocuments.Where(doc => doc.Id == documentId).FirstOrDefault().DocumentPath;
 
             return filename;
         }
@@ -29,19 +29,19 @@ namespace MIDAS.GBX.DocumentManager
             string path=string.Empty;
             var documentnodeParameter = new SqlParameter("@document_node", documentNode);
             var documentPath = context.Database.SqlQuery<string>("midas_sp_get_document_path @document_node", documentnodeParameter).ToList();
-
+            
             switch (objectType.ToUpper())
             {
                 case EN.Constants.CaseType:
                     path = documentPath[0].Replace("cmp/", "")
-                                        .Replace("cs", "cs-" + objectId)
-                                        .Replace("cstype", context.Cases.Where(csid => csid.Id == objectId).FirstOrDefault().CaseType.CaseTypeText);
+                                        .Replace("cstype", context.Cases.Where(csid => csid.Id == objectId).FirstOrDefault().CaseType.CaseTypeText.ToLower())
+                                        .Replace("cs", "cs-" + objectId);
                     break;
                 case EN.Constants.VisitType:
                     path = documentPath[0].Replace("cmp/", "")
-                                        .Replace("cs", "cs-" + context.PatientVisit2.Where(pvid => pvid.Id == objectId).FirstOrDefault().CaseId)
                                         .Replace("cstype", context.Cases.Where(csid => csid.Id == context.PatientVisit2.Where(pvid => pvid.Id == objectId).FirstOrDefault().CaseId)
-                                                                                                   .FirstOrDefault().CaseType.CaseTypeText);
+                                                                                                   .FirstOrDefault().CaseType.CaseTypeText.ToLower())
+                                        .Replace("cs", "cs-" + context.PatientVisit2.Where(pvid => pvid.Id == objectId).FirstOrDefault().CaseId);
                     break;
             }
             return path;

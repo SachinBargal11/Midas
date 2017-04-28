@@ -70,11 +70,12 @@ namespace MIDAS.GBX.DocumentManager
             return (Object)documents;
         }
 
-        public override Object Download(int objectId, int documentId)
+        public override Object Download(int companyId, int documentId)
         {
+            util.ContainerName = "company-" + companyId;
             string blobName = util.getBlob(documentId, _context);
             CloudBlockBlob _cblob = util.BlobContainer.GetBlockBlobReference(blobName);
-            _cblob.FetchAttributes();
+            //_cblob.FetchAttributes();
 
             var ms = new MemoryStream();
             _cblob.DownloadToStreamAsync(ms);
