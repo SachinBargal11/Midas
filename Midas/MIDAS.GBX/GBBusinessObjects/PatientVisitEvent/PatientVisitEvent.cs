@@ -54,6 +54,31 @@ namespace MIDAS.GBX.BusinessObjects
         public string Modifier { get; set; }
 
     }
+
+    public class mPatientVisitEvent : GbObject
+    {
+        [JsonProperty("patientVisitId")]
+        public int PatientVisitId { get; set; }
+
+        [JsonProperty("specialtyId")]
+        public int? SpecialtyId { get; set; }
+
+        [JsonProperty("procedureCodeId")]
+        public byte ProcedureCodeId { get; set; }
+
+        [JsonProperty("reportPath")]
+        public string ReportPath { get; set; }
+
+        [JsonProperty("readingDoctorId")]
+        public int? ReadingDoctorId { get; set; }
+
+        [JsonProperty("billNumber")]
+        public string BillNumber { get; set; }
+
+        [JsonProperty("imageId")]
+        public int? ImageId { get; set; }
+
+    }
 }
 
 

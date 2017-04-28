@@ -40,4 +40,27 @@ namespace MIDAS.GBX.BusinessObjects
             return validations;
         }
     }
+
+    public class mRefferingOffice : GbObject
+    {
+
+        [JsonProperty("caseId")]
+        public int CaseId { get; set; }
+
+        [JsonProperty("refferingOfficeId")]
+        public byte? RefferingOfficeId { get; set; }
+
+        [JsonProperty("addressInfoId")]
+        public int? AddressInfoId { get; set; }
+
+        [JsonProperty("refferingDoctorId")]
+        public byte? ReffferingDoctorId { get; set; }
+
+        [JsonProperty("npi")]
+        public string NPI { get; set; }
+
+        [JsonProperty("mAddressInfo")]
+        public mAddressInfo mAddressInfo { get; set; }
+     
+    }
 }

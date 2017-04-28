@@ -48,4 +48,38 @@ namespace MIDAS.GBX.BusinessObjects
             return validations;
         }
     }
+
+    public class mRoomTest : GbObject
+    {
+        private string _name;
+        public string name
+        {
+            get
+            {
+                return this._name;
+            }
+            set
+            {
+                _name = value;
+            }
+        }
+
+        private List<mRoom> _rooms;
+        public List<mRoom> rooms
+        {
+            get
+            {
+                return this._rooms;
+            }
+            set
+            {
+                _rooms = value;
+            }
+        }
+
+        [Required]
+        [JsonProperty("colorCode")]
+        public string ColorCode { get; set; }
+
+    }
 }

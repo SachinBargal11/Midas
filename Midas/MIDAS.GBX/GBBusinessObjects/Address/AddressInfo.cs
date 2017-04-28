@@ -35,4 +35,25 @@ namespace MIDAS.GBX.BusinessObjects
         public string StateCode { get; set; }
         //[STATECODE-CHANGE]
     }
+
+    public class mAddressInfo : GbObject
+    {
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("address1")]
+        public string Address1 { get; set; }
+
+        [JsonProperty("city")]
+        public string City { get; set; }
+
+        [JsonProperty("state")]
+        public string State { get; set; }
+
+        [JsonProperty("country")]
+        public string Country { get; set; }
+
+        [JsonProperty("stateCode")]
+        public string StateCode { get; set; }
+    }
 }

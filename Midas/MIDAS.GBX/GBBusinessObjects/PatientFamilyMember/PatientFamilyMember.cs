@@ -47,4 +47,26 @@ namespace MIDAS.GBX.BusinessObjects
         public bool? PrimaryContact { get; set; }
 
     }
+
+    public class mPatientFamilyMember : GbObject
+    {
+        [JsonProperty("patientId")]
+        public int PatientId { get; set; }
+
+        [JsonProperty("firstName")]
+        public string FirstName { get; set; }
+
+        [JsonProperty("lastName")]
+        public string LastName { get; set; }
+
+        [JsonProperty("raceId")]
+        public byte? RaceId { get; set; }
+
+        [JsonProperty("ethnicitesId")]
+        public byte? EthnicitesId { get; set; }
+
+        [JsonProperty("primaryContact")]
+        public bool? PrimaryContact { get; set; }
+
+    }
 }

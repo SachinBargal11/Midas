@@ -72,15 +72,26 @@ namespace MIDAS.GBX.DocumentManager
 
         public override Object Download(int companyId, int documentId)
         {
+            //Sample BLOB URL : https://midasdocument.blob.core.windows.net/company-16/cs-86/nofault/consent/consent.pdf
             util.ContainerName = "company-" + companyId;
             string blobName = util.getBlob(documentId, _context);
             CloudBlockBlob _cblob = util.BlobContainer.GetBlockBlobReference(blobName);
             //_cblob.FetchAttributes();
 
             var ms = new MemoryStream();
-            _cblob.DownloadToStreamAsync(ms);
-            
-            return new Object();
+            _cblob.DownloadToStream(ms);
+
+            long fileByteLength = _cblob.Properties.Length;
+            byte[] fileContents = new byte[fileByteLength];
+            _cblob.DownloadToByteArray(fileContents, 0);
+
+            HttpContext.Current.Response.ContentType = _cblob.Properties.ContentType;
+            HttpContext.Current.Response.AddHeader("Content-Disposition", "Attachment; filename=" + Path.GetFileName(blobName.ToString()));
+            HttpContext.Current.Response.AddHeader("Content-Length", _cblob.Properties.Length.ToString());
+            HttpContext.Current.Response.BinaryWrite(fileContents);
+
+
+            return (Object)ms;
         }
 
         public bool DeleteBlob(string blobName)

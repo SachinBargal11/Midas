@@ -21,4 +21,19 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("documentName")]
         public string DocumentName { get; set; }
     }
+
+    public class mMidasDocument : GbObject
+    {
+        [JsonProperty("objectType")]
+        public string ObjectType { get; set; }
+
+        [JsonProperty("objectId")]
+        public int ObjectId { get; set; }
+
+        [JsonProperty("documentPath")]
+        public string DocumentPath { get; set; }
+
+        [JsonProperty("documentName")]
+        public string DocumentName { get; set; }
+    }
 }

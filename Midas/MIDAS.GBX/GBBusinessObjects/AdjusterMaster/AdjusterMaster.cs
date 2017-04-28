@@ -40,4 +40,31 @@ namespace MIDAS.GBX.BusinessObjects
         public InsuranceMaster InsuranceMaster { get; set; }
 
     }
+
+    public class mAdjusterMaster : GbObject
+    {
+        [JsonProperty("companyId")]
+        public int? CompanyId { get; set; }
+
+        [JsonProperty("insuranceMasterId")]
+        public int? InsuranceMasterId { get; set; }
+
+        [JsonProperty("firstName")]
+        public string FirstName { get; set; }
+
+        [JsonProperty("lastName")]
+        public string LastName { get; set; }
+
+        [JsonProperty("mAddressInfo")]
+        public mAddressInfo mAddressInfo { get; set; }
+
+        [JsonProperty("mContactInfo")]
+        public mContactInfo mContactInfo { get; set; }
+
+        [JsonProperty("mInsuranceMaster")]
+        public mInsuranceMaster mInsuranceMaster { get; set; }
+
+    }
+
+
 }

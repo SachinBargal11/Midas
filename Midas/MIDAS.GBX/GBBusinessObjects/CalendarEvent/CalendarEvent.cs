@@ -44,6 +44,26 @@ namespace MIDAS.GBX.BusinessObjects
 
     }
 
+    public class mCalendarEvent : GbObject
+    {
+        [JsonProperty("name")]
+        public string Name { get; set; }
+
+        [JsonProperty("eventStart")]
+        public DateTime? EventStart { get; set; }
+
+        [JsonProperty("eventEnd")]
+        public DateTime? EventEnd { get; set; }
+
+        [JsonProperty("timeZone")]
+        public string TimeZone { get; set; }
+
+        [JsonProperty("isAllDay")]
+        [JsonConverter(typeof(BoolConverter))]
+        public bool? IsAllDay { get; set; }
+
+    }
+
     //---------------------------------------------------------
     /*
     public class CalendarEventWithPatientVisit2 : GbObject

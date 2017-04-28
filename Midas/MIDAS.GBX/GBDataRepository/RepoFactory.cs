@@ -212,15 +212,7 @@ namespace MIDAS.GBX
             else if (typeof(T) == typeof(BO.CalendarEvent))
             {
                 repo = new CalendarEventRepository(context);
-            }
-            else if (typeof(T) == typeof(List<BO.DoctorLocationSpeciality>))
-            {
-                repo = new DoctorLocationSpecialityRepository(context);
-            }
-            else if (typeof(T) == typeof(BO.DoctorLocationSpeciality))
-            {
-                repo = new DoctorLocationSpecialityRepository(context);
-            }
+            }            
             else if (typeof(T) == typeof(BO.CaseCompanyMapping))
             {
                 repo = new CaseCompanyMappingRepository(context);

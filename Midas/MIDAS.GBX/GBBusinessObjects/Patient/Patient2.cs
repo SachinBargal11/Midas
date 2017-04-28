@@ -128,7 +128,44 @@ namespace MIDAS.GBX.BusinessObjects
         }
     }
 
+    public class mPatient : GbObject
+    {
+        [JsonProperty("ssn")]
+        public string SSN { get; set; }
+
+        [JsonProperty("dateOfFirstTreatment")]
+        public DateTime? DateOfFirstTreatment { get; set; }
+
+        [JsonProperty("user")]
+        public User User { get; set; }
+
+        [JsonProperty("cases")]
+        public List<Case> Cases { get; set; }
+
+        [JsonProperty("patientInsuranceInfoes")]
+        public List<PatientInsuranceInfo> PatientInsuranceInfoes { get; set; }
+
+  }
+
     public class AddPatient : GbObject
+    {
+        [JsonProperty("userName")]
+        public string UserName { get; set; }
+
+        [JsonProperty("firstName")]
+        public string FirstName { get; set; }
+
+        [JsonProperty("lastName")]
+        public string LastName { get; set; }
+
+        [JsonProperty("cellPhone")]
+        public string CellPhone { get; set; }
+
+        [JsonProperty("companyId")]
+        public int? CompanyId { get; set; }
+    }
+
+    public class mAddPatient : GbObject
     {
         [JsonProperty("userName")]
         public string UserName { get; set; }

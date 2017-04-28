@@ -31,4 +31,26 @@ namespace MIDAS.GBX.BusinessObjects
         public AdjusterMaster AdjusterMasters { get; set; }
 
     }
+
+    public class mInsuranceMaster : GbObject
+    {
+        [JsonProperty("companyName")]
+        public string CompanyName { get; set; }
+
+        [JsonProperty("addressInfoId")]
+        public int? AddressInfoId { get; set; }
+
+        [JsonProperty("contactInfoId")]
+        public int? ContactInfoId { get; set; }
+
+        [JsonProperty("mAddressInfo")]
+        public mAddressInfo mAddressInfo { get; set; }
+
+        [JsonProperty("mContactInfo")]
+        public mContactInfo mContactInfo { get; set; }
+
+        [JsonProperty("mAdjusterMasters")]
+        public mAdjusterMaster mAdjusterMasters { get; set; }
+
+    }
 }

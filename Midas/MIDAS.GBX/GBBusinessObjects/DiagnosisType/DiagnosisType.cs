@@ -23,5 +23,20 @@ namespace MIDAS.GBX.BusinessObjects
 
         public List<DiagnosisCode> DiagnosisCodes { get; set; }
     }
+
+    public class mDiagnosisType : GbObject
+    {
+        [Required]
+        [JsonProperty("diagnosisTypeText")]
+        public string DiagnosisTypeText { get; set; }
+
+        [Required]
+        [JsonProperty("companyId")]
+        public int? CompanyId { get; set; }
+
+        public Company Company { get; set; }
+
+        public List<mDiagnosisCode> mDiagnosisCodes { get; set; }
+    }
 }
 

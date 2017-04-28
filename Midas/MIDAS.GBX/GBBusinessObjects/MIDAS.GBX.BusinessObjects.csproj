@@ -81,7 +81,6 @@
     <Compile Include="DiagnosisType\DiagnosisType.cs" />
     <Compile Include="Doctor\Doctor.cs" />
     <Compile Include="CompanyCaseConsentApproval\CompanyCaseConsentApproval.cs" />
-    <Compile Include="Doctor\DoctorLocationSpeciality.cs" />
     <Compile Include="Doctor\DoctorLocation.cs" />
     <Compile Include="Doctor\DoctorSpeciality.cs" />
     <Compile Include="DocumentInfo\Document.cs" />
@@ -139,9 +138,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Schedule\Room\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
