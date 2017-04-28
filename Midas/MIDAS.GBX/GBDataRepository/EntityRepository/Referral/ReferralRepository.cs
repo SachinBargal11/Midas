@@ -241,6 +241,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository.Common
 
             if (referralBO != null)
             {
+                if (referralBO.ReferredToCompanyId == null && referralBO.ReferredToEmail == null)
+                {
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass ReferredToCompanyId or ReferredToEmail.", ErrorLevel = ErrorLevel.Error };
+                }
+
                 referralDB = _context.Referrals.Where(p => p.Id == referralBO.ID && (p.IsDeleted.HasValue == false || (p.IsDeleted.HasValue == true && p.IsDeleted.Value == false))).FirstOrDefault();
                 bool add_referral = false;
 

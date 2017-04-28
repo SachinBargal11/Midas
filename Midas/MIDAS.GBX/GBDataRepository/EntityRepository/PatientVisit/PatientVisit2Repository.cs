@@ -327,7 +327,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #endregion
 
         #region Get By Location Id, Patient Id And Room Id
-        public override object GetByLocationRoomAndPatient(int locationId, int roomId, int patientId)
+        public override object GetByLocationRoomAndPatientId(int locationId, int roomId, int patientId)
         {
             List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("CalendarEvent")
                                                                         .Include("Patient2")
@@ -491,6 +491,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 bool IsEditMode = false;
                 bool IsAddModeCalendarEvent = false;
                 IsEditMode = (PatientVisit2BO != null && PatientVisit2BO.ID > 0) ? true : false;
+
+                if (PatientVisit2BO.IsOutOfOffice != true && PatientVisit2BO.PatientId == null)
+                {
+                    return new BO.ErrorObject { errorObject = "", ErrorMessage = "Please pass caseId and PatientId.", ErrorLevel = ErrorLevel.Error };
+                }
 
                 if (PatientVisit2BO.ID <= 0 && PatientVisit2BO.PatientId.HasValue == false && PatientVisit2BO.LocationId.HasValue == false)
                 {
@@ -941,7 +946,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
             List<PatientVisit2> lstPatientVisit = _context.PatientVisit2.Include("Patient2").Include("Patient2.User").Include("Patient2.PatientInsuranceInfoes")
                                                                        .Include("Case").Include("Case.PatientAccidentInfoes")
                                                                        .Where(p => p.DoctorId == DoctorId
-                                                                                && userId.Contains(p.PatientId)
+                                                                                && ((p.PatientId.HasValue == true) && (userId.Contains(p.PatientId.Value)))
                                                                                 && p.EventStart >= FromDate && p.EventStart < ToDate
                                                                                 && (p.Patient2.IsDeleted.HasValue == false || (p.Patient2.IsDeleted.HasValue == true && p.Patient2.IsDeleted.Value == false))
                                                                                 && (p.Case.IsDeleted.HasValue == false || (p.Case.IsDeleted.HasValue == true && p.Case.IsDeleted.Value == false))
