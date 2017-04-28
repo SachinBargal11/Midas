@@ -28,6 +28,8 @@
 							<a class="dropdown-item" href="#"><span class="font-icon glyphicon glyphicon-user"></span>{{ sessionStore.session.user.displayName }}</a>
 							<div class="dropdown-divider"></div>
 							<a (click)="changePassword()" class="dropdown-item"><span class="font-icon glyphicon glyphicon-edit"></span>Change Password</a>
+							<a (click)="showSettingsDialog()" class="dropdown-item"><span class="font-icon glyphicon font-icon-player-settings"></span>User Setting</a>
+
 							<a (click)="logout()" class="dropdown-item"><span class="font-icon glyphicon glyphicon-log-out"></span>Logout</a>
 						</div>
 					</div>
@@ -83,3 +85,43 @@
 		</div>
 	</div>
 </header>
+
+<p-dialog header="User Settings" [minWidth]="600" [width]="1200" [responsive]="true" showEffect="fade" modal="modal" [style]="{'overflow':'visible'}"
+	[(visible)]="settingsDialogVisible">
+	<div *ngIf="doctorRoleFlag">
+		<form [formGroup]="addUserSettings" (ngSubmit)="saveUserSettings()">
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						User Profile:
+						<p-checkbox formControlName="isPublicProfile" binary="true" label="Public"></p-checkbox>
+						<!--<p-checkbox binary="true" label="Private"></p-checkbox>-->
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="form-group">
+						Publish Calender
+						<p-checkbox formControlName="isPublishCalender" binary="true" label=""></p-checkbox>
+					</div>
+
+				</div>
+			</div>
+			<p-footer>
+				<div class="row">
+					<div class="col-md-4">
+						<button type="submit" class="btn btn-success">
+                        Save
+                        <loader [visible]="isSaveProgress"></loader>
+                    </button>
+						<button type="button" class="btn btn-secondary" (click)="closeDialog()">Cancel</button>
+					</div>
+				</div>
+			</p-footer>
+		</form>
+	</div>
+	<div *ngIf="!doctorRoleFlag">
+		<h3> Staff </h3>
+	</div>
+</p-dialog>

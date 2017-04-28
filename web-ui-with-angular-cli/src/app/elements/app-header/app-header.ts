@@ -5,7 +5,8 @@ import { AuthenticationService } from '../../account/services/authentication-ser
 import { SessionStore } from '../../commons/stores/session-store';
 import { NotificationsStore } from '../../commons/stores/notifications-store';
 import * as _ from 'underscore';
-
+import { DialogModule } from 'primeng/primeng';
+import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 @Component({
     selector: 'app-header',
     templateUrl: './app-header.html',
@@ -20,6 +21,14 @@ export class AppHeaderComponent implements OnInit {
     menu_right_opened: boolean = false;
     menu_left_opened: boolean = false;
 
+    /* Dialog Visibilities */
+    settingsDialogVisible: boolean = false;
+
+    addUserSettings: FormGroup;
+    addUserSettingsControls;
+    isPublicProfile: boolean = false;
+    isPublishCalender: boolean = false;
+
     toggleDropdown($event: MouseEvent): void {
         $event.preventDefault();
         $event.stopPropagation();
@@ -30,9 +39,14 @@ export class AppHeaderComponent implements OnInit {
         private _authenticationService: AuthenticationService,
         private _notificationsStore: NotificationsStore,
         public sessionStore: SessionStore,
-        private _router: Router
+        private _router: Router,
+        private _fb: FormBuilder,
     ) {
-
+        this.addUserSettings = this._fb.group({
+            isPublicProfile: [''],
+            isPublishCalender: ['']
+        })
+        this.addUserSettingsControls = this.addUserSettings.controls;
     }
 
     ngOnInit() {
@@ -102,5 +116,19 @@ export class AppHeaderComponent implements OnInit {
 
     showNotifications() {
         this._notificationsStore.toggleVisibility();
+    }
+
+    showSettingsDialog() {
+        this.settingsDialogVisible = true;
+        // this._cd.detectChanges();
+    }
+    closeDialog() {
+        this.isPublicProfile = false;
+        this.isPublishCalender = false;
+        this.settingsDialogVisible = false;
+    }
+
+    saveUserSettings() {
+
     }
 }

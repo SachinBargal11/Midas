@@ -8,6 +8,7 @@ import { AttorneyRoutes } from './components/AttorneyMaster/attorney-routes';
 import { InsuranceMasterRoutes } from './components/insurance-master/insurance-master-routes';
 // import { SpecialityDetailsRoutes } from './components/speciality-details/speciality-details-routes';
 
+import {MedicalProviderRoutes} from './components/medical-provider-master/medical-provider-routes'
 
 let AccountSetupRoutes: Routes = [
     {
@@ -18,7 +19,8 @@ let AccountSetupRoutes: Routes = [
             ...SpecialityRoutes,
             ...AdjusterRoutes,
             ...AttorneyRoutes,
-            ...InsuranceMasterRoutes
+            ...InsuranceMasterRoutes,
+            ...MedicalProviderRoutes
 
         ],
         data: {

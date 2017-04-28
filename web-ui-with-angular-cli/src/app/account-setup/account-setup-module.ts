@@ -37,6 +37,13 @@ import { InsuranceMasterStore } from './stores/insurance-master-store';
 import { InsuranceStore } from '../patient-manager/patients/stores/insurance-store';
 import { InsuranceService } from '../patient-manager/patients/services/insurance-service';
 
+import { MedicalProviderListComponent } from './components/medical-provider-master/medical-provider-list';
+import { MedicalProviderMasterService } from './services/medical-provider-master-service';
+import { MedicalProviderMasterStore } from './stores/medical-provider-master-store';
+import { AddMedicalProviderComponent } from './components/medical-provider-master/add-medical-provider';
+
+
+
 @NgModule({
     imports: [
         CommonModule,
@@ -59,7 +66,9 @@ import { InsuranceService } from '../patient-manager/patients/services/insurance
         AttorneyMasterListComponent,
         AddInsuranceMasterComponent,
         EditInsuranceMasterComponent,
-        InsuranceMasterListComponent
+        InsuranceMasterListComponent,
+        MedicalProviderListComponent,
+        AddMedicalProviderComponent
 
     ],
     providers: [
@@ -74,7 +83,9 @@ import { InsuranceService } from '../patient-manager/patients/services/insurance
         AttorneyMasterService,
         AttorneyMasterStore,
         InsuranceMasterService,
-        InsuranceMasterStore
+        InsuranceMasterStore,
+        MedicalProviderMasterService
+        , MedicalProviderMasterStore
     ]
 })
 export class AccountSetupModule { }
