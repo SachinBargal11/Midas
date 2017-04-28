@@ -19,7 +19,7 @@ namespace MIDAS.GBX.BusinessObjects
         public int? CompanyID { get; set; }
 
         [Required]
-        [JsonProperty("ReevalDays")]
+        [JsonProperty("reevalDays")]
         public int? ReevalDays { get; set; }
 
         [Required]
@@ -58,6 +58,9 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("reEvalCode")]
         public string ReEvalCode { get; set; }
+
+        [JsonProperty("mandatoryProcCode")]
+        public bool MandatoryProcCode { get; set; }
 
         public Company Company { get; set; }
         public Specialty Specialty { get; set; }

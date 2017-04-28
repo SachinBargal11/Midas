@@ -47,7 +47,7 @@ namespace MIDAS.GBX.WebAPI.Controllers
 
         // POST: api/Organizations
         [HttpPost]
-        [Route("Add")]
+        [Route("Save")]
         
         public HttpResponseMessage Post([FromBody]CompanySpecialtyDetails data)
         {
