@@ -49,4 +49,35 @@ namespace MIDAS.GBX.BusinessObjects
             return validations;
         }
     }
+
+    public class mSchedule : GbObject
+    {
+        private string _name;
+        public string Name
+        {
+            get
+            {
+                return this._name;
+            }
+            set
+            {
+                _name = value;
+            }
+        }
+        private bool _isdefault;
+        public bool isDefault
+        {
+            get
+            {
+                return this._isdefault;
+            }
+            set
+            {
+                _isdefault = value;
+            }
+        }
+        public int? CompanyId { get; set; }
+        public List<mLocation> mLocations { get; set; }
+        public List<mScheduleDetail> mScheduleDetails { get; set; }
+    }
 }

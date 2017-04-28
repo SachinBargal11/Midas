@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MIDAS.GBX.BusinessObjects
 {
-    public class Referral : GbObject
+   public class Referral : GbObject
     {
         [JsonProperty("caseId")]
         public int CaseId { get; set; }
@@ -92,5 +92,50 @@ namespace MIDAS.GBX.BusinessObjects
 
         [JsonProperty("referralDocument")]
         public List<ReferralDocument> ReferralDocument { get; set; }
+    }
+
+    public class mReferral : GbObject
+    {
+        [JsonProperty("caseId")]
+        public int CaseId { get; set; }
+
+        [JsonProperty("referringCompanyId")]
+        public int ReferringCompanyId { get; set; }
+
+        [JsonProperty("referringLocationId")]
+        public int ReferringLocationId { get; set; }
+
+        [JsonProperty("referringUserId")]
+        public int ReferringUserId { get; set; }
+
+        [JsonProperty("referredByEmail")]
+        public string ReferredByEmail { get; set; }
+
+        [JsonProperty("referredToEmail")]
+        public string ReferredToEmail { get; set; }
+
+        [JsonProperty("referralAccepted")]
+        public bool? ReferralAccepted { get; set; }
+
+        [JsonProperty("mReferredToDoctor")]
+        public mDoctor mDoctor { get; set; }
+
+        [JsonProperty("mReferringUser")]
+        public mUser mUser { get; set; }
+
+        [JsonProperty("referringLocation")]
+        public Location Location1 { get; set; }
+
+        [JsonProperty("ReferredToCompany")]
+        public Company Company { get; set; }
+
+        [JsonProperty("referringCompany")]
+        public Company Company1 { get; set; }
+
+        [JsonProperty("firstName")]
+        public string FirstName { get; set; }
+
+        [JsonProperty("mReferralDocument")]
+        public List<mReferralDocument> mReferralDocument { get; set; }
     }
 }

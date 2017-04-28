@@ -23,4 +23,17 @@ namespace MIDAS.GBX.BusinessObjects
 
     }
 
+    public class mCaseCompanyMapping : GbObject
+    {
+        [JsonProperty("caseId")]
+        public int CaseId { get; set; }
+
+        [JsonProperty("case")]
+        public mCase Case { get; set; }
+
+        [JsonProperty("company")]
+        public Company Company { get; set; }
+
+    }
+
 }

@@ -43,4 +43,33 @@ namespace MIDAS.GBX.BusinessObjects
             return validations;
         }
     }
+
+    public class mLocationSchedule : GbObject
+    {
+        public mLocation _location;
+        public mLocation location
+        {
+            get
+            {
+                return this._location;
+            }
+            set
+            {
+                _location = value;
+            }
+        }
+        public mSchedule _schedule;
+        public mSchedule schedule
+        {
+            get
+            {
+                return this._schedule;
+            }
+            set
+            {
+                _schedule = value;
+            }
+        }
+
+    }
 }

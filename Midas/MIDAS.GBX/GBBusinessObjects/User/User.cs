@@ -77,4 +77,41 @@ namespace MIDAS.GBX.BusinessObjects
             return validations;
         }
     }
+
+    public class mUser : GbObject
+    {
+        [Required]
+
+        [JsonProperty("userType")]
+        public GBEnums.UserType UserType { get; set; }
+
+        [JsonProperty("addressInfo")]
+        public AddressInfo AddressInfo { get; set; }
+
+        [JsonProperty("contactInfo")]
+        public ContactInfo ContactInfo { get; set; }
+
+        [Required]
+        [JsonProperty("userName")]
+        public string UserName { get; set; }
+
+        [Required]
+        [JsonProperty("firstName")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [JsonProperty("lastName")]
+        public string LastName { get; set; }
+
+        [JsonProperty("password")]
+        public string Password /*Need to be updated to SecureString*/ { get; set; }
+
+        [JsonProperty("forceLogin")]
+        public bool forceLogin { get; set; }
+
+        public List<mUserCompany> mUserCompanies { get; set; }
+
+        public List<mRole> mRoles { get; set; }
+
+    }
 }

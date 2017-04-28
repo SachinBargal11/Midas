@@ -24,4 +24,22 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("referral")]
         public Referral Referral { get; set; }
     }
+
+    public class mReferralDocument : GbObject
+    {
+        [JsonProperty("referralId")]
+        public int ReferralId { get; set; }
+
+        [JsonProperty("midasDocumentId")]
+        public int MidasDocumentId { get; set; }
+
+        [JsonProperty("documentName")]
+        public string DocumentName { get; set; }
+
+        [JsonProperty("mMidasDocument")]
+        public mMidasDocument mMidasDocument { get; set; }
+
+        [JsonProperty("mreferral")]
+        public mReferral mReferral { get; set; }
+    }
 }
