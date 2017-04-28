@@ -19,7 +19,8 @@ export class SpecialityDetailAdapter {
                 InitialCode: specialityDetailData.initialCode,
                 ReEvalCode: specialityDetailData.reEvalCode,
                 specialty: SpecialityAdapter.parseResponse(specialityDetailData.specialty),
-                company: specialityDetailData.company
+                company: specialityDetailData.company,
+                mandatoryProcCode: specialityDetailData.mandatoryProcCode,
             });
         }
         return specialityDetail;

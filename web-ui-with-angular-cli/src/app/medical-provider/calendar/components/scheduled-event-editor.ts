@@ -162,6 +162,8 @@ export class ScheduledEventEditorComponent implements OnChanges {
             eventStartTime: [''],
             eventEndDate: ['', Validators.required],
             eventEndTime: [''],
+            transportType:[''],
+            referby:[''],
             isAllDay: [],
             repeatType: [],
             dailyInfo: this._fb.group({

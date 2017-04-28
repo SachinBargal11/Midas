@@ -68,6 +68,17 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-4">
+                <div class="form-group" [class.error]="!specialityDetailFormControls.mandatoryProcCode.valid">
+                    <p-checkbox name="mandatoryProcCode" label="Show Procedure Codes for Speciality" formControlName="mandatoryProcCode" [(ngModel)]="mandatoryProcCode"
+                        binary="true"></p-checkbox>
+                    <div class='error-list' *ngIf="!specialityDetailFormControls.mandatoryProcCode.valid">
+                        <ul>
+                            <li *ngIf="specialityDetailFormControls.mandatoryProcCode.hasError('required')">You must Publish schedule</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="row">
@@ -86,11 +97,11 @@
                                 <div class="form-group" [class.error]="specialityDetailFormControls.initialCodes.touched && !specialityDetailFormControls.initialCodes.valid">
                                     <textarea rows="2" formControlName="initialCodes" [ngModel]="specialityDetail.InitialCode" [class.error]="!specialityDetailFormControls.initialCodes.valid"
                                         class="form-control"></textarea>
-                                        <div class='error-list' *ngIf="specialityDetailFormControls.initialCodes.touched && !specialityDetailFormControls.initialCodes.valid">
-                                            <ul>
-                                                <li *ngIf="specialityDetailFormControls.initialCodes.hasError('required')">Initial Codes is required.</li>
-                                            </ul>
-                                        </div>
+                                    <div class='error-list' *ngIf="specialityDetailFormControls.initialCodes.touched && !specialityDetailFormControls.initialCodes.valid">
+                                        <ul>
+                                            <li *ngIf="specialityDetailFormControls.initialCodes.hasError('required')">Initial Codes is required.</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -154,11 +165,11 @@
                                 <div class="form-group" [class.error]="specialityDetailFormControls.reevalCodes.touched && !specialityDetailFormControls.reevalCodes.valid">
                                     <textarea rows="2" formControlName="reevalCodes" [ngModel]="specialityDetail.ReEvalCode" [class.error]="!specialityDetailFormControls.reevalCodes.valid"
                                         class="form-control"></textarea>
-                                        <div class='error-list' *ngIf="specialityDetailFormControls.reevalCodes.touched && !specialityDetailFormControls.reevalCodes.valid">
-                                            <ul>
-                                                <li *ngIf="specialityDetailFormControls.reevalCodes.hasError('required')">Reeval Codes is required.</li>
-                                            </ul>
-                                        </div>
+                                    <div class='error-list' *ngIf="specialityDetailFormControls.reevalCodes.touched && !specialityDetailFormControls.reevalCodes.valid">
+                                        <ul>
+                                            <li *ngIf="specialityDetailFormControls.reevalCodes.hasError('required')">Reeval Codes is required.</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
