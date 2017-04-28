@@ -90,7 +90,6 @@
     <Compile Include="EntityRepository\CompanyCaseConsentApproval\CompanyCaseConsentApprovalRepository.cs" />
     <Compile Include="EntityRepository\DiagnosisCode\DiagnosisCodeRepository.cs" />
     <Compile Include="EntityRepository\DiagnosisType\DiagnosisTypeRepository.cs" />
-    <Compile Include="EntityRepository\Doctor\DoctorLocationSpecialityRepository.cs" />
     <Compile Include="EntityRepository\Doctor\DoctorLocationScheduleRepository.cs" />
     <Compile Include="EntityRepository\Doctor\DoctorRepository.cs" />
     <Compile Include="EntityRepository\Doctor\DoctorSpecialityRepository.cs" />
@@ -200,9 +199,6 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\DoctorLocationSchedule.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\DoctorLocationSpecialty.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\DoctorSpeciality.cs">

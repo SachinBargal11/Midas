@@ -81,7 +81,6 @@
     <Compile Include="DiagnosisType\DiagnosisType.cs" />
     <Compile Include="Doctor\Doctor.cs" />
     <Compile Include="CompanyCaseConsentApproval\CompanyCaseConsentApproval.cs" />
-    <Compile Include="Doctor\DoctorLocationSpeciality.cs" />
     <Compile Include="Doctor\DoctorLocation.cs" />
     <Compile Include="Doctor\DoctorSpeciality.cs" />
     <Compile Include="DocumentInfo\Document.cs" />
