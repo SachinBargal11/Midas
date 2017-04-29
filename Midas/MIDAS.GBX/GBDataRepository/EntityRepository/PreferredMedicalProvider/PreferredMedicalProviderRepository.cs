@@ -16,33 +16,33 @@ using MIDAS.GBX.Common;
 
 namespace MIDAS.GBX.DataRepository.EntityRepository
 {
-    internal class MedicalProviderRepository : BaseEntityRepo, IDisposable
+    internal class PreferredMedicalProviderRepository : BaseEntityRepo, IDisposable
     {
-        private DbSet<MedicalProvider> _dbSet;
+        private DbSet<PreferredMedicalProvider> _dbSet;
        
         #region Constructor
-        public MedicalProviderRepository(MIDASGBXEntities context) : base(context)
+        public PreferredMedicalProviderRepository(MIDASGBXEntities context) : base(context)
         {
-            _dbSet = context.Set<MedicalProvider>();           
+            _dbSet = context.Set<PreferredMedicalProvider>();           
         }
         #endregion
 
         #region Entity Conversion
         public override T Convert<T, U>(U entity)
         {
-            
-                MedicalProvider medicalProvider = entity as MedicalProvider;
+
+            PreferredMedicalProvider medicalProvider = entity as PreferredMedicalProvider;
                 if (medicalProvider == null)
                     return default(T);
 
-                BO.MedicalProvider boMedicalProvider = new BO.MedicalProvider();
+                BO.PreferredMedicalProvider boMedicalProvider = new BO.PreferredMedicalProvider();
 
-                boMedicalProvider.ID = medicalProvider.id;
+                boMedicalProvider.ID = medicalProvider.Id;
                 boMedicalProvider.Name = medicalProvider.Name;
-                boMedicalProvider.TaxID = medicalProvider.TaxID;
-                boMedicalProvider.Status = medicalProvider.Status;
-                boMedicalProvider.CompanyType = medicalProvider.CompanyType;
-                boMedicalProvider.SubscriptionPlanType = medicalProvider.SubscriptionPlanType;
+                //boMedicalProvider.TaxID = medicalProvider.TaxID;
+                //boMedicalProvider.Status = medicalProvider.Status;
+                //boMedicalProvider.CompanyType = medicalProvider.CompanyType;
+                //boMedicalProvider.SubscriptionPlanType = medicalProvider.SubscriptionPlanType;
 
                
                 return (T)(object)boMedicalProvider;
@@ -59,7 +59,7 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         public override List<MIDAS.GBX.BusinessObjects.BusinessValidation> Validate<T>(T entity)
         {
            
-            BO.MedicalProvider medicalProviderBO = (BO.MedicalProvider)(object)entity;
+            BO.PreferredMedicalProvider medicalProviderBO = (BO.PreferredMedicalProvider)(object)entity;
            
             var result = medicalProviderBO.Validate(medicalProviderBO);
             return result;
@@ -69,9 +69,9 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
         #region Save Data
         public override object Save<T>(T entity)
         {
-            BO.MedicalProvider medicalProviderBO = (BO.MedicalProvider)(object)entity;
+            BO.PreferredMedicalProvider medicalProviderBO = (BO.PreferredMedicalProvider)(object)entity;
 
-            MedicalProvider medicalProviderDB = new MedicalProvider();
+            PreferredMedicalProvider medicalProviderDB = new PreferredMedicalProvider();
 
             using (var dbContextTransaction = _context.Database.BeginTransaction())
             {
@@ -83,11 +83,11 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
                 if (medicalProviderBO != null)
                 {
                     bool Add_medicalProviderDB = false;
-                    medicalProviderDB = _context.MedicalProviders.Where(p => p.id == medicalProviderBO.ID).FirstOrDefault();
+                    medicalProviderDB = _context.PreferredMedicalProviders.Where(p => p.Id == medicalProviderBO.ID).FirstOrDefault();
 
                     if (medicalProviderDB == null && medicalProviderBO.ID <= 0)
                     {
-                        medicalProviderDB = new MedicalProvider();
+                        medicalProviderDB = new PreferredMedicalProvider();
                         Add_medicalProviderDB = true;
                     }
                     else if (medicalProviderDB == null && medicalProviderBO.ID > 0)
@@ -99,16 +99,16 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
    
 
                    
-                    medicalProviderDB.Status = IsEditMode == true ? medicalProviderDB.Status : medicalProviderBO.Status;
+                    //medicalProviderDB.Status = IsEditMode == true ? medicalProviderDB.Status : medicalProviderBO.Status;
                     medicalProviderDB.Name = IsEditMode == true && medicalProviderBO.Name == null ? medicalProviderDB.Name : medicalProviderBO.Name;
-                    medicalProviderDB.CompanyType = IsEditMode == true ? medicalProviderDB.CompanyType : medicalProviderBO.CompanyType;
-                    medicalProviderDB.SubscriptionPlanType = IsEditMode == true ? medicalProviderDB.SubscriptionPlanType : medicalProviderBO.SubscriptionPlanType;
-                    medicalProviderDB.TaxID = IsEditMode == true && medicalProviderBO.TaxID == null ? medicalProviderDB.TaxID : medicalProviderBO.TaxID;
+                    //medicalProviderDB.CompanyType = IsEditMode == true ? medicalProviderDB.CompanyType : medicalProviderBO.CompanyType;
+                    //medicalProviderDB.SubscriptionPlanType = IsEditMode == true ? medicalProviderDB.SubscriptionPlanType : medicalProviderBO.SubscriptionPlanType;
+                    //medicalProviderDB.TaxID = IsEditMode == true && medicalProviderBO.TaxID == null ? medicalProviderDB.TaxID : medicalProviderBO.TaxID;
 
                   
                     if (Add_medicalProviderDB == true)
                     {
-                        medicalProviderDB = _context.MedicalProviders.Add(medicalProviderDB);
+                        medicalProviderDB = _context.PreferredMedicalProviders.Add(medicalProviderDB);
                     }
                     _context.SaveChanges();
                 }
@@ -127,10 +127,10 @@ namespace MIDAS.GBX.DataRepository.EntityRepository
 
                 dbContextTransaction.Commit();
 
-                medicalProviderDB = _context.MedicalProviders.Where(p => p.id == medicalProviderDB.id).FirstOrDefault<MedicalProvider>();
+                medicalProviderDB = _context.PreferredMedicalProviders.Where(p => p.Id == medicalProviderDB.Id).FirstOrDefault<PreferredMedicalProvider>();
             }
 
-            var res = Convert<BO.MedicalProvider, MedicalProvider>(medicalProviderDB);
+            var res = Convert<BO.PreferredMedicalProvider, PreferredMedicalProvider>(medicalProviderDB);
             return (object)res;
         }
         #endregion
