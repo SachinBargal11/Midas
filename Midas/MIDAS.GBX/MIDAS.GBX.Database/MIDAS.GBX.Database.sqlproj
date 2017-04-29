@@ -129,6 +129,7 @@
     <Build Include="Tables\Latest Tables\ProcedureCode.sql" />
     <Build Include="Tables\Latest Tables\PatientVisitDiagnosisCodes.sql" />
     <Build Include="Tables\Latest Tables\PatientVisitProcedureCodes.sql" />
+    <Build Include="Tables\Latest Tables\UserPersonalSettings.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />
