@@ -37,7 +37,7 @@ export class ProcedureComponent implements OnInit {
 
   ngOnInit() {
     if (this.selectedVisit.specialtyId) {
-        this.loadProceduresForSpeciality(this.selectedVisit.specialtyId)
+      this.loadProceduresForSpeciality(this.selectedVisit.specialtyId)
     } else if (this.selectedVisit.roomId) {
       this.loadProceduresForRoomTest(this.selectedVisit.roomId);
     }
@@ -49,7 +49,14 @@ export class ProcedureComponent implements OnInit {
     let result = this._procedureStore.getProceduresBySpecialityId(specialityId);
     result.subscribe(
       (procedures: Procedure[]) => {
-        this.procedures = procedures;
+        // this.procedures = procedures;
+        let procedureCodeIds: number[] = _.map(this.selectedProcedures, (currentProcedure: Procedure) => {
+          return currentProcedure.id;
+        });
+        let procedureDetails = _.filter(procedures, (currentProcedure: Procedure) => {
+          return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
+        });
+        this.procedures = procedureDetails;
       },
       (error) => {
         this._progressBarService.hide();
@@ -64,7 +71,14 @@ export class ProcedureComponent implements OnInit {
     let result = this._procedureStore.getProceduresByRoomTestId(roomTestId);
     result.subscribe(
       (procedures: Procedure[]) => {
-        this.procedures = procedures;
+        // this.procedures = procedures;
+        let procedureCodeIds: number[] = _.map(this.selectedProcedures, (currentProcedure: Procedure) => {
+          return currentProcedure.id;
+        });
+        let procedureDetails = _.filter(procedures, (currentProcedure: Procedure) => {
+          return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
+        });
+        this.procedures = procedureDetails;
       },
       (error) => {
         this._progressBarService.hide();
@@ -79,14 +93,14 @@ export class ProcedureComponent implements OnInit {
   }
 
   deleteProcedureCode() {
-      let procedureCodeIds: number[] = _.map(this.selectedProceduresToDelete, (currentProcedure: Procedure) => {
-        return currentProcedure.id;
-      });
-      let procedureCodeDetails = _.filter(this.selectedProcedures, (currentProcedure: Procedure) => {
-        return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
-      });
+    let procedureCodeIds: number[] = _.map(this.selectedProceduresToDelete, (currentProcedure: Procedure) => {
+      return currentProcedure.id;
+    });
+    let procedureCodeDetails = _.filter(this.selectedProcedures, (currentProcedure: Procedure) => {
+      return _.indexOf(procedureCodeIds, currentProcedure.id) < 0 ? true : false;
+    });
 
-      this.selectedProcedures = procedureCodeDetails;
+    this.selectedProcedures = procedureCodeDetails;
   }
 
 }

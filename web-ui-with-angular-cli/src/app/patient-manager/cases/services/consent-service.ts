@@ -209,11 +209,15 @@ export class ConsentService {
         return <Observable<Consent[]>>Observable.fromPromise(promise);
     }
 
-    downloadTemplate(CaseId: Number, CompanyId: Number): Observable<Consent[]> {
+    getConsentFormDownloadUrl(caseId: Number, companyId: Number): string {
+        return `${this._url}/CompanyCaseConsentApproval/download/${caseId}/${companyId}`;
+    }
+
+    downloadTemplate(caseId: Number, companyId: Number): Observable<Consent[]> {
         let thefile = {};
         let promise: Promise<Consent[]> = new Promise((resolve, reject) => {
             this._http
-                .get(this._url + '/CompanyCaseConsentApproval/download/' + CaseId + '/' + CompanyId)
+                .get(this._url + '/CompanyCaseConsentApproval/download/' + caseId + '/' + companyId)
                 .map(res => {
                     // If request fails, throw an Error that will be caught
                     if (res.status < 200 || res.status == 500 || res.status == 404) {
@@ -222,7 +226,7 @@ export class ConsentService {
                     // If everything went fine, return the response
                     else {
 
-                        window.location.assign(this._url + '/CompanyCaseConsentApproval/download/' + CaseId + '/' + CompanyId);
+                        window.location.assign(this._url + '/CompanyCaseConsentApproval/download/' + caseId + '/' + companyId);
                         // return res.arrayBuffer();
                     }
                 })

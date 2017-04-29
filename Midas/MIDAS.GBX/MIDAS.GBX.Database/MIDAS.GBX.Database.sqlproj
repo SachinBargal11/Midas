@@ -67,7 +67,7 @@
     <Build Include="Tables\InvitationType.sql" />
     <Build Include="Tables\Location.sql" />
     <Build Include="Tables\Log.sql" />
-    <Build Include="Tables\MedicalProvider.sql" />
+    <Build Include="Tables\PreferredMedicalProvider.sql" />
     <Build Include="Tables\OTP.sql" />
     <Build Include="Tables\PasswordToken.sql" />
     <Build Include="Tables\Role.sql" />
@@ -129,6 +129,7 @@
     <Build Include="Tables\Latest Tables\ProcedureCode.sql" />
     <Build Include="Tables\Latest Tables\PatientVisitDiagnosisCodes.sql" />
     <Build Include="Tables\Latest Tables\PatientVisitProcedureCodes.sql" />
+    <Build Include="Tables\Latest Tables\UserPersonalSettings.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="MIDAS.GBX.Database.refactorlog" />

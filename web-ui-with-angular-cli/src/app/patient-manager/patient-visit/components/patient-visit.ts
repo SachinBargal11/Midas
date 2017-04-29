@@ -142,7 +142,7 @@ export class PatientVisitComponent implements OnInit {
         private _fb: FormBuilder,
         private _cd: ChangeDetectorRef,
         private _router: Router,
-        private _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
         private _patientVisitsStore: PatientVisitsStore,
         private _patientsStore: PatientsStore,
         private _roomsStore: RoomsStore,
@@ -198,7 +198,7 @@ export class PatientVisitComponent implements OnInit {
             listWeek: { buttonText: 'list week' }
         };
 
-        this._sessionStore.userCompanyChangeEvent.subscribe(() => {
+        this.sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.locationsStore.getLocations();
         });
         this.locationsStore.getLocations();

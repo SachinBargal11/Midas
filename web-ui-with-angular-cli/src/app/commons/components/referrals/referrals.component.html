@@ -1,0 +1,70 @@
+<p-confirmDialog width="425"></p-confirmDialog>
+<br>
+<div class="row">
+  <div class="col-lg-3">
+    <select [(ngModel)]="selectedMode" class="select2-arrow form-control" (change)="selectOption($event)">
+        <option value="0"></option>
+        <optgroup label="Select Specialty">
+           <option data-type="1" data-specialityId="speciality.id" *ngFor="let speciality of specialities" [value]="speciality.id">{{speciality.name}}</option>                                       
+        </optgroup>
+        <optgroup label="Select Test">
+           <option data-type="2" data-testId="test.id" *ngFor="let test of tests" [value]="test.id">{{test.name}}</option>                                       
+        </optgroup>
+    </select>
+    <!--<select class="form-control select-list" (change)="searchProcedures($event)">
+    <option value="">- Select specialty -</option>
+    <option *ngFor="let specialty of diagnosisTypes" value="{{specialty.id}}">{{specialty.diagnosisTypeText}}</option>
+</select>-->
+  </div>
+</div>
+<br>
+<p-dataTable [value]="procedures" [(selection)]="selectedProcedures" [rows]="5" [paginator]="true" [globalFilter]="gb" [responsive]="true">
+  <header>Procedures</header>
+  <p-column selectionMode="multiple"></p-column>
+  <p-column field="procedureCodeText" header="Procedure Code" [sortable]="true"></p-column>
+  <p-column field="procedureCodeDesc" header="Description" [sortable]="true"></p-column>
+</p-dataTable>
+<br>
+
+<h5 class="with-border">Selected Procedure codes</h5>
+<div class="ui-widget-header row">
+  <div class="col-lg-4 input-group">
+    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+    <input #gb type="text" class="form-control" style="float:left" placeholder="Search ">
+  </div>
+  <div class="col-lg-8">
+    <a class="pull-right btn btn-danger btn-sm" (click)="deleteProcedureCode()">
+      <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Procedure codes </span>
+      <loader [visible]="isDeleteProgress"></loader>
+    </a>
+  </div>
+</div>
+<p-dataTable [value]="selectedProcedures" [(selection)]="selectedProceduresToDelete" [rows]="10" [paginator]="true" [globalFilter]="gb"
+  [responsive]="true">
+  <header>Procedures</header>
+  <p-column selectionMode="multiple"></p-column>
+  <p-column field="procedureCodeText" header="Specialty">
+    <ng-template let-procedure="rowData" pTemplate="body">
+        <div *ngIf="procedure.specialityId">
+          <div *ngFor="let speciality of specialities">
+            <div *ngIf="speciality.id == procedure.specialityId">
+            {{speciality.name}}
+            </div>
+          </div>
+        </div>
+        <div *ngIf="procedure.roomTestId">
+          <div *ngFor="let test of tests">
+            <div *ngIf="test.id == procedure.roomTestId">
+            {{test.name}}
+            </div>
+          </div>
+        </div>
+    </ng-template>
+  </p-column>
+  <p-column field="procedureCodeText" header="Procedure Code"></p-column>
+  <p-column field="procedureCodeDesc" header="Description"></p-column>
+</p-dataTable>
+<br>
+<button class="btn btn-success sign-up" (click)="saveProcedures()">Save
+    <loader [visible]="isSaveProgress"></loader>
+</button>

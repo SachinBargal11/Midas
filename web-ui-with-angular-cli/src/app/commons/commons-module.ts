@@ -23,6 +23,7 @@ import { LeaveEventEditorComponent } from '../medical-provider/calendar/componen
 import { DocumentUploadComponent } from '../commons/components/document-upload/document-upload.component';
 import { DignosisComponent } from './components/dignosis/dignosis.component';
 import { ProcedureComponent } from './components/procedure/procedure.component';
+import { ReferralsComponent } from './components/referrals/referrals.component';
 
 import { SignaturePadModule } from 'angular2-signaturepad';
 import { SignatureFieldComponent } from '../commons/components/signature-field/signature-field.component';
@@ -101,7 +102,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     DocumentUploadComponent,
     SignatureFieldComponent,
     DignosisComponent,
-    ProcedureComponent
+    ProcedureComponent,
+    ReferralsComponent
   ],
   exports: [
     CommonModule,
@@ -137,6 +139,11 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     SharedModule,
     ConfirmDialogModule,
     BsDropdownModule,
+    FileUploadModule,
+    GrowlModule,
+    TabViewModule,
+    LightboxModule,
+    ListboxModule,
     ShellComponent,
     ScheduledEventEditorComponent,
     LeaveEventEditorComponent,
@@ -144,11 +151,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     SignatureFieldComponent,
     DignosisComponent,
     ProcedureComponent,
-    FileUploadModule,
-    GrowlModule,
-    TabViewModule,
-    LightboxModule,
-    ListboxModule
+    ReferralsComponent
   ]
 })
 export class CommonsModule { }

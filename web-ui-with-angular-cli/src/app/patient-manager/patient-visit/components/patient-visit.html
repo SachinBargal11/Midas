@@ -260,6 +260,9 @@
                 </p-dataTable>
             </p-tabPanel>
 
+            <p-tabPanel header="Referrals" *ngIf="selectedVisit.id && sessionStore.isOnlyDoctorRole()">
+                <app-referrals [selectedVisit]="selectedVisit" (save)="saveProcedureCodesForVisit($event)"></app-referrals>
+            </p-tabPanel>
             <p-tabPanel header="Diagnosis" *ngIf="selectedVisit.id">
                 <app-dignosis [selectedVisit]="selectedVisit" (save)="saveDiagnosisCodesForVisit($event)"></app-dignosis>
             </p-tabPanel>

@@ -26,6 +26,7 @@ export class EditSpecialityDetailsComponent {
     specialityId: number;
     speciality: Speciality;
     associatedSpeciality: string;
+    mandatoryProcCode: boolean = false;
     specialityDetail: SpecialityDetail;
     isSpecialityDetailSaveInProgress = false;
     // specialities: Observable<List<Speciality>>;
@@ -85,6 +86,7 @@ export class EditSpecialityDetailsComponent {
                     if (this.specialityDetail.id) {
                         this.specialityDetailJS = this.specialityDetail.toJS();
                         this.title = 'Edit Speciality Detail';
+                        this.mandatoryProcCode = this.specialityDetail.mandatoryProcCode;
                     } else {
                         this.title = 'Add Speciality Detail';
                         this.specialityDetailJS = new SpecialityDetail({});
@@ -109,7 +111,8 @@ export class EditSpecialityDetailsComponent {
             include1500: [''],
             maxReval: [''],
             speciality: [{ value: '', disabled: true }],
-            allowMultipleVisit: ['']
+            allowMultipleVisit: [''],
+            mandatoryProcCode: ['']
         });
         // this.specialityDetailForm = this.fb.group({
         //     initialCodes: [''],
@@ -146,6 +149,7 @@ export class EditSpecialityDetailsComponent {
             allowmultipleVisit: parseInt(specialityDetailFormValues.allowMultipleVisit) ? true : false,
             InitialCode: specialityDetailFormValues.initialCodes,
             ReEvalCode: specialityDetailFormValues.reevalCodes,
+            mandatoryProcCode: specialityDetailFormValues.mandatoryProcCode,
             specialty: new Speciality({
                 id: this.specialityId
             })

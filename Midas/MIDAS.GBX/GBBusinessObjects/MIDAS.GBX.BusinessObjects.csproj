@@ -91,6 +91,7 @@
     <Compile Include="GBEnums.cs" />
     <Compile Include="GbObject.cs" />
     <Compile Include="InsuranceMaster\InsuranceMaster.cs" />
+    <Compile Include="PreferredMedicalProvider\MedicalProvider.cs" />
     <Compile Include="Notification\Notification.cs" />
     <Compile Include="PatientAccidentInfo\PatientAccidentInfo.cs" />
     <Compile Include="PatientFamilyMember\PatientFamilyMember.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Speciality\CompanySpecialtyDetails.cs" />
     <Compile Include="Speciality\Specialty.cs" />
     <Compile Include="Speciality\SpecialtyDetails.cs" />
+    <Compile Include="UserPersonalSetting\UserPersonalSetting.cs" />
     <Compile Include="User\AddUser.cs" />
     <Compile Include="User\OTP.cs" />
     <Compile Include="User\PasswordToken.cs" />

@@ -210,4 +210,39 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="DiagnosisCodeId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="99009c93-cd3a-497c-9707-f9590a13180c" ChangeDateTime="04/29/2017 07:19:34">
+    <Property Name="ElementName" Value="[dbo].[MedicalProvider].[id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[MedicalProvider]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="4a7a42f4-d917-49a0-8a4b-87faeb582641" ChangeDateTime="04/29/2017 07:20:21">
+    <Property Name="ElementName" Value="[dbo].[MedicalProvider].[SubscriptionPlanType]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[MedicalProvider]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ContactEmailId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="82d878a4-015d-4811-8b46-446b16720287" ChangeDateTime="04/29/2017 07:20:40">
+    <Property Name="ElementName" Value="[dbo].[MedicalProvider].[TaxID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[MedicalProvider]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FirstName" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="ebfa093e-c062-4794-929c-a7a654246732" ChangeDateTime="04/29/2017 07:21:23">
+    <Property Name="ElementName" Value="[dbo].[MedicalProvider].[AddressId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[MedicalProvider]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LastName" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="64909296-ff74-490d-accd-adb0a41b8953" ChangeDateTime="04/29/2017 07:21:35">
+    <Property Name="ElementName" Value="[dbo].[MedicalProvider].[ContactInfoID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[MedicalProvider]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CompanyId" />
+  </Operation>
 </Operations>

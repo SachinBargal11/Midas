@@ -22,7 +22,8 @@ const SpecialityDetailRecord = Record({
     createByUserID: 0,
     createDate: null,
     updateByUserID: 0,
-    updateDate: null
+    updateDate: null,
+    mandatoryProcCode: false,
 });
 
 export class SpecialityDetail extends SpecialityDetailRecord {
@@ -45,6 +46,7 @@ export class SpecialityDetail extends SpecialityDetailRecord {
     createDate: moment.Moment;
     updateByUserID: number;
     updateDate: moment.Moment;
+    mandatoryProcCode: boolean;
 
     constructor(props) {
         super(props);

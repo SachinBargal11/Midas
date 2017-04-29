@@ -72,7 +72,7 @@ export class AttorneyMasterService {
 
       assignAttorney(currentAttorneyId: Number,companyId: Number): Observable<Attorney> {
         let promise: Promise<Attorney> = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/AttorneyMaster/associateAttorneyWithCompany/' + currentAttorneyId + '/' + companyId)
+            return this._http.get(this._url + '/AttorneyMaster/associateAttorneyWithCompany/' + currentAttorneyId + '/' + companyId).map(res => res.json())
                 .subscribe((data: any) => {
                     let attorney = null;
                         attorney = AttorneyAdapter.parseResponse(data);
@@ -139,8 +139,10 @@ export class AttorneyMasterService {
         return <Observable<Attorney>>Observable.fromPromise(promise);
     }
     deleteAttorney(attorney: Attorney): Observable<Attorney> {
+        let companyId = this._sessionStore.session.currentCompany.id
         let promise = new Promise((resolve, reject) => {
             return this._http.get(this._url + '/AttorneyMaster/delete/' + attorney.id, {
+            // return this._http.get(this._url + '/AttorneyMaster/disassociateAttorneyWithCompany/'+ attorney.id + '/' + companyId, {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data) => {
@@ -153,4 +155,5 @@ export class AttorneyMasterService {
         });
         return <Observable<Attorney>>Observable.from(promise);
     }
+   
 }
