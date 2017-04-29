@@ -92,6 +92,7 @@ namespace MIDAS.GBX.WebAPI
         HttpResponseMessage DisassociateDoctorWithCompany(HttpRequestMessage request, int DoctorId, int CompanyId);
         HttpResponseMessage GetByLocationDoctorAndPatientId(HttpRequestMessage request, int locationId, int doctorId, int patientId);
         HttpResponseMessage GetBySpecialtyAndCompanyId(HttpRequestMessage request, int specialtyId, int companyId);
+        HttpResponseMessage GetUserId(HttpRequestMessage request, int userId);
         
     }
 }

@@ -11,8 +11,7 @@ namespace MIDAS.GBX.BusinessObjects
 {
     public class UserPersonalSetting : GbObject
     {
-        [Required]
-
+        
         [JsonProperty("userId")]
         public int UserId { get; set; }
 
@@ -28,12 +27,8 @@ namespace MIDAS.GBX.BusinessObjects
         [JsonProperty("user")]
         public User User { get; set; }
 
-        public override List<BusinessValidation> Validate<T>(T entity)
-        {
-            List<BusinessValidation> validations = new List<BusinessValidation>();
-            BusinessValidation validation = new BusinessValidation();
-            return validations;
-        }
+
+
     }
 
 }
