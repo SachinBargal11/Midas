@@ -34,7 +34,7 @@ export class SessionStore {
 
             let storedAccount: any = window.localStorage.getItem(this.__ACCOUNT_STORAGE_KEY__);
 
-            if (storedAccount) {               
+            if (storedAccount) {
                 let storedAccountData: any = JSON.parse(storedAccount);
                 let account: Account = AccountAdapter.parseStoredData(storedAccountData);
                 this._populateSession(account);
@@ -115,7 +115,7 @@ export class SessionStore {
         return Observable.from(promise);
     }
 
-    private _populateSession(account: Account) {      
+    private _populateSession(account: Account) {
         this._session.account = account;
         let storedCompany: any = JSON.parse(window.localStorage.getItem(this.__CURRENT_COMPANY__));
         let company: Company = CompanyAdapter.parseResponse(storedCompany);
@@ -135,5 +135,24 @@ export class SessionStore {
         this._session.currentCompany = company;
         window.localStorage.setItem(this.__CURRENT_COMPANY__, JSON.stringify(company));
         this.userCompanyChangeEvent.emit(null);
+    }
+    isOnlyDoctorRole() {
+        let isOnlyDoctorRole: boolean = false;
+        let roles = this.session.user.roles;
+        if (roles) {
+            if (roles.length === 1) {
+                let doctorRoleOnly = _.find(roles, (currentRole) => {
+                    return currentRole.roleType === 3;
+                });
+                if (doctorRoleOnly) {
+                    isOnlyDoctorRole = true;
+                } else {
+                    isOnlyDoctorRole = false;
+                }
+            } else {
+                    isOnlyDoctorRole = false;
+            }
+        }
+        return isOnlyDoctorRole;
     }
 }
