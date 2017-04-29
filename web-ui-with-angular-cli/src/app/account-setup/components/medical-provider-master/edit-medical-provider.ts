@@ -21,17 +21,15 @@ import { AppValidators } from '../../../commons/utils/AppValidators';
 
 
 @Component({
-    selector: 'add-medical-provider',
-    templateUrl: './add-medical-provider.html'
+    selector: 'edit-medical-provider',
+    templateUrl: './edit-medical-provider.html'
 })
 
-export class AddMedicalProviderComponent implements OnInit {
-
+export class EditMedicalProviderComponent implements OnInit {
 
     providerform: FormGroup;
     providerformControls;
- 
-     isSaveProgress = false;
+    isRegistrationInProgress = false;
     constructor(
         private fb: FormBuilder,
         private _router: Router,
@@ -40,9 +38,7 @@ export class AddMedicalProviderComponent implements OnInit {
         private _sessionStore: SessionStore,
         // private _authenticationService: AuthenticationService,
         // private _registrationService: RegistrationService,
-        private _elRef: ElementRef,
-        private _progressBarService: ProgressBarService,
-
+        private _elRef: ElementRef
     ) {
         this.providerform = this.fb.group({
             companyName: ['', [Validators.required]],
@@ -64,10 +60,6 @@ export class AddMedicalProviderComponent implements OnInit {
     }
 
     saveMedicalProvider() {
-        this.isSaveProgress = true;
-        let providerformValues = this.providerform.value;
-        let result;     
-
 
     }
 }

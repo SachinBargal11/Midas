@@ -94,8 +94,7 @@
 				<div class="col-md-4"> User Profile:</div>
 				<div class="col-md-4">
 					<div class="form-group">
-
-						<p-checkbox formControlName="isPublicProfile" binary="true" label="Public"></p-checkbox>
+						<p-checkbox formControlName="isPublicProfile" binary="true" label="Public" [(ngModel)]="isPublicProfile"></p-checkbox>
 						<!--<p-checkbox binary="true" label="Private"></p-checkbox>-->
 					</div>
 				</div>
@@ -104,10 +103,8 @@
 				<div class="col-md-4"> Publish Calender</div>
 				<div class="col-md-4">
 					<div class="form-group">
-
-						<p-checkbox formControlName="isPublishCalender" binary="true" label="Public"></p-checkbox>
+						<p-checkbox formControlName="isPublishCalender" binary="true" label="Public" [(ngModel)]="isPublishCalender"></p-checkbox>
 					</div>
-
 				</div>
 			</div>
 			<p-footer>
