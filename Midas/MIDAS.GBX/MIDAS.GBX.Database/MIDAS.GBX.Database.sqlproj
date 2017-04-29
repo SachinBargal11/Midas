@@ -67,7 +67,7 @@
     <Build Include="Tables\InvitationType.sql" />
     <Build Include="Tables\Location.sql" />
     <Build Include="Tables\Log.sql" />
-    <Build Include="Tables\MedicalProvider.sql" />
+    <Build Include="Tables\PreferredMedicalProvider.sql" />
     <Build Include="Tables\OTP.sql" />
     <Build Include="Tables\PasswordToken.sql" />
     <Build Include="Tables\Role.sql" />
