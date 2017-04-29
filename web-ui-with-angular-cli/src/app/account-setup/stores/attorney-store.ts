@@ -12,6 +12,7 @@ import { SessionStore } from '../../commons/stores/session-store';
 export class AttorneyMasterStore {
 
     private _attorneyMaster: BehaviorSubject<List<Attorney>> = new BehaviorSubject(List([]));
+    private _allAttorneyInMidas: BehaviorSubject<List<Attorney>> = new BehaviorSubject(List([]));
 
     constructor(
         private _attorneyMasterService: AttorneyMasterService,
@@ -24,6 +25,9 @@ export class AttorneyMasterStore {
 
     get attorneyMasters() {
         return this._attorneyMaster.asObservable();
+    }
+    get allAttorney() {
+        return this._allAttorneyInMidas.asObservable();
     }
 
     getAttorneyMasters(): Observable<Attorney[]> {
@@ -42,8 +46,9 @@ export class AttorneyMasterStore {
      getAllAttorney(): Observable<Attorney[]> {
         let companyId: number = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            this._attorneyMasterService.getAllAttorney(companyId).subscribe((allattorney: Attorney[]) => {
-                resolve(allattorney);
+            this._attorneyMasterService.getAllAttorney(companyId).subscribe((allAttorney: Attorney[]) => {
+                this._allAttorneyInMidas.next(List(allAttorney));
+                resolve(allAttorney);
             }, error => {
                 reject(error);
             });
@@ -130,5 +135,6 @@ export class AttorneyMasterStore {
 
     resetStore() {
         this._attorneyMaster.next(this._attorneyMaster.getValue().clear());
+        this._allAttorneyInMidas.next(this._allAttorneyInMidas.getValue().clear());
     }
 }

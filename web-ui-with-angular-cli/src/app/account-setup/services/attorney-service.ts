@@ -58,14 +58,13 @@ export class AttorneyMasterService {
             return this._http.get(this._url + '/AttorneyMaster/getAllExcludeCompany/' + companyId)
                 .map(res => res.json())
                 .subscribe((data: Array<Object>) => {
-                    let allattorney = (<Object[]>data).map((data: any) => {
+                    let allAttorney = (<Object[]>data).map((data: any) => {
                         return AttorneyAdapter.parseResponse(data);
                     });
-                    resolve(allattorney);
+                    resolve(allAttorney);
                 }, (error) => {
                     reject(error);
                 });
-
         });
         return <Observable<Attorney[]>>Observable.fromPromise(promise);
     }
@@ -80,7 +79,6 @@ export class AttorneyMasterService {
                 }, (error) => {
                     reject(error);
                 });
-
         });
         return <Observable<Attorney>>Observable.fromPromise(promise);
     }
@@ -139,12 +137,10 @@ export class AttorneyMasterService {
         return <Observable<Attorney>>Observable.fromPromise(promise);
     }
     deleteAttorney(attorney: Attorney): Observable<Attorney> {
-        let companyId = this._sessionStore.session.currentCompany.id
+        let companyId = this._sessionStore.session.currentCompany.id;
         let promise = new Promise((resolve, reject) => {
-            return this._http.get(this._url + '/AttorneyMaster/delete/' + attorney.id, {
-            // return this._http.get(this._url + '/AttorneyMaster/disassociateAttorneyWithCompany/'+ attorney.id + '/' + companyId, {
-                headers: this._headers
-            }).map(res => res.json())
+            // return this._http.get(this._url + '/AttorneyMaster/delete/' + attorney.id, {
+            return this._http.get(this._url + '/AttorneyMaster/disassociateAttorneyWithCompany/' + attorney.id + '/' + companyId).map(res => res.json())
                 .subscribe((data) => {
                     let parsedAttorney: Attorney = null;
                     parsedAttorney = AttorneyAdapter.parseResponse(data);
@@ -155,5 +151,4 @@ export class AttorneyMasterService {
         });
         return <Observable<Attorney>>Observable.from(promise);
     }
-   
 }
