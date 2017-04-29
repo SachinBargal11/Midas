@@ -122,6 +122,7 @@
     <Compile Include="EntityRepository\Speciality\CompanySpecialityDetailsRepository.cs" />
     <Compile Include="EntityRepository\Speciality\SpecialityDetailsRepository.cs" />
     <Compile Include="EntityRepository\Speciality\SpecialityRepository.cs" />
+    <Compile Include="EntityRepository\UserPersonalSetting\UserPersonalSettingRepository.cs" />
     <Compile Include="EntityRepository\User\OTPRepository.cs" />
     <Compile Include="EntityRepository\User\PasswordTokenRepository.cs" />
     <Compile Include="EntityRepository\User\UserCompanyRepository.cs" />
@@ -234,9 +235,6 @@
     <Compile Include="Model\MaritalStatu.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\MedicalProvider.cs">
-      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\MidasDocument.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
@@ -303,6 +301,9 @@
     <Compile Include="Model\PolicyOwner.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\PreferredMedicalProvider.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\ProcedureCode.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
@@ -361,6 +362,9 @@
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\UserCompanyRole.cs">
+      <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\UserPersonalSetting.cs">
       <DependentUpon>MIDASGBXEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\UserType.cs">

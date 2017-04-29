@@ -126,6 +126,7 @@
     <Compile Include="Speciality\CompanySpecialtyDetails.cs" />
     <Compile Include="Speciality\Specialty.cs" />
     <Compile Include="Speciality\SpecialtyDetails.cs" />
+    <Compile Include="UserPersonalSetting\UserPersonalSetting.cs" />
     <Compile Include="User\AddUser.cs" />
     <Compile Include="User\OTP.cs" />
     <Compile Include="User\PasswordToken.cs" />
