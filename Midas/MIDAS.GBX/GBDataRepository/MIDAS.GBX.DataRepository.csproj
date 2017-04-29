@@ -122,6 +122,7 @@
     <Compile Include="EntityRepository\Speciality\CompanySpecialityDetailsRepository.cs" />
     <Compile Include="EntityRepository\Speciality\SpecialityDetailsRepository.cs" />
     <Compile Include="EntityRepository\Speciality\SpecialityRepository.cs" />
+    <Compile Include="EntityRepository\UserPersonalSetting\UserPersonalSettingRepository.cs" />
     <Compile Include="EntityRepository\User\OTPRepository.cs" />
     <Compile Include="EntityRepository\User\PasswordTokenRepository.cs" />
     <Compile Include="EntityRepository\User\UserCompanyRepository.cs" />

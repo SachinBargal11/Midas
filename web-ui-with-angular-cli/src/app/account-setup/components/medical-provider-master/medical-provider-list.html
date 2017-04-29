@@ -9,14 +9,14 @@
                                 <span class="color-red">*</span>
                             </label>
                 <div class="form-group">
-                    <select type="text" [(ngModel)]="currentProviderId" class="form-control" placeholder="" (change)="selectAttorney($event)">
+                    <select type="text" [(ngModel)]="currentProviderId" class="form-control" placeholder="" (change)="selectProviders($event)">
                             <option value="0">-Select Provider-</option>
                              <option *ngFor="let location of locationsStore.locations | async" [value]="location.location.id">{{location.company.name}}</option>                                       
                  </select>
                 </div>
             </div>
             <div class="col-lg-4 m-t-lg">
-                <button type="submit" class="btn btn-success sign-up">Assign</button>
+                <button type="submit" (click)="assignMedicalProvider()" class="btn btn-success sign-up">Assign Medical Provider To Company</button>
             </div>
         </div>
     </div>
@@ -34,7 +34,7 @@
                 <input #gb type="text" class="form-control" style="float:left" placeholder="Search Medical Provider">
 </div>
 <div class="col-lg-8">
-    <a class="pull-right btn btn-danger btn-sm">
+    <a class="pull-right btn btn-danger btn-sm" (click)="deleteMedicalProviders()">
         <i class="fa fa-trash-o fa-1x"></i><span class="hidden-md-down"> Delete Medical Provider</span>
         <loader [visible]="isDeleteProgress"></loader>
     </a>

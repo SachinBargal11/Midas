@@ -6,6 +6,7 @@ import { Attorney } from '../../models/attorney';
 import { NotificationsStore } from '../../../commons/stores/notifications-store';
 import { Notification } from '../../../commons/models/notification';
 import * as moment from 'moment';
+import * as _ from 'underscore';
 import { ProgressBarService } from '../../../commons/services/progress-bar-service';
 import { NotificationsService } from 'angular2-notifications';
 import { ErrorMessageFormatter } from '../../../commons/utils/ErrorMessageFormatter';
@@ -21,7 +22,7 @@ export class AttorneyMasterListComponent implements OnInit {
     currentAttorneyId: number = 0;
     selectedAttorneys: Attorney[] = [];
     attorneys: Attorney[];
-    allattorneys: Attorney[];
+    allAttorneys: Attorney[];
     datasource: Attorney[];
     totalRecords: number;
     companyId: number;
@@ -41,6 +42,7 @@ export class AttorneyMasterListComponent implements OnInit {
 
         this._sessionStore.userCompanyChangeEvent.subscribe(() => {
             this.loadAttorney();
+            this.loadAllAttorney();
         });
 
     }
@@ -70,11 +72,12 @@ export class AttorneyMasterListComponent implements OnInit {
     loadAllAttorney() {
         this._progressBarService.show();
         this._attorneyMasterStore.getAllAttorney()
-            .subscribe(allattorney => {
-                this.allattorneys = allattorney;
-                // this.datasource = attorneys.reverse();
-                // this.totalRecords = this.datasource.length;
-                // this.attorneys = this.datasource.slice(0, 10);
+            .subscribe((allAttorney: Attorney[]) => {
+                // this.allAttorneys = allAttorney;
+                let allFilteredAttorneys: Attorney[] = _.reject(allAttorney, (currentAttorney: Attorney) => {
+                    return currentAttorney.user == null;
+                });
+                this.allAttorneys = allFilteredAttorneys;
             },
             (error) => {
                 this._progressBarService.hide();
@@ -93,46 +96,47 @@ export class AttorneyMasterListComponent implements OnInit {
     }
 
     selectAttorney(event) {
-    let currentAttorneyId = parseInt(event.target.value);
-    this.currentAttorneyId = currentAttorneyId;
-  }
+        let currentAttorneyId = parseInt(event.target.value);
+        this.currentAttorneyId = currentAttorneyId;
+    }
 
     assignAttorneyToCompany() {
-        if (this.currentAttorneyId !== 0) { 
-        let result;
-        result = this._attorneyMasterStore.assignAttorney(this.currentAttorneyId);
-        result.subscribe(
-            (response) => {
-                let notification = new Notification({
-                    'title': 'Attorney assigned successfully!',
-                    'type': 'SUCCESS',
-                    'createdAt': moment()
+        if (this.currentAttorneyId !== 0) {
+            let result;
+            result = this._attorneyMasterStore.assignAttorney(this.currentAttorneyId);
+            result.subscribe(
+                (response) => {
+                    let notification = new Notification({
+                        'title': 'Attorney assigned successfully!',
+                        'type': 'SUCCESS',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                    this.loadAttorney();
+                    this.loadAllAttorney();
+                    this.currentAttorneyId = 0;
+                    // this._router.navigate(['../'], { relativeTo: this._route });
+                },
+                (error) => {
+                    let errString = 'Unable to assign attorney.';
+                    let notification = new Notification({
+                        'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
+                        'type': 'ERROR',
+                        'createdAt': moment()
+                    });
+                    this._notificationsStore.addNotification(notification);
+                    this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
+                },
+                () => {
                 });
-                this._notificationsStore.addNotification(notification);
-                this.loadAttorney();
-                this.currentAttorneyId = 0;
-                // this._router.navigate(['../'], { relativeTo: this._route });
-            },
-            (error) => {
-                let errString = 'Unable to assign attorney.';
-                let notification = new Notification({
-                    'messages': ErrorMessageFormatter.getErrorMessages(error, errString),
-                    'type': 'ERROR',
-                    'createdAt': moment()
-                });
-                this._notificationsStore.addNotification(notification);
-                this._notificationsService.error('Oh No!', ErrorMessageFormatter.getErrorMessages(error, errString));
-            },
-            () => {
-            });
-        }else{
-           let notification = new Notification({
+        } else {
+            let notification = new Notification({
                 'title': 'select attorney to assign to company',
                 'type': 'ERROR',
                 'createdAt': moment()
             });
             this._notificationsStore.addNotification(notification);
-            this._notificationsService.error('Oh No!', 'select attorney to assign to company'); 
+            this._notificationsService.error('Oh No!', 'select attorney to assign to company');
         }
 
     }
@@ -158,6 +162,7 @@ export class AttorneyMasterListComponent implements OnInit {
                                     'createdAt': moment()
                                 });
                                 this.loadAttorney();
+                                this.loadAllAttorney();
                                 this._notificationsStore.addNotification(notification);
                                 this.selectedAttorneys = [];
                             },

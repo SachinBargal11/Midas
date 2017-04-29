@@ -9,9 +9,7 @@ export class AttorneyAdapter {
         if (data) {
             attorney = new Attorney({
                 id: data.id,
-                // companyId: data.companyId,
-                user: UserAdapter.parseResponse(data.user),
-
+                user: UserAdapter.parseResponse(data.user)
             });
         }
         return attorney;

@@ -302,6 +302,7 @@
     <Compile Include="Controllers\SpecialtyDetailsController.cs" />
     <Compile Include="Controllers\UserCompanyController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\UserPersonalSettingController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="ErrorHelper\ApiBusinessException.cs" />
     <Compile Include="ErrorHelper\ApiDataException.cs" />

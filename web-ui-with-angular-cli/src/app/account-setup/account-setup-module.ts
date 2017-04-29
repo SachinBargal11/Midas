@@ -41,6 +41,7 @@ import { MedicalProviderListComponent } from './components/medical-provider-mast
 import { MedicalProviderMasterService } from './services/medical-provider-master-service';
 import { MedicalProviderMasterStore } from './stores/medical-provider-master-store';
 import { AddMedicalProviderComponent } from './components/medical-provider-master/add-medical-provider';
+import { EditMedicalProviderComponent } from './components/medical-provider-master/edit-medical-provider';
 
 
 
@@ -68,7 +69,8 @@ import { AddMedicalProviderComponent } from './components/medical-provider-maste
         EditInsuranceMasterComponent,
         InsuranceMasterListComponent,
         MedicalProviderListComponent,
-        AddMedicalProviderComponent
+        AddMedicalProviderComponent,
+        EditMedicalProviderComponent
 
     ],
     providers: [
@@ -84,8 +86,8 @@ import { AddMedicalProviderComponent } from './components/medical-provider-maste
         AttorneyMasterStore,
         InsuranceMasterService,
         InsuranceMasterStore,
-        MedicalProviderMasterService
-        , MedicalProviderMasterStore
+        MedicalProviderMasterService,
+        MedicalProviderMasterStore
     ]
 })
 export class AccountSetupModule { }
