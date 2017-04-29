@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MIDAS.GBX.BusinessObjects
 {
-    public class MedicalProvider : GbObject
+    public class PreferredMedicalProvider : GbObject
     {
 
 

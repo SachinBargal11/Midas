@@ -91,7 +91,7 @@
     <Compile Include="GBEnums.cs" />
     <Compile Include="GbObject.cs" />
     <Compile Include="InsuranceMaster\InsuranceMaster.cs" />
-    <Compile Include="MedicalProvider\MedicalProvider.cs" />
+    <Compile Include="PreferredMedicalProvider\MedicalProvider.cs" />
     <Compile Include="Notification\Notification.cs" />
     <Compile Include="PatientAccidentInfo\PatientAccidentInfo.cs" />
     <Compile Include="PatientFamilyMember\PatientFamilyMember.cs" />

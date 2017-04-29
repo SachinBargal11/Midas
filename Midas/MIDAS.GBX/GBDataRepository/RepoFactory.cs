@@ -257,9 +257,9 @@ namespace MIDAS.GBX
             {
                 repo = new DocumentNodeObjectMappingRepository(context);
             }
-            else if (typeof(T) == typeof(BO.MedicalProvider))
+            else if (typeof(T) == typeof(BO.PreferredMedicalProvider))
             {
-                repo = new MedicalProviderRepository(context);
+                repo = new PreferredMedicalProviderRepository(context);
             }
             return repo;
         }
