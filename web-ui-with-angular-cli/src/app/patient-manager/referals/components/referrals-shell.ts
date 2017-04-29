@@ -10,7 +10,8 @@ import { SessionStore } from '../../../commons/stores/session-store';
 export class ReferralsShellComponent implements OnInit {
 
     constructor(
-        public _router: Router
+        public _router: Router,
+        public sessionStore: SessionStore
     ) {
 
     }

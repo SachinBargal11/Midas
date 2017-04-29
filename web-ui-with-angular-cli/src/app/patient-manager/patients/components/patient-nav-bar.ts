@@ -12,7 +12,7 @@ export class PatientNavComponent implements OnInit {
     doctorFlag = false;
     constructor(
         private _router: Router,
-        public _sessionStore: SessionStore,
+        public sessionStore: SessionStore,
 
     ) {
     }
@@ -23,7 +23,7 @@ export class PatientNavComponent implements OnInit {
 
        CheckingDoctor() {
         let doctorRoleOnly = null;
-        let roles = this._sessionStore.session.user.roles;
+        let roles = this.sessionStore.session.user.roles;
         if (roles) {
             if (roles.length === 1) {
                 doctorRoleOnly = _.find(roles, (currentRole) => {
