@@ -70,7 +70,7 @@ export class SpecialityDetailsService {
             requestData.specialty = _.omit(requestData.specialty, 'createByUserID', 'createDate', 'isDeleted', 'isUnitApply', 'name', 'specialityCode', 'updateByUserID', 'updateDate');
             // requestData.company = _.omit(requestData.company, 'taxId', 'companyType', 'name');
             // console.log(requestData);
-            return this._http.post(this._url + '/CompanySpecialtyDetails/add', JSON.stringify(requestData), {
+            return this._http.post(this._url + '/CompanySpecialtyDetails/save', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -95,7 +95,7 @@ export class SpecialityDetailsService {
 
             requestData.specialty = _.omit(requestData.specialty, 'createByUserID', 'createDate', 'isDeleted', 'isUnitApply', 'name', 'specialityCode', 'updateByUserID', 'updateDate');
             // console.log(requestData);
-            return this._http.post(this._url + '/CompanySpecialtyDetails/add', JSON.stringify(requestData), {
+            return this._http.post(this._url + '/CompanySpecialtyDetails/save', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
@@ -120,7 +120,7 @@ export class SpecialityDetailsService {
 
             requestData.specialty = _.omit(requestData.specialty, 'createByUserID', 'createDate', 'isDeleted', 'isUnitApply', 'name', 'specialityCode', 'updateByUserID', 'updateDate');
             // console.log(requestData);
-            return this._http.post(this._url + '/CompanySpecialtyDetails/add', JSON.stringify(requestData), {
+            return this._http.post(this._url + '/CompanySpecialtyDetails/save', JSON.stringify(requestData), {
                 headers: this._headers
             }).map(res => res.json())
                 .subscribe((data: any) => {
